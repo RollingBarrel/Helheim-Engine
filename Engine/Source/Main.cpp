@@ -2,10 +2,7 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "Globals.h"
-
-#include "SDL/include/SDL.h"
-#pragma comment( lib, "SDL/lib/x64/SDL2.lib" )
-#pragma comment( lib, "SDL/lib/x64/SDL2main.lib" )
+#include "SDL.h"
 
 enum main_states
 {

@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="log.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ModuleInput.cpp" />
+    <ClCompile Include="ModuleOpenGL.cpp" />
+    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui.cpp">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_demo.cpp">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_draw.cpp">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_tables.cpp">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_widgets.cpp">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp">
+      <Filter>Dependencies\ImGui\Backends</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp">
+      <Filter>Dependencies\ImGui\Backends</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Dummy.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="ModuleOpenGL.h" />
+    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imgui.h">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imgui_internal.h">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_rectpack.h">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_textedit.h">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_truetype.h">
+      <Filter>Dependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h">
+      <Filter>Dependencies\ImGui\Backends</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Dependencies\ImGui\Backends</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h">
+      <Filter>Dependencies\ImGui\Backends</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEditor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Dependencies">
+      <UniqueIdentifier>{b4d566a1-da6b-4459-8060-3c9b3f339050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\ImGui">
+      <UniqueIdentifier>{f21e2237-4826-4cfa-b7d0-390076d6a7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\ImGui\Backends">
+      <UniqueIdentifier>{3f2f64a4-60a8-4119-8bc2-db3e955a823a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

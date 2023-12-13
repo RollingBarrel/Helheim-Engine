@@ -19,9 +19,9 @@ mono_crash.*
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
-[Rr]elease/
+[Rr]elease/*
 [Rr]eleases/
-x64/
+x64/*
 x86/
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
@@ -396,3 +396,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Lib
+!/Engine/Source/Dependencies/GLEW-2.1.0/lib/Release/x64
+!/Engine/Source/Dependencies/SDL-2.0.16/lib/x64
