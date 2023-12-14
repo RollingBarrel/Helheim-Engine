@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 
+struct ImGuiIO;
+
 class ModuleEditor : public Module
 {
 public:
@@ -12,6 +14,9 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
+
+private:
+	ImGuiIO* io;
 
 };
 
