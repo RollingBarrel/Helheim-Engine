@@ -7,11 +7,15 @@
 #include "imgui_impl_sdl2.h"
 
 ModuleInput::ModuleInput()
-{}
+{
+
+}
 
 // Destructor
 ModuleInput::~ModuleInput()
-{}
+{
+
+}
 
 // Called before render is available
 bool ModuleInput::Init()
@@ -39,12 +43,17 @@ update_status ModuleInput::Update()
         ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
 
         switch (sdlEvent.type)
-        {
-            case SDL_QUIT:
-                return UPDATE_STOP;
+        {               
             case SDL_WINDOWEVENT:
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-                    App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                {
+                   App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                }
+
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+                {
+                   return UPDATE_STOP;
+                }
                 break;
         }
     }
