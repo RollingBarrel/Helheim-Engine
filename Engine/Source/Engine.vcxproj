@@ -28,13 +28,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -87,7 +87,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)Dependencies\MathGeoLib-v1.5;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,7 +116,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;$(ProjectDir)Dependencies\MathGeoLib-v1.5;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,9 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui.cpp" />
@@ -156,50 +152,15 @@
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_draw.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_widgets.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathOps.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
-    <ClCompile Include="Panel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h" />
@@ -209,66 +170,6 @@
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_textedit.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_truetype.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB2D.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeometryAll.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeomType.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\HitInfo.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\PBVolume.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathGeoLib.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathGeoLibFwd.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\assume.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Complex.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\CoordinateAxisConvention.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\FixedPoint.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4_neon.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4_sse.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4_neon.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4_sse.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\FloatCmp.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathAll.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathConstants.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathNamespace.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathTypes.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MatrixProxy.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\myassert.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\quat_simd.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Rect.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Reinterpret.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\sse_mathfun.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Module.h" />
@@ -276,15 +177,6 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="Panel.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
