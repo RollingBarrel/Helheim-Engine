@@ -159,6 +159,9 @@
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_widgets.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp" />
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.cpp" />
