@@ -3,6 +3,8 @@
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
+#include "string"
+//#include "MathGeoLib.h"
 
 class Component;
 
@@ -11,20 +13,31 @@ class GameObject
 
 public:
 
+	GameObject(const char* name, const GameObject* parent);
+	GameObject(const char* name, const GameObject* parent, float3 position, float3 scale, Quat rotation);
 	void RecalculateMatrices();
 	void Update();
 	void CreateComponent();
 	void DrawEditor();
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
+	
+	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
+	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
+	const Quat& GetRotation() const { return mRotation; }
+	const float3& GetPosition() const { return mPosition; }
+	const float3& GetScale() const { return mScale; }
 
+	void SetRotation(const Quat& rotation);
+	void SetPosition(const float3& position);
+	void SetScale(const float3& scale);
 
 private:
 	std::vector<GameObject*> mChildren;
-	GameObject* mParent;
+	const GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
 	const unsigned int mID;
-	char* mName;
+	std::string mName;
 	float4x4 mWorldTransformMatrix;
 	float4x4 mLocalTransformMatrix;
 	bool mIsRoot;
