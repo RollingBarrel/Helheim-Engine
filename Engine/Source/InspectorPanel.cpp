@@ -9,5 +9,6 @@ void InspectorPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	// Everything must be drawn by the components.
+
 	ImGui::End();
 }
