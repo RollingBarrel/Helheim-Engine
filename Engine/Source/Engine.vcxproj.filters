@@ -134,6 +134,13 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleFileSystem.cpp" />
+    <ClCompile Include="Importer.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureImporter.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -360,6 +367,13 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleFileSystem.h" />
+    <ClInclude Include="Importer.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureImporter.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -391,6 +405,9 @@
     </Filter>
     <Filter Include="Dependencies\MathGeoLib\Algorithm\Random">
       <UniqueIdentifier>{dfad91e7-ed65-4749-add2-d1bfd98a511e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Importers">
+      <UniqueIdentifier>{59a2e3e5-812b-45f5-9a1a-5096740588ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
