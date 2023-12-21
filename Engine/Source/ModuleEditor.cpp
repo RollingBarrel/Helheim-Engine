@@ -6,6 +6,7 @@
 #include "Panel.h"
 #include "AboutPanel.h"
 #include "ConsolePanel.h"
+#include "InspectorPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -16,6 +17,7 @@ ModuleEditor::ModuleEditor()
 	mPanels.reserve(2);
 	mPanels.push_back(mAbout = new AboutPanel());
 	mPanels.push_back(mConsole = new ConsolePanel());
+	mPanels.push_back(mInspector = new InspectorPanel());
 }
 
 ModuleEditor::~ModuleEditor()

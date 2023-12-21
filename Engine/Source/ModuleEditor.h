@@ -7,6 +7,7 @@ struct ImGuiIO;
 class Panel;
 class AboutPanel;
 class ConsolePanel;
+class InspectorPanel;
 
 class ModuleEditor : public Module
 {
@@ -20,6 +21,8 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
+	const InspectorPanel* GetInspectorPanel() const { return mInspector; }
+
 private:
 	ImGuiIO* io;
 
@@ -27,5 +30,6 @@ private:
 
 	AboutPanel* mAbout = nullptr;
 	ConsolePanel* mConsole = nullptr;
+	InspectorPanel* mInspector = nullptr;
 };
 
