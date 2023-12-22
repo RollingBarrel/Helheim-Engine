@@ -29,8 +29,5 @@ private:
 
 	std::map<const char*, Panel*> mPanelsMap;
 	std::vector<Panel*> mPanels;
-
-	AboutPanel* mAbout = nullptr;
-	ConsolePanel* mConsole = nullptr;
 };
 
