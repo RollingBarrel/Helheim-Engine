@@ -6,8 +6,6 @@
 struct ImGuiIO;
 
 class Panel;
-class AboutPanel;
-class ConsolePanel;
 
 class ModuleEditor : public Module
 {
