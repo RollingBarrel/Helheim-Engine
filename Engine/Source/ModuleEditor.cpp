@@ -6,6 +6,7 @@
 #include "Panel.h"
 #include "AboutPanel.h"
 #include "ConsolePanel.h"
+#include "InspectorPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -13,9 +14,10 @@
 
 ModuleEditor::ModuleEditor()
 {
-	mPanels.reserve(2);
-	mPanels.push_back(mAbout = new AboutPanel());
-	mPanels.push_back(mConsole = new ConsolePanel());
+	mPanels.reserve(3);
+	AddPanel(new AboutPanel(), ABOUTPANEL);
+	AddPanel(new ConsolePanel(), CONSOLEPANEL);
+	AddPanel(new InspectorPanel(), INSPECTORPANEL);
 }
 
 ModuleEditor::~ModuleEditor()
@@ -88,4 +90,23 @@ bool ModuleEditor::CleanUp()
 	ImGui::DestroyContext();
 
 	return true;
+}
+
+void ModuleEditor::AddPanel(Panel* panel, const char* name)
+{
+	mPanels.push_back(panel);
+	mPanelsMap[name] = panel;
+}
+
+bool ModuleEditor::IsPanelOpen(const char* name)
+{
+	return mPanelsMap[name]->IsOpen();
+
+	//If we do not want the map we can use this.
+	//It is less eficient, but saves a bit of memory and removes the need for AddPanel()
+	/*for (auto panel : mPanels) {
+		if (panel->GetName() == name) {
+			return panel->IsOpen();
+		}
+	}*/
 }
