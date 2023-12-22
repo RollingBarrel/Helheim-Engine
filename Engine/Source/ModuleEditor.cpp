@@ -88,6 +88,11 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+	for (auto panel : mPanels) {
+		delete panel;
+	}
+	mPanels.clear();
+	mPanelsMap.clear();
 
 	return true;
 }
