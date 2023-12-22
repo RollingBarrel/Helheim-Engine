@@ -7,6 +7,20 @@
 #include "InspectorPanel.h"
 #include "imgui.h"
 
+GameObject::GameObject(const GameObject* parent) 
+	:mID(2), mName("GameObject"), mParent(parent),
+	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
+	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
+	mRotation(Quat::identity)
+{
+	if (parent == nullptr) {
+		mIsRoot = true;
+	}
+	else {
+		mWorldTransformMatrix = mParent->GetWorldTransform();
+	}
+}
+
 GameObject::GameObject(const char* name, const GameObject* parent)
 	:mID(2), mName(name), mParent(parent),
 	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
@@ -14,13 +28,7 @@ GameObject::GameObject(const char* name, const GameObject* parent)
 	mRotation(Quat::identity)
 {
 
-	if (parent == nullptr) {
-		mIsRoot = true;
-
-	}
-	else {
-		mWorldTransformMatrix = mParent->GetWorldTransform();
-	}
+	
 
 
 }
@@ -69,7 +77,7 @@ void GameObject::SetScale(const float3& scale)
 
 
 
-void GameObject::DrawEditor() {
+void GameObject::DrawInspector() {
 	DrawTransform();
 
 	for (Component* component : mComponents) {
@@ -77,6 +85,18 @@ void GameObject::DrawEditor() {
 		component->DrawEditor();
 	}
 
+}
+
+void GameObject::DrawHierarchy()
+{
+	for (auto child : mChildren) {
+		child->DrawHierarchy();
+	}
+}
+
+void GameObject::AddChild(GameObject& child)
+{
+	mChildren.push_back(&child);
 }
 
 void GameObject::DrawTransform() {
