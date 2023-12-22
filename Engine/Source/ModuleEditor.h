@@ -1,6 +1,5 @@
 #pragma once
 #include "Module.h"
-#include <vector>
 #include <map>
 
 struct ImGuiIO;
@@ -18,14 +17,11 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
-	bool IsPanelOpen(const char* name);
+	bool IsPanelOpen(const char* name) { return mPanels[name]; }
 
 private:
-	void AddPanel(Panel* panel, const char* name);
-
 	ImGuiIO* io;
 
-	std::map<const char*, Panel*> mPanelsMap;
-	std::vector<Panel*> mPanels;
+	std::map<const char*, Panel*> mPanels;
 };
 

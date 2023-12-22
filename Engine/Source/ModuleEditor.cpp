@@ -14,10 +14,9 @@
 
 ModuleEditor::ModuleEditor()
 {
-	mPanels.reserve(3);
-	AddPanel(new AboutPanel(), ABOUTPANEL);
-	AddPanel(new ConsolePanel(), CONSOLEPANEL);
-	AddPanel(new InspectorPanel(), INSPECTORPANEL);
+	mPanels[ABOUTPANEL] = new AboutPanel();
+	mPanels[CONSOLEPANEL] = new ConsolePanel();
+	mPanels[INSPECTORPANEL] = new InspectorPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -55,9 +54,9 @@ update_status ModuleEditor::Update()
 	{
 		for (auto it = mPanels.cbegin(); it != mPanels.cend(); ++it)
 		{
-			if ((*it)->IsOpen())
+			if (it->second->IsOpen())
 			{
-				(*it)->Draw();
+				it->second->Draw();
 			}
 		}
 	}
@@ -89,29 +88,9 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 	for (auto panel : mPanels) {
-		delete panel;
+		delete panel.second;
 	}
 	mPanels.clear();
-	mPanelsMap.clear();
 
 	return true;
-}
-
-void ModuleEditor::AddPanel(Panel* panel, const char* name)
-{
-	mPanels.push_back(panel);
-	mPanelsMap[name] = panel;
-}
-
-bool ModuleEditor::IsPanelOpen(const char* name)
-{
-	return mPanelsMap[name]->IsOpen();
-
-	//If we do not want the map we can use this.
-	//It is less eficient, but saves a bit of memory and removes the need for AddPanel()
-	/*for (auto panel : mPanels) {
-		if (panel->GetName() == name) {
-			return panel->IsOpen();
-		}
-	}*/
 }
