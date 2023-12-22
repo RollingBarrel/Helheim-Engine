@@ -10,14 +10,15 @@ class GameObject;
 class Component
 {
 public:
-	void Enable();
-	void Disable();
-	void Update();
-	void DrawEditor();
+	virtual	void Enable() { mIsEnabled = true; };
+	virtual	void Disable() { mIsEnabled = false; }
+	virtual	void Update() {};
+	virtual	void DrawEditor() {};
 
 private:
 	ComponentType mType;
 	GameObject* Owner;
+	bool mIsEnabled;
 
 };
 

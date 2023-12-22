@@ -9,6 +9,8 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleEditor;
 class ModuleRenderExercise;
+class ModuleScene;
+
 
 class Application
 {
@@ -32,6 +34,7 @@ private:
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
     ModuleEditor* editor = nullptr;
+    ModuleScene* scene = nullptr;
 
     std::list<Module*> modules;
 
