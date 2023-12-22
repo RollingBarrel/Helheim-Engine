@@ -45,11 +45,6 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleEditor::Update()
-{
 	if (ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode))
 	{
 		for (auto it = mPanels.cbegin(); it != mPanels.cend(); ++it)
@@ -61,6 +56,11 @@ update_status ModuleEditor::Update()
 		}
 	}
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleEditor::Update()
+{	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
