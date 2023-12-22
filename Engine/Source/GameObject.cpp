@@ -72,8 +72,59 @@ void GameObject::DrawEditor() {
 	if (inspector->IsOpen()) {
 		if (ImGui::Begin(inspector->GetName())) {
 			// Draw Transform Component
+			if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {
+				bool modifiedTransform = false;
+				if (ImGui::BeginTable("transformTable", 2)) {
+					ImGui::TableNextRow();
+					ImGui::PushID(0);
+					ImGui::TableSetColumnIndex(0);
+					ImGui::Text("Position");
+					ImGui::TableSetColumnIndex(1);
+					ImGui::PushItemWidth(ImGui::GetColumnWidth(1)/4);
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("X", &mPosition.x);
+					ImGui::SameLine();
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("Y", &mPosition.y);
+					ImGui::SameLine();
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("Z", &mPosition.z);
+					ImGui::PopItemWidth();
+					ImGui::PopID();
+
+					ImGui::TableNextRow();
+					ImGui::PushID(1);
+					ImGui::TableSetColumnIndex(0);
+					ImGui::Text("Rotation");
+					ImGui::TableSetColumnIndex(1);
+					ImGui::PushItemWidth(ImGui::GetColumnWidth(1) / 4);
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("X", &mRotation.x);
+					ImGui::SameLine();
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("Y", &mRotation.y);
+					ImGui::SameLine();
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("Z", &mRotation.z);
+					ImGui::PopItemWidth();
+					ImGui::PopID();
+
+					ImGui::TableNextRow();
+					ImGui::PushID(2);
+					ImGui::TableSetColumnIndex(0);
+					ImGui::Text("Scale");
+					ImGui::TableSetColumnIndex(1);
+					ImGui::PushItemWidth(ImGui::GetColumnWidth(1) / 4);
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("X", &mScale.x);
+					ImGui::SameLine();
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("Y", &mScale.y);
+					ImGui::SameLine();
+					modifiedTransform = modifiedTransform || ImGui::InputFloat("Z", &mScale.z);
+					ImGui::PopItemWidth();
+					ImGui::PopID();
+					if (modifiedTransform) {
+						RecalculateMatrices();
+					}
+				}
+				ImGui::EndTable();
+			}
 
 			for (Component* component : mComponents) {
+				ImGui::Separator();
 				component->DrawEditor();
 			}
 		}
