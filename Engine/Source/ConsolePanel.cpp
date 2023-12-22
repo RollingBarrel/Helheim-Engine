@@ -2,7 +2,7 @@
 
 #include "imgui.h"
 
-ConsolePanel::ConsolePanel() : Panel("Console##", true)
+ConsolePanel::ConsolePanel() : Panel(CONSOLEPANEL, true)
 {
 }
 

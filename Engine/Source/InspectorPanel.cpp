@@ -2,7 +2,8 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleScene.h"
-InspectorPanel::InspectorPanel() : Panel("Inspector##", true) {}
+
+InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {

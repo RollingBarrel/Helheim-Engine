@@ -14,10 +14,9 @@
 
 ModuleEditor::ModuleEditor()
 {
-	mPanels.reserve(2);
-	mPanels.push_back(mAbout = new AboutPanel());
-	mPanels.push_back(mConsole = new ConsolePanel());
-	mPanels.push_back(mInspector = new InspectorPanel());
+	mPanels[ABOUTPANEL] = new AboutPanel();
+	mPanels[CONSOLEPANEL] = new ConsolePanel();
+	mPanels[INSPECTORPANEL] = new InspectorPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -46,22 +45,22 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleEditor::Update()
-{
 	if (ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode))
 	{
 		for (auto it = mPanels.cbegin(); it != mPanels.cend(); ++it)
 		{
-			if ((*it)->IsOpen())
+			if (it->second->IsOpen())
 			{
-				(*it)->Draw();
+				it->second->Draw();
 			}
 		}
 	}
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleEditor::Update()
+{	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -88,6 +87,10 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+	for (auto panel : mPanels) {
+		delete panel.second;
+	}
+	mPanels.clear();
 
 	return true;
 }
