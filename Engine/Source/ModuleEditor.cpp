@@ -7,6 +7,7 @@
 #include "AboutPanel.h"
 #include "ConsolePanel.h"
 #include "InspectorPanel.h"
+#include "HierarchyPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -17,6 +18,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[ABOUTPANEL] = new AboutPanel();
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
+	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 }
 
 ModuleEditor::~ModuleEditor()

@@ -191,6 +191,7 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
+    <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
