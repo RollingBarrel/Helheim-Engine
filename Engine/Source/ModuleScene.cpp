@@ -17,13 +17,10 @@ bool ModuleScene::Init()
 
 update_status ModuleScene::Update()
 {
-	DrawEditor();
 	return UPDATE_CONTINUE;
 }
 
 void ModuleScene::DrawEditor()
 {
-	//This is a placeholder for testing.
-	//Here we should call the DrawEditor of the GameObject that has Focus
 	mRoot->DrawEditor();
 }

@@ -47,5 +47,7 @@ private:
 	bool mIsEnabled;
 
 
+	void DrawTransform();
+
 };
 
