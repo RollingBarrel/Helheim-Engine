@@ -11,6 +11,7 @@ void HierarchyPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
+	App->GetScene()->DrawHierarchy();
 
 	ImGui::End();
 }

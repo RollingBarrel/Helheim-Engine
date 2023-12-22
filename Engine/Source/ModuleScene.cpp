@@ -20,7 +20,12 @@ update_status ModuleScene::Update()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DrawEditor()
+void ModuleScene::DrawInspector()
 {
-	mRoot->DrawEditor();
+	mRoot->DrawInspector();
+}
+
+void ModuleScene::DrawHierarchy()
+{
+	mRoot->DrawHierarchy();
 }
