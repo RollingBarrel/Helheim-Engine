@@ -4,9 +4,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModuleOpenGL.cpp" />
-    <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui.cpp">
       <Filter>Dependencies\ImGui</Filter>
     </ClCompile>
@@ -28,7 +25,6 @@
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp">
       <Filter>Dependencies\ImGui\Backends</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="Panel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -134,15 +130,27 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleOpenGL.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleWindow.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="Module.h" />
-    <ClInclude Include="ModuleInput.h" />
-    <ClInclude Include="ModuleOpenGL.h" />
-    <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
       <Filter>Dependencies\ImGui</Filter>
     </ClInclude>
@@ -170,7 +178,6 @@
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h">
       <Filter>Dependencies\ImGui\Backends</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="Panel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -360,6 +367,25 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleInput.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleOpenGL.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleWindow.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleProgram.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -392,6 +418,12 @@
     <Filter Include="Dependencies\MathGeoLib\Algorithm\Random">
       <UniqueIdentifier>{dfad91e7-ed65-4749-add2-d1bfd98a511e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{95c0a4da-d49a-43f4-8da0-45a8df1efad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{3455767e-9400-4924-9878-10687ebb4c3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
@@ -411,6 +443,12 @@
     </None>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\Game\shaders\default_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\shaders\default_vertex.glsl">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

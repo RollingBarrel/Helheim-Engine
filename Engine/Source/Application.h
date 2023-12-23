@@ -5,10 +5,9 @@
 
 class ModuleOpenGL;
 class ModuleWindow;
-class ModuleTextures;
 class ModuleInput;
 class ModuleEditor;
-class ModuleRenderExercise;
+class ModuleProgram;
 
 class Application
 {
@@ -21,19 +20,22 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-    ModuleOpenGL* GetOpenGL() { return render; }
-    ModuleWindow* GetWindow() { return window; }
-    ModuleInput*  GetInput() { return input; }
-    ModuleEditor*  GetEditor() { return editor; }
+    ModuleOpenGL* GetOpenGL() { return mRender; }
+    ModuleWindow* GetWindow() { return mWindow; }
+    ModuleInput*  GetInput() { return mInput; }
+    ModuleEditor*  GetEditor() { return mEditor; }
+    ModuleProgram* GetProgram() { return mProgram; }
+
 
 private:
 
-    ModuleOpenGL* render = nullptr;
-    ModuleWindow* window = nullptr;
-    ModuleInput* input = nullptr;
-    ModuleEditor* editor = nullptr;
+    ModuleOpenGL* mRender = nullptr;
+    ModuleWindow* mWindow = nullptr;
+    ModuleInput* mInput = nullptr;
+    ModuleEditor* mEditor = nullptr;
+    ModuleProgram* mProgram = nullptr;
 
-    std::list<Module*> modules;
+    std::list<Module*> mModules;
 
 };
 
