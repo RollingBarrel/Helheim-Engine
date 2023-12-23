@@ -16,6 +16,12 @@ void HierarchyPanel::Draw(int windowFlags)
 		App->GetScene()->getRoot()->AddChild(gameObject);
 		App->GetScene()->SetSelectedObject(gameObject);
 	}
+
+	if (ImGui::Button("Duplicate GameObject")) {
+		GameObject* gameObject = new GameObject(*(App->GetScene()->getSelectedGameObject()));
+		App->GetScene()->getRoot()->AddChild(gameObject);
+		App->GetScene()->SetSelectedObject(gameObject);
+	}
 	App->GetScene()->DrawHierarchy();
 
 	ImGui::End();

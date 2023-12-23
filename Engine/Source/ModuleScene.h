@@ -13,7 +13,10 @@ public:
 	update_status Update() override;
 	void DrawInspector();
 	void DrawHierarchy();
+
 	GameObject* getRoot() { return mRoot; }
+	GameObject* getSelectedGameObject() { return mSelectedGameObject; }
+
 	void SetSelectedObject(GameObject* gameObject);
 
 private:

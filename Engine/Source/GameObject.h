@@ -13,6 +13,7 @@ class GameObject
 
 public:
 	GameObject(const GameObject* parent);
+	GameObject(const GameObject& original);
 	GameObject(const char* name, const GameObject* parent);
 	GameObject(const char* name, const GameObject* parent, float3 position, float3 scale, Quat rotation);
 	void RecalculateMatrices();

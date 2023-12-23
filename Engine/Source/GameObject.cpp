@@ -18,6 +18,19 @@ GameObject::GameObject(const GameObject* parent)
 	else {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
+
+}
+
+GameObject::GameObject(const GameObject& original) 
+	:mID((new LCG())->Int()), mName(original.mName + " (1)"), mParent(original.mParent),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
+	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
+	mRotation(original.mRotation)
+{
+	for (auto child : original.mChildren) {
+		mChildren.push_back(new GameObject(*(child)));
+	}
+	//TODO: Copy Childs and Components
 }
 
 GameObject::GameObject(const char* name, const GameObject* parent)
