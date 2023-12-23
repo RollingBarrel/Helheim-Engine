@@ -22,7 +22,7 @@ public:
 	void DrawHierarchy();
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
-	void AddChild(GameObject& child);
+	void AddChild(GameObject* child);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }

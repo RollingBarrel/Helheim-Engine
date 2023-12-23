@@ -3,6 +3,7 @@
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
+	mSelectedGameObject = mRoot;
 }
 
 ModuleScene::~ModuleScene()
@@ -22,10 +23,18 @@ update_status ModuleScene::Update()
 
 void ModuleScene::DrawInspector()
 {
-	mRoot->DrawInspector();
+	if (mSelectedGameObject != mRoot) {
+		mSelectedGameObject->DrawInspector();
+	}
+	
 }
 
 void ModuleScene::DrawHierarchy()
 {
 	mRoot->DrawHierarchy();
+}
+
+void ModuleScene::SetSelectedObject(GameObject* gameObject)
+{
+	mSelectedGameObject = gameObject;
 }
