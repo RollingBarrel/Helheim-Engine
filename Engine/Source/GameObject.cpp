@@ -2,8 +2,7 @@
 #include "Algorithm/Random/LCG.h"
 #include "Component.h"
 #include "Application.h"
-#include "ModuleEditor.h"
-#include "InspectorPanel.h"
+#include "ModuleScene.h"
 #include "imgui.h"
 
 GameObject::GameObject(const GameObject* parent) 
@@ -92,11 +91,47 @@ void GameObject::DrawInspector() {
 
 }
 
-void GameObject::DrawHierarchy()
+void GameObject::DrawHierarchy(const int selected)
 {
-	if (ImGui::CollapsingHeader((mName+"##"+ std::to_string(mID)).c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+	bool nodeOpen = true;
+	if (!mIsRoot) {
+		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+		if (mID == selected)
+			baseFlags |= ImGuiTreeNodeFlags_Selected;
+		if (mChildren.size() == 0) {
+			baseFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+		}
+		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)mID, baseFlags, mName.c_str()) && (mChildren.size() > 0);
+		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+			App->GetScene()->SetSelectedObject(this);
+		}
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+		{
+			ImGui::SetDragDropPayload("_TREENODE", this, sizeof(this));
+
+			ImGui::Text(mName.c_str());
+			ImGui::EndDragDropSource();
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
+			{
+				/*GameObject* movedObject = (GameObject*)payload->Data;
+				movedObject->mParent->RemoveChild(movedObject);
+				movedObject->SetParent(this);
+				mChildren.push_back(movedObject);*/
+			}
+			ImGui::EndDragDropTarget();
+		}
+	}
+	
+	if (nodeOpen) {
 		for (auto child : mChildren) {
-			child->DrawHierarchy();
+			child->DrawHierarchy(selected);
+		}
+	
+		if (!mIsRoot) {
+			ImGui::TreePop(); 
 		}
 	}
 }
@@ -104,6 +139,14 @@ void GameObject::DrawHierarchy()
 void GameObject::AddChild(GameObject* child)
 {
 	mChildren.push_back(child);
+}
+
+void GameObject::RemoveChild(const GameObject* child)
+{
+	auto itChildren = std::find(mChildren.begin(), mChildren.end(), child);
+	if (itChildren != mChildren.end()) {
+		mChildren.erase(itChildren);
+	}
 }
 
 void GameObject::DrawTransform() {

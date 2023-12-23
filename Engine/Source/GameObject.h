@@ -19,20 +19,23 @@ public:
 	void Update();
 	void CreateComponent();
 	void DrawInspector();
-	void DrawHierarchy();
+	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
 	void AddChild(GameObject* child);
+	void RemoveChild(const GameObject* child);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const Quat& GetRotation() const { return mRotation; }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
+	const int GetID() const { return mID; }
 
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
+	//void SetParent(GameObject* parent) { mParent = parent; }
 
 private:
 	std::vector<GameObject*> mChildren;

@@ -58,6 +58,9 @@ update_status ModuleEditor::PreUpdate()
 		}
 	}
 
+	static bool show = true;
+	ImGui::ShowDemoWindow(&show);
+
 	return UPDATE_CONTINUE;
 }
 
