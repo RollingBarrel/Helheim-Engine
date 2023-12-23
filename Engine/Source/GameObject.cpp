@@ -1,14 +1,13 @@
 #include "GameObject.h"
 #include "Algorithm/Random/LCG.h"
 #include "Component.h"
-#include "MathGeoLib.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "InspectorPanel.h"
 #include "imgui.h"
 
 GameObject::GameObject(const GameObject* parent) 
-	:mID(2), mName("GameObject"), mParent(parent),
+	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
 	mRotation(Quat::identity)
@@ -22,14 +21,18 @@ GameObject::GameObject(const GameObject* parent)
 }
 
 GameObject::GameObject(const char* name, const GameObject* parent)
-	:mID(2), mName(name), mParent(parent),
+	:mID((new LCG())->Int()), mName(name), mParent(parent),
 	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
 	mRotation(Quat::identity)
 {
 
-	
-
+	if (parent == nullptr) {
+		mIsRoot = true;
+	}
+	else {
+		mWorldTransformMatrix = mParent->GetWorldTransform();
+	}
 
 }
 
@@ -78,6 +81,8 @@ void GameObject::SetScale(const float3& scale)
 
 
 void GameObject::DrawInspector() {
+	
+	ImGui::Text(mName.c_str());
 	DrawTransform();
 
 	for (Component* component : mComponents) {
@@ -89,14 +94,16 @@ void GameObject::DrawInspector() {
 
 void GameObject::DrawHierarchy()
 {
-	for (auto child : mChildren) {
-		child->DrawHierarchy();
+	if (ImGui::CollapsingHeader((mName+"##"+ std::to_string(mID)).c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+		for (auto child : mChildren) {
+			child->DrawHierarchy();
+		}
 	}
 }
 
-void GameObject::AddChild(GameObject& child)
+void GameObject::AddChild(GameObject* child)
 {
-	mChildren.push_back(&child);
+	mChildren.push_back(child);
 }
 
 void GameObject::DrawTransform() {

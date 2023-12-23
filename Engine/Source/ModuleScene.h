@@ -13,9 +13,11 @@ public:
 	update_status Update() override;
 	void DrawInspector();
 	void DrawHierarchy();
+	GameObject* getRoot() { return mRoot; }
+	void SetSelectedObject(GameObject* gameObject);
 
 private:
 	GameObject* mRoot;
-
+	GameObject* mSelectedGameObject;
 };
 
