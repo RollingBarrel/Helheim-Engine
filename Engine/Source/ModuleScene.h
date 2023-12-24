@@ -12,6 +12,9 @@ public:
 	bool Init() override;
 	update_status Update() override;
 	void DrawEditor();
+	GameObject* GetRoot() {
+		return mRoot;
+	}
 
 private:
 	GameObject* mRoot;

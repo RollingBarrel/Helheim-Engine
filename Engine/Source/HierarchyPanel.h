@@ -10,4 +10,5 @@ public:
 	//~HierarchyPanel();
 
 	void Draw(int windowFlags) override;
+	void OpenRightClickPanel();
 };
