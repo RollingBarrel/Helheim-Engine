@@ -14,7 +14,6 @@ class GameObject
 public:
 	GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
-	GameObject(GameObject* copy, GameObject* parent);
 	GameObject(const char* name, GameObject* parent, float3 position, float3 scale, Quat rotation);
 	void RecalculateMatrices();
 	void Update();

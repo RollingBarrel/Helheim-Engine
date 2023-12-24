@@ -29,11 +29,6 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 }
 
-GameObject::GameObject(GameObject* copy, GameObject* newParent) : mID(copy->mID), mName(copy->mName),
-mParent(newParent), mIsRoot(copy->mIsRoot), mIsEnabled(copy->mIsEnabled), mWorldTransformMatrix(copy->mWorldTransformMatrix),
-mLocalTransformMatrix(copy->mLocalTransformMatrix), mPosition(copy->mPosition), mScale(copy->mScale), mRotation(copy->mRotation),
-mChildren(copy->mChildren) {}
-
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
