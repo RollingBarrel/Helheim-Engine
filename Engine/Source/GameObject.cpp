@@ -94,13 +94,23 @@ void GameObject::DrawHierarchy(const int selected)
 {
 	bool nodeOpen = true;
 	if (!mIsRoot) {
+		ImGui::Separator();
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
+			{
+				const GameObject* movedObject = (const GameObject*)payload->Data;
+				movedObject->mParent->MoveChild(movedObject->GetID(), this->mParent, mID);
+			}
+			ImGui::EndDragDropTarget();
+		}
 		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (mID == selected)
 			baseFlags |= ImGuiTreeNodeFlags_Selected;
 		if (mChildren.size() == 0) {
 			baseFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 		}
-		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)mID, baseFlags, mName.c_str()) && (mChildren.size() > 0);
+		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)mID, baseFlags, "%s %d", mName.c_str(), mID) && (mChildren.size() > 0);
 		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
 			App->GetScene()->SetSelectedObject(this);
 		}
@@ -133,25 +143,77 @@ void GameObject::DrawHierarchy(const int selected)
 			ImGui::TreePop(); 
 		}
 	}
-}
-
-void GameObject::AddChild(GameObject* child)
-{
-	mChildren.push_back(child);
-	mChildren.back()->mParent = this;
-}
-
-void GameObject::MoveChild(const int id, GameObject* oldParent)
-{
-	for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
-	{
-		if ((*it)->GetID() == id)
+	if (mIsRoot) { // Dragging something to this Separator will move it to the end of root
+		ImGui::Separator();
+		if (ImGui::BeginDragDropTarget())
 		{
-			oldParent->AddChild(*it);
-			mChildren.erase(it);
-			break;
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
+			{
+				const GameObject* movedObject = (const GameObject*)payload->Data;
+				movedObject->mParent->MoveChild(movedObject->GetID(), this);
+			}
+			ImGui::EndDragDropTarget();
 		}
 	}
+}
+
+void GameObject::AddChild(GameObject* child, const int aboveThisId)
+{
+	child->mParent = this;
+	bool inserted = false;
+	if (aboveThisId != 0) {
+		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it) {
+			if ((*it)->GetID() == aboveThisId)
+			{				
+				mChildren.insert(it, child);
+				inserted = true;
+				break;
+			}
+		}
+	}
+	if (!inserted) {
+		mChildren.push_back(child);
+	}
+	
+}
+
+void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveThisId)
+{
+	if (mID == newParent->mID) { //Movement inside same object
+		if (id == aboveThisId) { return; }
+		std::vector<GameObject*>::iterator itMovedObject;
+		std::vector<GameObject*>::iterator itTargetPosition = mChildren.end();
+		for (auto it = mChildren.begin(); it != mChildren.cend(); ++it) {
+			if ((*it)->GetID() == id) {
+				itMovedObject = it;
+			}
+			else if ((*it)->GetID() == aboveThisId) {
+				itTargetPosition = it;
+			}
+		}
+		if (itMovedObject != mChildren.end()) {
+			if (itMovedObject < itTargetPosition) {
+				if (itMovedObject + 1 == itTargetPosition) { return; }
+				std::rotate(itMovedObject, itMovedObject + 1, itTargetPosition);
+			}
+			else if (itMovedObject > itTargetPosition) {
+				std::rotate(itTargetPosition, itMovedObject, itMovedObject + 1);
+			}
+		}
+		
+	}
+	else {
+		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
+		{
+			if ((*it)->GetID() == id)
+			{
+				newParent->AddChild(*it, aboveThisId);
+				mChildren.erase(it);
+				break;
+			}
+		}
+	}
+			
 }
 
 void GameObject::DrawTransform() {

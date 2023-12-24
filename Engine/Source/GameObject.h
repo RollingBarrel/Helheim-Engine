@@ -23,7 +23,7 @@ public:
 	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
-	void AddChild(GameObject* child);
+	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
@@ -37,7 +37,7 @@ public:
 	void SetScale(const float3& scale);
 
 private:
-	void MoveChild(const int id, GameObject* oldParent);
+	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
