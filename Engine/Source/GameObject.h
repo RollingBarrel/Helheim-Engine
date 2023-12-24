@@ -30,7 +30,7 @@ public:
 	const Quat& GetRotation() const { return mRotation; }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
-
+	const bool IsRoot() const { return mIsRoot; }
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
