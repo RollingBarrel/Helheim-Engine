@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleOpenGL.h"
 #include "SDL.h"
+#include "ModuleCamera.h"
 
 #include "imgui_impl_sdl2.h"
 
@@ -50,6 +51,12 @@ update_status ModuleInput::Update()
     }
 
     keyboard = SDL_GetKeyboardState(NULL);
+
+
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+
+    App->GetCamera()->ProcessInput(keyboard, x, y);
 
     return UPDATE_CONTINUE;
 }
