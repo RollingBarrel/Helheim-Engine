@@ -104,6 +104,7 @@ void GameObject::DrawHierarchy(const int selected)
 		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
 			App->GetScene()->SetSelectedObject(this);
 		}
+		/*****Begin Drag & Drop Code*******/
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
 			ImGui::SetDragDropPayload("_TREENODE", this, sizeof(*this));
@@ -115,14 +116,12 @@ void GameObject::DrawHierarchy(const int selected)
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 			{
-				GameObject* movedObject = (GameObject*)payload->Data;
-				mChildren.push_back(new GameObject(movedObject, this));
-				App->GetScene()->SetSelectedObject(mChildren.back());
-				movedObject->mParent->RemoveChild(movedObject);
+				const GameObject* movedObject = (const GameObject*)payload->Data;
+				movedObject->mParent->MoveChild(movedObject->GetID(), this);
 			}
 			ImGui::EndDragDropTarget();
 		}
-		const char* test = "test";
+		/*****End Drag & Drop Code*******/
 	}
 	
 	if (nodeOpen) {
@@ -139,15 +138,16 @@ void GameObject::DrawHierarchy(const int selected)
 void GameObject::AddChild(GameObject* child)
 {
 	mChildren.push_back(child);
+	mChildren.back()->mParent = this;
 }
 
-void GameObject::RemoveChild(GameObject* child)
+void GameObject::MoveChild(const int id, GameObject* oldParent)
 {
 	for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
 	{
-		if ((*it)->GetID() == child->GetID())
+		if ((*it)->GetID() == id)
 		{
-			delete* it;
+			oldParent->AddChild(*it);
 			mChildren.erase(it);
 			break;
 		}

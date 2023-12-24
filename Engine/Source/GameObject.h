@@ -24,7 +24,6 @@ public:
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
 	void AddChild(GameObject* child);
-	void RemoveChild(GameObject* child);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
@@ -36,9 +35,10 @@ public:
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
-	void SetParent(GameObject* parent) { mParent = parent; }
 
 private:
+	void MoveChild(const int id, GameObject* oldParent);
+
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
