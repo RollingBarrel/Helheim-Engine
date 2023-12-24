@@ -3,6 +3,7 @@
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
+	mSelectedGameObject = mRoot;
 }
 
 ModuleScene::~ModuleScene()
@@ -20,7 +21,20 @@ update_status ModuleScene::Update()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DrawEditor()
+void ModuleScene::DrawInspector()
 {
-	mRoot->DrawEditor();
+	if (mSelectedGameObject != mRoot) {
+		mSelectedGameObject->DrawInspector();
+	}
+	
+}
+
+void ModuleScene::DrawHierarchy()
+{
+	mRoot->DrawHierarchy();
+}
+
+void ModuleScene::SetSelectedObject(GameObject* gameObject)
+{
+	mSelectedGameObject = gameObject;
 }

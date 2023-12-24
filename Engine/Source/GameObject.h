@@ -12,15 +12,18 @@ class GameObject
 {
 
 public:
-
+	GameObject(const GameObject* parent);
+	GameObject(const GameObject& original);
 	GameObject(const char* name, const GameObject* parent);
 	GameObject(const char* name, const GameObject* parent, float3 position, float3 scale, Quat rotation);
 	void RecalculateMatrices();
 	void Update();
 	void CreateComponent();
-	void DrawEditor();
+	void DrawInspector();
+	void DrawHierarchy();
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
+	void AddChild(GameObject* child);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }

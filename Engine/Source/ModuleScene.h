@@ -11,13 +11,21 @@ public:
 	~ModuleScene();
 	bool Init() override;
 	update_status Update() override;
+
 	void DrawEditor();
 	GameObject* GetRoot() {
 		return mRoot;
 	}
+	void DrawInspector();
+	void DrawHierarchy();
+
+	GameObject* getRoot() { return mRoot; }
+	GameObject* getSelectedGameObject() { return mSelectedGameObject; }
+
+	void SetSelectedObject(GameObject* gameObject);
 
 private:
 	GameObject* mRoot;
-
+	GameObject* mSelectedGameObject;
 };
 

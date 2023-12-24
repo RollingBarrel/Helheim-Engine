@@ -1,14 +1,40 @@
 #include "GameObject.h"
 #include "Algorithm/Random/LCG.h"
 #include "Component.h"
-#include "MathGeoLib.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "InspectorPanel.h"
 #include "imgui.h"
 
+GameObject::GameObject(const GameObject* parent) 
+	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
+	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
+	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
+	mRotation(Quat::identity)
+{
+	if (parent == nullptr) {
+		mIsRoot = true;
+	}
+	else {
+		mWorldTransformMatrix = mParent->GetWorldTransform();
+	}
+
+}
+
+GameObject::GameObject(const GameObject& original) 
+	:mID((new LCG())->Int()), mName(original.mName + " (1)"), mParent(original.mParent),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
+	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
+	mRotation(original.mRotation)
+{
+	for (auto child : original.mChildren) {
+		mChildren.push_back(new GameObject(*(child)));
+	}
+	//TODO: Copy Childs and Components
+}
+
 GameObject::GameObject(const char* name, const GameObject* parent)
-	:mID(2), mName(name), mParent(parent),
+	:mID((new LCG())->Int()), mName(name), mParent(parent),
 	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
 	mRotation(Quat::identity)
@@ -16,12 +42,10 @@ GameObject::GameObject(const char* name, const GameObject* parent)
 
 	if (parent == nullptr) {
 		mIsRoot = true;
-
 	}
 	else {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
-
 
 }
 
@@ -69,7 +93,9 @@ void GameObject::SetScale(const float3& scale)
 
 
 
-void GameObject::DrawEditor() {
+void GameObject::DrawInspector() {
+	
+	ImGui::Text(mName.c_str());
 	DrawTransform();
 
 	for (Component* component : mComponents) {
@@ -77,6 +103,20 @@ void GameObject::DrawEditor() {
 		component->DrawEditor();
 	}
 
+}
+
+void GameObject::DrawHierarchy()
+{
+	if (ImGui::CollapsingHeader((mName+"##"+ std::to_string(mID)).c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
+		for (auto child : mChildren) {
+			child->DrawHierarchy();
+		}
+	}
+}
+
+void GameObject::AddChild(GameObject* child)
+{
+	mChildren.push_back(child);
 }
 
 void GameObject::DrawTransform() {
