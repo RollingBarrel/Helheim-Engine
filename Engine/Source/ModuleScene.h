@@ -12,15 +12,13 @@ public:
 	bool Init() override;
 	update_status Update() override;
 
-	void DrawEditor();
-	GameObject* GetRoot() {
-		return mRoot;
-	}
 	void DrawInspector();
 	void DrawHierarchy();
 
-	GameObject* getRoot() { return mRoot; }
-	GameObject* getSelectedGameObject() { return mSelectedGameObject; }
+	GameObject* GetRoot() const {
+		return mRoot;
+	}
+	GameObject* GetSelectedGameObject() const { return mSelectedGameObject; }
 
 	void SetSelectedObject(GameObject* gameObject);
 

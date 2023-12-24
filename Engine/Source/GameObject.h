@@ -12,38 +12,41 @@ class GameObject
 {
 
 public:
-	GameObject(const GameObject* parent);
+	GameObject(GameObject* parent);
 	GameObject(const GameObject& original);
-	GameObject(const char* name, const GameObject* parent);
-	GameObject(const char* name, const GameObject* parent, float3 position, float3 scale, Quat rotation);
+	GameObject(const char* name, GameObject* parent);
+	GameObject(const char* name, GameObject* parent, float3 position, float3 scale, Quat rotation);
 	void RecalculateMatrices();
 	void Update();
 	void CreateComponent();
 	void DrawInspector();
-	void DrawHierarchy();
+	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
-	void AddChild(GameObject* child);
+	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const Quat& GetRotation() const { return mRotation; }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
+	const int GetID() const { return mID; }
 
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
 private:
+	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
+
 	std::vector<GameObject*> mChildren;
-	const GameObject* mParent = nullptr;
+	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
 	const unsigned int mID;
 	std::string mName;
 	float4x4 mWorldTransformMatrix;
 	float4x4 mLocalTransformMatrix;
-	bool mIsRoot;
+	const bool mIsRoot;
 	float3 mPosition;
 	Quat mRotation;
 	float3 mScale;

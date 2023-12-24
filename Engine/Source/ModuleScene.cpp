@@ -18,6 +18,7 @@ bool ModuleScene::Init()
 
 update_status ModuleScene::Update()
 {
+	mRoot->Update();
 	return UPDATE_CONTINUE;
 }
 
@@ -31,7 +32,7 @@ void ModuleScene::DrawInspector()
 
 void ModuleScene::DrawHierarchy()
 {
-	mRoot->DrawHierarchy();
+	mRoot->DrawHierarchy(mSelectedGameObject->GetID());
 }
 
 void ModuleScene::SetSelectedObject(GameObject* gameObject)
