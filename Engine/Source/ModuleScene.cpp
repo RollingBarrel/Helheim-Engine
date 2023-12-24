@@ -18,6 +18,12 @@ bool ModuleScene::Init()
 
 update_status ModuleScene::Update()
 {
+	mRoot->Update();
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleScene::PostUpdate()
+{
 	return UPDATE_CONTINUE;
 }
 

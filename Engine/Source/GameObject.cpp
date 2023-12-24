@@ -5,35 +5,34 @@
 #include "ModuleScene.h"
 #include "imgui.h"
 
-GameObject::GameObject(const GameObject* parent) 
+GameObject::GameObject(GameObject* parent) 
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
-	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
+	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
 	mRotation(Quat::identity)
 {
-	if (parent == nullptr) {
-		mIsRoot = true;
-	}
-	else {
+	if(!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
 }
 
-GameObject::GameObject(const char* name, const GameObject* parent)
+GameObject::GameObject(const char* name, GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
-	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
+	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
 	mRotation(Quat::identity)
 {
 
-	if (parent == nullptr) {
-		mIsRoot = true;
-	}
-	else {
+	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
 
 }
+
+GameObject::GameObject(GameObject* copy, GameObject* newParent) : mID(copy->mID), mName(copy->mName),
+mParent(newParent), mIsRoot(copy->mIsRoot), mIsEnabled(copy->mIsEnabled), mWorldTransformMatrix(copy->mWorldTransformMatrix),
+mLocalTransformMatrix(copy->mLocalTransformMatrix), mPosition(copy->mPosition), mScale(copy->mScale), mRotation(copy->mRotation),
+mChildren(copy->mChildren) {}
 
 void GameObject::RecalculateMatrices()
 {
@@ -107,7 +106,7 @@ void GameObject::DrawHierarchy(const int selected)
 		}
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
-			ImGui::SetDragDropPayload("_TREENODE", this, sizeof(this));
+			ImGui::SetDragDropPayload("_TREENODE", this, sizeof(*this));
 
 			ImGui::Text(mName.c_str());
 			ImGui::EndDragDropSource();
@@ -116,13 +115,14 @@ void GameObject::DrawHierarchy(const int selected)
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 			{
-				/*GameObject* movedObject = (GameObject*)payload->Data;
+				GameObject* movedObject = (GameObject*)payload->Data;
+				mChildren.push_back(new GameObject(movedObject, this));
+				App->GetScene()->SetSelectedObject(mChildren.back());
 				movedObject->mParent->RemoveChild(movedObject);
-				movedObject->SetParent(this);
-				mChildren.push_back(movedObject);*/
 			}
 			ImGui::EndDragDropTarget();
 		}
+		const char* test = "test";
 	}
 	
 	if (nodeOpen) {
@@ -141,11 +141,16 @@ void GameObject::AddChild(GameObject* child)
 	mChildren.push_back(child);
 }
 
-void GameObject::RemoveChild(const GameObject* child)
+void GameObject::RemoveChild(GameObject* child)
 {
-	auto itChildren = std::find(mChildren.begin(), mChildren.end(), child);
-	if (itChildren != mChildren.end()) {
-		mChildren.erase(itChildren);
+	for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
+	{
+		if ((*it)->GetID() == child->GetID())
+		{
+			delete* it;
+			mChildren.erase(it);
+			break;
+		}
 	}
 }
 

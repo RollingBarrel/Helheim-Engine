@@ -11,6 +11,7 @@ public:
 	~ModuleScene();
 	bool Init() override;
 	update_status Update() override;
+	update_status PostUpdate() override;
 	void DrawInspector();
 	void DrawHierarchy();
 	GameObject* getRoot() { return mRoot; }
