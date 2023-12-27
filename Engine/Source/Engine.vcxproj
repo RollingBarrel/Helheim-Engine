@@ -194,6 +194,7 @@
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel.cpp" />
   </ItemGroup>
@@ -277,6 +278,7 @@
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
   </ItemGroup>

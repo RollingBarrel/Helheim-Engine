@@ -135,6 +135,7 @@
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -362,6 +363,7 @@
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

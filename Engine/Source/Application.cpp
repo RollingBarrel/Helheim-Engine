@@ -5,6 +5,8 @@
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "ModuleRenderTest.h"
+
 
 Application::Application()
 {
@@ -14,6 +16,7 @@ Application::Application()
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(camera = new ModuleCamera());
+	modules.push_back(test = new ModuleRenderTest());
 }
 
 Application::~Application()
