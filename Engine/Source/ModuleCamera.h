@@ -7,6 +7,7 @@
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 
+typedef uint8_t Uint8;
 
 enum CameraType
 {

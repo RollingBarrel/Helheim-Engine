@@ -44,8 +44,7 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
-    //TODO: Create the input triggers
-    ProcessInput();
+
     return UPDATE_CONTINUE;
 }
 
