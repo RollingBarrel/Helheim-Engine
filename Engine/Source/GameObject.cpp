@@ -15,19 +15,43 @@ GameObject::GameObject(GameObject* parent)
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
 
+	AddSufix();
 }
 
-GameObject::GameObject(const GameObject& original) 
-	:mID((new LCG())->Int()), mName(original.mName + " (1)"), mParent(original.mParent),
+GameObject::GameObject(const GameObject& original)
+	:mID((new LCG())->Int()), mName(original.mName), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
 {
+
+	AddSufix();
+
 	for (auto child : original.mChildren) {
-		mChildren.push_back(new GameObject(*(child)));
+		GameObject* gameObject = new GameObject(*(child), this);
+		gameObject->mParent = this;
+		mChildren.push_back(gameObject);
 	}
 	//TODO: Copy Childs and Components
 }
+
+GameObject::GameObject(const GameObject& original, GameObject* newParent) 
+	:mID((new LCG())->Int()), mName(original.mName), mParent(newParent),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
+	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
+	mRotation(original.mRotation)
+{
+
+	//AddSufix();
+
+	for (auto child : original.mChildren) {
+		GameObject* gameObject = new GameObject(*(child), this);
+		gameObject->mParent = this;
+		mChildren.push_back(gameObject);
+	}
+	//TODO: Copy Childs and Components
+}
+
 
 GameObject::GameObject(const char* name, GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
@@ -222,6 +246,40 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 		}
 	}
 			
+}
+
+void GameObject::AddSufix()
+{
+	bool found = true;
+	int count = 1;
+	int last_pos = -1;
+	while (found) {
+		std::string str = " (" + std::to_string(count) + ')';
+		int pos = std::string::npos;
+		for (auto gameObject : mParent->mChildren)
+		{
+			if (pos == -1) {
+				//pos = gameObject->mName.find(str, gameObject->mName.size() - 4);
+				pos = gameObject->mName.find(mName + str);
+			}
+
+		}
+
+		if (pos == std::string::npos) {
+			if (mParent->mChildren.size() > 0) {
+				mName += str;
+			}
+			
+			found = false;
+		}
+		else {
+			count++;
+			last_pos = pos;
+		}
+
+	}
+
+
 }
 
 void GameObject::DrawTransform() {

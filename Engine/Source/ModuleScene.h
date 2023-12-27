@@ -15,9 +15,7 @@ public:
 	void DrawInspector();
 	void DrawHierarchy();
 
-	GameObject* GetRoot() const {
-		return mRoot;
-	}
+	GameObject* GetRoot() const { return mRoot; }
 	GameObject* GetSelectedGameObject() const { return mSelectedGameObject; }
 
 	void SetSelectedObject(GameObject* gameObject);

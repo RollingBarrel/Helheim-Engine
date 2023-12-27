@@ -14,6 +14,7 @@ class GameObject
 public:
 	GameObject(GameObject* parent);
 	GameObject(const GameObject& original);
+	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(const char* name, GameObject* parent, float3 position, float3 scale, Quat rotation);
 	void RecalculateMatrices();
@@ -31,6 +32,8 @@ public:
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
 	const int GetID() const { return mID; }
+	GameObject* GetParent() const { return mParent; }
+	const std::string* GetName() const { return &mName; }
 
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
@@ -38,7 +41,7 @@ public:
 
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
-
+	void AddSufix();
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
