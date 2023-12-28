@@ -41,6 +41,8 @@ public:
 	void UpdateProjectionMatrix(int screenWidth, int screenHeight);
 	void DisplaceFromBoundingBox(float3 mins, float3 maxs);
 
+	
+
 
 private:
 	Frustum frustum;

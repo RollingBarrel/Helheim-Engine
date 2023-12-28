@@ -192,9 +192,6 @@ void ModuleCamera::ProcessInput(const Uint8* keyboard, const int x, const int y)
     }
 
 
-
-
-
 }
 
 void ModuleCamera::UpdateProjectionMatrix(int screenWidth, int screenHeight)
@@ -204,8 +201,6 @@ void ModuleCamera::UpdateProjectionMatrix(int screenWidth, int screenHeight)
 
     frustum.horizontalFov = DegToRad(90.0f);
     frustum.verticalFov = 2.0f * atan(tan(frustum.horizontalFov * 0.5f) / aspectRatio);
-
-
 
 }
 
@@ -227,5 +222,8 @@ void ModuleCamera::DisplaceFromBoundingBox(float3 mins, float3 maxs)
     frustum.front = (float3::zero - frustum.pos).Normalized();
     frustum.up = Cross(oldRight, frustum.front).Normalized();
 
+}
 
+void ModuleCamera::Draw() {
+    App.
 }
