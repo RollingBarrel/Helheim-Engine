@@ -2,11 +2,13 @@
 #include "Algorithm/Random/LCG.h"
 #include "Component.h"
 #include "Application.h"
+#include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "InspectorPanel.h"
 #include "imgui.h"
+#include <algorithm>
 
-GameObject::GameObject(const GameObject* parent) 
+GameObject::GameObject(GameObject* parent)
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
@@ -22,7 +24,7 @@ GameObject::GameObject(const GameObject* parent)
 }
 
 GameObject::GameObject(const GameObject& original) 
-	:mID((new LCG())->Int()), mName(original.mName + " (1)"), mParent(original.mParent),
+	:mID((new LCG())->Int()), mName(original.mName + "(1)"), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
@@ -33,7 +35,7 @@ GameObject::GameObject(const GameObject& original)
 	//TODO: Copy Childs and Components
 }
 
-GameObject::GameObject(const char* name, const GameObject* parent)
+GameObject::GameObject(const char* name,  GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
 	mIsRoot(false), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
@@ -112,7 +114,48 @@ void GameObject::DrawHierarchy()
 			child->DrawHierarchy();
 		}
 	}
+	OnLeftClick();
+	OnRightClick();
 }
+
+
+void GameObject::OnLeftClick() {
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left)) {
+		App->GetScene()->SetSelectedObject(this);
+	}
+
+
+}
+
+void GameObject::OnRightClick() {
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+		ImGui::OpenPopup("OptionsGO");
+	}
+	if (ImGui::BeginPopup("OptionsGO")) {
+		if (ImGui::Selectable("Create GameObject")) {
+			GameObject* gameObject = new GameObject(GetParent());
+			AddChild(gameObject);
+			App->GetScene()->SetSelectedObject(gameObject);
+		}
+
+		if (!mIsRoot) {
+			if (ImGui::Selectable("Duplicate")) {
+				GameObject* gameObject = new GameObject(*(this));
+				mParent->AddChild(gameObject);
+				App->GetScene()->SetSelectedObject(gameObject);
+			}
+		}
+
+		if (!mIsRoot) {
+			if (ImGui::Selectable("Delete")) {
+				mParent->mChildren.erase(std::remove(mParent->mChildren.begin(), mParent->mChildren.end(), this), mParent->mChildren.end());
+				App->GetScene()->SetSelectedObject(nullptr);
+			}
+		}
+		ImGui::EndPopup();
+	}
+}
+
 
 void GameObject::AddChild(GameObject* child)
 {

@@ -12,7 +12,7 @@ void HierarchyPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	OpenRightClickPanel();
+	/*OpenRightClickPanel();*/
 
 	App->GetScene()->DrawHierarchy();
 
@@ -27,20 +27,17 @@ void HierarchyPanel::OpenRightClickPanel()
 			ImGui::OpenPopup("Options");
 		}
 	}
-	//if (ImGui::IsItemClicked(1)) {
-	//	ImGui::OpenPopup("Options");
-	//}
 	if (ImGui::BeginPopup("Options")) {
 		if (ImGui::Button("Create GameObject")) {
-			GameObject* gameObject = new GameObject(App->GetScene()->getRoot());
-			App->GetScene()->getRoot()->AddChild(gameObject);
+			GameObject* gameObject = new GameObject(App->GetScene()->GetRoot());
+			App->GetScene()->GetRoot()->AddChild(gameObject);
 			App->GetScene()->SetSelectedObject(gameObject);
 		}
 		
-		if (App->GetScene()->getSelectedGameObject() != nullptr && !(App->GetScene()->getSelectedGameObject()->IsRoot())) {
+		if (App->GetScene()->GetSelectedGameObject() != nullptr && !(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
 			if (ImGui::Button("Duplicate GameObject")) {
-				GameObject* gameObject = new GameObject(*(App->GetScene()->getSelectedGameObject()));
-				App->GetScene()->getRoot()->AddChild(gameObject);
+				GameObject* gameObject = new GameObject(*(App->GetScene()->GetSelectedGameObject()));
+				App->GetScene()->GetRoot()->AddChild(gameObject);
 				App->GetScene()->SetSelectedObject(gameObject);
 			}
 		}

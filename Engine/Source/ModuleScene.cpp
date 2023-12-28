@@ -21,6 +21,14 @@ update_status ModuleScene::Update()
 	return UPDATE_CONTINUE;
 }
 
+update_status ModuleScene::PostUpdate()
+{
+	if (!mGameObjectsToDelete.empty()) {
+
+	}
+	return UPDATE_CONTINUE;
+}
+
 void ModuleScene::DrawInspector()
 {
 	if (mSelectedGameObject != mRoot) {
@@ -37,4 +45,21 @@ void ModuleScene::DrawHierarchy()
 void ModuleScene::SetSelectedObject(GameObject* gameObject)
 {
 	mSelectedGameObject = gameObject;
+}
+
+void ModuleScene::DeleteGameObject(GameObject* gameObject){
+
+	for (auto child : gameObject->GetChildren()) {
+
+		std::_Vector_iterator<std::_Vector_val<std::_Simple_types<unsigned int>>> idIterator = std::find(mGameObjectsToDelete.begin(), mGameObjectsToDelete.end(), child->GetID());
+		if (idIterator != mGameObjectsToDelete.end()) {
+			mGameObjectsToDelete.erase(idIterator);
+		}
+	}
+
+	if (!mGameObjectsToDelete.empty() && !gameObject->GetChildren().empty()) {
+		for (auto child : gameObject->GetChildren()) {
+			DeleteGameObject(gameObject);
+		}
+	}
 }
