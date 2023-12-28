@@ -5,13 +5,13 @@
 #include "ModuleScene.h"
 #include "imgui.h"
 
-GameObject::GameObject(GameObject* parent) 
+GameObject::GameObject(GameObject* parent)
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
 	mRotation(Quat::identity)
 {
-	if(!mIsRoot) {
+	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
 
@@ -35,7 +35,7 @@ GameObject::GameObject(const GameObject& original)
 	//TODO: Copy Childs and Components
 }
 
-GameObject::GameObject(const GameObject& original, GameObject* newParent) 
+GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID((new LCG())->Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
@@ -51,7 +51,6 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	}
 	//TODO: Copy Childs and Components
 }
-
 
 GameObject::GameObject(const char* name, GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
@@ -108,18 +107,54 @@ void GameObject::SetScale(const float3& scale)
 	RecalculateMatrices();
 }
 
-
-
 void GameObject::DrawInspector() {
-	
 	ImGui::Text(mName.c_str());
 	DrawTransform();
 
 	for (Component* component : mComponents) {
-		ImGui::Separator();
 		component->DrawEditor();
+
+		//Show all the Components created for this GameObject
+		ShowComponents(component);
+
+		if (ImGui::BeginPopupContextWindow("ComponentOptions")) {
+			if (ImGui::MenuItem("Delete Component")) {
+				// Delete the currently selected component
+				RemoveComponent(component);
+				ImGui::CloseCurrentPopup(); // Close popup menu after deleting
+			}
+			ImGui::EndPopup();
+		}
 	}
 
+	ImGui::Separator();
+
+	// Calculate the width of the current ImGui window
+	float windowWidth = ImGui::GetWindowWidth();
+
+	// Calculate the X position to center the button
+	float buttonWidth = 150.0f; // Desired width for the button
+	float posX = (windowWidth - buttonWidth) * 0.5f;
+
+	// Sets the X position of the cursor to center the button
+	ImGui::SetCursorPosX(posX);
+
+	// Draw the button centered
+	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
+		//Popup Menu
+		ImGui::OpenPopup("AddComponentPopup");
+	}
+
+	if (ImGui::BeginPopup("AddComponentPopup")) {
+		if (ImGui::MenuItem("Mesh Renderer")) {
+			Component* newComponent = Component::CreateComponent(ComponentType::MESHRENDERER, this);
+		}
+		if (ImGui::MenuItem("Material")) {
+			Component* newComponent = Component::CreateComponent(ComponentType::MATERIAL, this);
+		}
+
+		ImGui::EndPopup();
+	}
 }
 
 void GameObject::DrawHierarchy(const int selected)
@@ -165,14 +200,14 @@ void GameObject::DrawHierarchy(const int selected)
 		}
 		/*****End Drag & Drop Code*******/
 	}
-	
+
 	if (nodeOpen) {
 		for (auto child : mChildren) {
 			child->DrawHierarchy(selected);
 		}
-	
+
 		if (!mIsRoot) {
-			ImGui::TreePop(); 
+			ImGui::TreePop();
 		}
 	}
 	if (mIsRoot) { // Dragging something to this Separator will move it to the end of root
@@ -196,7 +231,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	if (aboveThisId != 0) {
 		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it) {
 			if ((*it)->GetID() == aboveThisId)
-			{				
+			{
 				mChildren.insert(it, child);
 				inserted = true;
 				break;
@@ -206,7 +241,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	if (!inserted) {
 		mChildren.push_back(child);
 	}
-	
+
 }
 
 void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveThisId)
@@ -232,7 +267,7 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 				std::rotate(itTargetPosition, itMovedObject, itMovedObject + 1);
 			}
 		}
-		
+
 	}
 	else {
 		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
@@ -245,7 +280,7 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 			}
 		}
 	}
-			
+
 }
 
 void GameObject::AddSufix()
@@ -269,7 +304,7 @@ void GameObject::AddSufix()
 			if (mParent->mChildren.size() > 0) {
 				mName += str;
 			}
-			
+
 			found = false;
 		}
 		else {
@@ -332,5 +367,50 @@ void GameObject::DrawTransform() {
 			}
 		}
 		ImGui::EndTable();
+	}
+}
+
+void GameObject::AddComponent(Component* component) {
+	mComponents.push_back(component);
+}
+
+void GameObject::RemoveComponent(Component* component) {
+	auto it = std::find(mComponents.begin(), mComponents.end(), component);
+	if (it != mComponents.end()) {
+		mComponents.erase(it);
+		Component::DeleteComponent(component); // Eliminar el componente completamente
+	}
+}
+
+void GameObject::ShowComponents(Component* component) {
+	if (!mComponents.empty()) { // Check if mComponents vector is not empty
+		ImGui::Separator();
+		switch (component->GetType()) {
+			case ComponentType::MESHRENDERER:
+				DrawMeshRenderer(component);
+				break;
+			case ComponentType::MATERIAL:
+				DrawMaterial(component);
+				break;
+			default:
+				break;
+			}
+	}
+}
+
+void GameObject::DrawMeshRenderer(Component* component) {
+	if (ImGui::CollapsingHeader("MeshRenderer", ImGuiTreeNodeFlags_DefaultOpen)) {
+		// SIMULATED CONTENT FOR TEST PURPOSES:
+		ImGui::Text("Model: Cube.obj (TEST)");
+		ImGui::Text("Material: DefaultMaterial (TEST)");
+		ImGui::Text("Shader: StandardShader (TEST)");
+	}
+}
+
+void GameObject::DrawMaterial(Component* component) {
+	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
+		// SIMULATED CONTENT FOR TEST PURPOSES:
+		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)");
+		ImGui::Text("Texture: DefaultTexture (TEST)");
 	}
 }
