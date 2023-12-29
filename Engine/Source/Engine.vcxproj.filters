@@ -138,7 +138,16 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="TextureImporter.cpp">
+    <ClCompile Include="ImporterTexture.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterMesh.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterScene.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterModel.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -371,7 +380,28 @@
     <ClInclude Include="Importer.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="TextureImporter.h">
+    <ClInclude Include="ImporterTexture.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterMesh.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Tinygltf-2.8.19\tiny_gltf.h">
+      <Filter>Dependencies\TinyGLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Tinygltf-2.8.19\json.hpp">
+      <Filter>Dependencies\TinyGLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image.h">
+      <Filter>Dependencies\TinyGLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h">
+      <Filter>Dependencies\TinyGLTF</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterScene.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterModel.h">
       <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -408,6 +438,9 @@
     </Filter>
     <Filter Include="Importers">
       <UniqueIdentifier>{59a2e3e5-812b-45f5-9a1a-5096740588ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\TinyGLTF">
+      <UniqueIdentifier>{b7577db9-f68a-494d-a49f-c95d2c21f9ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

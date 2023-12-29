@@ -1,5 +1,6 @@
 #include "ModuleFileSystem.h"
 #include "Importer.h"
+#include "ImporterTexture.h"
 
 ModuleFileSystem::ModuleFileSystem()
 {
@@ -17,6 +18,9 @@ bool ModuleFileSystem::Init()
 {
     Importer importer;
     importer.CreateBinaryFile();
+
+    //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
+
     return true;
 }
 
