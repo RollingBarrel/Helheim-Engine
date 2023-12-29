@@ -1,6 +1,6 @@
 #include "ImporterScene.h"
 
-void ImporterScene::Import(const char* filePath) const
+void Importer::Scene::Import(const char* filePath)
 {
 	//TODO work with the file path to call other importers
 

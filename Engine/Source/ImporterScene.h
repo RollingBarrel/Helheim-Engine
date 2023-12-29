@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Importer.h"
-
-class ImporterScene : public Importer
+namespace Importer
 {
-	void Import(const char* filePath) const override;
+	namespace Scene
+	{
+		void Import(const char* filePath);
+	}
 };
 

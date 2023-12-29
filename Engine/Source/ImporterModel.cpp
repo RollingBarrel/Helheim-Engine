@@ -9,7 +9,7 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-void ImporterModel::Import(const char* filePath) const
+void Importer::Model::Import(const char* filePath)
 {
     tinygltf::TinyGLTF gltfContext;
     tinygltf::Model model;
@@ -28,8 +28,7 @@ void ImporterModel::Import(const char* filePath) const
     {
         for (const auto& primitive : srcMesh.primitives)
         {
-            ImporterMesh importerM;
-            Mesh* mesh = new Mesh();
+            ResourceMesh* mesh = new ResourceMesh();
 
             //importerM.Import();
         }

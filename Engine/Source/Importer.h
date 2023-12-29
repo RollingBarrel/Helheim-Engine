@@ -1,17 +1,13 @@
 #pragma once
-class Importer
+
+namespace Importer
 {
-public:
-	Importer();
-	virtual ~Importer();
 
-	virtual void Import(const char* filePath) const;
+	inline void Import(const char* filePath);
 
-	virtual void Load(const char* filePath, char* &buffer) const;
-	virtual void Save(const char* filePath, const void* buffer, unsigned int size, bool append = false) const;
+	void Load(const char* filePath, char* &buffer);
+	void Save(const char* filePath, const void* buffer, unsigned int size, bool append = false);
 
 	void CreateBinaryFile();
 
-private:
-
-};
+}

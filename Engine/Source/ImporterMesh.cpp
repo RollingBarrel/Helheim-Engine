@@ -2,6 +2,7 @@
 #include "ImporterMesh.h"
 
 
-void ImporterMesh::Import(const char* filePath) const
+void Importer::Mesh::Import(const char* filePath)
 {
+
 }

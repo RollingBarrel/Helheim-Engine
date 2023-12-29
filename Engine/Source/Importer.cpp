@@ -4,17 +4,7 @@
 #include <fstream>
 #include <string>
 
-Importer::Importer()
-{
-
-}
-
-Importer::~Importer()
-{
-
-}
-
-void Importer::Import(const char* filePath) const
+void Importer::Import(const char* filePath)
 {
 	//Todo DirectXTex import
 
@@ -22,12 +12,12 @@ void Importer::Import(const char* filePath) const
 	//Load binary format
 }
 
-void Importer::Load(const char* filePath, char*& buffer) const
+void Importer::Load(const char* filePath, char*& buffer) 
 {
 
 }
 
-void Importer::Save(const char* file_path, const void* buffer, unsigned int size, bool append) const
+void Importer::Save(const char* file_path, const void* buffer, unsigned int size, bool append)
 {
 
 }

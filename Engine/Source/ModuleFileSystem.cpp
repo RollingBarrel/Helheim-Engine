@@ -16,8 +16,7 @@ ModuleFileSystem::~ModuleFileSystem()
 // Called before render is available
 bool ModuleFileSystem::Init()
 {
-    Importer importer;
-    importer.CreateBinaryFile();
+    Importer::CreateBinaryFile();
 
     //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
 

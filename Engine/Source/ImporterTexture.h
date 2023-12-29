@@ -1,10 +1,10 @@
 #pragma once
-#include "Importer.h"
 
-class ImporterTexture : public Importer
+namespace Importer
 {
-public:
-
-	void Import(const char* filePath) const;
+	namespace Texture
+	{
+		void Import(const char* filePath);
+	}
 };
 

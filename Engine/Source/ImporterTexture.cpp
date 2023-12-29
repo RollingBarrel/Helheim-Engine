@@ -1,6 +1,6 @@
 #include "ImporterTexture.h"
 
 
-void ImporterTexture::Import(const char* filePath) const
+void Importer::Texture::Import(const char* filePath)
 {
 }

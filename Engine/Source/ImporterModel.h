@@ -1,8 +1,10 @@
 #pragma once
-#include "Importer.h"
 
-class ImporterModel : public Importer
+namespace Importer
 {
-	void Import(const char* filePath) const override;
+	namespace Model
+	{
+		void Import(const char* filePath);
+	}
 };
 

@@ -1,15 +1,15 @@
 #pragma once
-#include "Importer.h"
 
-struct Mesh
+struct ResourceMesh
 {
 	unsigned mNumVertices;
 	unsigned mNumIndices;
 };
 
-class ImporterMesh : public Importer
+namespace Importer
 {
-public:
-
-	void Import(const char* filePath) const;
-};
+	namespace Mesh
+	{
+		void Import(const char* filePath);
+	}
+}
