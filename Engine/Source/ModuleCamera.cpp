@@ -31,7 +31,7 @@ bool ModuleCamera::Init()
     int x, y;
     SDL_GetMouseState(&x, &y);
     mousePos = float2((float)x, (float)y);
-
+    cameraType = fixed;
 
     return true;
 }
@@ -228,4 +228,8 @@ void ModuleCamera::DisplaceFromBoundingBox(float3 mins, float3 maxs)
     frustum.up = Cross(oldRight, frustum.front).Normalized();
 
 
+}
+
+void ModuleCamera::testFrustumBounds()
+{
 }

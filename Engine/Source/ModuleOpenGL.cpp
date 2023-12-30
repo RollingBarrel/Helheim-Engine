@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "glew.h"
+#include "ModuleRenderTest.h"
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -59,7 +60,7 @@ update_status ModuleOpenGL::PreUpdate()
 // Called every draw update
 update_status ModuleOpenGL::Update()
 {
-
+	App->GetTest()->RenderTriangleTest();
 	return UPDATE_CONTINUE;
 }
 

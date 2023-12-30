@@ -1,9 +1,9 @@
-#include "ModuleRenderTest.h"
-#include "ModuleOpenGL.h"
+﻿#include "ModuleRenderTest.h"
 #include "Application.h"
 #include "glew.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "MathGeoLib.h"
 
 
 
@@ -110,7 +110,7 @@ void ModuleRenderTest::RenderTriangleTest()
     float4x4 model = float4x4::identity;
     glUseProgram(program_id);
     glUniformMatrix4fv(glGetUniformLocation(program_id, "model"), 1, GL_TRUE, &model[0][0]);
-    glUniformMatrix4fv(glGetUniformLocation(program_id, "viewproj"), 1, GL_TRUE, &viewproj[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(program_id, "viewproj"), 1, GL_TRUE, &model[0][0]);
 
     // TODO: bind buffer and vertex attributes
     RenderVBO(triangleVBO, program_id);
@@ -144,7 +144,6 @@ update_status ModuleRenderTest::PreUpdate()
 
 update_status ModuleRenderTest::Update()
 {
-    RenderTriangleTest();
     return UPDATE_CONTINUE;
 }
 
