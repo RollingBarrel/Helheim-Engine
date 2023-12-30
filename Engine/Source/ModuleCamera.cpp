@@ -44,7 +44,7 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
-
+    testFrustumBounds();
     return UPDATE_CONTINUE;
 }
 
@@ -232,4 +232,9 @@ void ModuleCamera::DisplaceFromBoundingBox(float3 mins, float3 maxs)
 
 void ModuleCamera::testFrustumBounds()
 {
+    AABB test = AABB::AABB(float3(-1), float3(1));
+
+    if (frustum.Intersects(test)) {
+        LOG("Intersection detected");
+    }
 }
