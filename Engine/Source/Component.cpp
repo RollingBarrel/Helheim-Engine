@@ -12,18 +12,20 @@ Component* Component::CreateComponent(ComponentType type, GameObject* owner) {
 
     // Creating the component according to its type
     switch (type) {
-        case ComponentType::MESHRENDERER:
-            //ONLY FOR TEST PURPOSE
-            newComponent = new MeshRendererComponent();   
-            newComponent->mType = type; // Assigns the type to the Component
-            break;
-        case ComponentType::MATERIAL:
-            //ONLY FOR TEST PURPOSE            
-            newComponent = new MeshRendererComponent();
-            newComponent->mType = type;
-            break;
-        default:
-            break;
+    case ComponentType::MESHRENDERER:
+        //ONLY FOR TEST PURPOSE
+        newComponent = new MeshRendererComponent();
+
+        // Assigns the type to the Component
+        newComponent->mType = type;
+        break;
+    case ComponentType::MATERIAL:
+        //ONLY FOR TEST PURPOSE            
+        newComponent = new MeshRendererComponent();
+        newComponent->mType = type;
+        break;
+    default:
+        break;
     }
 
     if (newComponent) {

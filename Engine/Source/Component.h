@@ -15,6 +15,7 @@ public:
 	virtual	void Update() {};
 	virtual	void DrawEditor() {}; //Do not call ImGui::Begin() inside this function.
 
+	//****************************************************************
 	Component();
 	~Component();
 
@@ -27,11 +28,17 @@ public:
 	// Get the type of the component
 	ComponentType GetType() const { return mType; }
 
+	//****************************************************************
+
 private:
 	ComponentType mType;
 	GameObject* Owner;
 	bool mIsEnabled;
 
+	//********************************************************************
+
 	// Set the GameObject owner of the component
 	void SetOwner(GameObject* owner) { Owner = owner; }
+
+	//********************************************************************
 };

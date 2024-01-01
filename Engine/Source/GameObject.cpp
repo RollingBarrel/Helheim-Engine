@@ -52,6 +52,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	//TODO: Copy Childs and Components
 }
 
+
 GameObject::GameObject(const char* name, GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
 	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
@@ -111,50 +112,20 @@ void GameObject::DrawInspector() {
 	ImGui::Text(mName.c_str());
 	DrawTransform();
 
+	//*************************************************************************************
+	componentIndex = 0; // Generate an unique identifier for each component
+
 	for (Component* component : mComponents) {
 		component->DrawEditor();
 
-		//Show all the Components created for this GameObject
+		// Show all the Components created for this GameObject
 		ShowComponents(component);
-
-		if (ImGui::BeginPopupContextWindow("ComponentOptions")) {
-			if (ImGui::MenuItem("Delete Component")) {
-				// Delete the currently selected component
-				RemoveComponent(component);
-				ImGui::CloseCurrentPopup(); // Close popup menu after deleting
-			}
-			ImGui::EndPopup();
-		}
 	}
 
 	ImGui::Separator();
+	AddComponentButton();
 
-	// Calculate the width of the current ImGui window
-	float windowWidth = ImGui::GetWindowWidth();
-
-	// Calculate the X position to center the button
-	float buttonWidth = 150.0f; // Desired width for the button
-	float posX = (windowWidth - buttonWidth) * 0.5f;
-
-	// Sets the X position of the cursor to center the button
-	ImGui::SetCursorPosX(posX);
-
-	// Draw the button centered
-	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
-		//Popup Menu
-		ImGui::OpenPopup("AddComponentPopup");
-	}
-
-	if (ImGui::BeginPopup("AddComponentPopup")) {
-		if (ImGui::MenuItem("Mesh Renderer")) {
-			Component* newComponent = Component::CreateComponent(ComponentType::MESHRENDERER, this);
-		}
-		if (ImGui::MenuItem("Material")) {
-			Component* newComponent = Component::CreateComponent(ComponentType::MATERIAL, this);
-		}
-
-		ImGui::EndPopup();
-	}
+	//**********************************************************************************************************
 }
 
 void GameObject::DrawHierarchy(const int selected)
@@ -370,6 +341,8 @@ void GameObject::DrawTransform() {
 	}
 }
 
+//**************************************************************************************************************
+
 void GameObject::AddComponent(Component* component) {
 	mComponents.push_back(component);
 }
@@ -382,35 +355,122 @@ void GameObject::RemoveComponent(Component* component) {
 	}
 }
 
+/*
+void GameObject::RemoveComponent(Component* component) {
+	auto it = std::find(mComponents.begin(), mComponents.end(), component);
+	if (it != mComponents.end()) {
+		Component::DeleteComponent(*it); // Eliminar el componente completamente
+		mComponents.erase(it); // Eliminar el componente de la lista de componentes del GameObject
+	}
+}
+*/
+
+void GameObject::AddComponentButton() {
+	// Calculate the width of the current ImGui window
+	float windowWidth = ImGui::GetWindowWidth();
+
+	// Calculate the X position to center the button
+	float buttonWidth = 150.0f; // Desired width for the button
+	float posX = (windowWidth - buttonWidth) * 0.5f;
+
+	// Sets the X position of the cursor to center the button
+	ImGui::SetCursorPosX(posX);
+
+	// Draw the button centered
+	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
+		//Popup Menu
+		ImGui::OpenPopup("AddComponentPopup");
+	}
+
+	if (ImGui::BeginPopup("AddComponentPopup")) {
+		if (ImGui::MenuItem("Mesh Renderer")) {
+			Component* newComponent = Component::CreateComponent(ComponentType::MESHRENDERER, this);
+		}
+		if (ImGui::MenuItem("Material")) {
+			Component* newComponent = Component::CreateComponent(ComponentType::MATERIAL, this);
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
 void GameObject::ShowComponents(Component* component) {
 	if (!mComponents.empty()) { // Check if mComponents vector is not empty
 		ImGui::Separator();
 		switch (component->GetType()) {
-			case ComponentType::MESHRENDERER:
-				DrawMeshRenderer(component);
-				break;
-			case ComponentType::MATERIAL:
-				DrawMaterial(component);
-				break;
-			default:
-				break;
-			}
+		case ComponentType::MESHRENDERER:
+			DrawMeshRenderer(component);
+			break;
+		case ComponentType::MATERIAL:
+			DrawMaterial(component);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
 void GameObject::DrawMeshRenderer(Component* component) {
 	if (ImGui::CollapsingHeader("MeshRenderer", ImGuiTreeNodeFlags_DefaultOpen)) {
 		// SIMULATED CONTENT FOR TEST PURPOSES:
-		ImGui::Text("Model: Cube.obj (TEST)");
-		ImGui::Text("Material: DefaultMaterial (TEST)");
-		ImGui::Text("Shader: StandardShader (TEST)");
+		ImGui::Text("Model: Cube.obj (TEST)"); componentLines++;
+		ImGui::Text("Material: DefaultMaterial (TEST)"); componentLines++;
+		ImGui::Text("Shader: StandardShader (TEST)"); componentLines++;
 	}
+
+	// Activate Delete Popup for every Component
+	DeletePopup(component);
 }
 
 void GameObject::DrawMaterial(Component* component) {
 	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 		// SIMULATED CONTENT FOR TEST PURPOSES:
-		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)");
-		ImGui::Text("Texture: DefaultTexture (TEST)");
+		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)"); componentLines++;
+		ImGui::Text("Texture: DefaultTexture (TEST)"); componentLines++;
 	}
+
+	// Activate Delete Popup for every Component
+	DeletePopup(component);
 }
+
+void GameObject::DeletePopup(Component* component) {
+	// Calculate the header position using the number of text lines of the component
+	float headerPosition = componentLines * 13.5;
+	componentLines = 1; // Reset to start by counting the header
+
+	// Create a unique identifier for the Delete Popup
+	ImGui::PushID(componentIndex);
+	std::string popupID = "ComponentOptions_" + std::to_string(componentIndex);
+
+	ImVec2 min = ImGui::GetItemRectMin();
+	ImVec2 max = ImGui::GetItemRectMax();
+
+	// Set header position detection
+	min.y -= ImGui::GetStyle().FramePadding.y + headerPosition;
+	max.y += ImGui::GetStyle().FramePadding.y - headerPosition;
+
+	// Open Delete Popup with righ click when header is open
+	if (ImGui::IsMouseHoveringRect(min, max) && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
+		ImGui::OpenPopup(popupID.c_str());
+	}
+	
+	// Open Delete Popup with right click when header is close
+	if (ImGui::BeginPopupContextItem(popupID.c_str())) {
+		ImGui::OpenPopup(popupID.c_str());
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginPopup(popupID.c_str())) {
+		if (ImGui::MenuItem("Delete Component")) {
+			// Delete currently selected component
+			RemoveComponent(component);
+			ImGui::CloseCurrentPopup(); // Close popup menu after deleting
+		}
+		ImGui::EndPopup();
+	}
+
+	ImGui::PopID(); // Reset ID for next component
+	componentIndex++;
+}
+
+//********************************************************************************************

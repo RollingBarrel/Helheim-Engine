@@ -20,6 +20,8 @@ public:
 	void RecalculateMatrices();
 	void Update();
 
+	//void CreateComponent();
+
 	void DrawInspector();
 	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
@@ -39,8 +41,13 @@ public:
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
+	//***************************************************************************
+
 	void AddComponent(Component* component);
 	void RemoveComponent(Component* component);
+
+	//const std::vector<Component*>& GetComponents() const { return mComponents; } // Get GameObject components
+	//***************************************************************************
 
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
@@ -59,7 +66,15 @@ private:
 	bool mIsEnabled;
 
 	void DrawTransform();
+
+	//*******************************************************
+	int componentIndex;
+	int componentLines = 1; //Start by counting the header
+
+	void AddComponentButton();
 	void ShowComponents(Component* component);
 	void DrawMeshRenderer(Component* component);
 	void DrawMaterial(Component* component);
+	void DeletePopup(Component* component);
+	//*******************************************************
 };
