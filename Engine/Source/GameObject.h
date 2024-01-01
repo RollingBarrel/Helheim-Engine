@@ -69,7 +69,10 @@ private:
 
 	//*******************************************************
 	int componentIndex;
+
 	int componentLines = 1; //Start by counting the header
+	bool hasMeshRenderer = false;
+	bool hasMaterial = false;
 
 	void AddComponentButton();
 	void ShowComponents(Component* component);

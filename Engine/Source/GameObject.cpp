@@ -348,22 +348,19 @@ void GameObject::AddComponent(Component* component) {
 }
 
 void GameObject::RemoveComponent(Component* component) {
+	if (component->GetType() == ComponentType::MESHRENDERER) {
+		hasMeshRenderer = false;
+	}
+	else if (component->GetType() == ComponentType::MATERIAL) {
+		hasMaterial = false;
+	}
+
 	auto it = std::find(mComponents.begin(), mComponents.end(), component);
 	if (it != mComponents.end()) {
 		mComponents.erase(it);
-		Component::DeleteComponent(component); // Eliminar el componente completamente
+		Component::DeleteComponent(component); // Remove the component completely
 	}
 }
-
-/*
-void GameObject::RemoveComponent(Component* component) {
-	auto it = std::find(mComponents.begin(), mComponents.end(), component);
-	if (it != mComponents.end()) {
-		Component::DeleteComponent(*it); // Eliminar el componente completamente
-		mComponents.erase(it); // Eliminar el componente de la lista de componentes del GameObject
-	}
-}
-*/
 
 void GameObject::AddComponentButton() {
 	// Calculate the width of the current ImGui window
@@ -376,17 +373,20 @@ void GameObject::AddComponentButton() {
 	// Sets the X position of the cursor to center the button
 	ImGui::SetCursorPosX(posX);
 
-	// Draw the button centered
-	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
-		//Popup Menu
-		ImGui::OpenPopup("AddComponentPopup");
+	// Draw the button centered if have components available
+	if ((hasMeshRenderer == false) || (hasMaterial == false)) {
+		if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
+			//Popup Menu
+			ImGui::OpenPopup("AddComponentPopup");
+		}
 	}
 
 	if (ImGui::BeginPopup("AddComponentPopup")) {
-		if (ImGui::MenuItem("Mesh Renderer")) {
+		// Draw the menu Item if the component is available
+		if (hasMeshRenderer == false && ImGui::MenuItem("Mesh Renderer")) {
 			Component* newComponent = Component::CreateComponent(ComponentType::MESHRENDERER, this);
 		}
-		if (ImGui::MenuItem("Material")) {
+		if (hasMaterial == false && ImGui::MenuItem("Material")) {
 			Component* newComponent = Component::CreateComponent(ComponentType::MATERIAL, this);
 		}
 
@@ -407,35 +407,36 @@ void GameObject::ShowComponents(Component* component) {
 		default:
 			break;
 		}
+
+		// Activate Delete Popup for every Component
+		DeletePopup(component);
 	}
 }
 
 void GameObject::DrawMeshRenderer(Component* component) {
+	hasMeshRenderer = true;
+
 	if (ImGui::CollapsingHeader("MeshRenderer", ImGuiTreeNodeFlags_DefaultOpen)) {
 		// SIMULATED CONTENT FOR TEST PURPOSES:
 		ImGui::Text("Model: Cube.obj (TEST)"); componentLines++;
 		ImGui::Text("Material: DefaultMaterial (TEST)"); componentLines++;
 		ImGui::Text("Shader: StandardShader (TEST)"); componentLines++;
 	}
-
-	// Activate Delete Popup for every Component
-	DeletePopup(component);
 }
 
 void GameObject::DrawMaterial(Component* component) {
+	hasMaterial = true;
+
 	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
 		// SIMULATED CONTENT FOR TEST PURPOSES:
 		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)"); componentLines++;
 		ImGui::Text("Texture: DefaultTexture (TEST)"); componentLines++;
 	}
-
-	// Activate Delete Popup for every Component
-	DeletePopup(component);
 }
 
 void GameObject::DeletePopup(Component* component) {
 	// Calculate the header position using the number of text lines of the component
-	float headerPosition = componentLines * 13.5;
+	int headerPosition = componentLines * 16; //13.5
 	componentLines = 1; // Reset to start by counting the header
 
 	// Create a unique identifier for the Delete Popup
@@ -453,7 +454,7 @@ void GameObject::DeletePopup(Component* component) {
 	if (ImGui::IsMouseHoveringRect(min, max) && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
 		ImGui::OpenPopup(popupID.c_str());
 	}
-	
+
 	// Open Delete Popup with right click when header is close
 	if (ImGui::BeginPopupContextItem(popupID.c_str())) {
 		ImGui::OpenPopup(popupID.c_str());
