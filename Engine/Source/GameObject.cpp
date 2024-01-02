@@ -116,7 +116,6 @@ void GameObject::DrawInspector() {
 	ImGui::Text(mName.c_str());
 	DrawTransform();
 
-	//*************************************************************************************
 	componentIndex = 0; // Generate an unique identifier for each component
 
 	for (Component* component : mComponents) {
@@ -128,8 +127,6 @@ void GameObject::DrawInspector() {
 
 	ImGui::Separator();
 	AddComponentButton();
-
-	//**********************************************************************************************************
 }
 
 void GameObject::DrawHierarchy(const int selected)
@@ -345,8 +342,6 @@ void GameObject::DrawTransform() {
 	}
 }
 
-//**************************************************************************************************************
-
 void GameObject::AddComponent(Component* component) {
 	mComponents.push_back(component);
 }
@@ -477,5 +472,3 @@ void GameObject::DeletePopup(Component* component) {
 	ImGui::PopID(); // Reset ID for next component
 	componentIndex++;
 }
-
-//********************************************************************************************

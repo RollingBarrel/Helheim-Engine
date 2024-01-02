@@ -33,11 +33,7 @@ private:
 	GameObject* Owner;
 	bool mIsEnabled;
 
-	//********************************************************************
-
 	// Set the GameObject owner of the component
 	void SetOwner(GameObject* owner) { Owner = owner; }
-
-	//********************************************************************
 };
 
