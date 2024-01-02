@@ -13,8 +13,12 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 
+static ModuleEditor* s_ModuleEditorInstance = nullptr;
+
 ModuleEditor::ModuleEditor()
 {	
+	s_ModuleEditorInstance = this;
+
 	mPanels[ABOUTPANEL] = new AboutPanel();
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
@@ -130,19 +134,36 @@ void ModuleEditor::ShowMainMenuBar() {
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::BeginMenu("Panels")) {
-				if (ImGui::MenuItem("Close all floating panels...")) {
+				if (ImGui::MenuItem("Close all floating panels")) {
+					ResetFloatingPanels(false);
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Reset all floating panels")) {
+					ResetFloatingPanels(true);
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("1 Console")) {
+					Panel* console = s_ModuleEditorInstance->mPanels[CONSOLEPANEL];
+					if (console)
+					{
+						console->IsOpen() ? console->Close() : console->Open();
+					}
 				}
 				//if (ImGui::MenuItem("2 Game")) {}
 				
 				if (ImGui::MenuItem("2 Hierarchy")) {
+					Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
+					if (hierarchy)
+					{
+						hierarchy->IsOpen() ? hierarchy->Close() : hierarchy->Open();
+					}
 				}
 				if (ImGui::MenuItem("3 Inspector")) {
+					Panel* inspector = s_ModuleEditorInstance->mPanels[INSPECTORPANEL];
+					if (inspector)
+					{
+						inspector->IsOpen() ? inspector->Close() : inspector->Open();
+					}
 				}
 				//if (ImGui::MenuItem("5 Project")) {}
 				//if (ImGui::MenuItem("6 Scene")) {}
@@ -153,10 +174,36 @@ void ModuleEditor::ShowMainMenuBar() {
 
 		if (ImGui::BeginMenu("Help"))
 		{
-			if (ImGui::MenuItem("About")) {
+			if (ImGui::MenuItem("About"))
+			{
+				Panel* aboutPanel = s_ModuleEditorInstance->mPanels[ABOUTPANEL];
+				if (aboutPanel)
+				{
+					aboutPanel->IsOpen() ? aboutPanel->Close() : aboutPanel->Open();
+				}
 			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
+	}
+}
+
+void ModuleEditor::ResetFloatingPanels(bool openPanels) {
+	Panel* console = s_ModuleEditorInstance->mPanels[CONSOLEPANEL];
+	Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
+	Panel* inspector = s_ModuleEditorInstance->mPanels[INSPECTORPANEL];
+	Panel* aboutPanel = s_ModuleEditorInstance->mPanels[ABOUTPANEL];
+
+	if (openPanels == true) {
+		console->Open();
+		hierarchy->Open();
+		inspector->Open();
+		aboutPanel->Open();
+	}
+	else {
+		console->Close();
+		hierarchy->Close();
+		inspector->Close();
+		aboutPanel->Close();
 	}
 }
