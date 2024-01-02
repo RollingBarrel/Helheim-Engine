@@ -24,31 +24,18 @@ void HierarchyPanel::OpenRightClickPanel()
 	if(ImGui::IsWindowHovered()) {
 		if (ImGui::GetIO().MouseClicked[1])
 		{
-			ImGui::OpenPopup("Options");
+			App->GetScene()->SetSelectedObject(App->GetScene()->GetRoot());
+			ImGui::OpenPopup("OptionsRoot");
 			optionsPopUp = true;
 		}
 	}
 	if (optionsPopUp) {
-		if (ImGui::BeginPopup("Options")) {
+		if (ImGui::BeginPopup("OptionsRoot")) {
 			if (ImGui::Button("Create GameObject")) {
 				GameObject* gameObject = new GameObject(App->GetScene()->GetSelectedGameObject());
 				App->GetScene()->GetSelectedGameObject()->AddChild(gameObject);
 				App->GetScene()->SetSelectedObject(gameObject);
 				optionsPopUp = false;
-			}
-			if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
-				if (ImGui::Button("Duplicate GameObject")) {
-					GameObject* gameObject = new GameObject(*(App->GetScene()->GetSelectedGameObject()));
-					App->GetScene()->GetSelectedGameObject()->GetParent()->AddChild(gameObject);
-					App->GetScene()->SetSelectedObject(gameObject);
-					optionsPopUp = false;
-				}
-			}
-			if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
-				if (ImGui::Button("Delete GameObject")) {
-					App->GetScene()->AddGameObjectToDelete(App->GetScene()->GetSelectedGameObject()->GetID());
-					optionsPopUp = false;
-				}
 			}
 
 			ImGui::EndPopup();

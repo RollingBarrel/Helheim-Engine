@@ -43,6 +43,7 @@ public:
 	const bool IsRoot() const { return mIsRoot; }
 	GameObject* GetParent() const { return mParent; }
 	const std::string* GetName() const { return &mName; }
+	void DeleteChild(GameObject* child);
 
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);

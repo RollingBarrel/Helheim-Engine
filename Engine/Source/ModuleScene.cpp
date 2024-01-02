@@ -49,14 +49,14 @@ void ModuleScene::SetSelectedObject(GameObject* gameObject)
 }
 
 void ModuleScene::DeleteGameObject(GameObject* gameObject){
-
+	mSelectedGameObject = mRoot;
 	for (auto child : gameObject->GetChildren()) {
 
 		auto idIterator = std::find(mGameObjectsToDelete.begin(), mGameObjectsToDelete.end(), child->GetID());
 		if (idIterator != mGameObjectsToDelete.end()) {
-			delete child;
-			child = nullptr;
+			gameObject->DeleteChild(child);
 			mGameObjectsToDelete.erase(idIterator);
+			
 		}
 	}
 

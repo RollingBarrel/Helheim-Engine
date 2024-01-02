@@ -74,11 +74,12 @@ GameObject::~GameObject()
 {
 	for (GameObject* gameObject : mChildren) {
 		delete gameObject;
-		
+		gameObject = nullptr;
 	}
 	mChildren.clear();
 	for (Component* component : mComponents) {
 		delete component;
+		component = nullptr;
 	}
 	mComponents.clear();
 
@@ -106,6 +107,14 @@ void GameObject::Update()
 	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->Update();
 	}
+}
+
+void GameObject::DeleteChild(GameObject* child)
+{
+	auto childIterator = std::find(mChildren.begin(), mChildren.end(), child);
+	mChildren.erase(childIterator);
+	delete child;
+	child = nullptr;
 }
 
 void GameObject::SetRotation(const Quat& rotation)
@@ -161,9 +170,13 @@ void GameObject::DrawHierarchy(const int selected)
 			baseFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 		}
 		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)mID, baseFlags, mName.c_str()) && (mChildren.size() > 0);
-		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) {
 			App->GetScene()->SetSelectedObject(this);
 		}
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right) && !ImGui::IsItemToggledOpen()) {
+			App->GetScene()->SetSelectedObject(this);
+		}
+		OnRightClick();
 		/*****Begin Drag & Drop Code*******/
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
@@ -206,45 +219,43 @@ void GameObject::DrawHierarchy(const int selected)
 		}
 	}
 	//OnLeftClick();
-	//OnRightClick();
+
 }
 
 
 void GameObject::OnLeftClick() {
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left)) {
-		App->GetScene()->SetSelectedObject(this);
-	}
-
-
 }
 
 void GameObject::OnRightClick() {
+	ImGui::PushID(mID);
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+
 		ImGui::OpenPopup("OptionsGO");
 	}
 	if (ImGui::BeginPopup("OptionsGO")) {
 		if (ImGui::Selectable("Create GameObject")) {
-			GameObject* gameObject = new GameObject(GetParent());
-			AddChild(gameObject);
-			App->GetScene()->SetSelectedObject(gameObject);
+				GameObject* gameObject = new GameObject(this);
+				AddChild(gameObject);
+				App->GetScene()->SetSelectedObject(gameObject);
 		}
 
-		if (!mIsRoot) {
+		if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
 			if (ImGui::Selectable("Duplicate")) {
-				GameObject* gameObject = new GameObject(*(this));
+				GameObject* gameObject = new GameObject(*this);
 				mParent->AddChild(gameObject);
 				App->GetScene()->SetSelectedObject(gameObject);
 			}
 		}
 
-		if (!mIsRoot) {
+		if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
 			if (ImGui::Selectable("Delete")) {
-				mParent->mChildren.erase(std::remove(mParent->mChildren.begin(), mParent->mChildren.end(), this), mParent->mChildren.end());
-				App->GetScene()->SetSelectedObject(nullptr);
+				App->GetScene()->AddGameObjectToDelete(GetID());
+				App->GetScene()->SetSelectedObject(App->GetScene()->GetRoot());
 			}
 		}
 		ImGui::EndPopup();
 	}
+	ImGui::PopID();
 }
 
 
