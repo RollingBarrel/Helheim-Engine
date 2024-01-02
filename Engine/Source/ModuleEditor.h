@@ -24,4 +24,3 @@ private:
 
 	std::map<const char*, Panel*> mPanels;
 };
-

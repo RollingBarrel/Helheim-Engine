@@ -32,7 +32,10 @@ GameObject::GameObject(const GameObject& original)
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
-	//TODO: Copy Childs and Components
+
+	for (auto component : original.mComponents) {
+		mComponents.push_back(component->Clone());
+	}
 }
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
@@ -42,14 +45,15 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	mRotation(original.mRotation)
 {
 
-	//AddSufix();
-
 	for (auto child : original.mChildren) {
 		GameObject* gameObject = new GameObject(*(child), this);
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
-	//TODO: Copy Childs and Components
+
+	for (auto component : original.mComponents) {
+		mComponents.push_back(component->Clone());
+	}
 }
 
 
@@ -436,7 +440,7 @@ void GameObject::DrawMaterial(Component* component) {
 
 void GameObject::DeletePopup(Component* component) {
 	// Calculate the header position using the number of text lines of the component
-	int headerPosition = componentLines * 16; //13.5
+	int headerPosition = componentLines * 13.5; //16
 	componentLines = 1; // Reset to start by counting the header
 
 	// Create a unique identifier for the Delete Popup

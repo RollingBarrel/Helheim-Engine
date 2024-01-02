@@ -4,9 +4,6 @@
 //CLASS FOR TESTING PURPOSE
 #include "MeshRendererComponent.h"
 
-Component::Component() : mType(ComponentType::MESHRENDERER), Owner(nullptr), mIsEnabled(false) {}
-Component::~Component() { }
-
 Component* Component::CreateComponent(ComponentType type, GameObject* owner) {
     Component* newComponent = nullptr;
 

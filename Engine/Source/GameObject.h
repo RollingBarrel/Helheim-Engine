@@ -19,15 +19,15 @@ public:
 	GameObject(const char* name, GameObject* parent, float3 position, float3 scale, Quat rotation);
 	void RecalculateMatrices();
 	void Update();
-
+	
 	//void CreateComponent();
-
+	
 	void DrawInspector();
 	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
 	void AddChild(GameObject* child, const int aboveThisId = 0);
-
+	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const Quat& GetRotation() const { return mRotation; }
@@ -46,7 +46,6 @@ public:
 	void AddComponent(Component* component);
 	void RemoveComponent(Component* component);
 
-	//const std::vector<Component*>& GetComponents() const { return mComponents; } // Get GameObject components
 	//***************************************************************************
 
 private:
@@ -66,7 +65,7 @@ private:
 	bool mIsEnabled;
 
 	void DrawTransform();
-
+	
 	//*******************************************************
 	int componentIndex;
 
@@ -81,3 +80,4 @@ private:
 	void DeletePopup(Component* component);
 	//*******************************************************
 };
+
