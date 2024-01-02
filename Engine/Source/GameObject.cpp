@@ -8,14 +8,13 @@
 #include "imgui.h"
 #include <algorithm>
 
-
-GameObject::GameObject(GameObject* parent) 
+GameObject::GameObject(GameObject* parent)
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
 	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
 	mRotation(Quat::identity)
 {
-	if(!mIsRoot) {
+	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
 
@@ -36,24 +35,28 @@ GameObject::GameObject(const GameObject& original)
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
-	//TODO: Copy Childs and Components
+
+	for (auto component : original.mComponents) {
+		mComponents.push_back(component->Clone());
+	}
 }
 
-GameObject::GameObject(const GameObject& original, GameObject* newParent) 
+GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID((new LCG())->Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
 {
 
-	//AddSufix();
-
 	for (auto child : original.mChildren) {
 		GameObject* gameObject = new GameObject(*(child), this);
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
-	//TODO: Copy Childs and Components
+
+	for (auto component : original.mComponents) {
+		mComponents.push_back(component->Clone());
+	}
 }
 
 
@@ -135,10 +138,8 @@ void GameObject::SetScale(const float3& scale)
 	RecalculateMatrices();
 }
 
-
-
 void GameObject::DrawInspector() {
-	
+
 	ImGui::Text(mName.c_str());
 	DrawTransform();
 
@@ -196,7 +197,6 @@ void GameObject::DrawHierarchy(const int selected)
 		}
 		/*****End Drag & Drop Code*******/
 	}
-	
 	if (nodeOpen) {
 		for (auto child : mChildren) {
 			child->DrawHierarchy(selected);
@@ -266,7 +266,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	if (aboveThisId != 0) {
 		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it) {
 			if ((*it)->GetID() == aboveThisId)
-			{				
+			{
 				mChildren.insert(it, child);
 				inserted = true;
 				break;
@@ -276,7 +276,6 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	if (!inserted) {
 		mChildren.push_back(child);
 	}
-	
 }
 
 void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveThisId)
@@ -302,7 +301,6 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 				std::rotate(itTargetPosition, itMovedObject, itMovedObject + 1);
 			}
 		}
-		
 	}
 	else {
 		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
@@ -315,7 +313,6 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 			}
 		}
 	}
-			
 }
 
 void GameObject::AddSufix()
@@ -339,7 +336,6 @@ void GameObject::AddSufix()
 			if (mParent->mChildren.size() > 0) {
 				mName += str;
 			}
-			
 			found = false;
 		}
 		else {
@@ -357,7 +353,7 @@ void GameObject::DrawTransform() {
 		bool modifiedTransform = false;
 		if (ImGui::BeginTable("transformTable", 2)) {
 			ImGui::TableNextRow();
-			ImGui::PushID(0);
+			ImGui::PushID(mID);
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text("Position");
 			ImGui::TableSetColumnIndex(1);
@@ -371,7 +367,7 @@ void GameObject::DrawTransform() {
 			ImGui::PopID();
 
 			ImGui::TableNextRow();
-			ImGui::PushID(1);
+			ImGui::PushID(mID+1);
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text("Rotation");
 			ImGui::TableSetColumnIndex(1);
@@ -385,7 +381,7 @@ void GameObject::DrawTransform() {
 			ImGui::PopID();
 
 			ImGui::TableNextRow();
-			ImGui::PushID(2);
+			ImGui::PushID(mID+2);
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text("Scale");
 			ImGui::TableSetColumnIndex(1);
@@ -397,6 +393,7 @@ void GameObject::DrawTransform() {
 			modifiedTransform = modifiedTransform || ImGui::InputFloat("Z", &mScale.z);
 			ImGui::PopItemWidth();
 			ImGui::PopID();
+
 			if (modifiedTransform) {
 				RecalculateMatrices();
 			}
