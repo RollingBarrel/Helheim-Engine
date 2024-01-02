@@ -289,7 +289,7 @@ void GameObject::DrawTransform() {
 		bool modifiedTransform = false;
 		if (ImGui::BeginTable("transformTable", 2)) {
 			ImGui::TableNextRow();
-			ImGui::PushID(0);
+			ImGui::PushID(mID);
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text("Position");
 			ImGui::TableSetColumnIndex(1);
@@ -303,7 +303,7 @@ void GameObject::DrawTransform() {
 			ImGui::PopID();
 
 			ImGui::TableNextRow();
-			ImGui::PushID(1);
+			ImGui::PushID(mID+1);
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text("Rotation");
 			ImGui::TableSetColumnIndex(1);
@@ -317,7 +317,7 @@ void GameObject::DrawTransform() {
 			ImGui::PopID();
 
 			ImGui::TableNextRow();
-			ImGui::PushID(2);
+			ImGui::PushID(mID+2);
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text("Scale");
 			ImGui::TableSetColumnIndex(1);
@@ -329,6 +329,7 @@ void GameObject::DrawTransform() {
 			modifiedTransform = modifiedTransform || ImGui::InputFloat("Z", &mScale.z);
 			ImGui::PopItemWidth();
 			ImGui::PopID();
+
 			if (modifiedTransform) {
 				RecalculateMatrices();
 			}
