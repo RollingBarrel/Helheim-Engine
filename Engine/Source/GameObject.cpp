@@ -3,7 +3,10 @@
 #include "Component.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "InspectorPanel.h"
 #include "imgui.h"
+#include <algorithm>
 
 GameObject::GameObject(GameObject* parent)
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
@@ -70,6 +73,21 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 }
 
+GameObject::~GameObject()
+{
+	for (GameObject* gameObject : mChildren) {
+		delete gameObject;
+		gameObject = nullptr;
+	}
+	mChildren.clear();
+	for (Component* component : mComponents) {
+		delete component;
+		component = nullptr;
+	}
+	mComponents.clear();
+
+}
+
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
@@ -92,6 +110,14 @@ void GameObject::Update()
 	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->Update();
 	}
+}
+
+void GameObject::DeleteChild(GameObject* child)
+{
+	auto childIterator = std::find(mChildren.begin(), mChildren.end(), child);
+	mChildren.erase(childIterator);
+	delete child;
+	child = nullptr;
 }
 
 void GameObject::SetRotation(const Quat& rotation)
@@ -145,9 +171,13 @@ void GameObject::DrawHierarchy(const int selected)
 			baseFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 		}
 		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)mID, baseFlags, mName.c_str()) && (mChildren.size() > 0);
-		if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) {
 			App->GetScene()->SetSelectedObject(this);
 		}
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right) && !ImGui::IsItemToggledOpen()) {
+			App->GetScene()->SetSelectedObject(this);
+		}
+		OnRightClick();
 		/*****Begin Drag & Drop Code*******/
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
@@ -167,14 +197,13 @@ void GameObject::DrawHierarchy(const int selected)
 		}
 		/*****End Drag & Drop Code*******/
 	}
-
 	if (nodeOpen) {
 		for (auto child : mChildren) {
 			child->DrawHierarchy(selected);
 		}
-
+	
 		if (!mIsRoot) {
-			ImGui::TreePop();
+			ImGui::TreePop(); 
 		}
 	}
 	if (mIsRoot) { // Dragging something to this Separator will move it to the end of root
@@ -189,7 +218,46 @@ void GameObject::DrawHierarchy(const int selected)
 			ImGui::EndDragDropTarget();
 		}
 	}
+	//OnLeftClick();
+
 }
+
+
+void GameObject::OnLeftClick() {
+}
+
+void GameObject::OnRightClick() {
+	ImGui::PushID(mID);
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+
+		ImGui::OpenPopup("OptionsGO");
+	}
+	if (ImGui::BeginPopup("OptionsGO")) {
+		if (ImGui::Selectable("Create GameObject")) {
+				GameObject* gameObject = new GameObject(this);
+				AddChild(gameObject);
+				App->GetScene()->SetSelectedObject(gameObject);
+		}
+
+		if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
+			if (ImGui::Selectable("Duplicate")) {
+				GameObject* gameObject = new GameObject(*this);
+				mParent->AddChild(gameObject);
+				App->GetScene()->SetSelectedObject(gameObject);
+			}
+		}
+
+		if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
+			if (ImGui::Selectable("Delete")) {
+				App->GetScene()->AddGameObjectToDelete(GetID());
+				App->GetScene()->SetSelectedObject(App->GetScene()->GetRoot());
+			}
+		}
+		ImGui::EndPopup();
+	}
+	ImGui::PopID();
+}
+
 
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
 {
@@ -208,7 +276,6 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	if (!inserted) {
 		mChildren.push_back(child);
 	}
-
 }
 
 void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveThisId)
@@ -234,7 +301,6 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 				std::rotate(itTargetPosition, itMovedObject, itMovedObject + 1);
 			}
 		}
-
 	}
 	else {
 		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
@@ -247,7 +313,6 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 			}
 		}
 	}
-
 }
 
 void GameObject::AddSufix()
@@ -271,7 +336,6 @@ void GameObject::AddSufix()
 			if (mParent->mChildren.size() > 0) {
 				mName += str;
 			}
-
 			found = false;
 		}
 		else {

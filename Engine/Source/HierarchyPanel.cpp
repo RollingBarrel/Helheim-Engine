@@ -20,28 +20,24 @@ void HierarchyPanel::Draw(int windowFlags)
 
 void HierarchyPanel::OpenRightClickPanel()
 {
-	static bool options_pop_up = true;
+	static bool optionsPopUp = true;
 	if(ImGui::IsWindowHovered()) {
 		if (ImGui::GetIO().MouseClicked[1])
 		{
-			ImGui::OpenPopup("Options");
-			options_pop_up = true;
+			App->GetScene()->SetSelectedObject(App->GetScene()->GetRoot());
+			ImGui::OpenPopup("OptionsRoot");
+			optionsPopUp = true;
 		}
 	}
-	if (options_pop_up) {
-		if (ImGui::BeginPopup("Options")) {
+	if (optionsPopUp) {
+		if (ImGui::BeginPopup("OptionsRoot")) {
 			if (ImGui::Button("Create GameObject")) {
 				GameObject* gameObject = new GameObject(App->GetScene()->GetSelectedGameObject());
 				App->GetScene()->GetSelectedGameObject()->AddChild(gameObject);
 				App->GetScene()->SetSelectedObject(gameObject);
-				options_pop_up = false;
+				optionsPopUp = false;
 			}
-			if (ImGui::Button("Duplicate GameObject")) {
-				GameObject* gameObject = new GameObject(*(App->GetScene()->GetSelectedGameObject()));
-				App->GetScene()->GetSelectedGameObject()->GetParent()->AddChild(gameObject);
-				App->GetScene()->SetSelectedObject(gameObject);
-				options_pop_up = false;
-			}
+
 			ImGui::EndPopup();
 		}
 	}
