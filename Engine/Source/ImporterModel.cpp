@@ -29,8 +29,10 @@ void Importer::Model::Import(const char* filePath)
         for (const auto& primitive : srcMesh.primitives)
         {
             ResourceMesh* mesh = new ResourceMesh();
-
-            //importerM.Import();
+            Importer::Mesh::Import(model, primitive, (*mesh));
         }
     }
+
+
+
 }

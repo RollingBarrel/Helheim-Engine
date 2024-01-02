@@ -1,4 +1,5 @@
 #include "Importer.h"
+#include "ImporterModel.h"
 #include "Globals.h"
 #include <iostream>
 #include <fstream>
@@ -6,10 +7,17 @@
 
 void Importer::Import(const char* filePath)
 {
-	//Todo DirectXTex import
+	//TODO work with the file path to call other importers
 
-	//Save texture binary format
-	//Load binary format
+	// .gltf IMPORT Model
+	Importer::Model::Import(filePath);
+
+	// .dds Texture
+	 
+
+	// .glsl Shaders
+
+	// Others don't know
 }
 
 void Importer::Load(const char* filePath, char*& buffer) 
