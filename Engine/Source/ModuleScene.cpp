@@ -25,7 +25,7 @@ update_status ModuleScene::Update()
 update_status ModuleScene::PostUpdate()
 {
 	if (!mGameObjectsToDelete.empty()) {
-
+		DeleteGameObject(mRoot);
 	}
 	return UPDATE_CONTINUE;
 }
@@ -52,15 +52,17 @@ void ModuleScene::DeleteGameObject(GameObject* gameObject){
 
 	for (auto child : gameObject->GetChildren()) {
 
-		std::_Vector_iterator<std::_Vector_val<std::_Simple_types<unsigned int>>> idIterator = std::find(mGameObjectsToDelete.begin(), mGameObjectsToDelete.end(), child->GetID());
+		auto idIterator = std::find(mGameObjectsToDelete.begin(), mGameObjectsToDelete.end(), child->GetID());
 		if (idIterator != mGameObjectsToDelete.end()) {
+			delete child;
+			child = nullptr;
 			mGameObjectsToDelete.erase(idIterator);
 		}
 	}
 
-	if (!mGameObjectsToDelete.empty() && !gameObject->GetChildren().empty()) {
+	if (!(mGameObjectsToDelete.empty()) &&  !(gameObject->GetChildren().empty())) {
 		for (auto child : gameObject->GetChildren()) {
-			DeleteGameObject(gameObject);
+			DeleteGameObject(child);
 		}
 	}
 }

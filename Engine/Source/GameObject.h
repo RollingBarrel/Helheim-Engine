@@ -18,6 +18,9 @@ public:
 	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(const char* name, GameObject* parent, float3 position, float3 scale, Quat rotation);
+
+	~GameObject();
+
 	void RecalculateMatrices();
 	void Update();
 	void CreateComponent();
@@ -34,7 +37,6 @@ public:
 	const Quat& GetRotation() const { return mRotation; }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
-	const GameObject& GetParent() const { return mParent; }
 
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	const unsigned int GetID() const { return mID; }

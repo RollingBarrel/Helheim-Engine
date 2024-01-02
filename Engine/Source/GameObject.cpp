@@ -70,6 +70,20 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 }
 
+GameObject::~GameObject()
+{
+	for (GameObject* gameObject : mChildren) {
+		delete gameObject;
+		
+	}
+	mChildren.clear();
+	for (Component* component : mComponents) {
+		delete component;
+	}
+	mComponents.clear();
+
+}
+
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
@@ -191,8 +205,8 @@ void GameObject::DrawHierarchy(const int selected)
 			ImGui::EndDragDropTarget();
 		}
 	}
-	OnLeftClick();
-	OnRightClick();
+	//OnLeftClick();
+	//OnRightClick();
 }
 
 
