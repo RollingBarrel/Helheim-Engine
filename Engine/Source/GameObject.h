@@ -37,15 +37,12 @@ public:
 	const Quat& GetRotation() const { return mRotation; }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
-	const int GetID() const { return mID; }
 	GameObject* GetParent() const { return mParent; }
 	const std::string* GetName() const { return &mName; }
 
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	const unsigned int GetID() const { return mID; }
 	const bool IsRoot() const { return mIsRoot; }
-	GameObject* GetParent() const { return mParent; }
-	const std::string* GetName() const { return &mName; }
 	void DeleteChild(GameObject* child);
 
 	void SetRotation(const Quat& rotation);
