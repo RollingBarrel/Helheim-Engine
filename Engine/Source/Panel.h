@@ -12,6 +12,10 @@ public:
 
 	const char* GetName() const { return mName; }
 
+	//***********************************
+	void ToggleOpen() { mOpen = !mOpen; }
+	//***********************************
+
 protected:
 	bool mOpen;
 

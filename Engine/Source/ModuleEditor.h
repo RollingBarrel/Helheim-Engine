@@ -18,6 +18,7 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 	bool IsPanelOpen(const char* name) { return mPanels[name]; }
+	static void ShowMainMenuBar();
 
 private:
 	ImGuiIO* io;

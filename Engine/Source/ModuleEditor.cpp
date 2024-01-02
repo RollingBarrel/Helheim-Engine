@@ -14,7 +14,7 @@
 #include "imgui.h"
 
 ModuleEditor::ModuleEditor()
-{
+{	
 	mPanels[ABOUTPANEL] = new AboutPanel();
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
@@ -58,8 +58,11 @@ update_status ModuleEditor::PreUpdate()
 		}
 	}
 
-	static bool show = true;
+	//static bool show = true;
 	//ImGui::ShowDemoWindow(&show);
+
+	//Create Menu bar for the editor
+	ShowMainMenuBar();
 
 	return UPDATE_CONTINUE;
 }
@@ -98,4 +101,62 @@ bool ModuleEditor::CleanUp()
 	mPanels.clear();
 
 	return true;
+}
+
+void ModuleEditor::ShowMainMenuBar() {
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Quit"))
+			{
+				exit(0);
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit")) {
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Assets")) {
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("GameObject")) {
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Component")) {
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Window"))
+		{
+			if (ImGui::BeginMenu("Panels")) {
+				if (ImGui::MenuItem("Close all floating panels...")) {
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Reset all floating panels")) {
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("1 Console")) {
+				}
+				//if (ImGui::MenuItem("2 Game")) {}
+				
+				if (ImGui::MenuItem("2 Hierarchy")) {
+				}
+				if (ImGui::MenuItem("3 Inspector")) {
+				}
+				//if (ImGui::MenuItem("5 Project")) {}
+				//if (ImGui::MenuItem("6 Scene")) {}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("About")) {
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
 }
