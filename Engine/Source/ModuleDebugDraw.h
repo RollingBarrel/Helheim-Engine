@@ -24,13 +24,14 @@ public:
 
     void SetDrawGrid(bool drawGrid);
     bool GetDrawGrid() const;
+    void Draw(const float4x4& viewproj, unsigned width, unsigned height);
+
 
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
     bool mdrawGrid; 
 
-    void Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height);
 
     void DrawBoundingBox(const OBB& obb);
     void DrawGrid();
