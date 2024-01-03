@@ -39,8 +39,6 @@ public:
 	const float3& GetCameraPos() const { return frustum.pos; }
 	void ProcessInput(const Uint8* keyboard, const int x, const int y);
 	void UpdateProjectionMatrix(int screenWidth, int screenHeight);
-	void DisplaceFromBoundingBox(float3 mins, float3 maxs);
-	void testFrustumBounds();
 
 	
 

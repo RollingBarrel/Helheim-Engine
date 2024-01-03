@@ -44,7 +44,6 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
-    testFrustumBounds();
     return UPDATE_CONTINUE;
 }
 
@@ -205,31 +204,5 @@ void ModuleCamera::UpdateProjectionMatrix(int screenWidth, int screenHeight)
 
 }
 
-void ModuleCamera::DisplaceFromBoundingBox(float3 mins, float3 maxs)
-{
-    if (mins.Equals(float3(inf)) || maxs.Equals(float3(-inf))) {
-        LOG("Bounding box from model not loaded correctly");
-        return;
-    }
 
 
-    float newX = (mins.x - maxs.x) * 2 + (mins.x + maxs.x) / 2;
-    float newY = (mins.y - maxs.y) + (mins.y + maxs.y) / 2;
-    float newZ = (mins.z + maxs.z) / 2;
-
-    frustum.pos = float3(newX, newY, newZ);
-
-    float3 oldRight = frustum.WorldRight().Normalized();
-    frustum.front = (float3::zero - frustum.pos).Normalized();
-    frustum.up = Cross(oldRight, frustum.front).Normalized();
-
-}
-
-void ModuleCamera::testFrustumBounds()
-{
-    AABB test = AABB::AABB(float3(-1), float3(1));
-
-    if (frustum.Intersects(test)) {
-        LOG("Intersection detected");
-    }
-}
