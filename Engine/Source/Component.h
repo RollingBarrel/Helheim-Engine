@@ -2,7 +2,7 @@
 
 enum class ComponentType
 {
-	MESHRENDERER,
+	MESHRENDERER, TEST
 };
 
 class GameObject;
@@ -13,25 +13,18 @@ public:
 	virtual	void Enable() { mIsEnabled = true; };
 	virtual	void Disable() { mIsEnabled = false; }
 	virtual	void Update() = 0;
-	virtual	void DrawEditor() = 0; //Do not call ImGui::Begin() inside this function.
+	virtual	void DrawEditor() = 0;
 	virtual Component* Clone() = 0;
 
+	Component(GameObject* owner, ComponentType type);
 	virtual ~Component() {}
 
-	// Create a new component linked to this GameObject
-	static Component* CreateComponent(ComponentType type, GameObject* owner);
-
-	// Delete a component linked to this GameObject
-	static void DeleteComponent(Component* component);
-
-	// Get the type of the component
-	ComponentType GetType() const { return mType; }
-
+	const ComponentType GetType() const { return mType; }
+	GameObject* GetOwner() const { return mOwner; }
 
 private:
 	ComponentType mType;
-	GameObject* Owner;
+	GameObject* mOwner;
 	bool mIsEnabled;
-
 };
 

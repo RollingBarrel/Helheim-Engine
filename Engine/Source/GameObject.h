@@ -4,14 +4,11 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "string"
-
+#include "Component.h"
 //#include "MathGeoLib.h"
-
-class Component;
 
 class GameObject
 {
-
 public:
 	GameObject(GameObject* parent);
 	GameObject(const GameObject& original);
@@ -23,7 +20,6 @@ public:
 
 	void RecalculateMatrices();
 	void Update();
-	void CreateComponent();
 	void DrawInspector();
 	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
@@ -49,6 +45,9 @@ public:
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
+	void CreateComponent(ComponentType type);
+	void DeletePopup(Component* component, int headerPosition);
+
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
 	void AddSufix();
@@ -65,8 +64,13 @@ private:
 	float3 mScale;
 	bool mIsEnabled;
 
+	int componentIndex;
 
 	void DrawTransform();
-
+	void AddComponentButton();
+	void ShowComponents(Component* component);
+	void DrawMeshRenderer(Component* component);
+	void DrawMaterial(Component* component);
+	void RemoveComponent(Component* component);
 };
 

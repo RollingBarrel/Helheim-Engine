@@ -6,12 +6,12 @@
 class Material;
 struct Mesh;
 
-class MeshRendererComponent : public Component
+class TestComponent : public Component
 {
 public:
-	MeshRendererComponent(GameObject* ownerGameObject);
-	MeshRendererComponent(const MeshRendererComponent& original);
-	//~MeshRendererComponent();
+	TestComponent(GameObject* ownerGameObject);
+	TestComponent(const TestComponent& original);
+	//~TestComponent();
 
 	void Draw();
 	void Load();

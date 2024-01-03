@@ -8,6 +8,10 @@
 #include "imgui.h"
 #include <algorithm>
 
+//CLASSES FOR TESTING PURPOSE:
+#include "MeshRendererComponent.h"
+#include "TestComponent.h"
+
 GameObject::GameObject(GameObject* parent)
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
@@ -58,7 +62,6 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 		mComponents.push_back(component->Clone());
 	}
 }
-
 
 GameObject::GameObject(const char* name, GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
@@ -139,15 +142,17 @@ void GameObject::SetScale(const float3& scale)
 }
 
 void GameObject::DrawInspector() {
-
 	ImGui::Text(mName.c_str());
 	DrawTransform();
 
+	componentIndex = 0;
+
 	for (Component* component : mComponents) {
-		ImGui::Separator();
 		component->DrawEditor();
 	}
 
+	ImGui::Separator();
+	AddComponentButton();
 }
 
 void GameObject::DrawHierarchy(const int selected)
@@ -221,7 +226,6 @@ void GameObject::DrawHierarchy(const int selected)
 	//OnLeftClick();
 
 }
-
 
 void GameObject::OnLeftClick() {
 }
@@ -399,5 +403,107 @@ void GameObject::DrawTransform() {
 			}
 		}
 		ImGui::EndTable();
+	}
+}
+
+void GameObject::AddComponentButton() {
+	float windowWidth = ImGui::GetWindowWidth();
+	float buttonWidth = 150.0f; // Desired width for the button
+	float posX = (windowWidth - buttonWidth) * 0.5f;
+
+	ImGui::SetCursorPosX(posX);
+
+	bool hasMeshRendererComponent = false;
+	bool hasMaterialComponent = false;
+
+	for (Component* component : mComponents) {
+		if (component->GetType() == ComponentType::MESHRENDERER) {
+			hasMeshRendererComponent = true;
+		}
+		else if (component->GetType() == ComponentType::TEST) {
+			hasMaterialComponent = true;
+		}
+
+		if (hasMeshRendererComponent && hasMaterialComponent) {
+			break;
+		}
+	}
+
+	if (!hasMeshRendererComponent || !hasMaterialComponent) {
+		if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
+			ImGui::OpenPopup("AddComponentPopup");
+		}
+	}
+
+	if (ImGui::BeginPopup("AddComponentPopup")) {
+		if (!hasMeshRendererComponent && ImGui::MenuItem("Mesh Renderer")) {
+			CreateComponent(ComponentType::MESHRENDERER);
+		}
+		if (!hasMaterialComponent && ImGui::MenuItem("Test")) {
+			CreateComponent(ComponentType::TEST);
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void GameObject::CreateComponent(ComponentType type) {
+	Component* newComponent = nullptr;
+
+	switch (type) {
+		case ComponentType::MESHRENDERER:
+			//ONLY FOR TEST PURPOSE
+			newComponent = new MeshRendererComponent(this);
+			break;
+		case ComponentType::TEST:
+			//ONLY FOR TEST PURPOSE        
+			newComponent = new TestComponent(this);
+			break;
+		default:
+			break;
+	}
+
+	if (newComponent) {
+		mComponents.push_back(newComponent);
+	}
+}
+
+void GameObject::DeletePopup(Component* component, int headerPosition) {
+	ImGui::PushID(componentIndex); // Work correctly without this function, its necessary?
+
+	std::string popupID = "ComponentOptions_" + std::to_string(componentIndex);
+
+	ImVec2 min = ImGui::GetItemRectMin();
+	ImVec2 max = ImGui::GetItemRectMax();
+
+	min.y -= ImGui::GetStyle().FramePadding.y + headerPosition;
+	max.y += ImGui::GetStyle().FramePadding.y - headerPosition;
+
+	if (ImGui::IsMouseHoveringRect(min, max) && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
+		ImGui::OpenPopup(popupID.c_str());
+	}
+
+	if (ImGui::BeginPopupContextItem(popupID.c_str())) {
+		ImGui::OpenPopup(popupID.c_str());
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginPopup(popupID.c_str())) {
+		if (ImGui::MenuItem("Delete Component")) {
+			RemoveComponent(component);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
+	ImGui::PopID();
+	componentIndex++;
+}
+
+void GameObject::RemoveComponent(Component* component) {
+	auto it = std::find(mComponents.begin(), mComponents.end(), component);
+	if (it != mComponents.end()) {
+		mComponents.erase(it);
+		delete component;
 	}
 }
