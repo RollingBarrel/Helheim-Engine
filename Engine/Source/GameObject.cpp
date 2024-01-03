@@ -27,7 +27,7 @@ GameObject::GameObject(GameObject* parent)
 
 GameObject::GameObject(const GameObject& original)
 	:mID((new LCG())->Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
+	mIsRoot(false), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
 {
@@ -183,24 +183,8 @@ void GameObject::DrawHierarchy(const int selected)
 			App->GetScene()->SetSelectedObject(this);
 		}
 		OnRightClick();
-		/*****Begin Drag & Drop Code*******/
-		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-		{
-			ImGui::SetDragDropPayload("_TREENODE", this, sizeof(*this));
+		DragAndDrop();
 
-			ImGui::Text(mName.c_str());
-			ImGui::EndDragDropSource();
-		}
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
-			{
-				const GameObject* movedObject = (const GameObject*)payload->Data;
-				movedObject->mParent->MoveChild(movedObject->GetID(), this);
-			}
-			ImGui::EndDragDropTarget();
-		}
-		/*****End Drag & Drop Code*******/
 	}
 	if (nodeOpen) {
 		for (auto child : mChildren) {
@@ -211,7 +195,7 @@ void GameObject::DrawHierarchy(const int selected)
 			ImGui::TreePop(); 
 		}
 	}
-	if (mIsRoot) { // Dragging something to this Separator will move it to the end of root
+	if (mIsRoot) {
 		ImGui::Separator();
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -223,12 +207,12 @@ void GameObject::DrawHierarchy(const int selected)
 			ImGui::EndDragDropTarget();
 		}
 	}
-	//OnLeftClick();
+
+	
 
 }
 
-void GameObject::OnLeftClick() {
-}
+
 
 void GameObject::OnRightClick() {
 	ImGui::PushID(mID);
@@ -246,14 +230,15 @@ void GameObject::OnRightClick() {
 		if (!mIsRoot) {
 			if (ImGui::Selectable("Duplicate")) {
 				GameObject* gameObject = new GameObject(*this);
-				mParent->AddChild(gameObject);
+				//mParent->AddChild(gameObject);
+				App->GetScene()->AddGameObjectToDuplicate(gameObject);
 				App->GetScene()->SetSelectedObject(gameObject);
 			}
 		}
 
 		if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
 			if (ImGui::Selectable("Delete")) {
-				App->GetScene()->AddGameObjectToDelete(GetID());
+				App->GetScene()->AddGameObjectToDelete(this);
 				App->GetScene()->SetSelectedObject(App->GetScene()->GetRoot());
 			}
 		}
@@ -350,6 +335,26 @@ void GameObject::AddSufix()
 	}
 
 
+}
+
+void GameObject::DragAndDrop()
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("_TREENODE", this, sizeof(*this));
+
+		ImGui::Text(mName.c_str());
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
+		{
+			const GameObject* movedObject = (const GameObject*)payload->Data;
+			movedObject->mParent->MoveChild(movedObject->GetID(), this);
+		}
+		ImGui::EndDragDropTarget();
+	}
 }
 
 void GameObject::DrawTransform() {
@@ -452,11 +457,9 @@ void GameObject::CreateComponent(ComponentType type) {
 
 	switch (type) {
 		case ComponentType::MESHRENDERER:
-			//ONLY FOR TEST PURPOSE
 			newComponent = new MeshRendererComponent(this);
 			break;
-		case ComponentType::TEST:
-			//ONLY FOR TEST PURPOSE        
+		case ComponentType::TEST:    
 			newComponent = new TestComponent(this);
 			break;
 		default:

@@ -24,7 +24,6 @@ public:
 	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
-	void OnLeftClick();
 	void OnRightClick();
 	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
@@ -51,6 +50,7 @@ public:
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
 	void AddSufix();
+	void DragAndDrop();
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;

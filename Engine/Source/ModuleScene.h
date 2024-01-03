@@ -20,14 +20,20 @@ public:
 	GameObject* GetSelectedGameObject() { return mSelectedGameObject; }
 
 	void SetSelectedObject(GameObject* gameObject);
-	void AddGameObjectToDelete(const unsigned int id) {
-		mGameObjectsToDelete.push_back(id);
+	void AddGameObjectToDelete(GameObject* gameObject) {
+		mGameObjectsToDelete.push_back(gameObject);
+	}
+
+	void AddGameObjectToDuplicate(GameObject* gameObject) {
+		mGameObjectsToDuplicate.push_back(gameObject);
 	}
 
 private:
 	GameObject* mRoot;
 	GameObject* mSelectedGameObject;
-	std::vector<unsigned int> mGameObjectsToDelete;
-	void DeleteGameObject(GameObject* gameObject);
+	std::vector<GameObject*> mGameObjectsToDelete;
+	std::vector<GameObject*> mGameObjectsToDuplicate;
+	void DeleteGameObjects();
+	void DuplicateGameObjects();
 };
 

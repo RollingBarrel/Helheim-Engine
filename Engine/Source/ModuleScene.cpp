@@ -25,8 +25,12 @@ update_status ModuleScene::Update()
 update_status ModuleScene::PostUpdate()
 {
 	if (!mGameObjectsToDelete.empty()) {
-		DeleteGameObject(mRoot);
+		DeleteGameObjects();
 	}
+	if (!mGameObjectsToDuplicate.empty()) {
+		DuplicateGameObjects();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -48,21 +52,22 @@ void ModuleScene::SetSelectedObject(GameObject* gameObject)
 	mSelectedGameObject = gameObject;
 }
 
-void ModuleScene::DeleteGameObject(GameObject* gameObject){
-	mSelectedGameObject = mRoot;
-	for (auto child : gameObject->GetChildren()) {
+void ModuleScene::DeleteGameObjects(){
 
-		auto idIterator = std::find(mGameObjectsToDelete.begin(), mGameObjectsToDelete.end(), child->GetID());
-		if (idIterator != mGameObjectsToDelete.end()) {
-			gameObject->DeleteChild(child);
-			mGameObjectsToDelete.erase(idIterator);
-			
-		}
+	for (auto gameObject : mGameObjectsToDelete) {
+		gameObject->GetParent()->DeleteChild(gameObject);
 	}
 
-	if (!(mGameObjectsToDelete.empty()) &&  !(gameObject->GetChildren().empty())) {
-		for (auto child : gameObject->GetChildren()) {
-			DeleteGameObject(child);
-		}
+	mGameObjectsToDelete.clear();
+
+}
+
+void ModuleScene::DuplicateGameObjects() {
+
+	for (auto gameObject : mGameObjectsToDuplicate) {
+		gameObject->GetParent()->AddChild(gameObject);
 	}
+
+	mGameObjectsToDuplicate.clear();
+
 }
