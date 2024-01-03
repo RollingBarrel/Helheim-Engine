@@ -4,6 +4,7 @@
 #include "glew.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleInput.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -31,7 +32,6 @@ bool ModuleCamera::Init()
     int x, y;
     SDL_GetMouseState(&x, &y);
     mousePos = float2((float)x, (float)y);
-    cameraType = fixed;
 
     return true;
 }
@@ -44,6 +44,7 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
+    ProcessInput();
     return UPDATE_CONTINUE;
 }
 
@@ -65,11 +66,10 @@ void ModuleCamera::move(const float3& delta)
 
 void ModuleCamera::moveForward(bool backwards)
 {
-    if (cameraType == fixed) {
 
-        int sign = backwards ? 1 : -1;
-        move(sign * frustum.front.Normalized() * 0.1f);
-    }
+    int sign = backwards ? 1 : -1;
+    move(sign * frustum.front.Normalized() * 0.1f);
+    
 }
 
 void ModuleCamera::rotate(float angle, const float3& axis)
@@ -82,47 +82,52 @@ void ModuleCamera::rotate(float angle, const float3& axis)
 }
 
 
-void ModuleCamera::ProcessInput(const Uint8* keyboard, const int x, const int y)
+void ModuleCamera::ProcessInput()
 {
 
-    float speed = 0.01f;
+    float speed = 0.001f;
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+
     float2 mouse_delta = float2(mousePos.x - x, mousePos.y - y);
     mousePos = float2((float)x, (float)y);
 
-    if (keyboard[SDL_SCANCODE_LSHIFT])
+
+    
+    if (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT))
     {
         speed = speed * 2;
     }
-    if (cameraType == movable) {
+    if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_RIGHT)) {
 
-        if (keyboard[SDL_SCANCODE_W])
+        if (App->GetInput()->GetKey(SDL_SCANCODE_W))
         {
             move(-frustum.front.Normalized() * speed);
         }
 
-        if (keyboard[SDL_SCANCODE_S])
+        if (App->GetInput()->GetKey(SDL_SCANCODE_S))
         {
             move(frustum.front.Normalized() * speed);
 
         }
 
-        if (keyboard[SDL_SCANCODE_A])
+        if (App->GetInput()->GetKey(SDL_SCANCODE_A))
         {
             move(frustum.WorldRight().Normalized() * speed);
 
         }
 
-        if (keyboard[SDL_SCANCODE_D])
+        if (App->GetInput()->GetKey(SDL_SCANCODE_D))
         {
             move(-frustum.WorldRight().Normalized() * speed);
         }
 
-        if (keyboard[SDL_SCANCODE_Q])
+        if (App->GetInput()->GetKey(SDL_SCANCODE_Q))
         {
             move(frustum.up.Normalized() * speed);
 
         }
-        if (keyboard[SDL_SCANCODE_E])
+        if (App->GetInput()->GetKey(SDL_SCANCODE_E))
         {
             move(-frustum.up.Normalized() * speed);
 
@@ -137,40 +142,15 @@ void ModuleCamera::ProcessInput(const Uint8* keyboard, const int x, const int y)
 
 
     }
-    else if (cameraType == fixed) {
-
-        if (keyboard[SDL_SCANCODE_UP])
-        {
-            rotate(speed, frustum.WorldRight());
-
-        }
-        if (keyboard[SDL_SCANCODE_DOWN])
-        {
-            rotate(-speed, frustum.WorldRight());
-
-        }
-        if (keyboard[SDL_SCANCODE_LEFT])
-        {
-            rotate(speed, frustum.up);
-
-        }
-        if (keyboard[SDL_SCANCODE_RIGHT])
-        {
-            rotate(-speed, frustum.up);
-
-        }
-
-
-    }
-    else if (cameraType == CameraType::orbit && keyboard[SDL_SCANCODE_LALT]) {
+    else if (App->GetInput()->GetMouseButtonDown(SDL_BUTTON_LEFT) && App->GetInput()->GetKey(SDL_SCANCODE_LALT)) {
         
 
         float distanceCameraObject = (float3::zero - frustum.pos).Length();
         if (mouse_delta.x != 0) {
-            move(-mouse_delta.x * speed * distanceCameraObject * frustum.WorldRight());
+            move(-mouse_delta.x * speed * 2 * distanceCameraObject * frustum.WorldRight());
         }
         if (mouse_delta.y != 0) {
-            move(mouse_delta.y * speed * distanceCameraObject * frustum.up);
+            move(mouse_delta.y * speed * 2 * distanceCameraObject * frustum.up);
         }
         float3 oldRight = frustum.WorldRight().Normalized();
         frustum.front = (float3::zero - frustum.pos).Normalized();
@@ -181,8 +161,34 @@ void ModuleCamera::ProcessInput(const Uint8* keyboard, const int x, const int y)
 
 
     }
+    else {
 
-    if (keyboard[SDL_SCANCODE_F])
+        if (App->GetInput()->GetKey(SDL_SCANCODE_UP))
+        {
+            rotate(speed, frustum.WorldRight());
+
+        }
+        if (App->GetInput()->GetKey(SDL_SCANCODE_DOWN))
+        {
+            rotate(-speed, frustum.WorldRight());
+
+        }
+        if (App->GetInput()->GetKey(SDL_SCANCODE_LEFT))
+        {
+            rotate(speed, frustum.up);
+
+        }
+        if (App->GetInput()->GetKey(SDL_SCANCODE_RIGHT))
+        {
+            rotate(-speed, frustum.up);
+
+        }
+
+
+    }
+
+
+    if (App->GetInput()->GetKey(SDL_SCANCODE_F))
     {
         //Make this a lookat function Change float3::zero for a float3 input vector
         float3 oldRight = frustum.WorldRight().Normalized();

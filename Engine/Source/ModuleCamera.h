@@ -7,14 +7,6 @@
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 
-typedef uint8_t Uint8;
-
-enum CameraType
-{
-	fixed,
-	movable,
-	orbit
-};
 
 class ModuleCamera : public Module
 {
@@ -32,20 +24,17 @@ public:
 	void moveForward(bool backwards);
 	void rotate(float angle, const float3& axis);
 
-	void setCameraType(CameraType type) { cameraType = type; }
-
 	const float4x4& GetViewProjMatrix() const { return frustum.ViewProjMatrix(); }
 	const float4x4& GetInvViewProjMatrix() const { float4x4 vpMat = frustum.ViewProjMatrix(); vpMat.Inverse(); return vpMat; }
 	const float3& GetCameraPos() const { return frustum.pos; }
-	void ProcessInput(const Uint8* keyboard, const int x, const int y);
+	void ProcessInput();
 	void UpdateProjectionMatrix(int screenWidth, int screenHeight);
 
 	
 
 
 private:
-	Frustum frustum;
 	float2 mousePos;
-	CameraType cameraType = fixed;
+	Frustum frustum;
 };
 
