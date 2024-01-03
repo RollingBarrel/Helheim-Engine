@@ -42,6 +42,8 @@ public:
 	void DisplaceFromBoundingBox(float3 mins, float3 maxs);
 	void testFrustumBounds();
 
+	
+
 
 private:
 	Frustum frustum;
