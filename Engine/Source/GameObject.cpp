@@ -239,7 +239,7 @@ void GameObject::OnRightClick() {
 				App->GetScene()->SetSelectedObject(gameObject);
 		}
 
-		if (!(App->GetScene()->GetSelectedGameObject()->IsRoot())) {
+		if (!mIsRoot) {
 			if (ImGui::Selectable("Duplicate")) {
 				GameObject* gameObject = new GameObject(*this);
 				mParent->AddChild(gameObject);
