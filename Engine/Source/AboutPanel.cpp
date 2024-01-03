@@ -2,7 +2,7 @@
 
 #include "imgui.h"
 
-AboutPanel::AboutPanel() : Panel(ABOUTPANEL, true)
+AboutPanel::AboutPanel() : Panel("About##", true)
 {
 }
 

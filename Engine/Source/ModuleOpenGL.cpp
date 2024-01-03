@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "glew.h"
-#include "ModuleRenderTest.h"
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -51,7 +50,7 @@ update_status ModuleOpenGL::PreUpdate()
 {
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	return UPDATE_CONTINUE;
@@ -60,6 +59,7 @@ update_status ModuleOpenGL::PreUpdate()
 // Called every draw update
 update_status ModuleOpenGL::Update()
 {
+
 	return UPDATE_CONTINUE;
 }
 
