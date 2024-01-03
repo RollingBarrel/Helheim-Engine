@@ -4,7 +4,10 @@
 #include "ModuleOpenGL.h"
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
-#include "ModuleFileSystem.h"
+#include "ModuleCamera.h"
+#include "ModuleRenderTest.h"
+#include "ModuleDebugDraw.h"
+
 
 Application::Application()
 {
@@ -12,8 +15,11 @@ Application::Application()
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(render = new ModuleOpenGL());
 	modules.push_back(input = new ModuleInput());
+	modules.push_back(test = new ModuleRenderTest());
 	modules.push_back(editor = new ModuleEditor());
-	modules.push_back(fileSystem = new ModuleFileSystem());
+	modules.push_back(camera = new ModuleCamera());
+	modules.push_back(debugDraw = new ModuleDebugDraw());
+
 }
 
 Application::~Application()
