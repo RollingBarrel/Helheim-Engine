@@ -43,6 +43,30 @@ update_status ModuleInput::Update()
         {
             case SDL_QUIT:
                 return UPDATE_STOP;
+            case SDL_MOUSEBUTTONDOWN:
+                if (sdlEvent.button.button == SDL_BUTTON_RIGHT)
+                    App->GetCamera()->setCameraType(CameraType::movable);
+                else if (sdlEvent.button.button == SDL_BUTTON_LEFT)
+                    App->GetCamera()->setCameraType(CameraType::orbit);
+                break;
+
+            case SDL_MOUSEBUTTONUP:
+                if (sdlEvent.button.button == SDL_BUTTON_RIGHT)
+                    App->GetCamera()->setCameraType(CameraType::fixed);
+                if (sdlEvent.button.button == SDL_BUTTON_LEFT)
+                    App->GetCamera()->setCameraType(CameraType::fixed);
+                break;
+            case SDL_MOUSEWHEEL:
+                if (sdlEvent.wheel.y > 0)
+                {
+                    App->GetCamera()->moveForward(false);
+                }
+                else if (sdlEvent.wheel.y < 0)
+                {
+                    App->GetCamera()->moveForward(true);
+                }
+                break;
+
             case SDL_WINDOWEVENT:
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                     App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);

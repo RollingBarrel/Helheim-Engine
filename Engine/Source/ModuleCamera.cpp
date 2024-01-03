@@ -163,8 +163,9 @@ void ModuleCamera::ProcessInput(const Uint8* keyboard, const int x, const int y)
 
 
     }
-    else if (cameraType == CameraType::orbit) {
-        //TODO: Change the position of the camera so that the distance remains constant.
+    else if (cameraType == CameraType::orbit && keyboard[SDL_SCANCODE_LALT]) {
+        
+
         float distanceCameraObject = (float3::zero - frustum.pos).Length();
         if (mouse_delta.x != 0) {
             move(-mouse_delta.x * speed * distanceCameraObject * frustum.WorldRight());
