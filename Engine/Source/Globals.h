@@ -18,12 +18,3 @@ enum update_status
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "Super Awesome Engine"
-
-#define RELEASE_ARRAY( x ) \
-	{\
-       if( x != nullptr )\
-       {\
-           delete[] x;\
-	       x = nullptr;\
-		 }\
-	 }
