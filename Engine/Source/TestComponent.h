@@ -28,6 +28,5 @@ private:
 	Mesh* mMesh;
 	Material* material;
 	AABB mAABB;
-	GameObject* gameObject;
 };
 

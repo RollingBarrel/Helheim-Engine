@@ -36,8 +36,8 @@ void TestComponent::DrawEditor()
 		ImGui::Text("Texture: DefaultTexture (TEST)");
 	}
 
-	if (gameObject) {
-		gameObject->DeletePopup(this, 38);
+	if (this->GetOwner()) {
+		this->GetOwner()->DeletePopup(this, 38);
 	}
 }
 

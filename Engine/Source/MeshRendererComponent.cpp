@@ -37,8 +37,8 @@ void MeshRendererComponent::DrawEditor()
 		ImGui::Text("Shader: StandardShader (TEST)");
 	}
 
-	if (gameObject) {
-		gameObject->DeletePopup(this, 55);
+	if (this->GetOwner()) {
+		this->GetOwner()->DeletePopup(this, 55);
 	}
 }
 
