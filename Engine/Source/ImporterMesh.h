@@ -5,17 +5,18 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
+
 struct ResourceMesh
 {
 	unsigned int mNumVertices;
 	unsigned int mNumIndices;
 
-	const unsigned int* mIndices;
-	const float* mVerticesPosition;
-	const float* mVerticesTextureCoordinate;
-	const float* mVerticesColor;
-	const float* mVerticesNormal;
-	const float* mVerticesTanget;
+	unsigned int* mIndices = nullptr;
+	unsigned char* mVerticesPosition = nullptr;
+	unsigned char* mVerticesTextureCoordinate = nullptr;
+	unsigned char* mVerticesColor = nullptr;
+	unsigned char* mVerticesNormal = nullptr;
+	unsigned char* mVerticesTangent = nullptr;
 };
 
 namespace Importer
@@ -26,6 +27,6 @@ namespace Importer
 
 		void Save(const ResourceMesh& mesh);
 
-		void Load();
+		//void Load();
 	}
 }

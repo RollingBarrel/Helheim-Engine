@@ -5,6 +5,9 @@
 #include "glew.h"
 #include "physfs.h"
 
+#include "float2.h"
+#include "float3.h"
+
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
@@ -27,7 +30,25 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const tinygltf::Buffer& posBuffer = model.buffers[posView.buffer];
 
         mesh.mNumVertices = posAcc.count;
-        mesh.mVerticesPosition = reinterpret_cast<const float*>(&posBuffer.data[posView.byteOffset + posAcc.byteOffset]);
+
+        const unsigned char* bufferPos = &posBuffer.data[posView.byteOffset + posAcc.byteOffset];
+
+
+        //Add vertices Pos to this buffer taking into acc byteStride
+        mesh.mVerticesPosition = const_cast<unsigned char*>(bufferPos);
+        for (auto i = 0; i < posAcc.count; ++i)
+        {
+            reinterpret_cast<float3*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float3*>(bufferPos);
+
+            if (posView.byteStride != 0) {
+                bufferPos += posView.byteStride;
+            }
+            else {
+                bufferPos += sizeof(float) * 3;
+            }
+
+            LOG("%f %f %f", reinterpret_cast<float3*>(mesh.mVerticesPosition)[i].x, reinterpret_cast<float3*>(mesh.mVerticesPosition)[i].y, reinterpret_cast<float3*>(mesh.mVerticesPosition)[i].z);
+        }
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -38,7 +59,12 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const tinygltf::BufferView& texCoordView = model.bufferViews[texCoordAcc.bufferView];
         const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordView.buffer];
 
-        mesh.mVerticesTextureCoordinate = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset]);
+        const unsigned char* bufferTexCoord = &texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset];
+
+        //Add vertices TexCoord to this buffer taking into acc byteStride
+        mesh.mVerticesTextureCoordinate;
+
+
     }
 
     if (itNorm != primitive.attributes.end())
@@ -49,8 +75,27 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const tinygltf::BufferView& normView = model.bufferViews[normAcc.bufferView];
         const tinygltf::Buffer& normBuffer = model.buffers[normView.buffer];
 
-        mesh.mVerticesNormal = reinterpret_cast<const float*>(&normBuffer.data[normView.byteOffset + normAcc.byteOffset]);
+        const unsigned char* bufferNorm = &normBuffer.data[normView.byteOffset + normAcc.byteOffset];
+
+        //Add vertices Normal to this buffer taking into acc byteStride
+        mesh.mVerticesNormal;
     }
+
+    if (itTang != primitive.attributes.end())
+    {
+        const tinygltf::Accessor& tangAcc = model.accessors[itTang->second];
+        assert(tangAcc.type == TINYGLTF_TYPE_VEC3);
+        assert(tangAcc.componentType == GL_FLOAT);
+        const tinygltf::BufferView& tangView = model.bufferViews[tangAcc.bufferView];
+        const tinygltf::Buffer& tangBuffer = model.buffers[tangView.buffer];
+
+        const unsigned char* bufferTang = &tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset];
+
+        //Add vertices Tangent to this buffer taking into acc byteStride
+        mesh.mVerticesTangent;
+    }
+
+    //TODO: Add Indices part
 
     Mesh::Save(mesh);
 }

@@ -33,8 +33,9 @@ ModuleFileSystem::~ModuleFileSystem()
 // Called before render is available
 bool ModuleFileSystem::Init()
 {
-    Importer::CreateBinaryFile();
+    //Importer::CreateBinaryFile();
 
+    Importer::Import("Assets/Models/BakerHouse/BakerHouse.gltf");
     //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
 
     //CreateDirectoryLibrary();
