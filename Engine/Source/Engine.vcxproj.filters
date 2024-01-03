@@ -150,6 +150,9 @@
     <ClCompile Include="ImporterModel.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -403,6 +406,14 @@
     </ClInclude>
     <ClInclude Include="ImporterModel.h">
       <Filter>Importers</Filter>
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -441,6 +452,8 @@
     </Filter>
     <Filter Include="Dependencies\TinyGLTF">
       <UniqueIdentifier>{b7577db9-f68a-494d-a49f-c95d2c21f9ae}</UniqueIdentifier>
+    <Filter Include="Dependencies\DebugDraw">
+      <UniqueIdentifier>{3e12352f-bdca-40ad-8564-2646a77ac41c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

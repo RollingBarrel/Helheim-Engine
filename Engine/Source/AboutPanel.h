@@ -1,5 +1,6 @@
 #pragma once
 #include "Panel.h"
+#define ABOUTPANEL "About##"
 
 class AboutPanel : public Panel
 {
