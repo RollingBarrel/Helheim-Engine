@@ -3,6 +3,8 @@
 #include "ModuleInput.h"
 #include "SDL.h"
 
+#include "imgui_impl_sdl2.h"
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput() : Module(), mouse({ 0, 0 }), mouse_motion({ 0,0 })
@@ -79,6 +81,7 @@ update_status ModuleInput::PreUpdate()
 
 	while (SDL_PollEvent(&event) != 0)
 	{
+		ImGui_ImplSDL2_ProcessEvent(&event);
 		switch (event.type)
 		{
 		case SDL_QUIT:
