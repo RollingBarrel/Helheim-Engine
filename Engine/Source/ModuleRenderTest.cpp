@@ -144,6 +144,7 @@ update_status ModuleRenderTest::PreUpdate()
 
 update_status ModuleRenderTest::Update()
 {
+    RenderTriangleTest();
     return UPDATE_CONTINUE;
 }
 
