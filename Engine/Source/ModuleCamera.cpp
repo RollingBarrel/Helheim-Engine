@@ -223,7 +223,3 @@ void ModuleCamera::DisplaceFromBoundingBox(float3 mins, float3 maxs)
     frustum.up = Cross(oldRight, frustum.front).Normalized();
 
 }
-
-void ModuleCamera::Draw() {
-    App.
-}
