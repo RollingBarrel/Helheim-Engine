@@ -189,6 +189,7 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="log.cpp" />
