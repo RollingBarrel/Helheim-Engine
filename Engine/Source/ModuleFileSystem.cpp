@@ -122,7 +122,7 @@ unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, un
             LOG("Error closing file %s: %s\n", filePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
         }
     }
-    
+    return writeBytesSize;
 }
 
 bool ModuleFileSystem::CreateDirectory(const char* directory)
