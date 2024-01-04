@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -217,8 +217,8 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
-    <ClInclude Include="debugdraw.h" />
-    <ClInclude Include="debug_draw.hpp" />
+    <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
+    <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h" />
