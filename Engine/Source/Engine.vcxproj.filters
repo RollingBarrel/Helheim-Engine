@@ -147,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -384,6 +387,15 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -415,6 +427,9 @@
     </Filter>
     <Filter Include="Dependencies\MathGeoLib\Algorithm\Random">
       <UniqueIdentifier>{dfad91e7-ed65-4749-add2-d1bfd98a511e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\DebugDraw">
+      <UniqueIdentifier>{3e12352f-bdca-40ad-8564-2646a77ac41c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
