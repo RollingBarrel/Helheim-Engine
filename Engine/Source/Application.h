@@ -12,6 +12,7 @@ class ModuleRenderExercise;
 class ModuleCamera;
 class ModuleRenderTest;
 class ModuleDebugDraw;
+class ModuleFileSystem;
 
 class Application
 {
@@ -31,7 +32,7 @@ public:
     ModuleCamera* GetCamera() { return camera;  }
     ModuleRenderTest* GetTest() { return test; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
-
+    ModuleFileSystem* GetFileSystem() { return fileSystem; }
 
 private:
 
@@ -42,7 +43,7 @@ private:
     ModuleCamera* camera = nullptr;
     ModuleRenderTest* test = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
-
+    ModuleFileSystem* fileSystem = nullptr;
 
     std::list<Module*> modules;
 

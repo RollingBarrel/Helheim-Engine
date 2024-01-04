@@ -62,8 +62,22 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const unsigned char* bufferTexCoord = &texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset];
 
         //Add vertices TexCoord to this buffer taking into acc byteStride
-        mesh.mVerticesTextureCoordinate;
+        mesh.mVerticesTextureCoordinate = const_cast<unsigned char*>(bufferTexCoord);
+        for (auto i = 0; i < texCoordAcc.count; ++i)
+        {
+            reinterpret_cast<float2*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float2*>(bufferTexCoord);
 
+            if (texCoordView.byteStride != 0)
+            {
+                bufferTexCoord += texCoordView.byteStride;
+            }
+            else
+            {
+                bufferTexCoord += sizeof(float) * 2;
+            }
+
+            LOG("%f %f", reinterpret_cast<float2*>(mesh.mVerticesTextureCoordinate)[i].x, reinterpret_cast<float2*>(mesh.mVerticesTextureCoordinate)[i].y);
+        }
 
     }
 
@@ -96,6 +110,41 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
     }
 
     //TODO: Add Indices part
+ 
+    if (primitive.indices >=0)
+    {
+        const tinygltf::Accessor& indAcc = model.accessors[primitive.indices];
+        mesh.mNumIndices = indAcc.count;
+        const tinygltf::BufferView& indView = model.bufferViews[indAcc.bufferView];
+        const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
+        mesh.mIndices = const_cast<unsigned char*>(buffer);
+
+
+        if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
+        {
+            const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
+            for (uint32_t i = 0; i < indAcc.count; ++i)
+            {
+                mesh.mIndices[i] = bufferInd[i];
+            }
+        }
+        if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
+        {
+            const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
+            for (uint16_t i = 0; i < indAcc.count; ++i)
+            {
+                mesh.mIndices[i] = bufferInd[i];
+            }
+        }
+        if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
+        {
+            const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
+            for (uint8_t i = 0; i < indAcc.count; ++i)
+            {
+                mesh.mIndices[i] = bufferInd[i];
+            }
+        }
+    }
 
     Mesh::Save(mesh);
 }
@@ -110,11 +159,38 @@ void Importer::Mesh::Save(const ResourceMesh& mesh)
     char* cursor = fileBuffer;
 
     //Save Header
-    unsigned int bytes = sizeof(header);   
+    unsigned int bytes = sizeof(header);
     memcpy(cursor, header, bytes);
     cursor += bytes;
 
+    PHYSFS_exists("Library/Meshes/probando.txt");
+    PHYSFS_File* newFile = PHYSFS_openWrite("Library/Meshes/probando.txt");
 
-    
+    PHYSFS_writeBytes(newFile, fileBuffer, size);
+    PHYSFS_close(newFile);
 
+    char* bufferM = nullptr;
+    ResourceMesh* meshM = new ResourceMesh();
+    //Load(&bufferM,*meshM);
 }
+
+void Importer::Mesh::Load(char** data, ResourceMesh& mesh)
+{
+    PHYSFS_exists("Library/Meshes/probando.txt");
+    PHYSFS_File* newFile = PHYSFS_openRead("Library/Meshes/probando.txt");
+    unsigned int size = PHYSFS_fileLength(newFile);
+    PHYSFS_readBytes(newFile,*data,size);
+    PHYSFS_close(newFile);
+
+    char* cursor = *data;
+    unsigned int header[2];
+    unsigned int bytes = sizeof(header);
+    memcpy(header, cursor, bytes);
+    cursor += bytes;
+    mesh.mNumIndices = header[0];
+    mesh.mNumVertices = header[1];
+}
+
+
+
+
