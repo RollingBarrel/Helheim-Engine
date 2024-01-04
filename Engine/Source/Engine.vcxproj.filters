@@ -29,6 +29,10 @@
       <Filter>Dependencies\ImGui\Backends</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="MeshRendererComponent.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="Panel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -191,6 +195,10 @@
       <Filter>Dependencies\ImGui\Backends</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MeshRendererComponent.h" />
+    <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="Panel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -199,6 +207,38 @@
     </ClInclude>
     <ClInclude Include="ConsolePanel.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h">
       <Filter>Dependencies\MathGeoLib</Filter>
@@ -211,6 +251,78 @@
     </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h">
       <Filter>Dependencies\MathGeoLib\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h">
+      <Filter>Dependencies\MathGeoLib\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB2D.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeometryAll.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeomType.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\HitInfo.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\PBVolume.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\assume.h">
       <Filter>Dependencies\MathGeoLib\Math</Filter>

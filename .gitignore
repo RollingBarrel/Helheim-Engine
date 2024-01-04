@@ -401,3 +401,6 @@ FodyWeavers.xsd
 !/Engine/Source/Dependencies/GLEW-2.1.0/lib/Release/x64
 !/Engine/Source/Dependencies/SDL-2.0.16/lib/x64
 !/Engine/Source/Dependencies/Physfs-3.2.0/lib/Debug
+
+# IMGUI
+#imgui.ini

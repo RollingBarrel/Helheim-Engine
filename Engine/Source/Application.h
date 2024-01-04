@@ -13,6 +13,7 @@ class ModuleCamera;
 class ModuleRenderTest;
 class ModuleDebugDraw;
 class ModuleFileSystem;
+class ModuleScene;
 
 class Application
 {
@@ -33,6 +34,7 @@ public:
     ModuleRenderTest* GetTest() { return test; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
+    ModuleScene* GetScene() { return scene; }
 
 private:
 
@@ -44,6 +46,7 @@ private:
     ModuleRenderTest* test = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
+    ModuleScene* scene = nullptr;
 
     std::list<Module*> modules;
 

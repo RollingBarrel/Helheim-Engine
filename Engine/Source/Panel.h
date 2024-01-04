@@ -7,6 +7,8 @@ public:
 	virtual ~Panel();
 
 	virtual void Draw(int windowFlags = 0);
+	virtual void Open() { mOpen = true; }
+	virtual void Close() { mOpen = false; }
 
 	bool IsOpen() const;
 
@@ -18,4 +20,3 @@ protected:
 private:
 	const char* mName = nullptr;
 };
-
