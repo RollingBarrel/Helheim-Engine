@@ -74,10 +74,13 @@ void ModuleCamera::moveForward(bool backwards)
 
 void ModuleCamera::rotate(float angle, const float3& axis)
 {
-    float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis, angle);
-    frustum.front = (rotationMatrix * frustum.front).Normalized();
-    frustum.up = (rotationMatrix * frustum.up).Normalized();
+    float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis, DegToRad(angle));
 
+    float3 newfront, newup;
+    newfront = rotationMatrix.MulDir(frustum.front.Normalized());
+    newup = rotationMatrix.MulDir(frustum.up.Normalized());
+    frustum.front = newfront.Normalized();
+    frustum.up = newup.Normalized();
 
 }
 
@@ -85,7 +88,7 @@ void ModuleCamera::rotate(float angle, const float3& axis)
 void ModuleCamera::ProcessInput()
 {
 
-    float speed = 0.001f;
+    float speed = 0.01f;
     int x, y;
     SDL_GetMouseState(&x, &y);
 
@@ -134,10 +137,10 @@ void ModuleCamera::ProcessInput()
         }
 
         if (mouse_delta.x != 0) {
-            rotate(mouse_delta.x * 0.01, frustum.up);
+            rotate(mouse_delta.x , float3::unitY);
         }
         if (mouse_delta.y != 0) {
-            rotate(mouse_delta.y * 0.01, frustum.WorldRight());
+            rotate(mouse_delta.y , frustum.WorldRight());
         }
 
 
@@ -165,22 +168,22 @@ void ModuleCamera::ProcessInput()
 
         if (App->GetInput()->GetKey(SDL_SCANCODE_UP))
         {
-            rotate(speed, frustum.WorldRight());
+            rotate(speed * 100, frustum.WorldRight());
 
         }
         if (App->GetInput()->GetKey(SDL_SCANCODE_DOWN))
         {
-            rotate(-speed, frustum.WorldRight());
+            rotate(-speed * 100, frustum.WorldRight());
 
         }
         if (App->GetInput()->GetKey(SDL_SCANCODE_LEFT))
         {
-            rotate(speed, frustum.up);
+            rotate(speed * 100, float3::unitY);
 
         }
         if (App->GetInput()->GetKey(SDL_SCANCODE_RIGHT))
         {
-            rotate(-speed, frustum.up);
+            rotate(-speed * 100, float3::unitY);
 
         }
 

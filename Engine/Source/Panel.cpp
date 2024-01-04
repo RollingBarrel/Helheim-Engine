@@ -1,5 +1,7 @@
 #include "Panel.h"
 
+Panel::Panel(){}
+
 Panel::Panel(const char* name, bool open)
 {
 	mName = name;
@@ -17,5 +19,5 @@ bool Panel::IsOpen() const
 
 void Panel::Draw(int windowFlags)
 {
-	
+
 }
