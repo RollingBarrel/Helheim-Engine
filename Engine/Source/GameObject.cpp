@@ -434,6 +434,7 @@ void GameObject::DrawTransform() {
 		}
 		ImGui::EndTable();
 	}
+
 }
 
 void GameObject::AddComponentButton() {
