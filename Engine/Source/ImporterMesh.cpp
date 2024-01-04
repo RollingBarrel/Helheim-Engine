@@ -92,7 +92,23 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const unsigned char* bufferNorm = &normBuffer.data[normView.byteOffset + normAcc.byteOffset];
 
         //Add vertices Normal to this buffer taking into acc byteStride
-        mesh.mVerticesNormal;
+        mesh.mVerticesNormal = const_cast<unsigned char*>(bufferNorm);
+
+        for (auto i = 0; i < normAcc.count; ++i)
+        {
+            reinterpret_cast<float3*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float3*>(bufferNorm);
+
+            if (normView.byteStride != 0)
+            {
+                bufferNorm += normView.byteStride;
+            }
+            else
+            {
+                bufferNorm += sizeof(float) * 3;
+            }
+
+            LOG("%f %f %f", reinterpret_cast<float3*>(mesh.mVerticesNormal)[i].x, reinterpret_cast<float3*>(mesh.mVerticesNormal)[i].y, reinterpret_cast<float3*>(mesh.mVerticesNormal)[i].z);
+        }
     }
 
     if (itTang != primitive.attributes.end())
@@ -106,7 +122,23 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const unsigned char* bufferTang = &tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset];
 
         //Add vertices Tangent to this buffer taking into acc byteStride
-        mesh.mVerticesTangent;
+        mesh.mVerticesTangent = const_cast<unsigned char*>(bufferTang);
+
+        for (auto i = 0; i < tangAcc.count; ++i)
+        {
+            reinterpret_cast<float3*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float3*>(bufferTang);
+
+            if (tangView.byteStride != 0)
+            {
+                bufferTang += tangView.byteStride;
+            }
+            else
+            {
+                bufferTang += sizeof(float) * 3;
+            }
+
+            LOG("%f %f %f", reinterpret_cast<float3*>(mesh.mVerticesTangent)[i].x, reinterpret_cast<float3*>(mesh.mVerticesTangent)[i].y, reinterpret_cast<float3*>(mesh.mVerticesTangent)[i].z);
+        }
     }
 
     //TODO: Add Indices part
