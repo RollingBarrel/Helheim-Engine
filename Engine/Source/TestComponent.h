@@ -11,6 +11,7 @@ class TestComponent : public Component
 public:
 	TestComponent(GameObject* ownerGameObject);
 	TestComponent(const TestComponent& original);
+	void Reset();
 	//~TestComponent();
 
 	void Draw();

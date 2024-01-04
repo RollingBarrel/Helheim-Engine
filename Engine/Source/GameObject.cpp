@@ -367,13 +367,12 @@ void GameObject::DragAndDrop()
 }
 
 void GameObject::DrawTransform() {
-	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth |
-		ImGuiTreeNodeFlags_AllowItemOverlap);
+	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth |ImGuiTreeNodeFlags_AllowItemOverlap);
 	ImGui::SameLine(ImGui::GetItemRectSize().x - 50.0f);
 	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4 / 7.0f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4 / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(4/ 7.0f, 0.8f, 0.8f));
-	if (ImGui::SmallButton("Config")) {
+	if (ImGui::SmallButton("Config##transform")) {
 		ImGui::OpenPopup("TransformOptions");
 	}
 	if (ImGui::BeginPopup("TransformOptions")) {
@@ -520,6 +519,10 @@ void GameObject::DeletePopup(Component* component, int headerPosition) {
 	if (ImGui::BeginPopup(popupID.c_str())) {
 		if (ImGui::MenuItem("Delete Component")) {
 			RemoveComponent(component);
+			ImGui::CloseCurrentPopup();
+		}
+		if (ImGui::MenuItem("Reset Component")) {
+			component->Reset();
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::EndPopup();

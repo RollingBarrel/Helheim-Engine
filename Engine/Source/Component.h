@@ -13,6 +13,7 @@ public:
 	virtual	void Enable() { mIsEnabled = true; };
 	virtual	void Disable() { mIsEnabled = false; }
 	virtual	void Update() = 0;
+	virtual	void Reset() = 0;
 	virtual	void DrawEditor() = 0;
 	virtual Component* Clone() = 0;
 

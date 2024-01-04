@@ -14,6 +14,7 @@ public:
 	//~MeshRendererComponent();
 
 	void Draw();
+	void Reset() override;
 	void Load();
 
 	void Update() override;

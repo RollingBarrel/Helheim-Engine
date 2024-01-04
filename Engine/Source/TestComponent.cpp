@@ -12,6 +12,9 @@ TestComponent::TestComponent(const TestComponent& original)
 {
 	
 }
+void TestComponent::Reset() {
+
+}
 
 void TestComponent::Draw()
 {
