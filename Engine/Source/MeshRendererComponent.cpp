@@ -31,7 +31,6 @@ void MeshRendererComponent::Update()
 void MeshRendererComponent::DrawEditor()
 {
 	if (ImGui::CollapsingHeader("MeshRenderer", ImGuiTreeNodeFlags_DefaultOpen)) {
-		// SIMULATED CONTENT FOR TEST PURPOSES:
 		ImGui::Text("Model: Cube.obj (TEST)");
 		ImGui::Text("Material: DefaultMaterial (TEST)");
 		ImGui::Text("Shader: StandardShader (TEST)");

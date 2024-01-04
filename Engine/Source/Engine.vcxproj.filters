@@ -150,6 +150,7 @@
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />

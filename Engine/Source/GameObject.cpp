@@ -8,7 +8,6 @@
 #include "imgui.h"
 #include <algorithm>
 
-//CLASSES FOR TESTING PURPOSE:
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
 
