@@ -1,9 +1,10 @@
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleFileSystem.h"
 
 #include "ImporterMesh.h"
 
 #include "glew.h"
-#include "physfs.h"
 
 #include "float2.h"
 #include "float3.h"
@@ -181,6 +182,23 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
     Mesh::Save(mesh);
 }
 
+
+void Importer::Mesh::Load(char** data, ResourceMesh& mesh)
+{
+
+    //App->GetFileSystem()->Load();
+
+    char* cursor = *data;
+    unsigned int header[2];
+    unsigned int bytes = sizeof(header);
+    memcpy(header, cursor, bytes);
+    cursor += bytes;
+    mesh.mNumIndices = header[0];
+    mesh.mNumVertices = header[1];
+
+
+}
+
 void Importer::Mesh::Save(const ResourceMesh& mesh)
 {
     unsigned int header[2] = { mesh.mNumIndices, mesh.mNumVertices };
@@ -194,34 +212,10 @@ void Importer::Mesh::Save(const ResourceMesh& mesh)
     unsigned int bytes = sizeof(header);
     memcpy(cursor, header, bytes);
     cursor += bytes;
-
-    PHYSFS_exists("Library/Meshes/probando.txt");
-    PHYSFS_File* newFile = PHYSFS_openWrite("Library/Meshes/probando.txt");
-
-    PHYSFS_writeBytes(newFile, fileBuffer, size);
-    PHYSFS_close(newFile);
-
-    char* bufferM = nullptr;
-    ResourceMesh* meshM = new ResourceMesh();
-    //Load(&bufferM,*meshM);
+ 
+    //App->GetFileSystem()->Save();
 }
 
-void Importer::Mesh::Load(char** data, ResourceMesh& mesh)
-{
-    PHYSFS_exists("Library/Meshes/probando.txt");
-    PHYSFS_File* newFile = PHYSFS_openRead("Library/Meshes/probando.txt");
-    unsigned int size = PHYSFS_fileLength(newFile);
-    PHYSFS_readBytes(newFile,*data,size);
-    PHYSFS_close(newFile);
-
-    char* cursor = *data;
-    unsigned int header[2];
-    unsigned int bytes = sizeof(header);
-    memcpy(header, cursor, bytes);
-    cursor += bytes;
-    mesh.mNumIndices = header[0];
-    mesh.mNumVertices = header[1];
-}
 
 
 

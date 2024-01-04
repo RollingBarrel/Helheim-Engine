@@ -25,8 +25,8 @@ namespace Importer
 	{
 		void Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh& mesh);
 
-		void Save(const ResourceMesh& mesh);
-
 		void Load(char** data, ResourceMesh& mesh);
+
+		void Save(const ResourceMesh& mesh);
 	}
 }

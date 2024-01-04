@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "ModuleFileSystem.h"
 #include "Importer.h"
 #include "ImporterTexture.h"
@@ -57,27 +58,100 @@ bool ModuleFileSystem::CleanUp()
     return true;
 }
 
-bool ModuleFileSystem::CreateDirectory(const char* directory)
+unsigned int ModuleFileSystem::Load(const char* filePath, char** buffer) const
 {
-    bool ret = true;
-    PHYSFS_Stat stat;
-    if (!PHYSFS_stat(directory, &stat))
-        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-    ret = (stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
-  
-    if (ret == false)
+    unsigned int readBytesSize = 0;
+    if (Exists(filePath))
+    {
+        PHYSFS_File* newFile = PHYSFS_openRead(filePath);
+        if (newFile != nullptr)
+        {
+            unsigned int fileSize = PHYSFS_fileLength(newFile);
+            if (fileSize > 0)
+            {
+                *buffer = new char[fileSize];
+                readBytesSize = PHYSFS_readBytes(newFile, buffer, fileSize);
+                if (readBytesSize != fileSize)
+                {
+                    LOG("Error reading from file %s: %s\n", filePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+                    delete[](*buffer);
+                    *buffer = nullptr;
+                }
+            }
+            if (PHYSFS_close(newFile) == 0)
+            {
+                LOG("Error closing file %s: %s\n", filePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            }
+        }
+    }
+    return readBytesSize;
+}
+
+unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, unsigned int size, bool append) const
+{
+    unsigned int writeBytesSize = 0;
+
+    bool overwrite = !Exists(filePath);
+    PHYSFS_File* newFile = (append) ? PHYSFS_openAppend(filePath) : PHYSFS_openWrite(filePath);
+
+    if (newFile != nullptr)
+    {
+        writeBytesSize = PHYSFS_writeBytes(newFile, buffer, size);
+        if (writeBytesSize != size)
+        {
+            LOG("Error writing to file %s: %s", filePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        }
+        else
+        {
+            if (append)
+            {
+                LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), filePath);
+            }
+            else if (overwrite)
+            {
+                LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), filePath);
+            }
+            else
+            {
+                LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), filePath);
+            }
+        }
+
+        if (PHYSFS_close(newFile) == 0)
+        {
+            LOG("Error closing file %s: %s\n", filePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        }
+    }
+    
+}
+
+bool ModuleFileSystem::CreateDirectory(const char* directory)
+{ 
+    if (IsDirectory(directory) == false)
     {
         if (PHYSFS_mkdir(directory) != 0)
         {
             LOG("Succes creating file/dir stat: %s", directory);
-            ret = true;
+            return true;
         }
         else
         {
             LOG("Error creating file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));            
+            return false;
         }
     }  
+}
 
-    return ret;
+bool ModuleFileSystem::Exists(const char* filePath) const
+{
+    return PHYSFS_exists(filePath);
+}
+
+bool ModuleFileSystem::IsDirectory(const char* directoryPath) const
+{
+    PHYSFS_Stat stat;
+    if (!PHYSFS_stat(directoryPath, &stat))
+        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+    return(stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
 }
 

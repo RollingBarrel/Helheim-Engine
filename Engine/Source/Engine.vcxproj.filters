@@ -150,6 +150,10 @@
     <ClCompile Include="ImporterModel.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -404,6 +408,16 @@
     <ClInclude Include="ImporterModel.h">
       <Filter>Importers</Filter>
     </ClInclude>
+    <ClInclude Include="InspectorPanel.h" />
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -441,6 +455,9 @@
     </Filter>
     <Filter Include="Dependencies\TinyGLTF">
       <UniqueIdentifier>{b7577db9-f68a-494d-a49f-c95d2c21f9ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\DebugDraw">
+      <UniqueIdentifier>{2c4a22f9-4369-4564-a01f-b373358df20e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
