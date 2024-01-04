@@ -56,27 +56,38 @@ bool ModuleFileSystem::CleanUp()
     return true;
 }
 
-bool ModuleFileSystem::CreateDirectory(const char* directory)
+unsigned int ModuleFileSystem::Load(const char* filePath, char** buffer) const
 {
-    bool ret = true;
-    PHYSFS_Stat stat;
-    if (!PHYSFS_stat(directory, &stat))
-        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-    ret = (stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
-  
-    if (ret == false)
+    return 0;
+}
+
+unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, unsigned int size, bool append) const
+{
+    return 0;
+}
+
+bool ModuleFileSystem::CreateDirectory(const char* directory)
+{ 
+    if (IsDirectory(directory) == false)
     {
         if (PHYSFS_mkdir(directory) != 0)
         {
             LOG("Succes creating file/dir stat: %s", directory);
-            ret = true;
+            return true;
         }
         else
         {
             LOG("Error creating file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));            
+            return false;
         }
     }  
+}
 
-    return ret;
+bool ModuleFileSystem::IsDirectory(const char* directoryPath) const
+{
+    PHYSFS_Stat stat;
+    if (!PHYSFS_stat(directoryPath, &stat))
+        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+    return(stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
 }
 
