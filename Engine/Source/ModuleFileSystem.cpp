@@ -35,7 +35,8 @@ bool ModuleFileSystem::Init()
 {
     //Importer::CreateBinaryFile();
 
-    Importer::Import("Assets/Models/BakerHouse/BakerHouse.gltf");
+    Importer::Import("Assets/BoxTextured.gltf");
+
     //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
 
     //CreateDirectoryLibrary();

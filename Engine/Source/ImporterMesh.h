@@ -11,7 +11,7 @@ struct ResourceMesh
 	unsigned int mNumVertices;
 	unsigned int mNumIndices;
 
-	unsigned int* mIndices = nullptr;
+	unsigned char* mIndices = nullptr;
 	unsigned char* mVerticesPosition = nullptr;
 	unsigned char* mVerticesTextureCoordinate = nullptr;
 	unsigned char* mVerticesColor = nullptr;
@@ -27,6 +27,6 @@ namespace Importer
 
 		void Save(const ResourceMesh& mesh);
 
-		//void Load();
+		void Load(char** data, ResourceMesh& mesh);
 	}
 }
