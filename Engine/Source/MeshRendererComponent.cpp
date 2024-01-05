@@ -4,12 +4,13 @@
 MeshRendererComponent::MeshRendererComponent(GameObject* ownerGameObject) 
 	:Component(ownerGameObject, ComponentType::MESHRENDERER)
 {
-	componentName = "MeshRenderer";
+	mName = "MeshRenderer";
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original)
 	:Component(original.GetOwner(), ComponentType::MESHRENDERER)
 {
+	mName = "MeshRenderer";
 }
 
 void MeshRendererComponent::Draw()

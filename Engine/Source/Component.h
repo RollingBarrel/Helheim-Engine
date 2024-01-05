@@ -25,8 +25,8 @@ public:
 
 protected:
 	bool IsComponentOpen();
-	const char* componentName = "TEST";
-	int componentIndex = 0;
+	const char* mName;
+	int mIndex = 0;
 	static int lastcomponentIndex;
 
 private:

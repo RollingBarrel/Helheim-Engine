@@ -4,13 +4,13 @@
 TestComponent::TestComponent(GameObject* ownerGameObject) 
 	:Component(ownerGameObject, ComponentType::TEST)
 {
-	componentName = "Test Component";
+	mName = "Test Component";
 }
 
 TestComponent::TestComponent(const TestComponent& original)
 	:Component(original.GetOwner(), ComponentType::TEST)
 {
-	
+	mName = "Test Component";
 }
 void TestComponent::Reset() {
 

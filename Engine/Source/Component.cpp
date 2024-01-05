@@ -6,13 +6,13 @@ int Component::lastcomponentIndex = 0;
 
 Component::Component(GameObject* owner, ComponentType type) : mOwner(owner), mType(type), mIsEnabled(true)
 {
-	componentIndex = lastcomponentIndex++;
+	mIndex = lastcomponentIndex++;
 }
 
 bool Component::IsComponentOpen()
 {
-	ImGui::PushID(componentIndex);
-	bool isOpen = ImGui::CollapsingHeader(componentName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth |ImGuiTreeNodeFlags_AllowItemOverlap);
+	ImGui::PushID(mIndex);
+	bool isOpen = ImGui::CollapsingHeader(mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth |ImGuiTreeNodeFlags_AllowItemOverlap);
 	
 	if (GetOwner()) {
 		GetOwner()->DeletePopup(this);
