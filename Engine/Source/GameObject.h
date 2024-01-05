@@ -6,6 +6,7 @@
 #include "string"
 #include "Component.h"
 //#include "MathGeoLib.h"
+class MeshRendererComponent;
 
 class GameObject
 {
@@ -47,6 +48,7 @@ public:
 
 	void CreateComponent(ComponentType type);
 	void DeletePopup(Component* component, int headerPosition);
+	const MeshRendererComponent* getMeshRenderer() const;
 
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);

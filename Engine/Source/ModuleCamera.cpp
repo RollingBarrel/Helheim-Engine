@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "imgui.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -44,7 +45,11 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
-    ProcessInput();
+    const auto& io = ImGui::GetIO();
+    if (!io.WantCaptureMouse && !io.WantCaptureKeyboard) {
+        ProcessInput();
+    }
+
     return UPDATE_CONTINUE;
 }
 

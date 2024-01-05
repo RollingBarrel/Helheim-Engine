@@ -533,6 +533,14 @@ void GameObject::DeletePopup(Component* component, int headerPosition) {
 	componentIndex++;
 }
 
+const MeshRendererComponent* GameObject::getMeshRenderer() const
+{
+	for (const auto& comp : mComponents) {
+		if (comp->GetType() == ComponentType::MESHRENDERER)
+			return static_cast<MeshRendererComponent*>(comp);
+	}
+}
+
 void GameObject::RemoveComponent(Component* component) {
 	auto it = std::find(mComponents.begin(), mComponents.end(), component);
 	if (it != mComponents.end()) {

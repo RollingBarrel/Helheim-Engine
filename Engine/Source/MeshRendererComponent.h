@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
 #include "GameObject.h"
 
 class Material;
@@ -21,6 +21,8 @@ public:
 	void DrawEditor() override;
 	Component* Clone() override;
 
+	const OBB getOBB() const { return mOBB; }
+
 private:
 	void LoadVBO();
 	void LoadEBO();
@@ -28,6 +30,6 @@ private:
 
 	Mesh* mMesh;
 	Material* material;
-	AABB mAABB;
+	OBB mOBB;
 };
 
