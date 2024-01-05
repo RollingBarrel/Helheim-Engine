@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Geometry/AABB.h"
-#include "GameObject.h"
 
 class Material;
 struct Mesh;

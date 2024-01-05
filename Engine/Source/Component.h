@@ -23,6 +23,12 @@ public:
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
 
+protected:
+	bool IsComponentOpen();
+	const char* componentName = "TEST";
+	int componentIndex = 0;
+	static int lastcomponentIndex;
+
 private:
 	ComponentType mType;
 	GameObject* mOwner;

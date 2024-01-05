@@ -497,18 +497,12 @@ void GameObject::CreateComponent(ComponentType type) {
 	}
 }
 
-void GameObject::DeletePopup(Component* component, int headerPosition) {
+void GameObject::DeletePopup(Component* component) {
 	ImGui::PushID(componentIndex); // Work correctly without this function, its necessary?
 
 	std::string popupID = "ComponentOptions_" + std::to_string(componentIndex);
 
-	ImVec2 min = ImGui::GetItemRectMin();
-	ImVec2 max = ImGui::GetItemRectMax();
-
-	min.y -= ImGui::GetStyle().FramePadding.y + headerPosition;
-	max.y += ImGui::GetStyle().FramePadding.y - headerPosition;
-
-	if (ImGui::IsMouseHoveringRect(min, max) && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
+	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
 		ImGui::OpenPopup(popupID.c_str());
 	}
 

@@ -46,7 +46,7 @@ public:
 	void SetScale(const float3& scale);
 
 	void CreateComponent(ComponentType type);
-	void DeletePopup(Component* component, int headerPosition);
+	void DeletePopup(Component* component);
 
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
@@ -69,9 +69,6 @@ private:
 
 	void DrawTransform();
 	void AddComponentButton();
-	void ShowComponents(Component* component);
-	void DrawMeshRenderer(Component* component);
-	void DrawMaterial(Component* component);
 	void RemoveComponent(Component* component);
 };
 

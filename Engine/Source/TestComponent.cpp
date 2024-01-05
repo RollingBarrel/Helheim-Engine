@@ -4,7 +4,7 @@
 TestComponent::TestComponent(GameObject* ownerGameObject) 
 	:Component(ownerGameObject, ComponentType::TEST)
 {
-	
+	componentName = "Test Component";
 }
 
 TestComponent::TestComponent(const TestComponent& original)
@@ -33,14 +33,9 @@ void TestComponent::Update()
 
 void TestComponent::DrawEditor()
 {
-	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
-		// SIMULATED CONTENT FOR TEST PURPOSES:
+	if (IsComponentOpen()) {
 		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)");
 		ImGui::Text("Texture: DefaultTexture (TEST)");
-	}
-
-	if (this->GetOwner()) {
-		this->GetOwner()->DeletePopup(this, 38);
 	}
 }
 
