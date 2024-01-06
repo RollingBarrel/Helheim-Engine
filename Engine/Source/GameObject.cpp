@@ -117,7 +117,7 @@ void GameObject::Update()
 void GameObject::ResetTransform()
 {
 	mPosition = { 0,0,0 };
-	mScale = { 0,0,0 };
+	mScale = { 1,1,1 };
 	mRotation = { 0,0,0,0};
 }
 
@@ -191,7 +191,7 @@ void GameObject::DrawHierarchy(const int selected)
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Right) && !ImGui::IsItemToggledOpen()) {
 			App->GetScene()->SetSelectedObject(this);
 		}
-		OnRightClick();
+		HierarchyRightClickPopUp();
 		DragAndDrop();
 
 	}
@@ -223,7 +223,7 @@ void GameObject::DrawHierarchy(const int selected)
 
 
 
-void GameObject::OnRightClick() {
+void GameObject::HierarchyRightClickPopUp() {
 	ImGui::PushID(mID);
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
 
@@ -497,8 +497,7 @@ void GameObject::CreateComponent(ComponentType type) {
 	}
 }
 
-void GameObject::DeletePopup(Component* component) {
-	ImGui::PushID(componentIndex); // Work correctly without this function, its necessary?
+void GameObject::ComponentRightClickPopup(Component* component) {
 
 	std::string popupID = "ComponentOptions_" + std::to_string(componentIndex);
 
@@ -513,7 +512,7 @@ void GameObject::DeletePopup(Component* component) {
 
 	if (ImGui::BeginPopup(popupID.c_str())) {
 		if (ImGui::MenuItem("Delete Component")) {
-			RemoveComponent(component);
+			DeleteComponent(component);
 			ImGui::CloseCurrentPopup();
 		}
 		if (ImGui::MenuItem("Reset Component")) {
@@ -523,11 +522,10 @@ void GameObject::DeletePopup(Component* component) {
 		ImGui::EndPopup();
 	}
 
-	ImGui::PopID();
 	componentIndex++;
 }
 
-void GameObject::RemoveComponent(Component* component) {
+void GameObject::DeleteComponent(Component* component) {
 	auto it = std::find(mComponents.begin(), mComponents.end(), component);
 	if (it != mComponents.end()) {
 		mComponents.erase(it);

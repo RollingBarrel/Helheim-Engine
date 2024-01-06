@@ -15,7 +15,7 @@ bool Component::IsComponentOpen()
 	bool isOpen = ImGui::CollapsingHeader(mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth |ImGuiTreeNodeFlags_AllowItemOverlap);
 	
 	if (GetOwner()) {
-		GetOwner()->DeletePopup(this);
+		GetOwner()->ComponentRightClickPopup(this);
 	}
 
 	ImGui::PopID();
