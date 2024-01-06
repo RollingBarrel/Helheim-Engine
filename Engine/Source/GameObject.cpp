@@ -390,8 +390,22 @@ void GameObject::DragAndDrop()
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
+			bool isParent = false;
 			const GameObject* movedObject = (const GameObject*)payload->Data;
-			movedObject->mParent->MoveChild(movedObject->GetID(), this);
+			
+			GameObject* parent = mParent;
+
+			while (parent != nullptr) {
+				if (parent->mID == movedObject->mID) {
+					isParent = true;
+				}
+				parent = parent->mParent;
+			}
+
+				if (!isParent) {
+					movedObject->mParent->MoveChild(movedObject->GetID(), this);
+				}
+			
 		}
 		ImGui::EndDragDropTarget();
 	}
