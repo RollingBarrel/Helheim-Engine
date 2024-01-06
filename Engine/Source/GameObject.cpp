@@ -10,12 +10,13 @@
 
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
+#include <MathFunc.h>
 
 GameObject::GameObject(GameObject* parent)
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
-	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
-	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
-	mRotation(Quat::identity)
+	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::identity),
+	mLocalTransformMatrix(float4x4::identity), mPosition(float3::zero), mScale(float3::one),
+	mRotation(float3::zero)
 {
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
@@ -26,7 +27,7 @@ GameObject::GameObject(GameObject* parent)
 
 GameObject::GameObject(const GameObject& original)
 	:mID((new LCG())->Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(false), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
 {
@@ -64,9 +65,9 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 
 GameObject::GameObject(const char* name, GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
-	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
-	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
-	mRotation(Quat::identity)
+	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::identity),
+	mLocalTransformMatrix(float4x4::identity), mPosition(float3::zero), mScale(float3::one),
+	mRotation(float3::zero)
 {
 
 	if (!mIsRoot) {
@@ -115,7 +116,7 @@ Component* GameObject::GetComponent(ComponentType type)
 
 void GameObject::RecalculateMatrices()
 {
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, Quat::FromEulerXYZ(DegToRad(mRotation.x), DegToRad(mRotation.y), DegToRad(mRotation.z)), mScale);
 
 	mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
 
@@ -142,8 +143,8 @@ void GameObject::Update()
 void GameObject::ResetTransform()
 {
 	mPosition = { 0,0,0 };
-	mScale = { 1,1,1};
-	mRotation = { 0,0,0,0};
+	mScale = { 1,1,1 };
+	mRotation = { 0,0,0 };
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -160,7 +161,7 @@ void GameObject::AddComponentToDelete(Component* component)
 }
 
 
-void GameObject::SetRotation(const Quat& rotation)
+void GameObject::SetRotation(const float3& rotation)
 {
 	mRotation = rotation;
 	RecalculateMatrices();
