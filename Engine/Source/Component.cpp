@@ -6,9 +6,9 @@
 
 int Component::lastcomponentIndex = 0;
 
-Component::Component(GameObject* owner, ComponentType type) : mOwner(owner), mType(type), mIsEnabled(true), mPopupID("ComponentOptions_"+ lastcomponentIndex++)
+Component::Component(const char* name, GameObject* owner, ComponentType type) 
+	:mName(name), mOwner(owner), mType(type), mIsEnabled(true), mPopupID("ComponentOptions_"+ lastcomponentIndex++)
 {
-	//mIndex = lastcomponentIndex++;
 }
 
 void Component::RightClickPopup() {

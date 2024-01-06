@@ -17,7 +17,7 @@ public:
 	virtual	void DrawEditor() = 0;
 	virtual Component* Clone() = 0;
 
-	Component(GameObject* owner, ComponentType type);
+	Component(const char* name ,GameObject* owner, ComponentType type);
 	virtual ~Component() {}
 	
 
@@ -28,7 +28,7 @@ protected:
 	bool IsComponentOpen();
 	virtual	void Reset() = 0;
 	virtual void RightClickPopup();
-	const char* mName;
+	const char* const mName;
 	const char* mPopupID;
 	static int lastcomponentIndex;
 	GameObject* mOwner;

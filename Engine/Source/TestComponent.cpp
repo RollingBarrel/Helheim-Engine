@@ -4,19 +4,19 @@
 #include "MeshRendererComponent.h"
 
 TestComponent::TestComponent(GameObject* ownerGameObject) 
-	:Component(ownerGameObject, ComponentType::TEST)
+	:Component("Test Component", ownerGameObject, ComponentType::TEST)
 {
-	mName = "Test Component";
+	
 }
 
 TestComponent::TestComponent(const TestComponent& original)
-	:Component(original.GetOwner(), ComponentType::TEST)
+	:Component(original.mName, original.GetOwner(), ComponentType::TEST)
 {
-	mName = "Test Component";
+
 }
 void TestComponent::Reset() {
-	//Change Variables 
-
+	//Change variables to default values.
+	number = 0;
 }
 
 void TestComponent::Update()
@@ -24,7 +24,6 @@ void TestComponent::Update()
 	MeshRendererComponent* c = nullptr;
 		//c = mOwner->GetComponent<MeshRendererComponent>();
 	c = (MeshRendererComponent*)mOwner->GetComponent(ComponentType::MESHRENDERER);
-
 }
 
 void TestComponent::DrawEditor()
@@ -42,7 +41,7 @@ void TestComponent::DrawEditor()
 
 Component* TestComponent::Clone()
 {
-    return new TestComponent(*this);
+    return new TestComponent(*this); //Calls the copy contrustctor of your component
 }
 
 void TestComponent::RightClickPopup()
@@ -50,7 +49,7 @@ void TestComponent::RightClickPopup()
 	Component::RightClickPopup(); //Required for the right click popup to work
 
 
-	//Here Add Custom Options
+	//Here Add Custom ImGui for your component RightClick Menu
 	if (ImGui::BeginPopup(mPopupID)) {
 		if (ImGui::MenuItem("Custom Test Component Option")) {
 			ImGui::CloseCurrentPopup();

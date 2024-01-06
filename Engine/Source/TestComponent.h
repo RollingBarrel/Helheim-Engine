@@ -19,5 +19,7 @@ public:
 
 private:
 	void RightClickPopup() override;
+
+	int number;
 };
 

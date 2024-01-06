@@ -2,15 +2,15 @@
 #include "imgui.h"
 
 MeshRendererComponent::MeshRendererComponent(GameObject* ownerGameObject) 
-	:Component(ownerGameObject, ComponentType::MESHRENDERER)
+	:Component("Mesh Renderer" , ownerGameObject, ComponentType::MESHRENDERER)
 {
-	mName = "MeshRenderer";
+
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original)
-	:Component(original.GetOwner(), ComponentType::MESHRENDERER)
+	:Component(original.mName , original.GetOwner(), ComponentType::MESHRENDERER)
 {
-	mName = "MeshRenderer";
+
 }
 
 void MeshRendererComponent::Draw()
