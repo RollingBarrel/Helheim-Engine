@@ -181,7 +181,9 @@ void GameObject::SetScale(const float3& scale)
 void GameObject::DrawInspector() {
 	char nameArray[100];
 	strcpy_s(nameArray, mName.c_str());
+	ImGui::PushID(mID);
 	ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
+	ImGui::PopID();
 	mName = nameArray;
 	DrawTransform();
 
