@@ -2,7 +2,6 @@
 #include "Module.h"
 #include <vector>
 class GameObject;
-
 class ModuleScene : public Module
 {
 public:

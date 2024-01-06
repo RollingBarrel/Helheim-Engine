@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Geometry/AABB.h"
-#include "GameObject.h"
 
 class Material;
 struct Mesh;
@@ -25,7 +24,7 @@ private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-
+	void RightClickPopup() override;
 	Mesh* mMesh;
 	Material* material;
 	AABB mAABB;
