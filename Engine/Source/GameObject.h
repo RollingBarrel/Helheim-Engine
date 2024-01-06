@@ -24,6 +24,7 @@ public:
 	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
+	void OnRightClick();
 	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
@@ -39,22 +40,25 @@ public:
 	const unsigned int GetID() const { return mID; }
 	const bool IsRoot() const { return mIsRoot; }
 	void DeleteChild(GameObject* child);
+	void AddComponentToDelete(Component* component);
 
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
 	void CreateComponent(ComponentType type);
-	void ComponentRightClickPopup(Component* component);
 
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
 	void AddSufix();
 	void DragAndDrop();
-	void HierarchyRightClickPopUp();
+	void DrawTransform();
+	void AddComponentButton();
+	void DeleteComponents();
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
+	std::vector<Component*> mComponentsToDelete;
 	const unsigned int mID;
 	std::string mName;
 	float4x4 mWorldTransformMatrix;
@@ -67,8 +71,6 @@ private:
 
 	int componentIndex;
 
-	void DrawTransform();
-	void AddComponentButton();
-	void DeleteComponent(Component* component);
+	
 };
 

@@ -112,12 +112,14 @@ void GameObject::Update()
 	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->Update();
 	}
+
+	DeleteComponents();
 }
 
 void GameObject::ResetTransform()
 {
 	mPosition = { 0,0,0 };
-	mScale = { 1,1,1 };
+	mScale = { 1,1,1};
 	mRotation = { 0,0,0,0};
 }
 
@@ -128,6 +130,12 @@ void GameObject::DeleteChild(GameObject* child)
 	delete child;
 	child = nullptr;
 }
+
+void GameObject::AddComponentToDelete(Component* component)
+{
+	mComponentsToDelete.push_back(component);
+}
+
 
 void GameObject::SetRotation(const Quat& rotation)
 {
@@ -191,7 +199,7 @@ void GameObject::DrawHierarchy(const int selected)
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Right) && !ImGui::IsItemToggledOpen()) {
 			App->GetScene()->SetSelectedObject(this);
 		}
-		HierarchyRightClickPopUp();
+		OnRightClick();
 		DragAndDrop();
 
 	}
@@ -223,7 +231,7 @@ void GameObject::DrawHierarchy(const int selected)
 
 
 
-void GameObject::HierarchyRightClickPopUp() {
+void GameObject::OnRightClick() {
 	ImGui::PushID(mID);
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
 
@@ -497,38 +505,17 @@ void GameObject::CreateComponent(ComponentType type) {
 	}
 }
 
-void GameObject::ComponentRightClickPopup(Component* component) {
-
-	std::string popupID = "ComponentOptions_" + std::to_string(componentIndex);
-
-	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
-		ImGui::OpenPopup(popupID.c_str());
-	}
-
-	if (ImGui::BeginPopupContextItem(popupID.c_str())) {
-		ImGui::OpenPopup(popupID.c_str());
-		ImGui::EndPopup();
-	}
-
-	if (ImGui::BeginPopup(popupID.c_str())) {
-		if (ImGui::MenuItem("Delete Component")) {
-			DeleteComponent(component);
-			ImGui::CloseCurrentPopup();
+void GameObject::DeleteComponents() {
+	for (auto component : mComponentsToDelete)
+	{
+		auto it = std::find(mComponents.begin(), mComponents.end(), component);
+		if (it != mComponents.end()) {
+			mComponents.erase(it);
+			delete component;
+			component = nullptr;
 		}
-		if (ImGui::MenuItem("Reset Component")) {
-			component->Reset();
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::EndPopup();
 	}
 
-	componentIndex++;
 }
 
-void GameObject::DeleteComponent(Component* component) {
-	auto it = std::find(mComponents.begin(), mComponents.end(), component);
-	if (it != mComponents.end()) {
-		mComponents.erase(it);
-		delete component;
-	}
-}
+

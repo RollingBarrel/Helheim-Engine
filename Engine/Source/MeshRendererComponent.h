@@ -24,7 +24,7 @@ private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-
+	void RightClickPopup() override;
 	Mesh* mMesh;
 	Material* material;
 	AABB mAABB;

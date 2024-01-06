@@ -13,29 +13,24 @@ TestComponent::TestComponent(const TestComponent& original)
 	mName = "Test Component";
 }
 void TestComponent::Reset() {
+	//Change Variables 
 
-}
-
-void TestComponent::Draw()
-{
-
-}
-
-void TestComponent::Load()
-{
-    LoadVBO();
 }
 
 void TestComponent::Update()
 {
-    Draw();
 }
 
 void TestComponent::DrawEditor()
 {
+	
 	if (IsComponentOpen()) {
-		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)");
-		ImGui::Text("Texture: DefaultTexture (TEST)");
+		RightClickPopup(); //Required for the right click popup to work
+		ImGui::Text("Demo Text");
+		ImGui::Text("Demo Text 2 ");
+	}
+	else {
+		RightClickPopup();
 	}
 }
 
@@ -44,15 +39,24 @@ Component* TestComponent::Clone()
     return new TestComponent(*this);
 }
 
-void TestComponent::LoadVBO()
+void TestComponent::RightClickPopup()
 {
+	Component::RightClickPopup(); //Required for the right click popup to work
+
+
+	//Here Add Custom Options
+	if (ImGui::BeginPopup(mPopupID)) {
+		if (ImGui::MenuItem("Custom Test Component Option")) {
+			ImGui::CloseCurrentPopup();
+		}
+		if (ImGui::MenuItem("Custom Test Component Option 2")) {
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
 
 }
 
-void TestComponent::LoadEBO()
-{
-}
 
-void TestComponent::LoadVAO()
-{
-}
+
+

@@ -13,20 +13,11 @@ public:
 	void Reset();
 	//~TestComponent();
 
-	void Draw();
-	void Load();
-
 	void Update() override;
 	void DrawEditor() override;
 	Component* Clone() override;
 
 private:
-	void LoadVBO();
-	void LoadEBO();
-	void LoadVAO();
-
-	Mesh* mMesh;
-	Material* material;
-	AABB mAABB;
+	void RightClickPopup() override;
 };
 

@@ -13,22 +13,25 @@ public:
 	virtual	void Enable() { mIsEnabled = true; };
 	virtual	void Disable() { mIsEnabled = false; }
 	virtual	void Update() = 0;
-	virtual	void Reset() = 0;
+	
 	virtual	void DrawEditor() = 0;
 	virtual Component* Clone() = 0;
 
 	Component(GameObject* owner, ComponentType type);
 	virtual ~Component() {}
+	
 
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
 
 protected:
 	bool IsComponentOpen();
+	virtual	void Reset() = 0;
+	virtual void RightClickPopup();
 	const char* mName;
-	int mIndex = 0;
+	const char* mPopupID;
 	static int lastcomponentIndex;
-
+	
 private:
 	ComponentType mType;
 	GameObject* mOwner;
