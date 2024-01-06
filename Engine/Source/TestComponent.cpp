@@ -1,5 +1,7 @@
 #include "TestComponent.h"
 #include "imgui.h"
+#include "GameObject.h"
+#include "MeshRendererComponent.h"
 
 TestComponent::TestComponent(GameObject* ownerGameObject) 
 	:Component(ownerGameObject, ComponentType::TEST)
@@ -19,6 +21,10 @@ void TestComponent::Reset() {
 
 void TestComponent::Update()
 {
+	MeshRendererComponent* c = nullptr;
+		//c = mOwner->GetComponent<MeshRendererComponent>();
+	c = (MeshRendererComponent*)mOwner->GetComponent(ComponentType::MESHRENDERER);
+
 }
 
 void TestComponent::DrawEditor()

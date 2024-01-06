@@ -31,10 +31,10 @@ protected:
 	const char* mName;
 	const char* mPopupID;
 	static int lastcomponentIndex;
-	
+	GameObject* mOwner;
 private:
 	ComponentType mType;
-	GameObject* mOwner;
+	
 	bool mIsEnabled;
 };
 

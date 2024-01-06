@@ -18,6 +18,9 @@ public:
 
 	~GameObject();
 
+	//template<class T>
+	//T* GetComponent();
+	Component* GetComponent(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
 	void DrawInspector();

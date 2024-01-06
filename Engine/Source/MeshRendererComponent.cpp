@@ -33,7 +33,6 @@ void MeshRendererComponent::Update()
 
 void MeshRendererComponent::DrawEditor()
 {
-	
 
 	if (IsComponentOpen()) {
 		RightClickPopup();
@@ -41,11 +40,6 @@ void MeshRendererComponent::DrawEditor()
 		ImGui::Text("Material: DefaultMaterial (TEST)");
 		ImGui::Text("Shader: StandardShader (TEST)");
 	}
-
-
-
-	
-
 }
 
 Component* MeshRendererComponent::Clone()
