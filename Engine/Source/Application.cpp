@@ -14,14 +14,14 @@
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
-	modules.push_back(window = new ModuleWindow());
-	modules.push_back(render = new ModuleOpenGL());
-	modules.push_back(input = new ModuleInput());
-	modules.push_back(scene = new ModuleScene());
-	modules.push_back(test = new ModuleRenderTest());
-	modules.push_back(editor = new ModuleEditor());
-	modules.push_back(camera = new ModuleCamera());
-	modules.push_back(debugDraw = new ModuleDebugDraw());
+	mModules.push_back(window = new ModuleWindow());
+	mModules.push_back(render = new ModuleOpenGL());
+	mModules.push_back(input = new ModuleInput());
+	mModules.push_back(scene = new ModuleScene());
+	mModules.push_back(test = new ModuleRenderTest());
+	mModules.push_back(editor = new ModuleEditor());
+	mModules.push_back(camera = new ModuleCamera());
+	mModules.push_back(debugDraw = new ModuleDebugDraw());
 
 }
 
