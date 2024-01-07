@@ -7,7 +7,12 @@ class ModuleOpenGL;
 class ModuleWindow;
 class ModuleInput;
 class ModuleEditor;
-class ModuleProgram;
+class ModuleRenderExercise;
+class ModuleScene;
+
+class ModuleCamera;
+class ModuleRenderTest;
+class ModuleDebugDraw;
 
 class Application
 {
@@ -20,20 +25,27 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-    ModuleOpenGL* GetOpenGL() { return mRender; }
-    ModuleWindow* GetWindow() { return mWindow; }
-    ModuleInput*  GetInput() { return mInput; }
-    ModuleEditor*  GetEditor() { return mEditor; }
-    ModuleProgram* GetProgram() { return mProgram; }
+    ModuleOpenGL* GetOpenGL() { return render; }
+    ModuleWindow* GetWindow() { return window; }
+    ModuleInput*  GetInput() { return input; }
+    ModuleEditor*  GetEditor() { return editor; }
+    ModuleScene* GetScene() { return scene; }
+    ModuleCamera* GetCamera() { return camera;  }
+    ModuleRenderTest* GetTest() { return test; }
+    ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
 
 
 private:
 
-    ModuleOpenGL* mRender = nullptr;
-    ModuleWindow* mWindow = nullptr;
-    ModuleInput* mInput = nullptr;
-    ModuleEditor* mEditor = nullptr;
-    ModuleProgram* mProgram = nullptr;
+    ModuleOpenGL* render = nullptr;
+    ModuleWindow* window = nullptr;
+    ModuleInput* input = nullptr;
+    ModuleEditor* editor = nullptr;
+    ModuleScene* scene = nullptr;
+    ModuleCamera* camera = nullptr;
+    ModuleRenderTest* test = nullptr;
+    ModuleDebugDraw* debugDraw = nullptr;
+
 
     std::list<Module*> mModules;
 

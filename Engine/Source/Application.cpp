@@ -4,16 +4,25 @@
 #include "ModuleOpenGL.h"
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
-#include "ModuleProgram.h"
+#include "ModuleScene.h"
+
+#include "ModuleCamera.h"
+#include "ModuleRenderTest.h"
+#include "ModuleDebugDraw.h"
+
 
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
-	mModules.push_back(mWindow = new ModuleWindow());
-	mModules.push_back(mRender = new ModuleOpenGL());
-	mModules.push_back(mProgram = new ModuleProgram());
-	mModules.push_back(mInput = new ModuleInput());
-	mModules.push_back(mEditor = new ModuleEditor());
+	modules.push_back(window = new ModuleWindow());
+	modules.push_back(render = new ModuleOpenGL());
+	modules.push_back(input = new ModuleInput());
+	modules.push_back(scene = new ModuleScene());
+	modules.push_back(test = new ModuleRenderTest());
+	modules.push_back(editor = new ModuleEditor());
+	modules.push_back(camera = new ModuleCamera());
+	modules.push_back(debugDraw = new ModuleDebugDraw());
+
 }
 
 Application::~Application()

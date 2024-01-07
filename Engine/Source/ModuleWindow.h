@@ -18,6 +18,11 @@ public:
 	bool Init() override;
 	bool CleanUp() override;
 
+
+	int GetWidth() const;
+	int GetHeight() const;
+	float GetAspectRatio() const;
+
 public:
 
 	SDL_Window* window = nullptr;

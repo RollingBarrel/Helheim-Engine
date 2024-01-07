@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp" />
@@ -188,20 +189,30 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MeshRendererComponent.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
-    <ClCompile Include="ModuleProgram.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
+    <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h" />
@@ -272,25 +283,22 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="InspectorPanel.h" />
+    <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
-    <ClInclude Include="ModuleProgram.h" />
+    <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Game\shaders\default_fragment.glsl" />
-    <None Include="..\Game\shaders\default_vertex.glsl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
+    <ClInclude Include="TestComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -25,6 +25,11 @@
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp">
       <Filter>Dependencies\ImGui\Backends</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="MeshRendererComponent.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="Panel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -34,50 +39,39 @@
     <ClCompile Include="ConsolePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="HierarchyPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp">
+      <Filter>Dependencies\MathGeoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
+    <ClCompile Include="HierarchyPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleRenderTest.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp">
       <Filter>Dependencies\MathGeoLib\Time</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathOps.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
+      <Filter>Dependencies\MathGeoLib\Algorithm</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp">
       <Filter>Dependencies\MathGeoLib\Geometry</Filter>
@@ -127,8 +121,47 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.cpp">
       <Filter>Dependencies\MathGeoLib\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
-      <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathOps.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp">
+      <Filter>Dependencies\MathGeoLib\Math</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
@@ -178,6 +211,11 @@
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h">
       <Filter>Dependencies\ImGui\Backends</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleEditor.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MeshRendererComponent.h" />
+    <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="Panel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -186,6 +224,38 @@
     </ClInclude>
     <ClInclude Include="ConsolePanel.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h">
       <Filter>Dependencies\MathGeoLib</Filter>
@@ -198,6 +268,78 @@
     </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h">
       <Filter>Dependencies\MathGeoLib\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h">
+      <Filter>Dependencies\MathGeoLib\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB2D.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeometryAll.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeomType.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\HitInfo.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\PBVolume.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.h">
+      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\assume.h">
       <Filter>Dependencies\MathGeoLib\Math</Filter>
@@ -295,97 +437,6 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h">
       <Filter>Dependencies\MathGeoLib\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB2D.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeometryAll.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeomType.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\HitInfo.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\PBVolume.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h">
-      <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleEditor.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleInput.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleOpenGL.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleWindow.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="InspectorPanel.h">
-      <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleProgram.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -400,55 +451,26 @@
     <Filter Include="Panels">
       <UniqueIdentifier>{484d2c23-7ed4-47b5-8208-e922e3a7d9c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies\DebugDraw">
+      <UniqueIdentifier>{3e12352f-bdca-40ad-8564-2646a77ac41c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\DebugDraw">
+      <UniqueIdentifier>{3e12352f-bdca-40ad-8564-2646a77ac41c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Dependencies\MathGeoLib">
-      <UniqueIdentifier>{9aff8f19-ea43-4183-9d45-44520e2c2829}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Algorithm">
-      <UniqueIdentifier>{f52b5cf8-aed7-4250-89b6-8dadbc377122}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Geometry">
-      <UniqueIdentifier>{3cdca794-57ee-42b6-8553-0547fb08db4c}</UniqueIdentifier>
+      <UniqueIdentifier>{d1ca0b5e-6cf2-4bd6-a0f8-60ad34ab11bb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\MathGeoLib\Math">
-      <UniqueIdentifier>{c2a95d56-2579-4d2d-a3c3-97dd3a9e391b}</UniqueIdentifier>
+      <UniqueIdentifier>{9c1daccd-d1ad-4040-a84e-13fc07822eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\MathGeoLib\Geometry">
+      <UniqueIdentifier>{2ce5fefc-988b-464a-920d-8fac105dc475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\MathGeoLib\Algorithm">
+      <UniqueIdentifier>{b1107844-120e-473d-a690-df600b8b74fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\MathGeoLib\Time">
-      <UniqueIdentifier>{ab0740ec-ecc2-4cbc-a287-a3b1ba9b4f79}</UniqueIdentifier>
+      <UniqueIdentifier>{6cbf4185-af1b-4c6a-88b9-2d7a2a367dc0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Algorithm\Random">
-      <UniqueIdentifier>{dfad91e7-ed65-4749-add2-d1bfd98a511e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{95c0a4da-d49a-43f4-8da0-45a8df1efad1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{3455767e-9400-4924-9878-10687ebb4c3b}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_AVX.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="..\Game\shaders\default_fragment.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\shaders\default_vertex.glsl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>
