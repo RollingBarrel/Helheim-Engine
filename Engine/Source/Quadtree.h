@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Geometry/AABB2D.h"
+#include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
 
 class GameObject;
@@ -15,23 +15,22 @@ class Quadtree
 {
 public:
 
-	Quadtree(int depth, AABB2D bounding_box);
+	Quadtree(int depth, AABB bounding_box);
 	~Quadtree();
 
 	bool AddObject(GameObject* object);
 	void RemoveObject(GameObject* object);
 	bool Intersects(OBB* bounding_box);
 	const bool hasGameObjects() const { return has_been_filled; }
+	const int GetNumGameObjs() const { return mGameObjects.size(); }
+	void CleanUp();
 
 private:
 	
 	void SplitNode(); //Quan es detecta que tenim més del maxim de game objects permès cridem aixo per buidar tot 
 	//i crear els children i posar els game objects on pertany.
-	const AABB2D project2D(OBB* bounding_box) const;
 
-
-
-	AABB2D mBoundingBox;
+	AABB mBoundingBox;
 	Quadtree* children[4];
 	std::vector<GameObject*> mGameObjects;
 	int depth_level;
