@@ -355,11 +355,13 @@ void GameObject::AddSuffix()
 	while (found) {
 		std::string str = " (" + std::to_string(count) + ')';
 		int pos = std::string::npos;
+
+		std::string nameWithSufix = mName + str;
 		for (auto gameObject : mParent->mChildren)
 		{
 			if (pos == -1) {
 				//pos = gameObject->mName.find(str, gameObject->mName.size() - 4);
-				pos = gameObject->mName.find(mName + str);
+				pos = gameObject->mName.find(nameWithSufix);
 			}
 
 		}
