@@ -13,7 +13,7 @@
 #include <MathFunc.h>
 
 GameObject::GameObject(GameObject* parent)
-	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
+	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::identity),
 	mLocalTransformMatrix(float4x4::identity), mPosition(float3::zero), mScale(float3::one),
 	mRotation(float3::zero)
@@ -26,7 +26,7 @@ GameObject::GameObject(GameObject* parent)
 }
 
 GameObject::GameObject(const GameObject& original)
-	:mID((new LCG())->Int()), mName(original.mName), mParent(original.mParent),
+	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
@@ -46,7 +46,7 @@ GameObject::GameObject(const GameObject& original)
 }
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
-	:mID((new LCG())->Int()), mName(original.mName), mParent(newParent),
+	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
@@ -64,7 +64,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 }
 
 GameObject::GameObject(const char* name, GameObject* parent)
-	:mID((new LCG())->Int()), mName(name), mParent(parent),
+	:mID(LCG().Int()), mName(name), mParent(parent),
 	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::identity),
 	mLocalTransformMatrix(float4x4::identity), mPosition(float3::zero), mScale(float3::one),
 	mRotation(float3::zero)
