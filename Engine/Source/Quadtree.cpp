@@ -12,6 +12,11 @@ Quadtree::Quadtree(int depth, AABB bounding_box)
 	mBoundingBox = bounding_box;
 }
 
+Quadtree::Quadtree(AABB bounding_box)
+{
+	Quadtree(0, bounding_box);
+}
+
 Quadtree::~Quadtree()
 {
 	CleanUp();

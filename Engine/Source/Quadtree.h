@@ -14,8 +14,7 @@ class MeshRendererComponent;
 class Quadtree
 {
 public:
-
-	Quadtree(int depth, AABB bounding_box);
+	Quadtree(AABB bounding_box);
 	~Quadtree();
 
 	bool AddObject(GameObject* object);
@@ -26,7 +25,8 @@ public:
 	void CleanUp();
 
 private:
-	
+	Quadtree(int depth, AABB bounding_box);
+
 	void SplitNode(); //Quan es detecta que tenim més del maxim de game objects permès cridem aixo per buidar tot 
 	//i crear els children i posar els game objects on pertany.
 

@@ -1,9 +1,10 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
-
+#include "Quadtree.h"
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
 	mSelectedGameObject = mRoot;
+	mQuadtreeRoot = new Quadtree(AABB(float3(-10), float3(10)));
 }
 
 ModuleScene::~ModuleScene()
@@ -50,6 +51,11 @@ void ModuleScene::DrawHierarchy()
 void ModuleScene::SetSelectedObject(GameObject* gameObject)
 {
 	mSelectedGameObject = gameObject;
+}
+
+void ModuleScene::AddObjectToQuadtree(GameObject* gameObject)
+{
+	mQuadtreeRoot->AddObject(gameObject);
 }
 
 void ModuleScene::DeleteGameObjects(){

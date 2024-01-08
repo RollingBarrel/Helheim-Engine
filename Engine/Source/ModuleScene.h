@@ -2,6 +2,7 @@
 #include "Module.h"
 #include <vector>
 class GameObject;
+class Quadtree;
 
 class ModuleScene : public Module
 {
@@ -27,6 +28,8 @@ public:
 	void AddGameObjectToDuplicate(GameObject* gameObject) {
 		mGameObjectsToDuplicate.push_back(gameObject);
 	}
+	void AddObjectToQuadtree(GameObject* gameObject);
+
 
 private:
 	GameObject* mRoot;
@@ -35,5 +38,6 @@ private:
 	std::vector<GameObject*> mGameObjectsToDuplicate;
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
+	Quadtree* mQuadtreeRoot;
 };
 

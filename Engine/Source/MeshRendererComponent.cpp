@@ -1,16 +1,22 @@
 #include "MeshRendererComponent.h"
 #include "imgui.h"
+#include "Application.h"
+#include "Quadtree.h"
+#include "ModuleScene.h"
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* ownerGameObject) 
 	:Component(ownerGameObject, ComponentType::MESHRENDERER)
 {
-	
+	//Create Random BBO
+	mOBB = OBB(AABB(float3(-10), float3(10)));
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original)
 	:Component(original.GetOwner(), ComponentType::MESHRENDERER)
 {
+	//Create Random BBO
+	mOBB = OBB(AABB(float3(-10), float3(10)));
 }
 
 void MeshRendererComponent::Draw()
