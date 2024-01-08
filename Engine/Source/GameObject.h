@@ -52,9 +52,10 @@ public:
 	void CreateComponent(ComponentType type);
 
 private:
-	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
+	GameObject* RemoveChild(const int id);
 	void AddSuffix();
-	void DragAndDrop();
+	void DragAndDropSource();
+	void DragAndDropTarget(bool reorder = false);
 	void DrawTransform();
 	void AddComponentButton();
 	void DeleteComponents();
@@ -63,16 +64,16 @@ private:
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
 	const unsigned int mID;
-	std::string mName;
-	float4x4 mWorldTransformMatrix;
-	float4x4 mLocalTransformMatrix;
-	const bool mIsRoot;
-	float3 mPosition;
-	float3 mRotation;
-	float3 mScale;
-	bool mIsEnabled;
+	std::string mName = "Game Object";
+	float4x4 mWorldTransformMatrix = float4x4::identity;
+	float4x4 mLocalTransformMatrix = float4x4::identity;
+	const bool mIsRoot = false;
+	float3 mPosition = float3::zero;
+	float3 mRotation = float3::zero;
+	float3 mScale = float3::one;
+	bool mIsEnabled = true;
 
-	int componentIndex;
+	int componentIndex = 0;
 
 	
 };
