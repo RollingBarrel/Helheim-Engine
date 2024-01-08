@@ -41,7 +41,7 @@ GameObject::GameObject(const GameObject& original)
 	}
 
 	for (auto component : original.mComponents) {
-		mComponents.push_back(component->Clone());
+		mComponents.push_back(component->Clone(this));
 	}
 }
 
@@ -59,7 +59,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	}
 
 	for (auto component : original.mComponents) {
-		mComponents.push_back(component->Clone());
+		mComponents.push_back(component->Clone(this));
 	}
 }
 

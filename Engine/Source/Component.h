@@ -15,7 +15,7 @@ public:
 	virtual	void Update() = 0;
 	
 	virtual	void DrawEditor() = 0;
-	virtual Component* Clone() = 0;
+	virtual Component* Clone(GameObject* owner) = 0;
 
 	Component(const char* name ,GameObject* owner, ComponentType type);
 	virtual ~Component() {}

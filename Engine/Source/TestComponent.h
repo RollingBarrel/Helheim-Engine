@@ -9,13 +9,13 @@ class TestComponent : public Component
 {
 public:
 	TestComponent(GameObject* ownerGameObject);
-	TestComponent(const TestComponent& original);
+	TestComponent(const TestComponent& original, GameObject* owner);
 	void Reset();
 	//~TestComponent();
 
 	void Update() override;
 	void DrawEditor() override;
-	Component* Clone() override;
+	Component* Clone(GameObject* owner) override;
 
 private:
 	void RightClickPopup() override;
