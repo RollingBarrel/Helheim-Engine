@@ -40,6 +40,9 @@ void MeshRendererComponent::DrawEditor()
 		ImGui::Text("Material: DefaultMaterial (TEST)");
 		ImGui::Text("Shader: StandardShader (TEST)");
 	}
+	else {
+		RightClickPopup();
+	}
 }
 
 Component* MeshRendererComponent::Clone()
