@@ -53,7 +53,7 @@ public:
 
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
-	void AddSufix();
+	void AddSuffix();
 	void DragAndDrop();
 	void DrawTransform();
 	void AddComponentButton();

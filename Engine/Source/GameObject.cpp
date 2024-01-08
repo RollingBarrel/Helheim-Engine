@@ -22,7 +22,7 @@ GameObject::GameObject(GameObject* parent)
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 	}
 
-	AddSufix();
+	AddSuffix();
 }
 
 GameObject::GameObject(const GameObject& original)
@@ -32,7 +32,7 @@ GameObject::GameObject(const GameObject& original)
 	mRotation(original.mRotation)
 {
 
-	AddSufix();
+	AddSuffix();
 
 	for (auto child : original.mChildren) {
 		GameObject* gameObject = new GameObject(*(child), this);
@@ -347,7 +347,7 @@ void GameObject::MoveChild(const int id, GameObject* newParent, const int aboveT
 	}
 }
 
-void GameObject::AddSufix()
+void GameObject::AddSuffix()
 {
 	bool found = true;
 	int count = 1;
