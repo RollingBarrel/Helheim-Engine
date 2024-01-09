@@ -53,7 +53,7 @@ public:
 
 private:
 	GameObject* RemoveChild(const int id);
-	void AddSufix();
+	void AddSuffix();
 	void DragAndDropSource();
 	void DragAndDropTarget(bool reorder = false);
 	void DrawTransform();

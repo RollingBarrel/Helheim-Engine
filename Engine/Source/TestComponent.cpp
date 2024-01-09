@@ -9,8 +9,8 @@ TestComponent::TestComponent(GameObject* ownerGameObject)
 	
 }
 
-TestComponent::TestComponent(const TestComponent& original)
-	:Component(original.mName, original.GetOwner(), ComponentType::TEST)
+TestComponent::TestComponent(const TestComponent& original, GameObject* owner)
+	:Component(original.mName, owner, ComponentType::TEST)
 {
 
 }
@@ -39,9 +39,9 @@ void TestComponent::DrawEditor()
 	}
 }
 
-Component* TestComponent::Clone()
+Component* TestComponent::Clone(GameObject* owner)
 {
-    return new TestComponent(*this); //Calls the copy contrustctor of your component
+    return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }
 
 void TestComponent::RightClickPopup()
