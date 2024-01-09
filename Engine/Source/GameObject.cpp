@@ -454,8 +454,9 @@ void GameObject::DrawInspector() {
 void GameObject::DrawHierarchy(const int selected)
 {
 	bool nodeOpen = true;
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 	if (!mIsRoot) {
-		ImGui::Separator();
+		ImGui::InvisibleButton("##", ImVec2(-1, 5)); //This can be changed to modify the spacing between elements
 		DragAndDropTarget(true);
 		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (mID == selected)
@@ -464,6 +465,7 @@ void GameObject::DrawHierarchy(const int selected)
 			baseFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 		}
 		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)mID, baseFlags, mName.c_str()) && (mChildren.size() > 0);
+		ImGui::PopStyleVar();
 		if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) {
 			App->GetScene()->SetSelectedObject(this);
 		}
@@ -475,6 +477,7 @@ void GameObject::DrawHierarchy(const int selected)
 	}
 	else {
 		nodeOpen = ImGui::CollapsingHeader(mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		ImGui::PopStyleVar();
 	}
 	DragAndDropTarget();
 	if (nodeOpen) {
@@ -487,7 +490,7 @@ void GameObject::DrawHierarchy(const int selected)
 		}
 	}
 	if (mIsRoot) {
-		ImGui::Separator();
+		ImGui::InvisibleButton("##", ImVec2(-1, -1));
 		DragAndDropTarget();
 	}
 
