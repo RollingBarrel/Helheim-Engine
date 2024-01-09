@@ -2,14 +2,13 @@
 #include "ModuleTimer.h"
 #include "SDL.h"
 #include "Application.h"
-#include <ctime>
 
 ModuleTimer::ModuleTimer() {}
 ModuleTimer::~ModuleTimer() {}
 
 bool ModuleTimer::Init() {
-	mFpsLog.reserve(101);
-	mTime = clock();
+	mFpsLog.reserve(100);
+	mTime = SDL_GetTicks();
 	mUpdateTime = mTime;
 	return true;
 }
@@ -23,7 +22,7 @@ update_status ModuleTimer::Update() {
 	Uint64 ncounter = SDL_GetPerformanceCounter();
 	Uint64 ElapsedTime = (ncounter - LastTime);*/
 
-	mDeltaTime = (clock() - mTime);
+	mDeltaTime = (SDL_GetTicks() - mTime);
 	/*if (ElapsedTime < minElaps)
 	{
 		SDL_Delay((minElaps - ElapsedTime)*CLOCKS_PER_SEC/frequency);
@@ -34,22 +33,22 @@ update_status ModuleTimer::Update() {
 	if (mDeltaTime < 1000 / mFpsLimit)
 	{
 		SDL_Delay(1000 / mFpsLimit - mDeltaTime);
-		mDeltaTime = (clock() - mTime);
+		mDeltaTime = (SDL_GetTicks() - mTime);
 	}
 
-	mTime = clock();
+	mTime = SDL_GetTicks();
 	//LastTime = ncounter;
 
 	//double MSPerFrame = (((1000.0f * (double)ElapsedTime) / (double)frequency));
 	//double FPS = (double)frequency / (double)ElapsedTime;
 	long timeSinceUpdate = mTime - mUpdateTime;
 	if (timeSinceUpdate >= 500) {
-		mFpsLog.push_back(frameCounter * CLOCKS_PER_SEC / timeSinceUpdate);
-		if (mFpsLog.size() > 100) {
+		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
+		mFpsLog.push_back(frameCounter * 1000 / (float)timeSinceUpdate);
 		frameCounter = 0;
-		mUpdateTime = clock();
+		mUpdateTime = SDL_GetTicks();
 	}
 
 

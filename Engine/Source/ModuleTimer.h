@@ -16,6 +16,7 @@ public:
     bool CleanUp();
 
     long GetDeltaTime() const { return mDeltaTime; }
+    float GetFPS() const { return mFpsLog.back(); }
 
 private:
     long mTime = 0;
