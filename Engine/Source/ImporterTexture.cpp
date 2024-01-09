@@ -3,7 +3,6 @@
 #include "DirectXTex.h"
 #include "glew.h"
 
-
 void Importer::Texture::Import(const char* filePath)
 {
 

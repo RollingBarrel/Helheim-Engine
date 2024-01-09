@@ -14,13 +14,12 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh& mesh)
+void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh)
 {
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
     const auto& itNorm = primitive.attributes.find("NORMAL");
     const auto& itTang = primitive.attributes.find("TANGENT");
-
 
     if (itPos != primitive.attributes.end())
     {
@@ -30,16 +29,16 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const tinygltf::BufferView& posView = model.bufferViews[posAcc.bufferView];
         const tinygltf::Buffer& posBuffer = model.buffers[posView.buffer];
 
-        mesh.mNumVertices = posAcc.count;
+        mesh->mNumVertices = posAcc.count;
 
         const unsigned char* bufferPos = &posBuffer.data[posView.byteOffset + posAcc.byteOffset];
 
 
         //Add vertices Pos to this buffer taking into acc byteStride
-        mesh.mVerticesPosition = const_cast<unsigned char*>(bufferPos);
+        mesh->mVerticesPosition = reinterpret_cast<float*>(const_cast<unsigned char*>(bufferPos));
         for (auto i = 0; i < posAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float3*>(bufferPos);
+            reinterpret_cast<float3*>(mesh->mVerticesPosition)[i] = *reinterpret_cast<const float3*>(bufferPos);
 
             if (posView.byteStride != 0) {
                 bufferPos += posView.byteStride;
@@ -48,7 +47,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferPos += sizeof(float) * 3;
             }
 
-            LOG("%f %f %f", reinterpret_cast<float3*>(mesh.mVerticesPosition)[i].x, reinterpret_cast<float3*>(mesh.mVerticesPosition)[i].y, reinterpret_cast<float3*>(mesh.mVerticesPosition)[i].z);
+            LOG("%f %f %f", reinterpret_cast<float3*>(mesh->mVerticesPosition)[i].x, reinterpret_cast<float3*>(mesh->mVerticesPosition)[i].y, reinterpret_cast<float3*>(mesh->mVerticesPosition)[i].z);
         }
     }
 
@@ -63,10 +62,10 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const unsigned char* bufferTexCoord = &texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset];
 
         //Add vertices TexCoord to this buffer taking into acc byteStride
-        mesh.mVerticesTextureCoordinate = const_cast<unsigned char*>(bufferTexCoord);
+        mesh->mVerticesTextureCoordinate = reinterpret_cast<float*>(const_cast<unsigned char*>(bufferTexCoord));
         for (auto i = 0; i < texCoordAcc.count; ++i)
         {
-            reinterpret_cast<float2*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float2*>(bufferTexCoord);
+            reinterpret_cast<float2*>(mesh->mVerticesPosition)[i] = *reinterpret_cast<const float2*>(bufferTexCoord);
 
             if (texCoordView.byteStride != 0)
             {
@@ -77,7 +76,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferTexCoord += sizeof(float) * 2;
             }
 
-            LOG("%f %f", reinterpret_cast<float2*>(mesh.mVerticesTextureCoordinate)[i].x, reinterpret_cast<float2*>(mesh.mVerticesTextureCoordinate)[i].y);
+            LOG("%f %f", reinterpret_cast<float2*>(mesh->mVerticesTextureCoordinate)[i].x, reinterpret_cast<float2*>(mesh->mVerticesTextureCoordinate)[i].y);
         }
 
     }
@@ -93,11 +92,11 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const unsigned char* bufferNorm = &normBuffer.data[normView.byteOffset + normAcc.byteOffset];
 
         //Add vertices Normal to this buffer taking into acc byteStride
-        mesh.mVerticesNormal = const_cast<unsigned char*>(bufferNorm);
+        mesh->mVerticesNormal = reinterpret_cast<float*>(const_cast<unsigned char*>(bufferNorm));
 
         for (auto i = 0; i < normAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float3*>(bufferNorm);
+            reinterpret_cast<float3*>(mesh->mVerticesNormal)[i] = *reinterpret_cast<const float3*>(bufferNorm);
 
             if (normView.byteStride != 0)
             {
@@ -108,7 +107,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferNorm += sizeof(float) * 3;
             }
 
-            LOG("%f %f %f", reinterpret_cast<float3*>(mesh.mVerticesNormal)[i].x, reinterpret_cast<float3*>(mesh.mVerticesNormal)[i].y, reinterpret_cast<float3*>(mesh.mVerticesNormal)[i].z);
+            LOG("%f %f %f", reinterpret_cast<float3*>(mesh->mVerticesNormal)[i].x, reinterpret_cast<float3*>(mesh->mVerticesNormal)[i].y, reinterpret_cast<float3*>(mesh->mVerticesNormal)[i].z);
         }
     }
 
@@ -123,11 +122,11 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const unsigned char* bufferTang = &tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset];
 
         //Add vertices Tangent to this buffer taking into acc byteStride
-        mesh.mVerticesTangent = const_cast<unsigned char*>(bufferTang);
+        mesh->mVerticesTangent = reinterpret_cast<float*>(const_cast<unsigned char*>(bufferTang));
 
         for (auto i = 0; i < tangAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(mesh.mVerticesPosition)[i] = *reinterpret_cast<const float3*>(bufferTang);
+            reinterpret_cast<float3*>(mesh->mVerticesTangent)[i] = *reinterpret_cast<const float3*>(bufferTang);
 
             if (tangView.byteStride != 0)
             {
@@ -138,27 +137,26 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferTang += sizeof(float) * 3;
             }
 
-            LOG("%f %f %f", reinterpret_cast<float3*>(mesh.mVerticesTangent)[i].x, reinterpret_cast<float3*>(mesh.mVerticesTangent)[i].y, reinterpret_cast<float3*>(mesh.mVerticesTangent)[i].z);
+            LOG("%f %f %f", reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].x, reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].y, reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].z);
         }
     }
 
     //TODO: Add Indices part
- 
-    if (primitive.indices >=0)
+    if (primitive.indices >= 0)
     {
         const tinygltf::Accessor& indAcc = model.accessors[primitive.indices];
-        mesh.mNumIndices = indAcc.count;
+        mesh->mNumIndices = indAcc.count;
         const tinygltf::BufferView& indView = model.bufferViews[indAcc.bufferView];
         const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
-        mesh.mIndices = const_cast<unsigned char*>(buffer);
 
+        mesh->mIndices = reinterpret_cast<unsigned int*>(const_cast<unsigned char*>(buffer));
 
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
         {
             const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
             for (uint32_t i = 0; i < indAcc.count; ++i)
             {
-                mesh.mIndices[i] = bufferInd[i];
+                mesh->mIndices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
@@ -166,7 +164,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
             for (uint16_t i = 0; i < indAcc.count; ++i)
             {
-                mesh.mIndices[i] = bufferInd[i];
+                mesh->mIndices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
@@ -174,36 +172,23 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
             for (uint8_t i = 0; i < indAcc.count; ++i)
             {
-                mesh.mIndices[i] = bufferInd[i];
+                mesh->mIndices[i] = bufferInd[i];
             }
         }
     }
 
     Mesh::Save(mesh);
+
+    char* fileBuffer = nullptr;
+    ResourceMesh loadedMesh;
+    Mesh::Load(fileBuffer, &loadedMesh, mesh->mFileName);
 }
 
-
-void Importer::Mesh::Load(char** data, ResourceMesh& mesh)
+void Importer::Mesh::Save(const ResourceMesh* mesh)
 {
+    unsigned int header[2] = { mesh->mNumIndices, mesh->mNumVertices };
 
-    //App->GetFileSystem()->Load();
-
-    char* cursor = *data;
-    unsigned int header[2];
-    unsigned int bytes = sizeof(header);
-    memcpy(header, cursor, bytes);
-    cursor += bytes;
-    mesh.mNumIndices = header[0];
-    mesh.mNumVertices = header[1];
-
-
-}
-
-void Importer::Mesh::Save(const ResourceMesh& mesh)
-{
-    unsigned int header[2] = { mesh.mNumIndices, mesh.mNumVertices };
-
-    unsigned int size = sizeof(header);
+    unsigned int size = sizeof(header) + sizeof(unsigned int) * mesh->mNumIndices + sizeof(float) * mesh->mNumVertices * 3;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -212,11 +197,104 @@ void Importer::Mesh::Save(const ResourceMesh& mesh)
     unsigned int bytes = sizeof(header);
     memcpy(cursor, header, bytes);
     cursor += bytes;
+    //Save Indices
+    bytes = sizeof(unsigned int) * mesh->mNumIndices;
+    memcpy(cursor, mesh->mIndices, bytes);
+    cursor += bytes;
+    //Save Positions
+    bytes = sizeof(float) * mesh->mNumVertices * 3;
+    memcpy(cursor, mesh->mVerticesPosition, bytes);
+    cursor += bytes;
  
-    //App->GetFileSystem()->Save();
+    std::string path = LIBRARY_MESH_PATH;
+    path += mesh->mFileName;
+    path += ".messhi";
+
+    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+
+    delete[] fileBuffer;
+    fileBuffer = nullptr;
 }
 
+void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* fileName)
+{
+    std::string path = LIBRARY_MESH_PATH;
+    path += fileName;
+    path += ".messhi";
 
+    App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
 
+    //Load Header
+    char* cursor = fileBuffer;
+    unsigned int header[2];
+    unsigned int bytes = sizeof(header);
+    memcpy(header, cursor, bytes);
+    cursor += bytes;
+    mesh->mNumIndices = header[0];
+    mesh->mNumVertices = header[1];
+    //Load Indices
+    bytes = sizeof(unsigned int) * mesh->mNumIndices;
+    mesh->mIndices = new unsigned int[mesh->mNumIndices];
+    memcpy(mesh->mIndices, cursor, bytes);
+    //Load Positions
+    bytes = sizeof(float) * mesh->mNumVertices * 3;
+    mesh->mVerticesPosition = new float[mesh->mNumVertices * 3];
+    memcpy(mesh->mVerticesPosition, cursor, bytes);
 
+    mesh->LoadVBO();
+    mesh->LoadEBO();
+    mesh->LoadVAO();
+}
 
+void ResourceMesh::LoadVAO()
+{
+    glGenVertexArrays(1, &mVao);
+    glBindVertexArray(mVao);
+    LOG("[MESH] Creting VAO %u", mVao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+
+    //TODO: RECALCULATE OFFSET IF DONT HAVE ATTRIBUTES
+    unsigned offset = 0;
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, reinterpret_cast<void*>(offset));
+
+    glBindVertexArray(0);
+}
+
+void ResourceMesh::LoadVBO()
+{
+    glGenBuffers(1, &mVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mNumVertices * 3, nullptr, GL_STATIC_DRAW);
+    LOG("[MESH] Creating VBO %u, reserved %u memory", mVbo, (sizeof(float) * mNumVertices * 3));
+
+    assert(mVerticesPosition != nullptr);
+    float* ptr = reinterpret_cast<float*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY)));
+    for (auto i = 0; i < mNumVertices; ++i)
+    {
+        ptr[i] = mVerticesPosition[i];
+    }
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+    LOG("[MESH] Finish VBO map buffer");
+}
+
+void ResourceMesh::LoadEBO()
+{
+    glGenBuffers(1, &mEbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mNumIndices, nullptr, GL_STATIC_DRAW);
+    LOG("[MESH] Creating EBO %u, reserved %u memory", mEbo, (sizeof(unsigned int) * mNumIndices));
+
+    unsigned int* ptr = reinterpret_cast<unsigned int*>(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
+    for (auto i = 0; i < mNumIndices; ++i)
+    {
+        ptr[i] = mIndices[i];
+    }
+    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+    LOG("[MESH] Finish EBO map buffer");
+}

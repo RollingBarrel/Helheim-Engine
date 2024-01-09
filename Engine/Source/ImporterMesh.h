@@ -11,22 +11,37 @@ struct ResourceMesh
 	unsigned int mNumVertices;
 	unsigned int mNumIndices;
 
-	unsigned char* mIndices = nullptr;
-	unsigned char* mVerticesPosition = nullptr;
-	unsigned char* mVerticesTextureCoordinate = nullptr;
-	unsigned char* mVerticesColor = nullptr;
-	unsigned char* mVerticesNormal = nullptr;
-	unsigned char* mVerticesTangent = nullptr;
+	unsigned unsigned int* mIndices = nullptr;
+	float* mVerticesPosition = nullptr;
+	float* mVerticesTextureCoordinate = nullptr;
+	float* mVerticesColor = nullptr;
+	float* mVerticesNormal = nullptr;
+	float* mVerticesTangent = nullptr;
+
+	const char* mFileName = nullptr;
+
+	void LoadVAO();
+	void LoadVBO();
+	void LoadEBO();
+
+	unsigned int GetVAO() { return mVao; };
+	unsigned int GetVBO() { return mVbo; };
+	unsigned int GetEBO() { return mEbo; };
+	
+private:
+	unsigned int mVao;
+	unsigned int mVbo;
+	unsigned int mEbo;
 };
 
 namespace Importer
 {
 	namespace Mesh
 	{
-		void Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh& mesh);
+		void Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* ourMesh);
 
-		void Load(char** data, ResourceMesh& mesh);
+		void Save(const ResourceMesh* ourMesh);
 
-		void Save(const ResourceMesh& mesh);
+		void Load(char* fileBuffer, ResourceMesh* ourMesh, const char* fileName);
 	}
 }

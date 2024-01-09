@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "SDL.h"
-
 #include "imgui_impl_sdl2.h"
 
 #define MAX_KEYS 300

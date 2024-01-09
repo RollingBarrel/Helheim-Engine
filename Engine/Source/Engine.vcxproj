@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp" />
@@ -190,28 +191,34 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
-    <ClCompile Include="InspectorPanel.cpp" />
-    <ClCompile Include="log.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HierarchyPanel.cpp" />
+    <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="log.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MeshRendererComponent.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
-    <ClCompile Include="Panel.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
-    <ClInclude Include="debugdraw.h" />
-    <ClInclude Include="debug_draw.hpp" />
+    <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
+    <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h" />
@@ -286,11 +293,14 @@
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\tiny_gltf.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="InspectorPanel.h" />
+    <ClInclude Include="HierarchyPanel.h" />
+    <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
@@ -298,9 +308,6 @@
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
-    <ClInclude Include="ModuleRenderTest.h" />
-    <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="Panel.h" />
     <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterTexture.h" />
   </ItemGroup>
@@ -311,6 +318,11 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
+    <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Panel.h" />
+    <ClInclude Include="TestComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -36,7 +36,7 @@ bool ModuleFileSystem::Init()
 {
     //Importer::CreateBinaryFile();
 
-    Importer::Import("Assets/BoxTextured.gltf");
+    Importer::Import("Assets/Models/Triangle/Triangle.gltf");
 
     //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
 
@@ -66,11 +66,11 @@ unsigned int ModuleFileSystem::Load(const char* filePath, char** buffer) const
         PHYSFS_File* newFile = PHYSFS_openRead(filePath);
         if (newFile != nullptr)
         {
-            unsigned int fileSize = PHYSFS_fileLength(newFile);
+            int fileSize = PHYSFS_fileLength(newFile);
             if (fileSize > 0)
             {
                 *buffer = new char[fileSize];
-                readBytesSize = PHYSFS_readBytes(newFile, buffer, fileSize);
+                readBytesSize = PHYSFS_readBytes(newFile, *buffer, fileSize);
                 if (readBytesSize != fileSize)
                 {
                     LOG("Error reading from file %s: %s\n", filePath, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));

@@ -17,7 +17,7 @@ enum update_status
 #define SCREEN_HEIGHT 800
 #define FULLSCREEN false
 #define VSYNC true
-#define TITLE "HumbleEngine"
+#define TITLE "Super Awesome Engine"
 
 #define RELEASE_ARRAY( x ) \
 	{\

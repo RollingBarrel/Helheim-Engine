@@ -24,15 +24,21 @@ void Importer::Model::Import(const char* filePath)
     unsigned pos = modelName.find_last_of('/');
     std::string name = modelName.substr(++pos);
 
+    unsigned dotPos = name.find_last_of('.');
+    name = name.substr(0,dotPos);
+
     for (const auto& srcMesh : model.meshes)
     {
         for (const auto& primitive : srcMesh.primitives)
         {
-            ResourceMesh* mesh = new ResourceMesh();
-            Importer::Mesh::Import(model, primitive, (*mesh));
+            ResourceMesh* mesh = new ResourceMesh;
+            mesh->mFileName = name.c_str();
+            Importer::Mesh::Import(model, primitive, mesh);
+           
+            delete mesh;
+            mesh = nullptr;
         }
     }
 
-
-
+    
 }
