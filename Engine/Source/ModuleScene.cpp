@@ -4,7 +4,7 @@
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
 	mSelectedGameObject = mRoot;
-	mQuadtreeRoot = new Quadtree(AABB(float3(-10), float3(10)));
+	mQuadtreeRoot = new Quadtree(AABB(float3(-100), float3(100)));
 }
 
 ModuleScene::~ModuleScene()

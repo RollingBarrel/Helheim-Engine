@@ -4,19 +4,41 @@
 #include "Quadtree.h"
 #include "ModuleScene.h"
 
+#include <iostream>
+#include <random>
 
 MeshRendererComponent::MeshRendererComponent(GameObject* ownerGameObject) 
 	:Component(ownerGameObject, ComponentType::MESHRENDERER)
 {
 	//Create Random BBO
-	mOBB = OBB(AABB(float3(-10), float3(10)));
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	// Define the distribution for values between -100 and 100
+	std::uniform_int_distribution<int> distribution(-100, 90);
+
+	// Generate three random values
+	int rv1 = distribution(gen);
+	int rv2 = distribution(gen);
+	int rv3 = distribution(gen);
+	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+10, rv2+10, rv3+10)));
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original)
 	:Component(original.GetOwner(), ComponentType::MESHRENDERER)
 {
 	//Create Random BBO
-	mOBB = OBB(AABB(float3(-10), float3(10)));
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	// Define the distribution for values between -100 and 100
+	std::uniform_int_distribution<int> distribution(-100, 90);
+
+	// Generate three random values
+	int rv1 = distribution(gen);
+	int rv2 = distribution(gen);
+	int rv3 = distribution(gen);
+	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+10, rv2+10, rv3+10)));
 }
 
 void MeshRendererComponent::Draw()
@@ -58,6 +80,7 @@ void MeshRendererComponent::DrawEditor()
 		ImGui::Text("Model: Cube.obj (TEST)");
 		ImGui::Text("Material: DefaultMaterial (TEST)");
 		ImGui::Text("Shader: StandardShader (TEST)");
+		ImGui::DragFloat3("Bounding Box (position): ", &mOBB.pos.x);
 	}
 
 	if (this->GetOwner()) {
