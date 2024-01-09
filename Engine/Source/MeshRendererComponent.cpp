@@ -18,10 +18,10 @@ MeshRendererComponent::MeshRendererComponent(GameObject* ownerGameObject)
 	std::uniform_int_distribution<int> distribution(-100, 90);
 
 	// Generate three random values
-	int rv1 = distribution(gen);
-	int rv2 = distribution(gen);
-	int rv3 = distribution(gen);
-	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+10, rv2+10, rv3+10)));
+	float rv1 = distribution(gen)/10;
+	float rv2 = distribution(gen)/10;
+	float rv3 = distribution(gen)/10;
+	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original)
@@ -35,10 +35,10 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 	std::uniform_int_distribution<int> distribution(-100, 90);
 
 	// Generate three random values
-	int rv1 = distribution(gen);
-	int rv2 = distribution(gen);
-	int rv3 = distribution(gen);
-	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+10, rv2+10, rv3+10)));
+	float rv1 = distribution(gen) / 10;
+	float rv2 = distribution(gen) / 10;
+	float rv3 = distribution(gen) / 10;
+	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1 + 1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 }
 
 void MeshRendererComponent::Draw()

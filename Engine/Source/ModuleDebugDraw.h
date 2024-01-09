@@ -25,6 +25,7 @@ public:
     void SetDrawGrid(bool drawGrid);
     bool GetDrawGrid() const;
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
+    void DrawBoundingBox(const OBB& obb);
 
 
 private:
@@ -33,7 +34,6 @@ private:
     bool mdrawGrid; 
 
 
-    void DrawBoundingBox(const OBB& obb);
     void DrawGrid();
     void DrawFrustum(const Frustum& frustum); 
 
