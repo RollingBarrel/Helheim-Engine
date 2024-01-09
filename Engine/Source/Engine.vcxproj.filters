@@ -524,12 +524,6 @@
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleRenderTest.h" />
-    <ClInclude Include="debug_draw.hpp">
-      <Filter>Dependencies\DebugDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="debugdraw.h">
-      <Filter>Dependencies\DebugDraw</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObjects</Filter>
     </ClInclude>

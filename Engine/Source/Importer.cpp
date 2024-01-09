@@ -22,7 +22,7 @@ void Importer::Import(const char* filePath)
 	// .dds Texture
 	else if (extension.compare("dds") == 0)
 	{
-		Importer::Texture::Import(filePath);
+		//Importer::Texture::Import(filePath);
 	}
 	// .glsl Shaders
 	else if ((extension.compare("vs") == 0) || (extension.compare("fs") == 0))
