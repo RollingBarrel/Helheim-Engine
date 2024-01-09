@@ -63,9 +63,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 
 GameObject::GameObject(const char* name, GameObject* parent)
 	:mID(LCG().Int()), mName(name), mParent(parent),
-	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::identity),
-	mLocalTransformMatrix(float4x4::identity), mPosition(float3::zero), mScale(float3::one),
-	mRotation(float3::zero)
+	mIsRoot(parent == nullptr)
 {
 
 	if (!mIsRoot) {
@@ -191,6 +189,9 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 			}
 		}
 	}
+
+	child->mLocalTransformMatrix = mWorldTransformMatrix.Inverted() * child->mWorldTransformMatrix;
+
 	if (!inserted) {
 		mChildren.push_back(child);
 	}
