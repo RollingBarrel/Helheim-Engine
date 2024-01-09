@@ -16,32 +16,10 @@ ModuleRenderTest::~ModuleRenderTest()
 {
 }
 
-bool ModuleRenderTest::Init()
-{
-
-    return true;
-}
-
-update_status ModuleRenderTest::PreUpdate()
-{
-    return UPDATE_CONTINUE;
-}
-
 update_status ModuleRenderTest::Update()
 {
-    float4x4 viewproj = App->GetCamera()->GetViewProjMatrix();
+    float4x4 viewproj = App->GetCamera()->GetProjectionMatrix() * App->GetCamera()->GetViewMatrix();
     App->GetDebugDraw()->Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 
     return UPDATE_CONTINUE;
-}
-
-update_status ModuleRenderTest::PostUpdate()
-{
-    return UPDATE_CONTINUE;
-
-}
-
-bool ModuleRenderTest::CleanUp()
-{
-    return true;
 }

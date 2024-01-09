@@ -10,12 +10,13 @@
 
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
+#include <MathFunc.h>
 
 GameObject::GameObject(GameObject* parent)
 	:mID((new LCG())->Int()), mName("GameObject"), mParent(parent),
-	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
-	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
-	mRotation(Quat::identity)
+	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::identity),
+	mLocalTransformMatrix(float4x4::identity), mPosition(float3::zero), mScale(float3::one),
+	mRotation(float3::zero)
 {
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
@@ -26,7 +27,7 @@ GameObject::GameObject(GameObject* parent)
 
 GameObject::GameObject(const GameObject& original)
 	:mID((new LCG())->Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(false), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
 	mRotation(original.mRotation)
 {
@@ -64,9 +65,9 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 
 GameObject::GameObject(const char* name, GameObject* parent)
 	:mID((new LCG())->Int()), mName(name), mParent(parent),
-	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::zero),
-	mLocalTransformMatrix(float4x4::zero), mPosition(float3::zero), mScale(float3::zero),
-	mRotation(Quat::identity)
+	mIsRoot(parent == nullptr), mIsEnabled(true), mWorldTransformMatrix(float4x4::identity),
+	mLocalTransformMatrix(float4x4::identity), mPosition(float3::zero), mScale(float3::one),
+	mRotation(float3::zero)
 {
 
 	if (!mIsRoot) {
@@ -90,9 +91,32 @@ GameObject::~GameObject()
 
 }
 
+
+/*template<class T>
+T* GameObject::GetComponent() {
+	T& GameObject::GetComponent() {
+		for (auto&& component : components) {
+			if (component->IsClassType(T::Type))
+				return *static_cast<T*>(component.get());
+		}
+
+		return *std::unique_ptr<T>(nullptr);
+	}
+}
+*/
+Component* GameObject::GetComponent(ComponentType type)
+{
+	for (auto component : mComponents) {
+		if (component->GetType() == type) {
+			return component;
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::RecalculateMatrices()
 {
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, Quat::FromEulerXYZ(DegToRad(mRotation.x), DegToRad(mRotation.y), DegToRad(mRotation.z)), mScale);
 
 	mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
 
@@ -112,13 +136,15 @@ void GameObject::Update()
 	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->Update();
 	}
+
+	DeleteComponents();
 }
 
 void GameObject::ResetTransform()
 {
 	mPosition = { 0,0,0 };
-	mScale = { 0,0,0 };
-	mRotation = { 0,0,0,0};
+	mScale = { 1,1,1 };
+	mRotation = { 0,0,0 };
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -129,7 +155,13 @@ void GameObject::DeleteChild(GameObject* child)
 	child = nullptr;
 }
 
-void GameObject::SetRotation(const Quat& rotation)
+void GameObject::AddComponentToDelete(Component* component)
+{
+	mComponentsToDelete.push_back(component);
+}
+
+
+void GameObject::SetRotation(const float3& rotation)
 {
 	mRotation = rotation;
 	RecalculateMatrices();
@@ -150,7 +182,9 @@ void GameObject::SetScale(const float3& scale)
 void GameObject::DrawInspector() {
 	char nameArray[100];
 	strcpy_s(nameArray, mName.c_str());
+	ImGui::PushID(mID);
 	ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
+	ImGui::PopID();
 	mName = nameArray;
 	DrawTransform();
 
@@ -359,8 +393,22 @@ void GameObject::DragAndDrop()
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
+			bool isParent = false;
 			const GameObject* movedObject = (const GameObject*)payload->Data;
-			movedObject->mParent->MoveChild(movedObject->GetID(), this);
+			
+			GameObject* parent = mParent;
+
+			while (parent != nullptr) {
+				if (parent->mID == movedObject->mID) {
+					isParent = true;
+				}
+				parent = parent->mParent;
+			}
+
+				if (!isParent) {
+					movedObject->mParent->MoveChild(movedObject->GetID(), this);
+				}
+			
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -497,46 +545,17 @@ void GameObject::CreateComponent(ComponentType type) {
 	}
 }
 
-void GameObject::DeletePopup(Component* component, int headerPosition) {
-	ImGui::PushID(componentIndex); // Work correctly without this function, its necessary?
-
-	std::string popupID = "ComponentOptions_" + std::to_string(componentIndex);
-
-	ImVec2 min = ImGui::GetItemRectMin();
-	ImVec2 max = ImGui::GetItemRectMax();
-
-	min.y -= ImGui::GetStyle().FramePadding.y + headerPosition;
-	max.y += ImGui::GetStyle().FramePadding.y - headerPosition;
-
-	if (ImGui::IsMouseHoveringRect(min, max) && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
-		ImGui::OpenPopup(popupID.c_str());
-	}
-
-	if (ImGui::BeginPopupContextItem(popupID.c_str())) {
-		ImGui::OpenPopup(popupID.c_str());
-		ImGui::EndPopup();
-	}
-
-	if (ImGui::BeginPopup(popupID.c_str())) {
-		if (ImGui::MenuItem("Delete Component")) {
-			RemoveComponent(component);
-			ImGui::CloseCurrentPopup();
+void GameObject::DeleteComponents() {
+	for (auto component : mComponentsToDelete)
+	{
+		auto it = std::find(mComponents.begin(), mComponents.end(), component);
+		if (it != mComponents.end()) {
+			mComponents.erase(it);
+			delete component;
+			component = nullptr;
 		}
-		if (ImGui::MenuItem("Reset Component")) {
-			component->Reset();
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::EndPopup();
 	}
 
-	ImGui::PopID();
-	componentIndex++;
 }
 
-void GameObject::RemoveComponent(Component* component) {
-	auto it = std::find(mComponents.begin(), mComponents.end(), component);
-	if (it != mComponents.end()) {
-		mComponents.erase(it);
-		delete component;
-	}
-}
+

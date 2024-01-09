@@ -1,5 +1,8 @@
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
+#include "Math/float4x4.h"
+#include "Geometry/Frustum.h"
+#include "Geometry/OBB.h"
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!

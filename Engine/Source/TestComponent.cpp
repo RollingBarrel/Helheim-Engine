@@ -1,63 +1,67 @@
 #include "TestComponent.h"
 #include "imgui.h"
+#include "GameObject.h"
+#include "MeshRendererComponent.h"
 
 TestComponent::TestComponent(GameObject* ownerGameObject) 
-	:Component(ownerGameObject, ComponentType::TEST)
+	:Component("Test Component", ownerGameObject, ComponentType::TEST)
 {
 	
 }
 
 TestComponent::TestComponent(const TestComponent& original)
-	:Component(original.GetOwner(), ComponentType::TEST)
+	:Component(original.mName, original.GetOwner(), ComponentType::TEST)
 {
-	
+
 }
 void TestComponent::Reset() {
-
-}
-
-void TestComponent::Draw()
-{
-
-}
-
-void TestComponent::Load()
-{
-    LoadVBO();
+	//Change variables to default values.
+	number = 0;
 }
 
 void TestComponent::Update()
 {
-    Draw();
+	MeshRendererComponent* c = nullptr;
+		//c = mOwner->GetComponent<MeshRendererComponent>();
+	c = (MeshRendererComponent*)mOwner->GetComponent(ComponentType::MESHRENDERER);
 }
 
 void TestComponent::DrawEditor()
 {
-	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
-		// SIMULATED CONTENT FOR TEST PURPOSES:
-		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)");
-		ImGui::Text("Texture: DefaultTexture (TEST)");
+	
+	if (IsComponentOpen()) {
+		RightClickPopup(); //Required for the right click popup to work
+		ImGui::Text("Demo Text");
+		ImGui::Text("Demo Text 2 ");
 	}
-
-	if (this->GetOwner()) {
-		this->GetOwner()->DeletePopup(this, 38);
+	else {
+		RightClickPopup();
 	}
 }
 
 Component* TestComponent::Clone()
 {
-    return new TestComponent(*this);
+    return new TestComponent(*this); //Calls the copy contrustctor of your component
 }
 
-void TestComponent::LoadVBO()
+void TestComponent::RightClickPopup()
 {
+	Component::RightClickPopup(); //Required for the right click popup to work
+
+
+	//Here Add Custom ImGui for your component RightClick Menu
+	if (ImGui::BeginPopup(mPopupID)) {
+		if (ImGui::MenuItem("Custom Test Component Option")) {
+			ImGui::CloseCurrentPopup();
+		}
+		if (ImGui::MenuItem("Custom Test Component Option 2")) {
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
 
 }
 
-void TestComponent::LoadEBO()
-{
-}
 
-void TestComponent::LoadVAO()
-{
-}
+
+

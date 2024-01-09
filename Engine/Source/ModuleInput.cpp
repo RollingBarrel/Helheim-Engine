@@ -1,25 +1,23 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleWindow.h"
+#include "ModuleOpenGL.h"
 #include "SDL.h"
 #include "imgui_impl_sdl2.h"
 
-#define MAX_KEYS 300
-
-ModuleInput::ModuleInput() : Module(), mouse({ 0, 0 }), mouse_motion({ 0,0 })
+ModuleInput::ModuleInput()
 {
-	keyboard = new KeyState[MAX_KEYS];
-	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
-	memset(mouse_buttons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+	keyboard = new KeyState[SDL_NUM_SCANCODES];
+	memset(keyboard, 0, SDL_NUM_SCANCODES);
 }
 
 // Destructor
 ModuleInput::~ModuleInput()
 {
-	RELEASE_ARRAY(keyboard);
+	delete[] keyboard;
 }
 
-// Called before render is available
 bool ModuleInput::Init()
 {
 	LOG("Init SDL input event system");
@@ -35,121 +33,119 @@ bool ModuleInput::Init()
 	return ret;
 }
 
-// Called before the first frame
-bool ModuleInput::Start()
-{
-	return true;
-}
 
 // Called each loop iteration
 update_status ModuleInput::PreUpdate()
 {
-	static SDL_Event event;
+    //TODO: ugly reset !!
+    if (wheelY != 0)
+    {
+        wheelY = 0;
+    }
 
-	mouse_motion = float2(0.0);
-	memset(windowEvents, false, WE_COUNT * sizeof(bool));
+    SDL_Event sdlEvent;
 
-	const Uint8* keys = SDL_GetKeyboardState(NULL);
+    while (SDL_PollEvent(&sdlEvent) != 0)
+    {
+        ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+        switch (sdlEvent.type)
+        {
+        case SDL_QUIT:
+            return UPDATE_STOP;
+        case SDL_WINDOWEVENT:
+            //https://github.com/ocornut/imgui/blob/master/examples/example_sdl2_opengl3/main.cpp
+            //if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+            if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                App->GetWindow()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                App->GetOpenGL()->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+            }
+            if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+            {
+                return UPDATE_STOP;
+            }
+            break;
+        case SDL_MOUSEWHEEL:
+            wheelY = sdlEvent.wheel.y;
+            break;
+        case SDL_DROPFILE:
+            LOG("File droped: %s\n", sdlEvent.drop.file);
+            SDL_free(sdlEvent.drop.file);
+            break;
+        }
+    }
 
-	for (int i = 0; i < MAX_KEYS; ++i)
-	{
-		if (keys[i] == 1)
-		{
-			if (keyboard[i] == KEY_IDLE)
-				keyboard[i] = KEY_DOWN;
-			else
-				keyboard[i] = KEY_REPEAT;
-		}
-		else
-		{
-			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
-				keyboard[i] = KEY_UP;
-			else
-				keyboard[i] = KEY_IDLE;
-		}
-	}
+    //Mouse snapshot
+    unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mX, &mY);
+    for (int i = 0; i < MouseKey::NUM_MOUSE_BUTTONS; ++i)
+    {
+        unsigned int pressed = mouseBitmask & SDL_BUTTON(i + 1);
+        if (pressed)
+        {
+            switch (mouse[i])
+            {
+            case KeyState::KEY_IDLE:
+            case KeyState::KEY_UP:
+                mouse[i] = KeyState::KEY_DOWN;
+                break;
+            default:
+                mouse[i] = KeyState::KEY_REPEAT;
+                break;
+            }
+        }
+        else
+        {
+            switch (mouse[i])
+            {
+            case KeyState::KEY_DOWN:
+            case KeyState::KEY_REPEAT:
+                mouse[i] = KeyState::KEY_UP;
+                break;
+            default:
+                mouse[i] = KeyState::KEY_IDLE;
+                break;
+            }
+        }
+    }
 
-	for (int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
-	{
-		if (mouse_buttons[i] == KEY_DOWN)
-			mouse_buttons[i] = KEY_REPEAT;
+    //keyboard snapshot
+    const Uint8* keys = SDL_GetKeyboardState(NULL);
+    for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+    {
+        if (keys[i] == SDL_PRESSED)
+        {
+            switch (keyboard[i])
+            {
+            case KeyState::KEY_IDLE:
+            case KeyState::KEY_UP:
+                keyboard[i] = KeyState::KEY_DOWN;
+                break;
+            default:
+                keyboard[i] = KeyState::KEY_REPEAT;
+                break;
+            }
+        }
+        else
+        {
+            switch (keyboard[i])
+            {
+            case KeyState::KEY_REPEAT:
+            case KeyState::KEY_DOWN:
+                keyboard[i] = KeyState::KEY_UP;
+                break;
+            default:
+                keyboard[i] = KeyState::KEY_IDLE;
+                break;
+            }
+        }
+    }
 
-		if (mouse_buttons[i] == KEY_UP)
-			mouse_buttons[i] = KEY_IDLE;
-	}
-
-	while (SDL_PollEvent(&event) != 0)
-	{
-		ImGui_ImplSDL2_ProcessEvent(&event);
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			windowEvents[WE_QUIT] = true;
-			break;
-
-		case SDL_WINDOWEVENT:
-			switch (event.window.event)
-			{
-				//case SDL_WINDOWEVENT_LEAVE:
-			case SDL_WINDOWEVENT_HIDDEN:
-			case SDL_WINDOWEVENT_MINIMIZED:
-			case SDL_WINDOWEVENT_FOCUS_LOST:
-				windowEvents[WE_HIDE] = true;
-				break;
-
-				//case SDL_WINDOWEVENT_ENTER:
-			case SDL_WINDOWEVENT_SHOWN:
-			case SDL_WINDOWEVENT_FOCUS_GAINED:
-			case SDL_WINDOWEVENT_MAXIMIZED:
-			case SDL_WINDOWEVENT_RESTORED:
-				windowEvents[WE_SHOW] = true;
-				break;
-			}
-			break;
-
-		case SDL_MOUSEBUTTONDOWN:
-			mouse_buttons[event.button.button - 1] = KEY_DOWN;
-			break;
-
-		case SDL_MOUSEBUTTONUP:
-			mouse_buttons[event.button.button - 1] = KEY_UP;
-			break;
-
-		case SDL_MOUSEMOTION:
-			mouse_motion.x = event.motion.xrel / SCREEN_WIDTH;
-			mouse_motion.y = event.motion.yrel / SCREEN_HEIGHT;
-			mouse.x = event.motion.x / SCREEN_WIDTH;
-			mouse.y = event.motion.y / SCREEN_HEIGHT;
-			break;
-		}
-	}
-
-	if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		return UPDATE_STOP;
-
-	return UPDATE_CONTINUE;
+    return UPDATE_CONTINUE;
 }
 
-// Called before quitting
 bool ModuleInput::CleanUp()
 {
-	LOG("Quitting SDL event subsystem");
-	SDL_QuitSubSystem(SDL_INIT_EVENTS);
-	return true;
-}
-
-// ---------
-bool ModuleInput::GetWindowEvent(EventWindow ev) const
-{
-	return windowEvents[ev];
-}
-
-const float2& ModuleInput::GetMousePosition() const
-{
-	return mouse;
-}
-
-const float2& ModuleInput::GetMouseMotion() const
-{
-	return mouse_motion;
+    LOG("Quitting SDL input event subsystem");
+    SDL_QuitSubSystem(SDL_INIT_EVENTS);
+    return true;
 }

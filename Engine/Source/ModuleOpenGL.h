@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULE_OPENGL_H_
+#define _MODULE_OPENGL_H_
+
 #include "Module.h"
 #include "Globals.h"
 
@@ -14,7 +16,6 @@ public:
 
 	bool Init() override;
 	update_status PreUpdate() override;
-	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
@@ -23,3 +24,5 @@ public:
 public:
 	void* context = nullptr;
 };
+
+#endif /* _MODULEOPENGL_H_ */

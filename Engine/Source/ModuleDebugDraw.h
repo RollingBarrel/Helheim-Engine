@@ -2,10 +2,7 @@
 #define _MODULE_DEBUGDRAW_H_
 
 #include "Module.h"
-
-#include "Math/float4x4.h"
-#include "Geometry/Frustum.h"
-#include "Geometry/OBB.h"
+#include "MathGeoLibFwd.h"
 
 class DDRenderInterfaceCoreGL;
 class Camera;
@@ -18,12 +15,12 @@ public:
     ModuleDebugDraw();
     ~ModuleDebugDraw();
 
-	bool            Init();
-	update_status   Update();
-	bool            CleanUp();
+	bool            Init() override;
+	update_status   Update() override;
+	bool            CleanUp() override;
 
-    void SetDrawGrid(bool drawGrid);
-    bool GetDrawGrid() const;
+    void SetDrawGrid(bool drawGrid) { mdrawGrid = drawGrid; };
+    bool GetDrawGrid() const { return mdrawGrid; };
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
 
 
@@ -39,13 +36,4 @@ private:
 
 };
 
-inline void ModuleDebugDraw::SetDrawGrid(bool drawGrid)
-{
-    mdrawGrid = drawGrid;
-}
-
-inline bool ModuleDebugDraw::GetDrawGrid() const
-{
-    return mdrawGrid ;
-}
 #endif /* _MODULE_DEBUGDRAW_H_ */

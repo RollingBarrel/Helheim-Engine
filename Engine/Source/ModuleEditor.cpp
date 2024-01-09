@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "SDL.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"

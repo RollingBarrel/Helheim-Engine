@@ -1,8 +1,9 @@
-#pragma once
+#ifndef _MODULE_SCENE_H_
+#define _MODULE_SCENE_H_
+
 #include "Module.h"
 #include <vector>
 class GameObject;
-
 class ModuleScene : public Module
 {
 public:
@@ -37,3 +38,4 @@ private:
 	void DuplicateGameObjects();
 };
 
+#endif /* _MODULE_SCENE_H_ */

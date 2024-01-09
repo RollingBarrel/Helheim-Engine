@@ -1,5 +1,4 @@
 #pragma once
-#include <list>
 #include "Globals.h"
 #include "Module.h"
 
@@ -9,11 +8,11 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleEditor;
 class ModuleRenderExercise;
+class ModuleScene;
+class ModuleFileSystem;
 class ModuleCamera;
 class ModuleRenderTest;
 class ModuleDebugDraw;
-class ModuleFileSystem;
-class ModuleScene;
 
 class Application
 {
@@ -36,6 +35,7 @@ public:
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
 
+
 private:
 
     ModuleOpenGL* render = nullptr;
@@ -48,7 +48,8 @@ private:
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
 
-    std::list<Module*> modules;
+#define NUM_MODULES 9
+    Module* modules[NUM_MODULES];
 
 };
 

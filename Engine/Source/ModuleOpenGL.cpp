@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "glew.h"
 #include "ModuleRenderTest.h"
+#include "ModuleCamera.h"
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -20,16 +21,6 @@ bool ModuleOpenGL::Init()
 {
 	LOG("Creating Renderer context");
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-
 	context = SDL_GL_CreateContext(App->GetWindow()->window);
 
 	GLenum err = glewInit();
@@ -40,6 +31,7 @@ bool ModuleOpenGL::Init()
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
@@ -49,17 +41,10 @@ bool ModuleOpenGL::Init()
 
 update_status ModuleOpenGL::PreUpdate()
 {
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	return UPDATE_CONTINUE;
-}
-
-// Called every draw update
-update_status ModuleOpenGL::Update()
-{
 	return UPDATE_CONTINUE;
 }
 
@@ -83,5 +68,6 @@ bool ModuleOpenGL::CleanUp()
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
+	glViewport(0, 0, width, height);
+	App->GetCamera()->WindowResized(width, height);
 }
-
