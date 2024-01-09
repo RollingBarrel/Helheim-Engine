@@ -1,5 +1,7 @@
 #include "Importer.h"
 #include "ImporterModel.h"
+#include "ImporterTexture.h"
+#include "ImporterShader.h"
 #include "Globals.h"
 #include <iostream>
 #include <fstream>
@@ -8,26 +10,30 @@
 void Importer::Import(const char* filePath)
 {
 	//TODO work with the file path to call other importers
+	std::string extension = filePath;
+	unsigned pos = extension.find_last_of('.');
+	extension = extension.substr(++pos);
 
 	// .gltf IMPORT Model
-	Importer::Model::Import(filePath);
-
+	if (extension.compare("gltf") == 0)
+	{
+		Importer::Model::Import(filePath);
+	}
 	// .dds Texture
-	 
-
+	else if (extension.compare("dds") == 0)
+	{
+		Importer::Texture::Import(filePath);
+	}
 	// .glsl Shaders
-
+	else if ((extension.compare("vs") == 0) || (extension.compare("fs") == 0))
+	{
+		Importer::Shader::Import(filePath);
+	}
 	// Others don't know
-}
-
-void Importer::Load(const char* filePath, char*& buffer) 
-{
-
-}
-
-void Importer::Save(const char* file_path, const void* buffer, unsigned int size, bool append)
-{
-
+	else
+	{
+		LOG("The file %s has a unsupported extension type %s", filePath, extension);
+	}
 }
 
 void Importer::CreateBinaryFile()

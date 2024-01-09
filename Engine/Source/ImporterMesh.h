@@ -18,7 +18,7 @@ struct ResourceMesh
 	float* mVerticesNormal = nullptr;
 	float* mVerticesTangent = nullptr;
 
-	const char* mFileName = nullptr;
+	const char* mMeshName = nullptr;
 
 	void LoadVAO();
 	void LoadVBO();

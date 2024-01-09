@@ -172,6 +172,9 @@
     <ClCompile Include="InspectorPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ImporterShader.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -237,12 +240,6 @@
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
-    <ClInclude Include="debugdraw.h">
-      <Filter>Dependencies\DebugDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="debug_draw.hpp">
-      <Filter>Dependencies\DebugDraw</Filter>
-    </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h">
       <Filter>Dependencies\MathGeoLib</Filter>
     </ClInclude>
@@ -553,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h">
       <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterShader.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

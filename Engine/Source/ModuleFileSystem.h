@@ -5,6 +5,11 @@
 #define LIBRARY_MESH_PATH "Library/Meshes/"
 #define LIBRARY_TEXTURE_PATH "Library/Textures/"
 #define LIBRARY_MATERIAL_PATH "Library/Materials/"
+#define LIBRARY_SHADER_PATH "Library/Shaders/"
+
+#define ASSETS_PATH "Assets/"
+#define ASSETS_MODEL_PATH "Assets/Models/"
+#define ASSETS_TEXTURE_PATH "Assets/Textures/"
 
 class ModuleFileSystem : public Module
 {
