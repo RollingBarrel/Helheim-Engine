@@ -202,6 +202,7 @@
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleRenderTest.cpp" />
+    <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="TestComponent.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="TestComponent.h" />
