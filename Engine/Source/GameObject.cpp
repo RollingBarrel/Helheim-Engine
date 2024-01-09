@@ -242,6 +242,9 @@ void GameObject::OnRightClick() {
 				//mParent->AddChild(gameObject);
 				App->GetScene()->AddGameObjectToDuplicate(gameObject);
 				App->GetScene()->SetSelectedObject(gameObject);
+				if (getMeshRenderer() != nullptr) {
+					App->GetScene()->AddObjectToQuadtree(gameObject);
+				}
 			}
 		}
 

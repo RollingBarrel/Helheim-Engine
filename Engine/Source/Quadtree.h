@@ -14,7 +14,7 @@ class MeshRendererComponent;
 class Quadtree
 {
 public:
-	Quadtree(AABB bounding_box);
+	Quadtree(int depth, AABB bounding_box);
 	~Quadtree();
 
 	bool AddObject(GameObject* object);
@@ -23,9 +23,9 @@ public:
 	const bool hasGameObjects() const { return has_been_filled; }
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
 	void CleanUp();
+	void Draw();
 
 private:
-	Quadtree(int depth, AABB bounding_box);
 
 	void SplitNode(); //Quan es detecta que tenim més del maxim de game objects permès cridem aixo per buidar tot 
 	//i crear els children i posar els game objects on pertany.

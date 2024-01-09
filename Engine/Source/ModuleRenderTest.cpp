@@ -8,7 +8,7 @@
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
 #include "ModuleScene.h"
-
+#include "Quadtree.h"
 
 
 ModuleRenderTest::ModuleRenderTest()
@@ -36,6 +36,7 @@ update_status ModuleRenderTest::Update()
     App->GetDebugDraw()->Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
     GameObject* root = App->GetScene()->GetRoot();
     DrawMeshRenderersRecursive(root);
+    App->GetScene()->GetQuadtreeRoot()->Draw();
 
     return UPDATE_CONTINUE;
 }

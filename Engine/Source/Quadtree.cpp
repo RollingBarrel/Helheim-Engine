@@ -5,6 +5,10 @@
 #include "MeshRendererComponent.h"
 #include "Math/float3.h"
 
+#include "Application.h"
+#include "ModuleDebugDraw.h"
+
+
 Quadtree::Quadtree(int depth, AABB bounding_box)
 {
 	has_been_filled = false;
@@ -12,10 +16,6 @@ Quadtree::Quadtree(int depth, AABB bounding_box)
 	mBoundingBox = bounding_box;
 }
 
-Quadtree::Quadtree(AABB bounding_box)
-{
-	Quadtree(0, bounding_box);
-}
 
 Quadtree::~Quadtree()
 {
@@ -102,6 +102,22 @@ void Quadtree::CleanUp()
 		mGameObjects.clear();
 		return;
 	}
+}
+
+void Quadtree::Draw()
+{
+	App->GetDebugDraw()->DrawBoundingBox(OBB(mBoundingBox));
+
+
+	if (has_been_filled) {
+
+		children[0]->Draw();
+		children[1]->Draw();
+		children[2]->Draw();
+		children[3]->Draw();
+	}
+
+
 }
 
 void Quadtree::SplitNode()
