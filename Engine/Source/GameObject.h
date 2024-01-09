@@ -9,6 +9,7 @@
 
 class GameObject
 {
+	friend class HierarchyPanel;
 public:
 	GameObject(GameObject* parent);
 	GameObject(const GameObject& original);
@@ -24,10 +25,8 @@ public:
 	void RecalculateMatrices();
 	void Update();
 	void DrawInspector();
-	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
-	void OnRightClick();
 	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
@@ -54,8 +53,6 @@ public:
 private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
-	void DragAndDropSource();
-	void DragAndDropTarget(bool reorder = false);
 	void DrawTransform();
 	void AddComponentButton();
 	void DeleteComponents();

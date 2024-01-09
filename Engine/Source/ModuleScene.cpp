@@ -42,11 +42,6 @@ void ModuleScene::DrawInspector()
 	
 }
 
-void ModuleScene::DrawHierarchy()
-{
-	mRoot->DrawHierarchy(mSelectedGameObject->GetID());
-}
-
 void ModuleScene::SetSelectedObject(GameObject* gameObject)
 {
 	mSelectedGameObject = gameObject;
