@@ -23,7 +23,7 @@ void HierarchyPanel::Draw(int windowFlags)
 void HierarchyPanel::OnRightClickNode(GameObject* node) {
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
 
-		ImGui::OpenPopup("OptionsGO");
+		ImGui::OpenPopup("OptionsGO", ImGuiPopupFlags_NoOpenOverExistingPopup);
 	}
 	if (ImGui::BeginPopup("OptionsGO")) {
 		if (ImGui::Selectable("Create GameObject")) {
