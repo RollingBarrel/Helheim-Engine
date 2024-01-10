@@ -11,7 +11,6 @@ public:
 	bool Init() override;
 	update_status Update() override;
 	update_status PostUpdate() override;
-	void DrawInspector();
 
 	GameObject* GetRoot() { return mRoot; }
 	GameObject* GetSelectedGameObject() { return mSelectedGameObject; }

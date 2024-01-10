@@ -10,6 +10,7 @@
 class GameObject
 {
 	friend class HierarchyPanel;
+	friend class InspectorPanel;
 public:
 	GameObject(GameObject* parent);
 	GameObject(const GameObject& original);
@@ -24,7 +25,6 @@ public:
 	Component* GetComponent(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
-	void DrawInspector();
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
 	void AddChild(GameObject* child, const int aboveThisId = 0);
@@ -53,8 +53,6 @@ public:
 private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
-	void DrawTransform();
-	void AddComponentButton();
 	void DeleteComponents();
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;

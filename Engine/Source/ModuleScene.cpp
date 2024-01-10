@@ -34,14 +34,6 @@ update_status ModuleScene::PostUpdate()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DrawInspector()
-{
-	if (mSelectedGameObject != mRoot) {
-		mSelectedGameObject->DrawInspector();
-	}
-	
-}
-
 void ModuleScene::SetSelectedObject(GameObject* gameObject)
 {
 	mSelectedGameObject = gameObject;
