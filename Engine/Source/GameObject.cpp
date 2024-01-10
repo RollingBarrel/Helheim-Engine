@@ -142,8 +142,7 @@ void GameObject::ResetTransform()
 
 void GameObject::DeleteChild(GameObject* child)
 {
-	auto childIterator = std::find(mChildren.begin(), mChildren.end(), child);
-	mChildren.erase(childIterator);
+	RemoveChild(child->mID);
 	delete child;
 	child = nullptr;
 }
