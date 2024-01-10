@@ -16,32 +16,18 @@ update_status ModuleTimer::Update() {
 	static short frameCounter = 0;
 	++frameCounter;
 
-	/*static Uint64 LastTime = SDL_GetPerformanceCounter();
-	static Uint64 frequency = SDL_GetPerformanceFrequency();
-	static double minElaps = frequency / fpsLimit;
-	Uint64 ncounter = SDL_GetPerformanceCounter();
-	Uint64 ElapsedTime = (ncounter - LastTime);*/
+	long newTime = SDL_GetTicks();
+	mDeltaTime = newTime - mTime;
 
-	mDeltaTime = (SDL_GetTicks() - mTime);
-	/*if (ElapsedTime < minElaps)
+	if (mFpsLimit > 0 && mDeltaTime < (1000 / mFpsLimit))
 	{
-		SDL_Delay((minElaps - ElapsedTime)*CLOCKS_PER_SEC/frequency);
-		ncounter = SDL_GetPerformanceCounter();
-		ElapsedTime = (ncounter - LastTime);
-	}*/
-
-	if (mDeltaTime < 1000 / mFpsLimit)
-	{
-		SDL_Delay(1000 / mFpsLimit - mDeltaTime);
+		SDL_Delay((1000 / mFpsLimit) - mDeltaTime);
 		mDeltaTime = (SDL_GetTicks() - mTime);
 	}
 
 	mTime = SDL_GetTicks();
-	//LastTime = ncounter;
 
-	//double MSPerFrame = (((1000.0f * (double)ElapsedTime) / (double)frequency));
-	//double FPS = (double)frequency / (double)ElapsedTime;
-	long timeSinceUpdate = mTime - mUpdateTime;
+	long timeSinceUpdate = newTime - mUpdateTime;
 	if (timeSinceUpdate >= 500) {
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
