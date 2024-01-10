@@ -19,7 +19,7 @@ public:
     long GetDeltaTime() const { return mDeltaTime; }
     float GetFPS() const { return mFpsLog.back(); }
 
-    void SetGameSpeed(float speed) { mGameClock->SetSpeed(speed); }
+    void SetGameSpeed(float speed);
 
 private:
     Timer* mGameClock = nullptr;

@@ -43,3 +43,7 @@ bool ModuleTimer::CleanUp() {
 	return true;
 }
 
+inline void ModuleTimer::SetGameSpeed(float speed) { 
+	mGameClock->SetSpeed(speed); 
+}
+
