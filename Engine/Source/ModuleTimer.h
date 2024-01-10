@@ -3,6 +3,7 @@
 #include "Module.h"
 #include <vector>
 
+class Timer;
 
 class ModuleTimer : public Module
 {
@@ -22,10 +23,9 @@ public:
     void SetGameSpeed(float speed) { mGameClockSpeed = speed; }
 
 private:
-    long mTime = 0;
+    Timer* mGameClock = nullptr;
     long mDeltaTime = 0;
     long mUpdateTime = 0;
-    float mGameClockSpeed = 1;
     unsigned int mFpsLimit = 60;
     std::vector<float> mFpsLog;
 

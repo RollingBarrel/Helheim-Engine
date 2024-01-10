@@ -1,5 +1,6 @@
 #pragma once
 #include "ModuleTimer.h"
+#include "Timer.h"
 #include "SDL.h"
 #include "Application.h"
 
@@ -7,34 +8,31 @@ ModuleTimer::ModuleTimer() {}
 ModuleTimer::~ModuleTimer() {}
 
 bool ModuleTimer::Init() {
-	mFpsLog.reserve(100);
-	mTime = SDL_GetTicks();
-	mUpdateTime = mTime;
+	mGameClock = new Timer();
+	mGameClock->Start();
 	return true;
 }
 update_status ModuleTimer::Update() {
 	static short frameCounter = 0;
 	++frameCounter;
 
-	long newTime = SDL_GetTicks();
-	mDeltaTime = newTime - mTime;
+	mDeltaTime = mGameClock->ReadDelta();
 
 	if (mFpsLimit > 0 && mDeltaTime < (1000 / mFpsLimit))
 	{
 		SDL_Delay((1000 / mFpsLimit) - mDeltaTime);
-		mDeltaTime = (SDL_GetTicks() - mTime);
+		mDeltaTime = 1000 / mFpsLimit;
 	}
 
-	mTime = SDL_GetTicks();
 
-	long timeSinceUpdate = newTime - mUpdateTime;
-	if (timeSinceUpdate >= 500) {
+	mUpdateTime += mDeltaTime;
+	if (mUpdateTime >= 500) {
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
-		mFpsLog.push_back(frameCounter * 1000 / (float)timeSinceUpdate);
+		mFpsLog.push_back(frameCounter * 1000 / (float)mUpdateTime);
 		frameCounter = 0;
-		mUpdateTime = SDL_GetTicks();
+		mUpdateTime = 0;
 	}
 
 
@@ -42,5 +40,7 @@ update_status ModuleTimer::Update() {
 }
 
 bool ModuleTimer::CleanUp() {
+	delete mGameClock;
 	return true;
 }
+
