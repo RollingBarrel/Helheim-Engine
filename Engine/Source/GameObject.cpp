@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "InspectorPanel.h"
+#include "Quadtree.h"
 #include "imgui.h"
 #include <algorithm>
 
@@ -123,6 +124,9 @@ void GameObject::ResetTransform()
 
 void GameObject::DeleteChild(GameObject* child)
 {
+	if (child->getMeshRenderer() != nullptr) {
+		App->GetScene()->GetQuadtreeRoot()->RemoveObject(child);
+	}
 	auto childIterator = std::find(mChildren.begin(), mChildren.end(), child);
 	mChildren.erase(childIterator);
 	delete child;
@@ -242,9 +246,6 @@ void GameObject::OnRightClick() {
 				//mParent->AddChild(gameObject);
 				App->GetScene()->AddGameObjectToDuplicate(gameObject);
 				App->GetScene()->SetSelectedObject(gameObject);
-				if (getMeshRenderer() != nullptr) {
-					App->GetScene()->AddObjectToQuadtree(gameObject);
-				}
 			}
 		}
 
@@ -276,6 +277,9 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	}
 	if (!inserted) {
 		mChildren.push_back(child);
+	}
+	if (child->getMeshRenderer() != nullptr) {
+		App->GetScene()->GetQuadtreeRoot()->AddObject(child);
 	}
 }
 
@@ -497,10 +501,6 @@ void GameObject::CreateComponent(ComponentType type) {
 
 	if (newComponent) {
 		mComponents.push_back(newComponent);
-	}
-	if (type == ComponentType::MESHRENDERER)
-	{
-		App->GetScene()->AddObjectToQuadtree(this);
 	}
 }
 

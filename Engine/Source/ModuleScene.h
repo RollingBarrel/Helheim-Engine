@@ -28,10 +28,8 @@ public:
 	void AddGameObjectToDuplicate(GameObject* gameObject) {
 		mGameObjectsToDuplicate.push_back(gameObject);
 	}
-	void AddObjectToQuadtree(GameObject* gameObject);
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
-
 
 private:
 	GameObject* mRoot;

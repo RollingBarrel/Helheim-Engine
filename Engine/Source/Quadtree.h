@@ -10,31 +10,29 @@ class MeshRendererComponent;
 #define MAX_DEPTH 8
 #define CAPACITY 4
 
-
 class Quadtree
 {
 public:
-	Quadtree(int depth, AABB bounding_box);
+	Quadtree(const AABB& boundingBox);
 	~Quadtree();
 
 	bool AddObject(GameObject* object);
-	void RemoveObject(GameObject* object);
-	bool Intersects(OBB* bounding_box);
-	const bool hasGameObjects() const { return has_been_filled; }
+	void RemoveObject(const GameObject* object);
+	bool Intersects(const OBB* bounding_box) const;
+	const bool hasGameObjects() const { return mFilled; }
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
 	void CleanUp();
-	void Draw();
+	void Draw() const;
 
 private:
-
-	void SplitNode(); //Quan es detecta que tenim més del maxim de game objects permès cridem aixo per buidar tot 
-	//i crear els children i posar els game objects on pertany.
+	Quadtree(const AABB& boundingBox, int depth);
+	void SplitNode();
 
 	AABB mBoundingBox;
-	Quadtree* children[4];
+	Quadtree* mChildren[4];
 	std::vector<GameObject*> mGameObjects;
-	int depth_level;
-	bool has_been_filled;
+	int mDepthLevel;
+	bool mFilled;
 
 };
 
