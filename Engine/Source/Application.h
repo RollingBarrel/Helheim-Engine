@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
+#include "EngineTimer.h"
 
 class ModuleOpenGL;
 class ModuleWindow;
@@ -35,6 +36,7 @@ public:
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
 
+    float GetDt() const { return dt; }
 
 private:
 
@@ -51,6 +53,8 @@ private:
 #define NUM_MODULES 9
     Module* modules[NUM_MODULES];
 
+    EngineTimer timer;
+    float dt;
 };
 
 extern Application* App;

@@ -32,42 +32,44 @@ update_status ModuleCamera::Update()
 {
 	//Fer state machine amb els inputs !!!!
 	//TODO: Camera velocity variable independent of framerate
+	float dtTransformCameraVel = App->GetDt() * 8.f;
+	float dtRotateCameraVel = App->GetDt() * 1.f;
 
 	//moving/rot camera
 	if (App->GetInput()->GetMouseWheelMotion() != 0)
 	{
-		Transform(float3(0, 0, 0.05f * App->GetInput()->GetMouseWheelMotion()));
+		Transform(float3(0, 0, dtTransformCameraVel*10.f * App->GetInput()->GetMouseWheelMotion()));
 	}
 	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 	{
 		int mX, mY;
 		App->GetInput()->GetMouseMotion(mX, mY);
-		Rotate(float3::unitY, -mX * 0.002);
+		Rotate(float3::unitY, -mX * dtRotateCameraVel);
 		//TODO: save the right vector myself??
-		Rotate(frustum.WorldRight(), -mY * 0.002);
+		Rotate(frustum.WorldRight(), -mY * dtRotateCameraVel);
 		if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 		{
-			Transform(float3(0, -0.01f, 0));
+			Transform(float3(0, -dtTransformCameraVel, 0));
 		}
 		if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
 		{
-			Transform(float3(0, 0.01f, 0));
+			Transform(float3(0, dtTransformCameraVel, 0));
 		}
 		if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 		{
-			Transform(float3(0, 0, 0.01f));
+			Transform(float3(0, 0, dtTransformCameraVel));
 		}
 		if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
 		{
-			Transform(float3(0, 0, -0.01f));
+			Transform(float3(0, 0, -dtTransformCameraVel));
 		}
 		if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 		{
-			Transform(float3(-0.01f, 0, 0));
+			Transform(float3(-dtTransformCameraVel, 0, 0));
 		}
 		if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 		{
-			Transform(float3(0.01f, 0, 0));
+			Transform(float3(dtTransformCameraVel, 0, 0));
 		}
 	}
 	//paning camera
@@ -75,8 +77,8 @@ update_status ModuleCamera::Update()
 	{
 		int mX, mY;
 		App->GetInput()->GetMouseMotion(mX, mY);
-		Transform(float3(-mX * 0.01f, 0, 0));
-		Transform(float3(0, mY * 0.01f, 0));
+		Transform(float3(-mX * dtTransformCameraVel, 0, 0));
+		Transform(float3(0, mY * dtTransformCameraVel, 0));
 	}
 	//orbiting camera
 	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
@@ -85,7 +87,7 @@ update_status ModuleCamera::Update()
 		float3 focus = frustum.pos; //(cameraPos - targetPos)
 		int mX, mY;
 		App->GetInput()->GetMouseMotion(mX, mY);
-		float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3::unitY, -mX * 0.002f) * float3x3::RotateAxisAngle(right, -mY * 0.002f);
+		float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3::unitY, -mX * dtRotateCameraVel) * float3x3::RotateAxisAngle(right, -mY * dtRotateCameraVel);
 		focus = rotationMatrix.MulDir(focus);
 		float3 newUp = rotationMatrix.MulDir(frustum.up);
 		LookAt(focus, float3(0, 0, 0), newUp);

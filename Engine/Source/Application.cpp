@@ -44,6 +44,8 @@ bool Application::Init()
 
 update_status Application::Update()
 {
+	dt = timer.Read();
+	timer.Start();
 	update_status ret = UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
@@ -54,7 +56,7 @@ update_status Application::Update()
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
 		ret = modules[i]->PostUpdate();
-
+	LOG("dt: %f", dt);
 	return ret;
 }
 
