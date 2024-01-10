@@ -2,7 +2,6 @@
 #include "ModuleTimer.h"
 #include "Timer.h"
 #include "SDL.h"
-#include "Application.h"
 
 ModuleTimer::ModuleTimer() {}
 ModuleTimer::~ModuleTimer() {}

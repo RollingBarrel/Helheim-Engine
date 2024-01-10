@@ -16,11 +16,10 @@ public:
     update_status Update();
     bool CleanUp();
 
-    long GetRealDeltaTime() const { return mDeltaTime; }
-    long GetGameDeltaTime() const { return mDeltaTime * mGameClockSpeed; }
+    long GetDeltaTime() const { return mDeltaTime; }
     float GetFPS() const { return mFpsLog.back(); }
 
-    void SetGameSpeed(float speed) { mGameClockSpeed = speed; }
+    void SetGameSpeed(float speed) { mGameClock->SetSpeed(speed); }
 
 private:
     Timer* mGameClock = nullptr;
