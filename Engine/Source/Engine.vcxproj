@@ -189,6 +189,7 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
+    <ClCompile Include="EngineTimer.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\tiny_gltf.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="EngineTimer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Importer.h" />

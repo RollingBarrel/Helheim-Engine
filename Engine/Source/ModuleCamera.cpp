@@ -32,8 +32,8 @@ update_status ModuleCamera::Update()
 {
 	//Fer state machine amb els inputs !!!!
 	//TODO: Camera velocity variable independent of framerate
-	float dtTransformCameraVel = App->GetDt() * 8.f;
-	float dtRotateCameraVel = App->GetDt() * 1.f;
+	const float dtTransformCameraVel = App->GetDt() * 8.f;
+	const float dtRotateCameraVel = App->GetDt() * 1.f;
 
 	//moving/rot camera
 	if (App->GetInput()->GetMouseWheelMotion() != 0)
