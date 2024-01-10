@@ -23,22 +23,3 @@ long Timer::SetSpeed(float speed) {
 	speed = speed;
 	return currentTime;
 }
-
-void Timer::StartPrecise() {
-	mInitialCount = SDL_GetPerformanceCounter();
-}
-
-long long Timer::ReadPrecise() {
-	if (mInitialCount != 0) {
-		static Uint64 frequency = SDL_GetPerformanceFrequency();
-		Uint64 elapsedCount = SDL_GetPerformanceCounter() - mInitialCount;
-		mElapsedNanoseconds = elapsedCount / frequency;
-	}
-	return mElapsedNanoseconds;
-}
-
-long long Timer::StopPrecise() {
-	uint64_t finalTime = ReadPrecise();
-	mInitialCount = 0;
-	return finalTime;
-}
