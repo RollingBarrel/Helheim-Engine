@@ -67,6 +67,11 @@ void LoadTexture(const char* path, ResourceTex& texture)
         assert(false && "Unsupported format");
     }
 
-    texture.widthTex = image.GetMetadata().width;
-    texture.heightTex = image.GetMetadata().height;
+    texture.mWidth = image.GetMetadata().width;
+    texture.mHeight = image.GetMetadata().height;
+
+    for (auto i = 0; i < image.GetPixelsSize(); ++i)
+    {
+        texture.pixels[i] = image.GetPixels()[i];
+    }
 }

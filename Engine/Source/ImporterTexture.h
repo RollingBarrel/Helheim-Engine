@@ -2,9 +2,14 @@
 
 struct ResourceTex
 {
-	int widthTex, heightTex, colorTex;
+	int mWidth;
+	int mHeight;
 
-	int internalFormat, format, type;
+	int internalFormat;
+	int format;
+	int type;
+
+	unsigned char* pixels;
 };
 
 namespace Importer
