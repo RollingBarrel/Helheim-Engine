@@ -1,5 +1,6 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "TestSceneGameObjects.cpp"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
@@ -13,6 +14,8 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
+	TestSceneGameObjects test = TestSceneGameObjects();
+	test.TestScene();
 	return true;
 }
 

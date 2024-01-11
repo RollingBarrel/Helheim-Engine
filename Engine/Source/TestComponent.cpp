@@ -62,6 +62,11 @@ void TestComponent::RightClickPopup()
 
 }
 
+void TestComponent::Save(Archive& archive) const {
+	archive.AddString("type", "Test");
+}
 
+void TestComponent::Load(const rapidjson::Value& data) {
+}
 
 

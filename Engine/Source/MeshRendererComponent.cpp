@@ -77,4 +77,10 @@ void MeshRendererComponent::RightClickPopup()
 
 }
 
+void MeshRendererComponent::Save(Archive& archive) const {
+	archive.AddString("type", "MeshRenderer");
+}
+
+void MeshRendererComponent::Load(const rapidjson::Value& data) {
+}
 

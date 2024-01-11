@@ -558,4 +558,49 @@ void GameObject::DeleteComponents() {
 
 }
 
+void GameObject::Save(Archive& archive) const {
+	archive.AddString("name", mName);
+	archive.AddBool("isEnabled", mIsEnabled);
+	archive.AddFloat3("position", mPosition);
+	archive.AddFloat3("scale", mScale);
 
+	// Save components
+	Archive componentsArchive;
+	for (const auto& component : mComponents) {
+		component->Save(componentsArchive);
+	}
+	archive.AddObject("components", componentsArchive);
+
+	// Save children
+	Archive childrenArchive;
+	for (const auto& child : mChildren) {
+		Archive childArchive;
+		child->Save(childArchive);
+		childrenArchive.AddObject("child", childArchive);
+	}
+	archive.AddObject("children", childrenArchive);
+}
+
+/*void GameObject::Load(const rapidjson::Value& data) {
+	if (data.HasMember("name") && data["name"].IsString()) {
+		mName = data["name"].GetString();
+	}
+
+	// Load components
+	if (data.HasMember("components") && data["components"].IsArray()) {
+		const auto& componentsData = data["components"].GetArray();
+		for (const auto& componentData : componentsData) {
+			LoadComponent(componentData);
+		}
+	}
+
+	// Load children
+	if (data.HasMember("children") && data["children"].IsArray()) {
+		const auto& childrenData = data["children"].GetArray();
+		for (const auto& childData : childrenData) {
+			GameObject child;
+			child.Load(childData);
+			mChildren.push_back(child);
+		}
+	}
+}*/

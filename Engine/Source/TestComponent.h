@@ -17,6 +17,9 @@ public:
 	void DrawEditor() override;
 	Component* Clone() override;
 
+	void Save(Archive& archive) const override;
+	void Load(const rapidjson::Value& data) override;
+
 private:
 	void RightClickPopup() override;
 

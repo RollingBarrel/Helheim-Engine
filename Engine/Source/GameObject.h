@@ -51,6 +51,9 @@ public:
 
 	void CreateComponent(ComponentType type);
 
+	void Save(Archive& archive) const;
+	//void Load(const Archive& archive);
+
 private:
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
 	void AddSufix();
