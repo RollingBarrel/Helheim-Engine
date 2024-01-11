@@ -1,9 +1,8 @@
 #include "Component.h"
 #include "GameObject.h"
 
+int Component::mLastcomponentIndex = 0;
 
-int Component::lastcomponentIndex = 0;
-
-Component::Component(const char* name, GameObject* owner, ComponentType type) 
-	:mName(name), mOwner(owner), mType(type), mIsEnabled(true), mPopupID("ComponentOptions_"+ lastcomponentIndex++)
-{}
+Component::Component(const char* name, GameObject* owner, ComponentType type)
+	:mName(name), mOwner(owner), mType(type), mIsEnabled(true), mComponentIndex(mLastcomponentIndex++),
+	mPopupID("ComponentOptions_" + mComponentIndex){}

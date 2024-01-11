@@ -6,6 +6,8 @@
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 
+bool InspectorPanel::mSame_component_window = false;
+
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
@@ -28,6 +30,8 @@ void InspectorPanel::Draw(int windowFlags)
 		AddComponentButton(focusedObject);
 	}
 	
+	if (mSame_component_window) ShowSameComponentWindow();
+
 	ImGui::End();
 	ImGui::PopID();
 }
@@ -81,7 +85,6 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 
 }
 
-
 void InspectorPanel::AddComponentButton(GameObject* object) {
 	float windowWidth = ImGui::GetWindowWidth();
 	float buttonWidth = 150.0f; // Desired width for the button
@@ -89,38 +92,69 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 
 	ImGui::SetCursorPosX(posX);
 
-	bool hasMeshRendererComponent = false;
-	bool hasMaterialComponent = false;
+	bool hasMeshRendererComponent = CheckComponent(object, ComponentType::MESHRENDERER);
 
-	for (Component* component : object->mComponents) {
-		if (component->GetType() == ComponentType::MESHRENDERER) {
-			hasMeshRendererComponent = true;
-		}
-		else if (component->GetType() == ComponentType::TEST) {
-			hasMaterialComponent = true;
-		}
-
-		if (hasMeshRendererComponent && hasMaterialComponent) {
-			break;
-		}
-	}
-
-	if (!hasMeshRendererComponent || !hasMaterialComponent) {
-		if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
-			ImGui::OpenPopup("AddComponentPopup");
-		}
+	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
+		ImGui::OpenPopup("AddComponentPopup");
 	}
 
 	if (ImGui::BeginPopup("AddComponentPopup")) {
-		if (!hasMeshRendererComponent && ImGui::MenuItem("Mesh Renderer")) {
-			object->CreateComponent(ComponentType::MESHRENDERER);
+		if (ImGui::MenuItem("Mesh Renderer")) {
+			if (!hasMeshRendererComponent)
+			{
+				object->CreateComponent(ComponentType::MESHRENDERER);
+			} else {
+				mSame_component_window = true;
+			}
 		}
-		if (!hasMaterialComponent && ImGui::MenuItem("Test")) {
+		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
 		}
-
 		ImGui::EndPopup();
 	}
+}
+
+bool InspectorPanel::CheckComponent(GameObject* object, ComponentType type) {
+	for (Component* component : object->mComponents) {
+		if (component->GetType() == type) {
+			return true;
+			break;
+		}
+	}
+	return false;
+}
+
+void InspectorPanel::ShowSameComponentWindow() 
+{
+	ImGuiViewport* mainViewport = ImGui::GetMainViewport();
+	ImVec2 centerPos = ImVec2(mainViewport->Pos.x + mainViewport->Size.x * 0.5f,
+		mainViewport->Pos.y + mainViewport->Size.y * 0.5f);
+
+	ImGui::SetNextWindowPos(centerPos, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+	ImGui::SetNextWindowSize(ImVec2(380, 115), ImGuiCond_Appearing);
+
+	ImGui::Begin("Can't add the same component multiple times!", &mSame_component_window,
+		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar);
+
+	ImGui::Text("This component can't be added because GameObject ");
+	ImGui::Text("already contains the same component");
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImVec2 buttonSize(120, 25);
+	ImVec2 buttonPos((ImGui::GetWindowSize().x - buttonSize.x) * 0.5f, 90);
+
+	if (ImGui::Button("Cancel", buttonSize)) {
+		mSame_component_window = false;
+	}
+
+	ImGui::SetCursorPos(buttonPos);
+	ImGui::End();
 }
 
 /****************** COMPONENTS ********************/
@@ -169,6 +203,7 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
+		ImGui::PushID(component->mComponentIndex);
 		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		RightClickPopup(component);
 		if (isOpen) {
@@ -188,6 +223,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 
 			}
 		}
+		ImGui::PopID();
 	}
 }
 

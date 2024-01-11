@@ -67,9 +67,5 @@ private:
 	float3 mRotation = float3::zero;
 	float3 mScale = float3::one;
 	bool mIsEnabled = true;
-
-	int componentIndex = 0;
-
-	
 };
 

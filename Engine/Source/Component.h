@@ -20,7 +20,6 @@ public:
 	Component(const char* name ,GameObject* owner, ComponentType type);
 	virtual ~Component() {}
 	
-
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
 
@@ -28,7 +27,8 @@ protected:
 	virtual	void Reset() = 0;
 	const char* const mName;
 	const char* mPopupID;
-	static int lastcomponentIndex;
+	int mComponentIndex = 0;
+	static int mLastcomponentIndex;
 	GameObject* mOwner;
 private:
 	ComponentType mType;
