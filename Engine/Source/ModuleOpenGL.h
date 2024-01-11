@@ -20,9 +20,16 @@ public:
 	bool CleanUp() override;
 
 	void WindowResized(unsigned width, unsigned height);
+	unsigned int GetFramebufferTexture() const { return colorAttachment; }
+	void BindFramebuffer();
+	void UnbindFramebuffer();
 
 public:
 	void* context = nullptr;
+
+	unsigned int fbo;
+	unsigned int colorAttachment;
+	unsigned int depthStencil;
 };
 
 #endif /* _MODULEOPENGL_H_ */

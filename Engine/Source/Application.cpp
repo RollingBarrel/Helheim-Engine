@@ -15,15 +15,15 @@
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
-	modules[0] = window = new ModuleWindow();
-	modules[1] = render = new ModuleOpenGL();
-	modules[2] = fileSystem = new ModuleFileSystem();
-	modules[3] = input = new ModuleInput();
-	modules[4] = scene = new ModuleScene();
-	modules[5] = test = new ModuleRenderTest();
-	modules[6] = editor = new ModuleEditor();
-	modules[7] = camera = new ModuleCamera();
-	modules[8] = debugDraw = new ModuleDebugDraw();
+	modules[0] = input = new ModuleInput();
+	modules[1] = window = new ModuleWindow();
+	modules[2] = render = new ModuleOpenGL();
+	modules[3] = camera = new ModuleCamera();
+	modules[4] = fileSystem = new ModuleFileSystem();
+	modules[5] = scene = new ModuleScene();
+	modules[6] = test = new ModuleRenderTest();
+	modules[7] = debugDraw = new ModuleDebugDraw();
+	modules[8] = editor = new ModuleEditor();
 }
 
 Application::~Application()

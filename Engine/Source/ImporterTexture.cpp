@@ -74,4 +74,12 @@ void LoadTexture(const char* path, ResourceTex& texture)
     {
         texture.pixels[i] = image.GetPixels()[i];
     }
+
+    //unsigned int colorAttachment;
+    //glGenTextures(1, &colorAttachment);
+    //glBindTexture(GL_TEXTURE_2D, colorAttachment);
+    //glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    ////glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
 }

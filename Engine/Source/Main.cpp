@@ -1,8 +1,13 @@
 #include <stdlib.h>
 #include "Application.h"
-#include "ModuleOpenGL.h"
 #include "Globals.h"
 #include "SDL.h"
+
+//Select Nvidia or Amd GPU insted of integrated graphics
+extern "C" {
+	_declspec(dllexport) unsigned int NvOptimusEnablement = 1;
+	_declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
 
 enum main_states
 {

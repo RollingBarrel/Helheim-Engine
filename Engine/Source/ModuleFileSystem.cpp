@@ -41,7 +41,7 @@ bool ModuleFileSystem::Init()
 {
     //Importer::CreateBinaryFile();
 
-    Importer::Import("Assets/Models/Triangle/Triangle.gltf");
+    //Importer::Import("Assets/Models/Triangle/Triangle.gltf");
     //Importer::Import("Shaders/basic.vs");
 
     //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
