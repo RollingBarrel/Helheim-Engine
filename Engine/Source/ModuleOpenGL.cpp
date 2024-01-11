@@ -36,6 +36,18 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 
+	unsigned int fbo;
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	unsigned int colorAttachment;
+	glGenTextures(GL_TEXTURE_2D, &colorAttachment);
+	glBindTexture(GL_TEXTURE_2D, colorAttachment);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
+	unsigned int depthStencil;
+	glGenTextures(1, &depthStencil);
 	return true;
 }
 
