@@ -8,14 +8,21 @@ ModuleTimer::~ModuleTimer() {}
 
 bool ModuleTimer::Init() {
 	mGameClock = new Timer();
+	mRealClock = new Timer();
 	mGameClock->Start();
+	mRealClock->Start();
 	return true;
 }
 update_status ModuleTimer::Update() {
 	static short frameCounter = 0;
 	++frameCounter;
 
-	mDeltaTime = mGameClock->ReadDelta();
+	if (mChangeSpeed) { 
+		mGameDelta = mGameClock->SetSpeed(mNewSpeed);
+		mChangeSpeed = false;
+	}
+	else { mGameDelta = mGameClock->ReadDelta(); }
+	mDeltaTime = mRealClock->ReadDelta();
 
 	if (mFpsLimit > 0 && mDeltaTime < (1000 / mFpsLimit))
 	{
@@ -39,11 +46,13 @@ update_status ModuleTimer::Update() {
 }
 
 bool ModuleTimer::CleanUp() {
+	delete mRealClock;
 	delete mGameClock;
 	return true;
 }
 
 inline void ModuleTimer::SetGameSpeed(float speed) { 
-	mGameClock->SetSpeed(speed); 
+	mNewSpeed = speed;
+	mChangeSpeed = true;
 }
 
