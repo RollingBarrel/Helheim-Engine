@@ -9,6 +9,8 @@
 
 class GameObject
 {
+	friend class HierarchyPanel;
+	friend class InspectorPanel;
 public:
 	GameObject(GameObject* parent);
 	GameObject(const GameObject& original);
@@ -23,11 +25,8 @@ public:
 	Component* GetComponent(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
-	void DrawInspector();
-	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
-	void OnRightClick();
 	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
@@ -54,10 +53,6 @@ public:
 private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
-	void DragAndDropSource();
-	void DragAndDropTarget(bool reorder = false);
-	void DrawTransform();
-	void AddComponentButton();
 	void DeleteComponents();
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
@@ -72,9 +67,5 @@ private:
 	float3 mRotation = float3::zero;
 	float3 mScale = float3::one;
 	bool mIsEnabled = true;
-
-	int componentIndex = 0;
-
-	
 };
 

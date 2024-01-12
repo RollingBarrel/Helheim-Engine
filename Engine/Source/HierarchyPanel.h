@@ -3,6 +3,8 @@
 #include "Panel.h"
 #define HIERARCHYPANEL "Hierarchy##"
 
+class GameObject;
+
 class HierarchyPanel : public Panel
 {
 public:
@@ -10,5 +12,9 @@ public:
 	//~HierarchyPanel();
 
 	void Draw(int windowFlags) override;
-	void OpenRightClickPanel();
+private:
+	void DrawTree(GameObject* node, const int selected);
+	void DragAndDropSource(GameObject* source);
+	void DragAndDropTarget(GameObject* target, bool reorder = false);
+	void OnRightClickNode(GameObject* node);
 };

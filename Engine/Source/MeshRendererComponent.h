@@ -17,14 +17,12 @@ public:
 	void Load();
 
 	void Update() override;
-	void DrawEditor() override;
 	Component* Clone(GameObject* owner) override;
 
 private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-	void RightClickPopup() override;
 	Mesh* mMesh;
 	Material* material;
 	AABB mAABB;
