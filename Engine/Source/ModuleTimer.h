@@ -20,7 +20,7 @@ public:
     long GetGameDelta() const { return mGameDelta; }
     float GetFPS() const { return mFpsLog.back(); }
 
-    void SetGameSpeed(float speed);
+    void SetTimeScale(float speed);
 
 private:
     Timer* mGameClock = nullptr;

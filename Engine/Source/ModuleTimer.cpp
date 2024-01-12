@@ -17,12 +17,12 @@ update_status ModuleTimer::Update() {
 	static short frameCounter = 0;
 	++frameCounter;
 
+	mDeltaTime = mRealClock->ReadDelta();
 	if (mChangeSpeed) { 
 		mGameDelta = mGameClock->SetSpeed(mNewSpeed);
 		mChangeSpeed = false;
 	}
 	else { mGameDelta = mGameClock->ReadDelta(); }
-	mDeltaTime = mRealClock->ReadDelta();
 
 	if (mFpsLimit > 0 && mDeltaTime < (1000 / mFpsLimit))
 	{
@@ -51,7 +51,7 @@ bool ModuleTimer::CleanUp() {
 	return true;
 }
 
-inline void ModuleTimer::SetGameSpeed(float speed) { 
+void ModuleTimer::SetTimeScale(float speed) {
 	mNewSpeed = speed;
 	mChangeSpeed = true;
 }
