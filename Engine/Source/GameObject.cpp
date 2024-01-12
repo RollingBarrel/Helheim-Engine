@@ -3,11 +3,9 @@
 #include "Component.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include <algorithm>
-
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
-#include <MathFunc.h>
+
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
@@ -23,8 +21,8 @@ GameObject::GameObject(GameObject* parent)
 GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
-	mRotation(original.mRotation)
+	mLocalTransformMatrix(original.mLocalTransformMatrix)
+
 {
 
 	AddSuffix();
@@ -43,8 +41,7 @@ GameObject::GameObject(const GameObject& original)
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix), mPosition(original.mPosition), mScale(original.mScale),
-	mRotation(original.mRotation)
+	mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
 	for (auto child : original.mChildren) {
@@ -109,13 +106,15 @@ Component* GameObject::GetComponent(ComponentType type)
 
 void GameObject::RecalculateMatrices()
 {
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, Quat::FromEulerXYZ(DegToRad(mRotation.x), DegToRad(mRotation.y), DegToRad(mRotation.z)), mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 
 	mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
 
 	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->RecalculateMatrices();
 	}
+
+	isTransformModified = false;
 
 }
 
@@ -131,13 +130,17 @@ void GameObject::Update()
 	}
 
 	DeleteComponents();
+	if (isTransformModified) {
+		RecalculateMatrices();
+	}
+
 }
 
 void GameObject::ResetTransform()
 {
-	mPosition = { 0,0,0 };
-	mScale = { 1,1,1 };
-	mRotation = { 0,0,0 };
+	SetPosition(float3::zero);
+	SetRotation(float3::zero);
+	SetScale(float3::one);
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -153,22 +156,34 @@ void GameObject::AddComponentToDelete(Component* component)
 }
 
 
-void GameObject::SetRotation(const float3& rotation)
+void GameObject::SetRotation(const float3& rotationInRadians)
 {
+
+	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
+	mRotation = mRotation * deltaRotation;
+	mEulerRotation = rotationInRadians;
+
+	isTransformModified = true;
+}
+
+void GameObject::SetRotation(const Quat& rotation)
+{
+
 	mRotation = rotation;
-	RecalculateMatrices();
+
 }
 
 void GameObject::SetPosition(const float3& position)
 {
 	mPosition = position;
-	RecalculateMatrices();
+	isTransformModified = true;
 }
 
 void GameObject::SetScale(const float3& scale)
 {
 	mScale = scale;
-	RecalculateMatrices();
+
+	isTransformModified = true;
 }
 
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
@@ -186,7 +201,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 		}
 	}
 
-	child->mLocalTransformMatrix = mWorldTransformMatrix.Inverted() * child->mWorldTransformMatrix;
+	child->RecalculateLocalTransform();
 
 	if (!inserted) {
 		mChildren.push_back(child);
@@ -270,4 +285,18 @@ void GameObject::DeleteComponents() {
 			component = nullptr;
 		}
 	}
+}
+
+void GameObject::RecalculateLocalTransform()
+{
+	
+	mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	
+	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
+	mEulerRotation = mRotation.ToEulerXYZ();
+	
+	if (mEulerRotation.Equals(float3::zero)) {
+		mEulerRotation = float3::zero;
+	}
+
 }

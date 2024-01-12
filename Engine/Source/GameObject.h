@@ -4,8 +4,9 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "string"
-#include "Component.h"
-//#include "MathGeoLib.h"
+
+class Component;
+enum class ComponentType : unsigned int;
 
 class GameObject
 {
@@ -31,9 +32,9 @@ public:
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
-	const float3& GetRotation() const { return mRotation; }
-	const float3& GetPosition() const { return mPosition; }
-	const float3& GetScale() const { return mScale; }
+	const float3& GetRotation() const { return mLocalTransformMatrix.ToEulerXYZ(); }
+	const float3& GetPosition() const { return mLocalTransformMatrix.TranslatePart(); }
+	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
 	const std::string* GetName() const { return &mName; }
 	void ResetTransform();
@@ -45,6 +46,7 @@ public:
 	void AddComponentToDelete(Component* component);
 
 	void SetRotation(const float3& rotation);
+	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
@@ -54,6 +56,7 @@ private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
 	void DeleteComponents();
+	void RecalculateLocalTransform();
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
@@ -64,8 +67,11 @@ private:
 	float4x4 mLocalTransformMatrix = float4x4::identity;
 	const bool mIsRoot = false;
 	float3 mPosition = float3::zero;
-	float3 mRotation = float3::zero;
+	Quat mRotation = Quat::identity;
+	float3 mEulerRotation = float3::zero;
 	float3 mScale = float3::one;
 	bool mIsEnabled = true;
+	bool isTransformModified = false;
+	
 };
 

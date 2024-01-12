@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ComponentType
+enum class ComponentType : unsigned int
 {
 	MESHRENDERER, TEST
 };
@@ -26,9 +26,7 @@ public:
 protected:
 	virtual	void Reset() = 0;
 	const char* const mName;
-	const char* mPopupID;
-	int mComponentIndex = 0;
-	static int mLastcomponentIndex;
+	const unsigned int mID;
 	GameObject* mOwner;
 private:
 	ComponentType mType;
