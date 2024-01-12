@@ -12,6 +12,7 @@ class GameObject
 {
 	friend class HierarchyPanel;
 	friend class InspectorPanel;
+
 public:
 	GameObject(GameObject* parent);
 	GameObject(const GameObject& original);
@@ -54,12 +55,14 @@ private:
 	void AddSuffix();
 	void DeleteComponents();
 	void RecalculateLocalTransform();
+
+
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
 	const unsigned int mID;
-	std::string mName = "Game Object";
+	std::string mName = "GameObject";
 	float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;
 	const bool mIsRoot = false;

@@ -81,19 +81,6 @@ GameObject::~GameObject()
 
 }
 
-
-/*template<class T>
-T* GameObject::GetComponent() {
-	T& GameObject::GetComponent() {
-		for (auto&& component : components) {
-			if (component->IsClassType(T::Type))
-				return *static_cast<T*>(component.get());
-		}
-
-		return *std::unique_ptr<T>(nullptr);
-	}
-}
-*/
 Component* GameObject::GetComponent(ComponentType type)
 {
 	for (auto component : mComponents) {
@@ -236,7 +223,6 @@ void GameObject::AddSuffix()
 		for (auto gameObject : mParent->mChildren)
 		{
 			if (pos == -1) {
-				//pos = gameObject->mName.find(str, gameObject->mName.size() - 4);
 				pos = gameObject->mName.find(nameWithSufix);
 			}
 

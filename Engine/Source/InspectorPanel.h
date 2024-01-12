@@ -1,6 +1,5 @@
 #pragma once
 #include "Panel.h"
-#include "Component.h"
 #define INSPECTORPANEL "Inspector##"
 
 class GameObject;

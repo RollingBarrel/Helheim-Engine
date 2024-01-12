@@ -2,7 +2,7 @@
 
 enum class ComponentType : unsigned int
 {
-	MESHRENDERER, TEST
+	MESHRENDERER, TEST, NONE
 };
 
 class GameObject;
@@ -25,12 +25,11 @@ public:
 
 protected:
 	virtual	void Reset() = 0;
-	const char* const mName;
-	const unsigned int mID;
-	GameObject* mOwner;
+	const char* const mName = "";
+	const unsigned int mID = 0;
+	GameObject* mOwner = nullptr;
 private:
-	ComponentType mType;
-	
-	bool mIsEnabled;
+	ComponentType mType = ComponentType::NONE;
+	bool mIsEnabled = true;
 };
 
