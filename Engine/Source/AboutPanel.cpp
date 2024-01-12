@@ -17,11 +17,8 @@ void AboutPanel::Draw(int windowFlags)
 {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		//LOG("%d", App->GetOpenGL()->GetFramebufferTexture());
-
-
-		ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), ImVec2(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight()));
-		//mGui::Text("Welcum");
+		ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), ImGui::GetWindowSize(), ImVec2(0,1), ImVec2(1,0));
+		//ImGui::Text("Welcum");
 	}
 	ImGui::End();
 }

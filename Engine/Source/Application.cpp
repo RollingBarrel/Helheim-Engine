@@ -21,8 +21,8 @@ Application::Application()
 	modules[3] = camera = new ModuleCamera();
 	modules[4] = fileSystem = new ModuleFileSystem();
 	modules[5] = scene = new ModuleScene();
-	modules[6] = test = new ModuleRenderTest();
-	modules[7] = debugDraw = new ModuleDebugDraw();
+	modules[6] = debugDraw = new ModuleDebugDraw();
+	modules[7] = test = new ModuleRenderTest();
 	modules[8] = editor = new ModuleEditor();
 }
 
