@@ -12,6 +12,9 @@ AboutPanel::~AboutPanel()
 
 void AboutPanel::Draw(int windowFlags) 
 {
+	static bool show = true;
+	if (show)
+		ImGui::ShowDemoWindow(&show);
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
 		ImGui::Text("Welcum");

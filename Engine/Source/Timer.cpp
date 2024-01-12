@@ -14,12 +14,12 @@ long Timer::ReadDelta() {
 	Uint32 newTime = SDL_GetTicks();
 	Uint32 elapsedTime = newTime - mLastReadTime;
 	mLastReadTime = newTime;
-	mTotalTime += elapsedTime * speed;
-	return elapsedTime;
+	mTotalTime += elapsedTime * mSpeed;
+	return elapsedTime * mSpeed;
 }
 
 long Timer::SetSpeed(float speed) {
-	long currentTime = Read();
-	speed = speed;
+	long currentTime = ReadDelta();
+	mSpeed = speed;
 	return currentTime;
 }
