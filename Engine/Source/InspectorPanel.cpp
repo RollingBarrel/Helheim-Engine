@@ -34,7 +34,7 @@ void InspectorPanel::Draw(int windowFlags)
 	
 	if (mSame_component_window) 
 	{
-		ShowSameComponentWindow();
+		ShowSameComponentPopup();
 	}
 	
 	ImGui::End();
@@ -277,7 +277,7 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 	}
 }
 
-void InspectorPanel::ShowSameComponentWindow() 
+void InspectorPanel::ShowSameComponentPopup() 
 {
 	ImGuiViewport* mainViewport = ImGui::GetMainViewport();
 	ImVec2 centerPos = ImVec2(mainViewport->Pos.x + mainViewport->Size.x * 0.5f,

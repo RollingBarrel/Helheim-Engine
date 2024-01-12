@@ -20,8 +20,7 @@ private:
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);
-	bool CheckComponent(GameObject* object, ComponentType type);
-	static void ShowSameComponentWindow();
+	static void ShowSameComponentPopup();
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);

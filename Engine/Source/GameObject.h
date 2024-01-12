@@ -17,12 +17,9 @@ public:
 	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
-	GameObject(const char* name, GameObject* parent, float3 position, float3 scale, Quat rotation);
 
 	~GameObject();
 
-	//template<class T>
-	//T* GetComponent();
 	Component* GetComponent(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
