@@ -8,12 +8,15 @@
 #include "Application.h"
 #include "ModuleDebugDraw.h"
 
+#include "imgui.h"
+#include <iostream>
+#include <cstring>
 
-Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0)
+Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
 }
 
-Quadtree::Quadtree(const AABB& boundingBox, int depth)
+Quadtree::Quadtree(const AABB& boundingBox, int depth, const char* name)
 {
 	mBoundingBox = boundingBox;
 	mDepthLevel = depth;
@@ -22,6 +25,7 @@ Quadtree::Quadtree(const AABB& boundingBox, int depth)
 	mChildren[1] = nullptr;
 	mChildren[2] = nullptr;
 	mChildren[3] = nullptr;
+	mName = name;
 }
 
 Quadtree::~Quadtree()
@@ -119,6 +123,39 @@ void Quadtree::Draw() const
 	}
 }
 
+const void Quadtree::RenderTreeImGui() const
+{
+	
+	if (mName == "")
+		return;
+	bool treeNodeOpened = ImGui::TreeNode(mName.c_str());
+	
+	if (mFilled && treeNodeOpened) 
+	{
+		mChildren[0]->RenderTreeImGui();
+		mChildren[1]->RenderTreeImGui();
+		mChildren[2]->RenderTreeImGui();
+		mChildren[3]->RenderTreeImGui();
+
+	}
+	else 
+	{
+		if (treeNodeOpened)
+		{
+			for (const auto& object : mGameObjects)
+			{
+				ImGui::Text(object->GetName()->c_str());
+			}
+
+		}
+	}
+	
+	
+	if(treeNodeOpened)
+		ImGui::TreePop();
+	
+}
+
 void Quadtree::SplitNode()
 {
 	float3 minPoint = mBoundingBox.minPoint;
@@ -133,10 +170,11 @@ void Quadtree::SplitNode()
 	float3 uf_z = float3(maxPoint.x, maxPoint.y, center.z);
 	float3 uf_x = float3(center.x, maxPoint.y, maxPoint.z);
 
-	mChildren[0] = new Quadtree(AABB(minPoint, uf_center), mDepthLevel + 1);
-	mChildren[1] = new Quadtree(AABB(bf_x, uf_z), mDepthLevel + 1);
-	mChildren[2] = new Quadtree(AABB(bf_z, uf_x), mDepthLevel + 1);
-	mChildren[3] = new Quadtree(AABB(bf_center, maxPoint), mDepthLevel + 1);
+
+	mChildren[0] = new Quadtree(AABB(minPoint, uf_center), mDepthLevel + 1, (mName + "_A").c_str());
+	mChildren[1] = new Quadtree(AABB(bf_x, uf_z), mDepthLevel + 1, (mName + "_B").c_str());
+	mChildren[2] = new Quadtree(AABB(bf_z, uf_x), mDepthLevel + 1, (mName + "_C").c_str());
+	mChildren[3] = new Quadtree(AABB(bf_center, maxPoint), mDepthLevel + 1, (mName + "_D").c_str());
 
 	for (const auto& object : mGameObjects)
 	{

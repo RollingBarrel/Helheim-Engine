@@ -3,6 +3,8 @@
 #include <vector>
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
+#include "string"
+
 
 class GameObject;
 class MeshRendererComponent;
@@ -23,9 +25,11 @@ public:
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
 	void CleanUp();
 	void Draw() const;
+	const void RenderTreeImGui() const;
+	const char* GetName() const { return mName.c_str(); }
 
 private:
-	Quadtree(const AABB& boundingBox, int depth);
+	Quadtree(const AABB& boundingBox, int depth, const char* name);
 	void SplitNode();
 
 	AABB mBoundingBox;
@@ -33,6 +37,7 @@ private:
 	std::vector<GameObject*> mGameObjects;
 	int mDepthLevel;
 	bool mFilled;
+	std::string mName;
 
 };
 

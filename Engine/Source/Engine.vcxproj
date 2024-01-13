@@ -205,6 +205,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="QuadtreePanel.cpp" />
     <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +301,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="QuadtreePanel.h" />
     <ClInclude Include="TestComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

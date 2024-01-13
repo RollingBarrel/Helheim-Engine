@@ -8,6 +8,8 @@
 #include "ConsolePanel.h"
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
+#include "QuadtreePanel.h"
+
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -23,6 +25,9 @@ ModuleEditor::ModuleEditor()
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
+	mPanels[QUADTREEPANEL] = new QuadtreePanel();
+
+
 }
 
 ModuleEditor::~ModuleEditor()

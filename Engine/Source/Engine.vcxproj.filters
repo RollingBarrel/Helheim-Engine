@@ -167,6 +167,9 @@
       <Filter>Dependencies\MathGeoLib\Math</Filter>
     </ClCompile>
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="QuadtreePanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -430,6 +433,9 @@
       <Filter>Dependencies\MathGeoLib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="QuadtreePanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

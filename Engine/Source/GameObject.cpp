@@ -502,6 +502,10 @@ void GameObject::CreateComponent(ComponentType type) {
 	if (newComponent) {
 		mComponents.push_back(newComponent);
 	}
+	if (type == ComponentType::MESHRENDERER)
+	{
+		App->GetScene()->GetQuadtreeRoot()->AddObject(this);
+	}
 }
 
 void GameObject::DeletePopup(Component* component, int headerPosition) {
