@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
-
+#include "ModuleDebugDraw.h"
 #include <iostream>
 #include <random>
 
@@ -43,7 +43,7 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 
 void MeshRendererComponent::Draw()
 {
-
+	App->GetDebugDraw()->DrawBoundingBox(mOBB);
 }
 void MeshRendererComponent::Reset()
 {

@@ -3,7 +3,9 @@
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
-
+#include "Application.h"
+#include "ModuleCamera.h"
+#include "ModuleWindow.h"
 #include "glew.h"
 
 class DDRenderInterfaceCoreGL final
@@ -608,10 +610,9 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
-    if (false)
-    {
-        DrawGrid();
-    }
+    float4x4 viewproj = App->GetCamera()->GetViewProjMatrix();
+    Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+
 	return UPDATE_CONTINUE;
 }
 

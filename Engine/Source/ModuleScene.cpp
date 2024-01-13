@@ -20,6 +20,7 @@ bool ModuleScene::Init()
 update_status ModuleScene::Update()
 {
 	mRoot->Update();
+	mQuadtreeRoot->Draw();
 	return UPDATE_CONTINUE;
 }
 

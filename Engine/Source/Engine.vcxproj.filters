@@ -51,7 +51,6 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
-    <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp">
@@ -228,7 +227,6 @@
     </ClInclude>
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="ModuleCamera.h" />
-    <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="debugdraw.h">
       <Filter>Dependencies\DebugDraw</Filter>

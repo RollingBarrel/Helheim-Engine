@@ -12,7 +12,6 @@ class ModuleRenderExercise;
 class ModuleScene;
 
 class ModuleCamera;
-class ModuleRenderTest;
 class ModuleDebugDraw;
 
 class Application
@@ -32,7 +31,6 @@ public:
     ModuleEditor*  GetEditor() { return editor; }
     ModuleScene* GetScene() { return scene; }
     ModuleCamera* GetCamera() { return camera;  }
-    ModuleRenderTest* GetTest() { return test; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
 
 
@@ -44,7 +42,6 @@ private:
     ModuleEditor* editor = nullptr;
     ModuleScene* scene = nullptr;
     ModuleCamera* camera = nullptr;
-    ModuleRenderTest* test = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
 
 
