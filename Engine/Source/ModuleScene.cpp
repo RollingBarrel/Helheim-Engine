@@ -1,6 +1,8 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "TestSceneGameObjects.cpp"
+#include "Archive.h"
+#include "Globals.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
@@ -15,7 +17,13 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	TestSceneGameObjects test = TestSceneGameObjects();
-	test.TestScene();
+	test.TestSceneWithGameObject();
+
+	Archive* archive = new Archive();
+	mRoot->Save(*archive);
+
+	std::string out = archive->Serialize();
+
 	return true;
 }
 

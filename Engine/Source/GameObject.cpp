@@ -532,9 +532,11 @@ void GameObject::CreateComponent(ComponentType type) {
 	switch (type) {
 		case ComponentType::MESHRENDERER:
 			newComponent = new MeshRendererComponent(this);
+			mComponents.push_back(newComponent);
 			break;
 		case ComponentType::TEST:    
 			newComponent = new TestComponent(this);
+			mComponents.push_back(newComponent);
 			break;
 		default:
 			break;
@@ -565,20 +567,20 @@ void GameObject::Save(Archive& archive) const {
 	archive.AddFloat3("scale", mScale);
 
 	// Save components
-	Archive componentsArchive;
+	Archive* componentsArchive = new Archive();
 	for (const auto& component : mComponents) {
-		component->Save(componentsArchive);
+		component->Save(*componentsArchive);
 	}
-	archive.AddObject("components", componentsArchive);
+	archive.AddObject("components", *componentsArchive);
 
 	// Save children
-	Archive childrenArchive;
+	Archive* childrenArchive = new Archive();
 	for (const auto& child : mChildren) {
-		Archive childArchive;
-		child->Save(childArchive);
-		childrenArchive.AddObject("child", childArchive);
+		Archive* childArchive = new Archive();
+		child->Save(*childArchive);
+		childrenArchive->AddObject("child", *childArchive);
 	}
-	archive.AddObject("children", childrenArchive);
+	archive.AddObject("children", *childrenArchive);
 }
 
 /*void GameObject::Load(const rapidjson::Value& data) {

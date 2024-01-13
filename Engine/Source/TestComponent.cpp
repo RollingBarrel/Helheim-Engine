@@ -63,6 +63,7 @@ void TestComponent::RightClickPopup()
 }
 
 void TestComponent::Save(Archive& archive) const {
+	archive.AddString("Name", mName);
 	archive.AddString("type", "Test");
 }
 

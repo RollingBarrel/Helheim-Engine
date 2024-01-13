@@ -20,11 +20,12 @@ public:
 		LOG("TestSceneWithGameObject\n");
 		GameObject* scene = App->GetScene()->GetRoot();
 
-		GameObject gameObject = GameObject("Test Game Object 1", scene);
+		GameObject* gameObject = new GameObject("GO 1", nullptr);
 
-		Component* newComponent = new TestComponent(&gameObject);
+		gameObject->CreateComponent(ComponentType::MESHRENDERER);
+		//Component* newComponent = new TestComponent(gameObject);
 
-		scene->AddChild(&gameObject);
+		scene->AddChild(gameObject);
 
 		return scene;
 
