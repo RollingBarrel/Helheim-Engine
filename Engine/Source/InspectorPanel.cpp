@@ -7,7 +7,7 @@
 #include "MeshRendererComponent.h"
 #include <MathFunc.h>
 
-bool InspectorPanel::mSame_component_window = false;
+bool InspectorPanel::mSame_component_popup = false;
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -32,15 +32,14 @@ void InspectorPanel::Draw(int windowFlags)
 		AddComponentButton(focusedObject);
 	}
 	
-	if (mSame_component_window) 
+	if (mSame_component_popup)
 	{
 		ShowSameComponentPopup();
 	}
-	
+
 	ImGui::End();
 	ImGui::PopID();
 }
-
 
 void InspectorPanel::DrawTransform(GameObject* object) {
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
@@ -249,7 +248,6 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 //
 //}
 
-
 void InspectorPanel::AddComponentButton(GameObject* object) {
 	float windowWidth = ImGui::GetWindowWidth();
 	float buttonWidth = 150.0f; // Desired width for the button
@@ -263,11 +261,12 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 
 	if (ImGui::BeginPopup("AddComponentPopup")) {
 		if (ImGui::MenuItem("Mesh Renderer")) {
-			if (object->GetComponent(ComponentType::MESHRENDERER) == nullptr)
+			mComponent = object->GetComponent(ComponentType::MESHRENDERER);
+			if (!mComponent)
 			{
 				object->CreateComponent(ComponentType::MESHRENDERER);
 			} else {
-				mSame_component_window = true;
+				mSame_component_popup = true;
 			}
 		}
 		if (ImGui::MenuItem("Test")) {
@@ -277,36 +276,35 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 	}
 }
 
-void InspectorPanel::ShowSameComponentPopup() 
+void InspectorPanel::ShowSameComponentPopup()
 {
 	ImGuiViewport* mainViewport = ImGui::GetMainViewport();
 	ImVec2 centerPos = ImVec2(mainViewport->Pos.x + mainViewport->Size.x * 0.5f,
 		mainViewport->Pos.y + mainViewport->Size.y * 0.5f);
 
 	ImGui::SetNextWindowPos(centerPos, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	ImGui::SetNextWindowSize(ImVec2(380, 115), ImGuiCond_Appearing);
+	ImGui::SetNextWindowSize(ImVec2(380, 107), ImGuiCond_Appearing);
 
-	ImGui::Begin("Can't add the same component multiple times!", &mSame_component_window,
+	ImGui::Begin("Can't add the same component multiple times!", &mSame_component_popup,
 		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Text("This component can't be added because GameObject ");
-	ImGui::Text("already contains the same component");
+	ImGui::Text("The component %s can't be added because", mComponent->mName);
+	ImGui::Text("GameObject already contains the same component.");
 
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Spacing();
-	ImGui::Spacing();
 
-	ImVec2 buttonSize(120, 25);
-	ImVec2 buttonPos((ImGui::GetWindowSize().x - buttonSize.x) * 0.5f, 90);
+	float buttonPosX = ImGui::GetWindowContentRegionMax().x - 120;
 
-	if (ImGui::Button("Cancel", buttonSize)) {
-		mSame_component_window = false;
+	ImGui::SetCursorPosX(buttonPosX);
+
+	if (ImGui::Button("Cancel", ImVec2(120, 25))) {
+		mSame_component_popup = false;
 	}
 
-	ImGui::SetCursorPos(buttonPos);
 	ImGui::End();
 }
 

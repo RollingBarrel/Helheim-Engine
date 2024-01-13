@@ -14,12 +14,14 @@ public:
 	InspectorPanel();
 	//~InspectorPanel();
 	void Draw(int windowFlags) override;
+
 private:
-	static bool mSame_component_window;
+	static bool mSame_component_popup;
+	Component* mComponent = nullptr;
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);
-	static void ShowSameComponentPopup();
+	void ShowSameComponentPopup();
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
