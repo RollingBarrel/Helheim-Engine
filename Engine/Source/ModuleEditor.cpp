@@ -8,6 +8,7 @@
 #include "ConsolePanel.h"
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
+#include "PausePanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -23,6 +24,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
+	mPanels[PAUSEPANEL] = new PausePanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -38,7 +40,7 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-
+	io->ConfigDragClickToInputText = true;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->context);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
@@ -148,8 +150,6 @@ void ModuleEditor::ShowMainMenuBar() {
 						console->IsOpen() ? console->Close() : console->Open();
 					}
 				}
-				//if (ImGui::MenuItem("2 Game")) {}
-
 				if (ImGui::MenuItem("2 Hierarchy")) {
 					Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
 					if (hierarchy)
@@ -164,8 +164,14 @@ void ModuleEditor::ShowMainMenuBar() {
 						inspector->IsOpen() ? inspector->Close() : inspector->Open();
 					}
 				}
-				//if (ImGui::MenuItem("5 Project")) {}
-				//if (ImGui::MenuItem("6 Scene")) {}
+				if (ImGui::MenuItem("4 Pause")) {
+					Panel* pause = s_ModuleEditorInstance->mPanels[PAUSEPANEL];
+					if (pause)
+					{
+						pause->IsOpen() ? pause->Close() : pause->Open();
+					}
+				}
+				//if (ImGui::MenuItem("5 Scene")) {}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
@@ -191,18 +197,21 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* console = s_ModuleEditorInstance->mPanels[CONSOLEPANEL];
 	Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
 	Panel* inspector = s_ModuleEditorInstance->mPanels[INSPECTORPANEL];
+	Panel * pause = s_ModuleEditorInstance->mPanels[PAUSEPANEL];
 	Panel* aboutPanel = s_ModuleEditorInstance->mPanels[ABOUTPANEL];
 
 	if (openPanels == true) {
 		console->Open();
 		hierarchy->Open();
 		inspector->Open();
+		pause->Open();
 		aboutPanel->Open();
 	}
 	else {
 		console->Close();
 		hierarchy->Close();
 		inspector->Close();
+		pause->Close();
 		aboutPanel->Close();
 	}
 }
