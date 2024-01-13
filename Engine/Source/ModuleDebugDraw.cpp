@@ -1,3 +1,7 @@
+#include "Application.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
 
@@ -611,6 +615,7 @@ update_status  ModuleDebugDraw::Update()
     if (false)
     {
         DrawGrid();
+       
     }
 	return UPDATE_CONTINUE;
 }
@@ -623,7 +628,9 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
 
     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
     dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
-
+    
+    dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
+    //dd::sphere(App->GetScene()->GetSelectedGameObject()->GetPosition(), { 1,1,1 }, 1);
 
     dd::flush();
 }
