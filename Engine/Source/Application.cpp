@@ -5,7 +5,7 @@
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
-
+#include "ModuleTimer.h"
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 
@@ -17,6 +17,7 @@ Application::Application()
 	modules.push_back(render = new ModuleOpenGL());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(scene = new ModuleScene());
+	modules.push_back(clock = new ModuleTimer());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(debugDraw = new ModuleDebugDraw());
 	modules.push_back(editor = new ModuleEditor());

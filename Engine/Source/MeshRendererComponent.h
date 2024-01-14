@@ -9,8 +9,8 @@ struct Mesh;
 class MeshRendererComponent : public Component
 {
 public:
-	MeshRendererComponent(GameObject* ownerGameObject);
-	MeshRendererComponent(const MeshRendererComponent& original);
+	MeshRendererComponent(GameObject* owner);
+	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
 	//~MeshRendererComponent();
 
 	void Draw();
@@ -18,8 +18,7 @@ public:
 	void Load();
 
 	void Update() override;
-	void DrawEditor() override;
-	Component* Clone() override;
+	Component* Clone(GameObject* owner) override;
 
 	const OBB getOBB() const { return mOBB; }
 
@@ -29,7 +28,6 @@ private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-
 	Mesh* mMesh;
 	Material* material;
 	OBB mOBB;

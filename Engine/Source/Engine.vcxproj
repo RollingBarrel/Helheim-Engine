@@ -205,7 +205,11 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="QuadtreePanel.cpp" />
+    <ClCompile Include="ModuleTimer.cpp" />
+    <ClCompile Include="PausePanel.cpp" />
+    <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
@@ -300,7 +304,11 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="QuadtreePanel.h" />
+    <ClInclude Include="ModuleTimer.h" />
+    <ClInclude Include="PausePanel.h" />
+    <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

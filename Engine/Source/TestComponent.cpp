@@ -1,63 +1,36 @@
 #include "TestComponent.h"
-#include "imgui.h"
+#include "GameObject.h"
+#include "MeshRendererComponent.h"
 
 TestComponent::TestComponent(GameObject* ownerGameObject) 
-	:Component(ownerGameObject, ComponentType::TEST)
+	:Component("Test Component", ownerGameObject, ComponentType::TEST)
 {
 	
 }
 
-TestComponent::TestComponent(const TestComponent& original)
-	:Component(original.GetOwner(), ComponentType::TEST)
+TestComponent::TestComponent(const TestComponent& original, GameObject* owner)
+	:Component(original.mName, owner, ComponentType::TEST)
 {
-	
+
 }
 void TestComponent::Reset() {
-
-}
-
-void TestComponent::Draw()
-{
-
-}
-
-void TestComponent::Load()
-{
-    LoadVBO();
+	//Change variables to default values.
+	number = 0;
 }
 
 void TestComponent::Update()
 {
-    Draw();
+	MeshRendererComponent* c = nullptr;
+		//c = mOwner->GetComponent<MeshRendererComponent>();
+	c = (MeshRendererComponent*)mOwner->GetComponent(ComponentType::MESHRENDERER);
 }
 
-void TestComponent::DrawEditor()
+Component* TestComponent::Clone(GameObject* owner)
 {
-	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen)) {
-		// SIMULATED CONTENT FOR TEST PURPOSES:
-		ImGui::Text("Color: (R: 255, G: 0, B: 0) (TEST)");
-		ImGui::Text("Texture: DefaultTexture (TEST)");
-	}
-
-	if (this->GetOwner()) {
-		this->GetOwner()->DeletePopup(this, 38);
-	}
+    return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }
 
-Component* TestComponent::Clone()
-{
-    return new TestComponent(*this);
-}
 
-void TestComponent::LoadVBO()
-{
 
-}
 
-void TestComponent::LoadEBO()
-{
-}
 
-void TestComponent::LoadVAO()
-{
-}

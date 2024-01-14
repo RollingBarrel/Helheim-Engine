@@ -7,8 +7,8 @@
 #include <iostream>
 #include <random>
 
-MeshRendererComponent::MeshRendererComponent(GameObject* ownerGameObject) 
-	:Component(ownerGameObject, ComponentType::MESHRENDERER)
+MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
+	:Component("Mesh Renderer" ,owner, ComponentType::MESHRENDERER)
 {
 	//Create Random BBO
 	std::random_device rd;
@@ -22,10 +22,12 @@ MeshRendererComponent::MeshRendererComponent(GameObject* ownerGameObject)
 	float rv2 = distribution(gen)/10;
 	float rv3 = distribution(gen)/10;
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+1.0f, rv2 + 1.0f, rv3 + 1.0f)));
+
+
 }
 
-MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original)
-	:Component(original.GetOwner(), ComponentType::MESHRENDERER)
+MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
+	:Component(owner.mName, owner, ComponentType::MESHRENDERER)
 {
 	//Create Random BBO
 	std::random_device rd;
@@ -39,6 +41,7 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 	float rv2 = distribution(gen) / 10;
 	float rv3 = distribution(gen) / 10;
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1 + 1.0f, rv2 + 1.0f, rv3 + 1.0f)));
+
 }
 
 void MeshRendererComponent::Draw()
@@ -90,15 +93,11 @@ void MeshRendererComponent::DrawEditor()
 		ImGui::DragFloat3("Bounding Box (position): ", &mOBB.pos.x);
 		ImGui::Checkbox("Render bounding box", &mDrawBox);
 	}
-
-	if (this->GetOwner()) {
-		this->GetOwner()->DeletePopup(this, 55);
-	}
 }
 
-Component* MeshRendererComponent::Clone()
+Component* MeshRendererComponent::Clone(GameObject* owner)
 {
-	return new MeshRendererComponent(*this);
+	return new MeshRendererComponent(*this, owner);
 }
 
 void MeshRendererComponent::LoadVBO()
@@ -113,3 +112,6 @@ void MeshRendererComponent::LoadEBO()
 void MeshRendererComponent::LoadVAO()
 {
 }
+
+
+
