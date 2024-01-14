@@ -30,6 +30,7 @@ public:
 	}
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
+	bool* GetShouldRenderQuadtree() const { return mDrawQuadtree; }
 
 private:
 	GameObject* mRoot;
@@ -39,5 +40,7 @@ private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
 	Quadtree* mQuadtreeRoot;
+	bool* mDrawQuadtree = new bool(false);
+
 };
 

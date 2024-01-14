@@ -43,7 +43,8 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 
 void MeshRendererComponent::Draw()
 {
-	App->GetDebugDraw()->DrawBoundingBox(mOBB);
+	if(mDrawBox)
+		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 }
 void MeshRendererComponent::Reset()
 {
@@ -81,6 +82,7 @@ void MeshRendererComponent::DrawEditor()
 		ImGui::Text("Material: DefaultMaterial (TEST)");
 		ImGui::Text("Shader: StandardShader (TEST)");
 		ImGui::DragFloat3("Bounding Box (position): ", &mOBB.pos.x);
+		ImGui::Checkbox("Render bounding box", &mDrawBox);
 	}
 
 	if (this->GetOwner()) {

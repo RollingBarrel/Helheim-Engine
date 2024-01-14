@@ -31,5 +31,6 @@ private:
 	Mesh* mMesh;
 	Material* material;
 	OBB mOBB;
+	bool mDrawBox = false;
 };
 

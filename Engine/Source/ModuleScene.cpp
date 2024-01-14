@@ -1,6 +1,8 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
+
+
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
 	mSelectedGameObject = mRoot;
@@ -20,7 +22,10 @@ bool ModuleScene::Init()
 update_status ModuleScene::Update()
 {
 	mRoot->Update();
-	mQuadtreeRoot->Draw();
+	if (*mDrawQuadtree)
+	{
+		mQuadtreeRoot->Draw();
+	}
 	return UPDATE_CONTINUE;
 }
 

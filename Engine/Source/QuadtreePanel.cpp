@@ -17,8 +17,11 @@ void QuadtreePanel::Draw(int windowFlags)
 {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
+		ImGui::Checkbox("Draw quadtree", App->GetScene()->GetShouldRenderQuadtree());
+		
 		ImGui::Text("My Quadtree:");
 		App->GetScene()->GetQuadtreeRoot()->RenderTreeImGui();
+		
 		
 	}
 	ImGui::End();
