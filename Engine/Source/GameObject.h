@@ -6,6 +6,7 @@
 #include "string"
 #include "Archive.h"
 
+class MeshRendererComponent;
 class Component;
 enum class ComponentType : unsigned int;
 
@@ -54,6 +55,8 @@ public:
 
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectJson);
+
+	MeshRendererComponent* getMeshRenderer() const;
 
 private:
 	GameObject* RemoveChild(const int id);

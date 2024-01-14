@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "glew.h"
-#include "ModuleRenderTest.h"
 
 ModuleOpenGL::ModuleOpenGL()
 {

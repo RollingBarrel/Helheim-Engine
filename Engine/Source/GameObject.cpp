@@ -3,6 +3,12 @@
 #include "Component.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "InspectorPanel.h"
+#include "Quadtree.h"
+#include "imgui.h"
+#include <algorithm>
+
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
 
@@ -132,6 +138,8 @@ void GameObject::ResetTransform()
 
 void GameObject::DeleteChild(GameObject* child)
 {
+	
+	
 	RemoveChild(child->mID);
 	delete child;
 	child = nullptr;
@@ -198,6 +206,9 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	if (!inserted) {
 		mChildren.push_back(child);
 	}
+	if (child->getMeshRenderer() != nullptr) {
+		App->GetScene()->GetQuadtreeRoot()->AddObject(child);
+	}
 }
 
 GameObject* GameObject::RemoveChild(const int id)
@@ -206,6 +217,9 @@ GameObject* GameObject::RemoveChild(const int id)
 	std::vector<GameObject*>::iterator itTargetPosition = mChildren.end();
 	for (auto it = mChildren.begin(); it != mChildren.cend(); ++it) {
 		if ((*it)->GetID() == id) {
+			if ((*it)->getMeshRenderer() != nullptr) {
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject((*it));
+			}
 			movedObject = *it;
 			mChildren.erase(it);
 			break;
@@ -264,6 +278,10 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	if (newComponent) {
 		mComponents.push_back(newComponent);
 	}
+	if (type == ComponentType::MESHRENDERER)
+	{
+		App->GetScene()->GetQuadtreeRoot()->AddObject(this);
+	}
 	
 	return newComponent;
 }
@@ -279,6 +297,15 @@ void GameObject::DeleteComponents() {
 		}
 	}
 }
+
+MeshRendererComponent* GameObject::getMeshRenderer() const
+{
+	for (const auto& comp : mComponents) {
+		if (comp->GetType() == ComponentType::MESHRENDERER)
+			return static_cast<MeshRendererComponent*>(comp);
+	}
+}
+
 
 void GameObject::RecalculateLocalTransform()
 {

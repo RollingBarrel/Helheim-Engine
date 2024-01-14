@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
-#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
+#include "GameObject.h"
 
 class Material;
 struct Mesh;
@@ -17,7 +18,13 @@ public:
 	void Load();
 
 	void Update() override;
+	void DrawEditor();
 	Component* Clone(GameObject* owner) override;
+
+	const OBB getOBB() const { return mOBB; }
+
+	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
+	bool* getShouldDraw() { return mDrawBox; }
 
 	void Save(Archive& archive) const override;
 	void Load(const rapidjson::Value& data) override;
@@ -28,6 +35,8 @@ private:
 	void LoadVAO();
 	Mesh* mMesh;
 	Material* material;
-	AABB mAABB;
+	OBB mOBB;
+	bool* mDrawBox = new bool(false);
+	bool mInsideFrustum = true;
 };
 
