@@ -8,6 +8,7 @@
 #include "ConsolePanel.h"
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
+#include "QuadtreePanel.h"
 #include "PausePanel.h"
 
 #include "imgui_impl_sdl2.h"
@@ -24,6 +25,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
+	mPanels[QUADTREEPANEL] = new QuadtreePanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
 }
 
@@ -131,7 +133,21 @@ void ModuleEditor::ShowMainMenuBar() {
 		if (ImGui::BeginMenu("Component")) {
 			ImGui::EndMenu();
 		}
-
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::BeginMenu("View"))
+			{
+				if (ImGui::MenuItem("Quadtree")) {
+					Panel* quadtreeDebug = s_ModuleEditorInstance->mPanels[QUADTREEPANEL];
+					if (quadtreeDebug)
+					{
+						quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
+					}
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::BeginMenu("Panels")) {
