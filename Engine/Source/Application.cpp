@@ -20,8 +20,8 @@ Application::Application()
 	modules[2] = render = new ModuleOpenGL();
 	modules[3] = camera = new ModuleCamera();
 	modules[4] = fileSystem = new ModuleFileSystem();
-	modules[5] = scene = new ModuleScene();
-	modules[6] = debugDraw = new ModuleDebugDraw();
+	modules[5] = debugDraw = new ModuleDebugDraw();
+	modules[6] = scene = new ModuleScene();
 	modules[7] = test = new ModuleRenderTest();
 	modules[8] = editor = new ModuleEditor();
 }

@@ -212,6 +212,7 @@
     <ClCompile Include="ImporterTexture.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -326,6 +327,7 @@
     <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="ScenePanel.h" />
     <ClInclude Include="TestComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

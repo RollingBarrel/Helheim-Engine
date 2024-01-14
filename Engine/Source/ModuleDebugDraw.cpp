@@ -615,13 +615,13 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
-    App->GetOpenGL()->BindFramebuffer();
+    App->GetOpenGL()->BindSceneFramebuffer();
     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
     dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
 
     float4x4 viewproj = App->GetCamera()->GetProjectionMatrix() * App->GetCamera()->GetViewMatrix();
     Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
-    App->GetOpenGL()->UnbindFramebuffer();
+    App->GetOpenGL()->UnbindSceneFramebuffer();
 	return UPDATE_CONTINUE;
 }
 

@@ -20,14 +20,15 @@ public:
 	bool CleanUp() override;
 
 	void WindowResized(unsigned width, unsigned height);
+	void SceneFramebufferResized(unsigned width, unsigned height);
 	unsigned int GetFramebufferTexture() const { return colorAttachment; }
-	void BindFramebuffer();
-	void UnbindFramebuffer();
+	void BindSceneFramebuffer();
+	void UnbindSceneFramebuffer();
 
 public:
 	void* context = nullptr;
 
-	unsigned int fbo;
+	unsigned int sFbo;
 	unsigned int colorAttachment;
 	unsigned int depthStencil;
 };

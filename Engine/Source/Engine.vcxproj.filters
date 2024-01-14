@@ -175,6 +175,8 @@
     <ClCompile Include="ImporterShader.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="EngineTimer.cpp" />
+    <ClCompile Include="ScenePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -548,6 +550,8 @@
     <ClInclude Include="ImporterShader.h">
       <Filter>Importers</Filter>
     </ClInclude>
+    <ClInclude Include="EngineTimer.h" />
+    <ClInclude Include="ScenePanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

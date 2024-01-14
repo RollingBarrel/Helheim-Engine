@@ -47,12 +47,12 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
-void ModuleOpenGL::BindFramebuffer()
+void ModuleOpenGL::BindSceneFramebuffer()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 }
 
-void ModuleOpenGL::UnbindFramebuffer()
+void ModuleOpenGL::UnbindSceneFramebuffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -86,8 +86,8 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 
-	glGenFramebuffers(1, &fbo);
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glGenFramebuffers(1, &sFbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glGenTextures(1, &depthStencil);
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
@@ -117,7 +117,7 @@ bool ModuleOpenGL::Init()
 update_status ModuleOpenGL::PreUpdate()
 {
 
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -140,7 +140,7 @@ bool ModuleOpenGL::CleanUp()
 {
 	LOG("Destroying renderer");
 
-	glDeleteFramebuffers(1, &fbo);
+	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
 
@@ -154,8 +154,17 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
+}
+
+void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
+{
+	App->GetCamera()->WindowResized(width, height);
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+	glViewport(0, 0, width, height);
+	App->GetCamera()->WindowResized(width, height);
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
