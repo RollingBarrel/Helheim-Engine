@@ -5,7 +5,7 @@
 #include "ModuleScene.h"
 
 
-QuadtreePanel::QuadtreePanel() : Panel(QUADTREEPANEL, true)
+QuadtreePanel::QuadtreePanel() : Panel(QUADTREEPANEL, false)
 {
 }
 

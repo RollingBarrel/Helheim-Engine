@@ -134,7 +134,21 @@ void ModuleEditor::ShowMainMenuBar() {
 		if (ImGui::BeginMenu("Component")) {
 			ImGui::EndMenu();
 		}
-
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::BeginMenu("View"))
+			{
+				if (ImGui::MenuItem("Quadtree")) {
+					Panel* quadtreeDebug = s_ModuleEditorInstance->mPanels[QUADTREEPANEL];
+					if (quadtreeDebug)
+					{
+						quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
+					}
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::BeginMenu("Panels")) {
