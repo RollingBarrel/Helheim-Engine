@@ -7,6 +7,7 @@
 
 #include "Application.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleScene.h"
 
 #include "imgui.h"
 #include <iostream>
@@ -154,6 +155,33 @@ const void Quadtree::RenderTreeImGui() const
 	if(treeNodeOpened)
 		ImGui::TreePop();
 	
+}
+
+void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)
+{
+	if (!myCamera.Intersects(mBoundingBox))
+	{
+		return;
+	}
+
+	if (mFilled)
+	{
+		mChildren[0]->UpdateDrawableGameObjects(myCamera);
+		mChildren[1]->UpdateDrawableGameObjects(myCamera);
+		mChildren[2]->UpdateDrawableGameObjects(myCamera);
+		mChildren[3]->UpdateDrawableGameObjects(myCamera);
+
+	}
+	else 
+	{
+		for (auto& object : mGameObjects)
+		{
+			OBB temp = object->getMeshRenderer()->getOBB();
+			bool intersects = myCamera.Intersects(temp);
+			object->getMeshRenderer()->SetInsideFrustum(intersects);
+		}
+	}
+
 }
 
 void Quadtree::SplitNode()

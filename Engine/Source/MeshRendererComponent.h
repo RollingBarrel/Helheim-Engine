@@ -23,6 +23,8 @@ public:
 
 	const OBB getOBB() const { return mOBB; }
 
+	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
+
 private:
 	void LoadVBO();
 	void LoadEBO();
@@ -32,5 +34,6 @@ private:
 	Material* material;
 	OBB mOBB;
 	bool mDrawBox = false;
+	bool mInsideFrustum = true;
 };
 

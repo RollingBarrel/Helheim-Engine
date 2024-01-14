@@ -1,7 +1,8 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
-
+#include "Application.h"
+#include "ModuleCamera.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
@@ -17,6 +18,12 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	return true;
+}
+
+update_status ModuleScene::PreUpdate()
+{
+	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());
+	return UPDATE_CONTINUE;
 }
 
 update_status ModuleScene::Update()

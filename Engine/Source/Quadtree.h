@@ -28,6 +28,8 @@ public:
 	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
 
+	void UpdateDrawableGameObjects(const Frustum& myCamera);
+
 private:
 	Quadtree(const AABB& boundingBox, int depth, const char* name);
 	void SplitNode();
@@ -38,6 +40,7 @@ private:
 	int mDepthLevel;
 	bool mFilled;
 	std::string mName;
+	
 
 };
 

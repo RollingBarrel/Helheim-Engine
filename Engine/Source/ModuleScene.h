@@ -11,6 +11,7 @@ public:
 	ModuleScene();
 	~ModuleScene();
 	bool Init() override;
+	update_status PreUpdate() override;
 	update_status Update() override;
 	update_status PostUpdate() override;
 	void DrawEditor();
