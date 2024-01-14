@@ -8,8 +8,8 @@ struct Mesh;
 class MeshRendererComponent : public Component
 {
 public:
-	MeshRendererComponent(GameObject* ownerGameObject);
-	MeshRendererComponent(const MeshRendererComponent& original);
+	MeshRendererComponent(GameObject* owner);
+	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
 	//~MeshRendererComponent();
 
 	void Draw();
@@ -17,8 +17,7 @@ public:
 	void Load();
 
 	void Update() override;
-	void DrawEditor() override;
-	Component* Clone() override;
+	Component* Clone(GameObject* owner) override;
 
 	void Save(Archive& archive) const override;
 	void Load(const rapidjson::Value& data) override;
@@ -27,7 +26,6 @@ private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-	void RightClickPopup() override;
 	Mesh* mMesh;
 	Material* material;
 	AABB mAABB;
