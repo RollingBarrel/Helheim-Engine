@@ -598,7 +598,7 @@ void GameObject::Load(const char* json) {
 		scene = new GameObject("Scene", nullptr);
 
 		// Manage GameObjects
-		// Put this logic in a function to let this be recursive, gameobjects can be inside gameobjects
+		// TODO Put this logic in a function to let this be recursive, gameobjects can be inside gameobjects (pending to review)
 		if (s.HasMember("GameObjects") && s["GameObjects"].IsArray()) {
 			const rapidjson::Value& gameObjects = s["GameObjects"];
 			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
