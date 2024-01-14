@@ -24,8 +24,22 @@ bool ModuleScene::Init()
 
 	std::string out = archive->Serialize();
 
+
+	//INIT For testing purposes of Scene Load
 	const char* json = test.TestLoadSceneWithGameObjectsAndComponents();
-	mRoot->Load(json);
+	rapidjson::Document d;
+	rapidjson::ParseResult ok = d.Parse(json);
+	if (!ok) {
+		// TODO, what we do if we fail on loading a scene?
+		//LOG("Error when loading a scene: %s (%u)", rapidjson::GetParseError(ok.Code()), ok.Offset);
+	}
+	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
+		const rapidjson::Value& s = d["Scene"];
+		mRoot->Load(s);
+	}
+	//END For testing purposes of Scene Load
+
+	
 
 	return true;
 }

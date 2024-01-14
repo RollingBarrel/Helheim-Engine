@@ -59,7 +59,7 @@ public:
 	const char* TestLoadSceneWithGameObject() {
 		LOG("TestsLoadScene");
 
-		const char* json = "{\"Scene\": {\"GameObjects\": [{\"UID\":\"1\", \"ParentUID\": 2, \"Name\": \"Game Object 1\"}]}}";
+		const char* json = "{\"Scene\": {\"GameObjects\": [{\"UID\":1, \"ParentUID\": 2, \"Name\": \"Game Object 1\"}]}}";
 
 		return json;
 	}
@@ -70,15 +70,15 @@ public:
 		const char* json = 
 			"{\"Scene\": \n"
 				"{\"GameObjects\": [\n"
-					"{\"UID\":\"1\", \"ParentUID\": 2, \"Name\": \"Game Object 1\", \"Translation\": [0, 1, -10], \"Rotation\": [0, 0, 0, 1], \"Scale\": [1, 1, 1],\n"
+					"{\"UID\":1, \"ParentUID\": 0, \"Name\": \"Game Object 1\", \"Translation\": [0, 1, -10], \"Rotation\": [0, 0, 0, 1], \"Scale\": [1, 1, 1],\n"
 					"\"Components\": [\n"
-						"{\"ComponentType\": 1, \"HasResource\": false},\n"
-						"{\"ComponentType\": 2, \"FOV\": 57.295780}\n"
+						"{\"ComponentType\": 0, \"HasResource\": false},\n"
+						"{\"ComponentType\": 1, \"FOV\": 57.295780}\n"
 					"]},\n"
-					"{\"UID\":\"1\", \"ParentUID\": 2, \"Name\": \"Game Object 2\", \"Translation\": [0, 0, 0], \"Rotation\": [0, 0, 0, 1], \"Scale\": [1, 1, 1],\n"
+					"{\"UID\":3, \"ParentUID\": 0, \"Name\": \"Game Object 2\", \"Translation\": [0, 0, 0], \"Rotation\": [0, 0, 0, 1], \"Scale\": [1, 1, 1],\n"
 					"\"Components\": [\n"
-						"{\"ComponentType\": 3, \"HasResource\": true},\n"
-						"{\"ComponentType\": 4, \"Playing\": true}\n"
+						"{\"ComponentType\": 1, \"HasResource\": true},\n"
+						"{\"ComponentType\": 1, \"Playing\": true}\n"
 					"]}\n"
 				"]}\n"
 			"}";

@@ -48,11 +48,12 @@ public:
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
+	void SetID(const unsigned int ID);
 
-	void CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type);
 
 	void Save(Archive& archive) const;
-	void Load(const char* json);
+	void Load(const rapidjson::Value& gameObjectJson);
 
 private:
 	GameObject* RemoveChild(const int id);
@@ -65,7 +66,7 @@ private:
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
-	const unsigned int mID;
+	unsigned int mID;
 	std::string mName = "GameObject";
 	float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;
