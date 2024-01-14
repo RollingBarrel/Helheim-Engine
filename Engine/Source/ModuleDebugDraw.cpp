@@ -7,6 +7,7 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "glew.h"
+#include "Geometry/AABB.h"
 
 class DDRenderInterfaceCoreGL final
     : public dd::RenderInterface
@@ -638,6 +639,20 @@ void ModuleDebugDraw::DrawBoundingBox(const OBB& obb)
         points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
     };
     dd::box(orderedPoints, dd::colors::Blue);
+
+    dd::flush();
+}
+
+void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
+{
+    ddVec3 points[8];
+    aabb.GetCornerPoints(points);
+    
+    ddVec3 orderedPoints[8] =
+    {
+        points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
+    };
+    dd::box(orderedPoints, dd::colors::LightGoldenYellow);
 
     dd::flush();
 }

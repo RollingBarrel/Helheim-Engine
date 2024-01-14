@@ -26,6 +26,7 @@ public:
     bool GetDrawGrid() const;
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
     void DrawBoundingBox(const OBB& obb);
+    void DrawQuadtree(const AABB& aabb);
 
 
 private:

@@ -112,7 +112,7 @@ void Quadtree::CleanUp()
 
 void Quadtree::Draw() const
 {
-	App->GetDebugDraw()->DrawBoundingBox(OBB(mBoundingBox));
+	App->GetDebugDraw()->DrawQuadtree(mBoundingBox);
 
 	if (mFilled)
 	{
