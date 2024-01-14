@@ -24,6 +24,9 @@ bool ModuleScene::Init()
 
 	std::string out = archive->Serialize();
 
+	const char* json = test.TestLoadSceneWithGameObjectsAndComponents();
+	mRoot->Load(json);
+
 	return true;
 }
 
