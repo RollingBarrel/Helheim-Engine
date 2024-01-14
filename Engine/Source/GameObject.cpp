@@ -273,8 +273,6 @@ void GameObject::DeleteComponents() {
 	}
 }
 
-}
-
 void GameObject::RecalculateLocalTransform()
 {
 

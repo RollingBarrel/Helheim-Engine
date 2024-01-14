@@ -4,6 +4,7 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "string"
+#include "Archive.h"
 
 class Component;
 enum class ComponentType : unsigned int;
