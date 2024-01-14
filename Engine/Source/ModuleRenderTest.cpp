@@ -179,12 +179,12 @@ static unsigned int CreateProgram(const char* vShaderPath, const char* fShaderPa
 bool ModuleRenderTest::Init()
 {
     float vertices[]{
-        -1.f, 1.f, 0.f, 0.f, 1.f,
-        -1.f, -1.f, 0.f, 0.f, 0.f,
-        1.f, -1.f, 0.f, 1.f, 0.f,
-        1.f, -1.f, 0.f, 1.f, 0.f,
-        1.f, 1.f, 0.f, 1.f, 1.f,
-        -1.f, 1.f, 0.f, 0.f, 1.f
+        -0.5f, 0.5f, 0.f, 0.f, 1.f,
+        -0.5f, -0.5f, 0.f, 0.f, 0.f,
+        0.5f, -0.5f, 0.f, 1.f, 0.f,
+        0.5f, -0.5f, 0.f, 1.f, 0.f,
+        0.5f, 0.5f, 0.f, 1.f, 1.f,
+        -0.5f, 0.5f, 0.f, 0.f, 1.f
     };
 
     glGenVertexArrays(1, &VAO);
@@ -205,20 +205,21 @@ bool ModuleRenderTest::Init()
 }
 update_status ModuleRenderTest::Update()
 {
-    //glBindVertexArray(VAO);
-	//glUseProgram(programId);
-	//glActiveTexture(0);
-	//glBindTexture(GL_TEXTURE_2D, App->GetOpenGL()->GetFramebufferTexture());
-	////glBindTexture(GL_TEXTURE_2D, textureId);
-    //glDrawArrays(GL_TRIANGLES, 0, 6);
-    //glBindVertexArray(0);
+	App->GetOpenGL()->BindSceneFramebuffer();
+    glBindVertexArray(VAO);
+	glUseProgram(programId);
+	glActiveTexture(0);
+	glBindTexture(GL_TEXTURE_2D, textureId);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
+	App->GetOpenGL()->UnbindSceneFramebuffer();
     return UPDATE_CONTINUE;
 }
 
-//bool ModuleRenderTest::CleanUp()
-//{
-//    glDeleteVertexArrays(1, &VAO);
-//    glDeleteBuffers(1, &VBO);
-//	glDeleteTextures(1, &textureId);
-//    return true;
-//}
+bool ModuleRenderTest::CleanUp()
+{
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+	glDeleteTextures(1, &textureId);
+    return true;
+}
