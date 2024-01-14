@@ -27,7 +27,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
-	:Component(owner.mName, owner, ComponentType::MESHRENDERER)
+	:Component(owner->GetName()->c_str(), owner, ComponentType::MESHRENDERER)
 {
 	//Create Random BBO
 	std::random_device rd;
@@ -50,7 +50,7 @@ void MeshRendererComponent::Draw()
 	{
 		return;
 	}
-	if(mDrawBox)
+	if(*mDrawBox)
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 
 	mInsideFrustum = false;
@@ -69,31 +69,7 @@ void MeshRendererComponent::Update()
 	Draw();
 }
 
-void MeshRendererComponent::DrawEditor()
-{
-	bool headerOpen = ImGui::CollapsingHeader("MeshRenderer", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth |ImGuiTreeNodeFlags_AllowItemOverlap);
-	ImGui::SameLine(ImGui::GetItemRectSize().x - 50.0f);
-	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4 / 7.0f, 0.6f, 0.6f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4 / 7.0f, 0.7f, 0.7f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(4 / 7.0f, 0.8f, 0.8f));
-	if (ImGui::SmallButton("Config##MeshRenderer")) {
-		ImGui::OpenPopup("MeshRendererOptions");
-	}
-	if (ImGui::BeginPopup("MeshRendererOptions")) {
-		if (ImGui::Selectable("Reset")) {
-			Reset();
-		}
-		ImGui::EndPopup();
-	}
-	ImGui::PopStyleColor(3);
-	if (headerOpen) {
-		ImGui::Text("Model: Cube.obj (TEST)");
-		ImGui::Text("Material: DefaultMaterial (TEST)");
-		ImGui::Text("Shader: StandardShader (TEST)");
-		ImGui::DragFloat3("Bounding Box (position): ", &mOBB.pos.x);
-		ImGui::Checkbox("Render bounding box", &mDrawBox);
-	}
-}
+
 
 Component* MeshRendererComponent::Clone(GameObject* owner)
 {

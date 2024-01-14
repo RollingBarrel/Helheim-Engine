@@ -212,8 +212,8 @@ GameObject* GameObject::RemoveChild(const int id)
 	std::vector<GameObject*>::iterator itTargetPosition = mChildren.end();
 	for (auto it = mChildren.begin(); it != mChildren.cend(); ++it) {
 		if ((*it)->GetID() == id) {
-			if (it->getMeshRenderer() != nullptr) {
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject(it);
+			if ((*it)->getMeshRenderer() != nullptr) {
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject((*it));
 			}
 			movedObject = *it;
 			mChildren.erase(it);

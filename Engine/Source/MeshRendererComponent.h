@@ -18,11 +18,13 @@ public:
 	void Load();
 
 	void Update() override;
+	void DrawEditor();
 	Component* Clone(GameObject* owner) override;
 
 	const OBB getOBB() const { return mOBB; }
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
+	bool* getShouldDraw() { return mDrawBox; }
 
 private:
 	void LoadVBO();
@@ -31,7 +33,7 @@ private:
 	Mesh* mMesh;
 	Material* material;
 	OBB mOBB;
-	bool mDrawBox = false;
+	bool* mDrawBox = new bool(false);
 	bool mInsideFrustum = true;
 };
 
