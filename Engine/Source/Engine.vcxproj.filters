@@ -176,14 +176,14 @@
       <Filter>Importers</Filter>
     </ClCompile>
     <ClCompile Include="EngineTimer.cpp" />
+    <ClCompile Include="ScenePanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
     <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c">
       <Filter>Dependencies\MikkTspace</Filter>
-    </ClCompile>
-    <ClCompile Include="ScenePanel.cpp">
-      <Filter>Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -559,14 +559,14 @@
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="EngineTimer.h" />
+    <ClInclude Include="ScenePanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
     <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h">
       <Filter>Dependencies\MikkTspace</Filter>
-    </ClInclude>
-    <ClInclude Include="ScenePanel.h">
-      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
