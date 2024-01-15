@@ -215,6 +215,7 @@
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PausePanel.cpp" />
+    <ClCompile Include="ProjectPanel.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="QuadtreePanel.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
@@ -335,6 +336,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PausePanel.h" />
+    <ClInclude Include="ProjectPanel.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="QuadtreePanel.h" />
     <ClInclude Include="ScenePanel.h" />

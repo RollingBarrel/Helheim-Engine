@@ -12,6 +12,7 @@
 #include "ScenePanel.h"
 #include "QuadtreePanel.h"
 #include "PausePanel.h"
+#include "ProjectPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -26,6 +27,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[SCENEPANEL] = new ScenePanel();
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
+	mPanels[PROJECTPANEL] = new ProjectPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -216,6 +218,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* quadTree = mPanels[QUADTREEPANEL];
+	Panel* projectPanel = mPanels[PROJECTPANEL];
 
 	if (openPanels == true) {
 		console->Open();
@@ -225,6 +228,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		aboutPanel->Open();
 		scenePanel->Open();
 		quadTree->Open();
+		projectPanel->Open();
 	}
 	else {
 		console->Close();
@@ -234,5 +238,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		aboutPanel->Close();
 		scenePanel->Close();
 		quadTree->Close();
+		projectPanel->Close();
 	}
 }

@@ -3,6 +3,7 @@
 #include "Importer.h"
 #include "ImporterTexture.h"
 
+
 #include "physfs.h"
 
 ModuleFileSystem::ModuleFileSystem()
@@ -14,14 +15,10 @@ ModuleFileSystem::ModuleFileSystem()
         LOG("File System error while creating write dir: %s\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 
-    if (!PHYSFS_mount(".", nullptr, 1))
-    {
-        LOG("Error while setting path (%s): %s\n",".", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-    }
-
+    AddToSearchPath(".");
+    AddToSearchPath(ASSETS_PATH);
+    
     CreateDirectory(ASSETS_PATH);
-    CreateDirectory(ASSETS_MODEL_PATH);
-    CreateDirectory(ASSETS_TEXTURE_PATH);
 
     CreateDirectory(LIBRARY_PATH);
     CreateDirectory(LIBRARY_MESH_PATH);
@@ -186,4 +183,45 @@ bool ModuleFileSystem::IsDirectory(const char* directoryPath) const
         LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     return(stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
 }
+
+bool ModuleFileSystem::AddToSearchPath(const char* path)
+{
+    if (!PHYSFS_mount(path, nullptr, 1))
+    {
+        LOG("Error while setting path (%s): %s\n", path, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return false;
+    }
+    else
+        return true;
+}
+
+void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories)
+{
+    if (Exists(directory))
+    {
+        char** fileList = PHYSFS_enumerateFiles(directory);
+
+        std::string path = directory + std::string("/");
+
+        for (auto file = fileList; *file != nullptr; ++file)
+        {
+            path += *file;
+
+            if (IsDirectory(path.c_str()))
+            {
+                directories.push_back(path);
+                path = directory + std::string("/");
+            }
+            else
+            {
+                files.push_back(path);
+                path = directory + std::string("/");
+            }
+        }
+
+
+        PHYSFS_freeList(fileList);
+    }
+}
+
 

@@ -11,6 +11,9 @@
 #define ASSETS_MODEL_PATH "Assets/Models/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"
 
+#include <vector>
+#include <string>
+
 class ModuleFileSystem : public Module
 {
 public:
@@ -32,9 +35,11 @@ public:
 	bool Exists(const char* filePath) const;
 	bool IsDirectory(const char* directoryPath) const;
 
+	bool AddToSearchPath(const char* path);
+
+	void DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories);
+
 private:
-
-
 
 };
 
