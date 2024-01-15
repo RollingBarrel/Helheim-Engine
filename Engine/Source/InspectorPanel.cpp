@@ -205,6 +205,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mComponentIndex);
 		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		DragAndDrop(object, component);
 		RightClickPopup(component);
 		if (isOpen) {
 			switch (component->GetType()) {
@@ -236,4 +237,21 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::Text("Model: Cube.obj (TEST)");
 	ImGui::Text("Material: DefaultMaterial (TEST)");
 	ImGui::Text("Shader: StandardShader (TEST)");
+}
+
+void InspectorPanel::DragAndDrop(GameObject* object, Component* component) {
+	if (ImGui::IsItemActive() && !ImGui::IsItemHovered())
+	{
+
+		int next = (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
+		std::vector<Component*>::iterator it = std::find(object->mComponents.begin(), object->mComponents.end(), component);
+		std::vector<Component*>::iterator itNext = it + next;
+		
+		//object->mComponentsToSwap = { component, target };
+		if (itNext != object->mComponents.end() && itNext != object->mComponents.begin()) {
+			Component* target = *itNext;
+			std::rotate(it, itNext, itNext + 1);
+		}
+			
+	}
 }

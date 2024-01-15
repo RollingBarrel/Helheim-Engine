@@ -131,6 +131,7 @@ void GameObject::Update()
 	}
 
 	DeleteComponents();
+	ReorderComponents();
 }
 
 void GameObject::ResetTransform()
@@ -269,5 +270,35 @@ void GameObject::DeleteComponents() {
 			delete component;
 			component = nullptr;
 		}
+	}
+}
+
+Component* GameObject::RemoveComponent(Component* component)
+{
+	Component* movedComponent = nullptr;
+	auto it = std::find(mComponents.begin(), mComponents.end(), component);
+	if (it != mComponents.end()) {
+		movedComponent = *it;
+		mComponents.erase(it);		
+	}
+	return movedComponent;
+}
+
+void GameObject::AddComponent(Component* component, Component* position)
+{
+	if (position == nullptr) {
+		mComponents.push_back(component);
+	}
+	else {
+		auto it = std::find(mComponents.begin(), mComponents.end(), position);
+		mComponents.insert(it, component);
+	}
+}
+
+void GameObject::ReorderComponents() {
+	if (mComponentsToSwap.first != nullptr) {
+		RemoveComponent(mComponentsToSwap.first);
+		AddComponent(mComponentsToSwap.first, mComponentsToSwap.second);
+		mComponentsToSwap = { nullptr, nullptr };
 	}
 }
