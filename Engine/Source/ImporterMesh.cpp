@@ -16,9 +16,6 @@
 
 void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh)
 {
-    //Create Duplicate .bin
-    App->GetFileSystem();
-
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
     const auto& itNorm = primitive.attributes.find("NORMAL");
@@ -195,7 +192,12 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
 {
     unsigned int header[2] = { mesh->mNumIndices, mesh->mNumVertices };
 
-    unsigned int size = sizeof(header) + sizeof(unsigned int) * mesh->mNumIndices + sizeof(float) * mesh->mNumVertices * 3;
+    unsigned int size = sizeof(header) + 
+                        sizeof(unsigned int) * mesh->mNumIndices +          
+                        sizeof(float) * mesh->mNumVertices * 3 +
+                        sizeof(float) * mesh->mNumVertices * 2 +
+                        sizeof(float) * mesh->mNumVertices * 3 +
+                        sizeof(float) * mesh->mNumVertices * 3;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -212,7 +214,22 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     bytes = sizeof(float) * mesh->mNumVertices * 3;
     memcpy(cursor, mesh->mVerticesPosition, bytes);
     cursor += bytes;
- 
+    //Save TexCoords
+    //assert(mesh->mVerticesTextureCoordinate != nullptr);
+    //bytes = sizeof(float) * mesh->mNumVertices * 2;
+    //memcpy(cursor, mesh->mVerticesTextureCoordinate, bytes);
+    //cursor += bytes;
+    ////Save Normals
+    //assert(mesh->mVerticesNormal != nullptr);
+    //bytes = sizeof(float) * mesh->mNumVertices * 3;
+    //memcpy(cursor, mesh->mVerticesNormal, bytes);
+    //cursor += bytes;
+    ////Save Tangents
+    //assert(mesh->mVerticesTangent != nullptr);
+    //bytes = sizeof(float) * mesh->mNumVertices * 3;
+    //memcpy(cursor, mesh->mVerticesTangent, bytes);
+    //cursor += bytes;
+
     std::string path = LIBRARY_MESH_PATH;
     path += mesh->mMeshName;
     path += ".messhi";
@@ -247,6 +264,18 @@ void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* file
     bytes = sizeof(float) * mesh->mNumVertices * 3;
     mesh->mVerticesPosition = new float[mesh->mNumVertices * 3];
     memcpy(mesh->mVerticesPosition, cursor, bytes);
+    //Save TexCoords
+    bytes = sizeof(float) * mesh->mNumVertices * 2;
+    mesh->mVerticesTextureCoordinate = new float[mesh->mNumVertices * 2];
+    memcpy(mesh->mVerticesTextureCoordinate, cursor, bytes);
+    //Save Normals
+    bytes = sizeof(float) * mesh->mNumVertices * 3;
+    mesh->mVerticesNormal = new float[mesh->mNumVertices * 3];
+    memcpy(mesh->mVerticesNormal, cursor, bytes);
+    //Save Tangents
+    bytes = sizeof(float) * mesh->mNumVertices * 3;
+    mesh->mVerticesTangent = new float[mesh->mNumVertices * 3];
+    memcpy(mesh->mVerticesTangent, cursor, bytes);
 
     mesh->LoadVBO();
     mesh->LoadEBO();

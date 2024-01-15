@@ -19,6 +19,7 @@ struct ResourceMesh
 	float* mVerticesTangent = nullptr;
 
 	const char* mMeshName = nullptr;
+	unsigned int mUID;
 
 	void LoadVAO();
 	void LoadVBO();

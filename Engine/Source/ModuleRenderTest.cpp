@@ -209,6 +209,7 @@ static unsigned int SizeFromGlType(int glDefineType)
 
 #include "mikktspace.h"
 #include "weldmesh.h"
+
 typedef struct {
 	int numVertices;
 	int posOffset;
