@@ -204,8 +204,9 @@ void InspectorPanel::RightClickPopup(Component* component) {
 void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mComponentIndex);
+		DragAndDropTarget(object, component);
 		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
-		DragAndDrop(object, component);
+		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
 			switch (component->GetType()) {
@@ -226,6 +227,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		}
 		ImGui::PopID();
 	}
+	DragAndDropTarget(object, nullptr);
 }
 
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
@@ -239,19 +241,31 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::Text("Shader: StandardShader (TEST)");
 }
 
-void InspectorPanel::DragAndDrop(GameObject* object, Component* component) {
-	if (ImGui::IsItemActive() && !ImGui::IsItemHovered())
+void InspectorPanel::DragAndDropSource(Component* component) {
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
+		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
 
-		int next = (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
-		std::vector<Component*>::iterator it = std::find(object->mComponents.begin(), object->mComponents.end(), component);
-		std::vector<Component*>::iterator itNext = it + next;
-		
-		//object->mComponentsToSwap = { component, target };
-		if (itNext != object->mComponents.end() && itNext != object->mComponents.begin()) {
-			Component* target = *itNext;
-			std::rotate(it, itNext, itNext + 1);
-		}
-			
+		ImGui::Text(component->mName);
+		ImGui::EndDragDropSource();
 	}
+}
+
+void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+	ImGui::InvisibleButton("##", ImVec2(-1, 5));
+	if (ImGui::BeginDragDropTarget())
+	{
+		LOG("Droped payload");
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
+		{
+			Component* movedComponent = (Component*)payload->Data;
+			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) {
+				Component* pMovedComponent = object->RemoveComponent(movedComponent);
+				object->AddComponent(pMovedComponent, target);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	ImGui::PopStyleVar();
 }

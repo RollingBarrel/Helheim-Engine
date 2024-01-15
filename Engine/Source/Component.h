@@ -23,6 +23,8 @@ public:
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
 
+	int GetID() { return mComponentIndex; }
+
 protected:
 	virtual	void Reset() = 0;
 	const char* const mName;

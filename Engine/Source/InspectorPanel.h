@@ -25,5 +25,6 @@ private:
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
-	void DragAndDrop(GameObject* object, Component* targetPosition);
+	void DragAndDropSource(Component* component);
+	void DragAndDropTarget(GameObject* object, Component* target);
 };

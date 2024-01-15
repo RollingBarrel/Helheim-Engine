@@ -54,14 +54,12 @@ private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
 	void DeleteComponents();
-	void ReorderComponents();
 	Component* RemoveComponent(Component* component);
 	void AddComponent(Component* component, Component* position);
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
-	std::pair<Component*, Component*> mComponentsToSwap = { nullptr, nullptr };
 	const unsigned int mID;
 	std::string mName = "Game Object";
 	float4x4 mWorldTransformMatrix = float4x4::identity;

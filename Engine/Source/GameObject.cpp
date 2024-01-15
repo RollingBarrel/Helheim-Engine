@@ -129,9 +129,7 @@ void GameObject::Update()
 	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->Update();
 	}
-
 	DeleteComponents();
-	ReorderComponents();
 }
 
 void GameObject::ResetTransform()
@@ -276,10 +274,12 @@ void GameObject::DeleteComponents() {
 Component* GameObject::RemoveComponent(Component* component)
 {
 	Component* movedComponent = nullptr;
-	auto it = std::find(mComponents.begin(), mComponents.end(), component);
-	if (it != mComponents.end()) {
-		movedComponent = *it;
-		mComponents.erase(it);		
+	for (auto it = mComponents.begin(); it != mComponents.cend(); ++it) {
+		if ((*it)->GetID() == component->GetID()) {
+			movedComponent = *it;
+			mComponents.erase(it);
+			break;
+		}
 	}
 	return movedComponent;
 }
@@ -292,13 +292,5 @@ void GameObject::AddComponent(Component* component, Component* position)
 	else {
 		auto it = std::find(mComponents.begin(), mComponents.end(), position);
 		mComponents.insert(it, component);
-	}
-}
-
-void GameObject::ReorderComponents() {
-	if (mComponentsToSwap.first != nullptr) {
-		RemoveComponent(mComponentsToSwap.first);
-		AddComponent(mComponentsToSwap.first, mComponentsToSwap.second);
-		mComponentsToSwap = { nullptr, nullptr };
 	}
 }
