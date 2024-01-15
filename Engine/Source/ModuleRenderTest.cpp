@@ -1,12 +1,17 @@
-﻿#include "ModuleRenderTest.h"
-#include "glew.h"
-#include "Application.h"
-#include "ModuleOpenGL.h"
-
-#define _CRT_SECURE_NO_WARNINGS
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include "DirectXTex.h"
+
+
+#include "ModuleRenderTest.h"
+#include "glew.h"
+#include "Application.h"
+#include "ModuleOpenGL.h"
+#include "ModuleCamera.h"
+#include "float4x4.h"
+#include "MathConstants.h"
+#include "imgui.h"
 
 
 
@@ -176,42 +181,230 @@ static unsigned int CreateProgram(const char* vShaderPath, const char* fShaderPa
 	return programId;
 }
 
+static unsigned int SizeFromGlType(int glDefineType)
+{
+	switch (glDefineType)
+	{
+	case GL_BYTE:
+	case GL_UNSIGNED_BYTE:
+		return 1;
+	case GL_SHORT:
+	case GL_UNSIGNED_SHORT:
+	case GL_2_BYTES:
+		return 2;
+	case GL_3_BYTES:
+		return 3;
+	case GL_INT:
+	case GL_UNSIGNED_INT:
+	case GL_FLOAT:
+	case GL_4_BYTES:
+		return 4;
+	case GL_DOUBLE:
+		return 8;
+	default:
+		LOG("WARNING: Could not identify GLTypeDefine");
+	}
+	return 0;
+}
+
+#include "mikktspace.h"
+#include "weldmesh.h"
+typedef struct {
+	int numVertices;
+	int posOffset;
+	int texCoordOffset;
+	int normOffset;
+	int vertexSize;
+	char* vertices;
+	char* tVertices;
+} MikkTSpaceStruct;
+
+static int GetNumFaces(const SMikkTSpaceContext* pContext)
+{
+	MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+	return ptr->numVertices / 3;
+}
+static int GetNumVerticesOfFace(const SMikkTSpaceContext* pContext, const int iFace) {
+	return 3;
+}
+static void GetPosition(const SMikkTSpaceContext* pContext, float fvPosOut[], const int iFace, const int iVert)
+{
+	MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+	float* posOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->posOffset];
+	fvPosOut[0] = posOut[0];
+	fvPosOut[1] = posOut[1];
+	fvPosOut[2] = posOut[2];
+}
+static void GetTexCoord(const SMikkTSpaceContext* pContext, float fvTexcOut[], const int iFace, const int iVert)
+{
+	MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+	float* texCOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->texCoordOffset];
+	fvTexcOut[0] = texCOut[0];
+	fvTexcOut[1] = texCOut[1];
+}
+static void GetNormal(const SMikkTSpaceContext* pContext, float fvNormOut[], const int iFace, const int iVert)
+{
+	MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+	float* normalOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->normOffset];
+	fvNormOut[0] = normalOut[0];
+	fvNormOut[1] = normalOut[1];
+	fvNormOut[2] = normalOut[2];
+}
+
+static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTangent[], const float fSign, const int iFace, const int iVert)
+{
+	MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+	//Escriure tota la info del vertex + les tangents
+	const unsigned int vertexIdx = (iFace * 3 + iVert) * ptr->vertexSize;
+	const unsigned int vertexTIdx = (iFace * 3 + iVert) * (ptr->vertexSize + sizeof(float) * 4);
+	memcpy(&ptr->tVertices[vertexTIdx], &ptr->vertices[vertexIdx], ptr->vertexSize);
+	memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize], fvTangent, 3 * sizeof(float));
+	memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
+}
+
+void GenerateTangents(unsigned int indexType, unsigned int VBOEBO[1], unsigned int numIndices, unsigned int vertexSize)
+{
+	const unsigned int indexSize = SizeFromGlType(indexType);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOEBO[1]);
+	const char* indices = (const char*)glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_ONLY);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOEBO[0]);
+	const char* vertices = (const char*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
+	char* unweldedVertices = (char*)malloc(numIndices * vertexSize);
+	for (int i = 0; i < numIndices; ++i)
+	{
+		unsigned long long vertexIdx = 0;
+		memcpy(&vertexIdx, &indices[i * indexSize], indexSize);
+		//TODO: possible error en la endianes
+		//vertexIdx >>= sizeof(vertexIdx) - indexSize;
+		memcpy(&unweldedVertices[i * vertexSize], &vertices[vertexIdx * vertexSize], vertexSize);
+	}
+	glUnmapBuffer(GL_ARRAY_BUFFER);
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+	SMikkTSpaceInterface interfaceInput = {};
+	interfaceInput.m_getNumFaces = GetNumFaces;
+	interfaceInput.m_getNumVerticesOfFace = GetNumVerticesOfFace;
+	interfaceInput.m_getNormal = GetNormal;
+	interfaceInput.m_getPosition = GetPosition;
+	interfaceInput.m_getTexCoord = GetTexCoord;
+	interfaceInput.m_setTSpaceBasic = SetTSpaceBasic;
+	MikkTSpaceStruct mikkInput = {};
+	mikkInput.numVertices = numIndices;
+	mikkInput.posOffset = 0;
+	mikkInput.texCoordOffset = 3 * sizeof(float);
+	mikkInput.normOffset = 5 * sizeof(float);
+	mikkInput.vertexSize = 8 * sizeof(float);
+	mikkInput.vertices = unweldedVertices;
+	//Les mikktangents son vec4
+	char* unweldedTVertices = (char*)malloc(numIndices * (vertexSize + 4 * sizeof(float)));
+	mikkInput.tVertices = unweldedTVertices;
+	SMikkTSpaceContext tangContext = {};
+	tangContext.m_pInterface = &interfaceInput;
+	tangContext.m_pUserData = &mikkInput;
+	if (!genTangSpaceDefault(&tangContext))
+		LOG("ERROR: Could not generate the tangent space");
+
+	int* piRemapTable = (int*)malloc(mikkInput.numVertices * sizeof(int));
+	float* pfVertexDataOut = (float*)malloc(mikkInput.numVertices * 12 * sizeof(float));
+	unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut,
+		(float*)mikkInput.tVertices, mikkInput.numVertices, 12);
+	free(unweldedTVertices);
+	free(unweldedVertices);
+
+	glBufferData(GL_ARRAY_BUFFER, uniqueVertices * 12 * sizeof(float), pfVertexDataOut, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), 0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), (void*)(5 * sizeof(float)));
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 12 * sizeof(float), (void*)(8 * sizeof(float)));
+	glEnableVertexAttribArray(3);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mikkInput.numVertices * sizeof(int), piRemapTable, GL_STATIC_DRAW);
+	free(piRemapTable);
+	free(pfVertexDataOut);
+}
+
 bool ModuleRenderTest::Init()
 {
-    float vertices[]{
-        -0.5f, 0.5f, 0.f, 0.f, 1.f,
-        -0.5f, -0.5f, 0.f, 0.f, 0.f,
-        0.5f, -0.5f, 0.f, 1.f, 0.f,
-        0.5f, -0.5f, 0.f, 1.f, 0.f,
-        0.5f, 0.5f, 0.f, 1.f, 1.f,
-        -0.5f, 0.5f, 0.f, 0.f, 1.f
-    };
 
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(sizeof(float)*3));
-    glBindVertexArray(0);
+	programId = CreateProgram("Shaders\\Vertex.vs", "Shaders\\Fragment.fs");
 
-	programId = CreateProgram("SimpleVertexShader", "SimpleFragmentShader");
-	textureId = LoadTexture("brickwall.jpg");
+	glUseProgram(programId);
+	float4x4 model = float4x4::FromTRS(float3(1.0f, 0.0f, 0.0f), float4x4::RotateX(-pi / 4.0f), float3(2.5f, 2.5f, 2.5f));
+	glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
 
+
+	glUniform3fv(4, 1, lightDir);
+	glUniform3fv(5, 1, lightCol);
+	glUniform3fv(6, 1, ambientCol);
+	glUniform3fv(7, 1, App->GetCamera()->GetPos().ptr());
+	glUniform1f(8, kD);
+	glUniform1f(10, brightness);
+
+	float vertex[] = {
+	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
+	};
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	//glBindBuffer(GL_UNIFORM_BUFFER, App->GetCamera()->GetCameraUniffromsId());
+
+	glGenBuffers(2, VBOEBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOEBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	unsigned int indices[6] = { 0,1,2,3,2,1 };
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOEBO[1]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	GenerateTangents(GL_UNSIGNED_INT, VBOEBO, 6, 8 * sizeof(float));
+
+	glBindVertexArray(0);
+	textureId = LoadTexture("Assets\\Textures\\brickwall.jpg");
+	normTextureId = LoadTexture("Assets\\Textures\\brickwall_normal.jpg");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glUniform1i(3, 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, normTextureId);
+	glUniform1i(9, 1);
     return true;
 }
 update_status ModuleRenderTest::Update()
 {
-	App->GetOpenGL()->BindSceneFramebuffer();
-    glBindVertexArray(VAO);
 	glUseProgram(programId);
-	glActiveTexture(0);
+	glUniform3fv(7, 1, App->GetCamera()->GetPos().ptr());
+	ImGui::Begin("Lights");
+	if (ImGui::DragFloat("KD", &kD, 0.0f, 1.0f))
+		glUniform1f(8, kD);
+	if (ImGui::DragFloat("Brightness", &brightness, 0.0f, 1.0f))
+		glUniform1f(10, brightness);
+	if (ImGui::DragFloat3("LightDir", lightDir, 0.0f, 1.0f))
+		glUniform3fv(4, 1, lightDir);
+	if (ImGui::ColorPicker3("LightCol", lightCol))
+		glUniform3fv(5, 1, lightCol);
+	if (ImGui::ColorPicker3("AmbientCol", ambientCol))
+		glUniform3fv(6, 1, ambientCol);
+	ImGui::End();
+
+	App->GetOpenGL()->BindSceneFramebuffer();
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureId);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, normTextureId);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glUseProgram(0);
+	glBindVertexArray(0);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
     return UPDATE_CONTINUE;
 }
@@ -219,7 +412,8 @@ update_status ModuleRenderTest::Update()
 bool ModuleRenderTest::CleanUp()
 {
     glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(2, VBOEBO);
 	glDeleteTextures(1, &textureId);
+	glDeleteTextures(1, &normTextureId);
     return true;
 }

@@ -176,7 +176,15 @@
       <Filter>Importers</Filter>
     </ClCompile>
     <ClCompile Include="EngineTimer.cpp" />
-    <ClCompile Include="ScenePanel.cpp" />
+    <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c">
+      <Filter>Dependencies\MikkTspace</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c">
+      <Filter>Dependencies\MikkTspace</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenePanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -551,7 +559,15 @@
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="EngineTimer.h" />
-    <ClInclude Include="ScenePanel.h" />
+    <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h">
+      <Filter>Dependencies\MikkTspace</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h">
+      <Filter>Dependencies\MikkTspace</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenePanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -598,6 +614,9 @@
     </Filter>
     <Filter Include="GameObjects\Components">
       <UniqueIdentifier>{81d59651-7fc9-4778-967f-0ecdcfa808ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\MikkTspace">
+      <UniqueIdentifier>{58fe3eb7-9da9-4e89-b4ef-7117bf4acc3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
