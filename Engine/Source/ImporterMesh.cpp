@@ -118,7 +118,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
     if (itTang != primitive.attributes.end())
     {
         const tinygltf::Accessor& tangAcc = model.accessors[itTang->second];
-        assert(tangAcc.type == TINYGLTF_TYPE_VEC3);
+        assert(tangAcc.type == TINYGLTF_TYPE_VEC4);
         assert(tangAcc.componentType == GL_FLOAT);
         const tinygltf::BufferView& tangView = model.bufferViews[tangAcc.bufferView];
         const tinygltf::Buffer& tangBuffer = model.buffers[tangView.buffer];
@@ -143,6 +143,10 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
 
             LOG("%f %f %f", reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].x, reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].y, reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].z);
         }
+    }
+    else
+    {
+        //Generate Tangents
     }
 
     //TODO: Add Indices part
@@ -183,9 +187,9 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
 
     Mesh::Save(mesh);
 
-    char* fileBuffer = nullptr;
-    ResourceMesh loadedMesh;
-    Mesh::Load(fileBuffer, &loadedMesh, mesh->mMeshName);
+    //char* fileBuffer = nullptr;
+    //ResourceMesh loadedMesh;
+    //Mesh::Load(fileBuffer, &loadedMesh, mesh->mMeshName);
 }
 
 void Importer::Mesh::Save(const ResourceMesh* mesh)
@@ -197,7 +201,7 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
                         sizeof(float) * mesh->mNumVertices * 3 +
                         sizeof(float) * mesh->mNumVertices * 2 +
                         sizeof(float) * mesh->mNumVertices * 3 +
-                        sizeof(float) * mesh->mNumVertices * 3;
+                        sizeof(float) * mesh->mNumVertices * 4;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -215,20 +219,20 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     memcpy(cursor, mesh->mVerticesPosition, bytes);
     cursor += bytes;
     //Save TexCoords
-    //assert(mesh->mVerticesTextureCoordinate != nullptr);
-    //bytes = sizeof(float) * mesh->mNumVertices * 2;
-    //memcpy(cursor, mesh->mVerticesTextureCoordinate, bytes);
-    //cursor += bytes;
-    ////Save Normals
-    //assert(mesh->mVerticesNormal != nullptr);
-    //bytes = sizeof(float) * mesh->mNumVertices * 3;
-    //memcpy(cursor, mesh->mVerticesNormal, bytes);
-    //cursor += bytes;
-    ////Save Tangents
-    //assert(mesh->mVerticesTangent != nullptr);
-    //bytes = sizeof(float) * mesh->mNumVertices * 3;
-    //memcpy(cursor, mesh->mVerticesTangent, bytes);
-    //cursor += bytes;
+    assert(mesh->mVerticesTextureCoordinate != nullptr);
+    bytes = sizeof(float) * mesh->mNumVertices * 2;
+    memcpy(cursor, mesh->mVerticesTextureCoordinate, bytes);
+    cursor += bytes;
+    //Save Normals
+    assert(mesh->mVerticesNormal != nullptr);
+    bytes = sizeof(float) * mesh->mNumVertices * 3;
+    memcpy(cursor, mesh->mVerticesNormal, bytes);
+    cursor += bytes;
+    //Save Tangents
+    assert(mesh->mVerticesTangent != nullptr);
+    bytes = sizeof(float) * mesh->mNumVertices * 3;
+    memcpy(cursor, mesh->mVerticesTangent, bytes);
+    cursor += bytes;
 
     std::string path = LIBRARY_MESH_PATH;
     path += mesh->mMeshName;
@@ -273,13 +277,15 @@ void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* file
     mesh->mVerticesNormal = new float[mesh->mNumVertices * 3];
     memcpy(mesh->mVerticesNormal, cursor, bytes);
     //Save Tangents
-    bytes = sizeof(float) * mesh->mNumVertices * 3;
-    mesh->mVerticesTangent = new float[mesh->mNumVertices * 3];
+    bytes = sizeof(float) * mesh->mNumVertices * 4;
+    mesh->mVerticesTangent = new float[mesh->mNumVertices * 4];
     memcpy(mesh->mVerticesTangent, cursor, bytes);
 
     mesh->LoadVBO();
     mesh->LoadEBO();
     mesh->LoadVAO();
+
+    //Create GameObject and set mesh to it;
 }
 
 void ResourceMesh::LoadVAO()

@@ -6,7 +6,11 @@
 void Importer::Texture::Import(const char* filePath, ResourceTex& texture)
 {
     DirectX::ScratchImage image;
-    const wchar_t* pathTex = GetWC(filePath);
+
+    size_t size = strlen(filePath) + 1;
+    wchar_t* pathTex = new wchar_t[size];
+    size_t outSize;
+    mbstowcs_s(&outSize, pathTex, size, filePath, size - 1);
 
     // every texture have one format, if the format its not the correct it use another method for load
     HRESULT hr = DirectX::LoadFromDDSFile(pathTex, DirectX::DDS_FLAGS_NONE, nullptr, image);
@@ -56,14 +60,4 @@ void Importer::Texture::Import(const char* filePath, ResourceTex& texture)
         texture.pixels[i] = image.GetPixels()[i];
     }
 
-}
-
-const wchar_t* GetWC(const char* c)
-{
-    const size_t cSize = strlen(c) + 1;
-    size_t zSice;
-    wchar_t* wc = new wchar_t[cSize];
-    mbstowcs_s(&zSice, wc, cSize, c, cSize - 1);
-
-    return wc;
 }

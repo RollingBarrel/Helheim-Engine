@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "DirectXTex.h"
 
+#include "Importer.h"
+#include "ImporterModel.h"
 
 #include "ModuleRenderTest.h"
 #include "glew.h"
@@ -325,8 +327,10 @@ void GenerateTangents(unsigned int indexType, unsigned int VBOEBO[1], unsigned i
 
 bool ModuleRenderTest::Init()
 {
-
+	//Switch to Resource Shader later on.
 	programId = CreateProgram("Shaders\\Vertex.vs", "Shaders\\Fragment.fs");
+
+	Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
 
 	glUseProgram(programId);
 	float4x4 model = float4x4::FromTRS(float3(1.0f, 0.0f, 0.0f), float4x4::RotateX(-pi / 4.0f), float3(2.5f, 2.5f, 2.5f));
