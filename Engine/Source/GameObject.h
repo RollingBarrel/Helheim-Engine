@@ -56,7 +56,7 @@ public:
 	Component* CreateComponent(ComponentType type);
 
 	void Save(Archive& archive) const;
-	void Load(const rapidjson::Value& gameObjectJson);
+	void Load(const rapidjson::Value& gameObjectsJson);
 
 	MeshRendererComponent* getMeshRenderer() const;
 
