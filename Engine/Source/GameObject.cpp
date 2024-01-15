@@ -402,10 +402,10 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	if (gameObject.HasMember("Translation") && gameObject["Translation"].IsArray()) {
 		const rapidjson::Value& translationValues = gameObject["Translation"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (translationValues.Size() == 3 && translationValues[0].IsFloat() && translationValues[1].IsFloat() && translationValues[2].IsFloat()) {
-			x = translationValues[0].GetFloat();
-			y = translationValues[1].GetFloat();
-			z = translationValues[2].GetFloat();
+		if (translationValues.Size() == 3 && translationValues[0].IsInt() && translationValues[1].IsInt() && translationValues[2].IsInt()) {
+			x = translationValues[0].GetInt();
+			y = translationValues[1].GetInt();
+			z = translationValues[2].GetInt();
 		}
 
 		position = float3(x, y, z);
@@ -413,10 +413,11 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	if (gameObject.HasMember("Rotation") && gameObject["Rotation"].IsArray()) {
 		const rapidjson::Value& rotationValues = gameObject["Rotation"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-		if (rotationValues.Size() == 3 && rotationValues[0].IsFloat() && rotationValues[1].IsFloat() && rotationValues[2].IsFloat()) {
-			x = rotationValues[0].GetFloat();
-			y = rotationValues[1].GetFloat();
-			z = rotationValues[2].GetFloat();
+		if (rotationValues.Size() == 4 && rotationValues[0].IsInt() && rotationValues[1].IsInt() && rotationValues[2].IsInt() && rotationValues[3].IsInt()) {
+			x = rotationValues[0].GetInt();
+			y = rotationValues[1].GetInt();
+			z = rotationValues[2].GetInt();
+			w = rotationValues[3].GetInt();
 		}
 
 		rotation = Quat(x, y, z, w);
@@ -425,10 +426,10 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	if (gameObject.HasMember("Scale") && gameObject["Scale"].IsArray()) {
 		const rapidjson::Value& scaleValues = gameObject["Scale"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (scaleValues.Size() == 3 && scaleValues[0].IsFloat() && scaleValues[1].IsFloat() && scaleValues[2].IsFloat()) {
-			x = scaleValues[0].GetFloat();
-			y = scaleValues[1].GetFloat();
-			z = scaleValues[2].GetFloat();
+		if (scaleValues.Size() == 3 && scaleValues[0].IsInt() && scaleValues[1].IsInt() && scaleValues[2].IsInt()) {
+			x = scaleValues[0].GetInt();
+			y = scaleValues[1].GetInt();
+			z = scaleValues[2].GetInt();
 		}
 
 		scale = float3(x, y, z);
@@ -459,7 +460,7 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
-	GameObject* scene = new GameObject("Scene", nullptr);
+	GameObject* scene = App->GetScene()->GetRoot();
 	// Manage GameObjects inside the Scene
 	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray()) {
 		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];

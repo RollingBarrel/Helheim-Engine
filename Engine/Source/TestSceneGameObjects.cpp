@@ -48,16 +48,8 @@ public:
 
 	}
 
-	const char* TestLoadScene() {
-		LOG("TestsLoadScene");
-
-		const char* json = "{\"Scene\": {\"hola\":\"hey\" }}";
-
-		return json;
-	}
-
 	const char* TestLoadSceneWithGameObject() {
-		LOG("TestsLoadScene");
+		LOG("TestLoadSceneWithGameObject");
 
 		const char* json = "{\"Scene\": {\"GameObjects\": [{\"UID\":1, \"ParentUID\": 2, \"Name\": \"Game Object 1\"}]}}";
 
@@ -65,7 +57,7 @@ public:
 	}
 
 	const char* TestLoadSceneWithGameObjectsAndComponents() {
-		LOG("TestsLoadScene");
+		LOG("TestLoadSceneWithGameObjectsAndComponents");
 
 		const char* json = 
 			"{\"Scene\": \n"
@@ -79,6 +71,33 @@ public:
 					"\"Components\": [\n"
 						"{\"ComponentType\": 1, \"HasResource\": true},\n"
 						"{\"ComponentType\": 1, \"Playing\": true}\n"
+					"]}\n"
+				"]}\n"
+			"}";
+
+		return json;
+	}
+
+	const char* TestLoadSceneWithGameObjectsWithGameObjectsAsChildrenAndComponents() {
+		LOG("TestLoadSceneWithGameObjectsWithGameObjectsAsChildrenAndComponents");
+
+		const char* json =
+			"{\"Scene\": \n"
+				"{\"GameObjects\": [\n"
+					"{\"UID\":1, \"ParentUID\": 0, \"Name\": \"Game Object 1\", \"Translation\": [0, 1, -10], \"Rotation\": [0, 0, 0, 1], \"Scale\": [1, 1, 1],\n"
+					"\"Components\": [\n"
+						"{\"ComponentType\": 0, \"HasResource\": false},\n"
+						"{\"ComponentType\": 1, \"FOV\": 57.295780}\n"
+					"]},\n"
+					"{\"UID\":2, \"ParentUID\": 0, \"Name\": \"Game Object 2\", \"Translation\": [0, 0, 0], \"Rotation\": [0, 0, 0, 1], \"Scale\": [1, 1, 1],\n"
+					"\"Components\": [\n"
+						"{\"ComponentType\": 1, \"HasResource\": true},\n"
+						"{\"ComponentType\": 1, \"Playing\": true}\n"
+					"]},\n"
+					"{\"UID\":3, \"ParentUID\": 1, \"Name\": \"Game Object 3\", \"Translation\": [0, 1, -10], \"Rotation\": [0, 0, 0, 1], \"Scale\": [1, 1, 1],\n"
+					"\"Components\": [\n"
+						"{\"ComponentType\": 0, \"HasResource\": false},\n"
+						"{\"ComponentType\": 1, \"FOV\": 57.295780}\n"
 					"]}\n"
 				"]}\n"
 			"}";

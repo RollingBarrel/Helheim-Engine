@@ -30,7 +30,7 @@ bool ModuleScene::Init()
 
 
 	//INIT For testing purposes of Scene Load
-	const char* json = test.TestLoadSceneWithGameObjectsAndComponents();
+	const char* json = test.TestLoadSceneWithGameObjectsWithGameObjectsAsChildrenAndComponents();
 	rapidjson::Document d;
 	rapidjson::ParseResult ok = d.Parse(json);
 	if (!ok) {
