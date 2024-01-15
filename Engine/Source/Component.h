@@ -23,18 +23,17 @@ public:
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
 
-	int GetID() { return mComponentIndex; }
+	int GetID() { return mID; }
 
 protected:
 	virtual	void Reset() = 0;
 	const char* const mName;
 	const char* mPopupID;
-	int mComponentIndex = 0;
-	static int mLastcomponentIndex;
+	int mID = 0;
 	GameObject* mOwner;
 private:
 	ComponentType mType;
 	
-	bool mIsEnabled;
+	bool mIsEnabled = true;
 };
 

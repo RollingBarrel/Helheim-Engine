@@ -203,7 +203,7 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
-		ImGui::PushID(component->mComponentIndex);
+		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
 		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		DragAndDropSource(component);

@@ -1,8 +1,7 @@
 #include "Component.h"
 #include "GameObject.h"
-
-int Component::mLastcomponentIndex = 0;
+#include "Algorithm/Random/LCG.h"
 
 Component::Component(const char* name, GameObject* owner, ComponentType type)
-	:mName(name), mOwner(owner), mType(type), mIsEnabled(true), mComponentIndex(mLastcomponentIndex++),
-	mPopupID("ComponentOptions_" + mComponentIndex){}
+	:mName(name), mOwner(owner), mType(type), mID(LCG().Int()),
+	mPopupID("ComponentOptions_" + mID){}
