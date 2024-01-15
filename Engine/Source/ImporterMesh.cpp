@@ -8,6 +8,7 @@
 
 #include "float2.h"
 #include "float3.h"
+#include "float4.h"
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
@@ -130,7 +131,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
 
         for (auto i = 0; i < tangAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(mesh->mVerticesTangent)[i] = *reinterpret_cast<const float3*>(bufferTang);
+            reinterpret_cast<float4*>(mesh->mVerticesTangent)[i] = *reinterpret_cast<const float4*>(bufferTang);
 
             if (tangView.byteStride != 0)
             {
@@ -138,10 +139,10 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
             }
             else
             {
-                bufferTang += sizeof(float) * 3;
+                bufferTang += sizeof(float) * 4;
             }
 
-            LOG("%f %f %f", reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].x, reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].y, reinterpret_cast<float3*>(mesh->mVerticesTangent)[i].z);
+            LOG("%f %f %f", reinterpret_cast<float4*>(mesh->mVerticesTangent)[i].x, reinterpret_cast<float4*>(mesh->mVerticesTangent)[i].y, reinterpret_cast<float4*>(mesh->mVerticesTangent)[i].z);
         }
     }
     else
