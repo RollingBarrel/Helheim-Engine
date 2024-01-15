@@ -63,7 +63,6 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
-    <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp">
@@ -165,19 +164,9 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleInput.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleOpenGL.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleWindow.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="InspectorPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="QuadtreePanel.cpp" />
     <ClCompile Include="ModuleTimer.cpp" />
@@ -186,6 +175,12 @@
     <ClCompile Include="PausePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleInput.cpp" />
+    <ClCompile Include="ModuleOpenGL.cpp" />
+    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="ModuleProgram.cpp" />
+    <ClCompile Include="ModuleRender.cpp" />
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -255,7 +250,6 @@
     </ClInclude>
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="ModuleCamera.h" />
-    <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="debugdraw.h">
       <Filter>Dependencies\DebugDraw</Filter>
@@ -451,6 +445,19 @@
     <ClInclude Include="PausePanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="ModuleOpenGL.h" />
+    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="ModuleProgram.h" />
+    <ClInclude Include="ModuleRender.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Dependencies\tinygltf-2.8.19\json.hpp">
+      <Filter>Dependencies\Tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\tinygltf-2.8.19\tiny_gltf.h">
+      <Filter>Dependencies\Tinygltf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -485,6 +492,9 @@
     </Filter>
     <Filter Include="Dependencies\MathGeoLib\Time">
       <UniqueIdentifier>{6cbf4185-af1b-4c6a-88b9-2d7a2a367dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\Tinygltf">
+      <UniqueIdentifier>{a67dc305-8bfd-4587-abab-51de6fdd1872}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

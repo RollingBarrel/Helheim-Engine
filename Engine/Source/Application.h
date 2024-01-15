@@ -12,6 +12,7 @@ class ModuleScene;
 class ModuleTimer;
 class ModuleCamera;
 class ModuleDebugDraw;
+class ModuleProgram;
 
 class Application
 {
@@ -32,6 +33,8 @@ public:
     ModuleTimer* GetClock() { return clock; }
     ModuleCamera* GetCamera() { return camera;  }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
+    ModuleProgram* GetProgram() { return program; }
+
 
 
 private:
@@ -44,9 +47,11 @@ private:
     ModuleTimer* clock = nullptr;
     ModuleCamera* camera = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
+    ModuleProgram* program = nullptr;
 
 
-    std::list<Module*> mModules;
+
+    std::list<Module*> modules;
 
 };
 

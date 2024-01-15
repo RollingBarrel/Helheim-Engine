@@ -2,9 +2,9 @@
 #include "Component.h"
 #include "Geometry/OBB.h"
 #include "GameObject.h"
+#include "Mesh.h"
 
 class Material;
-struct Mesh;
 
 class MeshRendererComponent : public Component
 {
@@ -12,10 +12,10 @@ public:
 	MeshRendererComponent(GameObject* owner);
 	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
 	//~MeshRendererComponent();
-
+	void Clear();
 	void Draw();
 	void Reset() override;
-	void Load();
+	void Load(const char* assetFileName);
 
 	void Update() override;
 	void DrawEditor();
@@ -30,7 +30,7 @@ private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-	Mesh* mMesh;
+	std::vector<Mesh> mMeshes; //it was a mesh pointer (Mesh*) 
 	Material* material;
 	OBB mOBB;
 	bool* mDrawBox = new bool(false);

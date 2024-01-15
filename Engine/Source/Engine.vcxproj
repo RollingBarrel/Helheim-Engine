@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\tinygltf-2.8.19;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\tinygltf-2.8.19;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -196,10 +196,13 @@
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
+    <ClCompile Include="ModuleProgram.cpp" />
+    <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
@@ -289,11 +292,14 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\sse_mathfun.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
+    <ClInclude Include="Dependencies\tinygltf-2.8.19\json.hpp" />
+    <ClInclude Include="Dependencies\tinygltf-2.8.19\tiny_gltf.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="InspectorPanel.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
@@ -301,6 +307,8 @@
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
+    <ClInclude Include="ModuleProgram.h" />
+    <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
