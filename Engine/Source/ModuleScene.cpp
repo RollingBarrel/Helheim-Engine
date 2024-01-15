@@ -1,9 +1,13 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "Quadtree.h"
+#include "Application.h"
+#include "ModuleCamera.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
 	mSelectedGameObject = mRoot;
+	mQuadtreeRoot = new Quadtree(AABB(float3(-10), float3(10)));
 }
 
 ModuleScene::~ModuleScene()
@@ -16,9 +20,19 @@ bool ModuleScene::Init()
 	return true;
 }
 
+update_status ModuleScene::PreUpdate()
+{
+	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());
+	return UPDATE_CONTINUE;
+}
+
 update_status ModuleScene::Update()
 {
 	mRoot->Update();
+	if (*mDrawQuadtree)
+	{
+		mQuadtreeRoot->Draw();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -32,19 +46,6 @@ update_status ModuleScene::PostUpdate()
 	}
 
 	return UPDATE_CONTINUE;
-}
-
-void ModuleScene::DrawInspector()
-{
-	if (mSelectedGameObject != mRoot) {
-		mSelectedGameObject->DrawInspector();
-	}
-	
-}
-
-void ModuleScene::DrawHierarchy()
-{
-	mRoot->DrawHierarchy(mSelectedGameObject->GetID());
 }
 
 void ModuleScene::SetSelectedObject(GameObject* gameObject)

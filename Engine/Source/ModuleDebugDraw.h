@@ -15,22 +15,23 @@ public:
     ModuleDebugDraw();
     ~ModuleDebugDraw();
 
-	bool            Init() override;
-	update_status   Update() override;
-	bool            CleanUp() override;
+	bool            Init();
+	update_status   Update();
+	bool            CleanUp();
 
-    void SetDrawGrid(bool drawGrid) { mdrawGrid = drawGrid; };
-    bool GetDrawGrid() const { return mdrawGrid; };
+    void SetDrawGrid(bool drawGrid) { mDrawGrid = drawGrid; }
+    bool GetDrawGrid() const { return mDrawGrid; }
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
+    void DrawBoundingBox(const OBB& obb);
+    void DrawQuadtree(const AABB& aabb);
 
 
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
-    bool mdrawGrid; 
+    bool mDrawGrid; 
 
 
-    void DrawBoundingBox(const OBB& obb);
     void DrawGrid();
     void DrawFrustum(const Frustum& frustum); 
 

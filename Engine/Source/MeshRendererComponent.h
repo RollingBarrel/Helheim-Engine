@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
-#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
+#include "GameObject.h"
 
 class Material;
 struct Mesh;
@@ -8,8 +9,8 @@ struct Mesh;
 class MeshRendererComponent : public Component
 {
 public:
-	MeshRendererComponent(GameObject* ownerGameObject);
-	MeshRendererComponent(const MeshRendererComponent& original);
+	MeshRendererComponent(GameObject* owner);
+	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
 	//~MeshRendererComponent();
 
 	void Draw();
@@ -17,16 +18,22 @@ public:
 	void Load();
 
 	void Update() override;
-	void DrawEditor() override;
-	Component* Clone() override;
+	void DrawEditor();
+	Component* Clone(GameObject* owner) override;
+
+	const OBB getOBB() const { return mOBB; }
+
+	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
+	bool* getShouldDraw() { return mDrawBox; }
 
 private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-	void RightClickPopup() override;
 	Mesh* mMesh;
 	Material* material;
-	AABB mAABB;
+	OBB mOBB;
+	bool* mDrawBox = new bool(false);
+	bool mInsideFrustum = true;
 };
 

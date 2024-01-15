@@ -10,22 +10,22 @@
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
 #include "ScenePanel.h"
+#include "QuadtreePanel.h"
+#include "PausePanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 
-static ModuleEditor* s_ModuleEditorInstance = nullptr;
-
 ModuleEditor::ModuleEditor()
 {
-	s_ModuleEditorInstance = this;
-
 	mPanels[ABOUTPANEL] = new AboutPanel();
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[SCENEPANEL] = new ScenePanel();
+	mPanels[QUADTREEPANEL] = new QuadtreePanel();
+	mPanels[PAUSEPANEL] = new PausePanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -41,7 +41,7 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-
+	io->ConfigDragClickToInputText = true;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->context);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
@@ -132,7 +132,21 @@ void ModuleEditor::ShowMainMenuBar() {
 		if (ImGui::BeginMenu("Component")) {
 			ImGui::EndMenu();
 		}
-
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::BeginMenu("View"))
+			{
+				if (ImGui::MenuItem("Quadtree")) {
+					Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
+					if (quadtreeDebug)
+					{
+						quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
+					}
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::BeginMenu("Panels")) {
@@ -145,30 +159,34 @@ void ModuleEditor::ShowMainMenuBar() {
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("1 Console")) {
-					Panel* console = s_ModuleEditorInstance->mPanels[CONSOLEPANEL];
+					Panel* console = mPanels[CONSOLEPANEL];
 					if (console)
 					{
 						console->IsOpen() ? console->Close() : console->Open();
 					}
 				}
-				//if (ImGui::MenuItem("2 Game")) {}
-
 				if (ImGui::MenuItem("2 Hierarchy")) {
-					Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
+					Panel* hierarchy = mPanels[HIERARCHYPANEL];
 					if (hierarchy)
 					{
 						hierarchy->IsOpen() ? hierarchy->Close() : hierarchy->Open();
 					}
 				}
 				if (ImGui::MenuItem("3 Inspector")) {
-					Panel* inspector = s_ModuleEditorInstance->mPanels[INSPECTORPANEL];
+					Panel* inspector = mPanels[INSPECTORPANEL];
 					if (inspector)
 					{
 						inspector->IsOpen() ? inspector->Close() : inspector->Open();
 					}
 				}
-				//if (ImGui::MenuItem("5 Project")) {}
-				//if (ImGui::MenuItem("6 Scene")) {}
+				if (ImGui::MenuItem("4 Pause")) {
+					Panel* pause = mPanels[PAUSEPANEL];
+					if (pause)
+					{
+						pause->IsOpen() ? pause->Close() : pause->Open();
+					}
+				}
+				//if (ImGui::MenuItem("5 Scene")) {}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
@@ -178,7 +196,7 @@ void ModuleEditor::ShowMainMenuBar() {
 		{
 			if (ImGui::MenuItem("About"))
 			{
-				Panel* aboutPanel = s_ModuleEditorInstance->mPanels[ABOUTPANEL];
+				Panel* aboutPanel = mPanels[ABOUTPANEL];
 				if (aboutPanel)
 				{
 					aboutPanel->IsOpen() ? aboutPanel->Close() : aboutPanel->Open();
@@ -191,21 +209,30 @@ void ModuleEditor::ShowMainMenuBar() {
 }
 
 void ModuleEditor::ResetFloatingPanels(bool openPanels) {
-	Panel* console = s_ModuleEditorInstance->mPanels[CONSOLEPANEL];
-	Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
-	Panel* inspector = s_ModuleEditorInstance->mPanels[INSPECTORPANEL];
-	Panel* aboutPanel = s_ModuleEditorInstance->mPanels[ABOUTPANEL];
+	Panel* console = mPanels[CONSOLEPANEL];
+	Panel* hierarchy = mPanels[HIERARCHYPANEL];
+	Panel* inspector = mPanels[INSPECTORPANEL];
+	Panel* pause = mPanels[PAUSEPANEL];
+	Panel* aboutPanel = mPanels[ABOUTPANEL];
+	Panel* scenePanel = mPanels[SCENEPANEL];
+	Panel* quadTree = mPanels[QUADTREEPANEL];
 
 	if (openPanels == true) {
 		console->Open();
 		hierarchy->Open();
 		inspector->Open();
+		pause->Open();
 		aboutPanel->Open();
+		scenePanel->Open();
+		quadTree->Open();
 	}
 	else {
 		console->Close();
 		hierarchy->Close();
 		inspector->Close();
+		pause->Close();
 		aboutPanel->Close();
+		scenePanel->Close();
+		quadTree->Close();
 	}
 }

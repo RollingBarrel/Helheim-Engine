@@ -1,5 +1,4 @@
 #include "ConsolePanel.h"
-
 #include "imgui.h"
 #include "Application.h"
 
