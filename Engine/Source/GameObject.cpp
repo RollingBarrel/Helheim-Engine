@@ -72,6 +72,16 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 }
 
+GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
+	:mID(id), mName(name), mParent(parent), mPosition(position),
+	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr)
+{
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	if (!mIsRoot) {
+		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+	}
+}
+
 GameObject::~GameObject()
 {
 	for (GameObject* gameObject : mChildren) {
@@ -419,17 +429,10 @@ void GameObject::Load(const rapidjson::Value& gameObjectJson) {
 					scale = float3(x, y, z);
 				}
 
-				// If the parentUID of the GameObject is 0, the parent is the Scene.
-				// TODO use this constructor as soon as it's available from the GameObject team
-				//GameObject go = new GameObject(name, scene, position, scale, rotation);
 				GameObject* go;
 				
 				if (parentUID == 0) {
-					go = new GameObject(name, scene);
-					go->SetID(uuid);
-					go->SetPosition(position);
-					go->SetRotation(rotation);
-					go->SetScale(scale);
+					go = new GameObject(name, uuid, scene, position, scale, rotation);
 
 					// Manage Components
 					// TODO put this into a function
@@ -451,11 +454,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectJson) {
 				}
 				else {
 					GameObject* gameObjectParent = findGameObjectParent(scene, parentUID);
-					go = new GameObject(name, gameObjectParent);
-					go->SetID(uuid);
-					go->SetPosition(position);
-					go->SetRotation(rotation);
-					go->SetScale(scale);
+					go = new GameObject(name, uuid, gameObjectParent, position, scale, rotation);
 
 					// Manage Components
 					// TODO put this into a function
