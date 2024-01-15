@@ -4,6 +4,7 @@
 #include "Geometry/AABB.h"
 #include "MeshRendererComponent.h"
 #include "Math/float3.h"
+#include "Geometry/Frustum.h"
 
 #include "Application.h"
 #include "ModuleDebugDraw.h"

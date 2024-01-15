@@ -3,10 +3,12 @@
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 #include "Geometry/OBB.h"
+#include "Geometry/AABB.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
+
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
@@ -662,8 +664,8 @@ void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
 
 void ModuleDebugDraw::DrawGrid()
 {
-    dd::xzSquareGrid(-500, 500, -0.1f, 1.0f, dd::colors::White);
-    dd::axisTriad(float4x4::identity, 0.0f, 25.0f);
+    dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);
+    dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 }
 
 void ModuleDebugDraw::DrawFrustum(const Frustum& frustum)

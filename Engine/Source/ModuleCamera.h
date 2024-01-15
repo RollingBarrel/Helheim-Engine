@@ -21,6 +21,8 @@ public:
 	float4x4 GetProjectionMatrix() const { return frustum.ProjectionMatrix(); }
 	unsigned int GetCameraUniffromsId() const { return cameraUnis; }
 	void WindowResized(int w, int h);
+
+	const Frustum& GetFrustum() const { return frustum; }
 private:
 	Frustum frustum;
 	unsigned int cameraUnis = 0;

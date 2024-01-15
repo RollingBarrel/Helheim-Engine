@@ -20,8 +20,8 @@ public:
 	bool CleanUp() override;
 	bool IsPanelOpen(const char* name) { return mPanels[name]; }
 
-	static void ShowMainMenuBar();
-	static void ResetFloatingPanels(bool openPanels);
+	void ShowMainMenuBar();
+	void ResetFloatingPanels(bool openPanels);
 
 private:
 	ImGuiIO* io;

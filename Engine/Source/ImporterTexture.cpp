@@ -3,29 +3,10 @@
 #include "DirectXTex.h"
 #include "glew.h"
 
-void Importer::Texture::Import(const char* filePath)
+void Importer::Texture::Import(const char* filePath, ResourceTex& texture)
 {
-
-
-}
-
-const wchar_t* GetWC(const char* c)
-{
-    const size_t cSize = strlen(c) + 1;
-    size_t zSice;
-    wchar_t* wc = new wchar_t[cSize];
-    mbstowcs_s(&zSice, wc, cSize, c, cSize - 1);
-
-    return wc;
-}
-
-//unsigned solo recoge valores positivos, nunca recoge signo.
-
-void LoadTexture(const char* path, ResourceTex& texture)
-{
-
     DirectX::ScratchImage image;
-    const wchar_t* pathTex = GetWC(path);
+    const wchar_t* pathTex = GetWC(filePath);
 
     // every texture have one format, if the format its not the correct it use another method for load
     HRESULT hr = DirectX::LoadFromDDSFile(pathTex, DirectX::DDS_FLAGS_NONE, nullptr, image);
@@ -75,11 +56,14 @@ void LoadTexture(const char* path, ResourceTex& texture)
         texture.pixels[i] = image.GetPixels()[i];
     }
 
-    //unsigned int colorAttachment;
-    //glGenTextures(1, &colorAttachment);
-    //glBindTexture(GL_TEXTURE_2D, colorAttachment);
-    //glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    ////glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
+}
+
+const wchar_t* GetWC(const char* c)
+{
+    const size_t cSize = strlen(c) + 1;
+    size_t zSice;
+    wchar_t* wc = new wchar_t[cSize];
+    mbstowcs_s(&zSice, wc, cSize, c, cSize - 1);
+
+    return wc;
 }

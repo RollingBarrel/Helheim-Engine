@@ -45,3 +45,4 @@ private:
 	
 };
 
+#endif //_MODULE_SCENE_H_

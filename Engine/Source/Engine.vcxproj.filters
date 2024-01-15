@@ -185,6 +185,13 @@
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClCompile>
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="QuadtreePanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PausePanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -567,6 +574,13 @@
     </ClInclude>
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h">
       <Filter>Dependencies\MikkTspace</Filter>
+    </ClInclude>
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="QuadtreePanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PausePanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

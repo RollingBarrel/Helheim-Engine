@@ -23,6 +23,7 @@ bool ModuleScene::Init()
 update_status ModuleScene::PreUpdate()
 {
 	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());
+
 	return UPDATE_CONTINUE;
 }
 

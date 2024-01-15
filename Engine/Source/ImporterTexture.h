@@ -16,9 +16,9 @@ namespace Importer
 {
 	namespace Texture
 	{
-		void Import(const char* filePath);
+		void Import(const char* filePath, ResourceTex& texture);
 
-		void LoadTexture(const char* path, ResourceTex& texture);
-
+		void Load();
+		void Save();
 	}
 };

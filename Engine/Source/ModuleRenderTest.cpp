@@ -384,12 +384,12 @@ update_status ModuleRenderTest::Update()
 {
 	glUseProgram(programId);
 	glUniform3fv(7, 1, App->GetCamera()->GetPos().ptr());
-	ImGui::Begin("Lights");
-	if (ImGui::DragFloat("KD", &kD, 0.0f, 1.0f))
+	ImGui::Begin("Lighting");
+	if (ImGui::DragFloat("KD", &kD, 0.05f, 0.0f, 1.0f))
 		glUniform1f(8, kD);
-	if (ImGui::DragFloat("Brightness", &brightness, 0.0f, 1.0f))
+	if (ImGui::DragFloat("Brightness", &brightness, 0.05f, 0.0f))
 		glUniform1f(10, brightness);
-	if (ImGui::DragFloat3("LightDir", lightDir, 0.0f, 1.0f))
+	if (ImGui::DragFloat3("LightDir", lightDir, 0.05f, -1.0f, 1.0f))
 		glUniform3fv(4, 1, lightDir);
 	if (ImGui::ColorPicker3("LightCol", lightCol))
 		glUniform3fv(5, 1, lightCol);

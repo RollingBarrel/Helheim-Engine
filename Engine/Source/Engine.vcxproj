@@ -214,6 +214,9 @@
     <ClCompile Include="ImporterTexture.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="PausePanel.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="QuadtreePanel.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
@@ -331,6 +334,9 @@
     <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="PausePanel.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="QuadtreePanel.h" />
     <ClInclude Include="ScenePanel.h" />
     <ClInclude Include="TestComponent.h" />
   </ItemGroup>
