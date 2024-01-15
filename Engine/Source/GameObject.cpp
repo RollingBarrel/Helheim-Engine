@@ -115,7 +115,6 @@ void GameObject::Update()
 	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->Update();
 	}
-
 	DeleteComponents();
 	if (isTransformModified) {
 		RecalculateMatrices();
@@ -273,14 +272,37 @@ void GameObject::DeleteComponents() {
 	}
 }
 
-void GameObject::RecalculateLocalTransform()
+Component* GameObject::RemoveComponent(Component* component)
 {
-	
+	Component* movedComponent = nullptr;
+	for (auto it = mComponents.begin(); it != mComponents.cend(); ++it) {
+		if ((*it)->GetID() == component->GetID()) {
+			movedComponent = *it;
+			mComponents.erase(it);
+			break;
+		}
+	}
+	return movedComponent;
+}
+
+void GameObject::AddComponent(Component* component, Component* position)
+{
+	if (position == nullptr) {
+		mComponents.push_back(component);
+	}
+	else {
+		auto it = std::find(mComponents.begin(), mComponents.end(), position);
+		mComponents.insert(it, component);
+	}
+}
+
+void GameObject::RecalculateLocalTransform() {
+
 	mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
-	
+
 	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
 	mEulerRotation = mRotation.ToEulerXYZ();
-	
+
 	if (mEulerRotation.Equals(float3::zero)) {
 		mEulerRotation = float3::zero;
 	}

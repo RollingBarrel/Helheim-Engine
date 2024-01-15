@@ -355,7 +355,9 @@ void InspectorPanel::RightClickPopup(Component* component) {
 void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mID);
+		DragAndDropTarget(object, component);
 		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
 			switch (component->GetType()) {
@@ -376,6 +378,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		}
 		ImGui::PopID();
 	}
+	DragAndDropTarget(object, nullptr);
 }
 
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
@@ -387,4 +390,33 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::Text("Model: Cube.obj (TEST)");
 	ImGui::Text("Material: DefaultMaterial (TEST)");
 	ImGui::Text("Shader: StandardShader (TEST)");
+}
+
+void InspectorPanel::DragAndDropSource(Component* component) {
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
+
+		ImGui::Text(component->mName);
+		ImGui::EndDragDropSource();
+	}
+}
+
+void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+	ImGui::InvisibleButton("##", ImVec2(-1, 5));
+	if (ImGui::BeginDragDropTarget())
+	{
+		LOG("Droped payload");
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
+		{
+			Component* movedComponent = (Component*)payload->Data;
+			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) {
+				Component* pMovedComponent = object->RemoveComponent(movedComponent);
+				object->AddComponent(pMovedComponent, target);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	ImGui::PopStyleVar();
 }

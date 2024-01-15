@@ -54,8 +54,9 @@ private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
 	void DeleteComponents();
+	Component* RemoveComponent(Component* component);
+	void AddComponent(Component* component, Component* position);
 	void RecalculateLocalTransform();
-
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
