@@ -353,6 +353,19 @@ void GameObject::Save(Archive& archive) const {
 	archive.AddObject("children", *childrenArchive);
 }
 
+void loadComponents(const rapidjson::Value& components, GameObject* go) {
+	for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
+		if (components[i].IsObject()) {
+			const rapidjson::Value& component = components[i];
+			if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
+				ComponentType cType = ComponentType(component["ComponentType"].GetInt());
+				Component* c = go->CreateComponent(cType);
+				c->Load(component);
+			}
+		}
+	}
+}
+
 GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
 	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
 	for (int i = 0; i < gameObjects.size(); i++) {
@@ -433,21 +446,10 @@ void GameObject::Load(const rapidjson::Value& gameObjectJson) {
 				
 				if (parentUID == 0) {
 					go = new GameObject(name, uuid, scene, position, scale, rotation);
-
 					// Manage Components
 					// TODO put this into a function
 					if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
-						const rapidjson::Value& components = gameObject["Components"];
-						for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
-							if (components[i].IsObject()) {
-								const rapidjson::Value& component = components[i];
-								if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
-									ComponentType cType = ComponentType(component["ComponentType"].GetInt());
-									Component* c = go->CreateComponent(cType);
-									c->Load(component);
-								}
-							}
-						}
+						loadComponents(gameObject["Components"], go);
 					}
 
 					scene->AddChild(go, parentUID);
@@ -459,24 +461,12 @@ void GameObject::Load(const rapidjson::Value& gameObjectJson) {
 					// Manage Components
 					// TODO put this into a function
 					if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
-						const rapidjson::Value& components = gameObject["Components"];
-						for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
-							if (components[i].IsObject()) {
-								const rapidjson::Value& component = components[i];
-								if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
-									ComponentType cType = ComponentType(component["ComponentType"].GetInt());
-									Component* c = go->CreateComponent(cType);
-									c->Load(component);
-								}
-							}
-						}
+						loadComponents(gameObject["Components"], go);
 					}
 
 					gameObjectParent->AddChild(go);
 
 				}
-
-				
 			}
 		}
 	}
