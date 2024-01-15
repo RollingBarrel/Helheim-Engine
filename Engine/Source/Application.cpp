@@ -9,19 +9,21 @@
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleProgram.h"
+#include "ModuleRender.h"
 
 
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window = new ModuleWindow());
-	modules.push_back(render = new ModuleOpenGL());
+	modules.push_back(openGL = new ModuleOpenGL());
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(clock = new ModuleTimer());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(debugDraw = new ModuleDebugDraw());
+	modules.push_back(render = new ModuleRender());
 	modules.push_back(editor = new ModuleEditor());
 
 }

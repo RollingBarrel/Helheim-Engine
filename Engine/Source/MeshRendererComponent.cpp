@@ -55,7 +55,6 @@ void MeshRendererComponent::Draw()
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 	mInsideFrustum = false;
-
 	for (Mesh mesh : mMeshes)
 	{
 		mesh.Render(/*m_textures*/);
