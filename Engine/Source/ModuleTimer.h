@@ -16,15 +16,20 @@ public:
     update_status Update();
     bool CleanUp();
 
-    long GetDeltaTime() const { return mDeltaTime; }
+    long GetRealDelta() const { return mDeltaTime; }
+    long GetGameDelta() const { return mGameDelta; }
     float GetFPS() const { return mFpsLog.back(); }
 
-    void SetGameSpeed(float speed);
+    void SetTimeScale(float speed);
 
 private:
     Timer* mGameClock = nullptr;
+    Timer* mRealClock = nullptr;
+    long mGameDelta = 0;
     long mDeltaTime = 0;
     long mUpdateTime = 0;
+    bool mChangeSpeed = false;
+    int mNewSpeed = 1;
     unsigned int mFpsLimit = 60;
     std::vector<float> mFpsLog;
 

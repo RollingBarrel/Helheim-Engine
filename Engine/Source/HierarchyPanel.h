@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "Panel.h"
 #define HIERARCHYPANEL "Hierarchy##"
 

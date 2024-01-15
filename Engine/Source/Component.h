@@ -1,8 +1,8 @@
 #pragma once
 
-enum class ComponentType
+enum class ComponentType : unsigned int
 {
-	MESHRENDERER, TEST
+	MESHRENDERER, TEST, NONE
 };
 
 class GameObject;
@@ -27,13 +27,11 @@ public:
 
 protected:
 	virtual	void Reset() = 0;
-	const char* const mName;
-	const char* mPopupID;
-	int mID = 0;
-	GameObject* mOwner;
+	const char* const mName = "";
+	const unsigned int mID = 0;
+	GameObject* mOwner = nullptr;
 private:
-	ComponentType mType;
-	
+	ComponentType mType = ComponentType::NONE;
 	bool mIsEnabled = true;
 };
 
