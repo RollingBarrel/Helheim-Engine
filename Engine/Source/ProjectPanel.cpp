@@ -33,6 +33,15 @@ void ProjectPanel::Draw(int windowFlags)
 			}
 		}
 
+		for (auto i = 0; i < mFiles.size(); ++i)
+		{
+			if (ImGui::TreeNodeEx(mFiles[i].c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+			{
+
+				ImGui::TreePop();
+			}
+		}
+
 	}
 	ImGui::End();
 }

@@ -210,6 +210,7 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::str
             if (IsDirectory(path.c_str()))
             {
                 directories.push_back(path);
+                DiscoverFiles(path.c_str(), files, directories);
                 path = directory + std::string("/");
             }
             else
