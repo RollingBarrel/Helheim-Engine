@@ -25,7 +25,7 @@ void TestComponent::Update()
 	c = (MeshRendererComponent*)mOwner->GetComponent(ComponentType::MESHRENDERER);
 }
 
-Component* TestComponent::Clone(GameObject* owner)
+Component* TestComponent::Clone(GameObject* owner) const
 {
     return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }

@@ -22,7 +22,6 @@ GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
 	mLocalTransformMatrix(original.mLocalTransformMatrix)
-
 {
 
 	AddSuffix();
@@ -213,10 +212,10 @@ void GameObject::AddSuffix()
 {
 	bool found = true;
 	int count = 1;
-	int last_pos = -1;
+	size_t lastPos = -1;
 	while (found) {
 		std::string str = " (" + std::to_string(count) + ')';
-		int pos = std::string::npos;
+		size_t pos = std::string::npos;
 
 		std::string nameWithSufix = mName + str;
 		for (auto gameObject : mParent->mChildren)
@@ -235,7 +234,7 @@ void GameObject::AddSuffix()
 		}
 		else {
 			count++;
-			last_pos = pos;
+			lastPos = pos;
 		}
 
 	}

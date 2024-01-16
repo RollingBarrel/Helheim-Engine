@@ -13,9 +13,9 @@ public:
 	//~TestComponent();
 
 	void Update() override;
-	Component* Clone(GameObject* owner) override;
+	Component* Clone(GameObject* owner) const override;
 
 private:
-	int number;
+	int number = 0;
 };
 

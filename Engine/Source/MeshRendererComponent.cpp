@@ -31,7 +31,7 @@ void MeshRendererComponent::Update()
 }
 
 
-Component* MeshRendererComponent::Clone(GameObject* owner)
+Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
 }

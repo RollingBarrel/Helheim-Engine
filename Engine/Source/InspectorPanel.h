@@ -6,7 +6,6 @@ class GameObject;
 class Component;
 class TestComponent;
 class MeshRendererComponent;
-enum class ComponentType : unsigned int;
 
 class InspectorPanel : public Panel
 {
@@ -16,7 +15,7 @@ public:
 	void Draw(int windowFlags) override;
 
 private:
-	static bool mSame_component_popup;
+	bool mSameComponentPopup = false;
 	Component* mComponent = nullptr;
 
 	void DrawTransform(GameObject* object);

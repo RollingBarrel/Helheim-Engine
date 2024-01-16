@@ -26,10 +26,10 @@ private:
     Timer* mGameClock = nullptr;
     Timer* mRealClock = nullptr;
     long mGameDelta = 0;
-    long mDeltaTime = 0;
+    unsigned long mDeltaTime = 0;
     long mUpdateTime = 0;
     bool mChangeSpeed = false;
-    int mNewSpeed = 1;
+    float mNewSpeed = 1;
     unsigned int mFpsLimit = 60;
     std::vector<float> mFpsLog;
 

@@ -8,8 +8,6 @@
 #include "MeshRendererComponent.h"
 #include <MathFunc.h>
 
-bool InspectorPanel::mSame_component_popup = false;
-
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
@@ -34,7 +32,7 @@ void InspectorPanel::Draw(int windowFlags)
 		AddComponentButton(focusedObject);
 	}
 	
-	if (mSame_component_popup)
+	if (mSameComponentPopup)
 	{
 		ShowSameComponentPopup();
 	}
@@ -268,7 +266,7 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 			{
 				object->CreateComponent(ComponentType::MESHRENDERER);
 			} else {
-				mSame_component_popup = true;
+				mSameComponentPopup = true;
 			}
 		}
 		if (ImGui::MenuItem("Test")) {
@@ -287,7 +285,7 @@ void InspectorPanel::ShowSameComponentPopup()
 	ImGui::SetNextWindowPos(centerPos, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(380, 107), ImGuiCond_Appearing);
 
-	ImGui::Begin("Can't add the same component multiple times!", &mSame_component_popup,
+	ImGui::Begin("Can't add the same component multiple times!", &mSameComponentPopup,
 		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
@@ -304,7 +302,7 @@ void InspectorPanel::ShowSameComponentPopup()
 	ImGui::SetCursorPosX(buttonPosX);
 
 	if (ImGui::Button("Cancel", ImVec2(120, 25))) {
-		mSame_component_popup = false;
+		mSameComponentPopup = false;
 	}
 
 	ImGui::End();

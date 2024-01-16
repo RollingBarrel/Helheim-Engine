@@ -17,14 +17,14 @@ public:
 	void Load();
 
 	void Update() override;
-	Component* Clone(GameObject* owner) override;
+	Component* Clone(GameObject* owner) const override;
 
 private:
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
-	Mesh* mMesh;
-	Material* material;
+	Mesh* mMesh = nullptr;
+	Material* material = nullptr;
 	AABB mAABB;
 };
 
