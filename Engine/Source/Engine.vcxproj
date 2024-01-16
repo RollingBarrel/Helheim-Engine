@@ -150,6 +150,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
+    <ClCompile Include="DebugPanel.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="DebugPanel.h" />
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h" />

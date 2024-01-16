@@ -9,6 +9,7 @@
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
 #include "QuadtreePanel.h"
+#include "DebugPanel.h"
 #include "PausePanel.h"
 
 #include "imgui_impl_sdl2.h"
@@ -26,6 +27,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
+	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
 }
 
@@ -135,16 +137,21 @@ void ModuleEditor::ShowMainMenuBar() {
 		}
 		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::BeginMenu("View"))
-			{
-				if (ImGui::MenuItem("Quadtree")) {
-					Panel* quadtreeDebug = s_ModuleEditorInstance->mPanels[QUADTREEPANEL];
-					if (quadtreeDebug)
-					{
-						quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
-					}
+			if (ImGui::MenuItem("Quadtree")) {
+				Panel* quadtreeDebug = s_ModuleEditorInstance->mPanels[QUADTREEPANEL];
+				if (quadtreeDebug)
+				{
+					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
+			}
 				ImGui::EndMenu();
+
+			if (ImGui::MenuItem("Debug")) {
+				Panel* debugPanel = s_ModuleEditorInstance->mPanels[DEBUGPANEL];
+				if (debugPanel)
+				{
+					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
+				}
 			}
 			ImGui::EndMenu();
 		}
