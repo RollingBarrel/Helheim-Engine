@@ -93,6 +93,11 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     path += texture->mTextureName;
     path += ".textssy";
 
+    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+
+    delete[] fileBuffer;
+    fileBuffer = nullptr;
+
 }
 
 unsigned int Importer::Texture::Load(char* fileBuffer, ResourceTexture* texture, const char* fileName)

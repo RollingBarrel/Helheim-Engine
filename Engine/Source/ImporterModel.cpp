@@ -58,5 +58,6 @@ void Importer::Model::Import(const char* filePath)
         }
     }
 
+    //if(model.materials)
     
 }
