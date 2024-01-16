@@ -3,6 +3,10 @@
 #include "Quadtree.h"
 #include "Application.h"
 #include "ModuleCamera.h"
+#include "glew.h"
+#include "ModuleProgram.h"
+#include "MeshRendererComponent.h"
+
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
@@ -33,6 +37,17 @@ update_status ModuleScene::Update()
 	{
 		mQuadtreeRoot->Draw();
 	}
+
+	float4x4 viewProj = App->GetCamera()->GetViewProjMatrix();
+	auto program = App->GetProgram()->GetProgramID("default");
+	glUseProgram(program);
+	glUniformMatrix4fv(1, 1, GL_TRUE, &viewProj[0][0]); // first argument is 1 for the layout in vertex shader
+
+	GameObject* root = App->GetScene()->GetRoot();
+	mRenderList.clear();
+	GenerateRenderList(root);
+	DrawRenderList();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -71,4 +86,39 @@ void ModuleScene::DuplicateGameObjects() {
 
 	mGameObjectsToDuplicate.clear();
 
+}
+
+void ModuleScene::AddToRenderList(GameObject* root)
+{
+	mRenderList.push_back(root);
+}
+
+void ModuleScene::GenerateRenderList(GameObject* root)
+{
+	// if engine slows down there is an optimization 
+	// HERE on getMeshRenderer
+	if (root->getMeshRenderer())
+	{
+		AddToRenderList(root);
+	}
+	for (GameObject* child : root->GetChildren())
+	{
+		GenerateRenderList(child);
+	}
+}
+
+void ModuleScene::DrawRenderList()
+{
+	for (GameObject* objectToRender : mRenderList)
+	{
+		//Pass model matrix
+		float4x4 model = objectToRender->GetWorldTransform();
+		auto program = App->GetProgram()->GetProgramID("default");
+		glUseProgram(program);
+		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]); // first argument is 0 for the layout in vertex shader
+		//Render
+		//
+
+		objectToRender->getMeshRenderer()->Draw();
+	}
 }

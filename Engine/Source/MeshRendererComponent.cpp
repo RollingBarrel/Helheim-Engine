@@ -23,7 +23,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 	float rv3 = distribution(gen)/10;
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 
-	Load("../Source/Dependencies/tinygltf-2.8.19/models/bakerHouse/BakerHouse.gltf");
+	Load("models/testing/Cube/Cube.gltf");
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
@@ -57,45 +57,25 @@ void MeshRendererComponent::Draw()
 	mInsideFrustum = false;
 	for (Mesh mesh : mMeshes)
 	{
+
 		mesh.Render(/*m_textures*/);
 	}
 }
-
 
 void MeshRendererComponent::Reset()
 {
 
 }
-//void MeshRendererComponent::Load()
-//{
-//	LoadVBO();
-//}
-//
+
 void MeshRendererComponent::Update()
 {
 	//Draw();
 }
 
-
-
 Component* MeshRendererComponent::Clone(GameObject* owner)
 {
 	return new MeshRendererComponent(*this, owner);
 }
-
-//void MeshRendererComponent::LoadVBO()
-//{
-//
-//}
-//
-//void MeshRendererComponent::LoadEBO()
-//{
-//}
-//
-//void MeshRendererComponent::LoadVAO()
-//{
-//}
-
 
 void MeshRendererComponent::Load(const char* assetFileName)
 {

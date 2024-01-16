@@ -32,6 +32,10 @@ public:
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
+	void GenerateRenderList(GameObject* root);
+	void DrawRenderList();
+	void AddToRenderList(GameObject* root); // Can be public if needed 
+
 	
 	Quadtree* mQuadtreeRoot;
 	bool* mDrawQuadtree = new bool(false);
@@ -41,6 +45,7 @@ private:
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	
+	std::vector<GameObject*> mRenderList;
+
 };
 

@@ -4,10 +4,7 @@
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "glew.h"
-#include "ModuleScene.h"
-#include "ModuleProgram.h"
-#include "MeshRendererComponent.h"
-#include "ModuleCamera.h"
+
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -95,38 +92,7 @@ update_status ModuleOpenGL::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleOpenGL::AddToRenderList(GameObject* root)
-{
-	mRenderList.push_back(root);
-}
 
-void ModuleOpenGL::GenerateRenderList(GameObject* root)
-{
-	// if engine slows down there is an optimization 
-	// HERE on getMeshRenderer
-	if (root->getMeshRenderer())
-	{
-		AddToRenderList(root);
-	}
-	for (GameObject* child : root->GetChildren())
-	{
-		GenerateRenderList(child);
-	}
-}
-
-void ModuleOpenGL::DrawRenderList()
-{
-	for (GameObject* objectToRender : mRenderList)
-	{
-		//Pass model matrix
-		float4x4 model = objectToRender->GetWorldTransform();
-		auto program = App->GetProgram()->GetProgramID("default");
-		glUseProgram(program);
-		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]); // first argument is 0 for the layout in vertex shader
-		//Render
-		objectToRender->getMeshRenderer()->Draw();
-	}
-}
 // Called every draw update
 update_status ModuleOpenGL::Update()
 {
@@ -137,15 +103,6 @@ update_status ModuleOpenGL::Update()
 
 update_status ModuleOpenGL::PostUpdate()
 {
-	float4x4 viewProj = App->GetCamera()->GetViewProjMatrix();
-	auto program = App->GetProgram()->GetProgramID("default");
-	glUseProgram(program);
-	glUniformMatrix4fv(1, 1, GL_TRUE, &viewProj[0][0]); // first argument is 1 for the layout in vertex shader
-
-	GameObject* root = App->GetScene()->GetRoot();
-	mRenderList.clear();
-	GenerateRenderList(root);
-	DrawRenderList();
 
 	SDL_GL_SwapWindow(App->GetWindow()->window);
 
