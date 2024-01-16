@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "GameObject.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -21,5 +22,10 @@ public:
 	void WindowResized(unsigned width, unsigned height);
 
 public:
+	void GenerateRenderList(GameObject* root);
+	void DrawRenderList();
+	void AddToRenderList(GameObject* root); // Can be public if needed 
+
+	std::vector<GameObject*> mRenderList;
 	void* context = nullptr;
 };

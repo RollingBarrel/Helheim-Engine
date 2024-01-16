@@ -13,7 +13,6 @@ class ModuleTimer;
 class ModuleCamera;
 class ModuleDebugDraw;
 class ModuleProgram;
-class ModuleRender;
 
 class Application
 {
@@ -26,7 +25,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-    ModuleOpenGL* GetOpenGL() { return openGL; }
+    ModuleOpenGL* GetOpenGL() { return render; }
     ModuleWindow* GetWindow() { return window; }
     ModuleInput*  GetInput() { return input; }
     ModuleEditor*  GetEditor() { return editor; }
@@ -35,11 +34,10 @@ public:
     ModuleCamera* GetCamera() { return camera;  }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleProgram* GetProgram() { return program; }
-    ModuleRender* GetRender() { return render; }
 
 private:
 
-    ModuleOpenGL* openGL = nullptr;
+    ModuleOpenGL* render = nullptr;
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
     ModuleEditor* editor = nullptr;
@@ -48,9 +46,6 @@ private:
     ModuleCamera* camera = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleProgram* program = nullptr;
-    ModuleRender* render = nullptr;
-
-
 
     std::list<Module*> modules;
 

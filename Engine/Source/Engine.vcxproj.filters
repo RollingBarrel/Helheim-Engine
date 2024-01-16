@@ -179,7 +179,6 @@
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
-    <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -450,7 +449,6 @@
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="ModuleProgram.h" />
-    <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Dependencies\tinygltf-2.8.19\json.hpp">
       <Filter>Dependencies\Tinygltf</Filter>
@@ -496,5 +494,16 @@
     <Filter Include="Dependencies\Tinygltf">
       <UniqueIdentifier>{a67dc305-8bfd-4587-abab-51de6fdd1872}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{0e2c5a4a-1ff9-4be2-a35b-0e5ee002e50a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\shaders\default_fragment.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\Game\shaders\default_vertex.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

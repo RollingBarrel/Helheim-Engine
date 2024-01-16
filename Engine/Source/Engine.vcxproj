@@ -202,7 +202,6 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
-    <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
@@ -308,7 +307,6 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ModuleProgram.h" />
-    <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
@@ -319,6 +317,10 @@
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\shaders\default_fragment.glsl" />
+    <None Include="..\Game\shaders\default_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

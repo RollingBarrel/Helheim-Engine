@@ -23,7 +23,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 	float rv3 = distribution(gen)/10;
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 
-	Load("../Source/Dependencies/tinygltf-2.8.19/models/Cube/Cube.gltf");
+	Load("../Source/Dependencies/tinygltf-2.8.19/models/bakerHouse/BakerHouse.gltf");
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
