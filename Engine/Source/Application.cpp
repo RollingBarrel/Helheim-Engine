@@ -4,11 +4,12 @@
 #include "ModuleOpenGL.h"
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
+#include "ModuleTimer.h"
 #include "ModuleCamera.h"
-#include "ModuleRenderTest.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
-#include "ModuleScene.h"
+#include "ModuleRenderTest.h"
 
 
 Application::Application()
@@ -19,10 +20,12 @@ Application::Application()
 	modules.push_back(fileSystem = new ModuleFileSystem());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(scene = new ModuleScene());
-	modules.push_back(test = new ModuleRenderTest());
-	modules.push_back(editor = new ModuleEditor());
+	modules.push_back(clock = new ModuleTimer());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(debugDraw = new ModuleDebugDraw());
+	modules.push_back(editor = new ModuleEditor());
+	modules.push_back(test = new ModuleRenderTest());
+
 }
 
 Application::~Application()

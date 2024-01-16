@@ -30,6 +30,7 @@ public:
 	void ProcessInput();
 	void UpdateProjectionMatrix(int screenWidth, int screenHeight);
 
+	const Frustum GetFrustum() const { return frustum; }
 	
 
 

@@ -15,7 +15,7 @@ public:
 	const char* GetName() const { return mName; }
 
 protected:
-	bool mOpen;
+	bool mOpen = true;
 
 private:
 	const char* mName = nullptr;

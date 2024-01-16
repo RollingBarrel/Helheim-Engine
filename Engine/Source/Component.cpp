@@ -1,5 +1,8 @@
 #include "Component.h"
+#include "GameObject.h"
+#include "Algorithm/Random/LCG.h"
 
-Component::Component(GameObject* owner, ComponentType type) : mOwner(owner), mType(type), mIsEnabled(true)
-{
-}
+Component::Component(const char* name, GameObject* owner, ComponentType type)
+	:mName(name), mOwner(owner), mType(type), mIsEnabled(true),
+	mID(LCG().Int()){}
+

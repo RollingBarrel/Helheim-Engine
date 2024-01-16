@@ -10,7 +10,7 @@ class TestComponent : public Component
 {
 public:
 	TestComponent(GameObject* ownerGameObject);
-	TestComponent(const TestComponent& original);
+	TestComponent(const TestComponent& original, GameObject* owner);
 	void Reset();
 	//~TestComponent();
 
@@ -18,10 +18,13 @@ public:
 	void Load();
 
 	void Update() override;
-	void DrawEditor() override;
-	Component* Clone() override;
+	Component* Clone(GameObject* owner) override;
+
+	void Save(Archive& archive) const override;
+	void Load(const rapidjson::Value& data) override;
 
 private:
+	int number;
 	void LoadVBO();
 	void LoadEBO();
 	void LoadVAO();
