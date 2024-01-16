@@ -30,7 +30,5 @@ private:
 	GameObject* mSelectedGameObject = nullptr;
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	void DeleteGameObjects();
-	void DuplicateGameObjects();
 };
 
