@@ -13,9 +13,7 @@ public:
 	update_status PostUpdate() override;
 
 	GameObject* GetRoot() { return mRoot; }
-	GameObject* GetSelectedGameObject() { return mSelectedGameObject; }
 
-	void SetSelectedObject(GameObject* gameObject);
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
 	}
@@ -32,6 +30,7 @@ private:
 	GameObject* mSelectedGameObject = nullptr;
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	
+	void DeleteGameObjects();
+	void DuplicateGameObjects();
 };
 

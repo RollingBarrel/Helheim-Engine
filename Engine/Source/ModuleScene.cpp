@@ -3,7 +3,6 @@
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
-	mSelectedGameObject = mRoot;
 }
 
 ModuleScene::~ModuleScene()
@@ -32,11 +31,6 @@ update_status ModuleScene::PostUpdate()
 	}
 
 	return UPDATE_CONTINUE;
-}
-
-void ModuleScene::SetSelectedObject(GameObject* gameObject)
-{
-	mSelectedGameObject = gameObject;
 }
 
 void ModuleScene::DeleteGameObjects(){

@@ -1,7 +1,8 @@
 #include "InspectorPanel.h"
 #include "imgui.h"
 #include "Application.h"
-#include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "HierarchyPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
@@ -13,7 +14,8 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
-	GameObject* focusedObject = App->GetScene()->GetSelectedGameObject();
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
 	ImGui::PushID(focusedObject->mID);
