@@ -12,7 +12,7 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 
-	GameObject* GetRoot() { return mRoot; }
+	GameObject* GetRoot() const { return mRoot; }
 
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
