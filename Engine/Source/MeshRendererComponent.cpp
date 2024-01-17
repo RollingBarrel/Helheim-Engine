@@ -93,7 +93,7 @@ void MeshRendererComponent::DrawEditor()
 	}
 
 	if (this->GetOwner()) {
-		this->GetOwner()->DeletePopup(this, 55);
+		//this->GetOwner()->DeletePopup(this, 55);
 	}
 }
 

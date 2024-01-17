@@ -29,8 +29,6 @@ public:
 	Component* GetComponent(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
-	void DrawInspector();
-	void DrawHierarchy(const int selected);
 	void Enable() { mIsEnabled = true; };
 	void Disable() { mIsEnabled = false; };
 	void OnRightClick();
@@ -58,7 +56,6 @@ public:
 	void SetID(const unsigned int ID);
 
 	Component* CreateComponent(ComponentType type);
-	void DeletePopup(Component* component, int headerPosition);
 
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
@@ -71,7 +68,6 @@ private:
 	void DeleteComponents();
 	void RecalculateLocalTransform();
 	void MoveChild(const int id, GameObject* newParent, const int aboveThisId = 0);
-	void AddSufix();
 	void DragAndDrop();
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
