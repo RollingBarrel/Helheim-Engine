@@ -157,6 +157,18 @@ const void Quadtree::RenderTreeImGui() const
 	
 }
 
+void Quadtree::LoadHierarchy(GameObject* node)
+{
+	for (auto child : node->GetChildren()) {
+		//TODO Detect if the child is already inside to avoid duplicates when pressing button more than twice in a row
+		if (child->getMeshRenderer() != nullptr) 
+		{
+			AddObject(child);
+		}
+		LoadHierarchy(child);
+	}
+}
+
 void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)
 {
 	if (!myCamera.Intersects(mBoundingBox))

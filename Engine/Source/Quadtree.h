@@ -24,6 +24,7 @@ public:
 	const bool hasGameObjects() const { return mFilled; }
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
 	void CleanUp();
+	void LoadHierarchy(GameObject* child);
 	void Draw() const;
 	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
