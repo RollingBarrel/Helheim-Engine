@@ -209,12 +209,16 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::str
 
             if (IsDirectory(path.c_str()))
             {
+                //TODO PathNode 
                 directories.push_back(path);
                 DiscoverFiles(path.c_str(), files, directories);
                 path = directory + std::string("/");
             }
             else
             {
+                //TODO Assets To Display, except .bin
+
+                //TODO Read Meta and create Library Link
                 files.push_back(path);
                 path = directory + std::string("/");
             }
