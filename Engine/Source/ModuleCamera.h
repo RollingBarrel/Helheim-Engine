@@ -31,11 +31,12 @@ public:
 	void UpdateProjectionMatrix(int screenWidth, int screenHeight);
 
 	const Frustum GetFrustum() const { return frustum; }
-	
+	bool* GetShouldRenderFrustum() const { return mDrawFrustum; }
 
 
 private:
 	float2 mousePos;
 	Frustum frustum;
+	bool* mDrawFrustum = new bool(false);
 };
 

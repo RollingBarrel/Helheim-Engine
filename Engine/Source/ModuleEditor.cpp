@@ -144,7 +144,6 @@ void ModuleEditor::ShowMainMenuBar() {
 					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
 			}
-				ImGui::EndMenu();
 
 			if (ImGui::MenuItem("Debug")) {
 				Panel* debugPanel = s_ModuleEditorInstance->mPanels[DEBUGPANEL];

@@ -593,6 +593,8 @@ ModuleDebugDraw::ModuleDebugDraw()
 
 ModuleDebugDraw::~ModuleDebugDraw()
 {
+    delete mDrawGrid;
+    delete mDrawAxis;
 }
 
 bool ModuleDebugDraw::Init()
@@ -626,12 +628,12 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-
-    dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
-    dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
-    
-    dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
-    //dd::sphere(App->GetScene()->GetSelectedGameObject()->GetPosition(), { 1,1,1 }, 1);
+    if (*mDrawGrid) {
+       DrawGrid();
+    }
+    if (*mDrawAxis) {
+       DrawAxis();
+    }
 
     dd::flush();
 }
@@ -665,8 +667,12 @@ void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
 
 void ModuleDebugDraw::DrawGrid()
 {
-    dd::xzSquareGrid(-500, 500, -0.1f, 1.0f, dd::colors::White);
-    dd::axisTriad(float4x4::identity, 0.0f, 25.0f);
+     dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
+}
+
+void ModuleDebugDraw::DrawAxis()
+{
+     dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
 }
 
 void ModuleDebugDraw::DrawFrustum(const Frustum& frustum)

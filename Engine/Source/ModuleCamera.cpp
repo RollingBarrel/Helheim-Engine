@@ -2,10 +2,11 @@
 #include "MathGeoLib.h"
 #include "SDL.h"
 #include "glew.h"
+#include "imgui.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
-#include "imgui.h"
+#include "ModuleDebugDraw.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -13,10 +14,8 @@ ModuleCamera::ModuleCamera()
 
 ModuleCamera::~ModuleCamera()
 {
+    delete mDrawFrustum;
 }
-
-
-
 
 bool ModuleCamera::Init()
 {
@@ -48,6 +47,10 @@ update_status ModuleCamera::Update()
     const auto& io = ImGui::GetIO();
     if (!io.WantCaptureMouse && !io.WantCaptureKeyboard) {
         ProcessInput();
+    }
+    if (*mDrawFrustum)
+    {
+        App->GetDebugDraw()->DrawFrustum(frustum);
     }
 
     return UPDATE_CONTINUE;
@@ -217,6 +220,3 @@ void ModuleCamera::UpdateProjectionMatrix(int screenWidth, int screenHeight)
     frustum.verticalFov = 2.0f * atan(tan(frustum.horizontalFov * 0.5f) / aspectRatio);
 
 }
-
-
-

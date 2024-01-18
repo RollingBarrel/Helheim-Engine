@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Panel.h"
-#define DEBUGPANEL "Quadtree Info"
+#define DEBUGPANEL "Debugger"
 
 class DebugPanel : public Panel
 {
