@@ -9,7 +9,7 @@ class MeshRendererComponent : public Component
 {
 public:
 	MeshRendererComponent(GameObject* owner);
-	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
+	MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner);
 	//~MeshRendererComponent();
 	void Clear();
 	void Draw();
@@ -25,10 +25,23 @@ public:
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool* getShouldDraw() { return mDrawBox; }
 
+	//UNIFORMS
+	float lightDir[3] = { 0.0f, -1.0f, 1.0f };
+	float lightColor[3] = { 0.0f, 0.0f, 0.7f };
+	float lightIntensity = 10.0f;
+
+	float diffuseColor[3] = { 0.8f, 0.8f, 0.8f };
+	float specularColor[3] = { 0.8f, 0.8f, 0.8f };
+	float shininess = 300;
+	float ambientColor[3] = { 0.5f, 0.5f, 0.5f };
+
+	int hasDiffuseMap = 0;
+	int hasSpecularMap = 0;
+	int hasShininessMap = 0;
+
 private:
 	std::vector<Mesh*> mMeshes; //it was a mesh pointer (Mesh*) 
 	OBB mOBB;
 	bool* mDrawBox = new bool(false);
 	bool mInsideFrustum = true;
 };
-

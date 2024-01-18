@@ -18,7 +18,7 @@ public:
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void CreateVAO();
 
-	void Render();
+	void Render(float lightDir[3], float lightColor[3], float lightIntensity, float diffuseColor[3], float specularColor[3], float shininess, float ambientColor[3], int hasDiffuseMap, int hasSpecularMap, int hasShininessMap);
 
 	int GetNumIndices() { return m_numIndices; }
 	void SetMaterial(ResourceMaterial* material) { mMaterial = material; }
@@ -34,5 +34,3 @@ private:
 
 	ResourceMaterial* mMaterial = nullptr;
 };
-
-

@@ -8,21 +8,21 @@
 #include <iostream>
 #include <random>
 
-MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
-	:Component("Mesh Renderer" ,owner, ComponentType::MESHRENDERER)
+MeshRendererComponent::MeshRendererComponent(GameObject* owner)
+	:Component("Mesh Renderer", owner, ComponentType::MESHRENDERER)
 {
 	//Create Random BBO
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
 	// Define the distribution for values between -100 and 100
-	std::uniform_int_distribution<int> distribution(-100, 90);
+	std::uniform_int_distribution<int> distribution(-10, 10);
 
 	// Generate three random values
-	float rv1 = distribution(gen)/10;
-	float rv2 = distribution(gen)/10;
-	float rv3 = distribution(gen)/10;
-	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+1.0f, rv2 + 1.0f, rv3 + 1.0f)));
+	float rv1 = distribution(gen) / 10;
+	float rv2 = distribution(gen) / 10;
+	float rv3 = distribution(gen) / 10;
+	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1 + 1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 
 	//Load("models/testing/Cube/Cube.gltf");
 	Load("models/testing/DollHouse/Dollhouse.gltf");
@@ -52,7 +52,7 @@ void MeshRendererComponent::Draw()
 	{
 		return;
 	}
-	if (*mDrawBox) 
+	if (*mDrawBox)
 	{
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
@@ -60,7 +60,7 @@ void MeshRendererComponent::Draw()
 	for (Mesh* mesh : mMeshes)
 	{
 
-		mesh->Render(/*m_textures*/);
+		mesh.Render(lightDir, lightColor, lightIntensity, ambientColor);
 	}
 }
 
