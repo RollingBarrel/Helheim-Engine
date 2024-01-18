@@ -13,7 +13,7 @@ public:
     ~ModuleTimer();
 
     bool Init();
-    update_status Update();
+    update_status PreUpdate();
     bool CleanUp();
 
     long GetRealDelta() const { return mDeltaTime; }

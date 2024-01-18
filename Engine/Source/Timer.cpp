@@ -6,6 +6,11 @@ void Timer::Start() {
 	mLastReadTime = SDL_GetTicks();
 }
 
+void Timer::StartWithRunTime() {
+	mLastReadTime = SDL_GetTicks();
+	mTotalTime = mLastReadTime;
+}
+
 long Timer::Read() {
 	ReadDelta();
 	return mTotalTime;
