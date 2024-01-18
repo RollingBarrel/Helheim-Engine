@@ -1,4 +1,5 @@
 #include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
 #include "imgui.h"
 #include "Application.h"
 #include "Quadtree.h"
@@ -23,7 +24,8 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 	float rv3 = distribution(gen)/10;
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 
-	Load("models/testing/Cube/Cube.gltf");
+	//Load("models/testing/Cube/Cube.gltf");
+	Load("models/testing/DollHouse/Dollhouse.gltf");
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
@@ -55,10 +57,10 @@ void MeshRendererComponent::Draw()
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 	mInsideFrustum = false;
-	for (Mesh mesh : mMeshes)
+	for (Mesh* mesh : mMeshes)
 	{
 
-		mesh.Render(/*m_textures*/);
+		mesh->Render(/*m_textures*/);
 	}
 }
 
@@ -91,11 +93,19 @@ void MeshRendererComponent::Load(const char* assetFileName)
 	{
 		for (const auto& primitive : srcMesh.primitives)
 		{
-			Mesh mesh = Mesh();
-			mesh.LoadVBO(srcModel, srcMesh, primitive);
-			mesh.LoadEBO(srcModel, srcMesh, primitive);
-			mesh.CreateVAO();
+			Mesh* mesh = new Mesh();
+			mesh->LoadVBO(srcModel, srcMesh, primitive);
+			mesh->LoadEBO(srcModel, srcMesh, primitive);
+			mesh->CreateVAO();
 			mMeshes.push_back(mesh);
+
+			int materialID = primitive.material;
+
+			if (materialID != -1) {
+				ResourceMaterial* material = new ResourceMaterial();
+				material->LoadMaterial(srcModel, srcModel.materials[materialID]);
+				mesh->SetMaterial(material);
+			}
 		}
 	}
 }

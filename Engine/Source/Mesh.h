@@ -6,11 +6,14 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
+class ResourceMaterial;
+
 class Mesh
 {
 public:
 	Mesh();
 	~Mesh();
+
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void CreateVAO();
@@ -18,6 +21,7 @@ public:
 	void Render();
 
 	int GetNumIndices() { return m_numIndices; }
+	void SetMaterial(ResourceMaterial* material) { mMaterial = material; }
 
 
 private:
@@ -27,6 +31,8 @@ private:
 
 	int m_numVertices;
 	int m_numIndices;
+
+	ResourceMaterial* mMaterial = nullptr;
 };
 
 

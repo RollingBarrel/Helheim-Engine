@@ -4,7 +4,6 @@
 #include "GameObject.h"
 #include "Mesh.h"
 
-class Material;
 
 class MeshRendererComponent : public Component
 {
@@ -27,11 +26,7 @@ public:
 	bool* getShouldDraw() { return mDrawBox; }
 
 private:
-	void LoadVBO();
-	void LoadEBO();
-	void LoadVAO();
-	std::vector<Mesh> mMeshes; //it was a mesh pointer (Mesh*) 
-	Material* material;
+	std::vector<Mesh*> mMeshes; //it was a mesh pointer (Mesh*) 
 	OBB mOBB;
 	bool* mDrawBox = new bool(false);
 	bool mInsideFrustum = true;

@@ -45,7 +45,7 @@ bool ModuleProgram::Init()
 	}
 
 	// Add to mPrograms any shader you need
-	mPrograms["default"] = CreateShaderProgramFromPaths("default_vertex.glsl", "default_fragment.glsl");
+	mPrograms["default"] = CreateShaderProgramFromPaths("Shader_VS.glsl", "Shader_PS.glsl");
 
 	return true;
 }

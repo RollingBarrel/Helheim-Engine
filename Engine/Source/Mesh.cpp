@@ -1,6 +1,9 @@
 #include "Mesh.h"
 #include "Application.h"
 #include "ModuleProgram.h"
+#include "ModuleCamera.h"
+#include "ResourceMaterial.h"
+#include "Texture.h"
 
 #include "glew.h"
 #include "SDL.h"
@@ -152,12 +155,99 @@ void Mesh::Render(/*const std::vector<unsigned>& textures*/)
 {
 	unsigned program = App->GetProgram()->GetProgramID("default");
 	glUseProgram(program);
-	//glActiveTexture(GL_TEXTURE5);
-	//glBindTexture(GL_TEXTURE_2D, textures[m_material]);
-	//glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
+
+	// Fragment shader
+	if (mMaterial != nullptr) {
+		//glActiveTexture(GL_TEXTURE5);
+		//glBindTexture(GL_TEXTURE_2D, textures[textureID]->getTextureID());
+		glUniform3fv(
+			glGetUniformLocation(program,
+				"material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
+
+		glUniform3fv(
+			glGetUniformLocation(program,
+				"material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
+
+		glUniform1f(
+			glGetUniformLocation(program,
+				"material.shininess"), mMaterial->GetGlossinessFactor());
+
+
+		if (mMaterial->GetDiffuseMap() != nullptr)
+		{
+			glUniform1i(
+				glGetUniformLocation(program,
+					"material.hasDiffuseMap"), 1);
+			GLint diffuseTextureLoc =
+				glGetUniformLocation(program, "material.diffuseTexture");
+			glUniform1i(diffuseTextureLoc, 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, mMaterial->GetDiffuseMap()->getTextureID());
+		}
+		else {
+			glUniform1i(
+				glGetUniformLocation(program,
+					"material.hasDiffuseMap"), 0);
+		}
+
+		if (mMaterial->GetSpecularMap() != nullptr)
+		{
+			glUniform1i(
+				glGetUniformLocation(program,
+					"material.hasSpecularMap"), 1);
+			GLint specularTextureLoc =
+				glGetUniformLocation(program, "material.specularTexture");
+			glUniform1i(specularTextureLoc, 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, mMaterial->GetSpecularMap()->getTextureID());
+		}
+		else
+		{
+			glUniform1i(
+				glGetUniformLocation(program,
+					"material.hasSpecularMap"), 0);
+		}
+
+		// Light
+
+		float3 lightDir = float3(1.0, 1.0, 1.0);
+		//float3 lightColor = float3(1.0, 1.0, 1.0);
+		float3 ambientColor(1.0, 1.0, 1.0);
+		float lightIntensity(20.0);
+
+		GLuint lightDirLoc = glGetUniformLocation(program, "lightDir");
+		GLuint lightColorLoc = glGetUniformLocation(program, "lightColor");
+
+		GLfloat lightDirValue[] = { 1.0, 1.0, 1.0 };
+		GLfloat lightColorValue[] = { 1.0, 1.0, 1.0 };
+
+		glUniform3fv(lightDirLoc, 1, lightDirValue);
+		//glUniform3fv(lightColorLoc, 1, lightDirValue);
+
+		glUniform1f(
+			glGetUniformLocation(program,
+				"lightIntensity"), lightIntensity);
+
+
+		glUniform3fv(
+			glGetUniformLocation(program,
+				"material.ambientColor"), 1, &ambientColor[0]);
+
+	}
+
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, nullptr);
-	//glDrawArrays(GL_TRIANGLES, 0, m_numVertices);
+
+	//unsigned program = App->GetProgram()->GetProgramID("default");
+	//glUseProgram(program);
+
+
+	////glActiveTexture(GL_TEXTURE5);
+	////glBindTexture(GL_TEXTURE_2D, textures[m_material]);
+	////glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
+	//glBindVertexArray(m_vao);
+	//glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, nullptr);
+	////glDrawArrays(GL_TRIANGLES, 0, m_numVertices);
 
 }
 
