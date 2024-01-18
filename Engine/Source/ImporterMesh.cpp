@@ -387,18 +387,16 @@ void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* file
     //Create GameObject and set mesh to it;
 }
 
-//attribFloatsOffset += attributeFloats;
 void ResourceMesh::LoadInterleavedAttribute(float* fillBuffer, const float* attribData, unsigned int& attribFloatsOffset, unsigned int attribElements, unsigned int elementFloats) const
 {
     if (attribData != nullptr)
     {
-        attribElements = 3;
-        elementFloats = 3;
         unsigned int attributeFloats = sizeof(float) * elementFloats * attribElements;
         for (int vertexIdx = 0; vertexIdx < mNumVertices; ++vertexIdx)
         {
             memcpy(&fillBuffer[vertexIdx * attributeFloats + attribFloatsOffset], &mVerticesPosition[vertexIdx * attributeFloats], attributeFloats * sizeof(float));
         }
+        attribFloatsOffset += attributeFloats;
     }
 }
 
@@ -411,7 +409,20 @@ float* ResourceMesh::GetInterleavedData() const
     LoadInterleavedAttribute(ret, mVerticesTextureCoordinate, attribFloatsOffset, 2, 2);
     LoadInterleavedAttribute(ret, mVerticesNormal, attribFloatsOffset, 3, 3);
     LoadInterleavedAttribute(ret, mVerticesTangent, attribFloatsOffset, 4, 4);
+    LoadInterleavedAttribute(ret, mVerticesColor, attribFloatsOffset, 3, 3);
     return ret;
+}
+
+void ResourceMesh::FromInterleavedData(float* vData, unsigned int numvertices, unsigned int* iData, unsigned int numIndices, char attrBitmask)
+{
+    if (mIndices != nullptr)
+    {
+        //delete mIndices;
+        //delete[] mIndices;
+        free(mIndices);
+    }
+    if(attrBitmask & POS)
+        
 }
 
 void ResourceMesh::LoadVAO()

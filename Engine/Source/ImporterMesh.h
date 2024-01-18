@@ -28,14 +28,15 @@ struct ResourceMesh
 	unsigned int* mIndices = nullptr;
 	float* mVerticesPosition = nullptr;
 	float* mVerticesTextureCoordinate = nullptr;
-	float* mVerticesColor = nullptr;
 	float* mVerticesNormal = nullptr;
 	float* mVerticesTangent = nullptr;
+	float* mVerticesColor = nullptr;
 
 
 	const char* mMeshName = nullptr;
 	unsigned int mUID;
 
+	void FromInterleavedData(float*vData, unsigned int numVertices,  unsigned int* iData, unsigned int numIndices, char attributeMask);
 	float* GetInterleavedData() const;
 	unsigned int GetVertexSize() const { return mVertexSize; }
 

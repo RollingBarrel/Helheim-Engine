@@ -328,7 +328,7 @@ void GenerateTangents(unsigned int indexType, unsigned int VBOEBO[1], unsigned i
 bool ModuleRenderTest::Init()
 {
 	//Switch to Resource Shader later on.
-	programId = CreateProgram("Shaders\\Vertex.vs", "Shaders\\Fragment.fs");
+	programId = CreateProgram("Shaders/Vertex.vs", "Shaders/Fragment.fs");
 
 	Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
 
