@@ -6,6 +6,8 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
+//class float3;
+
 class Mesh
 {
 public:
@@ -15,7 +17,7 @@ public:
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void CreateVAO();
 
-	void Render();
+	void Render(float lightDir[3], float lightColor[3], float lightIntensity, float specularColor[3], float shininess, float ambientColor[3], int hasDiffuseMap, int hasSpecularMap, int hasShininessMap);
 
 	int GetNumIndices() { return m_numIndices; }
 
@@ -27,6 +29,5 @@ private:
 
 	int m_numVertices;
 	int m_numIndices;
+
 };
-
-

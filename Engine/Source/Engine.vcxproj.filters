@@ -180,6 +180,9 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ShaderPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -455,6 +458,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\tinygltf-2.8.19\tiny_gltf.h">
       <Filter>Dependencies\Tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderPanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

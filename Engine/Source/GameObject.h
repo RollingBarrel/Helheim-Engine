@@ -13,6 +13,7 @@ class GameObject
 {
 	friend class HierarchyPanel;
 	friend class InspectorPanel;
+	friend class ShaderPanel;
 
 public:
 	GameObject(GameObject* parent);

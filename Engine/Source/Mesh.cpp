@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "Application.h"
 #include "ModuleProgram.h"
+#include "ModuleCamera.h"
 
 #include "glew.h"
 #include "SDL.h"
@@ -10,7 +11,6 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #define TINYGLTF_IMPLEMENTATION /* Only in one of the includes */
 #include "tiny_gltf.h"
-
 
 Mesh::Mesh()
 {
@@ -148,16 +148,35 @@ void Mesh::CreateVAO()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 6 * m_numVertices));
 	glBindVertexArray(0);
 }
-void Mesh::Render(/*const std::vector<unsigned>& textures*/)
+
+void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, float specularColor[3], float shininess, float ambientColor[3], int hasDiffuseMap, int hasSpecularMap, int hasShininessMap)
 {
 	unsigned program = App->GetProgram()->GetProgramID("default");
 	glUseProgram(program);
+
 	//glActiveTexture(GL_TEXTURE5);
 	//glBindTexture(GL_TEXTURE_2D, textures[m_material]);
 	//glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
+
+	//UNIFORMS
+	glUniform3f(glGetUniformLocation(program, "lightDir"), lightDir[0], lightDir[1], lightDir[2]);
+	glUniform3f(glGetUniformLocation(program, "lightColor"), lightColor[0], lightColor[1], lightColor[2]);
+	glUniform1f(glGetUniformLocation(program, "lightIntensity"), lightIntensity);
+
+	float3 cameraPos = App->GetCamera()->GetCameraPos();
+	glUniform3f(glGetUniformLocation(program, "cameraPos"), cameraPos.x, cameraPos.y, cameraPos.z);
+
+	glUniform3f(glGetUniformLocation(program, "specularColor"), specularColor[0], specularColor[1], specularColor[2]);
+	glUniform1i(glGetUniformLocation(program, "shininess"), shininess);
+	glUniform3f(glGetUniformLocation(program, "ambientColor"), ambientColor[0], ambientColor[1], ambientColor[2]);
+
+	glUniform1i(glGetUniformLocation(program, "hasDiffuseMap"), hasDiffuseMap);
+	glUniform1i(glGetUniformLocation(program, "hasSpecularMap"), hasSpecularMap);
+	glUniform1i(glGetUniformLocation(program, "hasShininessMap"), hasShininessMap);
+
+
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_INT, nullptr);
 	//glDrawArrays(GL_TRIANGLES, 0, m_numVertices);
 
 }
-

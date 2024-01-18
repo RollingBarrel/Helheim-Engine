@@ -187,6 +187,13 @@ void ModuleEditor::ShowMainMenuBar() {
 						pause->IsOpen() ? pause->Close() : pause->Open();
 					}
 				}
+				if (ImGui::MenuItem("-1 Shaders")) {
+					Panel* shader = s_ModuleEditorInstance->mPanels[SHADERPANEL];
+					if (shader)
+					{
+						shader->IsOpen() ? shader->Close() : shader->Open();
+					}
+				}
 				//if (ImGui::MenuItem("5 Scene")) {}
 				ImGui::EndMenu();
 			}

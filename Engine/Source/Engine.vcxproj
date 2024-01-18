@@ -212,6 +212,7 @@
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="ShaderPanel.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
@@ -315,6 +316,7 @@
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="PausePanel.h" />
     <ClInclude Include="PreciseTimer.h" />
+    <ClInclude Include="ShaderPanel.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
