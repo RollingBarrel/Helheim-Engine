@@ -1,6 +1,6 @@
 #version 440
 
-in vec4 color;
+//in vec4 color;
 
 in vec3 position;
 in vec3 normal;

@@ -6,7 +6,7 @@ layout (location = 1) in vec3 vertexNormal;
 layout(location = 0) uniform mat4 model;
 layout(location = 1) uniform mat4 viewProj;
 
-out vec4 color;
+//out vec4 color;
 out vec3 position;
 out vec3 normal;
 //out vec2 uv0;
@@ -18,5 +18,5 @@ void main()
 	normal = transpose(inverse(mat3(model))) * vertexNormal;
 	//uv0 = vertexUV0;
 
-	color = vec4(abs(normalize(normal)), 1.0);
+	//color = vec4(abs(normalize(normal)), 1.0);
 }
