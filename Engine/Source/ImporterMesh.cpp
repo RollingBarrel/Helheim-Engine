@@ -413,7 +413,21 @@ float* ResourceMesh::GetInterleavedData() const
     return ret;
 }
 
-void ResourceMesh::FromInterleavedData(float* vData, unsigned int numvertices, unsigned int* iData, unsigned int numIndices, char attrBitmask)
+typedef struct {
+    enum Type: unsigned char {
+        POS = 1 << 1,
+        UV = 1 << 2,
+        NORMAL = 1 << 3,
+        TANGENT = 1 << 4,
+        COLOR = 1 << 5
+    };
+    Type type;
+    unsigned int size;
+    unsigned int stride;
+    unsigned int offset;
+}Attribute;
+
+void ResourceMesh::FromInterleavedData(float* vData, unsigned int numVertices, unsigned int* iData, unsigned int numIndices, char attrBitmask)
 {
     if (mIndices != nullptr)
     {
@@ -421,8 +435,14 @@ void ResourceMesh::FromInterleavedData(float* vData, unsigned int numvertices, u
         //delete[] mIndices;
         free(mIndices);
     }
-    if(attrBitmask & POS)
-        
+    if (attrBitmask & Attribute::POS)
+    {
+        for (unsigned int vertexIdx = 0; vertexIdx < numVertices; ++vertexIdx)
+        {
+            //Em falta l'stride i l'offset
+            memcpy(&mVerticesPosition[vertexIdx], vData[vertexIdx * attrStride + attOffset], sizeof(attribute));
+        }
+    }
 }
 
 void ResourceMesh::LoadVAO()
