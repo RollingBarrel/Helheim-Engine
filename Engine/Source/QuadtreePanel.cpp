@@ -26,7 +26,7 @@ void QuadtreePanel::Draw(int windowFlags)
 		ImGui::SameLine();
 		if (ImGui::Button("Reload quadtree"))
 		{
-			App->GetScene()->GetQuadtreeRoot()->LoadHierarchy(App->GetScene()->GetRoot());
+			App->GetScene()->GetQuadtreeRoot()->UpdateTree();
 		}
 		ImGui::Separator();
 		ImGui::Text("My Quadtree:");

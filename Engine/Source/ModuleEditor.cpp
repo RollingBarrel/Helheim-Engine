@@ -121,7 +121,7 @@ void ModuleEditor::ProcessInput()
 	{
 		if (App->GetInput()->GetKey(SDL_SCANCODE_Q))
 		{
-			App->GetScene()->GetQuadtreeRoot()->LoadHierarchy(App->GetScene()->GetRoot());
+			App->GetScene()->GetQuadtreeRoot()->UpdateTree();
 		}
 		else if (App->GetInput()->GetKey(SDL_SCANCODE_R))
 		{
