@@ -2,6 +2,9 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
+#include "ModuleInput.h"
+#include "ModuleScene.h"
+#include "Quadtree.h"
 
 #include "Panel.h"
 #include "AboutPanel.h"
@@ -89,6 +92,8 @@ update_status ModuleEditor::Update()
 		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 	}
 
+	ProcessInput();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -108,6 +113,21 @@ bool ModuleEditor::CleanUp()
 	mPanels.clear();
 
 	return true;
+}
+
+void ModuleEditor::ProcessInput()
+{
+	if (App->GetInput()->GetKey(SDL_SCANCODE_LCTRL) && App->GetInput()->GetKey(SDL_SCANCODE_LALT))
+	{
+		if (App->GetInput()->GetKey(SDL_SCANCODE_Q))
+		{
+			App->GetScene()->GetQuadtreeRoot()->LoadHierarchy(App->GetScene()->GetRoot());
+		}
+		else if (App->GetInput()->GetKey(SDL_SCANCODE_R))
+		{
+			App->GetScene()->GetQuadtreeRoot()->CleanUp();
+		}
+	}
 }
 
 void ModuleEditor::ShowMainMenuBar() {
