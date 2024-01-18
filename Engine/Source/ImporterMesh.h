@@ -21,48 +21,52 @@ namespace Importer
 	}
 }
 
-typedef struct {
+typedef struct Attribute {
 	enum Type : unsigned char {
-		POS,
-		UV,
-		NORMAL,
-		TANGENT,
-		COLOR,
-		NUM_ATTRIBUTES
+		POS = 1 << 0,
+		UV = 1 << 1,
+		NORMAL = 1 << 2,
+		TANGENT = 1 << 3,
+		COLOR = 1 << 4,
 	};
+	Attribute(Type iType, unsigned int iSize, unsigned int iStride, unsigned int iOffset) : type(iType), size(iSize), stride(iStride), offset(iOffset) {}
 	Type type;
 	unsigned int size;
-	unsigned int stride;
 	unsigned int offset;
+	//It is the vertex size
+	unsigned int stride;
 }Attribute;
 
 struct ResourceMesh
 {
+	~ResourceMesh() { CleanUp(); }
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
 
 	unsigned int* mIndices = nullptr;
-	float* mVerticesPosition = nullptr;
-	float* mVerticesTextureCoordinate = nullptr;
-	float* mVerticesNormal = nullptr;
-	float* mVerticesTangent = nullptr;
-	float* mVerticesColor = nullptr;
+	std::vector<float*> mAttributesData;
 
 
 	const char* mMeshName = nullptr;
 	unsigned int mUID = 0;
 
-	void FromInterleavedData(float*vData, unsigned int numVertices,  unsigned int* iData, unsigned int numIndices, Attribute* attributes = nullptr);
+	void FromInterleavedData(float* vData, unsigned int numVertices, unsigned int* iData, unsigned int numIndices, Attribute* attributes = nullptr);
 	float* GetInterleavedData() const;
-	unsigned int GetVertexSize() const { return mVertexSize; }
+	unsigned int GetVertexSize() const {
+		unsigned int size = 0;
+		for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+		{
+			size += (*it)->size;
+		}
+		return size;
+	}
+
+	bool HasAttributeData(Attribute::Type type);
+	float** GetAttributData(Attribute::Type type);
 
 	void LoadVAO();
 	void LoadVBO();
 	void LoadEBO();
-
-	unsigned int GetVAO() { return mVao; };
-	unsigned int GetVBO() { return mVbo; };
-	unsigned int GetEBO() { return mEbo; };
 
 	void CleanUp();
 
@@ -72,8 +76,7 @@ private:
 	unsigned int mVao;
 	unsigned int mVbo;
 	unsigned int mEbo;
-	unsigned int mVertexSize;
-	std::vector<Attribute> mAttributes;
+	std::vector<Attribute*> mAttributes;
 
 	friend void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh);
 	friend void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* fileName);
