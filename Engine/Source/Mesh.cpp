@@ -148,6 +148,8 @@ void Mesh::CreateVAO()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * m_numVertices));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 6 * m_numVertices));
 	glBindVertexArray(0);
 }
 
@@ -163,6 +165,7 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 		glUniform3fv(glGetUniformLocation(program,"material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
 		glUniform3fv(glGetUniformLocation(program,"material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
 		glUniform1f(glGetUniformLocation(program,"material.shininess"), mMaterial->GetGlossinessFactor());
+		glUniform3f(glGetUniformLocation(program, "material.ambientColor"), ambientColor[0], ambientColor[1], ambientColor[2]);
 		if (mMaterial->GetDiffuseMap() != nullptr)
 		{
 			glUniform1i(glGetUniformLocation(program,"material.hasDiffuseMap"), 1);
@@ -192,7 +195,6 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 		glUniform3f(glGetUniformLocation(program, "lightColor"), lightColor[0], lightColor[1], lightColor[2]);
 		glUniform1f(glGetUniformLocation(program, "lightIntensity"), lightIntensity);
 		
-		glUniform3f(glGetUniformLocation(program, "ambientColor"), ambientColor[0], ambientColor[1], ambientColor[2]);
 
 		float3 cameraPos = App->GetCamera()->GetCameraPos();
 		glUniform3f(glGetUniformLocation(program, "cameraPos"), cameraPos.x, cameraPos.y, cameraPos.z);

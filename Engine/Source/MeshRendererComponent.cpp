@@ -25,7 +25,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1 + 1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 
 	//Load("models/testing/Cube/Cube.gltf");
-	Load("models/testing/DollHouse/Dollhouse.gltf");
+	Load("models/Clock/Clock.gltf");
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
@@ -60,7 +60,7 @@ void MeshRendererComponent::Draw()
 	for (Mesh* mesh : mMeshes)
 	{
 
-		mesh.Render(lightDir, lightColor, lightIntensity, ambientColor);
+		mesh->Render(lightDir, lightColor, lightIntensity, ambientColor);
 	}
 }
 
