@@ -103,6 +103,45 @@ static void GenerateTangents(ResourceMesh* rMesh)
     //free(unweldedVertices);
 }
 
+void ResourceMesh::CleanUp()
+{
+    mNumVertices = 0;
+    mNumIndices = 0;
+    if (mIndices != nullptr)
+    {
+        delete[] mIndices;
+        mIndices = nullptr;
+    }
+    if (mVerticesPosition != nullptr)
+    {
+        delete[] mVerticesPosition;
+        mVerticesPosition = nullptr;
+    }
+    if (mVerticesTextureCoordinate != nullptr)
+    {
+        delete[] mVerticesTextureCoordinate;
+        mVerticesTextureCoordinate = nullptr;
+    }
+    if (mVerticesNormal != nullptr)
+    {
+        delete[] mVerticesNormal;
+        mVerticesNormal = nullptr;
+    }
+    if (mVerticesTangent != nullptr)
+    {
+        delete[] mVerticesTangent;
+        mVerticesTangent = nullptr;
+    }
+    if (mVerticesColor != nullptr)
+    {
+        delete[] mVerticesColor;
+        mVerticesColor = nullptr;
+    }
+    mVertexSize = 0;
+
+    //TODO: delete EBO/VBO...
+    mAttributes.clear();
+}
 void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh)
 {
     mesh->mVertexSize = 0;
@@ -413,36 +452,25 @@ float* ResourceMesh::GetInterleavedData() const
     return ret;
 }
 
-typedef struct {
-    enum Type: unsigned char {
-        POS = 1 << 1,
-        UV = 1 << 2,
-        NORMAL = 1 << 3,
-        TANGENT = 1 << 4,
-        COLOR = 1 << 5
-    };
-    Type type;
-    unsigned int size;
-    unsigned int stride;
-    unsigned int offset;
-}Attribute;
-
-void ResourceMesh::FromInterleavedData(float* vData, unsigned int numVertices, unsigned int* iData, unsigned int numIndices, char attrBitmask)
+void ResourceMesh::FromInterleavedData(float* vData, unsigned int numVertices, unsigned int* iData, unsigned int numIndices, Attribute* attributes)
 {
     if (mIndices != nullptr)
     {
-        //delete mIndices;
-        //delete[] mIndices;
-        free(mIndices);
+        delete[] mIndices;
     }
+    mIndices = iData;
+    mNumIndices = numIndices;
+    mNumVertices = numVertices;
+    unsigned int attributeOffset = 0;
     if (attrBitmask & Attribute::POS)
     {
         for (unsigned int vertexIdx = 0; vertexIdx < numVertices; ++vertexIdx)
         {
-            //Em falta l'stride i l'offset
-            memcpy(&mVerticesPosition[vertexIdx], vData[vertexIdx * attrStride + attOffset], sizeof(attribute));
+            //Em falta l'stride, la size i l'offset
+            memcpy(&mVerticesPosition[vertexIdx], &vData[vertexIdx * attrStride + attributeOffset], sizeof(attribute));
         }
     }
+    attributteOffset += attributteSize;
 }
 
 void ResourceMesh::LoadVAO()

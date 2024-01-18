@@ -4,6 +4,7 @@
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
+#include <vector>
 
 
 struct ResourceMesh;
@@ -20,10 +21,25 @@ namespace Importer
 	}
 }
 
+typedef struct {
+	enum Type : unsigned char {
+		POS,
+		UV,
+		NORMAL,
+		TANGENT,
+		COLOR,
+		NUM_ATTRIBUTES
+	};
+	Type type;
+	unsigned int size;
+	unsigned int stride;
+	unsigned int offset;
+}Attribute;
+
 struct ResourceMesh
 {
-	unsigned int mNumVertices;
-	unsigned int mNumIndices;
+	unsigned int mNumVertices = 0;
+	unsigned int mNumIndices = 0;
 
 	unsigned int* mIndices = nullptr;
 	float* mVerticesPosition = nullptr;
@@ -34,9 +50,9 @@ struct ResourceMesh
 
 
 	const char* mMeshName = nullptr;
-	unsigned int mUID;
+	unsigned int mUID = 0;
 
-	void FromInterleavedData(float*vData, unsigned int numVertices,  unsigned int* iData, unsigned int numIndices, char attributeMask);
+	void FromInterleavedData(float*vData, unsigned int numVertices,  unsigned int* iData, unsigned int numIndices, Attribute* attributes = nullptr);
 	float* GetInterleavedData() const;
 	unsigned int GetVertexSize() const { return mVertexSize; }
 
@@ -48,6 +64,8 @@ struct ResourceMesh
 	unsigned int GetVBO() { return mVbo; };
 	unsigned int GetEBO() { return mEbo; };
 
+	void CleanUp();
+
 private:
 	void LoadInterleavedAttribute(float* fillBuffer, const float* attribData, unsigned int& attribFloatsOffset, unsigned int attribElements, unsigned int elementFloats) const;
 
@@ -55,6 +73,7 @@ private:
 	unsigned int mVbo;
 	unsigned int mEbo;
 	unsigned int mVertexSize;
+	std::vector<Attribute> mAttributes;
 
 	friend void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh);
 	friend void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* fileName);
