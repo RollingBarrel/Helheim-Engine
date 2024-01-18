@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleCamera.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
@@ -102,6 +103,24 @@ void ShaderPanel::Draw(int windowFlags)
 				focusedObject->getMeshRenderer()->shininess = shininess;
 			}
 
+			static float diffuseCx = focusedObject->getMeshRenderer()->diffuseColor[0];
+			static float diffuseCy = focusedObject->getMeshRenderer()->diffuseColor[1];
+			static float diffuseCz = focusedObject->getMeshRenderer()->diffuseColor[2];
+
+			ImGui::Text("Diffuse Color");
+			if (ImGui::DragFloat("X diffuse", &diffuseCx, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				focusedObject->getMeshRenderer()->diffuseColor[0] = diffuseCx;
+			}
+			if (ImGui::DragFloat("Y diffuse", &diffuseCy, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				focusedObject->getMeshRenderer()->diffuseColor[1] = diffuseCy;
+			}
+			if (ImGui::DragFloat("Z diffuse", &diffuseCz, 0.05f, 0.0f, 0.0f, "%.2f"))
+			{
+				focusedObject->getMeshRenderer()->diffuseColor[2] = diffuseCz;
+			}
+
 			static float specularCx = focusedObject->getMeshRenderer()->specularColor[0];
 			static float specularCy = focusedObject->getMeshRenderer()->specularColor[1];
 			static float specularCz = focusedObject->getMeshRenderer()->specularColor[2];
@@ -131,9 +150,14 @@ void ShaderPanel::Draw(int windowFlags)
 			focusedObject->getMeshRenderer()->hasDiffuseMap = (int)hasDiffuse;
 			focusedObject->getMeshRenderer()->hasSpecularMap = (int)hasSpecular;
 			focusedObject->getMeshRenderer()->hasShininessMap = (int)hasShiny;
-
-
 		}
+
+		ImGui::Text("Camera");
+
+		float3 cameraPos = App->GetCamera()->GetCameraPos();
+		ImGui::InputFloat("X ", &cameraPos.x);
+		ImGui::InputFloat("Y ", &cameraPos.y);
+		ImGui::InputFloat("Z ", &cameraPos.z);
 	}
 	ImGui::End();
 }

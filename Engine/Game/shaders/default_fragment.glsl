@@ -17,6 +17,7 @@ uniform int hasDiffuseMap;
 uniform int hasSpecularMap;
 uniform int hasShininessMap;
 
+uniform vec3 diffuseColor;
 uniform vec3 specularColor;
 uniform int shininess;
 uniform vec3 ambientColor;
@@ -35,7 +36,7 @@ void main() {
 		//diffuse = pow(diffuseColor, vec3(2.2));
 		diffuse = vec3(254.0f/255.0f,1.0f/255.0f,154.0f/255.0f);
 	}else{
-		diffuse = color.xyz;
+		diffuse = diffuseColor.xyz;
 	}
 	//Specular
 	if(hasSpecularMap == 1){//Using  gamma correction forces to transform sRGB textures to linear space

@@ -58,7 +58,7 @@ void MeshRendererComponent::Draw()
 	for (Mesh mesh : mMeshes)
 	{
 
-		mesh.Render(lightDir, lightColor, lightIntensity, specularColor, shininess, ambientColor, hasDiffuseMap, hasSpecularMap, hasShininessMap);
+		mesh.Render(lightDir, lightColor, lightIntensity, diffuseColor, specularColor, shininess, ambientColor, hasDiffuseMap, hasSpecularMap, hasShininessMap);
 	}
 }
 

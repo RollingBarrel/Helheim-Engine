@@ -5,6 +5,7 @@
 
 #include "Panel.h"
 #include "AboutPanel.h"
+#include "ShaderPanel.h"
 #include "ConsolePanel.h"
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
@@ -27,6 +28,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
+	mPanels[SHADERPANEL] = new ShaderPanel();
 }
 
 ModuleEditor::~ModuleEditor()

@@ -31,6 +31,7 @@ public:
 	float lightColor[3] = { 0.0f, 0.0f, 0.7f };
 	float lightIntensity = 10.0f;
 
+	float diffuseColor[3] = { 0.8f, 0.8f, 0.8f };
 	float specularColor[3] = { 0.8f, 0.8f, 0.8f };
 	float shininess = 300;
 	float ambientColor[3] = { 0.5f, 0.5f, 0.5f };

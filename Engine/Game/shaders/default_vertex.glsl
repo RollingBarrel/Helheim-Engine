@@ -18,5 +18,5 @@ void main()
 	normal = transpose(inverse(mat3(model))) * vertexNormal;
 	//uv0 = vertexUV0;
 
-	color = vec4(abs(vertexNormal), 1.0);
+	color = vec4(abs(normalize(normal)), 1.0);
 }

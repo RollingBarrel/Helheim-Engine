@@ -149,7 +149,7 @@ void Mesh::CreateVAO()
 	glBindVertexArray(0);
 }
 
-void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, float specularColor[3], float shininess, float ambientColor[3], int hasDiffuseMap, int hasSpecularMap, int hasShininessMap)
+void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, float diffuseColor[3], float specularColor[3], float shininess, float ambientColor[3], int hasDiffuseMap, int hasSpecularMap, int hasShininessMap)
 {
 	unsigned program = App->GetProgram()->GetProgramID("default");
 	glUseProgram(program);
@@ -166,10 +166,11 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 	float3 cameraPos = App->GetCamera()->GetCameraPos();
 	glUniform3f(glGetUniformLocation(program, "cameraPos"), cameraPos.x, cameraPos.y, cameraPos.z);
 
+	glUniform3f(glGetUniformLocation(program, "diffuseColor"), diffuseColor[0], diffuseColor[1], diffuseColor[2]);
 	glUniform3f(glGetUniformLocation(program, "specularColor"), specularColor[0], specularColor[1], specularColor[2]);
 	glUniform1i(glGetUniformLocation(program, "shininess"), shininess);
 	glUniform3f(glGetUniformLocation(program, "ambientColor"), ambientColor[0], ambientColor[1], ambientColor[2]);
-
+	
 	glUniform1i(glGetUniformLocation(program, "hasDiffuseMap"), hasDiffuseMap);
 	glUniform1i(glGetUniformLocation(program, "hasSpecularMap"), hasSpecularMap);
 	glUniform1i(glGetUniformLocation(program, "hasShininessMap"), hasShininessMap);
