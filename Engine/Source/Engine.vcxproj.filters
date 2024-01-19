@@ -516,10 +516,10 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="packages.config" />
-    <None Include="..\Game\Shaders\Shader_PS.glsl">
+    <None Include="..\Game\Shaders\PBR_PixelShader.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="..\Game\Shaders\Shader_VS.glsl">
+    <None Include="..\Game\Shaders\PBR_VertexShader.glsl">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

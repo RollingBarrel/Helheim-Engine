@@ -7,6 +7,7 @@ class Component;
 class TestComponent;
 class MeshRendererComponent;
 enum class ComponentType : unsigned int;
+class ResourceMaterial;
 
 class InspectorPanel : public Panel
 {
@@ -26,4 +27,5 @@ private:
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
+	void MaterialVariables(ResourceMaterial* material, int i);
 };

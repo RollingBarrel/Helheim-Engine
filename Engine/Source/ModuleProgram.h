@@ -8,6 +8,8 @@ class ModuleProgram : public Module
 public:
 
 	ModuleProgram();
+	ModuleProgram(const char* mVertexShader, const char* mFragmentShader);
+
 	~ModuleProgram();
 
 	bool Init() override;
@@ -17,6 +19,9 @@ public:
 	const std::unordered_map<std::string, unsigned>& GetPrograms() const { return mPrograms; }
 	const unsigned GetProgramID(std::string programName) const;
 
+	const char* GetVertexShader() const { return mVertexShader; }
+	const char* GetFragmentShader() const { return mFragmentShader; }
+
 private:
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned CompileShader(unsigned type, const char* source) const;
@@ -25,4 +30,7 @@ private:
 
 private:
 	std::unordered_map<std::string, unsigned> mPrograms;
+
+	const char* mVertexShader = "PBR_VertexShader.glsl";
+	const char* mFragmentShader = "PBR_PixelShader.glsl";
 };

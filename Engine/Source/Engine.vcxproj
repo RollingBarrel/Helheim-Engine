@@ -327,8 +327,8 @@
   <ItemGroup>
     <None Include="..\Game\shaders\default_fragment.glsl" />
     <None Include="..\Game\shaders\default_vertex.glsl" />
-    <None Include="..\Game\Shaders\Shader_PS.glsl" />
-    <None Include="..\Game\Shaders\Shader_VS.glsl" />
+    <None Include="..\Game\Shaders\PBR_PixelShader.glsl" />
+    <None Include="..\Game\Shaders\PBR_VertexShader.glsl" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
