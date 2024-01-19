@@ -166,7 +166,7 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 		glUniform3fv(glGetUniformLocation(program,"material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
 		glUniform1f(glGetUniformLocation(program,"material.shininess"), mMaterial->GetGlossinessFactor());
 		glUniform3f(glGetUniformLocation(program, "material.ambientColor"), ambientColor[0], ambientColor[1], ambientColor[2]);
-		if (mMaterial->GetDiffuseMap() != nullptr)
+		if (mMaterial->GetEnableDiffuseTexture() && mMaterial->GetDiffuseMap() != nullptr)
 		{
 			glUniform1i(glGetUniformLocation(program,"material.hasDiffuseMap"), 1);
 			GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
@@ -178,7 +178,7 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 			glUniform1i(glGetUniformLocation(program,"material.hasDiffuseMap"), 0);
 		}
 
-		if (mMaterial->GetSpecularMap() != nullptr)
+		if (mMaterial->GetEnableSpecularGlossinessTexture() && mMaterial->GetSpecularMap() != nullptr)
 		{
 			glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 1);
 			GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");

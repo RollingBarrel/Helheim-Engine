@@ -24,6 +24,7 @@ public:
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool* getShouldDraw() { return mDrawBox; }
+	std::vector<Mesh*> getMeshes() { return mMeshes; }
 
 	//UNIFORMS
 	float lightDir[3] = { 0.0f, -1.0f, 1.0f };

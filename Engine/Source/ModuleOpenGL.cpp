@@ -42,7 +42,7 @@ void OurOpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severi
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+ 	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 // Called before render is available

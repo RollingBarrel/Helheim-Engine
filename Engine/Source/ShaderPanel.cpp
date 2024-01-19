@@ -6,9 +6,11 @@
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
 #include "Mesh.h"
-
+#include "Math/float4.h"
 #include <MathFunc.h>
+#include <string.h>
 
 
 ShaderPanel::ShaderPanel() : Panel(SHADERPANEL, true)
@@ -24,6 +26,9 @@ void ShaderPanel::Draw(int windowFlags)
 	GameObject* focusedObject = App->GetScene()->GetSelectedGameObject();
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
+	//ImGui::PushID(focusedObject->mID);
+	//ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
+	//ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
 	if (!focusedObject->IsRoot())
@@ -91,61 +96,79 @@ void ShaderPanel::Draw(int windowFlags)
 			{
 				focusedObject->getMeshRenderer()->ambientColor[2] = ambientCz;
 			}
-			/*
-			static float shininess = focusedObject->getMeshRenderer()->shininess;
 
-			ImGui::Text("Shininess");
-			if (ImGui::DragFloat("shininess", &shininess, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				focusedObject->getMeshRenderer()->shininess = shininess;
-			}
-			*//*
-			static float diffuseCx = focusedObject->getMeshRenderer()->diffuseColor[0];
-			static float diffuseCy = focusedObject->getMeshRenderer()->diffuseColor[1];
-			static float diffuseCz = focusedObject->getMeshRenderer()->diffuseColor[2];
+			ImGui::Text("Camera");
 
-			ImGui::Text("Diffuse Color");
-			if (ImGui::DragFloat("X diffuse", &diffuseCx, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				focusedObject->getMeshRenderer()->diffuseColor[0] = diffuseCx;
+			float3 cameraPos = App->GetCamera()->GetCameraPos();
+			ImGui::InputFloat("X ", &cameraPos.x);
+			ImGui::InputFloat("Y ", &cameraPos.y);
+			ImGui::InputFloat("Z ", &cameraPos.z);
+
+			std::vector<Mesh*> meshes = focusedObject->getMeshRenderer()->getMeshes();
+
+			for (auto i = 0; i < meshes.size(); i++) {
+				ImGui::PushID(i);
+				ResourceMaterial* material = meshes[i]->GetMaterial();
+				if (ImGui::CollapsingHeader(("Mesh " + std::to_string(i)).c_str())) {
+
+					float shininess = material->GetGlossinessFactor();
+
+					ImGui::Text("Shininess");
+					if (ImGui::DragFloat("shininess", &shininess, 0.05f, 0.0f, 0.0f, "%.2f"))
+					{
+						material->SetGlossinessFactor(shininess);
+					}
+
+					float diffuseCx = material->GetDiffuseFactor().x;
+					float diffuseCy = material->GetDiffuseFactor().y;
+					float diffuseCz = material->GetDiffuseFactor().z;
+
+					ImGui::Text("Diffuse Color");
+					if (ImGui::DragFloat("X diffuse", &diffuseCx, 0.05f, 0.0f, 1.0f, "%.2f"))
+					{
+						material->SetDiffuseFactor(float4(diffuseCx, diffuseCy, diffuseCz, material->GetDiffuseFactor().z));
+					}
+					if (ImGui::DragFloat("Y diffuse", &diffuseCy, 0.05f, 0.0f, 1.0f, "%.2f"))
+					{
+						material->SetDiffuseFactor(float4(diffuseCx, diffuseCy, diffuseCz, material->GetDiffuseFactor().z));
+					}
+					if (ImGui::DragFloat("Z diffuse", &diffuseCz, 0.05f, 0.0f, 0.0f, "%.2f"))
+					{
+						material->SetDiffuseFactor(float4(diffuseCx, diffuseCy, diffuseCz, material->GetDiffuseFactor().z));
+					}
+
+					float specularCx = material->GetSpecularFactor().x;
+					float specularCy = material->GetSpecularFactor().y;
+					float specularCz = material->GetSpecularFactor().z;
+
+					ImGui::Text("Specular Color");
+					if (ImGui::DragFloat("X specular", &specularCx, 0.05f, 0.0f, 1.0f, "%.2f"))
+					{
+						material->SetSpecularFactor(float3(specularCx, specularCy, specularCz));
+					}
+					if (ImGui::DragFloat("Y specular", &specularCy, 0.05f, 0.0f, 1.0f, "%.2f"))
+					{
+						material->SetSpecularFactor(float3(specularCx, specularCy, specularCz));
+					}
+					if (ImGui::DragFloat("Z specular", &specularCz, 0.05f, 0.0f, 0.0f, "%.2f"))
+					{
+						material->SetSpecularFactor(float3(specularCx, specularCy, specularCz));
+					}
+
+					bool hasDiffuse = material->GetEnableDiffuseTexture();
+					bool hasSpecular = material->GetEnableSpecularGlossinessTexture();
+
+					ImGui::Checkbox("Enable Diffuse map", &hasDiffuse);
+					ImGui::Checkbox("Enable Specular map", &hasSpecular);
+
+					material->SetEnableDiffuseTexture((int)hasDiffuse);
+					material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
+				}
+				ImGui::PopID();
 			}
-			if (ImGui::DragFloat("Y diffuse", &diffuseCy, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				focusedObject->getMeshRenderer()->diffuseColor[1] = diffuseCy;
-			}
-			if (ImGui::DragFloat("Z diffuse", &diffuseCz, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				focusedObject->getMeshRenderer()->diffuseColor[2] = diffuseCz;
-			}
-			*//*
-			static float specularCx = focusedObject->getMeshRenderer()->specularColor[0];
-			static float specularCy = focusedObject->getMeshRenderer()->specularColor[1];
-			static float specularCz = focusedObject->getMeshRenderer()->specularColor[2];
-			
-			ImGui::Text("Specular Color");
-			if (ImGui::DragFloat("X specular", &specularCx, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				focusedObject->getMeshRenderer()->specularColor[0] = specularCx;
-			}
-			if (ImGui::DragFloat("Y specular", &specularCy, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				focusedObject->getMeshRenderer()->specularColor[1] = specularCy;
-			}
-			if (ImGui::DragFloat("Z specular", &specularCz, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				focusedObject->getMeshRenderer()->specularColor[2] = specularCz;
-			}*/
+
 		}
 
-		ImGui::Text("Camera");
-
-		float3 cameraPos = App->GetCamera()->GetCameraPos();
-		ImGui::Text("X: "); ImGui::SameLine();
-		ImGui::Text( std::to_string(cameraPos.x).c_str());
-		ImGui::Text("Y: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(cameraPos.y).c_str());
-		ImGui::Text("Z: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(cameraPos.z).c_str());
 	}
 	ImGui::End();
 }

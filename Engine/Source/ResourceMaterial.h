@@ -18,6 +18,16 @@ public:
     float3 GetSpecularFactor()const { return mSpecularFactor; };
     float GetGlossinessFactor()const { return mGlossinessFactor; };
 
+    bool GetEnableDiffuseTexture()const { return mEnableDiffuseTexture; };
+    bool GetEnableSpecularGlossinessTexture()const { return mEnableSpecularGlossinessTexture; };
+
+    void SetDiffuseFactor(const float4& diffuseFactor) { mDiffuseFactor = diffuseFactor; }
+    void SetSpecularFactor(const float3& specularFactor) { mSpecularFactor = specularFactor; }
+    void SetGlossinessFactor(float glossinessFactor) { mGlossinessFactor = glossinessFactor; }
+
+    void SetEnableDiffuseTexture(bool enableDiffuseTexture) { mEnableDiffuseTexture = enableDiffuseTexture; }
+    void SetEnableSpecularGlossinessTexture(bool enableSpecularGlossinessTexture) { mEnableSpecularGlossinessTexture = enableSpecularGlossinessTexture; }
+
 private:
 
     float4 mDiffuseFactor;
@@ -26,4 +36,7 @@ private:
 
     Texture* mDiffuseTexture = nullptr;
     Texture* mSpecularGlossinessTexture = nullptr;
+
+    bool mEnableDiffuseTexture;
+    bool mEnableSpecularGlossinessTexture;
 };
