@@ -51,6 +51,7 @@ struct ResourceMesh
 	const char* mMeshName = nullptr;
 	unsigned int mUID = 0;
 
+	void GenerateTangents();
 	float* GetInterleavedData() const;
 	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
 	int GetAttributeIdx(Attribute::Type type) const;
@@ -66,9 +67,9 @@ struct ResourceMesh
 
 private:
 
-	unsigned int mVao;
-	unsigned int mVbo;
-	unsigned int mEbo;
+	unsigned int mVao = 0;
+	unsigned int mVbo = 0;
+	unsigned int mEbo = 0;
 	std::vector<Attribute*> mAttributes;
 	unsigned int mVertexSize = 0;
 
