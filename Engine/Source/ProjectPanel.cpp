@@ -20,24 +20,13 @@ void ProjectPanel::Draw(int windowFlags)
 	{
 		if(ImGui::Button("Refresh"))
 		{
-			mFiles.clear();
-			mDirectories.clear();
-			App->GetFileSystem()->DiscoverFiles("Assets", mFiles, mDirectories);
+			//App->GetFileSystem()->DiscoverFiles("Assets", mFiles, mDirectories);
 		}
 
-		for (auto i = 0; i < mDirectories.size(); ++i)
+		for (auto i = 0; i < root->mChildren.size(); ++i)
 		{
-			if (ImGui::TreeNodeEx(mDirectories[i].c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+			if (ImGui::TreeNodeEx(root->mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen))
 			{
-				ImGui::TreePop();
-			}
-		}
-
-		for (auto i = 0; i < mFiles.size(); ++i)
-		{
-			if (ImGui::TreeNodeEx(mFiles[i].c_str(), ImGuiTreeNodeFlags_DefaultOpen))
-			{
-
 				ImGui::TreePop();
 			}
 		}

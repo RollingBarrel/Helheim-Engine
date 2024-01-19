@@ -4,6 +4,8 @@
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
 
+#include "ProjectPanel.h"
+
 #include "Algorithm/Random/LCG.h"
 
 
@@ -44,13 +46,20 @@ void Importer::Model::Import(const char* filePath)
         LOG("[MODEL] Error loading %s: %s", gltfPath, error.c_str());
     }
 
+    AssetDisplay* newAsset = new AssetDisplay();
+
     for (const auto& srcMesh : model.meshes)
     {
         for (const auto& primitive : srcMesh.primitives)
         {
-            ResourceMesh* mesh = new ResourceMesh;
+
+            ResourceMesh* mesh = new ResourceMesh();
             mesh->mMeshName = name.c_str();
             mesh->mUID = math::LCG().Int();
+
+            newAsset->mName = mesh->mMeshName;
+            newAsset->mUid.push_back(mesh->mUID);
+
             Importer::Mesh::Import(model, primitive, mesh);
            
             delete mesh;

@@ -15,8 +15,10 @@ struct PathNode
 struct AssetDisplay
 {
 	const char* mName;
+	std::vector<unsigned int> mUid;
 	std::string mLocalPath;
 	std::string mLibPath;
+	PathNode* mParent;
 	//TODO Resource
 };
 
@@ -29,8 +31,8 @@ public:
 	void Draw(int windowFlags) override;
 
 private:
-	std::vector<std::string> mFiles;
-	std::vector<std::string> mDirectories;
+
+	std::vector<AssetDisplay*> assets;
 
 	PathNode* root = nullptr; 
 };
