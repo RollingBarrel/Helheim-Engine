@@ -29,16 +29,16 @@ typedef struct Attribute {
 		TANGENT = 1 << 3,
 		COLOR = 1 << 4,
 	};
-	Attribute(Type iType, unsigned int iSize, unsigned int iStride, unsigned int iOffset) : type(iType), size(iSize), stride(iStride), offset(iOffset) {}
+	Attribute(Type iType, unsigned int iSize, unsigned int iOffset) : type(iType), size(iSize), offset(iOffset) {}
+	Attribute(const Attribute& other): type(other.type), size(other.size), offset(other.offset) {}
 	Type type;
 	unsigned int size;
 	unsigned int offset;
-	//It is the vertex size
-	unsigned int stride;
 }Attribute;
 
 struct ResourceMesh
 {
+	ResourceMesh(const ResourceMesh& other);
 	~ResourceMesh() { CleanUp(); }
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
@@ -52,17 +52,11 @@ struct ResourceMesh
 
 	void FromInterleavedData(float* vData, unsigned int numVertices, unsigned int* iData, unsigned int numIndices, Attribute* attributes = nullptr);
 	float* GetInterleavedData() const;
-	unsigned int GetVertexSize() const {
-		unsigned int size = 0;
-		for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
-		{
-			size += (*it)->size;
-		}
-		return size;
-	}
+	unsigned int GetVertexSize() const { return mVertexSize; }
 
-	bool HasAttributeData(Attribute::Type type);
-	float** GetAttributData(Attribute::Type type);
+	int AttributeIdx(Attribute::Type type) const;
+	void AddAttribute(const Attribute& attribute, float* attributeData);
+	const float* GetAttributData(Attribute::Type type) const;
 
 	void LoadVAO();
 	void LoadVBO();
@@ -77,6 +71,7 @@ private:
 	unsigned int mVbo;
 	unsigned int mEbo;
 	std::vector<Attribute*> mAttributes;
+	unsigned int mVertexSize = 0;
 
 	friend void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh);
 	friend void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* fileName);
