@@ -100,7 +100,7 @@ int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
 void ResourceMesh::AddAttribute(const Attribute& attribute, float* attributeData)
 {
     assert(attributeData != nullptr && "Adding null data to new attribute");
-    unsigned int idx = GetAttributeIdx(attribute.type);
+    int idx = GetAttributeIdx(attribute.type);
     if (idx >= 0)
     {
         //mVertexSize += mAttributes.back()->size;
@@ -115,8 +115,8 @@ void ResourceMesh::AddAttribute(const Attribute& attribute, float* attributeData
     else
     {
         mAttributes.push_back(new Attribute(attribute));
+        mAttributes.back()->offset = GetVertexSize();
         mAttributesData.push_back(attributeData);
-        mAttributes[idx]->offset = GetVertexSize();
         mVertexSize += mAttributes.back()->size;
     }
 }
@@ -341,7 +341,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
         const tinygltf::BufferView& indView = model.bufferViews[indAcc.bufferView];
         const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
 
-        mesh->mIndices = reinterpret_cast<unsigned int*>(const_cast<unsigned char*>(buffer));
+        mesh->mIndices = new unsigned int[mesh->mNumIndices];
 
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
         {
@@ -397,7 +397,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferTang += sizeof(float) * 4;
             }
 
-            LOG("%f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z);
+            LOG("%f %f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z, reinterpret_cast<float4*>(data)[i].w);
         }
     }
     else
@@ -411,12 +411,12 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
 
 void Importer::Mesh::Save(const ResourceMesh* mesh)
 {
-    unsigned int header[] = { mesh->mNumIndices, mesh->mNumVertices, mesh->GetVertexSize(), mesh->GetAttributes().size() };
+    unsigned int header[] = { mesh->mNumIndices, mesh->mNumVertices, mesh->GetAttributes().size() };
 
     unsigned int size = sizeof(header) + sizeof(unsigned int) * mesh->mNumIndices;
     for (std::vector<Attribute*>::const_iterator it = mesh->GetAttributes().cbegin(); it != mesh->GetAttributes().cend(); ++it)
     {
-        size += (*it)->size + sizeof(Attribute);
+        size += (*it)->size * mesh->mNumVertices + sizeof(Attribute);
     }
 
     char* fileBuffer = new char[size];
@@ -445,7 +445,7 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     }
 
     std::string path = LIBRARY_MESH_PATH;
-    path += mesh->mMeshName;
+    path += std::to_string(mesh->mUID);
     path += ".messhi";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
@@ -454,31 +454,31 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     fileBuffer = nullptr;
 }
 
-void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* fileName)
+void Importer::Mesh::Load(ResourceMesh* mesh, const char* fileName)
 {
     std::string path = LIBRARY_MESH_PATH;
     path += fileName;
     path += ".messhi";
 
+    char* fileBuffer;
     App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
 
     //Load Header
     char* cursor = fileBuffer;
-    unsigned int header[4];
+    unsigned int header[3];
     unsigned int bytes = sizeof(header);
     memcpy(header, cursor, bytes);
     cursor += bytes;
     mesh->mNumIndices = header[0];
     mesh->mNumVertices = header[1];
-    mesh->mVertexSize = header[2];
-    unsigned int numAttributes = header[3];
+    unsigned int numAttributes = header[2];
     //Load Indices
     bytes = sizeof(unsigned int) * mesh->mNumIndices;
     mesh->mIndices = new unsigned int[mesh->mNumIndices];
     memcpy(mesh->mIndices, cursor, bytes);
     cursor += bytes;
 
-    for (int i = 0; i > numAttributes; ++i)
+    for (int i = 0; i < numAttributes; ++i)
     {
         Attribute* attr = reinterpret_cast<Attribute*>(cursor);
         cursor += sizeof(Attribute);
@@ -497,7 +497,7 @@ bool ResourceMesh::LoadInterleavedAttribute(float* fillBuffer, const Attribute& 
     if (idx < 0)
         return false;
     const Attribute& myAttribute = *mAttributes[idx];
-    assert(attribute.size != myAttribute.size);
+    assert(attribute.size == myAttribute.size);
     unsigned int j = 0;
     for (int i = 0; i < mVertexSize * mNumVertices; i += vertexSize)
     {
@@ -530,7 +530,7 @@ unsigned int ResourceMesh::LoadToMemory()
     unsigned int idx = 0;
     for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
-        glVertexAttribPointer(idx, (*it)->size, GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+        glVertexAttribPointer(idx, (*it)->size/sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
         glEnableVertexAttribArray(idx);
         ++idx;
     }

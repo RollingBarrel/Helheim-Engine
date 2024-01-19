@@ -17,7 +17,7 @@ namespace Importer
 
 		void Save(const ResourceMesh* ourMesh);
 
-		void Load(char* fileBuffer, ResourceMesh* ourMesh, const char* fileName);
+		void Load(ResourceMesh* ourMesh, const char* fileName);
 	}
 }
 
@@ -60,6 +60,7 @@ struct ResourceMesh
 	const float* GetAttributeData(Attribute::Type type) const;
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; };
 	unsigned int GetVertexSize() const { return mVertexSize; }
+	unsigned int GetVao() const { return mVao; }
 
 	unsigned int LoadToMemory();
 	void UnloadFromMemory();
@@ -76,5 +77,5 @@ private:
 
 	//TODO: Feo, provar de treure
 	friend void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh);
-	friend void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* fileName);
+	friend void Importer::Mesh::Load(ResourceMesh* mesh, const char* fileName);
 };

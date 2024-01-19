@@ -2,6 +2,8 @@
 #define _MODULE_RENDER_TEST_H_
 
 #include "Module.h"
+struct ResourceMesh;
+
 class ModuleRenderTest :
     public Module
 {
@@ -25,6 +27,8 @@ private:
 	float lightDir[3] = { 0.0f, -1.0f, -1.0f };
 	float lightCol[3] = { 1.f, 1.f, 1.f };
 	float ambientCol[3] = { 0.3f, 0.4f, 0.6f };
+	ResourceMesh* rMesh = nullptr;
+	ResourceMesh* rMesh2 = nullptr;
 };
 
 #endif /* _MODULE_RENDER_TEST_H_ */

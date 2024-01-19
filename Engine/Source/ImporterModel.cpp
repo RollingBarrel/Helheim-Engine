@@ -48,7 +48,7 @@ void Importer::Model::Import(const char* filePath)
     {
         for (const auto& primitive : srcMesh.primitives)
         {
-            ResourceMesh* mesh = new ResourceMesh;
+            ResourceMesh* mesh = new ResourceMesh();
             mesh->mMeshName = name.c_str();
             mesh->mUID = math::LCG().Int();
             Importer::Mesh::Import(model, primitive, mesh);
