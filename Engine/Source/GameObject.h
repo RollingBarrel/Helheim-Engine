@@ -5,6 +5,7 @@
 #include "Math/Quat.h"
 #include "string"
 
+class MeshRendererComponent;
 class Component;
 enum class ComponentType : unsigned int;
 
@@ -49,6 +50,7 @@ public:
 	void SetScale(const float3& scale);
 
 	void CreateComponent(ComponentType type);
+	MeshRendererComponent* getMeshRenderer() const;
 
 private:
 	GameObject* RemoveChild(const int id);

@@ -8,8 +8,11 @@
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
-
+#include "Application.h"
+#include "ModuleCamera.h"
+#include "ModuleWindow.h"
 #include "glew.h"
+#include "Geometry/AABB.h"
 
 class DDRenderInterfaceCoreGL final
     : public dd::RenderInterface
@@ -613,11 +616,9 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
-    if (false)
-    {
-        DrawGrid();
-       
-    }
+    float4x4 viewproj = App->GetCamera()->GetViewProjMatrix();
+    Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+
 	return UPDATE_CONTINUE;
 }
 
@@ -645,6 +646,22 @@ void ModuleDebugDraw::DrawBoundingBox(const OBB& obb)
         points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
     };
     dd::box(orderedPoints, dd::colors::Blue);
+
+    dd::flush();
+}
+
+void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
+{
+    ddVec3 points[8];
+    aabb.GetCornerPoints(points);
+    
+    ddVec3 orderedPoints[8] =
+    {
+        points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
+    };
+    dd::box(orderedPoints, dd::colors::LightGoldenYellow);
+
+    dd::flush();
 }
 
 void ModuleDebugDraw::DrawGrid()
