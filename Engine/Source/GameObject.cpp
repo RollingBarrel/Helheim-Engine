@@ -330,18 +330,21 @@ void GameObject::RecalculateLocalTransform()
 }
 
 void GameObject::Save(Archive& archive) const {
-	archive.AddInt("id", mID);
-	archive.AddString("name", mName);
+	archive.AddInt("UID", mID);
+	archive.AddString("Name", mName);
 	archive.AddBool("isEnabled", mIsEnabled);
-	archive.AddFloat3("position", mPosition);
-	archive.AddFloat3("scale", mScale);
+	archive.AddFloat3("Translation", mPosition);
+	archive.AddFloat3("Rotation", mPosition);
+	archive.AddFloat3("Scale", mScale);
+	archive.AddFloat4x4("WorldTransformMatrix", mWorldTransformMatrix);
+	archive.AddFloat4x4("LocalTransformMatrix", mLocalTransformMatrix);
 
 	// Save components
 	Archive* componentsArchive = new Archive();
 	for (const auto& component : mComponents) {
 		component->Save(*componentsArchive);
 	}
-	archive.AddObject("components", *componentsArchive);
+	archive.AddObject("Components", *componentsArchive);
 
 	// Save children IDs
 	if (!mChildren.empty()) {
@@ -349,7 +352,7 @@ void GameObject::Save(Archive& archive) const {
 		for (const auto& child : mChildren) {
 			childrenIds.push_back(child->GetId());
 		}
-		archive.AddIntArray("children", childrenIds);
+		archive.AddIntArray("Children", childrenIds);
 	}
 }
 

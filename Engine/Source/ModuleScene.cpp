@@ -22,7 +22,6 @@ bool ModuleScene::Init()
 {
 	TestSceneGameObjects test = TestSceneGameObjects();
 	test.TestSceneWithGameObjects();
-
 	Archive* archive = new Archive();
 	SaveGame(mRoot->GetChildren(), *archive);
 	//mRoot->Save(*archive);
