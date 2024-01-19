@@ -5,6 +5,7 @@
 
 #include "Importer.h"
 #include "ImporterModel.h"
+#include "ImporterMesh.h"
 
 #include "ModuleRenderTest.h"
 #include "glew.h"
@@ -14,6 +15,10 @@
 #include "float4x4.h"
 #include "MathConstants.h"
 #include "imgui.h"
+
+#include "GameObject.h"
+#include "Component.h"
+#include "MeshRendererComponent.h"
 
 
 
@@ -330,8 +335,12 @@ bool ModuleRenderTest::Init()
 	//Switch to Resource Shader later on.
 	programId = CreateProgram("Shaders/Vertex.vs", "Shaders/Fragment.fs");
 
-	Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
+	//Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
 
+	rMesh = new ResourceMesh();
+	rMesh2 = new ResourceMesh();
+	Importer::Mesh::Load(rMesh, "519408695");
+	Importer::Mesh::Load(rMesh2, "697368160");
 	glUseProgram(programId);
 	float4x4 model = float4x4::FromTRS(float3(1.0f, 0.0f, 0.0f), float4x4::RotateX(-pi / 4.0f), float3(2.5f, 2.5f, 2.5f));
 	glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
@@ -344,36 +353,36 @@ bool ModuleRenderTest::Init()
 	glUniform1f(8, kD);
 	glUniform1f(10, brightness);
 
-	float vertex[] = {
-	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-	 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
-	};
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	//glBindBuffer(GL_UNIFORM_BUFFER, App->GetCamera()->GetCameraUniffromsId());
-
-	glGenBuffers(2, VBOEBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBOEBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	unsigned int indices[6] = { 0,1,2,3,2,1 };
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOEBO[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	GenerateTangents(GL_UNSIGNED_INT, VBOEBO, 6, 8 * sizeof(float));
-
-	glBindVertexArray(0);
+	//float vertex[] = {
+	//-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	// 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	//-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	// 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
+	//};
+	//
+	//glGenVertexArrays(1, &VAO);
+	//glBindVertexArray(VAO);
+	//
+	////glBindBuffer(GL_UNIFORM_BUFFER, App->GetCamera()->GetCameraUniffromsId());
+	//
+	//glGenBuffers(2, VBOEBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBOEBO[0]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
+	//
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	//glEnableVertexAttribArray(2);
+	//
+	//unsigned int indices[6] = { 0,1,2,3,2,1 };
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOEBO[1]);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//
+	//GenerateTangents(GL_UNSIGNED_INT, VBOEBO, 6, 8 * sizeof(float));
+	//
+	//glBindVertexArray(0);
 	textureId = LoadTexture("Assets\\Textures\\brickwall.jpg");
 	normTextureId = LoadTexture("Assets\\Textures\\brickwall_normal.jpg");
 	glActiveTexture(GL_TEXTURE0);
@@ -402,12 +411,20 @@ update_status ModuleRenderTest::Update()
 	ImGui::End();
 
 	App->GetOpenGL()->BindSceneFramebuffer();
-	glBindVertexArray(VAO);
+	glBindVertexArray(rMesh->GetVao());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureId);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, normTextureId);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, rMesh->mNumIndices, GL_UNSIGNED_INT, 0);
+
+	glBindVertexArray(rMesh2->GetVao());
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, normTextureId);
+	glDrawElements(GL_TRIANGLES, rMesh2->mNumIndices, GL_UNSIGNED_INT, 0);
+
 	glUseProgram(0);
 	glBindVertexArray(0);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
