@@ -2,7 +2,9 @@
 #include "Math/float3.h"
 #include "Math/float4.h"
 #include "tiny_gltf.h"
+
 class Texture;
+
 class ResourceMaterial
 {
 public:

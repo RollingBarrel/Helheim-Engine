@@ -24,9 +24,6 @@ void ShaderPanel::Draw(int windowFlags)
 	GameObject* focusedObject = App->GetScene()->GetSelectedGameObject();
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
-	//ImGui::PushID(focusedObject->mID);
-	//ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
-	//ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
 	if (!focusedObject->IsRoot())
@@ -94,7 +91,7 @@ void ShaderPanel::Draw(int windowFlags)
 			{
 				focusedObject->getMeshRenderer()->ambientColor[2] = ambientCz;
 			}
-
+			/*
 			static float shininess = focusedObject->getMeshRenderer()->shininess;
 
 			ImGui::Text("Shininess");
@@ -102,7 +99,7 @@ void ShaderPanel::Draw(int windowFlags)
 			{
 				focusedObject->getMeshRenderer()->shininess = shininess;
 			}
-
+			*//*
 			static float diffuseCx = focusedObject->getMeshRenderer()->diffuseColor[0];
 			static float diffuseCy = focusedObject->getMeshRenderer()->diffuseColor[1];
 			static float diffuseCz = focusedObject->getMeshRenderer()->diffuseColor[2];
@@ -120,11 +117,11 @@ void ShaderPanel::Draw(int windowFlags)
 			{
 				focusedObject->getMeshRenderer()->diffuseColor[2] = diffuseCz;
 			}
-
+			*//*
 			static float specularCx = focusedObject->getMeshRenderer()->specularColor[0];
 			static float specularCy = focusedObject->getMeshRenderer()->specularColor[1];
 			static float specularCz = focusedObject->getMeshRenderer()->specularColor[2];
-
+			
 			ImGui::Text("Specular Color");
 			if (ImGui::DragFloat("X specular", &specularCx, 0.05f, 0.0f, 1.0f, "%.2f"))
 			{
@@ -137,27 +134,18 @@ void ShaderPanel::Draw(int windowFlags)
 			if (ImGui::DragFloat("Z specular", &specularCz, 0.05f, 0.0f, 0.0f, "%.2f"))
 			{
 				focusedObject->getMeshRenderer()->specularColor[2] = specularCz;
-			}
-
-			static bool hasDiffuse = focusedObject->getMeshRenderer()->hasDiffuseMap;
-			static bool hasSpecular = focusedObject->getMeshRenderer()->hasSpecularMap;
-			static bool hasShiny = focusedObject->getMeshRenderer()->hasShininessMap;
-
-			ImGui::Checkbox("Diffuse map", &hasDiffuse);
-			ImGui::Checkbox("Specular map", &hasSpecular);
-			ImGui::Checkbox("Shininess map", &hasShiny);
-
-			focusedObject->getMeshRenderer()->hasDiffuseMap = (int)hasDiffuse;
-			focusedObject->getMeshRenderer()->hasSpecularMap = (int)hasSpecular;
-			focusedObject->getMeshRenderer()->hasShininessMap = (int)hasShiny;
+			}*/
 		}
 
 		ImGui::Text("Camera");
 
 		float3 cameraPos = App->GetCamera()->GetCameraPos();
-		ImGui::InputFloat("X ", &cameraPos.x);
-		ImGui::InputFloat("Y ", &cameraPos.y);
-		ImGui::InputFloat("Z ", &cameraPos.z);
+		ImGui::Text("X: "); ImGui::SameLine();
+		ImGui::Text( std::to_string(cameraPos.x).c_str());
+		ImGui::Text("Y: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(cameraPos.y).c_str());
+		ImGui::Text("Z: "); ImGui::SameLine();
+		ImGui::Text(std::to_string(cameraPos.z).c_str());
 	}
 	ImGui::End();
 }

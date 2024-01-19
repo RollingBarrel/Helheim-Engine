@@ -176,9 +176,11 @@
         }
     ],
     "images": [
-        {
-            "uri": "DuckCM.png"
-        }
+      {
+        "mimeType": "image/png",
+        "name": "DuckDiffuse",
+        "uri": "DuckCM.png"
+      }
     ],
     "samplers": [
         {
