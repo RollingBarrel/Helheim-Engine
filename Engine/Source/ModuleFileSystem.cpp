@@ -195,7 +195,17 @@ bool ModuleFileSystem::AddToSearchPath(const char* path)
         return true;
 }
 
-void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories)
+const char* ModuleFileSystem::GetBaseDirectory() const
+{
+    return PHYSFS_getBaseDir();
+}
+
+const char* ModuleFileSystem::GetWriteDirectory() const
+{
+    return PHYSFS_getWriteDir();
+}
+
+void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories) const
 {
     if (Exists(directory))
     {
@@ -227,6 +237,42 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::str
 
         PHYSFS_freeList(fileList);
     }
+}
+
+const char* ModuleFileSystem::NormalizePath(const char* path) const
+{ 
+    std::string normalizedPath = path;
+
+    return normalizedPath.replace(normalizedPath.begin(), normalizedPath.end(), '\\', '/').c_str();
+}
+
+const char* ModuleFileSystem::GetFileFromPath(const char* path) const
+{
+    return nullptr;
+}
+
+const char* ModuleFileSystem::GetExtensionFromPath(const char* path) const
+{
+    return nullptr;
+}
+
+const char* ModuleFileSystem::GetFileExtensionFromPath(const char* path) const
+{
+    return nullptr;
+}
+
+void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::string* extension) const
+{
+    std::string tempPath = path;
+
+    unsigned int lastSlashPos = tempPath.find_last_of('/');
+    unsigned int dotPos = tempPath.find_last_of('.');
+
+    if(file != nullptr)
+        *file = (lastSlashPos < tempPath.length()) ? tempPath.substr(lastSlashPos + 1, dotPos - lastSlashPos - 1) : tempPath.substr(0, dotPos);
+
+    if(extension != nullptr)
+        *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
 }
 
 
