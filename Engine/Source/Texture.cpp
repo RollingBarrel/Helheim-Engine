@@ -16,7 +16,7 @@ void Texture::LoadTexture(const char* filePath) {
     HRESULT result = E_FAIL;
     DirectX::ScratchImage image;
 
-    const char* prefix = "models/Clock/";
+    const char* prefix = "models/testing/bakerHouse/";
     size_t prefixLength = strlen(prefix);
     size_t filePathLength = strlen(filePath);
 

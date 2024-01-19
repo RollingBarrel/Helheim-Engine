@@ -87,4 +87,18 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
         }
 
     }
+    else {
+        // Generic case for NON-KHR_materials_pbrSpecularGlossiness (e.g, first assignment model)
+        if (material.pbrMetallicRoughness.baseColorTexture.index >= 0)
+        {
+            const tinygltf::Texture& texture = model.textures[material.pbrMetallicRoughness.baseColorTexture.index];
+            const tinygltf::Image& image = model.images[texture.source];
+            const char* imageUri = image.uri.c_str();
+
+            Texture* diffuseTexture = new Texture();
+            diffuseTexture->LoadTexture(imageUri);
+            mDiffuseTexture = diffuseTexture;
+        }
+
+    }
 }
