@@ -195,6 +195,10 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 		{
 			glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
 		}
+		else 
+		{
+			glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 0);
+		}
 
 		glUniform3f(glGetUniformLocation(program, "lightDir"), lightDir[0], lightDir[1], lightDir[2]);
 		glUniform3f(glGetUniformLocation(program, "lightColor"), lightColor[0], lightColor[1], lightColor[2]);

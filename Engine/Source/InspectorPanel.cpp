@@ -571,6 +571,5 @@ void InspectorPanel::MaterialVariables(ResourceMaterial* material, int i)
 	material->SetEnableDiffuseTexture((int)hasDiffuse);
 	material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
 	material->SetEnableShinessMap((int)hasShininess);
-	//Shininess comes from the alpha channel of the specular texture
 
 }
