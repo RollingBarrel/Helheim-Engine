@@ -18,33 +18,43 @@
 #include "mikktspace.h"
 #include "weldmesh.h"
 
+typedef struct {
+    int numVertices;
+    int posOffset;
+    int texCoordOffset;
+    int normOffset;
+    int vertexSize;
+    char* vertices;
+    char* tVertices;
+} MikkTSpaceStruct;
+
 static int GetNumFaces(const SMikkTSpaceContext* pContext)
 {
-    ResourceMesh* ptr = (ResourceMesh*)pContext->m_pUserData;
-    return ptr->mNumVertices / 3;
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    return ptr->numVertices / 3;
 }
 static int GetNumVerticesOfFace(const SMikkTSpaceContext* pContext, const int iFace) {
     return 3;
 }
 static void GetPosition(const SMikkTSpaceContext* pContext, float fvPosOut[], const int iFace, const int iVert)
 {
-    ResourceMesh* ptr = (ResourceMesh*)pContext->m_pUserData;
-    const float* posOut = &ptr->GetAttributData(Attribute::POS)[(iFace * 3 + iVert)*3];
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* posOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->posOffset];
     fvPosOut[0] = posOut[0];
     fvPosOut[1] = posOut[1];
     fvPosOut[2] = posOut[2];
 }
 static void GetTexCoord(const SMikkTSpaceContext* pContext, float fvTexcOut[], const int iFace, const int iVert)
 {
-    ResourceMesh* ptr = (ResourceMesh*)pContext->m_pUserData;
-    const float* texCOut = &ptr->GetAttributData(Attribute::UV)[(iFace * 3 + iVert) * 2];
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* texCOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->texCoordOffset];
     fvTexcOut[0] = texCOut[0];
     fvTexcOut[1] = texCOut[1];
 }
 static void GetNormal(const SMikkTSpaceContext* pContext, float fvNormOut[], const int iFace, const int iVert)
 {
-    ResourceMesh* ptr = (ResourceMesh*)pContext->m_pUserData;
-    const float* normalOut = &ptr->GetAttributData(Attribute::NORMAL)[(iFace * 3 + iVert) * 3];
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* normalOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->normOffset];
     fvNormOut[0] = normalOut[0];
     fvNormOut[1] = normalOut[1];
     fvNormOut[2] = normalOut[2];
@@ -52,10 +62,13 @@ static void GetNormal(const SMikkTSpaceContext* pContext, float fvNormOut[], con
 
 static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTangent[], const float fSign, const int iFace, const int iVert)
 {
-    ResourceMesh* ptr = (ResourceMesh*)pContext->m_pUserData;
-    float* currTangPtr = const_cast<float*>(&ptr->GetAttributData(Attribute::TANGENT)[(iFace * 3 + iVert) * 4]);
-    memcpy(currTangPtr, fvTangent, 3 * sizeof(float));
-    memcpy(&currTangPtr[3*sizeof(float)], &fSign, sizeof(float));
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    //Escriure tota la info del vertex + les tangents
+    const unsigned int vertexIdx = (iFace * 3 + iVert) * ptr->vertexSize;
+    const unsigned int vertexTIdx = (iFace * 3 + iVert) * (ptr->vertexSize + sizeof(float) * 4);
+    memcpy(&ptr->tVertices[vertexTIdx], &ptr->vertices[vertexIdx], ptr->vertexSize);
+    memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize], fvTangent, 3 * sizeof(float));
+    memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
 }
 
 const float* ResourceMesh::GetAttributData(Attribute::Type type) const
@@ -70,7 +83,7 @@ const float* ResourceMesh::GetAttributData(Attribute::Type type) const
     return nullptr;
 }
 
-int ResourceMesh::AttributeIdx(Attribute::Type type) const
+int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
 {
     unsigned int ret = 0;
     for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
@@ -87,56 +100,68 @@ int ResourceMesh::AttributeIdx(Attribute::Type type) const
 void ResourceMesh::AddAttribute(const Attribute& attribute, float* attributeData)
 {
     assert(attributeData != nullptr && "Adding null data to new attribute");
-    unsigned int idx = AttributeIdx(attribute.type);
+    unsigned int idx = GetAttributeIdx(attribute.type);
     if (idx >= 0)
     {
         //mVertexSize += mAttributes.back()->size;
         assert(attribute.size != mAttributes[idx]->size);
+        unsigned int offset = mAttributes[idx]->offset;
         delete mAttributes[idx];
         mAttributes[idx] = new Attribute(attribute);
-        delete mAttributesData[idx];
+        mAttributes[idx]->offset = offset;
+        delete[] mAttributesData[idx];
         mAttributesData[idx] = attributeData;
     }
     else
     {
         mAttributes.push_back(new Attribute(attribute));
-        mAttributesData.push_back(new float[attribute.size/sizeof(float)]);
+        mAttributesData.push_back(attributeData);
+        mAttributes[idx]->offset = GetVertexSize();
         mVertexSize += mAttributes.back()->size;
     }
 }
 
-ResourceMesh::ResourceMesh(const ResourceMesh& other): mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mMeshName(new char[strlen(other.mMeshName)+1]), mUID(other.mUID), mVao(other.mVao), mVbo(other.mVbo), mEbo(other.mEbo)
+//ResourceMesh::ResourceMesh(const ResourceMesh& other): mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mMeshName(new char[strlen(other.mMeshName)+1]), mUID(other.mUID), mVao(other.mVao), mVbo(other.mVbo), mEbo(other.mEbo)
+//{
+//    strcpy(const_cast<char*>(mMeshName), other.mMeshName);
+//    unsigned int idx = 0;
+//    for (std::vector<Attribute*>::const_iterator it = other.mAttributes.cbegin(); it != other.mAttributes.cend(); ++it)
+//    {
+//        const Attribute& attribute = *(*it);
+//        mAttributes.push_back(new Attribute(attribute));
+//        mAttributesData.push_back(new float[mNumVertices * attribute.size/sizeof(float)]);
+//    }
+//}
+
+float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize)
 {
-    strcpy(const_cast<char*>(mMeshName), other.mMeshName);
-    unsigned int idx = 0;
-    for (std::vector<Attribute*>::const_iterator it = other.mAttributes.cbegin(); it != other.mAttributes.cend(); ++it)
+    float* ret = new float[(bufferSize / vertexSize) / sizeof(float)];
+    int j = 0;
+    for (int i = 0; i < bufferSize; i += vertexSize)
     {
-        const Attribute& attribute = *(*it);
-        mAttributes.push_back(new Attribute(attribute));
-        mAttributesData.push_back(new float[mNumVertices * attribute.size/sizeof(float)]);
+        memcpy(&ret[j], &interleavedBuffer[i + attr.offset], attr.size);
+        j += attr.size / sizeof(float);
     }
+    return ret;
 }
 
-static void GenerateTangents(ResourceMesh* rMesh)
+static void GenerateTangents(ResourceMesh*& rMesh)
 {
-    assert(rMesh->AttributeIdx(Attribute::POS) >= 0 && "No positions to generate tangents");
-    assert(rMesh->AttributeIdx(Attribute::UV) >= 0 && "No texture coords to generate tangents");
-    assert(rMesh->AttributeIdx(Attribute::NORMAL) >= 0 && "No normals to generate tangents");
+    //assert(rMesh->AttributeIdx(Attribute::POS) >= 0 && "No positions to generate tangents");
+    //assert(rMesh->AttributeIdx(Attribute::UV) >= 0 && "No texture coords to generate tangents");
+    //assert(rMesh->AttributeIdx(Attribute::NORMAL) >= 0 && "No normals to generate tangents");
+    if (rMesh->GetAttributeIdx(Attribute::POS) < 0 || rMesh->GetAttributeIdx(Attribute::UV) < 0 || rMesh->GetAttributeIdx(Attribute::NORMAL) < 0)
+        return;
 
-    ResourceMesh* unweldedRMesh = new ResourceMesh(*rMesh);
+    unsigned int* indices = reinterpret_cast<unsigned int*>(rMesh->mIndices);
+    const char* vertices = reinterpret_cast<const char*>(rMesh->GetInterleavedData());
+    char* unweldedVertices = new char[rMesh->mNumIndices * rMesh->GetVertexSize()];
 
-    Attribute tangAttribute = Attribute(Attribute::TANGENT, 4 * sizeof(float), rMesh->GetVertexSize());
-    unweldedRMesh->AddAttribute(tangAttribute, new float[unweldedRMesh->mNumVertices * 4]);
-
-    //VAIG PER AQIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    for (unsigned int i = 0; i < rMesh->mNumIndices; ++i)
+    for (int i = 0; i < rMesh->mNumIndices; ++i)
     {
-        const unsigned int idx = rMesh->mIndices[i];
-        memcpy(&unweldedPosBuffer[i*3], &unweldedPosBuffer[idx*3], 3 * sizeof(float));
-        memcpy(&unweldedUvBuffer[i*2], &unweldedUvBuffer[idx*2], 2 * sizeof(float));
-        memcpy(&unweldedNormalBuffer[i*3], &unweldedNormalBuffer[idx*3], 3 * sizeof(float));
+        memcpy(&unweldedVertices[i * rMesh->GetVertexSize()], &vertices[indices[i] * rMesh->GetVertexSize()], rMesh->GetVertexSize());
     }
-
+    
     SMikkTSpaceInterface interfaceInput = {};
     interfaceInput.m_getNumFaces = GetNumFaces;
     interfaceInput.m_getNumVerticesOfFace = GetNumVerticesOfFace;
@@ -144,22 +169,44 @@ static void GenerateTangents(ResourceMesh* rMesh)
     interfaceInput.m_getPosition = GetPosition;
     interfaceInput.m_getTexCoord = GetTexCoord;
     interfaceInput.m_setTSpaceBasic = SetTSpaceBasic;
+    MikkTSpaceStruct mikkInput = {};
+    mikkInput.numVertices = rMesh->mNumIndices;
+    mikkInput.posOffset = 0;
+    mikkInput.texCoordOffset = 3 * sizeof(float);
+    mikkInput.normOffset = 5 * sizeof(float);
+    mikkInput.vertexSize = 8 * sizeof(float);
+    mikkInput.vertices = unweldedVertices;
+    //Les mikktangents son vec4
+    char* unweldedTVertices = new char[rMesh->mNumIndices * (rMesh->GetVertexSize() + 4 * sizeof(float))];
+    mikkInput.tVertices = unweldedTVertices;
     SMikkTSpaceContext tangContext = {};
     tangContext.m_pInterface = &interfaceInput;
-    tangContext.m_pUserData = unweldedRMesh;
+    tangContext.m_pUserData = &mikkInput;
     if (!genTangSpaceDefault(&tangContext))
-    {
         LOG("ERROR: Could not generate the tangent space");
-    }
-    float* unweldedInterleavedData = unweldedRMesh->GetInterleavedData();
-    int* piRemapTable = (int*)malloc(unweldedRMesh->mNumVertices * sizeof(int));
-    float* pfVertexDataOut = (float*)malloc(unweldedRMesh->mNumVertices * (rMesh->GetVertexSize() + 4 * sizeof(float)));
-    unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut,
-        unweldedInterleavedData, unweldedRMesh->mNumVertices, rMesh->GetVertexSize() + 4 * sizeof(float));
+
+    int* piRemapTable = new int[mikkInput.numVertices];
+    float* pfVertexDataOut = new float[mikkInput.numVertices * 12];
+    unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut, reinterpret_cast<float*>(mikkInput.tVertices), mikkInput.numVertices, 12);
+    delete[] unweldedTVertices;
+    delete[] unweldedVertices;
     
-    //TODO: pass the resourcemesh from interleaved to separated again
-    //free(unweldedTVertices);
-    //free(unweldedVertices);
+    ResourceMesh* retMesh = new ResourceMesh();
+    Attribute newAttribute = Attribute(Attribute::POS, sizeof(float) * 3, 0);
+    retMesh->AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12* sizeof(float), 12*sizeof(float)));
+    newAttribute = Attribute(Attribute::UV, sizeof(float) * 2, sizeof(float) * 3);
+    retMesh->AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    newAttribute = Attribute(Attribute::NORMAL, sizeof(float) * 3, sizeof(float) * 5);
+    retMesh->AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    newAttribute = Attribute(Attribute::TANGENT, sizeof(float) * 4, sizeof(float) * 8);
+    retMesh->AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12 * sizeof(float), 12 * sizeof(float)));
+
+    delete rMesh;
+    rMesh = retMesh;
+
+    retMesh->mNumIndices = mikkInput.numVertices;
+    retMesh->mIndices = reinterpret_cast<unsigned int*>(piRemapTable);
+    delete[] pfVertexDataOut;
 }
 
 void ResourceMesh::CleanUp()
@@ -173,11 +220,11 @@ void ResourceMesh::CleanUp()
     }
     for (std::vector<float*>::iterator it = mAttributesData.begin(); it != mAttributesData.end(); ++it)
     {
-        delete[] * it;
+        delete[] *it;
     }
     for (std::vector<Attribute*>::iterator it = mAttributes.begin(); it != mAttributes.end(); ++it)
     {
-        delete[] * it;
+        delete *it;
     }
 
     //TODO: delete EBO/VBO...
@@ -372,7 +419,6 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
     }
     else
     {
-        mesh->mVertexSize = attrOffset;
         //Generate Tangents
         GenerateTangents(mesh);
     }
@@ -487,51 +533,30 @@ void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* file
     //Create GameObject and set mesh to it;
 }
 
-void ResourceMesh::LoadInterleavedAttribute(float* fillBuffer, const float* attribData, unsigned int& attribFloatsOffset, unsigned int attribElements, unsigned int elementFloats) const
+bool ResourceMesh::LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const
 {
-    if (attribData != nullptr)
+    unsigned int idx = GetAttributeIdx(attribute.type);
+    if (idx < 0)
+        return false;
+    const Attribute& myAttribute = *mAttributes[idx];
+    assert(attribute.size != myAttribute.size);
+    unsigned int j = 0;
+    for (int i = 0; i < mVertexSize * mNumVertices; i += vertexSize)
     {
-        unsigned int attributeFloats = sizeof(float) * elementFloats * attribElements;
-        for (int vertexIdx = 0; vertexIdx < mNumVertices; ++vertexIdx)
-        {
-            memcpy(&fillBuffer[vertexIdx * attributeFloats + attribFloatsOffset], &mVerticesPosition[vertexIdx * attributeFloats], attributeFloats * sizeof(float));
-        }
-        attribFloatsOffset += attributeFloats;
+        memcpy(&fillBuffer[(i + attribute.offset)/sizeof(float)], &((mAttributesData[idx])[j]), myAttribute.size);
+        j += myAttribute.size / sizeof(float);
     }
+    return true;
 }
 
 float* ResourceMesh::GetInterleavedData() const
 {
-    float* ret = new float[mNumVertices * GetVertexSize()];
-    unsigned int attributeFloats = 0;
-    unsigned int attribFloatsOffset = 0;
-    LoadInterleavedAttribute(ret, mVerticesPosition, attribFloatsOffset, 3, 3);
-    LoadInterleavedAttribute(ret, mVerticesTextureCoordinate, attribFloatsOffset, 2, 2);
-    LoadInterleavedAttribute(ret, mVerticesNormal, attribFloatsOffset, 3, 3);
-    LoadInterleavedAttribute(ret, mVerticesTangent, attribFloatsOffset, 4, 4);
-    LoadInterleavedAttribute(ret, mVerticesColor, attribFloatsOffset, 3, 3);
+    float* ret = new float[mNumVertices * GetVertexSize() / sizeof(float)];
+    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    {
+        LoadInterleavedAttribute(ret, *(*it), GetVertexSize());
+    }
     return ret;
-}
-
-void ResourceMesh::FromInterleavedData(float* vData, unsigned int numVertices, unsigned int* iData, unsigned int numIndices, Attribute* attributes)
-{
-    if (mIndices != nullptr)
-    {
-        delete[] mIndices;
-    }
-    mIndices = iData;
-    mNumIndices = numIndices;
-    mNumVertices = numVertices;
-    unsigned int attributeOffset = 0;
-    if (attrBitmask & Attribute::POS)
-    {
-        for (unsigned int vertexIdx = 0; vertexIdx < numVertices; ++vertexIdx)
-        {
-            //Em falta l'stride, la size i l'offset
-            memcpy(&mVerticesPosition[vertexIdx], &vData[vertexIdx * attrStride + attributeOffset], sizeof(attribute));
-        }
-    }
-    attributteOffset += attributteSize;
 }
 
 void ResourceMesh::LoadVAO()

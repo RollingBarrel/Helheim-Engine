@@ -36,9 +36,10 @@ typedef struct Attribute {
 	unsigned int offset;
 }Attribute;
 
+float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize);
 struct ResourceMesh
 {
-	ResourceMesh(const ResourceMesh& other);
+	//ResourceMesh(const ResourceMesh& other);
 	~ResourceMesh() { CleanUp(); }
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
@@ -50,13 +51,12 @@ struct ResourceMesh
 	const char* mMeshName = nullptr;
 	unsigned int mUID = 0;
 
-	void FromInterleavedData(float* vData, unsigned int numVertices, unsigned int* iData, unsigned int numIndices, Attribute* attributes = nullptr);
 	float* GetInterleavedData() const;
-	unsigned int GetVertexSize() const { return mVertexSize; }
-
-	int AttributeIdx(Attribute::Type type) const;
+	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
+	int GetAttributeIdx(Attribute::Type type) const;
 	void AddAttribute(const Attribute& attribute, float* attributeData);
 	const float* GetAttributData(Attribute::Type type) const;
+	unsigned int GetVertexSize() const { return mVertexSize; }
 
 	void LoadVAO();
 	void LoadVBO();
@@ -65,7 +65,6 @@ struct ResourceMesh
 	void CleanUp();
 
 private:
-	void LoadInterleavedAttribute(float* fillBuffer, const float* attribData, unsigned int& attribFloatsOffset, unsigned int attribElements, unsigned int elementFloats) const;
 
 	unsigned int mVao;
 	unsigned int mVbo;
