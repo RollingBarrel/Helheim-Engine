@@ -37,7 +37,17 @@ public:
 
 	bool AddToSearchPath(const char* path);
 
-	void DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories);
+	const char* GetBaseDirectory() const;
+	const char* GetWriteDirectory() const;
+
+	void DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories) const;
+
+	const char* NormalizePath(const char* path) const;
+
+	const char* GetFileFromPath(const char* path) const;
+	const char* GetExtensionFromPath(const char* path) const;
+	const char* GetFileExtensionFromPath(const char* path) const;
+	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
 
 private:
 
