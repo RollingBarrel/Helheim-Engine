@@ -8,7 +8,9 @@ ResourceMaterial::ResourceMaterial()
     mSpecularFactor(0.0f, 0.0f, 0.0f),
     mGlossinessFactor(1.0f),
     mDiffuseTexture(nullptr),
-    mSpecularGlossinessTexture(nullptr)
+    mSpecularGlossinessTexture(nullptr),
+    mEnableDiffuseTexture(false),
+    mEnableSpecularGlossinessTexture(false)
 {
 
 }
@@ -63,6 +65,8 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     Texture* diffuseTexture = new Texture();
                     diffuseTexture->LoadTexture(imageUri);
                     mDiffuseTexture = diffuseTexture;
+
+                    mEnableDiffuseTexture = true;
                 }
             }
         }
@@ -82,6 +86,8 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     Texture* specularTexture = new Texture();
                     specularTexture->LoadTexture(imageUri);
                     mSpecularGlossinessTexture = specularTexture;
+
+                    mEnableSpecularGlossinessTexture = false;
                 }
             }
         }

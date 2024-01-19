@@ -23,6 +23,8 @@ public:
 	int GetNumIndices() { return m_numIndices; }
 	void SetMaterial(ResourceMaterial* material) { mMaterial = material; }
 
+	ResourceMaterial* GetMaterial() { return mMaterial; }
+
 
 private:
 	unsigned m_vbo;

@@ -25,7 +25,8 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1 + 1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 
 	//Load("models/testing/Cube/Cube.gltf");
-	Load("models/Clock/Clock.gltf");
+	//Load("models/Clock/Clock.gltf");
+	Load("models/ZomBunny/Zombunny.gltf");
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
