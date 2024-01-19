@@ -562,7 +562,7 @@ void InspectorPanel::MaterialVariables(ResourceMaterial* material, int i)
 
 	bool hasDiffuse = material->GetEnableDiffuseTexture();
 	bool hasSpecular = material->GetEnableSpecularGlossinessTexture();
-	static bool hasShininess = true;
+	bool hasShininess = material->GetEnableShinessMap();
 
 	ImGui::Checkbox("Enable Diffuse map", &hasDiffuse);
 	ImGui::Checkbox("Enable Specular map", &hasSpecular);
@@ -570,6 +570,7 @@ void InspectorPanel::MaterialVariables(ResourceMaterial* material, int i)
 
 	material->SetEnableDiffuseTexture((int)hasDiffuse);
 	material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
+	material->SetEnableShinessMap((int)hasShininess);
 	//Shininess comes from the alpha channel of the specular texture
 
 }

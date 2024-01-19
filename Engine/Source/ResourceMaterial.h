@@ -20,6 +20,7 @@ public:
 
     bool GetEnableDiffuseTexture()const { return mEnableDiffuseTexture; };
     bool GetEnableSpecularGlossinessTexture()const { return mEnableSpecularGlossinessTexture; };
+    bool GetEnableShinessMap()const { return mEnableShinessMap; };
 
     void SetDiffuseFactor(const float4& diffuseFactor) { mDiffuseFactor = diffuseFactor; }
     void SetSpecularFactor(const float3& specularFactor) { mSpecularFactor = specularFactor; }
@@ -27,6 +28,7 @@ public:
 
     void SetEnableDiffuseTexture(bool enableDiffuseTexture) { mEnableDiffuseTexture = enableDiffuseTexture; }
     void SetEnableSpecularGlossinessTexture(bool enableSpecularGlossinessTexture) { mEnableSpecularGlossinessTexture = enableSpecularGlossinessTexture; }
+    void SetEnableShinessMap(bool enableShinessMap) { mEnableShinessMap = enableShinessMap; }
 
 private:
 
@@ -39,4 +41,5 @@ private:
 
     bool mEnableDiffuseTexture;
     bool mEnableSpecularGlossinessTexture;
+    bool mEnableShinessMap;
 };

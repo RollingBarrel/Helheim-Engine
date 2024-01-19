@@ -16,7 +16,7 @@ void Texture::LoadTexture(const char* filePath) {
     HRESULT result = E_FAIL;
     DirectX::ScratchImage image;
 
-    const char* prefix = "models/testing/bakerHouse/";
+    const char* prefix = "models/testing/Robot/";
     size_t prefixLength = strlen(prefix);
     size_t filePathLength = strlen(filePath);
 
@@ -100,4 +100,9 @@ void Texture::LoadTexture(const char* filePath) {
     mTextureID = textureId;
     mImageWidth = imWidth;
     mImageHeight = imHeigh;
+
+    if (DirectX::HasAlpha(image.GetMetadata().format)) 
+    {
+        mHasAlpha = true;
+    }
 }

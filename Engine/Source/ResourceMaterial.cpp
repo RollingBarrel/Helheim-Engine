@@ -10,7 +10,8 @@ ResourceMaterial::ResourceMaterial()
     mDiffuseTexture(nullptr),
     mSpecularGlossinessTexture(nullptr),
     mEnableDiffuseTexture(false),
-    mEnableSpecularGlossinessTexture(false)
+    mEnableSpecularGlossinessTexture(false),
+    mEnableShinessMap(false)
 {
 
 }
@@ -87,7 +88,11 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     specularTexture->LoadTexture(imageUri);
                     mSpecularGlossinessTexture = specularTexture;
 
-                    mEnableSpecularGlossinessTexture = false;
+                    mEnableSpecularGlossinessTexture = true;
+
+                    if (specularTexture->hasAlpha()) {
+                        mEnableShinessMap = true;
+                    }
                 }
             }
         }
@@ -104,6 +109,8 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
             Texture* diffuseTexture = new Texture();
             diffuseTexture->LoadTexture(imageUri);
             mDiffuseTexture = diffuseTexture;
+
+            mEnableDiffuseTexture = true;
         }
 
     }
