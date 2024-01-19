@@ -35,17 +35,16 @@ public:
 
 		GameObject* scene = App->GetScene()->GetRoot();
 
-		GameObject gameObject = GameObject("Test Game Object 1", scene);
+		GameObject* gameObject = new GameObject("Test Game Object 1", scene);
+		gameObject->CreateComponent(ComponentType::TEST);
 
-		Component* newComponent = new TestComponent(&gameObject);
+		GameObject* gameObject2 = new GameObject("Test Game Object 2", scene);
+		gameObject2->CreateComponent(ComponentType::TEST);
 
-		GameObject gameObject2 = GameObject("Test Game Object 2", scene);
-		Component* newComponent2 = new TestComponent(&gameObject2);
-		Component* newComponent3 = new TestComponent(&gameObject2);
+		gameObject->AddChild(gameObject2);
+		scene->AddChild(gameObject);
 
-		scene->AddChild(&gameObject);
-		scene->AddChild(&gameObject2);
-
+		return scene;
 	}
 
 	const char* TestLoadSceneWithGameObject() {

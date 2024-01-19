@@ -50,12 +50,12 @@ void Archive::AddBool(const std::string& key, bool value)
     mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
 }
 
-void Archive::AddArray(const std::string& key, const std::vector<Archive>& array) {
+void Archive::AddIntArray(const std::string& key, const std::vector<unsigned int>& array) {
     rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);
     for (const auto& item : array) {
-        rapidjson::Value jsonItem(rapidjson::kObjectType);
-        jsonItem.CopyFrom(*item.mDocument, mDocument->GetAllocator());
+        rapidjson::Value jsonItem(rapidjson::kNumberType);
+        jsonItem.SetInt(item);
         jsonArray.PushBack(jsonItem, mDocument->GetAllocator());
     }
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
@@ -110,6 +110,17 @@ void Archive::AddObject(const std::string& key, const Archive& value) {
     jsonValue.CopyFrom(*value.mDocument, mDocument->GetAllocator());
     mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
 }
+
+/*void Archive::AddObjectWithId(const unsigned int objectId, const Archive& objectArchive) {
+    // Convert the object ID to string
+    std::string key = std::to_string(objectId);
+
+    // Add the object to the archive
+    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonObject(rapidjson::kObjectType);
+    jsonObject.CopyFrom(*objectArchive.mDocument, mDocument->GetAllocator());
+    mDocument->AddMember(jsonKey, jsonObject, mDocument->GetAllocator());
+}*/
 
 int Archive::GetInt(const std::string& key) const
 {

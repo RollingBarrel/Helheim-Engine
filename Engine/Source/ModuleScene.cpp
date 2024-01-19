@@ -21,10 +21,11 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	TestSceneGameObjects test = TestSceneGameObjects();
-	test.TestSceneWithGameObject();
+	test.TestSceneWithGameObjects();
 
 	Archive* archive = new Archive();
-	mRoot->Save(*archive);
+	SaveGame(mRoot->GetChildren(), *archive);
+	//mRoot->Save(*archive);
 
 	std::string out = archive->Serialize();
 
@@ -46,6 +47,34 @@ bool ModuleScene::Init()
 	
 
 	return true;
+}
+
+void ModuleScene::SaveGameObjectRecursive(const GameObject& gameObject, Archive& gameObjectsArchive) {
+	// Save the current GameObject to its archive
+	Archive* gameObjectArchive = new Archive();
+	gameObject.Save(*gameObjectArchive);
+	gameObjectsArchive.AddObject(*gameObject.GetName(), *gameObjectArchive);
+
+	// Save children gameobject
+	const std::vector<GameObject*>& children = gameObject.GetChildren();
+	if (!children.empty()) {
+		for (GameObject child : children) {
+			SaveGameObjectRecursive(child, gameObjectsArchive);
+		}
+	}
+}
+
+void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) {
+	// Create an archive for game objects
+	Archive* gameObjectsArchive = new Archive();
+
+	// Save each GameObject to the gameObjectsArchive
+	for (GameObject* gameObject : gameObjects) {
+		SaveGameObjectRecursive(gameObject, *gameObjectsArchive);
+	}
+
+	// Add the gameObjectsArchive to the root archive under the key "gameobjects"
+	rootArchive.AddObject("gameobjects", *gameObjectsArchive);
 }
 
 update_status ModuleScene::PreUpdate()
