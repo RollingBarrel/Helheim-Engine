@@ -123,10 +123,7 @@ void ModuleEditor::ProcessInput()
 		{
 			App->GetScene()->GetQuadtreeRoot()->UpdateTree();
 		}
-		else if (App->GetInput()->GetKey(SDL_SCANCODE_R))
-		{
-			App->GetScene()->GetQuadtreeRoot()->CleanUp();
-		}
+		
 	}
 }
 
