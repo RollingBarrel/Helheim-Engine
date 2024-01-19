@@ -7,10 +7,14 @@
 #include <fstream>
 #include <sstream>
 
-
 ModuleProgram::ModuleProgram()
 {
 
+}
+ModuleProgram::ModuleProgram(const char* vertexShader, const char* fragmentShader)
+{
+	mVertexShader = vertexShader;
+	mFragmentShader = fragmentShader;
 }
 ModuleProgram::~ModuleProgram()
 {
@@ -45,7 +49,7 @@ bool ModuleProgram::Init()
 	}
 
 	// Add to mPrograms any shader you need
-	mPrograms["default"] = CreateShaderProgramFromPaths("Shader_VS.glsl", "Shader_PS.glsl");
+	mPrograms["default"] = CreateShaderProgramFromPaths(mVertexShader, mFragmentShader);
 
 	return true;
 }
