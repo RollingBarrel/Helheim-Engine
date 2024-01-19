@@ -22,31 +22,21 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-    void SetDrawGrid(bool drawGrid);
-    bool GetDrawGrid() const;
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
     void DrawBoundingBox(const OBB& obb);
     void DrawQuadtree(const AABB& aabb);
-
+    void DrawAxis();
+    void DrawFrustum(const Frustum& frustum);
+    bool* GetShouldRenderGrid() const { return mDrawGrid; }
+    bool* GetShouldRenderAxis() const { return mDrawAxis; }
 
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
-    bool mdrawGrid; 
-
+    bool* mDrawGrid = new bool(true);
+    bool* mDrawAxis = new bool(true);
 
     void DrawGrid();
-    void DrawFrustum(const Frustum& frustum); 
 
 };
-
-inline void ModuleDebugDraw::SetDrawGrid(bool drawGrid)
-{
-    mdrawGrid = drawGrid;
-}
-
-inline bool ModuleDebugDraw::GetDrawGrid() const
-{
-    return mdrawGrid ;
-}
 #endif /* _MODULE_DEBUGDRAW_H_ */
