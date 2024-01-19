@@ -71,7 +71,7 @@ static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTan
     memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
 }
 
-const float* ResourceMesh::GetAttributData(Attribute::Type type) const
+const float* ResourceMesh::GetAttributeData(Attribute::Type type) const
 {
     unsigned int idx = 0;
     for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
@@ -120,18 +120,6 @@ void ResourceMesh::AddAttribute(const Attribute& attribute, float* attributeData
         mVertexSize += mAttributes.back()->size;
     }
 }
-
-//ResourceMesh::ResourceMesh(const ResourceMesh& other): mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mMeshName(new char[strlen(other.mMeshName)+1]), mUID(other.mUID), mVao(other.mVao), mVbo(other.mVbo), mEbo(other.mEbo)
-//{
-//    strcpy(const_cast<char*>(mMeshName), other.mMeshName);
-//    unsigned int idx = 0;
-//    for (std::vector<Attribute*>::const_iterator it = other.mAttributes.cbegin(); it != other.mAttributes.cend(); ++it)
-//    {
-//        const Attribute& attribute = *(*it);
-//        mAttributes.push_back(new Attribute(attribute));
-//        mAttributesData.push_back(new float[mNumVertices * attribute.size/sizeof(float)]);
-//    }
-//}
 
 float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize)
 {
@@ -229,9 +217,7 @@ void ResourceMesh::CleanUp()
     //TODO: delete EBO/VBO...
     mAttributes.clear();
     mAttributesData.clear();
-    glDeleteBuffers(1, &mVbo);
-    glDeleteBuffers(1, &mEbo);
-    glDeleteVertexArrays(1, &mVao);
+    UnloadFromMemory();
 }
 
 void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh)
@@ -421,22 +407,17 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
     }
 
     Mesh::Save(mesh);
-
-    //char* fileBuffer = nullptr;
-    //ResourceMesh loadedMesh;
-    //Mesh::Load(fileBuffer, &loadedMesh, mesh->mMeshName);
 }
 
 void Importer::Mesh::Save(const ResourceMesh* mesh)
 {
-    unsigned int header[3] = { mesh->mNumIndices, mesh->mNumVertices, mesh->GetVertexSize() };
+    unsigned int header[] = { mesh->mNumIndices, mesh->mNumVertices, mesh->GetVertexSize(), mesh->GetAttributes().size() };
 
-    unsigned int size = sizeof(header) + 
-                        sizeof(unsigned int) * mesh->mNumIndices +          
-                        sizeof(float) * mesh->mNumVertices * 3 +
-                        sizeof(float) * mesh->mNumVertices * 2 +
-                        sizeof(float) * mesh->mNumVertices * 3 +
-                        sizeof(float) * mesh->mNumVertices * 4;
+    unsigned int size = sizeof(header) + sizeof(unsigned int) * mesh->mNumIndices;
+    for (std::vector<Attribute*>::const_iterator it = mesh->GetAttributes().cbegin(); it != mesh->GetAttributes().cend(); ++it)
+    {
+        size += (*it)->size + sizeof(Attribute);
+    }
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -449,25 +430,19 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     bytes = sizeof(unsigned int) * mesh->mNumIndices;
     memcpy(cursor, mesh->mIndices, bytes);
     cursor += bytes;
-    //Save Positions
-    bytes = sizeof(float) * mesh->mNumVertices * 3;
-    memcpy(cursor, mesh->mVerticesPosition, bytes);
-    cursor += bytes;
-    //Save TexCoords
-    assert(mesh->mVerticesTextureCoordinate != nullptr);
-    bytes = sizeof(float) * mesh->mNumVertices * 2;
-    memcpy(cursor, mesh->mVerticesTextureCoordinate, bytes);
-    cursor += bytes;
-    //Save Normals
-    assert(mesh->mVerticesNormal != nullptr);
-    bytes = sizeof(float) * mesh->mNumVertices * 3;
-    memcpy(cursor, mesh->mVerticesNormal, bytes);
-    cursor += bytes;
-    //Save Tangents
-    assert(mesh->mVerticesTangent != nullptr);
-    bytes = sizeof(float) * mesh->mNumVertices * 3;
-    memcpy(cursor, mesh->mVerticesTangent, bytes);
-    cursor += bytes;
+    //Save attributes and data
+    unsigned int idx = 0;
+    for (std::vector<Attribute*>::const_iterator it = mesh->GetAttributes().cbegin(); it != mesh->GetAttributes().cend(); ++it)
+    {
+        //save attribute metadata
+        memcpy(cursor, *(it), sizeof(Attribute));
+        cursor += sizeof(Attribute);
+        //save attribute data
+        bytes = (*it)->size * mesh->mNumVertices;
+        memcpy(cursor, mesh->mAttributesData[idx], bytes);
+        cursor += bytes;
+        ++idx;
+    }
 
     std::string path = LIBRARY_MESH_PATH;
     path += mesh->mMeshName;
@@ -489,37 +464,29 @@ void Importer::Mesh::Load(char* fileBuffer, ResourceMesh* mesh, const char* file
 
     //Load Header
     char* cursor = fileBuffer;
-    unsigned int header[2];
+    unsigned int header[4];
     unsigned int bytes = sizeof(header);
     memcpy(header, cursor, bytes);
     cursor += bytes;
     mesh->mNumIndices = header[0];
     mesh->mNumVertices = header[1];
     mesh->mVertexSize = header[2];
+    unsigned int numAttributes = header[3];
     //Load Indices
     bytes = sizeof(unsigned int) * mesh->mNumIndices;
     mesh->mIndices = new unsigned int[mesh->mNumIndices];
     memcpy(mesh->mIndices, cursor, bytes);
-    //Load Positions
-    bytes = sizeof(float) * mesh->mNumVertices * 3;
-    mesh->mVerticesPosition = new float[mesh->mNumVertices * 3];
-    memcpy(mesh->mVerticesPosition, cursor, bytes);
-    //Save TexCoords
-    bytes = sizeof(float) * mesh->mNumVertices * 2;
-    mesh->mVerticesTextureCoordinate = new float[mesh->mNumVertices * 2];
-    memcpy(mesh->mVerticesTextureCoordinate, cursor, bytes);
-    //Save Normals
-    bytes = sizeof(float) * mesh->mNumVertices * 3;
-    mesh->mVerticesNormal = new float[mesh->mNumVertices * 3];
-    memcpy(mesh->mVerticesNormal, cursor, bytes);
-    //Save Tangents
-    bytes = sizeof(float) * mesh->mNumVertices * 4;
-    mesh->mVerticesTangent = new float[mesh->mNumVertices * 4];
-    memcpy(mesh->mVerticesTangent, cursor, bytes);
+    cursor += bytes;
 
-    mesh->LoadVBO();
-    mesh->LoadEBO();
-    mesh->LoadVAO();
+    for (int i = 0; i > numAttributes; ++i)
+    {
+        Attribute* attr = reinterpret_cast<Attribute*>(cursor);
+        cursor += sizeof(Attribute);
+        mesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor));
+        cursor += attr->size * mesh->mNumVertices;
+    }
+
+    mesh->LoadToMemory();
 
     //Create GameObject and set mesh to it;
 }
@@ -550,55 +517,30 @@ float* ResourceMesh::GetInterleavedData() const
     return ret;
 }
 
-void ResourceMesh::LoadVAO()
+unsigned int ResourceMesh::LoadToMemory()
 {
     glGenVertexArrays(1, &mVao);
     glBindVertexArray(mVao);
-    LOG("[MESH] Creting VAO %u", mVao);
-
-    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-
-    //TODO: RECALCULATE OFFSET IF DONT HAVE ATTRIBUTES
-    unsigned offset = 0;
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, reinterpret_cast<void*>(offset));
-
-    glBindVertexArray(0);
-}
-
-void ResourceMesh::LoadVBO()
-{
     glGenBuffers(1, &mVbo);
+    glGenBuffers(1, &mEbo);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mNumVertices * 3, nullptr, GL_STATIC_DRAW);
-    LOG("[MESH] Creating VBO %u, reserved %u memory", mVbo, (sizeof(float) * mNumVertices * 3));
-
-    assert(mVerticesPosition != nullptr);
-    float* ptr = reinterpret_cast<float*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY)));
-    for (auto i = 0; i < mNumVertices; ++i)
+    glBufferData(GL_ARRAY_BUFFER, mNumVertices * mVertexSize, GetInterleavedData(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), mIndices, GL_STATIC_DRAW);
+    unsigned int idx = 0;
+    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
-        ptr[i] = mVerticesPosition[i];
+        glVertexAttribPointer(idx, (*it)->size, GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+        glEnableVertexAttribArray(idx);
+        ++idx;
     }
-    glUnmapBuffer(GL_ARRAY_BUFFER);
-    LOG("[MESH] Finish VBO map buffer");
+    glBindVertexArray(0);
+    return mVao;
 }
 
-void ResourceMesh::LoadEBO()
+void ResourceMesh::UnloadFromMemory()
 {
-    glGenBuffers(1, &mEbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mNumIndices, nullptr, GL_STATIC_DRAW);
-    LOG("[MESH] Creating EBO %u, reserved %u memory", mEbo, (sizeof(unsigned int) * mNumIndices));
-
-    unsigned int* ptr = reinterpret_cast<unsigned int*>(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
-    for (auto i = 0; i < mNumIndices; ++i)
-    {
-        ptr[i] = mIndices[i];
-    }
-    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-    LOG("[MESH] Finish EBO map buffer");
+    glDeleteBuffers(1, &mVbo);
+    glDeleteBuffers(1, &mEbo);
+    glDeleteVertexArrays(1, &mVao);
 }
