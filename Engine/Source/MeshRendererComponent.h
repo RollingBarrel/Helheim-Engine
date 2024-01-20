@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Geometry/OBB.h"
+#include "Geometry/AABB.h"
 #include "GameObject.h"
 
 class Material;
@@ -24,11 +25,13 @@ public:
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
+	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
 private:
 	ResourceMesh* mMesh;
 	Material* material;
 	OBB mOBB;
+	AABB mAABB;
 	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 };

@@ -28,14 +28,19 @@ public:
 	}
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
-	bool* GetShouldRenderQuadtree() const { return mDrawQuadtree; }
+	bool GetShouldRenderQuadtree() const { return mDrawQuadtree; }
+	void SetShouldRenderQuadtree(bool a) { mDrawQuadtree = a; }
+
+	bool GetApplyFrustumCulling() const { return mApplyculling; }
+	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
 	
 	Quadtree* mQuadtreeRoot;
-	bool* mDrawQuadtree = new bool(false);
+	bool mDrawQuadtree = false;
+	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
 	GameObject* mSelectedGameObject = nullptr;

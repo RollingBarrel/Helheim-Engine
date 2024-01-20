@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "MathGeoLibFwd.h"
 
+
 class DDRenderInterfaceCoreGL;
 class Camera;
 
@@ -19,22 +20,25 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-    void SetDrawGrid(bool drawGrid) { mDrawGrid = drawGrid; }
-    bool GetDrawGrid() const { return mDrawGrid; }
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
     void DrawBoundingBox(const OBB& obb);
     void DrawQuadtree(const AABB& aabb);
+    void DrawAxis();
+    bool GetShouldRenderGrid() const { return mDrawGrid; }
+    bool GetShouldRenderAxis() const { return mDrawAxis; }
+    void SetRenderGrid(bool a) { mDrawGrid = a; }
+    void SetRenderAxis(bool a) { mDrawAxis = a; }
 
 
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
-    bool mDrawGrid; 
-
+    bool mDrawGrid = true;
+    bool mDrawAxis = true;
 
     void DrawGrid();
     void DrawFrustum(const Frustum& frustum); 
 
-};
 
+};
 #endif /* _MODULE_DEBUGDRAW_H_ */
