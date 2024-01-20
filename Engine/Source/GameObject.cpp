@@ -391,7 +391,7 @@ void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) 
 			if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
 				ComponentType cType = ComponentType(component["ComponentType"].GetInt());
 				Component* c = go->CreateComponent(cType);
-				c->Load(component);
+				c->LoadFromJSON(component, go);
 			}
 		}
 	}
