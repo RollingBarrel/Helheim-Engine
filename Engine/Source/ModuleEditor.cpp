@@ -132,6 +132,14 @@ void ModuleEditor::ShowMainMenuBar() {
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("Load Scene"))
+			{
+
+			}
+			if (ImGui::MenuItem("Save Scene"))
+			{
+				
+			}
 			if (ImGui::MenuItem("Quit"))
 			{
 				exit(0);
