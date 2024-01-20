@@ -32,7 +32,7 @@ public:
 
 private:
 	ResourceMesh* mMesh;
-	Material* material;
+	Material* mMaterial;
 	OBB mOBB;
 	AABB mAABB;
 	bool mDrawBox = false;
