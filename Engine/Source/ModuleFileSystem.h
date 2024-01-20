@@ -54,7 +54,7 @@ public:
 
 	void DiscoverFiles(const char* directory, PathNode* parent) const;
 
-	const char* NormalizePath(const char* path) const;
+	void NormalizePath(char* path) const;
 
 	const char* GetFileFromPath(const char* path) const;
 	const char* GetExtensionFromPath(const char* path) const;
