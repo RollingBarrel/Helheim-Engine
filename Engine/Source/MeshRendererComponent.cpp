@@ -19,15 +19,11 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
-	:Component("Mesh Renderer", owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh())
+	:Component("Mesh Renderer", owner, ComponentType::MESHRENDERER), mMesh(original.mMesh), mMaterial(original.mMaterial)
 {
-
-
+	mOBB = original.mOBB;
+	mAABB = original.mAABB;
 	
-	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
-	mAABB = AABB();
-
-
 }
 
 void MeshRendererComponent::Draw()
