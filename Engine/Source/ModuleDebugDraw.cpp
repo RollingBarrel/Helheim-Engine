@@ -595,6 +595,8 @@ ModuleDebugDraw::ModuleDebugDraw()
 
 ModuleDebugDraw::~ModuleDebugDraw()
 {
+    delete mDrawGrid;
+    delete mDrawAxis;
 }
 
 bool ModuleDebugDraw::Init()
@@ -618,7 +620,6 @@ bool ModuleDebugDraw::CleanUp()
 update_status  ModuleDebugDraw::Update()
 {
     App->GetOpenGL()->BindSceneFramebuffer();
-    DrawGrid();
 
     float4x4 viewproj = App->GetCamera()->GetProjectionMatrix() * App->GetCamera()->GetViewMatrix();
     Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
@@ -631,6 +632,12 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
+    if (*mDrawGrid) {
+       DrawGrid();
+    }
+    if (*mDrawAxis) {
+       DrawAxis();
+    }
 
     dd::flush();
 }
@@ -667,6 +674,11 @@ void ModuleDebugDraw::DrawGrid()
     dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);
     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 }
+void ModuleDebugDraw::DrawAxis()
+{
+     dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
+}
+
 
 void ModuleDebugDraw::DrawFrustum(const Frustum& frustum)
 {

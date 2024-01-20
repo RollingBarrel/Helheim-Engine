@@ -3,6 +3,18 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
+#include "ModuleInput.h"
+#include "ModuleScene.h"
+#include "Quadtree.h"
+
+#include "Panel.h"
+#include "AboutPanel.h"
+#include "ConsolePanel.h"
+#include "InspectorPanel.h"
+#include "HierarchyPanel.h"
+#include "QuadtreePanel.h"
+#include "DebugPanel.h"
+#include "PausePanel.h"
 
 #include "Panel.h"
 #include "AboutPanel.h"
@@ -138,16 +150,20 @@ void ModuleEditor::ShowMainMenuBar() {
 		}
 		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::BeginMenu("View"))
-			{
-				if (ImGui::MenuItem("Quadtree")) {
-					Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
-					if (quadtreeDebug)
-					{
-						quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
-					}
+			if (ImGui::MenuItem("Quadtree")) {
+				Panel* quadtreeDebug = s_ModuleEditorInstance->mPanels[QUADTREEPANEL];
+				if (quadtreeDebug)
+				{
+					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
-				ImGui::EndMenu();
+			}
+
+			if (ImGui::MenuItem("Debug")) {
+				Panel* debugPanel = s_ModuleEditorInstance->mPanels[DEBUGPANEL];
+				if (debugPanel)
+				{
+					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
+				}
 			}
 			ImGui::EndMenu();
 		}

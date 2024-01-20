@@ -5,6 +5,7 @@
 #include <map>
 
 struct ImGuiIO;
+
 class Panel;
 
 class ModuleEditor : public Module

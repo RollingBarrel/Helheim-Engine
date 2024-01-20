@@ -23,7 +23,7 @@ public:
 	bool Intersects(const OBB* bounding_box) const;
 	const bool hasGameObjects() const { return mFilled; }
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
-	void CleanUp();
+	void UpdateTree();
 	void Draw() const;
 	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
@@ -33,6 +33,8 @@ public:
 private:
 	Quadtree(const AABB& boundingBox, int depth, const char* name);
 	void SplitNode();
+	void AddHierarchyObjects(GameObject* child);
+	void CleanUp();
 
 	AABB mBoundingBox;
 	Quadtree* mChildren[4];
@@ -40,6 +42,5 @@ private:
 	int mDepthLevel;
 	bool mFilled;
 	std::string mName;
-
 };
 
