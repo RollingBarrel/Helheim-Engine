@@ -14,6 +14,18 @@
 #include <vector>
 #include <string>
 
+struct AssetDisplay;
+
+struct PathNode
+{
+	PathNode(const char* name, PathNode* parent = nullptr);
+	const char* mName;
+	PathNode* mParent;
+	std::vector<PathNode*> mChildren;
+	std::vector<AssetDisplay*> assets;
+};
+
+
 class ModuleFileSystem : public Module
 {
 public:
@@ -40,7 +52,7 @@ public:
 	const char* GetBaseDirectory() const;
 	const char* GetWriteDirectory() const;
 
-	void DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories) const;
+	void DiscoverFiles(const char* directory, PathNode* parent) const;
 
 	const char* NormalizePath(const char* path) const;
 
@@ -49,7 +61,9 @@ public:
 	const char* GetFileExtensionFromPath(const char* path) const;
 	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
 
-private:
+	PathNode* GetRootNode() const { return mRoot; }
 
+private:
+	PathNode* mRoot = nullptr;
 };
 

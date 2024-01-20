@@ -16,11 +16,13 @@ ProjectPanel::~ProjectPanel()
 
 void ProjectPanel::Draw(int windowFlags)
 {
+	PathNode* root = App->GetFileSystem()->GetRootNode();
+
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
 		if(ImGui::Button("Refresh"))
 		{
-			//App->GetFileSystem()->DiscoverFiles("Assets", mFiles, mDirectories);
+			App->GetFileSystem()->DiscoverFiles("Library", root);
 		}
 
 		for (auto i = 0; i < root->mChildren.size(); ++i)
@@ -29,8 +31,13 @@ void ProjectPanel::Draw(int windowFlags)
 			{
 				ImGui::TreePop();
 			}
+
 		}
 
 	}
 	ImGui::End();
+}
+
+AssetDisplay::AssetDisplay(const char* name, PathNode* parent) : mName(name), mParent(parent)
+{
 }

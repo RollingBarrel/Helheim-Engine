@@ -3,10 +3,11 @@
 #include "Importer.h"
 #include "ImporterTexture.h"
 
+#include "ProjectPanel.h"
 
 #include "physfs.h"
 
-ModuleFileSystem::ModuleFileSystem()
+ModuleFileSystem::ModuleFileSystem() 
 {
     PHYSFS_init(nullptr);
 
@@ -25,6 +26,8 @@ ModuleFileSystem::ModuleFileSystem()
     CreateDirectory(LIBRARY_TEXTURE_PATH);
     CreateDirectory(LIBRARY_MATERIAL_PATH);
     CreateDirectory(LIBRARY_SHADER_PATH);
+
+    mRoot = new PathNode("Assets");
 }
 
 // Destructor
@@ -205,7 +208,7 @@ const char* ModuleFileSystem::GetWriteDirectory() const
     return PHYSFS_getWriteDir();
 }
 
-void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories) const
+void ModuleFileSystem::DiscoverFiles(const char* directory, PathNode* parent) const
 {
     if (Exists(directory))
     {
@@ -220,16 +223,18 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::str
             if (IsDirectory(path.c_str()))
             {
                 //TODO PathNode 
-                directories.push_back(path);
-                DiscoverFiles(path.c_str(), files, directories);
+                PathNode* node = new PathNode(path.c_str(), parent);
+                parent->mChildren.push_back(node);
+                DiscoverFiles(path.c_str(), node);
                 path = directory + std::string("/");
             }
             else
             {
                 //TODO Assets To Display, except .bin
-
-                //TODO Read Meta and create Library Link
-                files.push_back(path);
+                std::string fileName;
+                SplitPath(path.c_str(), &fileName);
+                AssetDisplay* assetDisplay = new AssetDisplay(fileName.c_str(), parent);          
+                parent->assets.push_back(assetDisplay);
                 path = directory + std::string("/");
             }
         }
@@ -275,4 +280,6 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
         *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
 }
 
-
+PathNode::PathNode(const char* name, PathNode* parent) : mName(name), mParent(parent)
+{
+}
