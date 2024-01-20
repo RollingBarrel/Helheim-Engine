@@ -198,6 +198,9 @@
     <ClCompile Include="DebugPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTimer.cpp" />
+    <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -594,7 +597,9 @@
     <ClInclude Include="DebugPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-
+    <ClInclude Include="ModuleTimer.h" />
+    <ClInclude Include="PreciseTimer.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
