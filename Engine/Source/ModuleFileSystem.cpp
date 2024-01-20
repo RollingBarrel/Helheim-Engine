@@ -285,6 +285,9 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
         *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
 }
 
-PathNode::PathNode(const char* name, PathNode* parent) : mName(name), mParent(parent)
+PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
 {
+    unsigned int size = strlen(name) + 1;
+    mName = new char[size];
+    strcpy_s(const_cast<char*>(mName), size, name);
 }
