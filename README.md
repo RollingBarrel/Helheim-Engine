@@ -17,7 +17,8 @@ Download GameEngine.zip file in [release](https://github.com/Assigment2Company/A
   - Left ALT + Left Click to Rotate de center of the scene.
   - Holding SHIFT duplicates de movement speed.
 - Project Panel
-  - Dragging a file inside the engine should import the file into project panel. (Click Refresh if the new asset is not appearing).
+  - Dragging a .gltf file inside the engine should import the file into project panel. (Click Refresh if the new asset is not appearing). 
+  **All model files (.gltf, .bin, textures...) should always be in the same folder**.
   - Dragging an asset inside the scene should create a GameObject in the Hierarchy panel with an meshRenderer component.
 - Hierarchy Panel  
   - Right click in hierarchy panel will open a popup where you can create, duplicate and delete a gameobject.
