@@ -50,7 +50,7 @@ public:
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
-	void CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type);
 	MeshRendererComponent* getMeshRenderer() const;
 
 private:

@@ -1,17 +1,19 @@
-#include "Application.h"
-#include "ModuleScene.h"
-#include "GameObject.h"
-
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
+#include "Math/float4x4.h"
+#include "Geometry/Frustum.h"
+#include "Geometry/OBB.h"
+#include "Geometry/AABB.h"
+#include "Application.h"
+#include "ModuleOpenGL.h"
+#include "ModuleCamera.h"
+#include "ModuleWindow.h"
+
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
-#include "Application.h"
-#include "ModuleCamera.h"
-#include "ModuleWindow.h"
+
 #include "glew.h"
-#include "Geometry/AABB.h"
 
 class DDRenderInterfaceCoreGL final
     : public dd::RenderInterface
@@ -593,6 +595,7 @@ ModuleDebugDraw::ModuleDebugDraw()
 
 ModuleDebugDraw::~ModuleDebugDraw()
 {
+
 }
 
 bool ModuleDebugDraw::Init()
@@ -615,9 +618,11 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
-    float4x4 viewproj = App->GetCamera()->GetViewProjMatrix();
-    Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+    App->GetOpenGL()->BindSceneFramebuffer();
 
+    float4x4 viewproj = App->GetCamera()->GetProjectionMatrix() * App->GetCamera()->GetViewMatrix();
+    Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+    App->GetOpenGL()->UnbindSceneFramebuffer();
 	return UPDATE_CONTINUE;
 }
 
@@ -626,12 +631,12 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-
-    dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
-    dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
-    
-    dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
-    //dd::sphere(App->GetScene()->GetSelectedGameObject()->GetPosition(), { 1,1,1 }, 1);
+    if (mDrawGrid) {
+       DrawGrid();
+    }
+    if (mDrawAxis) {
+       DrawAxis();
+    }
 
     dd::flush();
 }
@@ -665,9 +670,14 @@ void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
 
 void ModuleDebugDraw::DrawGrid()
 {
-    dd::xzSquareGrid(-500, 500, -0.1f, 1.0f, dd::colors::White);
-    dd::axisTriad(float4x4::identity, 0.0f, 25.0f);
+    dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);
+    dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 }
+void ModuleDebugDraw::DrawAxis()
+{
+     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
+}
+
 
 void ModuleDebugDraw::DrawFrustum(const Frustum& frustum)
 {

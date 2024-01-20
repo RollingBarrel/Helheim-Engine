@@ -8,6 +8,7 @@
 #include "MeshRendererComponent.h"
 #include "Component.h"
 
+#include "ModuleOpenGL.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
@@ -34,8 +35,9 @@ update_status ModuleScene::PreUpdate()
 update_status ModuleScene::Update()
 {
 	mRoot->Update();
-	if (*mDrawQuadtree)
+	if (mDrawQuadtree)
 	{
+		App->GetOpenGL()->BindSceneFramebuffer();
 		mQuadtreeRoot->Draw();
 	}
 

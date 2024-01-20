@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Geometry/OBB.h"
+#include "Geometry/AABB.h"
 #include "GameObject.h"
 #include "Mesh.h"
 
@@ -16,9 +17,14 @@ public:
 	void Reset() override;
 	void Load(const char* assetFileName);
 	void LoadByIDTemporal(const int id);
+	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
+	~MeshRendererComponent() { delete mMesh; };
+
+	void Draw();
+	void Load(const char* uid);
+	void Reset() override {}
 
 	void Update() override;
-	void DrawEditor();
 	Component* Clone(GameObject* owner) override;
 
 	const OBB getOBB() const { return mOBB; }
@@ -36,8 +42,15 @@ public:
 
 private:
 	std::vector<Mesh*> mMeshes; //it was a mesh pointer (Mesh*) 
+	bool ShouldDraw() const { return mDrawBox; }
+	void SetShouldDraw(bool draw) { mDrawBox = draw; }
+
+private:
+	ResourceMesh* mMesh;
+	Material* material;
 	OBB mOBB;
-	bool* mDrawBox = new bool(false);
+	AABB mAABB;
+	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 
 	int mTemporalID = -1;

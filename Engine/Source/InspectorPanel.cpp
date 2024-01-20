@@ -423,7 +423,7 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	}
 	
 	ImGui::SeparatorText("Material");
-	ImGui::Text("WATING FOR FILE SYSTEM ¿? (TEST)");
+	ImGui::Text("WATING FOR FILE SYSTEM ï¿½? (TEST)");
 	ImGui::Text("CREATE NAME VARIABLE?");
 
 	ImGui::Text(" ");

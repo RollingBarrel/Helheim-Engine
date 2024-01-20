@@ -1,7 +1,8 @@
-#pragma once
+#ifndef _MODULE_SCENE_H_
+#define _MODULE_SCENE_H_
+
 #include "Module.h"
 #include <vector>
-
 class Quadtree;
 class GameObject;
 class ModuleScene : public Module
@@ -27,7 +28,11 @@ public:
 	}
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
-	bool* GetShouldRenderQuadtree() const { return mDrawQuadtree; }
+	bool GetShouldRenderQuadtree() const { return mDrawQuadtree; }
+	void SetShouldRenderQuadtree(bool a) { mDrawQuadtree = a; }
+
+	bool GetApplyFrustumCulling() const { return mApplyculling; }
+	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
 private:
 	void DeleteGameObjects();
@@ -38,7 +43,8 @@ private:
 
 	
 	Quadtree* mQuadtreeRoot;
-	bool* mDrawQuadtree = new bool(false);
+	bool mDrawQuadtree = false;
+	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
 	GameObject* mSelectedGameObject = nullptr;
@@ -49,3 +55,4 @@ private:
 
 };
 
+#endif //_MODULE_SCENE_H_

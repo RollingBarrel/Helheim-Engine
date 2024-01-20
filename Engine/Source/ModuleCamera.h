@@ -1,41 +1,31 @@
-#pragma once
+#ifndef _MODULE_CAMERA_H_
+#define _MODULE_CAMERA_H_
+
 #include "Module.h"
-
-// Include only the necessary headers from MathGeoLib
-#include "Math/float2.h"
-#include "Math/float3.h"
 #include "Math/float4x4.h"
+#include "Math/float3.h"
 #include "Geometry/Frustum.h"
-
 
 class ModuleCamera : public Module
 {
 public:
-	ModuleCamera();
-	~ModuleCamera();
-
-
 	bool Init() override;
-	update_status PreUpdate() override;
 	update_status Update() override;
-	update_status PostUpdate() override;
 	bool CleanUp() override;
-	void move(const float3& delta);
-	void moveForward(bool backwards);
-	void rotate(float angle, const float3& axis);
 
-	const float4x4& GetViewProjMatrix() const { return frustum.ViewProjMatrix(); }
-	const float4x4& GetInvViewProjMatrix() const { float4x4 vpMat = frustum.ViewProjMatrix(); vpMat.Inverse(); return vpMat; }
-	const float3& GetCameraPos() const { return frustum.pos; }
-	void ProcessInput();
-	void UpdateProjectionMatrix(int screenWidth, int screenHeight);
+	void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
+	void Transform(float3 vec);
+	void Rotate(const float3& axix, float angleRad);
+	const float3& GetPos() const { return frustum.pos; }
+	float4x4 GetViewMatrix() const { return frustum.ViewMatrix(); }
+	float4x4 GetProjectionMatrix() const { return frustum.ProjectionMatrix(); }
+	unsigned int GetCameraUniffromsId() const { return cameraUnis; }
+	void WindowResized(int w, int h);
 
-	const Frustum GetFrustum() const { return frustum; }
-	
-
-
+	const Frustum& GetFrustum() const { return frustum; }
 private:
-	float2 mousePos;
 	Frustum frustum;
+	unsigned int cameraUnis = 0;
 };
 
+#endif /* _MODULE_CAMERA_H_ */
