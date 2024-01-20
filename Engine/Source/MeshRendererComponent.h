@@ -24,14 +24,15 @@ public:
 	const OBB getOBB() const { return mOBB; }
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
-	bool* ShouldDraw() const { return mDrawBox; }
+	bool ShouldDraw() const { return mDrawBox; }
+	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
 private:
 	ResourceMesh* mMesh;
 	Material* material;
 	OBB mOBB;
 	AABB mAABB;
-	bool* mDrawBox = new bool(false);
+	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 };
 

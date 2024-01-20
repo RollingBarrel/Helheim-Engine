@@ -17,7 +17,11 @@ void QuadtreePanel::Draw(int windowFlags)
 {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		ImGui::Checkbox("Draw quadtree", App->GetScene()->GetShouldRenderQuadtree());
+
+		bool a = App->GetScene()->GetShouldRenderQuadtree();
+		if (ImGui::Checkbox("Draw quadtree", &a))
+			App->GetScene()->SetShouldRenderQuadtree(a);
+		
 		ImGui::Separator();
 		ImGui::SameLine();
 		if (ImGui::Button("Reload quadtree"))

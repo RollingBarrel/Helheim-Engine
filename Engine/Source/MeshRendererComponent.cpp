@@ -36,11 +36,12 @@ void MeshRendererComponent::Draw()
 	//{
 	//	return;
 	//}
-	if (*mDrawBox)
+	App->GetOpenGL()->BindSceneFramebuffer();
+
+	if (mDrawBox)
 	{
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
-	App->GetOpenGL()->BindSceneFramebuffer();
 	glUseProgram(App->GetTest()->GetProgramId());
 	glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
 	glBindVertexArray(mMesh->GetVao());
