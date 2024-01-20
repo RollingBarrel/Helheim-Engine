@@ -48,10 +48,10 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 
 void MeshRendererComponent::Draw()
 {
-	//if (!mInsideFrustum)
-	//{
-	//	return;
-	//}
+	if (!mInsideFrustum)
+	{
+		return;
+	}
 	if (mDrawBox)
 	{
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
