@@ -27,5 +27,5 @@ private:
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
-	void MaterialVariables(ResourceMaterial* material, int i);
+	void MaterialVariables(MeshRendererComponent* material, int i);
 };

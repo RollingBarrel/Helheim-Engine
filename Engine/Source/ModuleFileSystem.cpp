@@ -5,6 +5,8 @@
 
 #include "ProjectPanel.h"
 
+#include <stdio.h>
+
 #include "physfs.h"
 
 ModuleFileSystem::ModuleFileSystem() 
@@ -18,6 +20,7 @@ ModuleFileSystem::ModuleFileSystem()
 
     AddToSearchPath(".");
     AddToSearchPath(ASSETS_PATH);
+    AddToSearchPath(ASSETS_MODEL_PATH);
     
     CreateDirectory(ASSETS_PATH);
 
@@ -134,7 +137,7 @@ unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, un
     return writeBytesSize;
 }
 
-bool ModuleFileSystem::Copy(const char* sourceFilePath, const char* destinationFilePath)
+bool ModuleFileSystem::CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath)
 {
     char* readBuffer = nullptr;
     int readBufferSize = Load(sourceFilePath, &readBuffer);
@@ -154,6 +157,26 @@ bool ModuleFileSystem::Copy(const char* sourceFilePath, const char* destinationF
         return false;
     }
    
+    return true;
+}
+
+bool ModuleFileSystem::CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath)
+{
+    FILE *src;
+    FILE *dst;
+
+    char buffer[4096];
+    size_t n;
+
+    fopen_s(&src,sourceFilePath, "rb");
+    fopen_s(&dst,destinationFilePath, "wb");
+
+    while ((n = fread(buffer, 1, sizeof(buffer), src)) > 0)
+    {
+        fwrite(buffer, 1, n, dst);
+    }
+    fclose(src);
+    fclose(dst);
     return true;
 }
 

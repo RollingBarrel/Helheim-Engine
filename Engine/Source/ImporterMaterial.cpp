@@ -1,31 +1,7 @@
-#include "ResourceMaterial.h"
-#include "Texture.h"
+#include "ImporterMaterial.h"
+#include "ImporterTexture.h"
 
-#define TINYGLTF_NO_STB_IMAGE_WRITE
-#define TINYGLTF_NO_STB_IMAGE
-#define TINYGLTF_NO_EXTERNAL_IMAGE
-#include "tiny_gltf.h"
-
-ResourceMaterial::ResourceMaterial()
-    : mDiffuseFactor(1.0f, 1.0f, 1.0f, 1.0f),
-    mSpecularFactor(0.0f, 0.0f, 0.0f),
-    mGlossinessFactor(1.0f),
-    mDiffuseTexture(nullptr),
-    mSpecularGlossinessTexture(nullptr),
-    mNormalTexture(nullptr),
-    mEnableDiffuseTexture(false),
-    mEnableSpecularGlossinessTexture(false),
-    mEnableNormalMap(false),
-    mEnableShinessMap(false)
-{
-
-}
-
-ResourceMaterial::~ResourceMaterial()
-{
-}
-
-void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf::Material& material)
+void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Material& material, ResourceMaterial* rMaterial)
 {
     auto it = material.extensions.find("KHR_materials_pbrSpecularGlossiness");
     if (it != material.extensions.end()) {
@@ -35,7 +11,7 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
             const tinygltf::Value& diffuseFactor = extensionMap.Get("diffuseFactor");
             if (diffuseFactor.IsArray()) {
                 for (int i = 0; i < 4; ++i) {
-                    mDiffuseFactor[i] = static_cast<float>(diffuseFactor.Get(i).Get<double>());
+                    rMaterial->mDiffuseFactor[i] = static_cast<float>(diffuseFactor.Get(i).Get<double>());
                 }
             }
         }
@@ -44,7 +20,7 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
             const tinygltf::Value& specularFactor = extensionMap.Get("specularFactor");
             if (specularFactor.IsArray()) {
                 for (int i = 0; i < 3; ++i) {
-                    mSpecularFactor[i] = static_cast<float>(specularFactor.Get(i).Get<double>());
+                    rMaterial->mSpecularFactor[i] = static_cast<float>(specularFactor.Get(i).Get<double>());
                 }
             }
         }
@@ -52,7 +28,7 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
         if (extensionMap.Has("glossinessFactor")) {
             const tinygltf::Value& glossinessFactor = extensionMap.Get("glossinessFactor");
             if (glossinessFactor.IsNumber()) {
-                mGlossinessFactor = static_cast<float>(glossinessFactor.Get<double>());
+                rMaterial->mGlossinessFactor = static_cast<float>(glossinessFactor.Get<double>());
             }
         }
 
@@ -68,11 +44,12 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     const tinygltf::Image& image = model.images[diffuseMap.source];
                     const char* imageUri = image.uri.c_str();
 
-                    Texture* diffuseTexture = new Texture(mTemporalID);
-                    diffuseTexture->LoadTexture(imageUri);
-                    mDiffuseTexture = diffuseTexture;
+                    ResourceTexture* diffuseTexture = new ResourceTexture();
+                    diffuseTexture->mTextureName = imageUri;
+                    Importer::Texture::Import(imageUri, diffuseTexture);
+                    rMaterial->mDiffuseTexture = diffuseTexture;
 
-                    mEnableDiffuseTexture = true;
+                    rMaterial->mEnableDiffuseTexture = true;
                 }
             }
         }
@@ -89,14 +66,15 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     const tinygltf::Image& image = model.images[specularMap.source];
                     const char* imageUri = image.uri.c_str();
 
-                    Texture* specularTexture = new Texture(mTemporalID);
-                    specularTexture->LoadTexture(imageUri);
-                    mSpecularGlossinessTexture = specularTexture;
+                    ResourceTexture* specularTexture = new ResourceTexture();
+                    specularTexture->mTextureName = imageUri;
+                    Importer::Texture::Import(imageUri, specularTexture);
+                    rMaterial->mSpecularGlossinessTexture = specularTexture;
 
-                    mEnableSpecularGlossinessTexture = true;
+                    rMaterial->mEnableSpecularGlossinessTexture = true;
 
-                    if (specularTexture->hasAlpha()) {
-                        mEnableShinessMap = true;
+                    if (specularTexture->HasAlpha()) {
+                        rMaterial->mEnableShinessMap = true;
                     }
                 }
             }
@@ -115,11 +93,12 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     const tinygltf::Image& image = model.images[normalMap.source];
                     const char* imageUri = image.uri.c_str();
 
-                    Texture* normalTexture = new Texture(mTemporalID);
-                    normalTexture->LoadTexture(imageUri);
-                    mNormalTexture = normalTexture;
+                    ResourceTexture* normalTexture = new ResourceTexture();
+                    normalTexture->mTextureName = imageUri;
+                    Importer::Texture::Import(imageUri, normalTexture);
+                    rMaterial->mNormalTexture = normalTexture;
 
-                    mEnableNormalMap = true;
+                    rMaterial->mEnableNormalMap = true;
                 }
             }
         }
@@ -133,12 +112,15 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
             const tinygltf::Image& image = model.images[texture.source];
             const char* imageUri = image.uri.c_str();
 
-            Texture* diffuseTexture = new Texture(mTemporalID);
-            diffuseTexture->LoadTexture(imageUri);
-            mDiffuseTexture = diffuseTexture;
+            ResourceTexture* diffuseTexture = new ResourceTexture();
+            diffuseTexture->mTextureName = imageUri;
+            Importer::Texture::Import(imageUri, diffuseTexture);
+            rMaterial->mDiffuseTexture = diffuseTexture;
 
-            mEnableDiffuseTexture = true;
+            rMaterial->mEnableDiffuseTexture = true;
         }
 
     }
 }
+
+

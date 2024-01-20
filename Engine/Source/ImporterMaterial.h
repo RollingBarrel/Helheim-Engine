@@ -1,24 +1,24 @@
 #pragma once
-#include "Math/float3.h"
-#include "Math/float4.h"
 
-class Texture;
+#include "MathGeoLibFwd.h"
 
-namespace tinygltf {
-    class Model;
-    class Material;
-};
+#include "float3.h"
+#include "float4.h"
 
-class ResourceMaterial
+#define TINYGLTF_NO_STB_IMAGE_WRITE
+#define TINYGLTF_NO_STB_IMAGE
+#define TINYGLTF_NO_EXTERNAL_IMAGE
+#include "tiny_gltf.h"
+
+struct ResourceTexture;
+
+
+struct ResourceMaterial
 {
 public:
-    ResourceMaterial();
-    ~ResourceMaterial();
-
-    void LoadMaterial(const tinygltf::Model& model, const tinygltf::Material& material);
-    Texture* GetDiffuseMap() const { return mDiffuseTexture; };
-    Texture* GetSpecularMap()const { return mSpecularGlossinessTexture; };
-    Texture* GetNormalMap()const { return mNormalTexture; };
+    ResourceTexture* GetDiffuseMap() const { return mDiffuseTexture; };
+    ResourceTexture* GetSpecularMap()const { return mSpecularGlossinessTexture; };
+    ResourceTexture* GetNormalMap()const { return mNormalTexture; };
     float4 GetDiffuseFactor()const { return mDiffuseFactor; };
     float3 GetSpecularFactor()const { return mSpecularFactor; };
     float GetGlossinessFactor()const { return mGlossinessFactor; };
@@ -37,15 +37,13 @@ public:
     void SetEnableShinessMap(bool enableShinessMap) { mEnableShinessMap = enableShinessMap; }
     void SetTemporalID(int id) { mTemporalID = id; }
 
-private:
-
     float4 mDiffuseFactor;
     float3 mSpecularFactor;
     float mGlossinessFactor;
 
-    Texture* mDiffuseTexture = nullptr;
-    Texture* mSpecularGlossinessTexture = nullptr;
-    Texture* mNormalTexture = nullptr;
+    ResourceTexture* mDiffuseTexture = nullptr;
+    ResourceTexture* mSpecularGlossinessTexture = nullptr;
+    ResourceTexture* mNormalTexture = nullptr;
 
     bool mEnableDiffuseTexture;
     bool mEnableSpecularGlossinessTexture;
@@ -54,3 +52,12 @@ private:
 
     int mTemporalID = -1;
 };
+
+namespace Importer
+{
+	namespace Material
+	{
+		void Import(const tinygltf::Model& model, const tinygltf::Material& material, ResourceMaterial* rMaterial);
+	}
+};
+

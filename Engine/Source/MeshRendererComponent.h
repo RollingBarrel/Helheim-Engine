@@ -7,6 +7,8 @@
 class Mesh;
 class Material;
 class ResourceMesh;
+class ResourceMaterial;
+
 class MeshRendererComponent : public Component
 {
 public:
@@ -18,7 +20,7 @@ public:
 
 	void Draw();
 	void Load(const char* uid);
-	void LoadPBR(const char* uid);
+	void LoadPBR(const char* uid) {};
 	void Reset() override {}
 
 	void Update() override;
@@ -31,6 +33,9 @@ public:
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
 	std::vector<Mesh*> getMeshes() { return mMeshes; }
+
+	const ResourceMaterial* GetMaterial() const { return material; }
+
 	//UNIFORMS
 	float lightDir[3] = { 0.0f, -1.0f, 1.0f };
 	float lightColor[3] = { 0.0f, 0.0f, 0.7f };
@@ -43,7 +48,7 @@ private:
 
 private:
 	ResourceMesh* mMesh;
-	Material* material;
+	ResourceMaterial* material;
 	OBB mOBB;
 	AABB mAABB;
 	bool mDrawBox = false;

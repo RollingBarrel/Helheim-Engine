@@ -198,13 +198,13 @@
     <ClCompile Include="DebugPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceMaterial.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
-    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="ImporterMaterial.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -601,13 +601,13 @@
     <ClInclude Include="DebugPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceMaterial.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleTimer.h" />
-    <ClInclude Include="Texture.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="ImporterMaterial.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

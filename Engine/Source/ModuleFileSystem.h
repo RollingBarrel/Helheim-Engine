@@ -41,7 +41,8 @@ public:
 	unsigned int Load(const char* filePath, char** buffer) const;
 	unsigned int Save(const char* filePath, const void* buffer, unsigned int size, bool append = false) const;
 
-	bool Copy(const char* sourceFilePath, const char* destinationFilePath);
+	bool CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath);
+	bool CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath);
 	bool Delete(const char* filePath);
 	bool CreateDirectory(const char* directory);
 	bool Exists(const char* filePath) const;

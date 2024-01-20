@@ -3,6 +3,8 @@
 #include "ModuleFileSystem.h"
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
+#include "ImporterMaterial.h"
+
 
 #include "Algorithm/Random/LCG.h"
 
@@ -29,10 +31,10 @@ void Importer::Model::Import(const char* filePath)
     extension.append(".bin");
 
     std::string gltfPath = (ASSETS_MODEL_PATH + name + ".gltf");
-    App->GetFileSystem()->Copy(filePath, gltfPath.c_str());
+    App->GetFileSystem()->CopyAbsolutePath(filePath, gltfPath.c_str());
 
     std::string binPath = (ASSETS_MODEL_PATH + name + ".bin");
-    App->GetFileSystem()->Copy(extension.c_str(), binPath.c_str());
+    App->GetFileSystem()->CopyAbsolutePath(extension.c_str(), binPath.c_str());
 
     tinygltf::TinyGLTF gltfContext;
     tinygltf::Model model;
@@ -42,6 +44,18 @@ void Importer::Model::Import(const char* filePath)
     if (!loadOk)
     {
         LOG("[MODEL] Error loading %s: %s", gltfPath, error.c_str());
+    }
+   
+    for (int i = 0; i < model.images.size(); ++i)
+    {
+        std::string pngName = filePath;
+        unsigned filePos = pngName.find_last_of('/');
+        pngName = pngName.substr(0, filePos+1);
+        pngName.append(model.images[i].uri);
+
+        std::string images = (ASSETS_TEXTURE_PATH + model.images[i].uri);
+
+        App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), images.c_str());
     }
 
     for (const auto& srcMesh : model.meshes)
@@ -53,12 +67,17 @@ void Importer::Model::Import(const char* filePath)
             mesh->mUID = math::LCG().Int();
 
             Importer::Mesh::Import(model, primitive, mesh);
-           
+
+            if (primitive.material != -1) {
+                ResourceMaterial* material = new ResourceMaterial();            
+                Importer::Material::Import(model, model.materials[primitive.material], material);
+            }
+
             delete mesh;
             mesh = nullptr;
+
+
         }
     }
-
-    //if(model.materials)
     
 }

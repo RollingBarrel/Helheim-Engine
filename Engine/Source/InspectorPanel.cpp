@@ -6,8 +6,8 @@
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
-#include "ResourceMaterial.h"
-#include "Mesh.h"
+#include "ImporterMaterial.h"
+
 #include <MathFunc.h>
 
 bool InspectorPanel::mSame_component_popup = false;
@@ -470,17 +470,17 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	}
 	ImGui::EndTable();
 
-	std::vector<Mesh*> meshes = component->getMeshes();
-
-	for (auto i = 0; i < meshes.size(); i++) {
-		ImGui::PushID(i);
-		ResourceMaterial* material = meshes[i]->GetMaterial();
-		if (ImGui::CollapsingHeader(("Mesh " + std::to_string(i)).c_str())) {
-
-			MaterialVariables(material, i);
-		}
-		ImGui::PopID();
-	}
+	//std::vector<Mesh*> meshes = component->getMeshes();
+	//
+	//for (auto i = 0; i < meshes.size(); i++) {
+	//	ImGui::PushID(i);
+	//	ResourceMaterial* material = meshes[i]->GetMaterial();
+	//	if (ImGui::CollapsingHeader(("Mesh " + std::to_string(i)).c_str())) {
+	//
+	//		MaterialVariables(material, i);
+	//	}
+	//	ImGui::PopID();
+	//}
 
 	ImGui::SeparatorText("Shaders ");
 	ImGui::Text("Vertex: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetVertexShader());
@@ -491,10 +491,13 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::Checkbox("Draw bounding box:", &shouldDraw);
 }
 
-void InspectorPanel::MaterialVariables(ResourceMaterial* material, int i)
+void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent, int i)
 {
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
+
 	if (ImGui::BeginTable("materialTable", 4))
 	{
+
 		float4 diffuse = material->GetDiffuseFactor();
 		float3 specular = material->GetSpecularFactor();
 		float shininess = material->GetGlossinessFactor();

@@ -8,15 +8,19 @@
 #include "glew.h"
 
 #include "DirectXTex.h"
+#include "Algorithm/Random/LCG.h"
 
 void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
 {
+    texture->mUid = math::LCG().Int();
+    std::string gltfPath = (ASSETS_TEXTURE_PATH + std::string(filePath));
+
     DirectX::ScratchImage image;
 
-    size_t size = strlen(filePath) + 1;
+    size_t size = strlen(gltfPath.c_str()) + 1;
     wchar_t* pathTex = new wchar_t[size];
     size_t outSize;
-    mbstowcs_s(&outSize, pathTex, size, filePath, size - 1);
+    mbstowcs_s(&outSize, pathTex, size, gltfPath.c_str(), size - 1);
 
     // every texture have one format, if the format its not the correct it use another method for load
     HRESULT hr = DirectX::LoadFromDDSFile(pathTex, DirectX::DDS_FLAGS_NONE, nullptr, image);
@@ -63,9 +67,15 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
     texture->mMipLevels = image.GetMetadata().mipLevels;
     texture->mNumPixels = image.GetPixelsSize();
 
+    texture->mPixels = new unsigned char[texture->mNumPixels];
     for (auto i = 0; i < image.GetPixelsSize(); ++i)
     {
         texture->mPixels[i] = image.GetPixels()[i];
+    }
+
+    if (DirectX::HasAlpha(image.GetMetadata().format))
+    {
+        texture->mHasAlpha = true;
     }
 
     Texture::Save(texture);
@@ -75,7 +85,10 @@ void Importer::Texture::Save(const ResourceTexture* texture)
 {
     unsigned int header[7] = { texture->mWidth, texture->mHeight, texture->mInternalFormat, texture->mFormat, texture->mType ,texture->mMipLevels, texture->mNumPixels};
 
+    bool alpha[1] = { texture->mHasAlpha };
+
     unsigned int size = sizeof(header) +
+                        sizeof(alpha) +
                         sizeof(unsigned char) * texture->mNumPixels;
 
     char* fileBuffer = new char[size];
@@ -85,12 +98,17 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     memcpy(cursor, header, bytes);
     cursor += bytes;
 
+    bytes = sizeof(alpha);
+    memcpy(cursor, alpha, bytes);
+    cursor += bytes;
+
     bytes = sizeof(unsigned char) * texture->mNumPixels;
     memcpy(cursor, texture->mPixels, bytes);
     cursor += bytes;
 
+    //TODO Change name for random UID
     std::string path = LIBRARY_TEXTURE_PATH;
-    path += texture->mTextureName;
+    path += std::to_string(texture->mUid);
     path += ".textssy";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
@@ -121,6 +139,12 @@ unsigned int Importer::Texture::Load(char* fileBuffer, ResourceTexture* texture,
     texture->mMipLevels = header[5];
     texture->mNumPixels = header[6];
 
+    bool alpha[1];
+    bytes = sizeof(alpha);
+    memcpy(alpha, cursor, bytes);
+    cursor += bytes;
+    texture->mHasAlpha = alpha[0];
+
     bytes = sizeof(unsigned int);
     memcpy(&texture->mWidth, cursor, bytes);
 
@@ -147,5 +171,6 @@ unsigned int ResourceTexture::CreateTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
 	return texId;
 }

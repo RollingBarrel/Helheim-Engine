@@ -1,5 +1,4 @@
 #include "MeshRendererComponent.h"
-#include "ResourceMaterial.h"
 #include "imgui.h"
 #include "ImporterMesh.h"
 #include "Application.h"
@@ -9,7 +8,7 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleRenderTest.h"
-#include "Mesh.h"
+
 
 
 
@@ -45,12 +44,12 @@ void MeshRendererComponent::Draw()
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 	mInsideFrustum = false;
-	for (Mesh* mesh : mMeshes)
-	{
-		App->GetOpenGL()->BindSceneFramebuffer();
-		mesh->Render(lightDir, lightColor, lightIntensity, ambientColor);
-		App->GetOpenGL()->UnbindSceneFramebuffer();
-	}
+	//for (Mesh* mesh : mMeshes)
+	//{
+	//	App->GetOpenGL()->BindSceneFramebuffer();
+	//	mesh->Render(lightDir, lightColor, lightIntensity, ambientColor);
+	//	App->GetOpenGL()->UnbindSceneFramebuffer();
+	//}
 
 	//App->GetOpenGL()->BindSceneFramebuffer();
 //
@@ -99,38 +98,38 @@ Component* MeshRendererComponent::Clone(GameObject* owner)
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::LoadPBR(const char* assetFileName)
-{
-	Clear();
-	tinygltf::TinyGLTF gltfContext;
-	tinygltf::Model srcModel;
-	std::string error, warning;
-	bool loadOk = gltfContext.LoadASCIIFromFile(&srcModel, &error, &warning, assetFileName);
-	if (!loadOk)
-	{
-		LOG("Error loading %s: %s", assetFileName, error.c_str());
-	}
-	for (const auto& srcMesh : srcModel.meshes)
-	{
-		for (const auto& primitive : srcMesh.primitives)
-		{
-			Mesh* mesh = new Mesh();
-			mesh->LoadVBO(srcModel, srcMesh, primitive);
-			mesh->LoadEBO(srcModel, srcMesh, primitive);
-			mesh->CreateVAO();
-			mMeshes.push_back(mesh);
-
-			int materialID = primitive.material;
-
-			if (materialID != -1) {
-				ResourceMaterial* material = new ResourceMaterial();
-				material->SetTemporalID(mTemporalID);
-				material->LoadMaterial(srcModel, srcModel.materials[materialID]);
-				mesh->SetMaterial(material);
-			}
-		}
-	}
-}
+//void MeshRendererComponent::LoadPBR(const char* assetFileName)
+//{
+//	Clear();
+//	tinygltf::TinyGLTF gltfContext;
+//	tinygltf::Model srcModel;
+//	std::string error, warning;
+//	bool loadOk = gltfContext.LoadASCIIFromFile(&srcModel, &error, &warning, assetFileName);
+//	if (!loadOk)
+//	{
+//		LOG("Error loading %s: %s", assetFileName, error.c_str());
+//	}
+//	for (const auto& srcMesh : srcModel.meshes)
+//	{
+//		for (const auto& primitive : srcMesh.primitives)
+//		{
+//			Mesh* mesh = new Mesh();
+//			mesh->LoadVBO(srcModel, srcMesh, primitive);
+//			mesh->LoadEBO(srcModel, srcMesh, primitive);
+//			mesh->CreateVAO();
+//			mMeshes.push_back(mesh);
+//
+//			int materialID = primitive.material;
+//
+//			//if (materialID != -1) {
+//			//	ResourceMaterial* material = new ResourceMaterial();
+//			//	material->SetTemporalID(mTemporalID);
+//			//	material->LoadMaterial(srcModel, srcModel.materials[materialID]);
+//			//	mesh->SetMaterial(material);
+//			//}
+//		}
+//	}
+//}
 
 void MeshRendererComponent::LoadByIDTemporal(const int id)
 {

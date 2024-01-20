@@ -2,6 +2,8 @@
 
 struct ResourceTexture
 {
+	bool HasAlpha() const { return mHasAlpha; }
+
 	unsigned int mWidth;
 	unsigned int mHeight;
 
@@ -16,8 +18,12 @@ struct ResourceTexture
 	unsigned char* mPixels;
 	
 	const char* mTextureName;
+	unsigned int mUid;
+
+	bool mHasAlpha;
 
 	unsigned int CreateTexture();
+
 };
 
 namespace Importer
