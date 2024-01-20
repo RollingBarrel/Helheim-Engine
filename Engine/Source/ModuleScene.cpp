@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleOpenGL.h"
+#include "ModuleFileSystem.h"
 #include "TestSceneGameObjects.cpp"
 #include "Archive.h"
 #include "Globals.h"
@@ -23,24 +24,45 @@ bool ModuleScene::Init()
 	TestSceneGameObjects test = TestSceneGameObjects();
 	test.TestSceneWithGameObjects();
 
+	Save("Scene");
+	Load("Scene");
+
+	return true;
+}
+
+void ModuleScene::Save(const char* sceneName) {
+	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
+	if (saveFilePath.find(".json") == std::string::npos) {
+		saveFilePath += ".json";
+	}
+
 	Archive* sceneArchive = new Archive();
 	Archive* archive = new Archive();
+
 	SaveGame(mRoot->GetChildren(), *archive);
 	sceneArchive->AddObject("Scene", *archive);
 
 	std::string out = sceneArchive->Serialize();
+	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+}
 
-
-	//INIT For testing purposes of Scene Load
-	//const char* json = test.TestLoadSceneWithGameObjectsWithGameObjectsAsChildrenAndComponents();
-	rapidjson::Document d;
-	rapidjson::ParseResult ok = d.Parse(out.c_str());
-	if (!ok) {
-		// TODO, what we do if we fail on loading a scene?
-		//LOG("Error when loading a scene: %s (%u)", rapidjson::GetParseError(ok.Code()), ok.Offset);
+void ModuleScene::Load(const char* sceneName) {
+	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
+	if (loadFilePath.find(".json") == std::string::npos) {
+		loadFilePath += ".json";
 	}
 
-	// Delete all GameObjects before loading the Scene
+	char* loadedBuffer = nullptr;
+	App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer);
+
+	rapidjson::Document d;
+	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
+	if (!ok) {
+		// Handle parsing error
+		LOG("Scene was not loaded.");
+		return;
+	}
+
 	const std::vector<GameObject*>& children = mRoot->GetChildren();
 	if (!children.empty()) {
 		for (GameObject* child : children) {
@@ -52,12 +74,11 @@ bool ModuleScene::Init()
 		const rapidjson::Value& s = d["Scene"];
 		mRoot->Load(s);
 	}
-	//END For testing purposes of Scene Load
 
-	
-
-	return true;
+	// Free the loaded buffer
+	delete[] loadedBuffer;
 }
+
 
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
 	// Save the current GameObject to its archive

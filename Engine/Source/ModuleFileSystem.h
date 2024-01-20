@@ -10,6 +10,7 @@
 #define ASSETS_PATH "Assets/"
 #define ASSETS_MODEL_PATH "Assets/Models/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"
+#define ASSETS_SCENES_PATH "Assets/Scenes/"
 
 #include <vector>
 #include <string>

@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleTimer.h"
+#include "ModuleScene.h"
 
 PausePanel::PausePanel() : Panel(PAUSEPANEL, true)
 {
@@ -30,6 +31,10 @@ void PausePanel::Draw(int windowFlags)
 		Play();
 		mState = GameState::RUN_ONCE;
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop", ImVec2(40, 40))) {
+		Stop();
+	}
 
 	ImGui::End();
 }
@@ -37,9 +42,16 @@ void PausePanel::Draw(int windowFlags)
 void PausePanel::Play() {
 	App->GetClock()->SetTimeScale(1.0f);
 	mState = GameState::PLAYING;
+	App->GetScene()->Save("TemporalScene");
 }
 
 void PausePanel::Pause() {
 	App->GetClock()->SetTimeScale(0.0f);
 	mState = GameState::PAUSED;
+}
+
+void PausePanel::Stop() {
+	App->GetClock()->SetTimeScale(1.0f);
+	mState = GameState::STOP;
+	App->GetScene()->Load("TemporalScene");
 }
