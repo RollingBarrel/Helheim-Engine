@@ -198,6 +198,13 @@
     <ClCompile Include="DebugPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceMaterial.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ModuleProgram.cpp" />
+    <ClCompile Include="ModuleTimer.cpp" />
+    <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -594,7 +601,13 @@
     <ClInclude Include="DebugPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-
+    <ClInclude Include="ResourceMaterial.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ModuleProgram.h" />
+    <ClInclude Include="ModuleTimer.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="PreciseTimer.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -645,6 +658,9 @@
     <Filter Include="Dependencies\MikkTspace">
       <UniqueIdentifier>{58fe3eb7-9da9-4e89-b4ef-7117bf4acc3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{8f599ee5-ceb5-410f-8897-6c33ddc67d58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
@@ -664,6 +680,20 @@
     </None>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\Game\shaders\default_fragment.glsl" />
+    <None Include="..\Game\shaders\default_vertex.glsl" />
+    <None Include="..\Game\Assets\Shaders\Fragment.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBR_PixelShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Vertex.vs">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

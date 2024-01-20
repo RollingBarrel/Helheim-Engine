@@ -1,19 +1,41 @@
-#version 440
-layout(location = 0) in vec3 vertexPosition;
-layout(location = 1) in vec3 vertexNormal;
-layout(location = 2) in vec2 vertexUV0;
+#version 460 core
+layout(location = 0) in vec3 inPos;
+layout(location = 1) in vec2 inUv;
+layout(location = 2) in vec3 inNorm;
+layout(location = 3) in vec4 inTang;
+
 
 layout(location = 0) uniform mat4 model;
-layout(location = 1) uniform mat4 viewproj;
+layout (location = 1)uniform vec3 lDir;
+layout (location = 2)uniform vec3 cPos;
 
-out vec3 position;
-out vec3 normal;
-out vec2 uv0;
+layout(std140, binding = 0) uniform CameraMatrices{
+	mat4 view;
+	mat4 proj;
+};
+
+
+out VertToFrag {
+	vec2 uv;
+	vec3 tLightDir;
+	vec3 tPos;
+	vec3 tCameraPos;
+	vec3 tNorm;
+};
 
 void main()
 {
-	gl_Position = viewproj * model * vec4(vertexPosition, 1.0);
-	position = (model * vec4(vertexPosition, 1.0f)).xyz;
-	normal = transpose(inverse(mat3(model))) * vertexNormal;
-	uv0 = vertexUV0;
+	vec3 N = normalize(vec3(model * vec4(inNorm, 0.0)));
+	vec3 T = normalize(vec3(model * vec4(inTang.xyz, 0.0))); 
+	vec3 B = inTang.w * cross(N, T);
+	mat3 TBNInv = transpose(mat3(T,B,N));
+
+	uv = inUv;
+	tLightDir = TBNInv * lDir;
+	vec4 modelPos = model * vec4(inPos,1);
+	tPos = TBNInv * modelPos.xyz;
+	//Calculate the normal in tangent space because we need it if the model does not have a normal map
+	tNorm = TBNInv * (model * vec4(inNorm,1)).xyz;
+	tCameraPos = TBNInv * cPos;
+	gl_Position = proj * view * modelPos;
 }

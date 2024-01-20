@@ -9,6 +9,7 @@
 #include "ModuleRenderTest.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleProgram.h"
 
 
 Application::Application()

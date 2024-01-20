@@ -1,4 +1,4 @@
-#version 440
+#version 460 core
 
 struct Material
 {
@@ -8,64 +8,75 @@ struct Material
 	//Specular
 	vec3 specularColor;
 	sampler2D specularTexture;
+	//Normal
+	sampler2D normalTexture;
 	
 	float shininess; //Shininess
-	vec3 ambientColor; //Ambient color
+	//vec3 ambientColor; //Ambient color
 	
 	//Options
 	bool hasDiffuseMap;
 	bool hasSpecularMap;
 	bool hasShininessMap;
+	bool hasNormalMap;
 };
 
-in vec3 position;
-in vec3 normal;
-in vec2 uv0;
+in VertToFrag {
+	vec2 uv;
+	vec3 tLightDir;
+	vec3 tPos;
+	vec3 tCameraPos;
+	vec3 tNorm;
+};
+
 
 //Light properties
-uniform vec3 lightDir;
-uniform vec3 lightColor;
-uniform float lightIntensity;
-
-uniform vec3 cameraPos;
+layout (location = 3)uniform vec3 lightColor;
+layout (location = 4)uniform vec3 ambientCol;
+uniform (location = 5)float lightIntensity;//0-5
 
 uniform Material material;
-
-vec3 diffuseColor;
-vec3 specularColor;
-float shininess;
 
 out vec4 outColor;
 
 void main() {
 
+	vec3 diffuseColor;
+	vec3 specularColor;
+	float shininess;
+
 	//Diffuse
 	if(material.hasDiffuseMap){//Using  gamma correction forces to transform sRGB textures to linear space
-		diffuseColor = vec3(texture(material.diffuseTexture, uv0));
+		diffuseColor = vec3(texture(material.diffuseTexture, uv));
 		diffuseColor = pow(diffuseColor, vec3(2.2));
 	}else{
 		diffuseColor = material.diffuseColor;
 	}
 	//Specular
 	if(material.hasSpecularMap){//Using  gamma correction forces to transform sRGB textures to linear space
-		specularColor = vec3(texture(material.specularTexture, uv0));
+		specularColor = vec3(texture(material.specularTexture, uv));
 		specularColor = pow(specularColor,vec3(2.2));
 	}else{
 		specularColor = material.specularColor;
 	}
 	//Shininess
 	if(material.hasShininessMap){
-		shininess = exp2(15*texture(material.specularTexture, uv0).a+1);
+		shininess = exp2(15*texture(material.specularTexture, uv).a+1);
 	}else{
 		shininess = material.shininess;
 	}
-	
-	vec3 N = -normalize(normal);  	//Normal
-	vec3 L =  normalize(lightDir); 	//Light direction
+	vec3 N = vec3(0);
+	if (material.hasNormalMap){
+		N = normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
+	}
+	else{
+		N = normalize(tNorm);  	//Normal
+	}
+	vec3 L =  -normalize(tLightDir); 	//Light direction
 	float NdotL = max(dot(N,L),0);	//It doesn't make sense for color to be negative
 	
 	vec3 R = reflect(L,N);
-	vec3 V = normalize(cameraPos - position); //View direction
+	vec3 V = normalize(tCameraPos - tPos); //View direction
 	float VdotRpown = pow(max(dot(V,R), 0), shininess);
 	
 	vec3 RFOi = specularColor + (1-specularColor) * pow(1-NdotL,5);
@@ -73,10 +84,10 @@ void main() {
 	vec3 Li = lightIntensity * lightColor;  //Incoming radiance
 	
 	//Color with specular and no pi corretion
-	vec3 lightColor = ((diffuseColor*(1-specularColor)) + ((shininess +2)/2)* RFOi * VdotRpown) * Li * NdotL;
+	vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess +2)/2)* RFOi * VdotRpown) * Li * NdotL;
 	
 	//Final color  
-	vec3 color = material.ambientColor * diffuseColor + lightColor;
+	vec3 color = material.ambientColor * diffuseColor + pbrColor;
 	
 	//Gamma correction
 	color.rgb = pow(color.rgb, vec3(1/2.2));

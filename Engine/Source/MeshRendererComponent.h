@@ -3,25 +3,22 @@
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
 #include "GameObject.h"
-#include "Mesh.h"
 
-
+class Mesh;
+class Material;
+class ResourceMesh;
 class MeshRendererComponent : public Component
 {
 public:
 	MeshRendererComponent(GameObject* owner);
 	MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner);
-	//~MeshRendererComponent();
-	void Clear();
-	void Draw();
-	void Reset() override;
-	void Load(const char* assetFileName);
-	void LoadByIDTemporal(const int id);
-	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
 	~MeshRendererComponent() { delete mMesh; };
+	void Clear();
+	void LoadByIDTemporal(const int id);
 
 	void Draw();
 	void Load(const char* uid);
+	void LoadPBR(const char* uid);
 	void Reset() override {}
 
 	void Update() override;
@@ -30,9 +27,10 @@ public:
 	const OBB getOBB() const { return mOBB; }
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
-	bool* getShouldDraw() { return mDrawBox; }
-	std::vector<Mesh*> getMeshes() { return mMeshes; }
+	bool ShouldDraw() const { return mDrawBox; }
+	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
+	std::vector<Mesh*> getMeshes() { return mMeshes; }
 	//UNIFORMS
 	float lightDir[3] = { 0.0f, -1.0f, 1.0f };
 	float lightColor[3] = { 0.0f, 0.0f, 0.7f };
@@ -42,8 +40,6 @@ public:
 
 private:
 	std::vector<Mesh*> mMeshes; //it was a mesh pointer (Mesh*) 
-	bool ShouldDraw() const { return mDrawBox; }
-	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
 private:
 	ResourceMesh* mMesh;

@@ -333,7 +333,7 @@ void GenerateTangents(unsigned int indexType, unsigned int VBOEBO[1], unsigned i
 bool ModuleRenderTest::Init()
 {
 	//Switch to Resource Shader later on.
-	programId = CreateProgram("Shaders/Vertex.vs", "Shaders/Fragment.fs");
+	programId = CreateProgram("Assets/Shaders/PBR_VertexShader.glsl", "Assets/Shaders/PBR_PixelShader.glsl");
 
 	//Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
 
@@ -346,12 +346,11 @@ bool ModuleRenderTest::Init()
 	glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
 
 
-	glUniform3fv(4, 1, lightDir);
-	glUniform3fv(5, 1, lightCol);
-	glUniform3fv(6, 1, ambientCol);
-	glUniform3fv(7, 1, App->GetCamera()->GetPos().ptr());
-	glUniform1f(8, kD);
-	glUniform1f(10, brightness);
+	glUniform3fv(1, 1, lightDir);
+	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
+	glUniform3fv(3, 1, lightCol);
+	glUniform3fv(4, 1, ambientCol);
+	glUniform1f(5, lightIntensity);
 
 	//float vertex[] = {
 	//-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
@@ -396,18 +395,16 @@ bool ModuleRenderTest::Init()
 update_status ModuleRenderTest::Update()
 {
 	glUseProgram(programId);
-	glUniform3fv(7, 1, App->GetCamera()->GetPos().ptr());
+	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
 	ImGui::Begin("Lighting");
-	if (ImGui::DragFloat("KD", &kD, 0.05f, 0.0f, 1.0f))
-		glUniform1f(8, kD);
-	if (ImGui::DragFloat("Brightness", &brightness, 0.05f, 0.0f))
-		glUniform1f(10, brightness);
+	if (ImGui::DragFloat("LightIntensity", &lightIntensity, 0.05f, 0.0f, 5.0f))
+		glUniform1f(5, lightIntensity);
 	if (ImGui::DragFloat3("LightDir", lightDir, 0.05f, -1.0f, 1.0f))
-		glUniform3fv(4, 1, lightDir);
+		glUniform3fv(1, 1, lightDir);
 	if (ImGui::ColorPicker3("LightCol", lightCol))
-		glUniform3fv(5, 1, lightCol);
+		glUniform3fv(3, 1, lightCol);
 	if (ImGui::ColorPicker3("AmbientCol", ambientCol))
-		glUniform3fv(6, 1, ambientCol);
+		glUniform3fv(4, 1, ambientCol);
 	ImGui::End();
 
 	//App->GetOpenGL()->BindSceneFramebuffer();

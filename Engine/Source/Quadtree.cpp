@@ -165,7 +165,7 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 {
 	for (auto child : node->GetChildren()) {
 		//TODO Detect if the child is already inside to avoid duplicates when pressing button more than twice in a row
-		if (child->getMeshRenderer() != nullptr) 
+		if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 		{
 			AddObject(child);
 		}

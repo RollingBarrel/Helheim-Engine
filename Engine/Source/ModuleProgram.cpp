@@ -24,29 +24,29 @@ ModuleProgram::~ModuleProgram()
 bool ModuleProgram::Init()
 {
 	
-	for (const auto& entry : std::filesystem::recursive_directory_iterator("Assets/Shaders/")) {
-		if (entry.is_regular_file()) {
-			std::string path = entry.path().generic_u8string();
-			std::ifstream strm(path.c_str());
-			if (!strm.is_open()) {
-				LOG("Error opening file: %s", path.c_str())49;
-				continue;
-			}
-			std::stringstream buffer;
-			buffer << strm.rdbuf();
-			size_t pos = path.find_first_of("/", 0);
-			if (pos != std::string::npos)
-			{
-				if (glNamedStringARB) {
-					glNamedStringARB(GL_SHADER_INCLUDE_ARB, -1, &path.c_str()[pos], -1, buffer.str().c_str());
-				}
-				else {
-					LOG("glNamedStringARB no está disponible en este contexto OpenGL.");
-				}
-				
-			}
-		}
-	}
+	//for (const auto& entry : std::filesystem::recursive_directory_iterator("Assets/Shaders/")) {
+	//	if (entry.is_regular_file()) {
+	//		std::string path = entry.path().generic_u8string();
+	//		std::ifstream strm(path.c_str());
+	//		if (!strm.is_open()) {
+	//			LOG("Error opening file: %s", path.c_str())49;
+	//			continue;
+	//		}
+	//		std::stringstream buffer;
+	//		buffer << strm.rdbuf();
+	//		size_t pos = path.find_first_of("/", 0);
+	//		if (pos != std::string::npos)
+	//		{
+	//			if (glNamedStringARB) {
+	//				glNamedStringARB(GL_SHADER_INCLUDE_ARB, -1, &path.c_str()[pos], -1, buffer.str().c_str());
+	//			}
+	//			else {
+	//				LOG("glNamedStringARB no está disponible en este contexto OpenGL.");
+	//			}
+	//			
+	//		}
+	//	}
+	//}
 
 	// Add to mPrograms any shader you need
 	mPrograms["default"] = CreateShaderProgramFromPaths(mVertexShader, mFragmentShader);

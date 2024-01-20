@@ -9,6 +9,8 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleRenderTest.h"
+#include "Mesh.h"
+
 
 
 
@@ -38,15 +40,16 @@ void MeshRendererComponent::Draw()
 	{
 		return;
 	}
-	if (*mDrawBox)
+	if (mDrawBox)
 	{
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 	mInsideFrustum = false;
 	for (Mesh* mesh : mMeshes)
 	{
-
+		App->GetOpenGL()->BindSceneFramebuffer();
 		mesh->Render(lightDir, lightColor, lightIntensity, ambientColor);
+		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
 
 	//App->GetOpenGL()->BindSceneFramebuffer();
@@ -68,11 +71,6 @@ void MeshRendererComponent::Draw()
 	//App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 
-void MeshRendererComponent::Reset()
-{
-
-}
-
 void MeshRendererComponent::Load(const char* uid)
 {
 	Importer::Mesh::Load(mMesh, uid);
@@ -85,6 +83,8 @@ void MeshRendererComponent::Load(const char* uid)
 	float4x4 model = mOwner->GetWorldTransform();
 
 	mOBB.SetFrom(mAABB, model);
+
+	//ResourceMaterial Load
 
 }
 
@@ -99,7 +99,7 @@ Component* MeshRendererComponent::Clone(GameObject* owner)
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::Load(const char* assetFileName)
+void MeshRendererComponent::LoadPBR(const char* assetFileName)
 {
 	Clear();
 	tinygltf::TinyGLTF gltfContext;
@@ -137,40 +137,40 @@ void MeshRendererComponent::LoadByIDTemporal(const int id)
 	mTemporalID = id;
 	switch (id) {
 		case 0:
-			Load("Assets\\Models\\Clock\\Clock.gltf");
+			LoadPBR("Assets\\Models\\Clock\\Clock.gltf");
 			break;
 		case 1:
-			Load("Assets\\Models\\DollHouse\\Dollhouse.gltf");
+			LoadPBR("Assets\\Models\\DollHouse\\Dollhouse.gltf");
 			break;
 		case 2:
-			Load("Assets\\Models\\Drawers\\Drawers.gltf");
+			LoadPBR("Assets\\Models\\Drawers\\Drawers.gltf");
 			break;
 		case 3:
-			Load("Assets\\Models\\Duck\\Duck.gltf");
+			LoadPBR("Assets\\Models\\Duck\\Duck.gltf");
 			break;
 		case 4:
-			Load("Assets\\Models\\Firetruck\\Firetruck.gltf");
+			LoadPBR("Assets\\Models\\Firetruck\\Firetruck.gltf");
 			break;
 		case 5:
-			Load("Assets\\Models\\Floor\\Floor.gltf");
+			LoadPBR("Assets\\Models\\Floor\\Floor.gltf");
 			break;
 		case 6:
-			Load("Assets\\Models\\Hearse\\Hearse.gltf");
+			LoadPBR("Assets\\Models\\Hearse\\Hearse.gltf");
 			break;
 		case 7:
-			Load("Assets\\Models\\Player\\Player.gltf");
+			LoadPBR("Assets\\Models\\Player\\Player.gltf");
 			break;
 		case 8:
-			Load("Assets\\Models\\SpinningTop\\SpinningTop.gltf");
+			LoadPBR("Assets\\Models\\SpinningTop\\SpinningTop.gltf");
 			break;
 		case 9:
-			Load("Assets\\Models\\testing\\Robot\\Robot.gltf");
+			LoadPBR("Assets\\Models\\testing\\Robot\\Robot.gltf");
 			break;
 		case 10:
-			Load("Assets\\Models\\Wall\\Wall.gltf");
+			LoadPBR("Assets\\Models\\Wall\\Wall.gltf");
 			break;
 		case 11:
-			Load("Assets\\Models\\ZomBunny\\Zombunny.gltf");
+			LoadPBR("Assets\\Models\\ZomBunny\\Zombunny.gltf");
 			break;
 		default:
 			// Handle the case when the ID is not found

@@ -1,6 +1,9 @@
 #include "ResourceMaterial.h"
 #include "Texture.h"
 
+#define TINYGLTF_NO_STB_IMAGE_WRITE
+#define TINYGLTF_NO_STB_IMAGE
+#define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
 ResourceMaterial::ResourceMaterial()
@@ -9,8 +12,10 @@ ResourceMaterial::ResourceMaterial()
     mGlossinessFactor(1.0f),
     mDiffuseTexture(nullptr),
     mSpecularGlossinessTexture(nullptr),
+    mNormalTexture(nullptr),
     mEnableDiffuseTexture(false),
     mEnableSpecularGlossinessTexture(false),
+    mEnableNormalMap(false),
     mEnableShinessMap(false)
 {
 
@@ -93,6 +98,28 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     if (specularTexture->hasAlpha()) {
                         mEnableShinessMap = true;
                     }
+                }
+            }
+        }
+
+        if (extensionMap.Has("normalTexture"))
+        {
+            const tinygltf::Value& normalTexture = extensionMap.Get("normalTexture");
+
+            if (normalTexture.IsObject()) {
+                const tinygltf::Value& indexValue = normalTexture.Get("index");
+
+                if (indexValue.IsInt()) {
+                    int normalIndex = indexValue.Get<int>();
+                    const tinygltf::Texture& normalMap = model.textures[normalIndex];
+                    const tinygltf::Image& image = model.images[normalMap.source];
+                    const char* imageUri = image.uri.c_str();
+
+                    Texture* normalTexture = new Texture(mTemporalID);
+                    normalTexture->LoadTexture(imageUri);
+                    mNormalTexture = normalTexture;
+
+                    mEnableNormalMap = true;
                 }
             }
         }

@@ -25,8 +25,7 @@ private:
 	unsigned int textureId;
 	unsigned int normTextureId;
 
-	float brightness = 20;
-	float kD = 0.2;
+	float lightIntensity = 1.2f;
 	float lightDir[3] = { 0.0f, -1.0f, -1.0f };
 	float lightCol[3] = { 1.f, 1.f, 1.f };
 	float ambientCol[3] = { 0.3f, 0.4f, 0.6f };

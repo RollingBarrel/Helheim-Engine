@@ -7,6 +7,7 @@
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
+#include "Mesh.h"
 #include <MathFunc.h>
 
 bool InspectorPanel::mSame_component_popup = false;
@@ -486,7 +487,8 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::Text("Fragment: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetFragmentShader());
 
 	ImGui::Text(" ");
-	ImGui::Checkbox("Draw bounding box:", component->getShouldDraw());
+	bool shouldDraw = component->ShouldDraw();
+	ImGui::Checkbox("Draw bounding box:", &shouldDraw);
 }
 
 void InspectorPanel::MaterialVariables(ResourceMaterial* material, int i)

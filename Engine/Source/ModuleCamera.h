@@ -19,6 +19,7 @@ public:
 	const float3& GetPos() const { return frustum.pos; }
 	float4x4 GetViewMatrix() const { return frustum.ViewMatrix(); }
 	float4x4 GetProjectionMatrix() const { return frustum.ProjectionMatrix(); }
+	float4x4 GetViewProjMatrix() const { return frustum.ViewProjMatrix(); }
 	unsigned int GetCameraUniffromsId() const { return cameraUnis; }
 	void WindowResized(int w, int h);
 

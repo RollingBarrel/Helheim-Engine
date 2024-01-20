@@ -11,7 +11,6 @@
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
-#define TINYGLTF_IMPLEMENTATION /* Only in one of the includes */
 #include "tiny_gltf.h"
 
 Mesh::Mesh()
@@ -168,7 +167,7 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 		glUniform3fv(glGetUniformLocation(program,"material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
 		glUniform3fv(glGetUniformLocation(program,"material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
 		glUniform1f(glGetUniformLocation(program,"material.shininess"), mMaterial->GetGlossinessFactor());
-		glUniform3f(glGetUniformLocation(program, "material.ambientColor"), ambientColor[0], ambientColor[1], ambientColor[2]);
+		//glUniform3f(glGetUniformLocation(program, "material.ambientColor"), ambientColor[0], ambientColor[1], ambientColor[2]);
 		if (mMaterial->GetEnableDiffuseTexture() && mMaterial->GetDiffuseMap() != nullptr)
 		{
 			glUniform1i(glGetUniformLocation(program,"material.hasDiffuseMap"), 1);
@@ -194,6 +193,19 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 			glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 0);
 		}
 
+		if (mMaterial->GetEnableNormalMap() && mMaterial->GetNormalMap() != nullptr)
+		{
+			glUniform1i(glGetUniformLocation(program, "material.hasNomalMap"), 1);
+			GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
+			glUniform1i(normalTextureLoc, 2);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, mMaterial->GetNormalMap()->getTextureID());
+		}
+		else
+		{
+			glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 0);
+		}
+
 		if (mMaterial->GetEnableShinessMap())
 		{
 			glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
@@ -206,11 +218,7 @@ void Mesh::Render(float lightDir[3], float lightColor[3], float lightIntensity, 
 		glUniform3f(glGetUniformLocation(program, "lightDir"), lightDir[0], lightDir[1], lightDir[2]);
 		glUniform3f(glGetUniformLocation(program, "lightColor"), lightColor[0], lightColor[1], lightColor[2]);
 		glUniform1f(glGetUniformLocation(program, "lightIntensity"), lightIntensity);
-		
-
-		float3 cameraPos = App->GetCamera()->GetCameraPos();
-		glUniform3f(glGetUniformLocation(program, "cameraPos"), cameraPos.x, cameraPos.y, cameraPos.z);
-
+	
 	}
 
 	glBindVertexArray(m_vao);

@@ -50,6 +50,7 @@ void ScenePanel::Draw(int windowFlags)
 					++path;
 				}
 				cMesh->Load(asset->mName);
+
 			}
 			ImGui::EndDragDropTarget();
 		}

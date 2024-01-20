@@ -51,7 +51,6 @@ public:
 	void SetScale(const float3& scale);
 
 	Component* CreateComponent(ComponentType type);
-	MeshRendererComponent* getMeshRenderer() const;
 
 private:
 	GameObject* RemoveChild(const int id);
