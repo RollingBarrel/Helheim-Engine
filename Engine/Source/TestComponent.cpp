@@ -35,7 +35,8 @@ void TestComponent::Save(Archive& archive) const {
 	archive.AddString("type", "Test");
 }
 
-void TestComponent::Load(const rapidjson::Value& data) {
+TestComponent* TestComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {
+	return nullptr;
 }
 
 

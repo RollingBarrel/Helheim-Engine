@@ -86,7 +86,26 @@ void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddString("type", "MeshRenderer");
 }
 
-void MeshRendererComponent::Load(const rapidjson::Value& data) {
-	// TODO implement by File System Team
+MeshRendererComponent* MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
+	const char* meshID = { "" };
+	const char* materialID = { "" };
+	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsString()) {
+		meshID = componentJson["MeshID"].GetString();
+	}
+	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsString()) {
+		materialID = componentJson["MaterialID"].GetString();
+	}
+
+	MeshRendererComponent* m = new MeshRendererComponent(owner);
+	if (meshID != "") {
+		m->Load(meshID);
+	}
+	if (materialID != "") {
+		//TODO check if we separate load function from each Component to load specific resources
+		//m->Load(materialID);
+	}
+
+	return m;
+
 }
 
