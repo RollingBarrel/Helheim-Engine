@@ -81,7 +81,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			if (ImGui::Selectable("Delete")) {
 				for (auto object : FilterMarked()) {
 					App->GetScene()->AddGameObjectToDelete(object);
-					mFocusedObject = nullptr;
+					mFocusedObject = App->GetScene()->GetRoot();
 				}
 				mMarked.clear();
 			}
