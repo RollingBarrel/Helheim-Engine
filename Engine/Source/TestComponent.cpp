@@ -29,7 +29,3 @@ Component* TestComponent::Clone(GameObject* owner)
 {
     return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }
-
-
-
-

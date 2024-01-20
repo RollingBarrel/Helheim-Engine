@@ -65,6 +65,8 @@ bool ModuleOpenGL::Init()
 	context = SDL_GL_CreateContext(App->GetWindow()->window);
 
 	GLenum err = glewInit();
+	glDebugMessageCallback(&OurOpenGLErrorFunction, nullptr); // sets the callback
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
 
 	LOG("Using Glew %s", glGetString(GLEW_VERSION));
 	LOG("Vendor: %s", glGetString(GL_VENDOR));

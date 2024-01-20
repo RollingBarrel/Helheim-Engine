@@ -144,7 +144,7 @@ update_status ModuleInput::PreUpdate()
         }
     }
 
-    return UPDATE_CONTINUE;
+	return UPDATE_CONTINUE;
 }
 
 bool ModuleInput::CleanUp()

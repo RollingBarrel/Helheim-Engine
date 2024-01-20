@@ -18,6 +18,8 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 
+static ModuleEditor* s_ModuleEditorInstance = nullptr;
+
 ModuleEditor::ModuleEditor()
 {
 	mPanels[ABOUTPANEL] = new AboutPanel();

@@ -209,17 +209,22 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ModuleRenderTest.cpp" />
-    <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
-    <ClCompile Include="ModuleScene.cpp" />
-    <ClCompile Include="Panel.cpp" />
-    <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
+    <ClCompile Include="ScenePanel.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
+    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="QuadtreePanel.cpp" />
-    <ClCompile Include="ScenePanel.cpp" />
+    <ClCompile Include="ModuleTimer.cpp" />
+    <ClCompile Include="PausePanel.cpp" />
+    <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
@@ -341,6 +346,9 @@
     <ClInclude Include="QuadtreePanel.h" />
     <ClInclude Include="ScenePanel.h" />
     <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="ModuleTimer.h" />
+    <ClInclude Include="PreciseTimer.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
