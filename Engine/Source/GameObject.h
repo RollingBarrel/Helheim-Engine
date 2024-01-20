@@ -4,6 +4,12 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "string"
+#include "Archive.h"
+
+#undef max
+#undef min
+#define NOMINMAX
+#include "rapidjson/document.h"
 
 class MeshRendererComponent;
 class Component;
@@ -19,6 +25,8 @@ public:
 	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
+	GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation);
+
 
 	~GameObject();
 
@@ -49,8 +57,10 @@ public:
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
-	void CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type);
 	MeshRendererComponent* getMeshRenderer() const;
+	void Save(Archive& archive) const;
+	void Load(const rapidjson::Value& gameObjectsJson);
 
 private:
 	GameObject* RemoveChild(const int id);

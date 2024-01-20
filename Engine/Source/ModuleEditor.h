@@ -1,9 +1,10 @@
-#pragma once
+#ifndef _MODULE_EDITOR_H_
+#define _MODULE_EDITOR_H_
+
 #include "Module.h"
 #include <map>
 
 struct ImGuiIO;
-
 class Panel;
 
 class ModuleEditor : public Module
@@ -19,10 +20,13 @@ public:
 	bool CleanUp() override;
 	Panel* GetPanel(const char* name) { return mPanels[name]; }
 
-	static void ShowMainMenuBar();
-	static void ResetFloatingPanels(bool openPanels);
+	void ShowMainMenuBar();
+	void ResetFloatingPanels(bool openPanels);
 
 private:
-	ImGuiIO* io = nullptr;
+	ImGuiIO* io;
+
 	std::map<const char*, Panel*> mPanels;
 };
+
+#endif /* _MODULE_EDITOR_H_ */

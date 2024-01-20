@@ -1,4 +1,5 @@
 #pragma once
+#include "Archive.h"
 
 enum class ComponentType : unsigned int
 {
@@ -20,7 +21,10 @@ public:
 	Component(const char* name ,GameObject* owner, ComponentType type);
 	virtual ~Component() {}
 	
-	ComponentType GetType() const { return mType; }
+	virtual void Save(Archive& archive) const = 0;
+	virtual void Load(const rapidjson::Value& data) = 0;
+
+	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
 
 	int GetID() { return mID; }

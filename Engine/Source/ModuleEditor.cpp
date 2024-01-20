@@ -1,32 +1,49 @@
 #include "Application.h"
+#include "SDL.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
+#include "ModuleInput.h"
+#include "ModuleScene.h"
+#include "Quadtree.h"
 
 #include "Panel.h"
 #include "AboutPanel.h"
 #include "ConsolePanel.h"
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
+#include "ScenePanel.h"
+#include "QuadtreePanel.h"
+#include "DebugPanel.h"
+#include "PausePanel.h"
+#include "ProjectPanel.h"
+
+#include "Panel.h"
+#include "AboutPanel.h"
+#include "ConsolePanel.h"
+#include "InspectorPanel.h"
+#include "HierarchyPanel.h"
+#include "ScenePanel.h"
 #include "QuadtreePanel.h"
 #include "PausePanel.h"
+#include "ProjectPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 
-static ModuleEditor* s_ModuleEditorInstance = nullptr;
 
 ModuleEditor::ModuleEditor()
 {
-	s_ModuleEditorInstance = this;
-
 	mPanels[ABOUTPANEL] = new AboutPanel();
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
+	mPanels[SCENEPANEL] = new ScenePanel();
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
+	mPanels[PROJECTPANEL] = new ProjectPanel();
+	mPanels[DEBUGPANEL] = new DebugPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -135,16 +152,20 @@ void ModuleEditor::ShowMainMenuBar() {
 		}
 		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::BeginMenu("View"))
-			{
-				if (ImGui::MenuItem("Quadtree")) {
-					Panel* quadtreeDebug = s_ModuleEditorInstance->mPanels[QUADTREEPANEL];
-					if (quadtreeDebug)
-					{
-						quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
-					}
+			if (ImGui::MenuItem("Quadtree")) {
+				Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
+				if (quadtreeDebug)
+				{
+					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
-				ImGui::EndMenu();
+			}
+
+			if (ImGui::MenuItem("Debug")) {
+				Panel* debugPanel = mPanels[DEBUGPANEL];
+				if (debugPanel)
+				{
+					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -160,28 +181,28 @@ void ModuleEditor::ShowMainMenuBar() {
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("1 Console")) {
-					Panel* console = s_ModuleEditorInstance->mPanels[CONSOLEPANEL];
+					Panel* console = mPanels[CONSOLEPANEL];
 					if (console)
 					{
 						console->IsOpen() ? console->Close() : console->Open();
 					}
 				}
 				if (ImGui::MenuItem("2 Hierarchy")) {
-					Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
+					Panel* hierarchy = mPanels[HIERARCHYPANEL];
 					if (hierarchy)
 					{
 						hierarchy->IsOpen() ? hierarchy->Close() : hierarchy->Open();
 					}
 				}
 				if (ImGui::MenuItem("3 Inspector")) {
-					Panel* inspector = s_ModuleEditorInstance->mPanels[INSPECTORPANEL];
+					Panel* inspector = mPanels[INSPECTORPANEL];
 					if (inspector)
 					{
 						inspector->IsOpen() ? inspector->Close() : inspector->Open();
 					}
 				}
 				if (ImGui::MenuItem("4 Pause")) {
-					Panel* pause = s_ModuleEditorInstance->mPanels[PAUSEPANEL];
+					Panel* pause = mPanels[PAUSEPANEL];
 					if (pause)
 					{
 						pause->IsOpen() ? pause->Close() : pause->Open();
@@ -197,7 +218,7 @@ void ModuleEditor::ShowMainMenuBar() {
 		{
 			if (ImGui::MenuItem("About"))
 			{
-				Panel* aboutPanel = s_ModuleEditorInstance->mPanels[ABOUTPANEL];
+				Panel* aboutPanel = mPanels[ABOUTPANEL];
 				if (aboutPanel)
 				{
 					aboutPanel->IsOpen() ? aboutPanel->Close() : aboutPanel->Open();
@@ -210,11 +231,14 @@ void ModuleEditor::ShowMainMenuBar() {
 }
 
 void ModuleEditor::ResetFloatingPanels(bool openPanels) {
-	Panel* console = s_ModuleEditorInstance->mPanels[CONSOLEPANEL];
-	Panel* hierarchy = s_ModuleEditorInstance->mPanels[HIERARCHYPANEL];
-	Panel* inspector = s_ModuleEditorInstance->mPanels[INSPECTORPANEL];
-	Panel * pause = s_ModuleEditorInstance->mPanels[PAUSEPANEL];
-	Panel* aboutPanel = s_ModuleEditorInstance->mPanels[ABOUTPANEL];
+	Panel* console = mPanels[CONSOLEPANEL];
+	Panel* hierarchy = mPanels[HIERARCHYPANEL];
+	Panel* inspector = mPanels[INSPECTORPANEL];
+	Panel* pause = mPanels[PAUSEPANEL];
+	Panel* aboutPanel = mPanels[ABOUTPANEL];
+	Panel* scenePanel = mPanels[SCENEPANEL];
+	Panel* quadTree = mPanels[QUADTREEPANEL];
+	Panel* projectPanel = mPanels[PROJECTPANEL];
 
 	if (openPanels == true) {
 		console->Open();
@@ -222,6 +246,9 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		inspector->Open();
 		pause->Open();
 		aboutPanel->Open();
+		scenePanel->Open();
+		quadTree->Open();
+		projectPanel->Open();
 	}
 	else {
 		console->Close();
@@ -229,5 +256,8 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		inspector->Close();
 		pause->Close();
 		aboutPanel->Close();
+		scenePanel->Close();
+		quadTree->Close();
+		projectPanel->Close();
 	}
 }
