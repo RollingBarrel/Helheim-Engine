@@ -16,7 +16,7 @@ public:
 	Component* Clone(GameObject* owner) override;
 
 	void Save(Archive& archive) const override;
-	void Load(const rapidjson::Value& data) override;
+	TestComponent* LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
 	int number;
