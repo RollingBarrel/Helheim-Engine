@@ -386,10 +386,41 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
-
-
 	ImGui::SeparatorText("Model ");
-	ImGui::Text("WATING FOR FILE SYSTEM ¿? (TEST)");
+	int selectedOption = 0;
+
+	if (ImGui::BeginCombo("Model", nullptr)) {
+		// List of mesh options
+		const char* meshOptions[] = {
+			"Clock",
+			"DollHouse",
+			"Drawers",
+			"Duck",
+			"Firetruck",
+			"Floor",
+			"Hearse",
+			"Player",
+			"SpinningTop",
+			"Robot",
+			"Wall",
+			"ZomBunny"
+		};
+
+		for (int i = 0; i < IM_ARRAYSIZE(meshOptions); i++) {
+			bool isSelected = (i == selectedOption);
+			if (ImGui::Selectable(meshOptions[i], isSelected)) {
+				selectedOption = i;
+				component->LoadByIDTemporal(i);
+			}
+
+			// If the option is selected, set the focus on it
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndCombo();
+	}
 	
 	ImGui::SeparatorText("Material");
 	ImGui::Text("WATING FOR FILE SYSTEM ¿? (TEST)");

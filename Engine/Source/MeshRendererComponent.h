@@ -15,6 +15,7 @@ public:
 	void Draw();
 	void Reset() override;
 	void Load(const char* assetFileName);
+	void LoadByIDTemporal(const int id);
 
 	void Update() override;
 	void DrawEditor();
@@ -38,4 +39,6 @@ private:
 	OBB mOBB;
 	bool* mDrawBox = new bool(false);
 	bool mInsideFrustum = true;
+
+	int mTemporalID = -1;
 };

@@ -6,6 +6,7 @@
 #include "glew.h"
 #include "ModuleProgram.h"
 #include "MeshRendererComponent.h"
+#include "Component.h"
 
 
 ModuleScene::ModuleScene() {
@@ -97,7 +98,7 @@ void ModuleScene::GenerateRenderList(GameObject* root)
 {
 	// if engine slows down there is an optimization 
 	// HERE on getMeshRenderer
-	if (root->getMeshRenderer())
+	if (root->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
 		AddToRenderList(root);
 	}
@@ -118,7 +119,9 @@ void ModuleScene::DrawRenderList()
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]); // first argument is 0 for the layout in vertex shader
 		//Render
 		//
+		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
+		MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
 
-		objectToRender->getMeshRenderer()->Draw();
+		meshRenderer->Draw();
 	}
 }

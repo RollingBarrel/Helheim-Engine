@@ -201,7 +201,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	if (!inserted) {
 		mChildren.push_back(child);
 	}
-	if (child->getMeshRenderer() != nullptr) {
+	if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr) {
 		App->GetScene()->GetQuadtreeRoot()->AddObject(child);
 	}
 }
@@ -212,7 +212,7 @@ GameObject* GameObject::RemoveChild(const int id)
 	std::vector<GameObject*>::iterator itTargetPosition = mChildren.end();
 	for (auto it = mChildren.begin(); it != mChildren.cend(); ++it) {
 		if ((*it)->GetID() == id) {
-			if ((*it)->getMeshRenderer() != nullptr) {
+			if ((*it)->GetComponent(ComponentType::MESHRENDERER) != nullptr) {
 				App->GetScene()->GetQuadtreeRoot()->RemoveObject((*it));
 			}
 			movedObject = *it;
@@ -290,15 +290,6 @@ void GameObject::DeleteComponents() {
 		}
 	}
 }
-
-MeshRendererComponent* GameObject::getMeshRenderer() const
-{
-	for (const auto& comp : mComponents) {
-		if (comp->GetType() == ComponentType::MESHRENDERER)
-			return static_cast<MeshRendererComponent*>(comp);
-	}
-}
-
 
 void GameObject::RecalculateLocalTransform()
 {

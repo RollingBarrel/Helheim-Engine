@@ -24,7 +24,7 @@ ModuleProgram::~ModuleProgram()
 bool ModuleProgram::Init()
 {
 	
-	for (const auto& entry : std::filesystem::recursive_directory_iterator("shaders")) {
+	for (const auto& entry : std::filesystem::recursive_directory_iterator("Assets/Shaders/")) {
 		if (entry.is_regular_file()) {
 			std::string path = entry.path().generic_u8string();
 			std::ifstream strm(path.c_str());
@@ -147,8 +147,8 @@ unsigned ModuleProgram::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsi
 }
 unsigned ModuleProgram::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
 {
-	std::string fullVertexShaderPath = "shaders/" + std::string(vertexShaderPath);
-	std::string fullFragmentShaderPath = "shaders/" + std::string(fragmentShaderPath);
+	std::string fullVertexShaderPath = "Assets/Shaders/" + std::string(vertexShaderPath);
+	std::string fullFragmentShaderPath = "Assets/Shaders/" + std::string(fragmentShaderPath);
 	char* vertexSource = LoadShaderSource(fullVertexShaderPath.c_str());
 	char* fragmentSource = LoadShaderSource(fullFragmentShaderPath.c_str());
 	unsigned vertexShaderID = CompileShader(GL_VERTEX_SHADER, vertexSource);

@@ -37,7 +37,10 @@ Quadtree::~Quadtree()
 
 bool Quadtree::AddObject(GameObject* object)
 {
-	OBB object_BB = object->getMeshRenderer()->getOBB();
+	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
+	MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+	OBB object_BB = meshRenderer->getOBB();
+
 	if (!mBoundingBox.Intersects(object_BB))
 	{
 		return false;
@@ -176,9 +179,12 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)
 	{
 		for (auto& object : mGameObjects)
 		{
-			OBB temp = object->getMeshRenderer()->getOBB();
+			Component* component = object->GetComponent(ComponentType::MESHRENDERER);
+			MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+
+			OBB temp = meshRenderer->getOBB();
 			bool intersects = myCamera.Intersects(temp);
-			object->getMeshRenderer()->SetInsideFrustum(intersects);
+			meshRenderer->SetInsideFrustum(intersects);
 		}
 	}
 

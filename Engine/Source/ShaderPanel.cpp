@@ -32,52 +32,54 @@ void ShaderPanel::Draw(int windowFlags)
 
 	if (!focusedObject->IsRoot())
 	{
-		if (focusedObject->getMeshRenderer() != nullptr)
+		Component* component = focusedObject->GetComponent(ComponentType::MESHRENDERER);
+		if (component != nullptr)
 		{
+			MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
 			ImGui::SeparatorText("LIGHTS (PROVISIONAL)");
 
-			static float lightDx = focusedObject->getMeshRenderer()->lightDir[0];
-			static float lightDy = focusedObject->getMeshRenderer()->lightDir[1];
-			static float lightDz = focusedObject->getMeshRenderer()->lightDir[2];
+			static float lightDx = meshRenderer->lightDir[0];
+			static float lightDy = meshRenderer->lightDir[1];
+			static float lightDz = meshRenderer->lightDir[2];
 
 			ImGui::Text("Light Direction");
 			if (ImGui::DragFloat("X light D", &lightDx, 0.05f, 0.0f, 0.0f, "%.2f"))
 			{
-				focusedObject->getMeshRenderer()->lightDir[0] = lightDx;
+				meshRenderer->lightDir[0] = lightDx;
 			}
 			if (ImGui::DragFloat("Y light D", &lightDy, 0.05f, 0.0f, 0.0f, "%.2f"))
 			{
-				focusedObject->getMeshRenderer()->lightDir[1] = lightDy;
+				meshRenderer->lightDir[1] = lightDy;
 			}
 			if (ImGui::DragFloat("Z light D", &lightDz, 0.05f, 0.0f, 0.0f, "%.2f"))
 			{
-				focusedObject->getMeshRenderer()->lightDir[2] = lightDz;
+				meshRenderer->lightDir[2] = lightDz;
 			}
 
-			static float lightCx = focusedObject->getMeshRenderer()->lightColor[0];
-			static float lightCy = focusedObject->getMeshRenderer()->lightColor[1];
-			static float lightCz = focusedObject->getMeshRenderer()->lightColor[2];
+			static float lightCx = meshRenderer->lightColor[0];
+			static float lightCy = meshRenderer->lightColor[1];
+			static float lightCz = meshRenderer->lightColor[2];
 
 			ImGui::Text("Light Color");
 			if (ImGui::DragFloat("X light C", &lightCx, 0.05f, 0.0f, 1.0f, "%.2f"))
 			{
-				focusedObject->getMeshRenderer()->lightColor[0] = lightCx;
+				meshRenderer->lightColor[0] = lightCx;
 			}
 			if (ImGui::DragFloat("Y light C", &lightCy, 0.05f, 0.0f, 1.0f, "%.2f"))
 			{
-				focusedObject->getMeshRenderer()->lightColor[1] = lightCy;
+				meshRenderer->lightColor[1] = lightCy;
 			}
 			if (ImGui::DragFloat("Z light C", &lightCz, 0.05f, 0.0f, 1.0f, "%.2f"))
 			{
-				focusedObject->getMeshRenderer()->lightColor[2] = lightCz;
+				meshRenderer->lightColor[2] = lightCz;
 			}
 
-			static float lightI = focusedObject->getMeshRenderer()->lightIntensity;
+			static float lightI = meshRenderer->lightIntensity;
 
 			ImGui::Text("Light Intensity");
 			if (ImGui::DragFloat("intensity", &lightI, 0.05f, 0.0f, 1.0f, "%.2f"))
 			{
-				focusedObject->getMeshRenderer()->lightIntensity = lightI;
+				meshRenderer->lightIntensity = lightI;
 			}
 
 			//ImGui::Text("Camera");

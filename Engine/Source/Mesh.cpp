@@ -33,6 +33,9 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 	const unsigned char* bufferNorm = nullptr;
 	const unsigned char* bufferTex_0 = nullptr;
 	size_t byteStride = 0;
+	size_t normalStride = 0;
+	size_t tex0Stride = 0;
+
 	int vertSize = 0;
 
 	if (itPos != primitive.attributes.end())
@@ -56,7 +59,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 		const tinygltf::BufferView& normView = model.bufferViews[normAcc.bufferView];
 		const tinygltf::Buffer& normBuffer = model.buffers[normView.buffer];
 		bufferNorm = &(normBuffer.data[normAcc.byteOffset + normView.byteOffset]);
-		SDL_assert(normView.byteStride == byteStride);
+		normalStride = normView.byteStride;
 		vertSize += 3;
 	}
 	if (itTex_0 != primitive.attributes.end())
@@ -68,7 +71,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 		const tinygltf::BufferView& tex0View = model.bufferViews[tex0Acc.bufferView];
 		const tinygltf::Buffer& tex0Buffer = model.buffers[tex0View.buffer];
 		bufferTex_0 = &(tex0Buffer.data[tex0Acc.byteOffset + tex0View.byteOffset]);
-		SDL_assert(tex0View.byteStride == byteStride);
+		tex0Stride = tex0View.byteStride;
 		vertSize += 2;
 	}
 
@@ -91,14 +94,14 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 			ptr[offset + i * 3 + 0] = *reinterpret_cast<const float*>(bufferNorm + sizeof(float) * 0);
 			ptr[offset + i * 3 + 1] = *reinterpret_cast<const float*>(bufferNorm + sizeof(float) * 1);
 			ptr[offset + i * 3 + 2] = *reinterpret_cast<const float*>(bufferNorm + sizeof(float) * 2);
-			if (byteStride != 0) bufferNorm += byteStride;
+			if (byteStride != 0) bufferNorm += normalStride;
 			else bufferNorm += sizeof(float) * 3;
 			offset += (size_t)(m_numVertices * 3);
 		}
 		if (bufferTex_0 != nullptr) {
 			ptr[offset + i * 2 + 0] = *reinterpret_cast<const float*>(bufferTex_0 + sizeof(float) * 0);
 			ptr[offset + i * 2 + 1] = *reinterpret_cast<const float*>(bufferTex_0 + sizeof(float) * 1);
-			if (byteStride != 0) bufferTex_0 += byteStride;
+			if (byteStride != 0) bufferTex_0 += tex0Stride;
 			else bufferTex_0 += sizeof(float) * 2;
 			offset += (size_t)(m_numVertices * 2);
 		}

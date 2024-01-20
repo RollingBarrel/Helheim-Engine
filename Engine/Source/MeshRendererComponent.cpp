@@ -24,9 +24,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 	float rv3 = distribution(gen) / 10;
 	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1 + 1.0f, rv2 + 1.0f, rv3 + 1.0f)));
 
-	//Load("models/testing/Cube/Cube.gltf");
-	//Load("models/testing/bakerHouse/BakerHouse.gltf");
-	Load("models/testing/Robot/Robot.gltf");
+
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
@@ -82,6 +80,7 @@ Component* MeshRendererComponent::Clone(GameObject* owner)
 
 void MeshRendererComponent::Load(const char* assetFileName)
 {
+	Clear();
 	tinygltf::TinyGLTF gltfContext;
 	tinygltf::Model srcModel;
 	std::string error, warning;
@@ -104,11 +103,58 @@ void MeshRendererComponent::Load(const char* assetFileName)
 
 			if (materialID != -1) {
 				ResourceMaterial* material = new ResourceMaterial();
+				material->SetTemporalID(mTemporalID);
 				material->LoadMaterial(srcModel, srcModel.materials[materialID]);
 				mesh->SetMaterial(material);
 			}
 		}
 	}
+}
+
+void MeshRendererComponent::LoadByIDTemporal(const int id)
+{
+	mTemporalID = id;
+	switch (id) {
+		case 0:
+			Load("Assets\\Models\\Clock\\Clock.gltf");
+			break;
+		case 1:
+			Load("Assets\\Models\\DollHouse\\Dollhouse.gltf");
+			break;
+		case 2:
+			Load("Assets\\Models\\Drawers\\Drawers.gltf");
+			break;
+		case 3:
+			Load("Assets\\Models\\Duck\\Duck.gltf");
+			break;
+		case 4:
+			Load("Assets\\Models\\Firetruck\\Firetruck.gltf");
+			break;
+		case 5:
+			Load("Assets\\Models\\Floor\\Floor.gltf");
+			break;
+		case 6:
+			Load("Assets\\Models\\Hearse\\Hearse.gltf");
+			break;
+		case 7:
+			Load("Assets\\Models\\Player\\Player.gltf");
+			break;
+		case 8:
+			Load("Assets\\Models\\SpinningTop\\SpinningTop.gltf");
+			break;
+		case 9:
+			Load("Assets\\Models\\testing\\Robot\\Robot.gltf");
+			break;
+		case 10:
+			Load("Assets\\Models\\Wall\\Wall.gltf");
+			break;
+		case 11:
+			Load("Assets\\Models\\ZomBunny\\Zombunny.gltf");
+			break;
+		default:
+			// Handle the case when the ID is not found
+			break;
+		}
 }
 
 void MeshRendererComponent::Clear()

@@ -29,6 +29,7 @@ public:
     void SetEnableDiffuseTexture(bool enableDiffuseTexture) { mEnableDiffuseTexture = enableDiffuseTexture; }
     void SetEnableSpecularGlossinessTexture(bool enableSpecularGlossinessTexture) { mEnableSpecularGlossinessTexture = enableSpecularGlossinessTexture; }
     void SetEnableShinessMap(bool enableShinessMap) { mEnableShinessMap = enableShinessMap; }
+    void SetTemporalID(int id) { mTemporalID = id; }
 
 private:
 
@@ -42,4 +43,6 @@ private:
     bool mEnableDiffuseTexture;
     bool mEnableSpecularGlossinessTexture;
     bool mEnableShinessMap;
+
+    int mTemporalID = -1;
 };

@@ -63,7 +63,7 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     const tinygltf::Image& image = model.images[diffuseMap.source];
                     const char* imageUri = image.uri.c_str();
 
-                    Texture* diffuseTexture = new Texture();
+                    Texture* diffuseTexture = new Texture(mTemporalID);
                     diffuseTexture->LoadTexture(imageUri);
                     mDiffuseTexture = diffuseTexture;
 
@@ -84,7 +84,7 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
                     const tinygltf::Image& image = model.images[specularMap.source];
                     const char* imageUri = image.uri.c_str();
 
-                    Texture* specularTexture = new Texture();
+                    Texture* specularTexture = new Texture(mTemporalID);
                     specularTexture->LoadTexture(imageUri);
                     mSpecularGlossinessTexture = specularTexture;
 
@@ -106,7 +106,7 @@ void ResourceMaterial::LoadMaterial(const tinygltf::Model& model, const tinygltf
             const tinygltf::Image& image = model.images[texture.source];
             const char* imageUri = image.uri.c_str();
 
-            Texture* diffuseTexture = new Texture();
+            Texture* diffuseTexture = new Texture(mTemporalID);
             diffuseTexture->LoadTexture(imageUri);
             mDiffuseTexture = diffuseTexture;
 

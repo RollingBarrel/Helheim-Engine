@@ -3,6 +3,7 @@ class Texture
 {
 public:
     Texture();
+    Texture(int TemporalID);
     ~Texture();
 
     void LoadTexture(const char* textureName);
@@ -17,5 +18,7 @@ private:
     unsigned mImageWidth;
     unsigned mImageHeight;
     bool mHasAlpha = false;
+
+    int mTemporalID = -1;
 };
 

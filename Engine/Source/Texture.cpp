@@ -8,15 +8,64 @@ Texture::Texture()
 {
 }
 
+Texture::Texture(int TemporalID)
+{
+    mTemporalID = TemporalID;
+}
+
 Texture::~Texture()
 {
 }
+
+
 void Texture::LoadTexture(const char* filePath) {
 
     HRESULT result = E_FAIL;
     DirectX::ScratchImage image;
 
-    const char* prefix = "models/testing/Robot/";
+    const char* prefix  = "";
+
+    switch (mTemporalID) {
+        case 0:
+            prefix = "Assets\\Models\\Clock\\";
+            break;
+        case 1:
+            prefix = "Assets\\Models\\DollHouse\\";
+            break;
+        case 2:
+            prefix = "Assets\\Models\\Drawers\\";
+            break;
+        case 3:
+            prefix = "Assets\\Models\\Duck\\";
+            break;
+        case 4:
+            prefix = "Assets\\Models\\Firetruck\\";
+            break;
+        case 5:
+            prefix = "Assets\\Models\\Floor\\";
+            break;
+        case 6:
+            prefix = "Assets\\Models\\Hearse\\";
+            break;
+        case 7:
+            prefix = "Assets\\Models\\Player\\";
+            break;
+        case 8:
+            prefix = "Assets\\Models\\SpinningTop\\";
+            break;
+        case 9:
+            prefix = "Assets\\Models\\testing\\Robot\\";
+            break;
+        case 10:
+            prefix = "Assets\\Models\\Wall\\";
+            break;
+        case 11:
+            prefix = "Assets\\Models\\ZomBunny\\";
+            break;
+        default:
+            // Handle the case when the ID is not found
+            break;
+    }
     size_t prefixLength = strlen(prefix);
     size_t filePathLength = strlen(filePath);
 
