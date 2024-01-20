@@ -17,16 +17,7 @@
 #include "DebugPanel.h"
 #include "PausePanel.h"
 #include "ProjectPanel.h"
-
-#include "Panel.h"
-#include "AboutPanel.h"
-#include "ConsolePanel.h"
-#include "InspectorPanel.h"
-#include "HierarchyPanel.h"
-#include "ScenePanel.h"
-#include "QuadtreePanel.h"
-#include "PausePanel.h"
-#include "ProjectPanel.h"
+#include "LoadScenePanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -44,6 +35,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
+	mPanels[LOADSCENEPANEL] = new LoadScenePanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -134,7 +126,11 @@ void ModuleEditor::ShowMainMenuBar() {
 		{
 			if (ImGui::MenuItem("Load Scene"))
 			{
-
+				Panel* loadPanel = mPanels[LOADSCENEPANEL];
+				if (loadPanel)
+				{
+					loadPanel->IsOpen() ? loadPanel->Close() : loadPanel->Open();
+				}
 			}
 			if (ImGui::MenuItem("Save Scene"))
 			{
@@ -247,6 +243,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* projectPanel = mPanels[PROJECTPANEL];
+	Panel* loadScenePanel = mPanels[LOADSCENEPANEL];
 
 	if (openPanels == true) {
 		console->Open();
@@ -257,6 +254,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Open();
 		quadTree->Open();
 		projectPanel->Open();
+		loadScenePanel->Open();
 	}
 	else {
 		console->Close();
@@ -267,5 +265,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Close();
 		quadTree->Close();
 		projectPanel->Close();
+		loadScenePanel->Close();
 	}
 }
