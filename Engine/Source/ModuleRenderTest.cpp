@@ -335,12 +335,12 @@ bool ModuleRenderTest::Init()
 	//Switch to Resource Shader later on.
 	programId = CreateProgram("Shaders/Vertex.vs", "Shaders/Fragment.fs");
 
-	Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
+	//Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
 
-	rMesh = new ResourceMesh();
-	rMesh2 = new ResourceMesh();
-	Importer::Mesh::Load(rMesh, "519408695");
-	Importer::Mesh::Load(rMesh2, "697368160");
+	//rMesh = new ResourceMesh();
+	//rMesh2 = new ResourceMesh();
+	//Importer::Mesh::Load(rMesh, "519408695");
+	//Importer::Mesh::Load(rMesh2, "697368160");
 	glUseProgram(programId);
 	float4x4 model = float4x4::FromTRS(float3(1.0f, 0.0f, 0.0f), float4x4::RotateX(-pi / 4.0f), float3(2.5f, 2.5f, 2.5f));
 	glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());

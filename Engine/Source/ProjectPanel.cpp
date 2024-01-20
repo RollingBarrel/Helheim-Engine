@@ -22,6 +22,8 @@ void ProjectPanel::Draw(int windowFlags)
 	{
 		if(ImGui::Button("Refresh"))
 		{
+			root->mChildren.clear();
+			root->assets.clear();
 			App->GetFileSystem()->DiscoverFiles("Library", root);
 		}
 
