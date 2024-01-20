@@ -74,6 +74,16 @@ GameObject::GameObject(const char* name, GameObject* parent)
 	}
 }
 
+GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
+	:mID(id), mName(name), mParent(parent), mPosition(position),
+	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr)
+{
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	if (!mIsRoot) {
+		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+	}
+}
+
 GameObject::~GameObject()
 {
 	for (GameObject* gameObject : mChildren) {
@@ -314,5 +324,148 @@ void GameObject::RecalculateLocalTransform()
 	if (mEulerRotation.Equals(float3::zero)) {
 		mEulerRotation = float3::zero;
 	}
-
 }
+
+void GameObject::Save(Archive& archive) const {
+	archive.AddString("name", mName);
+	archive.AddBool("isEnabled", mIsEnabled);
+	archive.AddFloat3("position", mPosition);
+	archive.AddFloat3("scale", mScale);
+
+	// Save components
+	Archive* componentsArchive = new Archive();
+	for (const auto& component : mComponents) {
+		component->Save(*componentsArchive);
+	}
+	archive.AddObject("components", *componentsArchive);
+
+	// Save children
+	Archive* childrenArchive = new Archive();
+	for (const auto& child : mChildren) {
+		Archive* childArchive = new Archive();
+		child->Save(*childArchive);
+		childrenArchive->AddObject("child", *childArchive);
+	}
+	archive.AddObject("children", *childrenArchive);
+}
+
+GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
+	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
+	for (int i = 0; i < gameObjects.size(); i++) {
+		if (gameObjects[i]->GetID() == UID) {
+			return gameObjects[i];
+		}
+		else if (gameObjects[i]->GetChildren().size() != 0) {
+			for (int j = 0; j < gameObjects[i]->GetChildren().size(); j++) {
+				findGameObjectParent(gameObjects[i]->GetChildren()[j], UID);
+			}
+
+		}
+	}
+
+	return nullptr;
+}
+
+void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
+	for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
+		if (components[i].IsObject()) {
+			const rapidjson::Value& component = components[i];
+			if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
+				ComponentType cType = ComponentType(component["ComponentType"].GetInt());
+				Component* c = go->CreateComponent(cType);
+				c->Load(component);
+			}
+		}
+	}
+}
+
+void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) {
+	unsigned int uuid{ 0 };
+	int parentUID{ 0 };
+	const char* name = { "" };
+	float3 position;
+	float3 scale;
+	Quat rotation;
+	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) {
+		uuid = gameObject["UID"].GetInt();
+	}
+	if (gameObject.HasMember("ParentUID") && gameObject["ParentUID"].IsInt()) {
+		parentUID = gameObject["ParentUID"].GetInt();
+	}
+	if (gameObject.HasMember("Name") && gameObject["Name"].IsString()) {
+		name = gameObject["Name"].GetString();
+	}
+	if (gameObject.HasMember("Translation") && gameObject["Translation"].IsArray()) {
+		const rapidjson::Value& translationValues = gameObject["Translation"];
+		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
+		if (translationValues.Size() == 3 && translationValues[0].IsInt() && translationValues[1].IsInt() && translationValues[2].IsInt()) {
+			x = translationValues[0].GetInt();
+			y = translationValues[1].GetInt();
+			z = translationValues[2].GetInt();
+		}
+
+		position = float3(x, y, z);
+	}
+	if (gameObject.HasMember("Rotation") && gameObject["Rotation"].IsArray()) {
+		const rapidjson::Value& rotationValues = gameObject["Rotation"];
+		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
+		if (rotationValues.Size() == 4 && rotationValues[0].IsInt() && rotationValues[1].IsInt() && rotationValues[2].IsInt() && rotationValues[3].IsInt()) {
+			x = rotationValues[0].GetInt();
+			y = rotationValues[1].GetInt();
+			z = rotationValues[2].GetInt();
+			w = rotationValues[3].GetInt();
+		}
+
+		rotation = Quat(x, y, z, w);
+	}
+
+	if (gameObject.HasMember("Scale") && gameObject["Scale"].IsArray()) {
+		const rapidjson::Value& scaleValues = gameObject["Scale"];
+		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
+		if (scaleValues.Size() == 3 && scaleValues[0].IsInt() && scaleValues[1].IsInt() && scaleValues[2].IsInt()) {
+			x = scaleValues[0].GetInt();
+			y = scaleValues[1].GetInt();
+			z = scaleValues[2].GetInt();
+		}
+
+		scale = float3(x, y, z);
+	}
+
+	GameObject* go;
+
+	if (parentUID == 0) {
+		go = new GameObject(name, uuid, scene, position, scale, rotation);
+		// Manage Components
+		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
+			loadComponentsFromJSON(gameObject["Components"], go);
+		}
+
+		scene->AddChild(go, parentUID);
+	}
+	else {
+		GameObject* gameObjectParent = findGameObjectParent(scene, parentUID);
+		go = new GameObject(name, uuid, gameObjectParent, position, scale, rotation);
+		// Manage Components
+		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
+			loadComponentsFromJSON(gameObject["Components"], go);
+		}
+
+		gameObjectParent->AddChild(go);
+
+	}
+}
+
+void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
+	GameObject* scene = App->GetScene()->GetRoot();
+	// Manage GameObjects inside the Scene
+	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray()) {
+		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
+		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
+			if (gameObjects[i].IsObject()) {
+				loadGameObjectFromJSON(gameObjects[i], scene);
+			}
+		}
+	}
+}
+
+

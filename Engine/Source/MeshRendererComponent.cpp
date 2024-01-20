@@ -80,3 +80,13 @@ Component* MeshRendererComponent::Clone(GameObject* owner)
 {
 	return new MeshRendererComponent(*this, owner);
 }
+
+
+void MeshRendererComponent::Save(Archive& archive) const {
+	archive.AddString("type", "MeshRenderer");
+}
+
+void MeshRendererComponent::Load(const rapidjson::Value& data) {
+	// TODO implement by File System Team
+}
+
