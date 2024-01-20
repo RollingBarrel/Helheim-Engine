@@ -239,11 +239,16 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, std::vector<std::str
     }
 }
 
-const char* ModuleFileSystem::NormalizePath(const char* path) const
+void ModuleFileSystem::NormalizePath(char* path) const
 { 
-    std::string normalizedPath = path;
-
-    return normalizedPath.replace(normalizedPath.begin(), normalizedPath.end(), '\\', '/').c_str();
+    while (*path != '\0')
+    {
+        if (*path == '\\')
+        {
+            *path = '/';
+        }
+        ++path;
+    }
 }
 
 const char* ModuleFileSystem::GetFileFromPath(const char* path) const

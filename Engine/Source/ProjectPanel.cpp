@@ -23,13 +23,13 @@ void ProjectPanel::Draw(int windowFlags)
 			//App->GetFileSystem()->DiscoverFiles("Assets", mFiles, mDirectories);
 		}
 
-		for (auto i = 0; i < root->mChildren.size(); ++i)
-		{
-			if (ImGui::TreeNodeEx(root->mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen))
-			{
-				ImGui::TreePop();
-			}
-		}
+		//for (auto i = 0; i < root->mChildren.size(); ++i)
+		//{
+		//	if (ImGui::TreeNodeEx(root->mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen))
+		//	{
+		//		ImGui::TreePop();
+		//	}
+		//}
 
 	}
 	ImGui::End();

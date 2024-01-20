@@ -42,7 +42,7 @@ public:
 
 	void DiscoverFiles(const char* directory, std::vector<std::string>& files, std::vector<std::string>& directories) const;
 
-	const char* NormalizePath(const char* path) const;
+	void NormalizePath(char* path) const;
 
 	const char* GetFileFromPath(const char* path) const;
 	const char* GetExtensionFromPath(const char* path) const;
