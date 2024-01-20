@@ -27,6 +27,9 @@ public:
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
+	void Save(Archive& archive) const override;
+	void Load(const rapidjson::Value& data) override;
+
 private:
 	ResourceMesh* mMesh;
 	Material* material;

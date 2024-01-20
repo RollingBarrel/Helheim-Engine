@@ -4,6 +4,9 @@
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleOpenGL.h"
+#include "TestSceneGameObjects.cpp"
+#include "Archive.h"
+#include "Globals.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
@@ -18,6 +21,31 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
+	TestSceneGameObjects test = TestSceneGameObjects();
+	test.TestSceneWithGameObject();
+
+	Archive* archive = new Archive();
+	mRoot->Save(*archive);
+
+	std::string out = archive->Serialize();
+
+
+	//INIT For testing purposes of Scene Load
+	const char* json = test.TestLoadSceneWithGameObjectsWithGameObjectsAsChildrenAndComponents();
+	rapidjson::Document d;
+	rapidjson::ParseResult ok = d.Parse(json);
+	if (!ok) {
+		// TODO, what we do if we fail on loading a scene?
+		//LOG("Error when loading a scene: %s (%u)", rapidjson::GetParseError(ok.Code()), ok.Offset);
+	}
+	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
+		const rapidjson::Value& s = d["Scene"];
+		mRoot->Load(s);
+	}
+	//END For testing purposes of Scene Load
+
+	
+
 	return true;
 }
 
