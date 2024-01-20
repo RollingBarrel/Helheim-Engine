@@ -2,10 +2,8 @@
 #define _MODULE_DEBUGDRAW_H_
 
 #include "Module.h"
+#include "MathGeoLibFwd.h"
 
-#include "Math/float4x4.h"
-#include "Geometry/Frustum.h"
-#include "Geometry/OBB.h"
 
 class DDRenderInterfaceCoreGL;
 class Camera;
@@ -22,31 +20,25 @@ public:
 	update_status   Update();
 	bool            CleanUp();
 
-    void SetDrawGrid(bool drawGrid);
-    bool GetDrawGrid() const;
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
     void DrawBoundingBox(const OBB& obb);
     void DrawQuadtree(const AABB& aabb);
+    void DrawAxis();
+    bool GetShouldRenderGrid() const { return mDrawGrid; }
+    bool GetShouldRenderAxis() const { return mDrawAxis; }
+    void SetRenderGrid(bool a) { mDrawGrid = a; }
+    void SetRenderAxis(bool a) { mDrawAxis = a; }
 
 
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
-    bool mdrawGrid; 
-
+    bool mDrawGrid = true;
+    bool mDrawAxis = true;
 
     void DrawGrid();
     void DrawFrustum(const Frustum& frustum); 
 
+
 };
-
-inline void ModuleDebugDraw::SetDrawGrid(bool drawGrid)
-{
-    mdrawGrid = drawGrid;
-}
-
-inline bool ModuleDebugDraw::GetDrawGrid() const
-{
-    return mdrawGrid ;
-}
 #endif /* _MODULE_DEBUGDRAW_H_ */

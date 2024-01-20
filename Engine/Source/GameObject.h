@@ -74,7 +74,7 @@ private:
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
-	unsigned int mID;
+	const unsigned int mID;
 	std::string mName = "GameObject";
 	float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;

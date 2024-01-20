@@ -3,9 +3,11 @@
 #include "Importer.h"
 #include "ImporterTexture.h"
 
+#include "ProjectPanel.h"
+
 #include "physfs.h"
 
-ModuleFileSystem::ModuleFileSystem()
+ModuleFileSystem::ModuleFileSystem() 
 {
     PHYSFS_init(nullptr);
 
@@ -14,20 +16,18 @@ ModuleFileSystem::ModuleFileSystem()
         LOG("File System error while creating write dir: %s\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 
-    if (!PHYSFS_mount(".", nullptr, 1))
-    {
-        LOG("Error while setting path (%s): %s\n",".", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-    }
-
+    AddToSearchPath(".");
+    AddToSearchPath(ASSETS_PATH);
+    
     CreateDirectory(ASSETS_PATH);
-    CreateDirectory(ASSETS_MODEL_PATH);
-    CreateDirectory(ASSETS_TEXTURE_PATH);
 
     CreateDirectory(LIBRARY_PATH);
     CreateDirectory(LIBRARY_MESH_PATH);
     CreateDirectory(LIBRARY_TEXTURE_PATH);
     CreateDirectory(LIBRARY_MATERIAL_PATH);
     CreateDirectory(LIBRARY_SHADER_PATH);
+
+    mRoot = new PathNode("Assets");
 }
 
 // Destructor
@@ -41,13 +41,12 @@ bool ModuleFileSystem::Init()
 {
     //Importer::CreateBinaryFile();
 
-    Importer::Import("Assets/Models/Triangle/Triangle.gltf");
+    //Importer::Import("Assets/Models/Triangle/Triangle.gltf");
     //Importer::Import("Shaders/basic.vs");
 
     //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
 
     //CreateDirectoryLibrary();
-    
 
     return true;
 }
@@ -188,3 +187,109 @@ bool ModuleFileSystem::IsDirectory(const char* directoryPath) const
     return(stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
 }
 
+bool ModuleFileSystem::AddToSearchPath(const char* path)
+{
+    if (!PHYSFS_mount(path, nullptr, 1))
+    {
+        LOG("Error while setting path (%s): %s\n", path, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        return false;
+    }
+    else
+        return true;
+}
+
+const char* ModuleFileSystem::GetBaseDirectory() const
+{
+    return PHYSFS_getBaseDir();
+}
+
+const char* ModuleFileSystem::GetWriteDirectory() const
+{
+    return PHYSFS_getWriteDir();
+}
+
+void ModuleFileSystem::DiscoverFiles(const char* directory, PathNode* parent) const
+{
+    if (Exists(directory))
+    {
+        char** fileList = PHYSFS_enumerateFiles(directory);
+
+        std::string path = directory + std::string("/");
+
+        for (auto file = fileList; *file != nullptr; ++file)
+        {
+            path += *file;
+
+            if (IsDirectory(path.c_str()))
+            {
+                //TODO PathNode 
+                PathNode* node = new PathNode(path.c_str(), parent);
+                parent->mChildren.push_back(node);
+                DiscoverFiles(path.c_str(), node);
+                path = directory + std::string("/");
+            }
+            else
+            {
+                //TODO Assets To Display, except .bin
+                std::string fileName;
+                std::string extensionName;
+                SplitPath(path.c_str(), &fileName, &extensionName);
+                std::string combiny = fileName + extensionName;
+                AssetDisplay* assetDisplay = new AssetDisplay(combiny.c_str(), parent);          
+                parent->assets.push_back(assetDisplay);
+                path = directory + std::string("/");
+            }
+        }
+
+
+        PHYSFS_freeList(fileList);
+    }
+}
+
+void ModuleFileSystem::NormalizePath(char* path) const
+{ 
+    while (*path != '\0')
+    {
+        if (*path == '\\')
+        {
+            *path = '/';
+        }
+        ++path;
+    }
+}
+
+const char* ModuleFileSystem::GetFileFromPath(const char* path) const
+{
+    return nullptr;
+}
+
+const char* ModuleFileSystem::GetExtensionFromPath(const char* path) const
+{
+    return nullptr;
+}
+
+const char* ModuleFileSystem::GetFileExtensionFromPath(const char* path) const
+{
+    return nullptr;
+}
+
+void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::string* extension) const
+{
+    std::string tempPath = path;
+
+    unsigned int lastSlashPos = tempPath.find_last_of('/');
+    unsigned int dotPos = tempPath.find_last_of('.');
+
+    if(file != nullptr)
+        *file = (lastSlashPos < tempPath.length()) ? tempPath.substr(lastSlashPos + 1, dotPos - lastSlashPos - 1) : tempPath.substr(0, dotPos);
+
+    if(extension != nullptr)
+        *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
+}
+
+PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
+{
+    unsigned int size = strlen(name) + 1;
+    mName = new char[size];
+    strcpy_s(const_cast<char*>(mName), size, name);
+}

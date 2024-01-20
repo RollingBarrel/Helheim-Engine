@@ -4,6 +4,7 @@
 #include "Geometry/AABB.h"
 #include "MeshRendererComponent.h"
 #include "Math/float3.h"
+#include "Geometry/Frustum.h"
 
 #include "Application.h"
 #include "ModuleDebugDraw.h"
@@ -155,6 +156,24 @@ const void Quadtree::RenderTreeImGui() const
 	if(treeNodeOpened)
 		ImGui::TreePop();
 	
+}
+
+void Quadtree::AddHierarchyObjects(GameObject* node)
+{
+	for (auto child : node->GetChildren()) {
+		//TODO Detect if the child is already inside to avoid duplicates when pressing button more than twice in a row
+		if (child->getMeshRenderer() != nullptr) 
+		{
+			AddObject(child);
+		}
+		AddHierarchyObjects(child);
+	}
+}
+
+void Quadtree::UpdateTree()
+{
+	CleanUp();
+	AddHierarchyObjects(App->GetScene()->GetRoot());
 }
 
 void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)

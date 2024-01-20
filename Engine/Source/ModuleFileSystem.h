@@ -11,6 +11,21 @@
 #define ASSETS_MODEL_PATH "Assets/Models/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"
 
+#include <vector>
+#include <string>
+
+struct AssetDisplay;
+
+struct PathNode
+{
+	PathNode(const char* name, PathNode* parent = nullptr);
+	const char* mName;
+	PathNode* mParent;
+	std::vector<PathNode*> mChildren;
+	std::vector<AssetDisplay*> assets;
+};
+
+
 class ModuleFileSystem : public Module
 {
 public:
@@ -32,9 +47,23 @@ public:
 	bool Exists(const char* filePath) const;
 	bool IsDirectory(const char* directoryPath) const;
 
+	bool AddToSearchPath(const char* path);
+
+	const char* GetBaseDirectory() const;
+	const char* GetWriteDirectory() const;
+
+	void DiscoverFiles(const char* directory, PathNode* parent) const;
+
+	void NormalizePath(char* path) const;
+
+	const char* GetFileFromPath(const char* path) const;
+	const char* GetExtensionFromPath(const char* path) const;
+	const char* GetFileExtensionFromPath(const char* path) const;
+	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
+
+	PathNode* GetRootNode() const { return mRoot; }
+
 private:
-
-
-
+	PathNode* mRoot = nullptr;
 };
 

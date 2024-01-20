@@ -1,19 +1,33 @@
 #pragma once
 
-struct ResourceTex
+struct ResourceTexture
 {
-	int widthTex, heightTex, colorTex;
+	unsigned int mWidth;
+	unsigned int mHeight;
 
-	int internalFormat, format, type;
+	unsigned int mInternalFormat;
+	unsigned int mFormat;
+	unsigned int mType;
+
+	unsigned int mMipLevels;
+
+	unsigned int mNumPixels;
+
+	unsigned char* mPixels;
+	
+	const char* mTextureName;
+
+	unsigned int CreateTexture();
 };
 
 namespace Importer
 {
 	namespace Texture
 	{
-		void Import(const char* filePath);
+		void Import(const char* filePath, ResourceTexture* texture);
 
-		void LoadTexture(const char* path, ResourceTex& texture);
+		void Save(const ResourceTexture* ourTexture);
 
+		unsigned int Load(char* fileBuffer, ResourceTexture* ourTexture, const char* fileName = nullptr );
 	}
 };

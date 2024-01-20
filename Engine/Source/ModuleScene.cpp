@@ -3,6 +3,7 @@
 #include "Quadtree.h"
 #include "Application.h"
 #include "ModuleCamera.h"
+#include "ModuleOpenGL.h"
 #include "TestSceneGameObjects.cpp"
 #include "Archive.h"
 #include "Globals.h"
@@ -85,8 +86,9 @@ update_status ModuleScene::PreUpdate()
 update_status ModuleScene::Update()
 {
 	mRoot->Update();
-	if (*mDrawQuadtree)
+	if (mDrawQuadtree)
 	{
+		App->GetOpenGL()->BindSceneFramebuffer();
 		mQuadtreeRoot->Draw();
 	}
 	return UPDATE_CONTINUE;

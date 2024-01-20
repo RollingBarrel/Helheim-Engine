@@ -41,24 +41,3 @@ Component* TestComponent::Clone(GameObject* owner)
 {
     return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }
-
-void TestComponent::Save(Archive& archive) const {
-	archive.AddString("Name", mName);
-	archive.AddString("type", "Test");
-}
-
-void TestComponent::Load(const rapidjson::Value& data) {
-}
-
-void TestComponent::LoadVBO()
-{
-
-}
-
-void TestComponent::LoadEBO()
-{
-}
-
-void TestComponent::LoadVAO()
-{
-}

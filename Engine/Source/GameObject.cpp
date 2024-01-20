@@ -19,9 +19,11 @@ GameObject::GameObject(GameObject* parent)
 {
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		parent->AddChild(this);
 	}
 
 	AddSuffix();
+
 }
 
 GameObject::GameObject(const GameObject& original)
@@ -68,8 +70,8 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		parent->AddChild(this);
 	}
-
 }
 
 GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
@@ -291,7 +293,6 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	{
 		App->GetScene()->GetQuadtreeRoot()->AddObject(this);
 	}
-	
 	return newComponent;
 }
 

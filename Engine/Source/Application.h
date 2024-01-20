@@ -1,7 +1,7 @@
 #pragma once
-#include <list>
 #include "Globals.h"
 #include "Module.h"
+#include "EngineTimer.h"
 
 class ModuleOpenGL;
 class ModuleWindow;
@@ -10,8 +10,9 @@ class ModuleInput;
 class ModuleEditor;
 class ModuleRenderExercise;
 class ModuleScene;
-class ModuleTimer;
+class ModuleFileSystem;
 class ModuleCamera;
+class ModuleRenderTest;
 class ModuleDebugDraw;
 class ModuleFileSystem;
 class ModuleRenderTest;
@@ -31,13 +32,13 @@ public:
     ModuleWindow* GetWindow() { return window; }
     ModuleInput*  GetInput() { return input; }
     ModuleEditor*  GetEditor() { return editor; }
-    ModuleScene* GetScene() { return scene; }
-    ModuleTimer* GetClock() { return clock; }
     ModuleCamera* GetCamera() { return camera;  }
-    ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleRenderTest* GetTest() { return test; }
+    ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
+    ModuleScene* GetScene() { return scene; }
 
+    float GetDt() const { return dt; }
 
 private:
 
@@ -45,15 +46,17 @@ private:
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
     ModuleEditor* editor = nullptr;
-    ModuleScene* scene = nullptr;
-    ModuleTimer* clock = nullptr;
     ModuleCamera* camera = nullptr;
-    ModuleDebugDraw* debugDraw = nullptr;
     ModuleRenderTest* test = nullptr;
+    ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
+    ModuleScene* scene = nullptr;
 
-    std::list<Module*> modules;
+#define NUM_MODULES 9
+    Module* modules[NUM_MODULES];
 
+    EngineTimer timer;
+    float dt;
 };
 
 extern Application* App;
