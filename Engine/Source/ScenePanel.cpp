@@ -25,6 +25,15 @@ void ScenePanel::Draw(int windowFlags)
 			prevSizeY = size.y;
 		}
 		ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			{
+
+			}
+			ImGui::EndDragDropTarget();
+		}
 	}
 	ImGui::End();
 }

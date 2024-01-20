@@ -105,7 +105,6 @@ void HierarchyPanel::DragAndDropSource(GameObject* source)
 		ImGui::Text(source->mName.c_str());
 		ImGui::EndDragDropSource();
 	}
-
 }
 
 void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder) {

@@ -232,8 +232,10 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, PathNode* parent) co
             {
                 //TODO Assets To Display, except .bin
                 std::string fileName;
-                SplitPath(path.c_str(), &fileName);
-                AssetDisplay* assetDisplay = new AssetDisplay(fileName.c_str(), parent);          
+                std::string extensionName;
+                SplitPath(path.c_str(), &fileName, &extensionName);
+                std::string combiny = fileName + extensionName;
+                AssetDisplay* assetDisplay = new AssetDisplay(combiny.c_str(), parent);          
                 parent->assets.push_back(assetDisplay);
                 path = directory + std::string("/");
             }
