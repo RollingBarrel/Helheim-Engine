@@ -32,7 +32,7 @@ bool ModuleScene::Init()
 
 
 	//INIT For testing purposes of Scene Load
-	const char* json = test.TestLoadSceneWithGameObjectsWithGameObjectsAsChildrenAndComponents();
+	/*const char* json = test.TestLoadSceneWithGameObjectsWithGameObjectsAsChildrenAndComponents();
 	rapidjson::Document d;
 	rapidjson::ParseResult ok = d.Parse(json);
 	if (!ok) {
@@ -42,7 +42,7 @@ bool ModuleScene::Init()
 	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
 		const rapidjson::Value& s = d["Scene"];
 		mRoot->Load(s);
-	}
+	}*/
 	//END For testing purposes of Scene Load
 
 	
@@ -50,16 +50,16 @@ bool ModuleScene::Init()
 	return true;
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject& gameObject, Archive& gameObjectsArchive) {
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, Archive& gameObjectsArchive) {
 	// Save the current GameObject to its archive
 	Archive* gameObjectArchive = new Archive();
-	gameObject.Save(*gameObjectArchive);
-	gameObjectsArchive.AddObject(*gameObject.GetName(), *gameObjectArchive);
+	gameObject->Save(*gameObjectArchive);
+	gameObjectsArchive.AddObject(*gameObject->GetName(), *gameObjectArchive);
 
 	// Save children gameobject
-	const std::vector<GameObject*>& children = gameObject.GetChildren();
+	const std::vector<GameObject*>& children = gameObject->GetChildren();
 	if (!children.empty()) {
-		for (GameObject child : children) {
+		for (GameObject* child : children) {
 			SaveGameObjectRecursive(child, gameObjectsArchive);
 		}
 	}

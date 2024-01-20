@@ -35,13 +35,13 @@ public:
 		GameObject* scene = App->GetScene()->GetRoot();
 
 		GameObject* gameObject = new GameObject("Test Game Object 1", scene);
-		gameObject->CreateComponent(ComponentType::TEST);
+		gameObject->CreateComponent(ComponentType::MESHRENDERER);
 
-		GameObject* gameObject2 = new GameObject("Test Game Object 2", scene);
-		gameObject2->CreateComponent(ComponentType::TEST);
+		GameObject* gameObject2 = new GameObject("Test Game Object 2", gameObject);
+		gameObject2->CreateComponent(ComponentType::MESHRENDERER);
 
-		gameObject->AddChild(gameObject2);
-		scene->AddChild(gameObject);
+		//gameObject->AddChild(gameObject2);
+		//scene->AddChild(gameObject);
 
 		return scene;
 	}

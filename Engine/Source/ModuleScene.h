@@ -39,7 +39,7 @@ public:
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
-	void SaveGameObjectRecursive(const GameObject& gameObject, Archive& gameObjectsArchive);
+	void SaveGameObjectRecursive(const GameObject* gameObject, Archive& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
 	
 	Quadtree* mQuadtreeRoot;

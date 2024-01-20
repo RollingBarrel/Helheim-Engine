@@ -83,7 +83,11 @@ Component* MeshRendererComponent::Clone(GameObject* owner)
 
 
 void MeshRendererComponent::Save(Archive& archive) const {
-	archive.AddString("type", "MeshRenderer");
+	archive.AddInt("Id", mID);
+	archive.AddInt("MeshId",mMesh->mUID);
+	archive.AddInt("MaterialId", mMesh->mUID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	archive.AddBool("isEnabled", IsEnabled());
 }
 
 MeshRendererComponent* MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
