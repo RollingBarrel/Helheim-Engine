@@ -61,47 +61,72 @@ void Archive::AddIntArray(const std::string& key, const std::vector<unsigned int
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
+void Archive::AddObjectArray(const std::string& key, const std::vector<Archive>& array) {
+    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
+
+    for (const auto& item : array) {
+        rapidjson::Value jsonItem(rapidjson::kObjectType);
+        jsonItem.CopyFrom(*item.mDocument, mDocument->GetAllocator());
+        jsonArray.PushBack(jsonItem, mDocument->GetAllocator());
+    }
+
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
+}
+
+std::vector<Archive> Archive::GetObjectArray(const std::string& key) const {
+    auto it = mDocument->FindMember(key.c_str());
+    if (it != mDocument->MemberEnd() && it->value.IsArray()) {
+        const auto& array = it->value.GetArray();
+        std::vector<Archive> result;
+        for (const auto& element : array) {
+            Archive elementArchive;
+            elementArchive.CopyFrom(element);
+            result.push_back(elementArchive);
+        }
+        return result;
+    }
+    // Handle error or return an empty vector
+    return std::vector<Archive>();
+}
+
 void Archive::AddFloat3(const std::string& key, const float3& vector)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key.c_str(), key.length(), mDocument->GetAllocator());
+    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
 
-    rapidjson::Value jsonValue(rapidjson::kObjectType);
-    jsonValue.AddMember("x", vector.x, mDocument->GetAllocator());
-    jsonValue.AddMember("y", vector.y, mDocument->GetAllocator());
-    jsonValue.AddMember("z", vector.z, mDocument->GetAllocator());
+    jsonArray.PushBack(vector.x, mDocument->GetAllocator());
+    jsonArray.PushBack(vector.y, mDocument->GetAllocator());
+    jsonArray.PushBack(vector.z, mDocument->GetAllocator());
 
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
 void Archive::AddFloat4x4(const std::string& key, const float4x4& matrix)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key.c_str(), key.length(), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kArrayType);
+    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
 
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
-            jsonValue.PushBack(matrix[i][j], mDocument->GetAllocator());
+            jsonArray.PushBack(matrix[i][j], mDocument->GetAllocator());
         }
     }
 
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
 void Archive::AddQuat(const std::string& key, const Quat& quat)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key.c_str(), key.length(), mDocument->GetAllocator());
+    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
 
-    rapidjson::Value jsonValue(rapidjson::kObjectType);
-    jsonValue.AddMember("x", quat.x, mDocument->GetAllocator());
-    jsonValue.AddMember("y", quat.y, mDocument->GetAllocator());
-    jsonValue.AddMember("z", quat.z, mDocument->GetAllocator());
-    jsonValue.AddMember("w", quat.w, mDocument->GetAllocator());
+    jsonArray.PushBack(quat.x, mDocument->GetAllocator());
+    jsonArray.PushBack(quat.y, mDocument->GetAllocator());
+    jsonArray.PushBack(quat.z, mDocument->GetAllocator());
+    jsonArray.PushBack(quat.w, mDocument->GetAllocator());
 
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
 void Archive::AddObject(const std::string& key, const Archive& value) {

@@ -40,9 +40,6 @@ public:
 		GameObject* gameObject2 = new GameObject("Test Game Object 2", gameObject);
 		gameObject2->CreateComponent(ComponentType::MESHRENDERER);
 
-		//gameObject->AddChild(gameObject2);
-		//scene->AddChild(gameObject);
-
 		return scene;
 	}
 

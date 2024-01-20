@@ -51,10 +51,13 @@ public:
     void AddFloat(const std::string& key, float value);
     void AddBool(const std::string& key, bool value);
     void AddIntArray(const std::string& key, const std::vector<unsigned int>& array);
+    void AddFloatArray(const std::string& key, const std::vector<float>& array);
     void AddFloat3(const std::string& key, const float3& vector);
     void AddFloat4x4(const std::string& key, const float4x4& matrix);
     void AddQuat(const std::string& key, const Quat& quat);
     void AddObject(const std::string& key, const Archive& value);
+    void AddObjectArray(const std::string& key, const std::vector<Archive>& array);
+    std::vector<Archive> GetObjectArray(const std::string& key) const;
 
     int GetInt(const std::string& key) const;
     std::string GetString(const std::string& key) const;
