@@ -5,7 +5,8 @@
 enum class GameState {
 	PLAYING,
 	PAUSED,
-	RUN_ONCE
+	RUN_ONCE,
+	STOP
 };
 class PausePanel : public Panel
 {
@@ -17,5 +18,6 @@ public:
 private:
 	void Play();
 	void Pause();
+	void Stop();
 	GameState mState = GameState::PLAYING;
 };
