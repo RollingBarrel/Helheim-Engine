@@ -34,6 +34,9 @@ public:
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
+	void Save(const char* saveFilePath);
+	void Load(const char* saveFilePath);
+
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
