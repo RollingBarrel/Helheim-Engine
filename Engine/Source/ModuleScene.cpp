@@ -10,7 +10,6 @@
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
-	mSelectedGameObject = mRoot;
 	mQuadtreeRoot = new Quadtree(AABB(float3(-10), float3(10)));
 }
 
