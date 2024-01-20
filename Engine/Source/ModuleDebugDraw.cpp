@@ -10,7 +10,8 @@
 #include "ModuleWindow.h"
 
 //This will be removed when functional gizmos are implmented
-#include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "HierarchyPanel.h"
 #include "GameObject.h"
 
 

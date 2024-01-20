@@ -35,11 +35,11 @@ void PausePanel::Draw(int windowFlags)
 }
 
 void PausePanel::Play() {
-	//App->GetClock()->SetTimeScale(1.0f);
+	App->GetClock()->SetTimeScale(1.0f);
 	mState = GameState::PLAYING;
 }
 
 void PausePanel::Pause() {
-	//App->GetClock()->SetTimeScale(0.0f);
+	App->GetClock()->SetTimeScale(0.0f);
 	mState = GameState::PAUSED;
 }
