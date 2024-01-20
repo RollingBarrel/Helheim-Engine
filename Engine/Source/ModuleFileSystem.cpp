@@ -167,16 +167,32 @@ bool ModuleFileSystem::CopyAbsolutePath(const char* sourceFilePath, const char* 
 
     char buffer[4096];
     size_t n;
+    errno_t err;
 
-    fopen_s(&src,sourceFilePath, "rb");
-    fopen_s(&dst,destinationFilePath, "wb");
+    if ((err = fopen_s(&src, sourceFilePath, "rb")) == 0 )
+    {      
+        if ((err = fopen_s(&dst, destinationFilePath, "wb")) == 0)
+        {
+            while ((n = fread(buffer, 1, sizeof(buffer), src)) > 0)
+            {
+                fwrite(buffer, 1, n, dst);
+            }
 
-    while ((n = fread(buffer, 1, sizeof(buffer), src)) > 0)
-    {
-        fwrite(buffer, 1, n, dst);
+            fclose(dst);
+        }  
+        else
+        {
+            LOG("Unable to open File %s", destinationFilePath);
+        }      
+
+        fclose(src);
     }
-    fclose(src);
-    fclose(dst);
+    else
+    {
+        LOG("Unable to open File %s", sourceFilePath);
+    }
+  
+
     return true;
 }
 
