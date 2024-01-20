@@ -1,6 +1,9 @@
 #ifndef ARCHIVE_H
 #define ARCHIVE_H
 
+#undef max
+#undef min
+#define NOMINMAX
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"

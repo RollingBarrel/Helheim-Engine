@@ -6,6 +6,11 @@
 #include "string"
 #include "Archive.h"
 
+#undef max
+#undef min
+#define NOMINMAX
+#include "rapidjson/document.h"
+
 class MeshRendererComponent;
 class Component;
 enum class ComponentType : unsigned int;
