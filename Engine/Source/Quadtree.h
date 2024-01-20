@@ -42,5 +42,6 @@ private:
 	int mDepthLevel;
 	bool mFilled;
 	std::string mName;
+
 };
 

@@ -53,7 +53,6 @@ void MeshRendererComponent::Draw()
 	glUseProgram(0);
 	glBindVertexArray(0);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
-	mInsideFrustum = false;
 }
 
 void MeshRendererComponent::Load(const char* uid)

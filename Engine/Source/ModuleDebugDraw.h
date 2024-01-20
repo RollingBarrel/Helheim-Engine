@@ -4,9 +4,6 @@
 #include "Module.h"
 #include "MathGeoLibFwd.h"
 
-#include "Math/float4x4.h"
-#include "Geometry/Frustum.h"
-#include "Geometry/OBB.h"
 
 class DDRenderInterfaceCoreGL;
 class Camera;

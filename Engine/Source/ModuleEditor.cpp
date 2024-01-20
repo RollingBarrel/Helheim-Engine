@@ -12,9 +12,11 @@
 #include "ConsolePanel.h"
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
+#include "ScenePanel.h"
 #include "QuadtreePanel.h"
 #include "DebugPanel.h"
 #include "PausePanel.h"
+#include "ProjectPanel.h"
 
 #include "Panel.h"
 #include "AboutPanel.h"
