@@ -35,6 +35,7 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
             if (FAILED(hr))
             {
                 LOG("texture failed to load");
+                return;
             }
         }
     }

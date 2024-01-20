@@ -23,6 +23,8 @@ ModuleFileSystem::ModuleFileSystem()
     AddToSearchPath(ASSETS_MODEL_PATH);
     
     CreateDirectory(ASSETS_PATH);
+    CreateDirectory(ASSETS_MODEL_PATH);
+    CreateDirectory(ASSETS_TEXTURE_PATH);
 
     CreateDirectory(LIBRARY_PATH);
     CreateDirectory(LIBRARY_MESH_PATH);
