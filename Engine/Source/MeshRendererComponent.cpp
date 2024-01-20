@@ -7,42 +7,26 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleRenderTest.h"
-#include <iostream>
-#include <random>
+
+
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
 	:Component("Mesh Renderer" ,owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh())
 {
-	//Create Random BBO
-	std::random_device rd;
-	std::mt19937 gen(rd());
 
-	// Define the distribution for values between -100 and 100
-	std::uniform_int_distribution<int> distribution(-100, 90);
-
-	// Generate three random values
-	float rv1 = distribution(gen)/10;
-	float rv2 = distribution(gen)/10;
-	float rv3 = distribution(gen)/10;
-	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1+1.0f, rv2 + 1.0f, rv3 + 1.0f)));
-
+	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
+	mAABB = AABB();
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
 	:Component(owner->GetName()->c_str(), owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh())
 {
-	//Create Random BBO
-	std::random_device rd;
-	std::mt19937 gen(rd());
 
-	// Define the distribution for values between -100 and 100
-	std::uniform_int_distribution<int> distribution(-100, 90);
 
-	// Generate three random values
-	float rv1 = distribution(gen) / 10;
-	float rv2 = distribution(gen) / 10;
-	float rv3 = distribution(gen) / 10;
-	mOBB = OBB(AABB(float3(rv1, rv2, rv3), float3(rv1 + 1.0f, rv2 + 1.0f, rv3 + 1.0f)));
+	
+	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
+	mAABB = AABB();
+
 
 }
 
@@ -52,7 +36,7 @@ void MeshRendererComponent::Draw()
 	//{
 	//	return;
 	//}
-	if (mDrawBox)
+	if (*mDrawBox)
 	{
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
@@ -74,10 +58,21 @@ void MeshRendererComponent::Draw()
 void MeshRendererComponent::Load(const char* uid)
 {
 	Importer::Mesh::Load(mMesh, uid);
+
+	
+	float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
+
+	mAABB.SetFrom(positions, mMesh->mNumVertices);
+
+	float4x4 model = mOwner->GetWorldTransform();
+
+	mOBB.SetFrom(mAABB, model);
+
 }
 
 void MeshRendererComponent::Update()
 {
+	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 	Draw();
 }
 

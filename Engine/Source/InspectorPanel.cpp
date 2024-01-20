@@ -387,6 +387,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::Text("Model: Cube.obj (TEST)");
 	ImGui::Text("Material: DefaultMaterial (TEST)");
 	ImGui::Text("Shader: StandardShader (TEST)");
-	bool a = component->ShouldDraw();
-	ImGui::Checkbox("Draw bounding box:", &a);
+
+	ImGui::Checkbox("Draw bounding box:", component->ShouldDraw());
 }
