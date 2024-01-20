@@ -20,7 +20,7 @@ void LoadScenePanel::Draw(int windowFlags)
 		static char fileName[128] = "";
 		ImGui::InputText(".json", fileName, IM_ARRAYSIZE(fileName));
 		if (ImGui::Button("Load")) {
-			// Add logic here to load file
+			App->GetScene()->Load(fileName);
 		}
 	}
 	ImGui::End();

@@ -134,7 +134,7 @@ void ModuleEditor::ShowMainMenuBar() {
 			}
 			if (ImGui::MenuItem("Save Scene"))
 			{
-				
+				App->GetScene()->Save("scene.json");
 			}
 			if (ImGui::MenuItem("Quit"))
 			{
