@@ -15,6 +15,9 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
+	unsigned int GetProgramId() const { return programId; }
+	unsigned int GetDifuseTexture() const { return textureId; }
+	unsigned int GetNormalTexture() const { return normTextureId; }
 private:
 	unsigned int VAO;
 	unsigned int VBOEBO[2];

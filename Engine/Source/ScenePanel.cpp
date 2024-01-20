@@ -2,6 +2,11 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
+#include "ProjectPanel.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+#include "MeshRendererComponent.h"
+#include "ImporterMesh.h"
 
 #include "imgui.h"
 
@@ -30,7 +35,21 @@ void ScenePanel::Draw(int windowFlags)
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
 			{
-
+				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+				GameObject* go = new GameObject(App->GetScene()->GetRoot());
+				MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
+				char* path = const_cast<char*>(asset->mName);
+				//TODO; Molt malament, fer split del path be!!!
+				while (*path != '\0')
+				{
+					if (*path == '.')
+					{
+						*path = '\0';
+						break;
+					}
+					++path;
+				}
+				cMesh->Load(asset->mName);
 			}
 			ImGui::EndDragDropTarget();
 		}

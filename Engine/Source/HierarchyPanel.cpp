@@ -28,7 +28,6 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 	if (ImGui::BeginPopup("OptionsGO")) {
 		if (ImGui::Selectable("Create GameObject")) {
 			GameObject* gameObject = new GameObject(node);
-			node->AddChild(gameObject);
 			App->GetScene()->SetSelectedObject(gameObject);
 		}
 

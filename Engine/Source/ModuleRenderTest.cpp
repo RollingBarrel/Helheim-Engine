@@ -410,20 +410,20 @@ update_status ModuleRenderTest::Update()
 		glUniform3fv(6, 1, ambientCol);
 	ImGui::End();
 
-	App->GetOpenGL()->BindSceneFramebuffer();
-	glBindVertexArray(rMesh->GetVao());
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureId);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, normTextureId);
-	glDrawElements(GL_TRIANGLES, rMesh->mNumIndices, GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(rMesh2->GetVao());
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureId);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, normTextureId);
-	glDrawElements(GL_TRIANGLES, rMesh2->mNumIndices, GL_UNSIGNED_INT, 0);
+	//App->GetOpenGL()->BindSceneFramebuffer();
+	//glBindVertexArray(rMesh->GetVao());
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, textureId);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, normTextureId);
+	//glDrawElements(GL_TRIANGLES, rMesh->mNumIndices, GL_UNSIGNED_INT, 0);
+	//
+	//glBindVertexArray(rMesh2->GetVao());
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, textureId);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, normTextureId);
+	//glDrawElements(GL_TRIANGLES, rMesh2->mNumIndices, GL_UNSIGNED_INT, 0);
 
 	glUseProgram(0);
 	glBindVertexArray(0);

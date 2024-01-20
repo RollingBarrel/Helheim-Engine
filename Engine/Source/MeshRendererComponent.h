@@ -4,36 +4,32 @@
 #include "GameObject.h"
 
 class Material;
-struct Mesh;
+struct ResourceMesh;
 
 class MeshRendererComponent : public Component
 {
 public:
 	MeshRendererComponent(GameObject* owner);
 	MeshRendererComponent(const MeshRendererComponent& original , GameObject* owner);
-	//~MeshRendererComponent();
+	~MeshRendererComponent() { delete mMesh; };
 
 	void Draw();
-	void Reset() override;
-	void Load();
+	void Load(const char* uid);
+	void Reset() override {}
 
 	void Update() override;
-	void DrawEditor();
 	Component* Clone(GameObject* owner) override;
 
 	const OBB getOBB() const { return mOBB; }
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
-	bool* getShouldDraw() { return mDrawBox; }
+	bool ShouldDraw() const { return mDrawBox; }
 
 private:
-	void LoadVBO();
-	void LoadEBO();
-	void LoadVAO();
-	Mesh* mMesh;
+	ResourceMesh* mMesh;
 	Material* material;
 	OBB mOBB;
-	bool* mDrawBox = new bool(false);
+	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 };
 

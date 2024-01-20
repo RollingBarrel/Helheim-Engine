@@ -3,7 +3,6 @@
 #define PROJECTPANEL "Project##"
 
 #include <vector>
-#include <string>
 
 struct PathNode;
 
