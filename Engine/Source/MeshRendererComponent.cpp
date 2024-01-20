@@ -32,10 +32,10 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 
 void MeshRendererComponent::Draw()
 {
-	//if (!mInsideFrustum)
-	//{
-	//	return;
-	//}
+	if (!mInsideFrustum && App->GetScene()->GetApplyFrustumCulling())
+	{
+		return;
+	}
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	if (mDrawBox)

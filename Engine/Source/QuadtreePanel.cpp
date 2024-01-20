@@ -17,10 +17,13 @@ void QuadtreePanel::Draw(int windowFlags)
 {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
+		bool culling = App->GetScene()->GetApplyFrustumCulling();
+		if (ImGui::Checkbox("Apply frustum culling", &culling))
+			App->GetScene()->SetApplyFrustumCulling(culling);
 
-		bool a = App->GetScene()->GetShouldRenderQuadtree();
-		if (ImGui::Checkbox("Draw quadtree", &a))
-			App->GetScene()->SetShouldRenderQuadtree(a);
+		bool draw = App->GetScene()->GetShouldRenderQuadtree();
+		if (ImGui::Checkbox("Draw quadtree", &draw))
+			App->GetScene()->SetShouldRenderQuadtree(draw);
 		
 		ImGui::Separator();
 		ImGui::SameLine();

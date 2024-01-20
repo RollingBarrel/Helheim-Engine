@@ -595,8 +595,7 @@ ModuleDebugDraw::ModuleDebugDraw()
 
 ModuleDebugDraw::~ModuleDebugDraw()
 {
-    delete mDrawGrid;
-    delete mDrawAxis;
+
 }
 
 bool ModuleDebugDraw::Init()
@@ -632,10 +631,10 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-    if (*mDrawGrid) {
+    if (mDrawGrid) {
        DrawGrid();
     }
-    if (*mDrawAxis) {
+    if (mDrawAxis) {
        DrawAxis();
     }
 
