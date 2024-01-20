@@ -9,6 +9,10 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 
+//This will be removed when functional gizmos are implmented
+#include "ModuleScene.h"
+#include "GameObject.h"
+
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
@@ -634,9 +638,7 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     if (mDrawGrid) {
        DrawGrid();
     }
-    if (mDrawAxis) {
        DrawAxis();
-    }
 
     dd::flush();
 }
@@ -675,7 +677,7 @@ void ModuleDebugDraw::DrawGrid()
 }
 void ModuleDebugDraw::DrawAxis()
 {
-     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
+     dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
 }
 
 
