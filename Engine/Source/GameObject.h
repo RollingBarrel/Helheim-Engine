@@ -44,6 +44,7 @@ public:
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
 	const std::string* GetName() const { return &mName; }
+	unsigned int GetId() const { return mID; }
 	void ResetTransform();
 
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }

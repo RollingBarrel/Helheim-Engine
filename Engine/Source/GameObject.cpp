@@ -327,6 +327,7 @@ void GameObject::RecalculateLocalTransform()
 }
 
 void GameObject::Save(Archive& archive) const {
+	archive.AddInt("id", mID);
 	archive.AddString("name", mName);
 	archive.AddBool("isEnabled", mIsEnabled);
 	archive.AddFloat3("position", mPosition);
@@ -339,14 +340,14 @@ void GameObject::Save(Archive& archive) const {
 	}
 	archive.AddObject("components", *componentsArchive);
 
-	// Save children
-	Archive* childrenArchive = new Archive();
-	for (const auto& child : mChildren) {
-		Archive* childArchive = new Archive();
-		child->Save(*childArchive);
-		childrenArchive->AddObject("child", *childArchive);
+	// Save children IDs
+	if (!mChildren.empty()) {
+		std::vector<unsigned int> childrenIds;
+		for (const auto& child : mChildren) {
+			childrenIds.push_back(child->GetId());
+		}
+		archive.AddIntArray("children", childrenIds);
 	}
-	archive.AddObject("children", *childrenArchive);
 }
 
 GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
