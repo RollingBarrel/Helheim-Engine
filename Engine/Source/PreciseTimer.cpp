@@ -13,7 +13,7 @@ long long PreciseTimer::Read() {
 long long PreciseTimer::ReadDelta() {
 	static Uint64 frequency = SDL_GetPerformanceFrequency();
 	Uint64 count = SDL_GetPerformanceFrequency();
-	Uint32 elapsedTime = (count - mLastCount) / frequency;
+	Uint64 elapsedTime = (count - mLastCount) / frequency;
 	mLastCount = count;
 	mTotalTime += elapsedTime;
 	return elapsedTime;

@@ -9,26 +9,28 @@
 #include "ModuleRenderTest.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
-
+#include "ModuleTimer.h"
 
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
-	modules[0] = input = new ModuleInput();
-	modules[1] = window = new ModuleWindow();
-	modules[2] = render = new ModuleOpenGL();
-	modules[3] = camera = new ModuleCamera();
-	modules[4] = fileSystem = new ModuleFileSystem();
-	modules[5] = debugDraw = new ModuleDebugDraw();
-	modules[6] = scene = new ModuleScene();
-	modules[7] = test = new ModuleRenderTest();
-	modules[8] = editor = new ModuleEditor();
+	modules[0] = clock = new ModuleTimer();
+	modules[1] = input = new ModuleInput();
+	modules[2] = window = new ModuleWindow();
+	modules[3] = render = new ModuleOpenGL();
+	modules[4] = camera = new ModuleCamera();
+	modules[5] = fileSystem = new ModuleFileSystem();
+	modules[6] = debugDraw = new ModuleDebugDraw();
+	modules[7] = scene = new ModuleScene();
+	modules[8] = test = new ModuleRenderTest();
+	modules[9] = editor = new ModuleEditor();
 }
 
 Application::~Application()
 {
-	for(int i = 0; i < NUM_MODULES; ++i)
-        delete modules[i];
+	for (int i = 0; i < NUM_MODULES; ++i) {
+		delete modules[i];
+	}
 }
 
 bool Application::Init()
@@ -43,8 +45,6 @@ bool Application::Init()
 
 update_status Application::Update()
 {
-	dt = timer.Read();
-	timer.Start();
 	update_status ret = UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
@@ -65,6 +65,10 @@ bool Application::CleanUp()
 
 	for (int i = 0; i < NUM_MODULES; ++i)
 		ret = modules[i]->CleanUp();
-
+	
 	return ret;
+}
+
+float Application::GetDt() const {
+	return clock->GetRealDelta() / (float) 1000; 
 }

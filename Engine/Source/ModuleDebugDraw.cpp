@@ -10,7 +10,8 @@
 #include "ModuleWindow.h"
 
 //This will be removed when functional gizmos are implmented
-#include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "HierarchyPanel.h"
 #include "GameObject.h"
 
 
@@ -677,7 +678,7 @@ void ModuleDebugDraw::DrawGrid()
 }
 void ModuleDebugDraw::DrawAxis()
 {
-     dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
+    dd::axisTriad(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetWorldTransform(), 0.1f, 1.0f);
 }
 
 

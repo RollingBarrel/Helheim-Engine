@@ -10,10 +10,11 @@ bool ModuleTimer::Init() {
 	mGameClock = new Timer();
 	mRealClock = new Timer();
 	mGameClock->Start();
-	mRealClock->Start();
+	mRealClock->StartWithRunTime();
 	return true;
 }
-update_status ModuleTimer::Update() {
+
+update_status ModuleTimer::PreUpdate() {
 	static short frameCounter = 0;
 	++frameCounter;
 

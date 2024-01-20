@@ -13,12 +13,12 @@ public:
 	//~TestComponent();
 
 	void Update() override;
-	Component* Clone(GameObject* owner) override;
+	Component* Clone(GameObject* owner) const override;
 
 	void Save(Archive& archive) const override;
 	TestComponent* LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
-	int number;
+	int number = 0;
 };
 

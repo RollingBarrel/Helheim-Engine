@@ -146,7 +146,7 @@ const void Quadtree::RenderTreeImGui() const
 		{
 			for (const auto& object : mGameObjects)
 			{
-				ImGui::Text(object->GetName()->c_str());
+				ImGui::Text(object->GetName().c_str());
 			}
 
 		}

@@ -19,15 +19,12 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
-	:Component(owner->GetName()->c_str(), owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh())
+	:Component("Mesh Renderer", owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh(*original.mMesh))
 {
 
-
+	mOBB = original.mOBB;
+	mAABB = original.mAABB;
 	
-	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
-	mAABB = AABB();
-
-
 }
 
 void MeshRendererComponent::Draw()
@@ -76,7 +73,8 @@ void MeshRendererComponent::Update()
 	Draw();
 }
 
-Component* MeshRendererComponent::Clone(GameObject* owner)
+
+Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
 }
