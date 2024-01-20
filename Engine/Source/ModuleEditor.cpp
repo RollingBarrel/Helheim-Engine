@@ -30,7 +30,6 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 
-static ModuleEditor* s_ModuleEditorInstance = nullptr;
 
 ModuleEditor::ModuleEditor()
 {
@@ -42,6 +41,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
+	mPanels[DEBUGPANEL] = new DebugPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -151,7 +151,7 @@ void ModuleEditor::ShowMainMenuBar() {
 		if (ImGui::BeginMenu("View"))
 		{
 			if (ImGui::MenuItem("Quadtree")) {
-				Panel* quadtreeDebug = s_ModuleEditorInstance->mPanels[QUADTREEPANEL];
+				Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
 				if (quadtreeDebug)
 				{
 					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
@@ -159,7 +159,7 @@ void ModuleEditor::ShowMainMenuBar() {
 			}
 
 			if (ImGui::MenuItem("Debug")) {
-				Panel* debugPanel = s_ModuleEditorInstance->mPanels[DEBUGPANEL];
+				Panel* debugPanel = mPanels[DEBUGPANEL];
 				if (debugPanel)
 				{
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();

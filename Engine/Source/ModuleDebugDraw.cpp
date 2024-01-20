@@ -676,7 +676,7 @@ void ModuleDebugDraw::DrawGrid()
 }
 void ModuleDebugDraw::DrawAxis()
 {
-     dd::axisTriad(App->GetScene()->GetSelectedGameObject()->GetWorldTransform(), 0.1f, 1.0f);
+     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 }
 
 

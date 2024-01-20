@@ -27,7 +27,6 @@ public:
     void DrawBoundingBox(const OBB& obb);
     void DrawQuadtree(const AABB& aabb);
     void DrawAxis();
-    void DrawFrustum(const Frustum& frustum);
     bool* GetShouldRenderGrid() const { return mDrawGrid; }
     bool* GetShouldRenderAxis() const { return mDrawAxis; }
 
