@@ -32,20 +32,15 @@ public:
 	}
 	GameObject* TestSceneWithGameObjects() {
 		LOG("TestSceneWithGameObjects\n");
-
 		GameObject* scene = App->GetScene()->GetRoot();
 
-		GameObject gameObject = GameObject("Test Game Object 1", scene);
+		GameObject* gameObject = new GameObject("Test Game Object 1", scene);
+		gameObject->CreateComponent(ComponentType::MESHRENDERER);
 
-		Component* newComponent = new TestComponent(&gameObject);
+		GameObject* gameObject2 = new GameObject("Test Game Object 2", gameObject);
+		gameObject2->CreateComponent(ComponentType::MESHRENDERER);
 
-		GameObject gameObject2 = GameObject("Test Game Object 2", scene);
-		Component* newComponent2 = new TestComponent(&gameObject2);
-		Component* newComponent3 = new TestComponent(&gameObject2);
-
-		scene->AddChild(&gameObject);
-		scene->AddChild(&gameObject2);
-
+		return scene;
 	}
 
 	const char* TestLoadSceneWithGameObject() {

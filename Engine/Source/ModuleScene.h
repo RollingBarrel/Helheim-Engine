@@ -5,6 +5,8 @@
 #include <vector>
 class Quadtree;
 class GameObject;
+class Archive;
+
 class ModuleScene : public Module
 {
 public:
@@ -35,6 +37,8 @@ public:
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
+	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
+	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
 	
 	Quadtree* mQuadtreeRoot;
 	bool mDrawQuadtree = false;

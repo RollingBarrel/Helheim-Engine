@@ -26,6 +26,7 @@ public:
 
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
+	const bool IsEnabled() const { return mIsEnabled; }
 
 	int GetID() { return mID; }
 

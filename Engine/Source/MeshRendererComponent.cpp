@@ -81,26 +81,34 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 
 
 void MeshRendererComponent::Save(Archive& archive) const {
-	archive.AddString("type", "MeshRenderer");
+	archive.AddInt("ID", mID);
+	archive.AddInt("MeshID",mMesh->mUID);
+	archive.AddInt("MaterialID", mMesh->mUID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	archive.AddBool("isEnabled", IsEnabled());
 }
 
 MeshRendererComponent* MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
-	const char* meshID = { "" };
-	const char* materialID = { "" };
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsString()) {
-		meshID = componentJson["MeshID"].GetString();
+	int ID = { 0 };
+	int meshID = { 0 };
+	int materialID = { 0 };
+	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+		meshID = componentJson["ID"].GetInt();
 	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsString()) {
-		materialID = componentJson["MaterialID"].GetString();
+	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
+		meshID = componentJson["MeshID"].GetInt();
+	}
+	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
+		materialID = componentJson["MaterialID"].GetInt();
 	}
 
 	MeshRendererComponent* m = new MeshRendererComponent(owner);
-	if (meshID != "") {
-		m->Load(meshID);
+	if (meshID != 0) {
+		m->Load(std::to_string(meshID).c_str());
 	}
-	if (materialID != "") {
+	if (materialID != 0) {
 		//TODO check if we separate load function from each Component to load specific resources
-		//m->Load(materialID);
+		//m->Load(std::to_string(materialID).c_str());
 	}
 
 	return m;
