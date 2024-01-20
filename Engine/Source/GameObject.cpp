@@ -193,11 +193,6 @@ void GameObject::SetScale(const float3& scale)
 	isTransformModified = true;
 }
 
-void GameObject::SetID(const unsigned int ID)
-{
-	mID = ID;
-}
-
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
 {
 	child->mParent = this;
