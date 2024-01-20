@@ -1,10 +1,10 @@
 #pragma once
 
 #include <vector>
-#include "Geometry/AABB.h"
-#include "Geometry/OBB.h"
-#include "string"
+#include <string>
 
+#include "Geometry/AABB.h"
+#include "MathGeoLibFwd.h"
 
 class GameObject;
 class MeshRendererComponent;
@@ -40,7 +40,6 @@ private:
 	int mDepthLevel;
 	bool mFilled;
 	std::string mName;
-	
 
 };
 

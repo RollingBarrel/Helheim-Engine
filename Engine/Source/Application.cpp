@@ -5,55 +5,56 @@
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
-#include "ModuleTimer.h"
 #include "ModuleCamera.h"
+#include "ModuleRenderTest.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleFileSystem.h"
 
 
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
-	modules.push_back(window = new ModuleWindow());
-	modules.push_back(render = new ModuleOpenGL());
-	modules.push_back(input = new ModuleInput());
-	modules.push_back(scene = new ModuleScene());
-	modules.push_back(clock = new ModuleTimer());
-	modules.push_back(camera = new ModuleCamera());
-	modules.push_back(debugDraw = new ModuleDebugDraw());
-	modules.push_back(editor = new ModuleEditor());
-
+	modules[0] = input = new ModuleInput();
+	modules[1] = window = new ModuleWindow();
+	modules[2] = render = new ModuleOpenGL();
+	modules[3] = camera = new ModuleCamera();
+	modules[4] = fileSystem = new ModuleFileSystem();
+	modules[5] = debugDraw = new ModuleDebugDraw();
+	modules[6] = scene = new ModuleScene();
+	modules[7] = test = new ModuleRenderTest();
+	modules[8] = editor = new ModuleEditor();
 }
 
 Application::~Application()
 {
-	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
-    {
-        delete *it;
-    }
+	for(int i = 0; i < NUM_MODULES; ++i)
+        delete modules[i];
 }
 
 bool Application::Init()
 {
 	bool ret = true;
 
-	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
-		ret = (*it)->Init();
+	for(int i = 0; i < NUM_MODULES && ret == true; ++i)
+		ret = modules[i]->Init();
 
 	return ret;
 }
 
 update_status Application::Update()
 {
+	dt = timer.Read();
+	timer.Start();
 	update_status ret = UPDATE_CONTINUE;
 
-	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		ret = (*it)->PreUpdate();
+	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
+		ret = modules[i]->PreUpdate();
 
-	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		ret = (*it)->Update();
+	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
+		ret = modules[i]->Update();
 
-	for(std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		ret = (*it)->PostUpdate();
+	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
+		ret = modules[i]->PostUpdate();
 
 	return ret;
 }
@@ -62,8 +63,8 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for(std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
-		ret = (*it)->CleanUp();
+	for (int i = 0; i < NUM_MODULES; ++i)
+		ret = modules[i]->CleanUp();
 
 	return ret;
 }
