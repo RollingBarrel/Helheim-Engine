@@ -19,7 +19,7 @@ public:
 	void Reset() override {}
 
 	void Update() override;
-	Component* Clone(GameObject* owner) override;
+	Component* Clone(GameObject* owner) const override;
 
 	const OBB getOBB() const { return mOBB; }
 

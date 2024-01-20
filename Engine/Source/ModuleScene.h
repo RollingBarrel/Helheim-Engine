@@ -15,10 +15,8 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 
-	GameObject* GetRoot() { return mRoot; }
-	GameObject* GetSelectedGameObject() { return mSelectedGameObject; }
+	GameObject* GetRoot() const { return mRoot; }
 
-	void SetSelectedObject(GameObject* gameObject);
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
 	}
@@ -43,11 +41,9 @@ private:
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
-	GameObject* mSelectedGameObject = nullptr;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	
 };
 
 #endif //_MODULE_SCENE_H_

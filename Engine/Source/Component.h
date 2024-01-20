@@ -16,7 +16,7 @@ public:
 	virtual	void Disable() { mIsEnabled = false; }
 	virtual	void Update() = 0;
 	
-	virtual Component* Clone(GameObject* owner) = 0;
+	virtual Component* Clone(GameObject* owner) const = 0;
 
 	Component(const char* name ,GameObject* owner, ComponentType type);
 	virtual ~Component() {}
@@ -26,6 +26,8 @@ public:
 
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
+
+	int GetID() { return mID; }
 
 protected:
 	virtual	void Reset() = 0;

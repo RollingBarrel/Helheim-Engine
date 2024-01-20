@@ -10,7 +10,6 @@
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", nullptr);
-	mSelectedGameObject = mRoot;
 	mQuadtreeRoot = new Quadtree(AABB(float3(-10), float3(10)));
 }
 
@@ -76,11 +75,6 @@ update_status ModuleScene::PostUpdate()
 	}
 
 	return UPDATE_CONTINUE;
-}
-
-void ModuleScene::SetSelectedObject(GameObject* gameObject)
-{
-	mSelectedGameObject = gameObject;
 }
 
 void ModuleScene::DeleteGameObjects(){

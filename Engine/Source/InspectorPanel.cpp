@@ -1,19 +1,19 @@
 #include "InspectorPanel.h"
 #include "imgui.h"
 #include "Application.h"
-#include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "HierarchyPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include <MathFunc.h>
 
-bool InspectorPanel::mSame_component_popup = false;
-
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
-	GameObject* focusedObject = App->GetScene()->GetSelectedGameObject();
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
 	ImGui::PushID(focusedObject->mID);
@@ -32,7 +32,7 @@ void InspectorPanel::Draw(int windowFlags)
 		AddComponentButton(focusedObject);
 	}
 	
-	if (mSame_component_popup)
+	if (mSameComponentPopup)
 	{
 		ShowSameComponentPopup();
 	}
@@ -42,6 +42,7 @@ void InspectorPanel::Draw(int windowFlags)
 }
 
 void InspectorPanel::DrawTransform(GameObject* object) {
+	ImGui::PushID(object->mID);
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
@@ -59,194 +60,47 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 		if (ImGui::BeginTable("transformTable", 4)) {
 			//ImGui::TableSetupColumn("columns", 0 , -FLT_MIN);
 
+			bool modifiedTransform = false;
 			float3 newRotation = RadToDeg(object->mEulerRotation);
 			float3 newPosition = object->mPosition;
 			float3 newScale = object->mScale;
 
-			ImGui::TableNextRow();
-			ImGui::PushID(object->mID);
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Position");
-			ImGui::PopItemWidth();
+			const char* labels[3] = { "Position", "Rotation", "Scale" };
+			const char* axisLabels[3] = { "X", "Y", "Z" };
+			float3* vectors[3] = { &newPosition, &newRotation, &newScale };
 
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("X");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##X", &newPosition.x, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
+			for (int i = 0; i < 3; ++i) {
+				ImGui::PushID(i);
+				ImGui::TableNextRow();
+
+				ImGui::TableNextColumn();
+				ImGui::PushItemWidth(-FLT_MIN);
+				ImGui::Text(labels[i]);
+				ImGui::PopItemWidth();
+
+				for (int j = 0; j < 3; ++j) {
+					ImGui::TableNextColumn();
+					ImGui::PushItemWidth(-FLT_MIN);
+					ImGui::AlignTextToFramePadding();
+					ImGui::Text(axisLabels[j]);
+					ImGui::SameLine();
+					modifiedTransform = ImGui::DragFloat(axisLabels[j], &(*vectors[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+					ImGui::PopItemWidth();
+				}
+				ImGui::PopID();
+			}
+
+			if (modifiedTransform) {
 				object->SetPosition(newPosition);
-			}
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Y");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Y", &newPosition.y, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				object->SetPosition(newPosition);
-			}
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Z");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Z", &newPosition.z, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				object->SetPosition(newPosition);
-			}
-			ImGui::PopItemWidth();
-
-			ImGui::PopID();
-
-
-			ImGui::TableNextRow();
-			ImGui::PushID(object->mID + 1);
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Rotation");
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("X");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##X", &newRotation.x, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
 				object->SetRotation(DegToRad(newRotation));
-			}
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Y");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Y", &newRotation.y, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				object->SetRotation(DegToRad(newRotation));
-			}
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Z");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Z", &newRotation.z, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				object->SetRotation(DegToRad(newRotation));
-			}
-			ImGui::PopItemWidth();
-
-			ImGui::PopID();
-
-
-			ImGui::TableNextRow();
-			ImGui::PushID(object->mID + 2);
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Scale");
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("X");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##X", &newScale.x, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
 				object->SetScale(newScale);
 			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Y");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Y", &newScale.y, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				object->SetScale(newScale);
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Z");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Z", &newScale.z, 0.05f, 0.0f, 0.0f, "%.2f"))
-			{
-				object->SetScale(newScale);
-			}
-			ImGui::PopItemWidth();
-
-			ImGui::PopID();
-
 		}
 		ImGui::EndTable();
 	}
-
+	ImGui::PopID();
 }
-//void InspectorPanel::DrawTransform(GameObject* object) {
-//
-//
-//	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
-//	ImGui::SameLine(ImGui::GetItemRectSize().x - 50.0f);
-//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4 / 7.0f, 0.6f, 0.6f));
-//	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4 / 7.0f, 0.7f, 0.7f));
-//	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(4 / 7.0f, 0.8f, 0.8f));
-//	if (ImGui::SmallButton("Config##transform")) {
-//		ImGui::OpenPopup("TransformOptions");
-//	}
-//	if (ImGui::BeginPopup("TransformOptions")) {
-//		if (ImGui::Selectable("Reset")) {
-//			object->ResetTransform();
-//		}
-//		ImGui::EndPopup();
-//	}
-//
-//	ImGui::PopStyleColor(3);
-//	if (headerOpen) {
-//		bool modifiedTransform = false;
-//		if (ImGui::BeginTable("transformTable", 2)) {
-//			float3 position = object->mLocalTransformMatrix.TranslatePart();
-//			float3 rotation = RadToDeg(object->mLocalTransformMatrix.ToEulerXYZ());
-//			float3 scale = object->mLocalTransformMatrix.GetScale();
-//			const char* labels[3] = { "Position", "Rotation", "Scale" };
-//			float3* vectors[3] = { &(position), &(rotation), &(scale) };
-//
-//			for (int i = 0; i < 3; ++i) {
-//				ImGui::PushID(i);
-//				ImGui::TableNextRow();
-//				ImGui::TableSetColumnIndex(0);
-//				ImGui::Text(labels[i]);
-//				ImGui::TableSetColumnIndex(1);
-//				ImGui::PushItemWidth(ImGui::GetColumnWidth(1) / 4);
-//
-//				modifiedTransform = modifiedTransform || ImGui::InputFloat("X", &vectors[i]->x);
-//				ImGui::SameLine();
-//				modifiedTransform = modifiedTransform || ImGui::InputFloat("Y", &vectors[i]->y);
-//				ImGui::SameLine();
-//				modifiedTransform = modifiedTransform || ImGui::InputFloat("Z", &vectors[i]->z);
-//				ImGui::PopItemWidth();
-//				ImGui::PopID();
-//			}
-//
-//			if (modifiedTransform) {
-//				object->RecalculateMatrices();
-//			}
-//		}
-//		ImGui::EndTable();
-//	}
-//
-//}
+
 
 void InspectorPanel::AddComponentButton(GameObject* object) {
 	float windowWidth = ImGui::GetWindowWidth();
@@ -266,7 +120,7 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 			{
 				object->CreateComponent(ComponentType::MESHRENDERER);
 			} else {
-				mSame_component_popup = true;
+				mSameComponentPopup = true;
 			}
 		}
 		if (ImGui::MenuItem("Test")) {
@@ -285,7 +139,7 @@ void InspectorPanel::ShowSameComponentPopup()
 	ImGui::SetNextWindowPos(centerPos, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(380, 107), ImGuiCond_Appearing);
 
-	ImGui::Begin("Can't add the same component multiple times!", &mSame_component_popup,
+	ImGui::Begin("Can't add the same component multiple times!", &mSameComponentPopup,
 		ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
@@ -302,7 +156,7 @@ void InspectorPanel::ShowSameComponentPopup()
 	ImGui::SetCursorPosX(buttonPosX);
 
 	if (ImGui::Button("Cancel", ImVec2(120, 25))) {
-		mSame_component_popup = false;
+		mSameComponentPopup = false;
 	}
 
 	ImGui::End();
@@ -352,10 +206,41 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 }
 
+void InspectorPanel::DragAndDropSource(Component* component) {
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
+
+		ImGui::Text(component->mName);
+		ImGui::EndDragDropSource();
+	}
+}
+
+void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+	ImGui::InvisibleButton("##", ImVec2(-1, 5));
+	if (ImGui::BeginDragDropTarget())
+	{
+		LOG("Droped payload");
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
+		{
+			Component* movedComponent = (Component*)payload->Data;
+			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) {
+				Component* pMovedComponent = object->RemoveComponent(movedComponent);
+				object->AddComponent(pMovedComponent, target);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	ImGui::PopStyleVar();
+}
+
 void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mID);
+		DragAndDropTarget(object, component);
 		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
 			switch (component->GetType()) {
@@ -376,6 +261,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		}
 		ImGui::PopID();
 	}
+	DragAndDropTarget(object, nullptr);
 }
 
 void InspectorPanel::DrawTestComponent(TestComponent* component) {

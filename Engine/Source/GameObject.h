@@ -43,12 +43,12 @@ public:
 	const float3& GetPosition() const { return mLocalTransformMatrix.TranslatePart(); }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
-	const std::string* GetName() const { return &mName; }
+	const std::string& GetName() const { return mName; }
 	void ResetTransform();
 
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
-	const unsigned int GetID() const { return mID; }
-	const bool IsRoot() const { return mIsRoot; }
+	unsigned int GetID() const { return mID; }
+	bool IsRoot() const { return mIsRoot; }
 	void DeleteChild(GameObject* child);
 	void AddComponentToDelete(Component* component);
 
@@ -66,8 +66,9 @@ private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
 	void DeleteComponents();
+	Component* RemoveComponent(Component* component);
+	void AddComponent(Component* component, Component* position);
 	void RecalculateLocalTransform();
-
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
