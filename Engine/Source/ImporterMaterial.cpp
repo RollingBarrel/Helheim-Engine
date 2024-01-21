@@ -86,26 +86,28 @@ void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Ma
             }
         }
 
-        if (extensionMap.Has("normalTexture"))
+        if (material.additionalValues.size() > 0)
         {
-            const tinygltf::Value& normalTexture = extensionMap.Get("normalTexture");
+            for (const auto& content : material.additionalValues)
+            {
+                if (content.first == "normalTexture")
+                {
+                    const int indexValue = content.second.TextureIndex();
 
-            if (normalTexture.IsObject()) {
-                const tinygltf::Value& indexValue = normalTexture.Get("index");
+                    if (indexValue) {
+                        int normalIndex = indexValue;
+                        const tinygltf::Texture& normalMap = model.textures[normalIndex];
+                        const tinygltf::Image& image = model.images[normalMap.source];
+                        const char* imageUri = image.uri.c_str();
 
-                if (indexValue.IsInt()) {
-                    int normalIndex = indexValue.Get<int>();
-                    const tinygltf::Texture& normalMap = model.textures[normalIndex];
-                    const tinygltf::Image& image = model.images[normalMap.source];
-                    const char* imageUri = image.uri.c_str();
+                        ResourceTexture* normalTexture = new ResourceTexture();
+                        normalTexture->mTextureName = imageUri;
+                        normalTexture->mUID = math::LCG().Int();
+                        Importer::Texture::Import(imageUri, normalTexture);
+                        rMaterial->mNormalTexture = normalTexture;
 
-                    ResourceTexture* normalTexture = new ResourceTexture();
-                    normalTexture->mTextureName = imageUri;
-                    normalTexture->mUID = math::LCG().Int();
-                    Importer::Texture::Import(imageUri, normalTexture);
-                    rMaterial->mNormalTexture = normalTexture;
-
-                    rMaterial->mEnableNormalMap = true;
+                        rMaterial->mEnableNormalMap = true;
+                    }
                 }
             }
         }
