@@ -171,12 +171,8 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 
-	if (meshID != 0) {
-		Load(std::to_string(meshID).c_str());
-	}
-	if (materialID != 0) {
-		//TODO check if we separate load function from each Component to load specific resources
-		//m->Load(std::to_string(materialID).c_str());
+	if (meshID != 0 && materialID != 0) {
+		Load(meshID, materialID);
 	}
 
 }

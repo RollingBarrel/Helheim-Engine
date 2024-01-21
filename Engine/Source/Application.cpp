@@ -9,6 +9,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleProgram.h"
+#include "ModuleTimer.h"
 
 
 Application::Application()
@@ -23,6 +24,7 @@ Application::Application()
 	modules[6] = debugDraw = new ModuleDebugDraw();
 	modules[7] = scene = new ModuleScene();
 	modules[8] = editor = new ModuleEditor();
+	modules[9] = clock = new ModuleTimer();
 }
 
 Application::~Application()

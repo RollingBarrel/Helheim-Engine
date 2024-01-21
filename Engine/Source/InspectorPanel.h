@@ -27,4 +27,5 @@ private:
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
+	void MaterialVariables(MeshRendererComponent* renderComponent, int i);
 };

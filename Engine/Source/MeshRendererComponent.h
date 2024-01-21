@@ -15,8 +15,7 @@ public:
 	MeshRendererComponent(GameObject* owner);
 	MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner);
 	~MeshRendererComponent() { delete mMesh; delete mMaterial; };
-	void Clear();
-	void LoadByIDTemporal(const int id);
+	void Clear() {};
 
 	void Draw();
 	void Load(unsigned int meshUid, unsigned int materialUid);

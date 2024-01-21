@@ -300,7 +300,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 			bool isSelected = (i == selectedOption);
 			if (ImGui::Selectable(meshOptions[i], isSelected)) {
 				selectedOption = i;
-				component->LoadByIDTemporal(i);
 			}
 
 			// If the option is selected, set the focus on it

@@ -13,6 +13,7 @@ class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
 class ModuleProgram;
+class ModuleTimer;
 
 class Application
 {
