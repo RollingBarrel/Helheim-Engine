@@ -202,7 +202,6 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
-    <ClCompile Include="LoadScenePanel.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
@@ -324,7 +323,6 @@
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="LightningPanel.h" />
-    <ClInclude Include="LoadScenePanel.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
