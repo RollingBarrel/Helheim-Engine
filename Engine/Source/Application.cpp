@@ -10,6 +10,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTimer.h"
+#include "ModuleSkybox.h"
 
 Application::Application()
 {
@@ -24,6 +25,7 @@ Application::Application()
 	modules[7] = scene = new ModuleScene();
 	modules[8] = test = new ModuleRenderTest();
 	modules[9] = editor = new ModuleEditor();
+	modules[10] = skybox = new ModuleSkybox();
 }
 
 Application::~Application()
