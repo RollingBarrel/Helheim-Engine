@@ -62,7 +62,9 @@ bool ModuleSkybox::Init()
         1.0f, -1.0f,  1.0f
     };
 
+    glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
+    glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
@@ -75,6 +77,7 @@ bool ModuleSkybox::Init()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
 
+    glBindVertexArray(0);
     return true;
 }
 
@@ -87,14 +90,18 @@ update_status ModuleSkybox::PreUpdate()
 
     glUseProgram(program);
 
+    glBindVertexArray(vao);
+
     glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
     glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
     glDepthMask(GL_FALSE);
+
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glDepthMask(GL_TRUE);
 
     glBindVertexArray(0);
+    App->GetOpenGL()->UnbindSceneFramebuffer();
 
     return update_status::UPDATE_CONTINUE;
 }
