@@ -200,9 +200,12 @@ void Importer::Material::Load(ResourceMaterial* ourMaterial, const char* fileNam
 
     memcpy(texturesUID, cursor, bytes);
     cursor += bytes;
-    ourMaterial->mDiffuseTexture->mUID = texturesUID[0];
-    ourMaterial->mSpecularGlossinessTexture->mUID = texturesUID[1];
-    ourMaterial->mNormalTexture->mUID = texturesUID[2];
+    ourMaterial->mDiffuseTexture = new ResourceTexture();
+    Importer::Texture::Load(ourMaterial->mDiffuseTexture, std::to_string(texturesUID[0]).c_str());
+    ourMaterial->mSpecularGlossinessTexture = new ResourceTexture();
+    Importer::Texture::Load(ourMaterial->mSpecularGlossinessTexture, std::to_string(texturesUID[1]).c_str());
+    ourMaterial->mNormalTexture = new ResourceTexture();
+    Importer::Texture::Load(ourMaterial->mNormalTexture, std::to_string(texturesUID[2]).c_str());
 
     bool enables[4];
     bytes = sizeof(enables);
