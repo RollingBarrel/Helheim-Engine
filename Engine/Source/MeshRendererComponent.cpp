@@ -43,12 +43,6 @@ void MeshRendererComponent::Draw()
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 	mInsideFrustum = false;
-	//for (Mesh* mesh : mMeshes)
-	//{
-	//	App->GetOpenGL()->BindSceneFramebuffer();
-	//	mesh->Render(lightDir, lightColor, lightIntensity, ambientColor);
-	//	App->GetOpenGL()->UnbindSceneFramebuffer();
-	//}
 
 	App->GetOpenGL()->BindSceneFramebuffer();
 
@@ -139,7 +133,7 @@ void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 void MeshRendererComponent::Update()
 {
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
-	Draw();
+	//Draw();
 }
 
 
