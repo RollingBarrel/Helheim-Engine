@@ -16,6 +16,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
+	//mMesh->mUID = LCG().Int();
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
@@ -55,7 +56,7 @@ void MeshRendererComponent::Draw()
 void MeshRendererComponent::Load(const char* uid)
 {
 	Importer::Mesh::Load(mMesh, uid);
-
+	mMesh->mUID = std::stoi(uid);
 	
 	float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 
@@ -93,7 +94,7 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 	int meshID = { 0 };
 	int materialID = { 0 };
 	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
-		meshID = componentJson["ID"].GetInt();
+		ID = componentJson["ID"].GetInt();
 	}
 	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
 		meshID = componentJson["MeshID"].GetInt();
