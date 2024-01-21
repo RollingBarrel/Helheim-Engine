@@ -1,7 +1,7 @@
 #include "AboutPanel.h"
 #include "imgui.h"
 
-AboutPanel::AboutPanel() : Panel(ABOUTPANEL, true)
+AboutPanel::AboutPanel() : Panel(ABOUTPANEL, false)
 {
 }
 

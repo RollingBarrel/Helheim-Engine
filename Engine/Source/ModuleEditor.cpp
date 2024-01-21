@@ -208,6 +208,13 @@ void ModuleEditor::ShowMainMenuBar() {
 						pause->IsOpen() ? pause->Close() : pause->Open();
 					}
 				}
+				if (ImGui::MenuItem("5 Lightning")) {
+					Panel* lightning = mPanels[LIGHTNINGPANEL];
+					if (lightning)
+					{
+						lightning->IsOpen() ? lightning->Close() : lightning->Open();
+					}
+				}
 				//if (ImGui::MenuItem("5 Scene")) {}
 				ImGui::EndMenu();
 			}

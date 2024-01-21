@@ -8,7 +8,7 @@ LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
-	ModuleRenderTest* renderTest = App->GetRenderTest();
+	ModuleRenderTest* renderTest = App->GetTest();
 
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	

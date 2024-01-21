@@ -35,7 +35,6 @@ public:
     ModuleRenderTest* GetTest() { return test; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
-    ModuleRenderTest* GetRenderTest() { return test; }
     ModuleScene* GetScene() { return scene; }
     ModuleTimer* GetClock() { return clock; }
 

@@ -203,6 +203,9 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="TestSceneGameObjects.cpp" />
+    <ClCompile Include="LightningPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -603,6 +606,9 @@
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Archive.h" />
+    <ClInclude Include="LightningPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
