@@ -19,6 +19,8 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "MeshRendererComponent.h"
+#include "ImporterTexture.h"
+#include "ImporterMaterial.h"
 
 
 
@@ -335,7 +337,7 @@ bool ModuleRenderTest::Init()
 	//Switch to Resource Shader later on.
 	programId = CreateProgram("Assets/Shaders/PBR_VertexShader.glsl", "Assets/Shaders/PBR_PixelShader.glsl");
 
-	//Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
+	Importer::Model::Import("Assets/Models/ZomBunny/Zombunny.gltf");
 
 	//rMesh = new ResourceMesh();
 	//rMesh2 = new ResourceMesh();
@@ -352,36 +354,7 @@ bool ModuleRenderTest::Init()
 	glUniform3fv(4, 1, ambientCol);
 	glUniform1f(5, lightIntensity);
 
-	//float vertex[] = {
-	//-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	// 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-	//-1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-	// 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f
-	//};
-	//
-	//glGenVertexArrays(1, &VAO);
-	//glBindVertexArray(VAO);
-	//
-	////glBindBuffer(GL_UNIFORM_BUFFER, App->GetCamera()->GetCameraUniffromsId());
-	//
-	//glGenBuffers(2, VBOEBO);
-	//glBindBuffer(GL_ARRAY_BUFFER, VBOEBO[0]);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
-	//
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-	//glEnableVertexAttribArray(2);
-	//
-	//unsigned int indices[6] = { 0,1,2,3,2,1 };
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBOEBO[1]);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	//
-	//GenerateTangents(GL_UNSIGNED_INT, VBOEBO, 6, 8 * sizeof(float));
-	//
-	//glBindVertexArray(0);
+
 	textureId = LoadTexture("Assets\\Textures\\brickwall.jpg");
 	normTextureId = LoadTexture("Assets\\Textures\\brickwall_normal.jpg");
 	glActiveTexture(GL_TEXTURE0);

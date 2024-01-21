@@ -40,17 +40,20 @@ void ScenePanel::Draw(int windowFlags)
 				MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
 				char* path = const_cast<char*>(asset->mName);
 				//TODO; Molt malament, fer split del path be!!!
+				bool done = false;
 				while (*path != '\0')
 				{
 					if (*path == '.')
 					{
 						*path = '\0';
+						done = true;
 						break;
 					}
 					++path;
 				}
 				cMesh->Load(asset->mName);
-
+				if (done)
+					*path = '.';
 			}
 			ImGui::EndDragDropTarget();
 		}
