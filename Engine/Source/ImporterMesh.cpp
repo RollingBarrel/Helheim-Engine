@@ -403,7 +403,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
     else
     {
         //Generate Tangents
-        mesh->GenerateTangents();
+        //mesh->GenerateTangents();
     }
 
     Mesh::Save(mesh);

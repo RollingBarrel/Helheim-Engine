@@ -27,6 +27,9 @@ Download GameEngine.zip file in [release](https://github.com/Assigment2Company/A
   - Click Button "Add Component" in the inspector panel when a gameObject is selected to add a new component.
   - Every gameObject has a transform tha can be modified using the transform section in the inspector panel.
   - The name of a gameObject can be modified in the inspector panel.
+  
+  - **Mesh Renderer Component**
+    - All information about materials and meshes can be read and modified here. 
 - Lighting Panel
   - In this panel you are able to modify: ambient color, brightness and KD (Diffuse Attenuation Coefficient).
 - Main Menu bar
@@ -36,7 +39,7 @@ Download GameEngine.zip file in [release](https://github.com/Assigment2Company/A
     - Quit
   - View
     - QuadTree
-      - CheckBox to enable or disable Frustum Culling.
+      - CheckBox to enable or disable Frustum Culling (Disabled by default).
       - CheckBox to show QuadTree in the Scene.
       - Shows QuadTree structure (can be updated using Refresh button).
     - Debug
