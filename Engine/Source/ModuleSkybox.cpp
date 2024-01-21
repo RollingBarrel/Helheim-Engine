@@ -1,10 +1,8 @@
 #include "ModuleSkybox.h"
+#include "Application.h"
 #include "ModuleCamera.h"
+#include "ModuleOpenGL.h"
 #include "glew.h"
-#include <string>
-#include <filesystem>
-#include<list>
-#include "Importer.h"
 
 ModuleSkybox::ModuleSkybox()
 {
@@ -16,12 +14,11 @@ ModuleSkybox::~ModuleSkybox()
 
 bool ModuleSkybox::Init()
 {
-    LOG("Intitialize Module Render Skybox\n");
+    LOG("Intitialize Skybox\n");
 
     LoadCubeMap();
 
     float skyboxVertices[] = {
-        //positions          
        -1.0f,  1.0f, -1.0f,
        -1.0f, -1.0f, -1.0f,
         1.0f, -1.0f, -1.0f,
@@ -65,7 +62,6 @@ bool ModuleSkybox::Init()
         1.0f, -1.0f,  1.0f
     };
 
-
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
@@ -84,6 +80,7 @@ bool ModuleSkybox::Init()
 
 update_status ModuleSkybox::PreUpdate()
 {
+    App->GetOpenGL()->BindSceneFramebuffer();
 
     proj = App->GetCamera()->GetProjectionMatrix();
     view = App->GetCamera()->GetViewMatrix();
