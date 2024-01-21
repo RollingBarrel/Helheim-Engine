@@ -52,6 +52,6 @@ void PausePanel::Pause() {
 
 void PausePanel::Stop() {
 	App->GetClock()->SetTimeScale(1.0f);
-	mState = GameState::STOP;
+	//mState = GameState::STOP;
 	App->GetScene()->Load("TemporalScene");
 }

@@ -195,9 +195,14 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)
 	{
 		for (auto& object : mGameObjects)
 		{
-			OBB temp = object->getMeshRenderer()->getOBB();
-			bool intersects = myCamera.Intersects(temp);
-			object->getMeshRenderer()->SetInsideFrustum(intersects);
+			
+			if (object->getMeshRenderer() != nullptr)
+			{
+				OBB temp = object->getMeshRenderer()->getOBB();
+				bool intersects = myCamera.Intersects(temp);
+				object->getMeshRenderer()->SetInsideFrustum(intersects);
+
+			}
 		}
 	}
 

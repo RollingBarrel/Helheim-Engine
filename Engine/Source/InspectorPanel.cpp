@@ -14,6 +14,8 @@ void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
+	if (focusedObject == nullptr) return;
+
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
 	ImGui::PushID(focusedObject->mID);

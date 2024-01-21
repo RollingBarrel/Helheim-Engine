@@ -29,12 +29,12 @@ public:
 	const char* GetName() const { return mName.c_str(); }
 
 	void UpdateDrawableGameObjects(const Frustum& myCamera);
+	void CleanUp();
 
 private:
 	Quadtree(const AABB& boundingBox, int depth, const char* name);
 	void SplitNode();
 	void AddHierarchyObjects(GameObject* child);
-	void CleanUp();
 
 	AABB mBoundingBox;
 	Quadtree* mChildren[4];

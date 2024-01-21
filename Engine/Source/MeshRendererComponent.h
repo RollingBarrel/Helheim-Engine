@@ -28,7 +28,7 @@ public:
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
 	void Save(Archive& archive) const override;
-	MeshRendererComponent* LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
 	ResourceMesh* mMesh;

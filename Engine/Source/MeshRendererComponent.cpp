@@ -88,7 +88,7 @@ void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddBool("isEnabled", IsEnabled());
 }
 
-MeshRendererComponent* MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
+void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
 	int ID = { 0 };
 	int meshID = { 0 };
 	int materialID = { 0 };
@@ -102,16 +102,13 @@ MeshRendererComponent* MeshRendererComponent::LoadFromJSON(const rapidjson::Valu
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 
-	MeshRendererComponent* m = new MeshRendererComponent(owner);
 	if (meshID != 0) {
-		m->Load(std::to_string(meshID).c_str());
+		Load(std::to_string(meshID).c_str());
 	}
 	if (materialID != 0) {
 		//TODO check if we separate load function from each Component to load specific resources
 		//m->Load(std::to_string(materialID).c_str());
 	}
-
-	return m;
 
 }
 

@@ -16,6 +16,9 @@ ModuleScene::ModuleScene() {
 
 ModuleScene::~ModuleScene()
 {
+	mQuadtreeRoot->CleanUp();
+	delete mQuadtreeRoot;
+
 	delete mRoot;
 }
 
@@ -69,11 +72,14 @@ void ModuleScene::Load(const char* sceneName) {
 			mRoot->DeleteChild(child);
 		}
 	}
+	mQuadtreeRoot->CleanUp();
 
 	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
 		const rapidjson::Value& s = d["Scene"];
 		mRoot->Load(s);
 	}
+
+	mQuadtreeRoot->UpdateTree();
 
 	// Free the loaded buffer
 	delete[] loadedBuffer;
@@ -110,7 +116,6 @@ void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive&
 
 update_status ModuleScene::PreUpdate()
 {
-	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());
 	return UPDATE_CONTINUE;
 }
 
@@ -134,6 +139,8 @@ update_status ModuleScene::PostUpdate()
 		DuplicateGameObjects();
 	}
 
+	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());
+
 	return UPDATE_CONTINUE;
 }
 
@@ -144,7 +151,7 @@ void ModuleScene::DeleteGameObjects(){
 	}
 
 	mGameObjectsToDelete.clear();
-
+	mQuadtreeRoot->UpdateTree();
 }
 
 void ModuleScene::DuplicateGameObjects() {
@@ -154,5 +161,6 @@ void ModuleScene::DuplicateGameObjects() {
 	}
 
 	mGameObjectsToDuplicate.clear();
+	mQuadtreeRoot->UpdateTree();
 
 }
