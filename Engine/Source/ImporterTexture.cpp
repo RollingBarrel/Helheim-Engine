@@ -147,7 +147,7 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     if (texture->mPixels != nullptr)
         delete[] texture->mPixels;
     texture->mPixels = new unsigned char[texture->mNumPixels];
-    memcpy(cursor, texture->mPixels, bytes);
+    memcpy(texture->mPixels, cursor, bytes);
     cursor += bytes;
 
     return texture->CreateTexture();
