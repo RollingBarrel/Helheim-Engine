@@ -1,10 +1,10 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
+#ifndef _MODULE_WINDOW_H_
+#define _MODULE_WINDOW_H_
 
 #include "Module.h"
-#include "SDL.h"
 
-class Application;
+struct SDL_Window;
+struct SDL_Surface;
 
 class ModuleWindow : public Module
 {
@@ -18,10 +18,18 @@ public:
 	bool Init() override;
 	bool CleanUp() override;
 
-public:
+
+	int GetWidth() const { return width; };
+	int GetHeight() const { return height; };
+	float GetAspectRatio() const { return (float)width / (float)height; };
+	void WindowResized(unsigned width, unsigned height);
 
 	SDL_Window* window = nullptr;
 	SDL_Surface* screen_surface = nullptr;
+
+private:
+	int width = 0;
+	int height = 0;
 };
 
-#endif // __ModuleWindow_H__
+#endif /* _MODULE_WINDOW_H_ */

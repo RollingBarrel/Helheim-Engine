@@ -1,14 +1,20 @@
 #pragma once
-#include <list>
 #include "Globals.h"
 #include "Module.h"
+#include "EngineTimer.h"
 
 class ModuleOpenGL;
 class ModuleWindow;
-class ModuleTextures;
 class ModuleInput;
 class ModuleEditor;
 class ModuleRenderExercise;
+class ModuleScene;
+class ModuleFileSystem;
+class ModuleCamera;
+class ModuleDebugDraw;
+class ModuleProgram;
+class ModuleTimer;
+class ModuleSkybox;
 
 class Application
 {
@@ -25,6 +31,15 @@ public:
     ModuleWindow* GetWindow() { return window; }
     ModuleInput*  GetInput() { return input; }
     ModuleEditor*  GetEditor() { return editor; }
+    ModuleCamera* GetCamera() { return camera;  }
+    ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
+    ModuleProgram* GetProgram() { return program; }
+    ModuleFileSystem* GetFileSystem() { return fileSystem; }
+    ModuleScene* GetScene() { return scene; }
+    ModuleTimer* GetClock() { return clock; }
+    ModuleSkybox* GetSkybox() { return skybox; }
+
+    float GetDt() const;
 
 private:
 
@@ -32,9 +47,16 @@ private:
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
     ModuleEditor* editor = nullptr;
+    ModuleCamera* camera = nullptr;
+    ModuleDebugDraw* debugDraw = nullptr;
+    ModuleProgram* program = nullptr;
+    ModuleFileSystem* fileSystem = nullptr;
+    ModuleScene* scene = nullptr;
+    ModuleTimer* clock = nullptr;
+    ModuleSkybox* skybox = nullptr;
 
-    std::list<Module*> modules;
-
+#define NUM_MODULES 11
+    Module* modules[NUM_MODULES];
 };
 
 extern Application* App;

@@ -1,5 +1,5 @@
-#pragma once
-#include <stdio.h>
+#ifndef _GLOBALS_H_
+#define _GLOBALS_H_
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
@@ -13,8 +13,20 @@ enum update_status
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1240
+#define SCREEN_HEIGHT 740
 #define FULLSCREEN false
+#define	RESIZEABLE true
 #define VSYNC true
 #define TITLE "Super Awesome Engine"
+
+#define RELEASE_ARRAY( x ) \
+	{\
+       if( x != nullptr )\
+       {\
+           delete[] x;\
+	       x = nullptr;\
+		 }\
+	 }
+
+#endif /* _GLOBALS_H_ */
