@@ -1,5 +1,4 @@
 #include "MeshRendererComponent.h"
-#include "ImporterModel.h"
 #include "ImporterMesh.h"
 #include "ImporterTexture.h"
 #include "ImporterMaterial.h"
@@ -62,7 +61,7 @@ void MeshRendererComponent::Draw()
 
 	unsigned int program = App->GetProgram()->GetPBRProgramId();
 	glUseProgram(program);
-	glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
+	glUniformMatrix4fv(0, 1, GL_FALSE, mOwner->GetWorldTransform().ptr());
 	glBindVertexArray(mMesh->GetVao());
 	//TODO: Put all this with imgui
 	//Dont update uniforms it every frame
@@ -121,14 +120,12 @@ void MeshRendererComponent::Draw()
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 
-void MeshRendererComponent::Load(const char* uid)
+void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 {
-	ResourceModel* rModel = new ResourceModel();
-	Importer::Model::Load(rModel, uid);
-	Importer::Mesh::Load(mMesh, std::to_string(rModel->meshUID).c_str());
-	Importer::Material::Load(mMaterial, std::to_string(rModel->materiaUID).c_str());
-	delete rModel;
-	float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
+
+	Importer::Mesh::Load(mMesh, std::to_string(meshUid).c_str());
+	Importer::Material::Load(mMaterial, std::to_string(materialUid).c_str());
+	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 
 	mAABB.SetFrom(positions, mMesh->mNumVertices);
 

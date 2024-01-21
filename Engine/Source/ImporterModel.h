@@ -1,9 +1,12 @@
 #pragma once
-
+#include <vector>
 struct ResourceModel
 {
-	unsigned int meshUID;
-	unsigned int materiaUID;
+	typedef struct ModelIds {
+		unsigned int meshUID;
+		unsigned int materiaUID;
+	}ModelIds;
+	std::vector<ModelIds>mUids;
 
 	unsigned int mUID;
 };

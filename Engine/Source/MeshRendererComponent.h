@@ -19,7 +19,7 @@ public:
 	void LoadByIDTemporal(const int id);
 
 	void Draw();
-	void Load(const char* uid);
+	void Load(unsigned int meshUid, unsigned int materialUid);
 	void LoadPBR(const char* uid) {};
 	void Reset() override {}
 

@@ -520,9 +520,9 @@ float* ResourceMesh::GetInterleavedData() const
 unsigned int ResourceMesh::LoadToMemory()
 {
     glGenVertexArrays(1, &mVao);
-    glBindVertexArray(mVao);
     glGenBuffers(1, &mVbo);
     glGenBuffers(1, &mEbo);
+    glBindVertexArray(mVao);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
     glBufferData(GL_ARRAY_BUFFER, mNumVertices * mVertexSize, GetInterleavedData(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);

@@ -6,7 +6,7 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
-#include "ImporterMesh.h"
+#include "ImporterModel.h"
 
 #include "imgui.h"
 
@@ -36,8 +36,6 @@ void ScenePanel::Draw(int windowFlags)
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
 			{
 				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-				GameObject* go = new GameObject(App->GetScene()->GetRoot());
-				MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
 				char* path = const_cast<char*>(asset->mName);
 				//TODO; Molt malament, fer split del path be!!!
 				bool done = false;
@@ -51,7 +49,16 @@ void ScenePanel::Draw(int windowFlags)
 					}
 					++path;
 				}
-				cMesh->Load(asset->mName);
+				ResourceModel* rModel = new ResourceModel();
+				Importer::Model::Load(rModel, asset->mName);
+				for (auto it = rModel->mUids.cbegin(); it != rModel->mUids.cend(); ++it)
+				{
+
+					GameObject* go = new GameObject(App->GetScene()->GetRoot());
+					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
+					cMesh->Load(it->meshUID, it->materiaUID);
+				}
+				delete rModel;
 				if (done)
 					*path = '.';
 			}

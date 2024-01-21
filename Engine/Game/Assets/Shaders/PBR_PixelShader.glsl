@@ -31,9 +31,9 @@ in VertToFrag {
 
 
 //Light properties
-layout (location = 3)uniform vec3 lightColor;
-layout (location = 4)uniform vec3 ambientCol;
-uniform (location = 5)float lightIntensity;//0-5
+layout (location = 3) uniform vec3 lightColor;
+layout (location = 4) uniform vec3 ambientColor;
+layout (location = 5) uniform float lightIntensity;//0-5
 
 uniform Material material;
 
@@ -87,7 +87,7 @@ void main() {
 	vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess +2)/2)* RFOi * VdotRpown) * Li * NdotL;
 	
 	//Final color  
-	vec3 color = material.ambientColor * diffuseColor + pbrColor;
+	vec3 color = ambientColor * diffuseColor + pbrColor;
 	
 	//Gamma correction
 	color.rgb = pow(color.rgb, vec3(1/2.2));

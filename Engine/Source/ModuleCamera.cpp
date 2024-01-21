@@ -97,8 +97,8 @@ update_status ModuleCamera::Update()
 
 	//TODO: aixo nomes si canvia la camera
 	glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, GetViewMatrix().Transposed().ptr());
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, GetProjectionMatrix().Transposed().ptr());
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, GetViewMatrix().ptr());
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, GetProjectionMatrix().ptr());
 
 	const auto& io = ImGui::GetIO();
 	if (!io.WantCaptureMouse && !io.WantCaptureKeyboard)
