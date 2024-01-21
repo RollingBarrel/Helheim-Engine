@@ -22,6 +22,8 @@ public:
 	const char* GetVertexShader() const { return mVertexShader; }
 	const char* GetFragmentShader() const { return mFragmentShader; }
 
+	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
+
 private:
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned CompileShader(unsigned type, const char* source) const;
@@ -33,4 +35,11 @@ private:
 
 	const char* mVertexShader = "PBR_VertexShader.glsl";
 	const char* mFragmentShader = "PBR_PixelShader.glsl";
+	
+	//Temporary to do a render for the delivery
+	unsigned int mPbrProgramId = 0;
+	float lightIntensity = 1.2f;
+	float lightDir[3] = { 0.0f, -1.0f, -1.0f };
+	float lightCol[3] = { 1.f, 1.f, 1.f };
+	float ambientCol[3] = { 0.3f, 0.4f, 0.6f };
 };

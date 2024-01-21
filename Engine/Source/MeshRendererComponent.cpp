@@ -1,13 +1,15 @@
 #include "MeshRendererComponent.h"
-#include "imgui.h"
+#include "ImporterModel.h"
 #include "ImporterMesh.h"
+#include "ImporterTexture.h"
+#include "ImporterMaterial.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
-#include "ModuleRenderTest.h"
+#include "ModuleProgram.h"
 
 
 
@@ -51,30 +53,81 @@ void MeshRendererComponent::Draw()
 	//	App->GetOpenGL()->UnbindSceneFramebuffer();
 	//}
 
-	//App->GetOpenGL()->BindSceneFramebuffer();
-//
-	//if (mDrawBox)
-	//{
-	//	App->GetDebugDraw()->DrawBoundingBox(mOBB);
-	//}
-	//glUseProgram(App->GetTest()->GetProgramId());
-	//glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
-	//glBindVertexArray(mMesh->GetVao());
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, App->GetTest()->GetDifuseTexture());
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, App->GetTest()->GetNormalTexture());
-	//glDrawElements(GL_TRIANGLES, mMesh->mNumIndices, GL_UNSIGNED_INT, 0);
-	//glUseProgram(0);
-	//glBindVertexArray(0);
-	//App->GetOpenGL()->UnbindSceneFramebuffer();
+	App->GetOpenGL()->BindSceneFramebuffer();
+
+	if (mDrawBox)
+	{
+		App->GetDebugDraw()->DrawBoundingBox(mOBB);
+	}
+
+	unsigned int program = App->GetProgram()->GetPBRProgramId();
+	glUseProgram(program);
+	glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
+	glBindVertexArray(mMesh->GetVao());
+	//TODO: Put all this with imgui
+	//Dont update uniforms it every frame
+	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
+	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
+	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->GetGlossinessFactor());
+	if (mMaterial->GetEnableDiffuseTexture() && mMaterial->GetDiffuseMap() != nullptr)
+	{
+		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 1);
+		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
+		glUniform1i(diffuseTextureLoc, 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->GetDiffuseMap()->openGlId);
+	}
+	else {
+		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
+	}
+
+	if (mMaterial->GetEnableSpecularGlossinessTexture() && mMaterial->GetSpecularMap() != nullptr)
+	{
+		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 1);
+		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
+		glUniform1i(specularTextureLoc, 1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->GetSpecularMap()->openGlId);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 0);
+	}
+
+	if (mMaterial->GetEnableNormalMap() && mMaterial->GetNormalMap() != nullptr)
+	{
+		glUniform1i(glGetUniformLocation(program, "material.hasNomalMap"), 1);
+		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
+		glUniform1i(normalTextureLoc, 2);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->GetNormalMap()->openGlId);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 0);
+	}
+
+	if (mMaterial->GetEnableShinessMap())
+	{
+		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 0);
+	}
+	glDrawElements(GL_TRIANGLES, mMesh->mNumIndices, GL_UNSIGNED_INT, 0);
+	glUseProgram(0);
+	glBindVertexArray(0);
+	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 
 void MeshRendererComponent::Load(const char* uid)
 {
-	Importer::Mesh::Load(mMesh, uid);
-
-	
+	ResourceModel* rModel = new ResourceModel();
+	Importer::Model::Load(rModel, uid);
+	Importer::Mesh::Load(mMesh, std::to_string(rModel->meshUID).c_str());
+	Importer::Material::Load(mMaterial, std::to_string(rModel->materiaUID).c_str());
+	delete rModel;
 	float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 
 	mAABB.SetFrom(positions, mMesh->mNumVertices);

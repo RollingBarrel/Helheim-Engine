@@ -6,7 +6,6 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
-#include "ModuleRenderTest.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleProgram.h"
@@ -23,8 +22,7 @@ Application::Application()
 	modules[5] = fileSystem = new ModuleFileSystem();
 	modules[6] = debugDraw = new ModuleDebugDraw();
 	modules[7] = scene = new ModuleScene();
-	modules[8] = test = new ModuleRenderTest();
-	modules[9] = editor = new ModuleEditor();
+	modules[8] = editor = new ModuleEditor();
 }
 
 Application::~Application()

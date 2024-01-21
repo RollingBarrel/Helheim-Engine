@@ -11,7 +11,6 @@ class ModuleRenderExercise;
 class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
-class ModuleRenderTest;
 class ModuleDebugDraw;
 class ModuleProgram;
 
@@ -31,7 +30,6 @@ public:
     ModuleInput*  GetInput() { return input; }
     ModuleEditor*  GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera;  }
-    ModuleRenderTest* GetTest() { return test; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleProgram* GetProgram() { return program; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
@@ -46,13 +44,12 @@ private:
     ModuleInput* input = nullptr;
     ModuleEditor* editor = nullptr;
     ModuleCamera* camera = nullptr;
-    ModuleRenderTest* test = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleProgram* program = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
 
-#define NUM_MODULES 10
+#define NUM_MODULES 9
     Module* modules[NUM_MODULES];
 
     EngineTimer timer;

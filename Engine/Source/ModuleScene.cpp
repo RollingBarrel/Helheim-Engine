@@ -41,10 +41,10 @@ update_status ModuleScene::Update()
 		mQuadtreeRoot->Draw();
 	}
 
-	float4x4 viewProj = App->GetCamera()->GetViewProjMatrix();
-	auto program = App->GetProgram()->GetProgramID("default");
-	glUseProgram(program);
-	glUniformMatrix4fv(1, 1, GL_TRUE, &viewProj[0][0]); // first argument is 1 for the layout in vertex shader
+	//float4x4 viewProj = App->GetCamera()->GetViewProjMatrix();
+	//auto program = App->GetProgram()->GetProgramID("default");
+	//glUseProgram(program);
+	//glUniformMatrix4fv(1, 1, GL_TRUE, &viewProj[0][0]); // first argument is 1 for the layout in vertex shader
 
 	GameObject* root = App->GetScene()->GetRoot();
 	mRenderList.clear();

@@ -18,6 +18,8 @@ struct ResourceTexture
 
 	bool mHasAlpha;
 
+	unsigned int openGlId = 0;
+
 	unsigned int CreateTexture();
 
 };

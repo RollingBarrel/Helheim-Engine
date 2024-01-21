@@ -22,6 +22,7 @@ void Importer::Import(const char* filePath)
 		ResourceModel* rModel = new ResourceModel();
 		rModel->mUID = math::LCG().Int();
 		Importer::Model::Import(filePath, rModel);
+		delete rModel;
 	}
 	// .dds Texture
 	else if (extension.compare("dds") == 0)

@@ -34,7 +34,7 @@ public:
 
 	std::vector<Mesh*> getMeshes() { return mMeshes; }
 
-	const ResourceMaterial* GetMaterial() const { return material; }
+	const ResourceMaterial* GetMaterial() const { return mMaterial; }
 
 	//UNIFORMS
 	float lightDir[3] = { 0.0f, -1.0f, 1.0f };
@@ -48,7 +48,7 @@ private:
 
 private:
 	ResourceMesh* mMesh;
-	ResourceMaterial* material;
+	ResourceMaterial* mMaterial;
 	OBB mOBB;
 	AABB mAABB;
 	bool mDrawBox = false;

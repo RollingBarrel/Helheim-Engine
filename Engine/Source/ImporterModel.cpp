@@ -72,6 +72,8 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
                 material->mUID = math::LCG().Int();
                 Importer::Material::Import(model, model.materials[primitive.material], material);
 
+                rModel->materiaUID = material->mUID;
+                rModel->meshUID = mesh->mUID;
                 Model::Save(rModel);
 
                 delete material;

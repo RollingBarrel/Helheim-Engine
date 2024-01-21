@@ -7,6 +7,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "ModuleCamera.h"
+#include "imgui.h"
+
 ModuleProgram::ModuleProgram()
 {
 
@@ -49,13 +52,36 @@ bool ModuleProgram::Init()
 	//}
 
 	// Add to mPrograms any shader you need
-	mPrograms["default"] = CreateShaderProgramFromPaths(mVertexShader, mFragmentShader);
+	//mPrograms["default"] = CreateShaderProgramFromPaths(mVertexShader, mFragmentShader);
+
+	//Temorary to do a render for the delivery
+	mPbrProgramId = CreateShaderProgramFromPaths(mVertexShader, mFragmentShader);
+	glUseProgram(mPbrProgramId);
+	glUniform3fv(1, 1, lightDir);
+	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
+	glUniform3fv(3, 1, lightCol);
+	glUniform3fv(4, 1, ambientCol);
+	glUniform1f(5, lightIntensity);
+	glUseProgram(0);
 
 	return true;
 }
 update_status ModuleProgram::Update()
 {
-
+	//Temorary to do a render for the delivery
+	glUseProgram(mPbrProgramId);
+	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
+	ImGui::Begin("Lighting");
+	if (ImGui::DragFloat("LightIntensity", &lightIntensity, 0.05f, 0.0f, 5.0f))
+		glUniform1f(5, lightIntensity);
+	if (ImGui::DragFloat3("LightDir", lightDir, 0.05f, -1.0f, 1.0f))
+		glUniform3fv(1, 1, lightDir);
+	if (ImGui::ColorPicker3("LightCol", lightCol))
+		glUniform3fv(3, 1, lightCol);
+	if (ImGui::ColorPicker3("AmbientCol", ambientCol))
+		glUniform3fv(4, 1, ambientCol);
+	ImGui::End();
+	glUseProgram(0);
 	return UPDATE_CONTINUE;
 }
 bool ModuleProgram::CleanUp()

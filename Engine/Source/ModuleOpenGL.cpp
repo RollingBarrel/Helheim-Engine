@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "glew.h"
-#include "ModuleRenderTest.h"
 #include "ModuleCamera.h"
 
 
@@ -111,6 +110,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	return true;
 }
 
