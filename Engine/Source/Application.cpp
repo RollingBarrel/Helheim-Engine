@@ -10,6 +10,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleProgram.h"
 #include "ModuleTimer.h"
+#include "ModuleSkybox.h"
 
 
 Application::Application()
@@ -21,10 +22,11 @@ Application::Application()
 	modules[3] = program = new ModuleProgram("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
 	modules[4] = camera = new ModuleCamera();
 	modules[5] = fileSystem = new ModuleFileSystem();
-	modules[6] = debugDraw = new ModuleDebugDraw();
-	modules[7] = scene = new ModuleScene();
-	modules[8] = editor = new ModuleEditor();
-	modules[9] = clock = new ModuleTimer();
+	modules[6] = skybox = new ModuleSkybox();
+	modules[7] = debugDraw = new ModuleDebugDraw();
+	modules[8] = scene = new ModuleScene();
+	modules[9] = editor = new ModuleEditor();
+	modules[10] = clock = new ModuleTimer();
 }
 
 Application::~Application()
