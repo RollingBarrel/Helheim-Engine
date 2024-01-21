@@ -14,6 +14,8 @@ public:
 
 	void Draw(int windowFlags) override;
 	GameObject* GetFocusedObject() const { return mFocusedObject; }
+	void SetFocus(GameObject* focusedObject) { mFocusedObject = focusedObject; }
+
 private:
 	void DrawTree(GameObject* node);
 	void DragAndDropSource(GameObject* source);

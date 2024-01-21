@@ -5,6 +5,8 @@
 #include "ModuleCamera.h"
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
+#include "HierarchyPanel.h"
+#include "ModuleEditor.h"
 #include "TestSceneGameObjects.cpp"
 #include "Archive.h"
 #include "Globals.h"
@@ -79,6 +81,8 @@ void ModuleScene::Load(const char* sceneName) {
 		mRoot->Load(s);
 	}
 
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	hierarchyPanel->SetFocus(mRoot);
 	mQuadtreeRoot->UpdateTree();
 
 	// Free the loaded buffer
