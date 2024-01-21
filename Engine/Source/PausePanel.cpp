@@ -6,6 +6,7 @@
 
 PausePanel::PausePanel() : Panel(PAUSEPANEL, true)
 {
+	mState = GameState::STOP;
 }
 
 void PausePanel::Draw(int windowFlags)
@@ -32,7 +33,7 @@ void PausePanel::Draw(int windowFlags)
 		mState = GameState::RUN_ONCE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Stop", ImVec2(40, 40))) {
+	if (ImGui::Button("Stop", ImVec2(40, 40)) && mState == GameState::PLAYING) {
 		Stop();
 	}
 
@@ -52,6 +53,5 @@ void PausePanel::Pause() {
 
 void PausePanel::Stop() {
 	App->GetClock()->SetTimeScale(1.0f);
-	//mState = GameState::STOP;
 	App->GetScene()->Load("TemporalScene");
 }

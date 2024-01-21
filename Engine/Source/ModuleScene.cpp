@@ -26,11 +26,11 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
-	TestSceneGameObjects test = TestSceneGameObjects();
-	test.TestSceneWithGameObjects();
+	//TestSceneGameObjects test = TestSceneGameObjects();
+	//test.TestSceneWithGameObjects();
 
-	Save("Scene");
-	Load("Scene");
+	//Save("Scene");
+	//Load("Scene");
 
 	return true;
 }
@@ -68,13 +68,16 @@ void ModuleScene::Load(const char* sceneName) {
 		return;
 	}
 
-	const std::vector<GameObject*>& children = mRoot->GetChildren();
+	/*const std::vector<GameObject*>& children = mRoot->GetChildren();
 	if (!children.empty()) {
 		for (GameObject* child : children) {
 			mRoot->DeleteChild(child);
 		}
-	}
+	}*/
 	mQuadtreeRoot->CleanUp();
+	delete mRoot;
+	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	
 
 	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
 		const rapidjson::Value& s = d["Scene"];
