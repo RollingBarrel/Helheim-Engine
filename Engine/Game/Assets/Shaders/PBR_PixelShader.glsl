@@ -67,12 +67,12 @@ void main() {
 	}
 	vec3 N = vec3(0);
 	if (material.hasNormalMap){
-		N = normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
+		N = -normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
 	}
 	else{
-		N = normalize(tNorm);  	//Normal
+		N = -normalize(tNorm);  	//Normal
 	}
-	vec3 L =  -normalize(tLightDir); 	//Light direction
+	vec3 L =  normalize(tLightDir); 	//Light direction
 	float NdotL = max(dot(N,L),0);	//It doesn't make sense for color to be negative
 	
 	vec3 R = reflect(L,N);
