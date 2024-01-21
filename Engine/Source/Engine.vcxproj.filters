@@ -208,6 +208,7 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleSkybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -270,7 +271,6 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h" />
-    <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h">
       <Filter>Dependencies\MathGeoLib</Filter>
@@ -555,7 +555,6 @@
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
-    <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="GameObject.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
@@ -614,6 +613,7 @@
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleSkybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -703,6 +703,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\Vertex.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\skybox.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\skybox.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

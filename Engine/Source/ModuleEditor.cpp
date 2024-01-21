@@ -249,9 +249,11 @@ void ModuleEditor::OpenLoadScene() {
 		static char fileName[128] = "";
 		ImGui::InputText(".json", fileName, IM_ARRAYSIZE(fileName));
 		if (ImGui::Button("Load")) {
-			App->GetScene()->Load(fileName);
-			ImGui::CloseCurrentPopup();
-			loadSceneOpen = false;
+			if (!strcmp(fileName, "scene")) {
+				App->GetScene()->Load(fileName);
+				ImGui::CloseCurrentPopup();
+				loadSceneOpen = false;
+			}
 		}
 		ImGui::EndPopup();
 	}
