@@ -122,7 +122,8 @@ void MeshRendererComponent::Draw()
 
 void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 {
-
+	mMesh->mUID = meshUid;
+	mMaterial->mUID = materialUid;
 	Importer::Mesh::Load(mMesh, std::to_string(meshUid).c_str());
 	Importer::Material::Load(mMaterial, std::to_string(materialUid).c_str());
 	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
