@@ -137,6 +137,7 @@ update_status ModuleScene::Update()
 	{
 		App->GetOpenGL()->BindSceneFramebuffer();
 		mQuadtreeRoot->Draw();
+		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
 
 	//float4x4 viewProj = App->GetCamera()->GetViewProjMatrix();
