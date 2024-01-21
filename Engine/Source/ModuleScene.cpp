@@ -96,7 +96,6 @@ void ModuleScene::Load(const char* sceneName) {
 	delete[] loadedBuffer;
 }
 
-
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
@@ -140,15 +139,9 @@ update_status ModuleScene::Update()
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
 
-	//float4x4 viewProj = App->GetCamera()->GetViewProjMatrix();
-	//auto program = App->GetProgram()->GetProgramID("default");
-	//glUseProgram(program);
-	//glUniformMatrix4fv(1, 1, GL_TRUE, &viewProj[0][0]); // first argument is 1 for the layout in vertex shader
-
-	//GameObject* root = App->GetScene()->GetRoot();
-	//mRenderList.clear();
-	//GenerateRenderList(root);
-	//DrawRenderList();
+	GenerateRenderList(mRoot);
+	DrawRenderList();
+	mRenderList.clear();
 
 	return UPDATE_CONTINUE;
 }
@@ -209,18 +202,10 @@ void ModuleScene::GenerateRenderList(GameObject* root)
 
 void ModuleScene::DrawRenderList()
 {
-	//for (GameObject* objectToRender : mRenderList)
-	//{
-	//	//Pass model matrix
-	//	float4x4 model = objectToRender->GetWorldTransform();
-	//	auto program = App->GetProgram()->GetProgramID("default");
-	//	glUseProgram(program);
-	//	glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]); // first argument is 0 for the layout in vertex shader
-	//	//Render
-	//	//
-	//	Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
-	//	MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
-	//
-	//	meshRenderer->Draw();
-	//}
+	for (GameObject* objectToRender : mRenderList)
+	{
+		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
+		MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+		meshRenderer->Draw();
+	}
 }
