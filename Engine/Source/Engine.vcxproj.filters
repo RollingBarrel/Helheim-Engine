@@ -201,6 +201,8 @@
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Archive.cpp" />
+    <ClCompile Include="TestSceneGameObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -600,6 +602,7 @@
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Archive.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

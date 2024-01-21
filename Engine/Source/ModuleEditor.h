@@ -22,11 +22,13 @@ public:
 
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
+	
 
 private:
 	ImGuiIO* io;
-
+	bool loadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
+	void OpenLoadScene();
 };
 
 #endif /* _MODULE_EDITOR_H_ */
