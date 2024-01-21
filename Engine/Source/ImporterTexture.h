@@ -14,7 +14,7 @@ struct ResourceTexture
 	unsigned int mNumPixels;
 	unsigned char* mPixels;
 	const char* mTextureName;
-	unsigned int mUID;
+	unsigned int mUID = 0;
 
 	bool mHasAlpha;
 

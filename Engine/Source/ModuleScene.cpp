@@ -46,10 +46,10 @@ update_status ModuleScene::Update()
 	//glUseProgram(program);
 	//glUniformMatrix4fv(1, 1, GL_TRUE, &viewProj[0][0]); // first argument is 1 for the layout in vertex shader
 
-	GameObject* root = App->GetScene()->GetRoot();
-	mRenderList.clear();
-	GenerateRenderList(root);
-	DrawRenderList();
+	//GameObject* root = App->GetScene()->GetRoot();
+	//mRenderList.clear();
+	//GenerateRenderList(root);
+	//DrawRenderList();
 
 	return UPDATE_CONTINUE;
 }
@@ -112,18 +112,18 @@ void ModuleScene::GenerateRenderList(GameObject* root)
 
 void ModuleScene::DrawRenderList()
 {
-	for (GameObject* objectToRender : mRenderList)
-	{
-		//Pass model matrix
-		float4x4 model = objectToRender->GetWorldTransform();
-		auto program = App->GetProgram()->GetProgramID("default");
-		glUseProgram(program);
-		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]); // first argument is 0 for the layout in vertex shader
-		//Render
-		//
-		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
-		MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
-
-		meshRenderer->Draw();
-	}
+	//for (GameObject* objectToRender : mRenderList)
+	//{
+	//	//Pass model matrix
+	//	float4x4 model = objectToRender->GetWorldTransform();
+	//	auto program = App->GetProgram()->GetProgramID("default");
+	//	glUseProgram(program);
+	//	glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]); // first argument is 0 for the layout in vertex shader
+	//	//Render
+	//	//
+	//	Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
+	//	MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+	//
+	//	meshRenderer->Draw();
+	//}
 }

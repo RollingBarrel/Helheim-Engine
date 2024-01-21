@@ -16,6 +16,7 @@ struct ResourceTexture;
 struct ResourceMaterial
 {
 public:
+    ~ResourceMaterial() { delete mDiffuseTexture; delete mSpecularGlossinessTexture; delete mNormalTexture;  }
     ResourceTexture* GetDiffuseMap() const { return mDiffuseTexture; };
     ResourceTexture* GetSpecularMap()const { return mSpecularGlossinessTexture; };
     ResourceTexture* GetNormalMap()const { return mNormalTexture; };
