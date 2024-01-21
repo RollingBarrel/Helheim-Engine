@@ -22,10 +22,11 @@ Application::Application()
 	modules[4] = camera = new ModuleCamera();
 	modules[5] = fileSystem = new ModuleFileSystem();
 	modules[6] = debugDraw = new ModuleDebugDraw();
-	modules[7] = skybox = new ModuleSkybox();
-	modules[8] = scene = new ModuleScene();
+	modules[7] = scene = new ModuleScene();
+	modules[8] = skybox = new ModuleSkybox();
 	modules[9] = test = new ModuleRenderTest();
 	modules[10] = editor = new ModuleEditor();
+
 }
 
 Application::~Application()
