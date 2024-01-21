@@ -85,10 +85,8 @@ void Importer::Texture::Save(const ResourceTexture* texture)
 {
     unsigned int header[7] = { texture->mWidth, texture->mHeight, texture->mInternalFormat, texture->mFormat, texture->mType ,texture->mMipLevels, texture->mNumPixels};
 
-    bool alpha[1] = { texture->mHasAlpha };
-
     unsigned int size = sizeof(header) +
-                        sizeof(alpha) +
+                        sizeof(texture->mHasAlpha) +
                         sizeof(unsigned char) * texture->mNumPixels;
 
     char* fileBuffer = new char[size];
@@ -98,8 +96,8 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     memcpy(cursor, header, bytes);
     cursor += bytes;
 
-    bytes = sizeof(alpha);
-    memcpy(cursor, alpha, bytes);
+    bytes = sizeof(texture->mHasAlpha);
+    memcpy(cursor, &texture->mHasAlpha, bytes);
     cursor += bytes;
 
     bytes = sizeof(unsigned char) * texture->mNumPixels;
@@ -141,14 +139,16 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     texture->mMipLevels = header[5];
     texture->mNumPixels = header[6];
 
-    bool alpha[1];
-    bytes = sizeof(alpha);
-    memcpy(alpha, cursor, bytes);
+    bytes = sizeof(texture->mHasAlpha);
+    memcpy(&texture->mHasAlpha, cursor, bytes);
     cursor += bytes;
-    texture->mHasAlpha = alpha[0];
 
-    bytes = sizeof(unsigned int);
-    memcpy(&texture->mWidth, cursor, bytes);
+    bytes = sizeof(unsigned char) * texture->mNumPixels;
+    if (texture->mPixels != nullptr)
+        delete[] texture->mPixels;
+    texture->mPixels = new unsigned char[texture->mNumPixels];
+    memcpy(cursor, texture->mPixels, bytes);
+    cursor += bytes;
 
     return texture->CreateTexture();
 }
