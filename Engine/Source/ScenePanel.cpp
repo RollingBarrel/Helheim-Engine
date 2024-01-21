@@ -22,6 +22,7 @@ void ScenePanel::Draw(int windowFlags)
 {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
+		isWindowsHovered = ImGui::IsWindowHovered();
 		ImVec2 size = ImGui::GetContentRegionAvail();
 		if (size.x != prevSizeX || size.y != prevSizeY)
 		{
