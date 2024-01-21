@@ -20,12 +20,6 @@ void ProjectPanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		if(ImGui::Button("Refresh"))
-		{
-			root->mChildren.clear();
-			root->assets.clear();
-			App->GetFileSystem()->DiscoverFiles("Library", root);
-		}
 
 		for (auto i = 0; i < root->mChildren.size(); ++i)
 		{
