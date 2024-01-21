@@ -22,7 +22,7 @@ public:
 	virtual ~Component() {}
 	
 	virtual void Save(Archive& archive) const = 0;
-	virtual Component* LoadFromJSON(const rapidjson::Value& data, GameObject* owner) = 0;
+	virtual void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) = 0;
 
 	const ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }
