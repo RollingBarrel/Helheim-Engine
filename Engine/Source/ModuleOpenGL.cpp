@@ -4,8 +4,8 @@
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "glew.h"
-#include "ModuleRenderTest.h"
 #include "ModuleCamera.h"
+
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -44,7 +44,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+ 	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -110,6 +110,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	return true;
 }
 
@@ -129,6 +130,7 @@ update_status ModuleOpenGL::PreUpdate()
 
 update_status ModuleOpenGL::PostUpdate()
 {
+
 	SDL_GL_SwapWindow(App->GetWindow()->window);
 
 	return UPDATE_CONTINUE;

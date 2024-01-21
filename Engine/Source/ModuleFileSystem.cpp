@@ -5,6 +5,8 @@
 
 #include "ProjectPanel.h"
 
+#include <stdio.h>
+
 #include "physfs.h"
 
 ModuleFileSystem::ModuleFileSystem() 
@@ -18,14 +20,18 @@ ModuleFileSystem::ModuleFileSystem()
 
     AddToSearchPath(".");
     AddToSearchPath(ASSETS_PATH);
+    AddToSearchPath(ASSETS_MODEL_PATH);
     
     CreateDirectory(ASSETS_PATH);
+    CreateDirectory(ASSETS_MODEL_PATH);
+    CreateDirectory(ASSETS_TEXTURE_PATH);
 
     CreateDirectory(LIBRARY_PATH);
     CreateDirectory(LIBRARY_MESH_PATH);
     CreateDirectory(LIBRARY_TEXTURE_PATH);
     CreateDirectory(LIBRARY_MATERIAL_PATH);
     CreateDirectory(LIBRARY_SHADER_PATH);
+    CreateDirectory(LIBRARY_MODEL_PATH);
 
     mRoot = new PathNode("Assets");
 }
@@ -41,7 +47,7 @@ bool ModuleFileSystem::Init()
 {
     //Importer::CreateBinaryFile();
 
-    //Importer::Import("Assets/Models/Triangle/Triangle.gltf");
+    //Importer::Import("Assets/Models/ZomBunny/Zombunny.gltf");
     //Importer::Import("Shaders/basic.vs");
 
     //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
@@ -134,7 +140,7 @@ unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, un
     return writeBytesSize;
 }
 
-bool ModuleFileSystem::Copy(const char* sourceFilePath, const char* destinationFilePath)
+bool ModuleFileSystem::CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath)
 {
     char* readBuffer = nullptr;
     int readBufferSize = Load(sourceFilePath, &readBuffer);
@@ -154,6 +160,42 @@ bool ModuleFileSystem::Copy(const char* sourceFilePath, const char* destinationF
         return false;
     }
    
+    return true;
+}
+
+bool ModuleFileSystem::CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath)
+{
+    FILE *src;
+    FILE *dst;
+
+    char buffer[4096];
+    size_t n;
+    errno_t err;
+
+    if ((err = fopen_s(&src, sourceFilePath, "rb")) == 0 )
+    {      
+        if ((err = fopen_s(&dst, destinationFilePath, "wb")) == 0)
+        {
+            while ((n = fread(buffer, 1, sizeof(buffer), src)) > 0)
+            {
+                fwrite(buffer, 1, n, dst);
+            }
+
+            fclose(dst);
+        }  
+        else
+        {
+            LOG("Unable to open File %s", destinationFilePath);
+        }      
+
+        fclose(src);
+    }
+    else
+    {
+        LOG("Unable to open File %s", sourceFilePath);
+    }
+  
+
     return true;
 }
 

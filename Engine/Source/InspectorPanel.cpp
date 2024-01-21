@@ -1,11 +1,15 @@
 #include "InspectorPanel.h"
 #include "imgui.h"
 #include "Application.h"
+#include "ModuleScene.h"
+#include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
+#include "ImporterMaterial.h"
+
 #include <MathFunc.h>
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
@@ -272,10 +276,224 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
-	ImGui::Text("Model: Cube.obj (TEST)");
-	ImGui::Text("Material: DefaultMaterial (TEST)");
-	ImGui::Text("Shader: StandardShader (TEST)");
-	bool a = component->ShouldDraw();
-	if(ImGui::Checkbox("Draw bounding box:", &a))
-		component->SetShouldDraw(a);
+	ImGui::SeparatorText("Model ");
+	int selectedOption = 0;
+
+	if (ImGui::BeginCombo("Model", nullptr)) {
+		// List of mesh options
+		const char* meshOptions[] = {
+			"Clock",
+			"DollHouse",
+			"Drawers",
+			"Duck",
+			"Firetruck",
+			"Floor",
+			"Hearse",
+			"Player",
+			"SpinningTop",
+			"Robot",
+			"Wall",
+			"ZomBunny"
+		};
+
+		for (int i = 0; i < IM_ARRAYSIZE(meshOptions); i++) {
+			bool isSelected = (i == selectedOption);
+			if (ImGui::Selectable(meshOptions[i], isSelected)) {
+				selectedOption = i;
+			}
+
+			// If the option is selected, set the focus on it
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+	
+	ImGui::SeparatorText("Material");
+	ImGui::Text("WATING FOR FILE SYSTEM �? (TEST)");
+	ImGui::Text("CREATE NAME VARIABLE?");
+
+	ImGui::Text(" ");
+
+	if (ImGui::BeginTable("materialTable", 4))
+	{
+		float* ambient = component->ambientColor;
+
+		ImGui::TableNextRow();
+		ImGui::PushID("ambient");
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Ambient");
+		ImGui::PopItemWidth();
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("X");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##X", &ambient[0], 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			component->ambientColor[0] = ambient[0];
+		}
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Y");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Y", &ambient[1], 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			component->ambientColor[1] = ambient[1];
+		}
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Z");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Z", &ambient[2], 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			component->ambientColor[2] = ambient[2];
+		}
+		ImGui::PopID();
+	}
+	ImGui::EndTable();
+
+	//std::vector<Mesh*> meshes = component->getMeshes();
+	//
+	//for (auto i = 0; i < meshes.size(); i++) {
+	//	ImGui::PushID(i);
+	//	ResourceMaterial* material = meshes[i]->GetMaterial();
+	//	if (ImGui::CollapsingHeader(("Mesh " + std::to_string(i)).c_str())) {
+	//
+	//		MaterialVariables(material, i);
+	//	}
+	//	ImGui::PopID();
+	//}
+
+	ImGui::SeparatorText("Shaders ");
+	ImGui::Text("Vertex: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetVertexShader());
+	ImGui::Text("Fragment: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetFragmentShader());
+
+	ImGui::Text(" ");
+	bool shouldDraw = component->ShouldDraw();
+	ImGui::Checkbox("Draw bounding box:", &shouldDraw);
+}
+
+void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent, int i)
+{
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
+
+	if (ImGui::BeginTable("materialTable", 4))
+	{
+
+		float4 diffuse = material->GetDiffuseFactor();
+		float3 specular = material->GetSpecularFactor();
+		float shininess = material->GetGlossinessFactor();
+
+		ImGui::TableNextRow();
+		ImGui::PushID(i + "diff");
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Diffuse");
+		ImGui::PopItemWidth();
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("X");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##X", &diffuse.x, 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
+		}
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text("Y");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Y", &diffuse.y, 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
+		}
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text("Z");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Z", &diffuse.z, 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
+		}
+		ImGui::PopID();
+
+		ImGui::TableNextRow();
+		ImGui::PushID(i + "spec");
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Specular");
+		ImGui::PopItemWidth();
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("X");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##X", &specular.x, 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
+		}
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Y");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Y", &specular.y, 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
+		}
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Z");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##Z", &specular.z, 0.05f, 0.0f, 1.0f, "%.2f"))
+		{
+			material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
+		}
+		ImGui::PopID();
+
+		ImGui::TableNextRow();
+		ImGui::PushID(i + "shiny");
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Shininess");
+		ImGui::PopItemWidth();
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text(" ");
+		ImGui::SameLine();
+		if (ImGui::DragFloat("##S", &shininess, 0.05f, 0.0f, 10000.0f, "%.2f"))
+		{
+			material->SetGlossinessFactor(shininess);
+		}
+
+		ImGui::PopID();
+	}
+	ImGui::EndTable();
+
+	ImGui::Text(" ");
+
+	bool hasDiffuse = material->GetEnableDiffuseTexture();
+	bool hasSpecular = material->GetEnableSpecularGlossinessTexture();
+	bool hasShininess = material->GetEnableShinessMap();
+
+	ImGui::Checkbox("Enable Diffuse map", &hasDiffuse);
+	ImGui::Checkbox("Enable Specular map", &hasSpecular);
+	ImGui::Checkbox("Enable Shininess map", &hasShininess);
+
+	material->SetEnableDiffuseTexture((int)hasDiffuse);
+	material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
+	material->SetEnableShinessMap((int)hasShininess);
+
 }

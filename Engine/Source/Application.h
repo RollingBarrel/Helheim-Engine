@@ -5,15 +5,14 @@
 
 class ModuleOpenGL;
 class ModuleWindow;
-class ModuleTextures;
 class ModuleInput;
 class ModuleEditor;
 class ModuleRenderExercise;
 class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
-class ModuleRenderTest;
 class ModuleDebugDraw;
+class ModuleProgram;
 class ModuleTimer;
 
 class Application
@@ -32,8 +31,8 @@ public:
     ModuleInput*  GetInput() { return input; }
     ModuleEditor*  GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera;  }
-    ModuleRenderTest* GetTest() { return test; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
+    ModuleProgram* GetProgram() { return program; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
     ModuleTimer* GetClock() { return clock; }
@@ -47,13 +46,13 @@ private:
     ModuleInput* input = nullptr;
     ModuleEditor* editor = nullptr;
     ModuleCamera* camera = nullptr;
-    ModuleRenderTest* test = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
+    ModuleProgram* program = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
     ModuleTimer* clock = nullptr;
 
-#define NUM_MODULES 10
+#define NUM_MODULES 10 //FCK TIMER
     Module* modules[NUM_MODULES];
 };
 

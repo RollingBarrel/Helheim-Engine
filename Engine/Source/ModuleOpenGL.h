@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "GameObject.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -26,6 +27,7 @@ public:
 	void UnbindSceneFramebuffer();
 
 public:
+
 	void* context = nullptr;
 
 	unsigned int sFbo;

@@ -6,24 +6,25 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
-#include "ModuleRenderTest.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleProgram.h"
 #include "ModuleTimer.h"
+
 
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
-	modules[0] = clock = new ModuleTimer();
-	modules[1] = input = new ModuleInput();
-	modules[2] = window = new ModuleWindow();
-	modules[3] = render = new ModuleOpenGL();
+	modules[0] = input = new ModuleInput();
+	modules[1] = window = new ModuleWindow();
+	modules[2] = render = new ModuleOpenGL();
+	modules[3] = program = new ModuleProgram("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
 	modules[4] = camera = new ModuleCamera();
 	modules[5] = fileSystem = new ModuleFileSystem();
 	modules[6] = debugDraw = new ModuleDebugDraw();
 	modules[7] = scene = new ModuleScene();
-	modules[8] = test = new ModuleRenderTest();
-	modules[9] = editor = new ModuleEditor();
+	modules[8] = editor = new ModuleEditor();
+	modules[9] = clock = new ModuleTimer();
 }
 
 Application::~Application()

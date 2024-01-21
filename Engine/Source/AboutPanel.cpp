@@ -13,7 +13,7 @@ void AboutPanel::Draw(int windowFlags)
 {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		ImGui::Text("Welcum");
+		ImGui::Text("Welcum :)");
 	}
 	ImGui::End();
 }

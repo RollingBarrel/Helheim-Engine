@@ -153,7 +153,6 @@
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
-    <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
@@ -202,9 +201,12 @@
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Archive.cpp" />
-    <ClCompile Include="TestSceneGameObjects.cpp" />
     <ClCompile Include="LightningPanel.cpp">
       <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleProgram.cpp" />
+    <ClCompile Include="ImporterMaterial.cpp">
+      <Filter>Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,7 +262,6 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h" />
-    <ClInclude Include="ModuleRenderTest.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>
@@ -609,6 +610,10 @@
     <ClInclude Include="LightningPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleProgram.h" />
+    <ClInclude Include="ImporterMaterial.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -659,6 +664,9 @@
     <Filter Include="Dependencies\MikkTspace">
       <UniqueIdentifier>{58fe3eb7-9da9-4e89-b4ef-7117bf4acc3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{9fdd9d2e-dc31-4b45-9684-7e9ff9d48e2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
@@ -678,6 +686,24 @@
     </None>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Dependencies\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\Game\shaders\default_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\shaders\default_vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Fragment.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBR_PixelShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Vertex.vs">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
