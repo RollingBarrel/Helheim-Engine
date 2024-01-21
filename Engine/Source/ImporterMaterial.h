@@ -35,7 +35,6 @@ public:
     void SetEnableDiffuseTexture(bool enableDiffuseTexture) { mEnableDiffuseTexture = enableDiffuseTexture; }
     void SetEnableSpecularGlossinessTexture(bool enableSpecularGlossinessTexture) { mEnableSpecularGlossinessTexture = enableSpecularGlossinessTexture; }
     void SetEnableShinessMap(bool enableShinessMap) { mEnableShinessMap = enableShinessMap; }
-    void SetTemporalID(int id) { mTemporalID = id; }
 
     float4 mDiffuseFactor;
     float3 mSpecularFactor;
@@ -50,7 +49,7 @@ public:
     bool mEnableNormalMap;
     bool mEnableShinessMap;
 
-    int mTemporalID = -1;
+    unsigned int mUID;
 };
 
 namespace Importer
@@ -58,6 +57,8 @@ namespace Importer
 	namespace Material
 	{
 		void Import(const tinygltf::Model& model, const tinygltf::Material& material, ResourceMaterial* rMaterial);
+        void Save(const ResourceMaterial* ourMaterial);
+        void Load(ResourceMaterial* ourMaterial, const char* fileName = nullptr);
 	}
 };
 

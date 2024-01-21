@@ -5,7 +5,6 @@
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
 
-
 #include "Algorithm/Random/LCG.h"
 
 
@@ -69,13 +68,16 @@ void Importer::Model::Import(const char* filePath)
             Importer::Mesh::Import(model, primitive, mesh);
 
             if (primitive.material != -1) {
-                ResourceMaterial* material = new ResourceMaterial();            
+                ResourceMaterial* material = new ResourceMaterial();  
+                material->mUID = math::LCG().Int();
                 Importer::Material::Import(model, model.materials[primitive.material], material);
+
+                delete material;
+                material = nullptr;
             }
 
             delete mesh;
             mesh = nullptr;
-
 
         }
     }

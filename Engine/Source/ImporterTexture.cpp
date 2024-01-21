@@ -8,11 +8,10 @@
 #include "glew.h"
 
 #include "DirectXTex.h"
-#include "Algorithm/Random/LCG.h"
+
 
 void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
 {
-    texture->mUid = math::LCG().Int();
     std::string gltfPath = (ASSETS_TEXTURE_PATH + std::string(filePath));
 
     DirectX::ScratchImage image;
@@ -109,7 +108,7 @@ void Importer::Texture::Save(const ResourceTexture* texture)
 
     //TODO Change name for random UID
     std::string path = LIBRARY_TEXTURE_PATH;
-    path += std::to_string(texture->mUid);
+    path += std::to_string(texture->mUID);
     path += ".textssy";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
@@ -119,8 +118,10 @@ void Importer::Texture::Save(const ResourceTexture* texture)
 
 }
 
-unsigned int Importer::Texture::Load(char* fileBuffer, ResourceTexture* texture, const char* fileName)
+unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileName)
 {
+    char* fileBuffer;
+
     std::string path = LIBRARY_TEXTURE_PATH;
     path += fileName;
     path += ".textssy";
