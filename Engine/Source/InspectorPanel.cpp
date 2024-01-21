@@ -287,7 +287,9 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 
 	ImGui::Text(" ");
 	bool shouldDraw = component->ShouldDraw();
-	ImGui::Checkbox("Draw bounding box:", &shouldDraw);
+	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
+		component->SetShouldDraw(shouldDraw);
+	}
 }
 
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
