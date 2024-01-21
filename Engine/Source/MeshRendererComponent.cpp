@@ -152,7 +152,7 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", mID);
 	archive.AddInt("MeshID",mMesh->mUID);
-	archive.AddInt("MaterialID", mMesh->mUID);
+	archive.AddInt("MaterialID", mMaterial->mUID);
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
 }

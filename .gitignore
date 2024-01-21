@@ -406,3 +406,5 @@ FodyWeavers.xsd
 
 # IMGUI
 #imgui.ini
+
+/Engine/Game/Library/*
