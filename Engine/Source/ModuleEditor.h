@@ -25,7 +25,7 @@ public:
 	
 
 private:
-	ImGuiIO* io;
+	ImGuiIO* io = nullptr;
 	bool loadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
 	void OpenLoadScene();
