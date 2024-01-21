@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ScenePanel.h"
+#include "ModuleEditor.h"
 #include "glew.h"
 
 #include "imgui.h"
@@ -32,6 +34,12 @@ void ModuleCamera::WindowResized(int w, int h)
 
 update_status ModuleCamera::Update()
 {    
+
+	const auto& io = ImGui::GetIO();
+	//ImGuiID id =  ImGui::GetID(SCENEPANEL);
+
+	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
+	{
 	//Fer state machine amb els inputs !!!!
 	//TODO: Camera velocity variable independent of framerate
 	const float dtTransformCameraVel = App->GetDt() * 8.f;
@@ -100,9 +108,6 @@ update_status ModuleCamera::Update()
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, GetViewMatrix().Transposed().ptr());
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, GetProjectionMatrix().Transposed().ptr());
 
-	const auto& io = ImGui::GetIO();
-	if (!io.WantCaptureMouse && !io.WantCaptureKeyboard)
-	{
 
 	}
 
