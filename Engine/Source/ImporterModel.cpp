@@ -15,7 +15,7 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-void Importer::Model::Import(const char* filePath)
+void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
 {
     //Create GLTF Dupliate REMEMBER .gltf && .bin must have the same name
     std::string modelName = filePath;
@@ -72,6 +72,8 @@ void Importer::Model::Import(const char* filePath)
                 material->mUID = math::LCG().Int();
                 Importer::Material::Import(model, model.materials[primitive.material], material);
 
+                Model::Save(rModel);
+
                 delete material;
                 material = nullptr;
             }
@@ -82,4 +84,48 @@ void Importer::Model::Import(const char* filePath)
         }
     }
     
+}
+
+void Importer::Model::Save(const ResourceModel* ourModel)
+{
+    unsigned int UIDs[2] = { ourModel->meshUID, ourModel->materiaUID };
+
+    unsigned int size = sizeof(UIDs);
+
+    char* fileBuffer = new char[size];
+    char* cursor = fileBuffer;
+
+    unsigned int bytes = sizeof(UIDs);
+    memcpy(cursor, UIDs, bytes);
+    cursor += bytes;
+
+    std::string path = LIBRARY_MODEL_PATH;
+    path += std::to_string(ourModel->mUID);
+    path += ".model";
+
+    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+
+    delete[] fileBuffer;
+    fileBuffer = nullptr;
+
+}
+
+void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
+{
+    char* fileBuffer;
+
+    std::string path = LIBRARY_MODEL_PATH;
+    path += fileName;
+    path += ".model";
+
+    App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
+
+    char* cursor = fileBuffer;
+    unsigned int UIDs[2];
+    unsigned int bytes = sizeof(UIDs);
+
+    memcpy(UIDs, cursor, bytes);
+    cursor += bytes;
+    ourModel->meshUID = UIDs[0];
+    ourModel->materiaUID = UIDs[1];
 }
