@@ -10,6 +10,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTimer.h"
+#include "ModuleSkybox.h"
 
 Application::Application()
 {
@@ -21,9 +22,10 @@ Application::Application()
 	modules[4] = camera = new ModuleCamera();
 	modules[5] = fileSystem = new ModuleFileSystem();
 	modules[6] = debugDraw = new ModuleDebugDraw();
-	modules[7] = scene = new ModuleScene();
-	modules[8] = test = new ModuleRenderTest();
-	modules[9] = editor = new ModuleEditor();
+	modules[7] = skybox = new ModuleSkybox();
+	modules[8] = scene = new ModuleScene();
+	modules[9] = test = new ModuleRenderTest();
+	modules[10] = editor = new ModuleEditor();
 }
 
 Application::~Application()

@@ -15,6 +15,7 @@ class ModuleCamera;
 class ModuleRenderTest;
 class ModuleDebugDraw;
 class ModuleTimer;
+class ModuleSkybox;
 
 class Application
 {
@@ -37,6 +38,7 @@ public:
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
     ModuleTimer* GetClock() { return clock; }
+    ModuleSkybox* GetSkybox() { return skybox; }
 
     float GetDt() const;
 
@@ -47,13 +49,14 @@ private:
     ModuleInput* input = nullptr;
     ModuleEditor* editor = nullptr;
     ModuleCamera* camera = nullptr;
+    ModuleSkybox* skybox = nullptr;
     ModuleRenderTest* test = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
     ModuleTimer* clock = nullptr;
 
-#define NUM_MODULES 10
+#define NUM_MODULES 11
     Module* modules[NUM_MODULES];
 };
 

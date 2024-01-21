@@ -212,6 +212,7 @@
     <ClCompile Include="ModuleRenderTest.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="ModuleSkybox.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
@@ -343,6 +344,7 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleRenderTest.h" />
+    <ClInclude Include="ModuleSkybox.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PausePanel.h" />
