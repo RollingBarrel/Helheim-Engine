@@ -34,6 +34,7 @@ ModuleFileSystem::ModuleFileSystem()
     CreateDirectory(LIBRARY_MODEL_PATH);
 
     mRoot = new PathNode("Assets");
+    DiscoverFiles("Library", mRoot);
 }
 
 // Destructor

@@ -1,16 +1,20 @@
+#include "Application.h"
 #include "Importer.h"
 #include "ImporterModel.h"
 #include "ImporterTexture.h"
 #include "ImporterShader.h"
+#include "ModuleFileSystem.h"
 #include "Globals.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 
+
 #include "Algorithm/Random/LCG.h"
 
 void Importer::Import(const char* filePath)
 {
+
 	//TODO work with the file path to call other importers
 	std::string extension = filePath;
 	unsigned pos = extension.find_last_of('.');
@@ -39,4 +43,11 @@ void Importer::Import(const char* filePath)
 	{
 		LOG("The file %s has a unsupported extension type %s", filePath, extension);
 	}
+
+	PathNode* root = App->GetFileSystem()->GetRootNode();
+	root->mChildren.clear();
+	root->assets.clear();
+	App->GetFileSystem()->DiscoverFiles("Library", root);
+
+
 }
