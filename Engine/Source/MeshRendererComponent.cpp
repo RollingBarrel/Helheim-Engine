@@ -61,7 +61,7 @@ void MeshRendererComponent::Draw()
 
 	unsigned int program = App->GetProgram()->GetPBRProgramId();
 	glUseProgram(program);
-	glUniformMatrix4fv(0, 1, GL_FALSE, mOwner->GetWorldTransform().ptr());
+	glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
 	glBindVertexArray(mMesh->GetVao());
 	//TODO: Put all this with imgui
 	//Dont update uniforms it every frame
