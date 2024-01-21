@@ -12,7 +12,6 @@
 #include "ModuleFileSystem.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
-#include "TestSceneGameObjects.cpp"
 #include "Archive.h"
 #include "Globals.h"
 

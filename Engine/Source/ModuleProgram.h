@@ -3,8 +3,10 @@
 #include "Globals.h"
 #include <unordered_map>
 #include <string>
+
 class ModuleProgram : public Module
 {
+friend class LightningPanel;
 public:
 
 	ModuleProgram();
@@ -37,9 +39,11 @@ private:
 	const char* mFragmentShader = "PBR_PixelShader.glsl";
 	
 	//Temporary to do a render for the delivery
+	bool mModified;
 	unsigned int mPbrProgramId = 0;
-	float lightIntensity = 1.2f;
-	float lightDir[3] = { 0.0f, -1.0f, -1.0f };
-	float lightCol[3] = { 1.f, 1.f, 1.f };
-	float ambientCol[3] = { 0.3f, 0.4f, 0.6f };
+
+	float mLightIntensity = 1.2f;
+	float mLightDir[3] = { 0.0f, -1.0f, -1.0f };
+	float mLightCol[3] = { 1.f, 1.f, 1.f };
+	float mAmbientCol[3] = { 0.3f, 0.4f, 0.6f };
 };

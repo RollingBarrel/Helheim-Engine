@@ -52,10 +52,10 @@ void ScenePanel::Draw(int windowFlags)
 				}
 				ResourceModel* rModel = new ResourceModel();
 				Importer::Model::Load(rModel, asset->mName);
+				GameObject* nGO = new GameObject(asset->mName,App->GetScene()->GetRoot());
 				for (auto it = rModel->mUids.cbegin(); it != rModel->mUids.cend(); ++it)
 				{
-
-					GameObject* go = new GameObject(App->GetScene()->GetRoot());
+					GameObject* go = new GameObject(nGO);
 					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
 					cMesh->Load(it->meshUID, it->materiaUID);
 				}

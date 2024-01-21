@@ -52,7 +52,7 @@ private:
     ModuleScene* scene = nullptr;
     ModuleTimer* clock = nullptr;
 
-#define NUM_MODULES 9 //FCK TIMER
+#define NUM_MODULES 10 //FCK TIMER
     Module* modules[NUM_MODULES];
 };
 

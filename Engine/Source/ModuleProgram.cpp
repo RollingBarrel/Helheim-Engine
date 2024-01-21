@@ -57,11 +57,11 @@ bool ModuleProgram::Init()
 	//Temorary to do a render for the delivery
 	mPbrProgramId = CreateShaderProgramFromPaths(mVertexShader, mFragmentShader);
 	glUseProgram(mPbrProgramId);
-	glUniform3fv(1, 1, lightDir);
+	glUniform3fv(1, 1, mLightDir);
 	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
-	glUniform3fv(3, 1, lightCol);
-	glUniform3fv(4, 1, ambientCol);
-	glUniform1f(5, lightIntensity);
+	glUniform3fv(3, 1, mLightCol);
+	glUniform3fv(4, 1, mAmbientCol);
+	glUniform1f(5, mLightIntensity);
 	glUseProgram(0);
 
 	return true;
@@ -71,16 +71,23 @@ update_status ModuleProgram::Update()
 	//Temorary to do a render for the delivery
 	glUseProgram(mPbrProgramId);
 	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
-	ImGui::Begin("Lighting");
-	if (ImGui::DragFloat("LightIntensity", &lightIntensity, 0.05f, 0.0f, 5.0f))
-		glUniform1f(5, lightIntensity);
-	if (ImGui::DragFloat3("LightDir", lightDir, 0.05f, -1.0f, 1.0f))
-		glUniform3fv(1, 1, lightDir);
-	if (ImGui::ColorPicker3("LightCol", lightCol))
-		glUniform3fv(3, 1, lightCol);
-	if (ImGui::ColorPicker3("AmbientCol", ambientCol))
-		glUniform3fv(4, 1, ambientCol);
-	ImGui::End();
+	//ImGui::Begin("Lighting");
+	//if (ImGui::DragFloat("LightIntensity", &lightIntensity, 0.05f, 0.0f, 5.0f))
+	//	glUniform1f(5, lightIntensity);
+	//if (ImGui::DragFloat3("LightDir", lightDir, 0.05f, -1.0f, 1.0f))
+	//	glUniform3fv(1, 1, lightDir);
+	//if (ImGui::ColorPicker3("LightCol", lightCol))
+	//	glUniform3fv(3, 1, lightCol);
+	//if (ImGui::ColorPicker3("AmbientCol", ambientCol))
+	//	glUniform3fv(4, 1, ambientCol);
+	//ImGui::End();
+	if (mModified)
+	{
+		glUniform1f(5, mLightIntensity);
+		glUniform3fv(1, 1, mLightDir);
+		glUniform3fv(3, 1, mLightCol);
+		glUniform3fv(4, 1, mAmbientCol);
+	}
 	glUseProgram(0);
 	return UPDATE_CONTINUE;
 }
