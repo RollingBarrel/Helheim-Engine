@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Archive.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
@@ -201,6 +202,7 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="LightningPanel.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
@@ -225,10 +227,12 @@
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TestSceneGameObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Archive.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
@@ -320,6 +324,7 @@
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
+    <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />

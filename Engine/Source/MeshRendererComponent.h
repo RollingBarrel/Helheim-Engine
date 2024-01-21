@@ -24,15 +24,13 @@ public:
 	void Reset() override {}
 
 	void Update() override;
-	Component* Clone(GameObject* owner) override;
+	Component* Clone(GameObject* owner) const override;
 
 	const OBB getOBB() const { return mOBB; }
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
-
-	std::vector<Mesh*> getMeshes() { return mMeshes; }
 
 	const ResourceMaterial* GetMaterial() const { return mMaterial; }
 
@@ -44,11 +42,11 @@ public:
 	float ambientColor[3] = {0.5f, 0.5f, 0.5f};
 
 private:
-	std::vector<Mesh*> mMeshes; //it was a mesh pointer (Mesh*) 
-
-private:
 	ResourceMesh* mMesh;
 	ResourceMaterial* mMaterial;
+	void Save(Archive& archive) const override;
+	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
 	OBB mOBB;
 	AABB mAABB;
 	bool mDrawBox = false;

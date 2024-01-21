@@ -25,7 +25,19 @@ void TestComponent::Update()
 	c = (MeshRendererComponent*)mOwner->GetComponent(ComponentType::MESHRENDERER);
 }
 
-Component* TestComponent::Clone(GameObject* owner)
+Component* TestComponent::Clone(GameObject* owner) const
 {
     return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }
+
+void TestComponent::Save(Archive& archive) const {
+	archive.AddString("Name", mName);
+	archive.AddString("type", "Test");
+}
+
+void TestComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {
+	
+}
+
+
+

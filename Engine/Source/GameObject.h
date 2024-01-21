@@ -4,6 +4,12 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "string"
+#include "Archive.h"
+
+#undef max
+#undef min
+#define NOMINMAX
+#include "rapidjson/document.h"
 
 class MeshRendererComponent;
 class Component;
@@ -20,6 +26,8 @@ public:
 	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
+	GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation);
+
 
 	~GameObject();
 
@@ -36,12 +44,13 @@ public:
 	const float3& GetPosition() const { return mLocalTransformMatrix.TranslatePart(); }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
-	const std::string* GetName() const { return &mName; }
+	const std::string& GetName() const { return mName; }
+	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
+
 	void ResetTransform();
 
-	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
-	const unsigned int GetID() const { return mID; }
-	const bool IsRoot() const { return mIsRoot; }
+	unsigned int GetID() const { return mID; }
+	bool IsRoot() const { return mIsRoot; }
 	void DeleteChild(GameObject* child);
 	void AddComponentToDelete(Component* component);
 
@@ -51,13 +60,17 @@ public:
 	void SetScale(const float3& scale);
 
 	Component* CreateComponent(ComponentType type);
+	MeshRendererComponent* getMeshRenderer() const;
+	void Save(Archive& archive) const;
+	void Load(const rapidjson::Value& gameObjectsJson);
 
 private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
 	void DeleteComponents();
+	Component* RemoveComponent(Component* component);
+	void AddComponent(Component* component, Component* position);
 	void RecalculateLocalTransform();
-
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;

@@ -19,16 +19,12 @@ void DebugPanel::Draw(int windowFlags) {
 	{
 		//ImGui::Checkbox("Draw Frustrum", App->GetCamera()->GetShouldRenderFrustum());
 		bool grid = App->GetDebugDraw()->GetShouldRenderGrid();
-		bool axis = App->GetDebugDraw()->GetShouldRenderAxis();
 		
 		if (ImGui::Checkbox("Draw Grid", &grid)) {
 			App->GetDebugDraw()->SetRenderGrid(grid);
 		}
 		
-		if(ImGui::Checkbox("Draw Axis", &axis)) {
-			App->GetDebugDraw()->SetRenderAxis(axis);
 
-		}
 
 
 

@@ -5,6 +5,8 @@
 #include <vector>
 class Quadtree;
 class GameObject;
+class Archive;
+
 class ModuleScene : public Module
 {
 public:
@@ -15,10 +17,8 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 
-	GameObject* GetRoot() { return mRoot; }
-	GameObject* GetSelectedGameObject() { return mSelectedGameObject; }
+	GameObject* GetRoot() const { return mRoot; }
 
-	void SetSelectedObject(GameObject* gameObject);
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
 	}
@@ -34,6 +34,9 @@ public:
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
+	void Save(const char* saveFilePath);
+	void Load(const char* saveFilePath);
+
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
@@ -41,13 +44,14 @@ private:
 	void DrawRenderList();
 	void AddToRenderList(GameObject* root); // Can be public if needed 
 
+	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
+	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
 	
 	Quadtree* mQuadtreeRoot;
 	bool mDrawQuadtree = false;
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
-	GameObject* mSelectedGameObject = nullptr;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;

@@ -5,6 +5,7 @@ public:
 	Timer() = default;
 
 	void Start();
+	void StartWithRunTime();
 	long Read();
 	long ReadDelta();
 	long Stop() { SetSpeed(0); }

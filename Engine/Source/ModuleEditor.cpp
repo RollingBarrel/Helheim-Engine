@@ -17,16 +17,7 @@
 #include "DebugPanel.h"
 #include "PausePanel.h"
 #include "ProjectPanel.h"
-
-#include "Panel.h"
-#include "AboutPanel.h"
-#include "ConsolePanel.h"
-#include "InspectorPanel.h"
-#include "HierarchyPanel.h"
-#include "ScenePanel.h"
-#include "QuadtreePanel.h"
-#include "PausePanel.h"
-#include "ProjectPanel.h"
+#include "LightningPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -44,6 +35,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
+	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -132,6 +124,14 @@ void ModuleEditor::ShowMainMenuBar() {
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("Load Scene"))
+			{
+				loadSceneOpen = true;
+			}
+			if (ImGui::MenuItem("Save Scene"))
+			{
+				App->GetScene()->Save("scene.json");
+			}
 			if (ImGui::MenuItem("Quit"))
 			{
 				exit(0);
@@ -208,6 +208,13 @@ void ModuleEditor::ShowMainMenuBar() {
 						pause->IsOpen() ? pause->Close() : pause->Open();
 					}
 				}
+				if (ImGui::MenuItem("5 Lightning")) {
+					Panel* lightning = mPanels[LIGHTNINGPANEL];
+					if (lightning)
+					{
+						lightning->IsOpen() ? lightning->Close() : lightning->Open();
+					}
+				}
 				//if (ImGui::MenuItem("5 Scene")) {}
 				ImGui::EndMenu();
 			}
@@ -228,6 +235,26 @@ void ModuleEditor::ShowMainMenuBar() {
 		}
 		ImGui::EndMainMenuBar();
 	}
+
+	if (loadSceneOpen) {
+		OpenLoadScene();
+	}
+}
+
+void ModuleEditor::OpenLoadScene() {
+	ImGui::OpenPopup("LoadSceneWindow");
+	if (ImGui::BeginPopupModal("LoadSceneWindow", &loadSceneOpen))
+	{
+		ImGui::Text("Which file you wish to load?");
+		static char fileName[128] = "";
+		ImGui::InputText(".json", fileName, IM_ARRAYSIZE(fileName));
+		if (ImGui::Button("Load")) {
+			App->GetScene()->Load(fileName);
+			ImGui::CloseCurrentPopup();
+			loadSceneOpen = false;
+		}
+		ImGui::EndPopup();
+	}
 }
 
 void ModuleEditor::ResetFloatingPanels(bool openPanels) {
@@ -239,6 +266,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* projectPanel = mPanels[PROJECTPANEL];
+	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
 
 	if (openPanels == true) {
 		console->Open();
@@ -249,6 +277,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Open();
 		quadTree->Open();
 		projectPanel->Open();
+		lightningPanel->Open();
 	}
 	else {
 		console->Close();
@@ -259,5 +288,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Close();
 		quadTree->Close();
 		projectPanel->Close();
+		lightningPanel->Close();
 	}
 }

@@ -20,18 +20,16 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
+	//mMesh->mUID = LCG().Int();
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
-	:Component(owner->GetName()->c_str(), owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
+	:Component("Mesh Renderer", owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh(*original.mMesh)), mMaterial(new ResourceMaterial(*original.mMaterial))
 {
 
-
+	mOBB = original.mOBB;
+	mAABB = original.mAABB;
 	
-	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
-	mAABB = AABB();
-
-
 }
 
 void MeshRendererComponent::Draw()
@@ -95,7 +93,7 @@ void MeshRendererComponent::Draw()
 
 	if (mMaterial->GetEnableNormalMap() && mMaterial->GetNormalMap() != nullptr)
 	{
-		glUniform1i(glGetUniformLocation(program, "material.hasNomalMap"), 1);
+		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 1);
 		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
 		glUniform1i(normalTextureLoc, 2);
 		glActiveTexture(GL_TEXTURE2);
@@ -144,91 +142,42 @@ void MeshRendererComponent::Update()
 	Draw();
 }
 
-Component* MeshRendererComponent::Clone(GameObject* owner)
+
+Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
 }
 
-//void MeshRendererComponent::LoadPBR(const char* assetFileName)
-//{
-//	Clear();
-//	tinygltf::TinyGLTF gltfContext;
-//	tinygltf::Model srcModel;
-//	std::string error, warning;
-//	bool loadOk = gltfContext.LoadASCIIFromFile(&srcModel, &error, &warning, assetFileName);
-//	if (!loadOk)
-//	{
-//		LOG("Error loading %s: %s", assetFileName, error.c_str());
-//	}
-//	for (const auto& srcMesh : srcModel.meshes)
-//	{
-//		for (const auto& primitive : srcMesh.primitives)
-//		{
-//			Mesh* mesh = new Mesh();
-//			mesh->LoadVBO(srcModel, srcMesh, primitive);
-//			mesh->LoadEBO(srcModel, srcMesh, primitive);
-//			mesh->CreateVAO();
-//			mMeshes.push_back(mesh);
-//
-//			int materialID = primitive.material;
-//
-//			//if (materialID != -1) {
-//			//	ResourceMaterial* material = new ResourceMaterial();
-//			//	material->SetTemporalID(mTemporalID);
-//			//	material->LoadMaterial(srcModel, srcModel.materials[materialID]);
-//			//	mesh->SetMaterial(material);
-//			//}
-//		}
-//	}
-//}
 
-void MeshRendererComponent::LoadByIDTemporal(const int id)
-{
-	mTemporalID = id;
-	switch (id) {
-		case 0:
-			LoadPBR("Assets\\Models\\Clock\\Clock.gltf");
-			break;
-		case 1:
-			LoadPBR("Assets\\Models\\DollHouse\\Dollhouse.gltf");
-			break;
-		case 2:
-			LoadPBR("Assets\\Models\\Drawers\\Drawers.gltf");
-			break;
-		case 3:
-			LoadPBR("Assets\\Models\\Duck\\Duck.gltf");
-			break;
-		case 4:
-			LoadPBR("Assets\\Models\\Firetruck\\Firetruck.gltf");
-			break;
-		case 5:
-			LoadPBR("Assets\\Models\\Floor\\Floor.gltf");
-			break;
-		case 6:
-			LoadPBR("Assets\\Models\\Hearse\\Hearse.gltf");
-			break;
-		case 7:
-			LoadPBR("Assets\\Models\\Player\\Player.gltf");
-			break;
-		case 8:
-			LoadPBR("Assets\\Models\\SpinningTop\\SpinningTop.gltf");
-			break;
-		case 9:
-			LoadPBR("Assets\\Models\\testing\\Robot\\Robot.gltf");
-			break;
-		case 10:
-			LoadPBR("Assets\\Models\\Wall\\Wall.gltf");
-			break;
-		case 11:
-			LoadPBR("Assets\\Models\\ZomBunny\\Zombunny.gltf");
-			break;
-		default:
-			// Handle the case when the ID is not found
-			break;
-		}
+void MeshRendererComponent::Save(Archive& archive) const {
+	archive.AddInt("ID", mID);
+	archive.AddInt("MeshID",mMesh->mUID);
+	archive.AddInt("MaterialID", mMesh->mUID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	archive.AddBool("isEnabled", IsEnabled());
 }
 
-void MeshRendererComponent::Clear()
-{
-	mMeshes.clear();
+void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
+	int ID = { 0 };
+	int meshID = { 0 };
+	int materialID = { 0 };
+	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+		ID = componentJson["ID"].GetInt();
+	}
+	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
+		meshID = componentJson["MeshID"].GetInt();
+	}
+	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
+		materialID = componentJson["MaterialID"].GetInt();
+	}
+
+	if (meshID != 0) {
+		Load(std::to_string(meshID).c_str());
+	}
+	if (materialID != 0) {
+		//TODO check if we separate load function from each Component to load specific resources
+		//m->Load(std::to_string(materialID).c_str());
+	}
+
 }
+

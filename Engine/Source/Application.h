@@ -34,8 +34,9 @@ public:
     ModuleProgram* GetProgram() { return program; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
+    ModuleTimer* GetClock() { return clock; }
 
-    float GetDt() const { return dt; }
+    float GetDt() const;
 
 private:
 
@@ -48,12 +49,10 @@ private:
     ModuleProgram* program = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
+    ModuleTimer* clock = nullptr;
 
-#define NUM_MODULES 9
+#define NUM_MODULES 9 //FCK TIMER
     Module* modules[NUM_MODULES];
-
-    EngineTimer timer;
-    float dt;
 };
 
 extern Application* App;

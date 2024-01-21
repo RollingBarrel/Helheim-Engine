@@ -25,16 +25,14 @@ public:
     void DrawQuadtree(const AABB& aabb);
     void DrawAxis();
     bool GetShouldRenderGrid() const { return mDrawGrid; }
-    bool GetShouldRenderAxis() const { return mDrawAxis; }
     void SetRenderGrid(bool a) { mDrawGrid = a; }
-    void SetRenderAxis(bool a) { mDrawAxis = a; }
+
 
 
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
     bool mDrawGrid = true;
-    bool mDrawAxis = true;
 
     void DrawGrid();
     void DrawFrustum(const Frustum& frustum); 

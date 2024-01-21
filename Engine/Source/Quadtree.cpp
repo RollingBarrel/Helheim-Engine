@@ -149,7 +149,7 @@ const void Quadtree::RenderTreeImGui() const
 		{
 			for (const auto& object : mGameObjects)
 			{
-				ImGui::Text(object->GetName()->c_str());
+				ImGui::Text(object->GetName().c_str());
 			}
 
 		}
@@ -198,12 +198,14 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)
 	{
 		for (auto& object : mGameObjects)
 		{
-			Component* component = object->GetComponent(ComponentType::MESHRENDERER);
-			MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+			
+			if (object->getMeshRenderer() != nullptr)
+			{
+				OBB temp = object->getMeshRenderer()->getOBB();
+				bool intersects = myCamera.Intersects(temp);
+				object->getMeshRenderer()->SetInsideFrustum(intersects);
 
-			OBB temp = meshRenderer->getOBB();
-			bool intersects = myCamera.Intersects(temp);
-			meshRenderer->SetInsideFrustum(intersects);
+			}
 		}
 	}
 

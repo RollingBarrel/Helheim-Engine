@@ -27,8 +27,9 @@ Application::Application()
 
 Application::~Application()
 {
-	for(int i = 0; i < NUM_MODULES; ++i)
-        delete modules[i];
+	for (int i = 0; i < NUM_MODULES; ++i) {
+		delete modules[i];
+	}
 }
 
 bool Application::Init()
@@ -43,8 +44,6 @@ bool Application::Init()
 
 update_status Application::Update()
 {
-	dt = timer.Read();
-	timer.Start();
 	update_status ret = UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
@@ -65,6 +64,10 @@ bool Application::CleanUp()
 
 	for (int i = 0; i < NUM_MODULES; ++i)
 		ret = modules[i]->CleanUp();
-
+	
 	return ret;
+}
+
+float Application::GetDt() const {
+	return clock->GetRealDelta() / (float) 1000; 
 }

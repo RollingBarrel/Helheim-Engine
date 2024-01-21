@@ -6,8 +6,6 @@ class GameObject;
 class Component;
 class TestComponent;
 class MeshRendererComponent;
-enum class ComponentType : unsigned int;
-class ResourceMaterial;
 
 class InspectorPanel : public Panel
 {
@@ -17,7 +15,7 @@ public:
 	void Draw(int windowFlags) override;
 
 private:
-	static bool mSame_component_popup;
+	bool mSameComponentPopup = false;
 	Component* mComponent = nullptr;
 
 	void DrawTransform(GameObject* object);
@@ -27,5 +25,6 @@ private:
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
-	void MaterialVariables(MeshRendererComponent* material, int i);
+	void DragAndDropSource(Component* component);
+	void DragAndDropTarget(GameObject* object, Component* target);
 };

@@ -18,15 +18,17 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
-	bool IsPanelOpen(const char* name) { return mPanels[name]; }
+	Panel* GetPanel(const char* name) { return mPanels[name]; }
 
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
+	
 
 private:
-	ImGuiIO* io;
-
+	ImGuiIO* io = nullptr;
+	bool loadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
+	void OpenLoadScene();
 };
 
 #endif /* _MODULE_EDITOR_H_ */
