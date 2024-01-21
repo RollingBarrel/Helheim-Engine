@@ -24,7 +24,7 @@ public:
 	void ResetFloatingPanels(bool openPanels);
 
 private:
-	ImGuiIO* io;
+	ImGuiIO* io = nullptr;
 
 	std::map<const char*, Panel*> mPanels;
 };

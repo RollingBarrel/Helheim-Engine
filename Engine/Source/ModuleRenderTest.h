@@ -4,9 +4,9 @@
 #include "Module.h"
 struct ResourceMesh;
 
-class ModuleRenderTest :
-    public Module
+class ModuleRenderTest : public Module
 {
+	friend class LightningPanel;
 public:
 	ModuleRenderTest();
 	~ModuleRenderTest();
@@ -24,6 +24,7 @@ private:
 	unsigned int programId;
 	unsigned int textureId;
 	unsigned int normTextureId;
+	bool mModified;
 
 	float brightness = 20;
 	float kD = 0.2;

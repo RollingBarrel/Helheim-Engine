@@ -397,7 +397,7 @@ update_status ModuleRenderTest::Update()
 {
 	glUseProgram(programId);
 	glUniform3fv(7, 1, App->GetCamera()->GetPos().ptr());
-	ImGui::Begin("Lighting");
+	/*ImGui::Begin("Lighting");
 	if (ImGui::DragFloat("KD", &kD, 0.05f, 0.0f, 1.0f))
 		glUniform1f(8, kD);
 	if (ImGui::DragFloat("Brightness", &brightness, 0.05f, 0.0f))
@@ -409,6 +409,17 @@ update_status ModuleRenderTest::Update()
 	if (ImGui::ColorPicker3("AmbientCol", ambientCol))
 		glUniform3fv(6, 1, ambientCol);
 	ImGui::End();
+	*/
+	if (mModified) 
+	{
+		glUniform1f(8, kD);
+		glUniform1f(10, brightness);
+		glUniform3fv(4, 1, lightDir);
+		glUniform3fv(5, 1, lightCol);
+		glUniform3fv(6, 1, ambientCol);
+
+		mModified = false;
+	}
 
 	//App->GetOpenGL()->BindSceneFramebuffer();
 	//glBindVertexArray(rMesh->GetVao());

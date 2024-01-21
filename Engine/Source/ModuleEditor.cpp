@@ -18,6 +18,7 @@
 #include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LoadScenePanel.h"
+#include "LightningPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -36,6 +37,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LOADSCENEPANEL] = new LoadScenePanel();
+	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -244,6 +246,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* loadScenePanel = mPanels[LOADSCENEPANEL];
+	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
 
 	if (openPanels == true) {
 		console->Open();
@@ -255,6 +258,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		quadTree->Open();
 		projectPanel->Open();
 		loadScenePanel->Open();
+		lightningPanel->Open();
 	}
 	else {
 		console->Close();
@@ -266,5 +270,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		quadTree->Close();
 		projectPanel->Close();
 		loadScenePanel->Close();
+		lightningPanel->Close();
 	}
 }
