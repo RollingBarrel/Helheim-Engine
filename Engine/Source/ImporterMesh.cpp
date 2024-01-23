@@ -143,9 +143,6 @@ float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedB
 
 void ResourceMesh::GenerateTangents()
 {
-    //assert(AttributeIdx(Attribute::POS) >= 0 && "No positions to generate tangents");
-    //assert(AttributeIdx(Attribute::UV) >= 0 && "No texture coords to generate tangents");
-    //assert(AttributeIdx(Attribute::NORMAL) >= 0 && "No normals to generate tangents");
     if (GetAttributeIdx(Attribute::POS) < 0 || GetAttributeIdx(Attribute::UV) < 0 || GetAttributeIdx(Attribute::NORMAL) < 0)
         return;
 
@@ -158,16 +155,6 @@ void ResourceMesh::GenerateTangents()
         memcpy(&unweldedVertices[i * GetVertexSize()], &vertices[indices[i] * GetVertexSize()], GetVertexSize());
     }
     
-    //LOG(".....................................................");
-    //for (int i = 0; i < mNumIndices; ++i)
-    //{
-    //    const float* vert = &reinterpret_cast<const float*>(unweldedVertices)[i * 8];
-    //    LOG("\np:%f %f %f\ntc:%f %f\nn:%f %f %f",
-    //        vert[0], vert[1], vert[2],
-    //        vert[3], vert[4],
-    //        vert[5], vert[6],vert[7]);
-    //}
-
     SMikkTSpaceInterface interfaceInput = {};
     interfaceInput.m_getNumFaces = GetNumFaces;
     interfaceInput.m_getNumVerticesOfFace = GetNumVerticesOfFace;
@@ -197,16 +184,6 @@ void ResourceMesh::GenerateTangents()
     delete[] unweldedTVertices;
     delete[] unweldedVertices;
     
-    LOG(".....................................................");
-    for (int i = 0; i < uniqueVertices; ++i)
-    {
-        const float* vert = &reinterpret_cast<const float*>(pfVertexDataOut)[i * 12];
-        LOG("\ni:%d\np:%f %f %f\ntc:%f %f\nn:%f %f %f\nt:%f %f %f %f",
-            i, vert[0], vert[1], vert[2],
-            vert[3], vert[4],
-            vert[5], vert[6], vert[7],
-            vert[8], vert[9], vert[10], vert[11]);
-    }
     CleanUp();
     mNumVertices = uniqueVertices;
     mNumIndices = mikkInput.numVertices;

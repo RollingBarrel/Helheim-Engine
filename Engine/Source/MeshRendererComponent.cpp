@@ -57,10 +57,10 @@ void MeshRendererComponent::Draw()
 	glBindVertexArray(mMesh->GetVao());
 	//TODO: Put all this with imgui
 	//Dont update uniforms it every frame
-	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
+	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->mDiffuseFactor.xyz()[0]);
 	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
 	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->GetGlossinessFactor());
-	if (mMaterial->GetEnableDiffuseTexture() && mMaterial->GetDiffuseMap() != nullptr)
+	if (mMaterial->mEnableDiffuseTexture && mMaterial->GetDiffuseMap() != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 1);
 		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
@@ -72,7 +72,7 @@ void MeshRendererComponent::Draw()
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
 	}
 
-	if (mMaterial->GetEnableSpecularGlossinessTexture() && mMaterial->GetSpecularMap() != nullptr)
+	if (mMaterial->mEnableSpecularGlossinessTexture && mMaterial->GetSpecularMap() != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 1);
 		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
@@ -85,7 +85,7 @@ void MeshRendererComponent::Draw()
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 0);
 	}
 
-	if (mMaterial->GetEnableNormalMap() && mMaterial->GetNormalMap() != nullptr)
+	if (mMaterial->mEnableNormalMap && mMaterial->GetNormalMap() != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 1);
 		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
@@ -98,7 +98,7 @@ void MeshRendererComponent::Draw()
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 0);
 	}
 
-	if (mMaterial->GetEnableShinessMap())
+	if (mMaterial->mEnableShinessMap)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
 	}

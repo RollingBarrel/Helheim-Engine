@@ -297,19 +297,10 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
 
-	bool hasDiffuse = material->GetEnableDiffuseTexture();
-	bool hasSpecular = material->GetEnableSpecularGlossinessTexture();
-	bool hasShininess = material->GetEnableShinessMap();
-
-	ImGui::Checkbox("Enable Diffuse map", &hasDiffuse);
-	ImGui::Checkbox("Enable Specular map", &hasSpecular);
-	ImGui::Checkbox("Enable Shininess map", &hasShininess);
-
-	material->SetEnableDiffuseTexture((int)hasDiffuse);
-	material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
-	material->SetEnableShinessMap((int)hasShininess);
-
-	//ImGui::Text(" ");
+	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
+	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
+	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
+	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
 
 
 	if (ImGui::BeginTable("materialTable", 4))
@@ -319,7 +310,8 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		float3 specular = material->GetSpecularFactor();
 		float shininess = material->GetGlossinessFactor();
 
-		if (!hasDiffuse) {
+		if (!material->mEnableDiffuseTexture) {
+			//ImGui::ColorPicker4("diff", material->mDiffuseFactor.ptr());
 			ImGui::TableNextRow();
 			ImGui::PushID("diff");
 			ImGui::TableNextColumn();
@@ -358,7 +350,7 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 			ImGui::PopID();
 		}
 
-		if (!hasSpecular) {
+		if (!material->mEnableSpecularGlossinessTexture) {
 			ImGui::TableNextRow();
 			ImGui::PushID("spec");
 			ImGui::TableNextColumn();
@@ -394,7 +386,7 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 			}
 			ImGui::PopID();
 		}
-		if (!hasShininess) {
+		if (!material->mEnableShinessMap) {
 			ImGui::TableNextRow();
 			ImGui::PushID("shiny");
 			ImGui::TableNextColumn();
