@@ -17,17 +17,6 @@ struct ResourceMaterial
 {
 public:
     ~ResourceMaterial() { delete mDiffuseTexture; delete mSpecularGlossinessTexture; delete mNormalTexture;  }
-    ResourceTexture* GetDiffuseMap() const { return mDiffuseTexture; };
-    ResourceTexture* GetSpecularMap()const { return mSpecularGlossinessTexture; };
-    ResourceTexture* GetNormalMap()const { return mNormalTexture; };
-    float4 GetDiffuseFactor()const { return mDiffuseFactor; };
-    float3 GetSpecularFactor()const { return mSpecularFactor; };
-    float GetGlossinessFactor()const { return mGlossinessFactor; };
-
-
-    void SetDiffuseFactor(const float4& diffuseFactor) { mDiffuseFactor = diffuseFactor; }
-    void SetSpecularFactor(const float3& specularFactor) { mSpecularFactor = specularFactor; }
-    void SetGlossinessFactor(float glossinessFactor) { mGlossinessFactor = glossinessFactor; }
 
     float4 mDiffuseFactor;
     float3 mSpecularFactor;
