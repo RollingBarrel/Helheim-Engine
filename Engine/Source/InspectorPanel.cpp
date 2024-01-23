@@ -297,124 +297,21 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
 
-	bool hasDiffuse = material->GetEnableDiffuseTexture();
-	bool hasSpecular = material->GetEnableSpecularGlossinessTexture();
-	bool hasShininess = material->GetEnableShinessMap();
+	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
+	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
+	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
+	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
 
-	ImGui::Checkbox("Enable Diffuse map", &hasDiffuse);
-	ImGui::Checkbox("Enable Specular map", &hasSpecular);
-	ImGui::Checkbox("Enable Shininess map", &hasShininess);
-
-	material->SetEnableDiffuseTexture((int)hasDiffuse);
-	material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
-	material->SetEnableShinessMap((int)hasShininess);
-
-	//ImGui::Text(" ");
-
-
-	if (ImGui::BeginTable("materialTable", 4))
+	if (!material->mEnableDiffuseTexture)
 	{
-
-		float4 diffuse = material->GetDiffuseFactor();
-		float3 specular = material->GetSpecularFactor();
-		float shininess = material->GetGlossinessFactor();
-
-		if (!hasDiffuse) {
-			ImGui::TableNextRow();
-			ImGui::PushID("diff");
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Diffuse");
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("X");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##X", &diffuse.x, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Y");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Y", &diffuse.y, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Z");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Z", &diffuse.z, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
-			}
-			ImGui::PopID();
-		}
-
-		if (!hasSpecular) {
-			ImGui::TableNextRow();
-			ImGui::PushID("spec");
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Specular");
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("X");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##X", &specular.x, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Y");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Y", &specular.y, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Z");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Z", &specular.z, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
-			}
-			ImGui::PopID();
-		}
-		if (!hasShininess) {
-			ImGui::TableNextRow();
-			ImGui::PushID("shiny");
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Shininess");
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text(" ");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##S", &shininess, 0.05f, 0.0f, 10000.0f, "%.2f"))
-			{
-				material->SetGlossinessFactor(shininess);
-			}
-
-			ImGui::PopID();
-		}
+		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
 	}
-	ImGui::EndTable();
-
-	
+	if (!material->mEnableSpecularGlossinessTexture)
+	{
+		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
+	}
+	if (!material->mEnableShinessMap)
+	{
+		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
+	}
 }

@@ -123,21 +123,26 @@ void ResourceMesh::AddAttribute(const Attribute& attribute, float* attributeData
 
 float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize)
 {
-    float* ret = new float[(bufferSize / vertexSize) / sizeof(float)];
-    int j = 0;
-    for (int i = 0; i < bufferSize; i += vertexSize)
+    unsigned int numVertices = (bufferSize / vertexSize);
+    unsigned int attributeNumFloats = (attr.size / sizeof(float));
+    float* ret = new float[numVertices* attributeNumFloats];
+    unsigned int floatOffset = attr.offset / sizeof(float);
+    unsigned int j = 0;
+    for (int i = 0; i < numVertices; ++i)
     {
-        memcpy(&ret[j], &interleavedBuffer[i + attr.offset], attr.size);
-        j += attr.size / sizeof(float);
+        const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize/sizeof(float) + floatOffset];
+        for (unsigned int j = 0; j < attributeNumFloats; ++j)
+        {
+            ret[i * attributeNumFloats + j] = vert[j];
+            LOG("%f", ret[i * attributeNumFloats + j]);
+        }
+
     }
     return ret;
 }
 
 void ResourceMesh::GenerateTangents()
 {
-    //assert(AttributeIdx(Attribute::POS) >= 0 && "No positions to generate tangents");
-    //assert(AttributeIdx(Attribute::UV) >= 0 && "No texture coords to generate tangents");
-    //assert(AttributeIdx(Attribute::NORMAL) >= 0 && "No normals to generate tangents");
     if (GetAttributeIdx(Attribute::POS) < 0 || GetAttributeIdx(Attribute::UV) < 0 || GetAttributeIdx(Attribute::NORMAL) < 0)
         return;
 
@@ -165,7 +170,7 @@ void ResourceMesh::GenerateTangents()
     mikkInput.vertexSize = 8 * sizeof(float);
     mikkInput.vertices = unweldedVertices;
     //Les mikktangents son vec4
-    char* unweldedTVertices = new char[mNumIndices * (GetVertexSize() + 4 * sizeof(float))];
+    char* unweldedTVertices = new char[mNumIndices * (mVertexSize + 4 * sizeof(float))];
     mikkInput.tVertices = unweldedTVertices;
     SMikkTSpaceContext tangContext = {};
     tangContext.m_pInterface = &interfaceInput;
@@ -183,13 +188,13 @@ void ResourceMesh::GenerateTangents()
     mNumVertices = uniqueVertices;
     mNumIndices = mikkInput.numVertices;
     Attribute newAttribute = Attribute(Attribute::POS, sizeof(float) * 3, 0);
-    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12* sizeof(float), 12*sizeof(float)));
+    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, uniqueVertices * 12* sizeof(float), 12 * sizeof(float)));
     newAttribute = Attribute(Attribute::UV, sizeof(float) * 2, sizeof(float) * 3);
-    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
     newAttribute = Attribute(Attribute::NORMAL, sizeof(float) * 3, sizeof(float) * 5);
-    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
     newAttribute = Attribute(Attribute::TANGENT, sizeof(float) * 4, sizeof(float) * 8);
-    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, mikkInput.numVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    AddAttribute(newAttribute, GetAttributeDataFromInterleavedBuffer(newAttribute, pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
 
     mNumIndices = mikkInput.numVertices;
     mIndices = reinterpret_cast<unsigned int*>(piRemapTable);
@@ -205,18 +210,26 @@ void ResourceMesh::CleanUp()
         delete[] mIndices;
         mIndices = nullptr;
     }
-    for (std::vector<float*>::iterator it = mAttributesData.begin(); it != mAttributesData.end(); ++it)
-    {
-        delete[] *it;
-    }
     for (std::vector<Attribute*>::iterator it = mAttributes.begin(); it != mAttributes.end(); ++it)
     {
-        delete *it;
+        if (*it != nullptr)
+        {
+            delete* it;
+            *it = nullptr;
+        }
     }
+    mAttributes.clear();
+    for (std::vector<float*>::iterator it = mAttributesData.begin(); it != mAttributesData.end(); ++it)
+    {
+        if (*it != nullptr)
+        {
+            delete[] * it;
+            *it = nullptr;
+        }
+    }
+    mAttributesData.clear();
 
     //TODO: delete EBO/VBO...
-    mAttributes.clear();
-    mAttributesData.clear();
     UnloadFromMemory();
 }
 
@@ -263,7 +276,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferPos += sizeof(float) * 3;
             }
 
-            LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
+            //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
 
     }
@@ -296,7 +309,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferTexCoord += sizeof(float) * 2;
             }
 
-            LOG("%f %f", reinterpret_cast<float2*>(data)[i].x, reinterpret_cast<float2*>(data)[i].y);
+            //LOG("%f %f", reinterpret_cast<float2*>(data)[i].x, reinterpret_cast<float2*>(data)[i].y);
         }
     }
 
@@ -328,7 +341,7 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferNorm += sizeof(float) * 3;
             }
 
-            LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
+            //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
 
     }
@@ -397,13 +410,13 @@ void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primit
                 bufferTang += sizeof(float) * 4;
             }
 
-            LOG("%f %f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z, reinterpret_cast<float4*>(data)[i].w);
+            //LOG("%f %f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z, reinterpret_cast<float4*>(data)[i].w);
         }
     }
     else
     {
         //Generate Tangents
-        //mesh->GenerateTangents();
+        mesh->GenerateTangents();
     }
 
     Mesh::Save(mesh);
