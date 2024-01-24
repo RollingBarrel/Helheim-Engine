@@ -17,7 +17,7 @@ layout(std140, binding = 0) uniform CameraMatrices{
 
 out VertToFrag {
 	vec2 uv;
-	vec3 tLightDir;
+	flat vec3 tLightDir;
 	vec3 tPos;
 	flat vec3 tCameraPos;
 	vec3 tNorm;
