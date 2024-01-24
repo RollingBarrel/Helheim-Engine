@@ -19,7 +19,7 @@ out VertToFrag {
 	vec2 uv;
 	vec3 tLightDir;
 	vec3 tPos;
-	vec3 tCameraPos;
+	flat vec3 tCameraPos;
 	vec3 tNorm;
 };
 
