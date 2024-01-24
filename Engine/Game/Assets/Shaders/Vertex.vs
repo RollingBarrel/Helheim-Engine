@@ -21,8 +21,8 @@ layout (location = 7)uniform vec3 cPos;
 out VertToFrag {
 	vec2 uv;
 	vec3 lightDir;
-	flat vec3 tangentFragPos;
-	flat vec3 tangentCameraPos;
+	vec3 tangentFragPos;
+	vec3 tangentCameraPos;
 };
 
 void main()
