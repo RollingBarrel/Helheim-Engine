@@ -5,8 +5,8 @@
 in VertToFrag{
 	vec2 uv;
 	vec3 lightDir;
-	vec3 tangentFragPos;
-	vec3 tangentCameraPos;
+	flat vec3 tangentFragPos;
+	flat vec3 tangentCameraPos;
 };
 
 layout (location = 3) uniform sampler2D theSampler;
