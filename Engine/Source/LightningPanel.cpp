@@ -1,33 +1,36 @@
 #include "LightningPanel.h"
 #include "Application.h"
 #include "ModuleProgram.h"
+#include "ModuleOpenGL.h"
 #include "imgui.h"
+#include "glew.h"
 
 
 LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
-	ModuleProgram* program = App->GetProgram();
+	ModuleOpenGL* mOpenGl = App->GetOpenGL();
 
+	glUseProgram(App->GetProgram()->GetPBRProgramId());
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	
-
-	if (ImGui::DragFloat("LightIntensity", &program->mLightIntensity, 0.05f, 0.0f))
+	if (ImGui::DragFloat("LightIntensity", &mOpenGl->mLightIntensity, 0.05f, 0.0f))
 	{
-		program->mModified = true;
+		glUniform1f(5, mOpenGl->mLightIntensity);
 	}
-	if (ImGui::DragFloat3("LightDir", program->mLightDir, 0.05f, -1.0f, 1.0f))
+	if (ImGui::DragFloat3("LightDir", mOpenGl->mLightDir, 0.05f, -1.0f, 1.0f))
 	{ 
-		program->mModified = true;
+		glUniform3fv(1, 1, mOpenGl->mLightDir);
 	}
-	if (ImGui::ColorPicker3("LightCol", program->mLightCol))
+	if (ImGui::ColorPicker3("LightCol", mOpenGl->mLightCol))
 	{ 
-		program->mModified = true;
+		glUniform3fv(3, 1, mOpenGl->mLightCol);
 	}
-	if (ImGui::ColorPicker3("AmbientCol", program->mAmbientCol))
+	if (ImGui::ColorPicker3("AmbientCol", mOpenGl->mAmbientCol))
 	{ 
-		program->mModified = true;
+		glUniform3fv(4, 1, mOpenGl->mAmbientCol);
 	}	
 	ImGui::End();
+	glUseProgram(0);
 }

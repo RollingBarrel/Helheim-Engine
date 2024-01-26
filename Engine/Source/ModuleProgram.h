@@ -6,7 +6,6 @@
 
 class ModuleProgram : public Module
 {
-friend class LightningPanel;
 public:
 
 	ModuleProgram();
@@ -15,7 +14,6 @@ public:
 	~ModuleProgram();
 
 	bool Init() override;
-	update_status Update() override;
 	bool CleanUp() override;
 
 	const std::unordered_map<std::string, unsigned>& GetPrograms() const { return mPrograms; }
@@ -39,11 +37,5 @@ private:
 	const char* mFragmentShader = "PBR_PixelShader.glsl";
 	
 	//Temporary to do a render for the delivery
-	bool mModified;
 	unsigned int mPbrProgramId = 0;
-
-	float mLightIntensity = 1.2f;
-	float mLightDir[3] = { 0.0f, -1.0f, -1.0f };
-	float mLightCol[3] = { 1.f, 1.f, 1.f };
-	float mAmbientCol[3] = { 0.3f, 0.4f, 0.6f };
 };

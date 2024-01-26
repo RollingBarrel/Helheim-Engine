@@ -25,14 +25,22 @@ public:
 	unsigned int GetFramebufferTexture() const { return colorAttachment; }
 	void BindSceneFramebuffer();
 	void UnbindSceneFramebuffer();
+	void* GetOpenGlContext() { return context; }
 
-public:
+private:
 
 	void* context = nullptr;
 
 	unsigned int sFbo;
 	unsigned int colorAttachment;
 	unsigned int depthStencil;
+
+	//Lighting uniforms
+	float mLightIntensity = 1.2f;
+	float mLightDir[3] = { 0.0f, -1.0f, -1.0f };
+	float mLightCol[3] = { 1.f, 1.f, 1.f };
+	float mAmbientCol[3] = { 0.3f, 0.4f, 0.6f };
+	friend class LightningPanel;
 };
 
 #endif /* _MODULEOPENGL_H_ */

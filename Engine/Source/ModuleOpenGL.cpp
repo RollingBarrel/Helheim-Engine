@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "glew.h"
 #include "ModuleCamera.h"
+#include "ModuleProgram.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -110,6 +111,15 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//Lighting uniforms
+	glUseProgram(App->GetProgram()->GetPBRProgramId());
+	glUniform3fv(1, 1, mLightDir);
+	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
+	glUniform3fv(3, 1, mLightCol);
+	glUniform3fv(4, 1, mAmbientCol);
+	glUniform1f(5, mLightIntensity);
+	glUseProgram(0);
 
 	return true;
 }

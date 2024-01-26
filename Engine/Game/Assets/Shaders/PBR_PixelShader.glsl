@@ -73,7 +73,7 @@ void main() {
 		vec3 B = tang.w * cross(N, T);
 		mat3 TBN = mat3(T,B,N);
 		N = normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
-		N = TBN * N;
+		N = normalize(TBN * N);
 	}
 	else{
 		N = normalize(norm);  	//Normal

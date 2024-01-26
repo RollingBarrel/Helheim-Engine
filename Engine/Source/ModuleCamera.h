@@ -25,6 +25,8 @@ public:
 
 	const Frustum& GetFrustum() const { return frustum; }
 private:
+	void SetOpenGlCameraUniforms() const;
+
 	Frustum frustum;
 	unsigned int cameraUnis = 0;
 };
