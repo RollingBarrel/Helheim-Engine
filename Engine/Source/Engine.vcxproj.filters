@@ -204,11 +204,9 @@
     <ClCompile Include="LightningPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleSkybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -609,11 +607,9 @@
     <ClInclude Include="LightningPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleSkybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

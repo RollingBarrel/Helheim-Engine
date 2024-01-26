@@ -5,8 +5,7 @@
 #include "ModuleInput.h"
 #include "ScenePanel.h"
 #include "ModuleEditor.h"
-#include "glew.h"
-#include "ModuleProgram.h"
+#include "ModuleOpenGL.h"
 
 #include "imgui.h"
 
@@ -20,11 +19,7 @@ bool ModuleCamera::Init()
 	int h = App->GetWindow()->GetHeight();
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)w / (float)h);
 	LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY);
-	glGenBuffers(1, &cameraUnis);
-	glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * 16 * 2, NULL, GL_STATIC_DRAW);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, cameraUnis);
-	//glBindBufferRange(GL_UNIFORM_BUFFER, 2, uboExampleBlock, 0, sizeof(float)*16*2);
+
 	return true;
 }
 
@@ -113,7 +108,7 @@ void ModuleCamera::Rotate(const float3& axis, float angleRad)
 	frustum.up = rotationMatrix.Mul(frustum.up);
 	frustum.front = rotationMatrix.Mul(frustum.front);
 
-	SetOpenGlCameraUniforms();
+	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
 
 void ModuleCamera::Transform(float3 vec)
@@ -124,7 +119,7 @@ void ModuleCamera::Transform(float3 vec)
 	world.SetTranslatePart(world.TranslatePart() + newTrans);
 	frustum.SetWorldMatrix(world);
 
-	SetOpenGlCameraUniforms();
+	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
 
 
@@ -140,22 +135,5 @@ void ModuleCamera::LookAt(float3 eyePos, float3 targetPos, float3 upVector) {
 	frustum.front = forward;
 	frustum.up = up;
 
-	SetOpenGlCameraUniforms();
-}
-
-void ModuleCamera::SetOpenGlCameraUniforms() const
-{
-	glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, GetViewMatrix().Transposed().ptr());
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, GetProjectionMatrix().Transposed().ptr());
-
-	glUseProgram(App->GetProgram()->GetPBRProgramId());
-	glUniform3fv(2, 1, frustum.pos.ptr());
-	glUseProgram(0);
-}
-
-bool ModuleCamera::CleanUp()
-{
-	glDeleteBuffers(1, &cameraUnis);
-	return true;
+	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }

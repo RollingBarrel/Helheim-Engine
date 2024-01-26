@@ -8,7 +8,6 @@
 #include "Quadtree.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
-#include "ModuleProgram.h"
 
 
 
@@ -51,7 +50,7 @@ void MeshRendererComponent::Draw()
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 
-	unsigned int program = App->GetProgram()->GetPBRProgramId();
+	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
 	glUseProgram(program);
 	glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
 	glBindVertexArray(mMesh->GetVao());

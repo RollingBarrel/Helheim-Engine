@@ -2,7 +2,6 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
 #include "GameObject.h"
@@ -280,10 +279,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
-
-	ImGui::SeparatorText("Shaders ");
-	ImGui::Text("Vertex: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetVertexShader());
-	ImGui::Text("Fragment: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetFragmentShader());
 
 	ImGui::Text(" ");
 	bool shouldDraw = component->ShouldDraw();

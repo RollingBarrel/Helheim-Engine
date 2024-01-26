@@ -25,15 +25,37 @@ public:
 	unsigned int GetFramebufferTexture() const { return colorAttachment; }
 	void BindSceneFramebuffer();
 	void UnbindSceneFramebuffer();
+	void SetOpenGlCameraUniforms() const;
 	void* GetOpenGlContext() { return context; }
 
-private:
+	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
+	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
+private:
 	void* context = nullptr;
 
+	//Framebuffer
 	unsigned int sFbo;
 	unsigned int colorAttachment;
 	unsigned int depthStencil;
+
+	//Camera
+	unsigned int cameraUnis;
+
+	//Skybox
+	void InitSkybox();
+	unsigned int mSkyBoxTexture = 0;
+	unsigned int mSkyVao = 0;
+	unsigned int mSkyVbo = 0;
+
+	//Programs
+	char* LoadShaderSource(const char* shaderFileName) const;
+	unsigned CompileShader(unsigned type, const char* source) const;
+	unsigned CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const;
+	unsigned CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
+	unsigned int mPbrProgramId = 0;
+	unsigned int mSkyBoxProgramId = 0;
+
 
 	//Lighting uniforms
 	float mLightIntensity = 1.2f;

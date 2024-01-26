@@ -1,6 +1,5 @@
 #include "LightningPanel.h"
 #include "Application.h"
-#include "ModuleProgram.h"
 #include "ModuleOpenGL.h"
 #include "imgui.h"
 #include "glew.h"
@@ -12,7 +11,7 @@ void LightningPanel::Draw(int windowFlags)
 {
 	ModuleOpenGL* mOpenGl = App->GetOpenGL();
 
-	glUseProgram(App->GetProgram()->GetPBRProgramId());
+	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	
 	if (ImGui::DragFloat("LightIntensity", &mOpenGl->mLightIntensity, 0.05f, 0.0f))

@@ -11,7 +11,6 @@ class ModuleCamera : public Module
 public:
 	bool Init() override;
 	update_status Update() override;
-	bool CleanUp() override;
 
 	void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
 	void Transform(float3 vec);
@@ -24,9 +23,8 @@ public:
 	void WindowResized(int w, int h);
 
 	const Frustum& GetFrustum() const { return frustum; }
-private:
-	void SetOpenGlCameraUniforms() const;
 
+private:
 	Frustum frustum;
 	unsigned int cameraUnis = 0;
 };

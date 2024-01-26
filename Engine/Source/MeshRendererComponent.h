@@ -33,13 +33,6 @@ public:
 
 	const ResourceMaterial* GetMaterial() const { return mMaterial; }
 
-	//UNIFORMS
-	float lightDir[3] = { 0.0f, -1.0f, 1.0f };
-	float lightColor[3] = { 0.0f, 0.0f, 0.7f };
-	float lightIntensity = 10.0f;
-
-	float ambientColor[3] = {0.5f, 0.5f, 0.5f};
-
 private:
 	ResourceMesh* mMesh;
 	ResourceMaterial* mMaterial;
