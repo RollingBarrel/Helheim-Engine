@@ -130,12 +130,15 @@ bool ModuleOpenGL::Init()
 	//Lighting uniforms
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
 	glUseProgram(program);
-	glUniform3fv(1, 1, mLightDir);
-	glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
-	glUniform3fv(3, 1, mLightCol);
-	glUniform3fv(4, 1, mAmbientCol);
-	glUniform1f(5, mLightIntensity);
+	glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
 	glUseProgram(0);
+	glGenBuffers(1, &lightUnis);
+	glBindBuffer(GL_UNIFORM_BUFFER, lightUnis);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(mDirDir) + sizeof(mDirCol) + sizeof(mAmbientCol), nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mDirDir), mDirDir);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mDirDir), sizeof(mDirCol), mDirCol);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mDirDir) + sizeof(mDirCol), sizeof(mAmbientCol), mAmbientCol);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightUnis);
 
 	return true;
 }
@@ -188,6 +191,7 @@ bool ModuleOpenGL::CleanUp()
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteBuffers(1, &mSkyVbo);
 	glDeleteBuffers(1, &cameraUnis);
+	glDeleteBuffers(1, &lightUnis);
 	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
@@ -226,7 +230,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, App->GetCamera()->GetProjectionMatrix().Transposed().ptr());
 
 		glUseProgram(App->GetOpenGL()->GetPBRProgramId());
-		glUniform3fv(2, 1, App->GetCamera()->GetPos().ptr());
+		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
 		glUseProgram(0);
 	}
 }

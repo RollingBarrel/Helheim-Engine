@@ -28,13 +28,14 @@ in VertToFrag {
 	vec4 tang;
 };
 
+layout(std140, binding = 1) uniform DirAmbientLights {
+	vec3 dirDir;
+	vec4 dirCol; //w is the intensity (0-5)
+	vec3 ambientCol;
+};
 
 //Light properties
-layout (location = 1)uniform vec3 lDir;
-layout (location = 2)uniform vec3 cPos;
-layout (location = 3) uniform vec3 lightColor;
-layout (location = 4) uniform vec3 ambientColor;
-layout (location = 5) uniform float lightIntensity;//0-5
+layout (location = 1)uniform vec3 cPos;
 
 uniform Material material;
 
@@ -78,7 +79,7 @@ void main() {
 	else{
 		N = normalize(norm);  	//Normal
 	}
-	vec3 L =  -normalize(lDir); 	//Light direction
+	vec3 L =  -normalize(dirDir); 	//Light direction
 	float NdotL = max(dot(N,L),0);	//It doesn't make sense for color to be negative
 	
 	vec3 R = reflect(L,N);
@@ -87,7 +88,7 @@ void main() {
 	
 	vec3 RFOi = specularColor + (1-specularColor) * pow(1-NdotL,5);
 	
-	vec3 Li = lightIntensity * lightColor;  //Incoming radiance
+	vec3 Li = dirCol.w * dirCol.rgb;  //Incoming radiance
 	
 	//Color with specular and no pi division
 	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
@@ -96,7 +97,7 @@ void main() {
 	vec3 pbrColor = ((diffuseColor*(1-specularColor))/pi + ((shininess+2)/2*pi)* RFOi * VdotRpown) * Li * NdotL;
 	
 	//Final color  
-	vec3 color = ambientColor * diffuseColor + pbrColor;
+	vec3 color = ambientCol * diffuseColor + pbrColor;
 	
 	//Gamma correction
 	color.rgb = pow(color.rgb, vec3(1/2.2));

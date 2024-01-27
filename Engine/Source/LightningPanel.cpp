@@ -9,26 +9,30 @@ LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
-	ModuleOpenGL* mOpenGl = App->GetOpenGL();
+	ModuleOpenGL* openGl = App->GetOpenGL();
 
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	
-	if (ImGui::DragFloat("LightIntensity", &mOpenGl->mLightIntensity, 0.05f, 0.0f))
+	if (ImGui::DragFloat("LightIntensity", &openGl->mDirCol[3], 0.05f, 0.0f, 5.0f))
 	{
-		glUniform1f(5, mOpenGl->mLightIntensity);
+		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(openGl->mDirDir) + sizeof(float) * 3, sizeof(float), &openGl->mDirCol[3]);
 	}
-	if (ImGui::DragFloat3("LightDir", mOpenGl->mLightDir, 0.05f, -1.0f, 1.0f))
+	if (ImGui::DragFloat3("LightDir", openGl->mDirDir, 0.05f, -1.0f, 1.0f))
 	{ 
-		glUniform3fv(1, 1, mOpenGl->mLightDir);
+		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 3, App->GetOpenGL()->mDirDir);
 	}
-	if (ImGui::ColorPicker3("LightCol", mOpenGl->mLightCol))
+	if (ImGui::ColorPicker3("LightCol", openGl->mDirCol))
 	{ 
-		glUniform3fv(3, 1, mOpenGl->mLightCol);
+		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 3, openGl->mDirCol);
 	}
-	if (ImGui::ColorPicker3("AmbientCol", mOpenGl->mAmbientCol))
+	if (ImGui::ColorPicker3("AmbientCol", openGl->mAmbientCol))
 	{ 
-		glUniform3fv(4, 1, mOpenGl->mAmbientCol);
+		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 3, openGl->mAmbientCol);
 	}	
 	ImGui::End();
 	glUseProgram(0);

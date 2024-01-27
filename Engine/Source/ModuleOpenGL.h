@@ -40,7 +40,7 @@ private:
 	unsigned int depthStencil;
 
 	//Camera
-	unsigned int cameraUnis;
+	unsigned int cameraUnis = 0;
 
 	//Skybox
 	void InitSkybox();
@@ -58,10 +58,10 @@ private:
 
 
 	//Lighting uniforms
-	float mLightIntensity = 1.2f;
-	float mLightDir[3] = { 0.0f, -1.0f, -1.0f };
-	float mLightCol[3] = { 1.f, 1.f, 1.f };
-	float mAmbientCol[3] = { 0.3f, 0.4f, 0.6f };
+	unsigned int lightUnis = 0;
+	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f}; //4th parameter is padding
+	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //4th parameter is the intensity
+	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //4th parameter is padding
 	friend class LightningPanel;
 };
 
