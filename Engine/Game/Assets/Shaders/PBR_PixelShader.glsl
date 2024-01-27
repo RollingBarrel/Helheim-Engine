@@ -28,14 +28,22 @@ in VertToFrag {
 	vec4 tang;
 };
 
+//Light properties
 layout(std140, binding = 1) uniform DirAmbientLights {
 	vec3 dirDir;
 	vec4 dirCol; //w is the intensity (0-5)
 	vec3 ambientCol;
 };
-
-//Light properties
 layout (location = 1)uniform vec3 cPos;
+struct PointLight{
+	vec4 pos; //w is the radius
+	vec4 col;//a is intensity
+};
+readonly layout(std430) buffer PointLights
+{
+	uint numPLights;
+	PointLight pLigiths[];
+};
 
 uniform Material material;
 

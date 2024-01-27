@@ -62,6 +62,7 @@ private:
 	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f}; //4th parameter is padding
 	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //4th parameter is the intensity
 	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //4th parameter is padding
+	unsigned int mPointSSBO = 0;
 	friend class LightningPanel;
 };
 

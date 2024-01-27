@@ -140,6 +140,10 @@ bool ModuleOpenGL::Init()
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mDirDir) + sizeof(mDirCol), sizeof(mAmbientCol), mAmbientCol);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightUnis);
 
+	glGenBuffers(1, &mPointSSBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, mPointSSBO, nullptr, GL_STATIC_DRAW);
+
 	return true;
 }
 
