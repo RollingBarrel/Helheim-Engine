@@ -409,3 +409,4 @@ unsigned ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath
 	free(fragmentSource);
 	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
 }
+

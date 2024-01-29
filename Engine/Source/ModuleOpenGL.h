@@ -4,18 +4,14 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
-#include <vector>
+#include "LightSourceComponent.h"
+#include <list>
 
 typedef struct DirectionalAmbient {
 	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
 	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity
 	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
 }DirectionalAmbient;
-
-typedef struct PointLight {
-	float pos[4]; //w is radius
-	float col[4]; //w is Intensity
-}PointLight;
 
 
 struct SDL_Texture;
@@ -43,6 +39,10 @@ public:
 
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
+
+	void AddPointLight(const PointLight& pLight, GameObject* go);
+	//void AddPointLight(PointLight&& pLight);
+	void RemovePointLight(std::list<PointLight>::iterator it);
 
 private:
 	void* context = nullptr;
@@ -74,7 +74,7 @@ private:
 	unsigned int lightUnis = 0;
 	DirectionalAmbient mDirAmb;
 	unsigned int mPointSSBO = 0;
-	std::vector<PointLight>mPointLights;
+	std::list<PointLight>mPointLights;
 	friend class LightningPanel;
 };
 
