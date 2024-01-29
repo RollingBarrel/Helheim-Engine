@@ -41,7 +41,6 @@ public:
 	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
 	void AddPointLight(const PointLight& pLight, GameObject* go);
-	//void AddPointLight(PointLight&& pLight);
 	void RemovePointLight(std::list<PointLight>::iterator it);
 
 private:

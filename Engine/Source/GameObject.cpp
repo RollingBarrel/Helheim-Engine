@@ -6,6 +6,7 @@
 #include "InspectorPanel.h"
 #include "Quadtree.h"
 #include "imgui.h"
+#include "LightSourceComponent.h"
 #include <algorithm>
 
 #include "MeshRendererComponent.h"
@@ -272,6 +273,8 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	case ComponentType::MESHRENDERER:
 		newComponent = new MeshRendererComponent(this);
 		break;
+	case ComponentType::LIGHTSOURCE:
+		newComponent = new Li
 	case ComponentType::TEST:
 		newComponent = new TestComponent(this);
 		break;

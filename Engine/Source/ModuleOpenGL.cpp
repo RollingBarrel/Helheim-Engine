@@ -410,3 +410,23 @@ unsigned ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath
 	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
 }
 
+//Ess pot optimitzar el emplace back pasantli els parameters de PointLight ??
+void ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* go)
+{
+	mPointLights.emplace_back(pLight);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+	const unsigned int numPointLights = mPointLights.size();
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(size_t), &numPointLights);
+
+	const unsigned int dataSize = sizeof(size_t) + sizeof(PointLight) * numPointLights;
+	glBindBuffer(GL_COPY_READ_BUFFER, mPointSSBO);
+	unsigned int tmp;
+	glGenBuffers(1, &tmp);
+	glBindBuffer(GL_COPY_WRITE_BUFFER, tmp);
+	glBufferData(GL_COPY_WRITE_BUFFER, dataSize, nullptr, GL_STATIC_DRAW);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, dataSize - sizeof(PointLight));
+	glDeleteBuffers(1, &mPointSSBO);
+	mPointSSBO = tmp;
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
+}
