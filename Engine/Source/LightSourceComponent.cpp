@@ -1,6 +1,6 @@
 #include "LightSourceComponent.h"
 
-LightSourceComponent::LightSourceComponent(GameObject* owner = nullptr, const PointLight& light) : Component(owner, ComponentType::LIGHTSOURCE), mData(&light) {}
+LightSourceComponent::LightSourceComponent(GameObject* owner = nullptr, std::list<PointLight>::iterator light) : Component(owner, ComponentType::LIGHTSOURCE), mData(&light) {}
 
 LightSourceComponent::~LightSourceComponent() {}
 

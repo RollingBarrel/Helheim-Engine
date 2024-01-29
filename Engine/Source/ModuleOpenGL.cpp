@@ -429,4 +429,6 @@ void ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* go)
 	mPointSSBO = tmp;
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
+
+	
 }
