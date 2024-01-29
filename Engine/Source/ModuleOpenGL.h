@@ -4,6 +4,19 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include <vector>
+
+typedef struct DirectionalAmbient {
+	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
+	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity
+	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
+}DirectionalAmbient;
+
+typedef struct PointLight {
+	float pos[4]; //w is radius
+	float col[4]; //w is Intensity
+}PointLight;
+
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -59,10 +72,9 @@ private:
 
 	//Lighting uniforms
 	unsigned int lightUnis = 0;
-	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f}; //4th parameter is padding
-	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //4th parameter is the intensity
-	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //4th parameter is padding
+	DirectionalAmbient mDirAmb;
 	unsigned int mPointSSBO = 0;
+	std::vector<PointLight>mPointLights;
 	friend class LightningPanel;
 };
 

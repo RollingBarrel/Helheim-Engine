@@ -134,16 +134,15 @@ bool ModuleOpenGL::Init()
 	glUseProgram(0);
 	glGenBuffers(1, &lightUnis);
 	glBindBuffer(GL_UNIFORM_BUFFER, lightUnis);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(mDirDir) + sizeof(mDirCol) + sizeof(mAmbientCol), nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mDirDir), mDirDir);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mDirDir), sizeof(mDirCol), mDirCol);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mDirDir) + sizeof(mDirCol), sizeof(mAmbientCol), mAmbientCol);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(mDirAmb), &mDirAmb, GL_STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightUnis);
 
 	glGenBuffers(1, &mPointSSBO);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, mPointSSBO, nullptr, GL_STATIC_DRAW);
-
+	unsigned int nPointLights = mPointLights.size();
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(nPointLights) + sizeof(PointLight) * nPointLights, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(nPointLights), &nPointLights);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
 	return true;
 }
 
