@@ -4,6 +4,15 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "LightSourceComponent.h"
+#include <list>
+
+typedef struct DirectionalAmbient {
+	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
+	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity
+	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
+}DirectionalAmbient;
+
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -25,14 +34,47 @@ public:
 	unsigned int GetFramebufferTexture() const { return colorAttachment; }
 	void BindSceneFramebuffer();
 	void UnbindSceneFramebuffer();
+	void SetOpenGlCameraUniforms() const;
+	void* GetOpenGlContext() { return context; }
 
-public:
+	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
+	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
+	void AddPointLight(const PointLight& pLight, GameObject* go);
+	void RemovePointLight(std::list<PointLight>::iterator it);
+
+private:
 	void* context = nullptr;
 
+	//Framebuffer
 	unsigned int sFbo;
 	unsigned int colorAttachment;
 	unsigned int depthStencil;
+
+	//Camera
+	unsigned int cameraUnis = 0;
+
+	//Skybox
+	void InitSkybox();
+	unsigned int mSkyBoxTexture = 0;
+	unsigned int mSkyVao = 0;
+	unsigned int mSkyVbo = 0;
+
+	//Programs
+	char* LoadShaderSource(const char* shaderFileName) const;
+	unsigned CompileShader(unsigned type, const char* source) const;
+	unsigned CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const;
+	unsigned CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
+	unsigned int mPbrProgramId = 0;
+	unsigned int mSkyBoxProgramId = 0;
+
+
+	//Lighting uniforms
+	unsigned int lightUnis = 0;
+	DirectionalAmbient mDirAmb;
+	unsigned int mPointSSBO = 0;
+	std::list<PointLight>mPointLights;
+	friend class LightningPanel;
 };
 
 #endif /* _MODULEOPENGL_H_ */

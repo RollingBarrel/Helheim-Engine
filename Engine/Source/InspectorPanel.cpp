@@ -2,7 +2,6 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
 #include "GameObject.h"
@@ -150,7 +149,7 @@ void InspectorPanel::ShowSameComponentPopup()
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Text("The component %s can't be added because", mComponent->mName);
+	ImGui::Text("The component %s can't be added because", mComponent->GetNameFromType());
 	ImGui::Text("GameObject already contains the same component.");
 
 	ImGui::Spacing();
@@ -217,7 +216,7 @@ void InspectorPanel::DragAndDropSource(Component* component) {
 	{
 		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
 
-		ImGui::Text(component->mName);
+		ImGui::Text(component->GetNameFromType());
 		ImGui::EndDragDropSource();
 	}
 }
@@ -245,7 +244,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
-		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
@@ -280,10 +279,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
-
-	ImGui::SeparatorText("Shaders ");
-	ImGui::Text("Vertex: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetVertexShader());
-	ImGui::Text("Fragment: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetFragmentShader());
 
 	ImGui::Text(" ");
 	bool shouldDraw = component->ShouldDraw();

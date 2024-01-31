@@ -23,17 +23,27 @@ struct Material
 
 in VertToFrag {
 	vec2 uv;
-	vec3 tLightDir;
-	vec3 tPos;
-	vec3 tCameraPos;
-	vec3 tNorm;
+	vec3 sPos;
+	vec3 norm;
+	vec4 tang;
 };
 
-
 //Light properties
-layout (location = 3) uniform vec3 lightColor;
-layout (location = 4) uniform vec3 ambientColor;
-layout (location = 5) uniform float lightIntensity;//0-5
+layout(std140, binding = 1) uniform DirAmbientLights {
+	vec3 dirDir;
+	vec4 dirCol; //w is the intensity (0-5)
+	vec3 ambientCol;
+};
+layout (location = 1)uniform vec3 cPos;
+struct PointLight{
+	vec4 pos; //w is the radius
+	vec4 col;//a is intensity
+};
+readonly layout(std430) buffer PointLights
+{
+	uint numPLights;
+	PointLight pLigiths[];
+};
 
 uniform Material material;
 
@@ -67,33 +77,40 @@ void main() {
 	}
 	vec3 N = vec3(0);
 	if (material.hasNormalMap){
-		N = -normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
+		N = normalize(norm);
+		vec3 T = normalize(tang.xyz); 
+		vec3 B = tang.w * cross(N, T);
+		mat3 TBN = mat3(T,B,N);
+		N = normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
+		N = normalize(TBN * N);
 	}
 	else{
-		N = -normalize(tNorm);  	//Normal
+		N = normalize(norm);  	//Normal
 	}
-	vec3 L =  normalize(tLightDir); 	//Light direction
+	vec3 L =  -normalize(dirDir); 	//Light direction
 	float NdotL = max(dot(N,L),0);	//It doesn't make sense for color to be negative
 	
 	vec3 R = reflect(L,N);
-	vec3 V = normalize(tCameraPos - tPos); //View direction
+	vec3 V = normalize(cPos - sPos); //View direction
 	float VdotRpown = pow(max(dot(V,R), 0), shininess);
 	
 	vec3 RFOi = specularColor + (1-specularColor) * pow(1-NdotL,5);
 	
-	vec3 Li = lightIntensity * lightColor;  //Incoming radiance
+	vec3 Li = dirCol.w * dirCol.rgb;  //Incoming radiance
 	
-	//Color with specular and no pi corretion
-	vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess +2)/2)* RFOi * VdotRpown) * Li * NdotL;
+	//Color with specular and no pi division
+	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
+	//Color with specular and pi divisions
+	float pi = 3.1415926535897932384626433832795;
+	vec3 pbrColor = ((diffuseColor*(1-specularColor))/pi + ((shininess+2)/2*pi)* RFOi * VdotRpown) * Li * NdotL;
 	
 	//Final color  
-	vec3 color = ambientColor * diffuseColor + pbrColor;
+	vec3 color = ambientCol * diffuseColor + pbrColor;
 	
 	//Gamma correction
 	color.rgb = pow(color.rgb, vec3(1/2.2));
 	
 	//Output
 	outColor = vec4(color, 1.0f);
-	//outColor = vec4(0.5,0,0.5,1);
 	
 }

@@ -78,6 +78,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(OpenGLErrorFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, false);
 #endif // _DEBUG
 
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -85,6 +86,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 
+	//Initialize scene framebuffer
 	glGenFramebuffers(1, &sFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glGenTextures(1, &depthStencil);
@@ -111,6 +113,36 @@ bool ModuleOpenGL::Init()
 	glFrontFace(GL_CCW);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	//InitializePrograms
+	mPbrProgramId = CreateShaderProgramFromPaths("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
+	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
+
+	//Initialize camera uniforms
+	glGenBuffers(1, &cameraUnis);
+	glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * 16 * 2, NULL, GL_STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, cameraUnis);
+	//glBindBufferRange(GL_UNIFORM_BUFFER, 2, uboExampleBlock, 0, sizeof(float)*16*2);
+	SetOpenGlCameraUniforms();
+
+	InitSkybox();
+
+	//Lighting uniforms
+	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
+	glUseProgram(program);
+	glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
+	glUseProgram(0);
+	glGenBuffers(1, &lightUnis);
+	glBindBuffer(GL_UNIFORM_BUFFER, lightUnis);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(mDirAmb), &mDirAmb, GL_STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightUnis);
+
+	glGenBuffers(1, &mPointSSBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+	unsigned int nPointLights = mPointLights.size();
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(nPointLights) + sizeof(PointLight) * nPointLights, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(nPointLights), &nPointLights);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
 	return true;
 }
 
@@ -124,6 +156,22 @@ update_status ModuleOpenGL::PreUpdate()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Draw the skybox
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+
+	glUseProgram(App->GetOpenGL()->GetSkyboxProgramId());
+
+	glBindVertexArray(mSkyVao);
+
+	glDepthMask(GL_FALSE);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDepthMask(GL_TRUE);
+
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return UPDATE_CONTINUE;
 }
@@ -141,6 +189,12 @@ bool ModuleOpenGL::CleanUp()
 {
 	LOG("Destroying renderer");
 
+	glDeleteProgram(mPbrProgramId);
+	glDeleteProgram(mSkyBoxProgramId);
+	glDeleteVertexArrays(1, &mSkyVao);
+	glDeleteBuffers(1, &mSkyVbo);
+	glDeleteBuffers(1, &cameraUnis);
+	glDeleteBuffers(1, &lightUnis);
 	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
@@ -168,4 +222,213 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void ModuleOpenGL::SetOpenGlCameraUniforms() const
+{
+	if (context != nullptr)
+	{
+		glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, App->GetCamera()->GetViewMatrix().Transposed().ptr());
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, App->GetCamera()->GetProjectionMatrix().Transposed().ptr());
+
+		glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
+		glUseProgram(0);
+	}
+}
+
+//TODO: This should not be here, we need like a resource or importer
+#include "DirectXTex.h"
+static unsigned int LoadCubeMap()
+{
+	unsigned int ret = 0;
+	DirectX::ScratchImage image;
+
+	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
+
+	if (res == S_OK)
+	{
+		const DirectX::TexMetadata& metadata = image.GetMetadata();
+
+		glGenTextures(1, &ret);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, ret);
+
+		for (uint32_t i = 0; i < metadata.arraySize; ++i)
+		{
+			const DirectX::Image* face = image.GetImage(0, i, 0);
+
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA8, face->width, face->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, face->pixels);
+		}
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	return ret;
+}
+
+void ModuleOpenGL::InitSkybox()
+{
+	mSkyBoxTexture = LoadCubeMap();
+
+	float skyboxVertices[] = {
+	   -1.0f,  1.0f, -1.0f,
+	   -1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+	   -1.0f,  1.0f, -1.0f,
+
+	   -1.0f, -1.0f,  1.0f,
+	   -1.0f, -1.0f, -1.0f,
+	   -1.0f,  1.0f, -1.0f,
+	   -1.0f,  1.0f, -1.0f,
+	   -1.0f,  1.0f,  1.0f,
+	   -1.0f, -1.0f,  1.0f,
+
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+
+	   -1.0f, -1.0f,  1.0f,
+	   -1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+	   -1.0f, -1.0f,  1.0f,
+
+	   -1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+	   -1.0f,  1.0f,  1.0f,
+	   -1.0f,  1.0f, -1.0f,
+
+	   -1.0f, -1.0f, -1.0f,
+	   -1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+	   -1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f
+	};
+
+	glGenVertexArrays(1, &mSkyVao);
+	glGenBuffers(1, &mSkyVbo);
+	glBindVertexArray(mSkyVao);
+	glBindBuffer(GL_ARRAY_BUFFER, mSkyVbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTexture);
+
+	glBindVertexArray(0);
+}
+
+char* ModuleOpenGL::LoadShaderSource(const char* shaderFileName) const
+{
+	char* data = nullptr;
+	FILE* file = nullptr;
+	auto info = fopen_s(&file, shaderFileName, "rb");
+	if (file)
+	{
+		fseek(file, 0, SEEK_END);
+		int size = ftell(file);
+		data = (char*)malloc(size + 1);
+		fseek(file, 0, SEEK_SET);
+		fread(data, 1, size, file);
+		data[size] = 0;
+		fclose(file);
+	}
+	return data;
+}
+
+unsigned ModuleOpenGL::CompileShader(unsigned type, const char* source) const
+{
+
+	unsigned shaderID = glCreateShader(type);
+
+	glShaderSource(shaderID, 1, &source, 0);
+	glCompileShader(shaderID);
+	int resolution = GL_FALSE;
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &resolution);
+	if (resolution == GL_FALSE)
+	{
+		int length = 0;
+		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
+		if (length > 0)
+		{
+			int written = 0;
+			char* info = (char*)malloc(length);
+			glGetShaderInfoLog(shaderID, length, &written, info);
+			LOG("Log Info: %s", info);
+			free(info);
+		}
+	}
+	return shaderID;
+}
+
+unsigned ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
+{
+	unsigned programID = glCreateProgram();
+	glAttachShader(programID, vertexShaderID);
+	glAttachShader(programID, fragmentShaderID);
+	glLinkProgram(programID);
+	int resolution;
+	glGetProgramiv(programID, GL_LINK_STATUS, &resolution);
+	if (resolution == GL_FALSE)
+	{
+		int length = 0;
+		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &length);
+		if (length > 0)
+		{
+			int written = 0;
+			char* info = (char*)malloc(length);
+			glGetProgramInfoLog(programID, length, &written, info);
+			LOG("Program Log Info: %s", info);
+			free(info);
+		}
+	}
+	glDeleteShader(vertexShaderID);
+	glDeleteShader(fragmentShaderID);
+	return programID;
+}
+unsigned ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
+{
+	std::string fullVertexShaderPath = "Assets/Shaders/" + std::string(vertexShaderPath);
+	std::string fullFragmentShaderPath = "Assets/Shaders/" + std::string(fragmentShaderPath);
+	char* vertexSource = LoadShaderSource(fullVertexShaderPath.c_str());
+	char* fragmentSource = LoadShaderSource(fullFragmentShaderPath.c_str());
+	unsigned vertexShaderID = CompileShader(GL_VERTEX_SHADER, vertexSource);
+	unsigned fragmentShaderID = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
+	free(vertexSource);
+	free(fragmentSource);
+	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
+}
+
+//Ess pot optimitzar el emplace back pasantli els parameters de PointLight ??
+void ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* go)
+{
+	mPointLights.emplace_back(pLight);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+	const unsigned int numPointLights = mPointLights.size();
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(size_t), &numPointLights);
+
+	const unsigned int dataSize = sizeof(size_t) + sizeof(PointLight) * numPointLights;
+	glBindBuffer(GL_COPY_READ_BUFFER, mPointSSBO);
+	unsigned int tmp;
+	glGenBuffers(1, &tmp);
+	glBindBuffer(GL_COPY_WRITE_BUFFER, tmp);
+	glBufferData(GL_COPY_WRITE_BUFFER, dataSize, nullptr, GL_STATIC_DRAW);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, dataSize - sizeof(PointLight));
+	glDeleteBuffers(1, &mPointSSBO);
+	mPointSSBO = tmp;
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
+
+	
 }

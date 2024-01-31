@@ -2,6 +2,19 @@
 #include "GameObject.h"
 #include "Algorithm/Random/LCG.h"
 
-Component::Component(const char* name, GameObject* owner, ComponentType type)
-	:mName(name), mOwner(owner), mType(type), mID(LCG().Int()){}
+Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int()){}
 
+const char* Component::GetNameFromType() const
+{
+	switch (mType)
+	{
+	case ComponentType::MESHRENDERER:
+			return "Mesh Renderer";
+		case ComponentType::LIGHTSOURCE:
+			return "Light Source";
+		case ComponentType::TEST:
+			return "Test";
+		default:
+			return "None";
+	}
+}
