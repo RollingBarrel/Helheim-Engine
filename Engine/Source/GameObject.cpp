@@ -6,6 +6,7 @@
 #include "InspectorPanel.h"
 #include "Quadtree.h"
 #include "imgui.h"
+#include "ModuleOpenGL.h"
 #include "LightSourceComponent.h"
 #include <algorithm>
 
@@ -273,8 +274,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	case ComponentType::MESHRENDERER:
 		newComponent = new MeshRendererComponent(this);
 		break;
-	//case ComponentType::LIGHTSOURCE:
-	//	newComponent = new Li
+	case ComponentType::LIGHTSOURCE:
+		newComponent = App->GetOpenGL()->AddPointLight(PointLight(), this);
+		break;
 	case ComponentType::TEST:
 		newComponent = new TestComponent(this);
 		break;

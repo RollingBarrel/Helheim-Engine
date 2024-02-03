@@ -5,6 +5,9 @@
 #include "SDL.h"
 #include "glew.h"
 #include "ModuleCamera.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -139,8 +142,8 @@ bool ModuleOpenGL::Init()
 
 	glGenBuffers(1, &mPointSSBO);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-	unsigned int nPointLights = mPointLights.size();
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(nPointLights) + sizeof(PointLight) * nPointLights, nullptr, GL_STATIC_DRAW);
+	const uint32_t nPointLights = mPointLights.size();
+	glBufferData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(PointLight) * nPointLights, nullptr, GL_STATIC_DRAW);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(nPointLights), &nPointLights);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
 	return true;
@@ -195,6 +198,7 @@ bool ModuleOpenGL::CleanUp()
 	glDeleteBuffers(1, &mSkyVbo);
 	glDeleteBuffers(1, &cameraUnis);
 	glDeleteBuffers(1, &lightUnis);
+	glDeleteBuffers(1, &mPointSSBO);
 	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
@@ -347,10 +351,10 @@ char* ModuleOpenGL::LoadShaderSource(const char* shaderFileName) const
 	return data;
 }
 
-unsigned ModuleOpenGL::CompileShader(unsigned type, const char* source) const
+unsigned int ModuleOpenGL::CompileShader(unsigned type, const char* source) const
 {
 
-	unsigned shaderID = glCreateShader(type);
+	unsigned int shaderID = glCreateShader(type);
 
 	glShaderSource(shaderID, 1, &source, 0);
 	glCompileShader(shaderID);
@@ -372,9 +376,9 @@ unsigned ModuleOpenGL::CompileShader(unsigned type, const char* source) const
 	return shaderID;
 }
 
-unsigned ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
+unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
 {
-	unsigned programID = glCreateProgram();
+	unsigned int programID = glCreateProgram();
 	glAttachShader(programID, vertexShaderID);
 	glAttachShader(programID, fragmentShaderID);
 	glLinkProgram(programID);
@@ -397,7 +401,7 @@ unsigned ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsig
 	glDeleteShader(fragmentShaderID);
 	return programID;
 }
-unsigned ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
+unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
 {
 	std::string fullVertexShaderPath = "Assets/Shaders/" + std::string(vertexShaderPath);
 	std::string fullFragmentShaderPath = "Assets/Shaders/" + std::string(fragmentShaderPath);
@@ -410,15 +414,15 @@ unsigned ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath
 	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
 }
 
-//Ess pot optimitzar el emplace back pasantli els parameters de PointLight ??
-void ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* go)
+//Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
+LightSourceComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
 {
 	mPointLights.emplace_back(pLight);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-	const unsigned int numPointLights = mPointLights.size();
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(size_t), &numPointLights);
+	const uint32_t numPointLights = mPointLights.size();
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(numPointLights), &numPointLights);
 
-	const unsigned int dataSize = sizeof(size_t) + sizeof(PointLight) * numPointLights;
+	const uint32_t dataSize = 16 + sizeof(PointLight) * numPointLights;
 	glBindBuffer(GL_COPY_READ_BUFFER, mPointSSBO);
 	unsigned int tmp;
 	glGenBuffers(1, &tmp);
@@ -428,7 +432,42 @@ void ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* go)
 	glDeleteBuffers(1, &mPointSSBO);
 	mPointSSBO = tmp;
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, dataSize - sizeof(PointLight), sizeof(PointLight), &mPointLights.back()); 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
 
-	
+	LightSourceComponent* nComponent = new LightSourceComponent(owner, mPointLights.back());
+	return nComponent;
+}
+
+void ModuleOpenGL::UpdatePoinLightInfo(PointLight* ptrPointLight)
+{
+	for (int i = 0; i < mPointLights.size(); ++i)
+	{
+		if (&mPointLights[i] == ptrPointLight)
+		{
+			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+			glBufferSubData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(PointLight) * i, sizeof(PointLight), &mPointLights[i]);
+			return;
+		}
+	}
+}
+
+void ModuleOpenGL::RemovePointLight(PointLight* ptrPointLight)
+{
+	int i = 0;
+	for(std::vector<PointLight>::iterator it = mPointLights.begin(); it != mPointLights.end(); ++it, ++i)
+	{
+		if (&(*it) == ptrPointLight)
+		{
+			mPointLights.erase(it);
+			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
+			glBindBuffer(GL_COPY_READ_BUFFER, mPointSSBO);
+			glBindBuffer(GL_COPY_WRITE_BUFFER, mPointSSBO);
+			unsigned int offset = 16 + sizeof(PointLight) * i;
+			glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, offset, offset + sizeof(PointLight), (mPointLights.size()-i +1)*sizeof(PointLight));
+			uint32_t numPlights = mPointLights.size();
+			glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(uint32_t), &numPlights);
+			return;
+		}
+	}
 }

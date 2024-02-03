@@ -33,7 +33,7 @@ bool ModuleScene::Init()
 	//test.TestSceneWithGameObjects();
 
 	//Save("Scene");
-	Load("scene");
+	//Load("scene");
 
 	return true;
 }
@@ -204,7 +204,7 @@ void ModuleScene::DrawRenderList()
 	for (GameObject* objectToRender : mRenderList)
 	{
 		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
-		MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
 		meshRenderer->Draw();
 	}
 }
