@@ -119,7 +119,7 @@ void main() {
 		vec3 mVector = sPos - pLights[i].pos.xyz;
 		float dist = length(mVector);
 		vec3 pDir = normalize(mVector);
-		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / dist*dist + 1;
+		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / (dist*dist + 1);
 		pbrCol += GetPBRLightColor(pDir, pLights[i].col.xyz,  pLights[i].col.w, att);
 	}
 
