@@ -44,7 +44,7 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
     {
         LOG("[MODEL] Error loading %s: %s", gltfPath, error.c_str());
     }
-   
+    
     for (int i = 0; i < model.images.size(); ++i)
     {
         std::string pngName = filePath;
@@ -56,7 +56,6 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
 
         App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), images.c_str());
     }
-
 
     for (const auto& srcMesh : model.meshes)
     {

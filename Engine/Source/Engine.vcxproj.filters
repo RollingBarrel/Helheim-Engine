@@ -210,6 +210,10 @@
     <ClCompile Include="LightSourceComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleResource.cpp" />
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -616,6 +620,10 @@
     <ClInclude Include="LightSourceComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleResource.h" />
+    <ClInclude Include="Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -668,6 +676,9 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{9fdd9d2e-dc31-4b45-9684-7e9ff9d48e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{520b8963-eb8f-43fa-9621-3ff6469aca97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

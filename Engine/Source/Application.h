@@ -13,6 +13,7 @@ class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
 class ModuleTimer;
+class ModuleResource;
 
 class Application
 {
@@ -34,6 +35,7 @@ public:
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
     ModuleTimer* GetClock() { return clock; }
+    ModuleResource* GetResource() { return resource; }
 
     float GetDt() const;
 
@@ -48,8 +50,9 @@ private:
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
     ModuleTimer* clock = nullptr;
+    ModuleResource* resource = nullptr;
 
-#define NUM_MODULES 9
+#define NUM_MODULES 10
     Module* modules[NUM_MODULES];
 };
 

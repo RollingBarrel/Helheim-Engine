@@ -20,7 +20,6 @@ namespace Importer
 		void Save(const ResourceModel* ourModel);
 
 		void Load(ResourceModel* ourModel, const char* fileName);
-
 	}
 };
 

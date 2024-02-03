@@ -213,7 +213,9 @@
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
@@ -349,6 +351,7 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
+    <ClInclude Include="ModuleResource.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
@@ -357,6 +360,7 @@
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="QuadtreePanel.h" />
     <ClInclude Include="ModuleTimer.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="ScenePanel.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
