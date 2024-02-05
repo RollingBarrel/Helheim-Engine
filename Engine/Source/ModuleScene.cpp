@@ -205,6 +205,11 @@ void ModuleScene::DrawRenderList()
 	{
 		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
 		MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
-		meshRenderer->Draw();
+
+		// Enable/disable mesh renderer component
+		if(meshRenderer->IsEnabled())
+		{
+			meshRenderer->Draw();
+		}
 	}
 }
