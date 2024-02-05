@@ -12,7 +12,7 @@ public:
 	long SetSpeed(float speed);
 
 private:
-	float mSpeed = 1;
+	float mSpeed = 1.0f;
 	long mLastReadTime = 0;
 	long mTotalTime = 0;
 };

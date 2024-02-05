@@ -15,11 +15,12 @@ bool ModuleTimer::Init() {
 }
 
 update_status ModuleTimer::PreUpdate() {
+	//Logs the average FPS in mFpsLog every 500 ms
 	static short frameCounter = 0;
 	++frameCounter;
 
 	mDeltaTime = mRealClock->ReadDelta();
-	if (mChangeSpeed) { 
+	if (mChangeSpeed) {
 		mGameDelta = mGameClock->SetSpeed(mNewSpeed);
 		mChangeSpeed = false;
 	}
@@ -40,6 +41,8 @@ update_status ModuleTimer::PreUpdate() {
 		mFpsLog.push_back(frameCounter * 1000 / (float)mUpdateTime);
 		frameCounter = 0;
 		mUpdateTime = 0;
+
+		mUpdateFpsLog = true;
 	}
 
 

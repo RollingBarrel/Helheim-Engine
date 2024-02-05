@@ -18,7 +18,20 @@ public:
 
     long GetRealDelta() const { return mDeltaTime; }
     long GetGameDelta() const { return mGameDelta; }
-    float GetFPS() const { return mFpsLog.back(); }
+
+    float GetFPS() const 
+    { 
+        if (!mFpsLog.empty()) 
+        {
+            return mFpsLog.back();
+        }
+        return 0; 
+    }
+    unsigned int GetFpsLimit() const { return mFpsLimit; }
+
+    std::vector<float> GetFpsLog() const { return mFpsLog; }
+    bool UpdateFpsLog() const { return mUpdateFpsLog; }
+    void FpsLogUpdated() { mUpdateFpsLog = false; }
 
     void SetTimeScale(float speed);
 
@@ -32,5 +45,6 @@ private:
     float mNewSpeed = 1;
     unsigned int mFpsLimit = 60;
     std::vector<float> mFpsLog;
+    bool mUpdateFpsLog = false;
 
 };
