@@ -15,18 +15,18 @@ public:
 	void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
 	void Transform(float3 vec);
 	void Rotate(const float3& axix, float angleRad);
-	const float3& GetPos() const { return frustum.pos; }
-	float4x4 GetViewMatrix() const { return frustum.ViewMatrix(); }
-	float4x4 GetProjectionMatrix() const { return frustum.ProjectionMatrix(); }
-	float4x4 GetViewProjMatrix() const { return frustum.ViewProjMatrix(); }
-	unsigned int GetCameraUniffromsId() const { return cameraUnis; }
+	const float3& GetPos() const { return mFrustum.pos; }
+	float4x4 GetViewMatrix() const { return mFrustum.ViewMatrix(); }
+	float4x4 GetProjectionMatrix() const { return mFrustum.ProjectionMatrix(); }
+	float4x4 GetViewProjMatrix() const { return mFrustum.ViewProjMatrix(); }
+	unsigned int GetCameraUniffromsId() const { return mCameraUnis; }
 	void WindowResized(int w, int h);
 
-	const Frustum& GetFrustum() const { return frustum; }
+	const Frustum& GetFrustum() const { return mFrustum; }
 
 private:
-	Frustum frustum;
-	unsigned int cameraUnis = 0;
+	Frustum mFrustum;
+	unsigned int mCameraUnis = 0;
 };
 
 #endif /* _MODULE_CAMERA_H_ */

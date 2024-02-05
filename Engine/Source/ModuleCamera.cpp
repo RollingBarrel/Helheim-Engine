@@ -9,15 +9,19 @@
 
 #include "imgui.h"
 
+
+//Temporal
+#include "ModuleDebugDraw.h"
+
 bool ModuleCamera::Init()
 {
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = math::pi / 4.0f;
+	mFrustum.type = FrustumType::PerspectiveFrustum;
+	mFrustum.nearPlaneDistance = 0.1f;
+	mFrustum.farPlaneDistance = 100.0f;
+	mFrustum.verticalFov = math::pi / 4.0f;
 	int w = App->GetWindow()->GetWidth();
 	int h = App->GetWindow()->GetHeight();
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)w / (float)h);
+	mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * (float)w / (float)h);
 	LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY);
 
 	return true;
@@ -25,7 +29,7 @@ bool ModuleCamera::Init()
 
 void ModuleCamera::WindowResized(int w, int h)
 {
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)w / (float)h);
+	mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * (float)w / (float)h);
 }
 
 update_status ModuleCamera::Update()
@@ -33,7 +37,7 @@ update_status ModuleCamera::Update()
 
 	const auto& io = ImGui::GetIO();
 	//ImGuiID id =  ImGui::GetID(SCENEPANEL);
-
+	App->GetDebugDraw()->DrawFrustum(mFrustum);
 	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
 	{
 		//Fer state machine amb els inputs !!!!
@@ -52,7 +56,7 @@ update_status ModuleCamera::Update()
 			App->GetInput()->GetMouseMotion(mX, mY);
 			Rotate(float3::unitY, -mX * dtRotateCameraVel);
 			//TODO: save the right vector myself??
-			Rotate(frustum.WorldRight(), -mY * dtRotateCameraVel);
+			Rotate(mFrustum.WorldRight(), -mY * dtRotateCameraVel);
 			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 			{
 				Transform(float3(0, -dtTransformCameraVel, 0));
@@ -89,13 +93,13 @@ update_status ModuleCamera::Update()
 		//orbiting camera
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
 		{
-			float3 right = frustum.WorldRight();
-			float3 focus = frustum.pos; //(cameraPos - targetPos)
+			float3 right = mFrustum.WorldRight();
+			float3 focus = mFrustum.pos; //(cameraPos - targetPos)
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
 			float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3::unitY, -mX * dtRotateCameraVel) * float3x3::RotateAxisAngle(right, -mY * dtRotateCameraVel);
 			focus = rotationMatrix.MulDir(focus);
-			float3 newUp = rotationMatrix.MulDir(frustum.up);
+			float3 newUp = rotationMatrix.MulDir(mFrustum.up);
 			LookAt(focus, float3(0, 0, 0), newUp);
 		}
 	}
@@ -105,8 +109,8 @@ update_status ModuleCamera::Update()
 void ModuleCamera::Rotate(const float3& axis, float angleRad)
 {
 	float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis, angleRad);
-	frustum.up = rotationMatrix.Mul(frustum.up);
-	frustum.front = rotationMatrix.Mul(frustum.front);
+	mFrustum.up = rotationMatrix.Mul(mFrustum.up);
+	mFrustum.front = rotationMatrix.Mul(mFrustum.front);
 
 	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
@@ -114,10 +118,10 @@ void ModuleCamera::Rotate(const float3& axis, float angleRad)
 void ModuleCamera::Transform(float3 vec)
 {
 	vec.z = -vec.z;
-	float3x4 world = frustum.WorldMatrix();
+	float3x4 world = mFrustum.WorldMatrix();
 	float3 newTrans = world.TransformDir(vec);
 	world.SetTranslatePart(world.TranslatePart() + newTrans);
-	frustum.SetWorldMatrix(world);
+	mFrustum.SetWorldMatrix(world);
 
 	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
@@ -131,9 +135,9 @@ void ModuleCamera::LookAt(float3 eyePos, float3 targetPos, float3 upVector) {
 	float3 up = math::Cross(right, forward);
 	up.Normalize();
 
-	frustum.pos = eyePos;
-	frustum.front = forward;
-	frustum.up = up;
+	mFrustum.pos = eyePos;
+	mFrustum.front = forward;
+	mFrustum.up = up;
 
 	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
