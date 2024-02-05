@@ -15,14 +15,21 @@ public:
 		Unknown
 	};
 
-	Resource(unsigned int uid, Type type);
+	Resource(unsigned int uid);
 	virtual ~Resource();
-	Type GetType() const { return mType; };
-	unsigned int GetUID() const;
-	const char* GetAssetsFile() const;
-	const char* GetLibraryFile() const;
-	unsigned int GetReferenceCount() const;
 
+	virtual void Import(const char* filePath);
+	virtual void Save();
+	virtual unsigned int Load(const char* fileName = nullptr);
+
+	Type GetType() const { return mType; };
+	unsigned int GetUID() const { return mUID; };
+	const std::string GetAssetsFile() const { return mAssetsFile; };
+	const std::string GetLibraryFile() const { return mLibraryFile; };
+	unsigned int GetReferenceCount() const { return mReferenceCount; };
+
+	void SetAssetsFile(const std::string& assetsFile) { mAssetsFile = assetsFile; };
+	void SetLibraryFile(const std::string& libraryFile) { mLibraryFile = libraryFile; };
 
 protected:
 	unsigned int mUID = 0;

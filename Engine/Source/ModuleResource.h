@@ -18,6 +18,7 @@ public:
 
 private:
 	Resource* CreateNewResource(const char* assetsFile, Resource::Type type);
+	Resource::Type DeduceResourceType(const char* assetsFile);
 
 	std::unordered_map<unsigned int, Resource*> mResources;
 };

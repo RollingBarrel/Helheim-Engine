@@ -1,9 +1,20 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
+#include "Resource.h"
+#include "ResourceTexture.h"
 
-#include "Importer.h"
-#include "ImporterTexture.h"
+#include <unordered_map>
+#include <algorithm>
+
+// Define a mapping between file extensions and resource types
+const std::unordered_map<std::string, Resource::Type> extensionToResourceType = {
+	{".png", Resource::Type::Texture},
+	{".jpg", Resource::Type::Texture},
+	{".bmp", Resource::Type::Texture},
+	// Add more mappings for other resource types as needed
+};
+
 
 unsigned int ModuleResource::Find(const char* assetsFile) const
 {
@@ -12,8 +23,8 @@ unsigned int ModuleResource::Find(const char* assetsFile) const
 
 unsigned int ModuleResource::ImportFile(const char* assetsFile)
 {
-
-	Resource* resource = CreateNewResource(assetsFile, Resource::Type::Unknown); //Save ID, assetsFile path, libraryFile path	
+	Resource::Type type = DeduceResourceType(assetsFile);
+	Resource* resource = CreateNewResource(assetsFile, type); //Save ID, assetsFile path, libraryFile path	
 	unsigned int ret = 0;
 
 	//Create copy in assets folder
@@ -36,8 +47,10 @@ unsigned int ModuleResource::ImportFile(const char* assetsFile)
 
 unsigned int ModuleResource::GenerateNewUID()
 {
-	return 0;
+	static unsigned int currentUID = 0; // Initialize a static variable to track the current UID
+	return ++currentUID; // Increment and return the current UID
 }
+
 
 Resource* ModuleResource::RequestResource(unsigned int uid)
 {
@@ -48,7 +61,39 @@ void ModuleResource::ReleaseResource(Resource* resource)
 {
 }
 
+
 Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Type type)
 {
-	return nullptr;
+	Resource* ret = nullptr;
+	unsigned int uid = GenerateNewUID(); // Your own algorithm to generate new IDs. Random // MD5
+	switch (type)
+	{
+	case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid); break;
+	//case Resource::mesh: ret = (Resource*) new ResourceMesh(uid); break;
+	//case Resource::scene: ret = (Resource*) new ResourceScene(uid); break;
+	//case Resource::bone: ret = (Resource*) new ResourceBone(uid); break;
+	//case Resource::animation: ret = (Resource*) new ResourceAnimation(uid); break;
+	}
+	if (ret != nullptr)
+	{
+		mResources[uid] = ret;
+		ret->SetAssetsFile(assetsPath);
+		ret->SetLibraryFile(GenLibraryPath(resource));
+	}
+	return ret;
+}
+
+Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
+{
+	if (const char* fileExtension = strrchr(assetsFile, '.')) // Extract file extension
+	{
+		std::string extension = fileExtension;
+		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower); // Convert to lowercase
+
+		auto it = extensionToResourceType.find(extension);
+		if (it != extensionToResourceType.end())
+			return it->second;
+	}
+
+	return Resource::Type::Unknown; // If the file extension is not recognized
 }
