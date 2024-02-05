@@ -41,7 +41,7 @@ public:
 	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
 	LightSourceComponent* AddPointLight(const PointLight& pLight,GameObject* owner);
-	void UpdatePoinLightInfo(PointLight* ptrPointLight);
+	void UpdatePoinLightInfo(const PointLight& ptrPointLight);
 	void RemovePointLight(PointLight* ptrPointLight);
 
 private:

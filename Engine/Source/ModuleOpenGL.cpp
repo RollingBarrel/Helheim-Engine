@@ -439,11 +439,11 @@ LightSourceComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, Game
 	return nComponent;
 }
 
-void ModuleOpenGL::UpdatePoinLightInfo(PointLight* ptrPointLight)
+void ModuleOpenGL::UpdatePoinLightInfo(const PointLight& pointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (&mPointLights[i] == ptrPointLight)
+		if (&mPointLights[i] == &pointLight)
 		{
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
 			glBufferSubData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(PointLight) * i, sizeof(PointLight), &mPointLights[i]);
@@ -454,12 +454,11 @@ void ModuleOpenGL::UpdatePoinLightInfo(PointLight* ptrPointLight)
 
 void ModuleOpenGL::RemovePointLight(PointLight* ptrPointLight)
 {
-	int i = 0;
-	for(std::vector<PointLight>::iterator it = mPointLights.begin(); it != mPointLights.end(); ++it, ++i)
+	for(int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (&(*it) == ptrPointLight)
+		if (&mPointLights[i] == ptrPointLight)
 		{
-			mPointLights.erase(it);
+			mPointLights.erase(mPointLights.begin() + i);
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
 			glBindBuffer(GL_COPY_READ_BUFFER, mPointSSBO);
 			glBindBuffer(GL_COPY_WRITE_BUFFER, mPointSSBO);

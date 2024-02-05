@@ -3,8 +3,8 @@
 #include "Component.h"
 
 typedef struct PointLight {
-	float pos[4] = {0.f, 0.f, -1.f, 1.f}; //w is radius
-	float col[4] = {1.f, 1.f, 1.f, 1.2f}; //w is Intensity
+	float pos[4]; //w is radius
+	float col[4]; //w is Intensity
 	//PointLight(const PointLight& other)  = delete;
 }PointLight;
 
@@ -21,15 +21,15 @@ public:
 
 	const float* GetPosition() const;
 	void SetPosition(const float poa[3]);
-	const float* GetColor() const { return mData->col; }
+	const float* GetColor() const { return mData.col; }
 	void SetColor(float col[3]);
-	float GetIntensity() const { return mData->col[3]; }
+	float GetIntensity() const { return mData.col[3]; }
 	void SetIntensity(float intensity);
-	float GetRadius() const { return mData->pos[3]; }
+	float GetRadius() const { return mData.pos[3]; }
 	void SetRadius(float radius);
 
 private:
-	PointLight* mData;
+	PointLight& mData;
 };
 
 #endif //_COMPONENT_LIGHTSOURCE_H_

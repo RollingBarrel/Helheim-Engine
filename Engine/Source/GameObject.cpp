@@ -275,8 +275,11 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		newComponent = new MeshRendererComponent(this);
 		break;
 	case ComponentType::LIGHTSOURCE:
-		newComponent = App->GetOpenGL()->AddPointLight(PointLight(), this);
+	{
+		const float3& pos = GetPosition();
+		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
 		break;
+	}
 	case ComponentType::TEST:
 		newComponent = new TestComponent(this);
 		break;
