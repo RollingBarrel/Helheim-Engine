@@ -294,8 +294,6 @@
     <ClInclude Include="HierarchyPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleCamera.h" />
-    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h">
       <Filter>Dependencies\MathGeoLib</Filter>
     </ClInclude>
@@ -576,8 +574,6 @@
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="InspectorPanel.h" />
-    <ClInclude Include="ModuleCamera.h" />
-    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="GameObject.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
@@ -685,6 +681,18 @@
     </ClInclude>
     <ClInclude Include="Quadtree.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDebugDraw.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDebugDraw.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
