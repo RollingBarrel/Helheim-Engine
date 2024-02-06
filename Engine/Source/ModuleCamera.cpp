@@ -6,6 +6,7 @@
 #include "ScenePanel.h"
 #include "ModuleEditor.h"
 #include "ModuleOpenGL.h"
+#include "HierarchyPanel.h"
 
 #include "imgui.h"
 
@@ -40,11 +41,16 @@ update_status ModuleCamera::Update()
 		//TODO: Camera velocity variable independent of framerate
 		const float dtTransformCameraVel = App->GetDt() * 8.f;
 		const float dtRotateCameraVel = App->GetDt() * 1.f;
+		
+		//Aply speed when shift
+		const float fastSpeed = dtTransformCameraVel * 3.0f;
+		bool shiftPressed = (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(SDL_SCANCODE_RSHIFT) == KeyState::KEY_REPEAT);
+		float speed = shiftPressed ? fastSpeed : dtTransformCameraVel;
 
 		//moving/rot camera
 		if (App->GetInput()->GetMouseWheelMotion() != 0)
 		{
-			Transform(float3(0, 0, dtTransformCameraVel*10.f * App->GetInput()->GetMouseWheelMotion()));
+			Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
@@ -55,27 +61,28 @@ update_status ModuleCamera::Update()
 			Rotate(frustum.WorldRight(), -mY * dtRotateCameraVel);
 			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, -dtTransformCameraVel, 0));
+				Transform(float3(0, -speed, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, dtTransformCameraVel, 0));
+				Transform(float3(0, speed, 0));
 			}
+
 			if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, dtTransformCameraVel));
+				Transform(float3(0, 0, speed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, -dtTransformCameraVel));
+				Transform(float3(0, 0, -speed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(-dtTransformCameraVel, 0, 0));
+				Transform(float3(-speed, 0, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(dtTransformCameraVel, 0, 0));
+				Transform(float3(speed, 0, 0));
 			}
 		}
 		//paning camera
@@ -97,6 +104,29 @@ update_status ModuleCamera::Update()
 			focus = rotationMatrix.MulDir(focus);
 			float3 newUp = rotationMatrix.MulDir(frustum.up);
 			LookAt(focus, float3(0, 0, 0), newUp);
+		}
+
+		if(App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
+		{
+			float3 selectedObjectPosition = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetLocalPosition();
+			float3 initialCameraPosition = frustum.pos;
+
+			float desiredDistance = 5.0f;
+
+			float3 finalCameraPosition = selectedObjectPosition - (desiredDistance * (selectedObjectPosition - initialCameraPosition).Normalized());
+			
+			frustum.pos = finalCameraPosition;
+
+			//ARREGLAR FUNCION LOOKAT
+			LookAt(frustum.pos, selectedObjectPosition, frustum.up);
+			
+			// Variable para controlar la duración de la animación
+			float animationDuration = 1.0f; // Duración de la animación en segundos
+		
+			// Variable para controlar el tiempo transcurrido durante la animación
+			float animationTime = 0.0f;
+
+			//falta poner hacer la funcion de la animacion
 		}
 	}
 	return UPDATE_CONTINUE;
