@@ -9,7 +9,6 @@
 #include "MeshRendererComponent.h"
 #include "LightSourceComponent.h"
 #include "ImporterMaterial.h"
-
 #include <MathFunc.h>
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
@@ -33,7 +32,6 @@ void InspectorPanel::Draw(int windowFlags)
 		focusedObject->mName = nameArray;
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
-
 		ImGui::Separator();
 		AddComponentButton(focusedObject);
 	}
@@ -49,6 +47,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PushID(object->mID);
+
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
@@ -248,7 +247,12 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
+
 		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		
+		//checkbox for enable/disable
+		ImGui::Checkbox("Enable", &component->mIsEnabled);
+	
 		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
@@ -303,7 +307,7 @@ void InspectorPanel::DrawLightSourceComponent(LightSourceComponent* component) {
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
-	
+
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
