@@ -10,7 +10,6 @@ typedef struct PointLight {
 
 class LightSourceComponent : public Component {
 public:
-	LightSourceComponent(GameObject* owner, PointLight& light);
 	~LightSourceComponent();
 
 	void Update() override;
@@ -29,7 +28,9 @@ public:
 	void SetRadius(float radius);
 
 private:
-	PointLight& mData;
+	PointLight mData;
+	LightSourceComponent(GameObject* owner, const PointLight& light);
+	friend class ModuleOpenGL;
 };
 
 #endif //_COMPONENT_LIGHTSOURCE_H_

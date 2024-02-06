@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
-#include "LightSourceComponent.h"
 #include <vector>
 
 typedef struct DirectionalAmbient {
@@ -13,7 +12,8 @@ typedef struct DirectionalAmbient {
 	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
 }DirectionalAmbient;
 
-
+class LightSourceComponent;
+class PointLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
@@ -40,9 +40,9 @@ public:
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
-	LightSourceComponent* AddPointLight(const PointLight& pLight,GameObject* owner);
-	void UpdatePoinLightInfo(const PointLight& ptrPointLight);
-	void RemovePointLight(PointLight* ptrPointLight);
+	LightSourceComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
+	void UpdatePoinLightInfo(const LightSourceComponent& ptrPointLight);
+	void RemovePointLight(const LightSourceComponent& cPointLight);
 
 private:
 	void* context = nullptr;
@@ -74,8 +74,7 @@ private:
 	unsigned int lightUnis = 0;
 	DirectionalAmbient mDirAmb;
 	unsigned int mPointSSBO = 0;
-	std::vector<PointLight>mPointLights;
-	void UpdatePointLightGPUBuffer();
+	std::vector<const LightSourceComponent*>mPointLights;
 	friend class LightningPanel;
 };
 

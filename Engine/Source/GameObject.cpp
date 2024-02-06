@@ -276,7 +276,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		break;
 	case ComponentType::LIGHTSOURCE:
 	{
-		const float3& pos = GetPosition();
+		const float3& pos = GetLocalPosition();
 		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
 		break;
 	}

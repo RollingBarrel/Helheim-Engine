@@ -8,6 +8,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "LightSourceComponent.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -417,7 +418,8 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShader
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
 LightSourceComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
 {
-	mPointLights.emplace_back(pLight);
+	LightSourceComponent* newComponent = new LightSourceComponent(owner, pLight);
+	mPointLights.push_back(newComponent);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
 	const uint32_t numPointLights = mPointLights.size();
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(numPointLights), &numPointLights);
@@ -432,31 +434,30 @@ LightSourceComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, Game
 	glDeleteBuffers(1, &mPointSSBO);
 	mPointSSBO = tmp;
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, dataSize - sizeof(PointLight), sizeof(PointLight), &mPointLights.back()); 
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, dataSize - sizeof(PointLight), sizeof(PointLight), &mPointLights.back()->mData); 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
 
-	LightSourceComponent* nComponent = new LightSourceComponent(owner, mPointLights.back());
-	return nComponent;
+	return newComponent;
 }
 
-void ModuleOpenGL::UpdatePoinLightInfo(const PointLight& pointLight)
+void ModuleOpenGL::UpdatePoinLightInfo(const LightSourceComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (&mPointLights[i] == &pointLight)
+		if (mPointLights[i] == &cPointLight)
 		{
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-			glBufferSubData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(PointLight) * i, sizeof(PointLight), &mPointLights[i]);
+			glBufferSubData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(PointLight) * i, sizeof(PointLight), &mPointLights[i]->mData);
 			return;
 		}
 	}
 }
 
-void ModuleOpenGL::RemovePointLight(PointLight* ptrPointLight)
+void ModuleOpenGL::RemovePointLight(const LightSourceComponent& cPointLight)
 {
 	for(int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (&mPointLights[i] == ptrPointLight)
+		if (mPointLights[i] == &cPointLight)
 		{
 			mPointLights.erase(mPointLights.begin() + i);
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
