@@ -299,6 +299,7 @@ void InspectorPanel::DrawLightSourceComponent(LightSourceComponent* component) {
 	{
 		component->SetRadius(radius);
 	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {

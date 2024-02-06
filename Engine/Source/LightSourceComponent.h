@@ -26,6 +26,8 @@ public:
 	void SetIntensity(float intensity);
 	float GetRadius() const { return mData.pos[3]; }
 	void SetRadius(float radius);
+	//Todo: Variable not necesary for the game mode
+	bool debugDraw = false;
 
 private:
 	PointLight mData;

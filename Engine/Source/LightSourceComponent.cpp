@@ -1,9 +1,10 @@
 #include "LightSourceComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
+#include "ModuleDebugDraw.h"
 
 LightSourceComponent::LightSourceComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::LIGHTSOURCE), mData(light) {
-	const float3& pos = owner->GetLocalPosition();
+	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
@@ -13,7 +14,7 @@ LightSourceComponent::~LightSourceComponent() { App->GetOpenGL()->RemovePointLig
 
 const float* LightSourceComponent::GetPosition() const 
 { 
-	return mOwner->GetLocalPosition().ptr(); 
+	return mOwner->GetWorldPosition().ptr(); 
 }
 
 void LightSourceComponent::SetPosition(const float pos[3])
@@ -47,12 +48,16 @@ void LightSourceComponent::SetRadius(float radius)
 void LightSourceComponent::Update()
 {
 	//TODO: No mirarlo cada frame ??
-	const float* pos = mOwner->GetLocalPosition().ptr();
+	const float* pos = mOwner->GetWorldPosition().ptr();
 	for (int i = 0; i < 3; ++i)
 	{
 		if (pos[i] != mData.pos[i])
 		{
 			SetPosition(pos);
 		}
+	}
+	if (debugDraw)
+	{
+		App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
 	}
 }
