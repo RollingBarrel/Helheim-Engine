@@ -27,7 +27,7 @@ Application::Application()
 
 Application::~Application()
 {
-	for (int i = 0; i < NUM_MODULES; ++i) {
+	for (int i = NUM_MODULES-1; i >= 0; --i) {
 		delete modules[i];
 	}
 }

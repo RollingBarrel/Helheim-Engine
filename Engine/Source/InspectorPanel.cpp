@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
+#include "LightSourceComponent.h"
 #include "ImporterMaterial.h"
 #include <MathFunc.h>
 
@@ -126,6 +127,9 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 			} else {
 				mSameComponentPopup = true;
 			}
+		}
+		if (ImGui::MenuItem("Light Source")) {
+			object->CreateComponent(ComponentType::LIGHTSOURCE);
 		}
 		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
@@ -254,14 +258,17 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
-					MeshRendererComponent* downCast = dynamic_cast<MeshRendererComponent*>(component);
-					assert(downCast != nullptr);
+					MeshRendererComponent* downCast = reinterpret_cast<MeshRendererComponent*>(component);
 					DrawMeshRendererComponent(downCast);
 					break;
 				}
+				case ComponentType::LIGHTSOURCE: {
+					LightSourceComponent* downCast = reinterpret_cast<LightSourceComponent*>(component);
+					DrawLightSourceComponent(downCast);
+					break;
+				}
 				case ComponentType::TEST: {
-					TestComponent* downCast = dynamic_cast<TestComponent*>(component);
-					assert(downCast != nullptr);
+					TestComponent* downCast = reinterpret_cast<TestComponent*>(component);
 					DrawTestComponent(downCast);
 					break;
 				}
@@ -276,6 +283,27 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text");
 	ImGui::Text("Demo Text 2 ");
+}
+
+void InspectorPanel::DrawLightSourceComponent(LightSourceComponent* component) {
+	ImGui::Text("Lights !!");
+	const float* pCol = component->GetColor();
+	float col[3] = { pCol[0], pCol[1] , pCol[2] };
+	if (ImGui::ColorPicker3("Color", col))
+	{
+		component->SetColor(col);
+	}
+	float intensity = component->GetIntensity();
+	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	{
+		component->SetIntensity(intensity);
+	}
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius,1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {

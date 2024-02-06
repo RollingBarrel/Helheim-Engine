@@ -671,6 +671,27 @@ void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
     dd::flush();
 }
 
+void ModuleDebugDraw::DrawLineSphere(const float center[3], const float color[3], const float radius, unsigned int precision)
+{
+    //math::float3 dCenter = math::float3(center);
+    math::float3 iFrom = { -radius, 0, 0};
+    math::float3 iTo = { radius, 0, 0};
+    math::float3 oFrom;
+    math::float3 oTo;
+    for (int j = 0; j < precision; ++j)
+    {
+        float angleZ = dd::degreesToRadians((180 / precision) * j);
+        for (int i = 0; i < precision; ++i)
+        {
+            float angleY = dd::degreesToRadians((180 / precision) * i);
+            ddMat4x4 mat = ddMat4x4::FromTRS(math::float3(center), ddMat4x4::FromEulerXYZ(0, angleY, angleZ), { 1,1,1 });
+            dd::matTransformPointXYZ(oFrom, iFrom, mat);
+            dd::matTransformPointXYZ(oTo, iTo, mat);
+            dd::line(oFrom, oTo, math::float3(color));
+        }
+    }
+}
+
 void ModuleDebugDraw::DrawGrid()
 {
     dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);
