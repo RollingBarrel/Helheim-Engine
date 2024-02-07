@@ -28,12 +28,17 @@ public:
         return 0; 
     }
     unsigned int GetFpsLimit() const { return mFpsLimit; }
+    void SetFpsLimit(unsigned int limit) { mFpsLimit = limit; }
+
+    void SetTimeScale(float speed);
 
     std::vector<float> GetFpsLog() const { return mFpsLog; }
+    std::vector<unsigned long> GetMsLog() const { return mMsLog; }
+
     bool UpdateFpsLog() const { return mUpdateFpsLog; }
     void FpsLogUpdated() { mUpdateFpsLog = false; }
 
-    void SetTimeScale(float speed);
+    unsigned int GetTotalFrames() { return mTotalFrames; }
 
 private:
     Timer* mGameClock = nullptr;
@@ -44,7 +49,11 @@ private:
     bool mChangeSpeed = false;
     float mNewSpeed = 1;
     unsigned int mFpsLimit = 60;
+
     std::vector<float> mFpsLog;
+    std::vector<unsigned long> mMsLog;
     bool mUpdateFpsLog = false;
+
+    unsigned int mTotalFrames = 0;
 
 };

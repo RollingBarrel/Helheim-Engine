@@ -10,6 +10,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTimer.h"
 
+#include "Timer.h"
+
 
 Application::Application()
 {
@@ -38,6 +40,8 @@ bool Application::Init()
 
 	for(int i = 0; i < NUM_MODULES && ret == true; ++i)
 		ret = modules[i]->Init();
+
+	//mRealTimer->StartWithRunTime();
 
 	return ret;
 }

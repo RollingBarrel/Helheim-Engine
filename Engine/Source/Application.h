@@ -14,6 +14,8 @@ class ModuleCamera;
 class ModuleDebugDraw;
 class ModuleTimer;
 
+class Timer;
+
 class Application
 {
 public:
@@ -51,6 +53,20 @@ private:
 
 #define NUM_MODULES 9
     Module* modules[NUM_MODULES];
+
+
+    //ModuleTimer stuff
+    Timer* mRealTimer;
+    Timer* mGameTimer;
+
+    long mGameDelta = 0;
+    unsigned long mDeltaTime = 0;
+    long mUpdateTime = 0;
+    bool mChangeSpeed = false;
+    float mNewSpeed = 1;
+    unsigned int mFpsLimit = 60;
+    //std::vector<float> mFpsLog;
+    bool mUpdateFpsLog = false;
 };
 
 extern Application* App;
