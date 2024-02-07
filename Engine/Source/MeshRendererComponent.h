@@ -8,6 +8,7 @@ class Mesh;
 class Material;
 class ResourceMesh;
 class ResourceMaterial;
+class GeometryBatch;
 
 class MeshRendererComponent : public Component
 {
@@ -34,8 +35,10 @@ public:
 	const ResourceMaterial* GetMaterial() const { return mMaterial; }
 
 private:
-	ResourceMesh* mMesh;
-	ResourceMaterial* mMaterial;
+	ResourceMesh* mMesh = nullptr;
+	ResourceMaterial* mMaterial = nullptr;
+	GeometryBatch* mBatch = nullptr;
+
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 

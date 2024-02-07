@@ -244,6 +244,12 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="GeometryBatch.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="BatchManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -693,6 +699,12 @@
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryBatch.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BatchManager.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

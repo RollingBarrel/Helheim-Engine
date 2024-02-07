@@ -8,15 +8,16 @@
 #include "Quadtree.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
+#include "GeometryBatch.h"
 
 
 
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
-	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
+	:Component(owner, ComponentType::MESHRENDERER), mMaterial(new ResourceMaterial())
 {
-
+	
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
 	//mMesh->mUID = LCG().Int();
@@ -28,6 +29,7 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 
 	mOBB = original.mOBB;
 	mAABB = original.mAABB;
+	mBatch = original.mBatch;
 	
 }
 

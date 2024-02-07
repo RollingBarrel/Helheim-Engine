@@ -8,6 +8,7 @@
 
 
 struct ResourceMesh;
+class GeometryBatch;
 
 namespace Importer
 {
