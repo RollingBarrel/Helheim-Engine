@@ -123,4 +123,117 @@ set(HEADERS
     Dependencies/MathGeoLib-v1.5/include/Geometry/Polygon.h
     Dependencies/MathGeoLib-v1.5/include/Geometry/Polyhedron.h
     Dependencies/MathGeoLib-v1.5/include/Geometry/QuadTree.h
-    Dependencies/Math
+    Dependencies/MathGeoLib-v1.5/include/Geometry/Ray.h
+    Dependencies/MathGeoLib-v1.5/include/Geometry/Sphere.h
+    Dependencies/MathGeoLib-v1.5/include/Geometry/Triangle.h
+    Dependencies/MathGeoLib-v1.5/include/Geometry/TriangleMesh.h
+    Dependencies/MathGeoLib-v1.5/include/Geometry/TSAAABB.h
+    Dependencies/MathGeoLib-v1.5/include/Math/Angle.h
+    Dependencies/MathGeoLib-v1.5/include/Math/BitOps.h
+    Dependencies/MathGeoLib-v1.5/include/Math/CMakeLists.txt
+    Dependencies/MathGeoLib-v1.5/include/Math/float2.h
+    Dependencies/MathGeoLib-v1.5/include/Math/float3.h
+    Dependencies/MathGeoLib-v1.5/include/Math/float3x3.h
+    Dependencies/MathGeoLib-v1.5/include/Math/float3x4.h
+    Dependencies/MathGeoLib-v1.5/include/Math/float4.h
+    Dependencies/MathGeoLib-v1.5/include/Math/float4x4.h
+    Dependencies/MathGeoLib-v1.5/include/Math/MathConstants.h
+    Dependencies/MathGeoLib-v1.5/include/Math/MathFunc.h
+    Dependencies/MathGeoLib-v1.5/include/Math/MathLog.h
+    Dependencies/MathGeoLib-v1.5/include/Math/MathOps.h
+    Dependencies/MathGeoLib-v1.5/include/Math/MathSSE.h
+    Dependencies/MathGeoLib-v1.5/include/Math/Polynomial.h
+    Dependencies/MathGeoLib-v1.5/include/Math/Quat.h
+    Dependencies/MathGeoLib-v1.5/include/Math/Random.h
+    Dependencies/MathGeoLib-v1.5/include/Math/Scalar.h
+    Dependencies/MathGeoLib-v1.5/include/Math/SphericalPolynomial.h
+    Dependencies/MathGeoLib-v1.5/include/Math/SSEMath.h
+    Dependencies/MathGeoLib-v1.5/include/Math/String.h
+    Dependencies/MathGeoLib-v1.5/include/Math/TransformOps.h
+    Dependencies/MathGeoLib-v1.5/include/Math/UnitTest.h
+    Dependencies/MathGeoLib-v1.5/include/Time/Clock.h
+    Dependencies/MathGeoLib-v1.5/include/Time/Timing.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Array.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Capsule.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Camera.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Contour.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/ConvexHull.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/ConvexHull2D.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/ConvexHull3D.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/DynamicLinearLeastSquares.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/FrustumCuller.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Interpolation.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/KdTree.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Line2D.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Line2D2.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Line3D.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/LineSegment2D.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/LineSegment2D2.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/LineSegment3D.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/MeshSimplifier.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Perlin.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/PlaneSet.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Profiler.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Quadtree.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/RayGridIntersector.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/RaySphereIntersector.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/SectorSet.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/SectorSet2D.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/SphereSet.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Triangulator.h
+    Dependencies/MathGeoLib-v1.5/include/Utils/Triangulator2D.h
+    Dependencies/MikkTSpace/mikktspace.h
+    Dependencies/MikkTSpace/weldmesh.h
+    EngineTimer.h
+    Importer.h
+    ImporterModel.h
+    ImporterMesh.h
+    ImporterShader.h
+    GameObject.h
+    HierarchyPanel.h
+    ImporterMaterial.h
+    InspectorPanel.h
+    LightningPanel.h
+    LightSourceComponent.h
+    log.h
+    Main.h
+    MeshRendererComponent.h
+    ModuleEditor.h
+    ModuleFileSystem.h
+    ModuleInput.h
+    ModuleOpenGL.h
+    ImporterScene.h
+    ImporterTexture.h
+    ModuleScene.h
+    ModuleCamera.h
+    ModuleDebugDraw.h
+    ModuleWindow.h
+    Panel.h
+    Quadtree.h
+    QuadtreePanel.h
+    ModuleTimer.h
+    PausePanel.h
+    PreciseTimer.h
+    TestComponent.h
+    Timer.h
+)
+
+# Include directories
+include_directories(
+    Dependencies/ImGui-1.90-docking/include
+    Dependencies/MathGeoLib-v1.5/include
+    Dependencies/MikkTSpace
+)
+
+# Add executable target
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+
+# Link libraries
+target_link_libraries(${PROJECT_NAME} 
+    OpenGL32
+    SDL2
+    SDL2main
+)
+
+# Set working directory
+set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
