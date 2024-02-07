@@ -179,9 +179,9 @@ void Quadtree::UpdateTree()
 	AddHierarchyObjects(App->GetScene()->GetRoot());
 }
 
-void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)
+void Quadtree::UpdateDrawableGameObjects(const Frustum* myCamera)
 {
-	if (!myCamera.Intersects(mBoundingBox))
+	if (!myCamera->Intersects(mBoundingBox))
 	{
 		return;
 	}
@@ -202,7 +202,7 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum& myCamera)
 			if (object->getMeshRenderer() != nullptr)
 			{
 				OBB temp = object->getMeshRenderer()->getOBB();
-				bool intersects = myCamera.Intersects(temp);
+				bool intersects = myCamera->Intersects(temp);
 				object->getMeshRenderer()->SetInsideFrustum(intersects);
 
 			}

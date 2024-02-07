@@ -27,7 +27,7 @@ public:
     void DrawFrustum(const Frustum& frustum);
     bool GetShouldRenderGrid() const { return mDrawGrid; }
     void SetRenderGrid(bool a) { mDrawGrid = a; }
-
+                    
 
 
 private:

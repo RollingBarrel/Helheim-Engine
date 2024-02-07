@@ -10,6 +10,7 @@
 #include <algorithm>
 
 #include "MeshRendererComponent.h"
+#include "CameraComponent.h"
 #include "TestComponent.h"
 
 
@@ -272,6 +273,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	switch (type) {
 	case ComponentType::MESHRENDERER:
 		newComponent = new MeshRendererComponent(this);
+		break;
+	case ComponentType::CAMERA:
+		newComponent = new CameraComponent(this);
 		break;
 	//case ComponentType::LIGHTSOURCE:
 	//	newComponent = new Li

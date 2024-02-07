@@ -127,6 +127,16 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 				mSameComponentPopup = true;
 			}
 		}
+		if (ImGui::MenuItem("Camera")) {
+			mComponent = object->GetComponent(ComponentType::CAMERA);
+			if (!mComponent)
+			{
+				object->CreateComponent(ComponentType::CAMERA);
+			}
+			else {
+				mSameComponentPopup = true;
+			}
+		}
 		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
 		}

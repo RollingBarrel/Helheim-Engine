@@ -244,6 +244,8 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="CameraComponent.cpp" />
+    <ClCompile Include="CameraUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -694,6 +696,8 @@
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="CameraUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
