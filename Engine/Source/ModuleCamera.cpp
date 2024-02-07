@@ -117,16 +117,7 @@ update_status ModuleCamera::Update()
 			
 			frustum.pos = finalCameraPosition;
 
-			//ARREGLAR FUNCION LOOKAT
 			LookAt(frustum.pos, selectedObjectPosition, frustum.up);
-			
-			// Variable para controlar la duración de la animación
-			float animationDuration = 1.0f; // Duración de la animación en segundos
-		
-			// Variable para controlar el tiempo transcurrido durante la animación
-			float animationTime = 0.0f;
-
-			//falta poner hacer la funcion de la animacion
 		}
 	}
 	return UPDATE_CONTINUE;
