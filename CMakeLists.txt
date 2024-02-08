@@ -28,4 +28,4 @@ add_executable(my_executable ${HEADERS} ${SOURCES})
 target_link_libraries(my_executable PRIVATE Engine/Game/*)
 
 # Install executable
-install(TARGETS my_executable DESTINATION bin)
+#install(TARGETS my_executable DESTINATION bin)
