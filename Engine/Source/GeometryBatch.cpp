@@ -61,7 +61,7 @@ void GeometryBatch::AddResourceMesh(ResourceMesh* mesh)
 
 	for (auto UniqueMesh : mUniqueMeshes) {
 
-		assert(UniqueMesh != mesh);
+		//assert(UniqueMesh != mesh);
 	}
 
 	mUniqueMeshes.push_back(mesh);
@@ -93,7 +93,7 @@ void GeometryBatch::AddResourceMesh(ResourceMesh* mesh)
 	glDeleteBuffers(1 , &mVbo);	
 
 	glBindBuffer(GL_ARRAY_BUFFER, destVbo);
-	
+	/*
 	float* ptr = reinterpret_cast<float*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE)) + mVboSize);
 	
 	float* data = mesh->GetInterleavedData();
@@ -103,15 +103,17 @@ void GeometryBatch::AddResourceMesh(ResourceMesh* mesh)
 		ptr[i] = data[i];
 
 	}
-
-	/*
-	LOG("%f", ptr[2]);
-	ptr[0] = 3.0f;
-	LOG("%f", *ptr);
-
-	ptr[1] = 4.0f;
-	LOG("%f", ptr[1]);
 	*/
+	glBufferSubData(GL_ARRAY_BUFFER, mVboSize, mesh->GetNumVertices() * mVertexSize, mesh->GetInterleavedData());
+
+	//float* ptr = reinterpret_cast<float*>(reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY)) + mVboSize);
+	//LOG("%f", ptr[0]);
+	//ptr[0] = 3.0f;
+	//LOG("%f", ptr[-1]);
+
+	//ptr[1] = 4.0f;
+	//LOG("%f", ptr[-2]);
+	
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
