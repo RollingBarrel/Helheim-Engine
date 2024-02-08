@@ -190,7 +190,7 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="LightSourceComponent.cpp">
+    <ClCompile Include="PointLightComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
@@ -625,7 +625,7 @@
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="LightSourceComponent.h">
+    <ClInclude Include="PointLightComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h">

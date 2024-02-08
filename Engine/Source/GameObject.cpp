@@ -7,7 +7,7 @@
 #include "Quadtree.h"
 #include "imgui.h"
 #include "ModuleOpenGL.h"
-#include "LightSourceComponent.h"
+#include "PointLightComponent.h"
 #include <algorithm>
 
 #include "MeshRendererComponent.h"
@@ -274,10 +274,16 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	case ComponentType::MESHRENDERER:
 		newComponent = new MeshRendererComponent(this);
 		break;
-	case ComponentType::LIGHTSOURCE:
+	case ComponentType::POINTLIGHT:
 	{
-		const float3& pos = GetLocalPosition();
+		const float3& pos = GetWorldPosition();
 		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
+		break;
+	}
+	case ComponentType::SPOTLIGHT:
+	{
+		//const float3& pos = GetWorldPosition();
+		//newComponent = App->GetOpenGL()->AddSpotLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
 		break;
 	}
 	case ComponentType::TEST:

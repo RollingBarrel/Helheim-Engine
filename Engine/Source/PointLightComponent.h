@@ -8,9 +8,9 @@ typedef struct PointLight {
 	//PointLight(const PointLight& other)  = delete;
 }PointLight;
 
-class LightSourceComponent : public Component {
+class PointLightComponent : public Component {
 public:
-	~LightSourceComponent();
+	~PointLightComponent();
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override { return nullptr; }
@@ -31,7 +31,7 @@ public:
 
 private:
 	PointLight mData;
-	LightSourceComponent(GameObject* owner, const PointLight& light);
+	PointLightComponent(GameObject* owner, const PointLight& light);
 	friend class ModuleOpenGL;
 };
 

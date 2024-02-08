@@ -8,7 +8,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
-#include "LightSourceComponent.h"
+#include "PointLightComponent.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -416,9 +416,9 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShader
 }
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
-LightSourceComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
+PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
 {
-	LightSourceComponent* newComponent = new LightSourceComponent(owner, pLight);
+	PointLightComponent* newComponent = new PointLightComponent(owner, pLight);
 	mPointLights.push_back(newComponent);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
 	const uint32_t numPointLights = mPointLights.size();
@@ -440,7 +440,7 @@ LightSourceComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, Game
 	return newComponent;
 }
 
-void ModuleOpenGL::UpdatePoinLightInfo(const LightSourceComponent& cPointLight)
+void ModuleOpenGL::UpdatePoinLightInfo(const PointLightComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
@@ -453,7 +453,7 @@ void ModuleOpenGL::UpdatePoinLightInfo(const LightSourceComponent& cPointLight)
 	}
 }
 
-void ModuleOpenGL::RemovePointLight(const LightSourceComponent& cPointLight)
+void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 {
 	for(int i = 0; i < mPointLights.size(); ++i)
 	{

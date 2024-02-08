@@ -7,7 +7,7 @@
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
-#include "LightSourceComponent.h"
+#include "PointLightComponent.h"
 #include "ImporterMaterial.h"
 #include <MathFunc.h>
 
@@ -128,8 +128,11 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 				mSameComponentPopup = true;
 			}
 		}
-		if (ImGui::MenuItem("Light Source")) {
-			object->CreateComponent(ComponentType::LIGHTSOURCE);
+		if (ImGui::MenuItem("Point Light")) {
+			object->CreateComponent(ComponentType::POINTLIGHT);
+		}
+		if (ImGui::MenuItem("Spot Light")) {
+			object->CreateComponent(ComponentType::SPOTLIGHT);
 		}
 		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
@@ -262,9 +265,14 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawMeshRendererComponent(downCast);
 					break;
 				}
-				case ComponentType::LIGHTSOURCE: {
-					LightSourceComponent* downCast = reinterpret_cast<LightSourceComponent*>(component);
-					DrawLightSourceComponent(downCast);
+				case ComponentType::POINTLIGHT: {
+					PointLightComponent* downCast = reinterpret_cast<PointLightComponent*>(component);
+					DrawPointLightComponent(downCast);
+					break;
+				}
+				case ComponentType::SPOTLIGHT: {
+					//PointLightComponent* downCast = reinterpret_cast<SpotLightComponent*>(component);
+					//DrawSpotLightComponent(downCast);
 					break;
 				}
 				case ComponentType::TEST: {
@@ -285,8 +293,7 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text 2 ");
 }
 
-void InspectorPanel::DrawLightSourceComponent(LightSourceComponent* component) {
-	ImGui::Text("Lights !!");
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	const float* pCol = component->GetColor();
 	float col[3] = { pCol[0], pCol[1] , pCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
