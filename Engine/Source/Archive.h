@@ -7,7 +7,8 @@
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
-#include "vector"
+#include <vector>
+#include <memory>
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
