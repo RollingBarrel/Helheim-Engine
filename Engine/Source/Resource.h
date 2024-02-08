@@ -9,9 +9,11 @@ public:
 	{
 		Texture,
 		Mesh,
-		Scene,
 		Bone,
 		Animation,
+		Model,
+		Material,
+		Scene,
 		Unknown
 	};
 
@@ -23,8 +25,11 @@ public:
 	const char* GetLibraryFile() const;
 	unsigned int GetReferenceCount() const;
 
+	const void SetAssetsFile(const char* assetsFile) { mAssetsFile = assetsFile; }
+	const void SetLibraryFile(const char* libraryFile) { mLibraryFile = libraryFile; }
 
 protected:
+	//Name??? To set it when generating game object
 	unsigned int mUID = 0;
 	std::string mAssetsFile;
 	std::string mLibraryFile;

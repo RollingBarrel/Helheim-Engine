@@ -19,6 +19,8 @@ public:
 private:
 	Resource* CreateNewResource(const char* assetsFile, Resource::Type type);
 
+	const void DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const;
+
 	std::unordered_map<unsigned int, Resource*> mResources;
 };
 

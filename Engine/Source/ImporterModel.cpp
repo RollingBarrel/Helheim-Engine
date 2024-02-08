@@ -7,6 +7,7 @@
 
 #include "Algorithm/Random/LCG.h"
 
+#include "ResourceMesh.h"
 
 #define TINYGLTF_IMPLEMENTATION
 
