@@ -29,13 +29,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 37,
+				"line" : 31,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 40,
+				"line" : 34,
 				"parent" : 0
 			},
 			{
@@ -175,62 +175,22 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "SDL2.lib",
+				"fragment" : "Engine/Source/Dependencies/SDL-2.0.16/lib/x64.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "SDL2main.lib",
+				"fragment" : "Engine/Source/GLEW-2.1.0/lib/Release/x64.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "glew32.lib",
+				"fragment" : "Engine/Source/Physfs-3.2.0/lib/Debug.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "opengl32.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "physfs.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "DirectXTex.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "opengl32.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "glu32.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "opengl32.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "glu32.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "physfs.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "DirectXTex.lib",
+				"fragment" : "Engine/Source/DirectXTex/lib/x64/Debug.lib",
 				"role" : "libraries"
 			},
 			{
