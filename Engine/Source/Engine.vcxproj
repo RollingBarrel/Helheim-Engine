@@ -203,7 +203,6 @@
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
-    <ClCompile Include="LightSourceComponent.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
@@ -213,6 +212,7 @@
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
@@ -225,6 +225,7 @@
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
@@ -324,7 +325,6 @@
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="LightningPanel.h" />
-    <ClInclude Include="LightSourceComponent.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
@@ -353,11 +353,13 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PausePanel.h" />
+    <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="ProjectPanel.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="QuadtreePanel.h" />
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="ScenePanel.h" />
+    <ClInclude Include="SpotLightComponent.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Timer.h" />

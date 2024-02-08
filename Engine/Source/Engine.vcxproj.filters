@@ -190,9 +190,6 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="PointLightComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -243,6 +240,12 @@
     </ClCompile>
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLightComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -625,9 +628,6 @@
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="PointLightComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -693,6 +693,12 @@
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLightComponent.h">
+      <Filter>GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
-#ifndef _COMPONENT_LIGHTSOURCE_H_
-#define _COMPONENT_LIGHTSOURCE_H_
+#ifndef _COMPONENT_SPOTLIGHT_H_
+#define _COMPONENT_SPOTLIGHT_H_
 #include "Component.h"
 
 typedef struct PointLight {
@@ -35,4 +35,4 @@ private:
 	friend class ModuleOpenGL;
 };
 
-#endif //_COMPONENT_LIGHTSOURCE_H_
+#endif //_COMPONENT_SPOTLIGHT_H_

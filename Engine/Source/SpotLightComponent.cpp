@@ -1,23 +1,23 @@
-#include "LightSourceComponent.h"
+#include "SpotLightComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleDebugDraw.h"
 
-PointLightComponent::PointLightComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::LIGHTSOURCE), mData(light) {
+SpotLightComponent::SpotLightComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::LIGHTSOURCE), mData(light) {
 	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
 }
 
-PointLightComponent::~PointLightComponent() { App->GetOpenGL()->RemovePointLight(*this); }
+SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemovePointLight(*this); }
 
-const float* PointLightComponent::GetPosition() const 
+const float* SpotLightComponent::GetPosition() const 
 { 
 	return mOwner->GetWorldPosition().ptr(); 
 }
 
-void PointLightComponent::SetPosition(const float pos[3])
+void SpotLightComponent::SetPosition(const float pos[3])
 {
 	mData.pos[0] = pos[0];
 	mData.pos[1] = pos[1];
@@ -25,7 +25,7 @@ void PointLightComponent::SetPosition(const float pos[3])
 	App->GetOpenGL()->UpdatePoinLightInfo(*this);
 }
 
-void PointLightComponent::SetColor(float col[3])
+void SpotLightComponent::SetColor(float col[3])
 {
 	mData.col[0] = col[0];
 	mData.col[1] = col[1];
@@ -33,19 +33,19 @@ void PointLightComponent::SetColor(float col[3])
 	App->GetOpenGL()->UpdatePoinLightInfo(*this);
 }
 
-void PointLightComponent::SetIntensity(float intensity)
+void SpotLightComponent::SetIntensity(float intensity)
 {
 	mData.col[3] = intensity;
 	App->GetOpenGL()->UpdatePoinLightInfo(*this);
 }
 
-void PointLightComponent::SetRadius(float radius)
+void SpotLightComponent::SetRadius(float radius)
 {
 	mData.pos[3] = radius;
 	App->GetOpenGL()->UpdatePoinLightInfo(*this);
 }
 
-void PointLightComponent::Update()
+void SpotLightComponent::Update()
 {
 	//TODO: No mirarlo cada frame ??
 	const float* pos = mOwner->GetWorldPosition().ptr();
