@@ -123,7 +123,7 @@
 				},
 				{
 					"backtrace" : 3,
-					"path" : "/usr/include/GL/glu.h"
+					"path" : "/usr/include/GL"
 				}
 			],
 			"language" : "CXX",
