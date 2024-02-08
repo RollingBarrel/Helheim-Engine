@@ -66,3 +66,8 @@ long Timer::SetSpeed(float speed) {
 	mSpeed = speed;
 	return currentTime;
 }
+
+void Timer::SetTimeScale(float speed) {
+	mNewSpeed = speed;
+	mChangeSpeed = true;
+}

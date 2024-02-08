@@ -16,6 +16,8 @@ public:
 	long Stop() { SetSpeed(0); }
 	long SetSpeed(float speed);
 
+    void SetTimeScale(float speed);
+
     long GetRealDelta() const { return mDeltaTime; }
 
     float GetFPS() const

@@ -24,11 +24,11 @@ Application::Application()
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
-	modules[4] = clock = new ModuleTimer();
-	modules[5] = render = new ModuleOpenGL();
-	modules[6] = debugDraw = new ModuleDebugDraw();
-	modules[7] = scene = new ModuleScene();
-	modules[8] = editor = new ModuleEditor();
+	//modules[4] = clock = new ModuleTimer();
+	modules[4] = render = new ModuleOpenGL();
+	modules[5] = debugDraw = new ModuleDebugDraw();
+	modules[6] = scene = new ModuleScene();
+	modules[7] = editor = new ModuleEditor();
 
 }
 
@@ -87,5 +87,5 @@ bool Application::CleanUp()
 }
 
 float Application::GetDt() const {
-	return clock->GetRealDelta() / (float) 1000; 
+	return mEngineTimer->GetRealDelta() / (float) 1000;
 }

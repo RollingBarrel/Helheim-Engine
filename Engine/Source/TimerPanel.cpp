@@ -7,7 +7,7 @@
 #include "Timer.h"
 #include "PreciseTimer.h"
 
-#include "ModuleTimer.h"
+//#include "ModuleTimer.h"
 
 
 TimerPanel::TimerPanel() : Panel(TIMERPANEL, true) 
@@ -25,7 +25,7 @@ void TimerPanel::Draw(int windowFlags)
 
 	ImGui::PushItemWidth(400.0f);
 
-	static ModuleTimer* clock = App->GetClock();
+	//static ModuleTimer* clock = App->GetClock();
 
 	static Timer* engineClock = App->GetEngineClock();
 
@@ -88,7 +88,6 @@ void TimerPanel::Draw(int windowFlags)
 	std::vector<float> msLogFloat(msLog.begin(), msLog.end());
 
 	ImGui::PlotLines("MS", msLogFloat.data(), msLogFloat.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
-	ImGui::Text(" ");
 
 	ImGui::End();
 }
