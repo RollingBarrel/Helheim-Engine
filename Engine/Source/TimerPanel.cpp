@@ -4,8 +4,10 @@
 #include "imgui.h"
 #include "glew.h"
 
-#include "ModuleTimer.h"
+#include "Timer.h"
 #include "PreciseTimer.h"
+
+#include "ModuleTimer.h"
 
 
 TimerPanel::TimerPanel() : Panel(TIMERPANEL, true) 
@@ -25,24 +27,26 @@ void TimerPanel::Draw(int windowFlags)
 
 	static ModuleTimer* clock = App->GetClock();
 
+	static Timer* engineClock = App->GetEngineClock();
+
 	static float fps;
 	static long ms;
 	static std::vector<float> fpsLog;
 	static std::vector<unsigned long> msLog;
 	
 	//Executes evey 500 ms (no change if executed every time)
-	if(clock->UpdateFpsLog())
+	if(engineClock->UpdateFpsLog())
 	{
-		fpsLog = clock->GetFpsLog();
-		clock->FpsLogUpdated();
+		fpsLog = engineClock->GetFpsLog();
+		engineClock->FpsLogUpdated();
 
-		ms = clock->GetRealDelta();
-		fps = clock->GetFPS();
+		ms = engineClock->GetRealDelta();
+		fps = engineClock->GetFPS();
 	}
 
-	static int fps_limit = clock->GetFpsLimit();
+	static int fps_limit = engineClock->GetFpsLimit();
 	ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
-	clock->SetFpsLimit(fps_limit);
+	engineClock->SetFpsLimit(fps_limit);
 
 	long framedelay = 0;
 	ImGui::Text("Last frame delayed for: %lld", framedelay);
@@ -74,13 +78,13 @@ void TimerPanel::Draw(int windowFlags)
 
 	ImGui::Text("Application average %lld ms/frame (%.1f FPS)", ms, fps);
 
-	ImGui::Text("Total Time: %.2f", clock->GetTotalFrames() * 0.01666f);
+	ImGui::Text("Total Time: %.2f", engineClock->GetTotalFrames() * 0.01666f);
 
-	ImGui::Text("Frame Count: %u", clock->GetTotalFrames());
+	ImGui::Text("Frame Count: %u", engineClock->GetTotalFrames());
 
 	ImGui::PlotHistogram("FPS", fpsLog.data(), fpsLog.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
 
-	msLog = clock->GetMsLog();
+	msLog = engineClock->GetMsLog();
 	std::vector<float> msLogFloat(msLog.begin(), msLog.end());
 
 	ImGui::PlotLines("MS", msLogFloat.data(), msLogFloat.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));

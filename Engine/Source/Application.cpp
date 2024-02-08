@@ -11,10 +11,14 @@
 #include "ModuleTimer.h"
 
 #include "Timer.h"
+#include "PreciseTimer.h"
 
 
 Application::Application()
 {
+	mEngineTimer = new Timer();
+	mGameTimer = new Timer();
+
 	// Order matters: they will Init/start/update in this order
 	modules[0] = input = new ModuleInput();
 	modules[1] = window = new ModuleWindow();
@@ -25,6 +29,7 @@ Application::Application()
 	modules[6] = debugDraw = new ModuleDebugDraw();
 	modules[7] = scene = new ModuleScene();
 	modules[8] = editor = new ModuleEditor();
+
 }
 
 Application::~Application()
@@ -32,10 +37,16 @@ Application::~Application()
 	for (int i = 0; i < NUM_MODULES; ++i) {
 		delete modules[i];
 	}
+
+	delete mEngineTimer;
+	delete mGameTimer;
 }
 
 bool Application::Init()
 {
+	mEngineTimer->Start();
+	mGameTimer->Start();
+
 	bool ret = true;
 
 	for(int i = 0; i < NUM_MODULES && ret == true; ++i)
@@ -48,6 +59,9 @@ bool Application::Init()
 
 update_status Application::Update()
 {
+	mEngineTimer->Update();
+	mGameTimer->Update();
+
 	update_status ret = UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)

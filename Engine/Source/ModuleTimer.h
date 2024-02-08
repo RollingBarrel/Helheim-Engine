@@ -27,6 +27,7 @@ public:
         }
         return 0; 
     }
+
     unsigned int GetFpsLimit() const { return mFpsLimit; }
     void SetFpsLimit(unsigned int limit) { mFpsLimit = limit; }
 

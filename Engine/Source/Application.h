@@ -37,6 +37,9 @@ public:
     ModuleScene* GetScene() { return scene; }
     ModuleTimer* GetClock() { return clock; }
 
+    Timer* GetEngineClock() const { return mEngineTimer; }
+    Timer* GetGameClock() const { return mGameTimer; }
+
     float GetDt() const;
 
 private:
@@ -54,19 +57,9 @@ private:
 #define NUM_MODULES 9
     Module* modules[NUM_MODULES];
 
-
     //ModuleTimer stuff
-    Timer* mRealTimer;
+    Timer* mEngineTimer;
     Timer* mGameTimer;
-
-    long mGameDelta = 0;
-    unsigned long mDeltaTime = 0;
-    long mUpdateTime = 0;
-    bool mChangeSpeed = false;
-    float mNewSpeed = 1;
-    unsigned int mFpsLimit = 60;
-    //std::vector<float> mFpsLog;
-    bool mUpdateFpsLog = false;
 };
 
 extern Application* App;
