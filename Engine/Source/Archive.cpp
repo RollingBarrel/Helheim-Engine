@@ -1,4 +1,4 @@
-#include "archive.h"
+#include "Archive.h"
 
 Archive::Archive() : mDocument(std::make_unique<rapidjson::Document>()) {
     mDocument->SetObject();
