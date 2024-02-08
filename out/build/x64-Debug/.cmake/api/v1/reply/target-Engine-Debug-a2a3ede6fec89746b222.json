@@ -29,13 +29,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 35,
+				"line" : 36,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 38,
+				"line" : 39,
 				"parent" : 0
 			},
 			{
@@ -120,6 +120,10 @@
 				{
 					"backtrace" : 3,
 					"path" : "C:/Users/davidbt3/workspace/Assigment2/Engine/Source/Dependencies/DirectXTex/lib/x64/Debug"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/usr/include/GL/glu.h"
 				}
 			],
 			"language" : "CXX",
