@@ -137,18 +137,19 @@ void main() {
 	for(int i = 0; i<numSLights; ++i)
 	{
 		vec3 mVector = sPos - sLights[i].pos.xyz;
-		vec3 sDir = normalize(sLights[i].aimD.xyz);
-		float dist = dot(mVector, sDir);
+		vec3 sDir = normalize(mVector);
+		vec3 aimDir = normalize(sLights[i].aimD.xyz);
+		float dist = dot(mVector, aimDir);
 		float r = ;
 		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
 		cAtt = 1;
-		vec3 c = dot(normalize(mVector), sDir);
-		vec3 cInner = cos(sDir);
+		vec3 c = dot(sDir, aimDir);
+		vec3 cInner = cos(sLights[i].aimD.w);
 		vec3 cOuter = cos(sLights[i].col.w);
 		if(cInner > c && c > cOuter)
 			cAtt = (c - cOuter) / (cInner - cOuter);
 		att *= cAtt;
-		pbrCol += GetPBRLightColor(sDir, pLights[i].col.xyz,  pLights[i].col.w, att);
+		pbrCol += GetPBRLightColor(sDir, pLights[i].col.xyz,  pLights[i].pos.w, att);
 	}
 
 	//HDR color  
