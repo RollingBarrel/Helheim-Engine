@@ -15,11 +15,14 @@ include_directories(
     Engine/Source/Dependencies/SDL-2.0.16/include
 )
 
+# Add header files
+file(GLOB HEADERS "Engine/Source/*.h")
+
 # Add source files
 file(GLOB SOURCES "Engine/Source/*.cpp")
 
 # Add executable
-add_executable(my_executable ${SOURCES})
+add_executable(my_executable ${HEADERS} ${SOURCES})
 
 # Add library dependencies
 target_link_libraries(my_executable PRIVATE Engine/Game/*)
