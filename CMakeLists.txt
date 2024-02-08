@@ -19,6 +19,10 @@ include_directories(
     Engine/Source/Dependencies/Physfs-3.2.0/include	
 	Engine/Source/Dependencies/DebugDraw
     Engine/Source/Dependencies/RapidJSON-1.1.0/include
+	Engine/Source/Dependencies/SDL-2.0.16/lib/x64
+	Engine/Source/Dependencies/GLEW-2.1.0/lib/Release/x64
+	Engine/Source/Dependencies/Physfs-3.2.0/lib/Debug
+	Engine/Source/Dependencies/DirectXTex/lib/x64/Debug
 )
 
 # Add header files

@@ -29,13 +29,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 31,
+				"line" : 35,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 34,
+				"line" : 38,
 				"parent" : 0
 			},
 			{
@@ -104,6 +104,22 @@
 				{
 					"backtrace" : 3,
 					"path" : "C:/Users/davidbt3/workspace/Assigment2/Engine/Source/Dependencies/RapidJSON-1.1.0/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/davidbt3/workspace/Assigment2/Engine/Source/Dependencies/SDL-2.0.16/lib/x64"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/davidbt3/workspace/Assigment2/Engine/Source/Dependencies/GLEW-2.1.0/lib/Release/x64"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/davidbt3/workspace/Assigment2/Engine/Source/Dependencies/Physfs-3.2.0/lib/Debug"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/davidbt3/workspace/Assigment2/Engine/Source/Dependencies/DirectXTex/lib/x64/Debug"
 				}
 			],
 			"language" : "CXX",
