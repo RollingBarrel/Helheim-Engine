@@ -19,7 +19,13 @@ include_directories(
     Engine/Source/Dependencies/Physfs-3.2.0/include	
 	Engine/Source/Dependencies/DebugDraw
     Engine/Source/Dependencies/RapidJSON-1.1.0/include
+	${OPENGL_INCLUDE_DIR}
+	${GLU_INCLUDE_DIR}
 )
+
+find_package(OpenGL REQUIRED)
+find_package(GLU REQUIRED)
+
 
 # Add header files
 file(GLOB HEADERS "Engine/Source/*.h")
@@ -38,6 +44,8 @@ target_link_libraries(Engine
 	opengl32
 	physfs
 	DirectXTex
+	${OPENGL_LIBRARIES}
+	${GLU_LIBRARY}
 )
 
 # Install executable
