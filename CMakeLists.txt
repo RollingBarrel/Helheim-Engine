@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(Engine VERSION 0.1.0)
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Include directories
@@ -22,10 +22,10 @@ file(GLOB HEADERS "Engine/Source/*.h")
 file(GLOB SOURCES "Engine/Source/*.cpp")
 
 # Add executable
-add_executable(my_executable ${HEADERS} ${SOURCES})
+add_executable(Engine ${HEADERS} ${SOURCES})
 
 # Add library dependencies
-target_link_libraries(my_executable PRIVATE Engine/Game/*)
+target_link_libraries(Engine PRIVATE Engine/Game/*)
 
 # Install executable
 #install(TARGETS my_executable DESTINATION bin)
