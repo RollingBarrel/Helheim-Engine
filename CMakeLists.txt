@@ -1,197 +1,28 @@
 cmake_minimum_required(VERSION 3.10)
-project(Engine)
+project(Engine VERSION 0.1.0)
 
+# Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
-
-# Define sources and headers
-set(SOURCES
-    Engine/Source/AboutPanel.cpp
-    Engine/Source/Application.cpp
-    Engine/Source/Archive.cpp
-    Engine/Source/Component.cpp
-    Engine/Source/ConsolePanel.cpp
-    Engine/Source/DebugPanel.cpp
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/backends/imgui_impl_opengl3.cpp
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/backends/imgui_impl_sdl2.cpp
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imgui.cpp
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imgui_demo.cpp
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imgui_draw.cpp
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imgui_tables.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Algorithm/Random/LCG.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/AABB.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Capsule.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Circle.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Cone.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Cylinder.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Frustum.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Line.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/LineSegment.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/OBB.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Plane.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Polygon.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Polyhedron.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Ray.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Sphere.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Triangle.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/TriangleMesh.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/BitOps.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float2.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float3.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float3x3.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float3x4.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float4.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float4x4.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/MathFunc.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/MathLog.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/MathOps.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/Polynomial.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/Quat.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/SSEMath.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/TransformOps.cpp
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Time/Clock.cpp
-    Engine/Source/Dependencies/MikkTSpace/mikktspace.c
-    Engine/Source/Dependencies/MikkTSpace/weldmesh.c
-    Engine/Source/EngineTimer.cpp
-    Engine/Source/Importer.cpp
-    Engine/Source/ImporterModel.cpp
-    Engine/Source/ImporterMesh.cpp
-    Engine/Source/ImporterShader.cpp
-    Engine/Source/GameObject.cpp
-    Engine/Source/HierarchyPanel.cpp
-    Engine/Source/ImporterMaterial.cpp
-    Engine/Source/InspectorPanel.cpp
-    Engine/Source/LightningPanel.cpp
-    Engine/Source/LightSourceComponent.cpp
-    Engine/Source/log.cpp
-    Engine/Source/Main.cpp
-    Engine/Source/MeshRendererComponent.cpp
-    Engine/Source/ModuleEditor.cpp
-    Engine/Source/ModuleFileSystem.cpp
-    Engine/Source/ModuleInput.cpp
-    Engine/Source/ModuleOpenGL.cpp
-    Engine/Source/ImporterScene.cpp
-    Engine/Source/ImporterTexture.cpp
-    Engine/Source/ModuleScene.cpp
-    Engine/Source/ModuleCamera.cpp
-    Engine/Source/ModuleDebugDraw.cpp
-    Engine/Source/ModuleWindow.cpp
-    Engine/Source/Panel.cpp
-    Engine/Source/Quadtree.cpp
-    Engine/Source/QuadtreePanel.cpp
-    Engine/Source/ModuleTimer.cpp
-    Engine/Source/PausePanel.cpp
-    Engine/Source/PreciseTimer.cpp
-    Engine/Source/TestComponent.cpp
-    Engine/Source/Timer.cpp
-)
-
-set(HEADERS
-    Engine/Source/AboutPanel.h
-    Engine/Source/Application.h
-    Engine/Source/Archive.h
-    Engine/Source/Component.h
-    Engine/Source/ConsolePanel.h
-    Engine/Source/Dependencies/DebugDraw/debugdraw.h
-    Engine/Source/Dependencies/DebugDraw/debug_draw.hpp
-    Engine/Source/DebugPanel.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/backends/imgui_impl_opengl3.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/backends/imgui_impl_opengl3_loader.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/backends/imgui_impl_sdl2.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imconfig.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imgui.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imgui_internal.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imstb_rectpack.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imstb_textedit.h
-    Engine/Source/Dependencies/ImGui-1.90-docking/include/imstb_truetype.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Algorithm/Random/LCG.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/AABB.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/AABB2D.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Capsule.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Circle.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Cone.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Cylinder.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Frustum.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/GeometryAll.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/GeomType.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/HitInfo.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/KDTree.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Line.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/LineSegment.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/OBB.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/PBVolume.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Plane.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Polygon.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Polyhedron.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/QuadTree.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Ray.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Sphere.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/Triangle.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Geometry/TriangleMesh.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/BitOps.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float2.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float3.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float3x3.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float3x4.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float4.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/float4x4.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/MathConstants.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/MathFunc.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/MathLog.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/Polynomial.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/Quat.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/SSEMath.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math/TransformOps.h
-    Engine/Source/Dependencies/MathGeoLib-v1.5/include/Time/Clock.h
-    Engine/Source/Dependencies/MikkTSpace/mikktspace.h
-    Engine/Source/Dependencies/MikkTSpace/weldmesh.h
-    Engine/Source/EngineTimer.h
-    Engine/Source/Importer.h
-    Engine/Source/ImporterModel.h
-    Engine/Source/ImporterMesh.h
-    Engine/Source/ImporterShader.h
-    Engine/Source/GameObject.h
-    Engine/Source/HierarchyPanel.h
-    Engine/Source/ImporterMaterial.h
-    Engine/Source/InspectorPanel.h
-    Engine/Source/LightningPanel.h
-    Engine/Source/LightSourceComponent.h
-    Engine/Source/MeshRendererComponent.h
-    Engine/Source/ModuleEditor.h
-    Engine/Source/ModuleFileSystem.h
-    Engine/Source/ModuleInput.h
-    Engine/Source/ModuleOpenGL.h
-    Engine/Source/ImporterScene.h
-    Engine/Source/ImporterTexture.h
-    Engine/Source/ModuleScene.h
-    Engine/Source/ModuleCamera.h
-    Engine/Source/ModuleDebugDraw.h
-    Engine/Source/ModuleWindow.h
-    Engine/Source/Panel.h
-    Engine/Source/Quadtree.h
-    Engine/Source/QuadtreePanel.h
-    Engine/Source/ModuleTimer.h
-    Engine/Source/PausePanel.h
-    Engine/Source/PreciseTimer.h
-    Engine/Source/TestComponent.h
-    Engine/Source/Timer.h
-)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Include directories
 include_directories(
-    Dependencies/ImGui-1.90-docking/include
-    Dependencies/MathGeoLib-v1.5/include
-    Dependencies/MikkTSpace
+    Engine/Source/Dependencies/GLEW-2.1.0/include
+    Engine/Source/Dependencies/ImGui-1.90-docking/include
+    Engine/Source/Dependencies/MathGeoLib-v1.5/include
+    Engine/Source/Dependencies/Physfs-3.2.0/include
+    Engine/Source/Dependencies/RapidJSON-1.1.0/include
+    Engine/Source/Dependencies/SDL-2.0.16/include
 )
 
-# Add executable target
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+# Add source files
+file(GLOB SOURCES "Engine/Source/*.cpp")
 
-# Link libraries
-target_link_libraries(${PROJECT_NAME} 
-    OpenGL32
-    SDL2
-    SDL2main
-)
+# Add executable
+add_executable(my_executable ${SOURCES})
 
-# Set working directory
-set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+# Add library dependencies
+target_link_libraries(my_executable PRIVATE Engine/Game/*)
+
+# Install executable
+install(TARGETS my_executable DESTINATION bin)
