@@ -2,7 +2,7 @@
 #define _COMPONENT_SPOTLIGHT_H_
 #include "Component.h"
 
-typedef struct PointLight {
+typedef struct SpotLight {
 	float pos[4]; //w is radius
 	float col[4]; //w is Intensity
 	//PointLight(const PointLight& other)  = delete;

@@ -44,6 +44,16 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
+struct SpotLight{
+	vec4 pos; //w intensity
+	vec4 aimD;//w inner angle
+	vec4 col;//w outer angle
+};
+readonly layout(std430, binding = 1) buffer SpotLights
+{
+	uint numSLights;
+	SpotLight sLights[];
+};
 
 uniform Material material;
 
@@ -71,7 +81,7 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	//Color with specular and no pi division
 	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
 	//Color with specular and pi divisions
-	vec3 pbrColor = ((diffuseColor*(1-specularColor))/PI + ((shininess+2)/2*PI)* RFOi * VdotRpown) * Li * NdotL;
+	vec3 pbrColor = (((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL)/ PI;
 	return pbrColor;
 }
 
@@ -121,6 +131,24 @@ void main() {
 		vec3 pDir = normalize(mVector);
 		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / (dist*dist + 1);
 		pbrCol += GetPBRLightColor(pDir, pLights[i].col.xyz,  pLights[i].col.w, att);
+	}
+
+	//Spot lights
+	for(int i = 0; i<numSLights; ++i)
+	{
+		vec3 mVector = sPos - sLights[i].pos.xyz;
+		vec3 sDir = normalize(sLights[i].aimD.xyz);
+		float dist = dot(mVector, sDir);
+		float r = ;
+		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
+		cAtt = 1;
+		vec3 c = dot(normalize(mVector), sDir);
+		vec3 cInner = cos(sDir);
+		vec3 cOuter = cos(sLights[i].col.w);
+		if(cInner > c && c > cOuter)
+			cAtt = (c - cOuter) / (cInner - cOuter);
+		att *= cAtt;
+		pbrCol += GetPBRLightColor(sDir, pLights[i].col.xyz,  pLights[i].col.w, att);
 	}
 
 	//HDR color  
