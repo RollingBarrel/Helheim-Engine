@@ -61,6 +61,9 @@ struct ResourceMesh
 	const float* GetAttributeData(Attribute::Type type) const;
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; };
 	unsigned int GetVertexSize() const { return mVertexSize; }
+	unsigned int GetNumVertices() const { return mNumVertices; }
+	unsigned int GetNumIndices() const { return mNumIndices; }
+	unsigned int* GetIndices() const { return mIndices; }
 	unsigned int GetVao() const { return mVao; }
 
 	unsigned int LoadToMemory();

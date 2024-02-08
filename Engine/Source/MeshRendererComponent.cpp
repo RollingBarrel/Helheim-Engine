@@ -15,12 +15,16 @@
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
-	:Component(owner, ComponentType::MESHRENDERER), mMaterial(new ResourceMaterial())
+	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
 {
 	
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
 	//mMesh->mUID = LCG().Int();
+
+	App->GetOpenGL()->AddMeshRendererComponent(this);
+
+
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
@@ -111,6 +115,12 @@ void MeshRendererComponent::Draw()
 	glUseProgram(0);
 	glBindVertexArray(0);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
+
+
+	//mBatch = new GeometryBatch(this);
+	//mBatch->AddResourceMesh(mMesh);
+
+
 }
 
 void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)

@@ -9,15 +9,18 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "LightSourceComponent.h"
+#include "BatchManager.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
 {
+	mBatchManager = new BatchManager();
 }
 
 // Destructor
 ModuleOpenGL::~ModuleOpenGL()
 {
+	delete mBatchManager;
 }
 
 static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
@@ -48,7 +51,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
- 	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+ 	//LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -470,4 +473,11 @@ void ModuleOpenGL::RemovePointLight(const LightSourceComponent& cPointLight)
 			return;
 		}
 	}
+}
+
+void ModuleOpenGL::AddMeshRendererComponent(MeshRendererComponent* mesh)
+{
+
+	mBatchManager->AddMeshRendererComponent(mesh);
+
 }

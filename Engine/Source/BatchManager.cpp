@@ -1,12 +1,27 @@
 #include "BatchManager.h"
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
+#include "MeshRendererComponent.h"
 
-GeometryBatch* BatchManager::RequiredBatch(ResourceMesh* resourceMesh) //Que asco de funcion dios como que un triple for
+BatchManager::BatchManager()
+{
+}
+
+BatchManager::~BatchManager()
+{
+	for (auto batch : mBatches) {
+		delete batch;
+	}
+
+
+}
+
+void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent) //Que asco de funcion dios como que un triple for
 {
 
 	bool batchFound = false;
 	int batchPos = -1;
+
 
 	for (int i = 0; i < mBatches.size() && !batchFound; ++i) 
 	{
@@ -15,7 +30,7 @@ GeometryBatch* BatchManager::RequiredBatch(ResourceMesh* resourceMesh) //Que asc
 
 		for (int j = 0; j < batchAttributes.size() && sameAttibutes; ++j) 
 		{
-			const std::vector<Attribute*> meshAttributes = resourceMesh->GetAttributes();
+			const std::vector<Attribute*> meshAttributes = meshComponent->GetResourceMesh()->GetAttributes();
 			bool found = false;
 
 				for (int k = 0; k < meshAttributes.size() && !found; ++k) 
@@ -39,10 +54,14 @@ GeometryBatch* BatchManager::RequiredBatch(ResourceMesh* resourceMesh) //Que asc
 	}
 
 	if (batchFound) {
-		return mBatches[batchPos];
+		 mBatches[batchPos]->AddComponent(meshComponent);
 	}
 	else {
-		mBatches.push_back(new GeometryBatch(resourceMesh->GetAttributes()));
+
+		GeometryBatch* newBatch = new GeometryBatch(meshComponent);
+		mBatches.push_back(newBatch);
 	}
 
 }
+
+

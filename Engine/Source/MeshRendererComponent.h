@@ -27,6 +27,7 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	const OBB getOBB() const { return mOBB; }
+	 ResourceMesh* GetResourceMesh() const { return mMesh; }
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }

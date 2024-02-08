@@ -14,6 +14,7 @@ typedef struct DirectionalAmbient {
 
 class LightSourceComponent;
 class PointLight;
+class BatchManager;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
@@ -44,8 +45,11 @@ public:
 	void UpdatePoinLightInfo(const LightSourceComponent& ptrPointLight);
 	void RemovePointLight(const LightSourceComponent& cPointLight);
 
+	void AddMeshRendererComponent(MeshRendererComponent* mesh);
+
 private:
 	void* context = nullptr;
+	BatchManager* mBatchManager;
 
 	//Framebuffer
 	unsigned int sFbo;

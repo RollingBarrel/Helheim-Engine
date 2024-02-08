@@ -20,11 +20,15 @@ struct Command
 class GeometryBatch
 {
 public:
-	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
-	GeometryBatch(std::vector<Attribute*> attributes);
 
+	GeometryBatch(MeshRendererComponent* mesh);
+	~GeometryBatch();
+
+	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
+	
 	void AddComponent(MeshRendererComponent* component);
 	void AddResourceMesh(ResourceMesh* mesh);
+	
 
 private:
 
@@ -32,6 +36,12 @@ private:
 	std::vector<ResourceMesh*> mUniqueMeshes;
 	std::vector<Attribute*> mAttributes;
 	std::vector<Command*> mCommands;
+
+	unsigned int mVertexSize = 0;
+
+	unsigned int mVboSize = 0;
+	unsigned int mEboSize = 0;
+	unsigned int mVaoSize = 0;
 
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
