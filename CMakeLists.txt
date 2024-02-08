@@ -32,12 +32,12 @@ add_executable(Engine ${HEADERS} ${SOURCES})
 
 # Add library dependencies
 target_link_libraries(Engine
-	SDL2.lib
-	SDL2main.lib
-	glew32.lib
-	opengl32.lib
-	physfs.lib
-	DirectXTex.lib
+	SDL2
+	SDL2main
+	glew32
+	opengl32
+	physfs
+	DirectXTex
 )
 
 # Install executable
