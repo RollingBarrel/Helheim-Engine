@@ -7,12 +7,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Include directories
 include_directories(
-    Engine/Source/Dependencies/GLEW-2.1.0/include
+	Engine/Source/Dependencies/MikkTSpace
+	Engine/Source/Dependencies/DirectXTex
+	Engine/Source/Dependencies/SDL-2.0.16/include
+    Engine/Source/Dependencies/GLEW-2.1.0/include/GL
     Engine/Source/Dependencies/ImGui-1.90-docking/include
+	Engine/Source/Dependencies/ImGui-1.90-docking/include/backends
     Engine/Source/Dependencies/MathGeoLib-v1.5/include
+	Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math
+	Engine/Source/Dependencies/Tinygltf-2.8.19
     Engine/Source/Dependencies/Physfs-3.2.0/include
+	Engine/Source/Dependencies/DebugDraw
     Engine/Source/Dependencies/RapidJSON-1.1.0/include
-    Engine/Source/Dependencies/SDL-2.0.16/include
 )
 
 # Add header files
