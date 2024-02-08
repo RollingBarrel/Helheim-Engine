@@ -16,7 +16,7 @@ include_directories(
     Engine/Source/Dependencies/MathGeoLib-v1.5/include
 	Engine/Source/Dependencies/MathGeoLib-v1.5/include/Math
 	Engine/Source/Dependencies/Tinygltf-2.8.19
-    Engine/Source/Dependencies/Physfs-3.2.0/include
+    Engine/Source/Dependencies/Physfs-3.2.0/include	
 	Engine/Source/Dependencies/DebugDraw
     Engine/Source/Dependencies/RapidJSON-1.1.0/include
 )
@@ -31,7 +31,14 @@ file(GLOB SOURCES "Engine/Source/*.cpp")
 add_executable(Engine ${HEADERS} ${SOURCES})
 
 # Add library dependencies
-target_link_libraries(Engine PRIVATE Engine/Game/*)
+target_link_libraries(Engine
+	SDL2.lib
+	SDL2main.lib
+	glew32.lib
+	opengl32.lib
+	physfs.lib
+	DirectXTex.lib
+)
 
 # Install executable
 #install(TARGETS my_executable DESTINATION bin)
