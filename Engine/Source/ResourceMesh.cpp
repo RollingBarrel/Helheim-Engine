@@ -126,6 +126,14 @@ float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedB
     return ret;
 }
 
+ResourceMesh::ResourceMesh()
+{
+}
+
+ResourceMesh::ResourceMesh(unsigned int id) : Resource(mUID)
+{
+}
+
 void ResourceMesh::GenerateTangents()
 {
     if (GetAttributeIdx(Attribute::POS) < 0 || GetAttributeIdx(Attribute::UV) < 0 || GetAttributeIdx(Attribute::NORMAL) < 0)

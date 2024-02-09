@@ -216,7 +216,10 @@
     <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
+    <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
@@ -362,7 +365,10 @@
     <ClInclude Include="QuadtreePanel.h" />
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="ResourceModel.h" />
+    <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="ScenePanel.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="PreciseTimer.h" />

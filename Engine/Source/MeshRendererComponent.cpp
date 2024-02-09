@@ -1,7 +1,4 @@
 #include "MeshRendererComponent.h"
-#include "ImporterMesh.h"
-#include "ImporterTexture.h"
-#include "ImporterMaterial.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "glew.h"
@@ -10,6 +7,8 @@
 #include "ModuleDebugDraw.h"
 
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
+#include "ResourceTexture.h"
 
 
 
@@ -65,7 +64,7 @@ void MeshRendererComponent::Draw()
 		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
 		glUniform1i(diffuseTextureLoc, 0);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->openGlId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->mOpenGLId);
 	}
 	else {
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
@@ -77,7 +76,7 @@ void MeshRendererComponent::Draw()
 		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
 		glUniform1i(specularTextureLoc, 1);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->openGlId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->mOpenGLId);
 	}
 	else
 	{
@@ -90,7 +89,7 @@ void MeshRendererComponent::Draw()
 		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
 		glUniform1i(normalTextureLoc, 2);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->openGlId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->mOpenGLId);
 	}
 	else
 	{
@@ -113,10 +112,11 @@ void MeshRendererComponent::Draw()
 
 void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 {
-	mMesh->mUID = meshUid;
-	mMaterial->mUID = materialUid;
-	Importer::Mesh::Load(mMesh, std::to_string(meshUid).c_str());
-	Importer::Material::Load(mMaterial, std::to_string(materialUid).c_str());
+	//TODO
+	//mMesh->mUID = meshUid;
+	//mMaterial->mUID = materialUid;
+	//Importer::Mesh::Load(mMesh, std::to_string(meshUid).c_str());
+	//Importer::Material::Load(mMaterial, std::to_string(materialUid).c_str());
 	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 
 	mAABB.SetFrom(positions, mMesh->mNumVertices);
@@ -144,8 +144,8 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", mID);
-	archive.AddInt("MeshID",mMesh->mUID);
-	archive.AddInt("MaterialID", mMaterial->mUID);
+	archive.AddInt("MeshID",mMesh->GetUID());
+	archive.AddInt("MaterialID", mMaterial->GetUID());
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
 }

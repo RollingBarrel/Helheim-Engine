@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "ImporterMesh.h"
-
+#include "Resource.h"
 
 typedef struct Attribute {
 	enum Type : unsigned char {
@@ -23,9 +23,12 @@ typedef struct Attribute {
 float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize);
 
 
-class ResourceMesh
+class ResourceMesh : public Resource
 {
 public:
+
+	ResourceMesh();
+	ResourceMesh(unsigned int id);
 	//ResourceMesh(const ResourceMesh& other);
 	~ResourceMesh() { CleanUp(); }
 	//TODO: Posar tot aixo privat !!
@@ -34,10 +37,6 @@ public:
 
 	unsigned int* mIndices = nullptr;
 	std::vector<float*> mAttributesData;
-
-
-	const char* mMeshName = nullptr;
-	unsigned int mUID = 0;
 
 	void GenerateTangents();
 	float* GetInterleavedData() const;

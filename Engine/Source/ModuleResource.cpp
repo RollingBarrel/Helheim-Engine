@@ -1,8 +1,12 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
+
 #include "Resource.h"
 #include "ResourceTexture.h"
+#include "ResourceMesh.h"
+#include "ResourceMaterial.h"
+#include "ResourceModel.h"
 
 #include <unordered_map>
 #include <algorithm>
@@ -11,6 +15,7 @@
 #include "Importer.h"
 #include "ImporterTexture.h"
 #include "ImporterMesh.h"
+
 #include "ImporterModel.h"
 
 // Define a mapping between file extensions and resource types
@@ -73,18 +78,14 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	unsigned int uid = GenerateNewUID(); // Your own algorithm to generate new IDs. Random // MD5
 	switch (type)
 	{
-	case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid); break;
-	//case Resource::mesh: ret = (Resource*) new ResourceMesh(uid); break;
-	//case Resource::scene: ret = (Resource*) new ResourceScene(uid); break;
-	//case Resource::bone: ret = (Resource*) new ResourceBone(uid); break;
-	//case Resource::animation: ret = (Resource*) new ResourceAnimation(uid); break;
+		case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid); break;
+		case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
+		//case Resource::Type::Bone: ret = (Resource*) new ResourceBone(uid); break;
+		//case Resource::Type::Animation: ret = (Resource*) new ResourceAnimation(uid); break;
+		case Resource::Type::Material: ret = (Resource*) new ResourceMaterial(uid); break;
+		case Resource::Type::Model: ret = (Resource*) new ResourceModel(uid); break;
 	}
-	if (ret != nullptr)
-	{
-		mResources[uid] = ret;
-		ret->SetAssetsFile(assetsPath.c_str());
-		ret->SetLibraryFile(GenLibraryPath(resource));
-	}
+
 	return ret;
 }
 
@@ -95,12 +96,12 @@ const void ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath,
 	{
 		case Resource::Type::Texture:
 		{
-			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile());
+			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
 			break;
 		}		
 		case Resource::Type::Model:
 		{
-			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile());
+			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
 			break;
 		}
 		case Resource::Type::Unknown:

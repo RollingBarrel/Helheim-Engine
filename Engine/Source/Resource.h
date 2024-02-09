@@ -3,7 +3,7 @@
 #include <string>
 
 class Resource
-{
+{	
 public:
 	enum class Type
 	{
@@ -11,12 +11,15 @@ public:
 		Mesh,
 		Bone,
 		Animation,
-		Model,
 		Material,
+		Model,
 		Scene,
+		NavMesh,
 		Unknown
 	};
 
+
+	Resource();
 	Resource(unsigned int uid);
 	virtual ~Resource();
 

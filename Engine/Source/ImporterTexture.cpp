@@ -4,6 +4,7 @@
 #include "ModuleFileSystem.h"
 
 #include "ImporterTexture.h"
+#include "ResourceTexture.h"
 
 #include "glew.h"
 
@@ -44,19 +45,19 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
     case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
     case DXGI_FORMAT_R8G8B8A8_UNORM:
         texture->mInternalFormat = GL_RGBA8;
-        texture->mFormat = GL_RGBA;
-        texture->mType = GL_UNSIGNED_BYTE;
+        texture->mTexFormat = GL_RGBA;
+        texture->mDataType = GL_UNSIGNED_BYTE;
         break;
     case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
     case DXGI_FORMAT_B8G8R8A8_UNORM:
         texture->mInternalFormat = GL_RGBA8;
-        texture->mFormat = GL_BGRA;
-        texture->mType = GL_UNSIGNED_BYTE;
+        texture->mTexFormat = GL_BGRA;
+        texture->mDataType = GL_UNSIGNED_BYTE;
         break;
     case DXGI_FORMAT_B5G6R5_UNORM:
         texture->mInternalFormat = GL_RGB8;
-        texture->mFormat = GL_BGR;
-        texture->mType = GL_UNSIGNED_BYTE;
+        texture->mTexFormat = GL_BGR;
+        texture->mDataType = GL_UNSIGNED_BYTE;
         break;
     default:
         assert(false && "Unsupported format");
@@ -83,7 +84,7 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
 
 void Importer::Texture::Save(const ResourceTexture* texture)
 {
-    unsigned int header[7] = { texture->mWidth, texture->mHeight, texture->mInternalFormat, texture->mFormat, texture->mType ,texture->mMipLevels, texture->mNumPixels};
+    unsigned int header[7] = { texture->mWidth, texture->mHeight, texture->mInternalFormat, texture->mTexFormat, texture->mDataType ,texture->mMipLevels, texture->mNumPixels};
 
     unsigned int size = sizeof(header) +
                         sizeof(texture->mHasAlpha) +
@@ -106,7 +107,7 @@ void Importer::Texture::Save(const ResourceTexture* texture)
 
     //TODO Change name for random UID
     std::string path = LIBRARY_TEXTURE_PATH;
-    path += std::to_string(texture->mUID);
+    path += std::to_string(texture->GetUID());
     path += ".textssy";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
@@ -134,8 +135,8 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     texture->mWidth = header[0];
     texture->mHeight = header[1];
     texture->mInternalFormat = header[2];
-    texture->mFormat = header[3];
-    texture->mType = header[4];
+    texture->mTexFormat = header[3];
+    texture->mDataType = header[4];
     texture->mMipLevels = header[5];
     texture->mNumPixels = header[6];
 
@@ -150,29 +151,4 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     memcpy(texture->mPixels, cursor, bytes);
 
     return texture->CreateTexture();
-}
-
-unsigned int ResourceTexture::CreateTexture()
-{
-    unsigned int texId;
-	glGenTextures(1, &texId);
-	glBindTexture(GL_TEXTURE_2D, texId);
-	for (size_t i = 0; i < mMipLevels; ++i)
-	{
-		glTexImage2D(GL_TEXTURE_2D, i, mInternalFormat, mWidth, mHeight, 0, mFormat, mType, mPixels);
-	}
-
-	if (mMipLevels == 1)
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mMipLevels - 1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-    openGlId = texId;
-	return texId;
 }

@@ -11,6 +11,8 @@
 #include "ImporterMaterial.h"
 #include <MathFunc.h>
 
+#include "ResourceMaterial.h"
+
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)

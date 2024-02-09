@@ -10,29 +10,7 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-struct ResourceTexture;
-
-
-struct ResourceMaterial
-{
-public:
-    ~ResourceMaterial() { delete mDiffuseTexture; delete mSpecularGlossinessTexture; delete mNormalTexture;  }
-
-    float4 mDiffuseFactor;
-    float3 mSpecularFactor;
-    float mGlossinessFactor;
-
-    ResourceTexture* mDiffuseTexture = nullptr;
-    ResourceTexture* mSpecularGlossinessTexture = nullptr;
-    ResourceTexture* mNormalTexture = nullptr;
-
-    bool mEnableDiffuseTexture;
-    bool mEnableSpecularGlossinessTexture;
-    bool mEnableNormalMap;
-    bool mEnableShinessMap;
-
-    unsigned int mUID;
-};
+class ResourceMaterial;
 
 namespace Importer
 {

@@ -50,16 +50,16 @@ void ScenePanel::Draw(int windowFlags)
 					}
 					++path;
 				}
-				ResourceModel* rModel = new ResourceModel();
-				Importer::Model::Load(rModel, asset->mName);
-				GameObject* nGO = new GameObject(asset->mName,App->GetScene()->GetRoot());
-				for (auto it = rModel->mUids.cbegin(); it != rModel->mUids.cend(); ++it)
-				{
-					GameObject* go = new GameObject(nGO);
-					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
-					cMesh->Load(it->meshUID, it->materiaUID);
-				}
-				delete rModel;
+				//ResourceModel* rModel = new ResourceModel();
+				//Importer::Model::Load(rModel, asset->mName);
+				//GameObject* nGO = new GameObject(asset->mName,App->GetScene()->GetRoot());
+				//for (auto it = rModel->mUids.cbegin(); it != rModel->mUids.cend(); ++it)
+				//{
+				//	GameObject* go = new GameObject(nGO);
+				//	MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
+				//	cMesh->Load(it->meshUID, it->materiaUID);
+				//}
+				//delete rModel;
 				if (done)
 					*path = '.';
 			}

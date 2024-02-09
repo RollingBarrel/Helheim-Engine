@@ -14,17 +14,11 @@ public:
 		Unknown
 	};
 
+	ResourceTexture();
 	ResourceTexture(unsigned int id);
 	~ResourceTexture();
 
-	void Import(const char* filePath) override;
-	void Save() override;
-	unsigned int Load(const char* fileName = nullptr) override;
-
-
-	unsigned int CreateTexture();
-
-	
+	unsigned int CreateTexture();	
 
 public:
 	unsigned int mWidth;
@@ -36,7 +30,6 @@ public:
 	unsigned int mMipLevels;
 	unsigned int mNumPixels;
 	unsigned char* mPixels;
-	const char* mTextureName;
 
 	bool mHasAlpha;
 

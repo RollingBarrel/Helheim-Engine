@@ -8,6 +8,8 @@
 #include "Algorithm/Random/LCG.h"
 
 #include "ResourceMesh.h"
+#include "ResourceModel.h"
+#include "ResourceMaterial.h"
 
 #define TINYGLTF_IMPLEMENTATION
 
@@ -62,18 +64,15 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
     {
         for (const auto& primitive : srcMesh.primitives)
         {
-            ResourceMesh* mesh = new ResourceMesh();
-            mesh->mMeshName = name.c_str();
-            mesh->mUID = math::LCG().Int();
+            ResourceMesh* mesh = new ResourceMesh(math::LCG().Int());
 
             Importer::Mesh::Import(model, primitive, mesh);
 
             if (primitive.material != -1) {
-                ResourceMaterial* material = new ResourceMaterial();  
-                material->mUID = math::LCG().Int();
+                ResourceMaterial* material = new ResourceMaterial(math::LCG().Int());
                 Importer::Material::Import(model, model.materials[primitive.material], material);
 
-                rModel->mUids.push_back({ mesh->mUID , material->mUID });
+                rModel->mUids.push_back({ mesh->GetUID() , material->GetUID() });
 
                 delete material;
                 material = nullptr;
@@ -105,17 +104,17 @@ void Importer::Model::Save(const ResourceModel* ourModel)
         bytes = sizeof(it->meshUID);
         memcpy(cursor, &it->meshUID, bytes);
         cursor += bytes;
-        bytes = sizeof(it->materiaUID);
-        memcpy(cursor, &it->materiaUID, bytes);
+        bytes = sizeof(it->materialUID);
+        memcpy(cursor, &it->materialUID, bytes);
         cursor += bytes;
     }
 
-    bytes = sizeof(ourModel->mUID);
+    bytes = sizeof(ourModel->GetUID());
     memcpy(cursor, &ourModel->mUID, bytes);
     cursor += bytes;
 
     std::string path = LIBRARY_MODEL_PATH;
-    path += std::to_string(ourModel->mUID);
+    path += std::to_string(ourModel->GetUID());
     path += ".model";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
