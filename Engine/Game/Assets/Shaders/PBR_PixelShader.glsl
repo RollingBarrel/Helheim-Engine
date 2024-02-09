@@ -140,7 +140,8 @@ void main() {
 		vec3 sDir = normalize(mVector);
 		vec3 aimDir = normalize(sLights[i].aimD.xyz);
 		float dist = dot(mVector, aimDir);
-		float r = ;
+		//TODO: Check that the radius of spot light is correct
+		float r = length(aimDir);
 		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
 		cAtt = 1;
 		vec3 c = dot(sDir, aimDir);

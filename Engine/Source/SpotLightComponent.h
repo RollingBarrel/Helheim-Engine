@@ -3,14 +3,14 @@
 #include "Component.h"
 
 typedef struct SpotLight {
-	float pos[4]; //w is radius
-	float col[4]; //w is Intensity
-	//PointLight(const PointLight& other)  = delete;
+	float pos[4]; //w intensity
+	float aimD[4];//w inner angle //The radius is the lenght of the aimD
+	float col[4];//w outer angle
 }PointLight;
 
-class PointLightComponent : public Component {
+class SpotLightComponent : public Component {
 public:
-	~PointLightComponent();
+	~SpotLightComponent();
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override { return nullptr; }
@@ -24,14 +24,15 @@ public:
 	void SetColor(float col[3]);
 	float GetIntensity() const { return mData.col[3]; }
 	void SetIntensity(float intensity);
-	float GetRadius() const { return mData.pos[3]; }
+	float GetRadius() const { return mRadius; }
 	void SetRadius(float radius);
 	//Todo: Variable not necesary for the game mode
 	bool debugDraw = false;
 
 private:
-	PointLight mData;
-	PointLightComponent(GameObject* owner, const PointLight& light);
+	SpotLight mData;
+	float mRadius = 1.0f;
+	SpotLightComponent(GameObject* owner, const SpotLight& light);
 	friend class ModuleOpenGL;
 };
 

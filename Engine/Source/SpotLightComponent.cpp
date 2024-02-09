@@ -3,7 +3,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleDebugDraw.h"
 
-SpotLightComponent::SpotLightComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::LIGHTSOURCE), mData(light) {
+SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) {
 	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
@@ -41,8 +41,8 @@ void SpotLightComponent::SetIntensity(float intensity)
 
 void SpotLightComponent::SetRadius(float radius)
 {
-	mData.pos[3] = radius;
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	mRadius = radius;
+	App->GetOpenGL()->UpdatePoinLightInfo(*this, radius);
 }
 
 void SpotLightComponent::Update()

@@ -13,6 +13,7 @@ typedef struct DirectionalAmbient {
 }DirectionalAmbient;
 
 class PointLightComponent;
+class SpotLightComponent;
 class PointLight;
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -75,6 +76,8 @@ private:
 	DirectionalAmbient mDirAmb;
 	unsigned int mPointSSBO = 0;
 	std::vector<const PointLightComponent*>mPointLights;
+	unsigned int mSpotSSBO = 0;
+	std::vector<const SpotLightComponent*>mSpotLights;
 	friend class LightningPanel;
 };
 

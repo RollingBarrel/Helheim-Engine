@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -147,6 +148,14 @@ bool ModuleOpenGL::Init()
 	glBufferData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(PointLight) * nPointLights, nullptr, GL_STATIC_DRAW);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(nPointLights), &nPointLights);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
+
+	glGenBuffers(1, &mSpotSSBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSpotSSBO);
+	const uint32_t nSpotLights = mSpotLights.size();
+	glBufferData(GL_SHADER_STORAGE_BUFFER, 16 + sizeof(SpotLight) * nSpotLights, nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(nSpotLights), &nSpotLights);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, mSpotSSBO);
+
 	return true;
 }
 
