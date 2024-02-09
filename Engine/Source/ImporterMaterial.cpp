@@ -170,7 +170,7 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
     //TODO Change name for random UID
     std::string path = LIBRARY_MATERIAL_PATH;
     path += std::to_string(ourMaterial->GetUID());
-    path += ".materyal";
+    path += ".mat";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
 
@@ -185,7 +185,7 @@ void Importer::Material::Load(ResourceMaterial* ourMaterial, const char* fileNam
 
     std::string path = LIBRARY_MATERIAL_PATH;
     path += fileName;
-    path += ".materyal";
+    path += ".mat";
 
     App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
 

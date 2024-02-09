@@ -20,7 +20,9 @@ private:
 	Resource* CreateNewResource(const char* assetsFile, Resource::Type type);
 	Resource::Type DeduceResourceType(const char* assetsFile);
 
-	const void DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const;
+	const bool CreateAssetsMeta(const Resource& assetsFile) const;
+
+	const bool DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const;
 
 	std::unordered_map<unsigned int, Resource*> mResources;
 };

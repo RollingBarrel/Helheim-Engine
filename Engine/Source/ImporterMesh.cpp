@@ -242,7 +242,7 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
 
     std::string path = LIBRARY_MESH_PATH;
     path += std::to_string(mesh->GetUID());
-    path += ".messhi";
+    path += ".mesh";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
 
@@ -254,7 +254,7 @@ void Importer::Mesh::Load(ResourceMesh* mesh, const char* fileName)
 {
     std::string path = LIBRARY_MESH_PATH;
     path += fileName;
-    path += ".messhi";
+    path += ".mesh";
 
     char* fileBuffer;
     App->GetFileSystem()->Load(path.c_str(), &fileBuffer);

@@ -108,7 +108,7 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     //TODO Change name for random UID
     std::string path = LIBRARY_TEXTURE_PATH;
     path += std::to_string(texture->GetUID());
-    path += ".textssy";
+    path += ".tex";
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
 
@@ -123,7 +123,7 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
 
     std::string path = LIBRARY_TEXTURE_PATH;
     path += fileName;
-    path += ".textssy";
+    path += ".tex";
 
     App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
 

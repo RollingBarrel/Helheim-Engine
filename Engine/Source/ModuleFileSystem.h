@@ -45,7 +45,7 @@ public:
 
 	bool CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath);
 	bool CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath);
-	bool Delete(const char* filePath);
+	bool DeleteDirectory(const char* filePath);
 	bool CreateDirectory(const char* directory);
 	bool Exists(const char* filePath) const;
 	bool IsDirectory(const char* directoryPath) const;

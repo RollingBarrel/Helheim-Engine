@@ -200,6 +200,11 @@ bool ModuleFileSystem::CopyAbsolutePath(const char* sourceFilePath, const char* 
     return true;
 }
 
+bool ModuleFileSystem::DeleteDirectory(const char* filePath)
+{
+    return false;
+}
+
 bool ModuleFileSystem::CreateDirectory(const char* directory)
 { 
     if (IsDirectory(directory) == false)
