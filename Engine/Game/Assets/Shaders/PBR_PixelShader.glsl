@@ -48,6 +48,7 @@ struct SpotLight{
 	vec4 pos; //w intensity
 	vec4 aimD;//w inner angle
 	vec4 col;//w outer angle
+	float radius;
 };
 readonly layout(std430, binding = 1) buffer SpotLights
 {
@@ -141,7 +142,7 @@ void main() {
 		vec3 aimDir = normalize(sLights[i].aimD.xyz);
 		float dist = dot(mVector, aimDir);
 		//TODO: Check that the radius of spot light is correct
-		float r = length(aimDir);
+		float r = sPointLight[i].radius;
 		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
 		cAtt = 1;
 		vec3 c = dot(sDir, aimDir);

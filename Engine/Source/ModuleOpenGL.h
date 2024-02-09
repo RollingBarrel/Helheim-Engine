@@ -18,6 +18,23 @@ class PointLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+;
+
+class OpenGLBuffer {
+public:
+	OpenGLBuffer();
+	~OpenGLBuffer();
+	void AddData(void* data);
+	//TODO: Use the address or an offsset tot acces the buffer??
+	void UpdateData(void* address, unsigned int numElements = 1);
+	void RemoveData(void* address);
+private:
+	unsigned int idx;
+	GLenum type;
+	unsigned int elementSize;
+	unsigned int numElements;
+	std::vector<char*>mData;
+};
 
 class ModuleOpenGL : public Module
 {
