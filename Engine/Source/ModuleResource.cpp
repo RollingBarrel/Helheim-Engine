@@ -34,20 +34,37 @@ unsigned int ModuleResource::Find(const char* assetsFile) const
 
 unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 {
+	// Extract the import file type of asset
 	Resource::Type type = DeduceResourceType(importedFilePath);
+	if (type == Resource::Type::Unknown) 
+	{
+		LOG("Unable to import this unsoported file: %s", importedFilePath);
+		return 0;
+	}
+
+	// Create the new resource
 	Resource* resource = CreateNewResource(importedFilePath, type); //Save ID, assetsFile path, libraryFile path	
-	unsigned int ret = 0;
-
-	//Create copy in assets folder
-	if (DuplicateFileInAssetDir(importedFilePath, *resource))
+	if (resource == nullptr) 
 	{
-		LOG("Succesfully duplicated File in %s", resource->GetAssetsFile().c_str());
+		LOG("Unable to create a new resource with this file: %s", importedFilePath);
+		return 0;
 	}
 
-	if (CreateAssetsMeta(*resource))
+	// Create copy in assets folder
+	if (!DuplicateFileInAssetDir(importedFilePath, *resource))
 	{
-		LOG("Succesfully Created a .meta File");
+		LOG("File could not be duplicated: %s", importedFilePath);
+		return 0;
 	}
+	LOG("Succesfully duplicated the file in %s", resource->GetAssetsFile().c_str());
+
+	// Create the Meta file for the Asset
+	if (!CreateAssetsMeta(*resource))
+	{
+		LOG("Couldn't create a .meta File");
+		return 0;
+	}
+	LOG("Succesfully created a .meta File");
 
 	//Only Textures, Models, Scenes, Prefabs
 	switch (resource->GetType())
@@ -100,7 +117,6 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 			//Importer::NavMesh::Save((ResourceNavMesh*)resource);
 			break;
 		}
-		case Resource::Type::Unknown:
 		default:
 		{
 			LOG("Unable to Import, this file %s", importedFilePath); 
@@ -108,13 +124,12 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 		}
 	}
 
-	ret = resource->GetUID();
+	unsigned int ret = resource->GetUID();
 
 	delete resource; // Unload the resource after importing, we should only use the ID
 
 	return ret;
 }
-
 
 Resource* ModuleResource::RequestResource(unsigned int uid)
 {
@@ -232,7 +247,8 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const
 {
 	bool ret = true;
-
+	
+	/* FOR NOW ALL TYPES HAVE THE SAME CALL
 	switch (resource.GetType())
 	{
 		case Resource::Type::Texture:
@@ -251,7 +267,9 @@ const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath,
 			ret = false;
 			break;
 		}
-	}
+	}*/
+
+	ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
 
 	return ret;
 }
