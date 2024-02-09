@@ -56,7 +56,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	
 	glGenBuffers(1, &mIbo);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferData(GL_DRAW_INDIRECT_BUFFER,  mCommands.size() * 20 , mCommands[0], GL_STATIC_DRAW);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER,  mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
 
 
 }
@@ -84,10 +84,11 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 	
 
 	Command* newCommand = new Command();
-	newCommand->mCount = rMesh->GetNumIndices();
+	//newCommand->mCount = rMesh->GetNumIndices();
+	cMesh->SetCommand(newCommand);
+	mCommands.push_back(newCommand);
 	newCommand->mInstanceCount = 0;
 	newCommand->baseInstance = 0;
-
 
 
 	unsigned int  destVbo;
@@ -130,9 +131,26 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 
 
 	newCommand->firstIndex = mEboSize;
+	//newCommand->firstIndex = 0;
 
 	mEbo = destEbo;
 	mEboSize = newEboSize;
+
+
+	unsigned int  destIbo;
+
+	glGenBuffers(1, &destIbo);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, destIbo);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+
+	glCopyNamedBufferSubData(mIbo, destIbo, 0, 0, (mCommands.size()-1) * sizeof(Command));
+	glDeleteBuffers(1, &mIbo);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, destIbo);
+	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, (mCommands.size() - 1) * sizeof(Command), sizeof(Command), newCommand);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+
+	mIbo = destIbo;
 
 }
 
@@ -142,7 +160,7 @@ void GeometryBatch::Draw()
 {
 
 
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, &mCommands, mCommands.size(), 0);
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*) 0, mCommands.size(), 0);
 
 
 }
