@@ -14,9 +14,8 @@ ResourceTexture::ResourceTexture()
 {
 }
 
-ResourceTexture::ResourceTexture(unsigned int id) : Resource(mUID)
+ResourceTexture::ResourceTexture(unsigned int uid) : Resource(uid)
 {
-
 }
 
 ResourceTexture::~ResourceTexture()

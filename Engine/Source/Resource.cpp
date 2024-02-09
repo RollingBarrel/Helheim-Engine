@@ -4,7 +4,7 @@ Resource::Resource()
 {
 }
 
-Resource::Resource(unsigned int uid)
+Resource::Resource(unsigned int uid) : mUID(uid)
 {
 }
 

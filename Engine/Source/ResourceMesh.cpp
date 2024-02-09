@@ -130,7 +130,7 @@ ResourceMesh::ResourceMesh()
 {
 }
 
-ResourceMesh::ResourceMesh(unsigned int id) : Resource(mUID)
+ResourceMesh::ResourceMesh(unsigned int uid) : Resource(uid)
 {
 }
 

@@ -22,11 +22,14 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
+#include <ctime>
+
 // Define a mapping between file extensions and resource types
 const std::unordered_map<std::string, Resource::Type> extensionToResourceType = {
 	{".png", Resource::Type::Texture},
 	{".jpg", Resource::Type::Texture},
 	{".bmp", Resource::Type::Texture},
+	{".gltf", Resource::Type::Model},
 	// Add more mappings for other resource types as needed
 };
 
@@ -85,55 +88,60 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	{
 		case Resource::Type::Texture:
 		{
-			Importer::Texture::Import(importedFilePath, (ResourceTexture*)resource);
+			Importer::Texture::Import(resource->GetAssetsFile().c_str(), (ResourceTexture*)resource);
 			Importer::Texture::Save((ResourceTexture*)resource);
 			break;
 		}
 		case Resource::Type::Mesh:
 		{
-			//Importer::Mesh::Import(importedFilePath, (ResourceMesh*) resource);
+			//Importer::Mesh::Import(resource->GetAssetsFile().c_str(), (ResourceMesh*) resource);
 			//Importer::Mesh::Save((ResourceMesh*)resource);
 			break;
 		}
 		case Resource::Type::Bone:
 		{
-			//Importer::Bone::Import(importedFilePath, (ResourceModel*)resource); 
+			//Importer::Bone::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource); 
 			//Importer::Bone::Save((ResourceBone*)resource);
 			break;
 		}
 		case Resource::Type::Animation:
 		{
-			//Importer::Animation::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Animation::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::Animation::Save((ResourceAnimation*)resource);
 			break;
 		}
 		case Resource::Type::Material:
 		{
-			//Importer::Material::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Material::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::Material::Save((ResourceMaterial*)resource);
 			break;
 		}
 		case Resource::Type::Model:
 		{
-			Importer::Model::Import(importedFilePath, (ResourceModel*)resource);
+			std::string binFile = "";
+			App->GetFileSystem()->SplitPath(importedFilePath, &binFile);
+
+			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
+
+			Importer::Model::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			Importer::Model::Save((ResourceModel*)resource);
 			break;
 		}
 		case Resource::Type::Scene:
 		{
-			//Importer::Scene::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Scene::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::Scene::Save((ResourceScene*)resource);
 			break;
 		}
 		case Resource::Type::NavMesh:
 		{
-			//Importer::NavMesh::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::NavMesh::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::NavMesh::Save((ResourceNavMesh*)resource);
 			break;
 		}
 		default:
 		{
-			LOG("Unable to Import, this file %s", importedFilePath); 
+			LOG("Unable to Import, this file %s", resource->GetAssetsFile().c_str());
 			break;
 		}
 	}

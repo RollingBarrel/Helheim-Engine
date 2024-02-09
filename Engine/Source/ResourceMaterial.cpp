@@ -4,6 +4,6 @@ ResourceMaterial::ResourceMaterial()
 {
 }
 
-ResourceMaterial::ResourceMaterial(unsigned int uid) : Resource(mUID)
+ResourceMaterial::ResourceMaterial(unsigned int uid) : Resource(uid)
 {
 }
