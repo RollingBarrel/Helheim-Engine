@@ -150,6 +150,9 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 		mEbo = destEbo;
 		mEboSize = newEboSize;
 
+	}
+
+
 
 		unsigned int  destIbo;
 
@@ -165,7 +168,7 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 		glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
 
 		mIbo = destIbo;
-	}
+	
 }
 
 
