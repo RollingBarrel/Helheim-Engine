@@ -13,8 +13,7 @@ void Timer::StartWithRunTime() {
 
 void Timer::Update()
 {
-	static short frameCounter = 0;
-	++frameCounter;
+	++mUpdateFrames;
 	++mTotalFrames;
 
 	if (mChangeSpeed) {
@@ -39,8 +38,8 @@ void Timer::Update()
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
-		mFpsLog.push_back(frameCounter * 1000 / (float)mUpdateTime);
-		frameCounter = 0;
+		mFpsLog.push_back(mUpdateFrames * 1000 / (float)mUpdateTime);
+		mUpdateFrames = 0;
 		mUpdateTime = 0;
 
 		mUpdateFpsLog = true;

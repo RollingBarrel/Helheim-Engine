@@ -7,8 +7,6 @@
 #include "Timer.h"
 #include "PreciseTimer.h"
 
-//#include "ModuleTimer.h"
-
 
 TimerPanel::TimerPanel() : Panel(TIMERPANEL, true) 
 {
@@ -21,13 +19,25 @@ TimerPanel::~TimerPanel()
 
 void TimerPanel::Draw(int windowFlags)
 {
+	static Timer* clock = App->GetEngineClock();
+
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
+	const char* timers[] = { "Engine", "Game"};
+	static int item_current = 0;
+	ImGui::Combo("Current Timer", &item_current, timers, 2);
+	ImGui::Text("   ");
+
+	if (item_current == 0) 
+	{
+		clock = App->GetEngineClock();
+	}
+	else 
+	{
+		clock = App->GetGameClock();
+	}
+
 	ImGui::PushItemWidth(400.0f);
-
-	//static ModuleTimer* clock = App->GetClock();
-
-	static Timer* engineClock = App->GetEngineClock();
 
 	static float fps;
 	static long ms;
@@ -35,18 +45,18 @@ void TimerPanel::Draw(int windowFlags)
 	static std::vector<unsigned long> msLog;
 	
 	//Executes evey 500 ms (no change if executed every time)
-	if(engineClock->UpdateFpsLog())
+	if(clock->UpdateFpsLog())
 	{
-		fpsLog = engineClock->GetFpsLog();
-		engineClock->FpsLogUpdated();
+		fpsLog = clock->GetFpsLog();
+		clock->FpsLogUpdated();
 
-		ms = engineClock->GetRealDelta();
-		fps = engineClock->GetFPS();
+		ms = clock->GetRealDelta();
+		fps = clock->GetFPS();
 	}
 
-	static int fps_limit = engineClock->GetFpsLimit();
+	int fps_limit = clock->GetFpsLimit();
 	ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
-	engineClock->SetFpsLimit(fps_limit);
+	clock->SetFpsLimit(fps_limit);
 
 	long framedelay = 0;
 	ImGui::Text("Last frame delayed for: %lld", framedelay);
@@ -72,22 +82,23 @@ void TimerPanel::Draw(int windowFlags)
 	ImGui::Text("Real time dt: %.3f", gametimedt);
 
 	static float gameScale = 1;
-	ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10);
+	ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10, "%.1f");
 
 	ImGui::PopItemWidth();
 
-	ImGui::Text("Application average %lld ms/frame (%.1f FPS)", ms, fps);
+	ImGui::Text("Total Time: %.2f", clock->GetTotalTime()/1000.0f);
 
-	ImGui::Text("Total Time: %.2f", engineClock->GetTotalFrames() * 0.01666f);
+	ImGui::Text("Frame Count: %u", clock->GetTotalFrames());
 
-	ImGui::Text("Frame Count: %u", engineClock->GetTotalFrames());
-
+	//Plots
 	ImGui::PlotHistogram("FPS", fpsLog.data(), fpsLog.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
 
-	msLog = engineClock->GetMsLog();
+	msLog = clock->GetMsLog();
 	std::vector<float> msLogFloat(msLog.begin(), msLog.end());
 
 	ImGui::PlotLines("MS", msLogFloat.data(), msLogFloat.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
+
+	ImGui::Text("Application average %lld ms/frame (%.1f FPS)", ms, fps);
 
 	ImGui::End();
 }

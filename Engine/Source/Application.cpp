@@ -8,7 +8,6 @@
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
-#include "ModuleTimer.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -24,7 +23,6 @@ Application::Application()
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
-	//modules[4] = clock = new ModuleTimer();
 	modules[4] = render = new ModuleOpenGL();
 	modules[5] = debugDraw = new ModuleDebugDraw();
 	modules[6] = scene = new ModuleScene();

@@ -222,7 +222,6 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="QuadtreePanel.cpp" />
-    <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="TestComponent.cpp" />
@@ -358,7 +357,6 @@
     <ClInclude Include="ProjectPanel.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="QuadtreePanel.h" />
-    <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="ScenePanel.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
