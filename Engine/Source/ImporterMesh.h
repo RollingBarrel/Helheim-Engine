@@ -66,6 +66,11 @@ struct ResourceMesh
 	unsigned int* GetIndices() const { return mIndices; }
 	unsigned int GetVao() const { return mVao; }
 
+	unsigned int GetVboPosition() const { return mVboPosition; }
+	unsigned int GetEboPosition() const { return mEboPosition; }
+	void SetVboPosition(unsigned int VboPos) { mVboPosition = VboPos; }
+	void SetEboPosition(unsigned int EboPos) { mEboPosition = EboPos; }
+
 	unsigned int LoadToMemory();
 	void UnloadFromMemory();
 
@@ -76,6 +81,9 @@ private:
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
+
+	unsigned int mVboPosition = 0;
+	unsigned int mEboPosition = 0;
 	std::vector<Attribute*> mAttributes;
 	unsigned int mVertexSize = 0;
 
