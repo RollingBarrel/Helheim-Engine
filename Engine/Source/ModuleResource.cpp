@@ -18,6 +18,10 @@
 #include "ImporterMesh.h"
 #include "ImporterModel.h"
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
 // Define a mapping between file extensions and resource types
 const std::unordered_map<std::string, Resource::Type> extensionToResourceType = {
 	{".png", Resource::Type::Texture},
@@ -306,11 +310,38 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 {
 	bool ret = true;
 
-	int metaFile = resource.GetAssetsFile().find_last_of('.');
-	std::string metaName = resource.GetAssetsFile().substr(metaFile) + ".meta";
+	// Get the path of the .meta file
+	std::string assetName = "";
+	std::string assetExtension = "";
+	App->GetFileSystem()->SplitPath(resource.GetAssetsFile().c_str(), &assetName, &assetExtension);
 
-	char* buffer = new char[0];
-	App->GetFileSystem()->Save(metaName.c_str(), buffer, sizeof(buffer));
-	RELEASE_ARRAY(buffer);
+	std::string metaName = assetName + assetExtension + ".meta";
+
+	// Create a JSON document
+	rapidjson::Document document;
+	document.SetObject();
+
+	// Add uid to the JSON document
+	rapidjson::Value uidValue;
+	uidValue.SetInt(resource.GetUID());
+	document.AddMember("uid", uidValue, document.GetAllocator());
+
+	// Add time of creation to the JSON document
+	rapidjson::Value timeValue;
+	time_t currentTime = time(nullptr);
+	timeValue.SetInt(static_cast<int>(currentTime));
+	document.AddMember("time", timeValue, document.GetAllocator());
+
+	// Convert the JSON document to a string
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	document.Accept(writer);
+	const char* jsonStr = buffer.GetString();
+
+	// Save the JSON string to the .meta file
+	ret = App->GetFileSystem()->Save(metaName.c_str(), jsonStr, strlen(jsonStr));
+	
+	RELEASE_ARRAY(jsonStr);
+	
 	return ret;
 }
