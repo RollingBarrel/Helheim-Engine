@@ -57,7 +57,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glGenBuffers(1, &mIbo);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER,  mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
-
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
 
 }
 
