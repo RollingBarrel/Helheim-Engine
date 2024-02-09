@@ -39,7 +39,15 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	unsigned int ret = 0;
 
 	//Create copy in assets folder
-	DuplicateFileInAssetDir(importedFilePath, *resource);
+	if (DuplicateFileInAssetDir(importedFilePath, *resource))
+	{
+		LOG("Succesfully duplicated File in %s", resource->GetAssetsFile().c_str());
+	}
+
+	if (CreateAssetsMeta(*resource))
+	{
+		LOG("Succesfully Created a .meta File");
+	}
 
 	//Only Textures, Models, Scenes, Prefabs
 	switch (resource->GetType())
@@ -103,41 +111,55 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 {
 	Resource* ret = nullptr;
 	unsigned int uid = LCG().Int();
+
+	std::string assetName;
+	std::string extensionName;
+	App->GetFileSystem()->SplitPath(assetsFile, &assetName, &extensionName);
 	switch (type)
 	{
-	case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid); break;
-	case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
+		case Resource::Type::Texture:
+		{
+			ret = (Resource*) new ResourceTexture(uid); 
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_TEXTURE_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_TEXTURE_PATH + std::to_string(ret->GetUID()) + ".tex");
+			break;
+		}
+		case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
 		//case Resource::Type::Bone: ret = (Resource*) new ResourceBone(uid); break;
 		//case Resource::Type::Animation: ret = (Resource*) new ResourceAnimation(uid); break;
-	case Resource::Type::Material: ret = (Resource*) new ResourceMaterial(uid); break;
-	case Resource::Type::Model: ret = (Resource*) new ResourceModel(uid); break;
+		case Resource::Type::Material: ret = (Resource*) new ResourceMaterial(uid); break;
+		case Resource::Type::Model: ret = (Resource*) new ResourceModel(uid); break;
 	}
 
 	return ret;
 }
 
-const void ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const
+const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const
 {
+	bool ret = true;
 
 	switch (resource.GetType())
 	{
-	case Resource::Type::Texture:
-	{
-		App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
-		break;
-	}
-	case Resource::Type::Model:
-	{
-		App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
-		break;
-	}
-	case Resource::Type::Unknown:
-	{
-		LOG("Unable to duplicate, this file %s", importedFilePath)
+		case Resource::Type::Texture:
+		{
+			ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
 			break;
-	}
+		}
+		case Resource::Type::Model:
+		{
+			ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
+			break;
+		}
+		case Resource::Type::Unknown:
+		{
+			LOG("Unable to duplicate, this file %s", importedFilePath);
+			ret = false;
+			break;
+		}
 	}
 
+	return ret;
 }
 
 Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
@@ -153,4 +175,17 @@ Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
 	}
 
 	return Resource::Type::Unknown; // If the file extension is not recognized
+}
+
+const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
+{
+	bool ret = true;
+
+	int metaFile = resource.GetAssetsFile().find_last_of('.');
+	std::string metaName = resource.GetAssetsFile().substr(metaFile) + ".meta";
+
+	char* buffer = new char[0];
+	App->GetFileSystem()->Save(metaName.c_str(), buffer, sizeof(buffer));
+	RELEASE_ARRAY(buffer);
+	return ret;
 }
