@@ -26,19 +26,13 @@ const std::unordered_map<std::string, Resource::Type> extensionToResourceType = 
 	// Add more mappings for other resource types as needed
 };
 
-
 unsigned int ModuleResource::Find(const char* assetsFile) const
 {
-	// PROBABLY CAN BE CHANGED BY LOOKING AT THE META FILE
-	// THIS CODE COULD FAIL WITH TWO ASSETS WITH SAME NAME
-
 	for (const auto& pair : mResources)
 	{
-		std::string fullPath = pair.second->GetAssetsFile();
-		size_t lastSeparatorPos = fullPath.find_last_of('/');
-		size_t lastDotPos = fullPath.find_last_of('.');
-		std::string name = fullPath.substr(lastSeparatorPos + 1, lastDotPos - lastSeparatorPos - 1);
-		if (name == assetsFile)
+		std::string assetName = "";
+		App->GetFileSystem()->SplitPath(assetsFile, &assetName);
+		if (assetName == assetsFile)
 		{
 			return pair.second->GetUID();
 		}
@@ -165,12 +159,15 @@ Resource* ModuleResource::RequestResource(unsigned int uid)
 
 void ModuleResource::ReleaseResource(Resource* resource)
 {
-	if (resource->GetReferenceCount() > 0)
+	if (resource->GetReferenceCount() > 1)
 	{
 		resource->RemoveReferenceCount();
 	}
 	else 
 	{
+		if (resource->GetReferenceCount() == 1) resource->RemoveReferenceCount();
+		
+		mResources.erase(mResources.find(resource->GetUID())->first);
 		delete resource;
 	}
 }
