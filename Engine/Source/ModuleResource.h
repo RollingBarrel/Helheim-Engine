@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Resource.h"
-#include <unordered_map>
+#include <map>
 
 class ModuleResource : public Module
 {
@@ -24,7 +24,7 @@ private:
 
 	const bool DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const;
 
-	std::unordered_map<unsigned int, Resource*> mResources;
+	std::map<unsigned int, Resource*> mResources;
 };
 
 #endif //_MODULE_RESOURCE_H_

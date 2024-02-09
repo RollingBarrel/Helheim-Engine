@@ -2,16 +2,27 @@
 #include "Module.h"
 
 #define LIBRARY_PATH "Library/"
-#define LIBRARY_MESH_PATH "Library/Meshes/"
 #define LIBRARY_TEXTURE_PATH "Library/Textures/"
+#define LIBRARY_MESH_PATH "Library/Meshes/"
+#define LIBRARY_BONE_PATH "Library/Bones/"
+#define LIBRARY_ANIMATION_PATH "Library/Animations/"
 #define LIBRARY_MATERIAL_PATH "Library/Materials/"
-#define LIBRARY_SHADER_PATH "Library/Shaders/"
 #define LIBRARY_MODEL_PATH "Library/Models/"
+#define LIBRARY_SCENE_PATH "Library/Scenes/"
+#define LIBRARY_SCENE_PATH "Library/NavMeshes/"
+
+#define LIBRARY_SHADER_PATH "Library/Shaders/"
 
 #define ASSETS_PATH "Assets/"
-#define ASSETS_MODEL_PATH "Assets/Models/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"
+#define ASSETS_MESH_PATH "Assets/Meshes/"
+#define ASSETS_BONE_PATH "Assets/Bones/"
+#define ASSETS_ANIMATION_PATH "Assets/Animations/"
+#define ASSETS_MATERIAL_PATH "Assets/Materials/"
+#define ASSETS_MODEL_PATH "Assets/Models/"
 #define ASSETS_SCENES_PATH "Assets/Scenes/"
+#define ASSETS_NAVMESH_PATH "Assets/NavMeshes/"
+
 
 #include <vector>
 #include <string>

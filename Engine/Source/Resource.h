@@ -31,6 +31,8 @@ public:
 
 	void SetAssetsFile(const std::string& assetsFile) { mAssetsFile = assetsFile; };
 	void SetLibraryFile(const std::string& libraryFile) { mLibraryFile = libraryFile; };
+	void AddReferenceCount() { mReferenceCount++; }
+	void RemoveReferenceCount() { mReferenceCount--; }
 
 protected:
 	//Name??? To set it when generating game object

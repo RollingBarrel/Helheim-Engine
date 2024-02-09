@@ -52,46 +52,65 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	//Only Textures, Models, Scenes, Prefabs
 	switch (resource->GetType())
 	{
-	case Resource::Type::Texture:
-		Importer::Texture::Import(importedFilePath, (ResourceTexture*)resource);
-		Importer::Texture::Save((ResourceTexture*)resource);
-		break;
-	case Resource::Type::Mesh:
-		//Importer::Mesh::Import(importedFilePath, (ResourceMesh*) resource);
-		//Importer::Mesh::Save((ResourceMesh*)resource);
-		break;
-	case Resource::Type::Bone:
-		//Importer::Bone::Import(importedFilePath, (ResourceModel*)resource); 
-		//Importer::Bone::Save((ResourceBone*)resource);
-		break;
-	case Resource::Type::Animation:
-		//Importer::Animation::Import(importedFilePath, (ResourceModel*)resource);
-		//Importer::Animation::Save((ResourceAnimation*)resource);
-		break;
-	case Resource::Type::Material:
-		//Importer::Material::Import(importedFilePath, (ResourceModel*)resource);
-		//Importer::Material::Save((ResourceMaterial*)resource);
-		break;
-	case Resource::Type::Model:
-		Importer::Model::Import(importedFilePath, (ResourceModel*)resource);
-		Importer::Model::Save((ResourceModel*)resource);
-		break;
-	case Resource::Type::Scene:
-		//Importer::Scene::Import(importedFilePath, (ResourceModel*)resource);
-		//Importer::Scene::Save((ResourceScene*)resource);
-		break;
-	case Resource::Type::NavMesh:
-		//Importer::NavMesh::Import(importedFilePath, (ResourceModel*)resource);
-		//Importer::NavMesh::Save((ResourceNavMesh*)resource);
-		break;
-	case Resource::Type::Unknown:
-	default:
-		LOG("Unable to Import, this file %s", importedFilePath); break;
+		case Resource::Type::Texture:
+		{
+			Importer::Texture::Import(importedFilePath, (ResourceTexture*)resource);
+			Importer::Texture::Save((ResourceTexture*)resource);
+			break;
+		}
+		case Resource::Type::Mesh:
+		{
+			//Importer::Mesh::Import(importedFilePath, (ResourceMesh*) resource);
+			//Importer::Mesh::Save((ResourceMesh*)resource);
+			break;
+		}
+		case Resource::Type::Bone:
+		{
+			//Importer::Bone::Import(importedFilePath, (ResourceModel*)resource); 
+			//Importer::Bone::Save((ResourceBone*)resource);
+			break;
+		}
+		case Resource::Type::Animation:
+		{
+			//Importer::Animation::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Animation::Save((ResourceAnimation*)resource);
+			break;
+		}
+		case Resource::Type::Material:
+		{
+			//Importer::Material::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Material::Save((ResourceMaterial*)resource);
+			break;
+		}
+		case Resource::Type::Model:
+		{
+			Importer::Model::Import(importedFilePath, (ResourceModel*)resource);
+			Importer::Model::Save((ResourceModel*)resource);
+			break;
+		}
+		case Resource::Type::Scene:
+		{
+			//Importer::Scene::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Scene::Save((ResourceScene*)resource);
+			break;
+		}
+		case Resource::Type::NavMesh:
+		{
+			//Importer::NavMesh::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::NavMesh::Save((ResourceNavMesh*)resource);
+			break;
+		}
+		case Resource::Type::Unknown:
+		default:
+		{
+			LOG("Unable to Import, this file %s", importedFilePath); 
+			break;
+		}
 	}
 
 	ret = resource->GetUID();
 
-	delete resource; //<-- unload the resource after importing, we should only use the ID
+	delete resource; // Unload the resource after importing, we should only use the ID
 
 	return ret;
 }
@@ -99,13 +118,31 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 
 Resource* ModuleResource::RequestResource(unsigned int uid)
 {
+	//Find if the resource is already loaded
+	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
+	if(it != mResources.end())
+	{
+		//it->second->referenceCount++;
+		it->second->AddReferenceCount();
+		return it->second;
+	}
+
+	//Find the library file (if exists) and load the custom file format
+	//return TryToLoadResource(uid); <------------------------------------------TODO
 	return nullptr;
 }
 
 void ModuleResource::ReleaseResource(Resource* resource)
 {
+	if (resource->GetReferenceCount() > 0)
+	{
+		resource->RemoveReferenceCount();
+	}
+	else 
+	{
+		delete resource;
+	}
 }
-
 
 Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Type type)
 {
@@ -115,6 +152,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	std::string assetName;
 	std::string extensionName;
 	App->GetFileSystem()->SplitPath(assetsFile, &assetName, &extensionName);
+	
 	switch (type)
 	{
 		case Resource::Type::Texture:
@@ -125,11 +163,67 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 			ret->SetLibraryFile(LIBRARY_TEXTURE_PATH + std::to_string(ret->GetUID()) + ".tex");
 			break;
 		}
-		case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
-		//case Resource::Type::Bone: ret = (Resource*) new ResourceBone(uid); break;
-		//case Resource::Type::Animation: ret = (Resource*) new ResourceAnimation(uid); break;
-		case Resource::Type::Material: ret = (Resource*) new ResourceMaterial(uid); break;
-		case Resource::Type::Model: ret = (Resource*) new ResourceModel(uid); break;
+		case Resource::Type::Mesh:
+		{
+			ret = (Resource*) new ResourceMesh(uid);
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_MESH_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_MESH_PATH + std::to_string(ret->GetUID()) + ".mesh");
+			break;
+		}
+		/*case Resource::Type::Bone: 
+		{
+			ret = (Resource*) new ResourceBone(uid); 
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_BONE_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_BONE_PATH + std::to_string(ret->GetUID()) + ".bone");
+			break;
+		}*/
+		/*case Resource::Type::Animation: 
+		{
+			ret = (Resource*) new ResourceAnimation(uid); 
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_ANIMATION_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_ANIMATION_PATH + std::to_string(ret->GetUID()) + ".anim");
+			break;
+		}*/
+		case Resource::Type::Material:
+		{
+			ret = (Resource*) new ResourceMaterial(uid);
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_MATERIAL_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_MATERIAL_PATH + std::to_string(ret->GetUID()) + ".mat");
+			break;
+		}
+		case Resource::Type::Model:
+		{
+			ret = (Resource*) new ResourceModel(uid);
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_MODEL_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_MODEL_PATH + std::to_string(ret->GetUID()) + ".model");
+			break;
+		}
+		/*case Resource::Type::Scene:
+		{
+			ret = (Resource*) new ResourceScene(uid);
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_SCENE_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_SCENE_PATH + std::to_string(ret->GetUID()) + ".scene");
+			break;
+		}*/
+		/*case Resource::Type::NavMesh:
+		{
+			ret = (Resource*) new ResourceNavMesh(uid);
+			mResources[uid] = ret;
+			ret->SetAssetsFile(ASSETS_NAVMESH_PATH + assetName + extensionName);
+			ret->SetLibraryFile(LIBRARY_NAVMESH_PATH + std::to_string(ret->GetUID()) + ".navmesh");
+			break;
+		}*/
+		default:
+		{
+			LOG("Unable to create asset for this file: %s", assetsFile);
+			break;
+		}
 	}
 
 	return ret;
