@@ -39,10 +39,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	
 
 
-	//ESTO PETA
-	//glGenBuffers(1, &mIbo);
-	//glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	//glBufferData(GL_DRAW_INDIRECT_BUFFER,  mCommands.size() * 20 , mCommands[0], GL_STATIC_DRAW);
+	
 
 
 	Command* newCommand = new Command();
@@ -54,6 +51,13 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 
 	mCommands.push_back(newCommand);
 	mesh->SetCommand(newCommand);
+
+
+	
+	glGenBuffers(1, &mIbo);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER,  mCommands.size() * 20 , mCommands[0], GL_STATIC_DRAW);
+
 
 }
 
