@@ -10,6 +10,19 @@ class ResourceMesh;
 class ResourceMaterial;
 class GeometryBatch;
 
+
+typedef struct Command
+{
+
+	unsigned int mCount = 0;		 // Number of indices in the mesh
+	unsigned int mInstanceCount = 0; // Number of instances to render
+	unsigned int firstIndex = 0;	 // Index offset in the EBO
+	unsigned int baseVertex = 0;	 // Vertex offset in the VBO
+	unsigned int baseInstance = 0;   // Instance Index
+
+} Command;
+
+
 class MeshRendererComponent : public Component
 {
 public:
@@ -27,8 +40,9 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	const OBB getOBB() const { return mOBB; }
-	 ResourceMesh* GetResourceMesh() const { return mMesh; }
-
+	ResourceMesh* GetResourceMesh() const { return mMesh; }
+	//Command* GetCommand() const { return mCommand; }
+	void SetCommand(Command* command) { mCommand = command; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
@@ -47,6 +61,7 @@ private:
 	AABB mAABB;
 	bool mDrawBox = false;
 	bool mInsideFrustum = true;
-
 	int mTemporalID = -1;
+
+	Command* mCommand = nullptr;
 };

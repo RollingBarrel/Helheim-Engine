@@ -15,14 +15,13 @@
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
-	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
+	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial()) , mCommand(new Command())
 {
-	
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
 	//mMesh->mUID = LCG().Int();
 
-	App->GetOpenGL()->AddMeshRendererComponent(this);
+	//App->GetOpenGL()->AddMeshRendererComponent(this);
 
 
 }
@@ -138,6 +137,12 @@ void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 	mOBB.SetFrom(mAABB, model);
 
 	//ResourceMaterial Load
+
+
+	
+	
+	
+	
 
 }
 

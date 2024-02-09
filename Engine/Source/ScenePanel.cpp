@@ -58,6 +58,7 @@ void ScenePanel::Draw(int windowFlags)
 					GameObject* go = new GameObject(nGO);
 					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
 					cMesh->Load(it->meshUID, it->materiaUID);
+					App->GetOpenGL()->AddMeshRendererComponent(cMesh);
 				}
 				delete rModel;
 				if (done)

@@ -11,6 +11,8 @@ public:
 	~BatchManager();
 	void AddMeshRendererComponent(MeshRendererComponent* meshComponent);
 
+	void Draw();
+
 private:
 
 	std::vector<GeometryBatch*> mBatches;
