@@ -1,4 +1,3 @@
-#pragma once
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
@@ -9,6 +8,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTimer.h"
+#include "ModuleResource.h"
 
 
 Application::Application()
@@ -18,11 +18,12 @@ Application::Application()
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
-	modules[4] = clock = new ModuleTimer();
-	modules[5] = render = new ModuleOpenGL();
-	modules[6] = debugDraw = new ModuleDebugDraw();
-	modules[7] = scene = new ModuleScene();
-	modules[8] = editor = new ModuleEditor();
+	modules[4] = resource = new ModuleResource();
+	modules[5] = clock = new ModuleTimer();
+	modules[6] = render = new ModuleOpenGL();
+	modules[7] = debugDraw = new ModuleDebugDraw();
+	modules[8] = scene = new ModuleScene();
+	modules[9] = editor = new ModuleEditor();
 }
 
 Application::~Application()
