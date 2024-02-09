@@ -29,6 +29,22 @@ const std::unordered_map<std::string, Resource::Type> extensionToResourceType = 
 
 unsigned int ModuleResource::Find(const char* assetsFile) const
 {
+	// PROBABLY CAN BE CHANGED BY LOOKING AT THE META FILE
+	// THIS CODE COULD FAIL WITH TWO ASSETS WITH SAME NAME
+
+	for (const auto& pair : mResources)
+	{
+		std::string fullPath = pair.second->GetAssetsFile();
+		size_t lastSeparatorPos = fullPath.find_last_of('/');
+		size_t lastDotPos = fullPath.find_last_of('.');
+		std::string name = fullPath.substr(lastSeparatorPos + 1, lastDotPos - lastSeparatorPos - 1);
+		if (name == assetsFile)
+		{
+			return pair.second->GetUID();
+		}
+	}
+
+	// Return 0 if no matching resource is found
 	return 0;
 }
 
