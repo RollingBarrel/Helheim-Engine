@@ -2,13 +2,9 @@
 #include "Component.h"
 #include "vector"
 #include "Geometry/OBB.h"
+#include "Recast.h"
 class Material;
 struct ResourceMesh;
-struct rcHeightfield;
-struct rcCompactHeightfield;
-struct rcContourSet;
-struct rcPolyMesh;
-struct rcPolyMeshDetail;
 class MeshRendererComponent;
 class NavMeshControllerComponent : public Component
 {
@@ -16,7 +12,7 @@ public:
 	NavMeshControllerComponent(GameObject* ownerGameObject);
 	NavMeshControllerComponent(const NavMeshControllerComponent& original, GameObject* owner);
 	void Reset();
-	//~TestComponent();
+	~NavMeshControllerComponent();
 	void HandleBuild();
 
 	void Update() override;
@@ -37,7 +33,7 @@ private:
 	rcPolyMesh* mPolyMesh = nullptr;
 	rcPolyMeshDetail* mPolyMeshDetail= nullptr;
 	unsigned char* mTriangleAreas = nullptr;
-
+	rcContext mRecastContext;
 	bool mKeepInterResults = false;
 	bool mFilterLowHangingObstacles;
 	bool mFilterLedgeSpans;
