@@ -481,3 +481,8 @@ void ModuleOpenGL::AddMeshRendererComponent(MeshRendererComponent* mesh)
 	mBatchManager->AddMeshRendererComponent(mesh);
 
 }
+
+void ModuleOpenGL::Draw()
+{
+	mBatchManager->Draw();
+}

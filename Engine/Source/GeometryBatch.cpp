@@ -5,6 +5,8 @@
 #include <float3.h>
 #include "MeshRendererComponent.h"
 #include "ImporterMesh.h"
+#include "ImporterMaterial.h"
+#include "ImporterTexture.h"
 
 
 
@@ -30,6 +32,8 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glGenVertexArrays(1, &mVao);
 	glGenBuffers(1, &mVbo);
 	glGenBuffers(1, &mEbo);
+	glGenBuffers(1, &mSsboModels);
+	glGenBuffers(1, &mIbo);
 	glBindVertexArray(mVao);
 	glBindBuffer(GL_ARRAY_BUFFER, mVbo);
 	glBufferData(GL_ARRAY_BUFFER, mVboSize, mUniqueMeshes[0]->GetInterleavedData(), GL_STATIC_DRAW);
@@ -39,25 +43,28 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	
 
 
+
+	Material* material = new Material();
+
+	material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor.xyz();
+	material->diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->openGlId;
+	material->specularColor = mesh->GetMaterial()->mSpecularFactor;
+	material->specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->openGlId;
+	material->normalTexture = mesh->GetMaterial()->mNormalTexture->openGlId;
+	material->shininess = mesh->GetMaterial()->mGlossinessFactor;
+	material->hasDiffuseMap = mesh->GetMaterial()->mEnableDiffuseTexture;
+	material->hasSpecularMap = mesh->GetMaterial()->mEnableSpecularGlossinessTexture;
+	material->hasShininessMap = mesh->GetMaterial()->mEnableShinessMap;
+	material->hasNormalMap = mesh->GetMaterial()->mEnableNormalMap;
+
+	mMaterials.push_back(material);
 	
 
-
-	Command* newCommand = new Command();
-	newCommand->mCount = mUniqueMeshes[0]->GetNumIndices();
-	newCommand->mInstanceCount = 0;
-	newCommand->firstIndex = 0;
-	newCommand->baseVertex = 0;
-	newCommand->baseInstance = 0;
-
-	mCommands.push_back(newCommand);
-	mesh->SetCommand(newCommand);
-
-
-	
-	glGenBuffers(1, &mIbo);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferData(GL_DRAW_INDIRECT_BUFFER,  mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+	glGenBuffers(1, &mSsboMaterials);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Material), mMaterials[0], GL_STATIC_DRAW);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 }
 
@@ -68,7 +75,7 @@ GeometryBatch::~GeometryBatch()
 
 
 
-void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
+void GeometryBatch::AddMesh(MeshRendererComponent* cMesh) //NEEDS A FULL REMAKE
 {
 	mMeshComponents.push_back(cMesh);
 	ResourceMesh* rMesh = cMesh->GetResourceMesh();
@@ -171,13 +178,40 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 	
 }
 
+void GeometryBatch::AddCommand(Command* command)
+{
+	mCommands.push_back(command);
+}
+
 
 
 void GeometryBatch::Draw()
 {
 
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
+
+
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, GL_STATIC_DRAW);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
+	
+	unsigned int offset = 0;
+
+	for (auto mesh : mMeshComponents) {
+
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().Transposed().ptr());
+
+		offset += sizeof(float) * 16;
+	}
+
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*) 0, mCommands.size(), 0);
 
-
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
 }
+

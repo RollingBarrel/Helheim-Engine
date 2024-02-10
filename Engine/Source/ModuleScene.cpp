@@ -14,6 +14,9 @@
 #include "Archive.h"
 #include "Globals.h"
 
+#include "GeometryBatch.h"
+#include "ImporterMesh.h"
+
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
@@ -206,10 +209,26 @@ void ModuleScene::DrawRenderList()
 		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
 		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
 
+		unsigned int instanceCounter = 0;
 		// Enable/disable mesh renderer component
 		if(meshRenderer->IsEnabled())
 		{
-			meshRenderer->Draw();
+			
+			if (mApplyculling) {
+				if (meshRenderer->IsInsideFrustum()) {
+					
+					meshRenderer->AddCommand(instanceCounter);
+					instanceCounter++;
+				}
+			}
+			else {
+
+				meshRenderer->AddCommand(instanceCounter);
+				instanceCounter++;
+			}
+			
 		}
 	}
+
+	App->GetOpenGL()->Draw();
 }

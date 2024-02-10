@@ -46,6 +46,8 @@ public:
 	void RemovePointLight(const LightSourceComponent& cPointLight);
 
 	void AddMeshRendererComponent(MeshRendererComponent* mesh);
+	void Draw();
+
 
 private:
 	void* context = nullptr;

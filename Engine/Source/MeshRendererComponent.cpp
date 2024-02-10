@@ -158,6 +158,18 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 	return new MeshRendererComponent(*this, owner);
 }
 
+void MeshRendererComponent::AddCommand(unsigned int instanceCounter)
+{
+	Command* command = new Command();
+	command->mCount = mMesh->GetNumIndices();
+	command->mInstanceCount = 1;
+	command->firstIndex = mMesh->GetEboPosition();
+	command->baseVertex = mMesh->GetVboPosition();
+	command->baseInstance = instanceCounter;
+
+	mBatch->AddCommand(command);
+}
+
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", mID);

@@ -1,5 +1,5 @@
 #version 460 core
-
+#extension GL_ARB_bindless_texture : require
 struct Material
 {
 	//Diffuse
@@ -28,6 +28,9 @@ in VertToFrag {
 	vec4 tang;
 };
 
+//uniform Material material;
+
+
 //Light properties
 layout(std140, binding = 1) uniform DirAmbientLights {
 	vec3 dirDir;
@@ -45,9 +48,9 @@ readonly layout(std430, binding = 0) buffer PointLights
 	PointLight pLights[];
 };
 
-uniform Material material;
 
 out vec4 outColor;
+flat in int  instace_index;
 
 #define PI 3.1415926535897932384626433832795
 vec3 diffuseColor;
@@ -55,6 +58,12 @@ vec3 specularColor;
 float shininess;
 vec3 V;
 vec3 N;
+
+readonly layout(std430 , binding = 11) buffer Materials {
+	Material materials[];
+};
+
+
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
 	
@@ -75,8 +84,10 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	return pbrColor;
 }
 
+
 void main() {
 
+	Material material = materials[instace_index];
 	//Diffuse
 	if(material.hasDiffuseMap){//Using  gamma correction forces to transform sRGB textures to linear space
 		diffuseColor = vec3(texture(material.diffuseTexture, uv));

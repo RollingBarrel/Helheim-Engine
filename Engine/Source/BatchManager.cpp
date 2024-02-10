@@ -55,11 +55,13 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 
 	if (batchFound) {
 		 mBatches[batchPos]->AddMesh(meshComponent);
+		 meshComponent->SetBatch(mBatches[batchPos]);
 	}
 	else {
 
 		GeometryBatch* newBatch = new GeometryBatch(meshComponent);
 		mBatches.push_back(newBatch);
+		meshComponent->SetBatch(newBatch);
 	}
 
 }
