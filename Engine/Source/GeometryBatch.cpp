@@ -1,4 +1,6 @@
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleOpenGL.h"
 #include "GeometryBatch.h"
 #include <cassert>
 #include "glew.h"
@@ -159,8 +161,6 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh) //NEEDS A FULL REMAKE
 
 	}
 
-
-
 		unsigned int  destIbo;
 
 		glGenBuffers(1, &destIbo);
@@ -187,7 +187,10 @@ void GeometryBatch::AddCommand(Command* command)
 
 void GeometryBatch::Draw()
 {
+	App->GetOpenGL()->BindSceneFramebuffer();
 
+	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+	glBindVertexArray(mVao);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
 
@@ -209,9 +212,17 @@ void GeometryBatch::Draw()
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 
+	//glBindBuffer(GL_ARRAY_BUFFER, mIbo);
+
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*) 0, mCommands.size(), 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+
+	glUseProgram(0);
+	glBindVertexArray(0);
+
+
+	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 
