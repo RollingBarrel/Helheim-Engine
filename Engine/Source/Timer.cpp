@@ -31,14 +31,21 @@ void Timer::Update()
 	if (mMsLog.size() >= 100) {
 		mMsLog.erase(mMsLog.begin());
 	}
-	mMsLog.push_back(mDeltaTime);
+	mMsLog.push_back(mDeltaTime/mSpeed);
 
-	mUpdateTime += mDeltaTime;
+	if(mSpeed != 0)
+	{
+		mUpdateTime += mDeltaTime / mSpeed;
+	}
+	else 
+	{
+		mUpdateTime += mDeltaTime;
+	}
 	if (mUpdateTime >= 500) {
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
-		mFpsLog.push_back(mUpdateFrames * 1000 / (float)mUpdateTime);
+		mFpsLog.push_back(mUpdateFrames * 1000 / mUpdateTime);
 		mUpdateFrames = 0;
 		mUpdateTime = 0;
 

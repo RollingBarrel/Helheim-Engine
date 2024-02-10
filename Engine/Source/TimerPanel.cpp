@@ -37,7 +37,7 @@ void TimerPanel::Draw(int windowFlags)
 		clock = App->GetGameClock();
 	}
 
-	ImGui::PushItemWidth(400.0f);
+	ImGui::PushItemWidth(300.0f);
 
 	static float fps;
 	static long ms;
@@ -81,8 +81,12 @@ void TimerPanel::Draw(int windowFlags)
 	float gametimedt = 0;
 	ImGui::Text("Real time dt: %.3f", gametimedt);
 
-	static float gameScale = 1;
-	ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10, "%.1f");
+	if (item_current == 1 && clock->GetNewSpeed() !=0) {
+		static float gameScale;
+		gameScale = clock->GetNewSpeed();
+		ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10, "%.1f");
+		clock->SetTimeScale(gameScale);
+	}
 
 	ImGui::PopItemWidth();
 

@@ -15,8 +15,10 @@ public:
 
 	long Stop() { SetSpeed(0); }
 	long SetSpeed(float speed);
-
     void SetTimeScale(float speed);
+
+    float GetSpeed() const { return mSpeed; }
+    float GetNewSpeed() const { return mNewSpeed; }
 
     long GetRealDelta() const { return mDeltaTime; }
 
@@ -29,8 +31,8 @@ public:
         return 0;
     }
 
-    unsigned long GetTotalTime() { return mTotalTime; }
-    unsigned int GetTotalFrames() { return mTotalFrames; }
+    unsigned long GetTotalTime() const { return mTotalTime; }
+    unsigned int GetTotalFrames() const { return mTotalFrames; }
 
     unsigned int GetFpsLimit() const { return mFpsLimit; }
     void SetFpsLimit(unsigned int limit) { mFpsLimit = limit; }
@@ -47,14 +49,14 @@ private:
 
 	long mLastReadTime = 0;         //Time the last frame was read
 
-    unsigned long mDeltaTime = 0;   //Ms of the last frame
+    unsigned long mDeltaTime = 0;   //Time of the last frame
 
 	long mTotalTime = 0;            //Total time since start of Timer
     unsigned int mTotalFrames = 0;  //Total frames since start of Timer
 
     unsigned int mFpsLimit = 60;    //Limit of FPS
 
-    long mUpdateTime = 0;           //Time since last FPS calculation (reset every 500 ms)
+    float mUpdateTime = 0;           //Time since last FPS calculation (reset every 500 ms)
     unsigned int mUpdateFrames = 0; //Frames since last FPS calculation (reset every 500 ms)
 
     bool mChangeSpeed = false;
