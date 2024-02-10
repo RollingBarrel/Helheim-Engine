@@ -339,6 +339,7 @@ MeshRendererComponent* GameObject::getMeshRenderer() const
 		if (comp->GetType() == ComponentType::MESHRENDERER)
 			return static_cast<MeshRendererComponent*>(comp);
 	}
+	return nullptr;
 }
 
 void GameObject::RecalculateLocalTransform() {

@@ -3,7 +3,7 @@
 
 enum class ComponentType : unsigned int
 {
-	MESHRENDERER, LIGHTSOURCE, TEST, NONE
+	MESHRENDERER, LIGHTSOURCE,NAVMESHCONTROLLER, TEST, NONE
 };
 
 class GameObject;
