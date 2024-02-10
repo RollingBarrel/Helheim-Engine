@@ -23,16 +23,19 @@ public:
 	void SetPosition(const float poa[3]);
 	const float* GetColor() const { return mData.col; }
 	void SetColor(float col[3]);
-	float GetIntensity() const { return mData.col[3]; }
+	float GetIntensity() const { return mData.pos[3]; }
 	void SetIntensity(float intensity);
-	float GetRadius() const { return mRadius; }
+	float GetRadius() const { return mData.radius; }
 	void SetRadius(float radius);
+	float GetOuterAngle() const { return mData.col[3]; }
+	void SetOuterAngle(float angle);
+	float GetInnerAngle() const { return mData.aimD[3]; }
+	void SetInnerAngle(float angle);
 	//Todo: Variable not necesary for the game mode
 	bool debugDraw = false;
 
 private:
 	SpotLight mData;
-	float mRadius = 1.0f;
 	SpotLightComponent(GameObject* owner, const SpotLight& light);
 	friend class ModuleOpenGL;
 };

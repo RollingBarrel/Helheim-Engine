@@ -146,7 +146,7 @@ bool ModuleOpenGL::Init()
 	mPointsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 0, 16, &numPointLights);
 
 	const uint32_t numSpotLights[4] = { 0, 0, 0, mSpotLights.size() };
-	mPointsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
+	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
 	return true;
 }
@@ -193,6 +193,9 @@ update_status ModuleOpenGL::PostUpdate()
 bool ModuleOpenGL::CleanUp()
 {
 	LOG("Destroying renderer");
+
+	delete mPointsBuffer;
+	delete mSpotsBuffer;
 
 	glDeleteProgram(mPbrProgramId);
 	glDeleteProgram(mSkyBoxProgramId);
@@ -453,7 +456,7 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 	}
 }
 
-//Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
+//Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
 SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
 {
 	SpotLightComponent* newComponent = new SpotLightComponent(owner, sLight);

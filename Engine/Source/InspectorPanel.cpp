@@ -8,6 +8,7 @@
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "ImporterMaterial.h"
 #include <MathFunc.h>
 
@@ -271,8 +272,8 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					break;
 				}
 				case ComponentType::SPOTLIGHT: {
-					//PointLightComponent* downCast = reinterpret_cast<SpotLightComponent*>(component);
-					//DrawSpotLightComponent(downCast);
+					SpotLightComponent* downCast = reinterpret_cast<SpotLightComponent*>(component);
+					DrawSpotLightComponent(downCast);
 					break;
 				}
 				case ComponentType::TEST: {
@@ -309,6 +310,36 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	if (ImGui::DragFloat("Radius", &radius,1.0f, 0.0f))
 	{
 		component->SetRadius(radius);
+	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
+}
+
+void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
+	const float* pCol = component->GetColor();
+	float col[3] = { pCol[0], pCol[1] , pCol[2] };
+	if (ImGui::ColorPicker3("Color", col))
+	{
+		component->SetColor(col);
+	}
+	float intensity = component->GetIntensity();
+	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	{
+		component->SetIntensity(intensity);
+	}
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float outerAngle = component->GetOuterAngle() * 57.2957795f;
+	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, 0.0f))
+	{
+		component->SetOuterAngle(outerAngle * 0.0174532925f);
+	}
+	float innerAngle = component->GetInnerAngle() * 57.2957795f;
+	if (ImGui::DragFloat("Inner angle", &innerAngle, 1.0f, 0.0f))
+	{
+		component->SetInnerAngle(innerAngle * 0.0174532925f);
 	}
 	ImGui::Checkbox("Debug draw", &component->debugDraw);
 }

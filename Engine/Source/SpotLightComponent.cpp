@@ -35,13 +35,25 @@ void SpotLightComponent::SetColor(float col[3])
 
 void SpotLightComponent::SetIntensity(float intensity)
 {
-	mData.col[3] = intensity;
+	mData.pos[3] = intensity;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::SetRadius(float radius)
 {
-	mRadius = radius;
+	mData.radius = radius;
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
+void SpotLightComponent::SetOuterAngle(float angle)
+{
+	mData.col[3] = angle;
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
+void SpotLightComponent::SetInnerAngle(float angle)
+{
+	mData.aimD[3] = angle;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -58,6 +70,6 @@ void SpotLightComponent::Update()
 	}
 	if (debugDraw)
 	{
-		App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
+		//App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
 	}
 }
