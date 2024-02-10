@@ -4,9 +4,10 @@
 
 typedef struct SpotLight {
 	float pos[4]; //w intensity
-	float aimD[4];//w inner angle //The radius is the lenght of the aimD
+	float aimD[4];//w inner angle
 	float col[4];//w outer angle
-}PointLight;
+	float radius;
+}SpotLight;
 
 class SpotLightComponent : public Component {
 public:

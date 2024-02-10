@@ -8,6 +8,7 @@
 #include "imgui.h"
 #include "ModuleOpenGL.h"
 #include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include <algorithm>
 
 #include "MeshRendererComponent.h"
@@ -282,8 +283,8 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	}
 	case ComponentType::SPOTLIGHT:
 	{
-		//const float3& pos = GetWorldPosition();
-		//newComponent = App->GetOpenGL()->AddSpotLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddSpotLight({ pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, 25* 0.0174532925f, 1.f, 1.f, 1.f , 38 * 0.0174532925f, 3.f }, this);
 		break;
 	}
 	case ComponentType::TEST:

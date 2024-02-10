@@ -142,12 +142,12 @@ void main() {
 		vec3 aimDir = normalize(sLights[i].aimD.xyz);
 		float dist = dot(mVector, aimDir);
 		//TODO: Check that the radius of spot light is correct
-		float r = sPointLight[i].radius;
+		float r = sLights[i].radius;
 		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
-		cAtt = 1;
-		vec3 c = dot(sDir, aimDir);
-		vec3 cInner = cos(sLights[i].aimD.w);
-		vec3 cOuter = cos(sLights[i].col.w);
+		float cAtt = 1;
+		float c = dot(sDir, aimDir);
+		float cInner = cos(sLights[i].aimD.w);
+		float cOuter = cos(sLights[i].col.w);
 		if(cInner > c && c > cOuter)
 			cAtt = (c - cOuter) / (cInner - cOuter);
 		att *= cAtt;

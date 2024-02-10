@@ -15,25 +15,30 @@ typedef struct DirectionalAmbient {
 class PointLightComponent;
 class SpotLightComponent;
 class PointLight;
+class SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
-;
+typedef unsigned int GLenum;
 
 class OpenGLBuffer {
 public:
-	OpenGLBuffer();
+	OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding = -1, unsigned int size = 0, const void* data = nullptr);
 	~OpenGLBuffer();
-	void AddData(void* data);
-	//TODO: Use the address or an offsset tot acces the buffer??
-	void UpdateData(void* address, unsigned int numElements = 1);
-	void RemoveData(void* address);
+	void PushBackData(const void* data, unsigned int dataSize);
+	void PopBackData(unsigned int dataSize);
+	void ShrinkToFit();
+	void UpdateData(const void* data, unsigned int dataSize, unsigned int offset);
+	void RemoveData(unsigned int dataSize, unsigned int offset);
+
 private:
-	unsigned int idx;
-	GLenum type;
-	unsigned int elementSize;
-	unsigned int numElements;
-	std::vector<char*>mData;
+	void ChangeBufferCapacity(unsigned int newCapacity);
+	const GLenum mType;
+	const GLenum mUsage;
+	const unsigned int mBinding;
+	unsigned int mIdx;
+	unsigned int mDataSize;
+	unsigned int mDataCapacity;
 };
 
 class ModuleOpenGL : public Module
@@ -61,6 +66,9 @@ public:
 	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
 	void UpdatePoinLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
+	SpotLightComponent* AddSpotLight(const SpotLight& pLight, GameObject* owner);
+	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
+	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
 private:
 	void* context = nullptr;
@@ -93,8 +101,10 @@ private:
 	DirectionalAmbient mDirAmb;
 	unsigned int mPointSSBO = 0;
 	std::vector<const PointLightComponent*>mPointLights;
+	OpenGLBuffer* mPointsBuffer = nullptr;
 	unsigned int mSpotSSBO = 0;
 	std::vector<const SpotLightComponent*>mSpotLights;
+	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
 };
 

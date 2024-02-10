@@ -10,7 +10,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mData.pos[2] = pos.z;
 }
 
-SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemovePointLight(*this); }
+SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemoveSpotLight(*this); }
 
 const float* SpotLightComponent::GetPosition() const 
 { 
@@ -22,7 +22,7 @@ void SpotLightComponent::SetPosition(const float pos[3])
 	mData.pos[0] = pos[0];
 	mData.pos[1] = pos[1];
 	mData.pos[2] = pos[2];
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::SetColor(float col[3])
@@ -30,19 +30,19 @@ void SpotLightComponent::SetColor(float col[3])
 	mData.col[0] = col[0];
 	mData.col[1] = col[1];
 	mData.col[2] = col[2];
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::SetIntensity(float intensity)
 {
 	mData.col[3] = intensity;
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::SetRadius(float radius)
 {
 	mRadius = radius;
-	App->GetOpenGL()->UpdatePoinLightInfo(*this, radius);
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::Update()
