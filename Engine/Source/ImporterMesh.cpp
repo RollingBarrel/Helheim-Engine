@@ -544,7 +544,7 @@ unsigned int ResourceMesh::LoadToMemory()
     for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
         
-        (idx, (*it)->size/sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+        glVertexAttribPointer(idx, (*it)->size/sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
         glEnableVertexAttribArray(idx);
         ++idx;
     }

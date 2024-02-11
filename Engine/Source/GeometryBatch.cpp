@@ -41,7 +41,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glBufferData(GL_ARRAY_BUFFER, mVboSize, mUniqueMeshes[0]->GetInterleavedData(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mUniqueMeshes[0]->mNumIndices * sizeof(unsigned int), mUniqueMeshes[0]->GetIndices(), GL_STATIC_DRAW);
-	glBindVertexArray(0);
+	
 	
 
 
@@ -63,6 +63,14 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	
 
 
+	unsigned int idx = 0;
+	for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+	{
+		glEnableVertexAttribArray(idx);
+		glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+		
+		++idx;
+	}
 
 
 	glGenBuffers(1, &mSsboMaterials);
@@ -70,6 +78,9 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Material), mMaterials[0], GL_STATIC_DRAW);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 }
 
@@ -193,6 +204,7 @@ void GeometryBatch::Draw()
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+
 	glBindVertexArray(mVao);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
@@ -223,7 +235,7 @@ void GeometryBatch::Draw()
 
 	//glBindBuffer(GL_ARRAY_BUFFER, mIbo);
 
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*) 0, mCommands.size(), 0);
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, 0, mCommands.size(), 0);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
