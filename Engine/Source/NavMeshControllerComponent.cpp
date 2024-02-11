@@ -51,6 +51,8 @@ void NavMeshControllerComponent::LoadFromJSON(const rapidjson::Value& data, Game
 void NavMeshControllerComponent::HandleBuild() {
 	GameObject* root= App->GetScene()->GetRoot();
 	GetGOMeshes(root);
+	mMeshRendererComponents;
+	
 	const MeshRendererComponent* testMesh{mMeshRendererComponents[0]};
 	
 	if (testMesh) {
@@ -88,7 +90,7 @@ void NavMeshControllerComponent::HandleBuild() {
 		int numberOfVertices = testMesh->GetResourceMesh()->mNumVertices;
 
 
-		  int* triangle = (int*)(testMesh->GetResourceMesh()->mIndices);
+		  const int* triangle = (const int*)(testMesh->GetResourceMesh()->mIndices);
 		
 
 		
@@ -232,15 +234,17 @@ void NavMeshControllerComponent::HandleBuild() {
 }
 
 void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
-	for (const auto& child : gameObj->GetChildren()) {
-		MeshRendererComponent* meshRendererComponent = gameObj->getMeshRenderer();
-		if (meshRendererComponent) {
-			mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
-			mOBBs.push_back(meshRendererComponent->getOBB());
-			mMeshRendererComponents.push_back(meshRendererComponent);
-			
+	if (!(gameObj->GetChildren().empty())) {
+		for (const auto& child : gameObj->GetChildren()) {
+			MeshRendererComponent* meshRendererComponent = child->getMeshRenderer();
+			if (meshRendererComponent) {
+				mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
+				mOBBs.push_back(meshRendererComponent->getOBB());
+				mMeshRendererComponents.push_back(meshRendererComponent);
+
+			}
+			GetGOMeshes(child);
 		}
-		GetGOMeshes(child);
 	}
 
 }

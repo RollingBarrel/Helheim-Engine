@@ -12,8 +12,7 @@
 
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
-
-
+#include "NavMeshControllerComponent.h"
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr)
@@ -282,6 +281,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	}
 	case ComponentType::TEST:
 		newComponent = new TestComponent(this);
+		break;
+	case ComponentType::NAVMESHCONTROLLER:
+		newComponent = new NavMeshControllerComponent(this);
 		break;
 	default:
 		break;
