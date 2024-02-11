@@ -10,7 +10,7 @@ NavMeshControllerComponent::NavMeshControllerComponent(GameObject* ownerGameObje
 	:Component(ownerGameObject, ComponentType::NAVMESHCONTROLLER)
 {
 	mRecastContext = rcContext(false);
-	HandleBuild();
+	
 }
 
 NavMeshControllerComponent::NavMeshControllerComponent(const NavMeshControllerComponent& original, GameObject* owner)
@@ -31,9 +31,7 @@ void NavMeshControllerComponent::Reset() {
 
 void NavMeshControllerComponent::Update()
 {
-	MeshRendererComponent* c = nullptr;
-		//c = mOwner->GetComponent<MeshRendererComponent>();
-	c = (MeshRendererComponent*)mOwner->GetComponent(ComponentType::MESHRENDERER);
+	HandleBuild();
 	
 }
 
