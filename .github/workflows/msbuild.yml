@@ -7,9 +7,9 @@ name: MSBuild
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop", "main", "hotfix/*", "feature/*" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "develop", "main", "hotfix/*" ]
 
 env:
   # Path to the solution file relative to the root of the project.
