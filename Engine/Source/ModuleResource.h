@@ -31,7 +31,7 @@ private:
 	std::map<unsigned int, Resource*> mResources;
 
 	std::unordered_map<std::string, Resource::Type> mExtensionToResourceType;
-	std::unordered_map<std::string, Resource::Type> mOurExtensionToResourceType;
+	//std::unordered_map<std::string, Resource::Type> mOurExtensionToResourceType;
 };
 
 #endif //_MODULE_RESOURCE_H_

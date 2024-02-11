@@ -26,10 +26,10 @@ bool ModuleResource::Init() {
 		// Add more mappings for other resource types as needed
 	};
 
-	mOurExtensionToResourceType = {
-		{".tex", Resource::Type::Texture},
-		// Add more mappings for other resource types as needed
-	};
+	//mOurExtensionToResourceType = {
+	//	{".tex", Resource::Type::Texture},
+	//	// Add more mappings for other resource types as needed
+	//};
 
 }
 
