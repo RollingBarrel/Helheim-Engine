@@ -27,7 +27,7 @@ ResourceTexture::ResourceTexture()
     mOpenGLId = 0;
 }
 
-ResourceTexture::ResourceTexture(unsigned int id) : Resource(mUID)
+ResourceTexture::ResourceTexture(unsigned int uid) : Resource(uid)
 {
     mWidth = 0;
     mHeight = 0;

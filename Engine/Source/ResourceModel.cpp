@@ -1,5 +1,5 @@
 #include "ResourceModel.h"
 
-ResourceModel::ResourceModel(unsigned int uid) : Resource(mUID)
+ResourceModel::ResourceModel(unsigned int uid) : Resource(uid)
 {
 }

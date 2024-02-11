@@ -17,6 +17,11 @@
 #include "ImporterMesh.h"
 #include "ImporterModel.h"
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
+#include <ctime>
 
 bool ModuleResource::Init() {
 	mExtensionToResourceType = {
@@ -90,55 +95,60 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	{
 		case Resource::Type::Texture:
 		{
-			(ResourceTexture*)resource->Import(importedFilePath);
-			(ResourceTexture*)resource->Save();
+			Importer::Texture::Import(resource->GetAssetsFile().c_str(), (ResourceTexture*)resource);
+			Importer::Texture::Save((ResourceTexture*)resource);
 			break;
 		}
 		case Resource::Type::Mesh:
 		{
-			//(ResourceMesh*)resource->Import(importedFilePath);
-			//(ResourceMesh*)resource->Save();
+			//Importer::Mesh::Import(resource->GetAssetsFile().c_str(), (ResourceMesh*) resource);
+			//Importer::Mesh::Save((ResourceMesh*)resource);
 			break;
 		}
 		case Resource::Type::Bone:
 		{
-			//Importer::Bone::Import(importedFilePath, (ResourceModel*)resource); 
+			//Importer::Bone::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource); 
 			//Importer::Bone::Save((ResourceBone*)resource);
 			break;
 		}
 		case Resource::Type::Animation:
 		{
-			//Importer::Animation::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Animation::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::Animation::Save((ResourceAnimation*)resource);
 			break;
 		}
 		case Resource::Type::Material:
 		{
-			//Importer::Material::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Material::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::Material::Save((ResourceMaterial*)resource);
 			break;
 		}
 		case Resource::Type::Model:
 		{
-			Importer::Model::Import(importedFilePath, (ResourceModel*)resource);
+			std::string binFile = "";
+			App->GetFileSystem()->SplitPath(importedFilePath, &binFile);
+
+			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
+
+			Importer::Model::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			Importer::Model::Save((ResourceModel*)resource);
 			break;
 		}
 		case Resource::Type::Scene:
 		{
-			//Importer::Scene::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::Scene::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::Scene::Save((ResourceScene*)resource);
 			break;
 		}
 		case Resource::Type::NavMesh:
 		{
-			//Importer::NavMesh::Import(importedFilePath, (ResourceModel*)resource);
+			//Importer::NavMesh::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			//Importer::NavMesh::Save((ResourceNavMesh*)resource);
 			break;
 		}
 		default:
 		{
-			LOG("Unable to Import, this file %s", importedFilePath); 
+			LOG("Unable to Import, this file %s", resource->GetAssetsFile().c_str());
 			break;
 		}
 	}*/
@@ -276,11 +286,38 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 {
 	bool ret = true;
 
-	int metaFile = resource.GetAssetsFile().find_last_of('.');
-	std::string metaName = resource.GetAssetsFile().substr(metaFile) + ".meta";
+	// Get the path of the .meta file
+	std::string assetName = "";
+	std::string assetExtension = "";
+	App->GetFileSystem()->SplitPath(resource.GetAssetsFile().c_str(), &assetName, &assetExtension);
 
-	char* buffer = new char[0];
-	App->GetFileSystem()->Save(metaName.c_str(), buffer, sizeof(buffer));
-	RELEASE_ARRAY(buffer);
+	std::string metaName = assetName + assetExtension + ".meta";
+
+	// Create a JSON document
+	rapidjson::Document document;
+	document.SetObject();
+
+	// Add uid to the JSON document
+	rapidjson::Value uidValue;
+	uidValue.SetInt(resource.GetUID());
+	document.AddMember("uid", uidValue, document.GetAllocator());
+
+	// Add time of creation to the JSON document
+	rapidjson::Value timeValue;
+	time_t currentTime = time(nullptr);
+	timeValue.SetInt(static_cast<int>(currentTime));
+	document.AddMember("time", timeValue, document.GetAllocator());
+
+	// Convert the JSON document to a string
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	document.Accept(writer);
+	const char* jsonStr = buffer.GetString();
+
+	// Save the JSON string to the .meta file
+	ret = App->GetFileSystem()->Save(metaName.c_str(), jsonStr, strlen(jsonStr));
+	
+	RELEASE_ARRAY(jsonStr);
+	
 	return ret;
 }

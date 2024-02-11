@@ -7,7 +7,7 @@ Resource::Resource()
 	mReferenceCount = 0;
 }
 
-Resource::Resource(unsigned int uid)
+Resource::Resource(unsigned int uid) : mUID(uid)
 {
 	mUID = uid;
 	mType = Type::Unknown;
