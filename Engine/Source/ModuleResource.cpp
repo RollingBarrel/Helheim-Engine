@@ -8,7 +8,6 @@
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
 
-#include <unordered_map>
 #include <algorithm>
 
 #include "Algorithm/Random/LCG.h"
@@ -18,13 +17,21 @@
 #include "ImporterMesh.h"
 #include "ImporterModel.h"
 
-// Define a mapping between file extensions and resource types
-const std::unordered_map<std::string, Resource::Type> extensionToResourceType = {
-	{".png", Resource::Type::Texture},
-	{".jpg", Resource::Type::Texture},
-	{".bmp", Resource::Type::Texture},
-	// Add more mappings for other resource types as needed
-};
+
+bool ModuleResource::Init() {
+	mExtensionToResourceType = {
+		{".png", Resource::Type::Texture},
+		{".jpg", Resource::Type::Texture},
+		{".bmp", Resource::Type::Texture},
+		// Add more mappings for other resource types as needed
+	};
+
+	mOurExtensionToResourceType = {
+		{".tex", Resource::Type::Texture},
+		// Add more mappings for other resource types as needed
+	};
+
+}
 
 unsigned int ModuleResource::Find(const char* assetsFile) const
 {
@@ -77,18 +84,20 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	LOG("Succesfully created a .meta File");
 
 	//Only Textures, Models, Scenes, Prefabs
-	switch (resource->GetType())
+	resource->Import(importedFilePath);
+	resource->Save();
+	/*switch (resource->GetType())
 	{
 		case Resource::Type::Texture:
 		{
-			Importer::Texture::Import(importedFilePath, (ResourceTexture*)resource);
-			Importer::Texture::Save((ResourceTexture*)resource);
+			(ResourceTexture*)resource->Import(importedFilePath);
+			(ResourceTexture*)resource->Save();
 			break;
 		}
 		case Resource::Type::Mesh:
 		{
-			//Importer::Mesh::Import(importedFilePath, (ResourceMesh*) resource);
-			//Importer::Mesh::Save((ResourceMesh*)resource);
+			//(ResourceMesh*)resource->Import(importedFilePath);
+			//(ResourceMesh*)resource->Save();
 			break;
 		}
 		case Resource::Type::Bone:
@@ -132,7 +141,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 			LOG("Unable to Import, this file %s", importedFilePath); 
 			break;
 		}
-	}
+	}*/
 
 	unsigned int ret = resource->GetUID();
 
@@ -151,9 +160,19 @@ Resource* ModuleResource::RequestResource(unsigned int uid)
 		it->second->AddReferenceCount();
 		return it->second;
 	}
-
-	//Find the library file (if exists) and load the custom file format
+	else 
+	{
+		return TryToLoadResource(uid);
+	}
+	//Find the library file (if exists) and load the custom file format 
 	//return TryToLoadResource(uid); <------------------------------------------TODO
+	return nullptr;
+}
+
+Resource* ModuleResource::TryToLoadResource(const unsigned int uid)
+{
+	//App->GetFileSystem()->GetPathFromFileName();
+
 	return nullptr;
 }
 
@@ -181,77 +200,26 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	std::string extensionName;
 	App->GetFileSystem()->SplitPath(assetsFile, &assetName, &extensionName);
 	
+	// Create resource from resource type
+	std::string path;
 	switch (type)
 	{
-		case Resource::Type::Texture:
-		{
-			ret = (Resource*) new ResourceTexture(uid); 
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_TEXTURE_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_TEXTURE_PATH + std::to_string(ret->GetUID()) + ".tex");
-			break;
-		}
-		case Resource::Type::Mesh:
-		{
-			ret = (Resource*) new ResourceMesh(uid);
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_MESH_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_MESH_PATH + std::to_string(ret->GetUID()) + ".mesh");
-			break;
-		}
-		/*case Resource::Type::Bone: 
-		{
-			ret = (Resource*) new ResourceBone(uid); 
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_BONE_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_BONE_PATH + std::to_string(ret->GetUID()) + ".bone");
-			break;
-		}*/
-		/*case Resource::Type::Animation: 
-		{
-			ret = (Resource*) new ResourceAnimation(uid); 
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_ANIMATION_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_ANIMATION_PATH + std::to_string(ret->GetUID()) + ".anim");
-			break;
-		}*/
-		case Resource::Type::Material:
-		{
-			ret = (Resource*) new ResourceMaterial(uid);
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_MATERIAL_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_MATERIAL_PATH + std::to_string(ret->GetUID()) + ".mat");
-			break;
-		}
-		case Resource::Type::Model:
-		{
-			ret = (Resource*) new ResourceModel(uid);
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_MODEL_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_MODEL_PATH + std::to_string(ret->GetUID()) + ".model");
-			break;
-		}
-		/*case Resource::Type::Scene:
-		{
-			ret = (Resource*) new ResourceScene(uid);
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_SCENE_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_SCENE_PATH + std::to_string(ret->GetUID()) + ".scene");
-			break;
-		}*/
-		/*case Resource::Type::NavMesh:
-		{
-			ret = (Resource*) new ResourceNavMesh(uid);
-			mResources[uid] = ret;
-			ret->SetAssetsFile(ASSETS_NAVMESH_PATH + assetName + extensionName);
-			ret->SetLibraryFile(LIBRARY_NAVMESH_PATH + std::to_string(ret->GetUID()) + ".navmesh");
-			break;
-		}*/
-		default:
-		{
-			LOG("Unable to create asset for this file: %s", assetsFile);
-			break;
-		}
+	case Resource::Type::Texture: ret = new ResourceTexture(uid); path = ASSETS_TEXTURE_PATH; break;
+	//case Resource::Type::Mesh: ret = new ResourceMesh(uid); path = ASSETS_MESH_PATH; break;
+	//case Resource::Type::Bone: ret = new ResourceBone(uid); path = ASSETS_BONE_PATH; break;
+	//case Resource::Type::Animation: ret = new ResourceAnimation(uid); path = ASSETS_ANIMATION_PATH; break;
+	//case Resource::Type::Material: ret = new ResourceMaterial(uid); path = ASSETS_MATERIAL_PATH; break;
+	//case Resource::Type::Model: ret = new ResourceModel(uid); path = ASSETS_MODEL_PATH; break; 
+	//case Resource::Type::Scene: ret = new ResourceScene(uid); path = ASSETS_SCENES_PATH; break; 
+	//case Resource::Type::NavMesh: ret = new ResourceNavMesh(uid); path = ASSETS_NAVMESH_PATH; break;
+	default: LOG("Unable to create asset for this file: %s", assetsFile); break;
+	}
+
+	// if ret is not nullptr
+	if (ret) {
+		mResources[uid] = ret;
+		ret->SetAssetsFile(path + assetName + extensionName);
+		ret->SetLibraryFile(path + std::to_string(ret->GetUID()) + ret->GetExtension());
 	}
 
 	return ret;
@@ -289,17 +257,19 @@ const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath,
 
 Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
 {
-	if (const char* fileExtension = strrchr(assetsFile, '.')) // Extract file extension
+	// Extract file extension
+	if (const char* fileExtension = strrchr(assetsFile, '.')) 
 	{
+		// Convert to lowercase
 		std::string extension = fileExtension;
-		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower); // Convert to lowercase
-
-		auto it = extensionToResourceType.find(extension);
-		if (it != extensionToResourceType.end())
+		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower); 
+		// Returns the Type of Resource (see map above)
+		auto it = mExtensionToResourceType.find(extension);
+		if (it != mExtensionToResourceType.end())
 			return it->second;
 	}
-
-	return Resource::Type::Unknown; // If the file extension is not recognized
+	// If the file extension is not recognized
+	return Resource::Type::Unknown; 
 }
 
 const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const

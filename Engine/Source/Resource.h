@@ -23,6 +23,12 @@ public:
 	Resource(unsigned int uid);
 	virtual ~Resource();
 
+	virtual void Import(const char* filePath) = 0;
+	virtual void Save() = 0;
+	virtual unsigned int Load(const char* fileName) = 0;
+
+	virtual std::string GetExtension() = 0;
+
 	Type GetType() const { return mType; };
 	unsigned int GetUID() const { return mUID; };
 	const std::string GetAssetsFile() const { return mAssetsFile; };
@@ -36,10 +42,10 @@ public:
 
 protected:
 	//Name??? To set it when generating game object
-	unsigned int mUID = 0;
+	unsigned int mUID;
 	std::string mAssetsFile;
 	std::string mLibraryFile;
-	Type mType = Type::Unknown;
-	unsigned int mReferenceCount = 0;
+	Type mType;
+	unsigned int mReferenceCount;
 };
 

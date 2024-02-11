@@ -18,9 +18,15 @@ public:
 	ResourceTexture(unsigned int id);
 	~ResourceTexture();
 
+	void Import(const char* filePath) override;
+	void Save() override;
+	unsigned int Load(const char* fileName) override;
+
+	std::string GetExtension() override { return ".tex"; }
+
 	unsigned int CreateTexture();	
 
-public:
+private:
 	unsigned int mWidth;
 	unsigned int mHeight;
 
@@ -33,6 +39,6 @@ public:
 
 	bool mHasAlpha;
 
-	unsigned int mOpenGLId = 0;
+	unsigned int mOpenGLId;
 };
 
