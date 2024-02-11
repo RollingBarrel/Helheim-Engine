@@ -58,9 +58,6 @@ private:
 	std::vector<Material*> mMaterials;
 	unsigned int mVertexSize = 0;
 
-	unsigned int mVboSize = 0;
-	unsigned int mEboSize = 0;
-	unsigned int mVaoSize = 0;
 
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
