@@ -29,6 +29,7 @@ public:
 	const std::string GetLibraryFile() const { return mLibraryFile; };
 	unsigned int GetReferenceCount() const { return mReferenceCount; };
 
+	void SetType(Type type) { mType = type; };
 	void SetAssetsFile(const std::string& assetsFile) { mAssetsFile = assetsFile; };
 	void SetLibraryFile(const std::string& libraryFile) { mLibraryFile = libraryFile; };
 	void AddReferenceCount() { mReferenceCount++; }

@@ -121,7 +121,12 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 			std::string binFile = "";
 			App->GetFileSystem()->SplitPath(importedFilePath, &binFile);
 
-			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
+			std::string binPath = importedFilePath;
+			int pos = binPath.find_last_of('.');
+
+			binPath = binPath.substr(0,pos) + ".bin";
+
+			App->GetFileSystem()->CopyAbsolutePath(binPath.c_str(), std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
 
 			Importer::Model::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
 			Importer::Model::Save((ResourceModel*)resource);
@@ -198,6 +203,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		case Resource::Type::Texture:
 		{
 			ret = (Resource*) new ResourceTexture(uid); 
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_TEXTURE_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_TEXTURE_PATH + std::to_string(ret->GetUID()) + ".tex");
@@ -206,6 +212,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		case Resource::Type::Mesh:
 		{
 			ret = (Resource*) new ResourceMesh(uid);
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_MESH_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_MESH_PATH + std::to_string(ret->GetUID()) + ".mesh");
@@ -214,6 +221,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		/*case Resource::Type::Bone: 
 		{
 			ret = (Resource*) new ResourceBone(uid); 
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_BONE_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_BONE_PATH + std::to_string(ret->GetUID()) + ".bone");
@@ -222,6 +230,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		/*case Resource::Type::Animation: 
 		{
 			ret = (Resource*) new ResourceAnimation(uid); 
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_ANIMATION_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_ANIMATION_PATH + std::to_string(ret->GetUID()) + ".anim");
@@ -230,6 +239,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		case Resource::Type::Material:
 		{
 			ret = (Resource*) new ResourceMaterial(uid);
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_MATERIAL_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_MATERIAL_PATH + std::to_string(ret->GetUID()) + ".mat");
@@ -238,6 +248,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		case Resource::Type::Model:
 		{
 			ret = (Resource*) new ResourceModel(uid);
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_MODEL_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_MODEL_PATH + std::to_string(ret->GetUID()) + ".model");
@@ -246,6 +257,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		/*case Resource::Type::Scene:
 		{
 			ret = (Resource*) new ResourceScene(uid);
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_SCENE_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_SCENE_PATH + std::to_string(ret->GetUID()) + ".scene");
@@ -254,6 +266,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		/*case Resource::Type::NavMesh:
 		{
 			ret = (Resource*) new ResourceNavMesh(uid);
+			ret->SetType(type);
 			mResources[uid] = ret;
 			ret->SetAssetsFile(ASSETS_NAVMESH_PATH + assetName + extensionName);
 			ret->SetLibraryFile(LIBRARY_NAVMESH_PATH + std::to_string(ret->GetUID()) + ".navmesh");
@@ -323,7 +336,53 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 	std::string assetExtension = "";
 	App->GetFileSystem()->SplitPath(resource.GetAssetsFile().c_str(), &assetName, &assetExtension);
 
-	std::string metaName = assetName + assetExtension + ".meta";
+	std::string metaName;
+
+	switch (resource.GetType())
+	{
+		case Resource::Type::Texture:
+		{	
+			metaName = ASSETS_TEXTURE_PATH;
+			break;
+		}
+		case Resource::Type::Mesh:
+		{
+			break;
+		}
+		case Resource::Type::Bone:
+		{
+			break;
+		}
+		case Resource::Type::Animation:
+		{
+			break;
+		}
+		case Resource::Type::Material:
+		{		
+			break;
+		}
+		case Resource::Type::Model:
+		{
+			metaName = ASSETS_MODEL_PATH;
+			break;
+		}
+		case Resource::Type::Scene:
+		{
+			break;
+		}
+		case Resource::Type::NavMesh:
+		{
+			break;
+		}
+		default:
+		{
+			LOG("Unable to create a good meta file");
+			ret = false;
+			break;
+		}
+	}
+
+	metaName += assetName + assetExtension + ".meta";
 
 	// Create a JSON document
 	rapidjson::Document document;
@@ -347,9 +406,9 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 	const char* jsonStr = buffer.GetString();
 
 	// Save the JSON string to the .meta file
-	ret = App->GetFileSystem()->Save(metaName.c_str(), jsonStr, strlen(jsonStr));
+	ret = App->GetFileSystem()->Save(metaName.c_str(), buffer.GetString(), strlen(buffer.GetString()));
 	
-	RELEASE_ARRAY(jsonStr);
-	
+	buffer.Clear();
+
 	return ret;
 }

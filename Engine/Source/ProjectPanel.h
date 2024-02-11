@@ -5,6 +5,7 @@
 #include <vector>
 
 struct PathNode;
+class Resource;
 
 struct AssetDisplay
 {
@@ -12,7 +13,7 @@ struct AssetDisplay
 	const char* mName;
 	std::vector<unsigned int> mUid;
 	PathNode* mParent;
-	//TODO Resource
+	Resource* mResource;
 };
 
 class ProjectPanel : public Panel
@@ -24,6 +25,6 @@ public:
 	void Draw(int windowFlags) override;
 
 private:
-
+	const void DrawAssetsFolder(const PathNode& current) const;
 };
 

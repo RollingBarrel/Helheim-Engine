@@ -47,7 +47,6 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
         for (const auto& primitive : srcMesh.primitives)
         {
             ResourceMesh* mesh = new ResourceMesh(math::LCG().Int());
-
             Importer::Mesh::Import(model, primitive, mesh);
 
             if (primitive.material != -1) {
@@ -65,7 +64,6 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
 
         }
     }
-    Importer::Model::Save(rModel);
 }
 
 void Importer::Model::Save(const ResourceModel* ourModel)
@@ -101,9 +99,7 @@ void Importer::Model::Save(const ResourceModel* ourModel)
 
     App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
 
-    delete[] fileBuffer;
-    fileBuffer = nullptr;
-
+    RELEASE_ARRAY(fileBuffer);
 }
 
 void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
