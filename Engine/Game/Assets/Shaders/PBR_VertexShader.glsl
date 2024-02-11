@@ -33,10 +33,9 @@ flat out int  instace_index;
 
 void main()
 {
-
-	mat4 model = models[instace_index];
-
 	instace_index =  gl_BaseInstance;
+	mat4 model = models[gl_BaseInstance];
+	
 	uv = inUv;
 	//transpos inverse on position and normal:)
 	//sPos = transpose(inverse(mat3(model)))*inPos;
