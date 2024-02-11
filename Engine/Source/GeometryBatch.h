@@ -7,7 +7,17 @@ class MeshRendererComponent;
 struct ResourceMesh;
 typedef struct Attribute;
 
-typedef struct Command;
+typedef struct Command
+{
+
+	unsigned int mCount = 0;		 // Number of indices in the mesh
+	unsigned int mInstanceCount = 0; // Number of instances to render
+	unsigned int firstIndex = 0;	 // Index offset in the EBO
+	unsigned int baseVertex = 0;	 // Vertex offset in the VBO
+	unsigned int baseInstance = 0;   // Instance Index
+
+} Command;
+
 
 typedef struct Material {
 	
