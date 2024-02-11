@@ -14,7 +14,7 @@
 Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
-	modules[0] = input = new ModuleInput();
+	//modules[0] = input = new ModuleInput();
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
