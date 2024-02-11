@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>;
-#include "float3.h"
+#include "float4.h"
 #include "float4x4.h"
 
 class MeshRendererComponent;
@@ -12,15 +12,15 @@ typedef struct Command;
 typedef struct Material {
 	
 	//Diffuse
-	float3 diffuseColor = float3::zero;
-	unsigned int diffuseTexture = 0;
+	float4 diffuseColor = float4::zero;
+	uint64_t diffuseTexture = 0;
 
 	//Specular
-	float3 specularColor = float3::zero;
-	unsigned int specularTexture = 0;
+	float4 specularColor = float4::zero;
+	uint64_t specularTexture = 0;
 
 	//Normal
-	unsigned int normalTexture = 0;
+	uint64_t normalTexture = 0;
 
 	//Shininess
 	float shininess = 0.0f;

@@ -48,9 +48,9 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 
 	Material* material = new Material();
 
-	material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor.xyz();
+	material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor;
 	material->diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->openGlId;
-	material->specularColor = mesh->GetMaterial()->mSpecularFactor;
+	material->specularColor =  float4(mesh->GetMaterial()->mSpecularFactor, 0);
 	material->specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->openGlId;
 	material->normalTexture = mesh->GetMaterial()->mNormalTexture->openGlId;
 	material->shininess = mesh->GetMaterial()->mGlossinessFactor;
@@ -61,6 +61,9 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 
 	mMaterials.push_back(material);
 	
+
+
+
 
 	glGenBuffers(1, &mSsboMaterials);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
@@ -210,6 +213,12 @@ void GeometryBatch::Draw()
 	}
 
 
+	for (auto material : mMaterials) {
+		glMakeTextureHandleResidentARB(material->diffuseTexture);
+		glMakeTextureHandleResidentARB(material->specularTexture);
+		glMakeTextureHandleResidentARB(material->normalTexture);
+	}
+
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 
 	//glBindBuffer(GL_ARRAY_BUFFER, mIbo);
@@ -222,6 +231,11 @@ void GeometryBatch::Draw()
 	glUseProgram(0);
 	glBindVertexArray(0);
 
+	for (auto material : mMaterials) {
+		glMakeTextureHandleNonResidentARB(material->diffuseTexture);
+		glMakeTextureHandleNonResidentARB(material->specularTexture);
+		glMakeTextureHandleNonResidentARB(material->normalTexture);
+	}
 
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 }

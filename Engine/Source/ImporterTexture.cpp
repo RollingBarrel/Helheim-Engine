@@ -152,7 +152,37 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     return texture->CreateTexture();
 }
 
+
 unsigned int ResourceTexture::CreateTexture()
+{
+    unsigned int texId;
+    glCreateTextures(GL_TEXTURE_2D, 1, &texId);
+    glTextureStorage2D(texId, mMipLevels, mInternalFormat, mWidth, mHeight);
+
+    for (size_t i = 0; i < mMipLevels; ++i)
+    {
+       
+       // glTexImage2D(GL_TEXTURE_2D, i, mInternalFormat, mWidth, mHeight, 0, mFormat, mType, mPixels);
+
+        glTextureSubImage2D(texId, i, 0, 0, mWidth, mHeight, mFormat, mType, mPixels);
+    }
+
+    if (mMipLevels == 1) {
+        glGenerateTextureMipmap(texId);
+    }
+        
+
+    glTextureParameteri(texId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureParameteri(texId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(texId, GL_TEXTURE_BASE_LEVEL, 0);
+    glTextureParameteri(texId, GL_TEXTURE_MAX_LEVEL, mMipLevels - 1);
+    glTextureParameteri(texId, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+
+    openGlId = glGetTextureHandleARB(texId);
+    return openGlId;
+}
+
+/*unsigned int ResourceTexture::CreateTexture()
 {
     unsigned int texId;
 	glGenTextures(1, &texId);
@@ -175,4 +205,4 @@ unsigned int ResourceTexture::CreateTexture()
 
     openGlId = texId;
 	return texId;
-}
+}*/

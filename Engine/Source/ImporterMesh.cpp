@@ -499,7 +499,7 @@ void Importer::Mesh::Load(ResourceMesh* mesh, const char* fileName)
         cursor += attr->size * mesh->mNumVertices;
     }
 
-    mesh->LoadToMemory();
+    //mesh->LoadToMemory();
 
     //Create GameObject and set mesh to it;
 }
@@ -543,7 +543,8 @@ unsigned int ResourceMesh::LoadToMemory()
     unsigned int idx = 0;
     for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
-        glVertexAttribPointer(idx, (*it)->size/sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+        
+        (idx, (*it)->size/sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
         glEnableVertexAttribArray(idx);
         ++idx;
     }
