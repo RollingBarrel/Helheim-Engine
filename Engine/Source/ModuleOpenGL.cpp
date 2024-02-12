@@ -196,7 +196,6 @@ bool ModuleOpenGL::CleanUp()
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteBuffers(1, &mSkyVbo);
-	glDeleteBuffers(1, &cameraUnis);
 	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
@@ -230,10 +229,8 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
 	if (mCameraUniBuffer != nullptr)
 	{
-		
-		glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, App->GetCamera()->GetViewMatrix().Transposed().ptr());
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, App->GetCamera()->GetProjectionMatrix().Transposed().ptr());
+		mCameraUniBuffer->UpdateData(App->GetCamera()->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(App->GetCamera()->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 		glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());

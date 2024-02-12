@@ -79,8 +79,7 @@ private:
 	unsigned int depthStencil;
 
 	//Camera
-	unsigned int cameraUnis = 0;
-	OpenGLBuffer* cameraUniBuffer = nullptr;
+	OpenGLBuffer* mCameraUniBuffer = nullptr;
 
 	//Skybox
 	void InitSkybox();
