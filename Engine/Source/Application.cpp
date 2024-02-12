@@ -58,7 +58,7 @@ bool Application::Init()
 update_status Application::Update()
 {
 	mEngineTimer->Update();
-	mGameTimer->Update();
+	//mGameTimer->Update();
 
 	update_status ret = UPDATE_CONTINUE;
 
