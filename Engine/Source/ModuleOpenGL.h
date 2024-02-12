@@ -80,6 +80,7 @@ private:
 
 	//Camera
 	unsigned int cameraUnis = 0;
+	OpenGLBuffer* cameraUniBuffer = nullptr;
 
 	//Skybox
 	void InitSkybox();

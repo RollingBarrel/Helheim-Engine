@@ -123,11 +123,7 @@ bool ModuleOpenGL::Init()
 	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
 
 	//Initialize camera uniforms
-	glGenBuffers(1, &cameraUnis);
-	glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * 16 * 2, NULL, GL_STATIC_DRAW);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, cameraUnis);
-	//glBindBufferRange(GL_UNIFORM_BUFFER, 2, uboExampleBlock, 0, sizeof(float)*16*2);
+	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
 	SetOpenGlCameraUniforms();
 
 	InitSkybox();
@@ -232,8 +228,9 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
-	if (context != nullptr)
+	if (mCameraUniBuffer != nullptr)
 	{
+		
 		glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, App->GetCamera()->GetViewMatrix().Transposed().ptr());
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, App->GetCamera()->GetProjectionMatrix().Transposed().ptr());
