@@ -20,7 +20,9 @@ public:
 	void Reset() override {}
 
 	const float* GetPosition() const;
-	void SetPosition(const float poa[3]);
+	void SetPosition(const float pos[3]);
+	const float* GetDirection() const { return mData.aimD; };
+	void SetDirection(const float dir[3]);
 	const float* GetColor() const { return mData.col; }
 	void SetColor(float col[3]);
 	float GetIntensity() const { return mData.pos[3]; }

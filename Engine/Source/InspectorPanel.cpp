@@ -262,23 +262,19 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
-					MeshRendererComponent* downCast = reinterpret_cast<MeshRendererComponent*>(component);
-					DrawMeshRendererComponent(downCast);
+					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				}
 				case ComponentType::POINTLIGHT: {
-					PointLightComponent* downCast = reinterpret_cast<PointLightComponent*>(component);
-					DrawPointLightComponent(downCast);
+					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
 					break;
 				}
 				case ComponentType::SPOTLIGHT: {
-					SpotLightComponent* downCast = reinterpret_cast<SpotLightComponent*>(component);
-					DrawSpotLightComponent(downCast);
+					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
 					break;
 				}
 				case ComponentType::TEST: {
-					TestComponent* downCast = reinterpret_cast<TestComponent*>(component);
-					DrawTestComponent(downCast);
+					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				}
 
@@ -315,11 +311,17 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 }
 
 void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
-	const float* pCol = component->GetColor();
-	float col[3] = { pCol[0], pCol[1] , pCol[2] };
+	const float* sCol = component->GetColor();
+	float col[3] = { sCol[0], sCol[1] , sCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
 	{
 		component->SetColor(col);
+	}
+	const float* sDir = component->GetDirection();
+	float dir[3] = { sDir[0], sDir[1] , sDir[2] };
+	if (ImGui::DragFloat3("Direction", dir, 1.0f, -1.f, 1.f))
+	{
+		component->SetDirection(dir);
 	}
 	float intensity = component->GetIntensity();
 	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))

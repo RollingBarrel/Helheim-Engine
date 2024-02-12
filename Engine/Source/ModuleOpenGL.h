@@ -99,10 +99,8 @@ private:
 	//Lighting uniforms
 	unsigned int lightUnis = 0;
 	DirectionalAmbient mDirAmb;
-	unsigned int mPointSSBO = 0;
 	std::vector<const PointLightComponent*>mPointLights;
 	OpenGLBuffer* mPointsBuffer = nullptr;
-	unsigned int mSpotSSBO = 0;
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;

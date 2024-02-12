@@ -131,7 +131,7 @@ void main() {
 		float dist = length(mVector);
 		vec3 pDir = normalize(mVector);
 		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / (dist*dist + 1);
-		pbrCol += GetPBRLightColor(pDir, pLights[i].col.xyz,  pLights[i].col.w, att);
+		pbrCol += GetPBRLightColor(pDir, pLights[i].col.rgb,  pLights[i].col.w, att);
 	}
 
 	//Spot lights
@@ -151,7 +151,7 @@ void main() {
 		if(cInner > c && c > cOuter)
 			cAtt = (c - cOuter) / (cInner - cOuter);
 		att *= cAtt;
-		pbrCol += GetPBRLightColor(sDir, pLights[i].col.xyz,  pLights[i].pos.w, att);
+		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att);
 	}
 
 	//HDR color  

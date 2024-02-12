@@ -25,6 +25,14 @@ void SpotLightComponent::SetPosition(const float pos[3])
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
+void SpotLightComponent::SetDirection(const float dir[3])
+{
+	mData.aimD[0] = dir[0];
+	mData.aimD[1] = dir[1];
+	mData.aimD[2] = dir[2];
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
 void SpotLightComponent::SetColor(float col[3])
 {
 	mData.col[0] = col[0];
