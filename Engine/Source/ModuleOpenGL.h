@@ -4,8 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
-#include "LightSourceComponent.h"
-#include <list>
+#include <vector>
 
 typedef struct DirectionalAmbient {
 	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
@@ -13,7 +12,8 @@ typedef struct DirectionalAmbient {
 	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
 }DirectionalAmbient;
 
-
+class LightSourceComponent;
+class PointLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
@@ -40,8 +40,9 @@ public:
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
-	void AddPointLight(const PointLight& pLight, GameObject* go);
-	void RemovePointLight(std::list<PointLight>::iterator it);
+	LightSourceComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
+	void UpdatePoinLightInfo(const LightSourceComponent& ptrPointLight);
+	void RemovePointLight(const LightSourceComponent& cPointLight);
 
 private:
 	void* context = nullptr;
@@ -62,9 +63,9 @@ private:
 
 	//Programs
 	char* LoadShaderSource(const char* shaderFileName) const;
-	unsigned CompileShader(unsigned type, const char* source) const;
-	unsigned CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const;
-	unsigned CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
+	unsigned int CompileShader(unsigned type, const char* source) const;
+	unsigned int CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const;
+	unsigned int CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
 	unsigned int mPbrProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 
@@ -73,7 +74,7 @@ private:
 	unsigned int lightUnis = 0;
 	DirectionalAmbient mDirAmb;
 	unsigned int mPointSSBO = 0;
-	std::list<PointLight>mPointLights;
+	std::vector<const LightSourceComponent*>mPointLights;
 	friend class LightningPanel;
 };
 

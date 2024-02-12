@@ -24,7 +24,8 @@ void main()
 {
 	uv = inUv;
 	//transpos inverse on position and normal:)
-	sPos = transpose(inverse(mat3(model)))*inPos;
+	//sPos = transpose(inverse(mat3(model)))*inPos;
+	sPos = (model*vec4(inPos,1)).xyz;
 	norm = transpose(inverse(mat3(model)))*inNorm;
 	tang = inTang;
 	gl_Position = proj * view * model * vec4(inPos,1);

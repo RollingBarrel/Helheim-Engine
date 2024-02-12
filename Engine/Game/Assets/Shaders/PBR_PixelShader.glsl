@@ -39,21 +39,43 @@ struct PointLight{
 	vec4 pos; //w is the radius
 	vec4 col;//a is intensity
 };
-readonly layout(std430) buffer PointLights
+readonly layout(std430, binding = 0) buffer PointLights
 {
 	uint numPLights;
-	PointLight pLigiths[];
+	PointLight pLights[];
 };
 
 uniform Material material;
 
 out vec4 outColor;
 
-void main() {
+#define PI 3.1415926535897932384626433832795
+vec3 diffuseColor;
+vec3 specularColor;
+float shininess;
+vec3 V;
+vec3 N;
+vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
+{
+	
+	vec3 L =  -normalize(lDir); 	//Light direction
+	float NdotL = max(dot(N,L),0);	//It doesn't make sense for color to be negative
+	
+	vec3 R = reflect(L,N);
+	float VdotRpown = pow(max(dot(V,R), 0), shininess);
+	
+	vec3 RFOi = specularColor + (1-specularColor) * pow(1-NdotL,5);
+	
+	vec3 Li = lInt * lAtt * lCol.rgb;  //Incoming radiance
+	
+	//Color with specular and no pi division
+	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
+	//Color with specular and pi divisions
+	vec3 pbrColor = ((diffuseColor*(1-specularColor))/PI + ((shininess+2)/2*PI)* RFOi * VdotRpown) * Li * NdotL;
+	return pbrColor;
+}
 
-	vec3 diffuseColor;
-	vec3 specularColor;
-	float shininess;
+void main() {
 
 	//Diffuse
 	if(material.hasDiffuseMap){//Using  gamma correction forces to transform sRGB textures to linear space
@@ -75,7 +97,6 @@ void main() {
 	}else{
 		shininess = material.shininess;
 	}
-	vec3 N = vec3(0);
 	if (material.hasNormalMap){
 		N = normalize(norm);
 		vec3 T = normalize(tang.xyz); 
@@ -87,30 +108,30 @@ void main() {
 	else{
 		N = normalize(norm);  	//Normal
 	}
-	vec3 L =  -normalize(dirDir); 	//Light direction
-	float NdotL = max(dot(N,L),0);	//It doesn't make sense for color to be negative
+	V = normalize(cPos - sPos); //View direction
 	
-	vec3 R = reflect(L,N);
-	vec3 V = normalize(cPos - sPos); //View direction
-	float VdotRpown = pow(max(dot(V,R), 0), shininess);
+	vec3 pbrCol = vec3(0);
+	pbrCol += GetPBRLightColor(dirDir.xyz, dirCol.xyz, dirCol.w, 1);
 	
-	vec3 RFOi = specularColor + (1-specularColor) * pow(1-NdotL,5);
+	//Point lights
+	for(int i = 0; i<numPLights; ++i)
+	{
+		vec3 mVector = sPos - pLights[i].pos.xyz;
+		float dist = length(mVector);
+		vec3 pDir = normalize(mVector);
+		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / (dist*dist + 1);
+		pbrCol += GetPBRLightColor(pDir, pLights[i].col.xyz,  pLights[i].col.w, att);
+	}
+
+	//HDR color  
+	vec3 hdrCol = ambientCol * diffuseColor + pbrCol;
 	
-	vec3 Li = dirCol.w * dirCol.rgb;  //Incoming radiance
-	
-	//Color with specular and no pi division
-	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
-	//Color with specular and pi divisions
-	float pi = 3.1415926535897932384626433832795;
-	vec3 pbrColor = ((diffuseColor*(1-specularColor))/pi + ((shininess+2)/2*pi)* RFOi * VdotRpown) * Li * NdotL;
-	
-	//Final color  
-	vec3 color = ambientCol * diffuseColor + pbrColor;
-	
+	//LDR color with reinhard tone Mapping
+	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));;
+
 	//Gamma correction
-	color.rgb = pow(color.rgb, vec3(1/2.2));
+	ldrCol = pow(ldrCol, vec3(1/2.2));
 	
 	//Output
-	outColor = vec4(color, 1.0f);
-	
+	outColor = vec4(ldrCol, 1.0f);
 }
