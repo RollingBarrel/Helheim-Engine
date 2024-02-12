@@ -161,9 +161,6 @@ unsigned int ResourceTexture::CreateTexture()
 
     for (size_t i = 0; i < mMipLevels; ++i)
     {
-       
-       // glTexImage2D(GL_TEXTURE_2D, i, mInternalFormat, mWidth, mHeight, 0, mFormat, mType, mPixels);
-
         glTextureSubImage2D(texId, i, 0, 0, mWidth, mHeight, mFormat, mType, mPixels);
     }
 
@@ -171,38 +168,13 @@ unsigned int ResourceTexture::CreateTexture()
         glGenerateTextureMipmap(texId);
     }
         
-
     glTextureParameteri(texId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTextureParameteri(texId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTextureParameteri(texId, GL_TEXTURE_BASE_LEVEL, 0);
     glTextureParameteri(texId, GL_TEXTURE_MAX_LEVEL, mMipLevels - 1);
     glTextureParameteri(texId, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 
-    openGlId = glGetTextureHandleARB(texId);
-    return openGlId;
+    mTextureID = texId;
+    mTextureHandle = glGetTextureHandleARB(texId);
+    return mTextureHandle;
 }
-
-/*unsigned int ResourceTexture::CreateTexture()
-{
-    unsigned int texId;
-	glGenTextures(1, &texId);
-	glBindTexture(GL_TEXTURE_2D, texId);
-	for (size_t i = 0; i < mMipLevels; ++i)
-	{
-		glTexImage2D(GL_TEXTURE_2D, i, mInternalFormat, mWidth, mHeight, 0, mFormat, mType, mPixels);
-	}
-
-	if (mMipLevels == 1)
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mMipLevels - 1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-    openGlId = texId;
-	return texId;
-}*/

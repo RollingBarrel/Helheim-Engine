@@ -19,7 +19,6 @@ public:
 	~MeshRendererComponent() { delete mMesh; delete mMaterial; };
 	void Clear() {};
 
-	void Draw();
 	void Load(unsigned int meshUid, unsigned int materialUid);
 	void LoadPBR(const char* uid) {};
 	void Reset() override {}

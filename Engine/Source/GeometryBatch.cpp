@@ -21,7 +21,6 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	mVertexSize = mesh->GetResourceMesh()->GetVertexSize();
 
 	
-
 	glGenVertexArrays(1, &mVao);
 	glBindVertexArray(mVao);
 	glGenBuffers(1, &mVbo);
@@ -40,11 +39,11 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 
 	Material* material = new Material();
 
-	material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor;
-	material->diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->openGlId;
-	material->specularColor =  float4(mesh->GetMaterial()->mSpecularFactor, 0);
-	material->specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->openGlId;
-	material->normalTexture = mesh->GetMaterial()->mNormalTexture->openGlId;
+	material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor.xyz();
+	material->diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->mTextureHandle;
+	material->specularColor =  mesh->GetMaterial()->mSpecularFactor;
+	material->specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->mTextureHandle;
+	material->normalTexture = mesh->GetMaterial()->mNormalTexture->mTextureHandle;
 	material->shininess = mesh->GetMaterial()->mGlossinessFactor;
 	material->hasDiffuseMap = mesh->GetMaterial()->mEnableDiffuseTexture;
 	material->hasSpecularMap = mesh->GetMaterial()->mEnableSpecularGlossinessTexture;
@@ -67,9 +66,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 		++idx;
 	}
 
-
 	glBindVertexArray(0);
-
 
 }
 
@@ -79,17 +76,16 @@ GeometryBatch::~GeometryBatch()
 }
 
 
-
-void GeometryBatch::AddMesh(MeshRendererComponent* cMesh) //NEEDS A FULL REMAKE
+void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 {
 	
 }
+
 
 void GeometryBatch::AddCommand(Command* command)
 {
 	mCommands.push_back(command);
 }
-
 
 
 void GeometryBatch::Draw()
@@ -125,8 +121,6 @@ void GeometryBatch::Draw()
 	}
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, mIbo);
 
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
 

@@ -32,91 +32,6 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& origin
 	
 }
 
-void MeshRendererComponent::Draw()
-{
-	if (!mInsideFrustum && App->GetScene()->GetApplyFrustumCulling())
-	{
-		return;
-	}
-	if (mDrawBox)
-	{
-		App->GetDebugDraw()->DrawBoundingBox(mOBB);
-	}
-	mInsideFrustum = false;
-
-	App->GetOpenGL()->BindSceneFramebuffer();
-
-	if (mDrawBox)
-	{
-		App->GetDebugDraw()->DrawBoundingBox(mOBB);
-	}
-
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
-	glUseProgram(program);
-	glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
-	glBindVertexArray(mMesh->GetVao());
-	//TODO: Put all this with imgui
-	//Dont update uniforms it every frame
-	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->mDiffuseFactor.xyz()[0]);
-	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->mSpecularFactor[0]);
-	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->mGlossinessFactor);
-	if (mMaterial->mEnableDiffuseTexture && mMaterial->mDiffuseTexture != nullptr)
-	{
-		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 1);
-		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
-		glUniform1i(diffuseTextureLoc, 0);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->openGlId);
-	}
-	else {
-		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
-	}
-
-	if (mMaterial->mEnableSpecularGlossinessTexture && mMaterial->mSpecularGlossinessTexture != nullptr)
-	{
-		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 1);
-		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
-		glUniform1i(specularTextureLoc, 1);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->openGlId);
-	}
-	else
-	{
-		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 0);
-	}
-
-	if (mMaterial->mEnableNormalMap && mMaterial->mNormalTexture != nullptr)
-	{
-		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 1);
-		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
-		glUniform1i(normalTextureLoc, 2);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->openGlId);
-	}
-	else
-	{
-		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 0);
-	}
-
-	if (mMaterial->mEnableShinessMap)
-	{
-		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
-	}
-	else
-	{
-		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 0);
-	}
-	glDrawElements(GL_TRIANGLES, mMesh->mNumIndices, GL_UNSIGNED_INT, 0);
-	glUseProgram(0);
-	glBindVertexArray(0);
-	App->GetOpenGL()->UnbindSceneFramebuffer();
-
-
-	//mBatch = new GeometryBatch(this);
-	//mBatch->AddResourceMesh(mMesh);
-
-
-}
 
 void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 {
@@ -133,12 +48,6 @@ void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 	mOBB.SetFrom(mAABB, model);
 
 	//ResourceMaterial Load
-
-
-	
-	
-	
-	
 
 }
 
