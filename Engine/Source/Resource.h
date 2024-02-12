@@ -23,10 +23,6 @@ public:
 	Resource(unsigned int uid);
 	virtual ~Resource();
 
-	virtual void Import(const char* filePath) = 0;
-	virtual void Save() = 0;
-	virtual unsigned int Load(const char* fileName) = 0;
-
 	virtual std::string GetExtension() = 0;
 
 	Type GetType() const { return mType; };

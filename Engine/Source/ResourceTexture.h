@@ -18,10 +18,6 @@ public:
 	ResourceTexture(unsigned int id);
 	~ResourceTexture();
 
-	void Import(const char* filePath) override;
-	void Save() override;
-	unsigned int Load(const char* fileName) override;
-
 	std::string GetExtension() override { return ".tex"; }
 
 	unsigned int CreateTexture();	

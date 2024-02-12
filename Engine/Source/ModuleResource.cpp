@@ -89,9 +89,8 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	LOG("Succesfully created a .meta File");
 
 	//Only Textures, Models, Scenes, Prefabs
-	resource->Import(importedFilePath);
-	resource->Save();
-	/*switch (resource->GetType())
+
+	switch (resource->GetType())
 	{
 		case Resource::Type::Texture:
 		{
@@ -151,7 +150,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 			LOG("Unable to Import, this file %s", resource->GetAssetsFile().c_str());
 			break;
 		}
-	}*/
+	}
 
 	unsigned int ret = resource->GetUID();
 
@@ -181,7 +180,7 @@ Resource* ModuleResource::RequestResource(unsigned int uid)
 
 Resource* ModuleResource::TryToLoadResource(const unsigned int uid)
 {
-	//App->GetFileSystem()->GetPathFromFileName();
+	//App->GetFileSystem()->GetPathFromFileName(uid);
 
 	return nullptr;
 }
@@ -211,7 +210,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	App->GetFileSystem()->SplitPath(assetsFile, &assetName, &extensionName);
 	
 	// Create resource from resource type
-	std::string path;
+	std::string path = "";
 	switch (type)
 	{
 	case Resource::Type::Texture: ret = new ResourceTexture(uid); path = ASSETS_TEXTURE_PATH; break;
@@ -226,7 +225,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	}
 
 	// if ret is not nullptr
-	if (ret) {
+	if (ret != nullptr and path != "") {
 		mResources[uid] = ret;
 		ret->SetAssetsFile(path + assetName + extensionName);
 		ret->SetLibraryFile(path + std::to_string(ret->GetUID()) + ret->GetExtension());
