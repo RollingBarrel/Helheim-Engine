@@ -14,16 +14,13 @@ ResourceTexture::ResourceTexture()
 {
     mWidth = 0;
     mHeight = 0;
-
     mInternalFormat = 0;
     mTexFormat = 0;
     mDataType = 0;
     mMipLevels = 0;
     mNumPixels = 0;
     mPixels = nullptr;
-
     mHasAlpha = false;
-
     mOpenGLId = 0;
 }
 
@@ -31,17 +28,38 @@ ResourceTexture::ResourceTexture(unsigned int uid) : Resource(uid)
 {
     mWidth = 0;
     mHeight = 0;
-
     mInternalFormat = 0;
     mTexFormat = 0;
     mDataType = 0;
     mMipLevels = 0;
     mNumPixels = 0;
     mPixels = nullptr;
-
     mHasAlpha = false;
-
     mOpenGLId = 0;
+}
+
+ResourceTexture::ResourceTexture(
+    unsigned int width, 
+    unsigned int height, 
+    unsigned int internalFormat, 
+    unsigned int texFormat, 
+    unsigned int dataType, 
+    unsigned int mipLevels, 
+    unsigned int numPixels, 
+    unsigned char* pixels, 
+    bool hasAlpha, 
+    unsigned int openGLId)
+{
+    mWidth = width;
+    mHeight = height;
+    mInternalFormat = internalFormat;
+    mTexFormat = texFormat;
+    mDataType = dataType;
+    mMipLevels = mipLevels;
+    mNumPixels = numPixels;
+    mPixels = pixels;
+    mHasAlpha = hasAlpha;
+    mOpenGLId = openGLId;
 }
 
 ResourceTexture::~ResourceTexture()

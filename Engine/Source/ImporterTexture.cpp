@@ -39,44 +39,47 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
             }
         }
     }
+    unsigned int internalFormat;
+    unsigned int texFormat;
+    unsigned int dataType;
 
     switch (image.GetMetadata().format) // for get all information of the texture and see the parameters it have
     {
     case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
     case DXGI_FORMAT_R8G8B8A8_UNORM:
-        texture->mInternalFormat = GL_RGBA8;
-        texture->mTexFormat = GL_RGBA;
-        texture->mDataType = GL_UNSIGNED_BYTE;
+        internalFormat = GL_RGBA8;
+        texFormat = GL_RGBA;
+        dataType = GL_UNSIGNED_BYTE;
         break;
     case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
     case DXGI_FORMAT_B8G8R8A8_UNORM:
-        texture->mInternalFormat = GL_RGBA8;
-        texture->mTexFormat = GL_BGRA;
-        texture->mDataType = GL_UNSIGNED_BYTE;
+        internalFormat = GL_RGBA8;
+        fexFormat = GL_BGRA;
+        dataType = GL_UNSIGNED_BYTE;
         break;
     case DXGI_FORMAT_B5G6R5_UNORM:
-        texture->mInternalFormat = GL_RGB8;
-        texture->mTexFormat = GL_BGR;
-        texture->mDataType = GL_UNSIGNED_BYTE;
+        internalFormat = GL_RGB8;
+        fexFormat = GL_BGR;
+        dataType = GL_UNSIGNED_BYTE;
         break;
     default:
         assert(false && "Unsupported format");
     }
 
-    texture->mWidth = image.GetMetadata().width;
-    texture->mHeight = image.GetMetadata().height;
-    texture->mMipLevels = image.GetMetadata().mipLevels;
-    texture->mNumPixels = image.GetPixelsSize();
+    width = image.GetMetadata().width;
+    height = image.GetMetadata().height;
+    mipLevels = image.GetMetadata().mipLevels;
+    numPixels = image.GetPixelsSize();
 
-    texture->mPixels = new unsigned char[texture->mNumPixels];
+    pixels = new unsigned char[numPixels];
     for (auto i = 0; i < image.GetPixelsSize(); ++i)
     {
-        texture->mPixels[i] = image.GetPixels()[i];
+        pixels[i] = image.GetPixels()[i];
     }
 
     if (DirectX::HasAlpha(image.GetMetadata().format))
     {
-        texture->mHasAlpha = true;
+        hasAlpha = true;
     }
 
     Texture::Save(texture);
@@ -84,11 +87,11 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
 
 void Importer::Texture::Save(const ResourceTexture* texture)
 {
-    unsigned int header[7] = { texture->mWidth, texture->mHeight, texture->mInternalFormat, texture->mTexFormat, texture->mDataType ,texture->mMipLevels, texture->mNumPixels};
+    unsigned int header[7] = { width, height, internalFormat, fexFormat, dataType ,mipLevels, numPixels};
 
     unsigned int size = sizeof(header) +
-                        sizeof(texture->mHasAlpha) +
-                        sizeof(unsigned char) * texture->mNumPixels;
+                        sizeof(hasAlpha) +
+                        sizeof(unsigned char) * numPixels;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -97,12 +100,12 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     memcpy(cursor, header, bytes);
     cursor += bytes;
 
-    bytes = sizeof(texture->mHasAlpha);
-    memcpy(cursor, &texture->mHasAlpha, bytes);
+    bytes = sizeof(hasAlpha);
+    memcpy(cursor, &hasAlpha, bytes);
     cursor += bytes;
 
-    bytes = sizeof(unsigned char) * texture->mNumPixels;
-    memcpy(cursor, texture->mPixels, bytes);
+    bytes = sizeof(unsigned char) * numPixels;
+    memcpy(cursor, pixels, bytes);
     cursor += bytes;
 
     //TODO Change name for random UID
@@ -134,23 +137,23 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     unsigned int bytes = sizeof(header);
     memcpy(header, cursor, bytes);
     cursor += bytes;
-    texture->mWidth = header[0];
-    texture->mHeight = header[1];
-    texture->mInternalFormat = header[2];
-    texture->mTexFormat = header[3];
-    texture->mDataType = header[4];
-    texture->mMipLevels = header[5];
-    texture->mNumPixels = header[6];
+    width = header[0];
+    height = header[1];
+    internalFormat = header[2];
+    fexFormat = header[3];
+    dataType = header[4];
+    mipLevels = header[5];
+    numPixels = header[6];
 
-    bytes = sizeof(texture->mHasAlpha);
-    memcpy(&texture->mHasAlpha, cursor, bytes);
+    bytes = sizeof(hasAlpha);
+    memcpy(&hasAlpha, cursor, bytes);
     cursor += bytes;
 
-    bytes = sizeof(unsigned char) * texture->mNumPixels;
-    if (texture->mPixels != nullptr)
-        delete[] texture->mPixels;
-    texture->mPixels = new unsigned char[texture->mNumPixels];
-    memcpy(texture->mPixels, cursor, bytes);
+    bytes = sizeof(unsigned char) * numPixels;
+    if (pixels != nullptr)
+        delete[] pixels;
+    pixels = new unsigned char[numPixels];
+    memcpy(pixels, cursor, bytes);
 
     return texture->CreateTexture();
 }

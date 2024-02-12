@@ -16,6 +16,18 @@ public:
 
 	ResourceTexture();
 	ResourceTexture(unsigned int id);
+	ResourceTexture(
+		unsigned int width, 
+		unsigned int height, 
+		unsigned int internalFormat, 
+		unsigned int texFormat, 
+		unsigned int dataType, 
+		unsigned int mipLevels, 
+		unsigned int numPixels,
+		unsigned char* pixels, 
+		bool hasAlpha, 
+		unsigned int openGLId);
+
 	~ResourceTexture();
 
 	std::string GetExtension() override { return ".tex"; }
