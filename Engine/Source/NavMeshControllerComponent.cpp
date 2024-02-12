@@ -79,7 +79,7 @@ void NavMeshControllerComponent::HandleBuild() {
 		// Allocate array that can hold triangle area types.
 		// If you have multiple meshes you need to process, allocate
 		// and array which can hold the max number of triangles you need to process.
-		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->mNumIndices;
+		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->mNumIndices/3;
 		mTriangleAreas = new unsigned char[numberOfTriangles];
 		if (!mTriangleAreas)
 		{
