@@ -39,9 +39,9 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 
 	Material* material = new Material();
 
-	material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor.xyz();
+	material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor;
 	material->diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->mTextureHandle;
-	material->specularColor =  mesh->GetMaterial()->mSpecularFactor;
+	material->specularColor =  float4(mesh->GetMaterial()->mSpecularFactor, 0);
 	material->specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->mTextureHandle;
 	material->normalTexture = mesh->GetMaterial()->mNormalTexture->mTextureHandle;
 	material->shininess = mesh->GetMaterial()->mGlossinessFactor;

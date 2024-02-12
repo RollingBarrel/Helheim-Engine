@@ -22,11 +22,12 @@ typedef struct Command
 typedef struct Material {
 	
 	//Diffuse
-	float3 diffuseColor = float3::zero;
+	float4 diffuseColor = float4::zero;
 	uint64_t diffuseTexture = 0;
 
+	uint64_t padding = 0;
 	//Specular
-	float3 specularColor = float3::zero;
+	float4 specularColor = float4::zero;
 	uint64_t specularTexture = 0;
 
 	//Normal
