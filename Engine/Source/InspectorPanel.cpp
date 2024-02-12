@@ -319,7 +319,7 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	}
 	const float* sDir = component->GetDirection();
 	float dir[3] = { sDir[0], sDir[1] , sDir[2] };
-	if (ImGui::DragFloat3("Direction", dir, 1.0f, -1.f, 1.f))
+	if (ImGui::DragFloat3("Direction", dir, 0.05f, -1.f, 1.f))
 	{
 		component->SetDirection(dir);
 	}

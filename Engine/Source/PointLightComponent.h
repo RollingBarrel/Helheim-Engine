@@ -14,8 +14,8 @@ public:
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override { return nullptr; }
-	void Save(Archive& archive) const override {}
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override {}
+	void Save(Archive& archive) const override;
+	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 	void Reset() override {}
 
 	const float* GetPosition() const;

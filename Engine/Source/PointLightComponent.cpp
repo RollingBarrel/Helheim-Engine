@@ -61,3 +61,34 @@ void PointLightComponent::Update()
 		App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
 	}
 }
+
+void PointLightComponent::Save(Archive& archive) const {
+	archive.AddInt("ID", mID);
+	archive.AddFloat4("", )
+	float pos[4]; //w is radius
+	float col[4]; //w is Intensity
+	archive.AddInt("MeshID", mMesh->mUID);
+	archive.AddInt("MaterialID", mMaterial->mUID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	archive.AddBool("isEnabled", IsEnabled());
+}
+
+void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
+	int ID = { 0 };
+	int meshID = { 0 };
+	int materialID = { 0 };
+	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+		ID = componentJson["ID"].GetInt();
+	}
+	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
+		meshID = componentJson["MeshID"].GetInt();
+	}
+	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
+		materialID = componentJson["MaterialID"].GetInt();
+	}
+
+	if (meshID != 0 && materialID != 0) {
+		Load(meshID, materialID);
+	}
+
+}

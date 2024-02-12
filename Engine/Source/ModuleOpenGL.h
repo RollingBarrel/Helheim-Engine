@@ -63,6 +63,7 @@ public:
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
+	//TODO: put all this calls into one without separating for light type??
 	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
 	void UpdatePoinLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
