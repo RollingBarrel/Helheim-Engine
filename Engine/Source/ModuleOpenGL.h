@@ -97,7 +97,7 @@ private:
 
 
 	//Lighting uniforms
-	unsigned int lightUnis = 0;
+	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalAmbient mDirAmb;
 	std::vector<const PointLightComponent*>mPointLights;
 	OpenGLBuffer* mPointsBuffer = nullptr;

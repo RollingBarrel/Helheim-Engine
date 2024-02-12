@@ -138,10 +138,7 @@ bool ModuleOpenGL::Init()
 	glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
 	glUseProgram(0);
 
-	glGenBuffers(1, &lightUnis);
-	glBindBuffer(GL_UNIFORM_BUFFER, lightUnis);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(mDirAmb), &mDirAmb, GL_STATIC_DRAW);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightUnis);
+	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirAmb), &mDirAmb);
 
 	const uint32_t numPointLights[4] = { mPointLights.size(), 0, 0, 0 };
 	mPointsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 0, 16, &numPointLights);
@@ -197,13 +194,13 @@ bool ModuleOpenGL::CleanUp()
 
 	delete mPointsBuffer;
 	delete mSpotsBuffer;
+	delete mDLightUniBuffer;
 
 	glDeleteProgram(mPbrProgramId);
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteBuffers(1, &mSkyVbo);
 	glDeleteBuffers(1, &cameraUnis);
-	glDeleteBuffers(1, &lightUnis);
 	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
