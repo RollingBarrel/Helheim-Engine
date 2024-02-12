@@ -54,22 +54,22 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
     case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
     case DXGI_FORMAT_B8G8R8A8_UNORM:
         internalFormat = GL_RGBA8;
-        fexFormat = GL_BGRA;
+        texFormat = GL_BGRA;
         dataType = GL_UNSIGNED_BYTE;
         break;
     case DXGI_FORMAT_B5G6R5_UNORM:
         internalFormat = GL_RGB8;
-        fexFormat = GL_BGR;
+        texFormat = GL_BGR;
         dataType = GL_UNSIGNED_BYTE;
         break;
     default:
         assert(false && "Unsupported format");
     }
 
-    width = image.GetMetadata().width;
-    height = image.GetMetadata().height;
-    mipLevels = image.GetMetadata().mipLevels;
-    numPixels = image.GetPixelsSize();
+    unsigned int width = image.GetMetadata().width;
+    unsigned int height = image.GetMetadata().height;
+    unsigned int mipLevels = image.GetMetadata().mipLevels;
+    unsigned int numPixels = image.GetPixelsSize();
 
     pixels = new unsigned char[numPixels];
     for (auto i = 0; i < image.GetPixelsSize(); ++i)
@@ -82,12 +82,12 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
         hasAlpha = true;
     }
 
-    Texture::Save(texture);
+
 }
 
 void Importer::Texture::Save(const ResourceTexture* texture)
 {
-    unsigned int header[7] = { width, height, internalFormat, fexFormat, dataType ,mipLevels, numPixels};
+    unsigned int header[7] = { width, height, internalFormat, texFormat, dataType ,mipLevels, numPixels};
 
     unsigned int size = sizeof(header) +
                         sizeof(hasAlpha) +
@@ -140,7 +140,7 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     width = header[0];
     height = header[1];
     internalFormat = header[2];
-    fexFormat = header[3];
+    texFormat = header[3];
     dataType = header[4];
     mipLevels = header[5];
     numPixels = header[6];
