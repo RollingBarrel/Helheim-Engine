@@ -327,6 +327,7 @@
     </ClCompile>
     <ClCompile Include="Dependencies\DetourTileCache\Source\DetourTileCacheBuilder.cpp">
       <Filter>Dependencies\DetourTileCache</Filter>
+    </ClCompile>
     <ClCompile Include="TimerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -845,6 +846,7 @@
     </ClInclude>
     <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.h">
       <Filter>Dependencies\DetourTileCache</Filter>
+    </ClInclude>
     <ClInclude Include="TimerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
