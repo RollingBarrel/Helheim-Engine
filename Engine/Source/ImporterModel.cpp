@@ -4,7 +4,6 @@
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
-
 #include "Algorithm/Random/LCG.h"
 
 #include "ResourceMesh.h"
@@ -18,8 +17,11 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
+ResourceModel* Importer::Model::Import(const char* filePath)
 {
+
+    ResourceModel* rModel = new ResourceModel(math::LCG().Int());
+
     tinygltf::TinyGLTF gltfContext;
     tinygltf::Model model;
 
@@ -47,9 +49,11 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
         for (const auto& primitive : srcMesh.primitives)
         {          
             ResourceMesh* mesh = Importer::Mesh::Import(model, primitive);
+            Importer::Mesh::Save(mesh);
 
             if (primitive.material != -1) {
                 ResourceMaterial* material = Importer::Material::Import(model, model.materials[primitive.material]);
+                Importer::Material::Save(material);
 
                 rModel->SetUids(mesh->GetUID(), material->GetUID());
 
@@ -61,6 +65,8 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
             mesh = nullptr;
         }
     }
+
+    return rModel;
 }
 
 void Importer::Model::Save(const ResourceModel* ourModel)
@@ -87,7 +93,8 @@ void Importer::Model::Save(const ResourceModel* ourModel)
     }
 
     bytes = sizeof(ourModel->GetUID());
-    memcpy(cursor, (void*)ourModel->GetUID(), bytes);
+    unsigned int uid = ourModel->GetUID();
+    memcpy(cursor, &uid, bytes);
     cursor += bytes;
 
     std::string path = LIBRARY_MODEL_PATH;
@@ -126,6 +133,7 @@ void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
         cursor += bytes;
         ourModel->SetUids(meshId, materialId);
     }
-
-    memcpy((void*)ourModel->GetUID(), cursor, sizeof(unsigned int));
+    unsigned int uid = ourModel->GetUID();
+    memcpy(&uid, cursor, bytes);
+    cursor += bytes;
 }

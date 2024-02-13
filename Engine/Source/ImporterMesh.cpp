@@ -143,6 +143,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
             for (uint32_t i = 0; i < indAcc.count; ++i)
             {
+                //TODO: Change this
                 rMesh->GetIndices()[i] = bufferInd[i];
             }
         }
@@ -223,7 +224,8 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     cursor += bytes;
     //Save Indices
     bytes = sizeof(unsigned int) * mesh->GetNumberIndices();
-    memcpy(cursor, (void*)mesh->GetNumberIndices(), bytes);
+    unsigned int numIndices = mesh->GetNumberIndices();
+    memcpy(cursor, &numIndices, bytes);
     cursor += bytes;
     //Save attributes and data
     unsigned int idx = 0;

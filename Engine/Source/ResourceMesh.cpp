@@ -68,7 +68,7 @@ static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTan
 
 void ResourceMesh::AddIndices(unsigned int* indices)
 {
-
+    mIndices = indices;
 }
 
 const float* ResourceMesh::GetAttributeData(Attribute::Type type) const

@@ -128,7 +128,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 
 			App->GetFileSystem()->CopyAbsolutePath(binPath.c_str(), std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
 
-			Importer::Model::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
+			resource = Importer::Model::Import(resource->GetAssetsFile().c_str());
 			Importer::Model::Save((ResourceModel*)resource);
 			break;
 		}
