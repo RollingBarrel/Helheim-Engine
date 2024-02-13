@@ -104,7 +104,7 @@ void MeshRendererComponent::Draw()
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 0);
 	}
-	glDrawElements(GL_TRIANGLES, mMesh->mNumIndices, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, mMesh->GetNumberIndices(), GL_UNSIGNED_INT, 0);
 	glUseProgram(0);
 	glBindVertexArray(0);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
@@ -119,7 +119,7 @@ void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 	//Importer::Material::Load(mMaterial, std::to_string(materialUid).c_str());
 	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 
-	mAABB.SetFrom(positions, mMesh->mNumVertices);
+	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 
 	float4x4 model = mOwner->GetWorldTransform();
 

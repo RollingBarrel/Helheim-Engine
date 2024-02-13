@@ -31,39 +31,49 @@ public:
 	ResourceMesh(unsigned int id);
 	//ResourceMesh(const ResourceMesh& other);
 	~ResourceMesh() { CleanUp(); }
-	//TODO: Posar tot aixo privat !!
-	unsigned int mNumVertices = 0;
-	unsigned int mNumIndices = 0;
 
-	unsigned int* mIndices = nullptr;
-	std::vector<float*> mAttributesData;
+	unsigned int GetNumberVertices() const { return mNumVertices; }
+	unsigned int GetNumberIndices() const { return mNumIndices; }
 
-	void GenerateTangents();
-	float* GetInterleavedData() const;
-	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
+	const void SetNumberVertices(unsigned int numVertices) { mNumVertices = numVertices; }
+	const void SetNumberIndices(unsigned int numIndices) { mNumIndices = numIndices; }
+
+	void AddIndices(unsigned int* indices);
+	unsigned int* GetIndices() const { return mIndices; }
+
+	unsigned int GetVao() const { return mVao; }
+
+	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
+	unsigned int GetVertexSize() const { return mVertexSize; }
+
+	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
 	void AddAttribute(const Attribute& attribute, float* attributeData);
-	const float* GetAttributeData(Attribute::Type type) const;
-	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; };
-	unsigned int GetVertexSize() const { return mVertexSize; }
-	unsigned int GetVao() const { return mVao; }
+	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
+	float* GetInterleavedData() const;
+
+
+	void GenerateTangents();
+
+	void CleanUp();
 
 	unsigned int LoadToMemory();
 	void UnloadFromMemory();
 
-	void CleanUp();
+	//TODO Make it Private
+	std::vector<float*> mAttributesData;
 
 private:
+
+	unsigned int mNumVertices = 0;
+	unsigned int mNumIndices = 0;
+	unsigned int* mIndices = nullptr;
 
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
+
 	std::vector<Attribute*> mAttributes;
 	unsigned int mVertexSize = 0;
-
-	//TODO: Feo, provar de treure
-	friend void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh);
-	friend void Importer::Mesh::Load(ResourceMesh* mesh, const char* fileName);
-
 };
 

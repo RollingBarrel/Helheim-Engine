@@ -8,8 +8,10 @@
 
 #include "Algorithm/Random/LCG.h"
 
-void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Material& material, ResourceMaterial* rMaterial)
+ResourceMaterial* Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Material& material)
 {
+    ResourceMaterial* rMaterial = new ResourceMaterial(math::LCG().Int());
+
     auto it = material.extensions.find("KHR_materials_pbrSpecularGlossiness");
     if (it != material.extensions.end()) {
         const tinygltf::Value& extensionMap = it->second;
@@ -127,7 +129,7 @@ void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Ma
 
     }
 
-    Material::Save(rMaterial);
+    return rMaterial;
 }
 
 void Importer::Material::Save(const ResourceMaterial* ourMaterial)

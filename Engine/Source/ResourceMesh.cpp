@@ -3,6 +3,16 @@
 #include "mikktspace.h"
 #include "weldmesh.h"
 
+#include "glew.h"
+
+ResourceMesh::ResourceMesh()
+{
+}
+
+ResourceMesh::ResourceMesh(unsigned int uid) : Resource(uid)
+{
+}
+
 typedef struct {
     int numVertices;
     int posOffset;
@@ -54,6 +64,11 @@ static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTan
     memcpy(&ptr->tVertices[vertexTIdx], &ptr->vertices[vertexIdx], ptr->vertexSize);
     memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize], fvTangent, 3 * sizeof(float));
     memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
+}
+
+void ResourceMesh::AddIndices(unsigned int* indices)
+{
+
 }
 
 const float* ResourceMesh::GetAttributeData(Attribute::Type type) const
@@ -126,13 +141,60 @@ float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedB
     return ret;
 }
 
-ResourceMesh::ResourceMesh()
+bool ResourceMesh::LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const
 {
+    unsigned int idx = GetAttributeIdx(attribute.type);
+    if (idx < 0)
+        return false;
+    const Attribute& myAttribute = *mAttributes[idx];
+    assert(attribute.size == myAttribute.size);
+    unsigned int j = 0;
+    for (int i = 0; i < mVertexSize * mNumVertices; i += vertexSize)
+    {
+        memcpy(&fillBuffer[(i + attribute.offset) / sizeof(float)], &((mAttributesData[idx])[j]), myAttribute.size);
+        j += myAttribute.size / sizeof(float);
+    }
+    return true;
 }
 
-ResourceMesh::ResourceMesh(unsigned int uid) : Resource(uid)
+float* ResourceMesh::GetInterleavedData() const
 {
+    float* ret = new float[mNumVertices * GetVertexSize() / sizeof(float)];
+    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    {
+        LoadInterleavedAttribute(ret, *(*it), GetVertexSize());
+    }
+    return ret;
 }
+
+unsigned int ResourceMesh::LoadToMemory()
+{
+    glGenVertexArrays(1, &mVao);
+    glGenBuffers(1, &mVbo);
+    glGenBuffers(1, &mEbo);
+    glBindVertexArray(mVao);
+    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+    glBufferData(GL_ARRAY_BUFFER, mNumVertices * mVertexSize, GetInterleavedData(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), mIndices, GL_STATIC_DRAW);
+    unsigned int idx = 0;
+    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    {
+        glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+        glEnableVertexAttribArray(idx);
+        ++idx;
+    }
+    glBindVertexArray(0);
+    return mVao;
+}
+
+void ResourceMesh::UnloadFromMemory()
+{
+    glDeleteBuffers(1, &mVbo);
+    glDeleteBuffers(1, &mEbo);
+    glDeleteVertexArrays(1, &mVao);
+}
+
 
 void ResourceMesh::GenerateTangents()
 {

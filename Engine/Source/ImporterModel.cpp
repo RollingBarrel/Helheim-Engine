@@ -45,15 +45,13 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
     for (const auto& srcMesh : model.meshes)
     {
         for (const auto& primitive : srcMesh.primitives)
-        {
-            ResourceMesh* mesh = new ResourceMesh(math::LCG().Int());
-            Importer::Mesh::Import(model, primitive, mesh);
+        {          
+            ResourceMesh* mesh = Importer::Mesh::Import(model, primitive);
 
             if (primitive.material != -1) {
-                ResourceMaterial* material = new ResourceMaterial(math::LCG().Int());
-                Importer::Material::Import(model, model.materials[primitive.material], material);
+                ResourceMaterial* material = Importer::Material::Import(model, model.materials[primitive.material]);
 
-                rModel->mUids.push_back({ mesh->GetUID() , material->GetUID() });
+                rModel->SetUids(mesh->GetUID(), material->GetUID());
 
                 delete material;
                 material = nullptr;
@@ -61,14 +59,13 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
 
             delete mesh;
             mesh = nullptr;
-
         }
     }
 }
 
 void Importer::Model::Save(const ResourceModel* ourModel)
 {
-    unsigned int numModels = ourModel->mUids.size();
+    unsigned int numModels = ourModel->GetUids().size();
 
     unsigned int size = sizeof(numModels) + sizeof(ResourceModel) * numModels;
 
@@ -79,7 +76,7 @@ void Importer::Model::Save(const ResourceModel* ourModel)
     memcpy(cursor, &numModels, bytes);
     cursor += bytes;
 
-    for (auto it = ourModel->mUids.cbegin(); it != ourModel->mUids.cend(); ++it)
+    for (auto it = ourModel->GetUids().cbegin(); it != ourModel->GetUids().cend(); ++it)
     {
         bytes = sizeof(it->meshUID);
         memcpy(cursor, &it->meshUID, bytes);
@@ -90,7 +87,7 @@ void Importer::Model::Save(const ResourceModel* ourModel)
     }
 
     bytes = sizeof(ourModel->GetUID());
-    memcpy(cursor, &ourModel->mUID, bytes);
+    memcpy(cursor, (void*)ourModel->GetUID(), bytes);
     cursor += bytes;
 
     std::string path = LIBRARY_MODEL_PATH;
@@ -127,8 +124,8 @@ void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
         unsigned int materialId = 0;
         memcpy(&materialId, cursor, bytes);
         cursor += bytes;
-        ourModel->mUids.push_back({ meshId, materialId });
+        ourModel->SetUids(meshId, materialId);
     }
 
-    memcpy(&ourModel->mUID, cursor, sizeof(unsigned int));
+    memcpy((void*)ourModel->GetUID(), cursor, sizeof(unsigned int));
 }

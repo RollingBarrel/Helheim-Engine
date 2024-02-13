@@ -16,7 +16,7 @@ namespace Importer
 {
 	namespace Material
 	{
-		void Import(const tinygltf::Model& model, const tinygltf::Material& material, ResourceMaterial* rMaterial);
+		ResourceMaterial* Import(const tinygltf::Model& model, const tinygltf::Material& material);
         void Save(const ResourceMaterial* ourMaterial);
         void Load(ResourceMaterial* ourMaterial, const char* fileName = nullptr);
 	}
