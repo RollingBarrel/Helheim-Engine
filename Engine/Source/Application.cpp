@@ -85,5 +85,5 @@ bool Application::CleanUp()
 }
 
 float Application::GetDt() const {
-	return mEngineTimer->GetRealDelta() / (float) 1000;
+	return mEngineTimer->GetDelta() / (float) 1000;
 }
