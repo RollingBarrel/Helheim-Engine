@@ -39,7 +39,7 @@ Quadtree::~Quadtree()
 bool Quadtree::AddObject(GameObject* object)
 {
 	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
-	MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
 	OBB object_BB = meshRenderer->getOBB();
 
 	if (!mBoundingBox.Intersects(object_BB))

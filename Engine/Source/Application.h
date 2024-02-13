@@ -12,7 +12,8 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
-class ModuleTimer;
+
+class Timer;
 
 class Application
 {
@@ -33,7 +34,9 @@ public:
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
-    ModuleTimer* GetClock() { return clock; }
+
+    Timer* GetEngineClock() const { return mEngineTimer; }
+    Timer* GetGameClock() const { return mGameTimer; }
 
     float GetDt() const;
 
@@ -47,10 +50,14 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
-    ModuleTimer* clock = nullptr;
+    //ModuleTimer* clock = nullptr;
 
-#define NUM_MODULES 9
+#define NUM_MODULES 8
     Module* modules[NUM_MODULES];
+
+    //Timer
+    Timer* mEngineTimer;
+    Timer* mGameTimer;
 };
 
 extern Application* App;

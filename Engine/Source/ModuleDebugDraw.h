@@ -26,6 +26,7 @@ public:
     void DrawAxis();
     bool GetShouldRenderGrid() const { return mDrawGrid; }
     void SetRenderGrid(bool a) { mDrawGrid = a; }
+    void DrawLineSphere(const float center[3], const float color[3], const float radius, unsigned int precision = 4);
 
 
 

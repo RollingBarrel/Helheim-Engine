@@ -41,7 +41,8 @@ public:
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mLocalTransformMatrix.ToEulerXYZ(); }
-	const float3& GetPosition() const { return mLocalTransformMatrix.TranslatePart(); }
+	const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
+	const float3& GetLocalPosition() const { return mLocalTransformMatrix.TranslatePart(); }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
