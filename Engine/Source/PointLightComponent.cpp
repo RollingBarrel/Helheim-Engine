@@ -63,32 +63,32 @@ void PointLightComponent::Update()
 }
 
 void PointLightComponent::Save(Archive& archive) const {
-	archive.AddInt("ID", mID);
-	archive.AddFloat4("", )
-	float pos[4]; //w is radius
-	float col[4]; //w is Intensity
-	archive.AddInt("MeshID", mMesh->mUID);
-	archive.AddInt("MaterialID", mMaterial->mUID);
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddBool("isEnabled", IsEnabled());
+	//TODO: Do we need id???
+	//archive.AddInt("ID", mID);
+	archive.AddFloat4("Position", mData.pos);
+	archive.AddFloat4("Color", mData.col);
 }
 
+//TODO: why is the GO owner passed here??
 void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
-	int ID = { 0 };
-	int meshID = { 0 };
-	int materialID = { 0 };
-	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
-		ID = componentJson["ID"].GetInt();
+	//int id = 0;
+	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+	//	id = componentJson["ID"].GetInt();
+	//}
+	if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
+	{
+		const auto& posArray = componentJson["Position"].GetArray();
+		for (int i = 0; i < posArray.Size(); ++i)
+		{
+			mData.pos[i] = posArray[i].GetFloat();
+		}
 	}
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
-		meshID = componentJson["MeshID"].GetInt();
+	if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
+	{
+		const auto& posArray = componentJson["Color"].GetArray();
+		for (int i = 0; i < posArray.Size(); ++i)
+		{
+			mData.col[i] = posArray[i].GetFloat();
+		}
 	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
-		materialID = componentJson["MaterialID"].GetInt();
-	}
-
-	if (meshID != 0 && materialID != 0) {
-		Load(meshID, materialID);
-	}
-
 }

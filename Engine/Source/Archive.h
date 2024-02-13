@@ -10,6 +10,7 @@
 #include <vector>
 #include "Math/float4x4.h"
 #include "Math/float3.h"
+#include "Math/float4.h"
 #include "Math/Quat.h"
 
 class Archive
@@ -53,7 +54,7 @@ public:
     void AddIntArray(const char* key, const std::vector<unsigned int>& array);
     void AddFloatArray(const char* key, const std::vector<float>& array);
     void AddFloat3(const char* key, const float3& vector);
-    void AddFloat4(const char* key, const float* vector);
+    void AddFloat4(const char* key, const float vector[4]);
     void AddFloat4x4(const char* key, const float4x4& matrix);
     void AddQuat(const char* key, const Quat& quat);
     void AddObject(const char* key, const Archive& value);
@@ -66,6 +67,7 @@ public:
     bool GetBool(const char* key) const;
     std::vector<Archive> GetArray(const char* key) const;
     float3 GetFloat3(const char* key) const;
+    float4 GetFloat4(const char* key) const;
     float4x4 GetFloat4x4(const char* key) const;
     Quat GetQuat(const char* key) const;
     Archive GetObject(const char* key) const;

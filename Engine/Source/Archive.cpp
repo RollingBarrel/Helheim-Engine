@@ -102,7 +102,7 @@ void Archive::AddFloat3(const char* key, const float3& vector)
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
-void Archive::AddFloat4(const char* key, const float* vector)
+void Archive::AddFloat4(const char* key, const float vector[4])
 {
     rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);
@@ -233,6 +233,23 @@ float3 Archive::GetFloat3(const char* key) const
     // Handle error or return a default value
     return float3(0.0f, 0.0f, 0.0f);
 }
+
+float4 Archive::GetFloat4(const char* key) const
+{
+    auto it = mDocument->FindMember(key);
+    if (it != mDocument->MemberEnd() && it->value.IsObject())
+    {
+        const auto& object = it->value.GetObject();
+        float x = object["x"].GetFloat();
+        float y = object["y"].GetFloat();
+        float z = object["z"].GetFloat();
+        float w = object["w"].GetFloat();
+        return float4(x, y, z, w);
+    }
+    // Handle error or return a default value
+    return float4(0.0f, 0.0f, 0.0f, 0.0f);
+}
+
 
 float4x4 Archive::GetFloat4x4(const char* key) const
 {

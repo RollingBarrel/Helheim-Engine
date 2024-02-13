@@ -363,7 +363,7 @@ void GameObject::RecalculateLocalTransform() {
 void GameObject::Save(Archive& archive) const {
 	archive.AddInt("UID", mID);
 	archive.AddInt("ParentUID", mParent->GetID());
-	archive.AddString("Name", mName);
+	archive.AddString("Name", mName.c_str());
 	archive.AddBool("isEnabled", mIsEnabled);
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);

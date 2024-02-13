@@ -81,3 +81,48 @@ void SpotLightComponent::Update()
 		//App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
 	}
 }
+
+void SpotLightComponent::Save(Archive& archive) const {
+	//TODO: Do we need id???
+	//archive.AddInt("ID", mID);
+	archive.AddFloat4("Position", mData.pos);
+	archive.AddFloat4("Direction", mData.aimD);
+	archive.AddFloat4("Color", mData.col);
+	archive.AddFloat("Radius", mData.radius);
+}
+
+//TODO: why is the GO owner passed here??
+void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
+	//int id = 0;
+	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+	//	id = componentJson["ID"].GetInt();
+	//}
+	if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
+	{
+		const auto& posArray = componentJson["Position"].GetArray();
+		for (int i = 0; i < posArray.Size(); ++i)
+		{
+			mData.pos[i] = posArray[i].GetFloat();
+		}
+	}
+	if (componentJson.HasMember("Direction") && componentJson["Direction"].IsArray())
+	{
+		const auto& posArray = componentJson["Direction"].GetArray();
+		for (int i = 0; i < posArray.Size(); ++i)
+		{
+			mData.aimD[i] = posArray[i].GetFloat();
+		}
+	}
+	if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
+	{
+		const auto& posArray = componentJson["Color"].GetArray();
+		for (int i = 0; i < posArray.Size(); ++i)
+		{
+			mData.col[i] = posArray[i].GetFloat();
+		}
+	}
+	if (componentJson.HasMember("Radius") && componentJson["Radius"].IsArray())
+	{
+		mData.radius = componentJson["Radius"].GetFloat();
+	}
+}
