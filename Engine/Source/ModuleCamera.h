@@ -10,7 +10,7 @@ class ModuleCamera : public Module
 {
 public:
 	bool Init() override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 
 	void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
 	void Transform(float3 vec);

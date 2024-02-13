@@ -55,7 +55,7 @@ bool Application::Init()
 	return ret;
 }
 
-update_status Application::Update()
+update_status Application::Update(float dt)
 {
 	mEngineTimer->Update();
 	//mGameTimer->Update();
@@ -63,13 +63,13 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
-		ret = modules[i]->PreUpdate();
+		ret = modules[i]->PreUpdate(dt);
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
-		ret = modules[i]->Update();
+		ret = modules[i]->Update(dt);
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
-		ret = modules[i]->PostUpdate();
+		ret = modules[i]->PostUpdate(dt);
 
 	return ret;
 }

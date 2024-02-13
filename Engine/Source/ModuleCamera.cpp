@@ -29,7 +29,7 @@ void ModuleCamera::WindowResized(int w, int h)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)w / (float)h);
 }
 
-update_status ModuleCamera::Update()
+update_status ModuleCamera::Update(float dt)
 {    
 
 	const auto& io = ImGui::GetIO();
@@ -39,7 +39,7 @@ update_status ModuleCamera::Update()
 	{
 		//Fer state machine amb els inputs !!!!
 		//TODO: Camera velocity variable independent of framerate
-		const float dtTransformCameraVelDt = App->GetDt() * 8.f;							//For some reason the velocities of movement with GetDt() implemented are not consistent
+		const float dtTransformCameraVelDt = dt * 8.f;							//For some reason the velocities of movement with GetDt() implemented are not consistent
 		float dtTransformCameraVel = 0.03f; //Temporary transform velocity (until good GetDt() implementation done)
 		const float dtRotateCameraVel = 0.01f;
 		

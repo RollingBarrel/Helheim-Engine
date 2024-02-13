@@ -23,7 +23,7 @@ public:
 	~Application();
 
 	bool Init();
-	update_status Update();
+	update_status Update(float dt);
 	bool CleanUp();
 
     ModuleOpenGL* GetOpenGL() { return render; }

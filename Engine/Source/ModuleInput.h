@@ -31,7 +31,7 @@ public:
 	~ModuleInput();
 
 	bool Init() override;
-	update_status PreUpdate() override;
+	update_status PreUpdate(float dt) override;
 	bool CleanUp() override;
 
 	KeyState GetKey(int id) const { return keyboard[id]; }

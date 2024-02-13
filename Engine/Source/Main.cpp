@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
 
 		case MAIN_UPDATE:
 		{
-			int update_return = App->Update();
+			int update_return = App->Update(App->GetDt());
 
 			if (update_return == UPDATE_ERROR)
 			{
