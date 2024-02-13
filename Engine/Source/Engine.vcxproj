@@ -195,6 +195,7 @@
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c" />
     <ClCompile Include="EngineTimer.cpp" />
     <ClCompile Include="Importer.cpp" />
+    <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterShader.cpp" />
@@ -317,6 +318,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Importer.h" />
+    <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="ImporterShader.h" />
