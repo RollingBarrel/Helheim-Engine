@@ -31,11 +31,6 @@ bool ModuleResource::Init() {
 		// Add more mappings for other resource types as needed
 	};
 
-	//mOurExtensionToResourceType = {
-	//	{".tex", Resource::Type::Texture},
-	//	// Add more mappings for other resource types as needed
-	//};
-
 }
 
 unsigned int ModuleResource::Find(const char* assetsFile) const
@@ -64,8 +59,8 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 		return 0;
 	}
 
-	// Create the new resource
-	Resource* resource = CreateNewResource(importedFilePath, type); //Save ID, assetsFile path, libraryFile path	
+	//// Create the new resource
+	Resource* resource = CreateNewResource(importedFilePath, type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
 	if (resource == nullptr) 
 	{
 		LOG("Unable to create a new resource with this file: %s", importedFilePath);
@@ -88,70 +83,6 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	}
 	LOG("Succesfully created a .meta File");
 
-	//Only Textures, Models, Scenes, Prefabs
-
-	switch (resource->GetType())
-	{
-		case Resource::Type::Texture:
-		{
-			Importer::Texture::Import(resource->GetAssetsFile().c_str(), (ResourceTexture*)resource);
-			Importer::Texture::Save((ResourceTexture*)resource);
-			break;
-		}
-		case Resource::Type::Mesh:
-		{
-			//Importer::Mesh::Import(resource->GetAssetsFile().c_str(), (ResourceMesh*) resource);
-			//Importer::Mesh::Save((ResourceMesh*)resource);
-			break;
-		}
-		case Resource::Type::Bone:
-		{
-			//Importer::Bone::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource); 
-			//Importer::Bone::Save((ResourceBone*)resource);
-			break;
-		}
-		case Resource::Type::Animation:
-		{
-			//Importer::Animation::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
-			//Importer::Animation::Save((ResourceAnimation*)resource);
-			break;
-		}
-		case Resource::Type::Material:
-		{
-			//Importer::Material::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
-			//Importer::Material::Save((ResourceMaterial*)resource);
-			break;
-		}
-		case Resource::Type::Model:
-		{
-			std::string binFile = "";
-			App->GetFileSystem()->SplitPath(importedFilePath, &binFile);
-
-			App->GetFileSystem()->CopyAbsolutePath(importedFilePath, std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
-
-			Importer::Model::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
-			Importer::Model::Save((ResourceModel*)resource);
-			break;
-		}
-		case Resource::Type::Scene:
-		{
-			//Importer::Scene::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
-			//Importer::Scene::Save((ResourceScene*)resource);
-			break;
-		}
-		case Resource::Type::NavMesh:
-		{
-			//Importer::NavMesh::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
-			//Importer::NavMesh::Save((ResourceNavMesh*)resource);
-			break;
-		}
-		default:
-		{
-			LOG("Unable to Import, this file %s", resource->GetAssetsFile().c_str());
-			break;
-		}
-	}
-
 	unsigned int ret = resource->GetUID();
 
 	delete resource; // Unload the resource after importing, we should only use the ID
@@ -159,7 +90,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	return ret;
 }
 
-Resource* ModuleResource::RequestResource(unsigned int uid)
+Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 {
 	//Find if the resource is already loaded
 	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
@@ -171,14 +102,14 @@ Resource* ModuleResource::RequestResource(unsigned int uid)
 	}
 	else 
 	{
-		return TryToLoadResource(uid);
+		return TryToLoadResource(uid, type);
 	}
 	//Find the library file (if exists) and load the custom file format 
 	//return TryToLoadResource(uid); <------------------------------------------TODO
 	return nullptr;
 }
 
-Resource* ModuleResource::TryToLoadResource(const unsigned int uid)
+Resource* ModuleResource::TryToLoadResource(const unsigned int uid, Resource::Type type)
 {
 	//App->GetFileSystem()->GetPathFromFileName(uid);
 
@@ -205,30 +136,41 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	Resource* ret = nullptr;
 	unsigned int uid = LCG().Int();
 
-	std::string assetName;
-	std::string extensionName;
-	App->GetFileSystem()->SplitPath(assetsFile, &assetName, &extensionName);
-	
-	// Create resource from resource type
-	std::string path = "";
 	switch (type)
 	{
-	case Resource::Type::Texture: ret = new ResourceTexture(uid); path = ASSETS_TEXTURE_PATH; break;
-	//case Resource::Type::Mesh: ret = new ResourceMesh(uid); path = ASSETS_MESH_PATH; break;
-	//case Resource::Type::Bone: ret = new ResourceBone(uid); path = ASSETS_BONE_PATH; break;
-	//case Resource::Type::Animation: ret = new ResourceAnimation(uid); path = ASSETS_ANIMATION_PATH; break;
-	//case Resource::Type::Material: ret = new ResourceMaterial(uid); path = ASSETS_MATERIAL_PATH; break;
-	//case Resource::Type::Model: ret = new ResourceModel(uid); path = ASSETS_MODEL_PATH; break; 
-	//case Resource::Type::Scene: ret = new ResourceScene(uid); path = ASSETS_SCENES_PATH; break; 
-	//case Resource::Type::NavMesh: ret = new ResourceNavMesh(uid); path = ASSETS_NAVMESH_PATH; break;
-	default: LOG("Unable to create asset for this file: %s", assetsFile); break;
+	case Resource::Type::Texture:
+		ret = Importer::Texture::Import(ret->GetAssetsFile().c_str(), uid);
+		if (ret) Importer::Texture::Save((ResourceTexture*)ret);
+		break;
+	case Resource::Type::Mesh:
+		break;
+	case Resource::Type::Bone:
+		break;
+	case Resource::Type::Animation:
+		break;
+	case Resource::Type::Material:
+		break;
+	case Resource::Type::Model:
+		//std::string binFile = "";
+		//App->GetFileSystem()->SplitPath(importedFilePath, &binFile);
+
+		//App->GetFileSystem()->CopyAbsolutePath(importedFilePath, std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
+
+		//Importer::Model::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
+		//Importer::Model::Save((ResourceModel*)resource);
+		break;
+	case Resource::Type::Scene:
+		break;
+	case Resource::Type::NavMesh:
+		break;
+	default:
+		LOG("Unable to Import, this file %s", ret->GetAssetsFile().c_str());
+		break;
 	}
 
 	// if ret is not nullptr
-	if (ret != nullptr and path != "") {
+	if (ret) {
 		mResources[uid] = ret;
-		ret->SetAssetsFile(path + assetName + extensionName);
-		ret->SetLibraryFile(path + std::to_string(ret->GetUID()) + ret->GetExtension());
 	}
 
 	return ret;

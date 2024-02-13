@@ -6,10 +6,11 @@ namespace Importer
 {
 	namespace Texture
 	{
-		void Import(const char* filePath, ResourceTexture* texture);
+
+		ResourceTexture* Import(const char* filePath, const unsigned int uid);
 
 		void Save(const ResourceTexture* ourTexture);
 
-		unsigned int Load(ResourceTexture* ourTexture, const char* fileName = nullptr );
+		unsigned int Load( const char* fileName = nullptr );
 	}
 };

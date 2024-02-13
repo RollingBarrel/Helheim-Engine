@@ -11,57 +11,41 @@
 
 
 ResourceTexture::ResourceTexture()
+    : mWidth(0), mHeight(0), mInternalFormat(0), mTexFormat(0),
+    mDataType(0), mMipLevels(0), mNumPixels(0), mPixels(nullptr),
+    mHasAlpha(false), mOpenGLId(0)
 {
-    mWidth = 0;
-    mHeight = 0;
-    mInternalFormat = 0;
-    mTexFormat = 0;
-    mDataType = 0;
-    mMipLevels = 0;
-    mNumPixels = 0;
-    mPixels = nullptr;
-    mHasAlpha = false;
-    mOpenGLId = 0;
-}
-
-ResourceTexture::ResourceTexture(unsigned int uid) : Resource(uid)
-{
-    mWidth = 0;
-    mHeight = 0;
-    mInternalFormat = 0;
-    mTexFormat = 0;
-    mDataType = 0;
-    mMipLevels = 0;
-    mNumPixels = 0;
-    mPixels = nullptr;
-    mHasAlpha = false;
-    mOpenGLId = 0;
 }
 
 ResourceTexture::ResourceTexture(
-    unsigned int width, 
-    unsigned int height, 
-    unsigned int internalFormat, 
-    unsigned int texFormat, 
-    unsigned int dataType, 
-    unsigned int mipLevels, 
-    unsigned int numPixels, 
-    unsigned char* pixels, 
-    bool hasAlpha, 
-    unsigned int openGLId)
+    unsigned int uid,
+    const char* path,
+    unsigned int width,
+    unsigned int height,
+    unsigned int internalFormat,
+    unsigned int texFormat,
+    unsigned int dataType,
+    unsigned int mipLevels,
+    unsigned int numPixels,
+    unsigned char* pixels,
+    bool hasAlpha)
+    : mWidth(width), mHeight(height), 
+    mInternalFormat(internalFormat), mTexFormat(texFormat), mDataType(dataType), 
+    mMipLevels(mipLevels),
+    mNumPixels(numPixels), mPixels(pixels), 
+    mHasAlpha(hasAlpha), 
+    mOpenGLId(0)
 {
-    mWidth = width;
-    mHeight = height;
-    mInternalFormat = internalFormat;
-    mTexFormat = texFormat;
-    mDataType = dataType;
-    mMipLevels = mipLevels;
-    mNumPixels = numPixels;
-    mPixels = pixels;
-    mHasAlpha = hasAlpha;
-    mOpenGLId = openGLId;
-}
+    mUID = uid;
+    mType = Type::Texture;
 
+    std::string assetName;
+    std::string extensionName;
+    App->GetFileSystem()->SplitPath(path, &assetName, &extensionName);
+    mAssetsFile = ASSETS_TEXTURE_PATH + assetName + extensionName;
+    mLibraryFile = LIBRARY_TEXTURE_PATH + std::to_string(mUID) + ".tex";
+
+}
 ResourceTexture::~ResourceTexture()
 {
 }

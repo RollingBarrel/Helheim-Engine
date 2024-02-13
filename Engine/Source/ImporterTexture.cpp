@@ -11,7 +11,7 @@
 #include "DirectXTex.h"
 
 
-void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
+ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int uid)
 {
     std::string gltfPath = (ASSETS_TEXTURE_PATH + std::string(filePath));
 
@@ -71,24 +71,26 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
     unsigned int mipLevels = image.GetMetadata().mipLevels;
     unsigned int numPixels = image.GetPixelsSize();
 
-    pixels = new unsigned char[numPixels];
+    unsigned char* pixels = new unsigned char[numPixels];
     for (auto i = 0; i < image.GetPixelsSize(); ++i)
     {
         pixels[i] = image.GetPixels()[i];
     }
-
+    bool hasAlpha = false;
     if (DirectX::HasAlpha(image.GetMetadata().format))
     {
         hasAlpha = true;
     }
 
-
+    return new ResourceTexture(uid, filePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
 }
 
 void Importer::Texture::Save(const ResourceTexture* texture)
 {
-    unsigned int header[7] = { width, height, internalFormat, texFormat, dataType ,mipLevels, numPixels};
+    unsigned int header[7] = { texture->GetWidth(), texture->GetHeight(), texture->GetInternalFormat(), texture->GetTexFormat(), texture->GetDataType() ,texture->GetMipLevels(), texture-> GetNumPixels()};
 
+    unsigned int numPixels = texture->GetNumPixels();
+    bool hasAlpha = texture->HasAlpha();
     unsigned int size = sizeof(header) +
                         sizeof(hasAlpha) +
                         sizeof(unsigned char) * numPixels;
@@ -105,23 +107,22 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     cursor += bytes;
 
     bytes = sizeof(unsigned char) * numPixels;
-    memcpy(cursor, pixels, bytes);
+    memcpy(cursor, texture->GetPixels(), bytes);
     cursor += bytes;
 
     //TODO Change name for random UID
-    // TODO This is in the Resource as mLibraryPath
-    std::string path = LIBRARY_TEXTURE_PATH;
-    path += std::to_string(texture->GetUID());
-    path += ".tex";
+    //std::string path = LIBRARY_TEXTURE_PATH;
+    //path += std::to_string(texture->GetUID());
+    //path += ".tex";
 
-    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+    App->GetFileSystem()->Save(texture->GetLibraryFile().c_str(), fileBuffer, size);
 
     delete[] fileBuffer;
     fileBuffer = nullptr;
 
 }
 
-unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileName)
+unsigned int Importer::Texture::Load( const char* fileName)
 {
     char* fileBuffer;
 
@@ -137,23 +138,28 @@ unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileN
     unsigned int bytes = sizeof(header);
     memcpy(header, cursor, bytes);
     cursor += bytes;
-    width = header[0];
-    height = header[1];
-    internalFormat = header[2];
-    texFormat = header[3];
-    dataType = header[4];
-    mipLevels = header[5];
-    numPixels = header[6];
+    unsigned int width = header[0];
+    unsigned int height = header[1];
+    unsigned int internalFormat = header[2];
+    unsigned int texFormat = header[3];
+    unsigned int dataType = header[4];
+    unsigned int mipLevels = header[5];
+    unsigned int numPixels = header[6];
 
+    bool hasAlpha;
     bytes = sizeof(hasAlpha);
     memcpy(&hasAlpha, cursor, bytes);
     cursor += bytes;
 
+    unsigned char* pixels;
     bytes = sizeof(unsigned char) * numPixels;
     if (pixels != nullptr)
         delete[] pixels;
     pixels = new unsigned char[numPixels];
     memcpy(pixels, cursor, bytes);
 
-    return texture->CreateTexture();
+    ResourceTexture* texture = new ResourceTexture(uid, filePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+    unsigned int texId = texture->CreateTexture();
+    
+    return texId;
 }
