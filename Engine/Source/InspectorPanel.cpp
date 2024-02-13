@@ -333,15 +333,15 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetRadius(radius);
 	}
-	float outerAngle = RadToDeg(component->GetOuterAngle());
-	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, 0.0f))
-	{
-		component->SetOuterAngle(DegToRad(outerAngle));
-	}
 	float innerAngle = RadToDeg(component->GetInnerAngle());
-	if (ImGui::DragFloat("Inner angle", &innerAngle, 1.0f, 0.0f))
+	float outerAngle = RadToDeg(component->GetOuterAngle());
+	if (ImGui::DragFloat("Inner angle", &innerAngle, 1.0f, 0.0f, outerAngle))
 	{
 		component->SetInnerAngle(DegToRad(innerAngle));
+	}
+	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, innerAngle, 90.f))
+	{
+		component->SetOuterAngle(DegToRad(outerAngle));
 	}
 	ImGui::Checkbox("Debug draw", &component->debugDraw);
 }

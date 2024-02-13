@@ -415,8 +415,8 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 {
 	PointLightComponent* newComponent = new PointLightComponent(owner, pLight);
 	mPointLights.push_back(newComponent);
-	uint32_t size = mPointLights.size();
 	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
+	uint32_t size = mPointLights.size();
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 
 	return newComponent;
@@ -442,6 +442,8 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 		{
 			mPointLights.erase(mPointLights.begin() + i);
 			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			uint32_t size = mPointLights.size();
+			mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
 		}
 	}
@@ -452,8 +454,8 @@ SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObje
 {
 	SpotLightComponent* newComponent = new SpotLightComponent(owner, sLight);
 	mSpotLights.push_back(newComponent);
-	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
+	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 
 	return newComponent;
@@ -479,6 +481,8 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 		{
 			mSpotLights.erase(mSpotLights.begin() + i);
 			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			uint32_t size = mSpotLights.size();
+			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
 		}
 	}
@@ -590,10 +594,23 @@ void OpenGLBuffer::RemoveData(unsigned int dataSize, unsigned int offset)
 		ShrinkToFit();
 		return;
 	}
-	if (offset == mDataSize)
+	if ((offset + dataSize) == mDataSize)
 	{
 		PopBackData(dataSize);
 		return;
 	}
-	glCopyNamedBufferSubData(mIdx, mIdx, offset + dataSize, offset, mDataSize - offset - dataSize);
+	//Careful same buffer overlaped data
+	//glCopyNamedBufferSubData(mIdx, mIdx, offset + dataSize, offset, mDataSize - offset - dataSize);
+	unsigned int tmp;
+	glGenBuffers(1, &tmp);
+	glBindBuffer(GL_COPY_WRITE_BUFFER, tmp);
+	glBufferData(GL_COPY_WRITE_BUFFER, mDataSize - dataSize, nullptr, GL_STATIC_COPY);
+	glBindBuffer(GL_COPY_READ_BUFFER, mIdx);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, offset);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, offset + dataSize, offset, mDataSize - offset - dataSize);
+	mDataSize -= dataSize;
+	glBindBuffer(GL_COPY_READ_BUFFER, tmp);
+	glBindBuffer(GL_COPY_WRITE_BUFFER, mIdx);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, mDataSize);
+	glDeleteBuffers(1, &tmp);
 }

@@ -45,10 +45,10 @@ readonly layout(std430, binding = 0) buffer PointLights
 	PointLight pLights[];
 };
 struct SpotLight{
-	vec4 pos; //w intensity
-	vec4 aimD;//w inner angle
-	vec4 col;//w outer angle
 	float radius;
+	vec4 pos; //w intensity
+	vec4 aimD;//w cos inner angle
+	vec4 col;//w cos outer angle
 };
 readonly layout(std430, binding = 1) buffer SpotLights
 {
@@ -144,12 +144,13 @@ void main() {
 		//TODO: Check that the radius of spot light is correct
 		float r = sLights[i].radius;
 		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
-		float cAtt = 1;
 		float c = dot(sDir, aimDir);
-		float cInner = cos(sLights[i].aimD.w);
-		float cOuter = cos(sLights[i].col.w);
-		if(cInner > c && c > cOuter)
-			cAtt = (c - cOuter) / (cInner - cOuter);
+		float cInner = sLights[i].aimD.w;
+		float cOuter = sLights[i].col.w;
+		//float cAtt = 1;
+		//if(cInner > c && c > cOuter)
+			//cAtt = (c - cOuter) / (cInner - cOuter);
+		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
 		att *= cAtt;
 		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att);
 	}

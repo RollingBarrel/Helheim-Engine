@@ -3,10 +3,11 @@
 #include "Component.h"
 
 typedef struct SpotLight {
+	float radius;
+	float padding[3];
 	float pos[4]; //w intensity
 	float aimD[4];//w cos inner angle
 	float col[4];//w cos outer angle
-	float radius;
 }SpotLight;
 
 class SpotLightComponent : public Component {
@@ -29,9 +30,9 @@ public:
 	void SetIntensity(float intensity);
 	float GetRadius() const { return mData.radius; }
 	void SetRadius(float radius);
-	inline float GetOuterAngle() const; 
+	float GetOuterAngle() const; 
 	void SetOuterAngle(float angle);
-	inline float GetInnerAngle() const;
+	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
 	//Todo: Variable not necesary for the game mode
 	bool debugDraw = false;

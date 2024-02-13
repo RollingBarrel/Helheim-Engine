@@ -54,7 +54,7 @@ void SpotLightComponent::SetRadius(float radius)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-inline float SpotLightComponent::GetOuterAngle() const {
+float SpotLightComponent::GetOuterAngle() const {
 	return acos(mData.col[3]);
 }
 
@@ -64,7 +64,7 @@ void SpotLightComponent::SetOuterAngle(float angle)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-inline float SpotLightComponent::GetInnerAngle() const {
+float SpotLightComponent::GetInnerAngle() const {
 	return acos(mData.aimD[3]);
 }
 
