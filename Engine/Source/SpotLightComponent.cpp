@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleDebugDraw.h"
+#include "MathFunc.h"
 
 SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) {
 	const float3& pos = owner->GetWorldPosition();
@@ -53,15 +54,23 @@ void SpotLightComponent::SetRadius(float radius)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
+inline float SpotLightComponent::GetOuterAngle() const {
+	return acos(mData.col[3]);
+}
+
 void SpotLightComponent::SetOuterAngle(float angle)
 {
-	mData.col[3] = angle;
+	mData.col[3] = cos(angle);
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
+inline float SpotLightComponent::GetInnerAngle() const {
+	return acos(mData.aimD[3]);
 }
 
 void SpotLightComponent::SetInnerAngle(float angle)
 {
-	mData.aimD[3] = angle;
+	mData.aimD[3] = cos(angle);
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 

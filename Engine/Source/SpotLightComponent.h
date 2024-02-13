@@ -4,8 +4,8 @@
 
 typedef struct SpotLight {
 	float pos[4]; //w intensity
-	float aimD[4];//w inner angle
-	float col[4];//w outer angle
+	float aimD[4];//w cos inner angle
+	float col[4];//w cos outer angle
 	float radius;
 }SpotLight;
 
@@ -29,9 +29,9 @@ public:
 	void SetIntensity(float intensity);
 	float GetRadius() const { return mData.radius; }
 	void SetRadius(float radius);
-	float GetOuterAngle() const { return mData.col[3]; }
+	inline float GetOuterAngle() const; 
 	void SetOuterAngle(float angle);
-	float GetInnerAngle() const { return mData.aimD[3]; }
+	inline float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
 	//Todo: Variable not necesary for the game mode
 	bool debugDraw = false;

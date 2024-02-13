@@ -10,7 +10,7 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ImporterMaterial.h"
-#include <MathFunc.h>
+#include "MathFunc.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -333,15 +333,15 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetRadius(radius);
 	}
-	float outerAngle = component->GetOuterAngle() * 57.2957795f;
+	float outerAngle = RadToDeg(component->GetOuterAngle());
 	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, 0.0f))
 	{
-		component->SetOuterAngle(outerAngle * 0.0174532925f);
+		component->SetOuterAngle(DegToRad(outerAngle));
 	}
-	float innerAngle = component->GetInnerAngle() * 57.2957795f;
+	float innerAngle = RadToDeg(component->GetInnerAngle());
 	if (ImGui::DragFloat("Inner angle", &innerAngle, 1.0f, 0.0f))
 	{
-		component->SetInnerAngle(innerAngle * 0.0174532925f);
+		component->SetInnerAngle(DegToRad(innerAngle));
 	}
 	ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
