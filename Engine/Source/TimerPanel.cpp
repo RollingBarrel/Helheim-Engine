@@ -19,8 +19,6 @@ TimerPanel::~TimerPanel()
 
 void TimerPanel::Draw(int windowFlags)
 {
-	//static Timer* clock = App->GetEngineClock();
-
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
 	ImGui::PushItemWidth(300.0f);
