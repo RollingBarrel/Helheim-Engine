@@ -53,7 +53,6 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
-    //ModuleTimer* clock = nullptr;
 
 #define NUM_MODULES 8
     Module* modules[NUM_MODULES];
