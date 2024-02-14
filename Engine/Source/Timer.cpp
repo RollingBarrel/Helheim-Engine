@@ -90,6 +90,15 @@ long Timer::ReadDelta() {
 	return convertedTime;
 }
 
+long Timer::Stop() {
+	Uint64 finalTime = Read();
+	mLastReadTime = 0;
+
+	SetSpeed(0.f);
+
+	return finalTime;
+}
+
 long Timer::SetSpeed(float speed) {
 	long currentTime = ReadDelta();
 	mSpeed = speed;

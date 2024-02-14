@@ -76,10 +76,10 @@ void TimerPanel::Draw(int windowFlags)
 
 	if (item_current == 1)
 	{
-		ImGui::Text("Real time since start: %.2f", clock->GetRealTime() / 1000.0f);
+		ImGui::Text("Real time since start: %.2f seconds", clock->GetRealTime() / 1000.0f);
 	}
 
-	ImGui::Text("Total Time: %.3f", clock->GetTotalTime() / 1000.0f);
+	ImGui::Text("Total Time: %.2f seconds", clock->GetTotalTime() / 1000.0f);
 
 	if (item_current == 1 && clock->GetNewSpeed() != 0) {
 		static float gameScale;

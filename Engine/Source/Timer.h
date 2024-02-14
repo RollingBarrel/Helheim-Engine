@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+
+
 class Timer {
 public:
     Timer() = default;
@@ -13,7 +15,8 @@ public:
     long Read();
     long ReadDelta();
 
-    long Stop() { SetSpeed(0); }
+    long Stop();
+
     long SetSpeed(float speed);
     void SetTimeScale(float speed);
 
