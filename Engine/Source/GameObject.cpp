@@ -29,8 +29,8 @@ GameObject::GameObject(GameObject* parent)
 
 GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
 	AddSuffix();
@@ -48,8 +48,8 @@ GameObject::GameObject(const GameObject& original)
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
 	for (auto child : original.mChildren) {
@@ -126,20 +126,22 @@ void GameObject::RecalculateMatrices()
 
 void GameObject::Update()
 {
-	for (size_t i = 0; i < mComponents.size(); i++)
+	if (IsActive())
 	{
-		mComponents[i]->Update();
-	}
+		for (size_t i = 0; i < mComponents.size(); i++)
+		{
+			mComponents[i]->Update();
+		}
 
-	for (size_t i = 0; i < mChildren.size(); i++) {
-		mChildren[i]->Update();
-	}
+		for (size_t i = 0; i < mChildren.size(); i++) {
+			mChildren[i]->Update();
+		}
 
-	DeleteComponents();
-	if (isTransformModified) {
-		RecalculateMatrices();
+		DeleteComponents();
+		if (isTransformModified) {
+			RecalculateMatrices();
+		}
 	}
-
 }
 
 void GameObject::ResetTransform()
@@ -147,6 +149,18 @@ void GameObject::ResetTransform()
 	SetPosition(float3::zero);
 	SetRotation(float3::zero);
 	SetScale(float3::one);
+}
+
+void GameObject::Enable()
+{ 
+	mIsEnabled = true;
+	EnableInHierarchy();
+}
+
+void GameObject::Disable()
+{
+	mIsEnabled = false;
+	DisableInHierarchy();
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -353,11 +367,40 @@ void GameObject::RecalculateLocalTransform() {
 	}
 }
 
+void GameObject::EnableInHierarchy()
+{
+	if (mParent != nullptr && !mParent->IsActive())
+	{
+		return;
+	}
+
+	mIsActive = true;
+	for (GameObject* child : mChildren)
+	{
+		child->EnableInHierarchy();
+	}
+}
+
+void GameObject::DisableInHierarchy()
+{
+	if (mParent != nullptr && !mParent->IsActive())
+	{
+		return;
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		child->DisableInHierarchy();
+	}
+	mIsActive = false;
+}
+
 void GameObject::Save(Archive& archive) const {
 	archive.AddInt("UID", mID);
 	archive.AddInt("ParentUID", mParent->GetID());
 	archive.AddString("Name", mName);
 	archive.AddBool("isEnabled", mIsEnabled);
+	archive.AddBool("isActive", mIsActive);
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);
