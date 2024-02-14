@@ -209,7 +209,7 @@ void ModuleScene::DrawRenderList()
 
 	for (GameObject* objectToRender : mRenderList)
 	{
-		MeshRendererComponent* meshRenderer = static_cast<MeshRendererComponent*>(objectToRender->GetComponent(ComponentType::MESHRENDERER));
+		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(objectToRender->GetComponent(ComponentType::MESHRENDERER));
 
 		if(meshRenderer->IsEnabled())
 		{

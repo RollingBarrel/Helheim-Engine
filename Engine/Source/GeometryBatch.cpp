@@ -162,14 +162,15 @@ void GeometryBatch::Draw()
 
 	glBindVertexArray(mVao);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands[0], GL_STATIC_DRAW);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
 
-	/*
+	
 	unsigned int offset3 = 0;
 	for (auto command : mCommands) {
 		glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset3, sizeof(Command), command);
+		offset3 += sizeof(Command);
 	}
-	*/
+	
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, GL_STATIC_COPY_ARB);
