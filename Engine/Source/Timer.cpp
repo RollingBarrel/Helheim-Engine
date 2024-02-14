@@ -34,12 +34,12 @@ void Timer::Update()
 
 		ReadDelta();	//ReadDelta is called so the next frameDelay is calculated properly (if this isn't done the previous delay will be counted as part of the next frame execution time)
 
-		mDeltaTime = 1000 / mFpsLimit;
+		mDeltaTime = mSpeed * 1000 / mFpsLimit;
 	}
 	else 
 	{
 		mFrameDelay = 0;
-		mDeltaTime /= mSpeed;
+		//mDeltaTime /= mSpeed;
 	}
 
 	//Checks if the frame is the slowest of all (doesn't check the first 500 because the first ones are always very slow)
@@ -51,9 +51,9 @@ void Timer::Update()
 	if (mMsLog.size() >= 100) {
 		mMsLog.erase(mMsLog.begin());
 	}
-	mMsLog.push_back(mDeltaTime);
+	mMsLog.push_back(mDeltaTime / mSpeed);
 
-	mUpdateTime += mDeltaTime;
+	mUpdateTime += mDeltaTime / mSpeed;
 
 	//Logs the average FPS every half a second
 	if (mUpdateTime > 500) {						//For some reason when the FPS are low this is executed more often (so time goes faster?)

@@ -35,16 +35,19 @@ void TimerPanel::Draw(int windowFlags)
 
 	static float fps;
 	static long ms;
+	static long averageMs;
 	static std::vector<float> fpsLog;
 	static std::vector<unsigned long> msLog;
 	
+	ms = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
+
 	//Executes evey 500 ms (no change if executed every time)
 	if(App->GetCurrentClock()->UpdateFpsLog())
 	{
 		fpsLog = App->GetCurrentClock()->GetFpsLog();
 		App->GetCurrentClock()->FpsLogUpdated();
 
-		ms = App->GetCurrentClock()->GetDelta();
+		averageMs = ms;
 		fps = App->GetCurrentClock()->GetFPS();
 	}
 
@@ -59,11 +62,11 @@ void TimerPanel::Draw(int windowFlags)
 	ImGui::SeparatorText("Frames");
 
 	ImGui::Text("Last frame delayed for %d ms", App->GetCurrentClock()->GetFrameDelay());
-	ImGui::Text("Actual execution time of the last frame: %d ms", App->GetCurrentClock()->GetDelta() - App->GetCurrentClock()->GetFrameDelay());
+	ImGui::Text("Actual execution time of the last frame: %d ms", ms - App->GetCurrentClock()->GetFrameDelay());
 
 	ImGui::Text("Slowest frame: %d MS on frame %i", App->GetCurrentClock()->GetSlowestFrameTime(), App->GetCurrentClock()->GetSlowestFrame());
 
-	ImGui::Text("Delta time: %d ms", App->GetCurrentClock()->GetDelta());
+	ImGui::Text("Delta time: %d ms", ms);
 
 	ImGui::Text("Frame Count: %u", App->GetCurrentClock()->GetTotalFrames());
 
@@ -105,7 +108,7 @@ void TimerPanel::Draw(int windowFlags)
 
 	ImGui::PlotLines("MS", msLogFloat.data(), msLogFloat.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
 
-	ImGui::Text("Application average %lld ms/frame (%.1f FPS)", ms, fps);
+	ImGui::Text("Application average %lld ms/frame (%.1f FPS)", averageMs, fps);
 
 	ImGui::End();
 }
