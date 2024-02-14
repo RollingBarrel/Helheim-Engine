@@ -83,6 +83,9 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
 	//Color with specular and pi divisions
 	vec3 pbrColor = (((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL)/ PI;
+	return pbrColor;
+}
+
 void main() {
 
 	//Diffuse
