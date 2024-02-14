@@ -206,17 +206,11 @@ void ModuleScene::DrawRenderList()
 {
 
 	unsigned int instanceCounter = 0;
-	unsigned int VboPos = 0;
 
 	for (GameObject* objectToRender : mRenderList)
 	{
-		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
-		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
+		MeshRendererComponent* meshRenderer = static_cast<MeshRendererComponent*>(objectToRender->GetComponent(ComponentType::MESHRENDERER));
 
-		
-		meshRenderer->GetResourceMesh()->SetVboPosition(VboPos);
-
-		// Enable/disable mesh renderer component
 		if(meshRenderer->IsEnabled())
 		{
 			
@@ -232,9 +226,6 @@ void ModuleScene::DrawRenderList()
 				meshRenderer->AddCommand(instanceCounter);
 				instanceCounter++;
 			}
-			
-
-			VboPos += meshRenderer->GetResourceMesh()->GetVertexSize() * meshRenderer->GetResourceMesh()->GetNumVertices();
 			
 		}
 	}

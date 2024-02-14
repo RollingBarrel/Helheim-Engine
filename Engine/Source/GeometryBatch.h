@@ -24,8 +24,9 @@ typedef struct Material {
 	//Diffuse
 	float4 diffuseColor = float4::zero;
 	uint64_t diffuseTexture = 0;
-
-	uint64_t padding = 0;
+private:
+	uint64_t padding = 0; //Alignment
+public:
 	//Specular
 	float4 specularColor = float4::zero;
 	uint64_t specularTexture = 0;
@@ -77,6 +78,8 @@ private:
 	unsigned int mSsboModels = 0;
 	unsigned int mSsboMaterials = 0;
 	
+	unsigned int mVboSize = 0;
+	unsigned int mEboSize = 0;
 
 };
 

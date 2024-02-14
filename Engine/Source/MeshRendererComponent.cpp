@@ -73,6 +73,7 @@ void MeshRendererComponent::AddCommand(unsigned int instanceCounter)
 	command->baseInstance = instanceCounter;
 
 	mBatch->AddCommand(command);
+	
 }
 
 

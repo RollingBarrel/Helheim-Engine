@@ -228,9 +228,7 @@ void ResourceMesh::CleanUp()
         }
     }
     mAttributesData.clear();
-
-    //TODO: delete EBO/VBO...
-    UnloadFromMemory();
+  
 }
 
 void Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, ResourceMesh* mesh)
@@ -530,31 +528,3 @@ float* ResourceMesh::GetInterleavedData() const
     return ret;
 }
 
-unsigned int ResourceMesh::LoadToMemory()
-{
-    glGenVertexArrays(1, &mVao);
-    glGenBuffers(1, &mVbo);
-    glGenBuffers(1, &mEbo);
-    glBindVertexArray(mVao);
-    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-    glBufferData(GL_ARRAY_BUFFER, mNumVertices * mVertexSize, GetInterleavedData(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), mIndices, GL_STATIC_DRAW);
-    unsigned int idx = 0;
-    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
-    {
-        
-        glVertexAttribPointer(idx, (*it)->size/sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
-        glEnableVertexAttribArray(idx);
-        ++idx;
-    }
-    glBindVertexArray(0);
-    return mVao;
-}
-
-void ResourceMesh::UnloadFromMemory()
-{
-    glDeleteBuffers(1, &mVbo);
-    glDeleteBuffers(1, &mEbo);
-    glDeleteVertexArrays(1, &mVao);
-}
