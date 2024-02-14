@@ -61,6 +61,7 @@ void TimerPanel::Draw(int windowFlags)
 	ImGui::SeparatorText("Frames");
 
 	ImGui::Text("Last frame delayed for %d ms", App->GetCurrentClock()->GetFrameDelay());
+	ImGui::Text("Actual execution time of the last frame: %d ms", App->GetCurrentClock()->GetDelta() - App->GetCurrentClock()->GetFrameDelay());
 
 	ImGui::Text("Slowest frame: %d MS on frame %i", App->GetCurrentClock()->GetSlowestFrameTime(), App->GetCurrentClock()->GetSlowestFrame());
 
@@ -77,6 +78,16 @@ void TimerPanel::Draw(int windowFlags)
 			gameScale = App->GetCurrentClock()->GetNewSpeed();
 			ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10, "%.1f");
 			App->GetCurrentClock()->SetTimeScale(gameScale);
+			if (ImGui::Button("-")) {
+				App->GetCurrentClock()->SetTimeScale(gameScale-0.1f);
+			}ImGui::SameLine();
+			if (ImGui::Button("Reset")) {
+				App->GetCurrentClock()->SetTimeScale(1.f);
+			}ImGui::SameLine();
+			if (ImGui::Button("+")) {
+				App->GetCurrentClock()->SetTimeScale(gameScale + 0.1f);
+			}
+			ImGui::Text(" ");
 		}
 
 		ImGui::Text("Real time since start: %.2f", App->GetCurrentClock()->GetRealTime() / 1000.0f);

@@ -60,7 +60,6 @@ public:
     void SetSlowestFrame();
 
 
-
 private:
 	float mSpeed = 1.0f;
     float mNewSpeed = 1.0f;

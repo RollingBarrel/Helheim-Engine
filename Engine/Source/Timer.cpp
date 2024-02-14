@@ -27,15 +27,19 @@ void Timer::Update()
 	}
 
 	//Delay the frame so the FPS match the limit if mDeltaTime 
-	if (mFpsLimit > 0 && mDeltaTime < (1000 / mFpsLimit))
+	if (mFpsLimit > 0 && mDeltaTime / mSpeed < (1000 / mFpsLimit))
 	{
-		mFrameDelay = (1000 / mFpsLimit) - mDeltaTime;
+		mFrameDelay = (1000 / mFpsLimit) - mDeltaTime / mSpeed;
 		SDL_Delay(mFrameDelay);
+
+		ReadDelta();	//ReadDelta is called so the next frameDelay is calculated properly (if this isn't done the previous delay will be counted as part of the next frame execution time)
+
 		mDeltaTime = 1000 / mFpsLimit;
 	}
 	else 
 	{
 		mFrameDelay = 0;
+		mDeltaTime /= mSpeed;
 	}
 
 	//Checks if the frame is the slowest of all (doesn't check the first 500 because the first ones are always very slow)
@@ -49,14 +53,10 @@ void Timer::Update()
 	}
 	mMsLog.push_back(mDeltaTime);
 
-	//This may have to be changed
-	if(mSpeed != 0)
-	{
-		mUpdateTime += mDeltaTime;
-	}
+	mUpdateTime += mDeltaTime;
 
 	//Logs the average FPS every half a second
-	if (mUpdateTime >= 500) {						//For some reason when the FPS are low this is executed more often (so time goes faster?)
+	if (mUpdateTime > 500) {						//For some reason when the FPS are low this is executed more often (so time goes faster?)
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
