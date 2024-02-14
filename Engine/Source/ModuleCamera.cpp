@@ -38,8 +38,7 @@ update_status ModuleCamera::Update(float dt)
 	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
 	{
 		//Fer state machine amb els inputs !!!!
-		//TODO: Camera velocity variable independent of framerate
-		const float dtTransformCameraVel = dt * 3.f;							//For some reason the velocities of movement with GetDt() implemented are not consistent
+		const float dtTransformCameraVel = dt * 3.f;
 		float transformCameraVel = 0.03f;
 		const float rotateCameraVel = 0.01f;
 		
@@ -93,7 +92,7 @@ update_status ModuleCamera::Update(float dt)
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Transform(float3(-mX * speed, 0, 0));						//GetDt should not influence this movement (it depends on the mouse position on the screen)	--- FIXED
+			Transform(float3(-mX * speed, 0, 0));							//GetDt should not influence this movement (it depends on the mouse position on the screen)	--- FIXED
 			Transform(float3(0, mY * speed, 0));							//GetDt should not influence this movement (it depends on the mouse position on the screen) --- FIXED
 		}
 		//orbiting camera
