@@ -1,7 +1,6 @@
 #include "PausePanel.h"
 #include "imgui.h"
 #include "Application.h"
-//#include "ModuleTimer.h"
 #include "ModuleScene.h"
 
 #include "Timer.h"
@@ -22,20 +21,20 @@ void PausePanel::Draw(int windowFlags)
 	windowFlags |= ImGuiWindowFlags_NoTitleBar;
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	
-	if (ImGui::Button("Play", ImVec2(40, 40))) {
+	if (ImGui::Button("Play", ImVec2(40, 40)) && mState != GameState::PLAYING) {
 		Play();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Pause", ImVec2(40, 40))) {
+	if (ImGui::Button("Pause", ImVec2(40, 40)) && mState == GameState::PLAYING) {
 		Pause();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Step", ImVec2(40, 40))) {
+	if (ImGui::Button("Step", ImVec2(40, 40)) && mState == GameState::PAUSED) {
 		Play();
 		mState = GameState::RUN_ONCE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Stop", ImVec2(40, 40)) && mState == GameState::PLAYING) {
+	if (ImGui::Button("Stop", ImVec2(40, 40)) && (mState == GameState::PLAYING || mState == GameState::PAUSED)) {
 		Stop();
 	}
 
@@ -48,12 +47,17 @@ void PausePanel::Play() {
 
 	App->SetCurrentClock(App->GetGameClock());	//Changes the current clock from Engine to Game
 
+	App->SetUpdateTimer(true);					//The timer must update in this state
+
 	mState = GameState::PLAYING;
 	App->GetScene()->Save("TemporalScene");
 }
 
 void PausePanel::Pause() {
 	App->GetGameClock()->SetTimeScale(0.0f);
+
+	App->SetUpdateTimer(false);				//The timer doesn't update in this state
+
 	mState = GameState::PAUSED;
 }
 
@@ -62,6 +66,8 @@ void PausePanel::Stop() {
 	App->GetEngineClock()->Resume();		//Engine clock resumes
 
 	App->SetCurrentClock(App->GetEngineClock());	//Changes the current clock from Game to Engine
+
+	App->SetUpdateTimer(true);					//The engine timer always updates when active
 
 	mState = GameState::STOP;
 	App->GetScene()->Load("TemporalScene");

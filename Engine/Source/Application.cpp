@@ -57,7 +57,9 @@ bool Application::Init()
 
 update_status Application::Update(float dt)
 {
-	mCurrentTimer->Update();		//Updates the current timer (Engine or Game depending on the game state)
+	if(mUpdateTimer){
+		mCurrentTimer->Update();		//Updates the current timer (Engine or Game depending on the game state)
+	}
 
 	update_status ret = UPDATE_CONTINUE;
 
