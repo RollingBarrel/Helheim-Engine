@@ -12,11 +12,34 @@ typedef struct DirectionalAmbient {
 	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
 }DirectionalAmbient;
 
-class LightSourceComponent;
+class PointLightComponent;
+class SpotLightComponent;
 class PointLight;
+class SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+typedef unsigned int GLenum;
+
+class OpenGLBuffer {
+public:
+	OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding = -1, unsigned int size = 0, const void* data = nullptr);
+	~OpenGLBuffer();
+	void PushBackData(const void* data, unsigned int dataSize);
+	void PopBackData(unsigned int dataSize);
+	void ShrinkToFit();
+	void UpdateData(const void* data, unsigned int dataSize, unsigned int offset);
+	void RemoveData(unsigned int dataSize, unsigned int offset);
+
+private:
+	void ChangeBufferCapacity(unsigned int newCapacity);
+	const GLenum mType;
+	const GLenum mUsage;
+	const unsigned int mBinding;
+	unsigned int mIdx;
+	unsigned int mDataSize;
+	unsigned int mDataCapacity;
+};
 
 class ModuleOpenGL : public Module
 {
@@ -40,9 +63,13 @@ public:
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
-	LightSourceComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
-	void UpdatePoinLightInfo(const LightSourceComponent& ptrPointLight);
-	void RemovePointLight(const LightSourceComponent& cPointLight);
+	//TODO: put all this calls into one without separating for light type??
+	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
+	void UpdatePoinLightInfo(const PointLightComponent& ptrPointLight);
+	void RemovePointLight(const PointLightComponent& cPointLight);
+	SpotLightComponent* AddSpotLight(const SpotLight& pLight, GameObject* owner);
+	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
+	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
 private:
 	void* context = nullptr;
@@ -53,7 +80,7 @@ private:
 	unsigned int depthStencil;
 
 	//Camera
-	unsigned int cameraUnis = 0;
+	OpenGLBuffer* mCameraUniBuffer = nullptr;
 
 	//Skybox
 	void InitSkybox();
@@ -71,10 +98,12 @@ private:
 
 
 	//Lighting uniforms
-	unsigned int lightUnis = 0;
+	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalAmbient mDirAmb;
-	unsigned int mPointSSBO = 0;
-	std::vector<const LightSourceComponent*>mPointLights;
+	std::vector<const PointLightComponent*>mPointLights;
+	OpenGLBuffer* mPointsBuffer = nullptr;
+	std::vector<const SpotLightComponent*>mSpotLights;
+	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
 };
 
