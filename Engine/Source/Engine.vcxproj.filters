@@ -184,6 +184,9 @@
     <ClCompile Include="DebugPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Archive.cpp" />
     <ClCompile Include="LightningPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -246,6 +249,8 @@
     </ClCompile>
     <ClCompile Include="SpotLightComponent.cpp">
       <Filter>GameObjects\Components</Filter>
+    <ClCompile Include="TimerPanel.cpp">
+      <Filter>Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -622,6 +627,9 @@
     <ClInclude Include="DebugPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="PreciseTimer.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Archive.h" />
     <ClInclude Include="LightningPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -699,6 +707,8 @@
     </ClInclude>
     <ClInclude Include="SpotLightComponent.h">
       <Filter>GameObjects\Components</Filter>
+    <ClInclude Include="TimerPanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
