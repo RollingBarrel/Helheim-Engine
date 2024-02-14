@@ -57,7 +57,7 @@ void TimerPanel::Draw(int windowFlags)
 	ImGui::SeparatorText("FPS");
 
 	int fps_limit = clock->GetFpsLimit();
-	ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
+	ImGui::SliderInt("FPS Limit", &fps_limit, 1, 60);
 	clock->SetFpsLimit(fps_limit);
 
 	ImGui::Text("Lowest FPS: %u on second %.3f", clock->GetLowestFPS(), clock->GetLowestFpsTime()/1000.f);

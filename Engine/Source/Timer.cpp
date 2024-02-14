@@ -4,6 +4,7 @@
 
 void Timer::Start() {
 	mLastReadTime = SDL_GetTicks();
+	SetTimeScale(1.f);
 }
 
 void Timer::StartWithRunTime() {
@@ -51,15 +52,11 @@ void Timer::Update()
 	//This may have to be changed
 	if(mSpeed != 0)
 	{
-		mUpdateTime += mDeltaTime / mSpeed;
-	}
-	else 
-	{
 		mUpdateTime += mDeltaTime;
 	}
 
 	//Logs the average FPS every half a second
-	if (mUpdateTime >= 500) {
+	if (mUpdateTime >= 500) {						//For some reason when the FPS are low this is executed more often (so time goes faster?)
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
@@ -88,6 +85,44 @@ long Timer::ReadDelta() {
 	mRealTime += elapsedTime;
 	mTotalTime += convertedTime;
 	return convertedTime;
+}
+
+long Timer::Stop() {
+	Uint64 finalTime = Read();
+
+	//We reset all variables
+	mLastReadTime = 0;
+
+	mDeltaTime = 0;
+	mFpsLimit = 60;
+
+	mUpdateTime = 0;
+	mUpdateFrames = 0;
+
+	mNewSpeed = 1.f;
+	mChangeSpeed = false;
+
+	mRealTime = 0;
+	mTotalTime = 0;
+
+	mTotalFrames = 0;
+
+	mFpsLog.clear(); 
+	mMsLog.clear();
+
+	mUpdateFpsLog = false;
+
+	mLowestFps = mFpsLimit;
+	mLowestFpsTime = 0;
+
+	mFrameDelay = 0;
+
+	mSlowestFrameTime = 0;
+	mSlowestFrame = 0;
+
+	Pause();
+
+	return finalTime;
 }
 
 long Timer::SetSpeed(float speed) {

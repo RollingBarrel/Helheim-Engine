@@ -43,7 +43,11 @@ void PausePanel::Draw(int windowFlags)
 }
 
 void PausePanel::Play() {
-	App->GetGameClock()->SetTimeScale(1.0f);
+	App->GetEngineClock()->Pause();				//Pauses Engine Clock (variables don't reset)
+	App->GetGameClock()->Start();				//Starts GameClock
+
+	App->SetCurrentClock(App->GetGameClock());	//Changes the current clock from Engine to Game
+
 	mState = GameState::PLAYING;
 	App->GetScene()->Save("TemporalScene");
 }
@@ -54,6 +58,11 @@ void PausePanel::Pause() {
 }
 
 void PausePanel::Stop() {
-	App->GetGameClock()->SetTimeScale(1.0f);
+	App->GetGameClock()->Stop();			//Resets the Game clock time and variables
+	App->GetEngineClock()->Resume();		//Engine clock resumes
+
+	App->SetCurrentClock(App->GetEngineClock());	//Changes the current clock from Game to Engine
+
+	mState = GameState::STOP;
 	App->GetScene()->Load("TemporalScene");
 }

@@ -6,19 +6,24 @@ public:
     Timer() = default;
 
     void Start();
-    void Update(); //Log frames and hault to match max FPS
-
     void StartWithRunTime();
+
+    void Update(); //Logs frames and statistics and haults the application to match max FPS
 
     long Read();
     long ReadDelta();
 
-    long Stop() { SetSpeed(0); }
-    long SetSpeed(float speed);
-    void SetTimeScale(float speed);
+    long Stop();
+    void Pause() { SetTimeScale(0.f); }
+    void Resume() { 
+        SetTimeScale(1.f); 
+        mDeltaTime = ReadDelta();
+    }
 
     float GetSpeed() const { return mSpeed; }
+    long SetSpeed(float speed);
     float GetNewSpeed() const { return mNewSpeed; }
+    void SetTimeScale(float speed);                     //Similar to SetSpeed but without recalculating current time (that has to be done in Timer::Update())
 
     long GetDelta() const { return mDeltaTime; }
 
@@ -60,6 +65,8 @@ private:
 	float mSpeed = 1.0f;
     float mNewSpeed = 1.0f;
 
+    bool mChangeSpeed = false;
+
 	long mLastReadTime = 0;         //Time the last frame was read
 
     unsigned long mDeltaTime = 0;   //Time of the last frame
@@ -68,8 +75,6 @@ private:
 
     float mUpdateTime = 0;           //Time since last FPS calculation (reset every 500 ms)
     unsigned int mUpdateFrames = 0; //Frames since last FPS calculation (reset every 500 ms)
-
-    bool mChangeSpeed = false;
 
     //Debugging variables
 
