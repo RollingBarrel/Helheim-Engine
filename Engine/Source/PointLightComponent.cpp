@@ -58,7 +58,7 @@ void PointLightComponent::Update()
 	}
 	if (debugDraw)
 	{
-		App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
+		App->GetDebugDraw()->DrawSphere(mData.pos, mData.col, mData.pos[3]);
 	}
 }
 

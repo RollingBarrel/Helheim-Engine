@@ -87,7 +87,7 @@ void SpotLightComponent::Update()
 	}
 	if (debugDraw)
 	{
-		//App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
+		App->GetDebugDraw()->DrawCone(mData.pos, mData.aimD, mData.col, mData.radius);
 	}
 }
 
