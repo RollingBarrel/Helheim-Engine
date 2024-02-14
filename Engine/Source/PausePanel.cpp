@@ -62,10 +62,15 @@ void PausePanel::Pause() {
 }
 
 void PausePanel::Stop() {
-	App->GetGameClock()->Stop();			//Resets the Game clock time and variables
-	App->GetEngineClock()->Resume();		//Engine clock resumes
 
-	App->SetCurrentClock(App->GetEngineClock());	//Changes the current clock from Game to Engine
+	//Adds the real time and frames from the game execution to the engine timer
+	App->GetEngineClock()->SetTotalTime(App->GetGameClock()->GetRealTime());
+	App->GetEngineClock()->SetTotalFrames(App->GetGameClock()->GetTotalFrames());
+
+	App->GetGameClock()->Stop();			//Resets the Game clock time and variables
+
+	App->SetCurrentClock(App->GetEngineClock());	//Changes the current clock from Game to Engine so it updates
+	App->GetEngineClock()->Resume();				//Engine clock execution resumes -> mSpeed = 1
 
 	App->SetUpdateTimer(true);					//The engine timer always updates when active
 

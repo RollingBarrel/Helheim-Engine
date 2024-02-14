@@ -39,20 +39,21 @@ update_status ModuleCamera::Update(float dt)
 	{
 		//Fer state machine amb els inputs !!!!
 		//TODO: Camera velocity variable independent of framerate
-		const float dtTransformCameraVel = dt * 8.f;							//For some reason the velocities of movement with GetDt() implemented are not consistent
-		float transformCameraVel = 0.03f; //Temporary transform velocity (until good GetDt() implementation done)
+		const float dtTransformCameraVel = dt * 3.f;							//For some reason the velocities of movement with GetDt() implemented are not consistent
+		float transformCameraVel = 0.03f;
 		const float rotateCameraVel = 0.01f;
 		
 		//Aply speed when shift
-		const float fastSpeed = dtTransformCameraVel * 3.0f;
+		const float dtFastSpeed = dtTransformCameraVel * 3.0f;
+		const float fastSpeed = transformCameraVel * 3.0f;
 		bool shiftPressed = (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(SDL_SCANCODE_RSHIFT) == KeyState::KEY_REPEAT);
-		float speed = shiftPressed ? fastSpeed : dtTransformCameraVel;
-		transformCameraVel = shiftPressed ? transformCameraVel * 3.0f : transformCameraVel;
+		float dtSpeed = shiftPressed ? dtFastSpeed : dtTransformCameraVel;
+		float speed = shiftPressed ? fastSpeed : transformCameraVel;
 
 		//moving/rot camera
 		if (App->GetInput()->GetMouseWheelMotion() != 0)
 		{
-			Transform(float3(0, 0, transformCameraVel * 10.f * App->GetInput()->GetMouseWheelMotion()));	//GetDt() should not influence this movement (it depends on the mouse wheel rotation) --- FIXED
+			Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));	//GetDt() should not influence this movement (it depends on the mouse wheel rotation) --- FIXED
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
@@ -63,28 +64,28 @@ update_status ModuleCamera::Update(float dt)
 			Rotate(frustum.WorldRight(), -mY * rotateCameraVel);							//GetDt() should not influence this rotation (it depends on the mouse position on the screen) --- FIXED
 			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, -speed, 0));
+				Transform(float3(0, -dtSpeed, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, speed, 0));
+				Transform(float3(0, dtSpeed, 0));
 			}
 
 			if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, speed));
+				Transform(float3(0, 0, dtSpeed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, -speed));
+				Transform(float3(0, 0, -dtSpeed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(-speed, 0, 0));
+				Transform(float3(-dtSpeed, 0, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(speed, 0, 0));
+				Transform(float3(dtSpeed, 0, 0));
 			}
 		}
 		//paning camera
@@ -92,8 +93,8 @@ update_status ModuleCamera::Update(float dt)
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Transform(float3(-mX * transformCameraVel, 0, 0));						//GetDt should influence this movement (it depends on the mouse position on the screen)	--- FIXED
-			Transform(float3(0, mY * transformCameraVel, 0));							//GetDt should influence this movement (it depends on the mouse position on the screen) --- FIXED
+			Transform(float3(-mX * speed, 0, 0));						//GetDt should not influence this movement (it depends on the mouse position on the screen)	--- FIXED
+			Transform(float3(0, mY * speed, 0));							//GetDt should not influence this movement (it depends on the mouse position on the screen) --- FIXED
 		}
 		//orbiting camera
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)

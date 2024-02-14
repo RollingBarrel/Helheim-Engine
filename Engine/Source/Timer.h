@@ -38,7 +38,9 @@ public:
 
     unsigned long GetRealTime() const { return mRealTime; }
     unsigned long GetTotalTime() const { return mTotalTime; }
+    void SetTotalTime(long gameTime) { mTotalTime += gameTime; }        //Adds the time of the game execution to the total time of the engine
     unsigned int GetTotalFrames() const { return mTotalFrames; }
+    void SetTotalFrames(long gameFrames) { mTotalFrames += gameFrames; }    //Adds the frames of the game execution to the total frames of the engine
 
     unsigned int GetFpsLimit() const { return mFpsLimit; }
     void SetFpsLimit(unsigned int limit) { mFpsLimit = limit; }
