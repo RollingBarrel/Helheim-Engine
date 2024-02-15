@@ -29,7 +29,7 @@ void ModuleCamera::WindowResized(int w, int h)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)w / (float)h);
 }
 
-update_status ModuleCamera::Update()
+update_status ModuleCamera::Update(float dt)
 {    
 
 	const auto& io = ImGui::GetIO();
@@ -38,51 +38,53 @@ update_status ModuleCamera::Update()
 	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
 	{
 		//Fer state machine amb els inputs !!!!
-		//TODO: Camera velocity variable independent of framerate
-		const float dtTransformCameraVel = App->GetDt() * 8.f;
-		const float dtRotateCameraVel = App->GetDt() * 1.f;
+		const float dtTransformCameraVel = dt * 3.f;
+		float transformCameraVel = 0.03f;
+		const float rotateCameraVel = 0.01f;
 		
 		//Aply speed when shift
-		const float fastSpeed = dtTransformCameraVel * 3.0f;
+		const float dtFastSpeed = dtTransformCameraVel * 3.0f;
+		const float fastSpeed = transformCameraVel * 3.0f;
 		bool shiftPressed = (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(SDL_SCANCODE_RSHIFT) == KeyState::KEY_REPEAT);
-		float speed = shiftPressed ? fastSpeed : dtTransformCameraVel;
+		float dtSpeed = shiftPressed ? dtFastSpeed : dtTransformCameraVel;
+		float speed = shiftPressed ? fastSpeed : transformCameraVel;
 
 		//moving/rot camera
 		if (App->GetInput()->GetMouseWheelMotion() != 0)
 		{
-			Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
+			Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));	
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Rotate(float3::unitY, -mX * dtRotateCameraVel);
+			Rotate(float3::unitY, -mX * rotateCameraVel);									
 			//TODO: save the right vector myself??
-			Rotate(frustum.WorldRight(), -mY * dtRotateCameraVel);
+			Rotate(frustum.WorldRight(), -mY * rotateCameraVel);							
 			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, -speed, 0));
+				Transform(float3(0, -dtSpeed, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, speed, 0));
+				Transform(float3(0, dtSpeed, 0));
 			}
 
 			if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, speed));
+				Transform(float3(0, 0, dtSpeed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, -speed));
+				Transform(float3(0, 0, -dtSpeed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(-speed, 0, 0));
+				Transform(float3(-dtSpeed, 0, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(speed, 0, 0));
+				Transform(float3(dtSpeed, 0, 0));
 			}
 		}
 		//paning camera
@@ -90,8 +92,8 @@ update_status ModuleCamera::Update()
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Transform(float3(-mX * dtTransformCameraVel, 0, 0));
-			Transform(float3(0, mY * dtTransformCameraVel, 0));
+			Transform(float3(-mX * speed, 0, 0));							
+			Transform(float3(0, mY * speed, 0));							
 		}
 		//orbiting camera
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
@@ -100,7 +102,7 @@ update_status ModuleCamera::Update()
 			float3 focus = frustum.pos; //(cameraPos - targetPos)
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3::unitY, -mX * dtRotateCameraVel) * float3x3::RotateAxisAngle(right, -mY * dtRotateCameraVel);
+			float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3::unitY, -mX * rotateCameraVel) * float3x3::RotateAxisAngle(right, -mY * rotateCameraVel);
 			focus = rotationMatrix.MulDir(focus);
 			float3 newUp = rotationMatrix.MulDir(frustum.up);
 			LookAt(focus, float3(0, 0, 0), newUp);

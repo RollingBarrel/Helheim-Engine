@@ -621,7 +621,7 @@ bool ModuleDebugDraw::CleanUp()
     return true;
 }
 
-update_status  ModuleDebugDraw::Update()
+update_status  ModuleDebugDraw::Update(float dt)
 {
     App->GetOpenGL()->BindSceneFramebuffer();
 

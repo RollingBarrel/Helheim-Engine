@@ -23,7 +23,7 @@ public:
 	~Application();
 
 	bool Init();
-	update_status Update();
+	update_status Update(float dt);
 	bool CleanUp();
 
     ModuleOpenGL* GetOpenGL() { return render; }
@@ -37,8 +37,11 @@ public:
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
+    Timer* GetCurrentClock() const { return mCurrentTimer; }
+    void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
 
-    float GetDt() const;
+    float GetRealDt() const;
+    float GetGameDt() const;
 
 private:
 
@@ -50,7 +53,6 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
-    //ModuleTimer* clock = nullptr;
 
 #define NUM_MODULES 8
     Module* modules[NUM_MODULES];
@@ -58,6 +60,7 @@ private:
     //Timer
     Timer* mEngineTimer;
     Timer* mGameTimer;
+    Timer* mCurrentTimer = nullptr;
 };
 
 extern Application* App;
