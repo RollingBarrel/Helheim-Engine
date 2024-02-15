@@ -81,7 +81,7 @@ void Importer::NavMesh::Save(const ResourceNavMesh* navMesh)
 
 
 	std::string path = LIBRARY_NAVMESH_PATH;
-	path += std::to_string(navMesh->mUID);
+	//path += std::to_string(navMesh->mUID);
 	path += ".navmesshi";
 
 	App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
