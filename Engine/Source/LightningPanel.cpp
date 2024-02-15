@@ -16,23 +16,19 @@ void LightningPanel::Draw(int windowFlags)
 	
 	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirAmb.mDirCol[3], 0.05f, 0.0f, 5.0f))
 	{
-		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(DirectionalAmbient, mDirCol[3]), sizeof(DirectionalAmbient::mDirCol[3]), &openGl->mDirAmb.mDirCol[3]);
+		openGl->mDLightUniBuffer->UpdateData(&openGl->mDirAmb.mDirCol[3], sizeof(DirectionalAmbient::mDirCol[3]), offsetof(DirectionalAmbient, mDirCol[3]));
 	}
 	if (ImGui::DragFloat3("DirLDir", openGl->mDirAmb.mDirDir, 0.05f, -1.0f, 1.0f))
 	{ 
-		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(DirectionalAmbient, mDirDir), sizeof(DirectionalAmbient::mDirDir), App->GetOpenGL()->mDirAmb.mDirDir);
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mDirDir, sizeof(DirectionalAmbient::mDirDir), offsetof(DirectionalAmbient, mDirDir));
 	}
 	if (ImGui::ColorPicker3("DirLCol", openGl->mDirAmb.mDirCol))
 	{ 
-		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(DirectionalAmbient, mDirCol), sizeof(DirectionalAmbient::mDirCol), openGl->mDirAmb.mDirCol);
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mDirCol, sizeof(DirectionalAmbient::mDirCol), offsetof(DirectionalAmbient, mDirCol));
 	}
 	if (ImGui::ColorPicker3("AmbientLCol", openGl->mDirAmb.mAmbientCol))
 	{ 
-		glBindBuffer(GL_UNIFORM_BUFFER, openGl->lightUnis);
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(DirectionalAmbient, mAmbientCol), sizeof(DirectionalAmbient::mAmbientCol), openGl->mDirAmb.mAmbientCol);
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mAmbientCol, sizeof(DirectionalAmbient::mAmbientCol), offsetof(DirectionalAmbient, mAmbientCol));
 	}
 	ImGui::End();
 	glUseProgram(0);

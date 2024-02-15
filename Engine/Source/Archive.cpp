@@ -6,10 +6,10 @@ Archive::Archive() : mDocument(std::make_unique<rapidjson::Document>()) {
 
 Archive::~Archive() {}
 
-void Archive::AddInt(const std::string& key, int value)
+void Archive::AddInt(const char* key, int value)
 {
     rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key.c_str(), key.length(), mDocument->GetAllocator());
+    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
 
     rapidjson::Value jsonValue(rapidjson::kNumberType);
     jsonValue.SetInt(value);
@@ -17,21 +17,21 @@ void Archive::AddInt(const std::string& key, int value)
     mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
 }
 
-void Archive::AddString(const std::string& key, const std::string& value)
+void Archive::AddString(const char* key, const char* value)
 {
     rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key.c_str(), key.length(), mDocument->GetAllocator());
+    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
 
     rapidjson::Value jsonValue(rapidjson::kStringType);
-    jsonValue.SetString(value.c_str(), value.length(), mDocument->GetAllocator());
+    jsonValue.SetString(value, strlen(value), mDocument->GetAllocator());
 
     mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
 }
 
-void Archive::AddFloat(const std::string& key, float value)
+void Archive::AddFloat(const char* key, float value)
 {
     rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key.c_str(), key.length(), mDocument->GetAllocator());
+    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
 
     rapidjson::Value jsonValue(rapidjson::kNumberType);
     jsonValue.SetFloat(value);
@@ -39,10 +39,10 @@ void Archive::AddFloat(const std::string& key, float value)
     mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
 }
 
-void Archive::AddBool(const std::string& key, bool value)
+void Archive::AddBool(const char* key, bool value)
 {
     rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key.c_str(), key.length(), mDocument->GetAllocator());
+    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
 
     rapidjson::Value jsonValue(rapidjson::kFalseType);
     jsonValue.SetBool(value);
@@ -50,8 +50,8 @@ void Archive::AddBool(const std::string& key, bool value)
     mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
 }
 
-void Archive::AddIntArray(const std::string& key, const std::vector<unsigned int>& array) {
-    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+void Archive::AddIntArray(const char* key, const std::vector<unsigned int>& array) {
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);
     for (const auto& item : array) {
         rapidjson::Value jsonItem(rapidjson::kNumberType);
@@ -61,8 +61,8 @@ void Archive::AddIntArray(const std::string& key, const std::vector<unsigned int
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
-void Archive::AddObjectArray(const std::string& key, const std::vector<Archive>& array) {
-    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+void Archive::AddObjectArray(const char* key, const std::vector<Archive>& array) {
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);
 
     for (const auto& item : array) {
@@ -74,8 +74,8 @@ void Archive::AddObjectArray(const std::string& key, const std::vector<Archive>&
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
-std::vector<Archive> Archive::GetObjectArray(const std::string& key) const {
-    auto it = mDocument->FindMember(key.c_str());
+std::vector<Archive> Archive::GetObjectArray(const char* key) const {
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsArray()) {
         const auto& array = it->value.GetArray();
         std::vector<Archive> result;
@@ -90,9 +90,9 @@ std::vector<Archive> Archive::GetObjectArray(const std::string& key) const {
     return std::vector<Archive>();
 }
 
-void Archive::AddFloat3(const std::string& key, const float3& vector)
+void Archive::AddFloat3(const char* key, const float3& vector)
 {
-    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);
 
     jsonArray.PushBack(vector.x, mDocument->GetAllocator());
@@ -102,9 +102,22 @@ void Archive::AddFloat3(const std::string& key, const float3& vector)
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
-void Archive::AddFloat4x4(const std::string& key, const float4x4& matrix)
+void Archive::AddFloat4(const char* key, const float vector[4])
 {
-    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
+
+    jsonArray.PushBack(vector[0], mDocument->GetAllocator());
+    jsonArray.PushBack(vector[1], mDocument->GetAllocator());
+    jsonArray.PushBack(vector[2], mDocument->GetAllocator());
+    jsonArray.PushBack(vector[3], mDocument->GetAllocator());
+
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
+}
+
+void Archive::AddFloat4x4(const char* key, const float4x4& matrix)
+{
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);
 
     for (int i = 0; i < 4; ++i) {
@@ -116,9 +129,9 @@ void Archive::AddFloat4x4(const std::string& key, const float4x4& matrix)
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
-void Archive::AddQuat(const std::string& key, const Quat& quat)
+void Archive::AddQuat(const char* key, const Quat& quat)
 {
-    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);
 
     jsonArray.PushBack(quat.x, mDocument->GetAllocator());
@@ -129,8 +142,8 @@ void Archive::AddQuat(const std::string& key, const Quat& quat)
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
-void Archive::AddObject(const std::string& key, const Archive& value) {
-    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
+void Archive::AddObject(const char* key, const Archive& value) {
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonValue(rapidjson::kObjectType);
     jsonValue.CopyFrom(*value.mDocument, mDocument->GetAllocator());
     mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
@@ -146,9 +159,9 @@ void Archive::AddObject(const std::string& key, const Archive& value) {
     mDocument->AddMember(jsonKey, jsonObject, mDocument->GetAllocator());
 }*/
 
-int Archive::GetInt(const std::string& key) const
+int Archive::GetInt(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsInt()) {
         return it->value.GetInt();
     }
@@ -156,9 +169,9 @@ int Archive::GetInt(const std::string& key) const
     return 0;
 }
 
-std::string Archive::GetString(const std::string& key) const
+std::string Archive::GetString(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsString())
     {
         return it->value.GetString();
@@ -167,9 +180,9 @@ std::string Archive::GetString(const std::string& key) const
     return "";
 }
 
-float Archive::GetFloat(const std::string& key) const
+float Archive::GetFloat(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsNumber())
     {
         return it->value.GetFloat();
@@ -178,9 +191,9 @@ float Archive::GetFloat(const std::string& key) const
     return 0.0f;
 }
 
-bool Archive::GetBool(const std::string& key) const
+bool Archive::GetBool(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsBool())
     {
         return it->value.GetBool();
@@ -189,9 +202,9 @@ bool Archive::GetBool(const std::string& key) const
     return false;
 }
 
-std::vector<Archive> Archive::GetArray(const std::string& key) const
+std::vector<Archive> Archive::GetArray(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsArray()) {
         const auto& array = it->value.GetArray();
         std::vector<Archive> result;
@@ -206,9 +219,9 @@ std::vector<Archive> Archive::GetArray(const std::string& key) const
     return std::vector<Archive>();
 }
 
-float3 Archive::GetFloat3(const std::string& key) const
+float3 Archive::GetFloat3(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsObject())
     {
         const auto& object = it->value.GetObject();
@@ -221,9 +234,26 @@ float3 Archive::GetFloat3(const std::string& key) const
     return float3(0.0f, 0.0f, 0.0f);
 }
 
-float4x4 Archive::GetFloat4x4(const std::string& key) const
+float4 Archive::GetFloat4(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
+    if (it != mDocument->MemberEnd() && it->value.IsObject())
+    {
+        const auto& object = it->value.GetObject();
+        float x = object["x"].GetFloat();
+        float y = object["y"].GetFloat();
+        float z = object["z"].GetFloat();
+        float w = object["w"].GetFloat();
+        return float4(x, y, z, w);
+    }
+    // Handle error or return a default value
+    return float4(0.0f, 0.0f, 0.0f, 0.0f);
+}
+
+
+float4x4 Archive::GetFloat4x4(const char* key) const
+{
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsArray())
     {
         const auto& array = it->value.GetArray();
@@ -243,9 +273,9 @@ float4x4 Archive::GetFloat4x4(const std::string& key) const
     return float4x4::identity;
 }
 
-Quat Archive::GetQuat(const std::string& key) const
+Quat Archive::GetQuat(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsObject())
     {
         const auto& object = it->value.GetObject();
@@ -259,9 +289,9 @@ Quat Archive::GetQuat(const std::string& key) const
     return Quat::identity;
 }
 
-Archive Archive::GetObject(const std::string& key) const
+Archive Archive::GetObject(const char* key) const
 {
-    auto it = mDocument->FindMember(key.c_str());
+    auto it = mDocument->FindMember(key);
     if (it != mDocument->MemberEnd() && it->value.IsObject()) {
         Archive objectArchive;
         objectArchive.CopyFrom(it->value);

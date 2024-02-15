@@ -193,9 +193,6 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="LightSourceComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -328,6 +325,12 @@
     <ClCompile Include="Dependencies\DetourTileCache\Source\DetourTileCacheBuilder.cpp">
       <Filter>Dependencies\DetourTileCache</Filter>
     </ClCompile>
+    <ClCompile Include="PointLightComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLightComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+	</ClCompile>
     <ClCompile Include="TimerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -715,9 +718,6 @@
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="LightSourceComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -847,6 +847,12 @@
     <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.h">
       <Filter>Dependencies\DetourTileCache</Filter>
     </ClInclude>
+    <ClInclude Include="PointLightComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLightComponent.h">
+      <Filter>GameObjects\Components</Filter>
+	</ClInclude>
     <ClInclude Include="TimerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
