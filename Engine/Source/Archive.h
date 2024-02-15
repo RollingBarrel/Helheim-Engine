@@ -10,6 +10,7 @@
 #include <vector>
 #include "Math/float4x4.h"
 #include "Math/float3.h"
+#include "Math/float4.h"
 #include "Math/Quat.h"
 
 class Archive
@@ -46,28 +47,30 @@ public:
         return *this;
     }
 
-    void AddInt(const std::string& key, int value);
-    void AddString(const std::string& key, const std::string& value);
-    void AddFloat(const std::string& key, float value);
-    void AddBool(const std::string& key, bool value);
-    void AddIntArray(const std::string& key, const std::vector<unsigned int>& array);
-    void AddFloatArray(const std::string& key, const std::vector<float>& array);
-    void AddFloat3(const std::string& key, const float3& vector);
-    void AddFloat4x4(const std::string& key, const float4x4& matrix);
-    void AddQuat(const std::string& key, const Quat& quat);
-    void AddObject(const std::string& key, const Archive& value);
-    void AddObjectArray(const std::string& key, const std::vector<Archive>& array);
-    std::vector<Archive> GetObjectArray(const std::string& key) const;
+    void AddInt(const char* key, int value);
+    void AddString(const char* key, const char* value);
+    void AddFloat(const char* key, float value);
+    void AddBool(const char* key, bool value);
+    void AddIntArray(const char* key, const std::vector<unsigned int>& array);
+    void AddFloatArray(const char* key, const std::vector<float>& array);
+    void AddFloat3(const char* key, const float3& vector);
+    void AddFloat4(const char* key, const float vector[4]);
+    void AddFloat4x4(const char* key, const float4x4& matrix);
+    void AddQuat(const char* key, const Quat& quat);
+    void AddObject(const char* key, const Archive& value);
+    void AddObjectArray(const char* key, const std::vector<Archive>& array);
+    std::vector<Archive> GetObjectArray(const char* key) const;
 
-    int GetInt(const std::string& key) const;
-    std::string GetString(const std::string& key) const;
-    float GetFloat(const std::string& key) const;
-    bool GetBool(const std::string& key) const;
-    std::vector<Archive> GetArray(const std::string& key) const;
-    float3 GetFloat3(const std::string& key) const;
-    float4x4 GetFloat4x4(const std::string& key) const;
-    Quat GetQuat(const std::string& key) const;
-    Archive GetObject(const std::string& key) const;
+    int GetInt(const char* key) const;
+    std::string GetString(const char* key) const;
+    float GetFloat(const char* key) const;
+    bool GetBool(const char* key) const;
+    std::vector<Archive> GetArray(const char* key) const;
+    float3 GetFloat3(const char* key) const;
+    float4 GetFloat4(const char* key) const;
+    float4x4 GetFloat4x4(const char* key) const;
+    Quat GetQuat(const char* key) const;
+    Archive GetObject(const char* key) const;
 
     void CopyFrom(const rapidjson::Value& value);
     void CopyFrom(const Archive& other);
