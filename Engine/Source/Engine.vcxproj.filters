@@ -214,9 +214,6 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTimer.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -325,13 +322,12 @@
     <ClCompile Include="Dependencies\DetourTileCache\Source\DetourTileCacheBuilder.cpp">
       <Filter>Dependencies\DetourTileCache</Filter>
     </ClCompile>
-
     <ClCompile Include="PointLightComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="SpotLightComponent.cpp">
       <Filter>GameObjects\Components</Filter>
-  </ClCompile>
+    </ClCompile>
     <ClCompile Include="TimerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -740,9 +736,6 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTimer.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleWindow.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -848,7 +841,6 @@
     <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.h">
       <Filter>Dependencies\DetourTileCache</Filter>
     </ClInclude>
-
     <ClInclude Include="PointLightComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
