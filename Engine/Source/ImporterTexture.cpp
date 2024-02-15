@@ -87,6 +87,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
 
 void Importer::Texture::Save(const ResourceTexture* texture)
 {
+    // TODO: Save also UID (and assetsFile?)
     unsigned int header[7] = { texture->GetWidth(), texture->GetHeight(), texture->GetInternalFormat(), texture->GetTexFormat(), texture->GetDataType() ,texture->GetMipLevels(), texture-> GetNumPixels()};
 
     unsigned int numPixels = texture->GetNumPixels();

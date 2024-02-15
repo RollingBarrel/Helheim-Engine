@@ -59,6 +59,14 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 		return 0;
 	}
 
+	// Create copy in assets folder
+	if (!DuplicateFileInAssetDir(importedFilePath, type))
+	{
+		LOG("File could not be duplicated: %s", importedFilePath);
+		return 0;
+	}
+	LOG("Succesfully duplicated the file in %s", resource->GetAssetsFile().c_str());
+
 	//// Create the new resource
 	Resource* resource = CreateNewResource(importedFilePath, type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
 	if (resource == nullptr) 
@@ -66,14 +74,6 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 		LOG("Unable to create a new resource with this file: %s", importedFilePath);
 		return 0;
 	}
-
-	// Create copy in assets folder
-	if (!DuplicateFileInAssetDir(importedFilePath, *resource))
-	{
-		LOG("File could not be duplicated: %s", importedFilePath);
-		return 0;
-	}
-	LOG("Succesfully duplicated the file in %s", resource->GetAssetsFile().c_str());
 
 	// Create the Meta file for the Asset
 	if (!CreateAssetsMeta(*resource))
@@ -102,7 +102,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 	}
 	else 
 	{
-		return TryToLoadResource(uid, type);
+		Resource* ret = TryToLoadResource(uid, type);
+		if (ret) {
+			mResources[uid] = ret;
+		}
+		return ret;
 	}
 	//Find the library file (if exists) and load the custom file format 
 	//return TryToLoadResource(uid); <------------------------------------------TODO
@@ -139,7 +143,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	switch (type)
 	{
 	case Resource::Type::Texture:
-		ret = Importer::Texture::Import(ret->GetAssetsFile().c_str(), uid);
+		ret = Importer::Texture::Import(assetsFile, uid);
 		if (ret) Importer::Texture::Save((ResourceTexture*)ret);
 		break;
 	case Resource::Type::Mesh:
@@ -164,7 +168,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	case Resource::Type::NavMesh:
 		break;
 	default:
-		LOG("Unable to Import, this file %s", ret->GetAssetsFile().c_str());
+		LOG("Unable to Import, this file %s", assetsFile);
 		break;
 	}
 
@@ -176,7 +180,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	return ret;
 }
 
-const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource& resource) const
+const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
 {
 	bool ret = true;
 	
@@ -201,7 +205,12 @@ const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath,
 		}
 	}*/
 
-	ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
+	//std::string assetName;
+	//std::string extensionName;
+	//App->GetFileSystem()->SplitPath(importedFilePath, &assetName, &extensionName);
+	//const char* newAssetFile = (std::string(importDirectory) + assetName + extensionName).c_str();
+
+	ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, (mtypeToAssetsPath[type]).c_str());
 
 	return ret;
 }
