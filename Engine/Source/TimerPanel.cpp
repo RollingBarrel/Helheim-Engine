@@ -40,7 +40,7 @@ void TimerPanel::Draw(int windowFlags)
 	static long averageMs;
 	static std::vector<float> fpsLog;
 	static std::vector<unsigned long> msLog;
-	static bool fpsLimitEnabled;
+	static bool fpsLimitEnabled = true;
 	
 	ms = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
 
