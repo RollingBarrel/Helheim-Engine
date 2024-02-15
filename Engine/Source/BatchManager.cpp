@@ -23,34 +23,41 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 	int batchPos = -1;
 
 
+	
+
+
 	for (int i = 0; i < mBatches.size() && !batchFound; ++i) 
 	{
 		const std::vector<Attribute*> batchAttributes = mBatches[i]->GetAttributes();
+		const std::vector<Attribute*> meshAttributes = meshComponent->GetResourceMesh()->GetAttributes();
 		bool sameAttibutes = true;
 
-		for (int j = 0; j < batchAttributes.size() && sameAttibutes; ++j) 
-		{
-			const std::vector<Attribute*> meshAttributes = meshComponent->GetResourceMesh()->GetAttributes();
-			bool found = false;
+		if (batchAttributes.size() == meshAttributes.size() && mBatches[i]->GetVertexSize() == meshComponent->GetResourceMesh()->GetVertexSize()) {
 
-				for (int k = 0; k < meshAttributes.size() && !found; ++k) 
+			for (int j = 0; j < batchAttributes.size() && sameAttibutes; ++j)
+			{
+				const std::vector<Attribute*> meshAttributes = meshComponent->GetResourceMesh()->GetAttributes();
+				bool found = false;
+
+				for (int k = 0; k < meshAttributes.size() && !found; ++k)
 				{
 					if (meshAttributes[k]->type == batchAttributes[j]->type)
 					{
 						found = true;
 					}
 				}
-				if (!found) 
+				if (!found)
 				{
 					sameAttibutes = false;
-				}	
-		}
+				}
+			}
 
-		if (sameAttibutes) {
-			batchFound = true;
-			batchPos = i;
+			if (sameAttibutes) {
+				batchFound = true;
+				batchPos = i;
+			}
+
 		}
-		
 	}
 
 	if (batchFound) {

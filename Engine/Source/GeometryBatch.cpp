@@ -80,8 +80,7 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 		unsigned int newVboSize = mVboSize + (mVertexSize * cMesh->GetResourceMesh()->GetNumVertices());
 		unsigned int newEboSize = mEboSize + cMesh->GetResourceMesh()->GetNumIndices() * sizeof(unsigned int);
 
-		//glDeleteBuffers(1, &mVao);
-		//glGenVertexArrays(1, &mVao);
+
 		glBindVertexArray(mVao);
 		glGenBuffers(1, &destVbo);
 		glBindBuffer(GL_ARRAY_BUFFER, destVbo);
@@ -94,7 +93,7 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 		glDeleteBuffers(1, &mVbo);
 
 		glBufferSubData(GL_ARRAY_BUFFER, mVboSize, cMesh->GetResourceMesh()->GetNumVertices() * mVertexSize, cMesh->GetResourceMesh()->GetInterleavedData());
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
 
 		cMesh->GetResourceMesh()->SetVboPosition(mVboSize);
 		mVbo = destVbo;
@@ -106,9 +105,8 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 		glDeleteBuffers(1, &mEbo);
 
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, mEboSize, cMesh->GetResourceMesh()->GetNumIndices() * sizeof(unsigned int), cMesh->GetResourceMesh()->GetIndices());
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 		
+
 		cMesh->GetResourceMesh()->SetEboPosition(mEboSize);
 		mEbo = destEbo;
 		mEboSize = newEboSize;
@@ -124,7 +122,8 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 		}
 
 		glBindVertexArray(0);
-
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 }
@@ -142,7 +141,9 @@ void GeometryBatch::Draw()
 
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 
+
 	glBindVertexArray(mVao);
+
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
 
