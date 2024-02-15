@@ -9,7 +9,7 @@ BatchManager::BatchManager()
 
 BatchManager::~BatchManager()
 {
-	for (auto batch : mBatches) {
+	for (GeometryBatch* batch : mBatches) {
 		delete batch;
 	}
 
@@ -76,7 +76,7 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 void BatchManager::Draw()
 {
 
-	for (auto batch : mBatches) {
+	for (GeometryBatch* batch : mBatches) {
 		batch->Draw();
 	}
 

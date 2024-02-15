@@ -9,7 +9,6 @@ typedef struct Attribute;
 
 typedef struct Command
 {
-
 	unsigned int mCount = 0;		 // Number of indices in the mesh
 	unsigned int mInstanceCount = 0; // Number of instances to render
 	unsigned int firstIndex = 0;	 // Index offset in the EBO
@@ -60,17 +59,15 @@ public:
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
 	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMesh(MeshRendererComponent* component);
-	void AddCommand(Command* command);
+	void AddCommand(const Command& command);
 	void Draw();
 
 private:
 
-	
-
 	std::vector<MeshRendererComponent*> mMeshComponents;
 	std::vector<ResourceMesh*> mUniqueMeshes;
 	std::vector<Attribute*> mAttributes;
-	std::vector<Command*> mCommands;
+	std::vector<Command> mCommands;
 	std::vector<Material*> mMaterials;
 	unsigned int mVertexSize = 0;
 

@@ -4,7 +4,7 @@
 #include "GeometryBatch.h"
 #include <cassert>
 #include "glew.h"
-#include <float3.h>
+#include "float3.h"
 #include "MeshRendererComponent.h"
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
@@ -50,6 +50,12 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	}
 
 	glBindVertexArray(0);
+
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 
 }
 
@@ -129,7 +135,7 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 }
 
 
-void GeometryBatch::AddCommand(Command* command)
+void GeometryBatch::AddCommand(const Command& command)
 {
 	mCommands.push_back(command);
 }
@@ -145,23 +151,22 @@ void GeometryBatch::Draw()
 	glBindVertexArray(mVao);
 
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
 
 	
-	unsigned int offset = 0;
-	for (auto command : mCommands) {
-		glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset, sizeof(Command), command);
-		offset += sizeof(Command);
-	}
+	//unsigned int offset = 0;
+	//for (Command* command : mCommands) {
+	//	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset, sizeof(Command), command);
+	//	offset += sizeof(Command);
+	//}
 	
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, GL_STATIC_DRAW);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
 	
 
-	offset = 0;
-	for (auto mesh : mMeshComponents) {
+	unsigned int offset = 0;
+	for (MeshRendererComponent* mesh : mMeshComponents) {
 
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().ptr());
 		offset += sizeof(float) * 16;
@@ -171,9 +176,8 @@ void GeometryBatch::Draw()
 	offset = 0;
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 
-	for (auto mesh : mMeshComponents) {
+	for (MeshRendererComponent* mesh : mMeshComponents) {
 
 		Material* material = new Material();
 
@@ -209,11 +213,6 @@ void GeometryBatch::Draw()
 		glMakeTextureHandleNonResidentARB(material->diffuseTexture);
 		glMakeTextureHandleNonResidentARB(material->specularTexture);
 		glMakeTextureHandleNonResidentARB(material->normalTexture);
-	}
-
-
-	for (auto command : mCommands) {
-		delete command;
 	}
 
 	for (auto material : mMaterials) {

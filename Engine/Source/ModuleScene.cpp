@@ -204,7 +204,6 @@ void ModuleScene::GenerateRenderList(GameObject* root)
 
 void ModuleScene::DrawRenderList()
 {
-
 	unsigned int instanceCounter = 0;
 
 	for (GameObject* objectToRender : mRenderList)
@@ -213,20 +212,11 @@ void ModuleScene::DrawRenderList()
 
 		if(meshRenderer->IsEnabled())
 		{
-			
-			if (mApplyculling) {
-				if (meshRenderer->IsInsideFrustum()) {
-					
-					meshRenderer->AddCommand(instanceCounter);
-					instanceCounter++;
-				}
-			}
-			else {
-
+			if (!mApplyculling || meshRenderer->IsInsideFrustum()) {
+				
 				meshRenderer->AddCommand(instanceCounter);
 				instanceCounter++;
 			}
-			
 		}
 	}
 

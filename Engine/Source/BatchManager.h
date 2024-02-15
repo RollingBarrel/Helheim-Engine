@@ -14,11 +14,6 @@ public:
 	void Draw();
 
 private:
-
 	std::vector<GeometryBatch*> mBatches;
-
-
-
-	
 };
 

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "BatchManager.h"
 #include <vector>
 
 typedef struct DirectionalAmbient {
@@ -15,7 +16,6 @@ typedef struct DirectionalAmbient {
 class PointLightComponent;
 class SpotLightComponent;
 class PointLight;
-class BatchManager;
 class SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -78,7 +78,8 @@ public:
 
 private:
 	void* context = nullptr;
-	BatchManager* mBatchManager;
+
+	BatchManager mBatchManager;
 
 	//Framebuffer
 	unsigned int sFbo;

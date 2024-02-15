@@ -15,13 +15,11 @@
 
 ModuleOpenGL::ModuleOpenGL()
 {
-	mBatchManager = new BatchManager();
 }
 
 // Destructor
 ModuleOpenGL::~ModuleOpenGL()
 {
-	delete mBatchManager;
 }
 
 static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
@@ -458,13 +456,13 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 void ModuleOpenGL::AddMeshRendererComponent(MeshRendererComponent* mesh)
 {
 
-	mBatchManager->AddMeshRendererComponent(mesh);
+	mBatchManager.AddMeshRendererComponent(mesh);
 
 }
 
 void ModuleOpenGL::Draw()
 {
-	mBatchManager->Draw();
+	mBatchManager.Draw();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
 SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
