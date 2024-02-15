@@ -59,7 +59,7 @@ float shininess;
 vec3 V;
 vec3 N;
 
-readonly layout(std430 , binding = 11) buffer Materials {
+readonly layout(std140 , binding = 11) buffer Materials {
 	Material materials[];
 };
 
@@ -88,6 +88,23 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 void main() {
 
 	Material material = materials[instace_index];
+	
+	//if (instace_index == 0)
+	//{
+		//outColor = vec4(1,0,0, 1);
+
+	//}
+
+	//if (instace_index == 1)
+	//{
+		//outColor = vec4(0,1,0, 1);
+
+	//}
+	//if (instace_index == 2){
+		//outColor = vec4(0,0,1, 1);
+	//}
+	
+
 	//Diffuse
 	if(material.hasDiffuseMap){//Using  gamma correction forces to transform sRGB textures to linear space
 		diffuseColor = vec3(texture(material.diffuseTexture, uv));

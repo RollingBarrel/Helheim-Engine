@@ -43,6 +43,10 @@ public:
 	bool hasShininessMap = false;
 	bool hasNormalMap = false;
 
+private:
+	float3 padding2; //Alignment
+	float3 padding3; //Alignment
+public:
 
 }Material;
 

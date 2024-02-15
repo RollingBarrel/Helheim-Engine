@@ -165,10 +165,10 @@ void GeometryBatch::Draw()
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
 
 	
-	unsigned int offset3 = 0;
+	unsigned int offset = 0;
 	for (auto command : mCommands) {
-		glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset3, sizeof(Command), command);
-		offset3 += sizeof(Command);
+		glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset, sizeof(Command), command);
+		offset += sizeof(Command);
 	}
 	
 
@@ -176,8 +176,8 @@ void GeometryBatch::Draw()
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, GL_STATIC_COPY_ARB);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
 	
-	unsigned int offset = 0;
 
+	offset = 0;
 	for (auto mesh : mMeshComponents) {
 
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().ptr());
