@@ -244,6 +244,21 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -694,6 +709,24 @@
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -758,6 +791,9 @@
     </Filter>
     <Filter Include="Utils\Timer">
       <UniqueIdentifier>{c2f3b8dd-32e7-451c-8641-fb9678a9c842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\ImGuizmo">
+      <UniqueIdentifier>{28e37490-f7fa-4d25-a78b-62410b0f7018}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
