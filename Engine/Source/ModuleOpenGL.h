@@ -48,8 +48,8 @@ public:
 	~ModuleOpenGL();
 
 	bool Init() override;
-	update_status PreUpdate() override;
-	update_status PostUpdate() override;
+	update_status PreUpdate(float dt) override;
+	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 
 	void WindowResized(unsigned width, unsigned height);

@@ -19,90 +19,96 @@ TimerPanel::~TimerPanel()
 
 void TimerPanel::Draw(int windowFlags)
 {
-	static Timer* clock = App->GetEngineClock();
-
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
-
-	const char* timers[] = { "Engine", "Game"};
-	static int item_current = 0;
-	ImGui::Combo("Current Timer", &item_current, timers, 2);
-	ImGui::Text("   ");
-
-	if (item_current == 0) 
-	{
-		clock = App->GetEngineClock();
-	}
-	else 
-	{
-		clock = App->GetGameClock();
-	}
 
 	ImGui::PushItemWidth(300.0f);
 
+	ImGui::SeparatorText("Current Timer");
+	static const char* timerName;
+	if (App->GetCurrentClock() == App->GetEngineClock()) {
+		timerName = "Engine";
+	}
+	else {
+		timerName = "Game";
+	}
+	ImGui::Text(timerName);
+
 	static float fps;
 	static long ms;
+	static long averageMs;
 	static std::vector<float> fpsLog;
 	static std::vector<unsigned long> msLog;
 	
+	ms = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
+
 	//Executes evey 500 ms (no change if executed every time)
-	if(clock->UpdateFpsLog())
+	if(App->GetCurrentClock()->UpdateFpsLog())
 	{
-		fpsLog = clock->GetFpsLog();
-		clock->FpsLogUpdated();
+		fpsLog = App->GetCurrentClock()->GetFpsLog();
+		App->GetCurrentClock()->FpsLogUpdated();
 
-		ms = clock->GetRealDelta();
-		fps = clock->GetFPS();
+		averageMs = ms;
+		fps = App->GetCurrentClock()->GetFPS();
 	}
 
-	int fps_limit = clock->GetFpsLimit();
+	ImGui::SeparatorText("FPS");
+
+	int fps_limit = App->GetCurrentClock()->GetFpsLimit();
 	ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
-	clock->SetFpsLimit(fps_limit);
+	App->GetCurrentClock()->SetFpsLimit(fps_limit);
 
-	long framedelay = 0;
-	ImGui::Text("Last frame delayed for: %lld", framedelay);
+	ImGui::Text("Lowest FPS: %u on second %.3f", App->GetCurrentClock()->GetLowestFPS(), App->GetCurrentClock()->GetLowestFpsTime()/1000.f);
 
-	long lowfps = 0;
-	float lowsec = 0;
-	ImGui::Text("Lowest FPS: %lld on second %.1f", lowfps, lowsec);
+	ImGui::SeparatorText("Frames");
 
-	long slowframe = 0;
-	float slowframeN = 0;
-	ImGui::Text("Slowest frame: %lld MS on frame %.1f", slowframe, slowframeN);
+	ImGui::Text("Last frame delayed for %d ms", App->GetCurrentClock()->GetFrameDelay());
+	ImGui::Text("Actual execution time of the last frame: %d ms", ms - App->GetCurrentClock()->GetFrameDelay());
 
-	float realtime = 0;
-	ImGui::Text("Real time since start: %.3f", realtime);
+	ImGui::Text("Slowest frame: %d MS on frame %i", App->GetCurrentClock()->GetSlowestFrameTime(), App->GetCurrentClock()->GetSlowestFrame());
 
-	float realtimedt = 0;
-	ImGui::Text("Real time dt: %.3f", realtimedt);
+	ImGui::Text("Delta time: %d ms", ms);
 
-	float gametime = 0;
-	ImGui::Text("Real time since start: %.3f", gametime);
+	ImGui::Text("Frame Count: %u", App->GetCurrentClock()->GetTotalFrames());
 
-	float gametimedt = 0;
-	ImGui::Text("Real time dt: %.3f", gametimedt);
+	ImGui::SeparatorText("Time");
 
-	if (item_current == 1 && clock->GetNewSpeed() !=0) {
-		static float gameScale;
-		gameScale = clock->GetNewSpeed();
-		ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10, "%.1f");
-		clock->SetTimeScale(gameScale);
+	if (App->GetCurrentClock() == App->GetGameClock())
+	{
+		if (App->GetCurrentClock()->GetNewSpeed() != 0) {
+			static float gameScale;
+			gameScale = App->GetCurrentClock()->GetNewSpeed();
+			ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10, "%.1f");
+			App->GetCurrentClock()->SetTimeScale(gameScale);
+			if (ImGui::Button("-")) {
+				App->GetCurrentClock()->SetTimeScale(gameScale-0.1f);
+			}ImGui::SameLine();
+			if (ImGui::Button("Reset")) {
+				App->GetCurrentClock()->SetTimeScale(1.f);
+			}ImGui::SameLine();
+			if (ImGui::Button("+")) {
+				App->GetCurrentClock()->SetTimeScale(gameScale + 0.1f);
+			}
+			ImGui::Text(" ");
+		}
+
+		ImGui::Text("Real time since start: %.2f", App->GetCurrentClock()->GetRealTime() / 1000.0f);
 	}
+
+	ImGui::Text("Total Time: %.3f", App->GetCurrentClock()->GetTotalTime() / 1000.0f);
 
 	ImGui::PopItemWidth();
 
-	ImGui::Text("Total Time: %.2f", clock->GetTotalTime()/1000.0f);
-
-	ImGui::Text("Frame Count: %u", clock->GetTotalFrames());
-
 	//Plots
+	ImGui::SeparatorText("Graphs");
+
 	ImGui::PlotHistogram("FPS", fpsLog.data(), fpsLog.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
 
-	msLog = clock->GetMsLog();
+	msLog = App->GetCurrentClock()->GetMsLog();
 	std::vector<float> msLogFloat(msLog.begin(), msLog.end());
 
 	ImGui::PlotLines("MS", msLogFloat.data(), msLogFloat.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
 
-	ImGui::Text("Application average %lld ms/frame (%.1f FPS)", ms, fps);
+	ImGui::Text("Application average %lld ms/frame (%.1f FPS)", averageMs, fps);
 
 	ImGui::End();
 }

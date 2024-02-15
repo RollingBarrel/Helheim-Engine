@@ -37,7 +37,7 @@ bool ModuleInput::Init()
 
 
 // Called each loop iteration
-update_status ModuleInput::PreUpdate()
+update_status ModuleInput::PreUpdate(float dt)
 {
     //TODO: ugly reset !!
     if (wheelY != 0)

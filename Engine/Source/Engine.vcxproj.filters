@@ -249,7 +249,7 @@
     </ClCompile>
     <ClCompile Include="SpotLightComponent.cpp">
       <Filter>GameObjects\Components</Filter>
-    </ClCompile>
+	</ClCompile>
     <ClCompile Include="TimerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -786,7 +786,7 @@
     </ClInclude>
     <ClInclude Include="SpotLightComponent.h">
       <Filter>GameObjects\Components</Filter>
-    </ClInclude>
+  	</ClInclude>
     <ClInclude Include="TimerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
