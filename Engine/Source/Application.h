@@ -37,13 +37,11 @@ public:
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
-
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
 
-    void SetUpdateTimer(float update) { mUpdateTimer = update; }
-
-    float GetDt() const;
+    float GetRealDt() const;
+    float GetGameDt() const;
 
 private:
 
@@ -63,8 +61,6 @@ private:
     Timer* mEngineTimer;
     Timer* mGameTimer;
     Timer* mCurrentTimer = nullptr;
-
-    bool mUpdateTimer = true;
 };
 
 extern Application* App;

@@ -47,8 +47,6 @@ void PausePanel::Play() {
 
 	App->SetCurrentClock(App->GetGameClock());	//Changes the current clock from Engine to Game
 
-	App->SetUpdateTimer(true);					//The timer must update in this state
-
 	mState = GameState::PLAYING;
 	App->GetScene()->Save("TemporalScene");
 }
@@ -56,23 +54,18 @@ void PausePanel::Play() {
 void PausePanel::Pause() {
 	App->GetGameClock()->SetTimeScale(0.0f);
 
-	App->SetUpdateTimer(false);				//The timer doesn't update in this state
-
 	mState = GameState::PAUSED;
 }
 
 void PausePanel::Stop() {
 
-	//Adds the real time and frames from the game execution to the engine timer
-	App->GetEngineClock()->SetTotalTime(App->GetGameClock()->GetRealTime());
+	//Adds the frames from the game execution to the engine timer (The real time adds automatically)
 	App->GetEngineClock()->SetTotalFrames(App->GetGameClock()->GetTotalFrames());
 
 	App->GetGameClock()->Stop();			//Resets the Game clock time and variables
 
 	App->SetCurrentClock(App->GetEngineClock());	//Changes the current clock from Game to Engine so it updates
-	App->GetEngineClock()->Resume();				//Engine clock execution resumes -> mSpeed = 1
-
-	App->SetUpdateTimer(true);					//The engine timer always updates when active
+	App->GetEngineClock()->Resume();				//Engine clock execution resumes -> mSpeed = 1.0f
 
 	mState = GameState::STOP;
 	App->GetScene()->Load("TemporalScene");

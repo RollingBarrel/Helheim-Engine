@@ -57,9 +57,7 @@ bool Application::Init()
 
 update_status Application::Update(float dt)
 {
-	if(mUpdateTimer){
-		mCurrentTimer->Update();		//Updates the current timer (Engine or Game depending on the game state)
-	}
+	mCurrentTimer->Update();		//Updates the current timer variables (Engine or Game depending on the game state)
 
 	update_status ret = UPDATE_CONTINUE;
 
@@ -85,6 +83,10 @@ bool Application::CleanUp()
 	return ret;
 }
 
-float Application::GetDt() const {
+float Application::GetRealDt() const {
 	return mEngineTimer->GetDelta() / (float) 1000;
+}
+
+float Application::GetGameDt() const {
+	return mGameTimer->GetDelta() / (float)1000;
 }

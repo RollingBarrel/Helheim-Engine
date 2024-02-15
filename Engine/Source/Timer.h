@@ -14,11 +14,8 @@ public:
     long ReadDelta();
 
     long Stop();
-    void Pause() { SetTimeScale(0.f); }
-    void Resume() { 
-        SetTimeScale(1.f); 
-        mDeltaTime = ReadDelta();
-    }
+    void Pause();
+    void Resume();
 
     float GetSpeed() const { return mSpeed; }
     long SetSpeed(float speed);
@@ -38,7 +35,6 @@ public:
 
     unsigned long GetRealTime() const { return mRealTime; }
     unsigned long GetTotalTime() const { return mTotalTime; }
-    void SetTotalTime(long gameTime) { mTotalTime += gameTime; }        //Adds the time of the game execution to the total time of the engine
     unsigned int GetTotalFrames() const { return mTotalFrames; }
     void SetTotalFrames(long gameFrames) { mTotalFrames += gameFrames; }    //Adds the frames of the game execution to the total frames of the engine
 
@@ -63,6 +59,9 @@ public:
 
 
 private:
+
+    void ResetVariables();
+
 	float mSpeed = 1.0f;
     float mNewSpeed = 1.0f;
 

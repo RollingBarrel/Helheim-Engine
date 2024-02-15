@@ -52,15 +52,15 @@ update_status ModuleCamera::Update(float dt)
 		//moving/rot camera
 		if (App->GetInput()->GetMouseWheelMotion() != 0)
 		{
-			Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));	//GetDt() should not influence this movement (it depends on the mouse wheel rotation) --- FIXED
+			Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));	
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Rotate(float3::unitY, -mX * rotateCameraVel);									//GetDt() should not influence this rotation (it depends on the mouse position on the screen) --- FIXED
+			Rotate(float3::unitY, -mX * rotateCameraVel);									
 			//TODO: save the right vector myself??
-			Rotate(frustum.WorldRight(), -mY * rotateCameraVel);							//GetDt() should not influence this rotation (it depends on the mouse position on the screen) --- FIXED
+			Rotate(frustum.WorldRight(), -mY * rotateCameraVel);							
 			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 			{
 				Transform(float3(0, -dtSpeed, 0));
@@ -92,8 +92,8 @@ update_status ModuleCamera::Update(float dt)
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Transform(float3(-mX * speed, 0, 0));							//GetDt should not influence this movement (it depends on the mouse position on the screen)	--- FIXED
-			Transform(float3(0, mY * speed, 0));							//GetDt should not influence this movement (it depends on the mouse position on the screen) --- FIXED
+			Transform(float3(-mX * speed, 0, 0));							
+			Transform(float3(0, mY * speed, 0));							
 		}
 		//orbiting camera
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)

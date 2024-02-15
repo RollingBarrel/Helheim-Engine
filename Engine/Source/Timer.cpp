@@ -39,10 +39,9 @@ void Timer::Update()
 	else 
 	{
 		mFrameDelay = 0;
-		//mDeltaTime /= mSpeed;
 	}
 
-	//Checks if the frame is the slowest of all (doesn't check the first 500 because the first ones are always very slow)
+	//Checks if the frame is the slowest of all (doesn't check the first 50 because the first ones are always very slow)
 	if (mTotalFrames > 50) {
 		SetSlowestFrame();
 	}
@@ -87,10 +86,7 @@ long Timer::ReadDelta() {
 	return convertedTime;
 }
 
-long Timer::Stop() {
-	Uint64 finalTime = Read();
-
-	//We reset all variables
+void Timer::ResetVariables() {
 	mLastReadTime = 0;
 
 	mDeltaTime = 0;
@@ -107,7 +103,7 @@ long Timer::Stop() {
 
 	mTotalFrames = 0;
 
-	mFpsLog.clear(); 
+	mFpsLog.clear();
 	mMsLog.clear();
 
 	mUpdateFpsLog = false;
@@ -119,6 +115,22 @@ long Timer::Stop() {
 
 	mSlowestFrameTime = 0;
 	mSlowestFrame = 0;
+}
+
+void Timer::Pause() { 
+	SetTimeScale(0.f); 
+}
+
+void Timer::Resume() {
+	SetTimeScale(1.f);
+	mDeltaTime = ReadDelta();
+}
+
+long Timer::Stop() {
+	Uint64 finalTime = Read();
+
+	//We reset all variables
+	ResetVariables();
 
 	Pause();
 
