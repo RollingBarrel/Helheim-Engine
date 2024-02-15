@@ -58,7 +58,7 @@ public:
 	~GeometryBatch();
 
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
-	
+	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMesh(MeshRendererComponent* component);
 	void AddCommand(Command* command);
 	void Draw();
