@@ -7,6 +7,8 @@
 #include "Timer.h"
 #include "PreciseTimer.h"
 
+#define STANDARD_FPS_LIMIT 60
+
 
 TimerPanel::TimerPanel() : Panel(TIMERPANEL, true) 
 {
@@ -38,6 +40,7 @@ void TimerPanel::Draw(int windowFlags)
 	static long averageMs;
 	static std::vector<float> fpsLog;
 	static std::vector<unsigned long> msLog;
+	static bool fpsLimitEnabled;
 	
 	ms = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
 
@@ -52,9 +55,13 @@ void TimerPanel::Draw(int windowFlags)
 	}
 
 	ImGui::SeparatorText("FPS");
-
-	int fps_limit = App->GetCurrentClock()->GetFpsLimit();
-	ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
+	ImGui::Checkbox("Enable FPS Limit", &fpsLimitEnabled);
+	int fps_limit = STANDARD_FPS_LIMIT;
+	if (fpsLimitEnabled) {
+		fps_limit = App->GetCurrentClock()->GetFpsLimit();
+		ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
+		
+	}
 	App->GetCurrentClock()->SetFpsLimit(fps_limit);
 
 	ImGui::Text("Lowest FPS: %u on second %.3f", App->GetCurrentClock()->GetLowestFPS(), App->GetCurrentClock()->GetLowestFpsTime()/1000.f);
