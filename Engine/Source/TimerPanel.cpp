@@ -56,7 +56,7 @@ void TimerPanel::Draw(int windowFlags)
 	}
 
 	ImGui::SeparatorText("Vsync");
-	ImGui::Checkbox("Enable Vsync", &vsyncEnabled);
+	ImGui::Checkbox("Vsync enabled", &vsyncEnabled);
 	if (vsyncEnabled != App->GetCurrentClock()->GetVsyncStatus()) {
 		App->GetCurrentClock()->SetVsyncStatus(vsyncEnabled);
 	}
