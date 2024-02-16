@@ -27,7 +27,7 @@ void Timer::Update()
 	}
 
 	//Delay the frame so the FPS match the limit if mDeltaTime if  vsync isn't enabled
-	if (mFpsLimit > 0 && mDeltaTime / mSpeed < (1000 / mFpsLimit) && !mEnabledVsync)
+	if (!mEnabledVsync && (mFpsLimit > 0 && mDeltaTime / mSpeed < (1000 / mFpsLimit)))
 	{
 		mFrameDelay = (1000 / mFpsLimit) - mDeltaTime / mSpeed;
 
