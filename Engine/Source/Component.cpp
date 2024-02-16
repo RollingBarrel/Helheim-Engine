@@ -16,6 +16,8 @@ const char* Component::GetNameFromType() const
 			return "Spot Light";
 		case ComponentType::TEST:
 			return "Test";
+		case ComponentType::NAVMESHCONTROLLER:
+			return "NavMeshController";
 		default:
 			return "None";
 	}
