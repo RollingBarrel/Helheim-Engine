@@ -78,7 +78,12 @@ void TimerPanel::Draw(int windowFlags)
 
 	ImGui::Text("Slowest frame: %d MS on frame %i", App->GetCurrentClock()->GetSlowestFrameTime(), App->GetCurrentClock()->GetSlowestFrame());
 
-	ImGui::Text("Delta time: %d ms", ms);
+	if (App->GetCurrentClock() == App->GetGameClock())
+	{
+		ImGui::Text("Game delta time: %d ms", App->GetCurrentClock()->GetDelta());
+	}
+
+	ImGui::Text("Real delta time: %d ms", ms);
 
 	ImGui::Text("Frame Count: %u", App->GetCurrentClock()->GetTotalFrames());
 
