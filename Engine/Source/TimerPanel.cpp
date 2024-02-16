@@ -41,7 +41,6 @@ void TimerPanel::Draw(int windowFlags)
 	static std::vector<float> fpsLog;
 	static std::vector<unsigned long> msLog;
 	static bool fpsLimitEnabled = true;
-	// Do we want to have vsync enabled by default or not?
 	static bool vsyncEnabled = true;
 	
 	ms = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
@@ -70,6 +69,11 @@ void TimerPanel::Draw(int windowFlags)
 
 	ImGui::SeparatorText("Vsync");
 	ImGui::Checkbox("Enable Vsync", &vsyncEnabled);
+	if (vsyncEnabled != App->GetCurrentClock()->GetVsyncStatus()) {
+		App->GetCurrentClock()->SetVsyncStatus(vsyncEnabled);
+	}
+	ImGui::Text("Timer panel vsync: %i", vsyncEnabled);
+	ImGui::Text("Vsync status: %i", App->GetCurrentClock()->GetVsyncStatus());
 
 	ImGui::SeparatorText("Frames");
 

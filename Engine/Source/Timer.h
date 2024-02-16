@@ -57,6 +57,8 @@ public:
     int GetSlowestFrame() const { return mSlowestFrame; }
     void SetSlowestFrame();
 
+    bool GetVsyncStatus() const { return mEnabledVsync; }
+    void SetVsyncStatus(bool vsyncStatus);
 
 private:
 
@@ -95,5 +97,9 @@ private:
 
     long mSlowestFrameTime = 0;
     int mSlowestFrame = 0;
+
+    //Vsync
+
+    bool mEnabledVsync = true;
 
 };
