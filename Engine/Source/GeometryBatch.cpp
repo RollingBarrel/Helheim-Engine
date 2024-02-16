@@ -155,13 +155,6 @@ void GeometryBatch::Draw()
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
 
-	
-	//unsigned int offset = 0;
-	//for (Command* command : mCommands) {
-	//	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset, sizeof(Command), command);
-	//	offset += sizeof(Command);
-	//}
-	
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, GL_STATIC_DRAW);
@@ -181,6 +174,7 @@ void GeometryBatch::Draw()
 
 	std::vector<Material> materials(mMeshComponents.size());
 
+	int count = 0;
 	for (MeshRendererComponent* mesh : mMeshComponents) {
 
 		Material material;
@@ -196,7 +190,8 @@ void GeometryBatch::Draw()
 		material.hasShininessMap = mesh->GetMaterial()->mEnableShinessMap;
 		material.hasNormalMap = mesh->GetMaterial()->mEnableNormalMap;
 
-		materials.push_back(material);
+		materials[count] = material;
+		count++;
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 		offset += sizeof(Material);
 
