@@ -64,13 +64,14 @@ void TimerPanel::Draw(int windowFlags)
 	ImGui::SeparatorText("FPS");
 	if (!vsyncEnabled) {
 		ImGui::Checkbox("Enable FPS Limit", &fpsLimitEnabled);
-		int fps_limit = STANDARD_FPS_LIMIT;
+		int fps_limit = 0;
 		if (fpsLimitEnabled) {
 			fps_limit = App->GetCurrentClock()->GetFpsLimit();
-			ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
-
+			ImGui::SliderInt("FPS Limit", &fps_limit, 10, 240);
+			
 		}
 		App->GetCurrentClock()->SetFpsLimit(fps_limit);
+		
 	}
 
 	ImGui::Text("Lowest FPS: %.2f on second %.2f", App->GetCurrentClock()->GetLowestFPS(), App->GetCurrentClock()->GetLowestFpsTime()/1000.f);
