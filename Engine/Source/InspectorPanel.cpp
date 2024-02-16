@@ -7,9 +7,10 @@
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
-#include "LightSourceComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "ImporterMaterial.h"
-#include <MathFunc.h>
+#include "MathFunc.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -128,8 +129,11 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 				mSameComponentPopup = true;
 			}
 		}
-		if (ImGui::MenuItem("Light Source")) {
-			object->CreateComponent(ComponentType::LIGHTSOURCE);
+		if (ImGui::MenuItem("Point Light")) {
+			object->CreateComponent(ComponentType::POINTLIGHT);
+		}
+		if (ImGui::MenuItem("Spot Light")) {
+			object->CreateComponent(ComponentType::SPOTLIGHT);
 		}
 		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
@@ -261,18 +265,19 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
-					MeshRendererComponent* downCast = reinterpret_cast<MeshRendererComponent*>(component);
-					DrawMeshRendererComponent(downCast);
+					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				}
-				case ComponentType::LIGHTSOURCE: {
-					LightSourceComponent* downCast = reinterpret_cast<LightSourceComponent*>(component);
-					DrawLightSourceComponent(downCast);
+				case ComponentType::POINTLIGHT: {
+					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
+					break;
+				}
+				case ComponentType::SPOTLIGHT: {
+					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
 					break;
 				}
 				case ComponentType::TEST: {
-					TestComponent* downCast = reinterpret_cast<TestComponent*>(component);
-					DrawTestComponent(downCast);
+					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				}
 
@@ -288,8 +293,7 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text 2 ");
 }
 
-void InspectorPanel::DrawLightSourceComponent(LightSourceComponent* component) {
-	ImGui::Text("Lights !!");
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	const float* pCol = component->GetColor();
 	float col[3] = { pCol[0], pCol[1] , pCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
@@ -305,6 +309,42 @@ void InspectorPanel::DrawLightSourceComponent(LightSourceComponent* component) {
 	if (ImGui::DragFloat("Radius", &radius,1.0f, 0.0f))
 	{
 		component->SetRadius(radius);
+	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
+}
+
+void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
+	const float* sCol = component->GetColor();
+	float col[3] = { sCol[0], sCol[1] , sCol[2] };
+	if (ImGui::ColorPicker3("Color", col))
+	{
+		component->SetColor(col);
+	}
+	const float* sDir = component->GetDirection();
+	float dir[3] = { sDir[0], sDir[1] , sDir[2] };
+	if (ImGui::DragFloat3("Direction", dir, 0.05f, -1.f, 1.f))
+	{
+		component->SetDirection(dir);
+	}
+	float intensity = component->GetIntensity();
+	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	{
+		component->SetIntensity(intensity);
+	}
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float innerAngle = RadToDeg(component->GetInnerAngle());
+	float outerAngle = RadToDeg(component->GetOuterAngle());
+	if (ImGui::DragFloat("Inner angle", &innerAngle, 1.0f, 0.0f, outerAngle))
+	{
+		component->SetInnerAngle(DegToRad(innerAngle));
+	}
+	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, innerAngle, 90.f))
+	{
+		component->SetOuterAngle(DegToRad(outerAngle));
 	}
 	ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
