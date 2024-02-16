@@ -22,10 +22,6 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 	bool batchFound = false;
 	int batchPos = -1;
 
-
-	
-
-
 	for (int i = 0; i < mBatches.size() && !batchFound; ++i) 
 	{
 		const std::vector<Attribute*> batchAttributes = mBatches[i]->GetAttributes();
