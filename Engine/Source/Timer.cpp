@@ -4,6 +4,7 @@
 
 void Timer::Start() {
 	mLastReadTime = SDL_GetTicks();
+	SetTimeScale(1.f);
 }
 
 void Timer::StartWithRunTime() {
@@ -26,18 +27,21 @@ void Timer::Update()
 	}
 
 	//Delay the frame so the FPS match the limit if mDeltaTime 
-	if (mFpsLimit > 0 && mDeltaTime < (1000 / mFpsLimit))
+	if (mFpsLimit > 0 && mDeltaTime / mSpeed < (1000 / mFpsLimit))
 	{
-		mFrameDelay = (1000 / mFpsLimit) - mDeltaTime;
+		mFrameDelay = (1000 / mFpsLimit) - mDeltaTime / mSpeed;
 		SDL_Delay(mFrameDelay);
-		mDeltaTime = 1000 / mFpsLimit;
+
+		ReadDelta();	//ReadDelta is called so the next frameDelay is calculated properly (if this isn't done the previous delay will be counted as part of the next frame execution time)
+
+		mDeltaTime = mSpeed * 1000 / mFpsLimit;
 	}
 	else 
 	{
 		mFrameDelay = 0;
 	}
 
-	//Checks if the frame is the slowest of all (doesn't check the first 500 because the first ones are always very slow)
+	//Checks if the frame is the slowest of all (doesn't check the first 50 because the first ones are always very slow)
 	if (mTotalFrames > 50) {
 		SetSlowestFrame();
 	}
@@ -46,20 +50,12 @@ void Timer::Update()
 	if (mMsLog.size() >= 100) {
 		mMsLog.erase(mMsLog.begin());
 	}
-	mMsLog.push_back(mDeltaTime);
+	mMsLog.push_back(mDeltaTime / mSpeed);
 
-	//This may have to be changed
-	if(mSpeed != 0)
-	{
-		mUpdateTime += mDeltaTime / mSpeed;
-	}
-	else 
-	{
-		mUpdateTime += mDeltaTime;
-	}
+	mUpdateTime += mDeltaTime / mSpeed;
 
 	//Logs the average FPS every half a second
-	if (mUpdateTime >= 500) {
+	if (mUpdateTime > 500) {						//For some reason when the FPS are low this is executed more often (so time goes faster?)
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
@@ -88,6 +84,57 @@ long Timer::ReadDelta() {
 	mRealTime += elapsedTime;
 	mTotalTime += convertedTime;
 	return convertedTime;
+}
+
+void Timer::ResetVariables() {
+	mLastReadTime = 0;
+
+	mDeltaTime = 0;
+	mFpsLimit = 60;
+
+	mUpdateTime = 0;
+	mUpdateFrames = 0;
+
+	mNewSpeed = 1.f;
+	mChangeSpeed = false;
+
+	mRealTime = 0;
+	mTotalTime = 0;
+
+	mTotalFrames = 0;
+
+	mFpsLog.clear();
+	mMsLog.clear();
+
+	mUpdateFpsLog = false;
+
+	mLowestFps = mFpsLimit;
+	mLowestFpsTime = 0;
+
+	mFrameDelay = 0;
+
+	mSlowestFrameTime = 0;
+	mSlowestFrame = 0;
+}
+
+void Timer::Pause() { 
+	SetTimeScale(0.f); 
+}
+
+void Timer::Resume() {
+	SetTimeScale(1.f);
+	mDeltaTime = ReadDelta();
+}
+
+long Timer::Stop() {
+	Uint64 finalTime = Read();
+
+	//We reset all variables
+	ResetVariables();
+
+	Pause();
+
+	return finalTime;
 }
 
 long Timer::SetSpeed(float speed) {

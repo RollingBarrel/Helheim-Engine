@@ -10,8 +10,10 @@ const char* Component::GetNameFromType() const
 	{
 	case ComponentType::MESHRENDERER:
 			return "Mesh Renderer";
-		case ComponentType::LIGHTSOURCE:
-			return "Light Source";
+		case ComponentType::POINTLIGHT:
+			return "Point Light";
+		case ComponentType::SPOTLIGHT:
+			return "Spot Light";
 		case ComponentType::TEST:
 			return "Test";
 		default:
