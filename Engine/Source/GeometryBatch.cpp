@@ -41,7 +41,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboSize, mUniqueMeshes[0]->GetIndices(), GL_STATIC_DRAW);
 
 	unsigned int idx = 0;
-	for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+	for (std::vector<const Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
 		glEnableVertexAttribArray(idx);
 		glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
@@ -65,73 +65,73 @@ GeometryBatch::~GeometryBatch()
 }
 
 
-void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
+void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 {
 	mMeshComponents.push_back(cMesh);
-
-
-	bool found = false;
-	for (auto mesh : mUniqueMeshes) {
-		if (mesh->mUID == cMesh->GetResourceMesh()->mUID) {
-			found = true;
-			cMesh->GetResourceMesh()->SetVboPosition(mesh->GetVboPosition());
-			cMesh->GetResourceMesh()->SetEboPosition(mesh->GetEboPosition());
-		}
-	}
-
-
-	if (!found) {
-
-		mUniqueMeshes.push_back(cMesh->GetResourceMesh());
-
-		unsigned int  destVbo, destEbo;
-		unsigned int newVboSize = mVboSize + (mVertexSize * cMesh->GetResourceMesh()->GetNumVertices());
-		unsigned int newEboSize = mEboSize + cMesh->GetResourceMesh()->GetNumIndices() * sizeof(unsigned int);
-
-
-		glBindVertexArray(mVao);
-		glGenBuffers(1, &destVbo);
-		glBindBuffer(GL_ARRAY_BUFFER, destVbo);
-		glGenBuffers(1, &destEbo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, destEbo);
-
-
-		glBufferData(GL_ARRAY_BUFFER, newVboSize, nullptr, GL_STATIC_DRAW);
-		glCopyNamedBufferSubData(mVbo, destVbo, 0, 0, mVboSize);
-		glDeleteBuffers(1, &mVbo);
-
-		glBufferSubData(GL_ARRAY_BUFFER, mVboSize, cMesh->GetResourceMesh()->GetNumVertices() * mVertexSize, cMesh->GetResourceMesh()->GetInterleavedData());
-		
-
-		cMesh->GetResourceMesh()->SetVboPosition(mVboSize);
-		mVbo = destVbo;
-		mVboSize = newVboSize;
-
 	
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, newEboSize, nullptr, GL_STATIC_DRAW);
-		glCopyNamedBufferSubData(mEbo, destEbo, 0, 0, mEboSize);
-		glDeleteBuffers(1, &mEbo);
+	const ResourceMesh* rMesh = cMesh->GetResourceMesh();
+	for (const ResourceMesh* mesh : mUniqueMeshes) {
 
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, mEboSize, cMesh->GetResourceMesh()->GetNumIndices() * sizeof(unsigned int), cMesh->GetResourceMesh()->GetIndices());
-		
+		if (mesh->mUID == rMesh->mUID) {
+			rMesh->SetVboPosition(mesh->GetVboPosition());
+			rMesh->SetEboPosition(mesh->GetEboPosition());
 
-		cMesh->GetResourceMesh()->SetEboPosition(mEboSize);
-		mEbo = destEbo;
-		mEboSize = newEboSize;
+			mUniqueMeshes.push_back(rMesh);
+
+			unsigned int  destVbo, destEbo;
+			unsigned int newVboSize = mVboSize + (mVertexSize * rMesh->GetNumVertices());
+			unsigned int newEboSize = mEboSize + rMesh->GetNumIndices() * sizeof(unsigned int);
 
 
-		unsigned int idx = 0;
-		for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
-		{
-			glEnableVertexAttribArray(idx);
-			glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+			glBindVertexArray(mVao);
+			glGenBuffers(1, &destVbo);
+			glBindBuffer(GL_ARRAY_BUFFER, destVbo);
+			glGenBuffers(1, &destEbo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, destEbo);
 
-			++idx;
+
+			glBufferData(GL_ARRAY_BUFFER, newVboSize, nullptr, GL_STATIC_DRAW);
+			glCopyNamedBufferSubData(mVbo, destVbo, 0, 0, mVboSize);
+			glDeleteBuffers(1, &mVbo);
+
+			float* interleavedData = rMesh->GetInterleavedData();
+			glBufferSubData(GL_ARRAY_BUFFER, mVboSize, rMesh->GetNumVertices() * mVertexSize, interleavedData);
+			delete[] interleavedData;
+
+
+			rMesh->SetVboPosition(mVboSize);
+			mVbo = destVbo;
+			mVboSize = newVboSize;
+
+
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, newEboSize, nullptr, GL_STATIC_DRAW);
+			glCopyNamedBufferSubData(mEbo, destEbo, 0, 0, mEboSize);
+			glDeleteBuffers(1, &mEbo);
+
+			glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, mEboSize, rMesh->GetNumIndices() * sizeof(unsigned int), rMesh->GetIndices());
+
+
+			rMesh->SetEboPosition(mEboSize);
+			mEbo = destEbo;
+			mEboSize = newEboSize;
+
+
+			unsigned int idx = 0;
+			for (std::vector<const Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+			{
+				glEnableVertexAttribArray(idx);
+				glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+
+				++idx;
+			}
+
+			glBindVertexArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			break;
 		}
 
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 }
@@ -154,13 +154,6 @@ void GeometryBatch::Draw()
 
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
-
-	
-	//unsigned int offset = 0;
-	//for (Command* command : mCommands) {
-	//	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset, sizeof(Command), command);
-	//	offset += sizeof(Command);
-	//}
 	
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
@@ -168,7 +161,7 @@ void GeometryBatch::Draw()
 	
 
 	unsigned int offset = 0;
-	for (MeshRendererComponent* mesh : mMeshComponents) {
+	for (const MeshRendererComponent* mesh : mMeshComponents) {
 
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().ptr());
 		offset += sizeof(float) * 16;
@@ -179,7 +172,7 @@ void GeometryBatch::Draw()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
 
-	for (MeshRendererComponent* mesh : mMeshComponents) {
+	for (const MeshRendererComponent* mesh : mMeshComponents) {
 
 		Material* material = new Material();
 
@@ -203,21 +196,21 @@ void GeometryBatch::Draw()
 		glMakeTextureHandleResidentARB(material->normalTexture);
 	}
 
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
+
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
-
 	glUseProgram(0);
 	glBindVertexArray(0);
 
-	for (auto material : mMaterials) {
+	for (const Material* material : mMaterials) {
 		glMakeTextureHandleNonResidentARB(material->diffuseTexture);
 		glMakeTextureHandleNonResidentARB(material->specularTexture);
 		glMakeTextureHandleNonResidentARB(material->normalTexture);
 	}
 
-	for (auto material : mMaterials) {
+	for (const Material* material : mMaterials) {
 		delete material;
 	}
 
@@ -225,8 +218,5 @@ void GeometryBatch::Draw()
 	mCommands.clear();
 
 	App->GetOpenGL()->UnbindSceneFramebuffer();
-
-
-	
 }
 
