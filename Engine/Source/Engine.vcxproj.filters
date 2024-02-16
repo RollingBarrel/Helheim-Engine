@@ -238,9 +238,6 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="GeometryBatch.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="BatchManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -261,6 +258,9 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryBatch.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -706,9 +706,6 @@
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="GeometryBatch.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="BatchManager.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -729,6 +726,9 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryBatch.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

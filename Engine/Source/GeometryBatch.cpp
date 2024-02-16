@@ -74,6 +74,8 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 	for (auto mesh : mUniqueMeshes) {
 		if (mesh->mUID == cMesh->GetResourceMesh()->mUID) {
 			found = true;
+			cMesh->GetResourceMesh()->SetVboPosition(mesh->GetVboPosition());
+			cMesh->GetResourceMesh()->SetEboPosition(mesh->GetEboPosition());
 		}
 	}
 
