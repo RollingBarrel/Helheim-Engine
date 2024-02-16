@@ -26,21 +26,16 @@ void Timer::Update()
 		mDeltaTime = ReadDelta(); 
 	}
 
-	//Delay the frame so the FPS match the limit if mDeltaTime 
-	if (mFpsLimit > 0 && mDeltaTime / mSpeed < (1000 / mFpsLimit))
+	//Delay the frame so the FPS match the limit if mDeltaTime if  vsync isn't enabled
+	if (mFpsLimit > 0 && mDeltaTime / mSpeed < (1000 / mFpsLimit) && !mEnabledVsync)
 	{
 		mFrameDelay = (1000 / mFpsLimit) - mDeltaTime / mSpeed;
 
-		//If vsync isn't enabled we delay the frame
-		if(!mEnabledVsync)
-		{
-			SDL_Delay(mFrameDelay);
-			mDeltaTime = mSpeed * 1000 / mFpsLimit;
-		}
+		SDL_Delay(mFrameDelay);
 
 		ReadDelta();	//ReadDelta is called so the next frameDelay is calculated properly (if this isn't done the previous delay will be counted as part of the next frame execution time)
 
-		//mDeltaTime = mSpeed * 1000 / mFpsLimit;
+		mDeltaTime = mSpeed * 1000 / mFpsLimit;
 	}
 	else 
 	{
