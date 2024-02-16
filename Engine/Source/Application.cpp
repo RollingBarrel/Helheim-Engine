@@ -42,8 +42,8 @@ Application::~Application()
 
 bool Application::Init()
 {
-	mEngineTimer->Start();
-	mGameTimer->Start();
+	mEngineTimer->Start();			//Initializes the Engine timer
+	mCurrentTimer = mEngineTimer;	//The application starts in the editor
 
 	bool ret = true;
 
@@ -57,8 +57,7 @@ bool Application::Init()
 
 update_status Application::Update(float dt)
 {
-	mEngineTimer->Update();
-	//mGameTimer->Update();
+	mCurrentTimer->Update();		//Updates the current timer variables (Engine or Game depending on the game state)
 
 	update_status ret = UPDATE_CONTINUE;
 
@@ -84,6 +83,10 @@ bool Application::CleanUp()
 	return ret;
 }
 
-float Application::GetDt() const {
+float Application::GetRealDt() const {
 	return mEngineTimer->GetDelta() / (float) 1000;
+}
+
+float Application::GetGameDt() const {
+	return mGameTimer->GetDelta() / (float)1000;
 }
