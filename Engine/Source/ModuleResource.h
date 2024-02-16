@@ -17,7 +17,7 @@ public:
 	unsigned int GenerateNewUID();
 
 	Resource* RequestResource(unsigned int uid, Resource::Type type);
-	void ReleaseResource(Resource* resource);
+	void ReleaseResource(unsigned int uid);
 
 private:
 	Resource* CreateNewResource(const char* assetsFile, Resource::Type type);
@@ -26,12 +26,11 @@ private:
 
 	const bool CreateAssetsMeta(const Resource& assetsFile) const;
 
-	const bool DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const;
+	const char* DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const;
 
 	std::map<unsigned int, Resource*> mResources;
 
 	std::unordered_map<std::string, Resource::Type> mExtensionToResourceType;
-	std::unordered_map<Resource::Type, std::string> mtypeToAssetsPath;
 };
 
 #endif //_MODULE_RESOURCE_H_

@@ -60,15 +60,16 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	}
 
 	// Create copy in assets folder
-	if (!DuplicateFileInAssetDir(importedFilePath, type))
+	const char* assetsCopiedFile = DuplicateFileInAssetDir(importedFilePath, type);
+	if (assetsCopiedFile)
 	{
 		LOG("File could not be duplicated: %s", importedFilePath);
 		return 0;
 	}
-	LOG("Succesfully duplicated the file in %s", resource->GetAssetsFile().c_str());
+	LOG("Succesfully duplicated the file in %s", assetsCopiedFile);
 
 	//// Create the new resource
-	Resource* resource = CreateNewResource(importedFilePath, type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
+	Resource* resource = CreateNewResource(assetsCopiedFile, type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
 	if (resource == nullptr) 
 	{
 		LOG("Unable to create a new resource with this file: %s", importedFilePath);
@@ -100,16 +101,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		it->second->AddReferenceCount();
 		return it->second;
 	}
-	else 
-	{
-		Resource* ret = TryToLoadResource(uid, type);
-		if (ret) {
-			mResources[uid] = ret;
-		}
+	Resource* ret = TryToLoadResource(uid, type);
+	if (ret) {
+		mResources[uid] = ret;
 		return ret;
 	}
-	//Find the library file (if exists) and load the custom file format 
-	//return TryToLoadResource(uid); <------------------------------------------TODO
 	return nullptr;
 }
 
@@ -120,18 +116,20 @@ Resource* ModuleResource::TryToLoadResource(const unsigned int uid, Resource::Ty
 	return nullptr;
 }
 
-void ModuleResource::ReleaseResource(Resource* resource)
+void ModuleResource::ReleaseResource(unsigned int uid)
 {
-	if (resource->GetReferenceCount() > 1)
+	mResources[uid]->RemoveReferenceCount();
+	if (mResources[uid]->GetReferenceCount() <= 0)
 	{
-		resource->RemoveReferenceCount();
-	}
-	else 
-	{
-		if (resource->GetReferenceCount() == 1) resource->RemoveReferenceCount();
-		
-		mResources.erase(mResources.find(resource->GetUID())->first);
-		delete resource;
+		if (mResources.find(uid) == mResources.end())
+		{
+			LOG("The resource with UID %s does not exist.", std::to_string(uid).c_str());
+		}
+		else if (mResources.find(uid)->second != nullptr)
+		{
+			mResources[uid] = nullptr;
+		}
+		delete mResources[uid];
 	}
 }
 
@@ -155,13 +153,6 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	case Resource::Type::Material:
 		break;
 	case Resource::Type::Model:
-		//std::string binFile = "";
-		//App->GetFileSystem()->SplitPath(importedFilePath, &binFile);
-
-		//App->GetFileSystem()->CopyAbsolutePath(importedFilePath, std::string(ASSETS_MODEL_PATH + binFile + ".bin").c_str());
-
-		//Importer::Model::Import(resource->GetAssetsFile().c_str(), (ResourceModel*)resource);
-		//Importer::Model::Save((ResourceModel*)resource);
 		break;
 	case Resource::Type::Scene:
 		break;
@@ -171,48 +162,51 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
 	}
-
 	// if ret is not nullptr
 	if (ret) {
-		mResources[uid] = ret;
+		mResources[uid] = nullptr;
 	}
 
 	return ret;
 }
 
-const bool ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
+const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
 {
-	bool ret = true;
-	
-	/* FOR NOW ALL TYPES HAVE THE SAME CALL
-	switch (resource.GetType())
+	std::string assetName; 
+	std::string extensionName; 
+	App->GetFileSystem()->SplitPath(importedFilePath, &assetName, &extensionName);
+	std::string assetsFilePath;
+	switch (type) {
+	case Resource::Type::Texture:
+		assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
+		break;
+	case Resource::Type::Mesh:
+		break;
+	case Resource::Type::Bone:
+		break;
+	case Resource::Type::Animation:
+		break;
+	case Resource::Type::Material:
+		break;
+	case Resource::Type::Model:
+		break;
+	case Resource::Type::Scene:
+		break;
+	case Resource::Type::NavMesh:
+		break;
+	default:
+		LOG("Unable to Copy, this file %s", importedFilePath);
+		break;
+	}
+	std::string assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
+
+	bool ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, assetsFilePath.c_str());
+
+	if (ret) 
 	{
-		case Resource::Type::Texture:
-		{
-			ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
-			break;
-		}
-		case Resource::Type::Model:
-		{
-			ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, resource.GetAssetsFile().c_str());
-			break;
-		}
-		case Resource::Type::Unknown:
-		{
-			LOG("Unable to duplicate, this file %s", importedFilePath);
-			ret = false;
-			break;
-		}
-	}*/
-
-	//std::string assetName;
-	//std::string extensionName;
-	//App->GetFileSystem()->SplitPath(importedFilePath, &assetName, &extensionName);
-	//const char* newAssetFile = (std::string(importDirectory) + assetName + extensionName).c_str();
-
-	ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, (mtypeToAssetsPath[type]).c_str());
-
-	return ret;
+		return assetsFilePath.c_str();
+	}
+	return nullptr;
 }
 
 Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
@@ -222,7 +216,7 @@ Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
 	{
 		// Convert to lowercase
 		std::string extension = fileExtension;
-		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower); 
+		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 		// Returns the Type of Resource (see map above)
 		auto it = mExtensionToResourceType.find(extension);
 		if (it != mExtensionToResourceType.end())
