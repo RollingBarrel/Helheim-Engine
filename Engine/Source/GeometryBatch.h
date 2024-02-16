@@ -68,7 +68,6 @@ private:
 	std::vector<ResourceMesh*> mUniqueMeshes;
 	std::vector<Attribute*> mAttributes;
 	std::vector<Command> mCommands;
-	std::vector<Material*> mMaterials;
 	unsigned int mVertexSize = 0;
 
 

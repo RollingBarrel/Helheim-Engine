@@ -74,7 +74,7 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 	for (auto mesh : mUniqueMeshes) {
 		if (mesh->mUID == cMesh->GetResourceMesh()->mUID) {
 			found = true;
-			cMesh->GetResourceMesh()->SetVboPosition(mesh->GetVboPosition());
+			cMesh->GetResourceMesh()->SetVboPosition(mesh->GetVboPosition()); //When Resource Manager is ready this 2 lines should not be necceesary.
 			cMesh->GetResourceMesh()->SetEboPosition(mesh->GetEboPosition());
 		}
 	}
@@ -179,31 +179,35 @@ void GeometryBatch::Draw()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
 
+	std::vector<Material> materials(mMeshComponents.size());
+
 	for (MeshRendererComponent* mesh : mMeshComponents) {
 
-		Material* material = new Material();
+		Material material;
 
-		material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor;
-		material->diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->mTextureHandle;
-		material->specularColor = float4(mesh->GetMaterial()->mSpecularFactor, 0);
-		material->specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->mTextureHandle;
-		material->normalTexture = mesh->GetMaterial()->mNormalTexture->mTextureHandle;
-		material->shininess = mesh->GetMaterial()->mGlossinessFactor;
-		material->hasDiffuseMap = mesh->GetMaterial()->mEnableDiffuseTexture;
-		material->hasSpecularMap = mesh->GetMaterial()->mEnableSpecularGlossinessTexture;
-		material->hasShininessMap = mesh->GetMaterial()->mEnableShinessMap;
-		material->hasNormalMap = mesh->GetMaterial()->mEnableNormalMap;
+		material.diffuseColor = mesh->GetMaterial()->mDiffuseFactor;
+		material.diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->mTextureHandle;
+		material.specularColor = float4(mesh->GetMaterial()->mSpecularFactor, 0);
+		material.specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->mTextureHandle;
+		material.normalTexture = mesh->GetMaterial()->mNormalTexture->mTextureHandle;
+		material.shininess = mesh->GetMaterial()->mGlossinessFactor;
+		material.hasDiffuseMap = mesh->GetMaterial()->mEnableDiffuseTexture;
+		material.hasSpecularMap = mesh->GetMaterial()->mEnableSpecularGlossinessTexture;
+		material.hasShininessMap = mesh->GetMaterial()->mEnableShinessMap;
+		material.hasNormalMap = mesh->GetMaterial()->mEnableNormalMap;
 
-		mMaterials.push_back(material);
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), material);
+		materials.push_back(material);
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 		offset += sizeof(Material);
 
-		glMakeTextureHandleResidentARB(material->diffuseTexture);
-		glMakeTextureHandleResidentARB(material->specularTexture);
-		glMakeTextureHandleResidentARB(material->normalTexture);
+		glMakeTextureHandleResidentARB(material.diffuseTexture);
+		glMakeTextureHandleResidentARB(material.specularTexture);
+		glMakeTextureHandleResidentARB(material.normalTexture);
 	}
 
+
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
+
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
@@ -211,17 +215,13 @@ void GeometryBatch::Draw()
 	glUseProgram(0);
 	glBindVertexArray(0);
 
-	for (auto material : mMaterials) {
-		glMakeTextureHandleNonResidentARB(material->diffuseTexture);
-		glMakeTextureHandleNonResidentARB(material->specularTexture);
-		glMakeTextureHandleNonResidentARB(material->normalTexture);
+	for (const Material& material : materials) {
+		glMakeTextureHandleNonResidentARB(material.diffuseTexture);
+		glMakeTextureHandleNonResidentARB(material.specularTexture);
+		glMakeTextureHandleNonResidentARB(material.normalTexture);
 	}
 
-	for (auto material : mMaterials) {
-		delete material;
-	}
-
-	mMaterials.clear();
+	materials.clear();
 	mCommands.clear();
 
 	App->GetOpenGL()->UnbindSceneFramebuffer();
