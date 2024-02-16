@@ -58,17 +58,17 @@ public:
 
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
 	unsigned int GetVertexSize() { return mVertexSize; };
-	void AddMesh(const MeshRendererComponent* component);
+	void AddMesh(MeshRendererComponent* component);
 	void AddCommand(const Command& command);
 	void Draw();
 
 private:
 
-	std::vector<const MeshRendererComponent*> mMeshComponents;
-	std::vector<const ResourceMesh*> mUniqueMeshes;
-	std::vector<const Attribute*> mAttributes;
+	std::vector<MeshRendererComponent*> mMeshComponents;
+	std::vector<ResourceMesh*> mUniqueMeshes;
+	std::vector<Attribute*> mAttributes;
 	std::vector<Command> mCommands;
-	std::vector<const Material*> mMaterials;
+	std::vector<Material*> mMaterials;
 	unsigned int mVertexSize = 0;
 
 

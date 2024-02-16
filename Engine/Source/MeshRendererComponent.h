@@ -27,7 +27,7 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	const OBB getOBB() const { return mOBB; }
-	const ResourceMesh* GetResourceMesh() const { return mMesh; }
+	ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const GeometryBatch* GetBatch() const { return mBatch; }
 	void AddCommand(unsigned int instanceCounter);
 	void SetBatch(GeometryBatch* batch) { mBatch = batch; }
