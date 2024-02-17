@@ -97,7 +97,12 @@ void ModuleCamera::CheckRaycast()
 
 	if (!intersectMap.empty())
 	{
-		((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectMap.begin()->second);
+		GameObject* gameObject = intersectMap.begin()->second;
+		while (!gameObject->GetParent()->IsRoot()) 
+		{
+			gameObject = gameObject->GetParent();
+		}
+		((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
 	}
 
 }

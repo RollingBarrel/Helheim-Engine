@@ -10,7 +10,7 @@
 #define STANDARD_FPS_LIMIT 60
 
 
-TimerPanel::TimerPanel() : Panel(TIMERPANEL, true) 
+TimerPanel::TimerPanel() : Panel(TIMERPANEL, false) 
 {
 }
 

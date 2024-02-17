@@ -29,6 +29,12 @@ void HierarchyPanel::Draw(int windowFlags)
 	ImGui::End();
 }
 
+void HierarchyPanel::SetFocus(GameObject* focusedObject) 
+{ 
+	mUnmarkFlag = true;
+	mFocusedObject = focusedObject; 
+}
+
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) {
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) {
 		if (ImGui::GetIO().KeyShift) {

@@ -1,9 +1,11 @@
 #include "ScenePanel.h"
+#include "HierarchyPanel.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ProjectPanel.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
@@ -65,6 +67,7 @@ void ScenePanel::Draw(int windowFlags)
 					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
 					cMesh->Load(it->meshUID, it->materiaUID);
 				}
+				((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(nGO);
 				delete rModel;
 				if (done)
 					*path = '.';
