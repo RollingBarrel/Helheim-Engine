@@ -17,8 +17,6 @@ typedef struct Command
 } Command;
 
 typedef struct Material {
-	float diffuseColor[4] = {0.0f};
-	float specularColor[4] = {0.0f};
 	uint64_t diffuseTexture = 0;
 	uint64_t specularTexture = 0;
 	uint64_t normalTexture = 0;
@@ -27,8 +25,8 @@ typedef struct Material {
 	bool hasSpecularMap = false;
 	bool hasShininessMap = false;
 	bool hasNormalMap = false;
-private:
-	uint64_t padding = 0;
+	float diffuseColor[4] = {0.0f};
+	float specularColor[4] = {0.0f};
 }Material;
 
 class GeometryBatch

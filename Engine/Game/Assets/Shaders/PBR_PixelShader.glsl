@@ -33,18 +33,16 @@ readonly layout(std430, binding = 1) buffer SpotLights
 };
 struct Material
 {
-	vec3 diffuseColor;
-	vec3 specularColor;
-
 	sampler2D diffuseTexture;
 	sampler2D specularTexture;
 	sampler2D normalTexture;
-
 	float shininess;
 	bool hasDiffuseMap;
 	bool hasSpecularMap;
 	bool hasShininessMap;
 	bool hasNormalMap;
+	vec3 diffuseColor;
+	vec3 specularColor;
 };
 readonly layout(std430, binding = 11) buffer Materials 
 {

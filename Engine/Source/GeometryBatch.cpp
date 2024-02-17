@@ -10,9 +10,6 @@
 #include "ImporterMaterial.h"
 #include "ImporterTexture.h"
 
-
-
-
 GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 {
 	mMeshComponents.push_back(mesh);
@@ -37,7 +34,9 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-	glBufferData(GL_ARRAY_BUFFER, mVboSize, mUniqueMeshes[0]->GetInterleavedData(), GL_STATIC_DRAW);
+	float* interleavedData = mUniqueMeshes[0]->GetInterleavedData();
+	glBufferData(GL_ARRAY_BUFFER, mVboSize, interleavedData, GL_STATIC_DRAW);
+	delete[] interleavedData;
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboSize, mUniqueMeshes[0]->GetIndices(), GL_STATIC_DRAW);
@@ -58,6 +57,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 }
 
