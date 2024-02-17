@@ -250,6 +250,9 @@
     <ClCompile Include="TimerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ImporterNavMesh.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
     <ClCompile Include="Dependencies\Detour\Include\DetourAlloc.cpp">
       <Filter>Dependencies\NavigationAI\Detour</Filter>
     </ClCompile>
@@ -792,6 +795,9 @@
     </ClInclude>
     <ClInclude Include="TimerPanel.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterNavMesh.h">
+      <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Detour\Include\DetourAlloc.h">
       <Filter>Dependencies\NavigationAI\Detour</Filter>
