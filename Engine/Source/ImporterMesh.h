@@ -71,6 +71,8 @@ struct ResourceMesh
 	unsigned int GetEboPosition() const { return mEboPosition; }
 	void SetVboPosition(unsigned int VboPos) { mVboPosition = VboPos; }
 	void SetEboPosition(unsigned int EboPos) { mEboPosition = EboPos; }
+	unsigned int GetVao() const { return mVao; }
+	const unsigned int GetNumIndices() { return mNumIndices; }
 
 
 	void CleanUp();

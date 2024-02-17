@@ -34,6 +34,8 @@ public:
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
+	const std::vector<GameObject*> GetRenderList() { return mRenderList; }
+
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
 

@@ -5,7 +5,7 @@
 #include "glew.h"
 
 
-LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
+LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, false) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
