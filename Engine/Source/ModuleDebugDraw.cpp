@@ -698,6 +698,11 @@ void ModuleDebugDraw::DrawCone(const float pos[3], const float dir[3], const flo
     dd::cone(ddVec3(pos), ddVec3(dir), ddVec3(color), bRadius, 0.0f);
 }
 
+void ModuleDebugDraw::DrawLine(const float3& position, const float3& direction, const float3& color)
+{
+    dd::line(position, direction, color);
+}
+
 void ModuleDebugDraw::DrawGrid()
 {
     dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);
