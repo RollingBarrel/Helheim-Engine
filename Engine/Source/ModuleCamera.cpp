@@ -58,8 +58,9 @@ void ModuleCamera::CheckRaycast()
 
 	std::map<float, GameObject*> intersectMap;
 
+	// TODO: final implementation when Quadtree is added in this logic
 	for (auto gameObject : App->GetScene()->GetRoot()->GetChildren()) {
-
+		// TODO: We need to iterate recursively to all gameobjects in the future. Temporal implementation.
 		for (auto child : gameObject->GetChildren()) {
 			
 			MeshRendererComponent* rMesh = (MeshRendererComponent*)child->GetComponent(ComponentType::MESHRENDERER);
