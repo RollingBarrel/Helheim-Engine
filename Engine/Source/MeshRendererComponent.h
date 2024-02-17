@@ -31,12 +31,13 @@ public:
 	const GeometryBatch* GetBatch() const { return mBatch; }
 	void SetBatch(GeometryBatch* batch) { mBatch = batch; }
 	void AddCommand(unsigned int instanceCounter);
+	const AABB GetAABB() const { return mAABB; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 	bool IsInsideFrustum() { return mInsideFrustum;  }
 	const ResourceMaterial* GetMaterial() const { return mMaterial; }
-
+	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 private:
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;

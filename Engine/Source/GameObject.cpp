@@ -14,8 +14,7 @@
 
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
-
-
+#include "NavMeshControllerComponent.h"
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr)
@@ -291,6 +290,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	case ComponentType::TEST:
 		newComponent = new TestComponent(this);
 		break;
+	case ComponentType::NAVMESHCONTROLLER:
+		newComponent = new NavMeshControllerComponent(this);
+		break;
 	default:
 		break;
 	}
@@ -347,6 +349,7 @@ MeshRendererComponent* GameObject::getMeshRenderer() const
 		if (comp->GetType() == ComponentType::MESHRENDERER)
 			return static_cast<MeshRendererComponent*>(comp);
 	}
+	return nullptr;
 }
 
 void GameObject::RecalculateLocalTransform() {

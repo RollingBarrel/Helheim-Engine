@@ -126,12 +126,12 @@ void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive&
 	rootArchive.AddObjectArray("GameObjects", gameObjectsArchiveVector);
 }
 
-update_status ModuleScene::PreUpdate()
+update_status ModuleScene::PreUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleScene::Update()
+update_status ModuleScene::Update(float dt)
 {
 	mRoot->Update();
 	if (mDrawQuadtree)
@@ -148,7 +148,7 @@ update_status ModuleScene::Update()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleScene::PostUpdate()
+update_status ModuleScene::PostUpdate(float dt)
 {
 	if (!mGameObjectsToDelete.empty()) {
 		DeleteGameObjects();

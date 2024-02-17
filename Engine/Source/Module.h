@@ -20,17 +20,17 @@ public:
 		return true; 
 	}
 
-	virtual update_status PreUpdate()
+	virtual update_status PreUpdate(float dt)
 	{
 		return UPDATE_CONTINUE;
 	}
 
-	virtual update_status Update()
+	virtual update_status Update(float dt)
 	{
 		return UPDATE_CONTINUE;
 	}
 
-	virtual update_status PostUpdate()
+	virtual update_status PostUpdate(float dt)
 	{
 		return UPDATE_CONTINUE;
 	}

@@ -7,6 +7,7 @@
 #define LIBRARY_MATERIAL_PATH "Library/Materials/"
 #define LIBRARY_SHADER_PATH "Library/Shaders/"
 #define LIBRARY_MODEL_PATH "Library/Models/"
+#define LIBRARY_NAVMESH_PATH "Library/NavMeshes/"
 
 #define ASSETS_PATH "Assets/"
 #define ASSETS_MODEL_PATH "Assets/Models/"
@@ -36,7 +37,7 @@ public:
 
 	bool Init() override;
 	//update_status PreUpdate() override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 	//update_status PostUpdate() override;
 	bool CleanUp() override;
 

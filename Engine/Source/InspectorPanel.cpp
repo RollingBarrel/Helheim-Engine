@@ -138,6 +138,9 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
 		}
+		if (ImGui::MenuItem("NavMesh")) {
+			object->CreateComponent(ComponentType::NAVMESHCONTROLLER);
+		}
 		ImGui::EndPopup();
 	}
 }
