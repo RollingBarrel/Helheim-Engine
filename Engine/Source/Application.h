@@ -61,6 +61,8 @@ private:
     Timer* mEngineTimer;
     Timer* mGameTimer;
     Timer* mCurrentTimer = nullptr;
+
+    bool mEnableVsync = true;
 };
 
 extern Application* App;

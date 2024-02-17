@@ -47,7 +47,7 @@ public:
     bool UpdateFpsLog() const { return mUpdateFpsLog; }
     void FpsLogUpdated() { mUpdateFpsLog = false; }
 
-    unsigned int GetLowestFPS() const { return mLowestFps; }
+    float GetLowestFPS() const { return mLowestFps; }
     long GetLowestFpsTime() const { return mLowestFpsTime; }
     void SetLowestFps();
 
@@ -57,6 +57,8 @@ public:
     int GetSlowestFrame() const { return mSlowestFrame; }
     void SetSlowestFrame();
 
+    bool GetVsyncStatus() const { return mEnabledVsync; }
+    void SetVsyncStatus(bool vsyncStatus);
 
 private:
 
@@ -88,12 +90,16 @@ private:
 
     bool mUpdateFpsLog = false;         //True if enough time has passed (500ms) to calculate FPS
 
-    unsigned int mLowestFps = mFpsLimit;
+    float mLowestFps = mFpsLimit;
     long mLowestFpsTime = 0;
 
     long mFrameDelay = 0;               //Time in ms the last frame was delayed for
 
     long mSlowestFrameTime = 0;
     int mSlowestFrame = 0;
+
+    //Vsync
+
+    bool mEnabledVsync = true;
 
 };

@@ -7,6 +7,8 @@
 #include "Timer.h"
 #include "PreciseTimer.h"
 
+#define STANDARD_FPS_LIMIT 60
+
 
 TimerPanel::TimerPanel() : Panel(TIMERPANEL, true) 
 {
@@ -38,6 +40,8 @@ void TimerPanel::Draw(int windowFlags)
 	static long averageMs;
 	static std::vector<float> fpsLog;
 	static std::vector<unsigned long> msLog;
+	static bool fpsLimitEnabled = true;
+	static bool vsyncEnabled = true;
 	
 	ms = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
 
@@ -51,13 +55,26 @@ void TimerPanel::Draw(int windowFlags)
 		fps = App->GetCurrentClock()->GetFPS();
 	}
 
+	ImGui::SeparatorText("Vsync");
+	ImGui::Checkbox("Vsync enabled", &vsyncEnabled);
+	if (vsyncEnabled != App->GetCurrentClock()->GetVsyncStatus()) {
+		App->GetCurrentClock()->SetVsyncStatus(vsyncEnabled);
+	}
+
 	ImGui::SeparatorText("FPS");
+	if (!vsyncEnabled) {
+		ImGui::Checkbox("Enable FPS Limit", &fpsLimitEnabled);
+		int fps_limit = 0;
+		if (fpsLimitEnabled) {
+			fps_limit = App->GetCurrentClock()->GetFpsLimit();
+			ImGui::SliderInt("FPS Limit", &fps_limit, 10, 240);
+			
+		}
+		App->GetCurrentClock()->SetFpsLimit(fps_limit);
+		
+	}
 
-	int fps_limit = App->GetCurrentClock()->GetFpsLimit();
-	ImGui::SliderInt("FPS Limit", &fps_limit, 10, 60);
-	App->GetCurrentClock()->SetFpsLimit(fps_limit);
-
-	ImGui::Text("Lowest FPS: %u on second %.3f", App->GetCurrentClock()->GetLowestFPS(), App->GetCurrentClock()->GetLowestFpsTime()/1000.f);
+	ImGui::Text("Lowest FPS: %.2f on second %.2f", App->GetCurrentClock()->GetLowestFPS(), App->GetCurrentClock()->GetLowestFpsTime()/1000.f);
 
 	ImGui::SeparatorText("Frames");
 
@@ -66,7 +83,12 @@ void TimerPanel::Draw(int windowFlags)
 
 	ImGui::Text("Slowest frame: %d MS on frame %i", App->GetCurrentClock()->GetSlowestFrameTime(), App->GetCurrentClock()->GetSlowestFrame());
 
-	ImGui::Text("Delta time: %d ms", ms);
+	if (App->GetCurrentClock() == App->GetGameClock())
+	{
+		ImGui::Text("Game delta time: %d ms", App->GetCurrentClock()->GetDelta());
+	}
+
+	ImGui::Text("Real delta time: %d ms", ms);
 
 	ImGui::Text("Frame Count: %u", App->GetCurrentClock()->GetTotalFrames());
 
@@ -94,7 +116,7 @@ void TimerPanel::Draw(int windowFlags)
 		ImGui::Text("Real time since start: %.2f", App->GetCurrentClock()->GetRealTime() / 1000.0f);
 	}
 
-	ImGui::Text("Total Time: %.3f", App->GetCurrentClock()->GetTotalTime() / 1000.0f);
+	ImGui::Text("Total Time: %.2f", App->GetCurrentClock()->GetTotalTime() / 1000.0f);
 
 	ImGui::PopItemWidth();
 

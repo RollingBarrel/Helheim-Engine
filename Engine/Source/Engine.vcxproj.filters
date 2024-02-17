@@ -184,9 +184,6 @@
     <ClCompile Include="DebugPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="PreciseTimer.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Archive.cpp" />
     <ClCompile Include="LightningPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -333,6 +330,15 @@
     </ClCompile>
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp">
       <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="PreciseTimer.cpp">
+      <Filter>Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Archive.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -709,9 +715,6 @@
     <ClInclude Include="DebugPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="PreciseTimer.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Archive.h" />
     <ClInclude Include="LightningPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -855,6 +858,15 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h">
       <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="PreciseTimer.h">
+      <Filter>Utils\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Archive.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
