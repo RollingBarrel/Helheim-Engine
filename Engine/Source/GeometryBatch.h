@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>;
 #include "float4.h"
-#include "float4x4.h"
 
 class MeshRendererComponent;
 struct ResourceMesh;
@@ -17,36 +16,19 @@ typedef struct Command
 
 } Command;
 
-
 typedef struct Material {
-	
-	//Diffuse
-	float4 diffuseColor = float4::zero;
+	float diffuseColor[4] = {0.0f};
+	float specularColor[4] = {0.0f};
 	uint64_t diffuseTexture = 0;
-private:
-	uint64_t padding = 0; //Alignment
-public:
-	//Specular
-	float4 specularColor = float4::zero;
 	uint64_t specularTexture = 0;
-
-	//Normal
 	uint64_t normalTexture = 0;
-
-	//Shininess
 	float shininess = 0.0f;
-
-	//Options
 	bool hasDiffuseMap = false;
 	bool hasSpecularMap = false;
 	bool hasShininessMap = false;
 	bool hasNormalMap = false;
-
 private:
-	float3 padding2; //Alignment
-	float3 padding3; //Alignment
-public:
-
+	uint64_t padding = 0;
 }Material;
 
 class GeometryBatch
@@ -64,11 +46,11 @@ public:
 
 private:
 
-	std::vector<MeshRendererComponent*> mMeshComponents;
-	std::vector<ResourceMesh*> mUniqueMeshes;
+	std::vector<const MeshRendererComponent*> mMeshComponents;
+	std::vector<const ResourceMesh*> mUniqueMeshes;
 	std::vector<Attribute*> mAttributes;
 	std::vector<Command> mCommands;
-	std::vector<Material*> mMaterials;
+	//std::vector<const Material*> mMaterials;
 	unsigned int mVertexSize = 0;
 
 

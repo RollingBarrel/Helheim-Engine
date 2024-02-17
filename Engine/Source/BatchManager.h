@@ -15,5 +15,6 @@ public:
 
 private:
 	std::vector<GeometryBatch*> mBatches;
+	std::vector<uint64_t>mResidentTextures;
 };
 

@@ -83,6 +83,16 @@ const float* ResourceMesh::GetAttributeData(Attribute::Type type) const
     return nullptr;
 }
 
+bool ResourceMesh::HasAttribute(Attribute::Type type) const
+{
+    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    {
+        if (type == (*it)->type)
+            return true;
+    }
+    return false;
+}
+
 int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
 {
     unsigned int ret = 0;

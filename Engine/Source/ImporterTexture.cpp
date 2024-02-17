@@ -176,5 +176,10 @@ unsigned int ResourceTexture::CreateTexture()
 
     mTextureID = texId;
     mTextureHandle = glGetTextureHandleARB(texId);
+    glMakeTextureHandleResidentARB(mTextureHandle);
     return mTextureHandle;
+}
+
+ResourceTexture::~ResourceTexture() {
+    glMakeTextureHandleNonResidentARB(mTextureHandle);
 }

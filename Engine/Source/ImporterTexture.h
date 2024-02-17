@@ -2,6 +2,7 @@
 
 struct ResourceTexture
 {
+	~ResourceTexture();
 	bool HasAlpha() const { return mHasAlpha; }
 
 	unsigned int mWidth;

@@ -59,6 +59,8 @@ struct ResourceMesh
 	int GetAttributeIdx(Attribute::Type type) const;
 	void AddAttribute(const Attribute& attribute, float* attributeData);
 	const float* GetAttributeData(Attribute::Type type) const;
+	bool HasAttribute(Attribute::Type type) const;
+	unsigned int NumAttributes() const { return mAttributes.size(); }
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; };
 	unsigned int GetVertexSize() const { return mVertexSize; }
 	unsigned int GetNumVertices() const { return mNumVertices; }

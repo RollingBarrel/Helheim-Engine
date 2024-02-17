@@ -1,44 +1,16 @@
 #version 460 core
 #extension GL_ARB_bindless_texture : require
-struct Material
-{
-	//Diffuse
-	vec3 diffuseColor;
-	sampler2D diffuseTexture;
-	//Specular
-	vec3 specularColor;
-	sampler2D specularTexture;
-	//Normal
-	sampler2D normalTexture;
-	
-	float shininess; //Shininess
-	//vec3 ambientColor; //Ambient color
-	
-	//Options
-	bool hasDiffuseMap;
-	bool hasSpecularMap;
-	bool hasShininessMap;
-	bool hasNormalMap;
-};
-
-in VertToFrag {
-	vec2 uv;
-	vec3 sPos;
-	vec3 norm;
-	vec4 tang;
-};
-
-//uniform Material material;
-
 
 //Light properties
-layout(std140, binding = 1) uniform DirAmbientLights {
+layout(std140, binding = 1) uniform DirAmbientLights 
+{
 	vec3 dirDir;
 	vec4 dirCol; //w is the intensity (0-5)
 	vec3 ambientCol;
 };
 layout (location = 1)uniform vec3 cPos;
-struct PointLight{
+struct PointLight
+{
 	vec4 pos; //w is the radius
 	vec4 col;//a is intensity
 };
@@ -47,7 +19,8 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-struct SpotLight{
+struct SpotLight
+{
 	float radius;
 	vec4 pos; //w intensity
 	vec4 aimD;//w cos inner angle
@@ -58,10 +31,35 @@ readonly layout(std430, binding = 1) buffer SpotLights
 	uint numSLights;
 	SpotLight sLights[];
 };
+struct Material
+{
+	vec3 diffuseColor;
+	vec3 specularColor;
+
+	sampler2D diffuseTexture;
+	sampler2D specularTexture;
+	sampler2D normalTexture;
+
+	float shininess;
+	bool hasDiffuseMap;
+	bool hasSpecularMap;
+	bool hasShininessMap;
+	bool hasNormalMap;
+};
+readonly layout(std430, binding = 11) buffer Materials 
+{
+	Material materials[];
+};
 
 
+in VertToFrag {
+	vec2 uv;
+	vec3 sPos;
+	vec3 norm;
+	vec4 tang;
+	flat uint instace_index;
+};
 out vec4 outColor;
-flat in int  instace_index;
 
 #define PI 3.1415926535897932384626433832795
 vec3 diffuseColor;
@@ -69,11 +67,6 @@ vec3 specularColor;
 float shininess;
 vec3 V;
 vec3 N;
-
-readonly layout(std140 , binding = 11) buffer Materials {
-	Material materials[];
-};
-
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {

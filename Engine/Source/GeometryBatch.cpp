@@ -19,8 +19,10 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	mUniqueMeshes.push_back(mesh->GetResourceMesh());
 	mAttributes = mesh->GetResourceMesh()->GetAttributes();
 	mVertexSize = mesh->GetResourceMesh()->GetVertexSize();
-	mesh->GetResourceMesh()->SetVboPosition(0);
-	mesh->GetResourceMesh()->SetEboPosition(0);
+
+	ResourceMesh& rMesh = const_cast<ResourceMesh&>(*mesh->GetResourceMesh());
+	rMesh.SetVboPosition(0);
+	rMesh.SetEboPosition(0);
 
 	glGenVertexArrays(1, &mVao);
 	glBindVertexArray(mVao);
@@ -69,70 +71,65 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 {
 	mMeshComponents.push_back(cMesh);
 
-
-	bool found = false;
-	for (auto mesh : mUniqueMeshes) {
-		if (mesh->mUID == cMesh->GetResourceMesh()->mUID) {
-			found = true;
-			cMesh->GetResourceMesh()->SetVboPosition(mesh->GetVboPosition());
-			cMesh->GetResourceMesh()->SetEboPosition(mesh->GetEboPosition());
+	ResourceMesh& rMesh = const_cast<ResourceMesh&>(*cMesh->GetResourceMesh());
+	for (const ResourceMesh* mesh : mUniqueMeshes) {
+		if (mesh->mUID == rMesh.mUID) {
+			rMesh.SetVboPosition(mesh->GetVboPosition());
+			rMesh.SetEboPosition(mesh->GetEboPosition());
+			return;
 		}
 	}
 
+	mUniqueMeshes.push_back(&rMesh);
 
-	if (!found) {
-
-		mUniqueMeshes.push_back(cMesh->GetResourceMesh());
-
-		unsigned int  destVbo, destEbo;
-		unsigned int newVboSize = mVboSize + (mVertexSize * cMesh->GetResourceMesh()->GetNumVertices());
-		unsigned int newEboSize = mEboSize + cMesh->GetResourceMesh()->GetNumIndices() * sizeof(unsigned int);
+	unsigned int  destVbo, destEbo;
+	unsigned int newVboSize = mVboSize + (mVertexSize * rMesh.GetNumVertices());
+	unsigned int newEboSize = mEboSize + rMesh.GetNumIndices() * sizeof(unsigned int);
 
 
-		glBindVertexArray(mVao);
-		glGenBuffers(1, &destVbo);
-		glBindBuffer(GL_ARRAY_BUFFER, destVbo);
-		glGenBuffers(1, &destEbo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, destEbo);
+	glBindVertexArray(mVao);
+	glGenBuffers(1, &destVbo);
+	glBindBuffer(GL_ARRAY_BUFFER, destVbo);
+	glGenBuffers(1, &destEbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, destEbo);
 
 
-		glBufferData(GL_ARRAY_BUFFER, newVboSize, nullptr, GL_STATIC_DRAW);
-		glCopyNamedBufferSubData(mVbo, destVbo, 0, 0, mVboSize);
-		glDeleteBuffers(1, &mVbo);
+	glBufferData(GL_ARRAY_BUFFER, newVboSize, nullptr, GL_STATIC_DRAW);
+	glCopyNamedBufferSubData(mVbo, destVbo, 0, 0, mVboSize);
+	glDeleteBuffers(1, &mVbo);
 
-		glBufferSubData(GL_ARRAY_BUFFER, mVboSize, cMesh->GetResourceMesh()->GetNumVertices() * mVertexSize, cMesh->GetResourceMesh()->GetInterleavedData());
-		
+	glBufferSubData(GL_ARRAY_BUFFER, mVboSize, rMesh.GetNumVertices() * mVertexSize, rMesh.GetInterleavedData());
+	
 
-		cMesh->GetResourceMesh()->SetVboPosition(mVboSize);
-		mVbo = destVbo;
-		mVboSize = newVboSize;
+	rMesh.SetVboPosition(mVboSize);
+	mVbo = destVbo;
+	mVboSize = newVboSize;
 
 	
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, newEboSize, nullptr, GL_STATIC_DRAW);
-		glCopyNamedBufferSubData(mEbo, destEbo, 0, 0, mEboSize);
-		glDeleteBuffers(1, &mEbo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, newEboSize, nullptr, GL_STATIC_DRAW);
+	glCopyNamedBufferSubData(mEbo, destEbo, 0, 0, mEboSize);
+	glDeleteBuffers(1, &mEbo);
 
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, mEboSize, cMesh->GetResourceMesh()->GetNumIndices() * sizeof(unsigned int), cMesh->GetResourceMesh()->GetIndices());
-		
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, mEboSize, rMesh.GetNumIndices() * sizeof(unsigned int), rMesh.GetIndices());
+	
 
-		cMesh->GetResourceMesh()->SetEboPosition(mEboSize);
-		mEbo = destEbo;
-		mEboSize = newEboSize;
+	rMesh.SetEboPosition(mEboSize);
+	mEbo = destEbo;
+	mEboSize = newEboSize;
 
 
-		unsigned int idx = 0;
-		for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
-		{
-			glEnableVertexAttribArray(idx);
-			glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+	unsigned int idx = 0;
+	for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+	{
+		glEnableVertexAttribArray(idx);
+		glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
 
-			++idx;
-		}
-
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		++idx;
 	}
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 }
 
@@ -154,13 +151,6 @@ void GeometryBatch::Draw()
 
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
-
-	
-	//unsigned int offset = 0;
-	//for (Command* command : mCommands) {
-	//	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, offset, sizeof(Command), command);
-	//	offset += sizeof(Command);
-	//}
 	
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
@@ -168,39 +158,39 @@ void GeometryBatch::Draw()
 	
 
 	unsigned int offset = 0;
-	for (MeshRendererComponent* mesh : mMeshComponents) {
+	for (const MeshRendererComponent* mesh : mMeshComponents) {
 
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().ptr());
 		offset += sizeof(float) * 16;
 	}
 
 
-	offset = 0;
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
 
-	for (MeshRendererComponent* mesh : mMeshComponents) {
+	offset = 0;
+	for (const MeshRendererComponent* mesh : mMeshComponents) {
 
-		Material* material = new Material();
-
-		material->diffuseColor = mesh->GetMaterial()->mDiffuseFactor;
-		material->diffuseTexture = mesh->GetMaterial()->mDiffuseTexture->mTextureHandle;
-		material->specularColor = float4(mesh->GetMaterial()->mSpecularFactor, 0);
-		material->specularTexture = mesh->GetMaterial()->mSpecularGlossinessTexture->mTextureHandle;
-		material->normalTexture = mesh->GetMaterial()->mNormalTexture->mTextureHandle;
-		material->shininess = mesh->GetMaterial()->mGlossinessFactor;
-		material->hasDiffuseMap = mesh->GetMaterial()->mEnableDiffuseTexture;
-		material->hasSpecularMap = mesh->GetMaterial()->mEnableSpecularGlossinessTexture;
-		material->hasShininessMap = mesh->GetMaterial()->mEnableShinessMap;
-		material->hasNormalMap = mesh->GetMaterial()->mEnableNormalMap;
-
-		mMaterials.push_back(material);
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), material);
+		const ResourceMaterial* rMaterial = mesh->GetMaterial();
+		Material material;
+		memcpy(material.diffuseColor, rMaterial->mDiffuseFactor.ptr(), sizeof(float) * 4);
+		material.diffuseTexture = rMaterial->mDiffuseTexture->mTextureHandle;
+		memcpy(material.specularColor, rMaterial->mSpecularFactor.ptr(), sizeof(float) * 4);
+		material.specularTexture = rMaterial->mSpecularGlossinessTexture->mTextureHandle;
+		material.normalTexture = rMaterial->mNormalTexture->mTextureHandle;
+		material.shininess = rMaterial->mGlossinessFactor;
+		material.hasDiffuseMap = rMaterial->mEnableDiffuseTexture;
+		material.hasSpecularMap = rMaterial->mEnableSpecularGlossinessTexture;
+		material.hasShininessMap = rMaterial->mEnableShinessMap;
+		material.hasNormalMap = rMaterial->mEnableNormalMap;
+		
+		//mMaterials.push_back(material);
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 		offset += sizeof(Material);
 
-		glMakeTextureHandleResidentARB(material->diffuseTexture);
-		glMakeTextureHandleResidentARB(material->specularTexture);
-		glMakeTextureHandleResidentARB(material->normalTexture);
+		//glMakeTextureHandleResidentARB(material.diffuseTexture);
+		//glMakeTextureHandleResidentARB(material.specularTexture);
+		//glMakeTextureHandleResidentARB(material.normalTexture);
 	}
 
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
@@ -211,22 +201,19 @@ void GeometryBatch::Draw()
 	glUseProgram(0);
 	glBindVertexArray(0);
 
-	for (auto material : mMaterials) {
-		glMakeTextureHandleNonResidentARB(material->diffuseTexture);
-		glMakeTextureHandleNonResidentARB(material->specularTexture);
-		glMakeTextureHandleNonResidentARB(material->normalTexture);
-	}
-
-	for (auto material : mMaterials) {
-		delete material;
-	}
-
-	mMaterials.clear();
+	//for (const Material* material : mMaterials) {
+	//	glMakeTextureHandleNonResidentARB(material->diffuseTexture);
+	//	glMakeTextureHandleNonResidentARB(material->specularTexture);
+	//	glMakeTextureHandleNonResidentARB(material->normalTexture);
+	//}
+	//
+	//for (const Material* material : mMaterials) {
+	//	delete material;
+	//}
+	//
+	//mMaterials.clear();
 	mCommands.clear();
 
 	App->GetOpenGL()->UnbindSceneFramebuffer();
-
-
-	
 }
 

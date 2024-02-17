@@ -21,15 +21,13 @@ out VertToFrag {
 	vec3 sPos;
 	vec3 norm;
 	vec4 tang;
+	flat uint instace_index;
 };
 
 
 readonly layout(std430, row_major, binding = 10) buffer Transforms {
 	mat4 models[];
 };
-
-
-flat out int  instace_index;
 
 void main()
 {

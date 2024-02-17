@@ -12,64 +12,42 @@ BatchManager::~BatchManager()
 	for (GeometryBatch* batch : mBatches) {
 		delete batch;
 	}
-
-
 }
 
-void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent) //Que asco de funcion dios como que un triple for
+void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent)
 {
 
-	bool batchFound = false;
-	int batchPos = -1;
-
-
-	
-
-
-	for (int i = 0; i < mBatches.size() && !batchFound; ++i) 
+	const ResourceMesh* rMesh = meshComponent->GetResourceMesh();
+	for (int i = 0; i < mBatches.size(); ++i)
 	{
 		const std::vector<Attribute*> batchAttributes = mBatches[i]->GetAttributes();
-		const std::vector<Attribute*> meshAttributes = meshComponent->GetResourceMesh()->GetAttributes();
-		bool sameAttibutes = true;
-
-		if (batchAttributes.size() == meshAttributes.size() && mBatches[i]->GetVertexSize() == meshComponent->GetResourceMesh()->GetVertexSize()) {
-
-			for (int j = 0; j < batchAttributes.size() && sameAttibutes; ++j)
+		if (batchAttributes.size() == rMesh->NumAttributes())
+		{
+			int j = 0;
+			while (j < batchAttributes.size())
 			{
-				const std::vector<Attribute*> meshAttributes = meshComponent->GetResourceMesh()->GetAttributes();
-				bool found = false;
-
-				for (int k = 0; k < meshAttributes.size() && !found; ++k)
+				if (!rMesh->HasAttribute(batchAttributes[j]->type))
 				{
-					if (meshAttributes[k]->type == batchAttributes[j]->type)
-					{
-						found = true;
-					}
+					break;
 				}
-				if (!found)
-				{
-					sameAttibutes = false;
-				}
+				++j;
 			}
-
-			if (sameAttibutes) {
-				batchFound = true;
-				batchPos = i;
+			if (j == batchAttributes.size())
+			{
+				//Found
+				mBatches[i]->AddMesh(meshComponent);
+				meshComponent->SetBatch(mBatches[i]);
+				return;
 			}
-
 		}
 	}
 
-	if (batchFound) {
-		 mBatches[batchPos]->AddMesh(meshComponent);
-		 meshComponent->SetBatch(mBatches[batchPos]);
-	}
-	else {
+	//Not Found
+	GeometryBatch* newBatch = new GeometryBatch(meshComponent);
+	mBatches.push_back(newBatch);
+	meshComponent->SetBatch(newBatch);
 
-		GeometryBatch* newBatch = new GeometryBatch(meshComponent);
-		mBatches.push_back(newBatch);
-		meshComponent->SetBatch(newBatch);
-	}
+
 
 }
 
