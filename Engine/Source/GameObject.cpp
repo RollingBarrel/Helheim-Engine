@@ -159,8 +159,8 @@ void GameObject::Enable()
 
 void GameObject::Disable()
 {
-	mIsEnabled = false;
 	DisableInHierarchy();
+	mIsEnabled = false;
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -392,6 +392,7 @@ void GameObject::DisableInHierarchy()
 	{
 		child->DisableInHierarchy();
 	}
+
 	mIsActive = false;
 }
 

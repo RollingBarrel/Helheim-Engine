@@ -98,6 +98,10 @@ void HierarchyPanel::DrawTree(GameObject* node)
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 	if (!node->mIsRoot) {
 		bool selected = mMarked.find(node) != mMarked.end();
+		if (!node->IsActive())
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.50f, 0.50f, 0.50f, 1.00f));
+		}
 		ShiftClick(node, selected);
 		ImGui::InvisibleButton("##", ImVec2(-1, 5)); //This can be changed to modify the spacing between elements
 		DragAndDropTarget(node, true);
@@ -109,6 +113,10 @@ void HierarchyPanel::DrawTree(GameObject* node)
 		}
 		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->mID, baseFlags, node->mName.c_str()) && (node->mChildren.size() > 0);
 		ImGui::PopStyleVar();
+		if (!node->IsActive())
+		{
+			ImGui::PopStyleColor();
+		}
 		DragAndDropSource(node);
 		OnLeftCkickNode(node);
 		OnRightClickNode(node);
