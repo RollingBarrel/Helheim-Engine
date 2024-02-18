@@ -56,10 +56,10 @@ void NavMeshControllerComponent::HandleBuild() {
 	const MeshRendererComponent* testMesh{mMeshRendererComponents[0]};
 	
 	if (testMesh) {
-		 float maxX = testMesh->GetAABB().maxPoint.x;
-		 float minX = testMesh->GetAABB().minPoint.x;
-		 const float* maxPoint = static_cast<const float*>(&maxX);
-		 const float* minPoint = static_cast<const float*>(&minX);
+		 float3 meshMax = testMesh->GetAABB().maxPoint;
+		 float3 meshMin = testMesh->GetAABB().minPoint;
+		 const float maxPoint[3] = { meshMax.x, meshMax.y, meshMax.z};
+		 const float minPoint[3] = { meshMin.x, meshMin.y, meshMin.z };
 		 int gridWidth=0;
 		 int gridHeight=0;
 
