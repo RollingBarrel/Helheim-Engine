@@ -18,6 +18,7 @@
 #include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
+#include "TimerPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -37,6 +38,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
+	mPanels[TIMERPANEL] = new TimerPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -169,6 +171,13 @@ void ModuleEditor::ShowMainMenuBar() {
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
 				}
 			}
+			if (ImGui::MenuItem("Timer")) {
+				Panel* timerPanel = mPanels[TIMERPANEL];
+				if (timerPanel)
+				{
+					timerPanel->IsOpen() ? timerPanel->Close() : timerPanel->Open();
+				}
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
@@ -271,6 +280,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
+	Panel* timerPanel = mPanels[TIMERPANEL];
 
 	if (openPanels == true) {
 		console->Open();
@@ -282,6 +292,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		quadTree->Open();
 		projectPanel->Open();
 		lightningPanel->Open();
+		timerPanel->Open();
 	}
 	else {
 		console->Close();
@@ -293,5 +304,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		quadTree->Close();
 		projectPanel->Close();
 		lightningPanel->Close();
+		timerPanel->Close();
 	}
 }
