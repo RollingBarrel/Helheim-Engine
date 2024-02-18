@@ -28,9 +28,11 @@ bool ModuleResource::Init() {
 		{".png", Resource::Type::Texture},
 		{".jpg", Resource::Type::Texture},
 		{".bmp", Resource::Type::Texture},
+		{".dds", Resource::Type::Texture},
+
 		// Add more mappings for other resource types as needed
 	};
-
+	return true;
 }
 
 unsigned int ModuleResource::Find(const char* assetsFile) const
@@ -61,7 +63,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 
 	// Create copy in assets folder
 	const char* assetsCopiedFile = DuplicateFileInAssetDir(importedFilePath, type);
-	if (assetsCopiedFile)
+	if (!assetsCopiedFile)
 	{
 		LOG("File could not be duplicated: %s", importedFilePath);
 		return 0;
@@ -76,17 +78,18 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 		return 0;
 	}
 
-	// Create the Meta file for the Asset
-	if (!CreateAssetsMeta(*resource))
-	{
-		LOG("Couldn't create a .meta File");
-		return 0;
-	}
-	LOG("Succesfully created a .meta File");
+	//// Create the Meta file for the Asset
+	//if (!CreateAssetsMeta(*resource))
+	//{
+	//	LOG("Couldn't create a .meta File");
+	//	return 0;
+	//}
+	//LOG("Succesfully created a .meta File");
 
 	unsigned int ret = resource->GetUID();
 
 	delete resource; // Unload the resource after importing, we should only use the ID
+	delete assetsCopiedFile;
 
 	return ret;
 }
@@ -111,9 +114,19 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 
 Resource* ModuleResource::TryToLoadResource(const unsigned int uid, Resource::Type type)
 {
+	// This has a hardcode on the file extension if u have a better way to do it please do it, i'm useless
+	Resource* ret;
+	std::string libraryFilePath;
+	switch (type) {
+	case Resource::Type::Texture: 
+		libraryFilePath = LIBRARY_TEXTURE_PATH + std::to_string(uid) + ".tex";
+		ret = Importer::Texture::Load(libraryFilePath.c_str(), uid);
+	default:
+		LOG("Can't Load a resource with UID %i", uid);
+		return nullptr;
+	}
 	//App->GetFileSystem()->GetPathFromFileName(uid);
-
-	return nullptr;
+	return ret;
 }
 
 void ModuleResource::ReleaseResource(unsigned int uid)
@@ -170,12 +183,15 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	return ret;
 }
 
+
+
 const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
 {
-	std::string assetName; 
-	std::string extensionName; 
+	std::string assetName;
+	std::string extensionName;
 	App->GetFileSystem()->SplitPath(importedFilePath, &assetName, &extensionName);
 	std::string assetsFilePath;
+
 	switch (type) {
 	case Resource::Type::Texture:
 		assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
@@ -198,16 +214,20 @@ const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 		LOG("Unable to Copy, this file %s", importedFilePath);
 		break;
 	}
-	std::string assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
 
 	bool ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, assetsFilePath.c_str());
 
-	if (ret) 
-	{
-		return assetsFilePath.c_str();
+	if (ret) {
+		// Asignar memoria dinámicamente para el char* y copiar la cadena assetsFilePath
+		char* copiedFilePath = new char[assetsFilePath.length() + 1];
+		strcpy_s(copiedFilePath, assetsFilePath.length() + 1, assetsFilePath.c_str());
+		return copiedFilePath;
 	}
-	return nullptr;
+	else {
+		return nullptr; // Devuelve nullptr si la copia no fue exitosa
+	}
 }
+
 
 Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
 {
@@ -262,6 +282,6 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 	ret = App->GetFileSystem()->Save(metaName.c_str(), jsonStr, strlen(jsonStr));
 	
 	RELEASE_ARRAY(jsonStr);
-	
+	bool debug = true;
 	return ret;
 }

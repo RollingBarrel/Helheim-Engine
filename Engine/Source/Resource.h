@@ -23,8 +23,6 @@ public:
 	Resource(unsigned int uid);
 	virtual ~Resource();
 
-	virtual std::string GetExtension() = 0;
-
 	Type GetType() const { return mType; };
 	unsigned int GetUID() const { return mUID; };
 	const std::string GetAssetsFile() const { return mAssetsFile; };

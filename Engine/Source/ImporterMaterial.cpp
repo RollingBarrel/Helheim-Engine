@@ -51,8 +51,8 @@ void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Ma
                     const tinygltf::Image& image = model.images[diffuseMap.source];
                     const char* imageUri = image.uri.c_str();
 
-                    ResourceTexture* diffuseTexture = new ResourceTexture(math::LCG().Int());
-                    Importer::Texture::Import(imageUri, diffuseTexture);
+                    unsigned int uid = math::LCG().Int();
+                    ResourceTexture* diffuseTexture = Importer::Texture::Import(imageUri, uid);
                     rMaterial->mDiffuseTexture = diffuseTexture;
 
                     rMaterial->mEnableDiffuseTexture = true;
@@ -72,13 +72,13 @@ void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Ma
                     const tinygltf::Image& image = model.images[specularMap.source];
                     const char* imageUri = image.uri.c_str();
 
-                    ResourceTexture* specularTexture = new ResourceTexture(math::LCG().Int());
-                    Importer::Texture::Import(imageUri, specularTexture);
+                    unsigned int uid = math::LCG().Int();
+                    ResourceTexture* specularTexture = Importer::Texture::Import(imageUri, uid);
                     rMaterial->mSpecularGlossinessTexture = specularTexture;
 
                     rMaterial->mEnableSpecularGlossinessTexture = true;
 
-                    if (specularTexture->mHasAlpha) {
+                    if (specularTexture->HasAlpha()) {
                         rMaterial->mEnableShinessMap = true;
                     }
                 }
@@ -99,8 +99,8 @@ void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Ma
                         const tinygltf::Image& image = model.images[normalMap.source];
                         const char* imageUri = image.uri.c_str();
 
-                        ResourceTexture* normalTexture = new ResourceTexture(math::LCG().Int());
-                        Importer::Texture::Import(imageUri, normalTexture);
+                        unsigned int uid = math::LCG().Int();
+                        ResourceTexture* normalTexture = Importer::Texture::Import(imageUri, uid);
                         rMaterial->mNormalTexture = normalTexture;
 
                         rMaterial->mEnableNormalMap = true;
@@ -118,8 +118,8 @@ void Importer::Material::Import(const tinygltf::Model& model, const tinygltf::Ma
             const tinygltf::Image& image = model.images[texture.source];
             const char* imageUri = image.uri.c_str();
 
-            ResourceTexture* diffuseTexture = new ResourceTexture(math::LCG().Int());
-            Importer::Texture::Import(imageUri, diffuseTexture);
+            unsigned int uid = math::LCG().Int();
+            ResourceTexture* diffuseTexture = Importer::Texture::Import(imageUri, uid);
             rMaterial->mDiffuseTexture = diffuseTexture;
 
             rMaterial->mEnableDiffuseTexture = true;
@@ -195,15 +195,15 @@ void Importer::Material::Load(ResourceMaterial* ourMaterial, const char* fileNam
 
     memcpy(texturesUID, cursor, bytes);
     cursor += bytes;
-    ourMaterial->mDiffuseTexture = new ResourceTexture();
-    if(texturesUID[0])
-        Importer::Texture::Load(ourMaterial->mDiffuseTexture, std::to_string(texturesUID[0]).c_str());
-    ourMaterial->mSpecularGlossinessTexture = new ResourceTexture();
-    if (texturesUID[1])
-        Importer::Texture::Load(ourMaterial->mSpecularGlossinessTexture, std::to_string(texturesUID[1]).c_str());
-    ourMaterial->mNormalTexture = new ResourceTexture();
-    if (texturesUID[2])
-        Importer::Texture::Load(ourMaterial->mNormalTexture, std::to_string(texturesUID[2]).c_str());
+    //ourMaterial->mDiffuseTexture = new ResourceTexture();
+    //if(texturesUID[0])
+    //    Importer::Texture::Load(ourMaterial->mDiffuseTexture, std::to_string(texturesUID[0]).c_str());
+    //ourMaterial->mSpecularGlossinessTexture = new ResourceTexture();
+    //if (texturesUID[1])
+    //    Importer::Texture::Load(ourMaterial->mSpecularGlossinessTexture, std::to_string(texturesUID[1]).c_str());
+    //ourMaterial->mNormalTexture = new ResourceTexture();
+    //if (texturesUID[2])
+    //    Importer::Texture::Load(ourMaterial->mNormalTexture, std::to_string(texturesUID[2]).c_str());
 
     bool enables[4];
     bytes = sizeof(enables);

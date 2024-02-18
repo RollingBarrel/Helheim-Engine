@@ -11,6 +11,6 @@ namespace Importer
 
 		void Save(const ResourceTexture* ourTexture);
 
-		unsigned int Load( const char* fileName = nullptr );
+		ResourceTexture* Load(const char* filePath, unsigned int uid);
 	}
 };

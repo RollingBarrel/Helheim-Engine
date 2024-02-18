@@ -39,10 +39,6 @@ ResourceTexture::ResourceTexture(
     mUID = uid;
     mType = Type::Texture;
 
-    std::string assetName;
-    std::string extensionName;
-    App->GetFileSystem()->SplitPath(path, &assetName, &extensionName);
-    mAssetsFile = ASSETS_TEXTURE_PATH + assetName + extensionName;
     mAssetsFile = path;
     mLibraryFile = LIBRARY_TEXTURE_PATH + std::to_string(mUID) + ".tex";
 
