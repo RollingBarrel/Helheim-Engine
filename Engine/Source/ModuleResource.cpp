@@ -78,13 +78,13 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 		return 0;
 	}
 
-	//// Create the Meta file for the Asset
-	//if (!CreateAssetsMeta(*resource))
-	//{
-	//	LOG("Couldn't create a .meta File");
-	//	return 0;
-	//}
-	//LOG("Succesfully created a .meta File");
+	// Create the Meta file for the Asset
+	if (!CreateAssetsMeta(*resource))
+	{
+		LOG("Couldn't create a .meta File");
+		return 0;
+	}
+	LOG("Succesfully created a .meta File");
 
 	unsigned int ret = resource->GetUID();
 
@@ -251,11 +251,8 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 	bool ret = true;
 
 	// Get the path of the .meta file
-	std::string assetName = "";
-	std::string assetExtension = "";
-	App->GetFileSystem()->SplitPath(resource.GetAssetsFile().c_str(), &assetName, &assetExtension);
 
-	std::string metaName = assetName + assetExtension + ".meta";
+	std::string metaName = resource.GetAssetsFile() + ".meta";
 
 	// Create a JSON document
 	rapidjson::Document document;
@@ -279,9 +276,10 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 	const char* jsonStr = buffer.GetString();
 
 	// Save the JSON string to the .meta file
-	ret = App->GetFileSystem()->Save(metaName.c_str(), jsonStr, strlen(jsonStr));
-	
-	RELEASE_ARRAY(jsonStr);
+	ret = App->GetFileSystem()->Save(metaName.c_str(), buffer.GetString(), strlen(buffer.GetString()));
+
+	buffer.Clear();
+
 	bool debug = true;
 	return ret;
 }

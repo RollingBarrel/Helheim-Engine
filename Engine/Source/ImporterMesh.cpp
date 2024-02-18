@@ -144,7 +144,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             for (uint32_t i = 0; i < indAcc.count; ++i)
             {
                 //TODO: Change this
-                rMesh->GetIndices()[i] = bufferInd[i];
+                (rMesh->GetIndices())[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
@@ -152,7 +152,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
             for (uint16_t i = 0; i < indAcc.count; ++i)
             {
-                rMesh->GetIndices()[i] = bufferInd[i];
+                (rMesh->GetIndices())[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
@@ -160,7 +160,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
             for (uint8_t i = 0; i < indAcc.count; ++i)
             {
-                rMesh->GetIndices()[i] = bufferInd[i];
+                (rMesh->GetIndices())[i] = bufferInd[i];
             }
         }
     }
@@ -212,7 +212,7 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     unsigned int size = sizeof(header) + sizeof(unsigned int) * mesh->GetNumberIndices();
     for (std::vector<Attribute*>::const_iterator it = mesh->GetAttributes().cbegin(); it != mesh->GetAttributes().cend(); ++it)
     {
-        size += (*it)->size * mesh->GetNumberIndices() + sizeof(Attribute);
+        size += (*it)->size * mesh->GetNumberVertices() + sizeof(Attribute);
     }
 
     char* fileBuffer = new char[size];

@@ -92,6 +92,7 @@ void Importer::Model::Save(const ResourceModel* ourModel)
         cursor += bytes;
     }
 
+    //Quitar 
     bytes = sizeof(ourModel->GetUID());
     unsigned int uid = ourModel->GetUID();
     memcpy(cursor, &uid, bytes);
