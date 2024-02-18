@@ -37,7 +37,7 @@ bool ModuleInput::Init()
 
 
 // Called each loop iteration
-update_status ModuleInput::PreUpdate()
+update_status ModuleInput::PreUpdate(float dt)
 {
     //TODO: ugly reset !!
     if (wheelY != 0)
@@ -80,7 +80,8 @@ update_status ModuleInput::PreUpdate()
     }
 
     //Mouse snapshot
-    unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mX, &mY);
+    unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mMouseMotionX, &mMouseMotionY);
+    SDL_GetMouseState(&mMousePositionX, &mMousePositionY);
     for (int i = 0; i < MouseKey::NUM_MOUSE_BUTTONS; ++i)
     {
         unsigned int pressed = mouseBitmask & SDL_BUTTON(i + 1);

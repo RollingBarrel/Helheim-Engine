@@ -33,7 +33,7 @@ bool ModuleScene::Init()
 	//test.TestSceneWithGameObjects();
 
 	//Save("Scene");
-	Load("scene");
+	//Load("scene");
 
 	return true;
 }
@@ -123,12 +123,12 @@ void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive&
 	rootArchive.AddObjectArray("GameObjects", gameObjectsArchiveVector);
 }
 
-update_status ModuleScene::PreUpdate()
+update_status ModuleScene::PreUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleScene::Update()
+update_status ModuleScene::Update(float dt)
 {
 	mRoot->Update();
 	if (mDrawQuadtree)
@@ -145,7 +145,7 @@ update_status ModuleScene::Update()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleScene::PostUpdate()
+update_status ModuleScene::PostUpdate(float dt)
 {
 	if (!mGameObjectsToDelete.empty()) {
 		DeleteGameObjects();
@@ -204,7 +204,7 @@ void ModuleScene::DrawRenderList()
 	for (GameObject* objectToRender : mRenderList)
 	{
 		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
-		MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
 
 		// Enable/disable mesh renderer component
 		if(meshRenderer->IsEnabled())

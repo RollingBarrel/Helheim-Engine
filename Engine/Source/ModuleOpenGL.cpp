@@ -5,6 +5,11 @@
 #include "SDL.h"
 #include "glew.h"
 #include "ModuleCamera.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -118,11 +123,7 @@ bool ModuleOpenGL::Init()
 	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
 
 	//Initialize camera uniforms
-	glGenBuffers(1, &cameraUnis);
-	glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * 16 * 2, NULL, GL_STATIC_DRAW);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, cameraUnis);
-	//glBindBufferRange(GL_UNIFORM_BUFFER, 2, uboExampleBlock, 0, sizeof(float)*16*2);
+	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
 	SetOpenGlCameraUniforms();
 
 	InitSkybox();
@@ -132,21 +133,19 @@ bool ModuleOpenGL::Init()
 	glUseProgram(program);
 	glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
 	glUseProgram(0);
-	glGenBuffers(1, &lightUnis);
-	glBindBuffer(GL_UNIFORM_BUFFER, lightUnis);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(mDirAmb), &mDirAmb, GL_STATIC_DRAW);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightUnis);
 
-	glGenBuffers(1, &mPointSSBO);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-	unsigned int nPointLights = mPointLights.size();
-	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(nPointLights) + sizeof(PointLight) * nPointLights, nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(nPointLights), &nPointLights);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
+	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirAmb), &mDirAmb);
+
+	const uint32_t numPointLights[4] = { mPointLights.size(), 0, 0, 0 };
+	mPointsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 0, 16, &numPointLights);
+
+	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
+	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
+
 	return true;
 }
 
-update_status ModuleOpenGL::PreUpdate()
+update_status ModuleOpenGL::PreUpdate(float dt)
 {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
@@ -176,7 +175,7 @@ update_status ModuleOpenGL::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleOpenGL::PostUpdate()
+update_status ModuleOpenGL::PostUpdate(float dt)
 {
 
 	SDL_GL_SwapWindow(App->GetWindow()->window);
@@ -189,12 +188,14 @@ bool ModuleOpenGL::CleanUp()
 {
 	LOG("Destroying renderer");
 
+	delete mPointsBuffer;
+	delete mSpotsBuffer;
+	delete mDLightUniBuffer;
+
 	glDeleteProgram(mPbrProgramId);
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteBuffers(1, &mSkyVbo);
-	glDeleteBuffers(1, &cameraUnis);
-	glDeleteBuffers(1, &lightUnis);
 	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
@@ -226,11 +227,10 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
-	if (context != nullptr)
+	if (mCameraUniBuffer != nullptr)
 	{
-		glBindBuffer(GL_UNIFORM_BUFFER, cameraUnis);
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float) * 16, App->GetCamera()->GetViewMatrix().Transposed().ptr());
-		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float) * 16, sizeof(float) * 16, App->GetCamera()->GetProjectionMatrix().Transposed().ptr());
+		mCameraUniBuffer->UpdateData(App->GetCamera()->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(App->GetCamera()->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 		glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
@@ -263,6 +263,9 @@ static unsigned int LoadCubeMap()
 
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	}
 	return ret;
 }
@@ -347,10 +350,10 @@ char* ModuleOpenGL::LoadShaderSource(const char* shaderFileName) const
 	return data;
 }
 
-unsigned ModuleOpenGL::CompileShader(unsigned type, const char* source) const
+unsigned int ModuleOpenGL::CompileShader(unsigned type, const char* source) const
 {
 
-	unsigned shaderID = glCreateShader(type);
+	unsigned int shaderID = glCreateShader(type);
 
 	glShaderSource(shaderID, 1, &source, 0);
 	glCompileShader(shaderID);
@@ -372,9 +375,9 @@ unsigned ModuleOpenGL::CompileShader(unsigned type, const char* source) const
 	return shaderID;
 }
 
-unsigned ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
+unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
 {
-	unsigned programID = glCreateProgram();
+	unsigned int programID = glCreateProgram();
 	glAttachShader(programID, vertexShaderID);
 	glAttachShader(programID, fragmentShaderID);
 	glLinkProgram(programID);
@@ -397,7 +400,7 @@ unsigned ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsig
 	glDeleteShader(fragmentShaderID);
 	return programID;
 }
-unsigned ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
+unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
 {
 	std::string fullVertexShaderPath = "Assets/Shaders/" + std::string(vertexShaderPath);
 	std::string fullFragmentShaderPath = "Assets/Shaders/" + std::string(fragmentShaderPath);
@@ -410,25 +413,207 @@ unsigned ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath
 	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
 }
 
-//Ess pot optimitzar el emplace back pasantli els parameters de PointLight ??
-void ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* go)
+//Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
+PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
 {
-	mPointLights.emplace_back(pLight);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-	const unsigned int numPointLights = mPointLights.size();
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(size_t), &numPointLights);
+	PointLightComponent* newComponent = new PointLightComponent(owner, pLight);
+	mPointLights.push_back(newComponent);
+	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
+	uint32_t size = mPointLights.size();
+	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 
-	const unsigned int dataSize = sizeof(size_t) + sizeof(PointLight) * numPointLights;
-	glBindBuffer(GL_COPY_READ_BUFFER, mPointSSBO);
+	return newComponent;
+}
+
+void ModuleOpenGL::UpdatePoinLightInfo(const PointLightComponent& cPointLight)
+{
+	for (int i = 0; i < mPointLights.size(); ++i)
+	{
+		if (mPointLights[i] == &cPointLight)
+		{
+			mPointsBuffer->UpdateData(&mPointLights[i]->mData, sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			return;
+		}
+	}
+}
+
+void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
+{
+	for(int i = 0; i < mPointLights.size(); ++i)
+	{
+		if (mPointLights[i] == &cPointLight)
+		{
+			mPointLights.erase(mPointLights.begin() + i);
+			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			uint32_t size = mPointLights.size();
+			mPointsBuffer->UpdateData(&size, sizeof(size), 0);
+			return;
+		}
+	}
+}
+
+//Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
+SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
+{
+	SpotLightComponent* newComponent = new SpotLightComponent(owner, sLight);
+	mSpotLights.push_back(newComponent);
+	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
+	uint32_t size = mSpotLights.size();
+	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
+
+	return newComponent;
+}
+
+void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
+{
+	for (int i = 0; i < mSpotLights.size(); ++i)
+	{
+		if (mSpotLights[i] == &cSpotLight)
+		{
+			mSpotsBuffer->UpdateData(&mSpotLights[i]->mData, sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			return;
+		}
+	}
+}
+
+void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
+{
+	for (int i = 0; i < mSpotLights.size(); ++i)
+	{
+		if (mSpotLights[i] == &cSpotLight)
+		{
+			mSpotLights.erase(mSpotLights.begin() + i);
+			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			uint32_t size = mSpotLights.size();
+			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
+			return;
+		}
+	}
+}
+
+OpenGLBuffer::OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding, unsigned int size, const void* data) : mType(type), mUsage(usage), mBinding(binding), mIdx(0), mDataSize(size), mDataCapacity(size) {
+	glGenBuffers(1, &mIdx);
+	glBindBuffer(mType, mIdx);
+	if(mDataSize != 0)
+		glBufferData(mType, mDataSize, data, mUsage);
+	if (mBinding != -1)
+		glBindBufferBase(mType, mBinding, mIdx);
+	//glBindBufferRange(mType, mBinding, mIdx, offset, size);
+	glBindBuffer(mType, 0);
+}
+
+OpenGLBuffer::~OpenGLBuffer()
+{
+	glDeleteBuffers(1, &mIdx);
+}
+
+void OpenGLBuffer::PushBackData(const void* data, unsigned int dataSize)
+{
+	if (mDataCapacity == 0)
+	{
+		glBindBuffer(mType, mIdx);
+		glBufferData(mType, mDataSize, data, mUsage);
+		mDataSize = dataSize;
+		mDataCapacity = dataSize;
+		glBindBuffer(mType, 0);
+		return;
+	}
+	const unsigned int newSize = (mDataSize + dataSize);
+	if (newSize > mDataCapacity)
+	{
+		ChangeBufferCapacity(newSize);
+	}
+
+	glBindBuffer(mType, mIdx);
+	glBufferSubData(mType, mDataSize, dataSize, data);
+	mDataSize = newSize;
+	glBindBuffer(mType, 0);
+}
+
+void OpenGLBuffer::PopBackData(unsigned int dataSize)
+{
+	if (mDataCapacity < dataSize)
+	{
+		mDataSize = 0;
+		return;
+	}
+
+	mDataSize -= dataSize;
+}
+
+void OpenGLBuffer::ShrinkToFit()
+{
+	if (mDataCapacity != mDataSize)
+	{
+		const unsigned int diff = mDataCapacity - mDataSize;
+		ChangeBufferCapacity(mDataCapacity - diff);
+	}
+}
+
+void OpenGLBuffer::ChangeBufferCapacity(unsigned int newCapacity)
+{
+	if (newCapacity < mDataSize)
+	{
+		mDataSize = newCapacity;
+	}
+	if (newCapacity == 0)
+	{
+		glBindBuffer(mType, mIdx);
+		glBufferData(mType, newCapacity, nullptr, mUsage);
+		mDataCapacity = newCapacity;
+		glBindBuffer(mType, 0);
+		return;
+	}
+	unsigned int tmp;
+	glGenBuffers(1, &tmp);
+	glBindBuffer(mType, tmp);
+	glBufferData(mType, newCapacity, nullptr, mUsage);
+	glCopyNamedBufferSubData(mIdx, tmp, 0, 0, mDataSize);
+	glDeleteBuffers(1, &mIdx);
+	mIdx = tmp;
+	if (mBinding != -1)
+		glBindBufferBase(mType, mBinding, mIdx);
+	mDataCapacity = newCapacity;
+	glBindBuffer(mType, 0);
+}
+
+void OpenGLBuffer::UpdateData(const void* data, unsigned int dataSize, unsigned int offset)
+{
+	const unsigned int requiredSize = (dataSize + offset);
+	if (requiredSize > mDataCapacity)
+	{
+		ChangeBufferCapacity(requiredSize);
+	}
+	glBindBuffer(mType, mIdx);
+	glBufferSubData(mType, offset, dataSize, data);
+	glBindBuffer(mType, 0);
+}
+
+void OpenGLBuffer::RemoveData(unsigned int dataSize, unsigned int offset)
+{
+	if (dataSize >= mDataCapacity)
+	{
+		mDataSize = 0;
+		ShrinkToFit();
+		return;
+	}
+	if ((offset + dataSize) == mDataSize)
+	{
+		PopBackData(dataSize);
+		return;
+	}
+	//Careful same buffer overlaped data
+	//glCopyNamedBufferSubData(mIdx, mIdx, offset + dataSize, offset, mDataSize - offset - dataSize);
 	unsigned int tmp;
 	glGenBuffers(1, &tmp);
 	glBindBuffer(GL_COPY_WRITE_BUFFER, tmp);
-	glBufferData(GL_COPY_WRITE_BUFFER, dataSize, nullptr, GL_STATIC_DRAW);
-	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, dataSize - sizeof(PointLight));
-	glDeleteBuffers(1, &mPointSSBO);
-	mPointSSBO = tmp;
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPointSSBO);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, mPointSSBO);
-
-	
+	glBufferData(GL_COPY_WRITE_BUFFER, mDataSize - dataSize, nullptr, GL_STATIC_COPY);
+	glBindBuffer(GL_COPY_READ_BUFFER, mIdx);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, offset);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, offset + dataSize, offset, mDataSize - offset - dataSize);
+	mDataSize -= dataSize;
+	glBindBuffer(GL_COPY_READ_BUFFER, tmp);
+	glBindBuffer(GL_COPY_WRITE_BUFFER, mIdx);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, mDataSize);
+	glDeleteBuffers(1, &tmp);
 }

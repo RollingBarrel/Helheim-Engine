@@ -10,7 +10,7 @@ class ModuleCamera : public Module
 {
 public:
 	bool Init() override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 
 	const float3& GetPos() const { return mFrustum->pos; }
 	float4x4 GetViewMatrix() const { return mFrustum->ViewMatrix(); }
@@ -18,12 +18,16 @@ public:
 	float4x4 GetViewProjMatrix() const { return mFrustum->ViewProjMatrix(); }
 	unsigned int GetCameraUniffromsId() const { return mCameraUnis; }
 	void WindowResized(int w, int h);
-
+	void CheckRaycast();
+	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
 	const Frustum* GetFrustum() const { return mFrustum; }
 
 private:
 	Frustum* mFrustum = nullptr;
 	unsigned int mCameraUnis = 0;
+	Ray mRay;
+	bool mDrawRayCast; 
+
 };
 
 #endif /* _MODULE_CAMERA_H_ */

@@ -5,6 +5,7 @@
 #include "ModuleEditor.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleCamera.h"
 #include "Quadtree.h"
 
 #include "Panel.h"
@@ -18,6 +19,7 @@
 #include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
+#include "TimerPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -36,6 +38,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
+	mPanels[TIMERPANEL] = new TimerPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -58,7 +61,7 @@ bool ModuleEditor::Init()
 	return true;
 }
 
-update_status ModuleEditor::PreUpdate()
+update_status ModuleEditor::PreUpdate(float dt)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
@@ -83,7 +86,7 @@ update_status ModuleEditor::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleEditor::Update()
+update_status ModuleEditor::Update(float dt)
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -101,7 +104,7 @@ update_status ModuleEditor::Update()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleEditor::PostUpdate()
+update_status ModuleEditor::PostUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
 }
@@ -126,7 +129,7 @@ void ModuleEditor::ShowMainMenuBar() {
 		{
 			if (ImGui::MenuItem("Load Scene"))
 			{
-				loadSceneOpen = true;
+				mLoadSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Save Scene"))
 			{
@@ -150,7 +153,7 @@ void ModuleEditor::ShowMainMenuBar() {
 		if (ImGui::BeginMenu("Component")) {
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("View"))
+		if (ImGui::BeginMenu("Tools"))
 		{
 			if (ImGui::MenuItem("Quadtree")) {
 				Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
@@ -167,6 +170,18 @@ void ModuleEditor::ShowMainMenuBar() {
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
 				}
 			}
+			if (ImGui::MenuItem("Timer")) {
+				Panel* timerPanel = mPanels[TIMERPANEL];
+				if (timerPanel)
+				{
+					timerPanel->IsOpen() ? timerPanel->Close() : timerPanel->Open();
+				}
+			}
+
+			if (ImGui::Checkbox("Draw Mouse Picking RayCast", &mDrawRaycast)) {
+				App->GetCamera()->DrawRayCast(mDrawRaycast);
+			}
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
@@ -236,14 +251,14 @@ void ModuleEditor::ShowMainMenuBar() {
 		ImGui::EndMainMenuBar();
 	}
 
-	if (loadSceneOpen) {
+	if (mLoadSceneOpen) {
 		OpenLoadScene();
 	}
 }
 
 void ModuleEditor::OpenLoadScene() {
 	ImGui::OpenPopup("LoadSceneWindow");
-	if (ImGui::BeginPopupModal("LoadSceneWindow", &loadSceneOpen))
+	if (ImGui::BeginPopupModal("LoadSceneWindow", &mLoadSceneOpen))
 	{
 		ImGui::Text("Which file you wish to load?");
 		static char fileName[128] = "";
@@ -252,7 +267,7 @@ void ModuleEditor::OpenLoadScene() {
 			if (!strcmp(fileName, "scene")) {
 				App->GetScene()->Load(fileName);
 				ImGui::CloseCurrentPopup();
-				loadSceneOpen = false;
+				mLoadSceneOpen = false;
 			}
 		}
 		ImGui::EndPopup();
@@ -269,6 +284,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
+	Panel* timerPanel = mPanels[TIMERPANEL];
 
 	if (openPanels == true) {
 		console->Open();
@@ -280,6 +296,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		quadTree->Open();
 		projectPanel->Open();
 		lightningPanel->Open();
+		timerPanel->Open();
 	}
 	else {
 		console->Close();
@@ -291,5 +308,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		quadTree->Close();
 		projectPanel->Close();
 		lightningPanel->Close();
+		timerPanel->Close();
 	}
 }

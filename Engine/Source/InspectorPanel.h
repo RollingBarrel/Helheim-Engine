@@ -7,6 +7,8 @@ class Component;
 class TestComponent;
 class MeshRendererComponent;
 class CameraComponent;
+class PointLightComponent;
+class SpotLightComponent;
 
 class InspectorPanel : public Panel
 {
@@ -26,6 +28,8 @@ private:
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
 	void DrawCameraComponent(CameraComponent* component);
+	void DrawPointLightComponent(PointLightComponent* component);
+	void DrawSpotLightComponent(SpotLightComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);

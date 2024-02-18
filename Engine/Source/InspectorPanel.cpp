@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
 #include "GameObject.h"
@@ -9,6 +10,7 @@
 #include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "ImporterMaterial.h"
+
 #include <MathFunc.h>
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
@@ -47,7 +49,6 @@ void InspectorPanel::Draw(int windowFlags)
 
 void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PushID(object->mID);
-
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
@@ -128,16 +129,6 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 				mSameComponentPopup = true;
 			}
 		}
-		if (ImGui::MenuItem("Camera")) {
-			mComponent = object->GetComponent(ComponentType::CAMERA);
-			if (!mComponent)
-			{
-				object->CreateComponent(ComponentType::CAMERA);
-			}
-			else {
-				mSameComponentPopup = true;
-			}
-		}
 		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
 		}
@@ -159,7 +150,7 @@ void InspectorPanel::ShowSameComponentPopup()
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Text("The component %s can't be added because", mComponent->GetNameFromType());
+	ImGui::Text("The component %s can't be added because", mComponent->mName);
 	ImGui::Text("GameObject already contains the same component.");
 
 	ImGui::Spacing();
@@ -226,7 +217,7 @@ void InspectorPanel::DragAndDropSource(Component* component) {
 	{
 		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
 
-		ImGui::Text(component->GetNameFromType());
+		ImGui::Text(component->mName);
 		ImGui::EndDragDropSource();
 	}
 }
@@ -254,12 +245,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
-
-		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
-		
-		//checkbox for enable/disable
-		ImGui::Checkbox("Enable", &component->mIsEnabled);
-	
+		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
@@ -282,6 +268,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawCameraComponent(downCast);
 					break;
 				}
+
 			}
 		}
 		ImGui::PopID();
@@ -350,6 +337,10 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 
 	MaterialVariables(component);
 
+	ImGui::SeparatorText("Shaders ");
+	ImGui::Text("Vertex: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetVertexShader());
+	ImGui::Text("Fragment: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetFragmentShader());
+
 	ImGui::Text(" ");
 	bool shouldDraw = component->ShouldDraw();
 	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
@@ -362,21 +353,124 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
 
-	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
-	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
-	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
-	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
+	bool hasDiffuse = material->GetEnableDiffuseTexture();
+	bool hasSpecular = material->GetEnableSpecularGlossinessTexture();
+	bool hasShininess = material->GetEnableShinessMap();
 
-	if (!material->mEnableDiffuseTexture)
+	ImGui::Checkbox("Enable Diffuse map", &hasDiffuse);
+	ImGui::Checkbox("Enable Specular map", &hasSpecular);
+	ImGui::Checkbox("Enable Shininess map", &hasShininess);
+
+	material->SetEnableDiffuseTexture((int)hasDiffuse);
+	material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
+	material->SetEnableShinessMap((int)hasShininess);
+
+	//ImGui::Text(" ");
+
+
+	if (ImGui::BeginTable("materialTable", 4))
 	{
-		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
+
+		float4 diffuse = material->GetDiffuseFactor();
+		float3 specular = material->GetSpecularFactor();
+		float shininess = material->GetGlossinessFactor();
+
+		if (!hasDiffuse) {
+			ImGui::TableNextRow();
+			ImGui::PushID("diff");
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text("Diffuse");
+			ImGui::PopItemWidth();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text("X");
+			ImGui::SameLine();
+			if (ImGui::DragFloat("##X", &diffuse.x, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
+			}
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Y");
+			ImGui::SameLine();
+			if (ImGui::DragFloat("##Y", &diffuse.y, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
+			}
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Z");
+			ImGui::SameLine();
+			if (ImGui::DragFloat("##Z", &diffuse.z, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
+			}
+			ImGui::PopID();
+		}
+
+		if (!hasSpecular) {
+			ImGui::TableNextRow();
+			ImGui::PushID("spec");
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text("Specular");
+			ImGui::PopItemWidth();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text("X");
+			ImGui::SameLine();
+			if (ImGui::DragFloat("##X", &specular.x, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
+			}
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text("Y");
+			ImGui::SameLine();
+			if (ImGui::DragFloat("##Y", &specular.y, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
+			}
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text("Z");
+			ImGui::SameLine();
+			if (ImGui::DragFloat("##Z", &specular.z, 0.05f, 0.0f, 1.0f, "%.2f"))
+			{
+				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
+			}
+			ImGui::PopID();
+		}
+		if (!hasShininess) {
+			ImGui::TableNextRow();
+			ImGui::PushID("shiny");
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text("Shininess");
+			ImGui::PopItemWidth();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text(" ");
+			ImGui::SameLine();
+			if (ImGui::DragFloat("##S", &shininess, 0.05f, 0.0f, 10000.0f, "%.2f"))
+			{
+				material->SetGlossinessFactor(shininess);
+			}
+
+			ImGui::PopID();
+		}
 	}
-	if (!material->mEnableSpecularGlossinessTexture)
-	{
-		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
-	}
-	if (!material->mEnableShinessMap)
-	{
-		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
-	}
+	ImGui::EndTable();
+
+	
 }

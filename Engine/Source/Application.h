@@ -12,7 +12,8 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
-class ModuleTimer;
+
+class Timer;
 
 class Application
 {
@@ -22,7 +23,7 @@ public:
 	~Application();
 
 	bool Init();
-	update_status Update();
+	update_status Update(float dt);
 	bool CleanUp();
 
     ModuleOpenGL* GetOpenGL() { return render; }
@@ -33,9 +34,14 @@ public:
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
-    ModuleTimer* GetClock() { return clock; }
 
-    float GetDt() const;
+    Timer* GetEngineClock() const { return mEngineTimer; }
+    Timer* GetGameClock() const { return mGameTimer; }
+    Timer* GetCurrentClock() const { return mCurrentTimer; }
+    void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
+
+    float GetRealDt() const;
+    float GetGameDt() const;
 
 private:
 
@@ -47,10 +53,16 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
-    ModuleTimer* clock = nullptr;
 
-#define NUM_MODULES 9
+#define NUM_MODULES 8
     Module* modules[NUM_MODULES];
+
+    //Timer
+    Timer* mEngineTimer;
+    Timer* mGameTimer;
+    Timer* mCurrentTimer = nullptr;
+
+    bool mEnableVsync = true;
 };
 
 extern Application* App;

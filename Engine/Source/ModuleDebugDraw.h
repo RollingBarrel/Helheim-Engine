@@ -17,7 +17,7 @@ public:
     ~ModuleDebugDraw();
 
 	bool            Init();
-	update_status   Update();
+	update_status   Update(float dt);
 	bool            CleanUp();
 
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
@@ -26,8 +26,10 @@ public:
     void DrawAxis();
     void DrawFrustum(const Frustum& frustum);
     bool GetShouldRenderGrid() const { return mDrawGrid; }
-    void SetRenderGrid(bool a) { mDrawGrid = a; }
-                    
+    void SetRenderGrid(bool a) { mDrawGrid = a; }     
+    void DrawSphere(const float center[3], const float color[3], const float radius);
+    void DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius);
+    void DrawLine(const float3& position, const float3& direction, const float3& color);
 
 
 private:

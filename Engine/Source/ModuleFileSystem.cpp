@@ -59,7 +59,7 @@ bool ModuleFileSystem::Init()
 }
 
 // Called every draw update
-update_status ModuleFileSystem::Update()
+update_status ModuleFileSystem::Update(float dt)
 {
     return UPDATE_CONTINUE;
 }
