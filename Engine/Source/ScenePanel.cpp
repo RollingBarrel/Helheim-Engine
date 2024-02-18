@@ -68,18 +68,21 @@ void ScenePanel::Draw(int windowFlags)
 			ImGui::EndDragDropTarget();
 		}
 
-		ImVec2 framebufferPosition = ImGui::GetWindowPos();
-		framebufferPosition.y += (ImGui::GetWindowHeight() - size.y);
+		//Change the Guizmo operation using W,E & R keywords
+		if (ImGui::IsKeyPressed(ImGuiKey_W))
+			mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
+		if (ImGui::IsKeyPressed(ImGuiKey_E))
+			mCurrentGuizmoOperation = ImGuizmo::ROTATE;
+		if (ImGui::IsKeyPressed(ImGuiKey_R))
+			mCurrentGuizmoOperation = ImGuizmo::SCALE;
 
-		float viewManipulateRight = framebufferPosition.x + ImGui::GetContentRegionAvail().x;
-		float viewManipulateTop = framebufferPosition.y;
-
+		ImVec2 windowPos = ImGui::GetWindowPos();
 		ImGuizmo::SetDrawlist();
-		ImGuizmo::SetRect(framebufferPosition.x, framebufferPosition.y, ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
+		ImGuizmo::SetRect(windowPos.x, windowPos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-		const Frustum* engineFrustum = &App->GetCamera()->GetFrustum();
-		float4x4 cameraView = float4x4(engineFrustum->ViewMatrix()).Transposed();
-		float4x4 cameraProjection = engineFrustum->ProjectionMatrix().Transposed();
+		const ModuleCamera* camera = App->GetCamera();
+		float4x4 cameraView = camera->GetViewMatrix().Transposed();
+		float4x4 cameraProjection = camera->GetProjectionMatrix().Transposed();
 
 		GameObject* selectedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 
@@ -87,7 +90,7 @@ void ScenePanel::Draw(int windowFlags)
 			const float4x4* transform = &selectedGameObject->GetWorldTransform();
 			float4x4 globalMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
-			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, globalMatrix.ptr(), NULL, 0);
+			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, globalMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
 
 			if (ImGuizmo::IsUsing()) {
 				GameObject* parent = selectedGameObject->GetParent();

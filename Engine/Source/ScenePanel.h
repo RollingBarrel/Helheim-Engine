@@ -18,7 +18,9 @@ private:
 	bool isWindowsHovered = false;
 
 	//ImGuizmo variables
-	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::ROTATE;
-	ImGuizmo::MODE mCurrentGuizmoMode = ImGuizmo::WORLD;
+	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
+	ImGuizmo::MODE mCurrentGuizmoMode = ImGuizmo::LOCAL;
+	bool useSnap = false;
+	float snap[3] = { 1.f, 1.f, 1.f };
 };
 #endif /* _SCENE_PANEL_H_ */
