@@ -68,8 +68,8 @@ void MeshRendererComponent::AddCommand(unsigned int instanceCounter)
 	Command command;
 	command.mCount = mMesh->GetNumIndices();
 	command.mInstanceCount = 1;
-	command.firstIndex = mMesh->GetEboPosition() / sizeof(GLuint);
-	command.baseVertex = mMesh->GetVboPosition() / mBatch->GetVertexSize();
+	command.firstIndex = mMesh->GetEboPosition();// / sizeof(GLuint);
+	command.baseVertex = mMesh->GetVboPosition();// / mBatch->GetVertexSize();
 	command.baseInstance = instanceCounter;
 
 	mBatch->AddCommand(command);

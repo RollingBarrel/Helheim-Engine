@@ -17,16 +17,18 @@ typedef struct Command
 } Command;
 
 typedef struct Material {
+	uint32_t  hasShininessMap = false;
+	uint32_t hasNormalMap = false;
+	uint32_t hasDiffuseMap = false;
+	uint32_t hasSpecularMap = false;
+	float diffuseColor[3] = {0.0f};
+	float shininess = 0.0f;
+	float specularColor[4] = {0.0f};
 	uint64_t diffuseTexture = 0;
 	uint64_t specularTexture = 0;
 	uint64_t normalTexture = 0;
-	float shininess = 0.0f;
-	bool hasDiffuseMap = false;
-	bool hasSpecularMap = false;
-	bool hasShininessMap = false;
-	bool hasNormalMap = false;
-	float diffuseColor[4] = {0.0f};
-	float specularColor[4] = {0.0f};
+private:
+	uint64_t padding = 0;
 }Material;
 
 class GeometryBatch
@@ -58,9 +60,11 @@ private:
 	unsigned int mIbo = 0;
 	unsigned int mSsboModels = 0;
 	unsigned int mSsboMaterials = 0;
-	
-	unsigned int mVboSize = 0;
-	unsigned int mEboSize = 0;
+
+	float* mVboData = nullptr;
+	unsigned int mVboNumElements = 0;
+	unsigned int* mEboData = nullptr;
+	unsigned int mEboNumElements = 0;
 
 };
 
