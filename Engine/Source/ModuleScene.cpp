@@ -207,7 +207,7 @@ void ModuleScene::DrawRenderList()
 		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
 
 		// Enable/disable mesh renderer component
-		if(meshRenderer->IsEnabled())
+		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
 		{
 			meshRenderer->Draw();
 		}

@@ -22,6 +22,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
+	bool enabled = focusedObject->IsEnabled();
 	ImGui::PushID(focusedObject->mID);
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
@@ -29,8 +30,16 @@ void InspectorPanel::Draw(int windowFlags)
 
 	if (!focusedObject->IsRoot()) 
 	{
+		if (ImGui::Checkbox("##enabled", &enabled))
+		{
+			focusedObject->SetEnabled(enabled);
+		}
+		ImGui::SameLine();
+		ImGui::PushID(focusedObject->mID);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
+		ImGui::PopID();
+
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
 		ImGui::Separator();
