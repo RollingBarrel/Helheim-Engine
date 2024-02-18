@@ -1,4 +1,5 @@
 #include "ScenePanel.h"
+#include "HierarchyPanel.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
@@ -11,11 +12,13 @@
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
-#include "float3.h"
-#include "float4.h"
+
+#include "Math/float2.h"
+#include "imgui.h"
 
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
 {
+
 }
 
 ScenePanel::~ScenePanel()
@@ -35,6 +38,11 @@ void ScenePanel::Draw(int windowFlags)
 			prevSizeY = size.y;
 		}
 		ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
+
+		mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+		mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+		mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+
 
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -63,6 +71,7 @@ void ScenePanel::Draw(int windowFlags)
 					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
 					cMesh->Load(it->meshUID, it->materiaUID);
 				}
+				((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(nGO);
 				delete rModel;
 				if (done)
 					*path = '.';

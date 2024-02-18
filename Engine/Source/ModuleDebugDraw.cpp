@@ -621,7 +621,7 @@ bool ModuleDebugDraw::CleanUp()
     return true;
 }
 
-update_status  ModuleDebugDraw::Update()
+update_status  ModuleDebugDraw::Update(float dt)
 {
     App->GetOpenGL()->BindSceneFramebuffer();
 
@@ -696,6 +696,11 @@ void ModuleDebugDraw::DrawSphere(const float center[3], const float color[3], co
 void ModuleDebugDraw::DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius)
 {
     dd::cone(ddVec3(pos), ddVec3(dir), ddVec3(color), bRadius, 0.0f);
+}
+
+void ModuleDebugDraw::DrawLine(const float3& position, const float3& direction, const float3& color)
+{
+    dd::line(position, direction, color);
 }
 
 void ModuleDebugDraw::DrawGrid()

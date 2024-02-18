@@ -17,7 +17,6 @@ enum update_status
 #define SCREEN_HEIGHT 740
 #define FULLSCREEN false
 #define	RESIZEABLE true
-#define VSYNC true
 #define TITLE "Super Awesome Engine"
 
 #define RELEASE_ARRAY( x ) \

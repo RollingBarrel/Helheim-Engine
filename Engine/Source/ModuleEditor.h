@@ -18,9 +18,9 @@ public:
 	~ModuleEditor();
 
 	bool Init() override;
-	update_status PreUpdate() override;
-	update_status Update() override;
-	update_status PostUpdate() override;
+	update_status PreUpdate(float dt) override;
+	update_status Update(float dt) override;
+	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	Panel* GetPanel(const char* name) { return mPanels[name]; }
 
@@ -30,7 +30,8 @@ public:
 
 private:
 	ImGuiIO* io = nullptr;
-	bool loadSceneOpen = false;
+	bool mLoadSceneOpen = false;
+	bool mDrawRaycast = false;
 	std::map<const char*, Panel*> mPanels;
 	void OpenLoadScene();
 

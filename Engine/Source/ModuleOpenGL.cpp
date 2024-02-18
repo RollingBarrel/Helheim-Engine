@@ -145,7 +145,7 @@ bool ModuleOpenGL::Init()
 	return true;
 }
 
-update_status ModuleOpenGL::PreUpdate()
+update_status ModuleOpenGL::PreUpdate(float dt)
 {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
@@ -175,7 +175,7 @@ update_status ModuleOpenGL::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleOpenGL::PostUpdate()
+update_status ModuleOpenGL::PostUpdate(float dt)
 {
 
 	SDL_GL_SwapWindow(App->GetWindow()->window);
