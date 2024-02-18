@@ -35,7 +35,7 @@ void InspectorPanel::Draw(int windowFlags)
 		}
 		ImGui::SameLine();
 		ImGui::PushID(focusedObject->mID);
-		bool renameChanged = ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
+		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
