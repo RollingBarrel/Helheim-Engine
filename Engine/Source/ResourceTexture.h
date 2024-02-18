@@ -15,12 +15,36 @@ public:
 	};
 
 	ResourceTexture();
-	ResourceTexture(unsigned int id);
+	ResourceTexture(
+		unsigned int uid,
+		const char* path,
+		unsigned int width, 
+		unsigned int height, 
+		unsigned int internalFormat, 
+		unsigned int texFormat, 
+		unsigned int dataType, 
+		unsigned int mipLevels, 
+		unsigned int numPixels,
+		unsigned char* pixels, 
+		bool hasAlpha);
+
 	~ResourceTexture();
 
 	unsigned int CreateTexture();	
 
-public:
+	// Getters for attributes
+	unsigned int GetWidth() const { return mWidth; }
+	unsigned int GetHeight() const { return mHeight; }
+	unsigned int GetInternalFormat() const { return mInternalFormat; }
+	unsigned int GetTexFormat() const { return mTexFormat; }
+	unsigned int GetDataType() const { return mDataType; }
+	unsigned int GetMipLevels() const { return mMipLevels; }
+	unsigned int GetNumPixels() const { return mNumPixels; }
+	unsigned char* GetPixels() const { return mPixels; }
+	bool HasAlpha() const { return mHasAlpha; }
+	unsigned int GetOpenGLId() const { return mOpenGLId; }
+
+private:
 	unsigned int mWidth;
 	unsigned int mHeight;
 
@@ -33,6 +57,6 @@ public:
 
 	bool mHasAlpha;
 
-	unsigned int mOpenGLId = 0;
+	unsigned int mOpenGLId;
 };
 

@@ -64,7 +64,7 @@ void MeshRendererComponent::Draw()
 		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
 		glUniform1i(diffuseTextureLoc, 0);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->mOpenGLId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->GetOpenGLId());
 	}
 	else {
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
@@ -76,7 +76,7 @@ void MeshRendererComponent::Draw()
 		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
 		glUniform1i(specularTextureLoc, 1);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->mOpenGLId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->GetOpenGLId());
 	}
 	else
 	{
@@ -89,7 +89,7 @@ void MeshRendererComponent::Draw()
 		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
 		glUniform1i(normalTextureLoc, 2);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->mOpenGLId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->GetOpenGLId());
 	}
 	else
 	{

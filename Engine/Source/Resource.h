@@ -37,10 +37,10 @@ public:
 
 protected:
 	//Name??? To set it when generating game object
-	unsigned int mUID = 0;
+	unsigned int mUID;
 	std::string mAssetsFile;
 	std::string mLibraryFile;
-	Type mType = Type::Unknown;
-	unsigned int mReferenceCount = 0;
+	Type mType;
+	unsigned int mReferenceCount;
 };
 
