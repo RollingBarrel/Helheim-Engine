@@ -5,6 +5,7 @@
 #include "ModuleEditor.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleCamera.h"
 #include "Quadtree.h"
 
 #include "Panel.h"
@@ -128,7 +129,7 @@ void ModuleEditor::ShowMainMenuBar() {
 		{
 			if (ImGui::MenuItem("Load Scene"))
 			{
-				loadSceneOpen = true;
+				mLoadSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Save Scene"))
 			{
@@ -152,7 +153,7 @@ void ModuleEditor::ShowMainMenuBar() {
 		if (ImGui::BeginMenu("Component")) {
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("View"))
+		if (ImGui::BeginMenu("Tools"))
 		{
 			if (ImGui::MenuItem("Quadtree")) {
 				Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
@@ -176,6 +177,11 @@ void ModuleEditor::ShowMainMenuBar() {
 					timerPanel->IsOpen() ? timerPanel->Close() : timerPanel->Open();
 				}
 			}
+
+			if (ImGui::Checkbox("Draw Mouse Picking RayCast", &mDrawRaycast)) {
+				App->GetCamera()->DrawRayCast(mDrawRaycast);
+			}
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
@@ -245,14 +251,14 @@ void ModuleEditor::ShowMainMenuBar() {
 		ImGui::EndMainMenuBar();
 	}
 
-	if (loadSceneOpen) {
+	if (mLoadSceneOpen) {
 		OpenLoadScene();
 	}
 }
 
 void ModuleEditor::OpenLoadScene() {
 	ImGui::OpenPopup("LoadSceneWindow");
-	if (ImGui::BeginPopupModal("LoadSceneWindow", &loadSceneOpen))
+	if (ImGui::BeginPopupModal("LoadSceneWindow", &mLoadSceneOpen))
 	{
 		ImGui::Text("Which file you wish to load?");
 		static char fileName[128] = "";
@@ -261,7 +267,7 @@ void ModuleEditor::OpenLoadScene() {
 			if (!strcmp(fileName, "scene")) {
 				App->GetScene()->Load(fileName);
 				ImGui::CloseCurrentPopup();
-				loadSceneOpen = false;
+				mLoadSceneOpen = false;
 			}
 		}
 		ImGui::EndPopup();

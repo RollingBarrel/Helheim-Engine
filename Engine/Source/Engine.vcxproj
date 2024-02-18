@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,6 +152,21 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp" />
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.cpp" />
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathQueue.cpp" />
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.cpp" />
+    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCache.cpp" />
+    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.cpp" />
+    <ClCompile Include="Dependencies\Detour\Include\DetourAlloc.cpp" />
+    <ClCompile Include="Dependencies\Detour\Include\DetourAssert.cpp" />
+    <ClCompile Include="Dependencies\Detour\Include\DetourCommon.cpp" />
+    <ClCompile Include="Dependencies\Detour\Include\DetourNavMesh.cpp" />
+    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="Dependencies\Detour\Include\DetourNode.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui.cpp" />
@@ -193,10 +208,22 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
     <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c" />
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c" />
+    <ClCompile Include="Dependencies\Recast\Include\Recast.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastAlloc.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastArea.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastAssert.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastContour.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastFilter.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastLayers.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastMesh.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
+    <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
     <ClCompile Include="EngineTimer.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
+    <ClCompile Include="ImporterNavMesh.cpp" />
     <ClCompile Include="ImporterShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
@@ -212,6 +239,7 @@
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="NavMeshControllerComponent.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
@@ -238,6 +266,23 @@
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
     <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
     <ClInclude Include="DebugPanel.h" />
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h" />
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.h" />
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.h" />
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.h" />
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathQueue.h" />
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.h" />
+    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCache.h" />
+    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourAlloc.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourAssert.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourCommon.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourMath.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourNavMesh.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshBuilder.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshQuery.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourNode.h" />
+    <ClInclude Include="Dependencies\Detour\Include\DetourStatus.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h" />
@@ -309,6 +354,9 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
     <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h" />
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h" />
+    <ClInclude Include="Dependencies\Recast\Include\Recast.h" />
+    <ClInclude Include="Dependencies\Recast\Include\RecastAlloc.h" />
+    <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\json.hpp" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h" />
@@ -320,6 +368,7 @@
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
+    <ClInclude Include="ImporterNavMesh.h" />
     <ClInclude Include="ImporterShader.h" />
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
@@ -352,6 +401,7 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="NavMeshControllerComponent.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PausePanel.h" />
     <ClInclude Include="PointLightComponent.h" />
