@@ -1,9 +1,12 @@
+#include <string>
+using namespace std;
+
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
-
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
 void log(const char file[], int line, const char* format, ...);
+string GetLogBuffer();
 
 enum update_status
 {

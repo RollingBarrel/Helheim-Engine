@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "Globals.h"
 
+string logBuffer;
+
 void log(const char file[], int line, const char* format, ...)
 {
 	static char tmp_string[4096];
@@ -15,4 +17,10 @@ void log(const char file[], int line, const char* format, ...)
 	va_end(ap);
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);
+
+	logBuffer += tmp_string2; //Stores all log chars into logBuffer string
+}
+
+string GetLogBuffer() {
+	return logBuffer;
 }
