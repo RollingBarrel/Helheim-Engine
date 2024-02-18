@@ -639,7 +639,7 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     if (mDrawGrid) {
        DrawGrid();
     }
-       DrawAxis();
+    //DrawAxis();
 
     dd::flush();
 }

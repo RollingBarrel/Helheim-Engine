@@ -88,9 +88,9 @@ void ScenePanel::Draw(int windowFlags)
 
 		if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot())) {
 			const float4x4* transform = &selectedGameObject->GetWorldTransform();
-			float4x4 globalMatrix = selectedGameObject->GetWorldTransform().Transposed();
+			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
-			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, globalMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
+			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
 
 			if (ImGuizmo::IsUsing()) {
 				GameObject* parent = selectedGameObject->GetParent();
@@ -99,7 +99,7 @@ void ScenePanel::Draw(int windowFlags)
 					const float4x4* parentTransform = &parent->GetWorldTransform();
 					inverseParentMatrix = parent->GetWorldTransform().Inverted();
 				}
-				float4x4 localMatrix = inverseParentMatrix * globalMatrix.Transposed();
+				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
 
 				float3 translation;
 				Quat rotation;
@@ -117,6 +117,7 @@ void ScenePanel::Draw(int windowFlags)
 					selectedGameObject->SetScale(scale);
 					break;
 				}
+				selectedGameObject->RecalculateMatrices();
 			}
 		}
 	}
