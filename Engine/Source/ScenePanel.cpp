@@ -129,11 +129,14 @@ void ScenePanel::Draw(int windowFlags)
 		float viewManipulateTop = windowPos.y;
 		float viewManipulateSize = 100;
 
+		//TODO: Find the way to only apply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
+		/*
 		ImGuizmo::ViewManipulate(cameraView.ptr(), 4, ImVec2(viewManipulateRight - viewManipulateSize, viewManipulateTop), ImVec2(viewManipulateSize, viewManipulateSize), 0x10101010);
 		if (ImGui::IsWindowFocused()) {
 			float4x4 newCameraView = cameraView.InverseTransposed();
 			App->GetCamera()->LookAt(float3(newCameraView.Col(3).xyz()), float3(- newCameraView.Col(2).xyz()), float3(newCameraView.Col(1).xyz()));
 		}
+		*/
 	}
 	ImGui::End();
 }
