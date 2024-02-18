@@ -11,6 +11,8 @@
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
+#include "float3.h"
+#include "float4.h"
 
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
 {
@@ -86,10 +88,12 @@ void ScenePanel::Draw(int windowFlags)
 
 		GameObject* selectedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 
+		//If there's a selected object in the hierarchy and it's not the root
 		if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot())) {
 			const float4x4* transform = &selectedGameObject->GetWorldTransform();
 			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
+			//Draws the Guizmo axis
 			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
 
 			if (ImGuizmo::IsUsing()) {
@@ -119,6 +123,16 @@ void ScenePanel::Draw(int windowFlags)
 				}
 				selectedGameObject->RecalculateMatrices();
 			}
+		}
+
+		float viewManipulateRight = windowPos.x + size.x;
+		float viewManipulateTop = windowPos.y;
+		float viewManipulateSize = 100;
+
+		ImGuizmo::ViewManipulate(cameraView.ptr(), 4, ImVec2(viewManipulateRight - viewManipulateSize, viewManipulateTop), ImVec2(viewManipulateSize, viewManipulateSize), 0x10101010);
+		if (ImGui::IsWindowFocused()) {
+			float4x4 newCameraView = cameraView.InverseTransposed();
+			App->GetCamera()->LookAt(float3(newCameraView.Col(3).xyz()), float3(- newCameraView.Col(2).xyz()), float3(newCameraView.Col(1).xyz()));
 		}
 	}
 	ImGui::End();
