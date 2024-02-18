@@ -46,8 +46,7 @@ public:
 
 	void ResetTransform();
 
-	void Enable();
-	void Disable();
+	void SetEnabled(bool enabled);
 	// Status for this GameObject
 	bool IsEnabled() const { return mIsEnabled; }
 	// Status for this GameObject and all its ancestors
@@ -77,8 +76,7 @@ private:
 	void AddComponent(Component* component, Component* position);
 	void RecalculateLocalTransform();
 
-	void EnableInHierarchy();
-	void DisableInHierarchy();
+	void SetActiveInHierarchy(bool active);
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;

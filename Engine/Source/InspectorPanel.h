@@ -18,7 +18,6 @@ public:
 private:
 	bool mSameComponentPopup = false;
 	Component* mComponent = nullptr;
-	GameObject* lastFocusedObject = nullptr;
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);

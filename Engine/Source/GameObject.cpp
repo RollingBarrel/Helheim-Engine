@@ -20,9 +20,9 @@ GameObject::GameObject(GameObject* parent)
 {
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
-
 	AddSuffix();
 
 }
@@ -48,7 +48,7 @@ GameObject::GameObject(const GameObject& original)
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
@@ -70,6 +70,7 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
 }
@@ -81,6 +82,7 @@ GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, fl
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
 }
@@ -151,16 +153,10 @@ void GameObject::ResetTransform()
 	SetScale(float3::one);
 }
 
-void GameObject::Enable()
+void GameObject::SetEnabled(bool enabled)
 { 
-	mIsEnabled = true;
-	EnableInHierarchy();
-}
-
-void GameObject::Disable()
-{
-	DisableInHierarchy();
-	mIsEnabled = false;
+	mIsEnabled = enabled;
+	SetActiveInHierarchy(enabled);
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -367,33 +363,14 @@ void GameObject::RecalculateLocalTransform() {
 	}
 }
 
-void GameObject::EnableInHierarchy()
+void GameObject::SetActiveInHierarchy(bool active)
 {
-	if (mParent != nullptr && !mParent->IsActive())
-	{
-		return;
-	}
-
-	mIsActive = true;
-	for (GameObject* child : mChildren)
-	{
-		child->EnableInHierarchy();
-	}
-}
-
-void GameObject::DisableInHierarchy()
-{
-	if (mParent != nullptr && !mParent->IsActive())
-	{
-		return;
-	}
+	mIsActive = active;
 
 	for (GameObject* child : mChildren)
 	{
-		child->DisableInHierarchy();
+		child->SetActiveInHierarchy(active);
 	}
-
-	mIsActive = false;
 }
 
 void GameObject::Save(Archive& archive) const {
