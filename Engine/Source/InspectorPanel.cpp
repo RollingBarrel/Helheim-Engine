@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
+#include "CameraComponent.h"
 #include "ImporterMaterial.h"
 #include <MathFunc.h>
 
@@ -275,7 +276,12 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawTestComponent(downCast);
 					break;
 				}
-
+				case ComponentType::CAMERA: {
+					CameraComponent* downCast = dynamic_cast<CameraComponent*>(component);
+					assert(downCast != nullptr);
+					DrawCameraComponent(downCast);
+					break;
+				}
 			}
 		}
 		ImGui::PopID();
@@ -286,6 +292,56 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text");
 	ImGui::Text("Demo Text 2 ");
+}
+
+void InspectorPanel::DrawCameraComponent(CameraComponent* component)
+{
+	ImGui::SeparatorText("Camera");
+
+	float Near = component->GetNearPlane();
+	float* NearBar = &Near;
+	const char* NearLabel = "NearPlane";
+
+	float Far = component->GetFarPlane();
+	float* FarBar = &Far;
+	const char* FarLabel = "FarPlane";
+
+	float FOV = RadToDeg(component->GetVerticicalFOV());
+	float* FOVBar = &FOV;
+	const char* FOVLabel = "FOV";
+
+	bool modifiedValue = false;
+
+	ImGui::PushID(NearLabel);
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Near Plane");
+	ImGui::SameLine();
+	modifiedValue = ImGui::DragFloat(NearLabel, &(*NearBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	ImGui::PopID();
+
+	ImGui::PushID(FarLabel);
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Far Plane");
+	ImGui::SameLine();
+	modifiedValue = ImGui::DragFloat(FarLabel, &(*FarBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	ImGui::PopID();
+
+	ImGui::PushID(FOVLabel);
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("FOV");
+	ImGui::SameLine();
+	modifiedValue = ImGui::DragFloat(FOVLabel, &(*FOVBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	ImGui::PopID();
+
+	if (modifiedValue)
+	{
+		component->SetNearPlane(Near);
+		component->SetFarPlane(Far);
+		component->SetVerticicalFOV(DegToRad(FOV));
+	}
+
+	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
+	// Is culling
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {

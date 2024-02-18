@@ -147,6 +147,11 @@ void GameObject::ResetTransform()
 	SetPosition(float3::zero);
 	SetRotation(float3::zero);
 	SetScale(float3::one);
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->Reset();
+	}
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -164,10 +169,16 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
+	float3 difference = rotationInRadians - mEulerRotation;
 
 	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->SetRotation(difference);
+	}
 
 	isTransformModified = true;
 }
@@ -181,8 +192,15 @@ void GameObject::SetRotation(const Quat& rotation)
 
 void GameObject::SetPosition(const float3& position)
 {
+	float3 difference = position - mPosition;
+
 	mPosition = position;
 	isTransformModified = true;
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->SetPosition(difference);
+	}
 }
 
 void GameObject::SetScale(const float3& scale)
@@ -334,10 +352,28 @@ void GameObject::AddComponent(Component* component, Component* position)
 
 MeshRendererComponent* GameObject::getMeshRenderer() const
 {
-	for (const auto& comp : mComponents) {
-		if (comp->GetType() == ComponentType::MESHRENDERER)
-			return static_cast<MeshRendererComponent*>(comp);
+	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
+		return comp->GetType() == ComponentType::MESHRENDERER;
+		});
+
+	if (it != mComponents.end()) {
+		return static_cast<MeshRendererComponent*>(*it);
 	}
+
+	return nullptr;
+}
+
+CameraComponent* GameObject::getCamera() const
+{
+	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
+		return comp->GetType() == ComponentType::CAMERA;
+		});
+
+	if (it != mComponents.end()) {
+		return static_cast<CameraComponent*>(*it);
+	}
+
+	return nullptr;
 }
 
 void GameObject::RecalculateLocalTransform() {

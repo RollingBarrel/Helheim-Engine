@@ -3,20 +3,14 @@
 #include "Math/MathConstants.h"
 #include "ModuleWindow.h"
 #include "Application.h"
+#include "CameraUtils.h"
 
 #include "ModuleDebugDraw.h"
 
 CameraComponent::CameraComponent(GameObject* owner)
 	:Component(owner, ComponentType::CAMERA)
 {
-	mCamera.type = FrustumType::PerspectiveFrustum;
-	mCamera.nearPlaneDistance = 0.1f;
-	mCamera.farPlaneDistance = 100.0f;
-	mCamera.verticalFov = math::pi / 4.0f;
-	int w = App->GetWindow()->GetWidth();
-	int h = App->GetWindow()->GetHeight();
-	mCamera.horizontalFov = 2.f * atanf(tanf(mCamera.verticalFov * 0.5f) * (float)w / (float)h);
-	LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY);
+	mCamera = CameraUtils::InitiateCamera(float3(0.0f, 0.0f, 0.0f));
 }
 
 CameraComponent::CameraComponent(const CameraComponent& original, GameObject* owner)
@@ -31,7 +25,7 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Update()
 {
-	App->GetDebugDraw()->DrawFrustum(mCamera);
+	App->GetDebugDraw()->DrawFrustum(*mCamera);
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
@@ -39,17 +33,19 @@ Component* CameraComponent::Clone(GameObject* owner) const
 	return new CameraComponent(*this, owner);
 }
 
-void CameraComponent::LookAt(float3 eyePos, float3 targetPos, float3 upVector) {
-	float3 forward = (targetPos - eyePos);
-	forward.Normalize();
-	float3 right = math::Cross(forward, upVector);
-	right.Normalize();
-	float3 up = math::Cross(right, forward);
-	up.Normalize();
+void CameraComponent::Reset()
+{
+	mCamera = CameraUtils::InitiateCamera(float3(0.0f, 0.0f, 0.0f));
+}
 
-	mCamera.pos = eyePos;
-	mCamera.front = forward;
-	mCamera.up = up;
+void CameraComponent::SetPosition(const float3& position)
+{
+	CameraUtils::CameraComponentTransform(position, *mCamera);
+}
+
+void CameraComponent::SetRotation(const float3& rotation)
+{
+	CameraUtils::Rotate(rotation,-1 ,*mCamera);
 }
 
 void CameraComponent::Save(Archive& archive) const

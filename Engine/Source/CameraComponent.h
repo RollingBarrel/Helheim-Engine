@@ -14,13 +14,23 @@ public:
 
     void Update() override;
     Component* Clone(GameObject* owner) const override;
-    void Reset() override {}
+    void Reset() override;
+    void SetPosition(const float3& position);
+    void SetRotation(const float3& rotation);
+
+    void SetNearPlane(const float value) { mCamera->nearPlaneDistance = value;};
+    void SetFarPlane(const float value) { mCamera->farPlaneDistance = value; };
+    void SetVerticicalFOV(const float value) { mCamera->verticalFov = value; };
+
+    float GetNearPlane() { return mCamera->nearPlaneDistance; };
+    float GetFarPlane() { return mCamera->farPlaneDistance; };
+    float GetVerticicalFOV() { return mCamera->verticalFov; };
 
 private:
-    void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
-    Frustum mCamera;
+    Frustum* mCamera;
+    bool mEnableCulling;
 };
 

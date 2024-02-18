@@ -5,9 +5,9 @@
 #include "Math/MathConstants.h"
 #include "ModuleOpenGL.h"
 
-Frustum* CameraUtils::InitiateCamera()
+Frustum* CameraUtils::InitiateCamera(float3 initialPosition)
 {
-    Frustum* frustum = new Frustum();;
+    Frustum* frustum = new Frustum();
 
     frustum->type = FrustumType::PerspectiveFrustum;
     frustum->nearPlaneDistance = 0.1f;
@@ -18,7 +18,7 @@ Frustum* CameraUtils::InitiateCamera()
     int h = App->GetWindow()->GetHeight();
     frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * (float)w / (float)h);
 
-    LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, *frustum);
+    LookAt(initialPosition, float3(0.0f, 0.0f, -1.0f), float3::unitY, *frustum);
 
     return frustum;
 }
@@ -51,6 +51,16 @@ void CameraUtils::Rotate(const float3& axis, float angleRad, Frustum& camera)
 void CameraUtils::Transform(float3 vec, Frustum& camera)
 {
     vec.z = -vec.z;
+    float3x4 world = camera.WorldMatrix();
+    float3 newTrans = world.TransformDir(vec);
+    world.SetTranslatePart(world.TranslatePart() + newTrans);
+    camera.SetWorldMatrix(world);
+
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
+}
+
+void CameraUtils::CameraComponentTransform(float3 vec, Frustum& camera)
+{
     float3x4 world = camera.WorldMatrix();
     float3 newTrans = world.TransformDir(vec);
     world.SetTranslatePart(world.TranslatePart() + newTrans);

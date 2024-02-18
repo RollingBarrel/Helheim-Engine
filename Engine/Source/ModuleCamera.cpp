@@ -12,7 +12,7 @@
 
 bool ModuleCamera::Init()
 {
-	mFrustum = CameraUtils::InitiateCamera();
+	mFrustum = CameraUtils::InitiateCamera(float3(0.0f, 4.0f, 8.0f));
 
 	return true;
 }
