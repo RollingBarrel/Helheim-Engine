@@ -2,6 +2,10 @@
 #define _MODULE_EDITOR_H_
 
 #include "Module.h"
+
+#include "imgui.h"
+#include "ImGuizmo.h"
+
 #include <map>
 
 struct ImGuiIO;
@@ -29,6 +33,10 @@ private:
 	bool loadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
 	void OpenLoadScene();
+
+	//ImGuizmo variables
+	ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::WORLD;
 };
 
 #endif /* _MODULE_EDITOR_H_ */
