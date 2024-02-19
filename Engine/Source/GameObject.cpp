@@ -185,7 +185,7 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 void GameObject::SetRotation(const Quat& rotation)
 {
 	mRotation = rotation;
-	mEulerRotation = RadToDeg(rotation.ToEulerXYZ());
+	mEulerRotation = rotation.ToEulerXYZ();
 }
 
 void GameObject::SetPosition(const float3& position)

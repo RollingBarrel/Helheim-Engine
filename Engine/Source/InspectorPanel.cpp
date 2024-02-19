@@ -76,8 +76,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 			//ImGui::TableSetupColumn("columns", 0 , -FLT_MIN);
 
 			bool modifiedTransform = false;
-			float3 newRotation = object->mEulerRotation;
 			float3 newPosition = object->mPosition;
+			float3 newRotation = RadToDeg(object->mEulerRotation);
 			float3 newScale = object->mScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
