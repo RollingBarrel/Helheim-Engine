@@ -28,9 +28,9 @@ void PreciseTimer::Update()
 	//Delay the frame so the FPS match the limit if mDeltaTime if  vsync isn't enabled
 	if (!mEnabledVsync && (mFpsLimit > 0 && mDeltaTime / mSpeed < (MICRO_IN_SECONDS / mFpsLimit)))
 	{
-		mFrameDelay = ((MICRO_IN_SECONDS / mFpsLimit) - mDeltaTime / mSpeed) / 1000.0f;
+		mFrameDelay = (MICRO_IN_SECONDS / mFpsLimit) - mDeltaTime / mSpeed;
 
-		SDL_Delay(mFrameDelay);
+		SDL_Delay(mFrameDelay / 1000.0f);
 
 		ReadDelta();	//ReadDelta is called so the next frameDelay is calculated properly (if this isn't done the previous delay will be counted as part of the next frame execution time)
 

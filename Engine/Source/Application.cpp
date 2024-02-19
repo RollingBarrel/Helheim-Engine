@@ -27,7 +27,6 @@ Application::Application()
 	modules[5] = debugDraw = new ModuleDebugDraw();
 	modules[6] = scene = new ModuleScene();
 	modules[7] = editor = new ModuleEditor();
-
 }
 
 Application::~Application()
