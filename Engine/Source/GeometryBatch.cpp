@@ -174,7 +174,7 @@ void GeometryBatch::Draw()
 
 	glUseProgram(0);
 	mCommands.clear();
-
+	mInstanceCounter = 0;
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 
