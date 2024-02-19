@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+#define MILLI_IN_SECONDS 1000
+
 class Timer {
 public:
     Timer() = default;
@@ -36,7 +38,7 @@ public:
     unsigned long GetRealTime() const { return mRealTime; }
     unsigned long GetTotalTime() const { return mTotalTime; }
     unsigned int GetTotalFrames() const { return mTotalFrames; }
-    void SetTotalFrames(long gameFrames) { mTotalFrames += gameFrames; }    //Adds the frames of the game execution to the total frames of the engine
+    void SetTotalFrames(unsigned int gameFrames) { mTotalFrames += gameFrames; }    //Adds the frames of the game execution to the total frames of the engine
 
     unsigned int GetFpsLimit() const { return mFpsLimit; }
     void SetFpsLimit(unsigned int limit) { mFpsLimit = limit; }
@@ -59,6 +61,8 @@ public:
 
     bool GetVsyncStatus() const { return mEnabledVsync; }
     void SetVsyncStatus(bool vsyncStatus);
+
+    float GetTimerPrecision() const { return (float)MILLI_IN_SECONDS;  }
 
 private:
 
