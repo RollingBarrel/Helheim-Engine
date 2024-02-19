@@ -12,7 +12,12 @@
 
 GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 {
-	mAttributes = mesh->GetResourceMesh()->GetAttributes();
+	const std::vector<Attribute*>& attributes = mesh->GetResourceMesh()->GetAttributes();
+	for (const Attribute* ptrAttr : attributes)
+	{
+		//mAttributes.emplace_back(ptrAttr->type, ptrAttr->size, ptrAttr->offset);
+		mAttributes.push_back(*ptrAttr);
+	}
 	mVertexSize = mesh->GetResourceMesh()->GetVertexSize();
 
 	glGenVertexArrays(1, &mVao);
@@ -31,11 +36,10 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glGenBuffers(1, &mIbo);
 
 	unsigned int idx = 0;
-	for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
 		glEnableVertexAttribArray(idx);
-		glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
-		
+		glVertexAttribPointer(idx, (*it).size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it).offset);
 		++idx;
 	}
 
@@ -56,8 +60,19 @@ GeometryBatch::~GeometryBatch()
 	glDeleteBuffers(1, &mSsboModels);
 	glDeleteBuffers(1, &mSsboMaterials);
 	glDeleteBuffers(1, &mIbo);
+	mMeshComponents.clear();
+	mUniqueMeshes.clear();
+	mAttributes.clear();
+	mCommands.clear();
 }
 
+void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
+{
+	for (Attribute attribute : mAttributes)
+	{
+		attributes.push_back(attribute);
+	}
+}
 
 void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 {
@@ -110,7 +125,7 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 	unsigned int found = 0;
 	for (std::vector<const MeshRendererComponent*>::iterator it = mMeshComponents.begin(); it != mMeshComponents.end();)
 	{
-		if (component->GetResourceMesh()->mUID == rMesh.mUID)
+		if ((*it)->GetResourceMesh()->mUID == rMesh.mUID)
 		{
 			++found;
 		}
@@ -126,7 +141,7 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 			glBindBuffer(GL_ARRAY_BUFFER, mVbo);
 			glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+	
 			memmove(mEboData + rMesh.GetEboPosition(), mEboData + rMesh.GetEboPosition() + rMesh.GetNumIndices(), rMesh.GetNumIndices() * sizeof(unsigned int));
 			mEboNumElements -= rMesh.GetNumIndices();
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
@@ -144,6 +159,7 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 			if (&rMesh == *it)
 			{
 				mUniqueMeshes.erase(it);
+				break;
 			}
 		}
 	}

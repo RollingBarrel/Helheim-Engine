@@ -20,13 +20,14 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 	const ResourceMesh* rMesh = meshComponent->GetResourceMesh();
 	for (int i = 0; i < mBatches.size(); ++i)
 	{
-		const std::vector<Attribute*> batchAttributes = mBatches[i]->GetAttributes();
+		std::vector<Attribute> batchAttributes;
+		mBatches[i]->GetAttributes(batchAttributes);
 		if (batchAttributes.size() == rMesh->NumAttributes())
 		{
 			int j = 0;
 			while (j < batchAttributes.size())
 			{
-				if (!rMesh->HasAttribute(batchAttributes[j]->type))
+				if (!rMesh->HasAttribute(batchAttributes[j].type))
 				{
 					break;
 				}

@@ -86,7 +86,7 @@ void NavMeshControllerComponent::HandleBuild() {
 			LOG("buildNavigation: Out of memory 'mTriangleAreas'");
 			return;
 		}
-		float* vertices= (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS));
+		const float* vertices= testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 		int numberOfVertices = testMesh->GetResourceMesh()->mNumVertices;
 
 

@@ -14,8 +14,10 @@
 
 MeshRendererComponent::~MeshRendererComponent() { 
 	mBatch->RemoveMesh(this);
-	delete mMesh; 
-	delete mMaterial; 
+	if(mMesh)
+		delete mMesh; 
+	if(mMaterial)
+		delete mMaterial; 
 };
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) 

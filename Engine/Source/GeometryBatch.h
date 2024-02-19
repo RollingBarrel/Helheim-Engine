@@ -38,7 +38,7 @@ public:
 	GeometryBatch(MeshRendererComponent* mesh);
 	~GeometryBatch();
 
-	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
+	void GetAttributes(std::vector<Attribute>& attributes) const;
 	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMesh(const MeshRendererComponent* component );
 	void RemoveMesh(const MeshRendererComponent* component);
@@ -49,7 +49,7 @@ private:
 
 	std::vector<const MeshRendererComponent*> mMeshComponents;
 	std::vector<const ResourceMesh*> mUniqueMeshes;
-	std::vector<Attribute*> mAttributes;
+	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
 	unsigned int mVertexSize = 0;
 
