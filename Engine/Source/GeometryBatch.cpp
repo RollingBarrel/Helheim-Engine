@@ -59,7 +59,7 @@ GeometryBatch::~GeometryBatch()
 }
 
 
-void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
+void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 {
 	mMeshComponents.push_back(cMesh);
 
@@ -217,6 +217,8 @@ void GeometryBatch::Draw()
 		offset += sizeof(Material);
 	}
 
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
 
 	glBindVertexArray(0);

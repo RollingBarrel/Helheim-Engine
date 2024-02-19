@@ -40,7 +40,7 @@ public:
 
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
 	unsigned int GetVertexSize() { return mVertexSize; };
-	void AddMesh(MeshRendererComponent* component);
+	void AddMesh(const MeshRendererComponent* component );
 	void RemoveMesh(const MeshRendererComponent* component);
 	void AddCommand(const MeshRendererComponent* mesh);
 	void Draw();
