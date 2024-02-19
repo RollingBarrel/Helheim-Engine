@@ -83,11 +83,11 @@ void TimerPanel::Draw(int windowFlags)
 
 	if (!vsyncEnabled) //Only works without vsync
 	{
-		ImGui::Text("Last frame delayed for %d ms", App->GetCurrentClock()->GetFrameDelay() * precision);
-		ImGui::Text("Actual execution time of the last frame: %d ms", ms - App->GetCurrentClock()->GetFrameDelay() * precision);
+		ImGui::Text("Last frame delayed for %d ms", App->GetCurrentClock()->GetFrameDelay());
+		ImGui::Text("Actual execution time of the last frame: %d ms", ms - App->GetCurrentClock()->GetFrameDelay());
 	}
 
-	ImGui::Text("Slowest frame: %d ms on frame %i", App->GetCurrentClock()->GetSlowestFrameTime() * precision, App->GetCurrentClock()->GetSlowestFrame());
+	ImGui::Text("Slowest frame: %.2f ms on frame %i", App->GetCurrentClock()->GetSlowestFrameTime() * precision, App->GetCurrentClock()->GetSlowestFrame());
 
 	if (App->GetCurrentClock() == App->GetGameClock())
 	{
