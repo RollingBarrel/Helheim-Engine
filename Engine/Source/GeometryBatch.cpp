@@ -157,7 +157,7 @@ void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
 	command.mCount = mesh->GetResourceMesh()->GetNumIndices();
 	command.mInstanceCount = 1;
 	command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();// / sizeof(GLuint);
-	command.baseVertex = mesh->GetResourceMesh()->GetVboPosition();// / mBatch->GetVertexSize();
+	command.baseVertex = mesh->GetResourceMesh()->GetVertexBase();// / mBatch->GetVertexSize();
 	command.baseInstance = mCommands.size();
 
 	mCommands.push_back(command);
