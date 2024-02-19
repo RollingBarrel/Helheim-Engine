@@ -150,10 +150,22 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 }
 
 
-void GeometryBatch::AddCommand(const Command& command)
+void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
 {
+	
+	Command command;
+	command.mCount = mesh->GetResourceMesh()->GetNumIndices();
+	command.mInstanceCount = 1;
+	command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();// / sizeof(GLuint);
+	command.baseVertex = mesh->GetResourceMesh()->GetVboPosition();// / mBatch->GetVertexSize();
+	command.baseInstance = mCommands.size();
+
 	mCommands.push_back(command);
 }
+
+
+
+
 
 
 void GeometryBatch::Draw()
@@ -213,7 +225,6 @@ void GeometryBatch::Draw()
 
 	glUseProgram(0);
 	mCommands.clear();
-
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 

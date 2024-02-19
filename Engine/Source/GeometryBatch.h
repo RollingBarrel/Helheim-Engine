@@ -42,7 +42,7 @@ public:
 	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMesh(MeshRendererComponent* component);
 	void RemoveMesh(const MeshRendererComponent* component);
-	void AddCommand(const Command& command);
+	void AddCommand(const MeshRendererComponent* mesh);
 	void Draw();
 
 private:
@@ -65,6 +65,5 @@ private:
 	unsigned int mVboNumElements = 0;
 	unsigned int* mEboData = nullptr;
 	unsigned int mEboNumElements = 0;
-
 };
 
