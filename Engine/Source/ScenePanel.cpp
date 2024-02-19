@@ -105,7 +105,7 @@ void ScenePanel::Draw(int windowFlags)
 			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
 			//Draws the Guizmo axis
-			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
+			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, modelMatrix.ptr(), NULL, mUseSnap ? &mSnap[0] : nullptr);
 
 			if (ImGuizmo::IsUsing()) {
 				GameObject* parent = selectedGameObject->GetParent();

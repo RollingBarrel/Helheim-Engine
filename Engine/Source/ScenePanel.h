@@ -28,10 +28,9 @@ private:
 	float2 mWindowsSize;
 	float2 mMousePosition;
   
-  //ImGuizmo variables
 	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE mCurrentGuizmoMode = ImGuizmo::LOCAL;
-	bool useSnap = false;
-	float snap[3] = { 1.f, 1.f, 1.f };
+	bool mUseSnap = false;
+	float mSnap[3] = { 1.f, 1.f, 1.f };
 };
 #endif /* _SCENE_PANEL_H_ */
