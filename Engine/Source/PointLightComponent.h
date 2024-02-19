@@ -12,7 +12,10 @@ class PointLightComponent : public Component {
 public:
 	~PointLightComponent();
 
+	void Enable() override;
+	void Disable() override;
 	void Update() override;
+
 	Component* Clone(GameObject* owner) const override { return nullptr; }
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;

@@ -37,8 +37,8 @@ protected:
 	virtual	void Reset() = 0;
 	const unsigned int mID = 0;
 	GameObject* mOwner = nullptr;
+	bool mIsEnabled = true;
 private:
 	ComponentType mType = ComponentType::NONE;
-	bool mIsEnabled = true;
 };
 

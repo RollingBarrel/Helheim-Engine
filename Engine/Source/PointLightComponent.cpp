@@ -92,3 +92,15 @@ void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Ga
 		}
 	}
 }
+
+void PointLightComponent::Enable()
+{
+	//App->GetOpenGL()->AddPointLight(mData, mOwner);
+	//mIsEnabled = true;
+}
+
+void PointLightComponent::Disable()
+{
+	//App->GetOpenGL()->RemovePointLight(*this);
+	//mIsEnabled = false;
+}
