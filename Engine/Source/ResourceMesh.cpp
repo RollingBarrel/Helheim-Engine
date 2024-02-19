@@ -7,6 +7,18 @@
 
 #include "glew.h"
 
+ResourceMesh::ResourceMesh()
+{
+}
+
+ResourceMesh::ResourceMesh(unsigned int uid)
+{
+    mUID = uid;
+    mType = Type::Mesh;
+    mAssetsFile = "NONE";
+    mLibraryFile = LIBRARY_MESH_PATH + std::to_string(mUID) + ".mesh";
+}
+
 ResourceMesh::ResourceMesh(
     unsigned int uid, 
     const char* path, 

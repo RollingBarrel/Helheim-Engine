@@ -160,6 +160,7 @@ void ModuleEditor::ShowMainMenuBar() {
 				}
 			}
 
+			Panel* debugPanel = mPanels[DEBUGPANEL];
 			if (ImGui::MenuItem("Debug")) {
 				Panel* debugPanel = mPanels[DEBUGPANEL];
 				if (debugPanel)

@@ -1,6 +1,7 @@
 #include "MeshRendererComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
+#include "ModuleFileSystem.h"	//Remove Just for the Library definition
 #include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
@@ -112,13 +113,11 @@ void MeshRendererComponent::Draw()
 
 void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 {
+	mMesh = Importer::Mesh::Load(std::string(LIBRARY_MESH_PATH + std::to_string(meshUid) + ".mesh").c_str(), meshUid);
 	//TODO
-	//mMesh->mUID = meshUid;
-	//mMaterial->mUID = materialUid;
-	//Importer::Mesh::Load(mMesh, std::to_string(meshUid).c_str());
-	//Importer::Material::Load(mMaterial, std::to_string(materialUid).c_str());
-	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
+	//mMaterial = Importer::Material::Load(std::string(LIBRARY_MATERIAL_PATH + std::to_string(materialUid) + ".mat").c_str(), std::to_string(materialUid).c_str());
 
+	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 
 	float4x4 model = mOwner->GetWorldTransform();

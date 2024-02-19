@@ -27,7 +27,8 @@ class ResourceMesh : public Resource
 {
 public:
 
-	ResourceMesh() {};	//Does not exist
+	ResourceMesh();
+	ResourceMesh(unsigned int uid);	//Does not exist
 	ResourceMesh(unsigned int uid,
 		const char* path,
 		unsigned int numIndices,

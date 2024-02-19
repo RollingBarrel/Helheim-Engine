@@ -7,15 +7,15 @@ class Resource
 public:
 	enum class Type
 	{
-		Texture,
-		Mesh,
-		Bone,
-		Animation,
-		Material,
-		Model,
-		Scene,
-		NavMesh,
-		Unknown
+		Texture = 1,
+		Mesh = 2,
+		Bone = 3,
+		Animation = 4,
+		Material = 5,
+		Model = 6,
+		Scene = 7,
+		NavMesh = 8,
+		Unknown = 0
 	};
 
 

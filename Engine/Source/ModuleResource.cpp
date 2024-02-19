@@ -29,7 +29,7 @@ bool ModuleResource::Init() {
 		{".jpg", Resource::Type::Texture},
 		{".bmp", Resource::Type::Texture},
 		{".dds", Resource::Type::Texture},
-
+		{".gltf", Resource::Type::Model},
 		// Add more mappings for other resource types as needed
 	};
 	return true;
@@ -71,7 +71,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	LOG("Succesfully duplicated the file in %s", assetsCopiedFile);
 
 	//// Create the new resource
-	Resource* resource = CreateNewResource(assetsCopiedFile, type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
+	Resource* resource = CreateNewResource(importedFilePath, assetsCopiedFile, type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
 	if (resource == nullptr) 
 	{
 		LOG("Unable to create a new resource with this file: %s", importedFilePath);
@@ -146,7 +146,7 @@ void ModuleResource::ReleaseResource(unsigned int uid)
 	}
 }
 
-Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Type type)
+Resource* ModuleResource::CreateNewResource(const char* importedFile, const char* assetsFile, Resource::Type type)
 {
 	Resource* ret = nullptr;
 	unsigned int uid = LCG().Int();
@@ -166,6 +166,8 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, Resource::Ty
 	case Resource::Type::Material:
 		break;
 	case Resource::Type::Model:
+		ret = Importer::Model::Import(importedFile, assetsFile, uid);
+		if (ret) Importer::Model::Save((ResourceModel*)ret);
 		break;
 	case Resource::Type::Scene:
 		break;
@@ -194,8 +196,10 @@ const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 
 	switch (type) {
 	case Resource::Type::Texture:
+	{
 		assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
 		break;
+	}
 	case Resource::Type::Mesh:
 		break;
 	case Resource::Type::Bone:
@@ -205,7 +209,17 @@ const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 	case Resource::Type::Material:
 		break;
 	case Resource::Type::Model:
+	{
+		assetsFilePath = ASSETS_MODEL_PATH + assetName + extensionName;
+
+		//Duplicate .bin file
+		std::string importedBinFilePath = importedFilePath;
+		unsigned int dotPos = importedBinFilePath.find_last_of('.');
+		importedBinFilePath = importedBinFilePath.substr(0,dotPos);
+		importedBinFilePath += ".bin";
+		App->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
 		break;
+	}
 	case Resource::Type::Scene:
 		break;
 	case Resource::Type::NavMesh:
@@ -262,6 +276,11 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 	rapidjson::Value uidValue;
 	uidValue.SetInt(resource.GetUID());
 	document.AddMember("uid", uidValue, document.GetAllocator());
+
+	// Add resource type to the JSON document
+	rapidjson::Value typeValue;
+	typeValue.SetInt(static_cast<int>(resource.GetType()));
+	document.AddMember("type", typeValue, document.GetAllocator());
 
 	// Add time of creation to the JSON document
 	rapidjson::Value timeValue;

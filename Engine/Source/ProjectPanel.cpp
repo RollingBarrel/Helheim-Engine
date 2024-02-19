@@ -62,9 +62,15 @@ const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 	}
 }
 
-AssetDisplay::AssetDisplay(const char* name, PathNode* parent) : mParent(parent)
+AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent) : mParent(parent)
 {
-	unsigned int size = strlen(name) + 1;
-	mName = new char[size];
-	strcpy_s(const_cast<char*>(mName), size, name);
+	unsigned int sizeName = strlen(name) + 1;
+	mName = new char[sizeName];
+	strcpy_s(const_cast<char*>(mName), sizeName, name);
+
+	unsigned int sizePath = strlen(path) + 1;
+	mPath = new char[sizePath];
+	strcpy_s(const_cast<char*>(mPath), sizePath, path);
 }
+
+

@@ -20,7 +20,7 @@ public:
 	void ReleaseResource(unsigned int uid);
 
 private:
-	Resource* CreateNewResource(const char* assetsFile, Resource::Type type);
+	Resource* CreateNewResource(const char* importedFile, const char* assetsFile, Resource::Type type);
 	Resource* TryToLoadResource(const unsigned int uid, Resource::Type type);
 	Resource::Type DeduceResourceType(const char* assetsFile);
 

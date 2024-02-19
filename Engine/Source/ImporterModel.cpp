@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResource.h"
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
@@ -17,38 +18,35 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-ResourceModel* Importer::Model::Import(const char* filePath)
+ResourceModel* Importer::Model::Import(const char* filePath, const char* assetsPath, unsigned int uid)
 {
-
-    ResourceModel* rModel = new ResourceModel(math::LCG().Int());
+    ResourceModel* rModel = new ResourceModel(uid, assetsPath);
 
     tinygltf::TinyGLTF gltfContext;
     tinygltf::Model model;
 
     std::string error, warning;
-    bool loadOk = gltfContext.LoadASCIIFromFile(&model, &error, &warning, filePath);
+    bool loadOk = gltfContext.LoadASCIIFromFile(&model, &error, &warning, assetsPath);
     if (!loadOk)
     {
-        LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
+        LOG("[MODEL] Error loading %s: %s", assetsPath, error.c_str());
     }
     
-    //for (int i = 0; i < model.images.size(); ++i)
-    //{
-    //    std::string pngName = filePath;
-    //    unsigned filePos = pngName.find_last_of('/');
-    //    pngName = pngName.substr(0, filePos+1);
-    //    pngName.append(model.images[i].uri);
-    //
-    //    std::string images = (ASSETS_TEXTURE_PATH + model.images[i].uri);
-    //
-    //    App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), images.c_str());
-    //}
+    for (int i = 0; i < model.images.size(); ++i)
+    {
+        std::string pngName = filePath;
+        unsigned filePos = pngName.find_last_of('/');
+        pngName = pngName.substr(0, filePos+1);
+        pngName.append(model.images[i].uri);
+
+        App->GetResource()->ImportFile(pngName.c_str());
+    }
     
     for (const auto& srcMesh : model.meshes)
     {
         for (const auto& primitive : srcMesh.primitives)
-        {          
-            ResourceMesh* mesh = Importer::Mesh::Import(model, primitive);
+        {   
+            ResourceMesh* mesh = Importer::Mesh::Import(model, primitive, math::LCG().Int());
             Importer::Mesh::Save(mesh);
 
             if (primitive.material != -1) {
@@ -92,30 +90,15 @@ void Importer::Model::Save(const ResourceModel* ourModel)
         cursor += bytes;
     }
 
-    //Quitar 
-    bytes = sizeof(ourModel->GetUID());
-    unsigned int uid = ourModel->GetUID();
-    memcpy(cursor, &uid, bytes);
-    cursor += bytes;
-
-    std::string path = LIBRARY_MODEL_PATH;
-    path += std::to_string(ourModel->GetUID());
-    path += ".model";
-
-    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+    App->GetFileSystem()->Save(ourModel->GetLibraryFile().c_str(), fileBuffer, size);
 
     RELEASE_ARRAY(fileBuffer);
 }
 
-void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
+ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
 {
     char* fileBuffer;
-
-    std::string path = LIBRARY_MODEL_PATH;
-    path += fileName;
-    path += ".model";
-
-    App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
+    App->GetFileSystem()->Load(fileName, &fileBuffer);
 
     char* cursor = fileBuffer;
 
@@ -123,6 +106,8 @@ void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
     unsigned int size = 0;
     memcpy(&size, cursor, bytes);
     cursor += bytes;
+
+    ResourceModel* rModel = new ResourceModel(uid, fileName);
     
     for (int i = 0; i < size; ++i)
     {
@@ -132,9 +117,8 @@ void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
         unsigned int materialId = 0;
         memcpy(&materialId, cursor, bytes);
         cursor += bytes;
-        ourModel->SetUids(meshId, materialId);
+        rModel->SetUids(meshId, materialId);
     }
-    unsigned int uid = ourModel->GetUID();
-    memcpy(&uid, cursor, bytes);
-    cursor += bytes;
+
+    return rModel;
 }

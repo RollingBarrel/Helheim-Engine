@@ -17,13 +17,13 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive)
+ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, unsigned int uid)
 {
     //TODO: Use the function Add attribute to import to the resource mesh
     // Try not to use friend func import on resourceMesh
     // Put the indices private
 
-    ResourceMesh* rMesh = new ResourceMesh(math::LCG().Int());
+    ResourceMesh* rMesh = new ResourceMesh(uid);
 
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");

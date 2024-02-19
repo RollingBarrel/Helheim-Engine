@@ -9,11 +9,12 @@ class Resource;
 
 struct AssetDisplay
 {
-	AssetDisplay(const char* name, PathNode* parent);
+	AssetDisplay(const char* name, const char* mPath, PathNode* parent);
 	const char* mName;
+	const char* mPath;
 	std::vector<unsigned int> mUid;
 	PathNode* mParent;
-	Resource* mResource;
+	//Resource* mResource;
 };
 
 class ProjectPanel : public Panel

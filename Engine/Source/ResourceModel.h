@@ -14,7 +14,7 @@ class ResourceModel : public Resource
 
 public: 
 
-	ResourceModel(unsigned int uid);
+	ResourceModel(unsigned int uid, const char* path);
 
 	const std::vector<ModelIds>& GetUids() const { return mUids; }
 	void SetUids(unsigned int meshUID, unsigned int materialUID);

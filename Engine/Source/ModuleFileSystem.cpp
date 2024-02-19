@@ -1,5 +1,7 @@
+#include "Application.h"
 #include "Globals.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResource.h"
 #include "Importer.h"
 #include "ImporterTexture.h"
 
@@ -278,13 +280,15 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, PathNode* parent) co
             }
             else
             {
-                //TODO Assets To Display, except .bin
                 std::string fileName;
                 std::string extensionName;
                 SplitPath(path.c_str(), &fileName, &extensionName);
-                std::string combiny = fileName + extensionName;
-                AssetDisplay* assetDisplay = new AssetDisplay(combiny.c_str(), parent);          
-                parent->assets.push_back(assetDisplay);
+                std::string combine = fileName + extensionName;
+                if (!(strcmp(extensionName.c_str(), ".meta") == 0) && !(strcmp(extensionName.c_str(), ".bin") == 0))
+                {   
+                    AssetDisplay* assetDisplay = new AssetDisplay(combine.c_str(), path.c_str(), parent);
+                    parent->assets.push_back(assetDisplay);
+                }        
                 path = directory + std::string("/");
             }
         }

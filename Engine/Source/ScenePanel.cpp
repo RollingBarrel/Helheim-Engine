@@ -2,13 +2,18 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
+#include "ModuleFileSystem.h"
 #include "ProjectPanel.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
 
+#include "ResourceModel.h"
+
 #include "imgui.h"
+
+#include "json.hpp"
 
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
 {
@@ -37,31 +42,63 @@ void ScenePanel::Draw(int windowFlags)
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
 			{
 				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-				char* path = const_cast<char*>(asset->mName);
-				//TODO; Molt malament, fer split del path be!!!
-				bool done = false;
-				while (*path != '\0')
-				{
-					if (*path == '.')
-					{
-						*path = '\0';
-						done = true;
-						break;
-					}
-					++path;
+
+				std::string path = asset->mPath;
+				path += ".meta";
+
+				char* fileBuffer = nullptr;
+				App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
+
+				rapidjson::Document document;
+				rapidjson::ParseResult result = document.Parse(fileBuffer);
+				if (!result) {
+					// Handle parsing error
+					LOG("Not able to load .meta file");
 				}
-				//ResourceModel* rModel = new ResourceModel();
-				//Importer::Model::Load(rModel, asset->mName);
-				//GameObject* nGO = new GameObject(asset->mName,App->GetScene()->GetRoot());
-				//for (auto it = rModel->mUids.cbegin(); it != rModel->mUids.cend(); ++it)
-				//{
-				//	GameObject* go = new GameObject(nGO);
-				//	MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
-				//	cMesh->Load(it->meshUID, it->materiaUID);
-				//}
-				//delete rModel;
-				if (done)
-					*path = '.';
+
+				Resource* resource = nullptr;
+				unsigned int uid;
+				if (document.HasMember("uid"))
+				{
+					uid = document["uid"].GetInt();
+				}
+				unsigned int type;
+				if (document.HasMember("type"))
+				{
+					type = document["type"].GetInt();		
+				}
+
+				switch (static_cast<Resource::Type>(type))
+				{
+				case Resource::Type::Texture:					
+					break;
+				case Resource::Type::Mesh:
+					break;
+				case Resource::Type::Bone:
+					break;
+				case Resource::Type::Animation:
+					break;
+				case Resource::Type::Material:
+					break;
+				case Resource::Type::Model:
+					resource = Importer::Model::Load(std::string(LIBRARY_MODEL_PATH + std::to_string(uid) + ".model").c_str(), uid);
+					break;
+				case Resource::Type::Scene:
+					break;
+				case Resource::Type::NavMesh:
+					break;
+				}
+
+				GameObject* nGO = new GameObject(asset->mName,App->GetScene()->GetRoot());
+				for (auto it = ((ResourceModel*)resource)->GetUids().cbegin(); it != ((ResourceModel*)resource)->GetUids().cend(); ++it)
+				{
+					GameObject* go = new GameObject(nGO);
+					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
+					cMesh->Load(it->meshUID, it->materialUID);
+				}
+
+				delete resource;
+				RELEASE_ARRAY(fileBuffer);
 			}
 			ImGui::EndDragDropTarget();
 		}

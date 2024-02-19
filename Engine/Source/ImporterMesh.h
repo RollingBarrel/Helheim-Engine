@@ -13,7 +13,7 @@ namespace Importer
 {
 	namespace Mesh
 	{
-		ResourceMesh* Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive);
+		ResourceMesh* Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, unsigned int uid);
 
 		void Save(const ResourceMesh* ourMesh);
 
