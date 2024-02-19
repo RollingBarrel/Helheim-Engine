@@ -35,10 +35,17 @@ public:
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
 
-    PreciseTimer* GetEngineClock() const { return mEngineTimer; }
-    PreciseTimer* GetGameClock() const { return mGameTimer; }
-    PreciseTimer* GetCurrentClock() const { return mCurrentTimer; }
-    void SetCurrentClock(PreciseTimer* clock) { mCurrentTimer = clock; }
+    Timer* GetEngineClock() const { return mEngineTimer; }
+    Timer* GetGameClock() const { return mGameTimer; }
+    Timer* GetCurrentClock() const { return mCurrentTimer; }
+    void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
+
+    //In case we want to use precise timer
+
+    //PreciseTimer* GetEngineClock() const { return mEngineTimer; }
+    //PreciseTimer* GetGameClock() const { return mGameTimer; }
+    //PreciseTimer* GetCurrentClock() const { return mCurrentTimer; }
+    //void SetCurrentClock(PreciseTimer* clock) { mCurrentTimer = clock; }
 
     float GetRealDt() const;
     float GetGameDt() const;
@@ -58,9 +65,15 @@ private:
     Module* modules[NUM_MODULES];
 
     //Timer
-    PreciseTimer* mEngineTimer;
-    PreciseTimer* mGameTimer;
-    PreciseTimer* mCurrentTimer = nullptr;
+    Timer* mEngineTimer;
+    Timer* mGameTimer;
+    Timer* mCurrentTimer = nullptr;
+
+    //In case we want to use precise timer
+    
+    //PreciseTimer* mEngineTimer;
+    //PreciseTimer* mGameTimer;
+    //PreciseTimer* mCurrentTimer = nullptr;
 
     bool mEnableVsync = true;
 };

@@ -15,8 +15,13 @@
 
 Application::Application()
 {
-	mEngineTimer = new PreciseTimer();
-	mGameTimer = new PreciseTimer();
+	mEngineTimer = new Timer();
+	mGameTimer = new Timer();
+
+	//In case we want to use precise timer
+	
+	//mEngineTimer = new PreciseTimer();
+	//mGameTimer = new PreciseTimer();
 
 	// Order matters: they will Init/start/update in this order
 	modules[0] = input = new ModuleInput();
