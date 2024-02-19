@@ -34,10 +34,6 @@ private:
 	bool mDrawRaycast = false;
 	std::map<const char*, Panel*> mPanels;
 	void OpenLoadScene();
-
-	//ImGuizmo variables
-	ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::WORLD;
 };
 
 #endif /* _MODULE_EDITOR_H_ */
