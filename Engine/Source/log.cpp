@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include "Globals.h"
 
-string logBuffer;
+const int MAX_LOG_BUFFER_SIZE = 4096 * 100;
+char logBuffer[MAX_LOG_BUFFER_SIZE] = { 0 };
 
 void log(const char file[], int line, const char* format, ...)
 {
@@ -18,9 +19,9 @@ void log(const char file[], int line, const char* format, ...)
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);
 
-	logBuffer += tmp_string2; //Stores all log chars into logBuffer string
+	strncat_s(logBuffer, tmp_string2, MAX_LOG_BUFFER_SIZE - strlen(logBuffer) - 1);
 }
 
-string GetLogBuffer() {
+const char* GetLogBuffer() {
 	return logBuffer;
 }
