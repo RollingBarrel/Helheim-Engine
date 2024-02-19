@@ -233,7 +233,7 @@ void ResourceMesh::CleanUp()
     {
         if (*it != nullptr)
         {
-            delete[] * it;
+            delete[] *it;
             *it = nullptr;
         }
     }

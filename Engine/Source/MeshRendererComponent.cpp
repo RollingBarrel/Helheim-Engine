@@ -12,7 +12,11 @@
 
 
 
-
+MeshRendererComponent::~MeshRendererComponent() { 
+	mBatch->RemoveMesh(this);
+	delete mMesh; 
+	delete mMaterial; 
+};
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
 	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
@@ -69,7 +73,7 @@ void MeshRendererComponent::AddCommand(unsigned int instanceCounter)
 	command.mCount = mMesh->GetNumIndices();
 	command.mInstanceCount = 1;
 	command.firstIndex = mMesh->GetEboPosition();// / sizeof(GLuint);
-	command.baseVertex = mMesh->GetVboPosition();// / mBatch->GetVertexSize();
+	command.baseVertex = mMesh->GetVertexBase();// / mBatch->GetVertexSize();
 	command.baseInstance = instanceCounter;
 
 	mBatch->AddCommand(command);

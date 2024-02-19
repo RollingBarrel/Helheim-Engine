@@ -41,6 +41,7 @@ public:
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
 	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMesh(MeshRendererComponent* component);
+	void RemoveMesh(const MeshRendererComponent* component);
 	void AddCommand(const Command& command);
 	void Draw();
 
@@ -50,7 +51,6 @@ private:
 	std::vector<const ResourceMesh*> mUniqueMeshes;
 	std::vector<Attribute*> mAttributes;
 	std::vector<Command> mCommands;
-	//std::vector<const Material*> mMaterials;
 	unsigned int mVertexSize = 0;
 
 

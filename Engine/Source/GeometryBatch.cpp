@@ -50,6 +50,12 @@ GeometryBatch::~GeometryBatch()
 {
 	delete[] mVboData;
 	delete[] mEboData;
+	glDeleteVertexArrays(1, &mVao);
+	glDeleteBuffers(1, &mVbo);
+	glDeleteBuffers(1, &mEbo);
+	glDeleteBuffers(1, &mSsboModels);
+	glDeleteBuffers(1, &mSsboMaterials);
+	glDeleteBuffers(1, &mIbo);
 }
 
 
@@ -60,7 +66,7 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 	ResourceMesh& rMesh = const_cast<ResourceMesh&>(*cMesh->GetResourceMesh());
 	for (const ResourceMesh* mesh : mUniqueMeshes) {
 		if (mesh->mUID == rMesh.mUID) {
-			rMesh.SetVboPosition(mesh->GetVboPosition());
+			rMesh.SetVertexBase(mesh->GetVertexBase());
 			rMesh.SetEboPosition(mesh->GetEboPosition());
 			return;
 		}
@@ -68,7 +74,7 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 
 	mUniqueMeshes.push_back(&rMesh);
 
-	rMesh.SetVboPosition(mVboNumElements * sizeof(float) / rMesh.GetVertexSize());
+	rMesh.SetVertexBase(mVboNumElements * sizeof(float) / rMesh.GetVertexSize());
 	unsigned int newNumElements = mVboNumElements + rMesh.GetNumVertices() * rMesh.GetVertexSize() / sizeof(float);
 	float* tmp = new float[newNumElements];
 	if(mVboData)
@@ -96,6 +102,51 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements * sizeof(unsigned int), mEboData, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+}
+
+void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
+{
+	const ResourceMesh& rMesh = *component->GetResourceMesh();
+	unsigned int found = 0;
+	for (std::vector<const MeshRendererComponent*>::iterator it = mMeshComponents.begin(); it != mMeshComponents.end();)
+	{
+		if (component->GetResourceMesh()->mUID == rMesh.mUID)
+		{
+			++found;
+		}
+		if (component == *it)
+		{
+			unsigned int offset = rMesh.GetVertexBase() * rMesh.GetVertexSize() / sizeof(float);
+			unsigned int size = rMesh.GetNumVertices() * GetVertexSize();
+			memmove(mVboData + offset, mVboData + offset + size / sizeof(float), size);
+			mVboNumElements -= size / sizeof(float);
+			float* tmp = new float[mVboNumElements];
+			delete[] mVboData;
+			mVboData = tmp;
+			glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+			glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			memmove(mEboData + rMesh.GetEboPosition(), mEboData + rMesh.GetEboPosition() + rMesh.GetNumIndices(), rMesh.GetNumIndices() * sizeof(unsigned int));
+			mEboNumElements -= rMesh.GetNumIndices();
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements, mEboData, GL_STATIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			it = mMeshComponents.erase(it);
+			continue;
+		}
+		++it;
+	}
+	if (found == 1)
+	{
+		for (std::vector<const ResourceMesh*>::iterator it = mUniqueMeshes.begin(); it != mUniqueMeshes.end(); ++it)
+		{
+			if (&rMesh == *it)
+			{
+				mUniqueMeshes.erase(it);
+			}
+		}
+	}
 }
 
 
