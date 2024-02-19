@@ -110,15 +110,16 @@ void ScenePanel::Draw(int windowFlags)
 			if (ImGuizmo::IsUsing()) {
 				GameObject* parent = selectedGameObject->GetParent();
 				float4x4 inverseParentMatrix = float4x4::identity;
+				float3 translation;
+				Quat rotation;
+				float3 scale;
+
 				if (parent != nullptr) {
 					const float4x4* parentTransform = &parent->GetWorldTransform();
 					inverseParentMatrix = parent->GetWorldTransform().Inverted();
 				}
-				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
 
-				float3 translation;
-				Quat rotation;
-				float3 scale;
+				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
 				localMatrix.Decompose(translation, rotation, scale);
 
 				switch (mCurrentGuizmoOperation) {

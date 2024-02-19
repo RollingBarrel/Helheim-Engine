@@ -175,7 +175,6 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
-
 	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
@@ -185,9 +184,8 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 
 void GameObject::SetRotation(const Quat& rotation)
 {
-
 	mRotation = rotation;
-
+	mEulerRotation = RadToDeg(rotation.ToEulerXYZ());
 }
 
 void GameObject::SetPosition(const float3& position)
