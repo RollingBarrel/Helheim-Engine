@@ -106,8 +106,7 @@ void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
 	command.mInstanceCount = 1;
 	command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();// / sizeof(GLuint);
 	command.baseVertex = mesh->GetResourceMesh()->GetVboPosition();// / mBatch->GetVertexSize();
-	command.baseInstance = mInstanceCounter;
-	mInstanceCounter++;
+	command.baseInstance = mCommands.size();
 
 	mCommands.push_back(command);
 }
@@ -174,7 +173,6 @@ void GeometryBatch::Draw()
 
 	glUseProgram(0);
 	mCommands.clear();
-	mInstanceCounter = 0;
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 

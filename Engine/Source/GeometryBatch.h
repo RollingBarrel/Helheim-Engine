@@ -65,6 +65,5 @@ private:
 	unsigned int mVboNumElements = 0;
 	unsigned int* mEboData = nullptr;
 	unsigned int mEboNumElements = 0;
-	unsigned int mInstanceCounter = 0;
 };
 
