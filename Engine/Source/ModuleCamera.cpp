@@ -170,7 +170,7 @@ update_status ModuleCamera::Update(float dt)
 				Transform(float3(dtSpeed, 0, 0));
 			}
 		}
-		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
+		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
 		{
 			CheckRaycast();
 		}
