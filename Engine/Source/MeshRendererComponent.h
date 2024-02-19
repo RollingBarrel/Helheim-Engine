@@ -30,7 +30,7 @@ public:
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const GeometryBatch* GetBatch() const { return mBatch; }
 	void SetBatch(GeometryBatch* batch) { mBatch = batch; }
-	void AddCommand(unsigned int instanceCounter);
+	void CreateCommand();
 	const AABB GetAABB() const { return mAABB; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }

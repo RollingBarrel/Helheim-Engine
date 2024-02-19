@@ -214,7 +214,7 @@ void ModuleScene::DrawRenderList()
 		{
 			if (!mApplyculling || meshRenderer->IsInsideFrustum()) {
 				
-				meshRenderer->AddCommand(instanceCounter);
+				meshRenderer->CreateCommand();
 				instanceCounter++;
 			}
 		}

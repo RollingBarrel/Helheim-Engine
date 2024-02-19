@@ -98,11 +98,23 @@ void GeometryBatch::AddMesh(MeshRendererComponent* cMesh)
 
 }
 
-
-void GeometryBatch::AddCommand(const Command& command)
+void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
 {
+	
+	Command command;
+	command.mCount = mesh->GetResourceMesh()->GetNumIndices();
+	command.mInstanceCount = 1;
+	command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();// / sizeof(GLuint);
+	command.baseVertex = mesh->GetResourceMesh()->GetVboPosition();// / mBatch->GetVertexSize();
+	command.baseInstance = mInstanceCounter;
+	mInstanceCounter++;
+
 	mCommands.push_back(command);
 }
+
+
+
+
 
 
 void GeometryBatch::Draw()

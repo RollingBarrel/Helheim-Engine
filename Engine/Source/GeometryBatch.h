@@ -41,7 +41,7 @@ public:
 	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
 	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMesh(MeshRendererComponent* component);
-	void AddCommand(const Command& command);
+	void AddCommand(const MeshRendererComponent* mesh);
 	void Draw();
 
 private:
@@ -65,6 +65,6 @@ private:
 	unsigned int mVboNumElements = 0;
 	unsigned int* mEboData = nullptr;
 	unsigned int mEboNumElements = 0;
-
+	unsigned int mInstanceCounter = 0;
 };
 

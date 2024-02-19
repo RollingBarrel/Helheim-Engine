@@ -63,16 +63,9 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::AddCommand(unsigned int instanceCounter)
+void MeshRendererComponent::CreateCommand()
 {
-	Command command;
-	command.mCount = mMesh->GetNumIndices();
-	command.mInstanceCount = 1;
-	command.firstIndex = mMesh->GetEboPosition();// / sizeof(GLuint);
-	command.baseVertex = mMesh->GetVboPosition();// / mBatch->GetVertexSize();
-	command.baseInstance = instanceCounter;
-
-	mBatch->AddCommand(command);
+	mBatch->AddCommand(this);
 }
 
 
