@@ -86,6 +86,8 @@ void ScenePanel::Draw(int windowFlags)
 			mCurrentGuizmoOperation = ImGuizmo::ROTATE;
 		if (ImGui::IsKeyPressed(ImGuiKey_R))
 			mCurrentGuizmoOperation = ImGuizmo::SCALE;
+		if (ImGui::IsKeyPressed(ImGuiKey_G))
+			mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
 
 		ImVec2 windowPos = ImGui::GetWindowPos();
 		ImGuizmo::SetDrawlist();
