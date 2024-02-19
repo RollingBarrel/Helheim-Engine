@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+#define MILLI_IN_SECONDS 1000
+
 class Timer {
 public:
     Timer() = default;
@@ -36,13 +38,13 @@ public:
     unsigned long GetRealTime() const { return mRealTime; }
     unsigned long GetTotalTime() const { return mTotalTime; }
     unsigned int GetTotalFrames() const { return mTotalFrames; }
-    void SetTotalFrames(long gameFrames) { mTotalFrames += gameFrames; }    //Adds the frames of the game execution to the total frames of the engine
+    void SetTotalFrames(unsigned int gameFrames) { mTotalFrames += gameFrames; }    //Adds the frames of the game execution to the total frames of the engine
 
     unsigned int GetFpsLimit() const { return mFpsLimit; }
     void SetFpsLimit(unsigned int limit) { mFpsLimit = limit; }
 
     std::vector<float> GetFpsLog() const { return mFpsLog; }
-    std::vector<unsigned long> GetMsLog() const { return mMsLog; }
+    std::vector<unsigned long long> GetMsLog() const { return mMsLog; }
 
     bool UpdateFpsLog() const { return mUpdateFpsLog; }
     void FpsLogUpdated() { mUpdateFpsLog = false; }
@@ -59,6 +61,8 @@ public:
 
     bool GetVsyncStatus() const { return mEnabledVsync; }
     void SetVsyncStatus(bool vsyncStatus);
+
+    float GetTimerPrecision() const { return (float)MILLI_IN_SECONDS;  }
 
 private:
 
@@ -86,7 +90,7 @@ private:
     unsigned int mTotalFrames = 0;  //Total frames since start of Timer
 
     std::vector<float> mFpsLog;         //Log of the last 100 FPS calculated
-    std::vector<unsigned long> mMsLog;  //Log of the time of the last 100 frames
+    std::vector<unsigned long long> mMsLog;  //Log of the time of the last 100 frames
 
     bool mUpdateFpsLog = false;         //True if enough time has passed (500ms) to calculate FPS
 
