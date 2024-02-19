@@ -17,6 +17,6 @@ namespace Importer
 
 		void Save(const ResourceMesh* ourMesh);
 
-		void Load(ResourceMesh* ourMesh, const char* fileName);
+		ResourceMesh* Load(const char* fileName, unsigned int uid);
 	}
 }

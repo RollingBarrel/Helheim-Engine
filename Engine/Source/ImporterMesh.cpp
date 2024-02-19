@@ -251,14 +251,10 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     fileBuffer = nullptr;
 }
 
-void Importer::Mesh::Load(ResourceMesh* mesh, const char* fileName)
+ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
 {
-    std::string path = LIBRARY_MESH_PATH;
-    path += fileName;
-    path += ".mesh";
-
     char* fileBuffer;
-    App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
+    App->GetFileSystem()->Load(filePath, &fileBuffer);
 
     //Load Header
     char* cursor = fileBuffer;
@@ -266,22 +262,28 @@ void Importer::Mesh::Load(ResourceMesh* mesh, const char* fileName)
     unsigned int bytes = sizeof(header);
     memcpy(header, cursor, bytes);
     cursor += bytes;
-    mesh->SetNumberIndices(header[0]);
-    mesh->SetNumberVertices(header[1]);
+    unsigned int numIndices = header[0];
+    unsigned int numVertices = header[1];
+
     unsigned int numAttributes = header[2];
+
     //Load Indices
-    bytes = sizeof(unsigned int) * mesh->GetNumberIndices();
-    mesh->AddIndices(new unsigned int[mesh->GetNumberIndices()]);
-    memcpy(mesh->GetIndices(), cursor, bytes);
+    bytes = sizeof(unsigned int) * numIndices;
+    unsigned int* indices = new unsigned int[numIndices];
+    memcpy(indices, cursor, bytes);
     cursor += bytes;
+
+    ResourceMesh* rMesh = new ResourceMesh(uid, filePath, numIndices, numVertices, indices);
 
     for (int i = 0; i < numAttributes; ++i)
     {
         Attribute* attr = reinterpret_cast<Attribute*>(cursor);
         cursor += sizeof(Attribute);
-        mesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor));
-        cursor += attr->size * mesh->GetNumberVertices();
+        rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor));
+        cursor += attr->size * numVertices;
     }
 
-    mesh->LoadToMemory();
+   rMesh->LoadToMemory();
+
+   return rMesh;
 }

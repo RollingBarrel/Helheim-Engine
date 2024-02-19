@@ -1,16 +1,27 @@
 #include "ResourceMesh.h"
 
+#include "ModuleFileSystem.h"
+
 #include "mikktspace.h"
 #include "weldmesh.h"
 
 #include "glew.h"
 
-ResourceMesh::ResourceMesh()
+ResourceMesh::ResourceMesh(
+    unsigned int uid, 
+    const char* path, 
+    unsigned int numIndices,
+    unsigned int numVertices, 
+    unsigned int* indices) :
+    mNumIndices(numIndices),
+    mNumVertices(numVertices),
+    mIndices(indices)
 {
-}
+    mUID = uid;
+    mType = Type::Mesh;
 
-ResourceMesh::ResourceMesh(unsigned int uid) : Resource(uid)
-{
+    mAssetsFile = path;
+    mLibraryFile = LIBRARY_MESH_PATH + std::to_string(mUID) + ".mesh";
 }
 
 typedef struct {
