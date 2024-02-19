@@ -1,7 +1,6 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
-#include "EngineTimer.h"
 
 class ModuleOpenGL;
 class ModuleWindow;
@@ -14,6 +13,7 @@ class ModuleCamera;
 class ModuleDebugDraw;
 
 class Timer;
+class PreciseTimer;
 
 class Application
 {
@@ -40,6 +40,13 @@ public:
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
 
+    //In case we want to use precise timer
+
+    //PreciseTimer* GetEngineClock() const { return mEngineTimer; }
+    //PreciseTimer* GetGameClock() const { return mGameTimer; }
+    //PreciseTimer* GetCurrentClock() const { return mCurrentTimer; }
+    //void SetCurrentClock(PreciseTimer* clock) { mCurrentTimer = clock; }
+
     float GetRealDt() const;
     float GetGameDt() const;
 
@@ -61,6 +68,12 @@ private:
     Timer* mEngineTimer;
     Timer* mGameTimer;
     Timer* mCurrentTimer = nullptr;
+
+    //In case we want to use precise timer
+    
+    //PreciseTimer* mEngineTimer;
+    //PreciseTimer* mGameTimer;
+    //PreciseTimer* mCurrentTimer = nullptr;
 
     bool mEnableVsync = true;
 };
