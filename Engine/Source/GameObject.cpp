@@ -155,9 +155,13 @@ void GameObject::ResetTransform()
 }
 
 void GameObject::SetEnabled(bool enabled)
-{ 
+{
 	mIsEnabled = enabled;
-	SetActiveInHierarchy(enabled);
+
+	if (!enabled || mParent->IsActive())
+	{
+		SetActiveInHierarchy(enabled);
+	}
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -376,6 +380,11 @@ void GameObject::RecalculateLocalTransform() {
 
 void GameObject::SetActiveInHierarchy(bool active)
 {
+	if (active && !mIsEnabled)
+	{
+		return;
+	}
+
 	mIsActive = active;
 
 	for (GameObject* child : mChildren)
