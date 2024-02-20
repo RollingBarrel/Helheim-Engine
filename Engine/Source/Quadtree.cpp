@@ -9,7 +9,8 @@
 #include "Application.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
-
+#include "ImporterMesh.h"
+#include "Geometry/Triangle.h"
 #include "imgui.h"
 #include <iostream>
 #include <cstring>
@@ -176,6 +177,66 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 		}
 		AddHierarchyObjects(child);
 	}
+}
+
+const GameObject* Quadtree::RayCast(Ray* ray) const
+{
+	if (mFilled) 
+	{
+		const GameObject* go1 = mChildren[0]->RayCast(ray);
+		const GameObject* go2 = mChildren[1]->RayCast(ray);
+		const GameObject* go3 = mChildren[2]->RayCast(ray);
+		const GameObject* go4 = mChildren[3]->RayCast(ray);
+		if (go1 != nullptr)
+			return go1;
+		if (go2 != nullptr)
+			return go2;
+		if (go3 != nullptr)
+			return go3;
+		if (go4 != nullptr)
+			return go4;
+	}
+	else
+	{
+		bool intersects = false;
+		bool intersectsTriangle = false;
+
+		for (const auto& child : mGameObjects) {
+
+			MeshRendererComponent* rMesh = (MeshRendererComponent*)child->GetComponent(ComponentType::MESHRENDERER);
+
+			if (rMesh != nullptr) {
+
+				Ray localRay(*ray);
+				localRay.pos = child->GetWorldTransform().Inverted().MulPos(ray->pos);
+				localRay.dir = child->GetWorldTransform().Inverted().MulDir(ray->dir).Normalized();
+
+				intersects = localRay.Intersects(rMesh->GetAABB());
+				if (intersects)
+				{
+					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
+					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
+
+					for (int i = 0; i < rMesh->GetResourceMesh()->mNumIndices / 3; i += 3) {
+						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i] + 1], triangles[indices[i] + 2]);
+						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i] + 2]);
+						float3 verticeC = float3(triangles[indices[i + 2]], triangles[indices[i + 2] + 1], triangles[indices[i + 2] + 2]);
+
+						float distance;
+						float3 hitPoint;
+						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
+
+						if (intersectsTriangle) {
+							return child;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	return nullptr;
 }
 
 void Quadtree::UpdateTree()

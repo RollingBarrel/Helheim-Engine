@@ -59,7 +59,7 @@ void ModuleCamera::CheckRaycast()
 
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	QuadTreeRaycast(root);
+	const GameObject* cool = root->RayCast(&mRay);
 	if (!mIntersectMap.empty())
 	{
 		GameObject* gameObject = mIntersectMap.begin()->second;
