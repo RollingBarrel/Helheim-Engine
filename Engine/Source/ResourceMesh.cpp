@@ -23,13 +23,11 @@ ResourceMesh::ResourceMesh(
     unsigned int uid, 
     const char* path, 
     unsigned int numIndices,
-    unsigned int numVertices, 
-    unsigned int* indices) :
+    unsigned int numVertices) :
+    Resource(uid),
     mNumIndices(numIndices),
-    mNumVertices(numVertices),
-    mIndices(indices)
+    mNumVertices(numVertices)
 {
-    mUID = uid;
     mType = Type::Mesh;
 
     mAssetsFile = path;

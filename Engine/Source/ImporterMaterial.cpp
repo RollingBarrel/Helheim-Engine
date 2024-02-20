@@ -8,7 +8,7 @@
 
 #include "Algorithm/Random/LCG.h"
 
-ResourceMaterial* Importer::Material::Import(const unsigned int uid, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial)
+ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, const unsigned int uid, const std::vector<unsigned int>& textureUID)
 {
     float4 diffuseFactor = float4(); 
     float3 specularFactor = float3();
@@ -56,10 +56,9 @@ ResourceMaterial* Importer::Material::Import(const unsigned int uid, const tinyg
                     int diffuseTextureIndex = indexValue.Get<int>();
                     const tinygltf::Texture& diffuseMap = tinyModel.textures[diffuseTextureIndex];
                     const tinygltf::Image& image = tinyModel.images[diffuseMap.source];
-                    const char* imageUri = image.uri.c_str();
 
-                    unsigned int uidTexture = math::LCG().Int();
-                    diffuseTexture = Importer::Texture::Import(imageUri, uidTexture);
+                    unsigned int uidTexture = textureUID[diffuseTextureIndex];
+                    diffuseTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
                 }
             }
         }
@@ -74,10 +73,9 @@ ResourceMaterial* Importer::Material::Import(const unsigned int uid, const tinyg
                     int specularGlossinessIndex = indexValue.Get<int>();
                     const tinygltf::Texture& specularMap = tinyModel.textures[specularGlossinessIndex];
                     const tinygltf::Image& image = tinyModel.images[specularMap.source];
-                    const char* imageUri = image.uri.c_str();
 
-                    unsigned int uidTexture = math::LCG().Int();
-                    specularGlossinessTexture = Importer::Texture::Import(imageUri, uidTexture);
+                    unsigned int uidTexture = textureUID[specularGlossinessIndex];
+                    specularGlossinessTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
                 }
             }
         }
@@ -94,10 +92,9 @@ ResourceMaterial* Importer::Material::Import(const unsigned int uid, const tinyg
                         int normalIndex = indexValue;
                         const tinygltf::Texture& normalMap = tinyModel.textures[normalIndex];
                         const tinygltf::Image& image = tinyModel.images[normalMap.source];
-                        const char* imageUri = image.uri.c_str();
 
-                        unsigned int uidTexture = math::LCG().Int();
-                        normalTexture = Importer::Texture::Import(imageUri, uidTexture);
+                        unsigned int uidTexture = textureUID[normalIndex];
+                        normalTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
                     }
                 }
             }
@@ -110,10 +107,9 @@ ResourceMaterial* Importer::Material::Import(const unsigned int uid, const tinyg
         {
             const tinygltf::Texture& texture = tinyModel.textures[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index];
             const tinygltf::Image& image = tinyModel.images[texture.source];
-            const char* imageUri = image.uri.c_str();
 
-            unsigned int uidTexture = math::LCG().Int();
-            diffuseTexture = Importer::Texture::Import(imageUri, uidTexture);
+            unsigned int uidTexture = textureUID[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index];
+            diffuseTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
         }
 
     }
@@ -131,7 +127,7 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
         ourMaterial->IsDiffuseTextureEnabled(),
         ourMaterial->IsSpecularGlossinessTextureEnabled(),
         ourMaterial->IsNormalMapEnabled(),
-        ourMaterial->IsShinessMapEnabled()};
+        ourMaterial->IsShininessMapEnabled()};
 
     unsigned int size = sizeof(texturesUID) +
                         sizeof(enables) +
@@ -150,16 +146,19 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
     memcpy(cursor, enables, bytes);
     cursor += bytes;
 
+    float4 diffuseFactor = ourMaterial->GetDiffuseFactor();
     bytes = sizeof(float) * 4;
-    memcpy(cursor, &ourMaterial->GetDiffuseFactor(), bytes);
+    memcpy(cursor, &diffuseFactor, bytes);
     cursor += bytes;
 
+    float3 specularFactor = ourMaterial->GetSpecularFactor();
     bytes = sizeof(float) * 3;
-    memcpy(cursor, &ourMaterial->GetSpecularFactor(), bytes);
+    memcpy(cursor, &specularFactor, bytes);
     cursor += bytes;
 
+    float glossinessFactor = ourMaterial->GetGlossinessFactor();
     bytes = sizeof(float);
-    memcpy(cursor, &ourMaterial->GetGlossinessFactor(), bytes);
+    memcpy(cursor, &glossinessFactor, bytes);
     cursor += bytes;
 
     //TODO Change name for random UID
@@ -174,15 +173,10 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
 
 }
 
-ResourceMaterial* Importer::Material::Load(const unsigned int uid, const char* fileName)
+ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned int uid )
 {
     char* fileBuffer;
-
-    std::string path = LIBRARY_MATERIAL_PATH;
-    path += fileName;
-    path += ".mat";
-
-    App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
+    App->GetFileSystem()->Load(fileName, &fileBuffer);
 
     char* cursor = fileBuffer;
     unsigned int texturesUID[3];
@@ -190,36 +184,45 @@ ResourceMaterial* Importer::Material::Load(const unsigned int uid, const char* f
 
     memcpy(texturesUID, cursor, bytes);
     cursor += bytes;
-    //ourMaterial->mDiffuseTexture = new ResourceTexture();
-    //if(texturesUID[0])
-    //    Importer::Texture::Load(ourMaterial->mDiffuseTexture, std::to_string(texturesUID[0]).c_str());
-    //ourMaterial->mSpecularGlossinessTexture = new ResourceTexture();
-    //if (texturesUID[1])
-    //    Importer::Texture::Load(ourMaterial->mSpecularGlossinessTexture, std::to_string(texturesUID[1]).c_str());
-    //ourMaterial->mNormalTexture = new ResourceTexture();
-    //if (texturesUID[2])
-    //    Importer::Texture::Load(ourMaterial->mNormalTexture, std::to_string(texturesUID[2]).c_str());
+
+    ResourceTexture* diffuseTexture = new ResourceTexture();
+    if (texturesUID[0])
+        Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[0]) + ".tex").c_str(), texturesUID[0]);
+
+    ResourceTexture* specularGlossinesTexture = new ResourceTexture();
+    if (texturesUID[1])
+        Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[1]) + ".tex").c_str(), texturesUID[1]);
+
+    ResourceTexture* normalTexture = new ResourceTexture();
+    if (texturesUID[2])
+        Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[2]) + ".tex").c_str(), texturesUID[2]);
 
     bool enables[4];
     bytes = sizeof(enables);
     memcpy(enables, cursor, bytes);
     cursor += bytes;
-    ourMaterial->mEnableDiffuseTexture = enables[0];
-    ourMaterial->mEnableSpecularGlossinessTexture = enables[1];
-    ourMaterial->mEnableNormalMap = enables[2];
-    ourMaterial->mEnableShinessMap = enables[3];
 
+    bool enableDiffuseTexture = enables[0];
+    bool enableSpecularGlossinessTexture = enables[1];
+    bool enableNormalTexture = enables[2];
+    bool enableShininessTexture = enables[3];
+
+    float4 diffuseFactor;
     bytes = sizeof(float) * 4;
-    memcpy(&ourMaterial->mDiffuseFactor, cursor, bytes);
+    memcpy(&diffuseFactor, cursor, bytes);
     cursor += bytes;
 
+    float3 specularFactor;
     bytes = sizeof(float) * 3;
-    memcpy(&ourMaterial->mSpecularFactor, cursor, bytes);
+    memcpy(&specularFactor, cursor, bytes);
     cursor += bytes;
 
+    float glossinessFator;
     bytes = sizeof(float);
-    memcpy(&ourMaterial->mGlossinessFactor, cursor, bytes);
+    memcpy(&glossinessFator, cursor, bytes);
     cursor += bytes;
+
+    return new ResourceMaterial(uid, diffuseFactor, specularFactor,glossinessFator,diffuseTexture,specularGlossinesTexture, normalTexture);
 }
 
 

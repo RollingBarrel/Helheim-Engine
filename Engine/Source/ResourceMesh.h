@@ -32,8 +32,7 @@ public:
 	ResourceMesh(unsigned int uid,
 		const char* path,
 		unsigned int numIndices,
-		unsigned int numVertices,
-		unsigned int* indices);
+		unsigned int numVertices);
 
 	//ResourceMesh(const ResourceMesh& other);
 	~ResourceMesh() { CleanUp(); }
@@ -68,12 +67,13 @@ public:
 
 	//TODO Make it Private
 	std::vector<float*> mAttributesData;
+	unsigned int* mIndices = nullptr;
 
 private:
 
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
-	unsigned int* mIndices = nullptr;
+
 
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;

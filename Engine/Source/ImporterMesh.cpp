@@ -136,7 +136,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& indView = model.bufferViews[indAcc.bufferView];
         const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
 
-        rMesh->AddIndices(new unsigned int[rMesh->GetNumberIndices()]);
+        rMesh->mIndices = new unsigned int[rMesh->GetNumberIndices()];
 
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
         {
@@ -144,7 +144,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             for (uint32_t i = 0; i < indAcc.count; ++i)
             {
                 //TODO: Change this
-                (rMesh->GetIndices())[i] = bufferInd[i];
+                rMesh->mIndices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
@@ -152,7 +152,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
             for (uint16_t i = 0; i < indAcc.count; ++i)
             {
-                (rMesh->GetIndices())[i] = bufferInd[i];
+                rMesh->mIndices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
@@ -160,7 +160,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
             for (uint8_t i = 0; i < indAcc.count; ++i)
             {
-                (rMesh->GetIndices())[i] = bufferInd[i];
+                rMesh->mIndices[i] = bufferInd[i];
             }
         }
     }
@@ -222,11 +222,12 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     unsigned int bytes = sizeof(header);
     memcpy(cursor, header, bytes);
     cursor += bytes;
+
     //Save Indices
     bytes = sizeof(unsigned int) * mesh->GetNumberIndices();
-    unsigned int numIndices = mesh->GetNumberIndices();
-    memcpy(cursor, &numIndices, bytes);
+    memcpy(cursor, mesh->mIndices, bytes);
     cursor += bytes;
+
     //Save attributes and data
     unsigned int idx = 0;
     for (std::vector<Attribute*>::const_iterator it = mesh->GetAttributes().cbegin(); it != mesh->GetAttributes().cend(); ++it)
@@ -273,7 +274,14 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
     memcpy(indices, cursor, bytes);
     cursor += bytes;
 
-    ResourceMesh* rMesh = new ResourceMesh(uid, filePath, numIndices, numVertices, indices);
+    ResourceMesh* rMesh = new ResourceMesh(uid, filePath, numIndices, numVertices);
+
+    rMesh->mIndices = new unsigned int[numIndices];
+    
+    for (int i = 0; i < numIndices; ++i)
+    {
+        rMesh->mIndices[i] = indices[i];
+    }
 
     for (int i = 0; i < numAttributes; ++i)
     {

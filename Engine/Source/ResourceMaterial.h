@@ -9,10 +9,11 @@ class ResourceTexture;
 class ResourceMaterial : public Resource
 {
 public:
+
     ResourceMaterial();
 	ResourceMaterial(unsigned int uid);
     ResourceMaterial(
-        unsigned int uid, 
+        unsigned int uid,
         float4 diffuseFactor, 
         float3 specularFactor, 
         float glossinessFactor, 
@@ -32,7 +33,16 @@ public:
     bool IsDiffuseTextureEnabled() const { return mEnableDiffuseTexture; }
     bool IsSpecularGlossinessTextureEnabled() const { return mEnableSpecularGlossinessTexture; }
     bool IsNormalMapEnabled() const { return mEnableNormalMap; }
-    bool IsShinessMapEnabled() const { return mEnableShinessMap; }
+    bool IsShininessMapEnabled() const { return mEnableShininessMap; }
+
+    void SetDiffuseFactor(float4 factor) { mDiffuseFactor = factor; }
+    void SetSpecularFactor(float3 factor) { mSpecularFactor = factor; }
+    void SetGlossinessFactor(float factor) { mGlossinessFactor = factor; }
+
+    void EnableDiffuseTexture(bool state) { mEnableDiffuseTexture = state; }
+    void EnableSpecularGlossinessTexture(bool state) { mEnableSpecularGlossinessTexture = state; }
+    void EnableNormalTexture(bool state) { mEnableNormalMap = state; }
+    void EnableShininessTexture(bool state) { mEnableShininessMap = state; }
 
 private:
     float4 mDiffuseFactor;
@@ -46,6 +56,6 @@ private:
     bool mEnableDiffuseTexture;
     bool mEnableSpecularGlossinessTexture;
     bool mEnableNormalMap;
-    bool mEnableShinessMap;
+    bool mEnableShininessMap;
 };
 

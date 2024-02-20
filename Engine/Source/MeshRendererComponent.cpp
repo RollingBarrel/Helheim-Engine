@@ -7,6 +7,8 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 
+#include "ImporterMaterial.h"
+
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -56,48 +58,48 @@ void MeshRendererComponent::Draw()
 	glBindVertexArray(mMesh->GetVao());
 	//TODO: Put all this with imgui
 	//Dont update uniforms it every frame
-	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->mDiffuseFactor.xyz()[0]);
-	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->mSpecularFactor[0]);
-	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->mGlossinessFactor);
-	if (mMaterial->mEnableDiffuseTexture && mMaterial->mDiffuseTexture != nullptr)
+	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
+	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
+	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->GetGlossinessFactor());
+	if (mMaterial->IsDiffuseTextureEnabled() && mMaterial->GetDiffuseTexture() != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 1);
 		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
 		glUniform1i(diffuseTextureLoc, 0);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mMaterial->GetDiffuseTexture()->GetOpenGLId());
 	}
 	else {
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
 	}
 
-	if (mMaterial->mEnableSpecularGlossinessTexture && mMaterial->mSpecularGlossinessTexture != nullptr)
+	if (mMaterial->IsSpecularGlossinessTextureEnabled() && mMaterial->GetSpecularGlossinessTexture() != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 1);
 		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
 		glUniform1i(specularTextureLoc, 1);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mMaterial->GetSpecularGlossinessTexture()->GetOpenGLId());
 	}
 	else
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 0);
 	}
 
-	if (mMaterial->mEnableNormalMap && mMaterial->mNormalTexture != nullptr)
+	if (mMaterial->IsNormalMapEnabled() && mMaterial->GetNormalTexture() != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 1);
 		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
 		glUniform1i(normalTextureLoc, 2);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mMaterial->GetNormalTexture()->GetOpenGLId());
 	}
 	else
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 0);
 	}
 
-	if (mMaterial->mEnableShinessMap)
+	if (mMaterial->IsShininessMapEnabled())
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
 	}
@@ -115,7 +117,7 @@ void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 {
 	mMesh = Importer::Mesh::Load(std::string(LIBRARY_MESH_PATH + std::to_string(meshUid) + ".mesh").c_str(), meshUid);
 	//TODO
-	//mMaterial = Importer::Material::Load(std::string(LIBRARY_MATERIAL_PATH + std::to_string(materialUid) + ".mat").c_str(), std::to_string(materialUid).c_str());
+	mMaterial = Importer::Material::Load(std::string(LIBRARY_MATERIAL_PATH + std::to_string(materialUid) + ".mat").c_str(), materialUid);
 
 	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 	mAABB.SetFrom(positions, mMesh->GetNumberVertices());

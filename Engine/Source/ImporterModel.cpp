@@ -32,14 +32,19 @@ ResourceModel* Importer::Model::Import(const char* filePath, const char* assetsP
         LOG("[MODEL] Error loading %s: %s", assetsPath, error.c_str());
     }
     
+    std::vector<unsigned int> texturesID;
+    texturesID.reserve(model.images.size());
+
     for (int i = 0; i < model.images.size(); ++i)
     {
         std::string pngName = filePath;
         unsigned filePos = pngName.find_last_of('/');
         pngName = pngName.substr(0, filePos+1);
         pngName.append(model.images[i].uri);
+        unsigned int id;
+        id = App->GetResource()->ImportFile(pngName.c_str());
 
-        App->GetResource()->ImportFile(pngName.c_str());
+        texturesID.push_back(id);
     }
     
     for (const auto& srcMesh : model.meshes)
@@ -50,7 +55,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, const char* assetsP
             Importer::Mesh::Save(mesh);
 
             if (primitive.material != -1) {
-                ResourceMaterial* material = Importer::Material::Import(model, model.materials[primitive.material]);
+                ResourceMaterial* material = Importer::Material::Import(model, model.materials[primitive.material], uid, texturesID);
                 Importer::Material::Save(material);
 
                 rModel->SetUids(mesh->GetUID(), material->GetUID());

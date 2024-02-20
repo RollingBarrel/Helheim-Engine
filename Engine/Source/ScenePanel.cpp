@@ -97,7 +97,6 @@ void ScenePanel::Draw(int windowFlags)
 					cMesh->Load(it->meshUID, it->materialUID);
 				}
 
-				delete resource;
 				RELEASE_ARRAY(fileBuffer);
 			}
 			ImGui::EndDragDropTarget();
