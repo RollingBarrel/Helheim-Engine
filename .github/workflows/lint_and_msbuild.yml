@@ -39,7 +39,6 @@ jobs:
             ignore: Engine/Source/Dependencies
 
   build:
-    needs: cpp-linter
     runs-on: windows-latest
 
     strategy:
