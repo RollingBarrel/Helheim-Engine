@@ -32,6 +32,7 @@ private:
 	uint64_t padding = 0;
 }Material;
 
+#define NUM_BUFFERS 3
 class GeometryBatch
 {
 public:
@@ -47,8 +48,6 @@ public:
 	void Draw();
 
 private:
-	void WaitBuffer();
-
 
 	std::vector<const MeshRendererComponent*> mMeshComponents;
 	std::vector<const ResourceMesh*> mUniqueMeshes;
@@ -61,8 +60,11 @@ private:
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
 	unsigned int mIbo = 0;
-	unsigned int mSsboModelsFirst = 0;
-	unsigned int mSsboModelsSecond = 0;
+
+	uint64_t mDrawCount = 0;
+	unsigned int mSsboModels = 0;
+	float* mSsboModelsData[NUM_BUFFERS];
+	GLsync mSync[NUM_BUFFERS];
 
 	unsigned int mSsboMaterials = 0;
 
@@ -70,10 +72,5 @@ private:
 	unsigned int mVboNumElements = 0;
 	unsigned int* mEboData = nullptr;
 	unsigned int mEboNumElements = 0;
-	float4x4* mSsboModelsFirstData = nullptr;
-	float4x4* mSsboModelsSecondData = nullptr;
-	bool mFirstBufferActive = true;
-	GLsync mGSync = 0;
-	Command* commandBuffer = nullptr;
 };
 
