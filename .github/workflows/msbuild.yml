@@ -30,7 +30,6 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Execute CPP Linter
-      working-directory: ${{env.GITHUB_WORKSPACE}}
       uses: cpp-linter/cpp-linter-action@v2
 
   build:
