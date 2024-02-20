@@ -37,6 +37,7 @@ jobs:
             files-changed-only: false
             extensions: h,cpp
             ignore: Engine/Source/Dependencies
+            extra-args: -std=c++14
 
   build:
     runs-on: windows-latest
