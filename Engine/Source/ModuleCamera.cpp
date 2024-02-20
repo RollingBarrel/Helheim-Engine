@@ -54,9 +54,6 @@ void ModuleCamera::CheckRaycast()
 	bool intersects = false;
 	bool intersectsTriangle = false;
 
-
-	//std::map<float, GameObject*> intersectMap;
-
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
 	const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&mRay);
@@ -89,7 +86,6 @@ update_status ModuleCamera::Update(float dt)
 		const float dtTransformCameraVel = dt * 3.f;
 		float transformCameraVel = 0.03f;
 		const float rotateCameraVel = 0.01f;
-		
 		
 		const float dtFastSpeed = dtTransformCameraVel * 3.0f;
 		const float fastSpeed = transformCameraVel * 3.0f;
