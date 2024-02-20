@@ -10,7 +10,7 @@ class GameObject;
 class MeshRendererComponent;
 class pair;
 #define MAX_DEPTH 6
-#define CAPACITY 1 //8
+#define CAPACITY 8
 
 class Quadtree
 {
