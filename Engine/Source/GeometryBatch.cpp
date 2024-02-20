@@ -228,14 +228,11 @@ void GeometryBatch::Draw()
 {
 	App->GetOpenGL()->BindSceneFramebuffer();
 
+
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
-
-
 	glBindVertexArray(mVao);
-
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
-
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
 	unsigned int offset = 0;
@@ -245,18 +242,13 @@ void GeometryBatch::Draw()
 		offset += sizeof(float) * 16;
 	}
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-
-
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
 
-
 	glBindVertexArray(0);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
-
 	glUseProgram(0);
 	mCommands.clear();
 	App->GetOpenGL()->UnbindSceneFramebuffer();
