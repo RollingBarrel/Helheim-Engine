@@ -8,7 +8,7 @@
 
 class GameObject;
 class MeshRendererComponent;
-
+class pair;
 #define MAX_DEPTH 6
 #define CAPACITY 1 //8
 
@@ -26,7 +26,7 @@ public:
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
 	const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
 	const Quadtree* GetChildren() const { return *mChildren; }
-	const GameObject* RayCast(Ray* ray) const;
+	const std::pair<float, GameObject*> RayCast(Ray* ray) const;
 	void UpdateTree();
 	void Draw() const;
 	const void RenderTreeImGui() const;

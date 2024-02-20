@@ -14,6 +14,7 @@
 #include "imgui.h"
 #include <iostream>
 #include <cstring>
+#include <utility>
 
 Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
@@ -179,22 +180,32 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 	}
 }
 
-const GameObject* Quadtree::RayCast(Ray* ray) const
+const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 {
 	if (mFilled) 
 	{
-		const GameObject* go1 = mChildren[0]->RayCast(ray);
-		const GameObject* go2 = mChildren[1]->RayCast(ray);
-		const GameObject* go3 = mChildren[2]->RayCast(ray);
-		const GameObject* go4 = mChildren[3]->RayCast(ray);
-		if (go1 != nullptr)
-			return go1;
-		if (go2 != nullptr)
-			return go2;
-		if (go3 != nullptr)
-			return go3;
-		if (go4 != nullptr)
-			return go4;
+
+		std::map<float, GameObject*> map;
+
+
+		const std::pair<float, GameObject*> p1 = mChildren[0]->RayCast(ray);
+		const std::pair<float, GameObject*> p2 = mChildren[1]->RayCast(ray);
+		const std::pair<float, GameObject*> p3 = mChildren[2]->RayCast(ray);
+		const std::pair<float, GameObject*> p4 = mChildren[3]->RayCast(ray);
+
+		if (p1.second != nullptr)
+			map.insert(p1);
+		if (p2.second != nullptr)
+			map.insert(p2);
+		if (p3.second != nullptr)
+			map.insert(p3);
+		if (p4.second != nullptr)
+			map.insert(p4);
+
+		if (!map.empty()) {
+			return std::pair<float, GameObject*>(map.begin()->first, map.begin()->second);
+		}
+		
 	}
 	else
 	{
@@ -227,16 +238,15 @@ const GameObject* Quadtree::RayCast(Ray* ray) const
 						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
 
 						if (intersectsTriangle) {
-							return child;
+							return std::pair<float, GameObject*>(distance, child);
 						}
 					}
 				}
 			}
 		}
 	}
-	
-	
-	return nullptr;
+
+	return std::pair<float, GameObject*>(FLT_MAX,nullptr);
 }
 
 void Quadtree::UpdateTree()
