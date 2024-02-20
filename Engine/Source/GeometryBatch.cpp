@@ -5,6 +5,7 @@
 #include <cassert>
 #include "glew.h"
 #include "float3.h"
+#include "float4x4.h"
 #include "MeshRendererComponent.h"
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
@@ -23,15 +24,11 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glBindVertexArray(mVao);
 	glGenBuffers(1, &mVbo);
 	glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-	glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_STATIC_DRAW);
 	glGenBuffers(1, &mEbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-	glGenBuffers(1, &mSsboModels);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
-	glGenBuffers(1, &mSsboMaterials);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
+	glGenBuffers(1, &mSsboModelsFirst);
+	glGenBuffers(1, &mSsboModelsSecond);
+	glGenBuffers(1, &mSsboMaterials);;
 	glGenBuffers(1, &mIbo);
 	
 
@@ -57,7 +54,8 @@ GeometryBatch::~GeometryBatch()
 	glDeleteVertexArrays(1, &mVao);
 	glDeleteBuffers(1, &mVbo);
 	glDeleteBuffers(1, &mEbo);
-	glDeleteBuffers(1, &mSsboModels);
+	glDeleteBuffers(1, &mSsboModelsFirst);
+	glDeleteBuffers(1, &mSsboModelsSecond);
 	glDeleteBuffers(1, &mSsboMaterials);
 	glDeleteBuffers(1, &mIbo);
 	mMeshComponents.clear();
@@ -77,6 +75,46 @@ void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
 void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 {
 	mMeshComponents.push_back(cMesh);
+
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+
+
+	glDeleteBuffers(1, &mSsboModelsFirst);
+	glGenBuffers(1, &mSsboModelsFirst);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelsFirst);
+	GLbitfield flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, flags);
+	mSsboModelsFirstData = reinterpret_cast<float4x4*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY));
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
+
+	unsigned int offset = 0;
+	for (const MeshRendererComponent* mesh : mMeshComponents) {
+
+		const ResourceMaterial* rMaterial = mesh->GetMaterial();
+		Material material;
+		memcpy(material.diffuseColor, rMaterial->mDiffuseFactor.ptr(), sizeof(float) * 4);
+		material.diffuseTexture = rMaterial->mDiffuseTexture->mTextureHandle;
+		memcpy(material.specularColor, rMaterial->mSpecularFactor.ptr(), sizeof(float) * 4);
+		material.specularTexture = rMaterial->mSpecularGlossinessTexture->mTextureHandle;
+		material.normalTexture = rMaterial->mNormalTexture->mTextureHandle;
+		material.shininess = rMaterial->mGlossinessFactor;
+		material.hasDiffuseMap = rMaterial->mEnableDiffuseTexture;
+		material.hasSpecularMap = rMaterial->mEnableSpecularGlossinessTexture;
+		material.hasShininessMap = rMaterial->mEnableShinessMap;
+		material.hasNormalMap = rMaterial->mEnableNormalMap;
+
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
+		offset += sizeof(Material);
+	}
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
 
 	ResourceMesh& rMesh = const_cast<ResourceMesh&>(*cMesh->GetResourceMesh());
 	for (const ResourceMesh* mesh : mUniqueMeshes) {
@@ -116,43 +154,6 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements * sizeof(unsigned int), mEboData, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferData(GL_DRAW_INDIRECT_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
-
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, GL_STATIC_DRAW);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
-
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
-	
-
-
-	unsigned int offset = 0;
-	for (const MeshRendererComponent* mesh : mMeshComponents) {
-
-		const ResourceMaterial* rMaterial = mesh->GetMaterial();
-		Material material;
-		memcpy(material.diffuseColor, rMaterial->mDiffuseFactor.ptr(), sizeof(float) * 4);
-		material.diffuseTexture = rMaterial->mDiffuseTexture->mTextureHandle;
-		memcpy(material.specularColor, rMaterial->mSpecularFactor.ptr(), sizeof(float) * 4);
-		material.specularTexture = rMaterial->mSpecularGlossinessTexture->mTextureHandle;
-		material.normalTexture = rMaterial->mNormalTexture->mTextureHandle;
-		material.shininess = rMaterial->mGlossinessFactor;
-		material.hasDiffuseMap = rMaterial->mEnableDiffuseTexture;
-		material.hasSpecularMap = rMaterial->mEnableSpecularGlossinessTexture;
-		material.hasShininessMap = rMaterial->mEnableShinessMap;
-		material.hasNormalMap = rMaterial->mEnableNormalMap;
-
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
-		offset += sizeof(Material);
-	}
-
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 
 }
@@ -232,15 +233,18 @@ void GeometryBatch::Draw()
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModels);
-	unsigned int offset = 0;
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelsFirst);
+	unsigned int i = 0;
 	for (const MeshRendererComponent* mesh : mMeshComponents) {
 
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().ptr());
-		offset += sizeof(float) * 16;
+		//glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().ptr());
+		//offset += sizeof(float) * 16;
+		mSsboModelsFirstData[i] = mesh->GetOwner()->GetWorldTransform();
+		++i;
 	}
 
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels);
+	//glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelsFirst);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelsFirst, 0, mMeshComponents.size() * sizeof(float) * 16);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
 

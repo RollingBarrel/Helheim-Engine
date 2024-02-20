@@ -58,12 +58,16 @@ private:
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
 	unsigned int mIbo = 0;
-	unsigned int mSsboModels = 0;
+	unsigned int mSsboModelsFirst = 0;
+	unsigned int mSsboModelsSecond = 0;
+
 	unsigned int mSsboMaterials = 0;
 
 	float* mVboData = nullptr;
 	unsigned int mVboNumElements = 0;
 	unsigned int* mEboData = nullptr;
 	unsigned int mEboNumElements = 0;
+	float4x4* mSsboModelsFirstData = nullptr;
+	float4x4* mSsboModelsSecondData = nullptr;
 };
 
