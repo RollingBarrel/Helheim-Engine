@@ -5,6 +5,7 @@
 class MeshRendererComponent;
 struct ResourceMesh;
 typedef struct Attribute;
+typedef struct __GLsync* GLsync;
 
 typedef struct Command
 {
@@ -47,6 +48,10 @@ public:
 
 private:
 
+	void LockBuffer();
+	void WaitBuffer();
+
+
 	std::vector<const MeshRendererComponent*> mMeshComponents;
 	std::vector<const ResourceMesh*> mUniqueMeshes;
 	std::vector<Attribute> mAttributes;
@@ -70,5 +75,6 @@ private:
 	float4x4* mSsboModelsFirstData = nullptr;
 	float4x4* mSsboModelsSecondData = nullptr;
 	bool mFirstBufferActive = true;
+	GLsync* mGSync;
 };
 

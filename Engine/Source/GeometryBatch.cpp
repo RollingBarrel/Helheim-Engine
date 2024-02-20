@@ -13,6 +13,8 @@
 
 GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 {
+	mGSync = new GLsync();
+
 	const std::vector<Attribute*>& attributes = mesh->GetResourceMesh()->GetAttributes();
 	for (const Attribute* ptrAttr : attributes)
 	{
@@ -49,6 +51,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 
 GeometryBatch::~GeometryBatch()
 {
+	delete mGSync;
 	delete[] mVboData;
 	delete[] mEboData;
 	glDeleteVertexArrays(1, &mVao);
@@ -240,6 +243,7 @@ void GeometryBatch::Draw()
 	unsigned int activeBuffer;
 
 	if (mFirstBufferActive) {
+		WaitBuffer();
 		activeBufferData = mSsboModelsFirstData;
 		activeBuffer = mSsboModelsFirst;
 	}
@@ -259,6 +263,15 @@ void GeometryBatch::Draw()
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, activeBuffer, 0, mMeshComponents.size() * sizeof(float) * 16);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
+	
+	if (mFirstBufferActive) {
+		LockBuffer();
+		mFirstBufferActive = false;
+	}
+	else {
+		mFirstBufferActive = true;
+	}
+	
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -266,5 +279,28 @@ void GeometryBatch::Draw()
 	glUseProgram(0);
 	mCommands.clear();
 	App->GetOpenGL()->UnbindSceneFramebuffer();
+}
+
+void GeometryBatch::LockBuffer()
+{
+	if (*mGSync) {
+		glDeleteSync(*mGSync);
+	}
+
+	*mGSync = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+}
+
+void GeometryBatch::WaitBuffer()
+{
+	if (*mGSync) {
+		while (1) {
+			GLenum waitReturn = glClientWaitSync(*mGSync, GL_SYNC_FLUSH_COMMANDS_BIT, 1);
+			if (waitReturn == GL_ALREADY_SIGNALED || waitReturn == GL_CONDITION_SATISFIED){
+				return;
+			}
+				
+		}
+	}
+
 }
 
