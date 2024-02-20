@@ -31,8 +31,7 @@ jobs:
 
       - name: Execute CPP Linter
         uses: cpp-linter/cpp-linter-action@main
-        id: linter
-          continue-on-error: true
+        
         with:
             style: file
             files-changed-only: false
