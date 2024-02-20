@@ -26,8 +26,12 @@ jobs:
   cpp-linter:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: cpp-linter/cpp-linter-action@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Execute CPP Linter
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        uses: cpp-linter/cpp-linter-action@v2
 
   build:
     runs-on: windows-latest
@@ -37,7 +41,8 @@ jobs:
         build_configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
