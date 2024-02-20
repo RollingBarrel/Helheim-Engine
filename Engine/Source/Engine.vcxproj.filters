@@ -223,9 +223,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="EngineTimer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="PreciseTimer.cpp">
       <Filter>Utils\Timer</Filter>
     </ClCompile>
@@ -771,9 +768,6 @@
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineTimer.h">
-      <Filter>Utils\Timer</Filter>
     </ClInclude>
     <ClInclude Include="PreciseTimer.h">
       <Filter>Utils\Timer</Filter>

@@ -11,5 +11,7 @@ public:
 
 	void Draw(int windowFlags) override;
 
+private:
+	bool mDrawRaycast = false;
 };
 

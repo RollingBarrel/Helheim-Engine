@@ -34,8 +34,6 @@ void ModuleCamera::WindowResized(int w, int h)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)w / (float)h);
 }
 
-
-
 void ModuleCamera::CheckRaycast()
 {
 
@@ -107,8 +105,6 @@ void ModuleCamera::CheckRaycast()
 	}
 
 }
-
-
 
 update_status ModuleCamera::Update(float dt)
 {    
@@ -231,7 +227,6 @@ void ModuleCamera::Transform(float3 vec)
 
 	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
-
 
 void ModuleCamera::LookAt(float3 eyePos, float3 targetPos, float3 upVector) {
 	float3 forward = (targetPos - eyePos);
