@@ -47,8 +47,6 @@ public:
 	void Draw();
 
 private:
-
-	void LockBuffer();
 	void WaitBuffer();
 
 
@@ -75,6 +73,7 @@ private:
 	float4x4* mSsboModelsFirstData = nullptr;
 	float4x4* mSsboModelsSecondData = nullptr;
 	bool mFirstBufferActive = true;
-	GLsync* mGSync;
+	GLsync mGSync = 0;
+	Command* commandBuffer = nullptr;
 };
 
