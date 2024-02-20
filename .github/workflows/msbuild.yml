@@ -31,6 +31,8 @@ jobs:
 
     - name: Execute CPP Linter
       uses: cpp-linter/cpp-linter-action@v2
+      with:
+        repo-root: ${{env.GITHUB_WORKSPACE}}
 
   build:
     runs-on: windows-latest
