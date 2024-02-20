@@ -26,18 +26,16 @@ jobs:
   cpp-linter:
     runs-on: windows-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Execute CPP Linter
-      uses: cpp-linter/cpp-linter-action@main
-      id: linter
-        continue-on-error: true
-      with:
-          style: file
-          files-changed-only: false
-      #with:
-        #repo-root: ${{env.GITHUB_WORKSPACE}}
+      - name: Execute CPP Linter
+        uses: cpp-linter/cpp-linter-action@main
+        id: linter
+          continue-on-error: true
+        with:
+            style: file
+            files-changed-only: false
 
   build:
     needs: cpp-linter
