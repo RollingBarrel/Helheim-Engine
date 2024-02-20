@@ -69,5 +69,6 @@ private:
 	unsigned int mEboNumElements = 0;
 	float4x4* mSsboModelsFirstData = nullptr;
 	float4x4* mSsboModelsSecondData = nullptr;
+	bool mFirstBufferActive = true;
 };
 

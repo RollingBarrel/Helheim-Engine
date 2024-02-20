@@ -81,12 +81,19 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
 
 
+	GLbitfield flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
 	glDeleteBuffers(1, &mSsboModelsFirst);
 	glGenBuffers(1, &mSsboModelsFirst);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelsFirst);
-	GLbitfield flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, flags);
 	mSsboModelsFirstData = reinterpret_cast<float4x4*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY));
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	glDeleteBuffers(1, &mSsboModelsSecond);
+	glGenBuffers(1, &mSsboModelsSecond);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelsSecond);
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(float) * 16, nullptr, flags);
+	mSsboModelsSecondData = reinterpret_cast<float4x4*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY));
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 
@@ -219,10 +226,6 @@ void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
 }
 
 
-
-
-
-
 void GeometryBatch::Draw()
 {
 	App->GetOpenGL()->BindSceneFramebuffer();
@@ -233,18 +236,27 @@ void GeometryBatch::Draw()
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelsFirst);
+	float4x4* activeBufferData;	
+	unsigned int activeBuffer;
+
+	if (mFirstBufferActive) {
+		activeBufferData = mSsboModelsFirstData;
+		activeBuffer = mSsboModelsFirst;
+	}
+	else {
+		activeBufferData = mSsboModelsSecondData;
+		activeBuffer = mSsboModelsSecond;
+	}
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, activeBuffer);
 	unsigned int i = 0;
 	for (const MeshRendererComponent* mesh : mMeshComponents) {
 
-		//glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(float) * 16, mesh->GetOwner()->GetWorldTransform().ptr());
-		//offset += sizeof(float) * 16;
-		mSsboModelsFirstData[i] = mesh->GetOwner()->GetWorldTransform();
+		activeBufferData[i] = mesh->GetOwner()->GetWorldTransform();
 		++i;
 	}
 
-	//glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelsFirst);
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelsFirst, 0, mMeshComponents.size() * sizeof(float) * 16);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, activeBuffer, 0, mMeshComponents.size() * sizeof(float) * 16);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
 
