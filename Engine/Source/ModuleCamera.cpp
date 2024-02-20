@@ -72,60 +72,6 @@ void ModuleCamera::CheckRaycast()
 	
 }
 
-void ModuleCamera::QuadTreeRaycast(const Quadtree* quadtree)
-{
-	if (quadtree->IsFilled()) {
-		for (int i = 0; i < 4; i++) {
-			if (quadtree->GetChildren()[i].Intersects(&mRay)) {
-				QuadTreeRaycast(&quadtree->GetChildren()[i]);
-			}
-		}
-	}
-	else {
-
-		bool intersects = false;
-		bool intersectsTriangle = false;
-
-		for (auto child : quadtree->GetGameObjects()) {
-
-			MeshRendererComponent* rMesh = (MeshRendererComponent*)child->GetComponent(ComponentType::MESHRENDERER);
-
-			if (rMesh != nullptr) {
-
-				Ray localRay(mRay);
-				localRay.pos = child->GetWorldTransform().Inverted().MulPos(mRay.pos);
-				localRay.dir = child->GetWorldTransform().Inverted().MulDir(mRay.dir).Normalized();
-
-				intersects = localRay.Intersects(rMesh->GetAABB());
-				if (intersects)
-				{
-					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
-					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
-
-					for (int i = 0; i < rMesh->GetResourceMesh()->mNumIndices / 3; i += 3) {
-						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i] + 1], triangles[indices[i] + 2]);
-						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i] + 2]);
-						float3 verticeC = float3(triangles[indices[i + 2]], triangles[indices[i + 2] + 1], triangles[indices[i + 2] + 2]);
-
-						float distance;
-						float3 hitPoint;
-						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
-
-						if (intersectsTriangle) {
-							mIntersectMap[distance] = child;
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-	
-
-}
-
-
-
 
 
 update_status ModuleCamera::Update(float dt)

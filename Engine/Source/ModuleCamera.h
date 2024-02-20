@@ -27,7 +27,6 @@ public:
 	void WindowResized(int w, int h);
 	void CheckRaycast();
 	const Frustum& GetFrustum() const { return frustum; }
-	void QuadTreeRaycast(const Quadtree* quadtree);
 
 
 private:
