@@ -92,6 +92,11 @@ bool Quadtree::Intersects(const OBB* bounding_box) const
 	return bounding_box->Intersects(mBoundingBox);
 }
 
+bool Quadtree::Intersects(const Ray* ray) const
+{
+	return ray->Intersects(mBoundingBox);
+}
+
 void Quadtree::CleanUp()
 {
 	if (mFilled) 

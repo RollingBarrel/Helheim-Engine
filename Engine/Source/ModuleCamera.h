@@ -5,6 +5,10 @@
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Geometry/Frustum.h"
+#include <map>
+
+class Quadtree;
+class GameObject;
 
 class ModuleCamera : public Module
 {
@@ -23,14 +27,14 @@ public:
 	void WindowResized(int w, int h);
 	void CheckRaycast();
 	const Frustum& GetFrustum() const { return frustum; }
-
+	void QuadTreeRaycast(const Quadtree* quadtree);
 
 
 private:
 	Frustum frustum;
 	Ray mRay;
 	bool mDrawRayCast; 
-	
+	std::map<float, GameObject*> mIntersectMap;
 };
 
 #endif /* _MODULE_CAMERA_H_ */
