@@ -234,7 +234,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 
 					for (int i = 0; i < rMesh->GetResourceMesh()->mNumIndices / 3; i += 3) {
 						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i] + 1], triangles[indices[i] + 2]);
-						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i] + 2]);
+						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i + 1] + 2]);
 						float3 verticeC = float3(triangles[indices[i + 2]], triangles[indices[i + 2] + 1], triangles[indices[i + 2] + 2]);
 
 						float distance;
