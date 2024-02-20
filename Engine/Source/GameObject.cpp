@@ -15,6 +15,7 @@
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr)
@@ -143,6 +144,7 @@ void GameObject::Update()
 		DeleteComponents();
 		if (isTransformModified) {
 			RecalculateMatrices();
+			RefreshBoundingBoxes();
 		}
 	}
 }
@@ -357,7 +359,7 @@ void GameObject::AddComponent(Component* component, Component* position)
 	}
 }
 
-MeshRendererComponent* GameObject::getMeshRenderer() const
+MeshRendererComponent* GameObject::GetMeshRenderer() const
 {
 	for (const auto& comp : mComponents) {
 		if (comp->GetType() == ComponentType::MESHRENDERER)
@@ -375,6 +377,21 @@ void GameObject::RecalculateLocalTransform() {
 
 	if (mEulerRotation.Equals(float3::zero)) {
 		mEulerRotation = float3::zero;
+	}
+}
+
+void GameObject::RefreshBoundingBoxes()
+{
+	if (GetMeshRenderer() != nullptr)
+	{
+		GetMeshRenderer()->RefreshBoundingBoxes();
+	}
+	else
+	{
+		for (auto children : mChildren)
+		{
+			children->RefreshBoundingBoxes();
+		}
 	}
 }
 

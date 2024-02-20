@@ -64,7 +64,7 @@ public:
 	void SetScale(const float3& scale);
 
 	Component* CreateComponent(ComponentType type);
-	MeshRendererComponent* getMeshRenderer() const;
+	MeshRendererComponent* GetMeshRenderer() const;
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
 
@@ -75,6 +75,7 @@ private:
 	Component* RemoveComponent(Component* component);
 	void AddComponent(Component* component, Component* position);
 	void RecalculateLocalTransform();
+	void RefreshBoundingBoxes();
 
 	void SetActiveInHierarchy(bool active);
 
