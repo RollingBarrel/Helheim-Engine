@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: MSBuild
+name: Lint and Build with MSBuild
 
 on:
   push:
@@ -37,7 +37,10 @@ jobs:
             files-changed-only: false
             extensions: h,cpp
             ignore: Engine/Source/Dependencies
-
+            # The following value will only update a single comment
+            # in a pull request's thread. Set it to false to disable the comment.
+            # Set it to true to post a new comment (and delete the old comment).
+            thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
 
   build:
     needs: cpp-linter
