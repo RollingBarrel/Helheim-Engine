@@ -26,6 +26,7 @@ private:
 	std::vector<const ResourceMesh*> mMeshesToNavMesh;
 	std::vector<OBB> mOBBs;
 	std::vector<const MeshRendererComponent*> mMeshRendererComponents;
+	void DebugDrawPolyMesh();
 
 	rcHeightfield*  mHeightField=nullptr;
 	rcCompactHeightfield* mCompactHeightField = nullptr;
@@ -53,5 +54,9 @@ private:
 	int mMaxVertsPerPoly = 6;
 	float mDetailSampleDist = 6;
 	float mDetailSampleMaxError = 1;
+
+	//DEBUG DRAW VARIABLES
+	bool mDraw = true;
+
 };
 

@@ -5,6 +5,7 @@
 
 #include "Application.h"
 #include "ImporterMesh.h"
+#include "ModuleDebugDraw.h"
 
 NavMeshControllerComponent::NavMeshControllerComponent(GameObject* ownerGameObject)
 	:Component(ownerGameObject, ComponentType::NAVMESHCONTROLLER)
@@ -32,7 +33,7 @@ void NavMeshControllerComponent::Reset() {
 void NavMeshControllerComponent::Update()
 {
 	HandleBuild();
-	
+	DebugDrawPolyMesh();
 }
 
 Component* NavMeshControllerComponent::Clone(GameObject* owner) const
@@ -247,4 +248,33 @@ void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 		}
 	}
 
+}
+
+void NavMeshControllerComponent::DebugDrawPolyMesh()
+{
+	if (mDraw && mPolyMeshDetail != nullptr)
+	{
+		int triangle_index = 0;
+		for (int i = 0; i < mPolyMeshDetail->ntris; ++i) {
+			// Assuming tris are stored as indices to vertices
+			unsigned char* triIndices = &mPolyMeshDetail->tris[i * 4];
+
+			int vertIndex1 = triIndices[0];
+			int vertIndex2 = triIndices[1];
+			int vertIndex3 = triIndices[2];
+
+			float* vertex1 = &mPolyMeshDetail->verts[vertIndex1 * 3];
+			float* vertex2 = &mPolyMeshDetail->verts[vertIndex2 * 3];
+			float* vertex3 = &mPolyMeshDetail->verts[vertIndex3 * 3];
+
+			float3 v1 = float3(vertex1[0], vertex1[1], vertex1[2]);
+			float3 v2 = float3(vertex2[0], vertex2[1], vertex2[2]);
+			float3 v3 = float3(vertex3[0], vertex3[1], vertex3[2]);
+
+			App->GetDebugDraw()->DrawTriangle(v1, v2, v3);
+
+		}
+
+	}
+	return;
 }
