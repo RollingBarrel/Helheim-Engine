@@ -35,6 +35,9 @@ jobs:
         with:
             style: file
             files-changed-only: false
+            extensions: h,cpp
+            ignore: "Engine\Source\Dependencies"
+
 
   build:
     needs: cpp-linter
