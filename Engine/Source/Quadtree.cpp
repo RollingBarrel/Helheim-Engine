@@ -89,9 +89,9 @@ void Quadtree::RemoveObject(const GameObject* object)
 	}
 }
 
-bool Quadtree::Intersects(const OBB* bounding_box) const
+bool Quadtree::Intersects(const OBB* boundingBox) const
 {
-	return bounding_box->Intersects(mBoundingBox);
+	return boundingBox->Intersects(mBoundingBox);
 }
 
 bool Quadtree::Intersects(const Ray* ray) const

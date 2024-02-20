@@ -20,8 +20,8 @@ public:
 
 	bool AddObject(GameObject* object);
 	void RemoveObject(const GameObject* object);
-	bool Intersects(const OBB* bounding_box) const;
-	bool Intersects(const Ray* bounding_box) const;
+	bool Intersects(const OBB* boundingBox) const;
+	bool Intersects(const Ray* ray) const;
 	const bool IsFilled() const { return mFilled; }
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
 	const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
