@@ -1,0 +1,67 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Lint and Build with MSBuild
+
+on:
+  push:
+    branches: [ "develop", "main", "hotfix/*", "feature/*" ]
+  pull_request:
+    branches: [ "develop", "main", "hotfix/*" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: ./Engine/Source
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+
+permissions:
+  contents: read
+
+jobs:
+  cpp-linter:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Linter
+        uses: cpp-linter/cpp-linter-action@main
+        continue-on-error: true
+        with:
+            style: file
+            files-changed-only: false
+            extensions: h,cpp
+            ignore: Engine/Source/Dependencies
+            # The following value will only update a single comment
+            # in a pull request's thread. Set it to false to disable the comment.
+            # Set it to true to post a new comment (and delete the old comment).
+            thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        build_configuration: [Debug, Release]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{matrix.build_configuration}} ${{env.SOLUTION_FILE_PATH}}
