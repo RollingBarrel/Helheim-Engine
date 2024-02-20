@@ -2,6 +2,10 @@
 #define _MODULE_EDITOR_H_
 
 #include "Module.h"
+
+#include "imgui.h"
+#include "ImGuizmo.h"
+
 #include <map>
 
 struct ImGuiIO;
@@ -26,17 +30,6 @@ public:
 private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
-	bool mQuadtreePanel = false;
-	bool mDebugPanel = false;
-	bool mTimerPanel = false;
-	bool mProjectPanel = false;
-	bool mConsolePanel = false;
-	bool mHierarchyPanel = false;
-	bool mPausePanel = false;
-	bool mScenePanel = false;
-	bool mInspectorPanel = false;
-	bool mLightingPanel = false;
-	bool mAboutPanel = false;
 	std::map<const char*, Panel*> mPanels;
 	void OpenLoadScene();
 };

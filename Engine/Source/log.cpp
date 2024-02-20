@@ -2,8 +2,9 @@
 #include <windows.h>
 #include <stdio.h>
 #include "Globals.h"
-
-string logBuffer;
+#include "Application.h"
+#include "ModuleEditor.h"
+#include "ConsolePanel.h"
 
 void log(const char file[], int line, const char* format, ...)
 {
@@ -18,9 +19,7 @@ void log(const char file[], int line, const char* format, ...)
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);
 
-	logBuffer += tmp_string2; //Stores all log chars into logBuffer string
-}
-
-string GetLogBuffer() {
-	return logBuffer;
+	if (App != nullptr) {
+		((ConsolePanel*)App->GetEditor()->GetPanel(CONSOLEPANEL))->SetLog(tmp_string2);
+	}
 }

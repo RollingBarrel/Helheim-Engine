@@ -24,6 +24,7 @@
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
+#include "ImGuizmo.h"
 
 ModuleEditor::ModuleEditor()
 {
@@ -65,6 +66,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	if (ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode))
 	{
@@ -121,21 +123,8 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
-void ModuleEditor::ShowMainMenuBar() {
-	Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
-	Panel* debugPanel = mPanels[DEBUGPANEL];
-	Panel* timerPanel = mPanels[TIMERPANEL];
-
-	Panel* project = mPanels[PROJECTPANEL];
-	Panel* console = mPanels[CONSOLEPANEL];
-	Panel* hierarchy = mPanels[HIERARCHYPANEL];
-	Panel* pause = mPanels[PAUSEPANEL];
-	Panel* scene = mPanels[SCENEPANEL];
-	Panel* inspector = mPanels[INSPECTORPANEL];
-	Panel* lightning = mPanels[LIGHTNINGPANEL];
-
-	Panel* aboutPanel = mPanels[ABOUTPANEL];
-
+void ModuleEditor::ShowMainMenuBar() 
+{
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -168,20 +157,22 @@ void ModuleEditor::ShowMainMenuBar() {
 		}
 		if (ImGui::BeginMenu("Tools"))
 		{
-			if (ImGui::MenuItem("Timer", NULL, &mTimerPanel)) {
+			Panel* timerPanel = mPanels[TIMERPANEL];
+			if (ImGui::MenuItem("Timer", NULL, timerPanel->IsOpen())) {
 				if (timerPanel)
 				{
 					timerPanel->IsOpen() ? timerPanel->Close() : timerPanel->Open();
 				}
 			}
-			if (ImGui::MenuItem("Quadtree", NULL, &mQuadtreePanel)) {
+			Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
+			if (ImGui::MenuItem("Quadtree", NULL, quadtreeDebug->IsOpen())) {
 				if (quadtreeDebug)
 				{
 					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
 			}
-
-			if (ImGui::MenuItem("Debug", NULL, &mDebugPanel)) {
+			Panel* debugPanel = mPanels[DEBUGPANEL];
+			if (ImGui::MenuItem("Debug", NULL, debugPanel->IsOpen())) {
 				if (debugPanel)
 				{
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
@@ -200,44 +191,51 @@ void ModuleEditor::ShowMainMenuBar() {
 					ResetFloatingPanels(true);
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("1 Project", NULL, &mProjectPanel)) 
+				Panel* project = mPanels[PROJECTPANEL];
+				if (ImGui::MenuItem("1 Project", NULL, project->IsOpen()))
 				{
 					if (project)
 					{
 						project->IsOpen() ? project->Close() : project->Open();
 					}
 				}
-				if (ImGui::MenuItem("2 Console", NULL, &mConsolePanel)) {
+				Panel* console = mPanels[CONSOLEPANEL];
+				if (ImGui::MenuItem("2 Console", NULL, console->IsOpen())) {
 					if (console)
 					{
 						console->IsOpen() ? console->Close() : console->Open();
 					}
 				}
-				if (ImGui::MenuItem("3 Hierarchy", NULL, &mHierarchyPanel)) {
+				Panel* hierarchy = mPanels[HIERARCHYPANEL];
+				if (ImGui::MenuItem("3 Hierarchy", NULL, hierarchy->IsOpen())) {
 					if (hierarchy)
 					{
 						hierarchy->IsOpen() ? hierarchy->Close() : hierarchy->Open();
 					}
 				}
-				if (ImGui::MenuItem("4 Pause", NULL, &mPausePanel)) {
+				Panel* pause = mPanels[PAUSEPANEL];
+				if (ImGui::MenuItem("4 Pause", NULL, pause->IsOpen())) {
 					if (pause)
 					{
 						pause->IsOpen() ? pause->Close() : pause->Open();
 					}
 				}
-				if (ImGui::MenuItem("5 Scene", NULL, &mScenePanel)) {
+				Panel* scene = mPanels[SCENEPANEL];
+				if (ImGui::MenuItem("5 Scene", NULL, scene->IsOpen())) {
 					if (scene)
 					{
 						scene->IsOpen() ? scene->Close() : scene->Open();
 					}
 				}
-				if (ImGui::MenuItem("6 Inspector", NULL, &mInspectorPanel)) {
+				Panel* inspector = mPanels[INSPECTORPANEL];
+				if (ImGui::MenuItem("6 Inspector", NULL, inspector->IsOpen())) {
 					if (inspector)
 					{
 						inspector->IsOpen() ? inspector->Close() : inspector->Open();
 					}
 				}
-				if (ImGui::MenuItem("7 Lightning", NULL, &mLightingPanel)) {
+				Panel* lightning = mPanels[LIGHTNINGPANEL];
+				if (ImGui::MenuItem("7 Lightning", NULL, lightning->IsOpen())) {
 					if (lightning)
 					{
 						lightning->IsOpen() ? lightning->Close() : lightning->Open();
@@ -250,7 +248,8 @@ void ModuleEditor::ShowMainMenuBar() {
 
 		if (ImGui::BeginMenu("Help"))
 		{
-			if (ImGui::MenuItem("About", NULL, &mAboutPanel))
+			Panel* aboutPanel = mPanels[ABOUTPANEL];
+			if (ImGui::MenuItem("About", NULL, aboutPanel->IsOpen()))
 			{
 				if (aboutPanel)
 				{
@@ -264,80 +263,6 @@ void ModuleEditor::ShowMainMenuBar() {
 
 	if (mLoadSceneOpen) {
 		OpenLoadScene();
-	}
-
-	if (quadtreeDebug->IsOpen() == false) {
-		mQuadtreePanel = false;
-	}
-	else {
-		mQuadtreePanel = true;
-	}
-
-	if (debugPanel->IsOpen() == false) {
-		mDebugPanel = false;
-	}
-	else {
-		mDebugPanel = true;
-	}
-
-	if (timerPanel->IsOpen() == false) {
-		mTimerPanel = false;
-	}
-	else {
-		mTimerPanel = true;
-	}
-
-	if (project->IsOpen() == false) {
-		mProjectPanel = false;
-	}
-	else { 
-		mProjectPanel = true; 
-	}
-
-	if (console->IsOpen() == false) {
-		mConsolePanel = false;
-	}
-	else {
-		mConsolePanel = true; 
-	}
-
-	if (hierarchy->IsOpen() == false) {
-		mHierarchyPanel = false;
-	}
-	else{ 
-		mHierarchyPanel = true; 
-	}
-
-	if (pause->IsOpen() == false) {
-		mPausePanel = false;
-	}
-	else{ 
-		mPausePanel = true; 
-	}
-
-	if (scene->IsOpen() == false) {
-		mScenePanel = false;
-	}
-	else{ 
-		mScenePanel = true; 
-	}
-
-	if (inspector->IsOpen() == false) {
-		mInspectorPanel = false;
-	}
-	else {
-		mInspectorPanel = true;
-	}
-
-	if (lightning->IsOpen() == false) {
-		mLightingPanel = false;
-	}
-	else {
-		mLightingPanel = true;
-	}
-
-	if (aboutPanel->IsOpen() == false) {
-		mAboutPanel = false;
 	}
 }
 
@@ -386,18 +311,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Open();
 		inspector->Open();
 		lightningPanel->Open();
-		
-		mTimerPanel = true;
-		mQuadtreePanel = true;
-		mDebugPanel = true;
-
-		mProjectPanel = true;
-		mConsolePanel = true;
-		mHierarchyPanel = true;
-		mPausePanel = true;
-		mScenePanel = true;
-		mInspectorPanel = true;
-		mLightingPanel = true;
 	}
 	else {
 		timerPanel->Close();
@@ -413,19 +326,5 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		lightningPanel->Close();
 
 		aboutPanel->Close();
-		
-		mTimerPanel = false;
-		mQuadtreePanel = false;
-		mDebugPanel = false;
-
-		mProjectPanel = false;
-		mConsolePanel = false;
-		mHierarchyPanel = false;
-		mPausePanel = false;
-		mScenePanel = false;
-		mInspectorPanel = false;
-		mLightingPanel = false;
-
-		mAboutPanel = false;
 	}
 }
