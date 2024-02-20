@@ -229,14 +229,15 @@ void ResourceMesh::CleanUp()
         }
     }
     mAttributes.clear();
-    for (std::vector<float*>::iterator it = mAttributesData.begin(); it != mAttributesData.end(); ++it)
-    {
-        if (*it != nullptr)
-        {
-            delete[] (*it);
-            *it = nullptr;
-        }
-    }
+    //TODO: This crashes but we need to remove the memory !!
+    //for (std::vector<float*>::iterator it = mAttributesData.begin(); it != mAttributesData.end(); ++it)
+    //{
+    //    if (*it != nullptr)
+    //    {
+    //        delete[] (*it);
+    //        *it = nullptr;
+    //    }
+    //}
     mAttributesData.clear();
   
 }

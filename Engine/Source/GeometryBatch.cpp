@@ -150,6 +150,13 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 			it = mMeshComponents.erase(it);
 			continue;
 		}
+		//if(found >= 1)
+		//{
+		//	ResourceMesh* rMesh2 = const_cast<ResourceMesh*>((*it)->GetResourceMesh());
+		//	rMesh2->SetEboPosition(rMesh2->GetEboPosition() - rMesh.GetNumIndices());
+		//	int a = (rMesh.GetNumVertices() * (rMesh.GetVertexSize() / sizeof(float)));
+		//	rMesh2->SetVertexBase(rMesh2->GetVertexBase() - a);
+		//}
 		++it;
 	}
 	if (found == 1)
