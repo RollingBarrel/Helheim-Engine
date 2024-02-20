@@ -193,15 +193,19 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 		const std::pair<float, GameObject*> p3 = mChildren[2]->RayCast(ray);
 		const std::pair<float, GameObject*> p4 = mChildren[3]->RayCast(ray);
 
-		if (p1.second != nullptr)
+		if (p1.second != nullptr) {
 			map.insert(p1);
-		if (p2.second != nullptr)
+		}
+		if (p2.second != nullptr) {
 			map.insert(p2);
-		if (p3.second != nullptr)
+		}
+		if (p3.second != nullptr) {
 			map.insert(p3);
-		if (p4.second != nullptr)
+		}
+		if (p4.second != nullptr) {
 			map.insert(p4);
-
+		}
+			
 		if (!map.empty()) {
 			return std::pair<float, GameObject*>(map.begin()->first, map.begin()->second);
 		}
