@@ -15,7 +15,6 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	const std::vector<Attribute*>& attributes = mesh->GetResourceMesh()->GetAttributes();
 	for (const Attribute* ptrAttr : attributes)
 	{
-		//mAttributes.emplace_back(ptrAttr->type, ptrAttr->size, ptrAttr->offset);
 		mAttributes.push_back(*ptrAttr);
 	}
 	mVertexSize = mesh->GetResourceMesh()->GetVertexSize();
@@ -149,7 +148,6 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 		material.hasShininessMap = rMaterial->mEnableShinessMap;
 		material.hasNormalMap = rMaterial->mEnableNormalMap;
 
-		//mMaterials.push_back(material);
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 		offset += sizeof(Material);
 	}
@@ -212,8 +210,8 @@ void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
 	Command command;
 	command.mCount = mesh->GetResourceMesh()->GetNumIndices();
 	command.mInstanceCount = 1;
-	command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();// / sizeof(GLuint);
-	command.baseVertex = mesh->GetResourceMesh()->GetVertexBase();// / mBatch->GetVertexSize();
+	command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();
+	command.baseVertex = mesh->GetResourceMesh()->GetVertexBase();
 	command.baseInstance = mCommands.size();
 
 	mCommands.push_back(command);
