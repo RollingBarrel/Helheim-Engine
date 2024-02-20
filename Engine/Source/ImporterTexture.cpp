@@ -84,28 +84,27 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         hasAlpha = true;
     }
 
-    return new ResourceTexture(uid, filePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+    return new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
 }
 
 void Importer::Texture::Save(const ResourceTexture* texture)
 {
     // TODO: Save also UID (and assetsFile?)
-    unsigned int header[8] = { 
-        texture->GetWidth(), 
-        texture->GetHeight(), 
-        texture->GetInternalFormat(), 
-        texture->GetTexFormat(), 
-        texture->GetDataType(), 
-        texture->GetMipLevels(), 
-        texture->GetNumPixels(),
-        texture->GetAssetsFile().length()};
+    unsigned int header[7] = {
+        texture->GetWidth(),
+        texture->GetHeight(),
+        texture->GetInternalFormat(),
+        texture->GetTexFormat(),
+        texture->GetDataType(),
+        texture->GetMipLevels(),
+        texture->GetNumPixels()
+    };
 
     unsigned int numPixels = texture->GetNumPixels();
     bool hasAlpha = texture->HasAlpha();
     unsigned int size = sizeof(header) +
         sizeof(hasAlpha) +
-        sizeof(unsigned char) * numPixels +
-        sizeof(char) * header[7];
+        sizeof(unsigned char) * numPixels;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -122,10 +121,6 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     memcpy(cursor, texture->GetPixels(), bytes);
     cursor += bytes;
 
-    bytes = sizeof(char) * header[7];
-    memcpy(cursor, texture->GetAssetsFile().c_str(), bytes);
-    cursor += bytes;
-
     App->GetFileSystem()->Save(texture->GetLibraryFile().c_str(), fileBuffer, size);
 
     delete[] fileBuffer;
@@ -133,14 +128,14 @@ void Importer::Texture::Save(const ResourceTexture* texture)
 
 }
 
-ResourceTexture* Importer::Texture::Load( const char* filePath, unsigned int uid)
+ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
 {
     char* fileBuffer;
 
     App->GetFileSystem()->Load(filePath, &fileBuffer);
 
     char* cursor = fileBuffer;
-    unsigned int header[8];
+    unsigned int header[7];
     unsigned int bytes = sizeof(header);
     memcpy(header, cursor, bytes);
     cursor += bytes;
@@ -151,7 +146,6 @@ ResourceTexture* Importer::Texture::Load( const char* filePath, unsigned int uid
     unsigned int dataType = header[4];
     unsigned int mipLevels = header[5];
     unsigned int numPixels = header[6];
-    unsigned int lenAssetsPath = header[7];
 
 
     bool hasAlpha;
@@ -166,14 +160,7 @@ ResourceTexture* Importer::Texture::Load( const char* filePath, unsigned int uid
     pixels = new unsigned char[numPixels];
     memcpy(pixels, cursor, bytes);
 
-    char* assetsFilePath = nullptr;
-    bytes = sizeof(char) * lenAssetsPath;
-    if (assetsFilePath != nullptr)
-        delete[] assetsFilePath;
-    assetsFilePath = new char[lenAssetsPath];
-    memcpy(assetsFilePath, cursor, bytes);
-
-    ResourceTexture* texture = new ResourceTexture(uid, assetsFilePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+    ResourceTexture* texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
     unsigned int texId = texture->CreateTexture();
     
     return texture;

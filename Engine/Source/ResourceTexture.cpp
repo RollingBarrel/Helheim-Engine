@@ -19,7 +19,6 @@ ResourceTexture::ResourceTexture()
 
 ResourceTexture::ResourceTexture(
     unsigned int uid,
-    const char* path,
     unsigned int width,
     unsigned int height,
     unsigned int internalFormat,
@@ -32,14 +31,15 @@ ResourceTexture::ResourceTexture(
     : mWidth(width), mHeight(height), 
     mInternalFormat(internalFormat), mTexFormat(texFormat), mDataType(dataType), 
     mMipLevels(mipLevels),
-    mNumPixels(numPixels), mPixels(pixels), 
+    mNumPixels(numPixels), 
+    mPixels(pixels), 
     mHasAlpha(hasAlpha), 
     mOpenGLId(0)
 {
     mUID = uid;
     mType = Type::Texture;
 
-    mAssetsFile = path;
+    mAssetsFile = "NONE";
     mLibraryFile = LIBRARY_TEXTURE_PATH + std::to_string(mUID) + ".tex";
 
 }

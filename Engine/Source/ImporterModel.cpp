@@ -55,7 +55,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, const char* assetsP
             Importer::Mesh::Save(mesh);
 
             if (primitive.material != -1) {
-                ResourceMaterial* material = Importer::Material::Import(model, model.materials[primitive.material], uid, texturesID);
+                ResourceMaterial* material = Importer::Material::Import(model, model.materials[primitive.material], uid);
                 Importer::Material::Save(material);
 
                 rModel->SetUids(mesh->GetUID(), material->GetUID());

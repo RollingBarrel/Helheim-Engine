@@ -154,8 +154,8 @@ Resource* ModuleResource::CreateNewResource(const char* importedFile, const char
 	switch (type)
 	{
 	case Resource::Type::Texture:
-		ret = Importer::Texture::Import(assetsFile, uid);
-		if (ret) Importer::Texture::Save((ResourceTexture*)ret);
+		//ret = Importer::Texture::Import(assetsFile, uid);
+		//if (ret) Importer::Texture::Save((ResourceTexture*)ret);
 		break;
 	case Resource::Type::Mesh:
 		break;

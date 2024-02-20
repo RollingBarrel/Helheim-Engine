@@ -29,7 +29,7 @@ ResourceMaterial::ResourceMaterial(
     
     //if (mDiffuseTexture) mEnableDiffuseTexture = true;
     //else mEnableDiffuseTexture = false;
-    mEnableDiffuseTexture = (!mDiffuseTexture) ? true : false;
+    mEnableDiffuseTexture = (mDiffuseTexture != nullptr) ? true : false;
 
     if (mSpecularGlossinessTexture) {
         mEnableSpecularGlossinessTexture = true;
@@ -44,7 +44,7 @@ ResourceMaterial::ResourceMaterial(
 
     //if (mNormalTexture) mEnableNormalMap = true;
     //else mEnableNormalMap = false;
-    mEnableNormalMap = (!mNormalTexture) ? true : false;
+    mEnableNormalMap = (mNormalTexture != nullptr) ? true : false;
 
     mType = Type::Material;
 

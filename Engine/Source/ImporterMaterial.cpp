@@ -8,10 +8,10 @@
 
 #include "Algorithm/Random/LCG.h"
 
-ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, const unsigned int uid, const std::vector<unsigned int>& textureUID)
+ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, const unsigned int uid)
 {
-    float4 diffuseFactor = float4(); 
-    float3 specularFactor = float3();
+    float4 diffuseFactor = float4::zero; 
+    float3 specularFactor = float3::zero;
     float GlossinessFactor = 0.0f;
     ResourceTexture* diffuseTexture = nullptr; 
     ResourceTexture* specularGlossinessTexture = nullptr;
@@ -57,8 +57,9 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
                     const tinygltf::Texture& diffuseMap = tinyModel.textures[diffuseTextureIndex];
                     const tinygltf::Image& image = tinyModel.images[diffuseMap.source];
 
-                    unsigned int uidTexture = textureUID[diffuseTextureIndex];
+                    unsigned int uidTexture = math::LCG().Int();
                     diffuseTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
+                    Importer::Texture::Save(diffuseTexture);
                 }
             }
         }
@@ -74,8 +75,9 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
                     const tinygltf::Texture& specularMap = tinyModel.textures[specularGlossinessIndex];
                     const tinygltf::Image& image = tinyModel.images[specularMap.source];
 
-                    unsigned int uidTexture = textureUID[specularGlossinessIndex];
+                    unsigned int uidTexture = math::LCG().Int();
                     specularGlossinessTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
+                    Importer::Texture::Save(specularGlossinessTexture);
                 }
             }
         }
@@ -93,8 +95,9 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
                         const tinygltf::Texture& normalMap = tinyModel.textures[normalIndex];
                         const tinygltf::Image& image = tinyModel.images[normalMap.source];
 
-                        unsigned int uidTexture = textureUID[normalIndex];
+                        unsigned int uidTexture = math::LCG().Int();
                         normalTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
+                        Importer::Texture::Save(normalTexture);
                     }
                 }
             }
@@ -108,8 +111,9 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
             const tinygltf::Texture& texture = tinyModel.textures[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index];
             const tinygltf::Image& image = tinyModel.images[texture.source];
 
-            unsigned int uidTexture = textureUID[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index];
+            unsigned int uidTexture = math::LCG().Int();
             diffuseTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
+            Importer::Texture::Save(diffuseTexture);
         }
 
     }
@@ -161,12 +165,7 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
     memcpy(cursor, &glossinessFactor, bytes);
     cursor += bytes;
 
-    //TODO Change name for random UID
-    std::string path = LIBRARY_MATERIAL_PATH;
-    path += std::to_string(ourMaterial->GetUID());
-    path += ".mat";
-
-    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+    App->GetFileSystem()->Save(ourMaterial->GetLibraryFile().c_str(), fileBuffer, size);
 
     delete[] fileBuffer;
     fileBuffer = nullptr;
@@ -187,15 +186,15 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
 
     ResourceTexture* diffuseTexture = new ResourceTexture();
     if (texturesUID[0])
-        Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[0]) + ".tex").c_str(), texturesUID[0]);
+        diffuseTexture = Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[0]) + ".tex").c_str(), texturesUID[0]);
 
-    ResourceTexture* specularGlossinesTexture = new ResourceTexture();
+    ResourceTexture* specularGlossinessTexture = new ResourceTexture();
     if (texturesUID[1])
-        Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[1]) + ".tex").c_str(), texturesUID[1]);
+        specularGlossinessTexture = Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[1]) + ".tex").c_str(), texturesUID[1]);
 
     ResourceTexture* normalTexture = new ResourceTexture();
     if (texturesUID[2])
-        Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[2]) + ".tex").c_str(), texturesUID[2]);
+        normalTexture = Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[2]) + ".tex").c_str(), texturesUID[2]);
 
     bool enables[4];
     bytes = sizeof(enables);
@@ -222,7 +221,7 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
     memcpy(&glossinessFator, cursor, bytes);
     cursor += bytes;
 
-    return new ResourceMaterial(uid, diffuseFactor, specularFactor,glossinessFator,diffuseTexture,specularGlossinesTexture, normalTexture);
+    return new ResourceMaterial(uid, diffuseFactor, specularFactor,glossinessFator,diffuseTexture,specularGlossinessTexture, normalTexture);
 }
 
 

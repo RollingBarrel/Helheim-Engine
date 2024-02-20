@@ -17,7 +17,6 @@ public:
 	ResourceTexture();
 	ResourceTexture(
 		unsigned int uid,
-		const char* path,
 		unsigned int width, 
 		unsigned int height, 
 		unsigned int internalFormat, 
