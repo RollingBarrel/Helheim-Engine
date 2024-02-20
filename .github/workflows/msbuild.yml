@@ -36,7 +36,7 @@ jobs:
             style: file
             files-changed-only: false
             extensions: h,cpp
-            ignore: Engine\Source\Dependencies\*
+            ignore: Engine/Source/Dependencies
 
 
   build:
