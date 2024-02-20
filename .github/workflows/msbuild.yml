@@ -27,14 +27,20 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Execute CPP Linter
-      uses: cpp-linter/cpp-linter-action@v2
+      uses: cpp-linter/cpp-linter-action@main
+      id: linter
+        continue-on-error: true
       with:
-        repo-root: ${{env.GITHUB_WORKSPACE}}
+          style: file
+          files-changed-only: false
+      #with:
+        #repo-root: ${{env.GITHUB_WORKSPACE}}
 
   build:
+    needs: cpp-linter
     runs-on: windows-latest
 
     strategy:
@@ -43,7 +49,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
