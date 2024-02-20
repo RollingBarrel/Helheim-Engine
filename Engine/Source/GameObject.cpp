@@ -186,11 +186,14 @@ void GameObject::SetRotation(const Quat& rotation)
 {
 	mRotation = rotation;
 	mEulerRotation = rotation.ToEulerXYZ();
+
+	isTransformModified = true;
 }
 
 void GameObject::SetPosition(const float3& position)
 {
 	mPosition = position;
+
 	isTransformModified = true;
 }
 

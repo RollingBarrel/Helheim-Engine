@@ -79,7 +79,7 @@ void ScenePanel::Draw(int windowFlags)
 			ImGui::EndDragDropTarget();
 		}
 
-		//Change the Guizmo operation using W,E & R keywords
+		//Change the Guizmo operation using W,E & R keywords and the coordinate mode with G
 		if (ImGui::IsKeyPressed(ImGuiKey_W))
 			mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 		if (ImGui::IsKeyPressed(ImGuiKey_E))
@@ -133,7 +133,6 @@ void ScenePanel::Draw(int windowFlags)
 					selectedGameObject->SetScale(scale);
 					break;
 				}
-				selectedGameObject->RecalculateMatrices();
 			}
 		}
 
