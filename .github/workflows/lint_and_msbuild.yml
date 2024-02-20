@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: MSBuild
+name: Lint and Build with MSBuild
 
 on:
   push:
@@ -23,6 +23,22 @@ permissions:
   contents: read
 
 jobs:
+  cpp-linter:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Linter
+        uses: cpp-linter/cpp-linter-action@main
+        continue-on-error: true
+        with:
+            style: file
+            files-changed-only: false
+            extensions: h,cpp
+            ignore: Engine/Source/Dependencies
+            extra-args: -std=c++14
+
   build:
     runs-on: windows-latest
 
@@ -31,7 +47,8 @@ jobs:
         build_configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
