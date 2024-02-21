@@ -181,6 +181,7 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
+	float3 difference = rotationInRadians - mEulerRotation;
 	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
