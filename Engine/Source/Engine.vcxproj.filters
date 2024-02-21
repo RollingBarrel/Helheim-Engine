@@ -223,9 +223,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="EngineTimer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="PreciseTimer.cpp">
       <Filter>Utils\Timer</Filter>
     </ClCompile>
@@ -354,6 +351,21 @@
     </ClCompile>
     <ClCompile Include="Archive.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -772,9 +784,6 @@
     <ClInclude Include="Globals.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="EngineTimer.h">
-      <Filter>Utils\Timer</Filter>
-    </ClInclude>
     <ClInclude Include="PreciseTimer.h">
       <Filter>Utils\Timer</Filter>
     </ClInclude>
@@ -898,6 +907,24 @@
     <ClInclude Include="Archive.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -971,6 +998,9 @@
     </Filter>
     <Filter Include="Dependencies\NavigationAI\Recast">
       <UniqueIdentifier>{18339c62-ad80-452d-af04-8a8366cd7c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\ImGuizmo">
+      <UniqueIdentifier>{507b6f07-d49a-45f6-88cc-c49673feecf8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

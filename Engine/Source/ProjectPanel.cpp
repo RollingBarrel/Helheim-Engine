@@ -20,7 +20,6 @@ void ProjectPanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-
 		for (auto i = 0; i < root->mChildren.size(); ++i)
 		{
 			if (strcmp(root->mChildren[i]->mName, "Library/Models") == 0) {

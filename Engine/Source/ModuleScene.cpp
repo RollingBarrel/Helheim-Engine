@@ -209,7 +209,8 @@ void ModuleScene::DrawRenderList()
 	{
 		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(objectToRender->GetComponent(ComponentType::MESHRENDERER));
 
-		if(meshRenderer->IsEnabled())
+		// Enable/disable mesh renderer component
+		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
 		{
 			if (!mApplyculling || meshRenderer->IsInsideFrustum()) {
 				

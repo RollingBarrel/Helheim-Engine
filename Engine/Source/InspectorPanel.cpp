@@ -22,6 +22,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
+	bool enabled = focusedObject->IsEnabled();
 	ImGui::PushID(focusedObject->mID);
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
@@ -29,8 +30,16 @@ void InspectorPanel::Draw(int windowFlags)
 
 	if (!focusedObject->IsRoot()) 
 	{
+		if (ImGui::Checkbox("##enabled", &enabled))
+		{
+			focusedObject->SetEnabled(enabled);
+		}
+		ImGui::SameLine();
+		ImGui::PushID(focusedObject->mID);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
+		ImGui::PopID();
+
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
 		ImGui::Separator();
@@ -67,8 +76,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 			//ImGui::TableSetupColumn("columns", 0 , -FLT_MIN);
 
 			bool modifiedTransform = false;
-			float3 newRotation = RadToDeg(object->mEulerRotation);
 			float3 newPosition = object->mPosition;
+			float3 newRotation = RadToDeg(object->mEulerRotation);
 			float3 newScale = object->mScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
