@@ -43,6 +43,7 @@ public:
 	void GetAttributes(std::vector<Attribute>& attributes) const;
 	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMesh(const MeshRendererComponent* component );
+	void EditMaterial(const MeshRendererComponent* component);
 	void RemoveMesh(const MeshRendererComponent* component);
 	void AddCommand(const MeshRendererComponent* mesh);
 	void Draw();

@@ -74,6 +74,11 @@ void MeshRendererComponent::CreateCommand()
 	mBatch->AddCommand(this);
 }
 
+void MeshRendererComponent::EditMaterial() const
+{
+	mBatch->EditMaterial(this);
+}
+
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", mID);

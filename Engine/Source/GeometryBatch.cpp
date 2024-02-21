@@ -73,6 +73,35 @@ void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
 	}
 }
 
+void GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
+{
+	unsigned int offset = 0;
+	for (const MeshRendererComponent* mesh : mMeshComponents) {
+
+		if (mesh == cMesh)
+		{
+			const ResourceMaterial* rMaterial = mesh->GetMaterial();
+			Material material;
+			memcpy(material.diffuseColor, rMaterial->mDiffuseFactor.ptr(), sizeof(float) * 4);
+			material.diffuseTexture = rMaterial->mDiffuseTexture->mTextureHandle;
+			memcpy(material.specularColor, rMaterial->mSpecularFactor.ptr(), sizeof(float) * 4);
+			material.specularTexture = rMaterial->mSpecularGlossinessTexture->mTextureHandle;
+			material.normalTexture = rMaterial->mNormalTexture->mTextureHandle;
+			material.shininess = rMaterial->mGlossinessFactor;
+			material.hasDiffuseMap = rMaterial->mEnableDiffuseTexture;
+			material.hasSpecularMap = rMaterial->mEnableSpecularGlossinessTexture;
+			material.hasShininessMap = rMaterial->mEnableShinessMap;
+			material.hasNormalMap = rMaterial->mEnableNormalMap;
+
+			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
+			glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
+			glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+			break;
+		}
+		offset += sizeof(Material);
+	}
+}
+
 void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 {
 	mMeshComponents.push_back(cMesh);
@@ -239,21 +268,6 @@ void GeometryBatch::Draw()
 	glBindVertexArray(mVao);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
-
-	//float4x4* activeBufferData;	
-	//unsigned int activeBuffer;
-	//
-	//if (mFirstBufferActive) {
-	//	WaitBuffer();
-	//	activeBufferData = mSsboModelsFirstData;
-	//	activeBuffer = mSsboModelsFirst;
-	//}
-	//else {
-	//	activeBufferData = mSsboModelsSecondData;
-	//	activeBuffer = mSsboModelsSecond;
-	//}
-	//
-	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, activeBuffer);
 
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 	if (mSync[idx])
