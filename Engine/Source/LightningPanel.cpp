@@ -1,33 +1,35 @@
 #include "LightningPanel.h"
 #include "Application.h"
-#include "ModuleProgram.h"
+#include "ModuleOpenGL.h"
 #include "imgui.h"
+#include "glew.h"
 
 
-LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
+LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, false) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
-	ModuleProgram* program = App->GetProgram();
+	ModuleOpenGL* openGl = App->GetOpenGL();
 
+	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	
-
-	if (ImGui::DragFloat("LightIntensity", &program->mLightIntensity, 0.05f, 0.0f))
+	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirAmb.mDirCol[3], 0.05f, 0.0f, 5.0f))
 	{
-		program->mModified = true;
+		openGl->mDLightUniBuffer->UpdateData(&openGl->mDirAmb.mDirCol[3], sizeof(DirectionalAmbient::mDirCol[3]), offsetof(DirectionalAmbient, mDirCol[3]));
 	}
-	if (ImGui::DragFloat3("LightDir", program->mLightDir, 0.05f, -1.0f, 1.0f))
+	if (ImGui::DragFloat3("DirLDir", openGl->mDirAmb.mDirDir, 0.05f, -1.0f, 1.0f))
 	{ 
-		program->mModified = true;
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mDirDir, sizeof(DirectionalAmbient::mDirDir), offsetof(DirectionalAmbient, mDirDir));
 	}
-	if (ImGui::ColorPicker3("LightCol", program->mLightCol))
+	if (ImGui::ColorPicker3("DirLCol", openGl->mDirAmb.mDirCol))
 	{ 
-		program->mModified = true;
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mDirCol, sizeof(DirectionalAmbient::mDirCol), offsetof(DirectionalAmbient, mDirCol));
 	}
-	if (ImGui::ColorPicker3("AmbientCol", program->mAmbientCol))
+	if (ImGui::ColorPicker3("AmbientLCol", openGl->mDirAmb.mAmbientCol))
 	{ 
-		program->mModified = true;
-	}	
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mAmbientCol, sizeof(DirectionalAmbient::mAmbientCol), offsetof(DirectionalAmbient, mAmbientCol));
+	}
 	ImGui::End();
+	glUseProgram(0);
 }

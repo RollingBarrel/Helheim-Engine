@@ -1,0 +1,322 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Floor1"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 1518,
+      "type": "VEC3",
+      "max": [
+        1.3028091192245483,
+        1.2933143377304077,
+        0.0581117607653141
+      ],
+      "min": [
+        -1.2971911430358887,
+        -1.3066853284835815,
+        -1.9073485191256623E-07
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1518,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1518,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9632149338722229,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1518,
+      "type": "VEC2",
+      "max": [
+        0.99951171875,
+        1.0
+      ],
+      "min": [
+        9.8943710327148438E-05,
+        -9.8824501037597656E-05
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 1518,
+      "type": "VEC2",
+      "max": [
+        0.99853515625,
+        0.99853515625
+      ],
+      "min": [
+        0.00099945068359375,
+        0.0120391845703125
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5123,
+      "count": 4875,
+      "type": "SCALAR",
+      "max": [
+        1509.0
+      ],
+      "min": [
+        0.0
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 18,
+      "type": "SCALAR",
+      "max": [
+        1517.0
+      ],
+      "min": [
+        1510.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Floor1.bin",
+      "byteLength": 94796
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 18216,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 18216,
+      "byteLength": 18216,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 36432,
+      "byteLength": 24288,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 60720,
+      "byteLength": 12144,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 72864,
+      "byteLength": 12144,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 85008,
+      "byteLength": 9752,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 94760,
+      "byteLength": 36,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "T_RoomStyle01_Floor01_Normal.jpg",
+      "name": "T_RoomStyle01_Floor01_Normal"
+    },
+    {
+      "uri": "T_RoomStyle01_Floor01_Occlusion.jpg",
+      "name": "T_RoomStyle01_Floor01_Occlusion"
+    },
+    {
+      "uri": "T_RoomStyle01_Floor01_BaseColor.jpg",
+      "name": "T_RoomStyle01_Floor01_BaseColor"
+    },
+    {
+      "uri": "T_RoomStyle01_Floor01_Metallic.jpg",
+      "name": "T_RoomStyle01_Floor01_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.215860471,
+          0.215860471,
+          0.215860471,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "MI_RoomStyle01_Floor01"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0833333,
+          0.0833333,
+          0.0833333,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.55278640985488892
+      },
+      "name": "M_BlackBack"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 5,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 6,
+          "material": 1
+        }
+      ],
+      "name": "Floor1"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -0.7071068,
+        0.0,
+        0.0,
+        0.7071067
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        2.98023224E-08
+      ],
+      "name": "Floor1"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "T_RoomStyle01_Floor01_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "T_RoomStyle01_Floor01_Occlusion"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "T_RoomStyle01_Floor01_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "T_RoomStyle01_Floor01_Metallic"
+    }
+  ]
+}

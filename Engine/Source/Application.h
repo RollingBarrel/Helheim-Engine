@@ -1,7 +1,6 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
-#include "EngineTimer.h"
 
 class ModuleOpenGL;
 class ModuleWindow;
@@ -12,9 +11,9 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
-class ModuleProgram;
-class ModuleTimer;
-class ModuleSkybox;
+
+class Timer;
+class PreciseTimer;
 
 class Application
 {
@@ -24,7 +23,7 @@ public:
 	~Application();
 
 	bool Init();
-	update_status Update();
+	update_status Update(float dt);
 	bool CleanUp();
 
     ModuleOpenGL* GetOpenGL() { return render; }
@@ -33,13 +32,23 @@ public:
     ModuleEditor*  GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera;  }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
-    ModuleProgram* GetProgram() { return program; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
-    ModuleTimer* GetClock() { return clock; }
-    ModuleSkybox* GetSkybox() { return skybox; }
 
-    float GetDt() const;
+    Timer* GetEngineClock() const { return mEngineTimer; }
+    Timer* GetGameClock() const { return mGameTimer; }
+    Timer* GetCurrentClock() const { return mCurrentTimer; }
+    void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
+
+    //In case we want to use precise timer
+
+    //PreciseTimer* GetEngineClock() const { return mEngineTimer; }
+    //PreciseTimer* GetGameClock() const { return mGameTimer; }
+    //PreciseTimer* GetCurrentClock() const { return mCurrentTimer; }
+    //void SetCurrentClock(PreciseTimer* clock) { mCurrentTimer = clock; }
+
+    float GetRealDt() const;
+    float GetGameDt() const;
 
 private:
 
@@ -49,14 +58,24 @@ private:
     ModuleEditor* editor = nullptr;
     ModuleCamera* camera = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
-    ModuleProgram* program = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
-    ModuleTimer* clock = nullptr;
-    ModuleSkybox* skybox = nullptr;
 
-#define NUM_MODULES 11
+#define NUM_MODULES 8
     Module* modules[NUM_MODULES];
+
+    //Timer
+    Timer* mEngineTimer;
+    Timer* mGameTimer;
+    Timer* mCurrentTimer = nullptr;
+
+    //In case we want to use precise timer
+    
+    //PreciseTimer* mEngineTimer;
+    //PreciseTimer* mGameTimer;
+    //PreciseTimer* mCurrentTimer = nullptr;
+
+    bool mEnableVsync = true;
 };
 
 extern Application* App;

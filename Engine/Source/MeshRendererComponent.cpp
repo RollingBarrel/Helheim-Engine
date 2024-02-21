@@ -8,14 +8,13 @@
 #include "Quadtree.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
-#include "ModuleProgram.h"
 
 
 
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
-	:Component("Mesh Renderer" ,owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
+	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
 {
 
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
@@ -24,7 +23,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner)
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
-	:Component("Mesh Renderer", owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh(*original.mMesh)), mMaterial(new ResourceMaterial(*original.mMaterial))
+	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh(*original.mMesh)), mMaterial(new ResourceMaterial(*original.mMaterial))
 {
 
 	mOBB = original.mOBB;
@@ -51,54 +50,54 @@ void MeshRendererComponent::Draw()
 		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 
-	unsigned int program = App->GetProgram()->GetPBRProgramId();
+	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
 	glUseProgram(program);
 	glUniformMatrix4fv(0, 1, GL_TRUE, mOwner->GetWorldTransform().ptr());
 	glBindVertexArray(mMesh->GetVao());
 	//TODO: Put all this with imgui
 	//Dont update uniforms it every frame
-	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
-	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
-	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->GetGlossinessFactor());
-	if (mMaterial->GetEnableDiffuseTexture() && mMaterial->GetDiffuseMap() != nullptr)
+	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->mDiffuseFactor.xyz()[0]);
+	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->mSpecularFactor[0]);
+	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->mGlossinessFactor);
+	if (mMaterial->mEnableDiffuseTexture && mMaterial->mDiffuseTexture != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 1);
 		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
 		glUniform1i(diffuseTextureLoc, 0);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->GetDiffuseMap()->openGlId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->openGlId);
 	}
 	else {
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
 	}
 
-	if (mMaterial->GetEnableSpecularGlossinessTexture() && mMaterial->GetSpecularMap() != nullptr)
+	if (mMaterial->mEnableSpecularGlossinessTexture && mMaterial->mSpecularGlossinessTexture != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 1);
 		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
 		glUniform1i(specularTextureLoc, 1);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->GetSpecularMap()->openGlId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->openGlId);
 	}
 	else
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 0);
 	}
 
-	if (mMaterial->GetEnableNormalMap() && mMaterial->GetNormalMap() != nullptr)
+	if (mMaterial->mEnableNormalMap && mMaterial->mNormalTexture != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 1);
 		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
 		glUniform1i(normalTextureLoc, 2);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->GetNormalMap()->openGlId);
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->openGlId);
 	}
 	else
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 0);
 	}
 
-	if (mMaterial->GetEnableShinessMap())
+	if (mMaterial->mEnableShinessMap)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
 	}
@@ -149,6 +148,12 @@ void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("MaterialID", mMaterial->mUID);
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
+	archive.AddBool("Diffuse", mMaterial->mEnableDiffuseTexture);
+	archive.AddBool("Specular", mMaterial->mEnableSpecularGlossinessTexture);
+	archive.AddBool("Shininess", mMaterial->mEnableShinessMap);
+	archive.AddBool("Normal", mMaterial->mEnableNormalMap);
+	
+	
 }
 
 void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
@@ -168,6 +173,21 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 	if (meshID != 0 && materialID != 0) {
 		Load(meshID, materialID);
 	}
-
+	if (componentJson.HasMember("Diffuse") && componentJson["Diffuse"].IsBool())
+	{
+		mMaterial->mEnableDiffuseTexture = componentJson["Diffuse"].GetBool();
+	}
+	if (componentJson.HasMember("Specular") && componentJson["Specular"].IsBool())
+	{
+		mMaterial->mEnableSpecularGlossinessTexture = componentJson["Specular"].GetBool();
+	}
+	if (componentJson.HasMember("Shininess") && componentJson["Shininess"].IsBool())
+	{
+		mMaterial->mEnableShinessMap = componentJson["Shininess"].GetBool();
+	}
+	if (componentJson.HasMember("Normal") && componentJson["Normal"].IsBool())
+	{
+		mMaterial->mEnableNormalMap = componentJson["Normal"].GetBool();
+	}
 }
 

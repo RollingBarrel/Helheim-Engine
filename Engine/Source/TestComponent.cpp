@@ -3,13 +3,13 @@
 #include "MeshRendererComponent.h"
 
 TestComponent::TestComponent(GameObject* ownerGameObject) 
-	:Component("Test Component", ownerGameObject, ComponentType::TEST)
+	:Component(ownerGameObject, ComponentType::TEST)
 {
 	
 }
 
 TestComponent::TestComponent(const TestComponent& original, GameObject* owner)
-	:Component(original.mName, owner, ComponentType::TEST)
+	:Component(owner, ComponentType::TEST)
 {
 
 }
@@ -31,13 +31,9 @@ Component* TestComponent::Clone(GameObject* owner) const
 }
 
 void TestComponent::Save(Archive& archive) const {
-	archive.AddString("Name", mName);
-	archive.AddString("type", "Test");
+	archive.AddString("type", GetNameFromType());
 }
 
 void TestComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {
 	
 }
-
-
-

@@ -9,10 +9,12 @@
 #include "Application.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
-
+#include "ImporterMesh.h"
+#include "Geometry/Triangle.h"
 #include "imgui.h"
 #include <iostream>
 #include <cstring>
+#include <utility>
 
 Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
@@ -39,7 +41,7 @@ Quadtree::~Quadtree()
 bool Quadtree::AddObject(GameObject* object)
 {
 	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
-	MeshRendererComponent* meshRenderer = dynamic_cast<MeshRendererComponent*>(component);
+	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
 	OBB object_BB = meshRenderer->getOBB();
 
 	if (!mBoundingBox.Intersects(object_BB))
@@ -87,9 +89,14 @@ void Quadtree::RemoveObject(const GameObject* object)
 	}
 }
 
-bool Quadtree::Intersects(const OBB* bounding_box) const
+bool Quadtree::Intersects(const OBB* boundingBox) const
 {
-	return bounding_box->Intersects(mBoundingBox);
+	return boundingBox->Intersects(mBoundingBox);
+}
+
+bool Quadtree::Intersects(const Ray* ray) const
+{
+	return ray->Intersects(mBoundingBox);
 }
 
 void Quadtree::CleanUp()
@@ -163,7 +170,7 @@ const void Quadtree::RenderTreeImGui() const
 
 void Quadtree::AddHierarchyObjects(GameObject* node)
 {
-	for (auto child : node->GetChildren()) {
+	for (const auto& child : node->GetChildren()) {
 		//TODO Detect if the child is already inside to avoid duplicates when pressing button more than twice in a row
 		if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 		{
@@ -171,6 +178,79 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 		}
 		AddHierarchyObjects(child);
 	}
+}
+
+const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
+{
+	if (mFilled) 
+	{
+
+		std::map<float, GameObject*> map;
+
+
+		const std::pair<float, GameObject*> p1 = mChildren[0]->RayCast(ray);
+		const std::pair<float, GameObject*> p2 = mChildren[1]->RayCast(ray);
+		const std::pair<float, GameObject*> p3 = mChildren[2]->RayCast(ray);
+		const std::pair<float, GameObject*> p4 = mChildren[3]->RayCast(ray);
+
+		if (p1.second != nullptr) {
+			map.insert(p1);
+		}
+		if (p2.second != nullptr) {
+			map.insert(p2);
+		}
+		if (p3.second != nullptr) {
+			map.insert(p3);
+		}
+		if (p4.second != nullptr) {
+			map.insert(p4);
+		}
+			
+		if (!map.empty()) {
+			return std::pair<float, GameObject*>(map.begin()->first, map.begin()->second);
+		}
+		
+	}
+	else
+	{
+		bool intersects = false;
+		bool intersectsTriangle = false;
+
+		for (const auto& child : mGameObjects) {
+
+			MeshRendererComponent* rMesh = (MeshRendererComponent*)child->GetComponent(ComponentType::MESHRENDERER);
+
+			if (rMesh != nullptr) {
+
+				Ray localRay(*ray);
+				localRay.pos = child->GetWorldTransform().Inverted().MulPos(ray->pos);
+				localRay.dir = child->GetWorldTransform().Inverted().MulDir(ray->dir).Normalized();
+
+				intersects = localRay.Intersects(rMesh->GetAABB());
+				if (intersects)
+				{
+					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
+					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
+
+					for (int i = 0; i < rMesh->GetResourceMesh()->mNumIndices / 3; i += 3) {
+						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i] + 1], triangles[indices[i] + 2]);
+						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i + 1] + 2]);
+						float3 verticeC = float3(triangles[indices[i + 2]], triangles[indices[i + 2] + 1], triangles[indices[i + 2] + 2]);
+
+						float distance;
+						float3 hitPoint;
+						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
+
+						if (intersectsTriangle) {
+							return std::pair<float, GameObject*>(distance, child);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return std::pair<float, GameObject*>(FLT_MAX,nullptr);
 }
 
 void Quadtree::UpdateTree()

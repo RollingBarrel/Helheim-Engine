@@ -26,20 +26,13 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	const OBB getOBB() const { return mOBB; }
-
+	const AABB GetAABB() const { return mAABB; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
 	const ResourceMaterial* GetMaterial() const { return mMaterial; }
-
-	//UNIFORMS
-	float lightDir[3] = { 0.0f, -1.0f, 1.0f };
-	float lightColor[3] = { 0.0f, 0.0f, 0.7f };
-	float lightIntensity = 10.0f;
-
-	float ambientColor[3] = {0.5f, 0.5f, 0.5f};
-
+	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 private:
 	ResourceMesh* mMesh;
 	ResourceMaterial* mMaterial;

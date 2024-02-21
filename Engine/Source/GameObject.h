@@ -28,20 +28,17 @@ public:
 	GameObject(const char* name, GameObject* parent);
 	GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation);
 
-
 	~GameObject();
 
 	Component* GetComponent(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
-	void Enable() { mIsEnabled = true; };
-	void Disable() { mIsEnabled = false; };
-	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mLocalTransformMatrix.ToEulerXYZ(); }
-	const float3& GetPosition() const { return mLocalTransformMatrix.TranslatePart(); }
+	const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
+	const float3& GetLocalPosition() const { return mLocalTransformMatrix.TranslatePart(); }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
@@ -49,8 +46,15 @@ public:
 
 	void ResetTransform();
 
+	void SetEnabled(bool enabled);
+	// Status for this GameObject
+	bool IsEnabled() const { return mIsEnabled; }
+	// Status for this GameObject and all its ancestors
+	bool IsActive() const { return mIsEnabled && mIsActive; }
+	
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
+	void AddChild(GameObject* child, const int aboveThisId = 0);
 	void DeleteChild(GameObject* child);
 	void AddComponentToDelete(Component* component);
 
@@ -72,6 +76,8 @@ private:
 	void AddComponent(Component* component, Component* position);
 	void RecalculateLocalTransform();
 
+	void SetActiveInHierarchy(bool active);
+
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 	std::vector<Component*> mComponents;
@@ -86,6 +92,7 @@ private:
 	float3 mEulerRotation = float3::zero;
 	float3 mScale = float3::one;
 	bool mIsEnabled = true;
+	bool mIsActive = true;
 	bool isTransformModified = false;
 	
 };

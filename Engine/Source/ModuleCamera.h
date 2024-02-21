@@ -5,13 +5,16 @@
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Geometry/Frustum.h"
+#include <map>
+
+class Quadtree;
+class GameObject;
 
 class ModuleCamera : public Module
 {
 public:
 	bool Init() override;
-	update_status Update() override;
-	bool CleanUp() override;
+	update_status Update(float dt) override;
 
 	void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
 	void Transform(float3 vec);
@@ -20,13 +23,17 @@ public:
 	float4x4 GetViewMatrix() const { return frustum.ViewMatrix(); }
 	float4x4 GetProjectionMatrix() const { return frustum.ProjectionMatrix(); }
 	float4x4 GetViewProjMatrix() const { return frustum.ViewProjMatrix(); }
-	unsigned int GetCameraUniffromsId() const { return cameraUnis; }
+	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
 	void WindowResized(int w, int h);
-
+	void CheckRaycast();
 	const Frustum& GetFrustum() const { return frustum; }
+
+
 private:
 	Frustum frustum;
-	unsigned int cameraUnis = 0;
+	Ray mRay;
+	bool mDrawRayCast; 
+	std::map<float, GameObject*> mIntersectMap;
 };
 
 #endif /* _MODULE_CAMERA_H_ */

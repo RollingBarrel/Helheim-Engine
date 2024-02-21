@@ -8,7 +8,7 @@
 
 class GameObject;
 class MeshRendererComponent;
-
+class pair;
 #define MAX_DEPTH 6
 #define CAPACITY 8
 
@@ -20,9 +20,13 @@ public:
 
 	bool AddObject(GameObject* object);
 	void RemoveObject(const GameObject* object);
-	bool Intersects(const OBB* bounding_box) const;
-	const bool hasGameObjects() const { return mFilled; }
+	bool Intersects(const OBB* boundingBox) const;
+	bool Intersects(const Ray* ray) const;
+	const bool IsFilled() const { return mFilled; }
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
+	const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
+	const Quadtree* GetChildren() const { return *mChildren; }
+	const std::pair<float, GameObject*> RayCast(Ray* ray) const;
 	void UpdateTree();
 	void Draw() const;
 	const void RenderTreeImGui() const;
@@ -41,7 +45,9 @@ private:
 	std::vector<GameObject*> mGameObjects;
 	int mDepthLevel;
 	bool mFilled;
+	bool mHasChildren = false;
 	std::string mName;
+	
 
 };
 

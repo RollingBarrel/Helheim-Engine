@@ -6,29 +6,32 @@
 #include "InspectorPanel.h"
 #include "Quadtree.h"
 #include "imgui.h"
+#include "ModuleOpenGL.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include <algorithm>
+#include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
 #include "TestComponent.h"
-
-
+#include "NavMeshControllerComponent.h"
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
-
 	AddSuffix();
 
 }
 
 GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
 	AddSuffix();
@@ -46,8 +49,8 @@ GameObject::GameObject(const GameObject& original)
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
 	for (auto child : original.mChildren) {
@@ -68,6 +71,7 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
 }
@@ -79,6 +83,7 @@ GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, fl
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
 }
@@ -124,20 +129,22 @@ void GameObject::RecalculateMatrices()
 
 void GameObject::Update()
 {
-	for (size_t i = 0; i < mComponents.size(); i++)
+	if (IsActive())
 	{
-		mComponents[i]->Update();
-	}
+		for (size_t i = 0; i < mComponents.size(); i++)
+		{
+			mComponents[i]->Update();
+		}
 
-	for (size_t i = 0; i < mChildren.size(); i++) {
-		mChildren[i]->Update();
-	}
+		for (size_t i = 0; i < mChildren.size(); i++) {
+			mChildren[i]->Update();
+		}
 
-	DeleteComponents();
-	if (isTransformModified) {
-		RecalculateMatrices();
+		DeleteComponents();
+		if (isTransformModified) {
+			RecalculateMatrices();
+		}
 	}
-
 }
 
 void GameObject::ResetTransform()
@@ -145,6 +152,12 @@ void GameObject::ResetTransform()
 	SetPosition(float3::zero);
 	SetRotation(float3::zero);
 	SetScale(float3::one);
+}
+
+void GameObject::SetEnabled(bool enabled)
+{ 
+	mIsEnabled = enabled;
+	SetActiveInHierarchy(enabled);
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -162,7 +175,6 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
-
 	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
@@ -172,14 +184,16 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 
 void GameObject::SetRotation(const Quat& rotation)
 {
-
 	mRotation = rotation;
+	mEulerRotation = rotation.ToEulerXYZ();
 
+	isTransformModified = true;
 }
 
 void GameObject::SetPosition(const float3& position)
 {
 	mPosition = position;
+
 	isTransformModified = true;
 }
 
@@ -272,8 +286,23 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	case ComponentType::MESHRENDERER:
 		newComponent = new MeshRendererComponent(this);
 		break;
+	case ComponentType::POINTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
+		break;
+	}
+	case ComponentType::SPOTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
+		break;
+	}
 	case ComponentType::TEST:
 		newComponent = new TestComponent(this);
+		break;
+	case ComponentType::NAVMESHCONTROLLER:
+		newComponent = new NavMeshControllerComponent(this);
 		break;
 	default:
 		break;
@@ -331,6 +360,7 @@ MeshRendererComponent* GameObject::getMeshRenderer() const
 		if (comp->GetType() == ComponentType::MESHRENDERER)
 			return static_cast<MeshRendererComponent*>(comp);
 	}
+	return nullptr;
 }
 
 void GameObject::RecalculateLocalTransform() {
@@ -345,11 +375,22 @@ void GameObject::RecalculateLocalTransform() {
 	}
 }
 
+void GameObject::SetActiveInHierarchy(bool active)
+{
+	mIsActive = active;
+
+	for (GameObject* child : mChildren)
+	{
+		child->SetActiveInHierarchy(active);
+	}
+}
+
 void GameObject::Save(Archive& archive) const {
 	archive.AddInt("UID", mID);
 	archive.AddInt("ParentUID", mParent->GetID());
-	archive.AddString("Name", mName);
+	archive.AddString("Name", mName.c_str());
 	archive.AddBool("isEnabled", mIsEnabled);
+	archive.AddBool("isActive", mIsActive);
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);

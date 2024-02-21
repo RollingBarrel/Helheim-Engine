@@ -2,15 +2,15 @@
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "ImporterMaterial.h"
-
-#include <MathFunc.h>
+#include "MathFunc.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -22,6 +22,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
+	bool enabled = focusedObject->IsEnabled();
 	ImGui::PushID(focusedObject->mID);
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
@@ -29,11 +30,18 @@ void InspectorPanel::Draw(int windowFlags)
 
 	if (!focusedObject->IsRoot()) 
 	{
+		if (ImGui::Checkbox("##enabled", &enabled))
+		{
+			focusedObject->SetEnabled(enabled);
+		}
+		ImGui::SameLine();
+		ImGui::PushID(focusedObject->mID);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
+		ImGui::PopID();
+
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
-
 		ImGui::Separator();
 		AddComponentButton(focusedObject);
 	}
@@ -49,6 +57,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PushID(object->mID);
+
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
@@ -67,8 +76,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 			//ImGui::TableSetupColumn("columns", 0 , -FLT_MIN);
 
 			bool modifiedTransform = false;
-			float3 newRotation = RadToDeg(object->mEulerRotation);
 			float3 newPosition = object->mPosition;
+			float3 newRotation = RadToDeg(object->mEulerRotation);
 			float3 newScale = object->mScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
@@ -129,8 +138,17 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 				mSameComponentPopup = true;
 			}
 		}
+		if (ImGui::MenuItem("Point Light")) {
+			object->CreateComponent(ComponentType::POINTLIGHT);
+		}
+		if (ImGui::MenuItem("Spot Light")) {
+			object->CreateComponent(ComponentType::SPOTLIGHT);
+		}
 		if (ImGui::MenuItem("Test")) {
 			object->CreateComponent(ComponentType::TEST);
+		}
+		if (ImGui::MenuItem("NavMesh")) {
+			object->CreateComponent(ComponentType::NAVMESHCONTROLLER);
 		}
 		ImGui::EndPopup();
 	}
@@ -150,7 +168,7 @@ void InspectorPanel::ShowSameComponentPopup()
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Text("The component %s can't be added because", mComponent->mName);
+	ImGui::Text("The component %s can't be added because", mComponent->GetNameFromType());
 	ImGui::Text("GameObject already contains the same component.");
 
 	ImGui::Spacing();
@@ -217,7 +235,7 @@ void InspectorPanel::DragAndDropSource(Component* component) {
 	{
 		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
 
-		ImGui::Text(component->mName);
+		ImGui::Text(component->GetNameFromType());
 		ImGui::EndDragDropSource();
 	}
 }
@@ -245,21 +263,30 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 	for (auto component : object->mComponents) {
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
-		bool isOpen = ImGui::CollapsingHeader(component->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+
+		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		
+		//checkbox for enable/disable
+		ImGui::Checkbox("Enable", &component->mIsEnabled);
+	
 		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
-					MeshRendererComponent* downCast = dynamic_cast<MeshRendererComponent*>(component);
-					assert(downCast != nullptr);
-					DrawMeshRendererComponent(downCast);
+					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
+					break;
+				}
+				case ComponentType::POINTLIGHT: {
+					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
+					break;
+				}
+				case ComponentType::SPOTLIGHT: {
+					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
 					break;
 				}
 				case ComponentType::TEST: {
-					TestComponent* downCast = dynamic_cast<TestComponent*>(component);
-					assert(downCast != nullptr);
-					DrawTestComponent(downCast);
+					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				}
 
@@ -275,15 +302,67 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text 2 ");
 }
 
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
+	const float* pCol = component->GetColor();
+	float col[3] = { pCol[0], pCol[1] , pCol[2] };
+	if (ImGui::ColorPicker3("Color", col))
+	{
+		component->SetColor(col);
+	}
+	float intensity = component->GetIntensity();
+	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	{
+		component->SetIntensity(intensity);
+	}
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius,1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
+}
+
+void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
+	const float* sCol = component->GetColor();
+	float col[3] = { sCol[0], sCol[1] , sCol[2] };
+	if (ImGui::ColorPicker3("Color", col))
+	{
+		component->SetColor(col);
+	}
+	const float* sDir = component->GetDirection();
+	float dir[3] = { sDir[0], sDir[1] , sDir[2] };
+	if (ImGui::DragFloat3("Direction", dir, 0.05f, -1.f, 1.f))
+	{
+		component->SetDirection(dir);
+	}
+	float intensity = component->GetIntensity();
+	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	{
+		component->SetIntensity(intensity);
+	}
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float innerAngle = RadToDeg(component->GetInnerAngle());
+	float outerAngle = RadToDeg(component->GetOuterAngle());
+	if (ImGui::DragFloat("Inner angle", &innerAngle, 1.0f, 0.0f, outerAngle))
+	{
+		component->SetInnerAngle(DegToRad(innerAngle));
+	}
+	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, innerAngle, 90.f))
+	{
+		component->SetOuterAngle(DegToRad(outerAngle));
+	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
+}
+
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
-	
+
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
-
-	ImGui::SeparatorText("Shaders ");
-	ImGui::Text("Vertex: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetVertexShader());
-	ImGui::Text("Fragment: "); ImGui::SameLine(); ImGui::Text(App->GetProgram()->GetFragmentShader());
 
 	ImGui::Text(" ");
 	bool shouldDraw = component->ShouldDraw();
@@ -297,124 +376,21 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
 
-	bool hasDiffuse = material->GetEnableDiffuseTexture();
-	bool hasSpecular = material->GetEnableSpecularGlossinessTexture();
-	bool hasShininess = material->GetEnableShinessMap();
+	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
+	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
+	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
+	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
 
-	ImGui::Checkbox("Enable Diffuse map", &hasDiffuse);
-	ImGui::Checkbox("Enable Specular map", &hasSpecular);
-	ImGui::Checkbox("Enable Shininess map", &hasShininess);
-
-	material->SetEnableDiffuseTexture((int)hasDiffuse);
-	material->SetEnableSpecularGlossinessTexture((int)hasSpecular);
-	material->SetEnableShinessMap((int)hasShininess);
-
-	//ImGui::Text(" ");
-
-
-	if (ImGui::BeginTable("materialTable", 4))
+	if (!material->mEnableDiffuseTexture)
 	{
-
-		float4 diffuse = material->GetDiffuseFactor();
-		float3 specular = material->GetSpecularFactor();
-		float shininess = material->GetGlossinessFactor();
-
-		if (!hasDiffuse) {
-			ImGui::TableNextRow();
-			ImGui::PushID("diff");
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Diffuse");
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("X");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##X", &diffuse.x, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Y");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Y", &diffuse.y, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text("Z");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Z", &diffuse.z, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetDiffuseFactor(float4(diffuse.x, diffuse.y, diffuse.z, material->GetDiffuseFactor().w));
-			}
-			ImGui::PopID();
-		}
-
-		if (!hasSpecular) {
-			ImGui::TableNextRow();
-			ImGui::PushID("spec");
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Specular");
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("X");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##X", &specular.x, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Y");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Y", &specular.y, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
-			}
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Z");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##Z", &specular.z, 0.05f, 0.0f, 1.0f, "%.2f"))
-			{
-				material->SetSpecularFactor(float3(specular.x, specular.y, specular.z));
-			}
-			ImGui::PopID();
-		}
-		if (!hasShininess) {
-			ImGui::TableNextRow();
-			ImGui::PushID("shiny");
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Shininess");
-			ImGui::PopItemWidth();
-
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text(" ");
-			ImGui::SameLine();
-			if (ImGui::DragFloat("##S", &shininess, 0.05f, 0.0f, 10000.0f, "%.2f"))
-			{
-				material->SetGlossinessFactor(shininess);
-			}
-
-			ImGui::PopID();
-		}
+		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
 	}
-	ImGui::EndTable();
-
-	
+	if (!material->mEnableSpecularGlossinessTexture)
+	{
+		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
+	}
+	if (!material->mEnableShinessMap)
+	{
+		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
+	}
 }

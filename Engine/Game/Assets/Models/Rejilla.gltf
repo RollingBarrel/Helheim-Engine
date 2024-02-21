@@ -1,0 +1,275 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Rejilla"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 2269,
+      "type": "VEC3",
+      "max": [
+        2.300809383392334,
+        1.1006683111190796,
+        0.057153165340423584
+      ],
+      "min": [
+        -2.300809383392334,
+        -1.10066819190979,
+        -0.0346749871969223
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 2269,
+      "type": "VEC3",
+      "max": [
+        0.9984857439994812,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.9984855055809021,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 2269,
+      "type": "VEC4",
+      "max": [
+        0.99948441982269287,
+        1.0,
+        0.99999785423278809,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -0.99999785423278809,
+        1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 2269,
+      "type": "VEC2",
+      "max": [
+        0.978515625,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 2269,
+      "type": "VEC2",
+      "max": [
+        0.97607421875,
+        0.91162109375
+      ],
+      "min": [
+        0.00806427001953125,
+        0.00806427001953125
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5123,
+      "count": 7128,
+      "type": "SCALAR",
+      "max": [
+        2268.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Rejilla.bin",
+      "byteLength": 141320
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 27228,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 27228,
+      "byteLength": 27228,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 54456,
+      "byteLength": 36304,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 90760,
+      "byteLength": 18152,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 108912,
+      "byteLength": 18152,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 127064,
+      "byteLength": 14256,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "T_HangarFloor02_Normal.jpg",
+      "name": "T_HangarFloor02_Normal"
+    },
+    {
+      "uri": "T_HangarFloor02_Occlusion.jpg",
+      "name": "T_HangarFloor02_Occlusion"
+    },
+    {
+      "uri": "T_HangarFloor02_BaseColor.jpg",
+      "name": "T_HangarFloor02_BaseColor"
+    },
+    {
+      "uri": "T_HangarFloor02_Metallic.jpg",
+      "name": "T_HangarFloor02_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.215860471,
+          0.215860471,
+          0.215860471,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "MI_HangarFloor01"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 5,
+          "material": 0
+        }
+      ],
+      "name": "Rejilla"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -0.7071068,
+        0.0,
+        0.0,
+        0.7071067
+      ],
+      "name": "Rejilla"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "T_HangarFloor02_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "T_HangarFloor02_Occlusion"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "T_HangarFloor02_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "T_HangarFloor02_Metallic"
+    }
+  ]
+}
