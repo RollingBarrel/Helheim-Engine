@@ -20,7 +20,7 @@ bool ModuleCamera::Init()
 {
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
+	frustum.farPlaneDistance = 2000.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	int w = App->GetWindow()->GetWidth();
 	int h = App->GetWindow()->GetHeight();

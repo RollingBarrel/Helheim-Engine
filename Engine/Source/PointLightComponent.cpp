@@ -1,7 +1,8 @@
-#include "PointLightComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleDebugDraw.h"
+
+#include "PointLightComponent.h"
 
 PointLightComponent::PointLightComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::POINTLIGHT), mData(light) {
 	const float3& pos = owner->GetWorldPosition();
@@ -60,6 +61,11 @@ void PointLightComponent::Update()
 	{
 		App->GetDebugDraw()->DrawSphere(mData.pos, mData.col, mData.pos[3]);
 	}
+}
+
+inline Component* PointLightComponent::Clone(GameObject* owner) const 
+{
+	return App->GetOpenGL()->AddPointLight(mData, owner);
 }
 
 void PointLightComponent::Save(Archive& archive) const {

@@ -1,8 +1,9 @@
-#include "SpotLightComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleDebugDraw.h"
 #include "MathFunc.h"
+
+#include "SpotLightComponent.h"
 
 SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) {
 	const float3& pos = owner->GetWorldPosition();
@@ -89,6 +90,11 @@ void SpotLightComponent::Update()
 	{
 		App->GetDebugDraw()->DrawCone(mData.pos, mData.aimD, mData.col, mData.radius);
 	}
+}
+
+inline Component* SpotLightComponent::Clone(GameObject* owner) const 
+{ 
+	return App->GetOpenGL()->AddSpotLight(mData, owner);
 }
 
 void SpotLightComponent::Save(Archive& archive) const {
