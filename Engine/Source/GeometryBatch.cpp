@@ -283,7 +283,7 @@ void GeometryBatch::Draw()
 		memcpy(mSsboModelsData[idx] + 16 * i, mMeshComponents[i]->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 	}
 
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels, 0, mMeshComponents.size() * sizeof(float4x4));
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModels, 0, mMeshComponents.size() * sizeof(float) * 16);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
 	
