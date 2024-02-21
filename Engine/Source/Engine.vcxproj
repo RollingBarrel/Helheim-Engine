@@ -225,7 +225,6 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
-    <ClCompile Include="EngineTimer.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
