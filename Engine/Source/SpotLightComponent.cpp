@@ -94,6 +94,7 @@ void SpotLightComponent::Update()
 void SpotLightComponent::Save(Archive& archive) const {
 	//TODO: Do we need id???
 	//archive.AddInt("ID", mID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat4("Position", mData.pos);
 	archive.AddFloat4("Direction", mData.aimD);
 	archive.AddFloat4("Color", mData.col);
@@ -130,8 +131,9 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
-	if (componentJson.HasMember("Radius") && componentJson["Radius"].IsArray())
+	if (componentJson.HasMember("Radius") && componentJson["Radius"].IsFloat())
 	{
 		mData.radius = componentJson["Radius"].GetFloat();
 	}
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }

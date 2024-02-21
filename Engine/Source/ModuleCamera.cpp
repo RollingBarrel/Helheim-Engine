@@ -83,7 +83,7 @@ update_status ModuleCamera::Update(float dt)
 	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
 	{
 	
-		const float dtTransformCameraVel = dt * 3.f;
+		const float dtTransformCameraVel = dt * 6.f;
 		float transformCameraVel = 0.03f;
 		const float rotateCameraVel = 0.01f;
 		

@@ -65,8 +65,10 @@ void PointLightComponent::Update()
 void PointLightComponent::Save(Archive& archive) const {
 	//TODO: Do we need id???
 	//archive.AddInt("ID", mID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat4("Position", mData.pos);
 	archive.AddFloat4("Color", mData.col);
+
 }
 
 //TODO: why is the GO owner passed here??
@@ -91,6 +93,7 @@ void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Ga
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
+	App->GetOpenGL()->UpdatePoinLightInfo(*this);
 }
 
 void PointLightComponent::Enable()
