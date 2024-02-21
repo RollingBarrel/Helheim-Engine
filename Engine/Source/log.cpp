@@ -2,6 +2,9 @@
 #include <windows.h>
 #include <stdio.h>
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleEditor.h"
+#include "ConsolePanel.h"
 
 void log(const char file[], int line, const char* format, ...)
 {
@@ -15,4 +18,8 @@ void log(const char file[], int line, const char* format, ...)
 	va_end(ap);
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);
+
+	if (App != nullptr) {
+		((ConsolePanel*)App->GetEditor()->GetPanel(CONSOLEPANEL))->SetLog(tmp_string2);
+	}
 }

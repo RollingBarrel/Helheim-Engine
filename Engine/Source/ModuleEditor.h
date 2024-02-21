@@ -2,6 +2,10 @@
 #define _MODULE_EDITOR_H_
 
 #include "Module.h"
+
+#include "imgui.h"
+#include "ImGuizmo.h"
+
 #include <map>
 
 struct ImGuiIO;
@@ -22,12 +26,10 @@ public:
 
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
-	
 
 private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
-	bool mDrawRaycast = false;
 	std::map<const char*, Panel*> mPanels;
 	void OpenLoadScene();
 };
