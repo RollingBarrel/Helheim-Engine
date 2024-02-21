@@ -1,0 +1,305 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "AmmunationBox1 (5)"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 8053,
+      "type": "VEC3",
+      "max": [
+        0.22719542682170868,
+        0.21166183054447174,
+        0.98447704315185547
+      ],
+      "min": [
+        -0.22719557583332062,
+        -0.21166175603866577,
+        3.2043456030805828E-06
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 8053,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 8053,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 8053,
+      "type": "VEC2",
+      "max": [
+        0.98876953125,
+        0.99853515625
+      ],
+      "min": [
+        0.09759521484375,
+        0.005130767822265625
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 8053,
+      "type": "VEC2",
+      "max": [
+        0.99658203125,
+        0.9990234375
+      ],
+      "min": [
+        0.000499725341796875,
+        0.000499725341796875
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 8053,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "min": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 41454,
+      "type": "SCALAR",
+      "max": [
+        8052.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "AmmunationBox1 (5).bin",
+      "byteLength": 662724
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 96636,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 96636,
+      "byteLength": 96636,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 193272,
+      "byteLength": 128848,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 322120,
+      "byteLength": 64424,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 386544,
+      "byteLength": 64424,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 450968,
+      "byteLength": 128848,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 579816,
+      "byteLength": 82908,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "T_AmmunitionBoxes_Normal.jpg",
+      "name": "T_AmmunitionBoxes_Normal"
+    },
+    {
+      "uri": "T_AmmunitionBoxes_Occlusion.jpg",
+      "name": "T_AmmunitionBoxes_Occlusion"
+    },
+    {
+      "uri": "T_AmmunitionBoxes_BaseColor.jpg",
+      "name": "T_AmmunitionBoxes_BaseColor"
+    },
+    {
+      "uri": "T_AmmunitionBoxes_Metallic.jpg",
+      "name": "T_AmmunitionBoxes_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.215860471,
+          0.215860471,
+          0.215860471,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "MI_AmmunitionBox"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "COLOR_0": 5
+          },
+          "indices": 6,
+          "material": 0
+        }
+      ],
+      "name": "AmmunationBox1 (5)"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -0.7071068,
+        0.0,
+        0.0,
+        0.7071067
+      ],
+      "translation": [
+        0.1569643,
+        -2.63668919,
+        -3.74822569
+      ],
+      "name": "AmmunationBox1 (5)"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "T_AmmunitionBoxes_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "T_AmmunitionBoxes_Occlusion"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "T_AmmunitionBoxes_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "T_AmmunitionBoxes_Metallic"
+    }
+  ]
+}
