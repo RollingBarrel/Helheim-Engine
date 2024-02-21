@@ -1,0 +1,327 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Stairs"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 6141,
+      "type": "VEC3",
+      "max": [
+        3.774770975112915,
+        2.0050301551818848,
+        1.6307381391525269
+      ],
+      "min": [
+        -3.7252323627471924,
+        -2.2267048358917236,
+        0.089504122734069824
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 6141,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 6141,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        0.99125832319259644,
+        0.99990701675415039,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.99782842397689819,
+        -0.99991714954376221,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 6141,
+      "type": "VEC2",
+      "max": [
+        1.0,
+        1.1767578125
+      ],
+      "min": [
+        0.0,
+        0.037017822265625
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 6141,
+      "type": "VEC2",
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0117034912109375
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5123,
+      "count": 28932,
+      "type": "SCALAR",
+      "max": [
+        5924.0
+      ],
+      "min": [
+        0.0
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 582,
+      "type": "SCALAR",
+      "max": [
+        6140.0
+      ],
+      "min": [
+        5925.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Stairs.bin",
+      "byteLength": 402924
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 73692,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 73692,
+      "byteLength": 73692,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 147384,
+      "byteLength": 98256,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 245640,
+      "byteLength": 49128,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 294768,
+      "byteLength": 49128,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 343896,
+      "byteLength": 57864,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 401760,
+      "byteLength": 1164,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "T_Stair_Normal.jpg",
+      "name": "T_Stair_Normal"
+    },
+    {
+      "uri": "T_Stair_Occlusion.jpg",
+      "name": "T_Stair_Occlusion"
+    },
+    {
+      "uri": "T_Stair_BaseColor.jpg",
+      "name": "T_Stair_BaseColor"
+    },
+    {
+      "uri": "T_Stair_Metallic.jpg",
+      "name": "T_Stair_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.215860471,
+          0.215860471,
+          0.215860471,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "MI_Stair"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0833333,
+          0.0833333,
+          0.0833333,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.55278640985488892
+      },
+      "name": "M_BlackBack"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 5,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 6,
+          "material": 1
+        }
+      ],
+      "name": "Stairs"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        0.50000006,
+        -0.499999881,
+        -0.50000006,
+        -0.4999999
+      ],
+      "scale": [
+        0.5356796,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        -1.1920929E-07
+      ],
+      "name": "Stairs"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "T_Stair_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "T_Stair_Occlusion"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "T_Stair_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "T_Stair_Metallic"
+    }
+  ]
+}
