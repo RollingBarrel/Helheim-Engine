@@ -254,7 +254,7 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
 
 ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
 {
-    char* fileBuffer;
+    char* fileBuffer = nullptr;
     App->GetFileSystem()->Load(filePath, &fileBuffer);
 
     //Load Header

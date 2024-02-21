@@ -8,7 +8,7 @@
 
 #include "Algorithm/Random/LCG.h"
 
-ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, const unsigned int uid)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, const unsigned int uid)
 {
     float4 diffuseFactor = float4::zero; 
     float3 specularFactor = float3::zero;
@@ -46,6 +46,7 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
             }
         }
 
+        //TODO IMPORT DIFFUSE COLOR ALWAYS 
         if (extensionMap.Has("diffuseTexture")) {
             const tinygltf::Value& diffuseTextureValue = extensionMap.Get("diffuseTexture");
 
@@ -58,6 +59,13 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
                     const tinygltf::Image& image = tinyModel.images[diffuseMap.source];
 
                     unsigned int uidTexture = math::LCG().Int();
+
+                    std::string pngName = filePath;
+                    unsigned filePos = pngName.find_last_of('/');
+                    pngName = pngName.substr(0, filePos + 1);
+                    pngName.append(tinyModel.images[diffuseTextureIndex].uri);
+                    App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), std::string(ASSETS_TEXTURE_PATH + image.uri).c_str());
+
                     diffuseTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
                     Importer::Texture::Save(diffuseTexture);
                 }
@@ -76,6 +84,13 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
                     const tinygltf::Image& image = tinyModel.images[specularMap.source];
 
                     unsigned int uidTexture = math::LCG().Int();
+
+                    std::string pngName = filePath;
+                    unsigned filePos = pngName.find_last_of('/');
+                    pngName = pngName.substr(0, filePos + 1);
+                    pngName.append(tinyModel.images[specularGlossinessIndex].uri);
+                    App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), std::string(ASSETS_TEXTURE_PATH + image.uri).c_str());
+
                     specularGlossinessTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
                     Importer::Texture::Save(specularGlossinessTexture);
                 }
@@ -96,6 +111,13 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
                         const tinygltf::Image& image = tinyModel.images[normalMap.source];
 
                         unsigned int uidTexture = math::LCG().Int();
+
+                        std::string pngName = filePath;
+                        unsigned filePos = pngName.find_last_of('/');
+                        pngName = pngName.substr(0, filePos + 1);
+                        pngName.append(tinyModel.images[normalIndex].uri);
+                        App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), std::string(ASSETS_TEXTURE_PATH + image.uri).c_str());
+
                         normalTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
                         Importer::Texture::Save(normalTexture);
                     }
@@ -112,6 +134,14 @@ ResourceMaterial* Importer::Material::Import(const tinygltf::Model& tinyModel, c
             const tinygltf::Image& image = tinyModel.images[texture.source];
 
             unsigned int uidTexture = math::LCG().Int();
+
+            std::string pngName = filePath;
+            unsigned filePos = pngName.find_last_of('/');
+            pngName = pngName.substr(0, filePos + 1);
+            pngName.append(tinyModel.images[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index].uri);
+
+            App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), std::string(ASSETS_TEXTURE_PATH + image.uri).c_str());
+
             diffuseTexture = Importer::Texture::Import(std::string(ASSETS_TEXTURE_PATH + image.uri).c_str(), uidTexture);
             Importer::Texture::Save(diffuseTexture);
         }
