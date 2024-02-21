@@ -266,7 +266,9 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 
 	// Get the path of the .meta file
 
-	std::string metaName = resource.GetAssetsFile() + ".meta";
+	std::string metaName;
+	metaName += resource.GetAssetsFile();
+	metaName += ".meta";
 
 	// Create a JSON document
 	rapidjson::Document document;

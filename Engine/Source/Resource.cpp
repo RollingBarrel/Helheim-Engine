@@ -1,6 +1,8 @@
 #include "Resource.h"
 #include "ModuleFileSystem.h"
 
+#define _CRT_SECURE_NO_WARNINGS
+
 Resource::Resource(unsigned int uid, Type type, const char* assetsPath, const char* libraryExtension) : mUID(uid), mType(type), mReferenceCount(0)
 {
 	char* tmp = const_cast<char*>(mLibraryFile);

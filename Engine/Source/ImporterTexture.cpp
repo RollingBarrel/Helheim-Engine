@@ -84,7 +84,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         hasAlpha = true;
     }
 
-    return new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+    return new ResourceTexture(uid, filePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
 }
 
 void Importer::Texture::Save(const ResourceTexture* texture)
@@ -121,7 +121,7 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     memcpy(cursor, texture->GetPixels(), bytes);
     cursor += bytes;
 
-    App->GetFileSystem()->Save(texture->GetLibraryFile().c_str(), fileBuffer, size);
+    App->GetFileSystem()->Save(texture->GetLibraryFile(), fileBuffer, size);
 
     delete[] fileBuffer;
     fileBuffer = nullptr;
@@ -160,7 +160,7 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
     pixels = new unsigned char[numPixels];
     memcpy(pixels, cursor, bytes);
 
-    ResourceTexture* texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+    ResourceTexture* texture = new ResourceTexture(uid, filePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
     unsigned int texId = texture->CreateTexture();
     
     return texture;

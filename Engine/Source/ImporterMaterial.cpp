@@ -194,7 +194,7 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
     memcpy(cursor, &glossinessFactor, bytes);
     cursor += bytes;
 
-    App->GetFileSystem()->Save(ourMaterial->GetLibraryFile().c_str(), fileBuffer, size);
+    App->GetFileSystem()->Save(ourMaterial->GetLibraryFile(), fileBuffer, size);
 
     delete[] fileBuffer;
     fileBuffer = nullptr;
