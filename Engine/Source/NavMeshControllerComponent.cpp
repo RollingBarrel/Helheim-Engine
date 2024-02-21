@@ -41,7 +41,7 @@ Component* NavMeshControllerComponent::Clone(GameObject* owner) const
 }
 
 void NavMeshControllerComponent::Save(Archive& archive) const {
-	archive.AddString("type", GetNameFromType());
+	archive.AddString("type", GetNameFromOwnType());
 }
 
 void NavMeshControllerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {

@@ -7,10 +7,11 @@
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "CameraComponent.h"
 #include "ImporterMaterial.h"
-
-#include <MathFunc.h>
+#include "MathFunc.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -128,27 +129,18 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 	}
 
 	if (ImGui::BeginPopup("AddComponentPopup")) {
-		if (ImGui::MenuItem("Mesh Renderer")) {
-			mComponent = object->GetComponent(ComponentType::MESHRENDERER);
-			if (!mComponent)
-			{
-				object->CreateComponent(ComponentType::MESHRENDERER);
-			} else {
-				mSameComponentPopup = true;
+		for (unsigned int i = 0; i <= static_cast<unsigned int>(ComponentType::NONE) - 1; ++i) {
+			ComponentType currentComponent = static_cast<ComponentType>(i);
+			if (ImGui::MenuItem(Component::GetNameFromType(currentComponent))) {
+				mComponent = object->GetComponent(currentComponent);
+				if (!mComponent)
+				{
+					object->CreateComponent(currentComponent);
+				}
+				else {
+					mSameComponentPopup = true;
+				}
 			}
-		}
-		if (ImGui::MenuItem("Camera")) {
-			mComponent = object->GetComponent(ComponentType::CAMERA);
-			if (!mComponent)
-			{
-				object->CreateComponent(ComponentType::CAMERA);
-			}
-			else {
-				mSameComponentPopup = true;
-			}
-		}
-		if (ImGui::MenuItem("Test")) {
-			object->CreateComponent(ComponentType::TEST);
 		}
 		ImGui::EndPopup();
 	}
@@ -168,7 +160,7 @@ void InspectorPanel::ShowSameComponentPopup()
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Text("The component %s can't be added because", mComponent->GetNameFromType());
+	ImGui::Text("The component %s can't be added because", mComponent->GetNameFromOwnType());
 	ImGui::Text("GameObject already contains the same component.");
 
 	ImGui::Spacing();
@@ -244,7 +236,7 @@ void InspectorPanel::DragAndDropSource(Component* component) {
 	{
 		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
 
-		ImGui::Text(component->GetNameFromType());
+		ImGui::Text(component->GetNameFromOwnType());
 		ImGui::EndDragDropSource();
 	}
 }
@@ -273,7 +265,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
 
-		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromOwnType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 		//checkbox for enable/disable
 		ImGui::Checkbox("Enable", &component->mIsEnabled);
@@ -283,24 +275,25 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
-					MeshRendererComponent* downCast = dynamic_cast<MeshRendererComponent*>(component);
-					assert(downCast != nullptr);
-					DrawMeshRendererComponent(downCast);
+					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				}
-				case ComponentType::TEST: {
-					TestComponent* downCast = dynamic_cast<TestComponent*>(component);
-					assert(downCast != nullptr);
-					DrawTestComponent(downCast);
+				case ComponentType::POINTLIGHT: {
+					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
+					break;
+				}
+				case ComponentType::SPOTLIGHT: {
+					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
 					break;
 				}
 				case ComponentType::CAMERA: {
-					CameraComponent* downCast = dynamic_cast<CameraComponent*>(component);
-					assert(downCast != nullptr);
-					DrawCameraComponent(downCast);
+					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
 					break;
 				}
-
+				case ComponentType::TEST: {
+					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
+					break;
+				}
 			}
 		}
 		ImGui::PopID();
@@ -311,6 +304,99 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text");
 	ImGui::Text("Demo Text 2 ");
+}
+
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
+	const float* pCol = component->GetColor();
+	float col[3] = { pCol[0], pCol[1] , pCol[2] };
+	if (ImGui::ColorPicker3("Color", col))
+	{
+		component->SetColor(col);
+	}
+	float intensity = component->GetIntensity();
+	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	{
+		component->SetIntensity(intensity);
+	}
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
+}
+
+void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
+	const float* sCol = component->GetColor();
+	float col[3] = { sCol[0], sCol[1] , sCol[2] };
+	if (ImGui::ColorPicker3("Color", col))
+	{
+		component->SetColor(col);
+	}
+	const float* sDir = component->GetDirection();
+	float dir[3] = { sDir[0], sDir[1] , sDir[2] };
+	if (ImGui::DragFloat3("Direction", dir, 0.05f, -1.f, 1.f))
+	{
+		component->SetDirection(dir);
+	}
+	float intensity = component->GetIntensity();
+	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	{
+		component->SetIntensity(intensity);
+	}
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float innerAngle = RadToDeg(component->GetInnerAngle());
+	float outerAngle = RadToDeg(component->GetOuterAngle());
+	if (ImGui::DragFloat("Inner angle", &innerAngle, 1.0f, 0.0f, outerAngle))
+	{
+		component->SetInnerAngle(DegToRad(innerAngle));
+	}
+	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, innerAngle, 90.f))
+	{
+		component->SetOuterAngle(DegToRad(outerAngle));
+	}
+	ImGui::Checkbox("Debug draw", &component->debugDraw);
+}
+
+void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
+
+	ImGui::SeparatorText("Material");
+
+	MaterialVariables(component);
+
+	ImGui::Text(" ");
+	bool shouldDraw = component->ShouldDraw();
+	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
+		component->SetShouldDraw(shouldDraw);
+	}
+}
+
+void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
+{
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
+
+
+	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
+	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
+	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
+	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
+
+	if (!material->mEnableDiffuseTexture)
+	{
+		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
+	}
+	if (!material->mEnableSpecularGlossinessTexture)
+	{
+		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
+	}
+	if (!material->mEnableShinessMap)
+	{
+		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
+	}
 }
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
@@ -361,41 +447,4 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling
-}
-void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
-
-	ImGui::SeparatorText("Material");
-
-	MaterialVariables(component);
-
-	ImGui::Text(" ");
-	bool shouldDraw = component->ShouldDraw();
-	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
-		component->SetShouldDraw(shouldDraw);
-	}
-}
-
-void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
-{
-	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
-
-
-	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
-	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
-	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
-	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
-
-	if (!material->mEnableDiffuseTexture)
-	{
-		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
-	}
-	if (!material->mEnableSpecularGlossinessTexture)
-	{
-		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
-	}
-	if (!material->mEnableShinessMap)
-	{
-		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
-	}
-	
 }

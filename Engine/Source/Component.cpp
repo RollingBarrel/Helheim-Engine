@@ -4,11 +4,16 @@
 
 Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int()){}
 
-const char* Component::GetNameFromType() const
+const char* Component::GetNameFromOwnType() const
 {
-	switch (mType)
+	return GetNameFromType(mType);
+}
+
+const char* Component::GetNameFromType(ComponentType type)
+{
+	switch (type)
 	{
-	case ComponentType::MESHRENDERER:
+		case ComponentType::MESHRENDERER:
 			return "Mesh Renderer";
 		case ComponentType::POINTLIGHT:
 			return "Point Light";
@@ -22,5 +27,5 @@ const char* Component::GetNameFromType() const
 			return "NavMeshController";
 		default:
 			return "None";
-	}
+		}
 }
