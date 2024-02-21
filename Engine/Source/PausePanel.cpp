@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 
 #include "Timer.h"
+#include "PreciseTimer.h"
 
 PausePanel::PausePanel() : Panel(PAUSEPANEL, true)
 {

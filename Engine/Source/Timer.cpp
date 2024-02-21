@@ -26,15 +26,15 @@ void Timer::Update()
 	}
 
 	//Delay the frame so the FPS match the limit if mDeltaTime if  vsync isn't enabled
-	if (!mEnabledVsync && (mFpsLimit > 0 && mDeltaTime / mSpeed < (1000 / mFpsLimit)))
+	if (!mEnabledVsync && (mFpsLimit > 0 && mDeltaTime / mSpeed < (MILLI_IN_SECONDS / mFpsLimit)))
 	{
-		mFrameDelay = (1000 / mFpsLimit) - mDeltaTime / mSpeed;
+		mFrameDelay = (MILLI_IN_SECONDS / mFpsLimit) - mDeltaTime / mSpeed;
 
 		SDL_Delay(mFrameDelay);
 
 		ReadDelta();	//ReadDelta is called so the next frameDelay is calculated properly (if this isn't done the previous delay will be counted as part of the next frame execution time)
 
-		mDeltaTime = mSpeed * 1000 / mFpsLimit;
+		mDeltaTime = mSpeed * MILLI_IN_SECONDS / mFpsLimit;
 	}
 	else 
 	{
@@ -55,11 +55,11 @@ void Timer::Update()
 	mUpdateTime += mDeltaTime / mSpeed;
 
 	//Logs the average FPS every half a second
-	if (mUpdateTime > 500) {						//For some reason when the FPS are low this is executed more often (so time goes faster?)
+	if (mUpdateTime > 0.5f * MILLI_IN_SECONDS) {
 		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
-		mFpsLog.push_back(mUpdateFrames * 1000 / mUpdateTime);
+		mFpsLog.push_back(mUpdateFrames * MILLI_IN_SECONDS / mUpdateTime);
 
 		//Checks if the average is the lowest
 		SetLowestFps();
@@ -127,7 +127,7 @@ void Timer::Resume() {
 }
 
 long Timer::Stop() {
-	Uint64 finalTime = Read();
+	Uint32 finalTime = Read();
 
 	//We reset all variables
 	ResetVariables();

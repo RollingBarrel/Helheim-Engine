@@ -2,10 +2,10 @@
 #define _SCENE_PANEL_H_
 #include "Panel.h"
 #define SCENEPANEL "Scene##"
+
+#include "imgui.h"
+#include "ImGuizmo.h"
 #include "Math/float2.h"
-
-
-
 
 class ScenePanel : public Panel
 {
@@ -27,6 +27,10 @@ private:
 	float2 mWindowsPosition;
 	float2 mWindowsSize;
 	float2 mMousePosition;
-
+  
+	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
+	ImGuizmo::MODE mCurrentGuizmoMode = ImGuizmo::LOCAL;
+	bool mUseSnap = false;
+	float mSnap[3] = { 1.f, 1.f, 1.f };
 };
 #endif /* _SCENE_PANEL_H_ */

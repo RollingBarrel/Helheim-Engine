@@ -14,6 +14,7 @@
 #include "ImporterMesh.h"
 #include "imgui.h"
 #include "Geometry/Triangle.h"
+#include "Quadtree.h"
 
 bool ModuleCamera::Init()
 {
@@ -34,8 +35,6 @@ void ModuleCamera::WindowResized(int w, int h)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)w / (float)h);
 }
 
-
-
 void ModuleCamera::CheckRaycast()
 {
 
@@ -55,57 +54,19 @@ void ModuleCamera::CheckRaycast()
 	bool intersects = false;
 	bool intersectsTriangle = false;
 
+	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	std::map<float, GameObject*> intersectMap;
-
-	// TODO: final implementation when Quadtree is added in this logic
-	for (auto gameObject : App->GetScene()->GetRoot()->GetChildren()) {
-		// TODO: We need to iterate recursively to all gameobjects in the future. Temporal implementation.
-		for (auto child : gameObject->GetChildren()) {
-			
-			MeshRendererComponent* rMesh = (MeshRendererComponent*)child->GetComponent(ComponentType::MESHRENDERER);
-
-			if (rMesh != nullptr) {
-
-				Ray localRay(mRay);
-				localRay.pos = child->GetWorldTransform().Inverted().MulPos(mRay.pos);
-				localRay.dir = child->GetWorldTransform().Inverted().MulDir(mRay.dir).Normalized();
-
-				intersects = localRay.Intersects(rMesh->GetAABB());
-				if (intersects) 
-				{
-					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
-					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
-
-					for (int i = 0; i < rMesh->GetResourceMesh()->mNumIndices / 3; i+=3) {
-						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i]+1], triangles[indices[i]+2]);
-						float3 verticeB = float3(triangles[indices[i+1]], triangles[indices[i+1] + 1], triangles[indices[i] + 2]);
-						float3 verticeC = float3(triangles[indices[i+2]], triangles[indices[i+2] + 1], triangles[indices[i+2] + 2]);
-
-						float distance;
-						float3 hitPoint;
-						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
-						
-						if (intersectsTriangle) {
-							intersectMap[distance] = child;
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	if (!intersectMap.empty())
+	const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&mRay);
+	if (intersectGameObjectPair.second != nullptr)
 	{
-		GameObject* gameObject = intersectMap.begin()->second;
+		GameObject* gameObject = intersectGameObjectPair.second;
 		while (!gameObject->GetParent()->IsRoot()) 
 		{
 			gameObject = gameObject->GetParent();
 		}
 		((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
 	}
-
+	
 }
 
 
@@ -125,7 +86,6 @@ update_status ModuleCamera::Update(float dt)
 		const float dtTransformCameraVel = dt * 3.f;
 		float transformCameraVel = 0.03f;
 		const float rotateCameraVel = 0.01f;
-		
 		
 		const float dtFastSpeed = dtTransformCameraVel * 3.0f;
 		const float fastSpeed = transformCameraVel * 3.0f;
@@ -170,7 +130,7 @@ update_status ModuleCamera::Update(float dt)
 				Transform(float3(dtSpeed, 0, 0));
 			}
 		}
-		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
+		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
 		{
 			CheckRaycast();
 		}
@@ -231,7 +191,6 @@ void ModuleCamera::Transform(float3 vec)
 
 	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
-
 
 void ModuleCamera::LookAt(float3 eyePos, float3 targetPos, float3 upVector) {
 	float3 forward = (targetPos - eyePos);
