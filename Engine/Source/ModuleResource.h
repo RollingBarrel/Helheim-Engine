@@ -16,7 +16,7 @@ public:
 	unsigned int ImportFile(const char* assetsFile);
 	unsigned int GenerateNewUID();
 
-	Resource* RequestResource(unsigned int uid, Resource::Type type);
+	Resource* RequestResource(unsigned int uid);
 	void ReleaseResource(unsigned int uid);
 
 private:

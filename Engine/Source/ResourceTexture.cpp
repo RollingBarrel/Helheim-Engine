@@ -10,15 +10,9 @@
 #include "DirectXTex.h"
 
 
-ResourceTexture::ResourceTexture()
-    : mWidth(0), mHeight(0), mInternalFormat(0), mTexFormat(0),
-    mDataType(0), mMipLevels(0), mNumPixels(0), mPixels(nullptr),
-    mHasAlpha(false), mOpenGLId(0)
-{
-}
-
 ResourceTexture::ResourceTexture(
     unsigned int uid,
+    const char* path,
     unsigned int width,
     unsigned int height,
     unsigned int internalFormat,
@@ -28,7 +22,7 @@ ResourceTexture::ResourceTexture(
     unsigned int numPixels,
     unsigned char* pixels,
     bool hasAlpha)
-    : mWidth(width), mHeight(height), 
+    : Resource(uid, Type::Texture, path, ".tex"), mWidth(width), mHeight(height),
     mInternalFormat(internalFormat), mTexFormat(texFormat), mDataType(dataType), 
     mMipLevels(mipLevels),
     mNumPixels(numPixels), 
@@ -36,12 +30,6 @@ ResourceTexture::ResourceTexture(
     mHasAlpha(hasAlpha), 
     mOpenGLId(0)
 {
-    mUID = uid;
-    mType = Type::Texture;
-
-    mAssetsFile = "NONE";
-    mLibraryFile = LIBRARY_TEXTURE_PATH + std::to_string(mUID) + ".tex";
-
 }
 ResourceTexture::~ResourceTexture()
 {

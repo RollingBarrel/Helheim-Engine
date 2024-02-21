@@ -19,27 +19,25 @@ public:
 	};
 
 
-	Resource();
-	Resource(unsigned int uid);
+	Resource(unsigned int uid, Type type, const char* assetsPath, const char* libraryExtension);
 	virtual ~Resource();
 
 	Type GetType() const { return mType; };
 	unsigned int GetUID() const { return mUID; };
-	const std::string GetAssetsFile() const { return mAssetsFile; };
-	const std::string GetLibraryFile() const { return mLibraryFile; };
+	const char* GetAssetsFile() const { return mAssetsFile; };
+	const char* GetLibraryFile() const { return mLibraryFile; };
 	unsigned int GetReferenceCount() const { return mReferenceCount; };
 
-	void SetType(Type type) { mType = type; };
-	void SetAssetsFile(const std::string& assetsFile) { mAssetsFile = assetsFile; };
-	void SetLibraryFile(const std::string& libraryFile) { mLibraryFile = libraryFile; };
-	void AddReferenceCount() { mReferenceCount++; }
-	void RemoveReferenceCount() { mReferenceCount--; }
+	unsigned int AddReferenceCount();
+	unsigned int RemoveReferenceCount();
+	virtual void LoadToMemory() {}
+	virtual void UnloadFromMemory() {}
 
-protected:
+private:
 	//Name??? To set it when generating game object
 	unsigned int mUID;
-	std::string mAssetsFile;
-	std::string mLibraryFile;
+	const char* mAssetsFile;
+	const char* mLibraryFile;
 	Type mType;
 	unsigned int mReferenceCount;
 };

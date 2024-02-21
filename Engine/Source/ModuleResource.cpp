@@ -88,13 +88,13 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 
 	unsigned int ret = resource->GetUID();
 
-	delete resource; // Unload the resource after importing, we should only use the ID
+	ReleaseResource(ret);
 	delete assetsCopiedFile;
 
 	return ret;
 }
 
-Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
+Resource* ModuleResource::RequestResource(unsigned int uid)
 {
 	//Find if the resource is already loaded
 	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
@@ -104,11 +104,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		it->second->AddReferenceCount();
 		return it->second;
 	}
-	Resource* ret = TryToLoadResource(uid, type);
-	if (ret) {
-		mResources[uid] = ret;
-		return ret;
-	}
+	//Resource* ret = TryToLoadResource(uid, type);
+	//if (ret) {
+	//	mResources[uid] = ret;
+	//	return ret;
+	//}
 	return nullptr;
 }
 
@@ -154,8 +154,8 @@ Resource* ModuleResource::CreateNewResource(const char* importedFile, const char
 	switch (type)
 	{
 	case Resource::Type::Texture:
-		//ret = Importer::Texture::Import(assetsFile, uid);
-		//if (ret) Importer::Texture::Save((ResourceTexture*)ret);
+		ret = Importer::Texture::Import(assetsFile, uid);
+		if (ret) Importer::Texture::Save((ResourceTexture*)ret);
 		break;
 	case Resource::Type::Mesh:
 		break;
@@ -177,9 +177,9 @@ Resource* ModuleResource::CreateNewResource(const char* importedFile, const char
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
 	}
-	// if ret is not nullptr
+	//if ret is not nullptr
 	if (ret) {
-		mResources[uid] = nullptr;
+		mResources[uid] = ret;
 	}
 
 	return ret;

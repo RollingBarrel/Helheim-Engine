@@ -80,7 +80,7 @@ void Importer::Model::Save(const ResourceModel* ourModel)
         cursor += bytes;
     }
 
-    App->GetFileSystem()->Save(ourModel->GetLibraryFile().c_str(), fileBuffer, size);
+    App->GetFileSystem()->Save(ourModel->GetLibraryFile(), fileBuffer, size);
 
     RELEASE_ARRAY(fileBuffer);
 }

@@ -9,11 +9,9 @@ class ResourceTexture;
 class ResourceMaterial : public Resource
 {
 public:
-
-    ResourceMaterial();
-	ResourceMaterial(unsigned int uid);
     ResourceMaterial(
         unsigned int uid,
+        const char* path,
         float4 diffuseFactor, 
         float3 specularFactor, 
         float glossinessFactor, 
@@ -21,7 +19,7 @@ public:
         ResourceTexture* specularGlossinessTexture, 
         ResourceTexture* normalTexture);
 
-    ~ResourceMaterial() { delete mDiffuseTexture; delete mSpecularGlossinessTexture; delete mNormalTexture; }
+    ~ResourceMaterial();
 
     // Getter functions
     float4 GetDiffuseFactor() const { return mDiffuseFactor; }

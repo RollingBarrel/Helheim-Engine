@@ -27,8 +27,6 @@ class ResourceMesh : public Resource
 {
 public:
 
-	ResourceMesh();
-	ResourceMesh(unsigned int uid);	//Does not exist
 	ResourceMesh(unsigned int uid,
 		const char* path,
 		unsigned int numIndices,
@@ -62,8 +60,8 @@ public:
 
 	void CleanUp();
 
-	unsigned int LoadToMemory();
-	void UnloadFromMemory();
+	void LoadToMemory() override;
+	void UnloadFromMemory() override;
 
 	//TODO Make it Private
 	std::vector<float*> mAttributesData;

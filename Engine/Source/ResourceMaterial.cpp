@@ -3,26 +3,16 @@
 
 #include "ModuleFileSystem.h"
 
-ResourceMaterial::ResourceMaterial()
-{
-}
-
-ResourceMaterial::ResourceMaterial(unsigned int uid) : Resource(uid)
-{
-    mType = Type::Material;
-    mAssetsFile = "NONE";
-    mLibraryFile = LIBRARY_MATERIAL_PATH + std::to_string(mUID) + ".mat";
-}
-
 ResourceMaterial::ResourceMaterial(
     unsigned int uid,
+    const char* path,
     float4 diffuseFactor, 
     float3 specularFactor, 
     float glossinessFactor,
     ResourceTexture* diffuseTexture, 
     ResourceTexture* specularGlossinessTexture, 
     ResourceTexture* normalTexture) :
-    Resource(uid),
+    Resource(uid, Type::Material, path, ".mat"),
     mDiffuseFactor(diffuseFactor), mSpecularFactor(specularFactor), mGlossinessFactor(glossinessFactor),
     mDiffuseTexture(diffuseTexture), mSpecularGlossinessTexture(specularGlossinessTexture), mNormalTexture(normalTexture)
 {
@@ -45,8 +35,14 @@ ResourceMaterial::ResourceMaterial(
     //if (mNormalTexture) mEnableNormalMap = true;
     //else mEnableNormalMap = false;
     mEnableNormalMap = (mNormalTexture != nullptr) ? true : false;
+}
 
-    mType = Type::Material;
-
-    mLibraryFile = LIBRARY_MATERIAL_PATH + std::to_string(mUID) + ".mat";
+ResourceMaterial::~ResourceMaterial()
+{ 
+    if(mDiffuseTexture)
+        delete mDiffuseTexture; 
+    if(mSpecularGlossinessTexture)
+        delete mSpecularGlossinessTexture;
+    if(mNormalTexture)
+        delete mNormalTexture; 
 }

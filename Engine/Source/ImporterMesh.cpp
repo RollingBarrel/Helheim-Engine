@@ -23,7 +23,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     // Try not to use friend func import on resourceMesh
     // Put the indices private
 
-    ResourceMesh* rMesh = new ResourceMesh(uid);
+    //TODO: Constructor abaix per evitar el set num vertices i set num indices
+    ResourceMesh* rMesh = new ResourceMesh(uid, "MESH", 0, 0);
 
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");

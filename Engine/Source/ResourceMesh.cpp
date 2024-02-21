@@ -7,31 +7,12 @@
 
 #include "glew.h"
 
-ResourceMesh::ResourceMesh()
-{
-}
-
-ResourceMesh::ResourceMesh(unsigned int uid)
-{
-    mUID = uid;
-    mType = Type::Mesh;
-    mAssetsFile = "NONE";
-    mLibraryFile = LIBRARY_MESH_PATH + std::to_string(mUID) + ".mesh";
-}
-
 ResourceMesh::ResourceMesh(
     unsigned int uid, 
     const char* path, 
-    unsigned int numIndices,
-    unsigned int numVertices) :
-    Resource(uid),
-    mNumIndices(numIndices),
-    mNumVertices(numVertices)
+    unsigned int inNumIndices,
+    unsigned int inNumVertices) : Resource(uid, Type::Mesh, path, ".mesh"), mNumVertices(inNumVertices), mNumIndices(inNumIndices)
 {
-    mType = Type::Mesh;
-
-    mAssetsFile = path;
-    mLibraryFile = LIBRARY_MESH_PATH + std::to_string(mUID) + ".mesh";
 }
 
 typedef struct {
@@ -188,7 +169,7 @@ float* ResourceMesh::GetInterleavedData() const
     return ret;
 }
 
-unsigned int ResourceMesh::LoadToMemory()
+void ResourceMesh::LoadToMemory()
 {
     glGenVertexArrays(1, &mVao);
     glGenBuffers(1, &mVbo);
@@ -206,7 +187,7 @@ unsigned int ResourceMesh::LoadToMemory()
         ++idx;
     }
     glBindVertexArray(0);
-    return mVao;
+    //return mVao;
 }
 
 void ResourceMesh::UnloadFromMemory()

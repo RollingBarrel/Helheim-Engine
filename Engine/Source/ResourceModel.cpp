@@ -2,11 +2,8 @@
 
 #include "ModuleFileSystem.h"
 
-ResourceModel::ResourceModel(unsigned int uid, const char* path) : Resource(uid)
+ResourceModel::ResourceModel(unsigned int uid, const char* path) : Resource(uid, Type::Model, path, ".model")
 {
-	mType = Type::Model;
-	mAssetsFile = path;
-	mLibraryFile = LIBRARY_MODEL_PATH + std::to_string(mUID) + ".model";
 }
 
 void ResourceModel::SetUids(unsigned int meshUID, unsigned int materialUID)
