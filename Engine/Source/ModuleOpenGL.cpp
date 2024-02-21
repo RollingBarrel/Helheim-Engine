@@ -245,7 +245,7 @@ static unsigned int LoadCubeMap()
 	unsigned int ret = 0;
 	DirectX::ScratchImage image;
 
-	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
+	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap2.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
 
 	if (res == S_OK)
 	{

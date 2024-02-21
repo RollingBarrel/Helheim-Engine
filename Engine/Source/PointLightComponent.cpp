@@ -1,7 +1,8 @@
-#include "PointLightComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleDebugDraw.h"
+
+#include "PointLightComponent.h"
 
 PointLightComponent::PointLightComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::POINTLIGHT), mData(light) {
 	const float3& pos = owner->GetWorldPosition();
@@ -62,11 +63,18 @@ void PointLightComponent::Update()
 	}
 }
 
+inline Component* PointLightComponent::Clone(GameObject* owner) const 
+{
+	return App->GetOpenGL()->AddPointLight(mData, owner);
+}
+
 void PointLightComponent::Save(Archive& archive) const {
 	//TODO: Do we need id???
 	//archive.AddInt("ID", mID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat4("Position", mData.pos);
 	archive.AddFloat4("Color", mData.col);
+
 }
 
 //TODO: why is the GO owner passed here??
@@ -91,4 +99,17 @@ void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Ga
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
+	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+}
+
+void PointLightComponent::Enable()
+{
+	//App->GetOpenGL()->AddPointLight(mData, mOwner);
+	//mIsEnabled = true;
+}
+
+void PointLightComponent::Disable()
+{
+	//App->GetOpenGL()->RemovePointLight(*this);
+	//mIsEnabled = false;
 }
