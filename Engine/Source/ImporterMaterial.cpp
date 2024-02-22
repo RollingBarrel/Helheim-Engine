@@ -131,22 +131,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
         }
 
     }
-    ResourceMaterial* material = new ResourceMaterial(uid, filePath, diffuseFactor, specularFactor, GlossinessFactor, 
-        reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(diffuseTexture)),
-        reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(specularGlossinessTexture)),
-        reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexture)));
-    if (diffuseTexture)
-    {
-        App->GetResource()->ReleaseResource(diffuseTexture);
-    }
-    if (specularGlossinessTexture)
-    {
-        App->GetResource()->ReleaseResource(specularGlossinessTexture);
-    }
-    if (normalTexture)
-    {
-        App->GetResource()->ReleaseResource(normalTexture);
-    }
+    ResourceMaterial* material = new ResourceMaterial(uid, filePath, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
     return material;
 }
 

@@ -14,8 +14,8 @@ public:
 
 	unsigned int Find(const char* assetsFile) const;
 	unsigned int ImportFile(const char* assetsFile);
-	unsigned int GenerateNewUID();
 
+	Resource* RequestResource(const char* assetsPath);
 	Resource* RequestResource(unsigned int uid);
 	void ReleaseResource(unsigned int uid);
 

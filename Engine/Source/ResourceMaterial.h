@@ -15,9 +15,9 @@ public:
         float4 diffuseFactor, 
         float3 specularFactor, 
         float glossinessFactor, 
-        ResourceTexture* diffuseTexture, 
-        ResourceTexture* specularGlossinessTexture, 
-        ResourceTexture* normalTexture);
+        unsigned int diffuseTextureUid, 
+        unsigned int specularGlossinessTextureUid, 
+        unsigned int normalTextureUid);
 
     ~ResourceMaterial();
 

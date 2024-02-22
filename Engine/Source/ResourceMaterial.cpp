@@ -1,20 +1,22 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
-
-#include "ModuleFileSystem.h"
+#include "Application.h"
+#include "ModuleResource.h"
 
 ResourceMaterial::ResourceMaterial(
     unsigned int uid,
     const char* path,
-    float4 diffuseFactor, 
-    float3 specularFactor, 
+    float4 diffuseFactor,
+    float3 specularFactor,
     float glossinessFactor,
-    ResourceTexture* diffuseTexture, 
-    ResourceTexture* specularGlossinessTexture, 
-    ResourceTexture* normalTexture) :
+    unsigned int diffuseTextureUid,
+    unsigned int specularGlossinessTextureUid,
+    unsigned int normalTextureUid) :
     Resource(uid, Type::Material, path, ".mat"),
     mDiffuseFactor(diffuseFactor), mSpecularFactor(specularFactor), mGlossinessFactor(glossinessFactor),
-    mDiffuseTexture(diffuseTexture), mSpecularGlossinessTexture(specularGlossinessTexture), mNormalTexture(normalTexture)
+    mDiffuseTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(diffuseTextureUid))),
+    mSpecularGlossinessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(specularGlossinessTextureUid))),
+    mNormalTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTextureUid)))
 {
     
     //if (mDiffuseTexture) mEnableDiffuseTexture = true;
@@ -39,10 +41,10 @@ ResourceMaterial::ResourceMaterial(
 
 ResourceMaterial::~ResourceMaterial()
 { 
-    if(mDiffuseTexture)
-        delete mDiffuseTexture; 
+    if (mDiffuseTexture)
+        App->GetResource()->ReleaseResource(mDiffuseTexture->GetUID());
     if(mSpecularGlossinessTexture)
-        delete mSpecularGlossinessTexture;
+        App->GetResource()->ReleaseResource(mSpecularGlossinessTexture->GetUID());
     if(mNormalTexture)
-        delete mNormalTexture; 
+        App->GetResource()->ReleaseResource(mNormalTexture->GetUID());
 }
