@@ -60,7 +60,7 @@ public:
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
-	Component* CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
 	MeshRendererComponent* getMeshRenderer() const;
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);

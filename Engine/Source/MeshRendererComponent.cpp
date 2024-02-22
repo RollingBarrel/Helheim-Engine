@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"	//Remove Just for the Library definition
+#include "ModuleResource.h"
 #include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
@@ -15,22 +16,38 @@
 
 
 
-MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
-	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
+MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid) : Component(owner, ComponentType::MESHRENDERER)
 {
-
+	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid));
+	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid));
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	//mMesh->mUID = LCG().Int();
+	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+
+	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 }
 
-MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
-	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh(*original.mMesh)), mMaterial(new ResourceMaterial(*original.mMaterial))
+MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
 {
+	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID()));
+	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID()));
+	mOBB = other.mOBB;
+	mAABB = other.mAABB;
+}
 
-	mOBB = original.mOBB;
-	mAABB = original.mAABB;
-	
+MeshRendererComponent::~MeshRendererComponent()
+{
+	if (mMesh)
+	{
+		App->GetResource()->ReleaseResource(mMesh->GetUID());
+		mMesh = nullptr;
+	}
+	if (mMaterial)
+	{
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMesh = nullptr;
+	}
 }
 
 void MeshRendererComponent::Draw()
@@ -113,23 +130,6 @@ void MeshRendererComponent::Draw()
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 
-void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
-{
-	mMesh = Importer::Mesh::Load(std::string(LIBRARY_MESH_PATH + std::to_string(meshUid) + ".mesh").c_str(), meshUid);
-	//TODO
-	mMaterial = Importer::Material::Load(std::string(LIBRARY_MATERIAL_PATH + std::to_string(materialUid) + ".mat").c_str(), materialUid);
-
-	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
-	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-
-	float4x4 model = mOwner->GetWorldTransform();
-
-	mOBB.SetFrom(mAABB, model);
-
-	//ResourceMaterial Load
-
-}
-
 void MeshRendererComponent::Update()
 {
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
@@ -165,9 +165,8 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 
-	if (meshID != 0 && materialID != 0) {
-		Load(meshID, materialID);
-	}
+	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshID));
+	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialID));
 
 }
 

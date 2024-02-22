@@ -94,21 +94,56 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	return ret;
 }
 
-Resource* ModuleResource::RequestResource(unsigned int uid)
+Resource* ModuleResource::RequestResource(const char* assetsPath)
 {
+	std::string path = assetsPath;
+	path += ".meta";
+
+	char* fileBuffer = nullptr;
+	if (!App->GetFileSystem()->Load(path.c_str(), &fileBuffer))
+	{
+		LOG("Not able to open .meta file");
+		return nullptr;
+	}
+
+	rapidjson::Document document;
+	rapidjson::ParseResult result = document.Parse(fileBuffer);
+	if (!result) {
+		// Handle parsing error
+		LOG("Not able to load .meta file");
+		RELEASE_ARRAY(fileBuffer);
+		return nullptr;
+	}
+
+	unsigned int uid;
+	if (document.HasMember("uid"))
+	{
+		uid = document["uid"].GetInt();
+	}
+	
 	//Find if the resource is already loaded
 	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
 	if(it != mResources.end())
 	{
 		//it->second->referenceCount++;
 		it->second->AddReferenceCount();
+		RELEASE_ARRAY(fileBuffer);
 		return it->second;
 	}
-	//Resource* ret = TryToLoadResource(uid, type);
-	//if (ret) {
-	//	mResources[uid] = ret;
-	//	return ret;
-	//}
+	RELEASE_ARRAY(fileBuffer);
+	return nullptr;
+}
+
+Resource* ModuleResource::RequestResource(unsigned int uid)
+{
+	//Find if the resource is already loaded
+	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
+	if (it != mResources.end())
+	{
+		//it->second->referenceCount++;
+		it->second->AddReferenceCount();
+		return it->second;
+	}
 	return nullptr;
 }
 
