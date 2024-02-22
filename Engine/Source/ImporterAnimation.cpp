@@ -32,6 +32,7 @@ void Importer::Animation::ImportChannel(const tinygltf::Model& model, const tiny
 
     //Get the index of the animation sampler from the current channel
     const int samplerIndex = channel.sampler;
+    const int nodeIndex = channel.target_node;
 
     const tinygltf::AnimationSampler& animationSampler = model.animations[channel.target_node].samplers[samplerIndex];
     const int inputAccessorIndex = animationSampler.input;

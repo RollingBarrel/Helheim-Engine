@@ -4,6 +4,7 @@
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
+#include "ImporterAnimation.h"
 
 #include "Algorithm/Random/LCG.h"
 
@@ -56,7 +57,32 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
 
         App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), images.c_str());
     }
+    if (model.animations.empty())
+    {
 
+        for (const auto& srcAnimation : model.animations)
+        {
+            ResourceAnimation* animation = new ResourceAnimation();
+
+            for (const auto& channel : srcAnimation.channels)
+            {
+                if (animation->channels.find(model.nodes[channel.target_node].name) == animation->channels.end()) {
+                    
+                    //animation -> mUID = math::LCG().Int();
+                    Importer::Animation::ImportChannel(model, channel, animation);
+
+                }
+                
+
+            }
+            
+            delete animation;
+            animation = nullptr;
+            
+            
+        }
+        
+    }
 
     for (const auto& srcMesh : model.meshes)
     {

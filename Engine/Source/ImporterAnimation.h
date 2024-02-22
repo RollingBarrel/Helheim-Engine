@@ -34,6 +34,7 @@ class ResourceAnimation {
 public:
     std::string name; 
     float duration;   
+    unsigned int mUID = 0;
 
     // Define a structure to store keyframes for positions and rotations
     struct AnimationChannel {

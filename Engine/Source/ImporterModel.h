@@ -5,6 +5,7 @@ struct ResourceModel
 	typedef struct ModelIds {
 		unsigned int meshUID;
 		unsigned int materiaUID;
+		unsigned int animationUID;
 	}ModelIds;
 	std::vector<ModelIds>mUids;
 
