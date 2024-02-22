@@ -1,4 +1,4 @@
-[![cpp-linter](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml/badge.svg)](https://github.com/cpp-linter/cpp-linter-action/actions/workflows/cpp-linter.yml)
+[![Lint and Build with MSBuild](https://github.com/Assigment2Company/Assigment2/actions/workflows/lint_and_msbuild.yml/badge.svg?branch=develop)](https://github.com/Assigment2Company/Assigment2/actions/workflows/lint_and_msbuild.yml)
 # Assigment2
 This project is a Game Engine made for UPC videogames Master´s Degree
 
