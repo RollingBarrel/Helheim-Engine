@@ -67,6 +67,8 @@ public:
 	const char* GetWriteDirectory() const;
 
 	void DiscoverFiles(const char* directory, PathNode* parent) const;
+	std::string FindFileNoExtension(const char* fileName, const char* directory) const;
+	bool FileInDirectory();
 
 	void NormalizePath(char* path) const;
 

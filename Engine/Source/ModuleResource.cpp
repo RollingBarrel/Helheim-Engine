@@ -115,23 +115,14 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 		return nullptr;
 	}
 
-	unsigned int uid;
+	unsigned int uid = 0;
 	if (document.HasMember("uid"))
 	{
 		uid = document["uid"].GetInt();
 	}
 	
-	//Find if the resource is already loaded
-	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
-	if(it != mResources.end())
-	{
-		//it->second->referenceCount++;
-		it->second->AddReferenceCount();
-		RELEASE_ARRAY(fileBuffer);
-		return it->second;
-	}
 	RELEASE_ARRAY(fileBuffer);
-	return nullptr;
+	return RequestResource(uid);
 }
 
 Resource* ModuleResource::RequestResource(unsigned int uid)
@@ -140,10 +131,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid)
 	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
 	if (it != mResources.end())
 	{
-		//it->second->referenceCount++;
 		it->second->AddReferenceCount();
 		return it->second;
 	}
+	//Buscar el resource amb luid a library
+	//App->GetFileSystem()->FindFile(std::to_string(uid).c_str(), "Library");
 	return nullptr;
 }
 

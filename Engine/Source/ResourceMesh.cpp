@@ -187,14 +187,6 @@ void ResourceMesh::LoadToMemory()
         ++idx;
     }
     glBindVertexArray(0);
-    //return mVao;
-}
-
-void ResourceMesh::UnloadFromMemory()
-{
-    glDeleteBuffers(1, &mVbo);
-    glDeleteBuffers(1, &mEbo);
-    glDeleteVertexArrays(1, &mVao);
 }
 
 
@@ -289,5 +281,7 @@ void ResourceMesh::CleanUp()
     mAttributesData.clear();
 
     //TODO: delete EBO/VBO...
-    UnloadFromMemory();
+    glDeleteBuffers(1, &mVbo);
+    glDeleteBuffers(1, &mEbo);
+    glDeleteVertexArrays(1, &mVao);
 }

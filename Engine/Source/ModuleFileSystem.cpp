@@ -21,8 +21,11 @@ ModuleFileSystem::ModuleFileSystem()
     }
 
     AddToSearchPath(".");
-    AddToSearchPath(ASSETS_PATH);
-    AddToSearchPath(ASSETS_MODEL_PATH);
+    AddToSearchPath("./Assets");
+    //AddToSearchPath(ASSETS_PATH);
+    //AddToSearchPath(ASSETS_MODEL_PATH);
+    if (PHYSFS_exists("Models/Clock/Clock.bin"))
+        LOG("Estem trolling !!!");
     
     CreateDirectory(ASSETS_PATH);
     CreateDirectory(ASSETS_MODEL_PATH);
@@ -293,6 +296,56 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, PathNode* parent) co
             }
         }
 
+
+        PHYSFS_freeList(fileList);
+    }
+}
+
+std::string ModuleFileSystem::FindFileNoExtension(const char* fileName, const char* directory) const
+{
+    if (Exists(directory))
+    {
+        char** fileList = PHYSFS_enumerateFiles(directory);
+
+        std::string path = directory + std::string("/");
+
+        std::string name;
+        for (char** file = fileList; *file != nullptr; ++file)
+        {
+            SplitPath(*file, &name);
+            if (strcmp(fileName, name.c_str()) == 0)
+            {
+                return path;
+            }
+            if (IsDirectory(path.c_str()))
+            {
+                FindFileNoExtension(fileName, path.c_str());
+                path = directory + std::string("/");
+            }
+
+ //           path += *file;
+ //
+ //           
+ //           if (IsDirectory(path.c_str()))
+ //           {
+ //               //TODO PathNode 
+ //               DiscoverFiles(path.c_str(), node);
+ //               path = directory + std::string("/");
+ //           }
+ //           else
+ //           {
+ //               std::string fileName;
+ //               std::string extensionName;
+ //               SplitPath(path.c_str(), &fileName, &extensionName);
+ //               std::string combine = fileName + extensionName;
+ //               if (!(strcmp(extensionName.c_str(), ".meta") == 0) && !(strcmp(extensionName.c_str(), ".bin") == 0))
+ //               {
+ //                   AssetDisplay* assetDisplay = new AssetDisplay(combine.c_str(), path.c_str(), parent);
+ //                   parent->assets.push_back(assetDisplay);
+ //               }
+ //               path = directory + std::string("/");
+ //           }
+        }
 
         PHYSFS_freeList(fileList);
     }

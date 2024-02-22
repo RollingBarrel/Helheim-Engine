@@ -24,14 +24,15 @@ Resource::~Resource()
 unsigned int Resource::AddReferenceCount() 
 {
 	++mReferenceCount;
-	if (mReferenceCount == 1)
-		LoadToMemory();
+	//if (mReferenceCount == 1)
+		//TODO:Afegir el resource
+		//LoadToMemory();
 	return mReferenceCount; 
 }
 unsigned int Resource::RemoveReferenceCount() 
 {
 	--mReferenceCount;
-	if (mReferenceCount == 0)
-		UnloadFromMemory();
+	//if (mReferenceCount == 0)
+		//TODO: ttreure el resource del map
 	return mReferenceCount; 
 }

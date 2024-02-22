@@ -54,14 +54,12 @@ public:
 	void AddAttribute(const Attribute& attribute, float* attributeData);
 	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
 	float* GetInterleavedData() const;
+	void LoadToMemory();
 
 
 	void GenerateTangents();
 
 	void CleanUp();
-
-	void LoadToMemory() override;
-	void UnloadFromMemory() override;
 
 	//TODO Make it Private
 	std::vector<float*> mAttributesData;

@@ -30,8 +30,6 @@ public:
 
 	unsigned int AddReferenceCount();
 	unsigned int RemoveReferenceCount();
-	virtual void LoadToMemory() {}
-	virtual void UnloadFromMemory() {}
 
 private:
 	//Name??? To set it when generating game object

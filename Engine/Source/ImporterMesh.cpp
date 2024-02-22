@@ -291,8 +291,7 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
         rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor));
         cursor += attr->size * numVertices;
     }
-
-   rMesh->LoadToMemory();
+    rMesh->LoadToMemory();
 
    return rMesh;
 }

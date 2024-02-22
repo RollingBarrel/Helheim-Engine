@@ -198,18 +198,6 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
     memcpy(texturesUID, cursor, bytes);
     cursor += bytes;
 
-    ResourceTexture* diffuseTexture = nullptr;
-    if (texturesUID[0])
-        diffuseTexture = Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[0]) + ".tex").c_str(), texturesUID[0]);
-
-    ResourceTexture* specularGlossinessTexture = nullptr;
-    if (texturesUID[1])
-        specularGlossinessTexture = Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[1]) + ".tex").c_str(), texturesUID[1]);
-
-    ResourceTexture* normalTexture = nullptr;
-    if (texturesUID[2])
-        normalTexture = Importer::Texture::Load(std::string(LIBRARY_TEXTURE_PATH + std::to_string(texturesUID[2]) + ".tex").c_str(), texturesUID[2]);
-
     bool enables[4];
     bytes = sizeof(enables);
     memcpy(enables, cursor, bytes);
@@ -235,7 +223,7 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
     memcpy(&glossinessFator, cursor, bytes);
     cursor += bytes;
 
-    return new ResourceMaterial(uid, fileName, diffuseFactor, specularFactor,glossinessFator,diffuseTexture,specularGlossinessTexture, normalTexture);
+    return new ResourceMaterial(uid, fileName, diffuseFactor, specularFactor,glossinessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
 }
 
 
