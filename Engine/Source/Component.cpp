@@ -4,11 +4,6 @@
 
 Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int()){}
 
-const char* Component::GetNameFromOwnType() const
-{
-	return GetNameFromType(mType);
-}
-
 const char* Component::GetNameFromType(ComponentType type)
 {
 	switch (type)

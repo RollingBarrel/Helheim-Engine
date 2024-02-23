@@ -30,8 +30,6 @@ public:
 	virtual	void Disable() { mIsEnabled = false; }
 	bool IsEnabled() const { return mIsEnabled; }
 
-	const char* GetNameFromOwnType() const;
-
 	static const char* GetNameFromType(ComponentType type);
 
 protected:

@@ -160,7 +160,7 @@ void InspectorPanel::ShowSameComponentPopup()
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Text("The component %s can't be added because", mComponent->GetNameFromOwnType());
+	ImGui::Text("The component %s can't be added because", Component::GetNameFromType(mComponent->GetType()));
 	ImGui::Text("GameObject already contains the same component.");
 
 	ImGui::Spacing();
@@ -215,15 +215,6 @@ void InspectorPanel::RightClickPopup(Component* component) {
 				}
 				break;
 			}
-			case ComponentType::CAMERA: {
-				if (ImGui::MenuItem("Custom CameraComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				if (ImGui::MenuItem("Custom CameraComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				break;
-			}
 		}
 
 		ImGui::EndPopup();
@@ -236,7 +227,7 @@ void InspectorPanel::DragAndDropSource(Component* component) {
 	{
 		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
 
-		ImGui::Text(component->GetNameFromOwnType());
+		ImGui::Text(Component::GetNameFromType(component->GetType()));
 		ImGui::EndDragDropSource();
 	}
 }
@@ -265,7 +256,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
 
-		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromOwnType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 		//checkbox for enable/disable
 		ImGui::Checkbox("Enable", &component->mIsEnabled);
