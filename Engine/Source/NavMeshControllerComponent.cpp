@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
 #include "ModuleScene.h"
-
+#include "ModuleOpenGL.h"
 #include "Application.h"
 #include "ImporterMesh.h"
 #include "ModuleDebugDraw.h"
@@ -33,7 +33,11 @@ void NavMeshControllerComponent::Reset() {
 void NavMeshControllerComponent::Update()
 {
 	HandleBuild();
+	App->GetOpenGL()->BindSceneFramebuffer();
+
 	DebugDrawPolyMesh();
+	App->GetOpenGL()->UnbindSceneFramebuffer();
+
 }
 
 Component* NavMeshControllerComponent::Clone(GameObject* owner) const
@@ -52,7 +56,8 @@ void NavMeshControllerComponent::LoadFromJSON(const rapidjson::Value& data, Game
 void NavMeshControllerComponent::HandleBuild() {
 	GameObject* root= App->GetScene()->GetRoot();
 	GetGOMeshes(root);
-	mMeshRendererComponents;
+	if (mMeshRendererComponents.empty())
+		return;
 	
 	const MeshRendererComponent* testMesh{mMeshRendererComponents[0]};
 	
@@ -252,28 +257,56 @@ void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 
 void NavMeshControllerComponent::DebugDrawPolyMesh()
 {
-	if (mDraw && mPolyMeshDetail != nullptr)
+	if (mDraw && mPolyMesh != nullptr)
 	{
-		int triangle_index = 0;
-		for (int i = 0; i < mPolyMeshDetail->ntris; ++i) {
-			// Assuming tris are stored as indices to vertices
-			unsigned char* triIndices = &mPolyMeshDetail->tris[i * 4];
+		
+		int numVerticesPerPolygon = mPolyMesh->nvp;
 
-			int vertIndex1 = triIndices[0];
-			int vertIndex2 = triIndices[1];
-			int vertIndex3 = triIndices[2];
+		for (int i = 0; i < mPolyMesh->npolys; ++i) {
+			// Indices for the current polygon in the polys array
+			int polyStartIndex = i * 2 * numVerticesPerPolygon;
 
-			float* vertex1 = &mPolyMeshDetail->verts[vertIndex1 * 3];
-			float* vertex2 = &mPolyMeshDetail->verts[vertIndex2 * 3];
-			float* vertex3 = &mPolyMeshDetail->verts[vertIndex3 * 3];
+			std::vector<float3> polygon;
 
-			float3 v1 = float3(vertex1[0], vertex1[1], vertex1[2]);
-			float3 v2 = float3(vertex2[0], vertex2[1], vertex2[2]);
-			float3 v3 = float3(vertex3[0], vertex3[1], vertex3[2]);
+			for (int j = 0; j < numVerticesPerPolygon; ++j) {
+				int vertexIndex = mPolyMesh->polys[polyStartIndex + j];
+				unsigned short v_x = mPolyMesh->verts[vertexIndex];
+				unsigned short v_y = mPolyMesh->verts[vertexIndex + 1];
+				unsigned short v_z = mPolyMesh->verts[vertexIndex + 2];
+				float3 vertex = float3(v_x, v_y, v_z);
+				polygon.push_back(vertex);
 
-			App->GetDebugDraw()->DrawTriangle(v1, v2, v3);
+			}
 
+			for (int m = 0; m < polygon.size() - 1; m++)
+			{
+				App->GetDebugDraw()->DrawLine(polygon[m], polygon[m + 1], float3(0.0));
+			}
+			//App->GetDebugDraw()->DrawLine(polygon[-1], polygon[0], float3(0.0));
+
+			polygon.clear();
+			/*
+			// If you need neighboring polygon information, you can access it like this:
+			for (int j = numVerticesPerPolygon; j < 2 * numVerticesPerPolygon; ++j) {
+				int neighborIndex = mPolyMesh->polys[polyStartIndex + j];
+				unsigned short v_x = mPolyMesh->verts[neighborIndex];
+				unsigned short v_y = mPolyMesh->verts[neighborIndex + 1];
+				unsigned short v_z = mPolyMesh->verts[neighborIndex + 2];
+				float3 vertex = float3(v_x, v_y, v_z);
+				polygon.push_back(vertex);
+
+			}
+
+			for (int m = 0; m < polygon.size() - 1; m++)
+			{
+				App->GetDebugDraw()->DrawLine(polygon[m], polygon[m + 1], float3(0.0));
+			}
+			//App->GetDebugDraw()->DrawLine(polygon[-1], polygon[0], float3(0.0));
+			polygon.clear();
+
+			*/
 		}
+		
 
 	}
 	return;

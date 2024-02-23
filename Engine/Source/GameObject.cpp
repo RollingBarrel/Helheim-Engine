@@ -143,6 +143,12 @@ void GameObject::Update()
 		DeleteComponents();
 		if (isTransformModified) {
 			RecalculateMatrices();
+
+			
+			if(!mChildren.empty() || getMeshRenderer() != nullptr)
+				App->GetScene()->GetQuadtreeRoot()->UpdateTree(); //Hello me from the future, Carlos already told you to fix this eh! (Possible bottleneck alert)
+
+
 		}
 	}
 }
