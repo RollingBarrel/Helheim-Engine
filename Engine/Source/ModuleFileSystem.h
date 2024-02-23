@@ -10,8 +10,12 @@
 #define LIBRARY_MODEL_PATH "Library/Models/"
 #define LIBRARY_SCENE_PATH "Library/Scenes/"
 #define LIBRARY_SCENE_PATH "Library/NavMeshes/"
-
 #define LIBRARY_SHADER_PATH "Library/Shaders/"
+
+#define LIBRARY_TEXTURE_EXTENSION ".tex"
+#define LIBRARY_MESH_EXTENSION ".mesh"
+#define LIBRARY_MATERIAL_EXTENSION ".mat"
+#define LIBRARY_MODEL_EXTENSION ".mod"
 
 #define ASSETS_PATH "Assets/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"
@@ -67,8 +71,6 @@ public:
 	const char* GetWriteDirectory() const;
 
 	void DiscoverFiles(const char* directory, PathNode* parent) const;
-	std::string FindFileNoExtension(const char* fileName, const char* directory) const;
-	bool FileInDirectory();
 
 	void NormalizePath(char* path) const;
 

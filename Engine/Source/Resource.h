@@ -3,7 +3,7 @@
 #include <string>
 
 class Resource
-{	
+{
 public:
 	enum class Type
 	{
@@ -28,8 +28,8 @@ public:
 	const char* GetLibraryFile() const { return mLibraryFile; };
 	unsigned int GetReferenceCount() const { return mReferenceCount; };
 
-	unsigned int AddReferenceCount();
-	unsigned int RemoveReferenceCount();
+	unsigned int AddReferenceCount() { return ++mReferenceCount; };
+	unsigned int RemoveReferenceCount() { return --mReferenceCount; };
 
 private:
 	//Name??? To set it when generating game object

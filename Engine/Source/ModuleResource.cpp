@@ -16,24 +16,13 @@
 #include "ImporterTexture.h"
 #include "ImporterMesh.h"
 #include "ImporterModel.h"
+#include "ImporterMaterial.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
 #include <ctime>
-
-bool ModuleResource::Init() {
-	mExtensionToResourceType = {
-		{".png", Resource::Type::Texture},
-		{".jpg", Resource::Type::Texture},
-		{".bmp", Resource::Type::Texture},
-		{".dds", Resource::Type::Texture},
-		{".gltf", Resource::Type::Model},
-		// Add more mappings for other resource types as needed
-	};
-	return true;
-}
 
 unsigned int ModuleResource::Find(const char* assetsFile) const
 {
@@ -62,16 +51,16 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	}
 
 	// Create copy in assets folder
-	const char* assetsCopiedFile = DuplicateFileInAssetDir(importedFilePath, type);
-	if (!assetsCopiedFile)
+	std::string assetsCopiedFile = DuplicateFileInAssetDir(importedFilePath, type);
+	if (assetsCopiedFile.empty())
 	{
 		LOG("File could not be duplicated: %s", importedFilePath);
 		return 0;
 	}
-	LOG("Succesfully duplicated the file in %s", assetsCopiedFile);
+	LOG("Succesfully duplicated the file in %s", assetsCopiedFile.c_str());
 
 	//// Create the new resource
-	Resource* resource = CreateNewResource(importedFilePath, assetsCopiedFile, type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
+	Resource* resource = CreateNewResource(importedFilePath, assetsCopiedFile.c_str(), type); //Save ID, assetsFile path, libraryFile path, and create spesific resource
 	if (resource == nullptr) 
 	{
 		LOG("Unable to create a new resource with this file: %s", importedFilePath);
@@ -89,7 +78,6 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath)
 	unsigned int ret = resource->GetUID();
 
 	ReleaseResource(ret);
-	delete assetsCopiedFile;
 
 	return ret;
 }
@@ -116,16 +104,21 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 	}
 
 	unsigned int uid = 0;
+	Resource::Type type = Resource::Type::Unknown;
 	if (document.HasMember("uid"))
 	{
 		uid = document["uid"].GetInt();
 	}
+	if (document.HasMember("type"))
+	{
+		type = static_cast<Resource::Type>(document["type"].GetInt());
+	}
 	
 	RELEASE_ARRAY(fileBuffer);
-	return RequestResource(uid);
+	return RequestResource(uid, type);
 }
 
-Resource* ModuleResource::RequestResource(unsigned int uid)
+Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 {
 	//Find if the resource is already loaded
 	std::map<unsigned int, Resource*>::iterator it = mResources.find(uid);
@@ -134,9 +127,58 @@ Resource* ModuleResource::RequestResource(unsigned int uid)
 		it->second->AddReferenceCount();
 		return it->second;
 	}
+	Resource* ret = nullptr;
+	std::string path;
+	switch (type)
+	{
+	case Resource::Type::Texture:
+	{
+		path += LIBRARY_TEXTURE_PATH;
+		path += std::to_string(uid);
+		path += LIBRARY_TEXTURE_EXTENSION;
+		ret = Importer::Texture::Load(path.c_str(), uid);
+		break;
+	}
+	case Resource::Type::Mesh:
+	{
+		path += LIBRARY_MESH_PATH;
+		path += std::to_string(uid);
+		path += LIBRARY_MESH_EXTENSION;
+		ret = Importer::Mesh::Load(path.c_str(), uid);
+		break;
+	}
+	case Resource::Type::Bone:
+		break;
+	case Resource::Type::Animation:
+		break;
+	case Resource::Type::Material:
+	{
+		path += LIBRARY_MATERIAL_PATH;
+		path += std::to_string(uid);
+		path += LIBRARY_MATERIAL_EXTENSION;
+		ret = Importer::Material::Load(path.c_str(), uid);
+		break;
+	}
+	case Resource::Type::Model:
+	{
+		path += LIBRARY_MODEL_PATH;
+		path += std::to_string(uid);
+		path += LIBRARY_MODEL_EXTENSION;
+		ret = Importer::Model::Load(path.c_str(), uid);
+		break;
+	}
+	case Resource::Type::Scene:
+		break;
+	case Resource::Type::NavMesh:
+		break;
+	case Resource::Type::Unknown:
+		break;
+	default:
+		break;
+	}
 	//Buscar el resource amb luid a library
 	//App->GetFileSystem()->FindFile(std::to_string(uid).c_str(), "Library");
-	return nullptr;
+	return ret;
 }
 
 Resource* ModuleResource::TryToLoadResource(const unsigned int uid, Resource::Type type)
@@ -158,18 +200,21 @@ Resource* ModuleResource::TryToLoadResource(const unsigned int uid, Resource::Ty
 
 void ModuleResource::ReleaseResource(unsigned int uid)
 {
-	mResources[uid]->RemoveReferenceCount();
-	if (mResources[uid]->GetReferenceCount() <= 0)
+	if (mResources.find(uid) != mResources.end())
 	{
-		if (mResources.find(uid) == mResources.end())
+		mResources[uid]->RemoveReferenceCount();
+		if (mResources[uid]->GetReferenceCount() <= 0)
 		{
-			LOG("The resource with UID %s does not exist.", std::to_string(uid).c_str());
+			if (mResources.find(uid) == mResources.end())
+			{
+				LOG("The resource with UID %s does not exist.", std::to_string(uid).c_str());
+			}
+			else if (mResources.find(uid)->second != nullptr)
+			{
+				mResources[uid] = nullptr;
+			}
+			delete mResources[uid];
 		}
-		else if (mResources.find(uid)->second != nullptr)
-		{
-			mResources[uid] = nullptr;
-		}
-		delete mResources[uid];
 	}
 }
 
@@ -214,7 +259,7 @@ Resource* ModuleResource::CreateNewResource(const char* importedFile, const char
 
 
 
-const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
+std::string ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
 {
 	std::string assetName;
 	std::string extensionName;
@@ -227,14 +272,6 @@ const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 		assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
 		break;
 	}
-	case Resource::Type::Mesh:
-		break;
-	case Resource::Type::Bone:
-		break;
-	case Resource::Type::Animation:
-		break;
-	case Resource::Type::Material:
-		break;
 	case Resource::Type::Model:
 	{
 		assetsFilePath = ASSETS_MODEL_PATH + assetName + extensionName;
@@ -247,26 +284,14 @@ const char* ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 		App->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
 		break;
 	}
-	case Resource::Type::Scene:
-		break;
-	case Resource::Type::NavMesh:
-		break;
 	default:
 		LOG("Unable to Copy, this file %s", importedFilePath);
 		break;
 	}
 
-	bool ret = App->GetFileSystem()->CopyAbsolutePath(importedFilePath, assetsFilePath.c_str());
+	App->GetFileSystem()->CopyAbsolutePath(importedFilePath, assetsFilePath.c_str());
 
-	if (ret) {
-		// Asignar memoria dinámicamente para el char* y copiar la cadena assetsFilePath
-		char* copiedFilePath = new char[assetsFilePath.length() + 1];
-		strcpy_s(copiedFilePath, assetsFilePath.length() + 1, assetsFilePath.c_str());
-		return copiedFilePath;
-	}
-	else {
-		return nullptr; // Devuelve nullptr si la copia no fue exitosa
-	}
+	return assetsFilePath;
 }
 
 
@@ -328,6 +353,5 @@ const bool ModuleResource::CreateAssetsMeta(const Resource& resource) const
 
 	buffer.Clear();
 
-	bool debug = true;
 	return ret;
 }

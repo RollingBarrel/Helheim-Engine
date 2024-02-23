@@ -88,27 +88,29 @@ void Importer::Model::Save(const ResourceModel* ourModel)
 ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
 {
     char* fileBuffer;
-    App->GetFileSystem()->Load(fileName, &fileBuffer);
-
-    char* cursor = fileBuffer;
-
-    unsigned int bytes = sizeof(unsigned int);
-    unsigned int size = 0;
-    memcpy(&size, cursor, bytes);
-    cursor += bytes;
-
-    ResourceModel* rModel = new ResourceModel(uid, fileName);
-    
-    for (int i = 0; i < size; ++i)
+    ResourceModel* rModel = nullptr;
+    if (App->GetFileSystem()->Load(fileName, &fileBuffer))
     {
-        unsigned int meshId = 0;
-        memcpy(&meshId, cursor, bytes);
-        cursor += bytes;
-        unsigned int materialId = 0;
-        memcpy(&materialId, cursor, bytes);
-        cursor += bytes;
-        rModel->SetUids(meshId, materialId);
-    }
 
+        char* cursor = fileBuffer;
+
+        unsigned int bytes = sizeof(unsigned int);
+        unsigned int size = 0;
+        memcpy(&size, cursor, bytes);
+        cursor += bytes;
+
+        rModel = new ResourceModel(uid, fileName);
+
+        for (int i = 0; i < size; ++i)
+        {
+            unsigned int meshId = 0;
+            memcpy(&meshId, cursor, bytes);
+            cursor += bytes;
+            unsigned int materialId = 0;
+            memcpy(&materialId, cursor, bytes);
+            cursor += bytes;
+            rModel->SetUids(meshId, materialId);
+        }
+    }
     return rModel;
 }

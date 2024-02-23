@@ -131,37 +131,39 @@ void Importer::Texture::Save(const ResourceTexture* texture)
 ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
 {
     char* fileBuffer;
+    ResourceTexture* texture = nullptr;
 
-    App->GetFileSystem()->Load(filePath, &fileBuffer);
+    if (App->GetFileSystem()->Load(filePath, &fileBuffer))
+    {
+        char* cursor = fileBuffer;
+        unsigned int header[7];
+        unsigned int bytes = sizeof(header);
+        memcpy(header, cursor, bytes);
+        cursor += bytes;
+        unsigned int width = header[0];
+        unsigned int height = header[1];
+        unsigned int internalFormat = header[2];
+        unsigned int texFormat = header[3];
+        unsigned int dataType = header[4];
+        unsigned int mipLevels = header[5];
+        unsigned int numPixels = header[6];
 
-    char* cursor = fileBuffer;
-    unsigned int header[7];
-    unsigned int bytes = sizeof(header);
-    memcpy(header, cursor, bytes);
-    cursor += bytes;
-    unsigned int width = header[0];
-    unsigned int height = header[1];
-    unsigned int internalFormat = header[2];
-    unsigned int texFormat = header[3];
-    unsigned int dataType = header[4];
-    unsigned int mipLevels = header[5];
-    unsigned int numPixels = header[6];
 
+        bool hasAlpha;
+        bytes = sizeof(hasAlpha);
+        memcpy(&hasAlpha, cursor, bytes);
+        cursor += bytes;
 
-    bool hasAlpha;
-    bytes = sizeof(hasAlpha);
-    memcpy(&hasAlpha, cursor, bytes);
-    cursor += bytes;
+        unsigned char* pixels = nullptr;
+        bytes = sizeof(unsigned char) * numPixels;
+        if (pixels != nullptr)
+            delete[] pixels;
+        pixels = new unsigned char[numPixels];
+        memcpy(pixels, cursor, bytes);
 
-    unsigned char* pixels = nullptr;
-    bytes = sizeof(unsigned char) * numPixels;
-    if (pixels != nullptr)
-        delete[] pixels;
-    pixels = new unsigned char[numPixels];
-    memcpy(pixels, cursor, bytes);
-
-    ResourceTexture* texture = new ResourceTexture(uid, filePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
-    unsigned int texId = texture->CreateTexture();
+        texture = new ResourceTexture(uid, filePath, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+        unsigned int texId = texture->CreateTexture();
+    }
     
     return texture;
 }

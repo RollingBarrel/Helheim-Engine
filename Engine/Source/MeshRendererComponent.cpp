@@ -18,8 +18,8 @@
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid) : Component(owner, ComponentType::MESHRENDERER)
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid));
+	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
+	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
 	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
@@ -30,8 +30,8 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int mes
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID()));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID()));
+	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh));
+	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material));
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
 }
@@ -165,8 +165,8 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshID));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialID));
+	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshID, Resource::Type::Mesh));
+	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialID, Resource::Type::Material));
 
 }
 

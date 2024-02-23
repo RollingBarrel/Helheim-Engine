@@ -256,42 +256,46 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
 ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
 {
     char* fileBuffer = nullptr;
-    App->GetFileSystem()->Load(filePath, &fileBuffer);
+    ResourceMesh* rMesh = nullptr;
 
-    //Load Header
-    char* cursor = fileBuffer;
-    unsigned int header[3];
-    unsigned int bytes = sizeof(header);
-    memcpy(header, cursor, bytes);
-    cursor += bytes;
-    unsigned int numIndices = header[0];
-    unsigned int numVertices = header[1];
-
-    unsigned int numAttributes = header[2];
-
-    //Load Indices
-    bytes = sizeof(unsigned int) * numIndices;
-    unsigned int* indices = new unsigned int[numIndices];
-    memcpy(indices, cursor, bytes);
-    cursor += bytes;
-
-    ResourceMesh* rMesh = new ResourceMesh(uid, filePath, numIndices, numVertices);
-
-    rMesh->mIndices = new unsigned int[numIndices];
-    
-    for (int i = 0; i < numIndices; ++i)
+    if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
-        rMesh->mIndices[i] = indices[i];
-    }
 
-    for (int i = 0; i < numAttributes; ++i)
-    {
-        Attribute* attr = reinterpret_cast<Attribute*>(cursor);
-        cursor += sizeof(Attribute);
-        rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor));
-        cursor += attr->size * numVertices;
+        //Load Header
+        char* cursor = fileBuffer;
+        unsigned int header[3];
+        unsigned int bytes = sizeof(header);
+        memcpy(header, cursor, bytes);
+        cursor += bytes;
+        unsigned int numIndices = header[0];
+        unsigned int numVertices = header[1];
+
+        unsigned int numAttributes = header[2];
+
+        //Load Indices
+        bytes = sizeof(unsigned int) * numIndices;
+        unsigned int* indices = new unsigned int[numIndices];
+        memcpy(indices, cursor, bytes);
+        cursor += bytes;
+
+        rMesh = new ResourceMesh(uid, filePath, numIndices, numVertices);
+
+        rMesh->mIndices = new unsigned int[numIndices];
+
+        for (int i = 0; i < numIndices; ++i)
+        {
+            rMesh->mIndices[i] = indices[i];
+        }
+
+        for (int i = 0; i < numAttributes; ++i)
+        {
+            Attribute* attr = reinterpret_cast<Attribute*>(cursor);
+            cursor += sizeof(Attribute);
+            rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor));
+            cursor += attr->size * numVertices;
+        }
+        rMesh->LoadToMemory();
     }
-    rMesh->LoadToMemory();
 
    return rMesh;
 }

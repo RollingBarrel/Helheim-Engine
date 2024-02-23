@@ -14,9 +14,9 @@ ResourceMaterial::ResourceMaterial(
     unsigned int normalTextureUid) :
     Resource(uid, Type::Material, path, ".mat"),
     mDiffuseFactor(diffuseFactor), mSpecularFactor(specularFactor), mGlossinessFactor(glossinessFactor),
-    mDiffuseTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(diffuseTextureUid))),
-    mSpecularGlossinessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(specularGlossinessTextureUid))),
-    mNormalTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTextureUid)))
+    mDiffuseTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(diffuseTextureUid, Resource::Type::Texture))),
+    mSpecularGlossinessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(specularGlossinessTextureUid, Resource::Type::Texture))),
+    mNormalTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTextureUid, Resource::Type::Texture)))
 {
     
     //if (mDiffuseTexture) mEnableDiffuseTexture = true;

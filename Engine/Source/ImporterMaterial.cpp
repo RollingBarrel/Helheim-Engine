@@ -189,41 +189,45 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
 ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned int uid )
 {
     char* fileBuffer;
-    App->GetFileSystem()->Load(fileName, &fileBuffer);
+    ResourceMaterial* ret = nullptr;
+    if (App->GetFileSystem()->Load(fileName, &fileBuffer))
+    {
 
-    char* cursor = fileBuffer;
-    unsigned int texturesUID[3];
-    unsigned int bytes = sizeof(texturesUID);
+        char* cursor = fileBuffer;
+        unsigned int texturesUID[3];
+        unsigned int bytes = sizeof(texturesUID);
 
-    memcpy(texturesUID, cursor, bytes);
-    cursor += bytes;
+        memcpy(texturesUID, cursor, bytes);
+        cursor += bytes;
 
-    bool enables[4];
-    bytes = sizeof(enables);
-    memcpy(enables, cursor, bytes);
-    cursor += bytes;
+        bool enables[4];
+        bytes = sizeof(enables);
+        memcpy(enables, cursor, bytes);
+        cursor += bytes;
 
-    bool enableDiffuseTexture = enables[0];
-    bool enableSpecularGlossinessTexture = enables[1];
-    bool enableNormalTexture = enables[2];
-    bool enableShininessTexture = enables[3];
+        bool enableDiffuseTexture = enables[0];
+        bool enableSpecularGlossinessTexture = enables[1];
+        bool enableNormalTexture = enables[2];
+        bool enableShininessTexture = enables[3];
 
-    float4 diffuseFactor;
-    bytes = sizeof(float) * 4;
-    memcpy(&diffuseFactor, cursor, bytes);
-    cursor += bytes;
+        float4 diffuseFactor;
+        bytes = sizeof(float) * 4;
+        memcpy(&diffuseFactor, cursor, bytes);
+        cursor += bytes;
 
-    float3 specularFactor;
-    bytes = sizeof(float) * 3;
-    memcpy(&specularFactor, cursor, bytes);
-    cursor += bytes;
+        float3 specularFactor;
+        bytes = sizeof(float) * 3;
+        memcpy(&specularFactor, cursor, bytes);
+        cursor += bytes;
 
-    float glossinessFator;
-    bytes = sizeof(float);
-    memcpy(&glossinessFator, cursor, bytes);
-    cursor += bytes;
+        float glossinessFator;
+        bytes = sizeof(float);
+        memcpy(&glossinessFator, cursor, bytes);
+        cursor += bytes;
+        ret = new ResourceMaterial(uid, fileName, diffuseFactor, specularFactor, glossinessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
+    }
 
-    return new ResourceMaterial(uid, fileName, diffuseFactor, specularFactor,glossinessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
+    return ret;
 }
 
 
