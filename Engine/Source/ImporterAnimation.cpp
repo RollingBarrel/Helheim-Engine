@@ -16,23 +16,12 @@
 #include "tiny_gltf.h"
 
 
-void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, ResourceAnimation* ourAnimation) {
+void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation) {
     if (!ourAnimation)
         return;
 
-    for (const auto& channel : animation.channels) {
-        ImportChannel(model, channel, ourAnimation);
-    }
-
-}
-
-void Importer::Animation::ImportChannel(const tinygltf::Model& model, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation) {
-    if (!ourAnimation)
-        return;
-
-    //Get the index of the animation sampler from the current channel
+    // Get the index of the animation sampler from the current channel
     const int samplerIndex = channel.sampler;
-    const int nodeIndex = channel.target_node;
 
     const tinygltf::AnimationSampler& animationSampler = model.animations[channel.target_node].samplers[samplerIndex];
     const int inputAccessorIndex = animationSampler.input;
@@ -41,7 +30,7 @@ void Importer::Animation::ImportChannel(const tinygltf::Model& model, const tiny
     const tinygltf::Accessor& inputAccessor = model.accessors[inputAccessorIndex];
     const tinygltf::Accessor& outputAccessor = model.accessors[outputAccessorIndex];
 
-    //  Retrieves the buffer views for both input and output data.
+    // Retrieves the buffer views for both input and output data.
     const tinygltf::BufferView& inputBufferView = model.bufferViews[inputAccessor.bufferView];
     const tinygltf::BufferView& outputBufferView = model.bufferViews[outputAccessor.bufferView];
 
@@ -58,23 +47,29 @@ void Importer::Animation::ImportChannel(const tinygltf::Model& model, const tiny
     // Create an animation channel
     ResourceAnimation::AnimationChannel animChannel;
 
-    if (channel.target_path == "translation") {
-        for (size_t i = 0; i < numKeyframes; ++i) {
-            size_t index = i * inputAccessor.count;
-            animChannel.positions[i] = float3(outputPtr[index], outputPtr[index + 1], outputPtr[index + 2]); // Store the position for each keyframe
-            animChannel.posTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
-        }
-    }
-    else if (channel.target_path == "rotation") {
+    // Assuming each keyframe has 3 floats for translation (x, y, z)
+    // and each keyframe has 4 floats for rotation (x, y, z, w)
+    for (size_t i = 0; i < numKeyframes; ++i) {
+        size_t translationIndex = i * inputAccessor.count;
+        size_t rotationIndex = i * inputAccessor.count;
 
-        for (size_t i = 0; i < numKeyframes; ++i) {
-            size_t index = i * inputAccessor.count;
-            animChannel.rotations[i] = Quat(outputPtr[index], outputPtr[index + 1], outputPtr[index + 2], outputPtr[index + 3]); // Store the rotation for each keyframe
+        if (channel.target_path == "translation") {
+            animChannel.positions = std::make_unique<float3[]>(numKeyframes);
+            animChannel.posTimeStamps = std::make_unique<float[]>(numKeyframes);
+            animChannel.positions[i] = float3(outputPtr[translationIndex], outputPtr[translationIndex + 1], outputPtr[translationIndex + 2]); // Store the position for each keyframe
+            animChannel.posTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
+            animChannel.numPositions++;
+        }
+        else if (channel.target_path == "rotation") {
+            animChannel.rotations = std::make_unique<Quat[]>(numKeyframes);
+            animChannel.rotTimeStamps = std::make_unique<float[]>(numKeyframes);
+            animChannel.rotations[i] = Quat(outputPtr[rotationIndex], outputPtr[rotationIndex + 1], outputPtr[rotationIndex + 2], outputPtr[rotationIndex + 3]); // Store the rotation for each keyframe
             animChannel.rotTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
+            animChannel.numRotations++;
         }
     }
 
     // Store animation channel in the animation
-   // ourAnimation->channels[targetNode] = animChannel;
-
+    // Assuming channel.target_node represents the index of the node
+   // ourAnimation->channels[channel.target_node] = animChannel;
 }
