@@ -149,6 +149,8 @@
     <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
+    <ClCompile Include="CameraComponent.cpp" />
+    <ClCompile Include="CameraUtils.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
@@ -265,6 +267,8 @@
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
+    <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="CameraUtils.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
