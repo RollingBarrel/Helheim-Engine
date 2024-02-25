@@ -5,14 +5,13 @@
 
 ResourceMaterial::ResourceMaterial(
     unsigned int uid,
-    const char* path,
     float4 diffuseFactor,
     float3 specularFactor,
     float glossinessFactor,
     unsigned int diffuseTextureUid,
     unsigned int specularGlossinessTextureUid,
     unsigned int normalTextureUid) :
-    Resource(uid, Type::Material, path, ".mat"),
+    Resource(uid, Type::Material),
     mDiffuseFactor(diffuseFactor), mSpecularFactor(specularFactor), mGlossinessFactor(glossinessFactor),
     mDiffuseTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(diffuseTextureUid, Resource::Type::Texture))),
     mSpecularGlossinessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(specularGlossinessTextureUid, Resource::Type::Texture))),

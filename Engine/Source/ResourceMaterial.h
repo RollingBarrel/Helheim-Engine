@@ -11,7 +11,6 @@ class ResourceMaterial : public Resource
 public:
     ResourceMaterial(
         unsigned int uid,
-        const char* path,
         float4 diffuseFactor, 
         float3 specularFactor, 
         float glossinessFactor, 

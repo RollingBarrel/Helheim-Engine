@@ -36,7 +36,8 @@ void ScenePanel::Draw(int windowFlags)
 
 		if (ImGui::BeginDragDropTarget())
 		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE");
+			if (payload)
 			{
 				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
 

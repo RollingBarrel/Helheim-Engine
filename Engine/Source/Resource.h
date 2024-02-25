@@ -19,23 +19,19 @@ public:
 	};
 
 
-	Resource(unsigned int uid, Type type, const char* assetsPath, const char* libraryExtension);
+	Resource(unsigned int uid, Type type);
 	virtual ~Resource();
 
-	Type GetType() const { return mType; };
-	unsigned int GetUID() const { return mUID; };
-	const char* GetAssetsFile() const { return mAssetsFile; };
-	const char* GetLibraryFile() const { return mLibraryFile; };
-	unsigned int GetReferenceCount() const { return mReferenceCount; };
+	Type GetType() const { return mType; }
+	unsigned int GetUID() const { return mUID; }
+	unsigned int GetReferenceCount() const { return mReferenceCount; }
 
-	unsigned int AddReferenceCount() { return ++mReferenceCount; };
-	unsigned int RemoveReferenceCount() { return --mReferenceCount; };
+	unsigned int AddReferenceCount() { return ++mReferenceCount; }
+	unsigned int RemoveReferenceCount() { return --mReferenceCount; }
 
 private:
 	//Name??? To set it when generating game object
 	unsigned int mUID;
-	const char* mAssetsFile;
-	const char* mLibraryFile;
 	Type mType;
 	unsigned int mReferenceCount;
 };

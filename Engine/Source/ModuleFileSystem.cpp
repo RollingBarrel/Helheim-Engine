@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleFileSystem.h"
@@ -29,11 +30,6 @@ ModuleFileSystem::ModuleFileSystem()
     CreateDirectory(ASSETS_TEXTURE_PATH);
 
     CreateDirectory(LIBRARY_PATH);
-    CreateDirectory(LIBRARY_MESH_PATH);
-    CreateDirectory(LIBRARY_TEXTURE_PATH);
-    CreateDirectory(LIBRARY_MATERIAL_PATH);
-    CreateDirectory(LIBRARY_SHADER_PATH);
-    CreateDirectory(LIBRARY_MODEL_PATH);
 
     mRoot = new PathNode("Assets");
     DiscoverFiles("Assets", mRoot);
@@ -143,7 +139,7 @@ unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, un
     return writeBytesSize;
 }
 
-bool ModuleFileSystem::CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath)
+bool ModuleFileSystem::CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath) const
 {
     char* readBuffer = nullptr;
     int readBufferSize = Load(sourceFilePath, &readBuffer);
@@ -166,7 +162,7 @@ bool ModuleFileSystem::CopyRelativePath(const char* sourceFilePath, const char* 
     return true;
 }
 
-bool ModuleFileSystem::CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath)
+bool ModuleFileSystem::CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath) const
 {
     FILE *src;
     FILE *dst;
@@ -202,12 +198,22 @@ bool ModuleFileSystem::CopyAbsolutePath(const char* sourceFilePath, const char* 
     return true;
 }
 
-bool ModuleFileSystem::DeleteDirectory(const char* filePath)
+bool ModuleFileSystem::DeleteDirectory(const char* filePath) const
 {
     return false;
 }
 
-bool ModuleFileSystem::CreateDirectory(const char* directory)
+bool ModuleFileSystem::RemoveFile(const char* filePath) const
+{
+    if (PHYSFS_exists(filePath) && !IsDirectory(filePath))
+    {
+        PHYSFS_delete(filePath);
+        return true;
+    }
+    return false;
+}
+
+bool ModuleFileSystem::CreateDirectory(const char* directory) const
 { 
     if (IsDirectory(directory) == false)
     {
@@ -237,6 +243,30 @@ bool ModuleFileSystem::IsDirectory(const char* directoryPath) const
     return(stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
 }
 
+const char* ModuleFileSystem::GetLibraryFile(unsigned int uid, bool createDir) const
+{
+    char* ret = new char[sizeof(LIBRARY_PATH) + 13];
+    ret[0] = '\0';
+    std::string sUid = std::to_string(uid);
+    strcat(ret, LIBRARY_PATH);
+    ret[sizeof(LIBRARY_PATH) - 1] = sUid[0];
+    ret[sizeof(LIBRARY_PATH)] = sUid[1];
+    ret[sizeof(LIBRARY_PATH) + 1] = '/';
+    ret[sizeof(LIBRARY_PATH) + 2] = '\0';
+    if (createDir && !Exists(ret))
+        CreateDirectory(ret);
+    strcat(ret, sUid.c_str());
+    return ret;
+}
+
+int64_t ModuleFileSystem::GetLastModTime(const char* file) const
+{
+    PHYSFS_Stat stat;
+    if (PHYSFS_stat(file, &stat) == 0)
+        return 0;
+    return stat.modtime;
+}
+
 bool ModuleFileSystem::AddToSearchPath(const char* path)
 {
     if (!PHYSFS_mount(path, nullptr, 1))
@@ -256,6 +286,38 @@ const char* ModuleFileSystem::GetBaseDirectory() const
 const char* ModuleFileSystem::GetWriteDirectory() const
 {
     return PHYSFS_getWriteDir();
+}
+
+void ModuleFileSystem::DiscoverFiles(const char* directory, const char* extension, std::vector<std::string>&out) const
+{
+    if (Exists(directory) && IsDirectory(directory))
+    {
+        char** fileList = PHYSFS_enumerateFiles(directory);
+        
+        unsigned int dirSize = strlen(directory) + 2;
+        char* dir = new char[dirSize];
+        memcpy(dir, directory, dirSize - 1);
+        dir[dirSize - 2] = '/';
+        dir[dirSize - 1] = '\0';
+        std::string path;
+        for (char** file = fileList; *file != nullptr; ++file)
+        {
+            path.clear();
+            path += dir;
+            path += *file;
+            if (IsDirectory(path.c_str()))
+            {
+                DiscoverFiles(path.c_str(), extension, out);
+                continue;
+            }
+            char* currExtension = strrchr(*file, '.');
+            if (currExtension && strcmp(extension, currExtension) == 0)
+                out.push_back(path);
+        }
+
+        delete[] dir;
+        PHYSFS_freeList(fileList);
+    }
 }
 
 void ModuleFileSystem::DiscoverFiles(const char* directory, PathNode* parent) const

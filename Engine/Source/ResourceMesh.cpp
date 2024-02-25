@@ -9,10 +9,14 @@
 
 ResourceMesh::ResourceMesh(
     unsigned int uid, 
-    const char* path, 
     unsigned int inNumIndices,
-    unsigned int inNumVertices) : Resource(uid, Type::Mesh, path, ".mesh"), mNumVertices(inNumVertices), mNumIndices(inNumIndices)
+    unsigned int inNumVertices) : Resource(uid, Type::Mesh), mNumVertices(inNumVertices), mNumIndices(inNumIndices)
 {
+}
+
+ResourceMesh::~ResourceMesh()
+{
+    CleanUp();
 }
 
 typedef struct {
@@ -76,9 +80,9 @@ void ResourceMesh::AddIndices(unsigned int* indices)
 const float* ResourceMesh::GetAttributeData(Attribute::Type type) const
 {
     unsigned int idx = 0;
-    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
-        if (type == (*it)->type)
+        if (type == it->type)
             return mAttributesData[idx];
         ++idx;
     }
@@ -88,9 +92,9 @@ const float* ResourceMesh::GetAttributeData(Attribute::Type type) const
 int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
 {
     unsigned int ret = 0;
-    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
-        if (type == (*it)->type)
+        if (type == it->type)
         {
             return ret;
         }
@@ -99,27 +103,52 @@ int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
     return -1;
 }
 
-void ResourceMesh::AddAttribute(const Attribute& attribute, float* attributeData)
+void ResourceMesh::AddAttribute(const Attribute& attribute, float*&& attributeData)
 {
     assert(attributeData != nullptr && "Adding null data to new attribute");
     int idx = GetAttributeIdx(attribute.type);
     if (idx >= 0)
     {
         //mVertexSize += mAttributes.back()->size;
-        assert(attribute.size != mAttributes[idx]->size);
-        unsigned int offset = mAttributes[idx]->offset;
-        delete mAttributes[idx];
-        mAttributes[idx] = new Attribute(attribute);
-        mAttributes[idx]->offset = offset;
+        assert(attribute.size != mAttributes[idx].size);
+        unsigned int offset = mAttributes[idx].offset;
+        mAttributes[idx] = attribute;
+        mAttributes[idx].offset = offset;
         delete[] mAttributesData[idx];
         mAttributesData[idx] = attributeData;
     }
     else
     {
-        mAttributes.push_back(new Attribute(attribute));
-        mAttributes.back()->offset = GetVertexSize();
+        mAttributes.emplace_back(attribute);
+        mAttributes.back().offset = GetVertexSize();
         mAttributesData.push_back(attributeData);
-        mVertexSize += mAttributes.back()->size;
+        mVertexSize += mAttributes.back().size;
+    }
+}
+
+void ResourceMesh::AddAttribute(const Attribute& attribute, float* attributeData, unsigned int dataSize)
+{
+    assert(attributeData != nullptr && "Adding null data to new attribute");
+    int idx = GetAttributeIdx(attribute.type);
+    if (idx >= 0)
+    {
+        //mVertexSize += mAttributes.back()->size;
+        assert(attribute.size != mAttributes[idx].size);
+        unsigned int offset = mAttributes[idx].offset;
+        mAttributes[idx] = attribute;
+        mAttributes[idx].offset = offset;
+        delete[] mAttributesData[idx];
+        mAttributesData[idx] = new float[dataSize / sizeof(float)];
+        memcpy(mAttributesData[idx], attributeData, dataSize);
+    }
+    else
+    {
+        mAttributes.emplace_back(attribute);
+        mAttributes.back().offset = GetVertexSize();
+        float* tmp = new float[dataSize / sizeof(float)];
+        memcpy(tmp, attributeData, dataSize);
+        mAttributesData.push_back(tmp);
+        mVertexSize += mAttributes.back().size;
     }
 }
 
@@ -148,7 +177,7 @@ bool ResourceMesh::LoadInterleavedAttribute(float* fillBuffer, const Attribute& 
     unsigned int idx = GetAttributeIdx(attribute.type);
     if (idx < 0)
         return false;
-    const Attribute& myAttribute = *mAttributes[idx];
+    const Attribute& myAttribute = mAttributes[idx];
     assert(attribute.size == myAttribute.size);
     unsigned int j = 0;
     for (int i = 0; i < mVertexSize * mNumVertices; i += vertexSize)
@@ -162,9 +191,9 @@ bool ResourceMesh::LoadInterleavedAttribute(float* fillBuffer, const Attribute& 
 float* ResourceMesh::GetInterleavedData() const
 {
     float* ret = new float[mNumVertices * GetVertexSize() / sizeof(float)];
-    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
-        LoadInterleavedAttribute(ret, *(*it), GetVertexSize());
+        LoadInterleavedAttribute(ret, *it, GetVertexSize());
     }
     return ret;
 }
@@ -180,9 +209,9 @@ void ResourceMesh::LoadToMemory()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), mIndices, GL_STATIC_DRAW);
     unsigned int idx = 0;
-    for (std::vector<Attribute*>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
     {
-        glVertexAttribPointer(idx, (*it)->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it)->offset);
+        glVertexAttribPointer(idx, it->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)it->offset);
         glEnableVertexAttribArray(idx);
         ++idx;
     }
@@ -195,7 +224,7 @@ void ResourceMesh::GenerateTangents()
     if (GetAttributeIdx(Attribute::POS) < 0 || GetAttributeIdx(Attribute::UV) < 0 || GetAttributeIdx(Attribute::NORMAL) < 0)
         return;
 
-    unsigned int* indices = reinterpret_cast<unsigned int*>(mIndices);
+    unsigned int* indices = mIndices;
     const char* vertices = reinterpret_cast<const char*>(GetInterleavedData());
     char* unweldedVertices = new char[mNumIndices * GetVertexSize()];
 
@@ -203,6 +232,7 @@ void ResourceMesh::GenerateTangents()
     {
         memcpy(&unweldedVertices[i * GetVertexSize()], &vertices[indices[i] * GetVertexSize()], GetVertexSize());
     }
+    delete[] vertices;
 
     SMikkTSpaceInterface interfaceInput = {};
     interfaceInput.m_getNumFaces = GetNumFaces;
@@ -226,7 +256,10 @@ void ResourceMesh::GenerateTangents()
     tangContext.m_pUserData = &mikkInput;
     if (!genTangSpaceDefault(&tangContext))
     {
-        //LOG("ERROR: Could not generate the tangent space");
+        LOG("ERROR: Could not generate the tangent space");
+        delete[] unweldedTVertices;
+        delete[] unweldedVertices;
+        return;
     }
 
     int* piRemapTable = new int[mikkInput.numVertices];
@@ -261,27 +294,22 @@ void ResourceMesh::CleanUp()
         delete[] mIndices;
         mIndices = nullptr;
     }
-    for (std::vector<Attribute*>::iterator it = mAttributes.begin(); it != mAttributes.end(); ++it)
-    {
-        if (*it != nullptr)
-        {
-            delete* it;
-            *it = nullptr;
-        }
-    }
     mAttributes.clear();
     for (std::vector<float*>::iterator it = mAttributesData.begin(); it != mAttributesData.end(); ++it)
     {
         if (*it != nullptr)
         {
-            delete[] * it;
+            delete[] *it;
             *it = nullptr;
         }
     }
     mAttributesData.clear();
 
     //TODO: delete EBO/VBO...
-    glDeleteBuffers(1, &mVbo);
-    glDeleteBuffers(1, &mEbo);
-    glDeleteVertexArrays(1, &mVao);
+    if(mVbo)
+        glDeleteBuffers(1, &mVbo);
+    if (mEbo)
+        glDeleteBuffers(1, &mEbo);
+    if(mVao)
+        glDeleteVertexArrays(1, &mVao);
 }

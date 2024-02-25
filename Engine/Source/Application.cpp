@@ -18,9 +18,9 @@ Application::Application()
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
-	modules[4] = resource = new ModuleResource();
-	modules[5] = clock = new ModuleTimer();
-	modules[6] = render = new ModuleOpenGL();
+	modules[4] = clock = new ModuleTimer();
+	modules[5] = render = new ModuleOpenGL();
+	modules[6] = resource = new ModuleResource();
 	modules[7] = debugDraw = new ModuleDebugDraw();
 	modules[8] = scene = new ModuleScene();
 	modules[9] = editor = new ModuleEditor();

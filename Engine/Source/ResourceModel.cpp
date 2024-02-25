@@ -2,7 +2,7 @@
 
 #include "ModuleFileSystem.h"
 
-ResourceModel::ResourceModel(unsigned int uid, const char* path) : Resource(uid, Type::Model, path, ".model")
+ResourceModel::ResourceModel(unsigned int uid) : Resource(uid, Type::Model)
 {
 }
 

@@ -9,7 +9,7 @@ namespace Importer
 {
 	namespace Model
 	{
-		ResourceModel* Import(const char* filePath, const char* assetsPath, unsigned int uid);
+		ResourceModel* Import(const char* filePath, unsigned int uid);
 
 		void Save(const ResourceModel* ourModel);
 

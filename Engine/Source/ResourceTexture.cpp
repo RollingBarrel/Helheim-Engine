@@ -12,7 +12,6 @@
 
 ResourceTexture::ResourceTexture(
     unsigned int uid,
-    const char* path,
     unsigned int width,
     unsigned int height,
     unsigned int internalFormat,
@@ -22,7 +21,7 @@ ResourceTexture::ResourceTexture(
     unsigned int numPixels,
     unsigned char* pixels,
     bool hasAlpha)
-    : Resource(uid, Type::Texture, path, ".tex"), mWidth(width), mHeight(height),
+    : Resource(uid, Type::Texture), mWidth(width), mHeight(height),
     mInternalFormat(internalFormat), mTexFormat(texFormat), mDataType(dataType), 
     mMipLevels(mipLevels),
     mNumPixels(numPixels), 
@@ -33,6 +32,8 @@ ResourceTexture::ResourceTexture(
 }
 ResourceTexture::~ResourceTexture()
 {
+    glDeleteTextures(1, &mOpenGLId);
+    delete[] mPixels;
 }
 
 unsigned int ResourceTexture::CreateTexture()

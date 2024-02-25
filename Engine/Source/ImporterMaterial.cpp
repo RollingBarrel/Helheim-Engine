@@ -9,8 +9,10 @@
 
 #include "Algorithm/Random/LCG.h"
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, const unsigned int uid)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int uid)
 {
+    unsigned int currUid = uid;
+
     float4 diffuseFactor = float4::zero; 
     float3 specularFactor = float3::zero;
     float GlossinessFactor = 0.0f;
@@ -47,7 +49,6 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
             }
         }
 
-        //TODO IMPORT DIFFUSE COLOR ALWAYS 
         if (extensionMap.Has("diffuseTexture")) {
             const tinygltf::Value& diffuseTextureValue = extensionMap.Get("diffuseTexture");
 
@@ -64,7 +65,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[diffuseTextureIndex].uri);
 
-                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str());
+                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
                 }
             }
         }
@@ -85,7 +86,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[specularGlossinessIndex].uri);
 
-                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str());
+                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
                 }
             }
         }
@@ -108,7 +109,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         pngName = pngName.substr(0, filePos + 1);
                         pngName.append(tinyModel.images[normalIndex].uri);
 
-                        normalTexture = App->GetResource()->ImportFile(pngName.c_str());
+                        normalTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
                     }
                 }
             }
@@ -127,25 +128,26 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
             pngName = pngName.substr(0, filePos + 1);
             pngName.append(tinyModel.images[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index].uri);
 
-            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str());
+            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
         }
 
     }
-    ResourceMaterial* material = new ResourceMaterial(uid, filePath, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
-    return material;
+    ResourceMaterial* rMaterial = new ResourceMaterial(currUid++, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
+    Importer::Material::Save(rMaterial);
+    return rMaterial;
 }
 
-void Importer::Material::Save(const ResourceMaterial* ourMaterial)
+void Importer::Material::Save(const ResourceMaterial* rMaterial)
 {
-    unsigned int texturesUID[3] = { (ourMaterial->GetDiffuseTexture() != nullptr) ? ourMaterial->GetDiffuseTexture()->GetUID() : 0,
-                                    (ourMaterial->GetSpecularGlossinessTexture() != nullptr) ? ourMaterial->GetSpecularGlossinessTexture()->GetUID() : 0,
-                                    (ourMaterial->GetNormalTexture() != nullptr) ? ourMaterial->GetNormalTexture()->GetUID() : 0};
+    unsigned int texturesUID[3] = { (rMaterial->GetDiffuseTexture() != nullptr) ? rMaterial->GetDiffuseTexture()->GetUID() : 0,
+                                    (rMaterial->GetSpecularGlossinessTexture() != nullptr) ? rMaterial->GetSpecularGlossinessTexture()->GetUID() : 0,
+                                    (rMaterial->GetNormalTexture() != nullptr) ? rMaterial->GetNormalTexture()->GetUID() : 0};
 
     bool enables[4] = { 
-        ourMaterial->IsDiffuseTextureEnabled(),
-        ourMaterial->IsSpecularGlossinessTextureEnabled(),
-        ourMaterial->IsNormalMapEnabled(),
-        ourMaterial->IsShininessMapEnabled()};
+        rMaterial->IsDiffuseTextureEnabled(),
+        rMaterial->IsSpecularGlossinessTextureEnabled(),
+        rMaterial->IsNormalMapEnabled(),
+        rMaterial->IsShininessMapEnabled()};
 
     unsigned int size = sizeof(texturesUID) +
                         sizeof(enables) +
@@ -164,26 +166,26 @@ void Importer::Material::Save(const ResourceMaterial* ourMaterial)
     memcpy(cursor, enables, bytes);
     cursor += bytes;
 
-    float4 diffuseFactor = ourMaterial->GetDiffuseFactor();
+    float4 diffuseFactor = rMaterial->GetDiffuseFactor();
     bytes = sizeof(float) * 4;
     memcpy(cursor, &diffuseFactor, bytes);
     cursor += bytes;
 
-    float3 specularFactor = ourMaterial->GetSpecularFactor();
+    float3 specularFactor = rMaterial->GetSpecularFactor();
     bytes = sizeof(float) * 3;
     memcpy(cursor, &specularFactor, bytes);
     cursor += bytes;
 
-    float glossinessFactor = ourMaterial->GetGlossinessFactor();
+    float glossinessFactor = rMaterial->GetGlossinessFactor();
     bytes = sizeof(float);
     memcpy(cursor, &glossinessFactor, bytes);
     cursor += bytes;
 
-    App->GetFileSystem()->Save(ourMaterial->GetLibraryFile(), fileBuffer, size);
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rMaterial->GetUID(), true);
+    App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
+    delete[] libraryPath;
     delete[] fileBuffer;
-    fileBuffer = nullptr;
-
 }
 
 ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned int uid )
@@ -224,7 +226,10 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
         bytes = sizeof(float);
         memcpy(&glossinessFator, cursor, bytes);
         cursor += bytes;
-        ret = new ResourceMaterial(uid, fileName, diffuseFactor, specularFactor, glossinessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
+        ret = new ResourceMaterial(uid, diffuseFactor, specularFactor, glossinessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
+        Importer::Material::Save(ret);
+
+        delete[] fileBuffer;
     }
 
     return ret;

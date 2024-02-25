@@ -18,48 +18,48 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-ResourceModel* Importer::Model::Import(const char* filePath, const char* assetsPath, unsigned int uid)
+ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid)
 {
-    ResourceModel* rModel = new ResourceModel(uid, assetsPath);
+    unsigned int currUid = uid;
+    ResourceModel* rModel = new ResourceModel(currUid++);
 
     tinygltf::TinyGLTF gltfContext;
     tinygltf::Model model;
 
     std::string error, warning;
-    bool loadOk = gltfContext.LoadASCIIFromFile(&model, &error, &warning, assetsPath);
+    bool loadOk = gltfContext.LoadASCIIFromFile(&model, &error, &warning, filePath);
     if (!loadOk)
     {
-        LOG("[MODEL] Error loading %s: %s", assetsPath, error.c_str());
+        LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
     
     for (const auto& srcMesh : model.meshes)
     {
         for (const auto& primitive : srcMesh.primitives)
         {   
-            ResourceMesh* mesh = Importer::Mesh::Import(model, primitive, math::LCG().Int());
-            Importer::Mesh::Save(mesh);
+            ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, currUid++);
 
             if (primitive.material != -1) {
-                ResourceMaterial* material = Importer::Material::Import(filePath, model, model.materials[primitive.material], math::LCG().Int());
-                Importer::Material::Save(material);
+                ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], currUid++);
 
-                rModel->SetUids(mesh->GetUID(), material->GetUID());
-
-                delete material;
-                material = nullptr;
+                rModel->SetUids(rMesh->GetUID(), rMaterial->GetUID());
+                currUid = rMaterial->GetUID() + 1;
+                delete rMaterial;
             }
 
-            delete mesh;
-            mesh = nullptr;
+            delete rMesh;
         }
     }
+
+    if (rModel)
+        Importer::Model::Save(rModel);
 
     return rModel;
 }
 
-void Importer::Model::Save(const ResourceModel* ourModel)
+void Importer::Model::Save(const ResourceModel* rModel)
 {
-    unsigned int numModels = ourModel->GetUids().size();
+    unsigned int numModels = rModel->GetUids().size();
 
     unsigned int size = sizeof(numModels) + sizeof(ResourceModel) * numModels;
 
@@ -70,7 +70,7 @@ void Importer::Model::Save(const ResourceModel* ourModel)
     memcpy(cursor, &numModels, bytes);
     cursor += bytes;
 
-    for (auto it = ourModel->GetUids().cbegin(); it != ourModel->GetUids().cend(); ++it)
+    for (auto it = rModel->GetUids().cbegin(); it != rModel->GetUids().cend(); ++it)
     {
         bytes = sizeof(it->meshUID);
         memcpy(cursor, &it->meshUID, bytes);
@@ -80,9 +80,11 @@ void Importer::Model::Save(const ResourceModel* ourModel)
         cursor += bytes;
     }
 
-    App->GetFileSystem()->Save(ourModel->GetLibraryFile(), fileBuffer, size);
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
+    App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
-    RELEASE_ARRAY(fileBuffer);
+    delete[] libraryPath;
+    delete[] fileBuffer;
 }
 
 ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
@@ -99,7 +101,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         memcpy(&size, cursor, bytes);
         cursor += bytes;
 
-        rModel = new ResourceModel(uid, fileName);
+        rModel = new ResourceModel(uid);
 
         for (int i = 0; i < size; ++i)
         {
@@ -111,6 +113,8 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             cursor += bytes;
             rModel->SetUids(meshId, materialId);
         }
+
+        delete[] fileBuffer;
     }
     return rModel;
 }

@@ -28,12 +28,11 @@ class ResourceMesh : public Resource
 public:
 
 	ResourceMesh(unsigned int uid,
-		const char* path,
 		unsigned int numIndices,
 		unsigned int numVertices);
 
 	//ResourceMesh(const ResourceMesh& other);
-	~ResourceMesh() { CleanUp(); }
+	~ResourceMesh();
 
 	unsigned int GetNumberVertices() const { return mNumVertices; }
 	unsigned int GetNumberIndices() const { return mNumIndices; }
@@ -46,12 +45,13 @@ public:
 
 	unsigned int GetVao() const { return mVao; }
 
-	const std::vector<Attribute*>& GetAttributes() const { return mAttributes; }
+	const std::vector<Attribute>& GetAttributes() const { return mAttributes; }
 	unsigned int GetVertexSize() const { return mVertexSize; }
 
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
-	void AddAttribute(const Attribute& attribute, float* attributeData);
+	void AddAttribute(const Attribute& attribute, float* attributeData, unsigned int dataSize);
+	void AddAttribute(const Attribute& attribute, float*&& attributeData);
 	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
 	float* GetInterleavedData() const;
 	void LoadToMemory();
@@ -75,7 +75,7 @@ private:
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
 
-	std::vector<Attribute*> mAttributes;
+	std::vector<Attribute> mAttributes;
 	unsigned int mVertexSize = 0;
 };
 

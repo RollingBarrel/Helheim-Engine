@@ -2,20 +2,15 @@
 #include "Module.h"
 
 #define LIBRARY_PATH "Library/"
-#define LIBRARY_TEXTURE_PATH "Library/Textures/"
-#define LIBRARY_MESH_PATH "Library/Meshes/"
-#define LIBRARY_BONE_PATH "Library/Bones/"
-#define LIBRARY_ANIMATION_PATH "Library/Animations/"
-#define LIBRARY_MATERIAL_PATH "Library/Materials/"
-#define LIBRARY_MODEL_PATH "Library/Models/"
-#define LIBRARY_SCENE_PATH "Library/Scenes/"
-#define LIBRARY_SCENE_PATH "Library/NavMeshes/"
-#define LIBRARY_SHADER_PATH "Library/Shaders/"
-
-#define LIBRARY_TEXTURE_EXTENSION ".tex"
-#define LIBRARY_MESH_EXTENSION ".mesh"
-#define LIBRARY_MATERIAL_EXTENSION ".mat"
-#define LIBRARY_MODEL_EXTENSION ".mod"
+//#define LIBRARY_TEXTURE_PATH "Library/Textures/"
+//#define LIBRARY_MESH_PATH "Library/Meshes/"
+//#define LIBRARY_BONE_PATH "Library/Bones/"
+//#define LIBRARY_ANIMATION_PATH "Library/Animations/"
+//#define LIBRARY_MATERIAL_PATH "Library/Materials/"
+//#define LIBRARY_MODEL_PATH "Library/Models/"
+//#define LIBRARY_SCENE_PATH "Library/Scenes/"
+//#define LIBRARY_NAVMESH_PATH "Library/NavMeshes/"
+//#define LIBRARY_SHADER_PATH "Library/Shaders/"
 
 #define ASSETS_PATH "Assets/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"
@@ -58,12 +53,16 @@ public:
 	unsigned int Load(const char* filePath, char** buffer) const;
 	unsigned int Save(const char* filePath, const void* buffer, unsigned int size, bool append = false) const;
 
-	bool CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath);
-	bool CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath);
-	bool DeleteDirectory(const char* filePath);
-	bool CreateDirectory(const char* directory);
+	bool CopyRelativePath(const char* sourceFilePath, const char* destinationFilePath) const;
+	bool CopyAbsolutePath(const char* sourceFilePath, const char* destinationFilePath) const;
+	bool DeleteDirectory(const char* filePath) const;
+	bool CreateDirectory(const char* directory) const;
+	bool RemoveFile(const char* filePath) const;
 	bool Exists(const char* filePath) const;
 	bool IsDirectory(const char* directoryPath) const;
+	//The pointer returned by this function needs to be released !!!
+	const char* GetLibraryFile(unsigned int id, bool createDir = false) const;
+	int64_t GetLastModTime(const char* file) const;
 
 	bool AddToSearchPath(const char* path);
 
@@ -71,6 +70,7 @@ public:
 	const char* GetWriteDirectory() const;
 
 	void DiscoverFiles(const char* directory, PathNode* parent) const;
+	void DiscoverFiles(const char* directory, const char* extension, std::vector<std::string>& out) const;
 
 	void NormalizePath(char* path) const;
 
@@ -79,7 +79,7 @@ public:
 	const char* GetFileExtensionFromPath(const char* path) const;
 	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
 
-	PathNode* GetRootNode() const { return mRoot; }
+	PathNode* GetRootNode() { return mRoot; }
 
 private:
 	PathNode* mRoot = nullptr;

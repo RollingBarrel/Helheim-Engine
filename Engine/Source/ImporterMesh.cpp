@@ -24,7 +24,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     // Put the indices private
 
     //TODO: Constructor abaix per evitar el set num vertices i set num indices
-    ResourceMesh* rMesh = new ResourceMesh(uid, "MESH", 0, 0);
+    ResourceMesh* rMesh = new ResourceMesh(uid, 0, 0);
 
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
@@ -46,7 +46,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         attr = Attribute(Attribute::POS, sizeof(float) * 3, 0);
         float* data = new float[posAcc.count * 3];
-        rMesh->AddAttribute(attr, data);
         //Add vertices Pos to this buffer taking into acc byteStride
         for (auto i = 0; i < posAcc.count; ++i)
         {
@@ -61,7 +60,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
-
+        rMesh->AddAttribute(attr, data, posAcc.count * 3 * sizeof(float));
+        delete[] data;
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -77,7 +77,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         attr = Attribute(Attribute::UV, sizeof(float) * 2, 0);
         float* data = new float[texCoordAcc.count * 2];
-        rMesh->AddAttribute(attr, data);
         //Add vertices TexCoord to this buffer taking into acc byteStride
         for (auto i = 0; i < texCoordAcc.count; ++i)
         {
@@ -94,6 +93,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f", reinterpret_cast<float2*>(data)[i].x, reinterpret_cast<float2*>(data)[i].y);
         }
+        rMesh->AddAttribute(attr, data, texCoordAcc.count * 2 * sizeof(float));
+        delete[] data;
     }
 
     if (itNorm != primitive.attributes.end())
@@ -108,7 +109,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         attr = Attribute(Attribute::NORMAL, sizeof(float) * 3, 0);
         float* data = new float[normAcc.count * 3];
-        rMesh->AddAttribute(attr, data);
 
         //Add vertices Normal to this buffer taking into acc byteStride
         for (auto i = 0; i < normAcc.count; ++i)
@@ -126,7 +126,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
-
+        rMesh->AddAttribute(attr, data, normAcc.count * 3 * sizeof(float));
+        delete[] data;
     }
 
     //Indices part
@@ -178,7 +179,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         attr = Attribute(Attribute::TANGENT, sizeof(float) * 4, 0);
         float* data = new float[tangAcc.count * 4];
-        rMesh->AddAttribute(attr, data);
 
         //Add vertices Tangent to this buffer taking into acc byteStride
         for (auto i = 0; i < tangAcc.count; ++i)
@@ -196,6 +196,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z, reinterpret_cast<float4*>(data)[i].w);
         }
+        rMesh->AddAttribute(attr, data, tangAcc.count * 4 * sizeof(float));
+        delete[] data;
     }
     else
     {
@@ -203,17 +205,19 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         rMesh->GenerateTangents();
     }
 
+    if (rMesh)
+        Importer::Mesh::Save(rMesh);
     return rMesh;
 }
 
-void Importer::Mesh::Save(const ResourceMesh* mesh)
+void Importer::Mesh::Save(const ResourceMesh* rMesh)
 {
-    unsigned int header[] = { mesh->GetNumberIndices(), mesh->GetNumberVertices(), mesh->GetAttributes().size()};
+    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), rMesh->GetAttributes().size()};
 
-    unsigned int size = sizeof(header) + sizeof(unsigned int) * mesh->GetNumberIndices();
-    for (std::vector<Attribute*>::const_iterator it = mesh->GetAttributes().cbegin(); it != mesh->GetAttributes().cend(); ++it)
+    unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices();
+    for (std::vector<Attribute>::const_iterator it = rMesh->GetAttributes().cbegin(); it != rMesh->GetAttributes().cend(); ++it)
     {
-        size += (*it)->size * mesh->GetNumberVertices() + sizeof(Attribute);
+        size += it->size * rMesh->GetNumberVertices() + sizeof(Attribute);
     }
 
     char* fileBuffer = new char[size];
@@ -225,32 +229,29 @@ void Importer::Mesh::Save(const ResourceMesh* mesh)
     cursor += bytes;
 
     //Save Indices
-    bytes = sizeof(unsigned int) * mesh->GetNumberIndices();
-    memcpy(cursor, mesh->mIndices, bytes);
+    bytes = sizeof(unsigned int) * rMesh->GetNumberIndices();
+    memcpy(cursor, rMesh->mIndices, bytes);
     cursor += bytes;
 
     //Save attributes and data
     unsigned int idx = 0;
-    for (std::vector<Attribute*>::const_iterator it = mesh->GetAttributes().cbegin(); it != mesh->GetAttributes().cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = rMesh->GetAttributes().cbegin(); it != rMesh->GetAttributes().cend(); ++it)
     {
         //save attribute metadata
-        memcpy(cursor, *(it), sizeof(Attribute));
+        memcpy(cursor, &(*it), sizeof(Attribute));
         cursor += sizeof(Attribute);
         //save attribute data
-        bytes = (*it)->size * mesh->GetNumberVertices();
-        memcpy(cursor, mesh->mAttributesData[idx], bytes);
+        bytes = it->size * rMesh->GetNumberVertices();
+        memcpy(cursor, rMesh->mAttributesData[idx], bytes);
         cursor += bytes;
         ++idx;
     }
 
-    std::string path = LIBRARY_MESH_PATH;
-    path += std::to_string(mesh->GetUID());
-    path += ".mesh";
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rMesh->GetUID(), true);
+    App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
-    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
-
+    delete[] libraryPath;
     delete[] fileBuffer;
-    fileBuffer = nullptr;
 }
 
 ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
@@ -278,7 +279,7 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
         memcpy(indices, cursor, bytes);
         cursor += bytes;
 
-        rMesh = new ResourceMesh(uid, filePath, numIndices, numVertices);
+        rMesh = new ResourceMesh(uid, numIndices, numVertices);
 
         rMesh->mIndices = new unsigned int[numIndices];
 
@@ -291,10 +292,12 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
         {
             Attribute* attr = reinterpret_cast<Attribute*>(cursor);
             cursor += sizeof(Attribute);
-            rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor));
+            rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor), attr->size * numVertices);
             cursor += attr->size * numVertices;
         }
         rMesh->LoadToMemory();
+
+        delete[] fileBuffer;
     }
 
    return rMesh;

@@ -289,10 +289,10 @@
 			"extensions": {
 				"KHR_materials_pbrSpecularGlossiness": {
 					"diffuseTexture": {
-						"index": 1
+						"index": 0
 					},
 					"specularGlossinessTexture": {
-						"index": 3
+						"index": 1
 					}
 				}
 			},
@@ -304,12 +304,12 @@
 			},
 			"name": "PlanksMaterial",
 			"normalTexture": {
-				"index": 0,
+				"index": 2,
 				"scale": 3.0,
 				"texCoord": 0
 			},
 			"occlusionTexture": {
-				"index": 2
+				"index": 3
 			}
 		}
 	],

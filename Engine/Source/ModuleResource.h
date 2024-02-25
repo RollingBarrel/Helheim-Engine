@@ -10,19 +10,20 @@ class ModuleResource : public Module
 {
 public:
 
+	bool Init() override;
+
 	unsigned int Find(const char* assetsFile) const;
-	unsigned int ImportFile(const char* assetsFile);
+	unsigned int ImportFile(const char* assetsFile, unsigned int forcedUid = 0);
 
 	Resource* RequestResource(const char* assetsPath);
 	Resource* RequestResource(unsigned int uid, Resource::Type type);
 	void ReleaseResource(unsigned int uid);
 
 private:
-	Resource* CreateNewResource(const char* importedFile, const char* assetsFile, Resource::Type type);
-	Resource* TryToLoadResource(const unsigned int uid, Resource::Type type);
+	Resource* CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid = 0);
 	Resource::Type DeduceResourceType(const char* assetsFile);
 
-	const bool CreateAssetsMeta(const Resource& assetsFile) const;
+	bool CreateAssetsMeta(const Resource& resource, const char* assetsFile) const;
 
 	std::string DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const;
 

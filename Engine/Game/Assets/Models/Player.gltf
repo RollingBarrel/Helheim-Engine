@@ -1263,7 +1263,7 @@
 						"index": 4
 					},
 					"specularGlossinessTexture": {
-						"index": 7
+						"index": 5
 					}
 				}
 			},
@@ -1275,10 +1275,10 @@
 			},
 			"name": "GunMaterial",
 			"normalTexture": {
-				"index": 5
+				"index": 6
 			},
 			"occlusionTexture": {
-				"index": 6
+				"index": 7
 			}
 		},
 		{
@@ -1289,7 +1289,7 @@
 						"index": 0
 					},
 					"specularGlossinessTexture": {
-						"index": 3
+						"index": 1
 					}
 				}
 			},
@@ -1301,10 +1301,10 @@
 			},
 			"name": "PlayerMaterial",
 			"normalTexture": {
-				"index": 1
+				"index": 2
 			},
 			"occlusionTexture": {
-				"index": 2
+				"index": 3
 			}
 		}
 	],
