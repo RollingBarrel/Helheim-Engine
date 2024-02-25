@@ -1,8 +1,9 @@
-#include "SpotLightComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleDebugDraw.h"
 #include "MathFunc.h"
+
+#include "SpotLightComponent.h"
 
 SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) {
 	const float3& pos = owner->GetWorldPosition();
@@ -91,9 +92,15 @@ void SpotLightComponent::Update()
 	}
 }
 
+inline Component* SpotLightComponent::Clone(GameObject* owner) const 
+{ 
+	return App->GetOpenGL()->AddSpotLight(mData, owner);
+}
+
 void SpotLightComponent::Save(Archive& archive) const {
 	//TODO: Do we need id???
 	//archive.AddInt("ID", mID);
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat4("Position", mData.pos);
 	archive.AddFloat4("Direction", mData.aimD);
 	archive.AddFloat4("Color", mData.col);
@@ -130,8 +137,9 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
-	if (componentJson.HasMember("Radius") && componentJson["Radius"].IsArray())
+	if (componentJson.HasMember("Radius") && componentJson["Radius"].IsFloat())
 	{
 		mData.radius = componentJson["Radius"].GetFloat();
 	}
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }

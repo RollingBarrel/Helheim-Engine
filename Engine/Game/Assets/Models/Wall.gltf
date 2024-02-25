@@ -1,0 +1,327 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Wall"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 1650,
+      "type": "VEC3",
+      "max": [
+        1.4977914094924927,
+        0.17268940806388855,
+        2.9084734916687012
+      ],
+      "min": [
+        -1.5022082328796387,
+        -0.16134257614612579,
+        -0.0022849272936582565
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1650,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1650,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -0.98133116960525513,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1650,
+      "type": "VEC2",
+      "max": [
+        0.9990234375,
+        0.9990234375
+      ],
+      "min": [
+        0.000499725341796875,
+        0.000499725341796875
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 1650,
+      "type": "VEC2",
+      "max": [
+        0.9990234375,
+        0.9990234375
+      ],
+      "min": [
+        0.000499725341796875,
+        0.01262664794921875
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5123,
+      "count": 7455,
+      "type": "SCALAR",
+      "max": [
+        1569.0
+      ],
+      "min": [
+        0.0
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 192,
+      "type": "SCALAR",
+      "max": [
+        1649.0
+      ],
+      "min": [
+        1570.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Wall.bin",
+      "byteLength": 107696
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 19800,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 19800,
+      "byteLength": 19800,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 39600,
+      "byteLength": 26400,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 66000,
+      "byteLength": 13200,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 79200,
+      "byteLength": 13200,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 92400,
+      "byteLength": 14912,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 107312,
+      "byteLength": 384,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "T_RoomStyle_Wall01_Normal.jpg",
+      "name": "T_RoomStyle_Wall01_Normal"
+    },
+    {
+      "uri": "T_RoomStyle_Wall01_Occlusion.jpg",
+      "name": "T_RoomStyle_Wall01_Occlusion"
+    },
+    {
+      "uri": "T_RoomStyle_Wall01_BaseColor.jpg",
+      "name": "T_RoomStyle_Wall01_BaseColor"
+    },
+    {
+      "uri": "T_RoomStyle_Wall01_Metallic.jpg",
+      "name": "T_RoomStyle_Wall01_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.215860471,
+          0.215860471,
+          0.215860471,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "MI_RoomStyle01_Wall"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0833333,
+          0.0833333,
+          0.0833333,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.55278640985488892
+      },
+      "name": "M_BlackBack"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 5,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 6,
+          "material": 1
+        }
+      ],
+      "name": "Wall"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "scale": [
+        1.0656,
+        1.0,
+        1.245656
+      ],
+      "translation": [
+        4.956963,
+        -2.642304,
+        2.10226035
+      ],
+      "name": "Wall"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "T_RoomStyle_Wall01_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "T_RoomStyle_Wall01_Occlusion"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "T_RoomStyle_Wall01_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "T_RoomStyle_Wall01_Metallic"
+    }
+  ]
+}

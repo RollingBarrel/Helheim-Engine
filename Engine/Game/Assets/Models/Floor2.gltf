@@ -1,0 +1,327 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Floor2"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 743,
+      "type": "VEC3",
+      "max": [
+        1.3012129068374634,
+        1.2960952520370483,
+        0.063295118510723114
+      ],
+      "min": [
+        -1.298786997795105,
+        -1.30390465259552,
+        -2.3365019785615004E-07
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 743,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 743,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 743,
+      "type": "VEC2",
+      "max": [
+        0.99462890625,
+        0.99462890625
+      ],
+      "min": [
+        0.000499725341796875,
+        0.00507354736328125
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 743,
+      "type": "VEC2",
+      "max": [
+        0.9990234375,
+        0.9990234375
+      ],
+      "min": [
+        0.000499725341796875,
+        0.0767822265625
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5123,
+      "count": 3408,
+      "type": "SCALAR",
+      "max": [
+        734.0
+      ],
+      "min": [
+        0.0
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 18,
+      "type": "SCALAR",
+      "max": [
+        742.0
+      ],
+      "min": [
+        735.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Floor2.bin",
+      "byteLength": 48460
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 8916,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 8916,
+      "byteLength": 8916,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 17832,
+      "byteLength": 11888,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 29720,
+      "byteLength": 5944,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 35664,
+      "byteLength": 5944,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 41608,
+      "byteLength": 6816,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 48424,
+      "byteLength": 36,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "T_RoomStyle01_Floor02_Normal.jpg",
+      "name": "T_RoomStyle01_Floor02_Normal"
+    },
+    {
+      "uri": "T_RoomStyle01_Floor02_Occlusion.jpg",
+      "name": "T_RoomStyle01_Floor02_Occlusion"
+    },
+    {
+      "uri": "T_RoomStyle01_Floor02_BaseColor.jpg",
+      "name": "T_RoomStyle01_Floor02_BaseColor"
+    },
+    {
+      "uri": "T_RoomStyle01_Floor02_Metallic.jpg",
+      "name": "T_RoomStyle01_Floor02_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.215860471,
+          0.215860471,
+          0.215860471,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "MI_RoomStyle01_Floor02"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0833333,
+          0.0833333,
+          0.0833333,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.55278640985488892
+      },
+      "name": "M_BlackBack"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 5,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4
+          },
+          "indices": 6,
+          "material": 1
+        }
+      ],
+      "name": "Floor2"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -1.31779052E-06,
+        -0.7071068,
+        -0.707106769,
+        1.31779063E-06
+      ],
+      "scale": [
+        1.15470266,
+        1.15470266,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        0.0,
+        7.450581E-09
+      ],
+      "name": "Floor2"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "T_RoomStyle01_Floor02_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "T_RoomStyle01_Floor02_Occlusion"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "T_RoomStyle01_Floor02_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "T_RoomStyle01_Floor02_Metallic"
+    }
+  ]
+}
