@@ -64,6 +64,7 @@ void ScenePanel::Draw(int windowFlags)
 							GameObject* go = new GameObject(nGO);
 							MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER, it->meshUID, it->materialUID));
 						}
+						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
 					}
 					case Resource::Type::Scene:
