@@ -37,7 +37,7 @@ void ProjectPanel::Draw(int windowFlags)
 
 const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 {
-	//Discard Meta file but, read .meta data
+	//Discard Meta file but, read .emeta data
 	for (auto i = 0; i < current.mChildren.size(); ++i)
 	{
 		if (ImGui::TreeNodeEx(current.mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen))

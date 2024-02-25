@@ -346,7 +346,7 @@ void ModuleFileSystem::DiscoverFiles(const char* directory, PathNode* parent) co
                 std::string extensionName;
                 SplitPath(path.c_str(), &fileName, &extensionName);
                 std::string combine = fileName + extensionName;
-                if (!(strcmp(extensionName.c_str(), ".meta") == 0) && !(strcmp(extensionName.c_str(), ".bin") == 0))
+                if (!(strcmp(extensionName.c_str(), ".emeta") == 0) && !(strcmp(extensionName.c_str(), ".bin") == 0))
                 {   
                     AssetDisplay* assetDisplay = new AssetDisplay(combine.c_str(), path.c_str(), parent);
                     parent->assets.push_back(assetDisplay);

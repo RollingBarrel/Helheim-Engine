@@ -25,7 +25,7 @@
 bool ModuleResource::Init()
 {
 	std::vector<std::string> metas;
-	App->GetFileSystem()->DiscoverFiles("Assets", ".meta", metas);
+	App->GetFileSystem()->DiscoverFiles("Assets", ".emeta", metas);
 	std::string assetsPath;
 	for (std::string meta : metas)
 	{
@@ -39,7 +39,7 @@ bool ModuleResource::Init()
 		char* fileBuffer = nullptr;
 		if (!App->GetFileSystem()->Load(meta.c_str(), &fileBuffer))
 		{
-			LOG("Not able to open .meta file");
+			LOG("Not able to open .emeta file");
 			continue;
 		}
 
@@ -47,7 +47,7 @@ bool ModuleResource::Init()
 		rapidjson::ParseResult result = document.Parse(fileBuffer);
 		if (!result) {
 			// Handle parsing error
-			LOG("Not able to load .meta file");
+			LOG("Not able to load .emeta file");
 			RELEASE_ARRAY(fileBuffer);
 			continue;
 		}
@@ -124,10 +124,10 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned i
 	// Create the Meta file for the Asset
 	if (!CreateAssetsMeta(*resource, assetsCopiedFile.c_str()))
 	{
-		LOG("Couldn't create a .meta File");
+		LOG("Couldn't create a .emeta File");
 		return 0;
 	}
-	LOG("Succesfully created a .meta File");
+	LOG("Succesfully created a .emeta File");
 
 	unsigned int ret = resource->GetUID();
 	ReleaseResource(ret);
@@ -137,12 +137,12 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned i
 Resource* ModuleResource::RequestResource(const char* assetsPath)
 {
 	std::string path = assetsPath;
-	path += ".meta";
+	path += ".emeta";
 
 	char* fileBuffer = nullptr;
 	if (!App->GetFileSystem()->Load(path.c_str(), &fileBuffer))
 	{
-		LOG("Not able to open .meta file");
+		LOG("Not able to open .emeta file");
 		return nullptr;
 	}
 
@@ -150,7 +150,7 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 	rapidjson::ParseResult result = document.Parse(fileBuffer);
 	if (!result) {
 		// Handle parsing error
-		LOG("Not able to load .meta file");
+		LOG("Not able to load .emeta file");
 		RELEASE_ARRAY(fileBuffer);
 		return nullptr;
 	}
@@ -332,7 +332,7 @@ bool ModuleResource::CreateAssetsMeta(const Resource& resource, const char* asse
 
 	std::string metaName;
 	metaName += assetsFile;
-	metaName += ".meta";
+	metaName += ".emeta";
 
 	// Create a JSON document
 	rapidjson::Document document;
