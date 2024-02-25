@@ -37,6 +37,8 @@ private:
 		{".gltf", Resource::Type::Model},
 		// Add more mappings for other resource types as needed
 	};
+
+	friend class ResourcePanel;
 };
 
 #endif //_MODULE_RESOURCE_H_

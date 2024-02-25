@@ -262,6 +262,9 @@
     <ClCompile Include="ResourceModel.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="ResourcePanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -729,6 +732,9 @@
     </ClInclude>
     <ClInclude Include="ResourceModel.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
