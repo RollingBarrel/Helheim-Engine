@@ -356,10 +356,10 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="CanvasComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
+      <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
     <ClCompile Include="Transform2DComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
+      <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -908,10 +908,10 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="CanvasComponent.h">
-      <Filter>GameObjects\Components</Filter>
+      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="Transform2DComponent.h">
-      <Filter>GameObjects\Components</Filter>
+      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -989,6 +989,9 @@
     </Filter>
     <Filter Include="Dependencies\ImGuizmo">
       <UniqueIdentifier>{507b6f07-d49a-45f6-88cc-c49673feecf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Components\UI">
+      <UniqueIdentifier>{e20dbcd6-c127-457c-bb19-f579b8d3eee7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
