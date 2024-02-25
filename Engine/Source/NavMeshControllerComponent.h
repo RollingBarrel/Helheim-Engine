@@ -24,9 +24,9 @@ public:
 private:
 	void GetGOMeshes(const GameObject* gameObj);
 	std::vector<const ResourceMesh*> mMeshesToNavMesh;
-	std::vector<OBB> mOBBs;
 	std::vector<const MeshRendererComponent*> mMeshRendererComponents;
 	void DebugDrawPolyMesh();
+	void LoadDrawMesh();
 
 	rcHeightfield*  mHeightField=nullptr;
 	rcCompactHeightfield* mCompactHeightField = nullptr;
@@ -57,6 +57,12 @@ private:
 
 	//DEBUG DRAW VARIABLES
 	bool mDraw = true;
+	unsigned int mVao = 0;
+	unsigned int mVbo = 0;
+	unsigned int mEbo = 0;
+	std::vector<float3> mVertices;
+	std::vector<unsigned int> mIndices;
+
 
 };
 
