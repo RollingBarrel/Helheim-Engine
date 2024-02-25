@@ -352,6 +352,9 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleUI.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -894,6 +897,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleUI.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

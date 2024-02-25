@@ -243,6 +243,7 @@
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="NavMeshControllerComponent.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
@@ -393,6 +394,7 @@
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterTexture.h" />
+    <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="TimerPanel.h" />
   </ItemGroup>
   <ItemGroup>
