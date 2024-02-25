@@ -276,37 +276,19 @@ void NavMeshControllerComponent::LoadDrawMesh()
 {
 	if (mPolyMesh != nullptr)
 	{
-		int numVerticesPerPolygon = mPolyMesh->nvp;
+		
 
-		for (int i = 0; i < mPolyMesh->npolys; ++i) {
-			// Indices for the current polygon in the polys array
-			int polyStartIndex = i * 2 * numVerticesPerPolygon;
-
-			// Process current polygon vertices
-			for (int j = 0; j < numVerticesPerPolygon; ++j) {
-				int vertexIndex = mPolyMesh->polys[polyStartIndex + j];
-				unsigned short v_x = mPolyMesh->verts[vertexIndex];
-				unsigned short v_y = mPolyMesh->verts[vertexIndex + 1];
-				unsigned short v_z = mPolyMesh->verts[vertexIndex + 2];
-				float3 vertex = float3(v_x, v_y, v_z);
-				mVertices.push_back(vertex);
-			}
-
-			// Process neighboring polygon vertices
-			for (int j = numVerticesPerPolygon; j < 2 * numVerticesPerPolygon; ++j) {
-				int neighborIndex = mPolyMesh->polys[polyStartIndex + j];
-				unsigned short v_x = mPolyMesh->verts[neighborIndex];
-				unsigned short v_y = mPolyMesh->verts[neighborIndex + 1];
-				unsigned short v_z = mPolyMesh->verts[neighborIndex + 2];
-				float3 vertex = float3(v_x, v_y, v_z);
-				mVertices.push_back(vertex);
-			}
+		for (int i = 0; i < mPolyMeshDetail->nverts; ++i)
+		{
+			LOG("%f", mPolyMeshDetail->verts[i]);
+		}
+		LOG("Me cago en los indices y la madre que me trajo")
+		for (int i = 0; i < mPolyMeshDetail->ntris; ++i)
+		{
+			mIndices.push_back((unsigned int) mPolyMeshDetail->tris[i*4]);
 		}
 
-		// Fill indices array, assuming a simple triangulation
-		for (unsigned int i = 0; i < mVertices.size(); ++i) {
-			mIndices.push_back(i);
-		}
+
 
 		// Now you can create the VAO and fill it with the mesh data
 		glGenVertexArrays(1, &mVao);
@@ -316,10 +298,10 @@ void NavMeshControllerComponent::LoadDrawMesh()
 		glBindVertexArray(mVao);
 
 		glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-		glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(float) * 3, mVertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 3 * mPolyMeshDetail->nverts * sizeof(float), mPolyMeshDetail->verts, GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), mIndices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
 
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
