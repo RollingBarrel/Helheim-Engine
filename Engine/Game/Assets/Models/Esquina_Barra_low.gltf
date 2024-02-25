@@ -1,0 +1,247 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Esquina_Barra_low"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 330,
+      "type": "VEC3",
+      "max": [
+        0.027148498222231865,
+        0.0065311342477798462,
+        0.010238634422421455
+      ],
+      "min": [
+        -0.02612452395260334,
+        -0.0067871217615902424,
+        -0.0097613651305437088
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 330,
+      "type": "VEC3",
+      "max": [
+        0.81161957979202271,
+        1.0,
+        0.90453404188156128
+      ],
+      "min": [
+        -0.70710676908493042,
+        -0.99857938289642334,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 330,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        0.99859040975570679,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.95346260070800781,
+        -0.72094565629959106,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 330,
+      "type": "VEC2",
+      "max": [
+        0.978725254535675,
+        0.99134933948516846
+      ],
+      "min": [
+        0.0094043388962745667,
+        0.012682914733886719
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5123,
+      "count": 846,
+      "type": "SCALAR",
+      "max": [
+        329.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Esquina_Barra_low.bin",
+      "byteLength": 17532
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 3960,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 3960,
+      "byteLength": 3960,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 7920,
+      "byteLength": 5280,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 13200,
+      "byteLength": 2640,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 15840,
+      "byteLength": 1692,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "Esquina_Barra_low_Material.001_Normal.jpg",
+      "name": "Esquina_Barra_low_Material.001_Normal"
+    },
+    {
+      "uri": "Esquina_Barra_low_Material.001_AlbedoTransparency.jpg",
+      "name": "Esquina_Barra_low_Material.001_AlbedoTransparency"
+    },
+    {
+      "uri": "Esquina_Barra_low_Material.001_MetallicSmoothness.jpg",
+      "name": "Esquina_Barra_low_Material.001_MetallicSmoothness"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 1,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "M_BarCorner"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0
+        }
+      ],
+      "name": "Esquina_Barra_low"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -7.61406937E-08,
+        8.940697E-08,
+        0.7071067,
+        0.7071069
+      ],
+      "scale": [
+        0.25000003,
+        4.0,
+        1.0
+      ],
+      "translation": [
+        -0.008199933,
+        0.0165200066,
+        0.009690902
+      ],
+      "name": "Esquina_Barra_low"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "Esquina_Barra_low_Material.001_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "Esquina_Barra_low_Material.001_AlbedoTransparency"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "Esquina_Barra_low_Material.001_MetallicSmoothness"
+    }
+  ]
+}
