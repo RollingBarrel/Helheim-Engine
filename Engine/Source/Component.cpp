@@ -18,6 +18,8 @@ const char* Component::GetNameFromType() const
 			return "Test";
 		case ComponentType::NAVMESHCONTROLLER:
 			return "NavMeshController";
+		case ComponentType::AIAGENT:
+			return "AI Agent";
 		default:
 			return "None";
 	}
