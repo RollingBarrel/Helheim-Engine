@@ -69,7 +69,7 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
                 if (animation->channels.find(model.nodes[channel.target_node].name) == animation->channels.end()) {
                     
                     //animation -> mUID = math::LCG().Int();
-                    Importer::Animation::ImportChannel(model, channel, animation);
+                    Importer::Animation::Import(model, channel, animation);
 
                 }
                 

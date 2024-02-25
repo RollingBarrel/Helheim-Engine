@@ -7,6 +7,7 @@
 #define LIBRARY_MATERIAL_PATH "Library/Materials/"
 #define LIBRARY_SHADER_PATH "Library/Shaders/"
 #define LIBRARY_MODEL_PATH "Library/Models/"
+#define LIBRARY_ANIMATION_PATH "Library/Animations/"
 
 #define ASSETS_PATH "Assets/"
 #define ASSETS_MODEL_PATH "Assets/Models/"

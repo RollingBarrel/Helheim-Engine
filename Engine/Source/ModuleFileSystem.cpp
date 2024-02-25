@@ -32,6 +32,7 @@ ModuleFileSystem::ModuleFileSystem()
     CreateDirectory(LIBRARY_MATERIAL_PATH);
     CreateDirectory(LIBRARY_SHADER_PATH);
     CreateDirectory(LIBRARY_MODEL_PATH);
+    CreateDirectory(LIBRARY_ANIMATION_PATH);
 
     mRoot = new PathNode("Assets");
     DiscoverFiles("Library", mRoot);
