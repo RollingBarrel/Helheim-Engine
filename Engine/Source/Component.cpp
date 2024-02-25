@@ -18,6 +18,10 @@ const char* Component::GetNameFromType() const
 			return "Test";
 		case ComponentType::NAVMESHCONTROLLER:
 			return "NavMeshController";
+		case ComponentType::CANVAS:
+			return "Canvas";
+		case ComponentType::TRANSFORM2D:
+return "Transform2D";
 		default:
 			return "None";
 	}

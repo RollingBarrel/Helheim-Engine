@@ -355,6 +355,12 @@
     <ClCompile Include="ModuleUI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="CanvasComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform2DComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -900,6 +906,12 @@
     </ClInclude>
     <ClInclude Include="ModuleUI.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform2DComponent.h">
+      <Filter>GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
