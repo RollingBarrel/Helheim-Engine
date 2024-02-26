@@ -58,18 +58,18 @@ bool ModuleResource::Init()
 		{
 			uid = document["uid"].GetInt();
 		}
-		int64_t metatTime;
+		int64_t metaTime;
 		//Mode time
 		if (document.HasMember("modTime"))
 		{
-			metatTime = document["modTime"].GetInt64();
+			metaTime = document["modTime"].GetInt64();
 		}
 		else
 		{
 			assert(false && "Meta has no time");
 		}
 		const char* libraryFile = App->GetFileSystem()->GetLibraryFile(uid);
-		if (metatTime < App->GetFileSystem()->GetLastModTime(assetsPath.c_str()) || !App->GetFileSystem()->Exists(libraryFile))
+		if (metaTime < App->GetFileSystem()->GetLastModTime(assetsPath.c_str()) || !App->GetFileSystem()->Exists(libraryFile))
 		{
 			ImportFile(assetsPath.c_str(), uid);
 		}
