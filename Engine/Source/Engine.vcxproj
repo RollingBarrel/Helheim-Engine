@@ -149,6 +149,7 @@
     <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
+    <ClCompile Include="CanvasComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CameraUtils.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -245,6 +246,7 @@
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="NavMeshControllerComponent.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
@@ -262,11 +264,13 @@
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerPanel.cpp" />
+    <ClCompile Include="Transform2DComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
+    <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CameraUtils.h" />
     <ClInclude Include="Component.h" />
@@ -397,7 +401,9 @@
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterTexture.h" />
+    <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="TimerPanel.h" />
+    <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\Fragment.fs" />
