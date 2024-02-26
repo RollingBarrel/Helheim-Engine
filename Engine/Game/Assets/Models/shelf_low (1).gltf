@@ -1,0 +1,225 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "shelf_low (1)"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 916,
+      "type": "VEC3",
+      "max": [
+        0.011377855204045773,
+        0.0099999997764825821,
+        0.020229578018188477
+      ],
+      "min": [
+        -0.0099999997764825821,
+        -0.0099999997764825821,
+        0.00022957682085689157
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 916,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 916,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 916,
+      "type": "VEC2",
+      "max": [
+        0.99642407894134521,
+        0.99433588981628418
+      ],
+      "min": [
+        0.0037593953311443329,
+        0.0029056072235107422
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5123,
+      "count": 2424,
+      "type": "SCALAR",
+      "max": [
+        915.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "shelf_low (1).bin",
+      "byteLength": 48816
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 10992,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 10992,
+      "byteLength": 10992,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 21984,
+      "byteLength": 14656,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 36640,
+      "byteLength": 7328,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 43968,
+      "byteLength": 4848,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "shelf_low_DefaultMaterial_Normal.jpg",
+      "name": "shelf_low_DefaultMaterial_Normal"
+    },
+    {
+      "uri": "shelf_low_DefaultMaterial_AlbedoTransparency.jpg",
+      "name": "shelf_low_DefaultMaterial_AlbedoTransparency"
+    },
+    {
+      "uri": "shelf_low_DefaultMaterial_MetallicSmoothness.jpg",
+      "name": "shelf_low_DefaultMaterial_MetallicSmoothness"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "Shelf"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0
+        }
+      ],
+      "name": "shelf_low (1)"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "shelf_low (1)"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "shelf_low_DefaultMaterial_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "shelf_low_DefaultMaterial_AlbedoTransparency"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "shelf_low_DefaultMaterial_MetallicSmoothness"
+    }
+  ]
+}

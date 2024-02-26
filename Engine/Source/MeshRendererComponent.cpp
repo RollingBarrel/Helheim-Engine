@@ -146,6 +146,12 @@ void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("MaterialID", mMaterial->mUID);
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
+	archive.AddBool("Diffuse", mMaterial->mEnableDiffuseTexture);
+	archive.AddBool("Specular", mMaterial->mEnableSpecularGlossinessTexture);
+	archive.AddBool("Shininess", mMaterial->mEnableShinessMap);
+	archive.AddBool("Normal", mMaterial->mEnableNormalMap);
+	
+	
 }
 
 void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
@@ -165,6 +171,21 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 	if (meshID != 0 && materialID != 0) {
 		Load(meshID, materialID);
 	}
-
+	if (componentJson.HasMember("Diffuse") && componentJson["Diffuse"].IsBool())
+	{
+		mMaterial->mEnableDiffuseTexture = componentJson["Diffuse"].GetBool();
+	}
+	if (componentJson.HasMember("Specular") && componentJson["Specular"].IsBool())
+	{
+		mMaterial->mEnableSpecularGlossinessTexture = componentJson["Specular"].GetBool();
+	}
+	if (componentJson.HasMember("Shininess") && componentJson["Shininess"].IsBool())
+	{
+		mMaterial->mEnableShinessMap = componentJson["Shininess"].GetBool();
+	}
+	if (componentJson.HasMember("Normal") && componentJson["Normal"].IsBool())
+	{
+		mMaterial->mEnableNormalMap = componentJson["Normal"].GetBool();
+	}
 }
 

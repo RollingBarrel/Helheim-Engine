@@ -22,6 +22,7 @@ public:
 
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
     void DrawAxis();
+    void DrawFrustum(const Frustum& frustum);
     bool GetShouldRenderGrid() const { return mDrawGrid; }
     void SetRenderGrid(bool a) { mDrawGrid = a; }
     void DrawCube(const OBB& obb, const float3& color);
@@ -36,7 +37,7 @@ private:
     bool mDrawGrid = true;
 
     void DrawGrid();
-    void DrawFrustum(const Frustum& frustum); 
+    
 
 
 };
