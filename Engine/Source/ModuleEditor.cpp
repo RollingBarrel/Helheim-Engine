@@ -129,8 +129,13 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
-void ModuleEditor::OpenPanel(const char* name)
+void ModuleEditor::OpenPanel(const char* name, const bool focus)
 {
+	if (focus)
+	{
+		ImGui::SetNextWindowFocus();
+	}
+	
 	Panel* panel = mPanels[name];
 	panel->Open();
 }

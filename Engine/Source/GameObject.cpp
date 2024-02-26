@@ -574,4 +574,14 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 	}
 }
 
+GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
+{
+	return nullptr;
+}
+
+std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
+{
+	return std::vector<GameObject*>();
+}
+
 

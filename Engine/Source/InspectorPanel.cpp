@@ -63,7 +63,7 @@ void InspectorPanel::Draw(int windowFlags)
 		ImGui::SameLine();
 
 		if (ImGui::Button("Edit")) {
-			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL);
+			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
 		}
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);

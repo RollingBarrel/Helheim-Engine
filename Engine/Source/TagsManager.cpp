@@ -61,11 +61,10 @@ Tag* TagsManager::GetTag(std::string tagname)
 
 void TagsManager::DeleteTag(Tag* tag)
 {
-    std::vector<Tag*> customs = GetCustomTag();
-    auto it = std::find(customs.begin(), customs.end(), tag);
+    auto it = std::find(mTags.begin(), mTags.end(), tag);
 
-    if (it != customs.end()) {
-        customs.erase(it);
+    if (it != mTags.end()) {
+        mTags.erase(it);
 
         delete tag;
     }

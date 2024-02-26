@@ -31,7 +31,6 @@ void TagsManagerPanel::DrawTagsList()
     int yMax = (20 * App->GetTags()->GetCustomTagsSize() >= 300) ? 300 : 20 * App->GetTags()->GetCustomTagsSize();
     ImVec2 size = ImVec2(200.0f, yMax);
 
-    std::vector<Tag*> systemTags = App->GetTags()->GetSystemTag();
     std::vector<Tag*> customTags = App->GetTags()->GetCustomTag();
 
     if (ImGui::BeginListBox("##Tags", size))
@@ -64,7 +63,6 @@ void TagsManagerPanel::DrawAddButton()
 {
     ImGui::SeparatorText("ADD");
     static char inputBuffer[256] = ""; 
-    //strcpy_s(inputBuffer, mTemporalTagName);
     ImGui::InputText("##Add a new tag", inputBuffer, IM_ARRAYSIZE(inputBuffer));
 
     if (ImGui::Button("Add") && std::strlen(inputBuffer) > 0)

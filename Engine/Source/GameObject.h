@@ -73,6 +73,9 @@ public:
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
 
+	static GameObject* FindGameObjectWithTag(std::string tagname);
+	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
+
 private:
 	GameObject* RemoveChild(const int id);
 	void AddSuffix();
