@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "Dependencies\Optick\src\optick.h"
 
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 
@@ -99,6 +100,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 
 void HierarchyPanel::DrawTree(GameObject* node)
 {
+	OPTICK_EVENT();
 	ImGui::PushID(node->GetID());
 	bool nodeOpen = true;
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
