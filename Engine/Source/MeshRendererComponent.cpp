@@ -43,7 +43,8 @@ void MeshRendererComponent::Draw()
 
 	if (mDrawBox)
 	{
-		App->GetDebugDraw()->DrawBoundingBox(mOBB);
+		App->GetDebugDraw()->DrawCube(mOBB, float3(0.0f, 0.0f, 1.0f)); // Blue
+		App->GetDebugDraw()->DrawCube(mAABBWorld, float3(1.0f, 0.647059f, 0.0f)); // Orange
 	}
 
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
@@ -134,7 +135,8 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 
 void MeshRendererComponent::RefreshBoundingBoxes()
 {
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+	mOBB = OBB(mAABB);
+	mOBB.Transform(mOwner->GetWorldTransform());
 	mAABBWorld = mOBB.MinimalEnclosingAABB();
 }
 

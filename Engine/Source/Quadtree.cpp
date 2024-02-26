@@ -117,7 +117,7 @@ void Quadtree::CleanUp()
 
 void Quadtree::Draw() const
 {
-	App->GetDebugDraw()->DrawQuadtree(mBoundingBox);
+	App->GetDebugDraw()->DrawCube(mBoundingBox, float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
 
 	if (mFilled)
 	{

@@ -644,29 +644,15 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     dd::flush();
 }
 
-void ModuleDebugDraw::DrawBoundingBox(const OBB& obb)
+void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
 {
     ddVec3 points[8];
     obb.GetCornerPoints(points);
-    ddVec3 orderedPoints[8] = 
-    {
-        points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
-    };
-    dd::box(orderedPoints, dd::colors::Blue);
-
-    dd::flush();
-}
-
-void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
-{
-    ddVec3 points[8];
-    aabb.GetCornerPoints(points);
-    
     ddVec3 orderedPoints[8] =
     {
         points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
     };
-    dd::box(orderedPoints, dd::colors::LightGoldenYellow);
+    dd::box(orderedPoints, color);
 
     dd::flush();
 }
