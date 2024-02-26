@@ -16,14 +16,20 @@ TagsManager::~TagsManager()
 {
 }
 
-void TagsManager::AddTag(char* tagname)
+void TagsManager::AddTag(std::string tagname)
 {
-    if (!TagNameExists(tagname)) {
+    if (TagNameExists(tagname) == nullptr) {
         Tag* newTag = new Tag(lastIndex, tagname);
         mCustomTags.push_back(newTag);
 
         ++lastIndex;
     }
+}
+
+Tag* TagsManager::GetTag(std::string tagname)
+{
+    // Dublicate but public version of TagNameExists
+    return TagNameExists(tagname);
 }
 
 void TagsManager::DeleteTag(Tag* tag)
@@ -37,14 +43,14 @@ void TagsManager::DeleteTag(Tag* tag)
     }
 }
 
-bool TagsManager::TagNameExists( const char* tagname)
+Tag* TagsManager::TagNameExists(std::string tagname)
 {
-    for (const Tag* tag : mCustomTags) {
-        if (std::strcmp(tag->GetName().c_str(), tagname) == 0) {
-            return true; 
+    for (Tag* tag : mCustomTags) {
+        if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0) {
+            return tag;
         }
     }
-    return false; 
+    return nullptr; 
 }
 
 

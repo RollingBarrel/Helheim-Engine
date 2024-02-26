@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "InspectorPanel.h"
 #include "Quadtree.h"
 #include "imgui.h"
@@ -16,8 +17,10 @@
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+#include "TagsManager.h"
+#include "Tag.h"
 GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
+	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetEditor()->GetTags()->GetTag("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -32,7 +35,7 @@ GameObject::GameObject(GameObject* parent)
 GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(App->GetEditor()->GetTags()->GetTag("Untagged"))
 {
 
 	AddSuffix();
@@ -51,7 +54,8 @@ GameObject::GameObject(const GameObject& original)
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
+	mTag(App->GetEditor()->GetTags()->GetTag("Untagged"))
 {
 
 	for (auto child : original.mChildren) {
@@ -66,7 +70,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 }
 
 GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent),
+	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetEditor()->GetTags()->GetTag("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 
@@ -79,7 +83,8 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
 	:mID(id), mName(name), mParent(parent), mPosition(position),
-	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr)
+	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr),
+	mTag(App->GetEditor()->GetTags()->GetTag("Untagged"))
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 	if (!mIsRoot) {

@@ -11,6 +11,8 @@
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
 #include "ImporterMaterial.h"
+#include "Tag.h"
+#include "TagsManager.h"
 #include "MathFunc.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
@@ -41,6 +43,27 @@ void InspectorPanel::Draw(int windowFlags)
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
+		ImGui::Text("Tag");
+		ImGui::SameLine();
+		const char* fruitOptions[] = { "Apple", "Banana", "Orange", "Grapes", "Strawberry" };
+		int selectedFruitIndex = 0;
+		std::vector<Tag*> systemTags = App->GetEditor()->GetTags()->GetSystemTag();
+		std::vector<Tag*> customTags = App->GetEditor()->GetTags()->GetCustomTag();
+		std::vector<Tag*> combinedTags(systemTags.begin(), systemTags.end());
+		combinedTags.insert(combinedTags.end(), customTags.begin(), customTags.end());
+
+		if (ImGui::BeginCombo("##tags", fruitOptions[selectedFruitIndex]))
+		{
+			for (auto i = 0; i < combinedTags.size(); i++) {
+				if (ImGui::Selectable(combinedTags[i]->GetName().c_str(), selectedFruitIndex))
+				{
+					selectedFruitIndex = i;
+					//mSelectedTag = customTags[i];
+				}
+			}
+
+			ImGui::EndCombo();
+		}
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
 		ImGui::Separator();

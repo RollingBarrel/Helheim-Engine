@@ -4,7 +4,6 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "string"
-#include "Tag.h"
 #include "Archive.h"
 
 #undef max
@@ -15,6 +14,7 @@
 class MeshRendererComponent;
 class CameraComponent;
 class Component;
+class Tag;
 enum class ComponentType : unsigned int;
 
 class GameObject
@@ -83,7 +83,7 @@ private:
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
-	//Tag* mTag = 
+	Tag* mTag = nullptr;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
 	const unsigned int mID;
