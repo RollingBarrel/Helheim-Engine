@@ -45,7 +45,7 @@ public:
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
-	const Tag* GetTag() const { return mTag; }
+	Tag* GetTag() const { return mTag; }
 
 	void ResetTransform();
 

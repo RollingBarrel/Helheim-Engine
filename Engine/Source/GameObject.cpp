@@ -34,7 +34,7 @@ GameObject::GameObject(GameObject* parent)
 GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(App->GetTags()->GetTag("Untagged"))
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(original.GetTag())
 {
 
 	AddSuffix();
@@ -54,7 +54,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mTag(App->GetTags()->GetTag("Untagged"))
+	mTag(original.GetTag())
 {
 
 	for (auto child : original.mChildren) {
@@ -576,6 +576,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 
 GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 {
+	
 	return nullptr;
 }
 

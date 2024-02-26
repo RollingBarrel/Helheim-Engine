@@ -18,17 +18,29 @@ TagsManagerPanel::~TagsManagerPanel()
 
 void TagsManagerPanel::Draw(int windowFlags)
 {
-    if (ImGui::CollapsingHeader("Tags")) {
-        DrawTagsList();
-        DrawDeleteButton();
-        DrawAddButton();
+    if (ImGui::Begin(GetName(), &mOpen, windowFlags))
+    {
+        if (ImGui::CollapsingHeader("Tags")) {
+            DrawTagsList();
+            DrawDeleteButton();
+            DrawAddButton();
+        }
     }
-    
+    ImGui::End(); 
 }
 
 void TagsManagerPanel::DrawTagsList()
 {
-    int yMax = (20 * App->GetTags()->GetCustomTagsSize() >= 300) ? 300 : 20 * App->GetTags()->GetCustomTagsSize();
+    int yMax;
+    if (18 * App->GetTags()->GetCustomTagsSize() >= 300) {
+        yMax = 300;
+    }
+    else if (18 * App->GetTags()->GetCustomTagsSize() == 0) {
+        yMax = 18;
+    }
+    else {
+        yMax = 18 * App->GetTags()->GetCustomTagsSize();
+    }
     ImVec2 size = ImVec2(200.0f, yMax);
 
     std::vector<Tag*> customTags = App->GetTags()->GetCustomTag();

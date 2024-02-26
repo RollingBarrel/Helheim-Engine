@@ -16,6 +16,9 @@ TagsManager::TagsManager()
 
 TagsManager::~TagsManager()
 {
+    for (Tag* tag : mTags) {
+        delete tag;
+    }
 }
 
 void TagsManager::AddTag(std::string tagname)
@@ -72,7 +75,6 @@ void TagsManager::DeleteTag(Tag* tag)
 
 Tag* TagsManager::TagNameExists(std::string tagname)
 {
-    // Prevent delete system tags
     for (Tag* tag : mTags) {
         if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0) {
             return tag;

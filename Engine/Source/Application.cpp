@@ -43,6 +43,7 @@ Application::~Application()
 
 	delete mEngineTimer;
 	delete mGameTimer;
+	delete mTagsManager;
 }
 
 bool Application::Init()
