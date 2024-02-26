@@ -34,7 +34,21 @@ void NavMeshControllerComponent::Reset() {
 	//Change variables to default values.
 }
 
+void NavMeshControllerComponent::DebugDrawPolyMesh()
+{
+	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glUseProgram(program);
+	float4x4 identity = float4x4::identity;
+	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
+	glBindVertexArray(mVao);
+	glDrawElements(GL_TRIANGLES,mPolyMeshDetail->nverts , GL_UNSIGNED_INT, 0);
 
+
+
+
+}
 
 void NavMeshControllerComponent::Update()
 {
@@ -258,19 +272,7 @@ void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 
 }
 
-void NavMeshControllerComponent::DebugDrawPolyMesh()
-{
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
-	glUseProgram(program);
-	float4x4 identity = float4x4::identity;
-	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
-	glBindVertexArray(mVao);
-	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-	glUseProgram(0);
-	glBindVertexArray(0);
 
-
-}
 
 void NavMeshControllerComponent::LoadDrawMesh()
 {
@@ -278,33 +280,42 @@ void NavMeshControllerComponent::LoadDrawMesh()
 	{
 		
 
-		for (int i = 0; i < mPolyMeshDetail->nverts; ++i)
+		for (int i = 0; i < mPolyMeshDetail->nverts* 3; ++i)
 		{
 			LOG("%f", mPolyMeshDetail->verts[i]);
 		}
 		LOG("Me cago en los indices y la madre que me trajo")
-		for (int i = 0; i < mPolyMeshDetail->ntris; ++i)
+			int counter = 1;
+		for (int i = 0; i < mPolyMeshDetail->ntris*4; ++i)
 		{
-			mIndices.push_back((unsigned int) mPolyMeshDetail->tris[i*4]);
+			if (i == 0) {
+				mIndices.push_back((unsigned int)mPolyMeshDetail->tris[i]);
+			}
+			if (i != 0&&counter % 4 != 0) {
+				mIndices.push_back((unsigned int)mPolyMeshDetail->tris[i]);
+			}
+			counter++;
+			
 		}
 
 
 
 		// Now you can create the VAO and fill it with the mesh data
 		glGenVertexArrays(1, &mVao);
-		glGenBuffers(1, &mVbo);
-		glGenBuffers(1, &mEbo);
-
 		glBindVertexArray(mVao);
 
+
+		glGenBuffers(1, &mVbo);
 		glBindBuffer(GL_ARRAY_BUFFER, mVbo);
 		glBufferData(GL_ARRAY_BUFFER, 3 * mPolyMeshDetail->nverts * sizeof(float), mPolyMeshDetail->verts, GL_STATIC_DRAW);
 
+
+		glGenBuffers(1, &mEbo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
+	
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glEnableVertexAttribArray(0);
 
 
 		glBindVertexArray(0);
