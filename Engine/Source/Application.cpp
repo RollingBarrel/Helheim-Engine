@@ -8,6 +8,7 @@
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScriptManager.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -32,6 +33,7 @@ Application::Application()
 	modules[5] = debugDraw = new ModuleDebugDraw();
 	modules[6] = scene = new ModuleScene();
 	modules[7] = editor = new ModuleEditor();
+	modules[8] = scriptManager = new ModuleScriptManager();
 }
 
 Application::~Application()
