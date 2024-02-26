@@ -235,6 +235,12 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="CameraUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="NavMeshControllerComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -801,6 +807,12 @@
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="NavMeshControllerComponent.h">
       <Filter>GameObjects\Components</Filter>
