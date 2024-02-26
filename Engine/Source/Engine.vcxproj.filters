@@ -367,6 +367,9 @@
     <ClCompile Include="Transform2DComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ImageComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -923,6 +926,9 @@
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="Transform2DComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>

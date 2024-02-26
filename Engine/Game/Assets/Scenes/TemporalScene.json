@@ -1,1 +1,1 @@
-{"Scene":{"GameObjects":[]}}
+{"Scene":{"GameObjects":[{"UID":2,"ParentUID":1,"Name":"Canvas","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Components":[]}]}}

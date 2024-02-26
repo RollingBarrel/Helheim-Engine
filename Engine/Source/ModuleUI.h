@@ -13,5 +13,8 @@ public:
 	bool Init();
 	update_status Update();
 	update_status PostUpdate();
+
+private:
+	void DrawWidget(const GameObject* gameObject);
 };
 

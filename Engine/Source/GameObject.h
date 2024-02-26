@@ -31,7 +31,8 @@ public:
 
 	~GameObject();
 
-	Component* GetComponent(ComponentType type);
+	Component* GetComponent(ComponentType type) const;
+	std::vector<Component*> GetComponents(ComponentType type) const;
 	void RecalculateMatrices();
 	void Update();
 	

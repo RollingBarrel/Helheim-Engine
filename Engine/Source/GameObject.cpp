@@ -104,7 +104,7 @@ GameObject::~GameObject()
 
 }
 
-Component* GameObject::GetComponent(ComponentType type)
+Component* GameObject::GetComponent(ComponentType type) const
 {
 	for (auto component : mComponents) {
 		if (component->GetType() == type) {
@@ -112,6 +112,19 @@ Component* GameObject::GetComponent(ComponentType type)
 		}
 	}
 	return nullptr;
+}
+
+std::vector<Component*> GameObject::GetComponents(ComponentType type) const
+{
+	std::vector<Component*> matchingComponents;
+
+	for (auto component : mComponents) {
+		if (component->GetType() == type) {
+			matchingComponents.push_back(component);
+		}
+	}
+
+	return matchingComponents;
 }
 
 void GameObject::RecalculateMatrices()
