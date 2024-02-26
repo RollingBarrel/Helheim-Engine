@@ -26,6 +26,9 @@
 #include "imgui.h"
 #include "ImGuizmo.h"
 
+//IF U SEE THIS DELETE IT
+#include "MonoBehaviour.h"
+
 ModuleEditor::ModuleEditor()
 {
 	mPanels[ABOUTPANEL] = new AboutPanel();
@@ -101,7 +104,22 @@ update_status ModuleEditor::Update(float dt)
 
 		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 	}
+	// GUARRADA DE LOS DE SCRIPTING :) JEJE
+	// IF U SEE THIS DELETE IT
+	static bool first = true;
+	if (first) {
+		fibonacci_init(1, 1);
+		first = false;
+	}
+	unsigned long long number;
+	if (fibonacci_next()) {
+		number = fibonacci_current();
+		LOG("%llu", number);
+	}
+	else first = true;
 
+
+	// -------------------
 	return UPDATE_CONTINUE;
 }
 
