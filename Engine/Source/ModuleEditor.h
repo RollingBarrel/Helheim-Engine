@@ -23,8 +23,8 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
-	TagsManager* GetTags() { return mTagsManager; }
 	Panel* GetPanel(const char* name) { return mPanels[name]; }
+	void OpenPanel(const char* name);
 
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
@@ -33,7 +33,7 @@ private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
-	TagsManager* mTagsManager;
+	
 	void OpenLoadScene();
 };
 

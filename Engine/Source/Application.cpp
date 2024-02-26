@@ -17,6 +17,7 @@ Application::Application()
 {
 	mEngineTimer = new Timer();
 	mGameTimer = new Timer();
+	mTagsManager = new TagsManager();
 
 	//In case we want to use precise timer
 	

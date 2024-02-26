@@ -28,11 +28,11 @@ void TagsManagerPanel::Draw(int windowFlags)
 
 void TagsManagerPanel::DrawTagsList()
 {
-    int yMax = (20 * App->GetEditor()->GetTags()->GetCustomTagsSize() >= 300) ? 300 : 20 * App->GetEditor()->GetTags()->GetCustomTagsSize();
+    int yMax = (20 * App->GetTags()->GetCustomTagsSize() >= 300) ? 300 : 20 * App->GetTags()->GetCustomTagsSize();
     ImVec2 size = ImVec2(200.0f, yMax);
 
-    std::vector<Tag*> systemTags = App->GetEditor()->GetTags()->GetSystemTag();
-    std::vector<Tag*> customTags = App->GetEditor()->GetTags()->GetCustomTag();
+    std::vector<Tag*> systemTags = App->GetTags()->GetSystemTag();
+    std::vector<Tag*> customTags = App->GetTags()->GetCustomTag();
 
     if (ImGui::BeginListBox("##Tags", size))
     {
@@ -55,7 +55,7 @@ void TagsManagerPanel::DrawDeleteButton()
     if (ImGui::Button("Delete selected tag"))
     {
         if (mSelectedTag != nullptr) {
-            App->GetEditor()->GetTags()->DeleteTag(mSelectedTag);
+            App->GetTags()->DeleteTag(mSelectedTag);
         }
     }
 }
@@ -69,7 +69,7 @@ void TagsManagerPanel::DrawAddButton()
 
     if (ImGui::Button("Add") && std::strlen(inputBuffer) > 0)
     {
-        App->GetEditor()->GetTags()->AddTag(inputBuffer);
+        App->GetTags()->AddTag(inputBuffer);
         strcpy_s(inputBuffer, "");
     }
 }

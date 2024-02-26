@@ -1,14 +1,16 @@
 #include "TagsManager.h"
+#include <algorithm>
+#include <iterator>
 
 TagsManager::TagsManager()
 {
 	// System
-	mSystemTags.push_back(new Tag(0, "Untagged"));
-	mSystemTags.push_back(new Tag(1, "Respawn"));
-	mSystemTags.push_back(new Tag(2, "Finish"));
-	mSystemTags.push_back(new Tag(3, "EditorOnly"));
-	mSystemTags.push_back(new Tag(4, "Main Camera"));
-	mSystemTags.push_back(new Tag(5, "Player"));
+    mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
+    mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
+    mTags.push_back(new Tag(2, "Finish", TagType::SYSTEM));
+    mTags.push_back(new Tag(3, "EditorOnly", TagType::SYSTEM));
+    mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
+    mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
 
 }
 
@@ -19,11 +21,36 @@ TagsManager::~TagsManager()
 void TagsManager::AddTag(std::string tagname)
 {
     if (TagNameExists(tagname) == nullptr) {
-        Tag* newTag = new Tag(lastIndex, tagname);
-        mCustomTags.push_back(newTag);
+        Tag* newTag = new Tag(lastIndex, tagname, TagType::CUSTOM);
+        mTags.push_back(newTag);
 
         ++lastIndex;
     }
+}
+
+int TagsManager::GetCustomTagsSize()
+{
+    std::vector<Tag*> customs = GetCustomTag();
+
+    return customs.size();
+}
+
+std::vector<Tag*> TagsManager::GetSystemTag()
+{
+    std::vector<Tag*> systemTags;
+    std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
+        [](Tag* tag) { return tag->GetType() == TagType::SYSTEM; });
+
+    return systemTags;
+}
+
+std::vector<Tag*> TagsManager::GetCustomTag()
+{
+    std::vector<Tag*> customTags;
+    std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(customTags),
+        [](Tag* tag) { return tag->GetType() == TagType::CUSTOM; });
+
+    return customTags;
 }
 
 Tag* TagsManager::GetTag(std::string tagname)
@@ -34,10 +61,11 @@ Tag* TagsManager::GetTag(std::string tagname)
 
 void TagsManager::DeleteTag(Tag* tag)
 {
-    auto it = std::find(mCustomTags.begin(), mCustomTags.end(), tag);
+    std::vector<Tag*> customs = GetCustomTag();
+    auto it = std::find(customs.begin(), customs.end(), tag);
 
-    if (it != mCustomTags.end()) {
-        mCustomTags.erase(it);
+    if (it != customs.end()) {
+        customs.erase(it);
 
         delete tag;
     }
@@ -45,7 +73,8 @@ void TagsManager::DeleteTag(Tag* tag)
 
 Tag* TagsManager::TagNameExists(std::string tagname)
 {
-    for (Tag* tag : mCustomTags) {
+    // Prevent delete system tags
+    for (Tag* tag : mTags) {
         if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0) {
             return tag;
         }

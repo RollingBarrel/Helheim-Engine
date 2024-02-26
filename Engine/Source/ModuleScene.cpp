@@ -15,8 +15,7 @@
 #include "Globals.h"
 
 ModuleScene::ModuleScene() {
-	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
+
 }
 
 ModuleScene::~ModuleScene()
@@ -29,6 +28,8 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
+	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
 	//TestSceneGameObjects test = TestSceneGameObjects();
 	//test.TestSceneWithGameObjects();
 

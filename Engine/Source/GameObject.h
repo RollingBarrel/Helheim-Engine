@@ -45,6 +45,7 @@ public:
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
+	const Tag* GetTag() const { return mTag; }
 
 	void ResetTransform();
 
@@ -64,6 +65,7 @@ public:
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
+	void SetTag(Tag* tag) { mTag = tag; };
 
 	Component* CreateComponent(ComponentType type);
 	MeshRendererComponent* getMeshRenderer() const;

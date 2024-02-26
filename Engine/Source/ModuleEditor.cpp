@@ -29,9 +29,6 @@
 
 ModuleEditor::ModuleEditor()
 {
-	// Editor global variable
-	mTagsManager = new TagsManager();
-
 	// Panels
 	mPanels[ABOUTPANEL] = new AboutPanel();
 	mPanels[CONSOLEPANEL] = new ConsolePanel(                                                                                                                );
@@ -45,6 +42,9 @@ ModuleEditor::ModuleEditor()
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
+
+	// Panels closed by default
+	mPanels[TAGSMANAGERPANEL]->Close();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -86,7 +86,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 	}
 
 	static bool show = true;
-	ImGui::ShowDemoWindow(&show);
+	//ImGui::ShowDemoWindow(&show);
 
 	ShowMainMenuBar();
 
@@ -127,6 +127,12 @@ bool ModuleEditor::CleanUp()
 	mPanels.clear();
 
 	return true;
+}
+
+void ModuleEditor::OpenPanel(const char* name)
+{
+	Panel* panel = mPanels[name];
+	panel->Open();
 }
 
 void ModuleEditor::ShowMainMenuBar() 

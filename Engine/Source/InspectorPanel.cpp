@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
+#include "TagsManagerPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
@@ -45,24 +46,24 @@ void InspectorPanel::Draw(int windowFlags)
 
 		ImGui::Text("Tag");
 		ImGui::SameLine();
-		const char* fruitOptions[] = { "Apple", "Banana", "Orange", "Grapes", "Strawberry" };
-		int selectedFruitIndex = 0;
-		std::vector<Tag*> systemTags = App->GetEditor()->GetTags()->GetSystemTag();
-		std::vector<Tag*> customTags = App->GetEditor()->GetTags()->GetCustomTag();
-		std::vector<Tag*> combinedTags(systemTags.begin(), systemTags.end());
-		combinedTags.insert(combinedTags.end(), customTags.begin(), customTags.end());
+		std::vector<Tag*> tags = App->GetTags()->GetAllTags();
 
-		if (ImGui::BeginCombo("##tags", fruitOptions[selectedFruitIndex]))
+		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
 		{
-			for (auto i = 0; i < combinedTags.size(); i++) {
-				if (ImGui::Selectable(combinedTags[i]->GetName().c_str(), selectedFruitIndex))
+			for (auto i = 0; i < tags.size(); i++) {
+				if (ImGui::Selectable(tags[i]->GetName().c_str()))
 				{
-					selectedFruitIndex = i;
-					//mSelectedTag = customTags[i];
+					focusedObject->SetTag(tags[i]);
 				}
 			}
 
 			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Edit")) {
+			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL);
 		}
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
