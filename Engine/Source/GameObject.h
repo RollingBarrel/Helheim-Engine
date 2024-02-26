@@ -4,6 +4,7 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "string"
+#include "Tag.h"
 #include "Archive.h"
 
 #undef max
@@ -82,6 +83,7 @@ private:
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
+	//Tag* mTag = 
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
 	const unsigned int mID;
@@ -96,6 +98,8 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool isTransformModified = false;
+
+
 	
 };
 

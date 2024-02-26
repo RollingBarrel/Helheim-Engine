@@ -20,6 +20,7 @@
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
 #include "TimerPanel.h"
+#include "TagsManagerPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -28,8 +29,12 @@
 
 ModuleEditor::ModuleEditor()
 {
+	// Editor global variable
+	mTagsManager = new TagsManager();
+
+	// Panels
 	mPanels[ABOUTPANEL] = new AboutPanel();
-	mPanels[CONSOLEPANEL] = new ConsolePanel();
+	mPanels[CONSOLEPANEL] = new ConsolePanel(                                                                                                                );
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[SCENEPANEL] = new ScenePanel();
@@ -39,6 +44,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
+	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -79,8 +85,8 @@ update_status ModuleEditor::PreUpdate(float dt)
 		}
 	}
 
-	//static bool show = true;
-	//ImGui::ShowDemoWindow(&show);
+	static bool show = true;
+	ImGui::ShowDemoWindow(&show);
 
 	ShowMainMenuBar();
 

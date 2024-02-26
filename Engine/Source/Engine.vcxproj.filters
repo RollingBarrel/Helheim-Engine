@@ -358,6 +358,9 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="TagsManager.cpp" />
+    <ClCompile Include="Tag.cpp" />
+    <ClCompile Include="TagsManagerPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -907,6 +910,9 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="TagsManager.h" />
+    <ClInclude Include="Tag.h" />
+    <ClInclude Include="TagsManagerPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

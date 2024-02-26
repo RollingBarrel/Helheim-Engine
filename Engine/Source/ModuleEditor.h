@@ -5,6 +5,7 @@
 
 #include "imgui.h"
 #include "ImGuizmo.h"
+#include "TagsManager.h"
 
 #include <map>
 
@@ -22,6 +23,7 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
+	TagsManager* GetTags() { return mTagsManager; }
 	Panel* GetPanel(const char* name) { return mPanels[name]; }
 
 	void ShowMainMenuBar();
@@ -31,6 +33,7 @@ private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
+	TagsManager* mTagsManager;
 	void OpenLoadScene();
 };
 
