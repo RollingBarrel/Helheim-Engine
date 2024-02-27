@@ -58,18 +58,25 @@ bool ModuleResource::Init()
 		{
 			uid = document["uid"].GetInt();
 		}
-		int64_t metaTime;
-		//Mode time
+		int64_t assetModTime;
+		//Mod time
 		if (document.HasMember("modTime"))
 		{
-			metaTime = document["modTime"].GetInt64();
+			assetModTime = document["modTime"].GetInt64();
 		}
 		else
 		{
 			assert(false && "Meta has no time");
 		}
+		int64_t metaModTime = App->GetFileSystem()->GetLastModTime(meta.c_str());
+
+		//if the meta time is very different compared to the time it stores inside the date has probably been modified by a git clone
+		if ((metaModTime + 10) < assetModTime)
+		{
+			assetModTime += metaModTime - assetModTime;
+		}
 		const char* libraryFile = App->GetFileSystem()->GetLibraryFile(uid);
-		if (metaTime < App->GetFileSystem()->GetLastModTime(assetsPath.c_str()) || !App->GetFileSystem()->Exists(libraryFile))
+		if (assetModTime < App->GetFileSystem()->GetLastModTime(assetsPath.c_str()) || !App->GetFileSystem()->Exists(libraryFile))
 		{
 			ImportFile(assetsPath.c_str(), uid);
 		}
@@ -348,7 +355,7 @@ bool ModuleResource::CreateAssetsMeta(const Resource& resource, const char* asse
 	typeValue.SetInt(static_cast<int>(resource.GetType()));
 	document.AddMember("type", typeValue, document.GetAllocator());
 
-	// Add time of creation to the JSON document
+	// Add modification time of asset to the JSON document
 	rapidjson::Value timeValue;
 	int64_t currentTime = App->GetFileSystem()->GetLastModTime(assetsFile);
 	timeValue.SetInt64(currentTime);
