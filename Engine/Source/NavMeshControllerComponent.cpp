@@ -236,7 +236,7 @@ void NavMeshControllerComponent::HandleBuild() {
 void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
-			MeshRendererComponent* meshRendererComponent = child->getMeshRenderer();
+			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
 			if (meshRendererComponent) {
 				mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mOBBs.push_back(meshRendererComponent->getOBB());

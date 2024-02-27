@@ -124,7 +124,7 @@ void Quadtree::CleanUp()
 
 void Quadtree::Draw() const
 {
-	App->GetDebugDraw()->DrawQuadtree(mBoundingBox);
+	App->GetDebugDraw()->DrawCube(mBoundingBox, float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
 
 	if (mFilled)
 	{
@@ -279,11 +279,11 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum* myCamera)
 		for (auto& object : mGameObjects)
 		{
 			
-			if (object->getMeshRenderer() != nullptr)
+			if (object->GetMeshRenderer() != nullptr)
 			{
-				OBB temp = object->getMeshRenderer()->getOBB();
+				OBB temp = object->GetMeshRenderer()->getOBB();
 				bool intersects = myCamera->Intersects(temp);
-				object->getMeshRenderer()->SetInsideFrustum(intersects);
+				object->GetMeshRenderer()->SetInsideFrustum(intersects);
 
 			}
 		}
