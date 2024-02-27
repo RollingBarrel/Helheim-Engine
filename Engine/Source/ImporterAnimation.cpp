@@ -16,14 +16,14 @@
 #include "tiny_gltf.h"
 
 
-void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation) {
+void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation) {
     if (!ourAnimation)
         return;
 
     // Get the index of the animation sampler from the current channel
     const int samplerIndex = channel.sampler;
 
-    const tinygltf::AnimationSampler& animationSampler = model.animations[channel.target_node].samplers[samplerIndex];
+    const tinygltf::AnimationSampler& animationSampler = animation.samplers[samplerIndex];
     const int inputAccessorIndex = animationSampler.input;
     const int outputAccessorIndex = animationSampler.output;
 
@@ -69,7 +69,7 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
         }
     }
     // Store animation channel in the animation
-   // ourAnimation->channels[channel.target_node] = animChannel;
+   // ourAnimation->channels[model.nodes[channel.target_node].name] = animChannel;
 }
 void Importer::Animation::Save(const ResourceAnimation* ourAnimation) {
     if (!ourAnimation)

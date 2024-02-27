@@ -57,27 +57,27 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
 
         App->GetFileSystem()->CopyAbsolutePath(pngName.c_str(), images.c_str());
     }
-    if (model.animations.empty())
+    if (!model.animations.empty())
     {
 
         for (const auto& srcAnimation : model.animations)
         {
-            ResourceAnimation* animation = new ResourceAnimation();
+            ResourceAnimation* ourAnimation = new ResourceAnimation();
 
-            for (const auto& channel : srcAnimation.channels)
+            for (const auto& srcChannel : srcAnimation.channels)
             {
-                if (animation->channels.find(model.nodes[channel.target_node].name) == animation->channels.end()) {
+                if (ourAnimation->channels.find(model.nodes[srcChannel.target_node].name) == ourAnimation->channels.end()) {
                     
                     //animation -> mUID = math::LCG().Int();
-                    Importer::Animation::Import(model, channel, animation);
+                    Importer::Animation::Import(model, srcAnimation, srcChannel, ourAnimation);
 
                 }
                 
 
             }
             
-            delete animation;
-            animation = nullptr;
+            delete ourAnimation;
+            ourAnimation = nullptr;
             
             
         }
