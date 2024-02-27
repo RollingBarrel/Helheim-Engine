@@ -37,17 +37,14 @@ void MeshRendererComponent::Draw()
 	{
 		return;
 	}
-	if (mDrawBox)
-	{
-		App->GetDebugDraw()->DrawBoundingBox(mOBB);
-	}
 	mInsideFrustum = false;
 
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	if (mDrawBox)
 	{
-		App->GetDebugDraw()->DrawBoundingBox(mOBB);
+		App->GetDebugDraw()->DrawCube(mOBB, float3(0.0f, 0.0f, 1.0f)); // Blue
+		App->GetDebugDraw()->DrawCube(mAABBWorld, float3(1.0f, 0.647059f, 0.0f)); // Orange
 	}
 
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
@@ -120,10 +117,7 @@ void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
 
 	mAABB.SetFrom(positions, mMesh->mNumVertices);
-
-	float4x4 model = mOwner->GetWorldTransform();
-
-	mOBB.SetFrom(mAABB, model);
+	RefreshBoundingBoxes();
 
 	//ResourceMaterial Load
 
@@ -131,16 +125,20 @@ void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
 
 void MeshRendererComponent::Update()
 {
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 	//Draw();
 }
-
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
 }
 
+void MeshRendererComponent::RefreshBoundingBoxes()
+{
+	mOBB = OBB(mAABB);
+	mOBB.Transform(mOwner->GetWorldTransform());
+	mAABBWorld = mOBB.MinimalEnclosingAABB();
+}
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", mID);

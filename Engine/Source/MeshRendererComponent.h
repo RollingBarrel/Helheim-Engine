@@ -25,6 +25,7 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
+	void RefreshBoundingBoxes();
 	const OBB getOBB() const { return mOBB; }
 	const AABB GetAABB() const { return mAABB; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
@@ -41,6 +42,7 @@ private:
 
 	OBB mOBB;
 	AABB mAABB;
+	AABB mAABBWorld;
 	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 
