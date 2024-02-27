@@ -3,7 +3,7 @@
 
 OptickAdapter::~OptickAdapter() {
 	//Close Optick when Terminating Engine
-	TerminateProcess(pi.hProcess, 1);
+	//TerminateProcess(pi.hProcess, 1);
 
 	// Close process and thread handles. 
 	CloseHandle(pi.hProcess);

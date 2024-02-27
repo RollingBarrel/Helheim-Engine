@@ -13,6 +13,7 @@
 #include "ModuleEditor.h"
 #include "Archive.h"
 #include "Globals.h"
+#include "optick.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
@@ -39,6 +40,7 @@ bool ModuleScene::Init()
 }
 
 void ModuleScene::Save(const char* sceneName) {
+	OPTICK_CATEGORY("Save", Optick::Category::Scene);
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos) {
 		saveFilePath += ".json";
@@ -55,6 +57,7 @@ void ModuleScene::Save(const char* sceneName) {
 }
 
 void ModuleScene::Load(const char* sceneName) {
+	OPTICK_CATEGORY("Load", Optick::Category::Scene);
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) {
 		loadFilePath += ".json";
@@ -201,6 +204,7 @@ void ModuleScene::GenerateRenderList(GameObject* root)
 
 void ModuleScene::DrawRenderList()
 {
+	OPTICK_CATEGORY("DrawRenderList", Optick::Category::Rendering);
 	for (GameObject* objectToRender : mRenderList)
 	{
 		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);

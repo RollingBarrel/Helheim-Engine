@@ -14,6 +14,7 @@
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
+#include "optick.h"
 
 void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
 {
@@ -127,6 +128,7 @@ void Importer::Model::Save(const ResourceModel* ourModel)
 
 void Importer::Model::Load(ResourceModel* ourModel, const char* fileName)
 {
+    OPTICK_CATEGORY("LoadModel", Optick::Category::Scene);
     char* fileBuffer;
 
     std::string path = LIBRARY_MODEL_PATH;

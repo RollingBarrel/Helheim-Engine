@@ -16,6 +16,7 @@
 #include "imgui.h"
 #include "Geometry/Triangle.h"
 #include "Quadtree.h"
+#include "optick.h"
 
 
 bool ModuleCamera::Init()
@@ -67,7 +68,8 @@ void ModuleCamera::CheckRaycast()
 
 
 update_status ModuleCamera::Update(float dt)
-{    
+{
+	OPTICK_CATEGORY("Update_Camera", Optick::Category::Camera);
 	if (mDrawRayCast) {
 		App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
 	}
