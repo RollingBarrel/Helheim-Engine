@@ -89,7 +89,7 @@ void main() {
 		diffuseColor = material.diffuseColor;
 	}
 	//Specular
-	vec4 specularTex = (0.0f);
+	vec4 specularTex = vec4(0.0f);
 	if(material.hasSpecularMap)
 	{
 		specularTex = texture(material.specularTexture, uv);
