@@ -43,7 +43,7 @@ void NavMeshControllerComponent::DebugDrawPolyMesh()
 	float4x4 identity = float4x4::identity;
 	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
 	glBindVertexArray(mVao);
-	glDrawElements(GL_TRIANGLES,mPolyMeshDetail->nverts , GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES,mIndices.size(), GL_UNSIGNED_INT, 0);
 
 
 
@@ -277,24 +277,22 @@ void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 void NavMeshControllerComponent::LoadDrawMesh()
 {
 	if (mPolyMesh != nullptr)
-	{
-		
-
-		for (int i = 0; i < mPolyMeshDetail->nverts* 3; ++i)
-		{
-			LOG("%f", mPolyMeshDetail->verts[i]);
-		}
-		LOG("Me cago en los indices y la madre que me trajo")
-			int counter = 1;
+	{		
+		int counter = 1;
 		for (int i = 0; i < mPolyMeshDetail->ntris*4; ++i)
 		{
 			if (i == 0) {
+				
+			}
+			if (i != 0 &&counter % 4 == 0) {
+				counter++;
+				continue;
+			}
+			else {
+				counter++;
 				mIndices.push_back((unsigned int)mPolyMeshDetail->tris[i]);
 			}
-			if (i != 0&&counter % 4 != 0) {
-				mIndices.push_back((unsigned int)mPolyMeshDetail->tris[i]);
-			}
-			counter++;
+	
 			
 		}
 
