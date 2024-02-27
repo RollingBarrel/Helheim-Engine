@@ -13,6 +13,7 @@
 #include "ModuleEditor.h"
 #include "Archive.h"
 #include "Globals.h"
+#include "optick.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);

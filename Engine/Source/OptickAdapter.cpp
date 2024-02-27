@@ -42,5 +42,10 @@ bool OptickAdapter::IsOpen() const {
 	if (!GetExitCodeProcess(pi.hProcess, &exitCode)) {
 		return false;
 	}
+	if (exitCode != STILL_ACTIVE) { 
+		// Close handles for previous instance if it has been closed
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+	}
 	return exitCode == STILL_ACTIVE;
 }
