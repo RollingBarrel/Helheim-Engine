@@ -9,7 +9,7 @@
 
 #include "Algorithm/Random/LCG.h"
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int uid)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int uid, bool modifyAssets)
 {
     unsigned int currUid = uid;
 
@@ -65,7 +65,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[diffuseTextureIndex].uri);
 
-                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
+                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
                 }
             }
         }
@@ -86,7 +86,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[specularGlossinessIndex].uri);
 
-                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
+                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
                 }
             }
         }
@@ -109,7 +109,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         pngName = pngName.substr(0, filePos + 1);
                         pngName.append(tinyModel.images[normalIndex].uri);
 
-                        normalTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
+                        normalTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
                     }
                 }
             }
@@ -128,7 +128,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
             pngName = pngName.substr(0, filePos + 1);
             pngName.append(tinyModel.images[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index].uri);
 
-            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++);
+            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
         }
 
     }

@@ -126,7 +126,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned i
 	else
 		assetsCopiedFile = importedFilePath;
 	//// Create the new resource
-	Resource* resource = CreateNewResource(assetsCopiedFile.c_str(), importedFilePath, type, forcedUid); //Save ID, assetsFile path, libraryFile path, and create spesific resource
+	Resource* resource = CreateNewResource(assetsCopiedFile.c_str(), importedFilePath, type, forcedUid, modifyAssets); //Save ID, assetsFile path, libraryFile path, and create spesific resource
 	if (resource == nullptr) 
 	{
 		LOG("Unable to create a new resource with this file: %s", importedFilePath);
@@ -244,7 +244,7 @@ void ModuleResource::ReleaseResource(unsigned int uid)
 	}
 }
 
-Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid)
+Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid, bool modifyAssets)
 {
 	Resource* ret = nullptr;
 
@@ -265,7 +265,7 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* 
 	case Resource::Type::Material:
 		break;
 	case Resource::Type::Model:
-		ret = Importer::Model::Import(importedFile, uid);
+		ret = Importer::Model::Import(importedFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Scene:
 		break;

@@ -18,7 +18,7 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid)
+ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, bool modifyAssets)
 {
     unsigned int currUid = uid;
     ResourceModel* rModel = new ResourceModel(currUid++);
@@ -40,7 +40,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid)
             ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, currUid++);
 
             if (primitive.material != -1) {
-                ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], currUid++);
+                ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], currUid++, modifyAssets);
 
                 rModel->SetUids(rMesh->GetUID(), rMaterial->GetUID());
                 currUid = rMaterial->GetUID() + 1;

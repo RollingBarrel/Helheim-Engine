@@ -20,7 +20,7 @@ public:
 	void ReleaseResource(unsigned int uid);
 
 private:
-	Resource* CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid = 0);
+	Resource* CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid = 0, bool modifyAssets = true);
 	Resource::Type DeduceResourceType(const char* assetsFile);
 
 	bool CreateAssetsMeta(const Resource& resource, const char* assetsFile) const;
