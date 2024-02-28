@@ -45,7 +45,8 @@ bool ModuleResource::Init()
 
 		rapidjson::Document document;
 		rapidjson::ParseResult result = document.Parse(fileBuffer);
-		if (!result) {
+		if (!result) 
+		{
 			// Handle parsing error
 			LOG("Not able to load .emeta file");
 			RELEASE_ARRAY(fileBuffer);
@@ -54,29 +55,22 @@ bool ModuleResource::Init()
 
 		unsigned int uid = 0;
 		Resource::Type type = Resource::Type::Unknown;
-		if (document.HasMember("uid"))
-		{
-			uid = document["uid"].GetInt();
-		}
-		int64_t assetModTime;
+		assert(document.HasMember("uid") && "Meta has no uid");
+		uid = document["uid"].GetInt();
+		int64_t metaAssetModTime;
 		//Mod time
-		if (document.HasMember("modTime"))
-		{
-			assetModTime = document["modTime"].GetInt64();
-		}
-		else
-		{
-			assert(false && "Meta has no time");
-		}
+		assert(document.HasMember("modTime") && "Meta has no mod time");
+		metaAssetModTime = document["modTime"].GetInt64();
 		int64_t metaModTime = App->GetFileSystem()->GetLastModTime(meta.c_str());
 
 		//if the meta time is very different compared to the time it stores inside the date has probably been modified by a git clone
-		if ((metaModTime + 10) < assetModTime)
+		if ((metaModTime + 10) < metaAssetModTime)
 		{
-			assetModTime += metaModTime - assetModTime;
+			metaAssetModTime += metaModTime - metaAssetModTime;
 		}
+		int64_t assetModTime = App->GetFileSystem()->GetLastModTime(assetsPath.c_str());
 		const char* libraryFile = App->GetFileSystem()->GetLibraryFile(uid);
-		if (assetModTime < App->GetFileSystem()->GetLastModTime(assetsPath.c_str()) || !App->GetFileSystem()->Exists(libraryFile))
+		if (metaAssetModTime < assetModTime || !App->GetFileSystem()->Exists(libraryFile))
 		{
 			ImportFile(assetsPath.c_str(), uid);
 		}
