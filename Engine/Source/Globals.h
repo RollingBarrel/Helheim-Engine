@@ -1,8 +1,19 @@
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
-#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
-void log(const char file[], int line, const char* format, ...);
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec(dllexport)
+#else
+#define ENGINE_API __declspec(dllimport)
+#endif
+
+#define LOG(format, ...) EngineLog(__FILE__, __LINE__, format, __VA_ARGS__);
+
+
+void ENGINE_API EngineLog(const char file[], int line, const char* format, ...);
+
+
+
 
 enum update_status
 {
@@ -16,7 +27,7 @@ enum update_status
 #define SCREEN_HEIGHT 740
 #define FULLSCREEN false
 #define	RESIZEABLE true
-#define TITLE "Super Awesome Engine"
+#define TITLE "HellHeim Engine"
 
 #define RELEASE_ARRAY( x ) \
 	{\

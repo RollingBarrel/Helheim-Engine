@@ -100,7 +100,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Scripting;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -108,7 +108,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Scripting\$(IntDir);$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;Scripting.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -138,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Scripting;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -148,7 +148,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Scripting\$(IntDir);$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;Scripting.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -269,6 +269,7 @@
     <ClCompile Include="QuadtreePanel.cpp" />
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="Script.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -409,6 +410,7 @@
     <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="ModuleScriptManager.h" />
+    <ClInclude Include="Script.h" />
     <ClInclude Include="TimerPanel.h" />
   </ItemGroup>
   <ItemGroup>

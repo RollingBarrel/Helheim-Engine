@@ -21,7 +21,7 @@
     <ClInclude Include="pch.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="MonoBehaviour.h">
+    <ClInclude Include="TestScript.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="MonoBehaviour.cpp">
+    <ClCompile Include="TestScript.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
