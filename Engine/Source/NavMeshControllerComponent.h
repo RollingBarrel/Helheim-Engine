@@ -3,6 +3,7 @@
 #include "vector"
 #include "Geometry/OBB.h"
 #include "Recast.h"
+
 class Material;
 struct ResourceMesh;
 class MeshRendererComponent;
@@ -28,6 +29,8 @@ private:
 	void DebugDrawPolyMesh();
 	void LoadDrawMesh();
 
+
+	dtNavMeshCreateParams params;
 	rcHeightfield*  mHeightField=nullptr;
 	rcCompactHeightfield* mCompactHeightField = nullptr;
 	rcContourSet* mContourSet = nullptr;
@@ -39,6 +42,8 @@ private:
 	bool mFilterLowHangingObstacles;
 	bool mFilterLedgeSpans;
 	bool mFilterWalkableLowHeightSpans;
+	unsigned char* navData = 0;
+	int navDataSize = 0;
 
 	//IMGUI VALUES
 	float mCellSize = 0.30f;

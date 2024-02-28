@@ -8,6 +8,7 @@
 #include "float4x4.h"
 #include "ImporterMesh.h"
 #include "ModuleDebugDraw.h"
+#include "DetourNavMeshBuilder.h"
 
 NavMeshControllerComponent::NavMeshControllerComponent(GameObject* ownerGameObject)
 	:Component(ownerGameObject, ComponentType::NAVMESHCONTROLLER)
@@ -250,6 +251,36 @@ void NavMeshControllerComponent::HandleBuild() {
 			rcFreeContourSet(mContourSet);
 			mContourSet = 0;
 		}
+
+		dtNavMeshCreateParams params;
+		memset(&params, 0, sizeof(params));
+		params.verts = mPolyMesh->verts;
+		params.vertCount = mPolyMesh->nverts;
+		params.polys = mPolyMesh->polys;
+		params.polyAreas = mPolyMesh->areas;
+		params.polyFlags = mPolyMesh->flags;
+		params.polyCount = mPolyMesh->npolys;
+		params.nvp = mPolyMesh->nvp;
+		params.detailMeshes = mPolyMeshDetail->meshes;
+		params.detailVerts = mPolyMeshDetail->verts;
+		params.detailVertsCount = mPolyMeshDetail->nverts;
+		params.detailTris = mPolyMeshDetail->tris;
+		params.detailTriCount = mPolyMeshDetail->ntris;
+		params.offMeshConVerts = m_geom->getOffMeshConnectionVerts();
+		params.offMeshConRad = m_geom->getOffMeshConnectionRads();
+		params.offMeshConDir = m_geom->getOffMeshConnectionDirs();
+		params.offMeshConAreas = m_geom->getOffMeshConnectionAreas();
+		params.offMeshConFlags = m_geom->getOffMeshConnectionFlags();
+		params.offMeshConUserID = m_geom->getOffMeshConnectionId();
+		params.offMeshConCount = m_geom->getOffMeshConnectionCount();
+		params.walkableHeight = m_agentHeight;
+		params.walkableRadius = m_agentRadius;
+		params.walkableClimb = m_agentMaxClimb;
+		rcVcopy(params.bmin, m_pmesh->bmin);
+		rcVcopy(params.bmax, m_pmesh->bmax);
+		params.cs = m_cfg.cs;
+		params.ch = m_cfg.ch;
+		params.buildBvTree = true;
 
 		LoadDrawMesh();
 	}
