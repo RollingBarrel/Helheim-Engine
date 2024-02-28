@@ -10,6 +10,7 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
+#include "ImageComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
 
@@ -285,6 +286,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				}
+				case ComponentType::IMAGE: {
+					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+				}
 			}
 		}
 		ImGui::PopID();
@@ -438,4 +442,8 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling
+}
+
+void InspectorPanel::DrawImageComponent(ImageComponent* component) {
+
 }

@@ -9,6 +9,7 @@ class MeshRendererComponent;
 class CameraComponent;
 class PointLightComponent;
 class SpotLightComponent;
+class ImageComponent;
 
 class InspectorPanel : public Panel
 {
@@ -31,6 +32,7 @@ private:
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
+	void DrawImageComponent(ImageComponent* component);
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);
