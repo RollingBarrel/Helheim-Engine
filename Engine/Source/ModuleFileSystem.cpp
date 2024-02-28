@@ -267,6 +267,14 @@ int64_t ModuleFileSystem::GetLastModTime(const char* file) const
     return stat.modtime;
 }
 
+int64_t ModuleFileSystem::GetCreationTime(const char* file) const
+{
+    PHYSFS_Stat stat;
+    if (PHYSFS_stat(file, &stat) == 0)
+        return 0;
+    return stat.createtime;
+}
+
 bool ModuleFileSystem::AddToSearchPath(const char* path)
 {
     if (!PHYSFS_mount(path, nullptr, 1))

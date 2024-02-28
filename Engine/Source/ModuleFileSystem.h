@@ -63,6 +63,7 @@ public:
 	//The pointer returned by this function needs to be released !!!
 	const char* GetLibraryFile(unsigned int id, bool createDir = false) const;
 	int64_t GetLastModTime(const char* file) const;
+	int64_t GetCreationTime(const char* file) const;
 
 	bool AddToSearchPath(const char* path);
 

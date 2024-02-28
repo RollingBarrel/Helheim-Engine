@@ -13,7 +13,7 @@ public:
 	bool Init() override;
 
 	unsigned int Find(const char* assetsFile) const;
-	unsigned int ImportFile(const char* assetsFile, unsigned int forcedUid = 0);
+	unsigned int ImportFile(const char* assetsFile, unsigned int forcedUid = 0, bool modifyAssets = true);
 
 	Resource* RequestResource(const char* assetsPath);
 	Resource* RequestResource(unsigned int uid, Resource::Type type);

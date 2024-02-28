@@ -61,18 +61,24 @@ bool ModuleResource::Init()
 		//Mod time
 		assert(document.HasMember("modTime") && "Meta has no mod time");
 		metaAssetModTime = document["modTime"].GetInt64();
-		int64_t metaModTime = App->GetFileSystem()->GetLastModTime(meta.c_str());
+		int64_t metaCreationTime = App->GetFileSystem()->GetCreationTime(meta.c_str());
+		int64_t assetModTime = App->GetFileSystem()->GetLastModTime(assetsPath.c_str());
 
 		//if the meta time is very different compared to the time it stores inside the date has probably been modified by a git clone
-		if ((metaModTime + 10) < metaAssetModTime)
+		if (metaCreationTime > (metaAssetModTime + 10))
 		{
-			metaAssetModTime += metaModTime - metaAssetModTime;
+			
+			int64_t  diff = metaCreationTime - metaAssetModTime;
+			metaAssetModTime += diff;
 		}
-		int64_t assetModTime = App->GetFileSystem()->GetLastModTime(assetsPath.c_str());
 		const char* libraryFile = App->GetFileSystem()->GetLibraryFile(uid);
-		if (metaAssetModTime < assetModTime || !App->GetFileSystem()->Exists(libraryFile))
+		if (metaAssetModTime < assetModTime)
 		{
 			ImportFile(assetsPath.c_str(), uid);
+		}
+		else if (!App->GetFileSystem()->Exists(libraryFile))
+		{
+			ImportFile(assetsPath.c_str(), uid, false);
 		}
 		delete[] libraryFile;
 	}
@@ -95,7 +101,7 @@ unsigned int ModuleResource::Find(const char* assetsFile) const
 	return 0;
 }
 
-unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned int forcedUid)
+unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned int forcedUid, bool modifyAssets)
 {
 	// Extract the import file type of asset
 	Resource::Type type = DeduceResourceType(importedFilePath);
@@ -105,15 +111,20 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned i
 		return 0;
 	}
 
+	std::string assetsCopiedFile;
 	// Create copy in assets folder
-	std::string assetsCopiedFile = DuplicateFileInAssetDir(importedFilePath, type);
-	if (assetsCopiedFile.empty())
+	if (modifyAssets)
 	{
-		LOG("File could not be duplicated: %s", importedFilePath);
-		return 0;
+		assetsCopiedFile = DuplicateFileInAssetDir(importedFilePath, type);
+		if (assetsCopiedFile.empty())
+		{
+			LOG("File could not be duplicated: %s", importedFilePath);
+			return 0;
+		}
+		LOG("Succesfully duplicated the file in %s", assetsCopiedFile.c_str());
 	}
-	LOG("Succesfully duplicated the file in %s", assetsCopiedFile.c_str());
-
+	else
+		assetsCopiedFile = importedFilePath;
 	//// Create the new resource
 	Resource* resource = CreateNewResource(assetsCopiedFile.c_str(), importedFilePath, type, forcedUid); //Save ID, assetsFile path, libraryFile path, and create spesific resource
 	if (resource == nullptr) 
@@ -123,12 +134,15 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned i
 	}
 
 	// Create the Meta file for the Asset
-	if (!CreateAssetsMeta(*resource, assetsCopiedFile.c_str()))
+	if (modifyAssets)
 	{
-		LOG("Couldn't create a .emeta File");
-		return 0;
+		if (!CreateAssetsMeta(*resource, assetsCopiedFile.c_str()))
+		{
+			LOG("Couldn't create a .emeta File");
+			return 0;
+		}
+		LOG("Succesfully created a .emeta File");
 	}
-	LOG("Succesfully created a .emeta File");
 
 	unsigned int ret = resource->GetUID();
 	ReleaseResource(ret);
@@ -361,6 +375,7 @@ bool ModuleResource::CreateAssetsMeta(const Resource& resource, const char* asse
 	document.Accept(writer);
 	const char* jsonStr = buffer.GetString();
 
+	App->GetFileSystem()->RemoveFile(metaName.c_str());
 	// Save the JSON string to the .meta file
 	ret = App->GetFileSystem()->Save(metaName.c_str(), buffer.GetString(), strlen(buffer.GetString()));
 
