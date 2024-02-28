@@ -47,17 +47,17 @@ void LightSourceComponent::SetRadius(float radius)
 
 void LightSourceComponent::Update()
 {
-	//TODO: No mirarlo cada frame ??
-	const float* pos = mOwner->GetWorldPosition().ptr();
-	for (int i = 0; i < 3; ++i)
-	{
-		if (pos[i] != mData.pos[i])
+	//TODO: No mirarlo cada frame ??	
+		const float* pos = mOwner->GetWorldPosition().ptr();
+		for (int i = 0; i < 3; ++i)
 		{
-			SetPosition(pos);
+			if (pos[i] != mData.pos[i])
+			{
+				SetPosition(pos);
+			}
 		}
-	}
-	if (debugDraw)
-	{
-		App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
-	}
+		if (debugDraw)
+		{
+			App->GetDebugDraw()->DrawLineSphere(mData.pos, mData.col, mData.pos[3]);
+		}		
 }

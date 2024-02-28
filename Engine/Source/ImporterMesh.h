@@ -7,7 +7,7 @@
 #include <vector>
 
 
-struct ResourceMesh;
+class ResourceMesh;
 
 namespace Importer
 {

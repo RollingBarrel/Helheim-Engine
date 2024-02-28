@@ -13,9 +13,9 @@ public:
 	ModuleScene();
 	~ModuleScene();
 	bool Init() override;
-	update_status PreUpdate() override;
-	update_status Update() override;
-	update_status PostUpdate() override;
+	update_status PreUpdate(float dt) override;
+	update_status Update(float dt) override;
+	update_status PostUpdate(float dt) override;
 
 	GameObject* GetRoot() const { return mRoot; }
 
@@ -33,6 +33,8 @@ public:
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
+
+	const std::vector<GameObject*> GetRenderList() { return mRenderList; }
 
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);

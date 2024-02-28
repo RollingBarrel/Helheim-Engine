@@ -31,18 +31,22 @@ public:
 	~ModuleInput();
 
 	bool Init() override;
-	update_status PreUpdate() override;
+	update_status PreUpdate(float dt) override;
 	bool CleanUp() override;
 
 	KeyState GetKey(int id) const { return keyboard[id]; }
 	KeyState GetMouseKey(MouseKey id) const { return mouse[id]; }
-	void GetMouseMotion(int& x, int& y) const { x = mX; y = mY; }
+	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
+	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
 	int GetMouseWheelMotion() const { return wheelY; }
 private:
 	KeyState mouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
 	KeyState* keyboard = NULL;
-	int mX;
-	int mY;
+	int mMouseMotionX = 0;
+	int mMouseMotionY = 0;
+	int mMousePositionX = 0;
+	int mMousePositionY = 0;
+
 	int wheelY = 0;
 };
 

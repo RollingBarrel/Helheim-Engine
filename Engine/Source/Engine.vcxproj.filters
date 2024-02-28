@@ -190,9 +190,6 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="LightSourceComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -214,9 +211,6 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTimer.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -228,9 +222,6 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineTimer.cpp">
-      <Filter>Utils\Timer</Filter>
     </ClCompile>
     <ClCompile Include="PreciseTimer.cpp">
       <Filter>Utils\Timer</Filter>
@@ -264,6 +255,138 @@
     </ClCompile>
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMeshControllerComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLightComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterNavMesh.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Detour\Include\DetourAlloc.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Detour\Include\DetourAssert.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Detour\Include\DetourCommon.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Detour\Include\DetourNavMesh.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshBuilder.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshQuery.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Detour\Include\DetourNode.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathQueue.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCache.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.cpp">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\Recast.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastAlloc.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastArea.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastAssert.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastContour.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastFilter.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastLayers.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastMesh.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="PreciseTimer.cpp">
+      <Filter>Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Archive.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleUI.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform2DComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -646,9 +769,6 @@
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="LightSourceComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -670,9 +790,6 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTimer.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleWindow.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -687,9 +804,6 @@
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineTimer.h">
-      <Filter>Utils\Timer</Filter>
     </ClInclude>
     <ClInclude Include="PreciseTimer.h">
       <Filter>Utils\Timer</Filter>
@@ -735,6 +849,123 @@
     </ClInclude>
     <ClInclude Include="ResourcePanel.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshControllerComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLightComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterNavMesh.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourAlloc.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourAssert.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourCommon.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourMath.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourNavMesh.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshBuilder.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshQuery.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourNode.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathQueue.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Detour\Include\DetourStatus.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCache.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.h">
+      <Filter>Dependencies\NavigationAI\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Recast\Include\Recast.h">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Recast\Include\RecastAlloc.h">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h">
+      <Filter>Dependencies\NavigationAI\Recast</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="PreciseTimer.h">
+      <Filter>Utils\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Archive.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleUI.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform2DComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -803,6 +1034,20 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{ea99d1f6-2c70-403e-b5b6-3a7fab634aa0}</UniqueIdentifier>
+    <Filter Include="Dependencies\NavigationAI">
+      <UniqueIdentifier>{579d3554-19f7-47db-8abf-7b98913d0ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\NavigationAI\Detour">
+      <UniqueIdentifier>{ae264cdc-3277-4937-a9a5-3ef4ddf01867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\NavigationAI\Recast">
+      <UniqueIdentifier>{18339c62-ad80-452d-af04-8a8366cd7c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\ImGuizmo">
+      <UniqueIdentifier>{507b6f07-d49a-45f6-88cc-c49673feecf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Components\UI">
+      <UniqueIdentifier>{e20dbcd6-c127-457c-bb19-f579b8d3eee7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

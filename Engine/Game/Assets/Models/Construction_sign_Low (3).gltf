@@ -1,0 +1,247 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Construction_sign_Low (3)"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 1093,
+      "type": "VEC3",
+      "max": [
+        0.0018237102776765823,
+        0.0018237102776765823,
+        0.010399007238447666
+      ],
+      "min": [
+        -0.0018237106269225478,
+        -0.0018237106269225478,
+        -0.0011754462029784918
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1093,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1093,
+      "type": "VEC4",
+      "max": [
+        0.993902325630188,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.993890643119812,
+        -0.99279391765594482,
+        -1.0,
+        1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1093,
+      "type": "VEC2",
+      "max": [
+        0.98741483688354492,
+        0.9874148964881897
+      ],
+      "min": [
+        0.012585124932229519,
+        0.012933790683746338
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5123,
+      "count": 3816,
+      "type": "SCALAR",
+      "max": [
+        1092.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Construction_sign_Low (3).bin",
+      "byteLength": 60096
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 13116,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 13116,
+      "byteLength": 13116,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 26232,
+      "byteLength": 17488,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 43720,
+      "byteLength": 8744,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 52464,
+      "byteLength": 7632,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "Construction_sign_Low_Material_Normal.jpg",
+      "name": "Construction_sign_Low_Material_Normal"
+    },
+    {
+      "uri": "Construction_sign_Low_Material_BaseColor.jpg",
+      "name": "Construction_sign_Low_Material_BaseColor"
+    },
+    {
+      "uri": "Construction_sign_Low_Material_Roughness.jpg",
+      "name": "Construction_sign_Low_Material_Roughness"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 1,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "Material"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0
+        }
+      ],
+      "name": "Construction_sign_Low (3)"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -0.7071068,
+        0.0,
+        0.0,
+        0.7071067
+      ],
+      "scale": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "translation": [
+        -9.663035,
+        -2.53508162,
+        -3.18822551
+      ],
+      "name": "Construction_sign_Low (3)"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "Construction_sign_Low_Material_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "Construction_sign_Low_Material_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "Construction_sign_Low_Material_Roughness"
+    }
+  ]
+}

@@ -2,15 +2,6 @@
 #include "Module.h"
 
 #define LIBRARY_PATH "Library/"
-//#define LIBRARY_TEXTURE_PATH "Library/Textures/"
-//#define LIBRARY_MESH_PATH "Library/Meshes/"
-//#define LIBRARY_BONE_PATH "Library/Bones/"
-//#define LIBRARY_ANIMATION_PATH "Library/Animations/"
-//#define LIBRARY_MATERIAL_PATH "Library/Materials/"
-//#define LIBRARY_MODEL_PATH "Library/Models/"
-//#define LIBRARY_SCENE_PATH "Library/Scenes/"
-//#define LIBRARY_NAVMESH_PATH "Library/NavMeshes/"
-//#define LIBRARY_SHADER_PATH "Library/Shaders/"
 
 #define ASSETS_PATH "Assets/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"
@@ -46,7 +37,7 @@ public:
 
 	bool Init() override;
 	//update_status PreUpdate() override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 	//update_status PostUpdate() override;
 	bool CleanUp() override;
 

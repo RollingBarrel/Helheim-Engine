@@ -56,17 +56,14 @@ void MeshRendererComponent::Draw()
 	{
 		return;
 	}
-	if (mDrawBox)
-	{
-		App->GetDebugDraw()->DrawBoundingBox(mOBB);
-	}
 	mInsideFrustum = false;
 
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	if (mDrawBox)
 	{
-		App->GetDebugDraw()->DrawBoundingBox(mOBB);
+		App->GetDebugDraw()->DrawCube(mOBB, float3(0.0f, 0.0f, 1.0f)); // Blue
+		App->GetDebugDraw()->DrawCube(mAABBWorld, float3(1.0f, 0.647059f, 0.0f)); // Orange
 	}
 
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
@@ -132,16 +129,20 @@ void MeshRendererComponent::Draw()
 
 void MeshRendererComponent::Update()
 {
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 	//Draw();
 }
-
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
 }
 
+void MeshRendererComponent::RefreshBoundingBoxes()
+{
+	mOBB = OBB(mAABB);
+	mOBB.Transform(mOwner->GetWorldTransform());
+	mAABBWorld = mOBB.MinimalEnclosingAABB();
+}
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", mID);
@@ -149,6 +150,12 @@ void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("MaterialID", mMaterial->GetUID());
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
+	archive.AddBool("Diffuse", mMaterial->mEnableDiffuseTexture);
+	archive.AddBool("Specular", mMaterial->mEnableSpecularGlossinessTexture);
+	archive.AddBool("Shininess", mMaterial->mEnableShinessMap);
+	archive.AddBool("Normal", mMaterial->mEnableNormalMap);
+	
+	
 }
 
 void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {

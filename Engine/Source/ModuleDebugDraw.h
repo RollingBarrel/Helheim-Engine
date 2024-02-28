@@ -17,17 +17,18 @@ public:
     ~ModuleDebugDraw();
 
 	bool            Init();
-	update_status   Update();
+	update_status   Update(float dt);
 	bool            CleanUp();
 
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
-    void DrawBoundingBox(const OBB& obb);
-    void DrawQuadtree(const AABB& aabb);
     void DrawAxis();
+    void DrawFrustum(const Frustum& frustum);
     bool GetShouldRenderGrid() const { return mDrawGrid; }
     void SetRenderGrid(bool a) { mDrawGrid = a; }
-    void DrawLineSphere(const float center[3], const float color[3], const float radius, unsigned int precision = 4);
-
+    void DrawCube(const OBB& obb, const float3& color);
+    void DrawSphere(const float center[3], const float color[3], const float radius);
+    void DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius);
+    void DrawLine(const float3& position, const float3& direction, const float3& color);
 
 
 private:
@@ -36,7 +37,7 @@ private:
     bool mDrawGrid = true;
 
     void DrawGrid();
-    void DrawFrustum(const Frustum& frustum); 
+    
 
 
 };

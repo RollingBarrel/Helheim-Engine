@@ -1,6 +1,5 @@
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
-
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
 void log(const char file[], int line, const char* format, ...);
@@ -17,7 +16,6 @@ enum update_status
 #define SCREEN_HEIGHT 740
 #define FULLSCREEN false
 #define	RESIZEABLE true
-#define VSYNC true
 #define TITLE "Super Awesome Engine"
 
 #define RELEASE_ARRAY( x ) \

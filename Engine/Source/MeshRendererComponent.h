@@ -22,14 +22,15 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
+	void RefreshBoundingBoxes();
 	const OBB getOBB() const { return mOBB; }
-
+	const AABB GetAABB() const { return mAABB; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 
 	const ResourceMaterial* GetMaterial() const { return mMaterial; }
-
+	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 private:
 	ResourceMesh* mMesh;
 	ResourceMaterial* mMaterial;
@@ -38,6 +39,7 @@ private:
 
 	OBB mOBB;
 	AABB mAABB;
+	AABB mAABBWorld;
 	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 

@@ -12,6 +12,7 @@
 #include "rapidjson/document.h"
 
 class MeshRendererComponent;
+class CameraComponent;
 class Component;
 enum class ComponentType : unsigned int;
 
@@ -28,15 +29,11 @@ public:
 	GameObject(const char* name, GameObject* parent);
 	GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation);
 
-
 	~GameObject();
 
 	Component* GetComponent(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
-	void Enable() { mIsEnabled = true; };
-	void Disable() { mIsEnabled = false; };
-	void AddChild(GameObject* child, const int aboveThisId = 0);
 	
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
@@ -50,8 +47,15 @@ public:
 
 	void ResetTransform();
 
+	void SetEnabled(bool enabled);
+	// Status for this GameObject
+	bool IsEnabled() const { return mIsEnabled; }
+	// Status for this GameObject and all its ancestors
+	bool IsActive() const { return mIsEnabled && mIsActive; }
+	
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
+	void AddChild(GameObject* child, const int aboveThisId = 0);
 	void DeleteChild(GameObject* child);
 	void AddComponentToDelete(Component* component);
 
@@ -61,7 +65,8 @@ public:
 	void SetScale(const float3& scale);
 
 	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
-	MeshRendererComponent* getMeshRenderer() const;
+	MeshRendererComponent* GetMeshRenderer() const;
+	CameraComponent* getCamera() const;
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
 
@@ -72,6 +77,9 @@ private:
 	Component* RemoveComponent(Component* component);
 	void AddComponent(Component* component, Component* position);
 	void RecalculateLocalTransform();
+	void RefreshBoundingBoxes();
+
+	void SetActiveInHierarchy(bool active);
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
@@ -87,6 +95,7 @@ private:
 	float3 mEulerRotation = float3::zero;
 	float3 mScale = float3::one;
 	bool mIsEnabled = true;
+	bool mIsActive = true;
 	bool isTransformModified = false;
 	
 };

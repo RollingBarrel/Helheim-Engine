@@ -1,7 +1,6 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
-#include "EngineTimer.h"
 
 class ModuleOpenGL;
 class ModuleWindow;
@@ -12,8 +11,11 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
-class ModuleTimer;
 class ModuleResource;
+class ModuleUI;
+
+class Timer;
+class PreciseTimer;
 
 class Application
 {
@@ -23,7 +25,7 @@ public:
 	~Application();
 
 	bool Init();
-	update_status Update();
+	update_status Update(float dt);
 	bool CleanUp();
 
     ModuleOpenGL* GetOpenGL() { return render; }
@@ -34,10 +36,22 @@ public:
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
-    ModuleTimer* GetClock() { return clock; }
     ModuleResource* GetResource() { return resource; }
 
-    float GetDt() const;
+    Timer* GetEngineClock() const { return mEngineTimer; }
+    Timer* GetGameClock() const { return mGameTimer; }
+    Timer* GetCurrentClock() const { return mCurrentTimer; }
+    void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
+
+    //In case we want to use precise timer
+
+    //PreciseTimer* GetEngineClock() const { return mEngineTimer; }
+    //PreciseTimer* GetGameClock() const { return mGameTimer; }
+    //PreciseTimer* GetCurrentClock() const { return mCurrentTimer; }
+    //void SetCurrentClock(PreciseTimer* clock) { mCurrentTimer = clock; }
+
+    float GetRealDt() const;
+    float GetGameDt() const;
 
 private:
 
@@ -49,11 +63,24 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
-    ModuleTimer* clock = nullptr;
     ModuleResource* resource = nullptr;
+    ModuleUI* ui = nullptr;
 
-#define NUM_MODULES 10
+#define NUM_MODULES 11
     Module* modules[NUM_MODULES];
+
+    //Timer
+    Timer* mEngineTimer;
+    Timer* mGameTimer;
+    Timer* mCurrentTimer = nullptr;
+
+    //In case we want to use precise timer
+    
+    //PreciseTimer* mEngineTimer;
+    //PreciseTimer* mGameTimer;
+    //PreciseTimer* mCurrentTimer = nullptr;
+
+    bool mEnableVsync = true;
 };
 
 extern Application* App;

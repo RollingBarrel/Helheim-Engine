@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
 
 		case MAIN_UPDATE:
 		{
-			int update_return = App->Update();
+			int update_return = App->Update(App->GetRealDt());
 
 			if (update_return == UPDATE_ERROR)
 			{
@@ -86,6 +86,5 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
-	LOG("Bye :)\n");
 	return main_return;
 }
