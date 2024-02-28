@@ -8,7 +8,7 @@
 #include "Script.h"
 
 
-class SCRIPTING_API TestScript : public Script{
+extern "C" class SCRIPTING_API TestScript : public Script {
 
 public:
 

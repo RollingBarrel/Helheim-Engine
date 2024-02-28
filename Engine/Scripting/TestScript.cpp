@@ -8,6 +8,7 @@
 
 TestScript::TestScript() : Script()
 {
+
 }
 
 void TestScript::Start()

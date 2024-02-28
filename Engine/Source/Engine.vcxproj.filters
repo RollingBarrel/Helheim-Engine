@@ -400,9 +400,6 @@
     <ClInclude Include="ConsolePanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="InspectorPanel.h">
-      <Filter>Panels</Filter>
-    </ClInclude>
     <ClInclude Include="HierarchyPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -914,6 +911,9 @@
     <ClInclude Include="ModuleScriptManager.h" />
     <ClInclude Include="Script.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

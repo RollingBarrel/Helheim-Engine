@@ -1,6 +1,7 @@
 #include "ModuleScriptManager.h"
 #include "Script.h"
 #include <Windows.h>
+#include <string>
 
 ModuleScriptManager::ModuleScriptManager()
 {
@@ -12,20 +13,20 @@ ModuleScriptManager::~ModuleScriptManager()
 
 bool ModuleScriptManager::Init()
 {
+	const char* name = "TestScript";
 
 	mHandle = LoadLibrary("Scripting.dll");
 
-	Script*(*script)() = (Script* (*)())GetProcAddress(static_cast<HMODULE>(mHandle), "CreateTestScript");
-	
+	Script*(*script)() = (Script* (*)())GetProcAddress(static_cast<HMODULE>(mHandle), (std::string("Create") + std::string(name)).c_str());
+
 	if (script != nullptr) {
 		mScripts.push_back(script());
 	}	
 	else {
-		LOG("Algo se ha muerto leyendo scripts");;
+		LOG("LOADING SCRIPT ERROR");;
 	}
 
 	return true;
-
 }
 
 update_status ModuleScriptManager::PreUpdate(float dt)
