@@ -64,6 +64,15 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     unsigned filePos = pngName.find_last_of('/');
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[diffuseTextureIndex].uri);
+                    if (!App->GetFileSystem()->Exists(pngName.c_str()))
+                    {
+                        size_t sizeUntilName = pngName.find_last_of('/') + 1;
+                        std::string extension = pngName.substr(pngName.find_last_of('.'));
+                        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
+                        pngName = ASSETS_TEXTURE_PATH;
+                        pngName += name;
+                        pngName += extension;
+                    }
 
                     diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
                 }
@@ -85,6 +94,15 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     unsigned filePos = pngName.find_last_of('/');
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[specularGlossinessIndex].uri);
+                    if (!App->GetFileSystem()->Exists(pngName.c_str()))
+                    {
+                        size_t sizeUntilName = pngName.find_last_of('/') + 1;
+                        std::string extension = pngName.substr(pngName.find_last_of('.'));
+                        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
+                        pngName = ASSETS_TEXTURE_PATH;
+                        pngName += name;
+                        pngName += extension;
+                    }
 
                     specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
                 }
@@ -108,6 +126,15 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         unsigned filePos = pngName.find_last_of('/');
                         pngName = pngName.substr(0, filePos + 1);
                         pngName.append(tinyModel.images[normalIndex].uri);
+                        if (!App->GetFileSystem()->Exists(pngName.c_str()))
+                        {
+                            size_t sizeUntilName = pngName.find_last_of('/') + 1;
+                            std::string extension = pngName.substr(pngName.find_last_of('.'));
+                            std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
+                            pngName = ASSETS_TEXTURE_PATH;
+                            pngName += name;
+                            pngName += extension;
+                        }
 
                         normalTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
                     }
@@ -127,6 +154,15 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
             unsigned filePos = pngName.find_last_of('/');
             pngName = pngName.substr(0, filePos + 1);
             pngName.append(tinyModel.images[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index].uri);
+            if (!App->GetFileSystem()->Exists(pngName.c_str()))
+            {
+                size_t sizeUntilName = pngName.find_last_of('/') + 1;
+                std::string extension = pngName.substr(pngName.find_last_of('.'));
+                std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
+                pngName = ASSETS_TEXTURE_PATH;
+                pngName += name;
+                pngName += extension;
+            }
 
             diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
         }
