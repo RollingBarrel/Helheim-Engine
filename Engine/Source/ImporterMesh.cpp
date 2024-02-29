@@ -23,13 +23,14 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     unsigned int numVertices = 0;
     unsigned int numIndices = 0;
     unsigned int* indices = nullptr;
+    std::vector<Attribute>attributes;
+    std::vector<float*>attributesData;
 
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
     const auto& itNorm = primitive.attributes.find("NORMAL");
     const auto& itTang = primitive.attributes.find("TANGENT");
 
-    Attribute attr = Attribute(Attribute::POS,sizeof(float)*3, 0);
     if (itPos != primitive.attributes.end())
     {
         const tinygltf::Accessor& posAcc = model.accessors[itPos->second];
@@ -42,7 +43,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         const unsigned char* bufferPos = &posBuffer.data[posView.byteOffset + posAcc.byteOffset];
 
-        attr = Attribute(Attribute::POS, sizeof(float) * 3, 0);
+        attributes.emplace_back(Attribute::POS, sizeof(float) * 3, 0);
         float* data = new float[posAcc.count * 3];
         //Add vertices Pos to this buffer taking into acc byteStride
         for (auto i = 0; i < posAcc.count; ++i)
@@ -58,8 +59,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
-        rMesh->AddAttribute(attr, data, posAcc.count * 3 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -73,7 +73,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const unsigned char* bufferTexCoord = &texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset];
 
 
-        attr = Attribute(Attribute::UV, sizeof(float) * 2, 0);
+        attributes.emplace_back(Attribute::UV, sizeof(float) * 2, 0);
         float* data = new float[texCoordAcc.count * 2];
         //Add vertices TexCoord to this buffer taking into acc byteStride
         for (auto i = 0; i < texCoordAcc.count; ++i)
@@ -91,8 +91,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f", reinterpret_cast<float2*>(data)[i].x, reinterpret_cast<float2*>(data)[i].y);
         }
-        rMesh->AddAttribute(attr, data, texCoordAcc.count * 2 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
 
     if (itNorm != primitive.attributes.end())
@@ -105,7 +104,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         const unsigned char* bufferNorm = &normBuffer.data[normView.byteOffset + normAcc.byteOffset];
 
-        attr = Attribute(Attribute::NORMAL, sizeof(float) * 3, 0);
+        attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, 0);
         float* data = new float[normAcc.count * 3];
 
         //Add vertices Normal to this buffer taking into acc byteStride
@@ -124,8 +123,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
-        rMesh->AddAttribute(attr, data, normAcc.count * 3 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
 
     //Indices part
@@ -175,7 +173,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         const unsigned char* bufferTang = &tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset];
 
-        attr = Attribute(Attribute::TANGENT, sizeof(float) * 4, 0);
+        attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, 0);
         float* data = new float[tangAcc.count * 4];
 
         //Add vertices Tangent to this buffer taking into acc byteStride
@@ -194,16 +192,18 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             //LOG("%f %f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z, reinterpret_cast<float4*>(data)[i].w);
         }
-        rMesh->AddAttribute(attr, data, tangAcc.count * 4 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
     else
     {
         //Generate Tangents
+        GenerateTangents(attributes, attributesData, numIndices, indices, GetVertexSize(), numVertices, GetInterleavedData())
         rMesh->GenerateTangents();
     }
 
     ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, indices, numVertices);
+    for (float* data : attributesData)
+        delete[] data;
     Importer::Mesh::Save(rMesh);
     return rMesh;
 }
@@ -228,7 +228,7 @@ void Importer::Mesh::Save(const ResourceMesh* rMesh)
 
     //Save Indices
     bytes = sizeof(unsigned int) * rMesh->GetNumberIndices();
-    memcpy(cursor, rMesh->mIndices, bytes);
+    memcpy(cursor, rMesh->GetIndices(), bytes);
     cursor += bytes;
 
     //Save attributes and data

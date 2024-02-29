@@ -1,11 +1,10 @@
 #include "ResourceMesh.h"
 
-#include "ModuleFileSystem.h"
+#include "Globals.h"
+#include <assert.h>
 
 #include "mikktspace.h"
 #include "weldmesh.h"
-
-#include "glew.h"
 
 ResourceMesh::ResourceMesh(
     unsigned int uid, 
@@ -72,11 +71,6 @@ static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTan
     memcpy(&ptr->tVertices[vertexTIdx], &ptr->vertices[vertexIdx], ptr->vertexSize);
     memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize], fvTangent, 3 * sizeof(float));
     memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
-}
-
-void ResourceMesh::AddIndices(unsigned int* indices)
-{
-    mIndices = indices;
 }
 
 const float* ResourceMesh::GetAttributeData(Attribute::Type type) const
@@ -200,26 +194,97 @@ float* ResourceMesh::GetInterleavedData() const
     return ret;
 }
 
-void ResourceMesh::LoadToMemory()
+void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int* indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData)
 {
-    glGenVertexArrays(1, &mVao);
-    glGenBuffers(1, &mVbo);
-    glGenBuffers(1, &mEbo);
-    glBindVertexArray(mVao);
-    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-    glBufferData(GL_ARRAY_BUFFER, mNumVertices * mVertexSize, GetInterleavedData(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(unsigned int), mIndices, GL_STATIC_DRAW);
-    unsigned int idx = 0;
-    for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+#ifdef _DEBUG
+    bool foundPos = false;
+    bool foundUv = false;
+    bool foundNormal = false;
+    for (const Attribute attribute : attributes)
     {
-        glVertexAttribPointer(idx, it->size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)it->offset);
-        glEnableVertexAttribArray(idx);
-        ++idx;
+        switch (attribute.type)
+        {
+        case Attribute::POS:
+            foundPos = true;
+            break;
+        case Attribute::UV:
+            foundUv = true;
+            break;
+        case Attribute::NORMAL:
+            foundNormal = true;
+            break;
+        }
+        if (foundPos && foundUv && foundNormal)
+            break;
     }
-    glBindVertexArray(0);
-}
+    if (!foundPos || !foundUv || !foundNormal)
+        return;
+#endif // _DEBUG
 
+    const char* vertices = reinterpret_cast<const char*>(vertexData);
+    char* unweldedVertices = new char[numIndices * vertexSize];
+
+    for (int i = 0; i < numIndices; ++i)
+    {
+        memcpy(&unweldedVertices[i * vertexSize], &vertices[indexData[i] * vertexSize], vertexSize);
+    }
+
+    SMikkTSpaceInterface interfaceInput = {};
+    interfaceInput.m_getNumFaces = GetNumFaces;
+    interfaceInput.m_getNumVerticesOfFace = GetNumVerticesOfFace;
+    interfaceInput.m_getNormal = GetNormal;
+    interfaceInput.m_getPosition = GetPosition;
+    interfaceInput.m_getTexCoord = GetTexCoord;
+    interfaceInput.m_setTSpaceBasic = SetTSpaceBasic;
+    MikkTSpaceStruct mikkInput = {};
+    mikkInput.numVertices = numIndices;
+    mikkInput.posOffset = 0;
+    mikkInput.texCoordOffset = 3 * sizeof(float);
+    mikkInput.normOffset = 5 * sizeof(float);
+    mikkInput.vertexSize = 8 * sizeof(float);
+    mikkInput.vertices = unweldedVertices;
+    //Les mikktangents son vec4
+    char* unweldedTVertices = new char[numIndices * (vertexSize + 4 * sizeof(float))];
+    mikkInput.tVertices = unweldedTVertices;
+    SMikkTSpaceContext tangContext = {};
+    tangContext.m_pInterface = &interfaceInput;
+    tangContext.m_pUserData = &mikkInput;
+    if (!genTangSpaceDefault(&tangContext))
+    {
+        LOG("ERROR: Could not generate the tangent space");
+        delete[] unweldedTVertices;
+        delete[] unweldedVertices;
+        return;
+    }
+
+    int* piRemapTable = new int[mikkInput.numVertices];
+    float* pfVertexDataOut = new float[mikkInput.numVertices * 12];
+    unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut, reinterpret_cast<float*>(mikkInput.tVertices), mikkInput.numVertices, 12);
+    delete[] unweldedTVertices;
+    delete[] unweldedVertices;
+
+    delete[] indexData;
+    delete[] vertexData;
+    attributes.clear();
+    for (float* data : attributeData)
+        delete[] data;
+    attributeData.clear();
+
+    numVertices = uniqueVertices;
+    numIndices = mikkInput.numVertices;
+    attributes.emplace_back(Attribute::POS, sizeof(float) * 3, 0);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::UV, sizeof(float) * 2, sizeof(float) * 3);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, sizeof(float) * 5);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, sizeof(float) * 8);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+
+    numIndices = mikkInput.numVertices;
+    indexData = reinterpret_cast<unsigned int*>(piRemapTable);
+    delete[] pfVertexDataOut;
+}
 
 void ResourceMesh::GenerateTangents()
 {
@@ -306,12 +371,4 @@ void ResourceMesh::CleanUp()
         }
     }
     mAttributesData.clear();
-
-    //TODO: delete EBO/VBO...
-    if(mVbo)
-        glDeleteBuffers(1, &mVbo);
-    if (mEbo)
-        glDeleteBuffers(1, &mEbo);
-    if(mVao)
-        glDeleteVertexArrays(1, &mVao);
 }

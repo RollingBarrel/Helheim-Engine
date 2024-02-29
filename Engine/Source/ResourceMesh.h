@@ -20,13 +20,13 @@ typedef struct Attribute {
 }Attribute;
 
 float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize);
-
+void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int* indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData);
 
 class ResourceMesh : public Resource
 {
 public:
 
-	ResourceMesh(unsigned int uid, unsigned int numIndices, unsigned int* indices, unsigned int numVertices);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, const unsigned int* indices, unsigned int numVertices);
 	~ResourceMesh();
 
 	unsigned int GetNumberVertices() const { return mNumVertices; }
@@ -37,7 +37,7 @@ public:
 	unsigned int GetVertexSize() const { return mVertexSize; }
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
-	//This allocates memory in the return pointer that you must free
+	//This allocates memory in the return pointer that you must delete
 	float* GetInterleavedData() const;
 
 	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
