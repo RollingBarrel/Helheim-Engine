@@ -32,7 +32,7 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
 
             if (srcChannel2.target_node == srcChannel.target_node && ourChannel->hasTranslation == false || ourChannel->hasRotation == false)
             {
-                ourAnimation->addChannels(model, animation, srcChannel, ourAnimation, ourChannel);
+                ourAnimation->addChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
             }
 
         }
