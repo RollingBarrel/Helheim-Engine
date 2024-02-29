@@ -61,23 +61,17 @@ void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf
     const tinygltf::Accessor& inputAccessor = model.accessors[inputAccessorIndex];
     const tinygltf::Accessor& outputAccessor = model.accessors[outputAccessorIndex];
 
-    // Retrieves the buffer views for both input and output data.
     const tinygltf::BufferView& inputBufferView = model.bufferViews[inputAccessor.bufferView];
     const tinygltf::BufferView& outputBufferView = model.bufferViews[outputAccessor.bufferView];
 
-    // Retrieves the actual buffer data from the model's buffers based on the buffer views and accessors.
+    // Retrieves the actual buffer data 
     const unsigned char* inputBuffer = &model.buffers[inputBufferView.buffer].data[inputBufferView.byteOffset + inputAccessor.byteOffset];
     const unsigned char* outputBuffer = &model.buffers[outputBufferView.buffer].data[outputBufferView.byteOffset + outputAccessor.byteOffset];
 
     const float* inputPtr = reinterpret_cast<const float*>(inputBuffer);
     const float* outputPtr = reinterpret_cast<const float*>(outputBuffer);
 
-    // Determine the number of keyframes is the number of output accessors
     size_t numKeyframes = outputAccessor.count;
-
-
-    // Assuming each keyframe has 3 floats for translation (x, y, z)
-    // and each keyframe has 4 floats for rotation (x, y, z, w)
 
     if (channel.target_path == "translation") {
         for (size_t i = 0; i < numKeyframes; ++i) {
