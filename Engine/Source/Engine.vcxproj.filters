@@ -1034,6 +1034,7 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{ea99d1f6-2c70-403e-b5b6-3a7fab634aa0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Dependencies\NavigationAI">
       <UniqueIdentifier>{579d3554-19f7-47db-8abf-7b98913d0ca2}</UniqueIdentifier>
     </Filter>
