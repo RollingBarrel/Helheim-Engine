@@ -10,8 +10,10 @@
 ResourceMesh::ResourceMesh(
     unsigned int uid, 
     unsigned int inNumIndices,
-    unsigned int inNumVertices) : Resource(uid, Type::Mesh), mNumVertices(inNumVertices), mNumIndices(inNumIndices)
+    const unsigned int* indices,
+    unsigned int inNumVertices) : Resource(uid, Type::Mesh), mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(new unsigned int[inNumIndices])
 {
+    memcpy(mIndices, indices, mNumIndices * sizeof(unsigned int));
 }
 
 ResourceMesh::~ResourceMesh()

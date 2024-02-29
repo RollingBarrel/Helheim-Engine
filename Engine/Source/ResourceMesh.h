@@ -1,8 +1,7 @@
-#pragma once
+#ifndef _RESOURCE_MESH_H_
+#define _RESOURCE_MESH_H_
 
 #include <vector>
-
-#include "ImporterMesh.h"
 #include "Resource.h"
 
 typedef struct Attribute {
@@ -27,11 +26,7 @@ class ResourceMesh : public Resource
 {
 public:
 
-	ResourceMesh(unsigned int uid,
-		unsigned int numIndices,
-		unsigned int numVertices);
-
-	//ResourceMesh(const ResourceMesh& other);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, unsigned int* indices, unsigned int numVertices);
 	~ResourceMesh();
 
 	unsigned int GetNumberVertices() const { return mNumVertices; }
@@ -62,3 +57,4 @@ private:
 	unsigned int mVertexSize = 0;
 };
 
+#endif // _RESOURCE_MESH_H_

@@ -19,12 +19,10 @@
 
 ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, unsigned int uid)
 {
-    //TODO: Use the function Add attribute to import to the resource mesh
-    // Try not to use friend func import on resourceMesh
-    // Put the indices private
 
-    //TODO: Constructor abaix per evitar el set num vertices i set num indices
-    ResourceMesh* rMesh = new ResourceMesh(uid, 0, 0);
+    unsigned int numVertices = 0;
+    unsigned int numIndices = 0;
+    unsigned int* indices = nullptr;
 
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
@@ -40,7 +38,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& posView = model.bufferViews[posAcc.bufferView];
         const tinygltf::Buffer& posBuffer = model.buffers[posView.buffer];
 
-        rMesh->SetNumberVertices(posAcc.count);
+        numVertices = posAcc.count;
 
         const unsigned char* bufferPos = &posBuffer.data[posView.byteOffset + posAcc.byteOffset];
 
@@ -134,11 +132,11 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     if (primitive.indices >= 0)
     {
         const tinygltf::Accessor& indAcc = model.accessors[primitive.indices];
-        rMesh->SetNumberIndices(indAcc.count);
+        numIndices = indAcc.count;
         const tinygltf::BufferView& indView = model.bufferViews[indAcc.bufferView];
         const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
 
-        rMesh->mIndices = new unsigned int[rMesh->GetNumberIndices()];
+        indices = new unsigned int[numIndices];
 
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
         {
@@ -146,7 +144,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             for (uint32_t i = 0; i < indAcc.count; ++i)
             {
                 //TODO: Change this
-                rMesh->mIndices[i] = bufferInd[i];
+                indices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
@@ -154,7 +152,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
             for (uint16_t i = 0; i < indAcc.count; ++i)
             {
-                rMesh->mIndices[i] = bufferInd[i];
+                indices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
@@ -162,7 +160,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
             for (uint8_t i = 0; i < indAcc.count; ++i)
             {
-                rMesh->mIndices[i] = bufferInd[i];
+                indices[i] = bufferInd[i];
             }
         }
     }
@@ -205,8 +203,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         rMesh->GenerateTangents();
     }
 
-    if (rMesh)
-        Importer::Mesh::Save(rMesh);
+    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, indices, numVertices);
+    Importer::Mesh::Save(rMesh);
     return rMesh;
 }
 
