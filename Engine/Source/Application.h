@@ -11,6 +11,7 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
+class ModuleUI;
 
 class Timer;
 class PreciseTimer;
@@ -63,8 +64,9 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
+    ModuleUI* ui = nullptr;
 
-#define NUM_MODULES 8
+#define NUM_MODULES 9
     Module* modules[NUM_MODULES];
 
     //Timer

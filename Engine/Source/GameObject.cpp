@@ -148,6 +148,7 @@ void GameObject::Update()
 		DeleteComponents();
 		if (isTransformModified) {
 			RecalculateMatrices();
+			RefreshBoundingBoxes();
 		}
 	}
 }
@@ -165,9 +166,13 @@ void GameObject::ResetTransform()
 }
 
 void GameObject::SetEnabled(bool enabled)
-{ 
+{
 	mIsEnabled = enabled;
-	SetActiveInHierarchy(enabled);
+
+	if (!enabled || mParent->IsActive())
+	{
+		SetActiveInHierarchy(enabled);
+	}
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -380,7 +385,7 @@ void GameObject::AddComponent(Component* component, Component* position)
 	}
 }
 
-MeshRendererComponent* GameObject::getMeshRenderer() const
+MeshRendererComponent* GameObject::GetMeshRenderer() const
 {
 	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
 		return comp->GetType() == ComponentType::MESHRENDERER;
@@ -418,8 +423,28 @@ void GameObject::RecalculateLocalTransform() {
 	}
 }
 
+void GameObject::RefreshBoundingBoxes()
+{
+	if (GetMeshRenderer() != nullptr)
+	{
+		GetMeshRenderer()->RefreshBoundingBoxes();
+	}
+	else
+	{
+		for (auto children : mChildren)
+		{
+			children->RefreshBoundingBoxes();
+		}
+	}
+}
+
 void GameObject::SetActiveInHierarchy(bool active)
 {
+	if (active && !mIsEnabled)
+	{
+		return;
+	}
+
 	mIsActive = active;
 
 	for (GameObject* child : mChildren)
