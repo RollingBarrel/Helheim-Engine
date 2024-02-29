@@ -12,6 +12,8 @@ class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
 class ModuleScriptManager;
+class ModuleResource;
+class ModuleUI;
 
 class Timer;
 class PreciseTimer;
@@ -36,6 +38,7 @@ public:
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
     ModuleScriptManager* GetScriptManager() { return scriptManager; }
+    ModuleResource* GetResource() { return resource; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
@@ -63,8 +66,10 @@ private:
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
     ModuleScriptManager* scriptManager = nullptr;
+    ModuleResource* resource = nullptr;
+    ModuleUI* ui = nullptr;
 
-#define NUM_MODULES 9
+#define NUM_MODULES 11
     Module* modules[NUM_MODULES];
 
     //Timer
