@@ -65,7 +65,6 @@ void ModuleCamera::CheckRaycast()
 }
 
 
-
 update_status ModuleCamera::Update(float dt)
 {    
 	if (mDrawRayCast) {
@@ -161,7 +160,7 @@ update_status ModuleCamera::Update(float dt)
 
 			mFrustum->pos = finalCameraPosition;
 
-			CameraUtils::LookAt(mFrustum->pos, selectedObjectPosition, mFrustum->up, *mFrustum);
+			CameraUtils::LookAt(mFrustum->pos, selectedObjectPosition, float3::unitY, *mFrustum);
 		}
 	}
 	return UPDATE_CONTINUE;

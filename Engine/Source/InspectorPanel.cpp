@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
+#include "ModuleCamera.h"
 #include "HierarchyPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
@@ -435,7 +436,4 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 		component->SetFarPlane(Far);
 		component->SetVerticicalFOV(DegToRad(FOV));
 	}
-
-	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
-	// Is culling
 }

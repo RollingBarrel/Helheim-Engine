@@ -42,8 +42,9 @@ void CameraUtils::LookAt(float3 eyePos, float3 targetPos, float3 upVector, Frust
 void CameraUtils::Rotate(const float3& axis, float angleRad, Frustum& camera)
 {
     float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis, angleRad);
-    camera.up = rotationMatrix.Mul(camera.up);
-    camera.front = rotationMatrix.Mul(camera.front);
+
+    camera.front = rotationMatrix.Mul(camera.front).Normalized();
+    camera.up = rotationMatrix.Mul(camera.up).Normalized();
 
     App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
