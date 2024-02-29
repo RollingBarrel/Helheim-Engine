@@ -237,6 +237,7 @@
     </ClCompile>
     <ClCompile Include="BatchManager.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -845,6 +846,7 @@
     </ClInclude>
     <ClInclude Include="BatchManager.h">
       <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
