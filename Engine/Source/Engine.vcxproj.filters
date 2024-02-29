@@ -380,9 +380,11 @@
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp" />
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleUI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -960,12 +962,14 @@
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScriptManager.h" />
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleUI.h">
       <Filter>Modules</Filter>
     </ClInclude>
