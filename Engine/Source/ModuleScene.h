@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <vector>
+#include <string>
 class Quadtree;
 class GameObject;
 class Archive;
@@ -35,6 +36,9 @@ public:
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
 	const std::vector<GameObject*> GetRenderList() { return mRenderList; }
+
+	GameObject* FindGameObjectWithTag(std::string tagname);
+	std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);

@@ -39,11 +39,15 @@ void InspectorPanel::Draw(int windowFlags)
 			focusedObject->SetEnabled(enabled);
 		}
 		ImGui::SameLine();
+
+
+		// Rename
 		ImGui::PushID(focusedObject->mID);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
+		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
 		std::vector<Tag*> tags = App->GetTags()->GetAllTags();
@@ -319,6 +323,41 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text");
 	ImGui::Text("Demo Text 2 ");
+
+	ImGui::SeparatorText("TAGS SYSYEM TEST");
+	ImGui::Text("The first name of game object found with");
+	ImGui::SameLine();
+	std::vector<Tag*> tags = App->GetTags()->GetAllTags();
+
+	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
+	{
+		for (auto i = 0; i < tags.size(); i++) {
+			if (ImGui::Selectable(tags[i]->GetName().c_str()))
+			{
+				component->mTestSavedTag1 = i;
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+	ImGui::Text("tag is ");
+	ImGui::SameLine();
+	GameObject* found = GameObject::FindGameObjectWithTag(tags[component->mTestSavedTag1]->GetName());
+	if (found != nullptr)
+	{
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
+	}
+	else {
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
+	}
+	
+
+	ImGui::Separator();
+	ImGui::Text("There is ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), std::to_string(GameObject::FindGameObjectsWithTag(tags[component->mTestSavedTag1]->GetName()).capacity()).c_str());
+	ImGui::SameLine();
+	ImGui::Text(" gameobjects with the same tag.");
 }
 
 void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {

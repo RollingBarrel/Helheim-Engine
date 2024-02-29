@@ -39,6 +39,30 @@ bool ModuleScene::Init()
 	return true;
 }
 
+GameObject* ModuleScene::FindGameObjectWithTag(std::string tagname)
+{
+	for (GameObject* child : mRoot->GetChildren())
+	{
+		if (child->GetTag()->GetName() == tagname) {
+			return child;
+		}
+	}
+
+	return nullptr;
+}
+
+std::vector<GameObject*> ModuleScene::FindGameObjectsWithTag(std::string tagname)
+{
+	std::vector<GameObject*> foundGameObjects = std::vector<GameObject*>();
+	for (GameObject* child : mRoot->GetChildren())
+	{
+		if (child->GetTag()->GetName() == tagname) {
+			foundGameObjects.push_back(child);
+		}
+	}
+	return foundGameObjects;
+}
+
 void ModuleScene::Save(const char* sceneName) {
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos) {

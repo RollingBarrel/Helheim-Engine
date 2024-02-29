@@ -358,9 +358,15 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="TagsManager.cpp" />
-    <ClCompile Include="Tag.cpp" />
-    <ClCompile Include="TagsManagerPanel.cpp" />
+    <ClCompile Include="TagsManagerPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Tag.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="TagsManager.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -910,9 +916,15 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="TagsManager.h" />
-    <ClInclude Include="Tag.h" />
-    <ClInclude Include="TagsManagerPanel.h" />
+    <ClInclude Include="TagsManagerPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="TagsManager.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Tag.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
