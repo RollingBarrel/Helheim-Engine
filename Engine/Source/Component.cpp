@@ -22,6 +22,10 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Script";
 		case ComponentType::NAVMESHCONTROLLER:
 			return "NavMeshController";
+		case ComponentType::CANVAS:
+			return "Canvas";
+		case ComponentType::TRANSFORM2D:
+return "Transform2D";
 		default:
 			return "None";
 		}
