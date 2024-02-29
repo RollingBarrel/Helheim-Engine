@@ -10,7 +10,6 @@
 #include "GameObject.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-#include "optick.h"
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -148,7 +147,6 @@ bool ModuleOpenGL::Init()
 
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
-	OPTICK_CATEGORY("OpenGL_PreUpdate", Optick::Category::Rendering);
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

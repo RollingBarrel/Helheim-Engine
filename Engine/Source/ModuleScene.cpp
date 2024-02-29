@@ -13,7 +13,6 @@
 #include "ModuleEditor.h"
 #include "Archive.h"
 #include "Globals.h"
-#include "optick.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
@@ -202,7 +201,6 @@ void ModuleScene::GenerateRenderList(GameObject* root)
 
 void ModuleScene::DrawRenderList()
 {
-	OPTICK_CATEGORY("DrawRenderList", Optick::Category::Rendering);
 	for (GameObject* objectToRender : mRenderList)
 	{
 		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
