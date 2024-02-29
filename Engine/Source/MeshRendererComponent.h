@@ -14,18 +14,16 @@ class GeometryBatch;
 class MeshRendererComponent : public Component
 {
 public:
-	MeshRendererComponent(GameObject* owner);
-	MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner);
+	MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid);
+	MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner);
 	~MeshRendererComponent();
-	void Clear() {};
-
-	void Load(unsigned int meshUid, unsigned int materialUid);
-	void LoadPBR(const char* uid) {};
+	
 	void Reset() override {}
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
+	void RefreshBoundingBoxes();
 	const OBB getOBB() const { return mOBB; }
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const GeometryBatch* GetBatch() const { return mBatch; }
@@ -48,6 +46,7 @@ private:
 
 	OBB mOBB;
 	AABB mAABB;
+	AABB mAABBWorld;
 	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 	int mTemporalID = -1;

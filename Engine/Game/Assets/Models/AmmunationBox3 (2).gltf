@@ -1,0 +1,305 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "AmmunationBox3 (2)"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 7243,
+      "type": "VEC3",
+      "max": [
+        0.47356170415878296,
+        0.28304201364517212,
+        0.28906133770942688
+      ],
+      "min": [
+        -0.47356170415878296,
+        -0.28304216265678406,
+        -5.7220457705398076E-08
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 7243,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 7243,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        0.9999995231628418,
+        0.999998927116394,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -0.99999916553497314,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 7243,
+      "type": "VEC2",
+      "max": [
+        0.9931640625,
+        0.9990234375
+      ],
+      "min": [
+        0.000499725341796875,
+        0.0029506683349609375
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 7243,
+      "type": "VEC2",
+      "max": [
+        0.9921875,
+        0.9892578125
+      ],
+      "min": [
+        0.00806427001953125,
+        0.00806427001953125
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 7243,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "min": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5123,
+      "count": 36174,
+      "type": "SCALAR",
+      "max": [
+        7242.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "AmmunationBox3 (2).bin",
+      "byteLength": 593844
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 86916,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 86916,
+      "byteLength": 86916,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 173832,
+      "byteLength": 115888,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 289720,
+      "byteLength": 57944,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 347664,
+      "byteLength": 57944,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 405608,
+      "byteLength": 115888,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 521496,
+      "byteLength": 72348,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "T_AmmunitionBox02_Normal.jpg",
+      "name": "T_AmmunitionBox02_Normal"
+    },
+    {
+      "uri": "T_AmmunitionBox02_Occlusion.jpg",
+      "name": "T_AmmunitionBox02_Occlusion"
+    },
+    {
+      "uri": "T_AmmunitionBox02_BaseColor.jpg",
+      "name": "T_AmmunitionBox02_BaseColor"
+    },
+    {
+      "uri": "T_AmmunitionBox02_Metallic.jpg",
+      "name": "T_AmmunitionBox02_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.215860471,
+          0.215860471,
+          0.215860471,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 3,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "MI_AmmunitionBox02"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "COLOR_0": 5
+          },
+          "indices": 6,
+          "material": 0
+        }
+      ],
+      "name": "AmmunationBox3 (2)"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -0.7071068,
+        0.0,
+        0.0,
+        0.7071067
+      ],
+      "translation": [
+        -1.44152737,
+        -2.35408163,
+        -3.36822557
+      ],
+      "name": "AmmunationBox3 (2)"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "T_AmmunitionBox02_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "T_AmmunitionBox02_Occlusion"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "T_AmmunitionBox02_BaseColor"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "T_AmmunitionBox02_Metallic"
+    }
+  ]
+}

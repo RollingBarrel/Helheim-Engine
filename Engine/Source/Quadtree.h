@@ -32,7 +32,7 @@ public:
 	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
 
-	void UpdateDrawableGameObjects(const Frustum& myCamera);
+	void UpdateDrawableGameObjects(const Frustum* myCamera);
 	void CleanUp();
 
 private:

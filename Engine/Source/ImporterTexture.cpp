@@ -4,15 +4,16 @@
 #include "ModuleFileSystem.h"
 
 #include "ImporterTexture.h"
+#include "ResourceTexture.h"
 
 #include "glew.h"
 
 #include "DirectXTex.h"
 
 
-void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
+ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int uid)
 {
-    std::string gltfPath = (ASSETS_TEXTURE_PATH + std::string(filePath));
+    std::string gltfPath = (filePath);
 
     DirectX::ScratchImage image;
 
@@ -34,60 +35,78 @@ void Importer::Texture::Import(const char* filePath, ResourceTexture* texture)
             if (FAILED(hr))
             {
                 LOG("texture failed to load");
-                return;
+                return nullptr;
             }
         }
     }
+    
+    // for get all information of the texture and see the parameters it have
+    unsigned int internalFormat;
+    unsigned int texFormat;
+    unsigned int dataType;
 
-    switch (image.GetMetadata().format) // for get all information of the texture and see the parameters it have
+    switch (image.GetMetadata().format) 
     {
     case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
     case DXGI_FORMAT_R8G8B8A8_UNORM:
-        texture->mInternalFormat = GL_RGBA8;
-        texture->mFormat = GL_RGBA;
-        texture->mType = GL_UNSIGNED_BYTE;
+        internalFormat = GL_RGBA8;
+        texFormat = GL_RGBA;
+        dataType = GL_UNSIGNED_BYTE;
         break;
     case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
     case DXGI_FORMAT_B8G8R8A8_UNORM:
-        texture->mInternalFormat = GL_RGBA8;
-        texture->mFormat = GL_BGRA;
-        texture->mType = GL_UNSIGNED_BYTE;
+        internalFormat = GL_RGBA8;
+        texFormat = GL_BGRA;
+        dataType = GL_UNSIGNED_BYTE;
         break;
     case DXGI_FORMAT_B5G6R5_UNORM:
-        texture->mInternalFormat = GL_RGB8;
-        texture->mFormat = GL_BGR;
-        texture->mType = GL_UNSIGNED_BYTE;
+        internalFormat = GL_RGB8;
+        texFormat = GL_BGR;
+        dataType = GL_UNSIGNED_BYTE;
         break;
     default:
         assert(false && "Unsupported format");
     }
 
-    texture->mWidth = image.GetMetadata().width;
-    texture->mHeight = image.GetMetadata().height;
-    texture->mMipLevels = image.GetMetadata().mipLevels;
-    texture->mNumPixels = image.GetPixelsSize();
+    unsigned int width = image.GetMetadata().width;
+    unsigned int height = image.GetMetadata().height;
+    unsigned int mipLevels = image.GetMetadata().mipLevels;
+    unsigned int numPixels = image.GetPixelsSize();
 
-    texture->mPixels = new unsigned char[texture->mNumPixels];
+    unsigned char* pixels = new unsigned char[numPixels];
     for (auto i = 0; i < image.GetPixelsSize(); ++i)
     {
-        texture->mPixels[i] = image.GetPixels()[i];
+        pixels[i] = image.GetPixels()[i];
     }
-
+    bool hasAlpha = false;
     if (DirectX::HasAlpha(image.GetMetadata().format))
     {
-        texture->mHasAlpha = true;
+        hasAlpha = true;
     }
 
-    Texture::Save(texture);
+    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+    Importer::Texture::Save(rTex);
+    return rTex;
 }
 
-void Importer::Texture::Save(const ResourceTexture* texture)
+void Importer::Texture::Save(const ResourceTexture* rTexture)
 {
-    unsigned int header[7] = { texture->mWidth, texture->mHeight, texture->mInternalFormat, texture->mFormat, texture->mType ,texture->mMipLevels, texture->mNumPixels};
+    // TODO: Save also UID (and assetsFile?)
+    unsigned int header[7] = {
+        rTexture->GetWidth(),
+        rTexture->GetHeight(),
+        rTexture->GetInternalFormat(),
+        rTexture->GetTexFormat(),
+        rTexture->GetDataType(),
+        rTexture->GetMipLevels(),
+        rTexture->GetNumPixels()
+    };
 
+    unsigned int numPixels = rTexture->GetNumPixels();
+    bool hasAlpha = rTexture->HasAlpha();
     unsigned int size = sizeof(header) +
-                        sizeof(texture->mHasAlpha) +
-                        sizeof(unsigned char) * texture->mNumPixels;
+        sizeof(hasAlpha) +
+        sizeof(unsigned char) * numPixels;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -96,88 +115,59 @@ void Importer::Texture::Save(const ResourceTexture* texture)
     memcpy(cursor, header, bytes);
     cursor += bytes;
 
-    bytes = sizeof(texture->mHasAlpha);
-    memcpy(cursor, &texture->mHasAlpha, bytes);
+    bytes = sizeof(hasAlpha);
+    memcpy(cursor, &hasAlpha, bytes);
     cursor += bytes;
 
-    bytes = sizeof(unsigned char) * texture->mNumPixels;
-    memcpy(cursor, texture->mPixels, bytes);
+    bytes = sizeof(unsigned char) * numPixels;
+    memcpy(cursor, rTexture->GetPixels(), bytes);
     cursor += bytes;
 
-    //TODO Change name for random UID
-    std::string path = LIBRARY_TEXTURE_PATH;
-    path += std::to_string(texture->mUID);
-    path += ".textssy";
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rTexture->GetUID(), true);
+    App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
-    App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
-
+    delete[] libraryPath;
     delete[] fileBuffer;
-    fileBuffer = nullptr;
-
 }
 
-unsigned int Importer::Texture::Load(ResourceTexture* texture, const char* fileName)
+ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
 {
     char* fileBuffer;
+    ResourceTexture* texture = nullptr;
 
-    std::string path = LIBRARY_TEXTURE_PATH;
-    path += fileName;
-    path += ".textssy";
-
-    App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
-
-    char* cursor = fileBuffer;
-    unsigned int header[7];
-    unsigned int bytes = sizeof(header);
-    memcpy(header, cursor, bytes);
-    cursor += bytes;
-    texture->mWidth = header[0];
-    texture->mHeight = header[1];
-    texture->mInternalFormat = header[2];
-    texture->mFormat = header[3];
-    texture->mType = header[4];
-    texture->mMipLevels = header[5];
-    texture->mNumPixels = header[6];
-
-    bytes = sizeof(texture->mHasAlpha);
-    memcpy(&texture->mHasAlpha, cursor, bytes);
-    cursor += bytes;
-
-    bytes = sizeof(unsigned char) * texture->mNumPixels;
-    if (texture->mPixels != nullptr)
-        delete[] texture->mPixels;
-    texture->mPixels = new unsigned char[texture->mNumPixels];
-    memcpy(texture->mPixels, cursor, bytes);
-
-    return texture->CreateTexture();
-}
-
-
-unsigned int ResourceTexture::CreateTexture()
-{
-    unsigned int texId;
-    glCreateTextures(GL_TEXTURE_2D, 1, &texId);
-    glTextureStorage2D(texId, mMipLevels, mInternalFormat, mWidth, mHeight);
-
-    for (size_t i = 0; i < mMipLevels; ++i)
+    if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
-        glTextureSubImage2D(texId, i, 0, 0, mWidth, mHeight, mFormat, mType, mPixels);
-    }
+        char* cursor = fileBuffer;
+        unsigned int header[7];
+        unsigned int bytes = sizeof(header);
+        memcpy(header, cursor, bytes);
+        cursor += bytes;
+        unsigned int width = header[0];
+        unsigned int height = header[1];
+        unsigned int internalFormat = header[2];
+        unsigned int texFormat = header[3];
+        unsigned int dataType = header[4];
+        unsigned int mipLevels = header[5];
+        unsigned int numPixels = header[6];
 
-    if (mMipLevels == 1) {
-        glGenerateTextureMipmap(texId);
-    }
-        
-    glTextureParameteri(texId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTextureParameteri(texId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(texId, GL_TEXTURE_BASE_LEVEL, 0);
-    glTextureParameteri(texId, GL_TEXTURE_MAX_LEVEL, mMipLevels - 1);
-    glTextureParameteri(texId, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 
-    mTextureID = texId;
-    mTextureHandle = glGetTextureHandleARB(texId);
-    glMakeTextureHandleResidentARB(mTextureHandle);
-    return mTextureHandle;
+        bool hasAlpha;
+        bytes = sizeof(hasAlpha);
+        memcpy(&hasAlpha, cursor, bytes);
+        cursor += bytes;
+
+        bytes = sizeof(unsigned char) * numPixels;
+        unsigned char* pixels = nullptr;
+        pixels = new unsigned char[numPixels];
+        memcpy(pixels, cursor, bytes);
+
+        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
+        unsigned int texId = texture->CreateTexture();
+
+        delete[] fileBuffer;
+    }
+    
+    return texture;
 }
 
 ResourceTexture::~ResourceTexture() {

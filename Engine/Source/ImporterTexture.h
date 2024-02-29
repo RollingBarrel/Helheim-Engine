@@ -1,39 +1,16 @@
 #pragma once
 
-struct ResourceTexture
-{
-	~ResourceTexture();
-	bool HasAlpha() const { return mHasAlpha; }
-
-	unsigned int mWidth;
-	unsigned int mHeight;
-
-	unsigned int mInternalFormat;
-	unsigned int mFormat;
-	unsigned int mType;
-	unsigned int mMipLevels;
-	unsigned int mNumPixels;
-	unsigned char* mPixels;
-	const char* mTextureName;
-	unsigned int mUID = 0;
-
-	bool mHasAlpha;
-
-	unsigned int mTextureID = 0;
-	uint64_t mTextureHandle = 0;
-
-	unsigned int CreateTexture();
-
-};
+class ResourceTexture;
 
 namespace Importer
 {
 	namespace Texture
 	{
-		void Import(const char* filePath, ResourceTexture* texture);
+
+		ResourceTexture* Import(const char* filePath, const unsigned int uid);
 
 		void Save(const ResourceTexture* ourTexture);
 
-		unsigned int Load(ResourceTexture* ourTexture, const char* fileName = nullptr );
+		ResourceTexture* Load(const char* filePath, unsigned int uid);
 	}
 };

@@ -9,8 +9,11 @@
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "CameraComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
+
+#include "ResourceMaterial.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -57,7 +60,6 @@ void InspectorPanel::Draw(int windowFlags)
 
 void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PushID(object->mID);
-
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
@@ -129,26 +131,18 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 	}
 
 	if (ImGui::BeginPopup("AddComponentPopup")) {
-		if (ImGui::MenuItem("Mesh Renderer")) {
-			mComponent = object->GetComponent(ComponentType::MESHRENDERER);
-			if (!mComponent)
-			{
-				object->CreateComponent(ComponentType::MESHRENDERER);
-			} else {
-				mSameComponentPopup = true;
+		for (unsigned int i = 0; i <= static_cast<unsigned int>(ComponentType::NONE) - 1; ++i) {
+			ComponentType currentComponent = static_cast<ComponentType>(i);
+			if (ImGui::MenuItem(Component::GetNameFromType(currentComponent))) {
+				mComponent = object->GetComponent(currentComponent);
+				if (!mComponent)
+				{
+					object->CreateComponent(currentComponent);
+				}
+				else {
+					mSameComponentPopup = true;
+				}
 			}
-		}
-		if (ImGui::MenuItem("Point Light")) {
-			object->CreateComponent(ComponentType::POINTLIGHT);
-		}
-		if (ImGui::MenuItem("Spot Light")) {
-			object->CreateComponent(ComponentType::SPOTLIGHT);
-		}
-		if (ImGui::MenuItem("Test")) {
-			object->CreateComponent(ComponentType::TEST);
-		}
-		if (ImGui::MenuItem("NavMesh")) {
-			object->CreateComponent(ComponentType::NAVMESHCONTROLLER);
 		}
 		ImGui::EndPopup();
 	}
@@ -168,7 +162,7 @@ void InspectorPanel::ShowSameComponentPopup()
 		ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar);
 
-	ImGui::Text("The component %s can't be added because", mComponent->GetNameFromType());
+	ImGui::Text("The component %s can't be added because", Component::GetNameFromType(mComponent->GetType()));
 	ImGui::Text("GameObject already contains the same component.");
 
 	ImGui::Spacing();
@@ -235,7 +229,7 @@ void InspectorPanel::DragAndDropSource(Component* component) {
 	{
 		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
 
-		ImGui::Text(component->GetNameFromType());
+		ImGui::Text(Component::GetNameFromType(component->GetType()));
 		ImGui::EndDragDropSource();
 	}
 }
@@ -264,11 +258,11 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
 
-		bool isOpen = ImGui::CollapsingHeader(component->GetNameFromType(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
-		
+		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+
 		//checkbox for enable/disable
 		ImGui::Checkbox("Enable", &component->mIsEnabled);
-	
+
 		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
@@ -285,11 +279,14 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
 					break;
 				}
+				case ComponentType::CAMERA: {
+					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+					break;
+				}
 				case ComponentType::TEST: {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				}
-
 			}
 		}
 		ImGui::PopID();
@@ -315,7 +312,7 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 		component->SetIntensity(intensity);
 	}
 	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius,1.0f, 0.0f))
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
 	{
 		component->SetRadius(radius);
 	}
@@ -375,7 +372,6 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
-
 	if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
 		renderComponent->EditMaterial();
 	if(ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
@@ -387,17 +383,67 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 
 	if (!material->mEnableDiffuseTexture)
 	{
-		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
-		renderComponent->EditMaterial();
+		if(ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
+			renderComponent->EditMaterial();
 	}
 	if (!material->mEnableSpecularGlossinessTexture)
 	{
-		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
-		renderComponent->EditMaterial();
+		if(ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
+			renderComponent->EditMaterial();
 	}
 	if (!material->mEnableShinessMap)
 	{
-		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
-		renderComponent->EditMaterial();
+		if(ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+			renderComponent->EditMaterial();
 	}
+}
+
+void InspectorPanel::DrawCameraComponent(CameraComponent* component)
+{
+	ImGui::SeparatorText("Camera");
+
+	float Near = component->GetNearPlane();
+	float* NearBar = &Near;
+	const char* NearLabel = "NearPlane";
+
+	float Far = component->GetFarPlane();
+	float* FarBar = &Far;
+	const char* FarLabel = "FarPlane";
+
+	float FOV = RadToDeg(component->GetVerticicalFOV());
+	float* FOVBar = &FOV;
+	const char* FOVLabel = "FOV";
+
+	bool modifiedValue = false;
+
+	ImGui::PushID(NearLabel);
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Near Plane");
+	ImGui::SameLine();
+	modifiedValue = ImGui::DragFloat(NearLabel, &(*NearBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	ImGui::PopID();
+
+	ImGui::PushID(FarLabel);
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Far Plane");
+	ImGui::SameLine();
+	modifiedValue = ImGui::DragFloat(FarLabel, &(*FarBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	ImGui::PopID();
+
+	ImGui::PushID(FOVLabel);
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("FOV");
+	ImGui::SameLine();
+	modifiedValue = ImGui::DragFloat(FOVLabel, &(*FOVBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	ImGui::PopID();
+
+	if (modifiedValue)
+	{
+		component->SetNearPlane(Near);
+		component->SetFarPlane(Far);
+		component->SetVerticicalFOV(DegToRad(FOV));
+	}
+
+	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
+	// Is culling
 }

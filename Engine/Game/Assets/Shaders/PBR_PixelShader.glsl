@@ -108,26 +108,43 @@ void main() {
 	
 
 	//Diffuse
-	if(material.hasDiffuseMap){//Using  gamma correction forces to transform sRGB textures to linear space
+	if(material.hasDiffuseMap)
+	{
+		//Using  gamma correction forces to transform sRGB textures to linear space
 		diffuseColor = vec3(texture(material.diffuseTexture, uv));
 		diffuseColor = pow(diffuseColor, vec3(2.2));
-	}else{
+	}
+	else
+	{
 		diffuseColor = material.diffuseColor;
 	}
 	//Specular
-	if(material.hasSpecularMap){//Using  gamma correction forces to transform sRGB textures to linear space
-		specularColor = vec3(texture(material.specularTexture, uv));
+	vec4 specularTex = vec4(0.0f);
+	if(material.hasSpecularMap)
+	{
+		specularTex = texture(material.specularTexture, uv);
+		specularColor = specularTex.xyz;
+		//Using  gamma correction forces to transform sRGB textures to linear space
 		specularColor = pow(specularColor,vec3(2.2));
-	}else{
+	}
+	else
+	{
 		specularColor = material.specularColor;
 	}
 	//Shininess
-	if(material.hasShininessMap){
-		shininess = exp2(15*texture(material.specularTexture, uv).a+1);
-	}else{
+	if(material.hasShininessMap)
+	{
+		if(material.hasSpecularMap)
+			shininess = exp2(15*specularTex.a + 1);
+		else
+			shininess = exp2(15*texture(material.specularTexture, uv).a+1);
+	}
+	else
+	{
 		shininess = material.shininess;
 	}
-	if (material.hasNormalMap){
+	if (material.hasNormalMap)
+	{
 		N = normalize(norm);
 		vec3 T = normalize(tang.xyz); 
 		vec3 B = tang.w * cross(N, T);
@@ -135,7 +152,8 @@ void main() {
 		N = normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
 		N = normalize(TBN * N);
 	}
-	else{
+	else
+	{
 		N = normalize(norm);  	//Normal
 	}
 	V = normalize(cPos - sPos); //View direction

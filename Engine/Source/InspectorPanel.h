@@ -6,6 +6,7 @@ class GameObject;
 class Component;
 class TestComponent;
 class MeshRendererComponent;
+class CameraComponent;
 class PointLightComponent;
 class SpotLightComponent;
 
@@ -26,6 +27,7 @@ private:
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
+	void DrawCameraComponent(CameraComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);

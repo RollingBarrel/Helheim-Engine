@@ -1,0 +1,241 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Tube_low (5)"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 1453,
+      "type": "VEC3",
+      "max": [
+        0.027823269367218018,
+        0.0099999997764825821,
+        0.2406008243560791
+      ],
+      "min": [
+        -0.08275274932384491,
+        -0.0099999997764825821,
+        -0.0099999997764825821
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1453,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1453,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0,
+        1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1453,
+      "type": "VEC2",
+      "max": [
+        0.99547421932220459,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.010765254497528076
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5123,
+      "count": 5028,
+      "type": "SCALAR",
+      "max": [
+        1452.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Tube_low (5).bin",
+      "byteLength": 79800
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 17436,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 17436,
+      "byteLength": 17436,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 34872,
+      "byteLength": 23248,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 58120,
+      "byteLength": 11624,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 69744,
+      "byteLength": 10056,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "Tube_low_DefaultMaterial_Normal.jpg",
+      "name": "Tube_low_DefaultMaterial_Normal"
+    },
+    {
+      "uri": "Tube_low_DefaultMaterial_AlbedoTransparency.jpg",
+      "name": "Tube_low_DefaultMaterial_AlbedoTransparency"
+    },
+    {
+      "uri": "Tube_low_DefaultMaterial_MetallicSmoothness.jpg",
+      "name": "Tube_low_DefaultMaterial_MetallicSmoothness"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "New Material"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0
+        }
+      ],
+      "name": "Tube_low (5)"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        -0.5000008,
+        -0.499999225,
+        -0.499999285,
+        0.5000007
+      ],
+      "scale": [
+        15.9448643,
+        103.065445,
+        14.7901449
+      ],
+      "translation": [
+        -6.82,
+        0.199,
+        -3.61
+      ],
+      "name": "Tube_low (5)"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "Tube_low_DefaultMaterial_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "Tube_low_DefaultMaterial_AlbedoTransparency"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "Tube_low_DefaultMaterial_MetallicSmoothness"
+    }
+  ]
+}
