@@ -1,0 +1,242 @@
+{
+  "asset": {
+    "generator": "UnityGLTF",
+    "version": "2.0"
+  },
+  "extensionsUsed": [
+    "KHR_texture_transform"
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Barra_low"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 428,
+      "type": "VEC3",
+      "max": [
+        0.019847715273499489,
+        0.0099999997764825821,
+        0.019943784922361374
+      ],
+      "min": [
+        -0.0099999997764825821,
+        -0.0099999997764825821,
+        -5.6213735661003739E-05
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 428,
+      "type": "VEC3",
+      "max": [
+        0.9796174168586731,
+        0.80436456203460693,
+        0.90453404188156128
+      ],
+      "min": [
+        -1.0,
+        -0.80436456203460693,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 428,
+      "type": "VEC4",
+      "max": [
+        0.953462541103363,
+        1.0,
+        0.97987490892410278,
+        1.0
+      ],
+      "min": [
+        -0.95346260070800781,
+        -0.95346230268478394,
+        -0.93627077341079712,
+        1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 428,
+      "type": "VEC2",
+      "max": [
+        0.98463183641433716,
+        0.98921704292297363
+      ],
+      "min": [
+        0.0088119357824325562,
+        0.0011768341064453125
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5123,
+      "count": 1884,
+      "type": "SCALAR",
+      "max": [
+        427.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "Barra_low.bin",
+      "byteLength": 24312
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 5136,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 5136,
+      "byteLength": 5136,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 10272,
+      "byteLength": 6848,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 17120,
+      "byteLength": 3424,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 20544,
+      "byteLength": 3768,
+      "target": 34963
+    }
+  ],
+  "images": [
+    {
+      "uri": "Barra_low_Material_Normal.jpg",
+      "name": "Barra_low_Material_Normal"
+    },
+    {
+      "uri": "Barra_low_Material_AlbedoTransparency.jpg",
+      "name": "Barra_low_Material_AlbedoTransparency"
+    },
+    {
+      "uri": "Barra_low_Material_MetallicSmoothness.jpg",
+      "name": "Barra_low_Material_MetallicSmoothness"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8,
+          0.8,
+          0.8,
+          1.0
+        ],
+        "baseColorTexture": {
+          "index": 1,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        },
+        "metallicRoughnessTexture": {
+          "index": 2,
+          "extensions": {
+            "KHR_texture_transform": {
+              "texCoord": 0
+            }
+          }
+        }
+      },
+      "normalTexture": {
+        "index": 0,
+        "extensions": {
+          "KHR_texture_transform": {
+            "texCoord": 0
+          }
+        }
+      },
+      "name": "M_Bar"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0
+        }
+      ],
+      "name": "Barra_low"
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "mesh": 0,
+      "translation": [
+        0.0,
+        -0.0597700253,
+        0.0
+      ],
+      "name": "Barra_low"
+    },
+    {
+      "name": "GameObject"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "Barra_low_Material_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "Barra_low_Material_AlbedoTransparency"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "Barra_low_Material_MetallicSmoothness"
+    }
+  ]
+}

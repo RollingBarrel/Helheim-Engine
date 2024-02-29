@@ -44,6 +44,17 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
+struct SpotLight{
+	float radius;
+	vec4 pos; //w intensity
+	vec4 aimD;//w cos inner angle
+	vec4 col;//w cos outer angle
+};
+readonly layout(std430, binding = 1) buffer SpotLights
+{
+	uint numSLights;
+	SpotLight sLights[];
+};
 
 uniform Material material;
 
@@ -71,33 +82,50 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	//Color with specular and no pi division
 	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
 	//Color with specular and pi divisions
-	vec3 pbrColor = ((diffuseColor*(1-specularColor))/PI + ((shininess+2)/2*PI)* RFOi * VdotRpown) * Li * NdotL;
+	vec3 pbrColor = (((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL)/ PI;
 	return pbrColor;
 }
 
 void main() {
 
 	//Diffuse
-	if(material.hasDiffuseMap){//Using  gamma correction forces to transform sRGB textures to linear space
+	if(material.hasDiffuseMap)
+	{
+		//Using  gamma correction forces to transform sRGB textures to linear space
 		diffuseColor = vec3(texture(material.diffuseTexture, uv));
 		diffuseColor = pow(diffuseColor, vec3(2.2));
-	}else{
+	}
+	else
+	{
 		diffuseColor = material.diffuseColor;
 	}
 	//Specular
-	if(material.hasSpecularMap){//Using  gamma correction forces to transform sRGB textures to linear space
-		specularColor = vec3(texture(material.specularTexture, uv));
+	vec4 specularTex = vec4(0.0f);
+	if(material.hasSpecularMap)
+	{
+		specularTex = texture(material.specularTexture, uv);
+		specularColor = specularTex.xyz;
+		//Using  gamma correction forces to transform sRGB textures to linear space
 		specularColor = pow(specularColor,vec3(2.2));
-	}else{
+	}
+	else
+	{
 		specularColor = material.specularColor;
 	}
 	//Shininess
-	if(material.hasShininessMap){
-		shininess = exp2(15*texture(material.specularTexture, uv).a+1);
-	}else{
+	if(material.hasShininessMap)
+	{
+		if(material.hasSpecularMap)
+			shininess = exp2(15*specularTex.a + 1);
+		else
+			shininess = exp2(15*texture(material.specularTexture, uv).a+1);
+	}
+	else
+	{
 		shininess = material.shininess;
 	}
-	if (material.hasNormalMap){
+	if (material.hasNormalMap)
+	{
 		N = normalize(norm);
 		vec3 T = normalize(tang.xyz); 
 		vec3 B = tang.w * cross(N, T);
@@ -105,7 +133,8 @@ void main() {
 		N = normalize(texture(material.normalTexture, uv).rgb * 2.0 - 1.0);
 		N = normalize(TBN * N);
 	}
-	else{
+	else
+	{
 		N = normalize(norm);  	//Normal
 	}
 	V = normalize(cPos - sPos); //View direction
@@ -120,7 +149,28 @@ void main() {
 		float dist = length(mVector);
 		vec3 pDir = normalize(mVector);
 		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / (dist*dist + 1);
-		pbrCol += GetPBRLightColor(pDir, pLights[i].col.xyz,  pLights[i].col.w, att);
+		pbrCol += GetPBRLightColor(pDir, pLights[i].col.rgb,  pLights[i].col.w, att);
+	}
+
+	//Spot lights
+	for(int i = 0; i<numSLights; ++i)
+	{
+		vec3 mVector = sPos - sLights[i].pos.xyz;
+		vec3 sDir = normalize(mVector);
+		vec3 aimDir = normalize(sLights[i].aimD.xyz);
+		float dist = dot(mVector, aimDir);
+		//TODO: Check that the radius of spot light is correct
+		float r = sLights[i].radius;
+		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
+		float c = dot(sDir, aimDir);
+		float cInner = sLights[i].aimD.w;
+		float cOuter = sLights[i].col.w;
+		//float cAtt = 1;
+		//if(cInner > c && c > cOuter)
+			//cAtt = (c - cOuter) / (cInner - cOuter);
+		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
+		att *= cAtt;
+		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att);
 	}
 
 	//HDR color  

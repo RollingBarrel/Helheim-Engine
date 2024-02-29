@@ -1,4 +1,3 @@
-#pragma once
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
@@ -8,6 +7,8 @@
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResource.h"
+#include "ModuleUI.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -18,16 +19,22 @@ Application::Application()
 	mEngineTimer = new Timer();
 	mGameTimer = new Timer();
 
+	//In case we want to use precise timer
+	
+	//mEngineTimer = new PreciseTimer();
+	//mGameTimer = new PreciseTimer();
+
 	// Order matters: they will Init/start/update in this order
 	modules[0] = input = new ModuleInput();
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
 	modules[4] = render = new ModuleOpenGL();
-	modules[5] = debugDraw = new ModuleDebugDraw();
-	modules[6] = scene = new ModuleScene();
-	modules[7] = editor = new ModuleEditor();
-
+	modules[5] = resource = new ModuleResource();
+	modules[6] = debugDraw = new ModuleDebugDraw();
+	modules[7] = scene = new ModuleScene();
+	modules[8] = editor = new ModuleEditor();
+	modules[9] = ui = new ModuleUI();
 }
 
 Application::~Application()
@@ -42,8 +49,8 @@ Application::~Application()
 
 bool Application::Init()
 {
-	mEngineTimer->Start();
-	mGameTimer->Start();
+	mEngineTimer->Start();			//Initializes the Engine timer
+	mCurrentTimer = mEngineTimer;	//The application starts in the editor
 
 	bool ret = true;
 
@@ -55,21 +62,20 @@ bool Application::Init()
 	return ret;
 }
 
-update_status Application::Update()
+update_status Application::Update(float dt)
 {
-	mEngineTimer->Update();
-	//mGameTimer->Update();
+	mCurrentTimer->Update();		//Updates the current timer variables (Engine or Game depending on the game state)
 
 	update_status ret = UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
-		ret = modules[i]->PreUpdate();
+		ret = modules[i]->PreUpdate(dt);
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
-		ret = modules[i]->Update();
+		ret = modules[i]->Update(dt);
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)
-		ret = modules[i]->PostUpdate();
+		ret = modules[i]->PostUpdate(dt);
 
 	return ret;
 }
@@ -84,6 +90,10 @@ bool Application::CleanUp()
 	return ret;
 }
 
-float Application::GetDt() const {
-	return mEngineTimer->GetRealDelta() / (float) 1000;
+float Application::GetRealDt() const {
+	return mEngineTimer->GetDelta() / (float) 1000;
+}
+
+float Application::GetGameDt() const {
+	return mGameTimer->GetDelta() / (float)1000;
 }

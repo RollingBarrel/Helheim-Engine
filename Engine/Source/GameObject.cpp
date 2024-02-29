@@ -7,12 +7,15 @@
 #include "Quadtree.h"
 #include "imgui.h"
 #include "ModuleOpenGL.h"
-#include "LightSourceComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include <algorithm>
+#include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
+#include "CameraComponent.h"
 #include "TestComponent.h"
-
+#include "NavMeshControllerComponent.h"
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
@@ -20,17 +23,17 @@ GameObject::GameObject(GameObject* parent)
 {
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
-
 	AddSuffix();
 
 }
 
 GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
 	AddSuffix();
@@ -48,8 +51,8 @@ GameObject::GameObject(const GameObject& original)
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mWorldTransformMatrix(original.mWorldTransformMatrix),
-	mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
 {
 
 	for (auto child : original.mChildren) {
@@ -70,6 +73,7 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
 }
@@ -81,6 +85,7 @@ GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, fl
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
 }
@@ -126,20 +131,23 @@ void GameObject::RecalculateMatrices()
 
 void GameObject::Update()
 {
-	for (size_t i = 0; i < mComponents.size(); i++)
+	if (IsActive())
 	{
-		mComponents[i]->Update();
-	}
+		for (size_t i = 0; i < mComponents.size(); i++)
+		{
+			mComponents[i]->Update();
+		}
 
-	for (size_t i = 0; i < mChildren.size(); i++) {
-		mChildren[i]->Update();
-	}
+		for (size_t i = 0; i < mChildren.size(); i++) {
+			mChildren[i]->Update();
+		}
 
-	DeleteComponents();
-	if (isTransformModified) {
-		RecalculateMatrices();
+		DeleteComponents();
+		if (isTransformModified) {
+			RecalculateMatrices();
+			RefreshBoundingBoxes();
+		}
 	}
-
 }
 
 void GameObject::ResetTransform()
@@ -147,6 +155,21 @@ void GameObject::ResetTransform()
 	SetPosition(float3::zero);
 	SetRotation(float3::zero);
 	SetScale(float3::one);
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->Reset();
+	}
+}
+
+void GameObject::SetEnabled(bool enabled)
+{
+	mIsEnabled = enabled;
+
+	if (!enabled || mParent->IsActive())
+	{
+		SetActiveInHierarchy(enabled);
+	}
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -164,25 +187,39 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
-
+	float3 difference = rotationInRadians - mEulerRotation;
 	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->SetRotation(difference);
+	}
 
 	isTransformModified = true;
 }
 
 void GameObject::SetRotation(const Quat& rotation)
 {
-
 	mRotation = rotation;
+	mEulerRotation = rotation.ToEulerXYZ();
 
+	isTransformModified = true;
 }
 
 void GameObject::SetPosition(const float3& position)
 {
+	float3 difference = position - mPosition;
+
 	mPosition = position;
+
 	isTransformModified = true;
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->SetPosition(difference);
+	}
 }
 
 void GameObject::SetScale(const float3& scale)
@@ -267,24 +304,37 @@ void GameObject::AddSuffix()
 	}
 }
 
-Component* GameObject::CreateComponent(ComponentType type) {
+//TODO: Crate a component that requires ids not clean now
+Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
-	case ComponentType::MESHRENDERER:
-		newComponent = new MeshRendererComponent(this);
-		break;
-	case ComponentType::LIGHTSOURCE:
-	{
-		const float3& pos = GetLocalPosition();
-		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
-		break;
-	}
-	case ComponentType::TEST:
-		newComponent = new TestComponent(this);
-		break;
-	default:
-		break;
+		case ComponentType::MESHRENDERER:
+			newComponent = new MeshRendererComponent(this, meshUid, materialUid);
+			break;
+		case ComponentType::CAMERA:
+			newComponent = new CameraComponent(this);
+			break;
+		case ComponentType::POINTLIGHT:
+		{
+			const float3& pos = GetWorldPosition();
+			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
+			break;
+		}
+		case ComponentType::SPOTLIGHT:
+		{
+			const float3& pos = GetWorldPosition();
+			newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
+			break;
+		}
+		case ComponentType::TEST:
+			newComponent = new TestComponent(this);
+			break;
+		case ComponentType::NAVMESHCONTROLLER:
+			newComponent = new NavMeshControllerComponent(this);
+			break;
+		default:
+			break;
 	}
 
 	if (newComponent) {
@@ -333,12 +383,30 @@ void GameObject::AddComponent(Component* component, Component* position)
 	}
 }
 
-MeshRendererComponent* GameObject::getMeshRenderer() const
+MeshRendererComponent* GameObject::GetMeshRenderer() const
 {
-	for (const auto& comp : mComponents) {
-		if (comp->GetType() == ComponentType::MESHRENDERER)
-			return static_cast<MeshRendererComponent*>(comp);
+	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
+		return comp->GetType() == ComponentType::MESHRENDERER;
+		});
+
+	if (it != mComponents.end()) {
+		return static_cast<MeshRendererComponent*>(*it);
 	}
+
+	return nullptr;
+}
+
+CameraComponent* GameObject::getCamera() const
+{
+	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
+		return comp->GetType() == ComponentType::CAMERA;
+		});
+
+	if (it != mComponents.end()) {
+		return static_cast<CameraComponent*>(*it);
+	}
+
+	return nullptr;
 }
 
 void GameObject::RecalculateLocalTransform() {
@@ -353,11 +421,42 @@ void GameObject::RecalculateLocalTransform() {
 	}
 }
 
+void GameObject::RefreshBoundingBoxes()
+{
+	if (GetMeshRenderer() != nullptr)
+	{
+		GetMeshRenderer()->RefreshBoundingBoxes();
+	}
+	else
+	{
+		for (auto children : mChildren)
+		{
+			children->RefreshBoundingBoxes();
+		}
+	}
+}
+
+void GameObject::SetActiveInHierarchy(bool active)
+{
+	if (active && !mIsEnabled)
+	{
+		return;
+	}
+
+	mIsActive = active;
+
+	for (GameObject* child : mChildren)
+	{
+		child->SetActiveInHierarchy(active);
+	}
+}
+
 void GameObject::Save(Archive& archive) const {
 	archive.AddInt("UID", mID);
 	archive.AddInt("ParentUID", mParent->GetID());
-	archive.AddString("Name", mName);
+	archive.AddString("Name", mName.c_str());
 	archive.AddBool("isEnabled", mIsEnabled);
+	archive.AddBool("isActive", mIsActive);
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);

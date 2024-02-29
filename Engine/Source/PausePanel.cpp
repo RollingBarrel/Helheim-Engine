@@ -1,10 +1,10 @@
 #include "PausePanel.h"
 #include "imgui.h"
 #include "Application.h"
-//#include "ModuleTimer.h"
 #include "ModuleScene.h"
 
 #include "Timer.h"
+#include "PreciseTimer.h"
 
 PausePanel::PausePanel() : Panel(PAUSEPANEL, true)
 {
@@ -22,20 +22,20 @@ void PausePanel::Draw(int windowFlags)
 	windowFlags |= ImGuiWindowFlags_NoTitleBar;
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	
-	if (ImGui::Button("Play", ImVec2(40, 40))) {
+	if (ImGui::Button("Play", ImVec2(40, 40)) && mState != GameState::PLAYING) {
 		Play();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Pause", ImVec2(40, 40))) {
+	if (ImGui::Button("Pause", ImVec2(40, 40)) && mState == GameState::PLAYING) {
 		Pause();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Step", ImVec2(40, 40))) {
+	if (ImGui::Button("Step", ImVec2(40, 40)) && mState == GameState::PAUSED) {
 		Play();
 		mState = GameState::RUN_ONCE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Stop", ImVec2(40, 40)) && mState == GameState::PLAYING) {
+	if (ImGui::Button("Stop", ImVec2(40, 40)) && (mState == GameState::PLAYING || mState == GameState::PAUSED)) {
 		Stop();
 	}
 
@@ -43,17 +43,31 @@ void PausePanel::Draw(int windowFlags)
 }
 
 void PausePanel::Play() {
-	App->GetGameClock()->SetTimeScale(1.0f);
+	App->GetEngineClock()->Pause();				//Pauses Engine Clock (variables don't reset)
+	App->GetGameClock()->Start();				//Starts GameClock
+
+	App->SetCurrentClock(App->GetGameClock());	//Changes the current clock from Engine to Game
+
 	mState = GameState::PLAYING;
 	App->GetScene()->Save("TemporalScene");
 }
 
 void PausePanel::Pause() {
 	App->GetGameClock()->SetTimeScale(0.0f);
+
 	mState = GameState::PAUSED;
 }
 
 void PausePanel::Stop() {
-	App->GetGameClock()->SetTimeScale(1.0f);
+
+	//Adds the frames from the game execution to the engine timer (The real time adds automatically)
+	App->GetEngineClock()->SetTotalFrames(App->GetGameClock()->GetTotalFrames());
+
+	App->GetGameClock()->Stop();			//Resets the Game clock time and variables
+
+	App->SetCurrentClock(App->GetEngineClock());	//Changes the current clock from Game to Engine so it updates
+	App->GetEngineClock()->Resume();				//Engine clock execution resumes -> mSpeed = 1.0f
+
+	mState = GameState::STOP;
 	App->GetScene()->Load("TemporalScene");
 }

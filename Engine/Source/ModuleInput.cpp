@@ -5,8 +5,8 @@
 #include "ModuleOpenGL.h"
 #include "SDL.h"
 #include "imgui_impl_sdl2.h"
-#include "Importer.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResource.h"
 
 ModuleInput::ModuleInput()
 {
@@ -37,7 +37,7 @@ bool ModuleInput::Init()
 
 
 // Called each loop iteration
-update_status ModuleInput::PreUpdate()
+update_status ModuleInput::PreUpdate(float dt)
 {
     //TODO: ugly reset !!
     if (wheelY != 0)
@@ -73,14 +73,19 @@ update_status ModuleInput::PreUpdate()
         case SDL_DROPFILE:
             LOG("File droped: %s\n", sdlEvent.drop.file);
             App->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
-            Importer::Import(sdlEvent.drop.file);
+            App->GetResource()->ImportFile(sdlEvent.drop.file);
+
+            App->GetFileSystem()->GetRootNode()->mChildren.clear();
+            App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());;
+
             SDL_free(sdlEvent.drop.file);
             break;
         }
     }
 
     //Mouse snapshot
-    unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mX, &mY);
+    unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mMouseMotionX, &mMouseMotionY);
+    SDL_GetMouseState(&mMousePositionX, &mMousePositionY);
     for (int i = 0; i < MouseKey::NUM_MOUSE_BUTTONS; ++i)
     {
         unsigned int pressed = mouseBitmask & SDL_BUTTON(i + 1);
