@@ -1,10 +1,10 @@
 #include "NavMeshControllerComponent.h"
 #include "GameObject.h"
-#include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
 #include "ModuleScene.h"
 
 #include "Application.h"
+#include "ImporterMesh.h"
 
 NavMeshControllerComponent::NavMeshControllerComponent(GameObject* ownerGameObject)
 	:Component(ownerGameObject, ComponentType::NAVMESHCONTROLLER)
@@ -79,7 +79,7 @@ void NavMeshControllerComponent::HandleBuild() {
 		// Allocate array that can hold triangle area types.
 		// If you have multiple meshes you need to process, allocate
 		// and array which can hold the max number of triangles you need to process.
-		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->GetNumberIndices()/3;
+		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->mNumIndices/3;
 		mTriangleAreas = new unsigned char[numberOfTriangles];
 		if (!mTriangleAreas)
 		{
@@ -87,7 +87,7 @@ void NavMeshControllerComponent::HandleBuild() {
 			return;
 		}
 		float* vertices= (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS));
-		int numberOfVertices = testMesh->GetResourceMesh()->GetNumberVertices();
+		int numberOfVertices = testMesh->GetResourceMesh()->mNumVertices;
 
 
 		  const int* triangle = (const int*)(testMesh->GetResourceMesh()->mIndices);
@@ -236,7 +236,7 @@ void NavMeshControllerComponent::HandleBuild() {
 void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
-			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
+			MeshRendererComponent* meshRendererComponent = child->getMeshRenderer();
 			if (meshRendererComponent) {
 				mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mOBBs.push_back(meshRendererComponent->getOBB());

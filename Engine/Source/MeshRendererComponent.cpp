@@ -1,53 +1,34 @@
 #include "MeshRendererComponent.h"
+#include "ImporterMesh.h"
+#include "ImporterTexture.h"
+#include "ImporterMaterial.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleFileSystem.h"	//Remove Just for the Library definition
-#include "ModuleResource.h"
 #include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 
-#include "ImporterMaterial.h"
-
-#include "ResourceMesh.h"
-#include "ResourceMaterial.h"
-#include "ResourceTexture.h"
 
 
 
-MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid) : Component(owner, ComponentType::MESHRENDERER)
+
+MeshRendererComponent::MeshRendererComponent(GameObject* owner) 
+	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh()), mMaterial(new ResourceMaterial())
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
+
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+	//mMesh->mUID = LCG().Int();
 }
 
-MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
+MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& original, GameObject* owner)
+	:Component(owner, ComponentType::MESHRENDERER), mMesh(new ResourceMesh(*original.mMesh)), mMaterial(new ResourceMaterial(*original.mMaterial))
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material));
-	mOBB = other.mOBB;
-	mAABB = other.mAABB;
-}
 
-MeshRendererComponent::~MeshRendererComponent()
-{
-	if (mMesh)
-	{
-		App->GetResource()->ReleaseResource(mMesh->GetUID());
-		mMesh = nullptr;
-	}
-	if (mMaterial)
-	{
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMesh = nullptr;
-	}
+	mOBB = original.mOBB;
+	mAABB = original.mAABB;
+	
 }
 
 void MeshRendererComponent::Draw()
@@ -56,14 +37,17 @@ void MeshRendererComponent::Draw()
 	{
 		return;
 	}
+	if (mDrawBox)
+	{
+		App->GetDebugDraw()->DrawBoundingBox(mOBB);
+	}
 	mInsideFrustum = false;
 
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	if (mDrawBox)
 	{
-		App->GetDebugDraw()->DrawCube(mOBB, float3(0.0f, 0.0f, 1.0f)); // Blue
-		App->GetDebugDraw()->DrawCube(mAABBWorld, float3(1.0f, 0.647059f, 0.0f)); // Orange
+		App->GetDebugDraw()->DrawBoundingBox(mOBB);
 	}
 
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
@@ -72,48 +56,48 @@ void MeshRendererComponent::Draw()
 	glBindVertexArray(mMesh->GetVao());
 	//TODO: Put all this with imgui
 	//Dont update uniforms it every frame
-	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->GetDiffuseFactor().xyz()[0]);
-	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->GetSpecularFactor()[0]);
-	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->GetGlossinessFactor());
-	if (mMaterial->IsDiffuseTextureEnabled() && mMaterial->GetDiffuseTexture() != nullptr)
+	glUniform3fv(glGetUniformLocation(program, "material.diffuseColor"), 1, &mMaterial->mDiffuseFactor.xyz()[0]);
+	glUniform3fv(glGetUniformLocation(program, "material.specularColor"), 1, &mMaterial->mSpecularFactor[0]);
+	glUniform1f(glGetUniformLocation(program, "material.shininess"), mMaterial->mGlossinessFactor);
+	if (mMaterial->mEnableDiffuseTexture && mMaterial->mDiffuseTexture != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 1);
 		GLint diffuseTextureLoc = glGetUniformLocation(program, "material.diffuseTexture");
 		glUniform1i(diffuseTextureLoc, 0);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->GetDiffuseTexture()->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mDiffuseTexture->openGlId);
 	}
 	else {
 		glUniform1i(glGetUniformLocation(program, "material.hasDiffuseMap"), 0);
 	}
 
-	if (mMaterial->IsSpecularGlossinessTextureEnabled() && mMaterial->GetSpecularGlossinessTexture() != nullptr)
+	if (mMaterial->mEnableSpecularGlossinessTexture && mMaterial->mSpecularGlossinessTexture != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 1);
 		GLint specularTextureLoc = glGetUniformLocation(program, "material.specularTexture");
 		glUniform1i(specularTextureLoc, 1);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->GetSpecularGlossinessTexture()->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mSpecularGlossinessTexture->openGlId);
 	}
 	else
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasSpecularMap"), 0);
 	}
 
-	if (mMaterial->IsNormalMapEnabled() && mMaterial->GetNormalTexture() != nullptr)
+	if (mMaterial->mEnableNormalMap && mMaterial->mNormalTexture != nullptr)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 1);
 		GLint normalTextureLoc = glGetUniformLocation(program, "material.normalTexture");
 		glUniform1i(normalTextureLoc, 2);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, mMaterial->GetNormalTexture()->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mMaterial->mNormalTexture->openGlId);
 	}
 	else
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasNormalMap"), 0);
 	}
 
-	if (mMaterial->IsShininessMapEnabled())
+	if (mMaterial->mEnableShinessMap)
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 1);
 	}
@@ -121,35 +105,55 @@ void MeshRendererComponent::Draw()
 	{
 		glUniform1i(glGetUniformLocation(program, "material.hasShininessMap"), 0);
 	}
-	glDrawElements(GL_TRIANGLES, mMesh->GetNumberIndices(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, mMesh->mNumIndices, GL_UNSIGNED_INT, 0);
 	glUseProgram(0);
 	glBindVertexArray(0);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 }
 
+void MeshRendererComponent::Load(unsigned int meshUid, unsigned int materialUid)
+{
+	mMesh->mUID = meshUid;
+	mMaterial->mUID = materialUid;
+	Importer::Mesh::Load(mMesh, std::to_string(meshUid).c_str());
+	Importer::Material::Load(mMaterial, std::to_string(materialUid).c_str());
+	const float3* positions = (float3*)(mMesh->GetAttributeData(Attribute::POS));
+
+	mAABB.SetFrom(positions, mMesh->mNumVertices);
+
+	float4x4 model = mOwner->GetWorldTransform();
+
+	mOBB.SetFrom(mAABB, model);
+
+	//ResourceMaterial Load
+
+}
+
 void MeshRendererComponent::Update()
 {
+	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 	//Draw();
 }
+
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::RefreshBoundingBoxes()
-{
-	mOBB = OBB(mAABB);
-	mOBB.Transform(mOwner->GetWorldTransform());
-	mAABBWorld = mOBB.MinimalEnclosingAABB();
-}
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", mID);
-	archive.AddInt("MeshID",mMesh->GetUID());
-	archive.AddInt("MaterialID", mMaterial->GetUID());
+	archive.AddInt("MeshID",mMesh->mUID);
+	archive.AddInt("MaterialID", mMaterial->mUID);
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
+	archive.AddBool("Diffuse", mMaterial->mEnableDiffuseTexture);
+	archive.AddBool("Specular", mMaterial->mEnableSpecularGlossinessTexture);
+	archive.AddBool("Shininess", mMaterial->mEnableShinessMap);
+	archive.AddBool("Normal", mMaterial->mEnableNormalMap);
+	
+	
 }
 
 void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
@@ -166,8 +170,24 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshID, Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialID, Resource::Type::Material));
-
+	if (meshID != 0 && materialID != 0) {
+		Load(meshID, materialID);
+	}
+	if (componentJson.HasMember("Diffuse") && componentJson["Diffuse"].IsBool())
+	{
+		mMaterial->mEnableDiffuseTexture = componentJson["Diffuse"].GetBool();
+	}
+	if (componentJson.HasMember("Specular") && componentJson["Specular"].IsBool())
+	{
+		mMaterial->mEnableSpecularGlossinessTexture = componentJson["Specular"].GetBool();
+	}
+	if (componentJson.HasMember("Shininess") && componentJson["Shininess"].IsBool())
+	{
+		mMaterial->mEnableShinessMap = componentJson["Shininess"].GetBool();
+	}
+	if (componentJson.HasMember("Normal") && componentJson["Normal"].IsBool())
+	{
+		mMaterial->mEnableNormalMap = componentJson["Normal"].GetBool();
+	}
 }
 

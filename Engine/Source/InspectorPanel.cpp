@@ -13,8 +13,6 @@
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
 
-#include "ResourceMaterial.h"
-
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
@@ -372,39 +370,23 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
-	bool enableDiffuse = material->IsDiffuseTextureEnabled();
-	if (ImGui::Checkbox("Enable Diffuse map", &enableDiffuse))
-		material->EnableDiffuseTexture(enableDiffuse);
 
-	bool enableSpecular = material->IsSpecularGlossinessTextureEnabled();
-	if (ImGui::Checkbox("Enable Specular map", &enableSpecular))
-		material->EnableSpecularGlossinessTexture(enableSpecular);
-	
-	bool enableShinines = material->IsShininessMapEnabled();
-	if (ImGui::Checkbox("Enable Shininess map", &enableShinines))
-		material->EnableShininessTexture(enableShinines);
+	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
+	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
+	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
+	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
 
-	bool enableNormal = material->IsNormalMapEnabled();
-	if (ImGui::Checkbox("Enable Normal map", &enableNormal))
-		material->EnableNormalTexture(enableNormal);
-
-	if (!enableDiffuse)
+	if (!material->mEnableDiffuseTexture)
 	{
-		float4 diffuseFactor = material->GetDiffuseFactor();
-		if (ImGui::ColorPicker3("Diffuse", diffuseFactor.ptr()))
-			material->SetDiffuseFactor(diffuseFactor);
+		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
 	}
-	if (!enableSpecular)
+	if (!material->mEnableSpecularGlossinessTexture)
 	{
-		float3 specularFactor = material->GetSpecularFactor();
-		if (ImGui::ColorPicker3("Specular", specularFactor.ptr()))
-			material->SetSpecularFactor(specularFactor);
+		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
 	}
-	if (!enableShinines)
+	if (!material->mEnableShinessMap)
 	{
-		float shininessFactor = material->GetGlossinessFactor();
-		if (ImGui::DragFloat("Shininess", &shininessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
-			material->SetGlossinessFactor(shininessFactor);
+		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
 	}
 }
 

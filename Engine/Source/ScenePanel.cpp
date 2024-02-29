@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
-#include "ModuleResource.h"
 #include "ProjectPanel.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -13,7 +12,6 @@
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
-#include "ResourceModel.h"
 
 #include "Math/float2.h"
 #include "imgui.h"
@@ -48,43 +46,35 @@ void ScenePanel::Draw(int windowFlags)
 
 		if (ImGui::BeginDragDropTarget())
 		{
-			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE");
-			if (payload)
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
 			{
 				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-
-				Resource* resource = App->GetResource()->RequestResource(asset->mPath);
-				if (resource)
+				char* path = const_cast<char*>(asset->mName);
+				//TODO; Molt malament, fer split del path be!!!
+				bool done = false;
+				while (*path != '\0')
 				{
-					switch (resource->GetType())
+					if (*path == '.')
 					{
-					case Resource::Type::Texture:
-						break;
-					case Resource::Type::Mesh:
-						break;
-					case Resource::Type::Bone:
-						break;
-					case Resource::Type::Animation:
-						break;
-					case Resource::Type::Material:
-						break;
-					case Resource::Type::Model:
-					{
-						GameObject* nGO = new GameObject(asset->mName, App->GetScene()->GetRoot());
-						for (auto it = reinterpret_cast<ResourceModel*>(resource)->GetUids().cbegin(); it != reinterpret_cast<ResourceModel*>(resource)->GetUids().cend(); ++it)
-						{
-							GameObject* go = new GameObject(nGO);
-							MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER, it->meshUID, it->materialUID));
-						}
-						App->GetResource()->ReleaseResource(resource->GetUID());
+						*path = '\0';
+						done = true;
 						break;
 					}
-					case Resource::Type::Scene:
-						break;
-					case Resource::Type::NavMesh:
-						break;
-					}
+					++path;
 				}
+				ResourceModel* rModel = new ResourceModel();
+				Importer::Model::Load(rModel, asset->mName);
+				GameObject* nGO = new GameObject(asset->mName,App->GetScene()->GetRoot());
+				for (auto it = rModel->mUids.cbegin(); it != rModel->mUids.cend(); ++it)
+				{
+					GameObject* go = new GameObject(nGO);
+					MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
+					cMesh->Load(it->meshUID, it->materiaUID);
+				}
+				((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(nGO);
+				delete rModel;
+				if (done)
+					*path = '.';
 			}
 			ImGui::EndDragDropTarget();
 		}

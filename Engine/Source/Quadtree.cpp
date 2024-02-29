@@ -9,7 +9,7 @@
 #include "Application.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
-#include "ResourceMesh.h"
+#include "ImporterMesh.h"
 #include "Geometry/Triangle.h"
 #include "imgui.h"
 #include <iostream>
@@ -124,7 +124,7 @@ void Quadtree::CleanUp()
 
 void Quadtree::Draw() const
 {
-	App->GetDebugDraw()->DrawCube(mBoundingBox, float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
+	App->GetDebugDraw()->DrawQuadtree(mBoundingBox);
 
 	if (mFilled)
 	{
@@ -232,7 +232,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
 					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 
-					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices() / 3; i += 3) {
+					for (int i = 0; i < rMesh->GetResourceMesh()->mNumIndices / 3; i += 3) {
 						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i] + 1], triangles[indices[i] + 2]);
 						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i + 1] + 2]);
 						float3 verticeC = float3(triangles[indices[i + 2]], triangles[indices[i + 2] + 1], triangles[indices[i + 2] + 2]);
@@ -279,11 +279,11 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum* myCamera)
 		for (auto& object : mGameObjects)
 		{
 			
-			if (object->GetMeshRenderer() != nullptr)
+			if (object->getMeshRenderer() != nullptr)
 			{
-				OBB temp = object->GetMeshRenderer()->getOBB();
+				OBB temp = object->getMeshRenderer()->getOBB();
 				bool intersects = myCamera->Intersects(temp);
-				object->GetMeshRenderer()->SetInsideFrustum(intersects);
+				object->getMeshRenderer()->SetInsideFrustum(intersects);
 
 			}
 		}

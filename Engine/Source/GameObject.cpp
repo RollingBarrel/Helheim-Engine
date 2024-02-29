@@ -16,7 +16,6 @@
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
-
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr)
@@ -145,7 +144,6 @@ void GameObject::Update()
 		DeleteComponents();
 		if (isTransformModified) {
 			RecalculateMatrices();
-			RefreshBoundingBoxes();
 		}
 	}
 }
@@ -163,13 +161,9 @@ void GameObject::ResetTransform()
 }
 
 void GameObject::SetEnabled(bool enabled)
-{
+{ 
 	mIsEnabled = enabled;
-
-	if (!enabled || mParent->IsActive())
-	{
-		SetActiveInHierarchy(enabled);
-	}
+	SetActiveInHierarchy(enabled);
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -304,13 +298,12 @@ void GameObject::AddSuffix()
 	}
 }
 
-//TODO: Crate a component that requires ids not clean now
-Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
+Component* GameObject::CreateComponent(ComponentType type) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
 		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this, meshUid, materialUid);
+			newComponent = new MeshRendererComponent(this);
 			break;
 		case ComponentType::CAMERA:
 			newComponent = new CameraComponent(this);
@@ -383,7 +376,7 @@ void GameObject::AddComponent(Component* component, Component* position)
 	}
 }
 
-MeshRendererComponent* GameObject::GetMeshRenderer() const
+MeshRendererComponent* GameObject::getMeshRenderer() const
 {
 	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
 		return comp->GetType() == ComponentType::MESHRENDERER;
@@ -421,28 +414,8 @@ void GameObject::RecalculateLocalTransform() {
 	}
 }
 
-void GameObject::RefreshBoundingBoxes()
-{
-	if (GetMeshRenderer() != nullptr)
-	{
-		GetMeshRenderer()->RefreshBoundingBoxes();
-	}
-	else
-	{
-		for (auto children : mChildren)
-		{
-			children->RefreshBoundingBoxes();
-		}
-	}
-}
-
 void GameObject::SetActiveInHierarchy(bool active)
 {
-	if (active && !mIsEnabled)
-	{
-		return;
-	}
-
 	mIsActive = active;
 
 	for (GameObject* child : mChildren)
