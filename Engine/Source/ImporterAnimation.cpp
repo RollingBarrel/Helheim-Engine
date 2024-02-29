@@ -15,8 +15,39 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
+void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, ResourceAnimation* ourAnimation) {
 
-void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation) {
+    for (const auto& srcChannel : animation.channels)
+    {
+        ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel;
+        std::string name = model.nodes[srcChannel.target_node].name;
+        if (ourAnimation->channels.find(name) == ourAnimation->channels.end())
+        {
+           
+        ourAnimation->addChannels(model, animation, srcChannel, ourAnimation, ourChannel);
+
+
+        for (const auto& srcChannel2 : animation.channels)
+        {
+
+            if (srcChannel2.target_node == srcChannel.target_node && srcChannel2.target_path !="translation")
+            {
+                ourAnimation->addChannels(model, animation, srcChannel, ourAnimation, ourChannel);
+            }
+
+        }
+        //animation -> mUID = math::LCG().Int();
+
+         ourAnimation->channels[model.nodes[srcChannel.target_node].name] = ourChannel;
+        }
+       
+        delete ourChannel;
+        ourChannel = nullptr;  
+    }
+
+}
+
+void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel) {
     if (!ourAnimation)
         return;
 
@@ -44,36 +75,35 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
     // Determine the number of keyframes is the number of output accessors
     size_t numKeyframes = outputAccessor.count;
 
-    // Create an animation channel
-    ResourceAnimation::AnimationChannel animChannel;
 
     // Assuming each keyframe has 3 floats for translation (x, y, z)
     // and each keyframe has 4 floats for rotation (x, y, z, w)
-    for (size_t i = 0; i < numKeyframes; ++i) {
-        size_t translationIndex = i * inputAccessor.count;
-        size_t rotationIndex = i * inputAccessor.count;
 
-        if (channel.target_path == "translation") {
-            animChannel.positions = std::make_unique<float3[]>(numKeyframes);
-            animChannel.posTimeStamps = std::make_unique<float[]>(numKeyframes);
-            animChannel.positions[i] = float3(outputPtr[translationIndex], outputPtr[translationIndex + 1], outputPtr[translationIndex + 2]); // Store the position for each keyframe
-            animChannel.posTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
-            animChannel.numPositions++;
-        }
-        else if (channel.target_path == "rotation") {
-            animChannel.rotations = std::make_unique<Quat[]>(numKeyframes);
-            animChannel.rotTimeStamps = std::make_unique<float[]>(numKeyframes);
-            animChannel.rotations[i] = Quat(outputPtr[rotationIndex], outputPtr[rotationIndex + 1], outputPtr[rotationIndex + 2], outputPtr[rotationIndex + 3]); // Store the rotation for each keyframe
-            animChannel.rotTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
-            animChannel.numRotations++;
-        }
+    if (channel.target_path == "translation") {
+        for (size_t i = 0; i < numKeyframes; ++i) {
+            size_t translationIndex = i * inputAccessor.count;
+            
+            ourChannel->positions = std::make_unique<float3[]>(numKeyframes);
+            ourChannel->posTimeStamps = std::make_unique<float[]>(numKeyframes);
+            ourChannel->positions[i] = float3(outputPtr[translationIndex], outputPtr[translationIndex + 1], outputPtr[translationIndex + 2]); // Store the position for each keyframe
+            ourChannel->posTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
+            ourChannel->numPositions++;
+
+
+        } 
     }
-    // Store animation channel in the animation
-   // ourAnimation->channels[model.nodes[channel.target_node].name] = animChannel;
+    else if (channel.target_path == "rotation") {
+        for (size_t i = 0; i < numKeyframes; ++i) {
+            size_t rotationIndex = i * inputAccessor.count;
+            ourChannel->rotations = std::make_unique<Quat[]>(numKeyframes);
+            ourChannel->rotTimeStamps = std::make_unique<float[]>(numKeyframes);
+            ourChannel->rotations[i] = Quat(outputPtr[rotationIndex], outputPtr[rotationIndex + 1], outputPtr[rotationIndex + 2], outputPtr[rotationIndex + 3]); // Store the rotation for each keyframe
+            ourChannel->rotTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
+            ourChannel->numRotations++;
+        }
+     }
+    
 }
-
-// ? ourAnimation or ourMesh ? 
-
 void Importer::Animation::Save(const ResourceAnimation* ourAnimation) {
     if (!ourAnimation)
         return;

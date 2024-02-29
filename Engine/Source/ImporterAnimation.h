@@ -18,23 +18,24 @@ struct Keyframe {
 
 struct ResourceAnimation;
 
+
 namespace Importer {
     namespace Animation {
-        void Import(const tinygltf::Model& model,const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel,  ResourceAnimation* ourAnimation);
-
-        // ? ourAnimation or ourMesh ?
+        void Import(const tinygltf::Model& model,const tinygltf::Animation& animation,ResourceAnimation* ourAnimation);
 
         void Save(const ResourceAnimation* ourMesh);
 
-        void Load(ResourceAnimation* ourMesh, const char* fileName);
+        void Load(ResourceAnimation* animation, const char* fileName);
     }
 }
 
-class ResourceAnimation {
+struct ResourceAnimation {
 public:
     std::string name; 
     float duration;   
     unsigned int mUID = 0;
+
+    
 
     // Define a structure to store keyframes for positions and rotations
     struct AnimationChannel {
@@ -47,7 +48,8 @@ public:
 
     };
 
+    void addChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
     // Use unordered_map to efficiently store animation channels by node name
-    std::unordered_map<std::string, AnimationChannel> channels;
-
+    std::unordered_map<std::string, AnimationChannel*> channels;
+    
 };

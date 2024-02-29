@@ -64,22 +64,11 @@ void Importer::Model::Import(const char* filePath, ResourceModel* rModel)
         {
             ResourceAnimation* ourAnimation = new ResourceAnimation();
 
-            for (const auto& srcChannel : srcAnimation.channels)
-            {
-                if (ourAnimation->channels.find(model.nodes[srcChannel.target_node].name) == ourAnimation->channels.end()) {
-                    
-                    //animation -> mUID = math::LCG().Int();
-                    Importer::Animation::Import(model, srcAnimation, srcChannel, ourAnimation);
+            Importer::Animation::Import(model, srcAnimation, ourAnimation);
 
-                }
-                
-
-            }
-            
+                     
             delete ourAnimation;
             ourAnimation = nullptr;
-            
-            
         }
         
     }
