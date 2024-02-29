@@ -36,15 +36,35 @@ void NavMeshControllerComponent::Reset() {
 
 void NavMeshControllerComponent::DebugDrawPolyMesh()
 {
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
-	glBindVertexArray(0);
-	glUseProgram(0);
-	glUseProgram(program);
-	float4x4 identity = float4x4::identity;
-	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
-	glBindVertexArray(mVao);
-	glDrawElements(GL_TRIANGLES,mIndices.size(), GL_UNSIGNED_INT, 0);
+	//unsigned int program = App->GetOpenGL()->GetPBRProgramId();
+	//glBindVertexArray(0);
+	//glUseProgram(0);
+	//glUseProgram(program);
+	//float4x4 identity = float4x4::identity;
+	//glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
+	//glBindVertexArray(mVao);
+	//glDrawElements(GL_TRIANGLES,mIndices.size(), GL_UNSIGNED_INT, 0);
 
+	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
+	{
+		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
+		const unsigned int bverts = m[0];
+		const unsigned int btris = m[2];
+		const int ntris = (int)m[3];
+		const float* verts = &mPolyMeshDetail->verts[bverts * 3];
+		const unsigned char* tris = &mPolyMeshDetail->tris[btris * 4];
+
+		float3 color = float3(1.0f, 0.0f, 0.0f);
+
+		for (int j = 0; j < ntris; ++j)
+		{
+			float3 a = float3(verts[tris[j * 4 + 0] * 3], verts[tris[j * 4 + 0] * 3 + 1], verts[tris[j * 4 + 0] * 3 + 2]);
+			float3 b = float3(verts[tris[j * 4 + 1] * 3], verts[tris[j * 4 + 1] * 3 + 1], verts[tris[j * 4 + 1] * 3 + 2]);
+			float3 c = float3(verts[tris[j * 4 + 2] * 3], verts[tris[j * 4 + 2] * 3 + 1], verts[tris[j * 4 + 2] * 3 + 2]);
+			App->GetDebugDraw()->DrawTriangle(a, b, c);
+		}
+	}
+	
 
 
 
