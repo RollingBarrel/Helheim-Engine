@@ -23,8 +23,10 @@ bool ModuleScriptManager::Init()
 		mScripts.push_back(script());
 	}	
 	else {
-		LOG("LOADING SCRIPT ERROR");;
+		LOG("LOADING SCRIPT ERROR");
 	}
+
+	Start();
 
 	return true;
 }
