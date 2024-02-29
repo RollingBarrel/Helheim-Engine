@@ -16,7 +16,7 @@ struct Keyframe {
     // float3 scale;
 };
 
-struct ResourceAnimation;
+class ResourceAnimation;
 
 
 namespace Importer {
@@ -29,7 +29,7 @@ namespace Importer {
     }
 }
 
-struct ResourceAnimation {
+class ResourceAnimation {
 public:
     std::string name; 
     float duration;   
@@ -46,8 +46,12 @@ public:
         uint32_t numPositions = 0;
         uint32_t numRotations = 0;
 
+        bool hasTranslation = false;
+        bool hasRotation = false;
+
     };
 
+    
     void addChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
     // Use unordered_map to efficiently store animation channels by node name
     std::unordered_map<std::string, AnimationChannel*> channels;
