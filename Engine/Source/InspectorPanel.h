@@ -7,6 +7,7 @@ class Component;
 class TestComponent;
 class MeshRendererComponent;
 class CameraComponent;
+class ScriptComponent;
 class PointLightComponent;
 class SpotLightComponent;
 
@@ -28,6 +29,7 @@ private:
 	void DrawComponents(GameObject* object);
 	void DrawTestComponent(TestComponent* component);
 	void DrawCameraComponent(CameraComponent* component);
+	void DrawScriptComponent(ScriptComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);

@@ -9,6 +9,7 @@
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ScriptComponent.h"
 #include "CameraComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
@@ -281,6 +282,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
 					break;
 				}
+				case ComponentType::SCRIPT: {
+					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
+					break;
+				}
 				case ComponentType::TEST: {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
@@ -438,4 +443,9 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling
+}
+
+void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
+{
+	ImGui::Text("SCRIPTCOMP");
 }

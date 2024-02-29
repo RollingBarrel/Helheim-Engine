@@ -358,9 +358,14 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleScriptManager.cpp" />
     <ClCompile Include="Script.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScriptManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -908,12 +913,17 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleScriptManager.h" />
     <ClInclude Include="Script.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScriptManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptComponent.h">
+      <Filter>GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

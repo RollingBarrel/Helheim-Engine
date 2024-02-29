@@ -16,6 +16,8 @@
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+#include "ScriptComponent.h"
+
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr)
@@ -318,6 +320,11 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		{
 			const float3& pos = GetWorldPosition();
 			newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
+			break;
+		}
+		case ComponentType::SCRIPT:
+		{
+			newComponent = new ScriptComponent(this);
 			break;
 		}
 		case ComponentType::TEST:
