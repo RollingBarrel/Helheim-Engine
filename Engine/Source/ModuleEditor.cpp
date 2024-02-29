@@ -19,6 +19,7 @@
 #include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
+#include "ResourcePanel.h"
 #include "TimerPanel.h"
 
 #include "imgui_impl_sdl2.h"
@@ -38,6 +39,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
+	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 }
 
@@ -296,6 +298,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* inspector = mPanels[INSPECTORPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
+	Panel* resourcePanel = mPanels[RESOURCEPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 
@@ -311,6 +314,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Open();
 		inspector->Open();
 		lightningPanel->Open();
+		resourcePanel->Open();
 	}
 	else {
 		timerPanel->Close();
@@ -324,6 +328,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Close();
 		inspector->Close();
 		lightningPanel->Close();
+		resourcePanel->Close();
 
 		aboutPanel->Close();
 	}
