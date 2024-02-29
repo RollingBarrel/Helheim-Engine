@@ -22,6 +22,8 @@ namespace Importer {
     namespace Animation {
         void Import(const tinygltf::Model& model,const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel,  ResourceAnimation* ourAnimation);
 
+        // ? ourAnimation or ourMesh ?
+
         void Save(const ResourceAnimation* ourMesh);
 
         void Load(ResourceAnimation* ourMesh, const char* fileName);
