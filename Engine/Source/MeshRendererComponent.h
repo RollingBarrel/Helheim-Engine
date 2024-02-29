@@ -20,7 +20,7 @@ public:
 	
 	void Reset() override {}
 
-	void Update() override;
+	void Update() override {}
 	Component* Clone(GameObject* owner) const override;
 
 	void RefreshBoundingBoxes();

@@ -183,18 +183,13 @@ void ModuleScene::DuplicateGameObjects() {
 
 }
 
-void ModuleScene::AddToRenderList(GameObject* root)
-{
-	mRenderList.push_back(root);
-}
-
 void ModuleScene::GenerateRenderList(GameObject* root)
 {
 	// if engine slows down there is an optimization 
 	// HERE on getMeshRenderer
 	if (root->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
-		AddToRenderList(root);
+		mRenderList.push_back(root);
 	}
 	for (GameObject* child : root->GetChildren())
 	{
@@ -219,5 +214,6 @@ void ModuleScene::DrawRenderList()
 		}
 	}
 
+	//TODO: No se si cridar aqui el draw o en el mateix update del renderer fer el draw
 	App->GetOpenGL()->Draw();
 }

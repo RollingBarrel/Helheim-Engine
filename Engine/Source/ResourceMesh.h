@@ -36,45 +36,28 @@ public:
 
 	unsigned int GetNumberVertices() const { return mNumVertices; }
 	unsigned int GetNumberIndices() const { return mNumIndices; }
-
-	const void SetNumberVertices(unsigned int numVertices) { mNumVertices = numVertices; }
-	const void SetNumberIndices(unsigned int numIndices) { mNumIndices = numIndices; }
-
-	void AddIndices(unsigned int* indices);
-	unsigned int* GetIndices() const { return mIndices; }
-
-	unsigned int GetVao() const { return mVao; }
-
+	const unsigned int* GetIndices() const { return mIndices; }
 	const std::vector<Attribute>& GetAttributes() const { return mAttributes; }
+	unsigned int GetNumAttributtes() const { return mAttributes.size(); }
 	unsigned int GetVertexSize() const { return mVertexSize; }
-
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
+	//This allocates memory in the return pointer that you must free
+	float* GetInterleavedData() const;
+
+	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
 	void AddAttribute(const Attribute& attribute, float* attributeData, unsigned int dataSize);
 	void AddAttribute(const Attribute& attribute, float*&& attributeData);
-	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
-	float* GetInterleavedData() const;
-	void LoadToMemory();
-
-
 	void GenerateTangents();
 
+private:
 	void CleanUp();
 
-	//TODO Make it Private
-	std::vector<float*> mAttributesData;
 	unsigned int* mIndices = nullptr;
-
-private:
-
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
 
-
-	unsigned int mVao = 0;
-	unsigned int mVbo = 0;
-	unsigned int mEbo = 0;
-
+	std::vector<float*> mAttributesData;
 	std::vector<Attribute> mAttributes;
 	unsigned int mVertexSize = 0;
 };

@@ -7,9 +7,9 @@
 #include "float3.h"
 #include "float4x4.h"
 #include "MeshRendererComponent.h"
-#include "ImporterMesh.h"
-#include "ImporterMaterial.h"
-#include "ImporterTexture.h"
+#include "ResourceMesh.h"
+#include "ResourceMaterial.h"
+#include "ResourceTexture.h"
 
 GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 {

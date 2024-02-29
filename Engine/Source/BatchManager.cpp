@@ -1,6 +1,6 @@
 #include "BatchManager.h"
 #include "GeometryBatch.h"
-#include "ImporterMesh.h"
+#include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
 
 BatchManager::BatchManager()
@@ -18,11 +18,11 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 {
 
 	const ResourceMesh* rMesh = meshComponent->GetResourceMesh();
+	std::vector<Attribute> batchAttributes;
 	for (int i = 0; i < mBatches.size(); ++i)
 	{
-		std::vector<Attribute> batchAttributes;
 		mBatches[i]->GetAttributes(batchAttributes);
-		if (batchAttributes.size() == rMesh->NumAttributes())
+		if (batchAttributes.size() == rMesh->GetNumAttributes())
 		{
 			int j = 0;
 			while (j < batchAttributes.size())
@@ -41,6 +41,7 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 				return;
 			}
 		}
+		batchAttributes.clear();
 	}
 
 	//Not Found
