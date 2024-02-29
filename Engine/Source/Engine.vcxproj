@@ -236,6 +236,7 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -246,10 +247,16 @@
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
+    <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="NavMeshControllerComponent.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceMaterial.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
+    <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
@@ -390,6 +397,7 @@
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
+    <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
@@ -418,6 +426,7 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
+    <ClInclude Include="ModuleResource.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="NavMeshControllerComponent.h" />
@@ -427,6 +436,11 @@
     <ClInclude Include="ProjectPanel.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="QuadtreePanel.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceMaterial.h" />
+    <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="ResourceModel.h" />
+    <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="ScenePanel.h" />
     <ClInclude Include="SpotLightComponent.h" />
     <ClInclude Include="TestComponent.h" />

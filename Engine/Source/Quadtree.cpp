@@ -9,7 +9,7 @@
 #include "Application.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
-#include "ImporterMesh.h"
+#include "ResourceMesh.h"
 #include "Geometry/Triangle.h"
 #include "imgui.h"
 #include <iostream>
@@ -232,7 +232,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
 					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 
-					for (int i = 0; i < rMesh->GetResourceMesh()->mNumIndices / 3; i += 3) {
+					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices() / 3; i += 3) {
 						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i] + 1], triangles[indices[i] + 2]);
 						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i + 1] + 2]);
 						float3 verticeC = float3(triangles[indices[i + 2]], triangles[indices[i + 2] + 1], triangles[indices[i + 2] + 2]);
