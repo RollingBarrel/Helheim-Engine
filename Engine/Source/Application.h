@@ -66,7 +66,7 @@ private:
     ModuleResource* resource = nullptr;
     ModuleUI* ui = nullptr;
 
-#define NUM_MODULES 11
+#define NUM_MODULES 10
     Module* modules[NUM_MODULES];
 
     //Timer

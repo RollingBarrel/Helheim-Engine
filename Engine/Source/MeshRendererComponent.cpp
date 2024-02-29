@@ -150,12 +150,6 @@ void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("MaterialID", mMaterial->GetUID());
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
-	archive.AddBool("Diffuse", mMaterial->mEnableDiffuseTexture);
-	archive.AddBool("Specular", mMaterial->mEnableSpecularGlossinessTexture);
-	archive.AddBool("Shininess", mMaterial->mEnableShinessMap);
-	archive.AddBool("Normal", mMaterial->mEnableNormalMap);
-	
-	
 }
 
 void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {

@@ -2,6 +2,7 @@
 #include "Module.h"
 
 #define LIBRARY_PATH "Library/"
+#define LIBRARY_NAVMESH_PATH "Library/Navmesh/"
 
 #define ASSETS_PATH "Assets/"
 #define ASSETS_TEXTURE_PATH "Assets/Textures/"

@@ -20,10 +20,11 @@ void ProjectPanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		for (auto i = 0; i < root->mChildren.size(); ++i)
-		{
-			DrawAssetsFolder(*root);
-		}
+		if (ImGui::BeginChild("Favs##"))
+			for (auto i = 0; i < root->mChildren.size(); ++i)
+			{
+				DrawAssetsFolder(*root);
+			}
 		ImGui::EndChild();
 
 		if (ImGui::BeginChild("Assets"))

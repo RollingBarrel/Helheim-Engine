@@ -29,12 +29,12 @@ Application::Application()
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
-	modules[5] = render = new ModuleOpenGL();
-	modules[6] = resource = new ModuleResource();
-	modules[7] = debugDraw = new ModuleDebugDraw();
-	modules[8] = scene = new ModuleScene();
-	modules[9] = editor = new ModuleEditor();
-	modules[10] = ui = new ModuleUI();
+	modules[4] = render = new ModuleOpenGL();
+	modules[5] = resource = new ModuleResource();
+	modules[6] = debugDraw = new ModuleDebugDraw();
+	modules[7] = scene = new ModuleScene();
+	modules[8] = editor = new ModuleEditor();
+	modules[9] = ui = new ModuleUI();
 }
 
 Application::~Application()
