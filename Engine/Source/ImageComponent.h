@@ -2,12 +2,13 @@
 #include "Component.h"
 
 class ResourceTexture;
+class ModuleResource;
 
 class ImageComponent : public Component
 {
 public:
-    ImageComponent( GameObject* owner,bool active);
     ImageComponent(GameObject* owner);
+    ImageComponent(GameObject* owner, bool active);
     ~ImageComponent();
 
     void Reset() override {}
@@ -22,4 +23,5 @@ private:
 
     ResourceTexture* mImage;
     float4 mColor;
+    unsigned int texId;
 };

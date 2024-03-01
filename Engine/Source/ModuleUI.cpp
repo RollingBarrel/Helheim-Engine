@@ -2,6 +2,7 @@
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
+#include "ModuleOpenGL.h"
 #include "Application.h"
 
 #include "GameObject.h"
@@ -14,7 +15,6 @@
 
 ModuleUI::ModuleUI() 
 {
-	LOG("Hello");
 };
 
 ModuleUI::~ModuleUI() 
@@ -22,6 +22,13 @@ ModuleUI::~ModuleUI()
 };
 
 bool ModuleUI::Init() {
+	mCanvas = new GameObject(App->GetScene()->GetCanvas());
+
+	LoadVBO();
+	CreateVAO();
+
+	mUIProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
+
 	return true;
 };
 
@@ -36,7 +43,7 @@ update_status ModuleUI::Update(float dt) {
 	*originalFrustum = *(App->GetCamera()->GetFrustum());
 
 	// Set Orthografic configuration
-	int width, height;
+	/*int width, height;
 	SDL_GetWindowSize(App->GetWindow()->window, &width, &height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -46,18 +53,20 @@ update_status ModuleUI::Update(float dt) {
 
 	Frustum* UIfrustum = new Frustum();
 	UIfrustum->type = FrustumType::OrthographicFrustum;
-	App->GetCamera()->SetFrustum(UIfrustum);
+	App->GetCamera()->SetFrustum(UIfrustum);*/
 
 	// Draw the UI
-	DrawWidget(App->GetScene()->GetCanvas());
+	App->GetOpenGL()->BindSceneFramebuffer();
+	DrawWidget(mCanvas);
+	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	// Restore original frustum state
-	glEnable(GL_DEPTH_TEST);
+	/*glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1, 1, -1, 1, -1, 1);
 	glMatrixMode(GL_MODELVIEW);
-	App->GetCamera()->SetFrustum(originalFrustum);
+	App->GetCamera()->SetFrustum(originalFrustum);*/
 
 	return UPDATE_CONTINUE;
 };
@@ -75,13 +84,13 @@ void ModuleUI::DrawWidget(const GameObject* gameObject)
 	if (gameObject->IsEnabled())
 	{
 		for (const Component* component : gameObject->GetComponents(ComponentType::IMAGE))
-		{
-			const ImageComponent* image = (const ImageComponent*) component;
-			if (image->IsEnabled())
 			{
-				image->Draw();
+				const ImageComponent* image = (const ImageComponent*) component;
+				if (image->IsEnabled())
+				{
+					image->Draw();
+				}
 			}
-		}
 
 		for (const GameObject* child : gameObject->GetChildren())
 		{
@@ -111,7 +120,95 @@ void ModuleUI::CreateVAO()
 	glBindVertexArray(mQuadVAO);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) (2 * sizeof(float)));
 
 	glBindVertexArray(0);
+<<<<<<< HEAD
+=======
+}
+
+unsigned int ModuleUI::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
+{
+	unsigned int programID = glCreateProgram();
+	glAttachShader(programID, vertexShaderID);
+	glAttachShader(programID, fragmentShaderID);
+	glLinkProgram(programID);
+	int resolution;
+	glGetProgramiv(programID, GL_LINK_STATUS, &resolution);
+	if (resolution == GL_FALSE)
+	{
+		int length = 0;
+		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &length);
+		if (length > 0)
+		{
+			int written = 0;
+			char* info = (char*)malloc(length);
+			glGetProgramInfoLog(programID, length, &written, info);
+			LOG("Program Log Info: %s", info);
+			free(info);
+		}
+	}
+	glDeleteShader(vertexShaderID);
+	glDeleteShader(fragmentShaderID);
+	return programID;
+}
+
+unsigned int ModuleUI::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
+{
+	std::string fullVertexShaderPath = "Assets/Shaders/" + std::string(vertexShaderPath);
+	std::string fullFragmentShaderPath = "Assets/Shaders/" + std::string(fragmentShaderPath);
+	char* vertexSource = LoadShaderSource(fullVertexShaderPath.c_str());
+	char* fragmentSource = LoadShaderSource(fullFragmentShaderPath.c_str());
+	unsigned vertexShaderID = CompileShader(GL_VERTEX_SHADER, vertexSource);
+	unsigned fragmentShaderID = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
+	free(vertexSource);
+	free(fragmentSource);
+	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
+}
+
+char* ModuleUI::LoadShaderSource(const char* shaderFileName) const
+{
+	char* data = nullptr;
+	FILE* file = nullptr;
+	auto info = fopen_s(&file, shaderFileName, "rb");
+	if (file)
+	{
+		fseek(file, 0, SEEK_END);
+		int size = ftell(file);
+		data = (char*)malloc(size + 1);
+		fseek(file, 0, SEEK_SET);
+		fread(data, 1, size, file);
+		data[size] = 0;
+		fclose(file);
+	}
+	return data;
+}
+
+unsigned int ModuleUI::CompileShader(unsigned type, const char* source) const
+{
+
+	unsigned int shaderID = glCreateShader(type);
+
+	glShaderSource(shaderID, 1, &source, 0);
+	glCompileShader(shaderID);
+	int resolution = GL_FALSE;
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &resolution);
+	if (resolution == GL_FALSE)
+	{
+		int length = 0;
+		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
+		if (length > 0)
+		{
+			int written = 0;
+			char* info = (char*)malloc(length);
+			glGetShaderInfoLog(shaderID, length, &written, info);
+			LOG("Log Info: %s", info);
+			free(info);
+		}
+	}
+	return shaderID;
+>>>>>>> 75b78f4 (Add UI shaders)
 }

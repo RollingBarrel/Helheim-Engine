@@ -1389,5 +1389,7 @@
     <None Include="..\Game\Assets\Shaders\skybox.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\ui.fs" />
+    <None Include="..\Game\Assets\Shaders\ui.vs" />
   </ItemGroup>
 </Project>
