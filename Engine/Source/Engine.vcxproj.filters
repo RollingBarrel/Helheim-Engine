@@ -366,6 +366,7 @@
     </ClCompile>
     <ClCompile Include="TagsManager.cpp">
       <Filter>GameObjects</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleUI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -932,6 +933,7 @@
     </ClInclude>
     <ClInclude Include="Tag.h">
       <Filter>GameObjects</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleUI.h">
       <Filter>Modules</Filter>
     </ClInclude>
