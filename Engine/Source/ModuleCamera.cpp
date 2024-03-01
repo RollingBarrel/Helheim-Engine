@@ -28,7 +28,6 @@ bool ModuleCamera::Init()
 void ModuleCamera::WindowResized(int w, int h)
 {
 	mFrustum->horizontalFov = 2.f * atanf(tanf(mFrustum->verticalFov * 0.5f) * (float)w / (float)h);
-	App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
 
 void ModuleCamera::CheckRaycast()

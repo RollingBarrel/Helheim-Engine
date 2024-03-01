@@ -210,6 +210,7 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
+	SetOpenGlCameraUniforms();
 }
 
 void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
@@ -217,6 +218,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
+	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
