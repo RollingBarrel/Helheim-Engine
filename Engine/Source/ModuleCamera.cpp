@@ -51,16 +51,23 @@ void ModuleCamera::CheckRaycast()
 
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&mRay);
-	if (intersectGameObjectPair.second != nullptr)
-	{
-		GameObject* gameObject = intersectGameObjectPair.second;
-		while (!gameObject->GetParent()->IsRoot()) 
-		{
-			gameObject = gameObject->GetParent();
-		}
-		((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
+	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) {
+
 	}
+	else {
+		const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&mRay);
+		if (intersectGameObjectPair.second != nullptr)
+		{
+			GameObject* gameObject = intersectGameObjectPair.second;
+			while (!gameObject->GetParent()->IsRoot())
+			{
+				gameObject = gameObject->GetParent();
+			}
+			((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
+		}
+	}
+
+	
 	
 }
 

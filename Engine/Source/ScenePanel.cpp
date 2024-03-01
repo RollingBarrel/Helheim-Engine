@@ -118,6 +118,7 @@ void ScenePanel::Draw(int windowFlags)
 			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, modelMatrix.ptr(), NULL, mUseSnap ? &mSnap[0] : nullptr);
 
 			if (ImGuizmo::IsUsing()) {
+				mIsGuizmoUsign = true;
 				GameObject* parent = selectedGameObject->GetParent();
 				float4x4 inverseParentMatrix = float4x4::identity;
 				float3 translation;
@@ -143,6 +144,9 @@ void ScenePanel::Draw(int windowFlags)
 					selectedGameObject->SetScale(scale);
 					break;
 				}
+			}
+			else {
+				mIsGuizmoUsign = false;
 			}
 		}
 
