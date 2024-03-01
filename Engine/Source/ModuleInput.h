@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "SDL_scancode.h"
+
 
 enum class KeyState : unsigned char
 {
@@ -34,14 +34,14 @@ public:
 	update_status PreUpdate(float dt) override;
 	bool CleanUp() override;
 
-	KeyState GetKey(int id) const { return keyboard[id]; }
+	ENGINE_API KeyState GetKey(int id) const { return keyboard[id]; }
 	KeyState GetMouseKey(MouseKey id) const { return mouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
 	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
 	int GetMouseWheelMotion() const { return wheelY; }
 private:
 	KeyState mouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
-	KeyState* keyboard = NULL;
+	KeyState* keyboard = 0;
 	int mMouseMotionX = 0;
 	int mMouseMotionY = 0;
 	int mMousePositionX = 0;

@@ -16,7 +16,7 @@ bool ModuleScriptManager::Init()
 	const char* name = "TestScript";
 
 	mHandle = LoadLibrary("Scripting.dll");
-
+	/*
 	Script*(*script)() = (Script* (*)())GetProcAddress(static_cast<HMODULE>(mHandle), (std::string("Create") + std::string(name)).c_str());
 
 	if (script != nullptr) {
@@ -25,8 +25,8 @@ bool ModuleScriptManager::Init()
 	else {
 		LOG("LOADING SCRIPT ERROR");
 	}
-
-	Start();
+	*/
+	//Start();
 
 	return true;
 }
@@ -38,9 +38,10 @@ update_status ModuleScriptManager::PreUpdate(float dt)
 
 update_status ModuleScriptManager::Update(float dt)
 {
-
-	for (std::vector<Script*>::iterator::value_type script : mScripts) {
-		script->Update();
+	if (mIsPlaying) {
+		for (std::vector<Script*>::iterator::value_type script : mScripts) {
+			script->Update();
+		}
 	}
 
 	return update_status::UPDATE_CONTINUE;
@@ -55,6 +56,18 @@ bool ModuleScriptManager::CleanUp()
 {
 	FreeLibrary(static_cast<HMODULE>(mHandle));
 	return true;
+}
+
+void ModuleScriptManager::Play()
+{
+	mIsPlaying = true;
+	Start();
+}
+
+void ModuleScriptManager::Stop()
+{
+	mIsPlaying = false;
+
 }
 
 void ModuleScriptManager::Start()

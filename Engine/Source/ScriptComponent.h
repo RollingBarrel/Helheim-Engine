@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 
+class Script;
+
 class ScriptComponent : public Component
 {
 public:
@@ -17,6 +19,7 @@ public:
 	//void Enable() override;
 
 private:
+	Script* mScript = nullptr;
 	unsigned int ID = 0;
 };
 

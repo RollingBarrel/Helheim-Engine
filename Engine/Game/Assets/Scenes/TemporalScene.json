@@ -1,1 +1,1 @@
-{"Scene":{"GameObjects":[]}}
+{"Scene":{"GameObjects":[{"UID":337931222,"ParentUID":1,"Name":"AmmunationBox1 (5).gltf","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Components":[]},{"UID":407482601,"ParentUID":337931222,"Name":"GameObject (1)","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Components":[{"ID":426767618,"MeshID":1497897124,"MaterialID":1497897126,"ComponentType":0,"isEnabled":true}]}]}}

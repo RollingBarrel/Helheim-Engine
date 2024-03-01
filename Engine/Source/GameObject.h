@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Globals.h"
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
@@ -38,8 +39,8 @@ public:
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mLocalTransformMatrix.ToEulerXYZ(); }
-	const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
-	const float3& GetLocalPosition() const { return mLocalTransformMatrix.TranslatePart(); }
+	ENGINE_API const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
+	ENGINE_API const float3& GetLocalPosition() const { return mLocalTransformMatrix.TranslatePart(); }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
@@ -61,7 +62,7 @@ public:
 
 	void SetRotation(const float3& rotation);
 	void SetRotation(const Quat& rotation);
-	void SetPosition(const float3& position);
+	ENGINE_API void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
 
 	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);

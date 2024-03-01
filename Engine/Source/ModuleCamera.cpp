@@ -16,6 +16,7 @@
 #include "imgui.h"
 #include "Geometry/Triangle.h"
 #include "Quadtree.h"
+#include "SDL_scancode.h"
 
 
 bool ModuleCamera::Init()

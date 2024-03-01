@@ -18,7 +18,7 @@ class ModuleUI;
 class Timer;
 class PreciseTimer;
 
-class Application
+class  Application
 {
 public:
 
@@ -31,7 +31,7 @@ public:
 
     ModuleOpenGL* GetOpenGL() { return render; }
     ModuleWindow* GetWindow() { return window; }
-    ModuleInput*  GetInput() { return input; }
+    ENGINE_API ModuleInput*  GetInput() { return input; }
     ModuleEditor*  GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera;  }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
@@ -53,7 +53,7 @@ public:
     //void SetCurrentClock(PreciseTimer* clock) { mCurrentTimer = clock; }
 
     float GetRealDt() const;
-    float GetGameDt() const;
+    ENGINE_API float GetGameDt() const;
 
 private:
 
@@ -86,4 +86,4 @@ private:
     bool mEnableVsync = true;
 };
 
-extern Application* App;
+ extern ENGINE_API Application* App;

@@ -16,7 +16,7 @@
 	@author Jukka Jylänki
 	@brief A 3D (x,y,z) ordered tuple. */
 #pragma once
-
+#include "../../../../Globals.h"
 #include "../MathBuildConfig.h"
 
 #ifdef MATH_ENABLE_STL_SUPPORT
@@ -44,7 +44,7 @@
 MATH_BEGIN_NAMESPACE
 
 /// A vector of form (x,y,z).
-class float3
+class ENGINE_API float3
 {
 public:
 	enum

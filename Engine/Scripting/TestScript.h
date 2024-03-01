@@ -12,12 +12,10 @@ extern "C" class SCRIPTING_API TestScript : public Script {
 
 public:
 
-    TestScript();
+    TestScript(GameObject* owner);
     ~TestScript() {}
     void Start() override;
     void Update() override;
-
-    char h[99999999];
 
 private:
 
@@ -26,6 +24,6 @@ private:
 };
 
 
-extern "C" SCRIPTING_API Script* CreateTestScript() { return new TestScript(); }
+extern "C" SCRIPTING_API Script* CreateTestScript(GameObject* owner) { return new TestScript(owner); }
 
 //extern "C" SCRIPTING_API void fibonacci_init2(const unsigned long long a, const unsigned long long b);

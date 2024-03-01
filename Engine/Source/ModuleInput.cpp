@@ -7,6 +7,7 @@
 #include "imgui_impl_sdl2.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
+#include "SDL_scancode.h"
 
 ModuleInput::ModuleInput()
 {
