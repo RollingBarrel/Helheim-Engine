@@ -18,7 +18,6 @@ struct Keyframe {
 
 class ResourceAnimation;
 
-
 namespace Importer {
     namespace Animation {
         void Import(const tinygltf::Model& model,const tinygltf::Animation& animation,ResourceAnimation* ourAnimation);
@@ -29,7 +28,8 @@ namespace Importer {
     }
 }
 
-class ResourceAnimation {
+class ResourceAnimation 
+{
 public:
     std::string name; 
     float duration;   
