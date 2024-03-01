@@ -1,4 +1,5 @@
 #include "TagsManager.h"
+#include "GameObject.h"
 #include <algorithm>
 #include <iterator>
 
@@ -67,8 +68,15 @@ void TagsManager::DeleteTag(Tag* tag)
     auto it = std::find(mTags.begin(), mTags.end(), tag);
 
     if (it != mTags.end()) {
-        mTags.erase(it);
 
+        // 1. Set tags to untagged
+        std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
+        for (auto object : objects) {
+            object->SetTag(GetTag("Untagged"));
+        }
+        //objects
+        // 2. Delete ir
+        mTags.erase(it);
         delete tag;
     }
 }
