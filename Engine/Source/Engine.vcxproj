@@ -421,6 +421,8 @@
     <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
+    <None Include="..\Game\Assets\Shaders\ui.fs" />
+    <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="..\Game\Assets\Shaders\Vertex.vs" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl" />

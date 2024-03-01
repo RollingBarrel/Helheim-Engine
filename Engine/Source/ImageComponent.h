@@ -23,4 +23,5 @@ private:
 
     ResourceTexture* mImage;
     float4 mColor;
+    unsigned int texId;
 };

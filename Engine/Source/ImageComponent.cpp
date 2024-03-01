@@ -19,7 +19,8 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
-	mImage = Importer::Texture::Load("Assets/Textures/Test-image-Baboon.dds", 0);
+	//mImage = Importer::Texture::Load("Assets/Textures/CesiumLogoFlat.png", 630045728);
+	mImage = ( ResourceTexture *) App->GetResource()->RequestResource(630045728, Resource::Type::Texture);
 }
 
 ImageComponent:: ~ImageComponent() {
@@ -35,23 +36,23 @@ void ImageComponent::Draw() const
 
 		glUseProgram(program);
 
-		Transform2DComponent* transform = (Transform2DComponent*) GetOwner()->GetComponent(ComponentType::TRANSFORM2D);
+		//Transform2DComponent* transform = (Transform2DComponent*) GetOwner()->GetComponent(ComponentType::TRANSFORM2D);
 
-		const float4x4& proj = App->GetCamera()->GetFrustum()->ProjectionMatrix();
+		float4x4 proj = App->GetCamera()->GetFrustum()->ProjectionMatrix();
 		/* 
 		std::pair<float, float> region = App->GetModule<ModuleEditor>()->GetAvailableRegion();
 		orthoProjectionMatrix = float4x4::D3DOrthoProjLH(-1, 1, floor(region.first), floor(region.second));
 		*/
-		const float4x4& model = float4x4::identity; //transform->GetGlobalScaledMatrix();
+		float4x4 model = float4x4::identity; //transform->GetGlobalScaledMatrix();
 		float4x4 view = float4x4::identity;
 
-		CanvasComponent* canvas = (CanvasComponent*) App->GetScene()->GetCanvas()->GetComponent(ComponentType::CANVAS);
-		if (canvas)
-		{
+		//CanvasComponent* canvas = (CanvasComponent*) App->GetScene()->GetCanvas()->GetComponent(ComponentType::CANVAS);
+		//if (canvas)
+		//{
 			//canvas->RecalculateSizeAndScreenFactor();
 			//float factor = canvas->GetScreenFactor();
 			//view = view * float4x4::Scale(factor, factor, factor);
-		}true, 
+		//} 
 
 		
 		/*glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
@@ -62,14 +63,15 @@ void ImageComponent::Draw() const
 		glBindVertexArray(App->GetUI()->GetQuadVAO());
 
 		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+		
 		// TODO Bind mColor
 
-		if (mImage)
-		{
-			//mImage->CreateTexture();
-		}
+		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
+		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawArrays(GL_TRIANGLES, 0, 4);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);

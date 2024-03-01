@@ -23,6 +23,9 @@ ModuleUI::~ModuleUI()
 bool ModuleUI::Init() {
 	mCanvas = new GameObject(App->GetScene()->GetCanvas());
 
+	LoadVBO();
+	CreateVAO();
+
 	mUIProgramId = CreateShaderProgramFromPaths("ui.fs", "ui.vs");
 
 	return true;
@@ -39,7 +42,7 @@ update_status ModuleUI::Update(float dt) {
 	*originalFrustum = *(App->GetCamera()->GetFrustum());
 
 	// Set Orthografic configuration
-	int width, height;
+	/*int width, height;
 	SDL_GetWindowSize(App->GetWindow()->window, &width, &height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -49,18 +52,18 @@ update_status ModuleUI::Update(float dt) {
 
 	Frustum* UIfrustum = new Frustum();
 	UIfrustum->type = FrustumType::OrthographicFrustum;
-	App->GetCamera()->SetFrustum(UIfrustum);
+	App->GetCamera()->SetFrustum(UIfrustum);*/
 
 	// Draw the UI
 	DrawWidget(mCanvas);
 
 	// Restore original frustum state
-	glEnable(GL_DEPTH_TEST);
+	/*glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-1, 1, -1, 1, -1, 1);
 	glMatrixMode(GL_MODELVIEW);
-	App->GetCamera()->SetFrustum(originalFrustum);
+	App->GetCamera()->SetFrustum(originalFrustum);*/
 
 	return UPDATE_CONTINUE;
 };
@@ -75,23 +78,22 @@ bool ModuleUI::CleanUp() {
 
 void ModuleUI::DrawWidget(const GameObject* gameObject)
 {
-	//if (gameObject->IsEnabled())
-	//{
-	//	for (const Component* component : gameObject->GetComponents(ComponentType::IMAGE))
-	//	{
-	//		const ImageComponent* image = (const ImageComponent*) component;
-	//		if (image->IsEnabled())
-	//		{
-	//			image->Draw();
-	//		}
-	//	}
+	if (gameObject->IsEnabled())
+	{
+		for (const Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+			{
+				const ImageComponent* image = (const ImageComponent*) component;
+				if (image->IsEnabled())
+				{
+					image->Draw();
+				}
+			}
 
-	//	for (const GameObject* child : gameObject->GetChildren())
-	//	{
-	//		DrawWidget(child);
-	//	}
-	//}
-	//mCanvas->Draw();
+		for (const GameObject* child : gameObject->GetChildren())
+		{
+			DrawWidget(child);
+		}
+	}
 }
 
 void ModuleUI::LoadVBO()
@@ -115,7 +117,10 @@ void ModuleUI::CreateVAO()
 	glBindVertexArray(mQuadVAO);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) (2 * sizeof(float)));
 
 	glBindVertexArray(0);
 }
