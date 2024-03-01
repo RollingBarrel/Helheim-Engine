@@ -235,6 +235,27 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMesh.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResource.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceTexture.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMaterial.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceModel.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
     <ClCompile Include="CameraUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -817,6 +838,27 @@
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMesh.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleResource.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceTexture.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMaterial.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceModel.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
     <ClInclude Include="CameraUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -1007,6 +1049,9 @@
     </Filter>
     <Filter Include="Utils\Timer">
       <UniqueIdentifier>{c2f3b8dd-32e7-451c-8641-fb9678a9c842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{ea99d1f6-2c70-403e-b5b6-3a7fab634aa0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\NavigationAI">
       <UniqueIdentifier>{579d3554-19f7-47db-8abf-7b98913d0ca2}</UniqueIdentifier>

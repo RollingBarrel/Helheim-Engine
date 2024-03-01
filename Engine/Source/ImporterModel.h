@@ -1,26 +1,19 @@
 #pragma once
 #include <vector>
-struct ResourceModel
-{
-	typedef struct ModelIds {
-		unsigned int meshUID;
-		unsigned int materiaUID;
-	}ModelIds;
-	std::vector<ModelIds>mUids;
 
-	unsigned int mUID;
-};
+#include "Resource.h"
+
+class ResourceModel;
 
 namespace Importer
 {
 	namespace Model
 	{
-		void Import(const char* filePath, ResourceModel* rModel);
+		ResourceModel* Import(const char* filePath, unsigned int uid, bool modifyAssets = true);
 
 		void Save(const ResourceModel* ourModel);
 
-		void Load(ResourceModel* ourModel, const char* fileName);
-
+		ResourceModel* Load(const char* fileName, unsigned int uid);
 	}
 };
 

@@ -307,12 +307,13 @@ void GameObject::AddSuffix()
 	}
 }
 
-Component* GameObject::CreateComponent(ComponentType type) {
+//TODO: Crate a component that requires ids not clean now
+Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
 		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this);
+			newComponent = new MeshRendererComponent(this, meshUid, materialUid);
 			break;
 		case ComponentType::CAMERA:
 			newComponent = new CameraComponent(this);
