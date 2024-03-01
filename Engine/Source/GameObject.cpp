@@ -523,7 +523,7 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	float3 position;
 	float3 scale;
 	Quat rotation;
-	Tag* tag = nullptr;
+	Tag* tag = App->GetTags()->GetTagByName("Untagged");
 
 	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) {
 		uuid = gameObject["UID"].GetInt();
@@ -575,13 +575,9 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 		int tagid = tagint.GetInt();
 		Tag* loadedTag = App->GetTags()->GetTagByID(tagid);
 
-		if (loadedTag == nullptr) {
-			tag = App->GetTags()->GetTagByName("Untagged");
-		}
-		else {
+		if (loadedTag != nullptr) {
 			tag = loadedTag;
 		}
-
 	}
 
 	GameObject* go;
