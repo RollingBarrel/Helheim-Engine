@@ -3,14 +3,13 @@
 #include "Math/MathConstants.h"
 #include "ModuleWindow.h"
 #include "Application.h"
-#include "CameraUtils.h"
 
 #include "ModuleDebugDraw.h"
 
 CameraComponent::CameraComponent(GameObject* owner)
 	:Component(owner, ComponentType::CAMERA)
 {
-	mCamera = CameraUtils::InitiateCamera(float3(0.0f, 0.0f, 0.0f));
+	//mCamera = InitiateCamera(float3(0.0f, 0.0f, 0.0f));
 }
 
 CameraComponent::CameraComponent(const CameraComponent& original, GameObject* owner)
@@ -35,17 +34,17 @@ Component* CameraComponent::Clone(GameObject* owner) const
 
 void CameraComponent::Reset()
 {
-	mCamera = CameraUtils::InitiateCamera(float3(0.0f, 0.0f, 0.0f));
+	//mCamera = InitiateCamera(float3(0.0f, 0.0f, 0.0f));
 }
 
 void CameraComponent::SetPosition(const float3& position)
 {
-	CameraUtils::CameraComponentTransform(position, *mCamera);
+	//CameraUtils::CameraComponentTransform(position, *mCamera);
 }
 
 void CameraComponent::SetRotation(const float3& rotation)
 {
-	CameraUtils::Rotate(rotation,-1 ,*mCamera);
+	//CameraUtils::Rotate(rotation,-1 ,*mCamera);
 }
 
 void CameraComponent::Save(Archive& archive) const

@@ -154,7 +154,7 @@ update_status ModuleScene::PostUpdate(float dt)
 		DuplicateGameObjects();
 	}
 
-	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());
+	mQuadtreeRoot->UpdateDrawableGameObjects(&App->GetCamera()->GetFrustum());
 
 	return UPDATE_CONTINUE;
 }

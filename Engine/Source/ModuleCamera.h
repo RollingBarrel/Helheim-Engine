@@ -16,17 +16,21 @@ public:
 	bool Init() override;
 	update_status Update(float dt) override;
 
-	const float3& GetPos() const { return mFrustum->pos; }
-	float4x4 GetViewMatrix() const { return mFrustum->ViewMatrix(); }
-	float4x4 GetProjectionMatrix() const { return mFrustum->ProjectionMatrix(); }
-	float4x4 GetViewProjMatrix() const { return mFrustum->ViewProjMatrix(); }
+	const float3& GetPos() const { return mFrustum.pos; }
+	float4x4 GetViewMatrix() const { return mFrustum.ViewMatrix(); }
+	float4x4 GetProjectionMatrix() const { return mFrustum.ProjectionMatrix(); }
+	float4x4 GetViewProjMatrix() const { return mFrustum.ViewProjMatrix(); }
 	void WindowResized(int w, int h);
 	void CheckRaycast();
 	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
-	const Frustum* GetFrustum() const { return mFrustum; }
+	const Frustum& GetFrustum() const { return mFrustum; }
+
+	void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
+	void Rotate(const float3& axis, float angleRad);
+	void Transform(float3 vec); 
 
 private:
-	Frustum* mFrustum = nullptr;
+	Frustum mFrustum;
 	Ray mRay;
 	bool mDrawRayCast; 
 	std::map<float, GameObject*> mIntersectMap;
