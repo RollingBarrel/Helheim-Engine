@@ -11,6 +11,7 @@ public:
 
 	std::string GetName() const { return mName; };
 	TagType GetType() const { return mType; };
+	unsigned GetID() const { return mId; };
 
 private:
 	unsigned mId;

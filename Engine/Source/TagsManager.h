@@ -17,14 +17,16 @@ public:
 	std::vector<Tag*> GetSystemTag();
 	std::vector<Tag*> GetCustomTag();
 
-	Tag* GetTag(std::string tagname);
+	Tag* GetTagByName(std::string tagname);
+	Tag* GetTagByID(unsigned id);
 	void DeleteTag(Tag* tag);
 
 private:
-	Tag* TagNameExists(std::string tagname);
+	Tag* TagNameExistsByName(std::string tagname);
+	Tag* TagNameExistsByID(unsigned tagname);
 
 	std::vector<Tag*> mTags;
 
-	unsigned lastIndex = 0;
+	unsigned lastIndex = 10;
 };
 

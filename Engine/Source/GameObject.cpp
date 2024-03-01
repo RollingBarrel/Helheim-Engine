@@ -19,7 +19,7 @@
 #include "TagsManager.h"
 #include "Tag.h"
 GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetTags()->GetTag("Untagged")),
+	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetTags()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -69,7 +69,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 }
 
 GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetTags()->GetTag("Untagged")),
+	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetTags()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 
@@ -83,7 +83,7 @@ GameObject::GameObject(const char* name, GameObject* parent)
 GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
 	:mID(id), mName(name), mParent(parent), mPosition(position),
 	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr),
-	mTag(App->GetTags()->GetTag("Untagged"))
+	mTag(App->GetTags()->GetTagByName("Untagged"))
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 	if (!mIsRoot) {
@@ -462,6 +462,7 @@ void GameObject::Save(Archive& archive) const {
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);
+	archive.AddInt("Tag", mTag->GetID());
 
 	// Save components
 	std::vector<Archive> componentsArchiveVector;
@@ -521,6 +522,8 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	float3 position;
 	float3 scale;
 	Quat rotation;
+	Tag* tag = nullptr;
+
 	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) {
 		uuid = gameObject["UID"].GetInt();
 	}
@@ -566,6 +569,20 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 		scale = float3(x, y, z);
 	}
 
+	if (gameObject.HasMember("Tag")) {
+		const rapidjson::Value& tagint = gameObject["Tag"];
+		int tagid = tagint[0].GetInt();
+		Tag* loadedTag = App->GetTags()->GetTagByID(tagid);
+
+		if (loadedTag == nullptr) {
+			tag = App->GetTags()->GetTagByName("Untagged");
+		}
+		else {
+			tag = loadedTag;
+		}
+
+	}
+
 	GameObject* go;
 
 	if (parentUID == 1) {
@@ -582,8 +599,9 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
 			loadComponentsFromJSON(gameObject["Components"], go);
 		}
-
 	}
+
+	go->SetTag(tag);
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) {

@@ -24,7 +24,7 @@ TagsManager::~TagsManager()
 
 void TagsManager::AddTag(std::string tagname)
 {
-    if (TagNameExists(tagname) == nullptr) {
+    if (TagNameExistsByName(tagname) == nullptr) {
         Tag* newTag = new Tag(lastIndex, tagname, TagType::CUSTOM);
         mTags.push_back(newTag);
 
@@ -57,10 +57,16 @@ std::vector<Tag*> TagsManager::GetCustomTag()
     return customTags;
 }
 
-Tag* TagsManager::GetTag(std::string tagname)
+Tag* TagsManager::GetTagByName(std::string tagname)
 {
-    // Dublicate but public version of TagNameExists
-    return TagNameExists(tagname);
+    // Dublicate but public version of TagNameExistsByName
+    return TagNameExistsByName(tagname);
+}
+
+Tag* TagsManager::GetTagByID(unsigned id)
+{
+    // Dublicate but public version of TagNameExistsByID
+    return TagNameExistsByID(id);
 }
 
 void TagsManager::DeleteTag(Tag* tag)
@@ -72,16 +78,16 @@ void TagsManager::DeleteTag(Tag* tag)
         // 1. Set tags to untagged
         std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
         for (auto object : objects) {
-            object->SetTag(GetTag("Untagged"));
+            object->SetTag(GetTagByName("Untagged"));
         }
-        //objects
-        // 2. Delete ir
+
+        // 2. Delete it
         mTags.erase(it);
         delete tag;
     }
 }
 
-Tag* TagsManager::TagNameExists(std::string tagname)
+Tag* TagsManager::TagNameExistsByName(std::string tagname)
 {
     for (Tag* tag : mTags) {
         if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0) {
@@ -89,6 +95,16 @@ Tag* TagsManager::TagNameExists(std::string tagname)
         }
     }
     return nullptr; 
+}
+
+Tag* TagsManager::TagNameExistsByID(unsigned id)
+{
+    for (Tag* tag : mTags) {
+        if (tag->GetID() == id) {
+            return tag;
+        }
+    }
+    return nullptr;
 }
 
 
