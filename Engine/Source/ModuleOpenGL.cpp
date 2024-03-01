@@ -214,7 +214,6 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 
 void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 {
-	App->GetCamera()->WindowResized(width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
