@@ -20,6 +20,7 @@ public:
 	void CreateVAO();
 
 	inline unsigned int GetQuadVAO() const { return mQuadVAO; }
+	inline unsigned int GetProgram() const { return mUIProgramId; }
 
 private:
 	void DrawWidget(const GameObject* gameObject);
@@ -27,5 +28,13 @@ private:
 	unsigned int mQuadVBO;
 	unsigned int mQuadVAO;
 	GameObject* mCanvas = nullptr;
+
+	unsigned int mUIProgramId = 0;
+
+	unsigned int CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const;
+	unsigned int CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
+	char* LoadShaderSource(const char* shaderFileName) const;
+	unsigned int CompileShader(unsigned type, const char* source) const;
+
 };
 

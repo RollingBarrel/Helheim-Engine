@@ -16,12 +16,10 @@
 
 
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) {
-	mImage = (ResourceTexture*) App->GetResource()->RequestResource(App->GetResource()->Find("CesiumLogoFlat.png"), Resource::Type::Texture);
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
 	mImage = Importer::Texture::Load("Assets/Textures/Test-image-Baboon.dds", 0);
-
 }
 
 ImageComponent:: ~ImageComponent() {
@@ -29,7 +27,7 @@ ImageComponent:: ~ImageComponent() {
 
 void ImageComponent::Draw() const
 {
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
+	unsigned int program = App->GetUI()->GetProgram();
 	if (program)
 	{
 		glEnable(GL_BLEND);
@@ -53,13 +51,14 @@ void ImageComponent::Draw() const
 			//canvas->RecalculateSizeAndScreenFactor();
 			//float factor = canvas->GetScreenFactor();
 			//view = view * float4x4::Scale(factor, factor, factor);
-		}
+		}true, 
 
-		glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
+		
+		/*glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
 		OpenGLBuffer* cameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
 		cameraUniBuffer->UpdateData(view.Transposed().ptr(), sizeof(float) * 16, 0);
 		cameraUniBuffer->UpdateData(proj.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
+		*/
 		glBindVertexArray(App->GetUI()->GetQuadVAO());
 
 		glActiveTexture(GL_TEXTURE0);
