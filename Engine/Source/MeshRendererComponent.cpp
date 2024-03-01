@@ -18,14 +18,18 @@
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid) : Component(owner, ComponentType::MESHRENDERER)
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
+	
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+	
+	if (meshUid != 0 && materialUid != 0) {
+		mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
+		mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
+		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+	}
 
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -169,5 +173,8 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshID, Resource::Type::Mesh));
 	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialID, Resource::Type::Material));
 
+	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 }
 
