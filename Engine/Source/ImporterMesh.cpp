@@ -22,6 +22,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
     unsigned int numVertices = 0;
     unsigned int numIndices = 0;
+    unsigned int vertexSize = 0;
     unsigned int* indices = nullptr;
     std::vector<Attribute>attributes;
     std::vector<float*>attributesData;
@@ -43,6 +44,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         const unsigned char* bufferPos = &posBuffer.data[posView.byteOffset + posAcc.byteOffset];
 
+        vertexSize += sizeof(float) * 3;
         attributes.emplace_back(Attribute::POS, sizeof(float) * 3, 0);
         float* data = new float[posAcc.count * 3];
         //Add vertices Pos to this buffer taking into acc byteStride
@@ -72,7 +74,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         const unsigned char* bufferTexCoord = &texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset];
 
-
+        vertexSize += sizeof(float) * 2;
         attributes.emplace_back(Attribute::UV, sizeof(float) * 2, 0);
         float* data = new float[texCoordAcc.count * 2];
         //Add vertices TexCoord to this buffer taking into acc byteStride
@@ -104,6 +106,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         const unsigned char* bufferNorm = &normBuffer.data[normView.byteOffset + normAcc.byteOffset];
 
+        vertexSize += sizeof(float) * 3;
         attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, 0);
         float* data = new float[normAcc.count * 3];
 
@@ -173,6 +176,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         const unsigned char* bufferTang = &tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset];
 
+        vertexSize += sizeof(float) * 4;
         attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, 0);
         float* data = new float[tangAcc.count * 4];
 
@@ -197,8 +201,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     else
     {
         //Generate Tangents
-        GenerateTangents(attributes, attributesData, numIndices, indices, GetVertexSize(), numVertices, GetInterleavedData())
-        rMesh->GenerateTangents();
+        GenerateTangents(attributes, attributesData, numIndices, indices, vertexSize, numVertices, GetInterleavedData())
     }
 
     ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, indices, numVertices);
@@ -206,6 +209,15 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         delete[] data;
     Importer::Mesh::Save(rMesh);
     return rMesh;
+}
+
+float* GetInterleavedData(const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData)
+{
+    unsigned int size = 0;
+    for (int i = 0; i < attributes.size(); ++i)
+    {
+        size += attributes[i].size;
+    }
 }
 
 void Importer::Mesh::Save(const ResourceMesh* rMesh)
