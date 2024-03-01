@@ -25,8 +25,10 @@ private:
 	void GetGOMeshes(const GameObject* gameObj);
 	std::vector<const ResourceMesh*> mMeshesToNavMesh;
 	std::vector<const MeshRendererComponent*> mMeshRendererComponents;
+	void TranslateIndices();
 	void DebugDrawPolyMesh();
 	void LoadDrawMesh();
+	int findVertexIndex(float3 vert);
 
 	rcHeightfield*  mHeightField=nullptr;
 	rcCompactHeightfield* mCompactHeightField = nullptr;
@@ -61,7 +63,7 @@ private:
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
 	std::vector<float3> mVertices;
-	std::vector<unsigned int> mIndices;
+	std::vector<int> mIndices;
 
 
 };

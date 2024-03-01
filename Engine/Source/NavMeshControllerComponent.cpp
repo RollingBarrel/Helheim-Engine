@@ -35,17 +35,8 @@ void NavMeshControllerComponent::Reset() {
 	//Change variables to default values.
 }
 
-void NavMeshControllerComponent::DebugDrawPolyMesh()
+void NavMeshControllerComponent::TranslateIndices()
 {
-	//unsigned int program = App->GetOpenGL()->GetPBRProgramId();
-	//glBindVertexArray(0);
-	//glUseProgram(0);
-	//glUseProgram(program);
-	//float4x4 identity = float4x4::identity;
-	//glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
-	//glBindVertexArray(mVao);
-	//glDrawElements(GL_TRIANGLES,mIndices.size(), GL_UNSIGNED_INT, 0);
-
 	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
 	{
 		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
@@ -55,7 +46,63 @@ void NavMeshControllerComponent::DebugDrawPolyMesh()
 		const float* verts = &mPolyMeshDetail->verts[bverts * 3];
 		const unsigned char* tris = &mPolyMeshDetail->tris[btris * 4];
 
-		float3 color = float3(1.0f, 0.0f, 0.0f);
+		for (int j = 0; j < ntris; ++j)
+		{
+			float3 a = float3(verts[tris[j * 4 + 0] * 3], verts[tris[j * 4 + 0] * 3 + 1], verts[tris[j * 4 + 0] * 3 + 2]);
+			float3 b = float3(verts[tris[j * 4 + 1] * 3], verts[tris[j * 4 + 1] * 3 + 1], verts[tris[j * 4 + 1] * 3 + 2]);
+			float3 c = float3(verts[tris[j * 4 + 2] * 3], verts[tris[j * 4 + 2] * 3 + 1], verts[tris[j * 4 + 2] * 3 + 2]);
+
+			// Check and update indices
+			int indexA = findVertexIndex(a);
+			if (indexA == -1) {
+				mVertices.push_back(a);
+				indexA = mVertices.size() - 1;
+			}
+
+			int indexB = findVertexIndex(b);
+			if (indexB == -1) {
+				mVertices.push_back(b);
+				indexB = mVertices.size() - 1;
+			}
+
+			int indexC = findVertexIndex(c);
+			if (indexC == -1) {
+				mVertices.push_back(c);
+				indexC = mVertices.size() - 1;
+			}
+
+			// Add indices to mIndices
+			mIndices.push_back(indexA);
+			mIndices.push_back(indexB);
+			mIndices.push_back(indexC);
+			
+		}
+	}
+}
+
+void NavMeshControllerComponent::DebugDrawPolyMesh()
+{
+	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glUseProgram(program);
+	float4x4 identity = float4x4::identity;
+	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
+	glBindVertexArray(mVao);
+	glDrawElements(GL_TRIANGLES,mIndices.size(), GL_UNSIGNED_INT, 0);
+
+
+	/*
+	Old draw polymesh with debud draw
+	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
+	{
+		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
+		const unsigned int bverts = m[0];
+		const unsigned int btris = m[2];
+		const int ntris = (int)m[3];
+		const float* verts = &mPolyMeshDetail->verts[bverts * 3];
+		const unsigned char* tris = &mPolyMeshDetail->tris[btris * 4];
+
 
 		for (int j = 0; j < ntris; ++j)
 		{
@@ -63,11 +110,10 @@ void NavMeshControllerComponent::DebugDrawPolyMesh()
 			float3 b = float3(verts[tris[j * 4 + 1] * 3], verts[tris[j * 4 + 1] * 3 + 1], verts[tris[j * 4 + 1] * 3 + 2]);
 			float3 c = float3(verts[tris[j * 4 + 2] * 3], verts[tris[j * 4 + 2] * 3 + 1], verts[tris[j * 4 + 2] * 3 + 2]);
 			App->GetDebugDraw()->DrawTriangle(a, b, c);
+
 		}
 	}
-	
-
-
+	*/
 
 }
 
@@ -299,26 +345,7 @@ void NavMeshControllerComponent::LoadDrawMesh()
 {
 	if (mPolyMesh != nullptr)
 	{		
-		int counter = 1;
-		for (int i = 0; i < mPolyMeshDetail->ntris*4; ++i)
-		{
-			if (i == 0) {
-				
-			}
-			if (i != 0 &&counter % 4 == 0) {
-				counter++;
-				continue;
-			}
-			else {
-				counter++;
-				mIndices.push_back((unsigned int)mPolyMeshDetail->tris[i]);
-			}
-	
-			
-		}
-
-
-
+		TranslateIndices();
 		// Now you can create the VAO and fill it with the mesh data
 		glGenVertexArrays(1, &mVao);
 		glBindVertexArray(mVao);
@@ -326,7 +353,7 @@ void NavMeshControllerComponent::LoadDrawMesh()
 
 		glGenBuffers(1, &mVbo);
 		glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-		glBufferData(GL_ARRAY_BUFFER, 3 * mPolyMeshDetail->nverts * sizeof(float), mPolyMeshDetail->verts, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 3 * mVertices.size() * sizeof(float), &mVertices[0], GL_STATIC_DRAW);
 
 
 		glGenBuffers(1, &mEbo);
@@ -341,4 +368,16 @@ void NavMeshControllerComponent::LoadDrawMesh()
 
 	}
 	return;
+}
+
+int NavMeshControllerComponent::findVertexIndex(float3 vert)
+{
+	
+	for (int i = 0; i < mVertices.size(); ++i) {
+		if (mVertices[i].x == vert.x && mVertices[i].y == vert.y && mVertices[i].z == vert.z) {
+			return i;
+		}
+	}
+	return -1; // Not found
+		
 }
