@@ -19,7 +19,6 @@ Frustum* CameraUtils::InitiateCamera(float3 initialPosition)
     frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * (float)w / (float)h);
 
     LookAt(initialPosition, float3(0.0f, 0.0f, -1.0f), float3::unitY, *frustum);
-    Rotate(float3::unitY,0, *frustum);
     return frustum;
 }
 
