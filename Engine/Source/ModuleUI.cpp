@@ -14,11 +14,6 @@
 
 ModuleUI::ModuleUI() 
 {
-<<<<<<< Updated upstream
-	LOG("Hello");
-=======
-
->>>>>>> Stashed changes
 };
 
 ModuleUI::~ModuleUI() 
@@ -30,13 +25,10 @@ bool ModuleUI::Init() {
 	return true;
 };
 
-<<<<<<< Updated upstream
 update_status ModuleUI::PreUpdate(float dt) {
 	return UPDATE_CONTINUE;
 }
 
-=======
->>>>>>> Stashed changes
 update_status ModuleUI::Update(float dt) {
 
 	// Save current frustum state

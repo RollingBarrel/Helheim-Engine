@@ -14,18 +14,14 @@
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 
-<<<<<<< Updated upstream
+
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) {
 	mImage = (ResourceTexture*) App->GetResource()->RequestResource(App->GetResource()->Find("CesiumLogoFlat.png"), Resource::Type::Texture);
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
-	
-=======
-
-ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
 	mImage = Importer::Texture::Load("Assets/Textures/Test-image-Baboon.dds", 0);
->>>>>>> Stashed changes
+
 }
 
 ImageComponent:: ~ImageComponent() {
