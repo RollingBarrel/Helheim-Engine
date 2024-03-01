@@ -572,7 +572,7 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 
 	if (gameObject.HasMember("Tag")) {
 		const rapidjson::Value& tagint = gameObject["Tag"];
-		int tagid = tagint[0].GetInt();
+		int tagid = tagint.GetInt();
 		Tag* loadedTag = App->GetTags()->GetTagByID(tagid);
 
 		if (loadedTag == nullptr) {
