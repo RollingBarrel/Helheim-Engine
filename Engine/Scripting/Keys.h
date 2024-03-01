@@ -1,18 +1,6 @@
 #ifndef Keys_h_
 #define Keys_h_
 
-#include "SDL_stdinc.h"
-
- /**
-  *  \brief The SDL keyboard scancode representation.
-  *
-  *  Values of this type are used to represent keyboard keys, among other places
-  *  in the \link SDL_Keysym::scancode key.keysym.scancode \endlink field of the
-  *  SDL_Event structure.
-  *
-  *  The values in this enumeration are based on the USB usage page standard:
-  *  https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
-  */
 typedef enum
 {
     Keys_UNKNOWN = 0,

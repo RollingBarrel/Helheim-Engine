@@ -16,9 +16,7 @@ TestScript::TestScript(GameObject* owner) : Script(owner)
 
 void TestScript::Start()
 {
-	
-	LOG("hola soy el script");
-	//LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
+	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
 }
 
 void TestScript::Update()
@@ -38,6 +36,6 @@ void TestScript::Update()
 	if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) {
 		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt());
 	}
-	
+
 }
 

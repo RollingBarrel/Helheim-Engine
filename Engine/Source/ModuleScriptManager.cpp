@@ -16,17 +16,6 @@ bool ModuleScriptManager::Init()
 	const char* name = "TestScript";
 
 	mHandle = LoadLibrary("Scripting.dll");
-	/*
-	Script*(*script)() = (Script* (*)())GetProcAddress(static_cast<HMODULE>(mHandle), (std::string("Create") + std::string(name)).c_str());
-
-	if (script != nullptr) {
-		mScripts.push_back(script());
-	}	
-	else {
-		LOG("LOADING SCRIPT ERROR");
-	}
-	*/
-	//Start();
 
 	return true;
 }
