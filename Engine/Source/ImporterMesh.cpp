@@ -17,6 +17,194 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
+
+
+static float* GetInterleavedData(const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData, unsigned int numVertices)
+{
+    unsigned int vertexSize = 0;
+    for (int i = 0; i < attributes.size(); ++i)
+    {
+        vertexSize += attributes[i].size;
+    }
+    float* ret = new float[numVertices * vertexSize / sizeof(float)];
+    unsigned int offset = 0;
+    for (int i = 0; i < attributesData.size(); ++i)
+    {
+        memcpy(&ret[offset], attributesData[i], numVertices * attributes[i].size);
+        offset += attributes[i].size * numVertices / sizeof(float);
+    }
+    return ret;
+}
+
+
+#include "mikktspace.h"
+#include "weldmesh.h"
+
+typedef struct {
+    int numVertices;
+    int posOffset;
+    int texCoordOffset;
+    int normOffset;
+    int vertexSize;
+    char* vertices;
+    char* tVertices;
+} MikkTSpaceStruct;
+
+static int GetNumFaces(const SMikkTSpaceContext* pContext)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    return ptr->numVertices / 3;
+}
+static int GetNumVerticesOfFace(const SMikkTSpaceContext* pContext, const int iFace) {
+    return 3;
+}
+static void GetPosition(const SMikkTSpaceContext* pContext, float fvPosOut[], const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* posOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->posOffset];
+    fvPosOut[0] = posOut[0];
+    fvPosOut[1] = posOut[1];
+    fvPosOut[2] = posOut[2];
+}
+static void GetTexCoord(const SMikkTSpaceContext* pContext, float fvTexcOut[], const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* texCOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->texCoordOffset];
+    fvTexcOut[0] = texCOut[0];
+    fvTexcOut[1] = texCOut[1];
+}
+static void GetNormal(const SMikkTSpaceContext* pContext, float fvNormOut[], const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* normalOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->normOffset];
+    fvNormOut[0] = normalOut[0];
+    fvNormOut[1] = normalOut[1];
+    fvNormOut[2] = normalOut[2];
+}
+
+static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTangent[], const float fSign, const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    //Escriure tota la info del vertex + les tangents
+    const unsigned int vertexIdx = (iFace * 3 + iVert) * ptr->vertexSize;
+    const unsigned int vertexTIdx = (iFace * 3 + iVert) * (ptr->vertexSize + sizeof(float) * 4);
+    memcpy(&ptr->tVertices[vertexTIdx], &ptr->vertices[vertexIdx], ptr->vertexSize);
+    memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize], fvTangent, 3 * sizeof(float));
+    memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
+}
+
+static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize)
+{
+    unsigned int numVertices = (bufferSize / vertexSize);
+    unsigned int attributeNumFloats = (attr.size / sizeof(float));
+    float* ret = new float[numVertices * attributeNumFloats];
+    unsigned int floatOffset = attr.offset / sizeof(float);
+    unsigned int j = 0;
+    for (int i = 0; i < numVertices; ++i)
+    {
+        const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize / sizeof(float) + floatOffset];
+        for (unsigned int j = 0; j < attributeNumFloats; ++j)
+        {
+            ret[i * attributeNumFloats + j] = vert[j];
+            //LOG("%f", ret[i * attributeNumFloats + j]);
+        }
+
+    }
+    return ret;
+}
+
+static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int* indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData)
+{
+#ifdef _DEBUG
+    bool foundPos = false;
+    bool foundUv = false;
+    bool foundNormal = false;
+    for (const Attribute attribute : attributes)
+    {
+        switch (attribute.type)
+        {
+        case Attribute::POS:
+            foundPos = true;
+            break;
+        case Attribute::UV:
+            foundUv = true;
+            break;
+        case Attribute::NORMAL:
+            foundNormal = true;
+            break;
+        }
+        if (foundPos && foundUv && foundNormal)
+            break;
+    }
+    if (!foundPos || !foundUv || !foundNormal)
+        return;
+#endif // _DEBUG
+
+    const char* vertices = reinterpret_cast<const char*>(vertexData);
+    char* unweldedVertices = new char[numIndices * vertexSize];
+
+    for (int i = 0; i < numIndices; ++i)
+    {
+        memcpy(&unweldedVertices[i * vertexSize], &vertices[indexData[i] * vertexSize], vertexSize);
+    }
+
+    SMikkTSpaceInterface interfaceInput = {};
+    interfaceInput.m_getNumFaces = GetNumFaces;
+    interfaceInput.m_getNumVerticesOfFace = GetNumVerticesOfFace;
+    interfaceInput.m_getNormal = GetNormal;
+    interfaceInput.m_getPosition = GetPosition;
+    interfaceInput.m_getTexCoord = GetTexCoord;
+    interfaceInput.m_setTSpaceBasic = SetTSpaceBasic;
+    MikkTSpaceStruct mikkInput = {};
+    mikkInput.numVertices = numIndices;
+    mikkInput.posOffset = 0;
+    mikkInput.texCoordOffset = 3 * sizeof(float);
+    mikkInput.normOffset = 5 * sizeof(float);
+    mikkInput.vertexSize = 8 * sizeof(float);
+    mikkInput.vertices = unweldedVertices;
+    //Les mikktangents son vec4
+    char* unweldedTVertices = new char[numIndices * (vertexSize + 4 * sizeof(float))];
+    mikkInput.tVertices = unweldedTVertices;
+    SMikkTSpaceContext tangContext = {};
+    tangContext.m_pInterface = &interfaceInput;
+    tangContext.m_pUserData = &mikkInput;
+    if (!genTangSpaceDefault(&tangContext))
+    {
+        LOG("ERROR: Could not generate the tangent space");
+        delete[] unweldedTVertices;
+        delete[] unweldedVertices;
+        return;
+    }
+
+    int* piRemapTable = new int[mikkInput.numVertices];
+    float* pfVertexDataOut = new float[mikkInput.numVertices * 12];
+    unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut, reinterpret_cast<float*>(mikkInput.tVertices), mikkInput.numVertices, 12);
+    delete[] unweldedTVertices;
+    delete[] unweldedVertices;
+
+    delete[] indexData;
+    delete[] vertexData;
+    attributes.clear();
+    for (float* data : attributeData)
+        delete[] data;
+    attributeData.clear();
+
+    numVertices = uniqueVertices;
+    numIndices = mikkInput.numVertices;
+    attributes.emplace_back(Attribute::POS, sizeof(float) * 3, 0);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::UV, sizeof(float) * 2, sizeof(float) * 3);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, sizeof(float) * 5);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, sizeof(float) * 8);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+
+    numIndices = mikkInput.numVertices;
+    indexData = reinterpret_cast<unsigned int*>(piRemapTable);
+    delete[] pfVertexDataOut;
+}
+
 ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, unsigned int uid)
 {
 
@@ -201,31 +389,23 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     else
     {
         //Generate Tangents
-        GenerateTangents(attributes, attributesData, numIndices, indices, vertexSize, numVertices, GetInterleavedData())
+        float* interleavedVertices = GetInterleavedData(attributes, attributesData, numVertices);
+        GenerateTangents(attributes, attributesData, numIndices, indices, vertexSize, numVertices, interleavedVertices);
     }
 
-    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, indices, numVertices);
-    for (float* data : attributesData)
-        delete[] data;
+    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
     Importer::Mesh::Save(rMesh);
     return rMesh;
 }
 
-float* GetInterleavedData(const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData)
-{
-    unsigned int size = 0;
-    for (int i = 0; i < attributes.size(); ++i)
-    {
-        size += attributes[i].size;
-    }
-}
-
 void Importer::Mesh::Save(const ResourceMesh* rMesh)
 {
-    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), rMesh->GetAttributes().size()};
+    std::vector<Attribute> attributes;
+    rMesh->GetAttributes(attributes);
+    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), attributes.size()};
 
     unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices();
-    for (std::vector<Attribute>::const_iterator it = rMesh->GetAttributes().cbegin(); it != rMesh->GetAttributes().cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
     {
         size += it->size * rMesh->GetNumberVertices() + sizeof(Attribute);
     }
@@ -245,14 +425,15 @@ void Importer::Mesh::Save(const ResourceMesh* rMesh)
 
     //Save attributes and data
     unsigned int idx = 0;
-    for (std::vector<Attribute>::const_iterator it = rMesh->GetAttributes().cbegin(); it != rMesh->GetAttributes().cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
     {
         //save attribute metadata
         memcpy(cursor, &(*it), sizeof(Attribute));
         cursor += sizeof(Attribute);
         //save attribute data
         bytes = it->size * rMesh->GetNumberVertices();
-        memcpy(cursor, rMesh->mAttributesData[idx], bytes);
+        assert(rMesh->GetAttributeData(it->type) && "Mesh does not have this attribute");
+        memcpy(cursor, rMesh->GetAttributeData(it->type), bytes);
         cursor += bytes;
         ++idx;
     }
@@ -271,7 +452,6 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
-
         //Load Header
         char* cursor = fileBuffer;
         unsigned int header[3];
@@ -289,24 +469,21 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
         memcpy(indices, cursor, bytes);
         cursor += bytes;
 
-        rMesh = new ResourceMesh(uid, numIndices, numVertices);
 
-        rMesh->mIndices = new unsigned int[numIndices];
-
-        for (int i = 0; i < numIndices; ++i)
-        {
-            rMesh->mIndices[i] = indices[i];
-        }
-
+        std::vector<Attribute> attributes;
+        std::vector<float*> attributesData;
         for (int i = 0; i < numAttributes; ++i)
         {
             Attribute* attr = reinterpret_cast<Attribute*>(cursor);
+            attributes.push_back(*attr);
             cursor += sizeof(Attribute);
-            rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor), attr->size * numVertices);
+            float* newAttributeData = new float[numVertices * attr->size / sizeof(float)];
+            memcpy(newAttributeData, cursor, numVertices * attr->size);
+            attributesData.push_back(newAttributeData);
             cursor += attr->size * numVertices;
         }
-        rMesh->LoadToMemory();
 
+        rMesh = new ResourceMesh(uid, numIndices,  std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
         delete[] fileBuffer;
     }
 

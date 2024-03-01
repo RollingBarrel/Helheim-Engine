@@ -171,5 +171,8 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
 }
 
 ResourceTexture::~ResourceTexture() {
-    glMakeTextureHandleNonResidentARB(mTextureHandle);
+    glDeleteTextures(1, &mOpenGLId);
+    if(mPixels)
+        delete[] mPixels;
+    //glMakeTextureHandleNonResidentARB(mTextureHandle);
 }

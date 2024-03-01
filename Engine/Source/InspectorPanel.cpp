@@ -372,30 +372,30 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
-	if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
-		renderComponent->EditMaterial();
-	if(ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
-		renderComponent->EditMaterial();
-	if(ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap))
-		renderComponent->EditMaterial();
-	if(ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
-		renderComponent->EditMaterial();
-
-	if (!material->mEnableDiffuseTexture)
-	{
-		if(ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
-			renderComponent->EditMaterial();
-	}
-	if (!material->mEnableSpecularGlossinessTexture)
-	{
-		if(ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
-			renderComponent->EditMaterial();
-	}
-	if (!material->mEnableShinessMap)
-	{
-		if(ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
-			renderComponent->EditMaterial();
-	}
+	//if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
+	//	renderComponent->EditMaterial();
+	//if(ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
+	//	renderComponent->EditMaterial();
+	//if(ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap))
+	//	renderComponent->EditMaterial();
+	//if(ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
+	//	renderComponent->EditMaterial();
+	//
+	//if (!material->mEnableDiffuseTexture)
+	//{
+	//	if(ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
+	//		renderComponent->EditMaterial();
+	//}
+	//if (!material->mEnableSpecularGlossinessTexture)
+	//{
+	//	if(ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
+	//		renderComponent->EditMaterial();
+	//}
+	//if (!material->mEnableShinessMap)
+	//{
+	//	if(ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+	//		renderComponent->EditMaterial();
+	//}
 }
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)

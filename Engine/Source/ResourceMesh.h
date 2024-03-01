@@ -19,35 +19,32 @@ typedef struct Attribute {
 	Type type;
 }Attribute;
 
-float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize);
-void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int* indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData);
-
 class ResourceMesh : public Resource
 {
 public:
 
-	ResourceMesh(unsigned int uid, unsigned int numIndices, const unsigned int* indices, unsigned int numVertices);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, const unsigned int* indices, unsigned int numVertices, const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, unsigned int*&& indices, unsigned int numVertices, std::vector<Attribute>&& attributes, std::vector<float*>&& attributesData);
+	ResourceMesh(const ResourceMesh& other);
+	ResourceMesh(ResourceMesh&& other);
 	~ResourceMesh();
 
 	unsigned int GetNumberVertices() const { return mNumVertices; }
 	unsigned int GetNumberIndices() const { return mNumIndices; }
 	const unsigned int* GetIndices() const { return mIndices; }
-	const std::vector<Attribute>& GetAttributes() const { return mAttributes; }
+	void GetAttributes(std::vector<Attribute>&) const;
 	unsigned int GetNumAttributtes() const { return mAttributes.size(); }
 	unsigned int GetVertexSize() const { return mVertexSize; }
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
 	//This allocates memory in the return pointer that you must delete
 	float* GetInterleavedData() const;
+	bool LoadInterleavedAttribute(float* interleavedBuffer, const Attribute& attribute, unsigned int vertexSize) const;
 
-	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
-	void AddAttribute(const Attribute& attribute, float* attributeData, unsigned int dataSize);
-	void AddAttribute(const Attribute& attribute, float*&& attributeData);
-	void GenerateTangents();
+	//void AddAttribute(const Attribute& attribute, float* attributeData, unsigned int dataSize);
+	//void AddAttribute(const Attribute& attribute, float*&& attributeData);
 
 private:
-	void CleanUp();
-
 	unsigned int* mIndices = nullptr;
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
