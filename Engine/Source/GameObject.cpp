@@ -13,8 +13,10 @@
 #include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
+#include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
 	mIsRoot(parent == nullptr)
@@ -143,12 +145,7 @@ void GameObject::Update()
 		DeleteComponents();
 		if (isTransformModified) {
 			RecalculateMatrices();
-
-			
-			if(!mChildren.empty() || getMeshRenderer() != nullptr)
-				App->GetScene()->GetQuadtreeRoot()->UpdateTree(); //Hello me from the future, Carlos already told you to fix this eh! (Possible bottleneck alert)
-
-
+			RefreshBoundingBoxes();
 		}
 	}
 }
@@ -158,12 +155,21 @@ void GameObject::ResetTransform()
 	SetPosition(float3::zero);
 	SetRotation(float3::zero);
 	SetScale(float3::one);
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->Reset();
+	}
 }
 
 void GameObject::SetEnabled(bool enabled)
-{ 
+{
 	mIsEnabled = enabled;
-	SetActiveInHierarchy(enabled);
+
+	if (!enabled || mParent->IsActive())
+	{
+		SetActiveInHierarchy(enabled);
+	}
 }
 
 void GameObject::DeleteChild(GameObject* child)
@@ -181,9 +187,15 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
+	float3 difference = rotationInRadians - mEulerRotation;
 	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->SetRotation(difference);
+	}
 
 	isTransformModified = true;
 }
@@ -198,9 +210,16 @@ void GameObject::SetRotation(const Quat& rotation)
 
 void GameObject::SetPosition(const float3& position)
 {
+	float3 difference = position - mPosition;
+
 	mPosition = position;
 
 	isTransformModified = true;
+
+	if (getCamera() != nullptr) {
+		CameraComponent* camera = getCamera();
+		camera->SetPosition(difference);
+	}
 }
 
 void GameObject::SetScale(const float3& scale)
@@ -285,33 +304,37 @@ void GameObject::AddSuffix()
 	}
 }
 
-Component* GameObject::CreateComponent(ComponentType type) {
+//TODO: Crate a component that requires ids not clean now
+Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
-	case ComponentType::MESHRENDERER:
-		newComponent = new MeshRendererComponent(this);
-		break;
-	case ComponentType::POINTLIGHT:
-	{
-		const float3& pos = GetWorldPosition();
-		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
-		break;
-	}
-	case ComponentType::SPOTLIGHT:
-	{
-		const float3& pos = GetWorldPosition();
-		newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
-		break;
-	}
-	case ComponentType::TEST:
-		newComponent = new TestComponent(this);
-		break;
-	case ComponentType::NAVMESHCONTROLLER:
-		newComponent = new NavMeshControllerComponent(this);
-		break;
-	default:
-		break;
+		case ComponentType::MESHRENDERER:
+			newComponent = new MeshRendererComponent(this, meshUid, materialUid);
+			break;
+		case ComponentType::CAMERA:
+			newComponent = new CameraComponent(this);
+			break;
+		case ComponentType::POINTLIGHT:
+		{
+			const float3& pos = GetWorldPosition();
+			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
+			break;
+		}
+		case ComponentType::SPOTLIGHT:
+		{
+			const float3& pos = GetWorldPosition();
+			newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
+			break;
+		}
+		case ComponentType::TEST:
+			newComponent = new TestComponent(this);
+			break;
+		case ComponentType::NAVMESHCONTROLLER:
+			newComponent = new NavMeshControllerComponent(this);
+			break;
+		default:
+			break;
 	}
 
 	if (newComponent) {
@@ -360,12 +383,29 @@ void GameObject::AddComponent(Component* component, Component* position)
 	}
 }
 
-MeshRendererComponent* GameObject::getMeshRenderer() const
+MeshRendererComponent* GameObject::GetMeshRenderer() const
 {
-	for (const auto& comp : mComponents) {
-		if (comp->GetType() == ComponentType::MESHRENDERER)
-			return static_cast<MeshRendererComponent*>(comp);
+	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
+		return comp->GetType() == ComponentType::MESHRENDERER;
+		});
+
+	if (it != mComponents.end()) {
+		return static_cast<MeshRendererComponent*>(*it);
 	}
+
+	return nullptr;
+}
+
+CameraComponent* GameObject::getCamera() const
+{
+	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
+		return comp->GetType() == ComponentType::CAMERA;
+		});
+
+	if (it != mComponents.end()) {
+		return static_cast<CameraComponent*>(*it);
+	}
+
 	return nullptr;
 }
 
@@ -381,8 +421,28 @@ void GameObject::RecalculateLocalTransform() {
 	}
 }
 
+void GameObject::RefreshBoundingBoxes()
+{
+	if (GetMeshRenderer() != nullptr)
+	{
+		GetMeshRenderer()->RefreshBoundingBoxes();
+	}
+	else
+	{
+		for (auto children : mChildren)
+		{
+			children->RefreshBoundingBoxes();
+		}
+	}
+}
+
 void GameObject::SetActiveInHierarchy(bool active)
 {
+	if (active && !mIsEnabled)
+	{
+		return;
+	}
+
 	mIsActive = active;
 
 	for (GameObject* child : mChildren)

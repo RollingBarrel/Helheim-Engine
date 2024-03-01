@@ -1,5 +1,6 @@
 #include "NavMeshControllerComponent.h"
 #include "GameObject.h"
+#include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
@@ -85,7 +86,7 @@ Component* NavMeshControllerComponent::Clone(GameObject* owner) const
 }
 
 void NavMeshControllerComponent::Save(Archive& archive) const {
-	archive.AddString("type", GetNameFromType());
+	archive.AddString("type", Component::GetNameFromType(ComponentType::NAVMESHCONTROLLER));
 }
 
 void NavMeshControllerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {
@@ -124,7 +125,7 @@ void NavMeshControllerComponent::HandleBuild() {
 		// Allocate array that can hold triangle area types.
 		// If you have multiple meshes you need to process, allocate
 		// and array which can hold the max number of triangles you need to process.
-		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->mNumIndices/3;
+		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->GetNumberIndices()/3;
 		mTriangleAreas = new unsigned char[numberOfTriangles];
 		if (!mTriangleAreas)
 		{
@@ -132,7 +133,7 @@ void NavMeshControllerComponent::HandleBuild() {
 			return;
 		}
 		float* vertices= (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS));
-		int numberOfVertices = testMesh->GetResourceMesh()->mNumVertices;
+		int numberOfVertices = testMesh->GetResourceMesh()->GetNumberVertices();
 
 
 		const int* triangle = (const int*)(testMesh->GetResourceMesh()->mIndices);
@@ -280,7 +281,7 @@ void NavMeshControllerComponent::HandleBuild() {
 void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
-			MeshRendererComponent* meshRendererComponent = child->getMeshRenderer();
+			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
 			if (meshRendererComponent) {
 				mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mMeshRendererComponents.push_back(meshRendererComponent);

@@ -5,8 +5,8 @@
 #include "ModuleOpenGL.h"
 #include "SDL.h"
 #include "imgui_impl_sdl2.h"
-#include "Importer.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResource.h"
 
 ModuleInput::ModuleInput()
 {
@@ -73,7 +73,11 @@ update_status ModuleInput::PreUpdate(float dt)
         case SDL_DROPFILE:
             LOG("File droped: %s\n", sdlEvent.drop.file);
             App->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
-            Importer::Import(sdlEvent.drop.file);
+            App->GetResource()->ImportFile(sdlEvent.drop.file);
+
+            App->GetFileSystem()->GetRootNode()->mChildren.clear();
+            App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());;
+
             SDL_free(sdlEvent.drop.file);
             break;
         }
