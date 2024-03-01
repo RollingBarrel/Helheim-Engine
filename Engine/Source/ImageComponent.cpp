@@ -44,7 +44,7 @@ void ImageComponent::Draw() const
 		orthoProjectionMatrix = float4x4::D3DOrthoProjLH(-1, 1, floor(region.first), floor(region.second));
 		*/
 		float4x4 model = float4x4::identity; //transform->GetGlobalScaledMatrix();
-		float4x4 view = float4x4::identity;
+		float4x4 view = App->GetCamera()->GetViewMatrix();
 
 		//CanvasComponent* canvas = (CanvasComponent*) App->GetScene()->GetCanvas()->GetComponent(ComponentType::CANVAS);
 		//if (canvas)

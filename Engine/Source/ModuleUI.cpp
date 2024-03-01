@@ -2,6 +2,7 @@
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
+#include "ModuleOpenGL.h"
 #include "Application.h"
 
 #include "GameObject.h"
@@ -26,7 +27,7 @@ bool ModuleUI::Init() {
 	LoadVBO();
 	CreateVAO();
 
-	mUIProgramId = CreateShaderProgramFromPaths("ui.fs", "ui.vs");
+	mUIProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
 
 	return true;
 };
@@ -55,7 +56,9 @@ update_status ModuleUI::Update(float dt) {
 	App->GetCamera()->SetFrustum(UIfrustum);*/
 
 	// Draw the UI
+	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(mCanvas);
+	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	// Restore original frustum state
 	/*glEnable(GL_DEPTH_TEST);
@@ -117,10 +120,10 @@ void ModuleUI::CreateVAO()
 	glBindVertexArray(mQuadVAO);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*) (2 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) (2 * sizeof(float)));
 
 	glBindVertexArray(0);
 }
