@@ -2,9 +2,11 @@
 #include "ModuleOpenGL.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
+#include "ModuleResource.h"
 #include "ModuleUI.h"
 
 #include "glew.h"
+#include "ResourceTexture.h"
 #include "ImporterTexture.h"
 
 #include "GameObject.h"
@@ -13,10 +15,11 @@
 #include "Transform2DComponent.h"
 
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) {
+	mImage = (ResourceTexture*) App->GetResource()->RequestResource(App->GetResource()->Find("CesiumLogoFlat.png"), Resource::Type::Texture);
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
-	Importer::Texture::Load(mImage, "brickwall");
+	
 }
 
 ImageComponent:: ~ImageComponent() {

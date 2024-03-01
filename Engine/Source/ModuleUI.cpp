@@ -14,6 +14,7 @@
 
 ModuleUI::ModuleUI() 
 {
+	LOG("Hello");
 };
 
 ModuleUI::~ModuleUI() 
@@ -24,7 +25,11 @@ bool ModuleUI::Init() {
 	return true;
 };
 
-update_status ModuleUI::Update() {
+update_status ModuleUI::PreUpdate(float dt) {
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleUI::Update(float dt) {
 
 	// Save current frustum state
 	Frustum* originalFrustum = new Frustum();
@@ -57,9 +62,13 @@ update_status ModuleUI::Update() {
 	return UPDATE_CONTINUE;
 };
 
-update_status ModuleUI::PostUpdate() {
+update_status ModuleUI::PostUpdate(float dt) {
 	return UPDATE_CONTINUE;
 };
+
+bool ModuleUI::CleanUp() {
+	return true;
+}
 
 void ModuleUI::DrawWidget(const GameObject* gameObject)
 {

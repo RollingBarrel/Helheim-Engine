@@ -3,16 +3,17 @@
 
 class GameObject;
 
-class ModuleUI :
-    public Module
+class ModuleUI : public Module
 {
 public:
 	ModuleUI();
 	~ModuleUI();
 
-	bool Init();
-	update_status Update();
-	update_status PostUpdate();
+	bool Init() override;
+	update_status PreUpdate(float dt) override;
+	update_status Update(float dt) override;
+	update_status PostUpdate(float dt) override;
+	bool CleanUp() override;
 
 	void LoadVBO();
 	void CreateVAO();

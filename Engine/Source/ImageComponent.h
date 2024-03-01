@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-struct ResourceTexture;
+class ResourceTexture;
 
 class ImageComponent : public Component
 {
