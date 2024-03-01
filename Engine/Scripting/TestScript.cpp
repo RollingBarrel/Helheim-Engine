@@ -24,19 +24,19 @@ void TestScript::Start()
 void TestScript::Update()
 {
 	if (App->GetInput()->GetKey(Keys::Keys_T) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetWorldPosition() + float3(0, 0, 1) * App->GetGameDt());
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt());
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetWorldPosition() + float3(0, 0, 1) * App->GetGameDt());
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt());
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetWorldPosition() + float3(0, 0, -1) * App->GetGameDt());
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, -1) * App->GetGameDt());
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetWorldPosition() + float3(-1, 0, 0) * App->GetGameDt());
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(-1, 0, 0) * App->GetGameDt());
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetWorldPosition() + float3(1, 0, 0) * App->GetGameDt());
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt());
 	}
 	
 }
