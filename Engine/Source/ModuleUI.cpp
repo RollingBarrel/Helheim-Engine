@@ -14,7 +14,11 @@
 
 ModuleUI::ModuleUI() 
 {
+<<<<<<< Updated upstream
 	LOG("Hello");
+=======
+
+>>>>>>> Stashed changes
 };
 
 ModuleUI::~ModuleUI() 
@@ -22,13 +26,17 @@ ModuleUI::~ModuleUI()
 };
 
 bool ModuleUI::Init() {
+	mCanvas = new GameObject(App->GetScene()->GetCanvas());
 	return true;
 };
 
+<<<<<<< Updated upstream
 update_status ModuleUI::PreUpdate(float dt) {
 	return UPDATE_CONTINUE;
 }
 
+=======
+>>>>>>> Stashed changes
 update_status ModuleUI::Update(float dt) {
 
 	// Save current frustum state
@@ -49,7 +57,7 @@ update_status ModuleUI::Update(float dt) {
 	App->GetCamera()->SetFrustum(UIfrustum);
 
 	// Draw the UI
-	DrawWidget(App->GetScene()->GetCanvas());
+	DrawWidget(mCanvas);
 
 	// Restore original frustum state
 	glEnable(GL_DEPTH_TEST);
@@ -72,22 +80,23 @@ bool ModuleUI::CleanUp() {
 
 void ModuleUI::DrawWidget(const GameObject* gameObject)
 {
-	if (gameObject->IsEnabled())
-	{
-		for (const Component* component : gameObject->GetComponents(ComponentType::IMAGE))
-		{
-			const ImageComponent* image = (const ImageComponent*) component;
-			if (image->IsEnabled())
-			{
-				image->Draw();
-			}
-		}
+	//if (gameObject->IsEnabled())
+	//{
+	//	for (const Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+	//	{
+	//		const ImageComponent* image = (const ImageComponent*) component;
+	//		if (image->IsEnabled())
+	//		{
+	//			image->Draw();
+	//		}
+	//	}
 
-		for (const GameObject* child : gameObject->GetChildren())
-		{
-			DrawWidget(child);
-		}
-	}
+	//	for (const GameObject* child : gameObject->GetChildren())
+	//	{
+	//		DrawWidget(child);
+	//	}
+	//}
+	//mCanvas->Draw();
 }
 
 void ModuleUI::LoadVBO()

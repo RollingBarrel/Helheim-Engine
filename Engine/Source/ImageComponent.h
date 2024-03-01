@@ -2,11 +2,14 @@
 #include "Component.h"
 
 class ResourceTexture;
+<<<<<<< Updated upstream
+=======
+class ModuleResource;
+>>>>>>> Stashed changes
 
 class ImageComponent : public Component
 {
 public:
-    ImageComponent( GameObject* owner,bool active);
     ImageComponent(GameObject* owner);
     ~ImageComponent();
 
