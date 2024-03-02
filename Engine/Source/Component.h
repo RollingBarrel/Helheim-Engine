@@ -3,8 +3,7 @@
 
 enum class ComponentType : unsigned int
 {
-
-	MESHRENDERER, POINTLIGHT, SPOTLIGHT,NAVMESHCONTROLLER, TEST,AIAGENT, NONE
+	MESHRENDERER, POINTLIGHT, SPOTLIGHT,NAVMESHCONTROLLER, AIAGENT, CAMERA, CANVAS, TRANSFORM2D ,TEST, NONE
 };
 
 class GameObject;
@@ -31,7 +30,7 @@ public:
 	virtual	void Disable() { mIsEnabled = false; }
 	bool IsEnabled() const { return mIsEnabled; }
 
-	const char* GetNameFromType() const;
+	static const char* GetNameFromType(ComponentType type);
 
 protected:
 	virtual	void Reset() = 0;

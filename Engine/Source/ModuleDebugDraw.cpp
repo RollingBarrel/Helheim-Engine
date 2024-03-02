@@ -642,29 +642,15 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     dd::flush();
 }
 
-void ModuleDebugDraw::DrawBoundingBox(const OBB& obb)
+void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
 {
     ddVec3 points[8];
     obb.GetCornerPoints(points);
-    ddVec3 orderedPoints[8] = 
-    {
-        points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
-    };
-    dd::box(orderedPoints, dd::colors::Blue);
-
-    dd::flush();
-}
-
-void ModuleDebugDraw::DrawQuadtree(const AABB& aabb)
-{
-    ddVec3 points[8];
-    aabb.GetCornerPoints(points);
-    
     ddVec3 orderedPoints[8] =
     {
         points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
     };
-    dd::box(orderedPoints, dd::colors::LightGoldenYellow);
+    dd::box(orderedPoints, color);
 
     dd::flush();
 }
@@ -699,6 +685,15 @@ void ModuleDebugDraw::DrawCone(const float pos[3], const float dir[3], const flo
 void ModuleDebugDraw::DrawLine(const float3& position, const float3& direction, const float3& color)
 {
     dd::line(position, direction, color);
+}
+
+void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)
+{
+    dd::line(v1, v2, dd::colors::Red);
+    dd::line(v1, v3, dd::colors::Red);
+    dd::line(v3, v2, dd::colors::Red);
+
+
 }
 
 void ModuleDebugDraw::DrawGrid()
