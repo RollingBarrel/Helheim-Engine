@@ -23,7 +23,7 @@ void EditorControlPanel::Draw(int windowFlags)
 	windowFlags |= ImGuiWindowFlags_NoTitleBar;
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	ImVec2 buttonSize(50, 50);
+	ImVec2 buttonSize(70, 30);
 
 	ImGui::BeginGroup();
 	if (ImGui::Button("Translate", buttonSize)) {
