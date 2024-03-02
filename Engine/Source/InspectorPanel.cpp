@@ -21,6 +21,11 @@ void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
+
+	if (mLockedGameObject != nullptr) {
+		focusedObject = mLockedGameObject;
+	}
+
 	if (focusedObject == nullptr) return;
 
 	char nameArray[100];
@@ -43,6 +48,16 @@ void InspectorPanel::Draw(int windowFlags)
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
+		// Lock
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Lock", &mLocked)) {
+			if (mLocked) {
+				mLockedGameObject = focusedObject;
+			}
+			else {
+				mLockedGameObject = nullptr;
+			}
+		}
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
 		ImGui::Separator();
