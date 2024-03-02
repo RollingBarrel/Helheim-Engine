@@ -43,11 +43,15 @@ public:
         std::unique_ptr<float[]> posTimeStamps;
         std::unique_ptr<Quat[]> rotations;
         std::unique_ptr<float[]> rotTimeStamps;
+        std::unique_ptr<float3[]> scales;
+        std::unique_ptr<float[]> scaleTimeStamps;
         uint32_t numPositions = 0;
         uint32_t numRotations = 0;
+        uint32_t numScales = 0;
 
         bool hasTranslation = false;
         bool hasRotation = false;
+        bool hasScale = false;
 
     };
 

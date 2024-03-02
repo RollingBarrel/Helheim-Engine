@@ -46,7 +46,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
                      
             delete ourAnimation;
-            ourAnimation = nullptr;
+            
         }
         
     }
