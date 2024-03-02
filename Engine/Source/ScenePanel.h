@@ -18,6 +18,7 @@ public:
 	const float2& GetWindowsPos() { return mWindowsPosition; };
 	const float2& GetWindowsSize() { return mWindowsSize; }
 	const float2& GetMousePosition() { return mMousePosition; }
+	bool IsGuizmoUsing() { return mIsGuizmoUsign; }
 
 private:
 	unsigned int prevSizeX = 0;
@@ -31,6 +32,7 @@ private:
 	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE mCurrentGuizmoMode = ImGuizmo::LOCAL;
 	bool mUseSnap = false;
+	bool mIsGuizmoUsign = false;
 	float mSnap[3] = { 1.f, 1.f, 1.f };
 };
 #endif /* _SCENE_PANEL_H_ */
