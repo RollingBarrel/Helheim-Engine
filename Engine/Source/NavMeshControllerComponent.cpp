@@ -53,19 +53,19 @@ void NavMeshControllerComponent::TranslateIndices()
 			float3 c = float3(verts[tris[j * 4 + 2] * 3], verts[tris[j * 4 + 2] * 3 + 1], verts[tris[j * 4 + 2] * 3 + 2]);
 
 			// Check and update indices
-			int indexA = findVertexIndex(a);
+			int indexA = FindVertexIndex(a);
 			if (indexA == -1) {
 				mVertices.push_back(a);
 				indexA = mVertices.size() - 1;
 			}
 
-			int indexB = findVertexIndex(b);
+			int indexB = FindVertexIndex(b);
 			if (indexB == -1) {
 				mVertices.push_back(b);
 				indexB = mVertices.size() - 1;
 			}
 
-			int indexC = findVertexIndex(c);
+			int indexC = FindVertexIndex(c);
 			if (indexC == -1) {
 				mVertices.push_back(c);
 				indexC = mVertices.size() - 1;
@@ -370,7 +370,7 @@ void NavMeshControllerComponent::LoadDrawMesh()
 	return;
 }
 
-int NavMeshControllerComponent::findVertexIndex(float3 vert)
+int NavMeshControllerComponent::FindVertexIndex(float3 vert)
 {
 	
 	for (int i = 0; i < mVertices.size(); ++i) {
