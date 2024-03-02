@@ -19,29 +19,33 @@ EditorControlPanel::~EditorControlPanel()
 void EditorControlPanel::Draw(int windowFlags)
 {
 	ImGui::SetNextWindowPos(ImVec2(100, 100), ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(150, 60), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 80), ImGuiCond_Once);
 	windowFlags |= ImGuiWindowFlags_NoTitleBar;
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	if (ImGui::Button("Translate", ImVec2(40, 40))) {
+	ImVec2 buttonSize(50, 50);
+
+	ImGui::BeginGroup();
+	if (ImGui::Button("Translate", buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Rotate", ImVec2(40, 40))) {
+	if (ImGui::Button("Rotate", buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::ROTATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Scale", ImVec2(40, 40))) {
+	if (ImGui::Button("Scale", buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::SCALE;
 	}
+	ImGui::EndGroup();
+
 	ImGui::SameLine();
-	if (ImGui::Button("Local", ImVec2(40, 40))) {
-		mCurrentGuizmoMode = ImGuizmo::LOCAL;
+	ImGui::BeginGroup();
+	const char* buttonLabel = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? "Local" : "World";
+	if (ImGui::Button(buttonLabel, buttonSize)) {
+		mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
 	}
-	ImGui::SameLine();
-	if (ImGui::Button("World", ImVec2(40, 40))) {
-		mCurrentGuizmoMode = ImGuizmo::WORLD;
-	}
+	ImGui::EndGroup();
 
 	//Change the Guizmo operation using W,E & R keywords and the coordinate mode with G
 	if (ImGui::IsKeyPressed(ImGuiKey_W))
