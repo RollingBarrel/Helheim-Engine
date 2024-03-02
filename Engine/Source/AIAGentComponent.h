@@ -1,21 +1,30 @@
 #pragma once
 #include "Component.h"
 
-class AgentProfile;
-
-class AIAGentComponent :public Component
+class AIAgentComponent :public Component
 {
 public:
-	AIAGentComponent(GameObject* ownerGameObject, AgentProfile* agentType);
-	AIAGentComponent(const AIAGentComponent& original, GameObject* owner);
+	AIAgentComponent(GameObject* ownerGameObject);
+	AIAgentComponent(const AIAgentComponent& original, GameObject* owner);
 	void Reset();
-	~AIAGentComponent();
+	~AIAgentComponent();
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
+	const float getRadius() const { return mRadius; };
+	const float getHeight() const { return mHeight; };
+	const float getStepHeight() const { return mStepHeight; };
+	const unsigned int getMaxSlope() const { return mMaxSlope; };
+	const float getSpeed() const { return mSpeed; };
+	const float getAngularSpeed() const { return mAngularSpeed; };
+	const float getAcceleration() const { return mAcceleration; };
+	const float getStoppingDistance() const { return mStoppingDistance; };
 private:
-	AgentProfile* mType;
-
+	//Agent Parameters:
+	float mRadius = 0.0f;
+	float mHeight = 0.0f;
+	float mStepHeight = 0.0f;
+	unsigned int mMaxSlope = 0;
 	//Steering Parameters:
 	float mSpeed = 0.0f;
 	float mAngularSpeed = 0.0f; //Maximum speed of rotation

@@ -6,7 +6,7 @@ public:
 	AgentProfile(std::string name, float radius, float height, float stepHeight, unsigned int maxSlope);
 	~AgentProfile();
 	std::string getName() { return mName; };
-	float getRadius() { return mRadius; };
+	const float getRadius() const { return mRadius; };
 	float getHeight() { return mHeight; };
 	float getStepHeight() { return mStepHeight; };
 	unsigned int getMaxSlope() { return mMaxSlope; };

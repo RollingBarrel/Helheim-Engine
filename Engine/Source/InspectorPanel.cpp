@@ -10,6 +10,7 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
+#include "AIAGentComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
 
@@ -365,6 +366,16 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	bool shouldDraw = component->ShouldDraw();
 	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
 		component->SetShouldDraw(shouldDraw);
+	}
+}
+
+void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
+{
+	ImGui::SeparatorText("AI Agent");
+	ImGui::Text("Agent Parameters: ");
+	float maxSlope = component->getMaxSlope();
+	if(ImGui::DragFloat("Max Slope", &maxSlope,0.0f, 60.f))
+	{
 	}
 }
 

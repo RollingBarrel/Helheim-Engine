@@ -384,6 +384,7 @@
     </ClCompile>
     <ClCompile Include="AgentProfile.cpp">
       <Filter>Utils</Filter>
+     </ClCompile>
     <ClCompile Include="ModuleUI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -968,6 +969,7 @@
     </ClInclude>
     <ClInclude Include="AgentProfile.h">
       <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleUI.h">
       <Filter>Modules</Filter>
     </ClInclude>
