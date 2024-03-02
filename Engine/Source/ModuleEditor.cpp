@@ -20,6 +20,7 @@
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
 #include "TimerPanel.h"
+#include "EditorControlPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -39,6 +40,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
+	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -234,8 +236,15 @@ void ModuleEditor::ShowMainMenuBar()
 						inspector->IsOpen() ? inspector->Close() : inspector->Open();
 					}
 				}
+				Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
+				if (ImGui::MenuItem("7 Editor Control Panel", NULL, editorControlPanel->IsOpen())) {
+					if (editorControlPanel)
+					{
+						editorControlPanel->IsOpen() ? editorControlPanel->Close() : editorControlPanel->Open();
+					}
+				}
 				Panel* lightning = mPanels[LIGHTNINGPANEL];
-				if (ImGui::MenuItem("7 Lightning", NULL, lightning->IsOpen())) {
+				if (ImGui::MenuItem("8 Lightning", NULL, lightning->IsOpen())) {
 					if (lightning)
 					{
 						lightning->IsOpen() ? lightning->Close() : lightning->Open();
@@ -295,6 +304,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* pause = mPanels[PAUSEPANEL];
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* inspector = mPanels[INSPECTORPANEL];
+	Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
@@ -310,6 +320,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		pause->Open();
 		scenePanel->Open();
 		inspector->Open();
+		editorControlPanel->Open();
 		lightningPanel->Open();
 	}
 	else {
@@ -323,6 +334,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		pause->Close();
 		scenePanel->Close();
 		inspector->Close();
+		editorControlPanel->Close();
 		lightningPanel->Close();
 
 		aboutPanel->Close();
