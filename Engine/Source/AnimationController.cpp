@@ -1,6 +1,5 @@
 #include "AnimationController.h"
 
-
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) {
 	return first * (1.0f - lambda) + second * lambda;
 }
