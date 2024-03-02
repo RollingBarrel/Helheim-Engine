@@ -21,11 +21,11 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
 
     for (const auto& srcChannel : animation.channels)
     {
-        ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel;
+        
         std::string name = model.nodes[srcChannel.target_node].name;
         if (ourAnimation->channels.find(name) == ourAnimation->channels.end())
         {
-           
+          ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel; 
         ourAnimation->addChannels(model, animation, srcChannel, ourAnimation, ourChannel);
 
 
@@ -40,15 +40,10 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
 
         }
         //animation -> mUID = math::LCG().Int();
-        
-         ourAnimation->channels[name] = ourChannel;
-
-
-        }
-
-
        
-        delete ourChannel;
+        ourAnimation->channels[name]=ourChannel;
+          //delete ourChannel;
+        }
         
     }
 
@@ -86,11 +81,13 @@ void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf
     size_t numKeyframes = outputAccessor.count;
 
     if (channel.target_path == "translation" && ourChannel->hasTranslation == false) {
+            ourChannel->positions = std::make_unique<float3[]>(numKeyframes);
+            ourChannel->posTimeStamps = std::make_unique<float[]>(numKeyframes);
+
         for (size_t i = 0; i < numKeyframes; ++i) {
             size_t translationIndex = i * inputAccessor.count;
             
-            ourChannel->positions = std::make_unique<float3[]>(numKeyframes);
-            ourChannel->posTimeStamps = std::make_unique<float[]>(numKeyframes);
+            
             ourChannel->positions[i] = float3(outputPtr[translationIndex], outputPtr[translationIndex + 1], outputPtr[translationIndex + 2]); // Store the position for each keyframe
             ourChannel->posTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
             ourChannel->numPositions++;
@@ -99,10 +96,11 @@ void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf
         } 
     }
     else if (channel.target_path == "rotation" && ourChannel->hasRotation == false) {
+        ourChannel->rotations = std::make_unique<Quat[]>(numKeyframes);
+        ourChannel->rotTimeStamps = std::make_unique<float[]>(numKeyframes);
         for (size_t i = 0; i < numKeyframes; ++i) {
             size_t rotationIndex = i * inputAccessor.count;
-            ourChannel->rotations = std::make_unique<Quat[]>(numKeyframes);
-            ourChannel->rotTimeStamps = std::make_unique<float[]>(numKeyframes);
+            
             ourChannel->rotations[i] = Quat(outputPtr[rotationIndex], outputPtr[rotationIndex + 1], outputPtr[rotationIndex + 2], outputPtr[rotationIndex + 3]); // Store the rotation for each keyframe
             ourChannel->rotTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
             ourChannel->numRotations++;
@@ -135,10 +133,12 @@ void Importer::Animation::Save(const ResourceAnimation* ourAnimation)
         size += sizeof(unsigned int) + channel.first.size();
 
         if (channel.second->hasTranslation) {
-            size += sizeof(float) * 2 * channel.second->numPositions; 
+            size += sizeof(float) * 3 * channel.second->numPositions; 
+            size += sizeof(float) * channel.second->numPositions;
         }
         if (channel.second->hasRotation) {
             size += sizeof(float) * 4 * channel.second->numRotations; 
+            size += sizeof(float) * channel.second->numRotations;
         }
     }
 
@@ -157,17 +157,19 @@ void Importer::Animation::Save(const ResourceAnimation* ourAnimation)
         cursor += nodeNameSize;
 
         if (channel.second->hasTranslation) {
-            bytes = sizeof(float) * 2 * channel.second->numPositions;
+            bytes = sizeof(float) * channel.second->numPositions;
             memcpy(cursor, channel.second->posTimeStamps.get(), bytes);
             cursor += bytes;
+            bytes = sizeof(float) * 3 * channel.second->numPositions;
             memcpy(cursor, channel.second->positions.get(), bytes);
             cursor += bytes;
         }
 
         if (channel.second->hasRotation) {
-            bytes = sizeof(float) * 4 * channel.second->numRotations;
+            bytes = sizeof(float) * channel.second->numRotations;
             memcpy(cursor, channel.second->rotTimeStamps.get(), bytes);
             cursor += bytes;
+            bytes = sizeof(float) * 4 * channel.second->numRotations;
             memcpy(cursor, channel.second->rotations.get(), bytes);
             cursor += bytes;
         }
