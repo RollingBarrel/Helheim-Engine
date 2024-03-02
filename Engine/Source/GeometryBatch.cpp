@@ -205,22 +205,22 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 		}
 		if (component == *it)
 		{
-			unsigned int offset = rMesh.GetVertexBase() * rMesh.GetVertexSize() / sizeof(float);
-			unsigned int size = rMesh.GetNumVertices() * GetVertexSize();
-			memmove(mVboData + offset, mVboData + offset + size / sizeof(float), size);
-			mVboNumElements -= size / sizeof(float);
-			float* tmp = new float[mVboNumElements];
-			delete[] mVboData;
-			mVboData = tmp;
-			glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-			glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-			memmove(mEboData + rMesh.GetEboPosition(), mEboData + rMesh.GetEboPosition() + rMesh.GetNumIndices(), rMesh.GetNumIndices() * sizeof(unsigned int));
-			mEboNumElements -= rMesh.GetNumIndices();
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements, mEboData, GL_STATIC_DRAW);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			//unsigned int offset = rMesh.GetVertexBase() * rMesh.GetVertexSize() / sizeof(float);
+			//unsigned int size = rMesh.GetNumberVertices() * GetVertexSize();
+			//memmove(mVboData + offset, mVboData + offset + size / sizeof(float), size);
+			//mVboNumElements -= size / sizeof(float);
+			//float* tmp = new float[mVboNumElements];
+			//delete[] mVboData;
+			//mVboData = tmp;
+			//glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+			//glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
+			//glBindBuffer(GL_ARRAY_BUFFER, 0);
+			//
+			//memmove(mEboData + rMesh.GetEboPosition(), mEboData + rMesh.GetEboPosition() + rMesh.GetNumberIndices(), rMesh.GetNumberIndices() * sizeof(unsigned int));
+			//mEboNumElements -= rMesh.GetNumberIndices();
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+			//glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements, mEboData, GL_STATIC_DRAW);
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			it = mMeshComponents.erase(it);
 			continue;
 		}
@@ -251,10 +251,10 @@ void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
 {
 	
 	Command command;
-	command.mCount = mesh->GetResourceMesh()->GetNumIndices();
+	command.mCount = mesh->GetResourceMesh()->GetNumberIndices();
 	command.mInstanceCount = 1;
-	command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();
-	command.baseVertex = mesh->GetResourceMesh()->GetVertexBase();
+	//command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();
+	//command.baseVertex = mesh->GetResourceMesh()->GetVertexBase();
 	command.baseInstance = mCommands.size();
 
 	mCommands.push_back(command);

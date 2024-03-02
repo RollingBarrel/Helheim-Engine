@@ -33,16 +33,14 @@ public:
 	unsigned int GetNumberIndices() const { return mNumIndices; }
 	const unsigned int* GetIndices() const { return mIndices; }
 	void GetAttributes(std::vector<Attribute>&) const;
-	unsigned int GetNumAttributtes() const { return mAttributes.size(); }
+	unsigned int GetNumberAttributes() const { return mAttributes.size(); }
+	bool HasAttribute(Attribute::Type type) const;
 	unsigned int GetVertexSize() const { return mVertexSize; }
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
 	//This allocates memory in the return pointer that you must delete
 	float* GetInterleavedData() const;
 	bool LoadInterleavedAttribute(float* interleavedBuffer, const Attribute& attribute, unsigned int vertexSize) const;
-
-	//void AddAttribute(const Attribute& attribute, float* attributeData, unsigned int dataSize);
-	//void AddAttribute(const Attribute& attribute, float*&& attributeData);
 
 private:
 	unsigned int* mIndices = nullptr;

@@ -169,10 +169,3 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
     
     return texture;
 }
-
-ResourceTexture::~ResourceTexture() {
-    glDeleteTextures(1, &mOpenGLId);
-    if(mPixels)
-        delete[] mPixels;
-    //glMakeTextureHandleNonResidentARB(mTextureHandle);
-}

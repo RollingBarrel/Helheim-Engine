@@ -10,15 +10,9 @@ ResourceMesh::ResourceMesh(
     unsigned int inNumVertices, 
     const std::vector<Attribute>& attributes, 
     const std::vector<float*>& attributesData) : Resource(uid, Type::Mesh),
-    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(new unsigned int[inNumIndices]), mVertexSize(0)
+    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(new unsigned int[inNumIndices]), mVertexSize(0), mAttributes(attributes)
 {
     memcpy(mIndices, indices, mNumIndices * sizeof(unsigned int));
-    mAttributes.reserve(attributes.size());
-    for (int i = 0; i < attributes.size(); ++i)
-    {
-        mAttributes.push_back(attributes[i]);
-        mVertexSize += attributes[i].size;
-    }
     mAttributesData.reserve(attributesData.size());
     for (int i = 0; i < attributesData.size(); ++i)
     {
@@ -43,15 +37,9 @@ ResourceMesh::ResourceMesh(
 }
 
 ResourceMesh::ResourceMesh(const ResourceMesh& other): Resource(other.GetUID(), Type::Mesh),
-    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(new unsigned int[other.mNumIndices]), mVertexSize(other.mVertexSize)
+    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(new unsigned int[other.mNumIndices]), mVertexSize(other.mVertexSize), mAttributes(other.mAttributes)
 {
     memcpy(mIndices, other.mIndices, mNumIndices * sizeof(unsigned int));
-    mAttributes.reserve(other.mAttributes.size());
-    for (int i = 0; i < other.mAttributes.size(); ++i)
-    {
-        mAttributes.push_back(other.mAttributes[i]);
-        mVertexSize += other.mAttributes[i].size;
-    }
     mAttributesData.reserve(other.mAttributesData.size());
     for (int i = 0; i < other.mAttributesData.size(); ++i)
     {
@@ -90,6 +78,14 @@ void ResourceMesh::GetAttributes(std::vector<Attribute>& attributes) const
 {
     for (const Attribute attribute : mAttributes)
         attributes.push_back(attribute);
+}
+
+bool ResourceMesh::HasAttribute(Attribute::Type type) const
+{
+    for (Attribute attribute : mAttributes)
+        if (attribute.type == type)
+            return true;
+    return false;
 }
 
 const float* ResourceMesh::GetAttributeData(Attribute::Type type) const
