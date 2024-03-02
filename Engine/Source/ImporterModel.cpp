@@ -7,8 +7,9 @@
 #include "ImporterMaterial.h"
 #include "ImporterAnimation.h"
 
-#include "Algorithm/Random/LCG.h"
 
+#include "Algorithm/Random/LCG.h"
+#include "ResourceAnimation.h"
 #include "ResourceMesh.h"
 #include "ResourceModel.h"
 #include "ResourceMaterial.h"
@@ -42,7 +43,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         {
             ResourceAnimation* ourAnimation = new ResourceAnimation();
 
-            Importer::Animation::Import(model, srcAnimation, ourAnimation);
+            //Importer::Animation::Import(model, srcAnimation, ourAnimation);
 
                      
             delete ourAnimation;

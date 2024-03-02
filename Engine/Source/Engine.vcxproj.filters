@@ -390,9 +390,12 @@
     </ClCompile>
     <ClCompile Include="ImporterAnimation.cpp">
       <Filter>Importers</Filter>
-    </ClCompile> 
+    </ClCompile>
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceAnimation.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -975,7 +978,7 @@
     </ClInclude>
     <ClInclude Include="ImporterAnimation.h">
       <Filter>Importers</Filter>
-    </ClInclude>  
+    </ClInclude>
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -984,6 +987,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceAnimation.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
