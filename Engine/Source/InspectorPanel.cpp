@@ -465,5 +465,22 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
-	ImGui::Text("SCRIPTCOMP");
+	//ImGui::SeparatorText("Script");
+
+	const char* items[] = { "Select Script", "TestScript", "MissionScript", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIIIIII", "JJJJ", "KKKKKKK" };
+    static int currentItem = 0;
+	
+	if (ImGui::Combo("script", &currentItem, items, IM_ARRAYSIZE(items))) {
+				
+		if (currentItem != 0) {
+			component->LoadScript(items[currentItem]);
+		}
+				
+	}
+			
+			
+					
+			
+
+
 }

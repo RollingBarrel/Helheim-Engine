@@ -14,12 +14,14 @@ public:
 	void Reset() override;
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void LoadScript(const char* scriptName);
 
 	//void Disable() override;
 	//void Enable() override;
 
 private:
 	Script* mScript = nullptr;
+	const char* mName = "";
 	unsigned int ID = 0;
 };
 
