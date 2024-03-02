@@ -1,12 +1,12 @@
 [![Lint and Build with MSBuild](https://github.com/Assigment2Company/Assigment2/actions/workflows/lint_and_msbuild.yml/badge.svg?branch=develop)](https://github.com/Assigment2Company/Assigment2/actions/workflows/lint_and_msbuild.yml)
-# Assigment2
+# Helheim-Engine
 This project is a Game Engine made for UPC videogames Master´s Degree
 
-- [Game Engine Github Repository](https://github.com/Assigment2Company/Assigment2)
+- [Game Engine Github Repository](https://github.com/RollingBarrel/Helheim-Engine)
 
 ## Installation
 
-Download GameEngine.zip file in [release](https://github.com/Assigment2Company/Assigment2/releases), unzip it and execute the Engine.exe file.
+Download GameEngine.zip file in [release](https://github.com/RollingBarrel/Helheim-Engine/releases), unzip it and execute the Engine.exe file.
 
 ## Engine Guide
 
