@@ -92,8 +92,8 @@ void NavMeshControllerComponent::DebugDrawPolyMesh()
 	glDrawElements(GL_TRIANGLES,mIndices.size(), GL_UNSIGNED_INT, 0);
 
 
-	/*
-	Old draw polymesh with debud draw
+	/*	Old draw polymesh with debug draw
+
 	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
 	{
 		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
