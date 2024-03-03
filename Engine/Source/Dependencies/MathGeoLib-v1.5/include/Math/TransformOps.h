@@ -25,7 +25,7 @@ MATH_BEGIN_NAMESPACE
 /// A structure that represents the translate operation for 3D objects.
 /** This structure is used to optimize special cases of 3D transformation concatenations. The use of this
 	class occurs transparently to the user. You do not need to instantiate new TranslateOp objects in your code. */
-class TranslateOp
+class ENGINE_API TranslateOp
 {
 public:
 	/// The x offset of translation.
@@ -64,7 +64,7 @@ float4x4 operator *(const float4x4 &lhs, const TranslateOp &rhs);
 /// A structure that represents the scale operation for 3D objects.
 /** This structure is used to optimize special cases of 3D transformation concatenations. The use of this
 	class occurs transparently to the user. You do not need to instantiate new ScaleOp objects in your code. */
-class ScaleOp
+class ENGINE_API ScaleOp
 {
 public:
 	/// The scale factor along the x axis.

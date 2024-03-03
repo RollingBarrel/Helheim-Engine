@@ -19,8 +19,12 @@ public:
 
 private:
 
-    int num = 0;
-
+    float speed = 1;
+    float coolDown = 2;
+    float height = 1;
+    float movement = 0;
+    bool up = false, startCounter = false;
+    float timePassed = 0;
 };
 
 

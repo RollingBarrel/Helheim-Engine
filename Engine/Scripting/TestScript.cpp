@@ -12,8 +12,10 @@
 #include "NavMeshControllerComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+
 #include "Keys.h"
 #include "Geometry/AABB.h"
+
 
 TestScript::TestScript(GameObject* owner) : Script(owner)
 {
@@ -46,9 +48,40 @@ void TestScript::Update()
 	if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) {
 		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt());
 	}
-
-	MeshRendererComponent* component = mGameObject->GetMeshRenderer();
-	//CameraComponent* component1 = new CameraComponent(mGameObject);
 	
+    if (movement >= height)
+    {
+        startCounter = true;
+        movement = 0;
+        up = up ? false : true;
+    }
+
+
+    if (startCounter)
+    {
+        timePassed += App->GetGameDt();
+
+        if (timePassed >= coolDown)
+        {
+            timePassed = 0;
+            startCounter = false;
+        }
+    }
+    else
+    {
+        movement += speed * App->GetGameDt();
+        if (up)
+        {
+            //transform.position = new Vector3(transform.position.x, transform.position.y + speed * App->GetGameDt(), transform.position.z);
+            mGameObject->SetPosition(float3(mGameObject->GetPosition().x, mGameObject->GetPosition().y + speed * App->GetGameDt(), mGameObject->GetPosition().z));
+        }
+        else
+        {
+            //transform.position = new Vector3(transform.position.x, transform.position.y - speed * App->GetGameDt(), transform.position.z);
+            mGameObject->SetPosition(float3(mGameObject->GetPosition().x, mGameObject->GetPosition().y - speed * App->GetGameDt(), mGameObject->GetPosition().z));
+        }
+    }
+	
+    
 }
 

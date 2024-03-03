@@ -16,7 +16,7 @@
 	@author Jukka Jylänki
 	@brief A 3D (x,y,z) ordered tuple. */
 #pragma once
-#include "../../../../Globals.h"
+//#include "../../../../Globals.h"
 #include "../MathBuildConfig.h"
 
 #ifdef MATH_ENABLE_STL_SUPPORT

@@ -23,7 +23,7 @@
 MATH_BEGIN_NAMESPACE
 
 /// A 3D cylinder 
-class Cone
+class ENGINE_API Cone
 {
 public:
 	/// Specifies the two inner points of this capsule.
