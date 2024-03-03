@@ -48,9 +48,41 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 
 void AIAgentComponent::Save(Archive& archive) const
 {
+	archive.AddFloat("Radius", mRadius);
+	archive.AddFloat("Height", mHeight);
+	archive.AddFloat("StepHeight", mStepHeight);
+	archive.AddInt("MaxSlope", mMaxSlope);
+	archive.AddFloat("Speed", mSpeed);
+	archive.AddFloat("AngularSpeed", mAngularSpeed);
+	archive.AddFloat("Acceleration", mAcceleration);
+	archive.AddFloat("StoppingDistance", mStoppingDistance);
 }
 
 void AIAgentComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+	if (data.HasMember("Radius")) {
+		mRadius = data["Radius"].GetFloat();
+	}
+	if (data.HasMember("Height")) {
+		mHeight = data["Height"].GetFloat();
+	}
+	if (data.HasMember("StepHeight")) {
+		mStepHeight = data["StepHeight"].GetFloat();
+	}
+	if (data.HasMember("MaxSlope")) {
+		mMaxSlope = data["MaxSlope"].GetInt();
+	}
+	if (data.HasMember("Speed")) {
+		mRadius = data["Speed"].GetFloat();
+	}
+	if (data.HasMember("AngularSpeed")) {
+		mRadius = data["AngularSpeed"].GetFloat();
+	}
+	if (data.HasMember("Acceleration")) {
+		mRadius = data["Acceleration"].GetFloat();
+	}
+	if (data.HasMember("StoppingDistance")) {
+		mRadius = data["StoppingDistance"].GetFloat();
+	}
 }
 
