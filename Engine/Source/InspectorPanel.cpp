@@ -76,6 +76,8 @@ void InspectorPanel::Draw(int windowFlags)
 
 		if (ImGui::Button("Edit")) {
 			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
+		}
+
 		// Lock
 		ImGui::SameLine();
 		if (ImGui::Checkbox("Lock", &mLocked)) {
