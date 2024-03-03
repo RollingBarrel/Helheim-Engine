@@ -18,7 +18,6 @@ public:
 	update_status PostUpdate(float dt) override;
 
 	GameObject* GetRoot() const { return mRoot; }
-	GameObject* GetCanvas() const { return mCanvas; }
 
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
@@ -55,7 +54,6 @@ private:
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
-	GameObject* mCanvas = nullptr;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;

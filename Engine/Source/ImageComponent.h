@@ -15,7 +15,7 @@ public:
     void Update() override {}
     Component* Clone(GameObject* owner) const override;
 
-    void Draw() const;
+    void Draw(bool useOrthographicProjection) const;
 
 private:
     void Save(Archive& archive) const override;
@@ -23,5 +23,5 @@ private:
 
     ResourceTexture* mImage;
     float4 mColor;
-    unsigned int texId;
+    unsigned int texId = 0;
 };

@@ -5,12 +5,15 @@
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
 #include "GameObject.h"
+
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
 #include "ImageComponent.h"
+#include "CanvasComponent.h"
+
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
 
@@ -291,6 +294,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::IMAGE: {
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
 				}
+				case ComponentType::CANVAS: {
+					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+				}
 			}
 		}
 		ImGui::PopID();
@@ -463,5 +469,9 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* component) {
+
+}
+
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* component) {
 
 }

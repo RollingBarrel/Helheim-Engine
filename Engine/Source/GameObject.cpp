@@ -7,16 +7,17 @@
 #include "Quadtree.h"
 #include "imgui.h"
 #include "ModuleOpenGL.h"
-#include "PointLightComponent.h"
-#include "SpotLightComponent.h"
 #include <algorithm>
 #include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
 #include "ImageComponent.h"
+#include "CanvasComponent.h"
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
@@ -349,6 +350,10 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 			break;
 		case ComponentType::IMAGE:
 			newComponent = new ImageComponent(this);
+			break;
+		case ComponentType::CANVAS:
+			newComponent = new CanvasComponent(this);
+			break;
 		default:
 			break;
 	}

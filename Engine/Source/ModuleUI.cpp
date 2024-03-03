@@ -23,6 +23,7 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Init() {
 	mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
+	mCanvas->CreateComponent(ComponentType::CANVAS);
 
 	LoadVBO();
 	CreateVAO();
@@ -76,6 +77,9 @@ update_status ModuleUI::PostUpdate(float dt) {
 };
 
 bool ModuleUI::CleanUp() {
+	glDeleteProgram(mUIProgramId);
+	glDeleteVertexArrays(1, &mQuadVAO);
+	glDeleteBuffers(1, &mQuadVBO);
 	return true;
 }
 
@@ -88,7 +92,7 @@ void ModuleUI::DrawWidget(const GameObject* gameObject)
 				const ImageComponent* image = (const ImageComponent*) component;
 				if (image->IsEnabled())
 				{
-					image->Draw();
+					image->Draw(false);
 				}
 			}
 
