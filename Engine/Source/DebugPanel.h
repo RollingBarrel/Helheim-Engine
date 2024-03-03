@@ -13,5 +13,6 @@ public:
 
 private:
 	bool mDrawRaycast = false;
+	int mRenderMode = 0;
 };
 
