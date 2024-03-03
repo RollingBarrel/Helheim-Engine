@@ -71,11 +71,11 @@ void ScenePanel::Draw(int windowFlags)
 					case Resource::Type::Model:
 					{
 						GameObject* nGO = new GameObject(asset->mName, App->GetScene()->GetRoot());
-						for (auto it = reinterpret_cast<ResourceModel*>(resource)->GetUids().cbegin(); it != reinterpret_cast<ResourceModel*>(resource)->GetUids().cend(); ++it)
-						{
-							GameObject* go = new GameObject(nGO);
-							MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER, it->meshUID, it->materialUID));
-						}
+						//for (auto it = reinterpret_cast<ResourceModel*>(resource)->GetUids().cbegin(); it != reinterpret_cast<ResourceModel*>(resource)->GetUids().cend(); ++it)
+						//{
+						//	GameObject* go = new GameObject(nGO);
+						//	MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER, it->meshUID, it->materialUID));
+						//}
 						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
 					}
