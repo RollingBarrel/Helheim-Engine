@@ -63,8 +63,8 @@ void ModuleScene::Load(const char* sceneName) {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer);
 
-	rapidjson::Document d;
-	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
+	rapidjson::Document document;
+	rapidjson::ParseResult ok = document.Parse(loadedBuffer);
 	if (!ok) {
 		// Handle parsing error
 		LOG("Scene was not loaded.");
@@ -82,9 +82,9 @@ void ModuleScene::Load(const char* sceneName) {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
 	
 
-	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
-		const rapidjson::Value& s = d["Scene"];
-		mRoot->Load(s);
+	if (document.HasMember("Scene") && document["Scene"].IsObject()) {
+		const rapidjson::Value& sceneValue = document["Scene"];
+		mRoot->Load(sceneValue);
 	}
 
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
