@@ -390,6 +390,7 @@
     </ClCompile>
     <ClCompile Include="ImageComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -974,6 +975,7 @@
     </ClInclude>
     <ClInclude Include="ImageComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
     </ClInclude>
