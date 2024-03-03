@@ -7,13 +7,13 @@ class CanvasComponent : public Component
 {
 public:
     CanvasComponent(bool active, GameObject* owner);
+    CanvasComponent(GameObject* owner);
     ~CanvasComponent();
 
     void Update() override;
     void Init();
     Component* Clone(GameObject* owner) const override;
     void Reset() override;
-    void Draw();
 
 private:
     void Save(Archive& archive) const override;

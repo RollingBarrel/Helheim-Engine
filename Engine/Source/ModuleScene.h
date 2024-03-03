@@ -23,10 +23,13 @@ public:
 
 	GameObject* GetRoot() const { return mRoot; }
 <<<<<<< HEAD
+<<<<<<< HEAD
 	NavMeshController* GetNavController() const { return mNavMeshController; }
 =======
 	GameObject* GetCanvas() const { return mCanvas; }
 >>>>>>> a5c51ef (Module UI initial structure)
+=======
+>>>>>>> ad6ffa9 (Canvas Component)
 
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
@@ -80,10 +83,13 @@ private:
 
 	GameObject* mRoot = nullptr;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	NavMeshController* mNavMeshController;
 =======
 	GameObject* mCanvas = nullptr;
 >>>>>>> a5c51ef (Module UI initial structure)
+=======
+>>>>>>> ad6ffa9 (Canvas Component)
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;

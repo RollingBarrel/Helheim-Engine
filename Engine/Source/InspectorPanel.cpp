@@ -6,17 +6,17 @@
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
 #include "GameObject.h"
+
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ScriptComponent.h"
 #include "CameraComponent.h"
-<<<<<<< HEAD
 #include "AIAGentComponent.h"
-=======
 #include "ImageComponent.h"
->>>>>>> 2cbcff0 (First modifications on ImageComponent)
+#include "CanvasComponent.h"
+
 #include "ImporterMaterial.h"
 #include "Tag.h"
 #include "MathFunc.h"
@@ -27,6 +27,8 @@
 #include "AnimationController.h"
 
 #include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -362,6 +364,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::IMAGE: {
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
 				}
+				case ComponentType::CANVAS: {
+					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+				}
 			}
 		}
 		ImGui::PopID();
@@ -642,7 +647,6 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	// Is culling
 }
 
-<<<<<<< HEAD
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
@@ -727,17 +731,31 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	static bool play = false;
 
-	if(ImGui::Button("Play"))
+	if (ImGui::Button("Play"))
 	{
 		component->OnStart();
 
 		play = true;
 	}
 
-	if(play)
+	if (play)
 		component->OnUpdate();
-=======
-void InspectorPanel::DrawImageComponent(ImageComponent* component) {
->>>>>>> 2cbcff0 (First modifications on ImageComponent)
+}
 
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
+	static int resourceId = int(imageComponent->GetResourceId());
+
+	//TODO: Handle the case where the resource is not found
+	ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		imageComponent->SetImage(resourceId);
+	}
+
+	//TODO: Decide what information to display 
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+}
+
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 }

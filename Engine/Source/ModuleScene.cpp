@@ -34,7 +34,6 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
 =======
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
-	mCanvas = new GameObject("Canvas", 2, mRoot, float3::zero, float3::one, Quat::identity);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
 >>>>>>> a5c51ef (Module UI initial structure)
 }

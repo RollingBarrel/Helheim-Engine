@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
 #include "ModuleResource.h"
+#include "ModuleWindow.h"
 #include "ModuleUI.h"
 
 #include "glew.h"
@@ -19,67 +20,60 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
-	//mImage = Importer::Texture::Load("Assets/Textures/CesiumLogoFlat.png", 630045728);
-	mImage = ( ResourceTexture *) App->GetResource()->RequestResource(630045728, Resource::Type::Texture);
+    SetImage(mResourceId);
 }
 
 ImageComponent:: ~ImageComponent() {
 }
 
-void ImageComponent::Draw() const
+
+
+void ImageComponent::Draw(bool useOrthographicProjection) const
 {
-	unsigned int program = App->GetUI()->GetProgram();
-	if (program)
-	{
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    unsigned int program = App->GetUI()->GetProgram();
+    if (program)
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glUseProgram(program);
+        glUseProgram(program);
 
-		//Transform2DComponent* transform = (Transform2DComponent*) GetOwner()->GetComponent(ComponentType::TRANSFORM2D);
+        float4x4 proj;
+        if (useOrthographicProjection) {
+            // Use orthographic projection matrix for UI rendering
+            float screenWidth = static_cast<float>(App->GetWindow()->GetWidth());
+            float screenHeight = static_cast<float>(App->GetWindow()->GetHeight());
+            proj = float4x4::D3DOrthoProjLH(-1.0f, 1.0f, screenWidth, screenHeight);
+        }
+        else {
+            // Use perspective projection matrix for regular rendering
+            proj = App->GetCamera()->GetFrustum()->ProjectionMatrix();
+        }
 
-		float4x4 proj = App->GetCamera()->GetFrustum()->ProjectionMatrix();
-		/* 
-		std::pair<float, float> region = App->GetModule<ModuleEditor>()->GetAvailableRegion();
-		orthoProjectionMatrix = float4x4::D3DOrthoProjLH(-1, 1, floor(region.first), floor(region.second));
-		*/
-		float4x4 model = float4x4::identity; //transform->GetGlobalScaledMatrix();
-		float4x4 view = App->GetCamera()->GetViewMatrix();
+        float4x4 model = float4x4::identity;
 
-		//CanvasComponent* canvas = (CanvasComponent*) App->GetScene()->GetCanvas()->GetComponent(ComponentType::CANVAS);
-		//if (canvas)
-		//{
-			//canvas->RecalculateSizeAndScreenFactor();
-			//float factor = canvas->GetScreenFactor();
-			//view = view * float4x4::Scale(factor, factor, factor);
-		//} 
+        float4x4 view = App->GetCamera()->GetViewMatrix();
 
-		
-		/*glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
-		OpenGLBuffer* cameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
-		cameraUniBuffer->UpdateData(view.Transposed().ptr(), sizeof(float) * 16, 0);
-		cameraUniBuffer->UpdateData(proj.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-		*/
-		glBindVertexArray(App->GetUI()->GetQuadVAO());
+        glBindVertexArray(App->GetUI()->GetQuadVAO());
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-		
-		// TODO Bind mColor
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
-		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
-		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
-		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+        // TODO Bind mColor
 
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+        glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
+        glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+        glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindVertexArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		glUseProgram(0);
-		glDisable(GL_BLEND);
-	}
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindVertexArray(0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        glUseProgram(0);
+        glDisable(GL_BLEND);
+    }
 }
 
 Component* ImageComponent::Clone(GameObject* owner) const
@@ -93,4 +87,8 @@ void ImageComponent::Save(Archive& archive) const
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+}
+
+void ImageComponent::SetImage(unsigned int resourceId) {
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }

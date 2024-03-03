@@ -22,7 +22,8 @@ ModuleUI::~ModuleUI()
 };
 
 bool ModuleUI::Init() {
-	mCanvas = new GameObject(App->GetScene()->GetCanvas());
+	mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
+	mCanvas->CreateComponent(ComponentType::CANVAS);
 
 	LoadVBO();
 	CreateVAO();
@@ -76,6 +77,9 @@ update_status ModuleUI::PostUpdate(float dt) {
 };
 
 bool ModuleUI::CleanUp() {
+	glDeleteProgram(mUIProgramId);
+	glDeleteVertexArrays(1, &mQuadVAO);
+	glDeleteBuffers(1, &mQuadVBO);
 	return true;
 }
 
@@ -88,7 +92,7 @@ void ModuleUI::DrawWidget(const GameObject* gameObject)
 				const ImageComponent* image = (const ImageComponent*) component;
 				if (image->IsEnabled())
 				{
-					image->Draw();
+					image->Draw(false);
 				}
 			}
 
@@ -103,12 +107,12 @@ void ModuleUI::LoadVBO()
 {
 	float vertices[] = {
 		// texture coordinates
-		-0.5f,  0.5f,  0.0f,  1.0f,   // top-left vertex
-		-0.5f, -0.5f,  0.0f,  0.0f,   // bottom-left vertex
-		 0.5f, -0.5f,  1.0f,  0.0f,   // bottom-right vertex
-		 0.5f,  0.5f,  1.0f,  1.0f,    // top-right vertex
-		 -0.5f,  0.5f,  0.0f,  1.0f,   // top-left vertex
-		 0.5f, -0.5f,  1.0f,  0.0f   // bottom-right vertex
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
+		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
 	};
 
 	glGenBuffers(1, &mQuadVBO);

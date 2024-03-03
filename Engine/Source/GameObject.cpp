@@ -7,13 +7,16 @@
 #include "Quadtree.h"
 #include "imgui.h"
 #include "ModuleOpenGL.h"
-#include "PointLightComponent.h"
-#include "SpotLightComponent.h"
 #include <algorithm>
 #include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
+<<<<<<< HEAD
 #include "ModuleScene.h"
+=======
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
+>>>>>>> ad6ffa9 (Canvas Component)
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
@@ -25,7 +28,11 @@
 #include "AnimationComponent.h"
 =======
 #include "ImageComponent.h"
+<<<<<<< HEAD
 >>>>>>> 2cbcff0 (First modifications on ImageComponent)
+=======
+#include "CanvasComponent.h"
+>>>>>>> ad6ffa9 (Canvas Component)
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -427,7 +434,14 @@ Component* GameObject::CreateComponent(ComponentType type) {
 =======
 		case ComponentType::IMAGE:
 			newComponent = new ImageComponent(this);
+<<<<<<< HEAD
 >>>>>>> 2cbcff0 (First modifications on ImageComponent)
+=======
+			break;
+		case ComponentType::CANVAS:
+			newComponent = new CanvasComponent(this);
+			break;
+>>>>>>> ad6ffa9 (Canvas Component)
 		default:
 			break;
 	}
