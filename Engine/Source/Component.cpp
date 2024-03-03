@@ -22,6 +22,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "NavMeshController";
 		case ComponentType::AIAGENT:
 			return "AI Agent";
+		case ComponentType::NAVMESHOBSTACLE:
+			return "NavMeshObstacle";
 		case ComponentType::CANVAS:
 			return "Canvas";
 		case ComponentType::TRANSFORM2D:

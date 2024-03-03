@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "SDL.h"
+#include "optick.h"
 
 //Select Nvidia or Amd GPU insted of integrated graphics
 extern "C" {
@@ -54,6 +55,7 @@ int main(int argc, char ** argv)
 
 		case MAIN_UPDATE:
 		{
+			OPTICK_FRAME("MainThread");
 			int update_return = App->Update(App->GetRealDt());
 
 			if (update_return == UPDATE_ERROR)

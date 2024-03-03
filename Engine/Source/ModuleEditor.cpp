@@ -26,6 +26,7 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 #include "ImGuizmo.h"
+#include "OptickAdapter.h"
 
 ModuleEditor::ModuleEditor()
 {
@@ -59,6 +60,8 @@ bool ModuleEditor::Init()
 	io->ConfigDragClickToInputText = true;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
+
+	mOptick = new OptickAdapter();
 
 	return true;
 }
@@ -121,12 +124,14 @@ bool ModuleEditor::CleanUp()
 		delete panel.second;
 	}
 	mPanels.clear();
+	delete mOptick;
 
 	return true;
 }
 
 void ModuleEditor::ShowMainMenuBar() 
 {
+
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -179,6 +184,9 @@ void ModuleEditor::ShowMainMenuBar()
 				{
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
 				}
+			}
+			if (ImGui::MenuItem("Optick", NULL, false, !mOptick->IsOpen())) {
+				mOptick->Startup();
 			}
 			ImGui::EndMenu();
 		}
