@@ -390,6 +390,8 @@
     </ClCompile>
     <ClCompile Include="ImageComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
+    <ClCompile Include="OptickAdapter.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -972,6 +974,14 @@
     </ClInclude>
     <ClInclude Include="ImageComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
+    <ClInclude Include="OptickAdapter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.config.h">
+      <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.h">
+      <Filter>Dependencies\Optick</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1055,6 +1065,9 @@
     </Filter>
     <Filter Include="GameObjects\Components\UI">
       <UniqueIdentifier>{e20dbcd6-c127-457c-bb19-f579b8d3eee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\Optick">
+      <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
