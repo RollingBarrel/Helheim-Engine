@@ -27,11 +27,15 @@ static float* GetInterleavedData(const std::vector<Attribute>& attributes, const
         vertexSize += attributes[i].size;
     }
     float* ret = new float[numVertices * vertexSize / sizeof(float)];
-    unsigned int offset = 0;
-    for (int i = 0; i < attributesData.size(); ++i)
+    for (unsigned int vertexIdx = 0; vertexIdx < numVertices; ++vertexIdx)
     {
-        memcpy(&ret[offset], attributesData[i], numVertices * attributes[i].size);
-        offset += attributes[i].size * numVertices / sizeof(float);
+        for (unsigned int attributeIdx = 0; attributeIdx < attributes.size(); ++attributeIdx)
+        {
+            unsigned int attributeSize = attributes[attributeIdx].size / sizeof(float);
+            unsigned int attributeOffset = attributes[attributeIdx].offset / sizeof(float);
+            const float* attributeData = attributesData[attributeIdx];
+            memcpy(&ret[vertexIdx * attributeSize + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
+        }
     }
     return ret;
 }
