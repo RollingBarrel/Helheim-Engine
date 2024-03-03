@@ -22,7 +22,7 @@ ModuleUI::~ModuleUI()
 };
 
 bool ModuleUI::Init() {
-	mCanvas = new GameObject(App->GetScene()->GetCanvas());
+	mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
 
 	LoadVBO();
 	CreateVAO();
