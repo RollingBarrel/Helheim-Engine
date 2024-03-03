@@ -11,14 +11,27 @@ public:
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
-	const float getRadius() const { return mRadius; };
-	const float getHeight() const { return mHeight; };
-	const float getStepHeight() const { return mStepHeight; };
-	const unsigned int getMaxSlope() const { return mMaxSlope; };
-	const float getSpeed() const { return mSpeed; };
-	const float getAngularSpeed() const { return mAngularSpeed; };
-	const float getAcceleration() const { return mAcceleration; };
-	const float getStoppingDistance() const { return mStoppingDistance; };
+
+	const float GetRadius() const { return mRadius; };
+	const float GetHeight() const { return mHeight; };
+	const float GetStepHeight() const { return mStepHeight; };
+	const unsigned int GetMaxSlope() const { return mMaxSlope; };
+	const float GetSpeed() const { return mSpeed; };
+	const float GetAngularSpeed() const { return mAngularSpeed; };
+	const float GetAcceleration() const { return mAcceleration; };
+	const float GetStoppingDistance() const { return mStoppingDistance; };
+
+	void SetRadius(float radius) { mRadius = radius; };
+	void SetHeight(float height) { mHeight = height; };
+	void SetStepHeight(float stepHeight) { mStepHeight = stepHeight; };
+	void SetMaxSlope(unsigned int maxSlope) { mMaxSlope = maxSlope; };
+	void SetSpeed(float speed) { mSpeed = speed; };
+	void SetAngularSpeed(float angularSpeed) { mAngularSpeed = angularSpeed; };
+	void SetAcceleration(float acceleration) { mAcceleration = acceleration; };
+	void SetStoppingDistance(float stoppingDistance) { mStoppingDistance = stoppingDistance; };
+
+	void Save(Archive& archive) const override;
+	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 private:
 	//Agent Parameters:
 	float mRadius = 0.0f;

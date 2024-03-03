@@ -41,3 +41,16 @@ void AIAgentComponent::Update()
 {
 }
 
+Component* AIAgentComponent::Clone(GameObject* owner) const
+{
+	return new AIAgentComponent(*this, owner);
+}
+
+void AIAgentComponent::Save(Archive& archive) const
+{
+}
+
+void AIAgentComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+{
+}
+
