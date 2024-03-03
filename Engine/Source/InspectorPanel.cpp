@@ -467,7 +467,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 	//ImGui::SeparatorText("Script");
 
-	const char* items[] = { "Select Script", "TestScript", "MissionScript", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIIIIII", "JJJJ", "KKKKKKK" };
+	const char* items[] = { "Select Script", "TestScript", "MissionScript", "Dash", "EEEE", "FFFF", "GGGG", "HHHH", "IIIIIII", "JJJJ", "KKKKKKK" };
     static int currentItem = 0;
 	
 	if (ImGui::Combo("script", &currentItem, items, IM_ARRAYSIZE(items))) {

@@ -13,10 +13,7 @@ ModuleScriptManager::~ModuleScriptManager()
 
 bool ModuleScriptManager::Init()
 {
-	const char* name = "TestScript";
-
 	mHandle = LoadLibrary("Scripting.dll");
-
 	return true;
 }
 

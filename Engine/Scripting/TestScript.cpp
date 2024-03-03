@@ -91,6 +91,10 @@ void TestScript::Update()
     }
 
   
+    if (mGameObject->GetPosition().x > 10.0f) {
+
+        LOG("YOU WIN");
+    }
 	
     
 }
