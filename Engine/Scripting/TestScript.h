@@ -25,6 +25,8 @@ private:
     float movement = 0;
     bool up = false, startCounter = false;
     float timePassed = 0;
+
+    GameObject* gameObject;
 };
 
 

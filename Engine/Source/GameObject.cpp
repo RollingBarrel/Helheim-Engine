@@ -106,6 +106,7 @@ GameObject::~GameObject()
 
 }
 
+
 Component* GameObject::GetComponent(ComponentType type)
 {
 	for (auto component : mComponents) {
@@ -228,6 +229,30 @@ void GameObject::SetScale(const float3& scale)
 	mScale = scale;
 
 	isTransformModified = true;
+}
+
+GameObject* GameObject::Find(const char* name)
+{
+	
+	GameObject* gameObject = nullptr;
+
+	for (auto child : mChildren) {
+
+		if (child->GetName()._Equal(std::string(name))) {
+			gameObject = child;
+			break;
+		}
+		else {
+			gameObject = child->Find(name);
+
+			if (gameObject) {
+				break;
+			}
+		}
+
+	}
+
+	return gameObject;
 }
 
 void GameObject::AddChild(GameObject* child, const int aboveThisId)

@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleScene.h"
 #include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "NavMeshControllerComponent.h"
@@ -29,6 +30,8 @@ void TestScript::Start()
 	NavMeshControllerComponent* component2 = (NavMeshControllerComponent*)mGameObject->CreateComponent(ComponentType::NAVMESHCONTROLLER);
 	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
+
+    gameObject = App->GetScene()->Find("Robot.gltf");
 }
 
 void TestScript::Update()
@@ -49,38 +52,45 @@ void TestScript::Update()
 		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt());
 	}
 	
-    if (movement >= height)
-    {
-        startCounter = true;
-        movement = 0;
-        up = up ? false : true;
-    }
 
-
-    if (startCounter)
-    {
-        timePassed += App->GetGameDt();
-
-        if (timePassed >= coolDown)
+    if (gameObject != nullptr) {
+        if (movement >= height)
         {
-            timePassed = 0;
-            startCounter = false;
+            startCounter = true;
+            movement = 0;
+            up = up ? false : true;
         }
-    }
-    else
-    {
-        movement += speed * App->GetGameDt();
-        if (up)
+
+
+
+        if (startCounter)
         {
-            //transform.position = new Vector3(transform.position.x, transform.position.y + speed * App->GetGameDt(), transform.position.z);
-            mGameObject->SetPosition(float3(mGameObject->GetPosition().x, mGameObject->GetPosition().y + speed * App->GetGameDt(), mGameObject->GetPosition().z));
+            timePassed += App->GetGameDt();
+
+            if (timePassed >= coolDown)
+            {
+                timePassed = 0;
+                startCounter = false;
+            }
         }
         else
         {
-            //transform.position = new Vector3(transform.position.x, transform.position.y - speed * App->GetGameDt(), transform.position.z);
-            mGameObject->SetPosition(float3(mGameObject->GetPosition().x, mGameObject->GetPosition().y - speed * App->GetGameDt(), mGameObject->GetPosition().z));
+            movement += speed * App->GetGameDt();
+            if (up)
+            {
+                //transform.position = new Vector3(transform.position.x, transform.position.y + speed * App->GetGameDt(), transform.position.z);
+                gameObject->SetPosition(float3(gameObject->GetPosition().x, gameObject->GetPosition().y + speed * App->GetGameDt(), gameObject->GetPosition().z));
+            }
+            else
+            {
+                //transform.position = new Vector3(transform.position.x, transform.position.y - speed * App->GetGameDt(), transform.position.z);
+                gameObject->SetPosition(float3(gameObject->GetPosition().x, gameObject->GetPosition().y - speed * App->GetGameDt(), gameObject->GetPosition().z));
+            }
         }
+
     }
+
+  
 	
     
 }

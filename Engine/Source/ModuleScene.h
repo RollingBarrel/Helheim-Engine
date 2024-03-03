@@ -7,7 +7,7 @@ class Quadtree;
 class GameObject;
 class Archive;
 
-class ModuleScene : public Module
+class ENGINE_API ModuleScene : public Module
 {
 public:
 	ModuleScene();
@@ -38,6 +38,8 @@ public:
 
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
+
+	GameObject* Find(const char* name);
 
 private:
 	void DeleteGameObjects();

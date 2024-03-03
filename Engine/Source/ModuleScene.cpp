@@ -95,6 +95,12 @@ void ModuleScene::Load(const char* sceneName) {
 	delete[] loadedBuffer;
 }
 
+GameObject* ModuleScene::Find(const char* name)
+{
+	return mRoot->Find(name);
+
+}
+
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;

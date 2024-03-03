@@ -23,7 +23,7 @@ enum MouseKey {
 	NUM_MOUSE_BUTTONS
 };
 
-class ModuleInput : public Module
+class ENGINE_API ModuleInput : public Module
 {
 public:
 
@@ -34,7 +34,7 @@ public:
 	update_status PreUpdate(float dt) override;
 	bool CleanUp() override;
 
-	ENGINE_API KeyState GetKey(int id) const { return keyboard[id]; }
+	KeyState GetKey(int id) const { return keyboard[id]; }
 	KeyState GetMouseKey(MouseKey id) const { return mouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
 	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
