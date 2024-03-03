@@ -22,7 +22,7 @@ namespace Importer {
     namespace Animation {
         void Import(const tinygltf::Model& model,const tinygltf::Animation& animation,ResourceAnimation* ourAnimation);
 
-        void Save(const ResourceAnimation* ourAnimation);
+        void Save( ResourceAnimation* ourAnimation);
 
         void Load(ResourceAnimation* animation, const char* fileName);
     }

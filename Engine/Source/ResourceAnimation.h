@@ -5,17 +5,14 @@
 #include "tiny_gltf.h"
 #include "Quat.h" // Include the headers for Quat and float3 if they are custom types
 #include "float3.h"
+#include "Resource.h"
 #include <string>
 
-class ResourceAnimation
+class ResourceAnimation : public Resource
 {
-
 public:
-    std::string name;
-    float duration;
-    unsigned int mUID = 0;
-
-
+    ResourceAnimation(unsigned int uid, const std::string name); 
+    ~ResourceAnimation();
 
     // Define a structure to store keyframes for positions and rotations
     struct AnimationChannel {
@@ -25,6 +22,7 @@ public:
         std::unique_ptr<float[]> rotTimeStamps;
         /*std::unique_ptr<float3[]> scales;
         std::unique_ptr<float[]> scaleTimeStamps;*/
+
         uint32_t numPositions = 0;
         uint32_t numRotations = 0;
         /*uint32_t numScales = 0;*/
@@ -35,9 +33,20 @@ public:
 
     };
 
-
     void addChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
-    // Use unordered_map to efficiently store animation channels by node name
-    std::unordered_map<std::string, AnimationChannel*> channels;
+    AnimationChannel* GetChannel(const std::string& name) const;
+   
+    const std::unordered_map<std::string, AnimationChannel*>& GetChannels() { return mChannels; }
+    const std::string& GetName() const {return mName; }
+    const float& GetDuration() const { return mDuration; }
+
+    void CleanUp();
+
+private:
+    std::string mName;
+    float mDuration;
+    std::unordered_map<std::string, AnimationChannel*> mChannels;
+
 };
+
 

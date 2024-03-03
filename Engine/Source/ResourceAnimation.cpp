@@ -1,4 +1,4 @@
-#include "ResourceAnimation.h"
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
@@ -18,7 +18,26 @@
 
 
 
+ResourceAnimation::ResourceAnimation(
+    unsigned int uid, 
+    const std::string inName) : Resource(uid, Type::Animation) , mName(inName)
+{
+}
 
+ResourceAnimation::~ResourceAnimation()
+{
+   // CleanUp();
+}
+
+ResourceAnimation::AnimationChannel* ResourceAnimation::GetChannel(const std::string& name) const
+{
+	auto it = mChannels.find(name);
+    if (it != mChannels.end())
+    {
+		return it->second;
+	}
+	return nullptr;
+}
 
 void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel) {
     if (!ourAnimation)
@@ -86,4 +105,16 @@ void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf
 
     //    }
 
+}
+
+void ResourceAnimation::CleanUp()
+{
+    mName.clear();
+    mDuration = 0.0f;
+
+    for (auto& channel : mChannels)
+    {
+		delete channel.second;
+	}
+	mChannels.clear();
 }

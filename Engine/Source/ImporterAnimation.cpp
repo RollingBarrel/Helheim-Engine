@@ -21,32 +21,30 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
 
     for (const auto& srcChannel : animation.channels)
     {
-        
         std::string name = model.nodes[srcChannel.target_node].name;
-        if (ourAnimation->channels.find(name) == ourAnimation->channels.end())
+
+        //check if the channel already exists
+        ResourceAnimation::AnimationChannel* ourChannel = ourAnimation->GetChannel(name);
+        if (ourChannel == nullptr)
         {
+            //create a new channel
           ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel; 
-        ourAnimation->addChannels(model, animation, srcChannel, ourAnimation, ourChannel);
+            ourAnimation->addChannels(model, animation, srcChannel, ourAnimation, ourChannel);
 
-
-        for (const auto& srcChannel2 : animation.channels)
-        {
-
-            if (srcChannel2.target_node == srcChannel.target_node && ourChannel->hasTranslation == false || ourChannel->hasRotation == false)
+            for (const auto& srcChannel2 : animation.channels)
             {
 
-                ourAnimation->addChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
-            }
+                if (srcChannel2.target_node == srcChannel.target_node && ourChannel->hasTranslation == false || ourChannel->hasRotation == false)
+                {
 
+                    ourAnimation->addChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
+                }
+            }
         }
         //animation -> mUID = math::LCG().Int();
-       
-        ourAnimation->channels[name]=ourChannel;
-          //delete ourChannel;
-        }
-        
+         //delete ourChannel;
     }
-
+        
     
     if (ourAnimation) {
         Importer::Animation::Save(ourAnimation);
@@ -56,12 +54,12 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
 
 
 
-void Importer::Animation::Save(const ResourceAnimation* ourAnimation)
+void Importer::Animation::Save (ResourceAnimation* ourAnimation)
 {
-    unsigned int header[] = { ourAnimation->channels.size(), ourAnimation->duration };
+    unsigned int header[] = {(ourAnimation->GetChannels().size()), ourAnimation->GetDuration()};
 
     unsigned int size = sizeof(header) ;
-    for (const auto& channel : ourAnimation->channels) {
+    for (const auto& channel : ourAnimation->GetChannels()) {
         size += sizeof(unsigned int) + channel.first.size();
 
         if (channel.second->hasTranslation) {
@@ -81,7 +79,7 @@ void Importer::Animation::Save(const ResourceAnimation* ourAnimation)
     memcpy(cursor, header, bytes);
     cursor += bytes;
 
-    for (const auto& channel : ourAnimation->channels) {
+    for (const auto& channel : ourAnimation->GetChannels()) {
         unsigned int nodeNameSize = static_cast<unsigned int>(channel.first.size());
         memcpy(cursor, &nodeNameSize, sizeof(unsigned int));
         cursor += sizeof(unsigned int);
@@ -107,16 +105,19 @@ void Importer::Animation::Save(const ResourceAnimation* ourAnimation)
         }
     }
 
-    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->mUID, true);
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
     delete[] libraryPath;
     delete[] fileBuffer;
 }
-
+//
 //void Importer::Animation::Load(ResourceAnimation* ourAnimation, const char* fileName) {
 //    if (!ourAnimation || !fileName)
 //        return;
+//
+//    char* fileBuffer = nullptr;
+//    ResourceImp* rMesh = nullptr;
 //
 //    // Construct the file path
 //    std::string path = LIBRARY_ANIMATION_PATH;

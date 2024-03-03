@@ -41,10 +41,9 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
         for (const auto& srcAnimation : model.animations)
         {
-            ResourceAnimation* ourAnimation = new ResourceAnimation();
+            ResourceAnimation* ourAnimation = new ResourceAnimation(currUid++,srcAnimation.name);
 
-            //Importer::Animation::Import(model, srcAnimation, ourAnimation);
-
+            Importer::Animation::Import(model, srcAnimation, ourAnimation);
                      
             delete ourAnimation;
             
