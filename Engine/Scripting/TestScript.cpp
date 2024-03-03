@@ -7,7 +7,13 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "MeshRendererComponent.h"
+#include "CameraComponent.h"
+#include "NavMeshControllerComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "Keys.h"
+#include "Geometry/AABB.h"
 
 TestScript::TestScript(GameObject* owner) : Script(owner)
 {
@@ -17,6 +23,10 @@ TestScript::TestScript(GameObject* owner) : Script(owner)
 void TestScript::Start()
 {
 	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
+	CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
+	NavMeshControllerComponent* component2 = (NavMeshControllerComponent*)mGameObject->CreateComponent(ComponentType::NAVMESHCONTROLLER);
+	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
+	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 }
 
 void TestScript::Update()
@@ -37,5 +47,8 @@ void TestScript::Update()
 		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt());
 	}
 
+	MeshRendererComponent* component = mGameObject->GetMeshRenderer();
+	//CameraComponent* component1 = new CameraComponent(mGameObject);
+	
 }
 

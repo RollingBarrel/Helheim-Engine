@@ -8,7 +8,7 @@ typedef struct PointLight {
 	//PointLight(const PointLight& other)  = delete;
 }PointLight;
 
-class PointLightComponent : public Component {
+class ENGINE_API PointLightComponent : public Component {
 public:
 	~PointLightComponent();
 

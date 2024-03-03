@@ -427,7 +427,7 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 	return newComponent;
 }
 
-void ModuleOpenGL::UpdatePoinLightInfo(const PointLightComponent& cPointLight)
+void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{

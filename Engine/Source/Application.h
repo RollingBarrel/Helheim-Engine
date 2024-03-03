@@ -18,7 +18,7 @@ class ModuleUI;
 class Timer;
 class PreciseTimer;
 
-class  Application
+class ENGINE_API Application
 {
 public:
 
@@ -31,7 +31,7 @@ public:
 
     ModuleOpenGL* GetOpenGL() { return render; }
     ModuleWindow* GetWindow() { return window; }
-    ENGINE_API ModuleInput*  GetInput() { return input; }
+    ModuleInput*  GetInput() { return input; }
     ModuleEditor*  GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera;  }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
@@ -53,7 +53,7 @@ public:
     //void SetCurrentClock(PreciseTimer* clock) { mCurrentTimer = clock; }
 
     float GetRealDt() const;
-    ENGINE_API float GetGameDt() const;
+    float GetGameDt() const;
 
 private:
 

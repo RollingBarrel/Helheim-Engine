@@ -3,7 +3,7 @@
 
 class Script;
 
-class ScriptComponent : public Component
+class ENGINE_API ScriptComponent : public Component
 {
 public:
 

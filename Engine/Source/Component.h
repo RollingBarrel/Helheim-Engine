@@ -1,14 +1,14 @@
 #pragma once
 #include "Archive.h"
 
-enum class ComponentType : unsigned int
+enum class ENGINE_API ComponentType : unsigned int
 {
 	MESHRENDERER, POINTLIGHT, SPOTLIGHT,NAVMESHCONTROLLER, CAMERA, CANVAS, SCRIPT, TRANSFORM2D ,TEST, NONE
 };
 
 class GameObject;
 
-class Component
+class ENGINE_API Component
 {
 	friend class InspectorPanel;
 public:
@@ -24,7 +24,7 @@ public:
 	ComponentType GetType() const { return mType; }
 	const GameObject* const GetOwner() const { return mOwner; }
 
-	int GetID() { return mID; }
+	int GetID() const { return mID; }
 
 	virtual	void Enable() { mIsEnabled = true; };
 	virtual	void Disable() { mIsEnabled = false; }

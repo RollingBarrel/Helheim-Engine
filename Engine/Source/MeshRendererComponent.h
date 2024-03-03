@@ -9,7 +9,7 @@ class Material;
 class ResourceMesh;
 class ResourceMaterial;
 
-class MeshRendererComponent : public Component
+class ENGINE_API MeshRendererComponent : public Component
 {
 public:
 	MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid);
