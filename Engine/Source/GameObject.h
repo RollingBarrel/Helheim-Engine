@@ -45,6 +45,7 @@ public:
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
+	const float3& GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); }
 
 	void ResetTransform();
 
@@ -100,6 +101,5 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool isTransformModified = false;
-	
 };
 

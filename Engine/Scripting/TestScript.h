@@ -1,12 +1,6 @@
 #pragma once
-#ifdef SCRIPTING_EXPORTS
-#define SCRIPTING_API __declspec(dllexport)
-#else
-#define SCRIPTING_API __declspec(dllimport)
-#endif
-
 #include "Script.h"
-
+#include "Macros.h"
 
 extern "C" class SCRIPTING_API TestScript : public Script {
 
