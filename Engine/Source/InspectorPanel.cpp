@@ -18,6 +18,8 @@
 #include "MathFunc.h"
 
 #include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -468,10 +470,20 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	// Is culling
 }
 
-void InspectorPanel::DrawImageComponent(ImageComponent* component) {
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
+	static int resourceId = int(imageComponent->GetResourceId());
+
+	//TODO: Handle the case where the resource is not found
+	ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		imageComponent->SetImage(resourceId);
+	}
+
+	//TODO: Decide what information to display 
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
 
 }
 
-void InspectorPanel::DrawCanvasComponent(CanvasComponent* component) {
-
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 }

@@ -20,13 +20,13 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
-	//mImage = Importer::Texture::Load("Assets/Textures/CesiumLogoFlat.png", 630045728);
-	mImage = ( ResourceTexture *) App->GetResource()->RequestResource(818189439, Resource::Type::Texture);
-
+    SetImage(mResourceId);
 }
 
 ImageComponent:: ~ImageComponent() {
 }
+
+
 
 void ImageComponent::Draw(bool useOrthographicProjection) const
 {
@@ -87,4 +87,8 @@ void ImageComponent::Save(Archive& archive) const
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+}
+
+void ImageComponent::SetImage(unsigned int resourceId) {
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
