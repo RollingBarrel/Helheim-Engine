@@ -153,7 +153,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
             std::string pngName = filePath;
             unsigned filePos = pngName.find_last_of('/');
             pngName = pngName.substr(0, filePos + 1);
-            pngName.append(tinyModel.images[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index].uri);
+            pngName.append(tinyModel.images[texture.source].uri);
             if (!modifyAssets)
             {
                 size_t sizeUntilName = pngName.find_last_of('/') + 1;
