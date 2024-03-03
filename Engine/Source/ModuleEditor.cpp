@@ -19,12 +19,14 @@
 #include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
+#include "ResourcePanel.h"
 #include "TimerPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 #include "ImGuizmo.h"
+#include "OptickAdapter.h"
 
 ModuleEditor::ModuleEditor()
 {
@@ -38,6 +40,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
+	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 }
 
@@ -57,6 +60,8 @@ bool ModuleEditor::Init()
 	io->ConfigDragClickToInputText = true;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
+
+	mOptick = new OptickAdapter();
 
 	return true;
 }
@@ -119,12 +124,14 @@ bool ModuleEditor::CleanUp()
 		delete panel.second;
 	}
 	mPanels.clear();
+	delete mOptick;
 
 	return true;
 }
 
 void ModuleEditor::ShowMainMenuBar() 
 {
+
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -177,6 +184,9 @@ void ModuleEditor::ShowMainMenuBar()
 				{
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
 				}
+			}
+			if (ImGui::MenuItem("Optick", NULL, false, !mOptick->IsOpen())) {
+				mOptick->Startup();
 			}
 			ImGui::EndMenu();
 		}
@@ -296,6 +306,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* inspector = mPanels[INSPECTORPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
+	Panel* resourcePanel = mPanels[RESOURCEPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 
@@ -311,6 +322,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Open();
 		inspector->Open();
 		lightningPanel->Open();
+		resourcePanel->Open();
 	}
 	else {
 		timerPanel->Close();
@@ -324,6 +336,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		scenePanel->Close();
 		inspector->Close();
 		lightningPanel->Close();
+		resourcePanel->Close();
 
 		aboutPanel->Close();
 	}
