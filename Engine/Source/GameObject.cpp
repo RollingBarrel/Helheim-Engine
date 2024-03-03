@@ -18,6 +18,8 @@
 #include "NavMeshControllerComponent.h"
 #include "TagsManager.h"
 #include "Tag.h"
+#include "NavMeshObstacleComponent.h"
+
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetTags()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
@@ -335,6 +337,9 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 			break;
 		case ComponentType::NAVMESHCONTROLLER:
 			newComponent = new NavMeshControllerComponent(this);
+			break;
+		case ComponentType::NAVMESHOBSTACLE:
+			newComponent = new NavMeshObstacleComponent(this);
 			break;
 		default:
 			break;

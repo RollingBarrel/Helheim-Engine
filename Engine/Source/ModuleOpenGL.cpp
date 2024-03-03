@@ -147,7 +147,6 @@ bool ModuleOpenGL::Init()
 
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
-
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -421,6 +420,8 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 	mPointLights.push_back(newComponent);
 	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
 	uint32_t size = mPointLights.size();
+	newComponent->SetIntensity(50);
+	newComponent->SetRadius(25);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 
 	return newComponent;
@@ -461,7 +462,8 @@ SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObje
 	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-
+	newComponent->SetIntensity(50);
+	newComponent->SetRadius(25);
 	return newComponent;
 }
 

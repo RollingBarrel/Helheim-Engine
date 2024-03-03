@@ -397,6 +397,12 @@
     <ClCompile Include="Transform2DComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="OptickAdapter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMeshObstacleComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -985,6 +991,18 @@
     <ClInclude Include="Transform2DComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
+    <ClInclude Include="OptickAdapter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.config.h">
+      <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.h">
+      <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshObstacleComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -1067,6 +1085,9 @@
     </Filter>
     <Filter Include="GameObjects\Components\UI">
       <UniqueIdentifier>{e20dbcd6-c127-457c-bb19-f579b8d3eee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\Optick">
+      <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

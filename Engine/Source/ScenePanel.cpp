@@ -90,14 +90,17 @@ void ScenePanel::Draw(int windowFlags)
 		}
 
 		//Change the Guizmo operation using W,E & R keywords and the coordinate mode with G
-		if (ImGui::IsKeyPressed(ImGuiKey_W))
-			mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
-		if (ImGui::IsKeyPressed(ImGuiKey_E))
-			mCurrentGuizmoOperation = ImGuizmo::ROTATE;
-		if (ImGui::IsKeyPressed(ImGuiKey_R))
-			mCurrentGuizmoOperation = ImGuizmo::SCALE;
-		if (ImGui::IsKeyPressed(ImGuiKey_G))
-			mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
+		if (!ImGui::IsKeyDown(ImGuiKey_MouseRight)) {
+			if (ImGui::IsKeyPressed(ImGuiKey_W))
+				mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
+			if (ImGui::IsKeyPressed(ImGuiKey_E))
+				mCurrentGuizmoOperation = ImGuizmo::ROTATE;
+			if (ImGui::IsKeyPressed(ImGuiKey_R))
+				mCurrentGuizmoOperation = ImGuizmo::SCALE;
+			if (ImGui::IsKeyPressed(ImGuiKey_G))
+				mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
+		}
+		
 
 		ImVec2 windowPos = ImGui::GetWindowPos();
 		ImGuizmo::SetDrawlist();

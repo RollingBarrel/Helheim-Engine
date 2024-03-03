@@ -11,6 +11,7 @@
 
 struct ImGuiIO;
 class Panel;
+class OptickAdapter;
 
 class ModuleEditor : public Module
 {
@@ -33,7 +34,7 @@ private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
-	
+	OptickAdapter* mOptick;
 	void OpenLoadScene();
 };
 
