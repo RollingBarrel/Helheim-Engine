@@ -22,6 +22,9 @@ private:
 	bool mSameComponentPopup = false;
 	Component* mComponent = nullptr;
 
+	bool mLocked = false;
+	GameObject* mLockedGameObject = nullptr;
+
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);
 	void ShowSameComponentPopup();
