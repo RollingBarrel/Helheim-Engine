@@ -39,28 +39,33 @@ bool ModuleScene::Init()
 	return true;
 }
 
-GameObject* ModuleScene::FindGameObjectWithTag(std::string tagname)
+GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
 {
-	for (GameObject* child : mRoot->GetChildren())
+	if (root->GetTag()->GetID() == tagid && root != mRoot) {
+		return root;
+	}
+
+	for (GameObject* child : root->GetChildren())
 	{
-		if (child->GetTag()->GetName() == tagname) {
-			return child;
+		GameObject* foundObject = FindGameObjectWithTag(child, tagid);
+		if (foundObject != nullptr) {
+			return foundObject;
 		}
 	}
 
 	return nullptr;
 }
 
-std::vector<GameObject*> ModuleScene::FindGameObjectsWithTag(std::string tagname)
+void ModuleScene::FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects)
 {
-	std::vector<GameObject*> foundGameObjects = std::vector<GameObject*>();
-	for (GameObject* child : mRoot->GetChildren())
-	{
-		if (child->GetTag()->GetName() == tagname) {
-			foundGameObjects.push_back(child);
-		}
+	if (root->GetTag()->GetID() == tagid && root != mRoot) {
+		foundGameObjects.push_back(root);
 	}
-	return foundGameObjects;
+
+	for (GameObject* child : root->GetChildren())
+	{
+		FindGameObjectsWithTag(child, tagid, foundGameObjects);
+	}
 }
 
 void ModuleScene::Save(const char* sceneName) {

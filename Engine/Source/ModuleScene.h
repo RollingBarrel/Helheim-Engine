@@ -37,8 +37,8 @@ public:
 
 	const std::vector<GameObject*> GetRenderList() { return mRenderList; }
 
-	GameObject* FindGameObjectWithTag(std::string tagname);
-	std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
+	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagid);
+	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
 
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
