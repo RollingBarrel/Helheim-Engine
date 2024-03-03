@@ -391,6 +391,9 @@
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="NavMeshObstacleComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -978,6 +981,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshObstacleComponent.h">
+      <Filter>GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

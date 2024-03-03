@@ -12,6 +12,7 @@
 #include "CameraComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
+#include "NavMeshObstacleComponent.h"
 
 #include "ResourceMaterial.h"
 
@@ -283,6 +284,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
 					break;
 				}
+				case ComponentType::NAVMESHOBSTACLE: {
+					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
+					break;
+				}
 				case ComponentType::TEST: {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
@@ -406,6 +411,20 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		if (ImGui::DragFloat("Shininess", &shininessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
 			material->SetGlossinessFactor(shininessFactor);
 	}
+}
+
+void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)
+{
+	ImGui::SeparatorText("Navigation Mesh Obstacle");
+	
+	float Radius = component->GetRadius();
+	ImGui::InputFloat("Radius", &Radius);
+	component->SetRadius(Radius);
+
+	float Height = component->GetHeight();
+	ImGui::InputFloat("Height", &Height);
+	component->SetHeight(Height);
+	
 }
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
