@@ -103,12 +103,12 @@ void ModuleUI::LoadVBO()
 {
 	float vertices[] = {
 		// texture coordinates
-		-0.5f,  0.5f,  0.0f,  1.0f,   // top-left vertex
-		-0.5f, -0.5f,  0.0f,  0.0f,   // bottom-left vertex
-		 0.5f, -0.5f,  1.0f,  0.0f,   // bottom-right vertex
-		 0.5f,  0.5f,  1.0f,  1.0f,    // top-right vertex
-		 -0.5f,  0.5f,  0.0f,  1.0f,   // top-left vertex
-		 0.5f, -0.5f,  1.0f,  0.0f   // bottom-right vertex
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
+		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
 	};
 
 	glGenBuffers(1, &mQuadVBO);

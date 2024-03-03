@@ -20,7 +20,7 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
 	//mImage = Importer::Texture::Load("Assets/Textures/CesiumLogoFlat.png", 630045728);
-	mImage = ( ResourceTexture *) App->GetResource()->RequestResource(630045728, Resource::Type::Texture);
+	mImage = ( ResourceTexture *) App->GetResource()->RequestResource(818189439, Resource::Type::Texture);
 }
 
 ImageComponent:: ~ImageComponent() {
