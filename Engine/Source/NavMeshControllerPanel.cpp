@@ -86,7 +86,10 @@ void NavMeshControllerPanel::Draw(int windowFlags)
         {
             navController->SetDetailSampleMaxError(detailSampleMaxError);
         }
-
+        if (ImGui::Button("Build Navigation"))
+        {
+            navController->HandleBuild();
+        }
 
 
 	}
