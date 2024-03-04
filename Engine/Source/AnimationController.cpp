@@ -1,10 +1,31 @@
 #include "AnimationController.h"
+#include "ResourceAnimation.h"
 
-float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) {
+#include "Application.h"
+#include "Timer.h"
+
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+void AnimationController::Play(unsigned int resource, bool loop)
+{
+	mStartTime = App->GetGameClock()->GetTotalTime();
+}
+
+void AnimationController::Update()
+{
+	mCurrentTime = App->GetGameClock()->GetTotalTime() - mStartTime;
+
+}
+
+float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) 
+{
 	return first * (1.0f - lambda) + second * lambda;
 }
 
-Quat Interpolate(const Quat& first, const Quat& second, float lambda)
+Quat AnimationController::Interpolate(const Quat& first, const Quat& second, float lambda)
 {
 	Quat result;
 	float dot = first.Dot(second);
@@ -24,4 +45,56 @@ Quat Interpolate(const Quat& first, const Quat& second, float lambda)
 	}
 	result.Normalize();
 	return result;
+}
+
+void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
+{
+	//Milliseconds to seconds
+	float currentTime = mCurrentTime / 1000.0f;
+	//In case the animation loops, if the current time is greater than the animation duration, we change the time so it's in range
+	if (mLoop) {
+		float duration = 1.0f;
+		currentTime = std::fmod(currentTime, duration);
+	}
+
+	//PROVISIONAL
+
+	//Gets the channels
+	const std::unordered_map<std::string, ResourceAnimation::AnimationChannel*>& channels = mResource->GetChannels();
+
+	//Gets the specific channel we want
+	ResourceAnimation::AnimationChannel* channel = channels.find(name)->second;
+
+
+	if (name == "translation" && channel->hasTranslation) 
+	{
+		std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
+		auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), currentTime);
+
+		int keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
+
+		float lambda = (currentTime - channel->rotTimeStamps[keyIndex]) / (channel->rotTimeStamps[keyIndex + 1] - channel->rotTimeStamps[keyIndex]);
+
+
+		pos = Interpolate(channel->positions[keyIndex-1], channel->positions[keyIndex], lambda);
+	}
+	else if (name == "rotation" && channel->hasRotation) 
+	{
+		std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+		auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), currentTime);
+
+		int keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+
+		float lambda = (currentTime - channel->rotTimeStamps[keyIndex]) / (channel->rotTimeStamps[keyIndex + 1] - channel->rotTimeStamps[keyIndex]);
+
+
+		rot = Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda);
+	}
+	//else if (name == "scale") {
+	//}
+	else {
+		return;
+	}
+
+	//auto upperBoundIterator1 = std::upper_bound(timestamps.begin(), timestamps.end(), targetValue1);
 }

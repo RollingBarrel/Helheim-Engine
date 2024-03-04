@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
+    <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
@@ -278,6 +279,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
+    <ClInclude Include="AnimationController.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
     <ClInclude Include="CanvasComponent.h" />
