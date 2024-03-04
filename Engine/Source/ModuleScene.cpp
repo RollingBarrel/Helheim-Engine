@@ -84,10 +84,10 @@ void ModuleScene::FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::
 void ModuleScene::AddTag(std::string tagname)
 {
 	if (GetTagByName(tagname) == nullptr) {
-		Tag* newTag = new Tag(lastTagIndex, tagname, TagType::CUSTOM);
+		Tag* newTag = new Tag(mLastTagIndex, tagname, TagType::CUSTOM);
 		mTags.push_back(newTag);
 
-		++lastTagIndex;
+		++mLastTagIndex;
 	}
 }
 
