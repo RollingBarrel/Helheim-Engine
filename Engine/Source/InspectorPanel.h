@@ -33,8 +33,8 @@ private:
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
-	void DrawImageComponent(ImageComponent* component);
-	void DrawCanvasComponent(CanvasComponent* component);
+	void DrawImageComponent(ImageComponent* imageComponent);
+	void DrawCanvasComponent(CanvasComponent* imageComponent);
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);
