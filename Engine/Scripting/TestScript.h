@@ -21,6 +21,15 @@ private:
     float timePassed = 0;
 
     GameObject* gameObject;
+
+#define SCRIPT_DECLARATION(type, name, value)\
+private:\
+    type name = value;\
+    listOfAtributes.push_back(ScriptAttribute(name, type, value));
+    
+
+    SCRIPT_DECLARATION(float, fast, &fast)
+
 };
 
 
