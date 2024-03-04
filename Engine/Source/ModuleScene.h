@@ -76,7 +76,7 @@ private:
 
 	std::vector<Tag*> mTags;
 
-	unsigned lastTagIndex = 10;
+	unsigned mLastTagIndex = 10;
 
 };
 
