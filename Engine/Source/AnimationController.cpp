@@ -18,6 +18,7 @@ void AnimationController::Update()
 {
 	mCurrentTime = App->GetGameClock()->GetTotalTime() - mStartTime;
 
+
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) 
@@ -54,10 +55,12 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 	//In case the animation loops, if the current time is greater than the animation duration, we change the time so it's in range
 	if (mLoop) {
 		float duration = 1.0f;
-		currentTime = std::fmod(currentTime, duration);
+		currentTime = std::fmod(currentTime, mResource->GetDuration());
 	}
 
 	//PROVISIONAL
+
+	static float lambda;
 
 	//Gets the channels
 	const std::unordered_map<std::string, ResourceAnimation::AnimationChannel*>& channels = mResource->GetChannels();
@@ -66,26 +69,36 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 	ResourceAnimation::AnimationChannel* channel = channels.find(name)->second;
 
 
-	if (name == "translation" && channel->hasTranslation) 
+	if (name == "translation" /* && channel->hasTranslation */) 
 	{
 		std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
 		auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), currentTime);
 
 		int keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
 
-		float lambda = (currentTime - channel->rotTimeStamps[keyIndex]) / (channel->rotTimeStamps[keyIndex + 1] - channel->rotTimeStamps[keyIndex]);
+		if (upperBoundIterator != posTimeStampsVector.end()) {
+			lambda = (currentTime - channel->posTimeStamps[keyIndex]) / (channel->posTimeStamps[keyIndex + 1] - channel->posTimeStamps[keyIndex]);
+		}
+		else {
+			lambda = posTimeStampsVector.back();
+		}
 
 
 		pos = Interpolate(channel->positions[keyIndex-1], channel->positions[keyIndex], lambda);
 	}
-	else if (name == "rotation" && channel->hasRotation) 
+	else if (name == "rotation" /* && channel->hasRotation */ )
 	{
 		std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
 		auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), currentTime);
 
 		int keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
 
-		float lambda = (currentTime - channel->rotTimeStamps[keyIndex]) / (channel->rotTimeStamps[keyIndex + 1] - channel->rotTimeStamps[keyIndex]);
+		if (upperBoundIterator != rotTimeStampsVector.end()) {
+			lambda = (currentTime - channel->rotTimeStamps[keyIndex]) / (channel->rotTimeStamps[keyIndex + 1] - channel->rotTimeStamps[keyIndex]);
+		}
+		else {
+			lambda = rotTimeStampsVector.back();
+		}
 
 
 		rot = Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda);
