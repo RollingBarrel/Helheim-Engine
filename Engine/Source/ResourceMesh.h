@@ -40,7 +40,6 @@ public:
 	int GetAttributeIdx(Attribute::Type type) const;
 	//This allocates memory in the return pointer that you must delete
 	float* GetInterleavedData() const;
-	bool LoadInterleavedAttribute(float* interleavedBuffer, const Attribute& attribute, unsigned int vertexSize) const;
 
 private:
 	unsigned int* mIndices = nullptr;

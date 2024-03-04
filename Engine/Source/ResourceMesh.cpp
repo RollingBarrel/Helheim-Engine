@@ -114,29 +114,18 @@ int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
     return -1;
 }
 
-bool ResourceMesh::LoadInterleavedAttribute(float* interleavedBuffer, const Attribute& attribute, unsigned int vertexSize) const
-{
-    assert(interleavedBuffer && "Passed a nullptr buffer");
-    unsigned int idx = GetAttributeIdx(attribute.type);
-    if (idx < 0)
-        return false;
-    const Attribute& myAttribute = mAttributes[idx];
-    assert(attribute.size == myAttribute.size);
-    unsigned int j = 0;
-    for (int i = 0; i < mVertexSize * mNumVertices; i += vertexSize)
-    {
-        memcpy(&interleavedBuffer[(i + attribute.offset) / sizeof(float)], &((mAttributesData[idx])[j]), myAttribute.size);
-        j += myAttribute.size / sizeof(float);
-    }
-    return true;
-}
-
 float* ResourceMesh::GetInterleavedData() const
 {
     float* ret = new float[mNumVertices * mVertexSize / sizeof(float)];
-    for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
+    for (unsigned int vertexIdx = 0; vertexIdx < mNumVertices; ++vertexIdx)
     {
-        LoadInterleavedAttribute(ret, *it, mVertexSize);
+        for (unsigned int attributeIdx = 0; attributeIdx < mAttributes.size(); ++attributeIdx)
+        {
+            unsigned int attributeSize = mAttributes[attributeIdx].size / sizeof(float);
+            unsigned int attributeOffset = mAttributes[attributeIdx].offset / sizeof(float);
+            const float* attributeData = mAttributesData[attributeIdx];
+            memcpy(&ret[vertexIdx * attributeSize + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
+        }
     }
     return ret;
 }
