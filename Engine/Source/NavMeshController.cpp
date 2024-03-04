@@ -74,6 +74,13 @@ void NavMeshController::TranslateIndices()
 
 void NavMeshController::DebugDrawPolyMesh()
 {
+
+	if (mPolyMeshDetail == nullptr)
+		return;
+	if (mPolyMeshDetail->nmeshes < 1)
+		return;
+	
+	
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
 	glBindVertexArray(0);
 	glUseProgram(0);
@@ -121,6 +128,11 @@ void NavMeshController::Update()
 }
 
 void NavMeshController::HandleBuild() {
+	mIndices.clear();
+	mVertices.clear();
+	mMeshesToNavMesh.clear();
+	mMeshRendererComponents.clear();
+
 	GameObject* root = App->GetScene()->GetRoot();
 	GetGOMeshes(root);
 	if (mMeshRendererComponents.empty())
@@ -324,8 +336,10 @@ void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 
 void NavMeshController::LoadDrawMesh()
 {
-	if (mPolyMesh != nullptr)
+	if (mPolyMeshDetail != nullptr)
 	{
+		if (mPolyMeshDetail->nmeshes < 1)
+			return; // Maybe remove the vao from memory until new call? Warn user?
 		TranslateIndices();
 		// Now you can create the VAO and fill it with the mesh data
 		glGenVertexArrays(1, &mVao);
