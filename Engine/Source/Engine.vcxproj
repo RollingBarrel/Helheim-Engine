@@ -236,6 +236,8 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="NavMeshController.cpp" />
+    <ClCompile Include="NavMeshControllerPanel.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
     <ClCompile Include="log.cpp" />
@@ -401,6 +403,8 @@
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
+    <ClInclude Include="NavMeshController.h" />
+    <ClInclude Include="NavMeshControllerPanel.h" />
     <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="MeshRendererComponent.h" />

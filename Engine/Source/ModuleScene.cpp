@@ -13,16 +13,19 @@
 #include "ModuleEditor.h"
 #include "Archive.h"
 #include "Globals.h"
+#include "NavMeshController.h"
 
 ModuleScene::ModuleScene() {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
+	mNavMeshController = new NavMeshController();
 }
 
 ModuleScene::~ModuleScene()
 {
 	mQuadtreeRoot->CleanUp();
 	delete mQuadtreeRoot;
+	delete mNavMeshController;
 
 	delete mRoot;
 }
@@ -137,7 +140,7 @@ update_status ModuleScene::Update(float dt)
 		mQuadtreeRoot->Draw();
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
-
+	mNavMeshController->Update();
 	GenerateRenderList(mRoot);
 	DrawRenderList();
 	mRenderList.clear();
