@@ -2,6 +2,10 @@
 #include "Script.h"
 #include "Macros.h"
 
+#define SCRIPT_DECLARATION(type, name, value)\
+    type name = value; \
+    listOfAtributes.push_back(ScriptAttribute(name, type, &name)); \
+
 extern "C" class SCRIPTING_API TestScript : public Script {
 
 public:
@@ -22,16 +26,11 @@ private:
 
     GameObject* gameObject;
 
-#define SCRIPT_DECLARATION(type, name, value)\
-private:\
-    type name = value;\
-    listOfAtributes.push_back(ScriptAttribute(name, type, value));
-    
 
-    SCRIPT_DECLARATION(float, fast, &fast)
+
+    SCRIPT_DECLARATION(float, fast, 1)
 
 };
-
 
 extern "C" SCRIPTING_API Script* CreateTestScript(GameObject* owner) { return new TestScript(owner); }
 

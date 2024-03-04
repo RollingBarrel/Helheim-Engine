@@ -39,7 +39,7 @@ public:
 protected:
 
 	GameObject* mGameObject = nullptr;
-	std::vector<ScriptAtribute> listOfAtributes;
+	std::vector<ScriptAttribute> listOfAtributes;
 
 private:
 
