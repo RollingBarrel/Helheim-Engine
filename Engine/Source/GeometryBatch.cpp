@@ -31,7 +31,7 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	glGenBuffers(1, &mEbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glGenBuffers(1, &mSsboModels);
-	glGenBuffers(1, &mSsboMaterials);;
+	glGenBuffers(1, &mSsboMaterials);
 	glGenBuffers(1, &mIbo);
 	
 
@@ -44,7 +44,6 @@ GeometryBatch::GeometryBatch(MeshRendererComponent* mesh)
 	}
 
 	glBindVertexArray(0);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	AddMesh(mesh);
 
