@@ -21,6 +21,18 @@ NavMeshController::NavMeshController()
 
 NavMeshController::~NavMeshController()
 {
+	mVertices.clear();
+	mIndices.clear();
+	mMeshesToNavMesh.clear();
+	mMeshRendererComponents.clear();
+
+	delete mPolyMeshDetail;
+	delete mPolyMesh;
+	delete mContourSet;
+	delete mCompactHeightField;
+	delete mHeightField;
+	delete mTriangleAreas;
+
 }
 
 void NavMeshController::Reset() {
