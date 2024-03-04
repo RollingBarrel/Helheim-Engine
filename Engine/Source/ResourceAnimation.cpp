@@ -66,44 +66,40 @@ void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf
     size_t numKeyframes = outputAccessor.count;
 
     if (channel.target_path == "translation" && ourChannel->hasTranslation == false) {
+
         ourChannel->positions = std::make_unique<float3[]>(numKeyframes);
         ourChannel->posTimeStamps = std::make_unique<float[]>(numKeyframes);
 
         for (size_t i = 0; i < numKeyframes; ++i) {
-            size_t translationIndex = i * inputAccessor.count;
 
+            size_t translationIndex = i * inputAccessor.count;
 
             ourChannel->positions[i] = float3(outputPtr[translationIndex], outputPtr[translationIndex + 1], outputPtr[translationIndex + 2]); // Store the position for each keyframe
             ourChannel->posTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
             ourChannel->numPositions++;
-            ourChannel->hasTranslation = true;
-
+            
         }
+
+        ourChannel->hasTranslation = true;
+
     }
     else if (channel.target_path == "rotation" && ourChannel->hasRotation == false) {
+
         ourChannel->rotations = std::make_unique<Quat[]>(numKeyframes);
         ourChannel->rotTimeStamps = std::make_unique<float[]>(numKeyframes);
+
         for (size_t i = 0; i < numKeyframes; ++i) {
+
             size_t rotationIndex = i * inputAccessor.count;
 
             ourChannel->rotations[i] = Quat(outputPtr[rotationIndex], outputPtr[rotationIndex + 1], outputPtr[rotationIndex + 2], outputPtr[rotationIndex + 3]); // Store the rotation for each keyframe
             ourChannel->rotTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
             ourChannel->numRotations++;
-            ourChannel->hasRotation = true;
 
         }
-    }
-    //else if (channel.target_path == "scale" && ourChannel->hasRotation == false) {
-    //    for (size_t i = 0; i < numKeyframes; ++i) {
-    //        size_t scaleIndex = i * inputAccessor.count;
-    //        ourChannel->scales = std::make_unique<float3[]>(numKeyframes);
-    //        ourChannel->scaleTimeStamps = std::make_unique<float[]>(numKeyframes);
-    //        ourChannel->scales[i] = float3(outputPtr[scaleIndex], outputPtr[scaleIndex + 1], outputPtr[scaleIndex + 2]); // Store the position for each keyframe
-    //        ourChannel->scaleTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
-    //        ourChannel->numScales++;
-    //        ourChannel->hasScale = true;
 
-    //    }
+        ourChannel->hasRotation = true;
+    }
 
 }
 

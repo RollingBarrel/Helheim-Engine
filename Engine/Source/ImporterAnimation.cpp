@@ -40,6 +40,9 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
                     ourAnimation->addChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
                 }
             }
+            
+            ourAnimation->mChannels[name] = ourChannel;
+
         }
         //animation -> mUID = math::LCG().Int();
          //delete ourChannel;
@@ -113,7 +116,7 @@ void Importer::Animation::Save (ResourceAnimation* ourAnimation)
     delete[] fileBuffer;
 }
 
-ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int uid, const tinygltf::Model& model, const tinygltf::Animation& animation)
+ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int uid)
 {
     char* fileBuffer = nullptr;
     ResourceAnimation* ourAnimation = nullptr;
@@ -174,8 +177,8 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
                 memcpy(rotations, cursor, bytes);
                 cursor += bytes;
             }
-            tinygltf::AnimationChannel tChannel;
-            ourAnimation->addChannels(model, animation, tChannel, ourAnimation, nullptr);
+            
+            ourAnimation->mChannels[nodeName] = channel;
 
 
         }

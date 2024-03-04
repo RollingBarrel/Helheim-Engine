@@ -24,6 +24,6 @@ namespace Importer {
 
         void Save( ResourceAnimation* ourAnimation);
 
-        ResourceAnimation* Load(const char* fileName, unsigned int uid, const tinygltf::Model& model, const tinygltf::Animation& animation);
+        ResourceAnimation* Load(const char* fileName, unsigned int uid);
     }
 }
