@@ -3,8 +3,6 @@
 
 #include <vector>
 
-#include "ImporterModel.h"
-
 #include "float3.h"
 #include "Quat.h"
 
@@ -12,6 +10,7 @@ typedef struct ModelIds {
 	unsigned int meshUID;
 	unsigned int materialUID;
 }ModelIds;
+
 
 struct ModelNode
 {
@@ -24,7 +23,7 @@ struct ModelNode
 
 	int mMeshId;
 
-	std::vector<ModelIds>mUids;
+	std::vector<ModelIds> mUids;
 	std::vector<ModelNode> mChildren;
 
 	//Components
