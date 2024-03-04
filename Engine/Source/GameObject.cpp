@@ -13,15 +13,15 @@
 #include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
+#include "ModuleScene.h"
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
-#include "TagsManager.h"
 #include "Tag.h"
 #include "NavMeshObstacleComponent.h"
 
 GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetTags()->GetTagByName("Untagged")),
+	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -71,7 +71,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 }
 
 GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetTags()->GetTagByName("Untagged")),
+	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 
@@ -85,7 +85,7 @@ GameObject::GameObject(const char* name, GameObject* parent)
 GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
 	:mID(id), mName(name), mParent(parent), mPosition(position),
 	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr),
-	mTag(App->GetTags()->GetTagByName("Untagged"))
+	mTag(App->GetScene()->GetTagByName("Untagged"))
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 	if (!mIsRoot) {
@@ -528,7 +528,7 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	float3 position;
 	float3 scale;
 	Quat rotation;
-	Tag* tag = App->GetTags()->GetTagByName("Untagged");
+	Tag* tag = App->GetScene()->GetTagByName("Untagged");
 
 	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) {
 		uuid = gameObject["UID"].GetInt();
@@ -578,7 +578,7 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	if (gameObject.HasMember("Tag")) {
 		const rapidjson::Value& tagint = gameObject["Tag"];
 		int tagid = tagint.GetInt();
-		Tag* loadedTag = App->GetTags()->GetTagByID(tagid);
+		Tag* loadedTag = App->GetScene()->GetTagByID(tagid);
 
 		if (loadedTag != nullptr) {
 			tag = loadedTag;
@@ -621,7 +621,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 
 GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 {
-	Tag* tag = App->GetTags()->GetTagByName(tagname);
+	Tag* tag = App->GetScene()->GetTagByName(tagname);
 
 	if (tag != nullptr) {
 		return App->GetScene()->FindGameObjectWithTag(App->GetScene()->GetRoot(), tag->GetID());
@@ -635,7 +635,7 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 {
 	std::vector<GameObject*> foundGameObjects;
-	Tag* tag = App->GetTags()->GetTagByName(tagname);
+	Tag* tag = App->GetScene()->GetTagByName(tagname);
 	App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetRoot(), tag->GetID(), foundGameObjects);
 
 	return foundGameObjects;

@@ -5,7 +5,6 @@
 
 #include "imgui.h"
 #include "ImGuizmo.h"
-#include "TagsManager.h"
 
 #include <map>
 

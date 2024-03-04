@@ -270,7 +270,6 @@
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
-    <ClCompile Include="TagsManager.cpp" />
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TagsManagerPanel.cpp" />
     <ClCompile Include="TestComponent.cpp" />
@@ -416,7 +415,6 @@
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterTexture.h" />
-    <ClInclude Include="TagsManager.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="ModuleUI.h" />

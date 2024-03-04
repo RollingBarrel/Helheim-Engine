@@ -16,7 +16,6 @@ class ModuleUI;
 
 class Timer;
 class PreciseTimer;
-class TagsManager;
 
 class Application
 {
@@ -43,8 +42,6 @@ public:
     Timer* GetGameClock() const { return mGameTimer; }
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
-
-    TagsManager* GetTags() { return mTagsManager; }
 
     //In case we want to use precise timer
 
@@ -76,9 +73,6 @@ private:
     Timer* mEngineTimer;
     Timer* mGameTimer;
     Timer* mCurrentTimer = nullptr;
-
-    // Tags Manager
-    TagsManager* mTagsManager = nullptr;
 
     //In case we want to use precise timer
     

@@ -7,6 +7,7 @@
 class Quadtree;
 class GameObject;
 class Archive;
+class Tag;
 
 class ModuleScene : public Module
 {
@@ -40,6 +41,16 @@ public:
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagid);
 	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
 
+	void AddTag(std::string tag);
+	int GetSize() { return mTags.size(); };
+	int GetCustomTagsSize();
+	std::vector<Tag*> GetAllTags() { return mTags; };
+	std::vector<Tag*> GetSystemTag();
+	std::vector<Tag*> GetCustomTag();
+	Tag* GetTagByName(std::string tagname);
+	Tag* GetTagByID(unsigned id);
+	void DeleteTag(Tag* tag);
+
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
 
@@ -62,6 +73,10 @@ private:
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
 	std::vector<GameObject*> mRenderList;
+
+	std::vector<Tag*> mTags;
+
+	unsigned lastTagIndex = 10;
 
 };
 

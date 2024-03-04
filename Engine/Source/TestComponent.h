@@ -20,7 +20,6 @@ public:
 
 	// Just for test
 	int mTestSavedTag1 = 0;
-	int mTestSavedTag2 = 0;
 
 private:
 	int number = 0;

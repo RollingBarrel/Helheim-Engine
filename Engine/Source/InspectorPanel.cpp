@@ -13,7 +13,6 @@
 #include "CameraComponent.h"
 #include "ImporterMaterial.h"
 #include "Tag.h"
-#include "TagsManager.h"
 #include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
 
@@ -58,7 +57,7 @@ void InspectorPanel::Draw(int windowFlags)
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
-		std::vector<Tag*> tags = App->GetTags()->GetAllTags();
+		std::vector<Tag*> tags = App->GetScene()->GetAllTags();
 
 		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
 		{
@@ -350,7 +349,7 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::SeparatorText("TAGS SYSYEM TEST");
 	ImGui::Text("The first name of game object found with");
 	ImGui::SameLine();
-	std::vector<Tag*> tags = App->GetTags()->GetAllTags();
+	std::vector<Tag*> tags = App->GetScene()->GetAllTags();
 
 	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
 	{

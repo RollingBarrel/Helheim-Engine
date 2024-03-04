@@ -1,6 +1,7 @@
 #include "TagsManagerPanel.h"
 #include "Application.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
 #include "Tag.h"
 #include "imgui.h"
 
@@ -32,18 +33,18 @@ void TagsManagerPanel::Draw(int windowFlags)
 void TagsManagerPanel::DrawTagsList()
 {
     int yMax;
-    if (18 * App->GetTags()->GetCustomTagsSize() >= 300) {
+    if (18 * App->GetScene()->GetCustomTagsSize() >= 300) {
         yMax = 300;
     }
-    else if (18 * App->GetTags()->GetCustomTagsSize() == 0) {
+    else if (18 * App->GetScene()->GetCustomTagsSize() == 0) {
         yMax = 18;
     }
     else {
-        yMax = 18 * App->GetTags()->GetCustomTagsSize();
+        yMax = 18 * App->GetScene()->GetCustomTagsSize();
     }
     ImVec2 size = ImVec2(200.0f, yMax);
 
-    std::vector<Tag*> customTags = App->GetTags()->GetCustomTag();
+    std::vector<Tag*> customTags = App->GetScene()->GetCustomTag();
 
     if (ImGui::BeginListBox("##Tags", size))
     {
@@ -66,7 +67,7 @@ void TagsManagerPanel::DrawDeleteButton()
     if (ImGui::Button("Delete selected tag"))
     {
         if (mSelectedTag != nullptr) {
-            App->GetTags()->DeleteTag(mSelectedTag);
+            App->GetScene()->DeleteTag(mSelectedTag);
         }
     }
 }
@@ -79,7 +80,7 @@ void TagsManagerPanel::DrawAddButton()
 
     if (ImGui::Button("Add") && std::strlen(inputBuffer) > 0)
     {
-        App->GetTags()->AddTag(inputBuffer);
+        App->GetScene()->AddTag(inputBuffer);
         strcpy_s(inputBuffer, "");
     }
 }
