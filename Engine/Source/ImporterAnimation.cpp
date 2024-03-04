@@ -48,6 +48,7 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
     
     if (ourAnimation) {
         Importer::Animation::Save(ourAnimation);
+       
     }
 
 }
@@ -111,7 +112,88 @@ void Importer::Animation::Save (ResourceAnimation* ourAnimation)
     delete[] libraryPath;
     delete[] fileBuffer;
 }
-//
+
+ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int uid, const tinygltf::Model& model, const tinygltf::Animation& animation)
+{
+    char* fileBuffer = nullptr;
+    ResourceAnimation* ourAnimation = nullptr;
+
+    if (App->GetFileSystem()->Load(filePath, &fileBuffer))
+    {
+        // Load Header
+        char* cursor = fileBuffer;
+        unsigned int header[2];
+        unsigned int bytes = sizeof(header);
+        memcpy(header, cursor, bytes);
+        cursor += bytes;
+        unsigned int numChannels = header[0];
+        float duration = *reinterpret_cast<float*>(cursor);
+        cursor += sizeof(float);
+
+        ourAnimation = new ResourceAnimation(uid, "");
+
+        // Load Channels
+        for (unsigned int i = 0; i < numChannels; ++i)
+        {
+            unsigned int nodeNameSize;
+            memcpy(&nodeNameSize, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            std::string nodeName(cursor, nodeNameSize);
+            cursor += nodeNameSize;
+
+            ResourceAnimation::AnimationChannel* channel = new ResourceAnimation::AnimationChannel;
+
+            float* posTimeStamps = nullptr;
+            float* positions = nullptr;
+            float* rotTimeStamps = nullptr;
+            float* rotations = nullptr;
+
+            if (channel->hasTranslation)
+            {
+                bytes = sizeof(float) * channel->numPositions;
+                posTimeStamps = new float[channel->numPositions];
+                memcpy(posTimeStamps, cursor, bytes);
+                cursor += bytes;
+
+                bytes = sizeof(float) * 3 * channel->numPositions;
+                positions = new float[3 * channel->numPositions];
+                memcpy(positions, cursor, bytes);
+                cursor += bytes;
+            }
+
+            if (channel->hasRotation)
+            {
+                bytes = sizeof(float) * channel->numRotations;
+                rotTimeStamps = new float[channel->numRotations];
+                memcpy(rotTimeStamps, cursor, bytes);
+                cursor += bytes;
+
+                bytes = sizeof(float) * 4 * channel->numRotations;
+                rotations = new float[4 * channel->numRotations];
+                memcpy(rotations, cursor, bytes);
+                cursor += bytes;
+            }
+            tinygltf::AnimationChannel tChannel;
+            ourAnimation->addChannels(model, animation, tChannel, ourAnimation, nullptr);
+
+
+        }
+
+        delete[] fileBuffer;
+    }
+
+    return ourAnimation;
+}
+
+
+
+
+
+
+
+
+// OLD ANIMATION LOAD
 //void Importer::Animation::Load(ResourceAnimation* ourAnimation, const char* fileName) {
 //    if (!ourAnimation || !fileName)
 //        return;
