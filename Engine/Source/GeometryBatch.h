@@ -8,6 +8,21 @@ struct ResourceMaterial;
 typedef struct Attribute;
 typedef struct __GLsync* GLsync;
 
+typedef struct BatchMeshRendererComponent
+{
+	const MeshRendererComponent* component;
+	unsigned int firstIndex = 0;	// Index offset in the EBO
+	unsigned int baseVertex = 0;	// Vertex offset in the VBO
+} BatchMeshRendererComponent;
+
+typedef struct BatchMeshRendererResource
+{
+	const ResourceMesh* resource;
+	unsigned int firstIndex = 0;	// Index offset in the EBO
+	unsigned int baseVertex = 0;	// Vertex offset in the VBO
+}BatchMeshRendererResource;
+
+
 typedef struct Command
 {
 	unsigned int mCount = 0;		 // Number of indices in the mesh
@@ -50,13 +65,12 @@ public:
 	void AddMesh(const MeshRendererComponent* component );
 	void EditMaterial(const MeshRendererComponent* component);
 	void RemoveMesh(const MeshRendererComponent* component);
-	void AddCommand(const MeshRendererComponent* mesh);
 	void Draw();
 
 private:
 
-	std::vector<const MeshRendererComponent*> mMeshComponents;
-	std::vector<const ResourceMesh*> mUniqueMeshes;
+	std::vector<BatchMeshRendererComponent> mMeshComponents;
+	std::vector<BatchMeshRendererResource> mUniqueMeshes;
 	std::vector<const ResourceMaterial*> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;

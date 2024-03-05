@@ -61,11 +61,6 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::CreateCommand()
-{
-	mBatch->AddCommand(this);
-}
-
 void MeshRendererComponent::EditMaterial() const
 {
 	mBatch->EditMaterial(this);

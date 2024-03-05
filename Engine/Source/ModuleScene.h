@@ -5,6 +5,7 @@
 #include <vector>
 class Quadtree;
 class GameObject;
+class MeshRendererComponent;
 class Archive;
 
 class ModuleScene : public Module
@@ -34,16 +35,12 @@ public:
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
-	const std::vector<GameObject*> GetRenderList() { return mRenderList; }
-
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
 
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
-	void GenerateRenderList(GameObject* root);
-	void DrawRenderList();
 
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
@@ -56,7 +53,6 @@ private:
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	std::vector<GameObject*> mRenderList;
 
 };
 

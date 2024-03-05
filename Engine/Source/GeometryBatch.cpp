@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
+#include "ModuleScene.h"
 #include "GeometryBatch.h"
 #include <cassert>
 #include "glew.h"
@@ -103,9 +104,6 @@ void GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 
 void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 {
-	cMesh->SetBatch(this);
-	mMeshComponents.push_back(cMesh);
-
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
@@ -168,18 +166,19 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
+	mMeshComponents.emplace_back(cMesh);
 	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();
-	for (const ResourceMesh* mesh : mUniqueMeshes) {
-		if (mesh->GetUID() == rMesh.GetUID()) {
-			//rMesh.SetVertexBase(mesh->GetVertexBase());
-			//rMesh.SetEboPosition(mesh->GetEboPosition());
+	for (const BatchMeshRendererResource mesh : mUniqueMeshes) 
+	{
+		if (mesh.resource->GetUID() == rMesh.GetUID()) 
+		{
+			mMeshComponents.back().firstIndex = mesh.firstIndex;
+			mMeshComponents.back().baseVertex = mesh.baseVertex;
 			return;
 		}
 	}
 
-	mUniqueMeshes.push_back(&rMesh);
-
-	//rMesh.SetVertexBase(mVboNumElements * sizeof(float) / rMesh.GetVertexSize());
+	unsigned int baseVertex = mVboNumElements * sizeof(float) / rMesh.GetVertexSize();
 	unsigned int newNumElements = mVboNumElements + rMesh.GetNumberVertices() * rMesh.GetVertexSize() / sizeof(float);
 	float* tmp = new float[newNumElements];
 	if(mVboData)
@@ -194,7 +193,7 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	//rMesh.SetEboPosition(mEboNumElements);
+	unsigned int firstIndex = mEboNumElements;
 	newNumElements = mEboNumElements + rMesh.GetNumberIndices();
 	unsigned int* tmp2 = new unsigned int[newNumElements];
 	if (mEboData)
@@ -207,7 +206,7 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements * sizeof(unsigned int), mEboData, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
+	mUniqueMeshes.emplace_back(&rMesh, firstIndex, baseVertex);
 }
 
 void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
@@ -263,40 +262,41 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 	}
 }
 
-
-void GeometryBatch::AddCommand(const MeshRendererComponent* mesh)
-{
-	
-	Command command;
-	command.mCount = mesh->GetResourceMesh()->GetNumberIndices();
-	command.mInstanceCount = 1;
-	//command.firstIndex = mesh->GetResourceMesh()->GetEboPosition();
-	//command.baseVertex = mesh->GetResourceMesh()->GetVertexBase();
-	command.baseInstance = mCommands.size();
-
-	mCommands.push_back(command);
-}
-
-
 void GeometryBatch::Draw()
 {
-	App->GetOpenGL()->BindSceneFramebuffer();
-
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 	glBindVertexArray(mVao);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
 
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 	if (mSync[idx])
 	{
 		GLenum waitReturn = GL_UNSIGNALED;
-		while (waitReturn != GL_ALREADY_SIGNALED && waitReturn != GL_CONDITION_SATISFIED) {
+		while (waitReturn != GL_ALREADY_SIGNALED && waitReturn != GL_CONDITION_SATISFIED) 
+		{
 			waitReturn = glClientWaitSync(mSync[idx], GL_SYNC_FLUSH_COMMANDS_BIT, 1000000000);
 		}
 	}
 
+	mCommands.clear();
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
+	for (const BatchMeshRendererComponent batchMeshRenderer : mMeshComponents)
+	{
+		const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
+		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
+		// Enable/disable mesh renderer component
+		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
+		{
+			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()) 
+			{
+				mCommands.emplace_back(rMesh->GetNumberIndices(), 1, batchMeshRenderer.firstIndex, batchMeshRenderer.baseVertex, mCommands.size());
+			}
+		}
+	}
+
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
+	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
+
+
 	for (unsigned int i = 0; i < mMeshComponents.size(); ++i) {
 		memcpy(mSsboModelMatricesData[idx] + 16 * i, mMeshComponents[i]->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 	}
@@ -315,7 +315,6 @@ void GeometryBatch::Draw()
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
 	glUseProgram(0);
 	mCommands.clear();
-	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	++mDrawCount;
 }

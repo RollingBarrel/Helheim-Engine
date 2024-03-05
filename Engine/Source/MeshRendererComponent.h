@@ -28,12 +28,11 @@ public:
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const GeometryBatch* GetBatch() const { return mBatch; }
 	void SetBatch(GeometryBatch* batch) { mBatch = batch; }
-	void CreateCommand();
 	const AABB GetAABB() const { return mAABB; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
-	bool IsInsideFrustum() { return mInsideFrustum;  }
+	bool IsInsideFrustum() const { return mInsideFrustum;  }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void EditMaterial() const;
 private:

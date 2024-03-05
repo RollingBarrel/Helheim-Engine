@@ -47,13 +47,12 @@ void BatchManager::AddMeshRendererComponent(MeshRendererComponent* meshComponent
 	mBatches.push_back(newBatch);
 }
 
-void BatchManager::Draw()
+void BatchManager::Draw(const std::vector<const MeshRendererComponent*>& renderList)
 {
-
-	for (GeometryBatch* batch : mBatches) {
+	for (GeometryBatch* batch : mBatches) 
+	{
 		batch->Draw();
 	}
-
 }
 
 

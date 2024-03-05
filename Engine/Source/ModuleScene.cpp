@@ -141,9 +141,7 @@ update_status ModuleScene::Update(float dt)
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
 
-	GenerateRenderList(mRoot);
-	DrawRenderList();
-	mRenderList.clear();
+	App->GetOpenGL()->Draw();
 
 	return UPDATE_CONTINUE;
 }
@@ -181,39 +179,4 @@ void ModuleScene::DuplicateGameObjects() {
 	mGameObjectsToDuplicate.clear();
 	mQuadtreeRoot->UpdateTree();
 
-}
-
-void ModuleScene::GenerateRenderList(GameObject* root)
-{
-	// if engine slows down there is an optimization 
-	// HERE on getMeshRenderer
-	if (root->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		mRenderList.push_back(root);
-	}
-	for (GameObject* child : root->GetChildren())
-	{
-		GenerateRenderList(child);
-	}
-}
-
-void ModuleScene::DrawRenderList()
-{
-
-	for (GameObject* objectToRender : mRenderList)
-	{
-		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(objectToRender->GetComponent(ComponentType::MESHRENDERER));
-
-		// Enable/disable mesh renderer component
-		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
-		{
-			if (!mApplyculling || meshRenderer->IsInsideFrustum()) {
-				
-				meshRenderer->CreateCommand();
-			}
-		}
-	}
-
-	//TODO: No se si cridar aqui el draw o en el mateix update del renderer fer el draw
-	App->GetOpenGL()->Draw();
 }

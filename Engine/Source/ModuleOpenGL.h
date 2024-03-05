@@ -73,7 +73,7 @@ public:
 	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
 	void AddMeshRendererComponent(MeshRendererComponent* mesh);
-	void Draw();
+	void Draw(const std::vector<const MeshRendererComponent*>& renderList);
 
 
 private:
