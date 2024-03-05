@@ -195,8 +195,23 @@ void NavMeshController::HandleBuild() {
 			LOG("buildNavigation: Out of memory 'mTriangleAreas'");
 			return;
 		}
-		float* vertices = (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS));
+		float* vertices = (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS)); // TODO: Translate using testMesh->WorldTransform
+		float4x4 objectTransform = testMesh->GetOwner()->GetWorldTransform();
+		std::vector<float> transformedVerts;
+
 		int numberOfVertices = testMesh->GetResourceMesh()->GetNumberVertices();
+
+		for (int i = 0; i < numberOfVertices * 3; i += 3) 
+		{
+			float4 operationTemp = objectTransform * float4(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f) ;
+			operationTemp = operationTemp / operationTemp.w;
+			transformedVerts.push_back(operationTemp.x);
+			transformedVerts.push_back(operationTemp.y);
+			transformedVerts.push_back(operationTemp.z);
+
+
+		}
+		
 
 
 		const int* triangle = (const int*)(testMesh->GetResourceMesh()->mIndices);
@@ -204,9 +219,9 @@ void NavMeshController::HandleBuild() {
 
 
 		memset(mTriangleAreas, 0, numberOfTriangles * sizeof(unsigned char));
-		rcMarkWalkableTriangles(&mRecastContext, mMaxSlopeAngle, vertices, numberOfVertices, triangle, numberOfTriangles, mTriangleAreas);
+		rcMarkWalkableTriangles(&mRecastContext, mMaxSlopeAngle, &transformedVerts[0], numberOfVertices, triangle, numberOfTriangles, mTriangleAreas);
 
-		if (!rcRasterizeTriangles(&mRecastContext, vertices, numberOfVertices, triangle, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
+		if (!rcRasterizeTriangles(&mRecastContext, &transformedVerts[0], numberOfVertices, triangle, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
 		{
 			LOG("buildNavigation: Could not rasterize triangles.");
 			return;
