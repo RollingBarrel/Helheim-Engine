@@ -36,5 +36,8 @@ private:
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned int CompileShader(unsigned type, const char* source) const;
 
+	//*******************************************************
+	bool mScreen = true;
+	//*******************************************************
 };
 
