@@ -4,6 +4,7 @@
 
 class MeshRendererComponent;
 struct ResourceMesh;
+struct ResourceMaterial;
 typedef struct Attribute;
 typedef struct __GLsync* GLsync;
 
@@ -32,12 +33,16 @@ private:
 	uint64_t padding = 0;
 }Material;
 
+typedef struct BufferIndices{
+	uint32_t Metarial;
+}ShaderIndices;
+
 #define NUM_BUFFERS 3
 class GeometryBatch
 {
 public:
 
-	GeometryBatch(MeshRendererComponent* mesh);
+	GeometryBatch(const MeshRendererComponent* mesh);
 	~GeometryBatch();
 
 	void GetAttributes(std::vector<Attribute>& attributes) const;
@@ -52,6 +57,7 @@ private:
 
 	std::vector<const MeshRendererComponent*> mMeshComponents;
 	std::vector<const ResourceMesh*> mUniqueMeshes;
+	std::vector<const ResourceMaterial*> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
 	unsigned int mVertexSize = 0;
@@ -63,8 +69,10 @@ private:
 	unsigned int mIbo = 0;
 
 	uint64_t mDrawCount = 0;
-	unsigned int mSsboModels = 0;
-	float* mSsboModelsData[NUM_BUFFERS];
+	unsigned int mSsboModelMatrices = 0;
+	float* mSsboModelMatricesData[NUM_BUFFERS];
+	unsigned int mSsboIndices = 0;
+	uint32_t* mSsboIndicesData[NUM_BUFFERS];
 	GLsync mSync[NUM_BUFFERS];
 
 	unsigned int mSsboMaterials = 0;

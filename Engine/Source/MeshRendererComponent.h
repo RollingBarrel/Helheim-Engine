@@ -34,7 +34,7 @@ public:
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 	bool IsInsideFrustum() { return mInsideFrustum;  }
-	const ResourceMaterial* GetMaterial() const { return mMaterial; }
+	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void EditMaterial() const;
 private:
 	ResourceMesh* mMesh = nullptr;
