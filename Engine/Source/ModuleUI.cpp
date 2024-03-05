@@ -45,7 +45,7 @@ update_status ModuleUI::Update(float dt) {
 	Frustum* originalFrustum = new Frustum();
 	*originalFrustum = *(App->GetCamera()->GetFrustum());
 
-	if (mScreen == true) {
+	if (mScreenSpace == true) {
 		// Set Orthografic configuration
 		int height, width;
 		height = App->GetWindow()->GetHeight();
@@ -57,15 +57,16 @@ update_status ModuleUI::Update(float dt) {
 		glLoadIdentity();
 		glOrtho(0, width, height, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
-		glDisable(GL_DEPTH_TEST);
+
+		//glDisable(GL_DEPTH_TEST);
 		*/
 
 		Frustum* UIfrustum = new Frustum();
 
 		UIfrustum->type = FrustumType::OrthographicFrustum;
-		UIfrustum->orthographicHeight = height;
-		UIfrustum->orthographicWidth = width;
-
+		UIfrustum->orthographicWidth = static_cast<float>(width);
+		UIfrustum->orthographicHeight = static_cast<float>(height); // Cast a float para evitar divisiones enteras
+		
 		// Dirección frontal y dirección arriba
 		UIfrustum->front = -float3::unitZ;
 		UIfrustum->up = float3::unitY;
@@ -77,13 +78,45 @@ update_status ModuleUI::Update(float dt) {
 
 		//***************************************************************
 
-		UIfrustum->verticalFov = math::pi / 4.0f;
-
 		float aspect_ratio = App->GetWindow()->GetAspectRatio();
 		//float aspect_ratio = width / height;
 
-		//UIfrustum->horizontalFov = 2.f * atanf(tanf(math::DegToRad(90) * 0.5f) * aspect_ratio);
-		UIfrustum->horizontalFov = 2.f * atanf(tanf(UIfrustum->verticalFov * 0.5f) * aspect_ratio);
+		//***************************************************************
+		
+		/*
+		//Rectangular con márgenes
+		float hFov = math::DegToRad(90);
+		UIfrustum->horizontalFov = hFov;
+		UIfrustum->verticalFov = 2.f * Atan(Tan(hFov * 0.5f) / aspect_ratio);
+		*/
+
+		//***************************************************************
+
+		
+		UIfrustum->verticalFov = math::pi / 4.0f;
+		//Cuadrada:
+		UIfrustum->horizontalFov = 2.f * atanf(tanf(math::DegToRad(90) * 0.5f) * aspect_ratio);
+		
+		//Rectangular:
+		//UIfrustum->horizontalFov = 2.f * atanf(tanf(UIfrustum->verticalFov * 0.5f) * aspect_ratio);
+		
+		//***************************************************************
+		
+		//Rectangular pero el tamaño horizontal encaja mejor con el tamaño de ventana: 1240 x 740
+		/*
+		float hFov = math::DegToRad(90);
+		UIfrustum->horizontalFov = 2.f * Atan(Tan(hFov * 0.5f) * aspect_ratio);
+		UIfrustum->verticalFov = hFov; 
+		*/
+		//***************************************************************
+
+		/*
+		float vFov = math::DegToRad(90); // Campo de visión vertical
+		float hFov = 2.f * Atan(Tan(vFov * 0.5f) / aspect_ratio); // Campo de visión horizontal ajustado según el aspect ratio
+
+		UIfrustum->horizontalFov = hFov;
+		UIfrustum->verticalFov = vFov;
+		*/
 
 		//***************************************************************
 
