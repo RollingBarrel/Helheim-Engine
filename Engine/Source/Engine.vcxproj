@@ -241,6 +241,7 @@
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterNavMesh.cpp" />
+    <ClCompile Include="ImporterScript.cpp" />
     <ClCompile Include="ImporterShader.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
@@ -268,6 +269,7 @@
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
+    <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
@@ -405,6 +407,8 @@
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImporterScript.h" />
+    <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />

@@ -403,6 +403,12 @@
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceScript.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterScript.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1002,6 +1008,12 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceScript.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterScript.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
