@@ -56,6 +56,12 @@ Quat AnimationController::Interpolate(const Quat& first, const Quat& second, flo
 
 void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 {
+	//Checks and gets the channel we want
+	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(name)->second;
+	if (channel == nullptr) {
+		return;
+	}
+
 	//Milliseconds to seconds
 	float currentTime = mCurrentTime / 1000.0f;
 	//In case the animation loops, if the current time is greater than the animation duration, we change the time so it's in range
@@ -63,15 +69,10 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 		currentTime = std::fmod(currentTime, mAnimation->GetDuration());
 	}
 
-	//PROVISIONAL
 	static float lambda;
 	static int keyIndex;
 
-	//Gets the specific channel we want
-	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(name)->second;
-
-
-	if (name == "translation" /* && channel->hasTranslation */) 
+	if (channel->hasTranslation) 
 	{
 		std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
 		auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), currentTime);
@@ -89,7 +90,7 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 
 		pos = Interpolate(channel->positions[keyIndex-1], channel->positions[keyIndex], lambda);
 	}
-	else if (name == "rotation" /* && channel->hasRotation */ )
+	else if (channel->hasRotation)
 	{
 		//Conversion of std::unique_ptr<float[]> to std::vector<float>
 		std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);

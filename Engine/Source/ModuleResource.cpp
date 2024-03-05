@@ -7,6 +7,7 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
+#include "ResourceAnimation.h"
 
 #include <algorithm>
 
