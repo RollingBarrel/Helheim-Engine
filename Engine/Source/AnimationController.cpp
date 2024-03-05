@@ -9,6 +9,12 @@
 #include <algorithm>
 #include <iostream>
 
+AnimationController::AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop) {
+	mAnimation = animation;
+	mResource = resource;
+	mLoop = loop;
+}
+
 void AnimationController::Play(unsigned int resource, bool loop)
 {
 	mStartTime = App->GetGameClock()->GetTotalTime();
@@ -54,19 +60,15 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 	float currentTime = mCurrentTime / 1000.0f;
 	//In case the animation loops, if the current time is greater than the animation duration, we change the time so it's in range
 	if (mLoop) {
-		float duration = 1.0f;
-		currentTime = std::fmod(currentTime, mResource->GetDuration());
+		currentTime = std::fmod(currentTime, mAnimation->GetDuration());
 	}
 
 	//PROVISIONAL
 
 	static float lambda;
 
-	//Gets the channels
-	const std::unordered_map<std::string, ResourceAnimation::AnimationChannel*>& channels = mResource->GetChannels();
-
 	//Gets the specific channel we want
-	ResourceAnimation::AnimationChannel* channel = channels.find(name)->second;
+	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(name)->second;
 
 
 	if (name == "translation" /* && channel->hasTranslation */) 
@@ -77,10 +79,10 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 		int keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
 
 		if (upperBoundIterator != posTimeStampsVector.end()) {
-			lambda = (currentTime - channel->posTimeStamps[keyIndex]) / (channel->posTimeStamps[keyIndex + 1] - channel->posTimeStamps[keyIndex]);
+			lambda = (currentTime - channel->posTimeStamps[keyIndex-1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex-1]);
 		}
 		else {
-			lambda = posTimeStampsVector.back();
+			lambda = 0;
 		}
 
 
@@ -88,14 +90,19 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 	}
 	else if (name == "rotation" /* && channel->hasRotation */ )
 	{
+		//Conversion of std::unique_ptr<float[]> to std::vector<float>
 		std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+		//Iterating using std::upper_bound to fins the first higher number than currentTime in an ordered array
 		auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), currentTime);
 
+		//Distance between the first element and the first higher element, aka the position of the first higher element
 		int keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
 
+		//Calculating lambda if an upper bound has been found
 		if (upperBoundIterator != rotTimeStampsVector.end()) {
 			lambda = (currentTime - channel->rotTimeStamps[keyIndex]) / (channel->rotTimeStamps[keyIndex + 1] - channel->rotTimeStamps[keyIndex]);
 		}
+		//In case there is no upper bound
 		else {
 			lambda = rotTimeStampsVector.back();
 		}
@@ -108,6 +115,4 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 	else {
 		return;
 	}
-
-	//auto upperBoundIterator1 = std::upper_bound(timestamps.begin(), timestamps.end(), targetValue1);
 }

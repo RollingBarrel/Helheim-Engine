@@ -41,6 +41,7 @@ public:
     const float& GetDuration() const { return mDuration; }
 
     void CleanUp();
+
     //TODO:Make private//
     std::unordered_map<std::string, AnimationChannel*> mChannels;
 private:

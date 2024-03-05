@@ -3,15 +3,25 @@
 #include "Component.h"
 
 class AnimationController;
+class ResourceAnimation;
 
-class PointLightComponent : public Component {
+class AnimationComponent : public Component {
 public:
+	AnimationComponent(GameObject* owner, unsigned int animationUid);
+	AnimationComponent(const AnimationComponent& other, GameObject* owner);
+	~AnimationComponent();
+
+	const ResourceAnimation* GetAnimation() { return mAnimation; }
+	const AnimationController* GetAnimationController() { return mController; }
+
 	void OnStart();
 	void OnStop();
 	void OnUpdate();
+
 private:
-	AnimationController* controller;
-	unsigned int uID;
+
+	ResourceAnimation* mAnimation;
+	AnimationController* mController;
 };
 
 #endif

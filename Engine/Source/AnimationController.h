@@ -11,6 +11,8 @@ class AnimationController
 {
 public:
 
+	AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop);
+
 	void Play(unsigned int resource, bool loop);
 	void Stop();
 	void Update();
@@ -27,9 +29,9 @@ private:
 	unsigned int mCurrentTime;
 	unsigned int mStartTime;
 
-	bool mLoop;
+	bool mLoop = true;
 
+	unsigned int mResource;
 
-	unsigned int mResourceUID;
-	ResourceAnimation* mResource = nullptr;
+	ResourceAnimation* mAnimation = nullptr;
 };

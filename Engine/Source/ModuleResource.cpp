@@ -17,6 +17,7 @@
 #include "ImporterMesh.h"
 #include "ImporterModel.h"
 #include "ImporterMaterial.h"
+#include "ImporterAnimation.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -217,6 +218,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 	case Resource::Type::Model:
 	{
 		ret = Importer::Model::Load(lPath, uid);
+		break;
+	}
+	case Resource::Type::Animation:
+	{
+		ret = Importer::Animation::Load(lPath, uid);
 		break;
 	}
 	default:
