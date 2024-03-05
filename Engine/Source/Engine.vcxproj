@@ -267,6 +267,7 @@
     <ClCompile Include="QuadtreePanel.cpp" />
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="SkyboxPanel.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -410,6 +411,7 @@
     <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="ModuleUI.h" />
+    <ClInclude Include="SkyboxPanel.h" />
     <ClInclude Include="TimerPanel.h" />
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>

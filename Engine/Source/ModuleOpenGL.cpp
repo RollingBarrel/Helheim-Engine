@@ -245,7 +245,7 @@ static unsigned int LoadCubeMap()
 	unsigned int ret = 0;
 	DirectX::ScratchImage image;
 
-	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap2.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
+	HRESULT res = DirectX::LoadFromDDSFile(L"InternalAssets/Skybox/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
 
 	if (res == S_OK)
 	{
@@ -272,6 +272,8 @@ static unsigned int LoadCubeMap()
 
 void ModuleOpenGL::InitSkybox()
 {
+
+	CreateDDSFile();
 	mSkyBoxTexture = LoadCubeMap();
 
 	float skyboxVertices[] = {
@@ -489,6 +491,11 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 			return;
 		}
 	}
+}
+
+void ModuleOpenGL::CreateDDSFile()
+{
+	system(".\\InternalAssets\\Skybox\\texassemble.exe cube -w 256 -h 256 -o .\\InternalAssets\\Skybox\\cubemap.dds .\\InternalAssets\\Skybox\\right.jpg .\\InternalAssets\\Skybox\\left.jpg .\\InternalAssets\\Skybox\\top.jpg .\\InternalAssets\\Skybox\\bottom.jpg .\\InternalAssets\\Skybox\\front.jpg .\\InternalAssets\\Skybox\\back.jpg");
 }
 
 OpenGLBuffer::OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding, unsigned int size, const void* data) : mType(type), mUsage(usage), mBinding(binding), mIdx(0), mDataSize(size), mDataCapacity(size) {

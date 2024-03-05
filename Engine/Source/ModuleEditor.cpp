@@ -21,6 +21,7 @@
 #include "LightningPanel.h"
 #include "ResourcePanel.h"
 #include "TimerPanel.h"
+#include "SkyboxPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -41,6 +42,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
+	mPanels[SKYBOXPANEL] = new SkyboxPanel();
 }
 
 ModuleEditor::~ModuleEditor()
