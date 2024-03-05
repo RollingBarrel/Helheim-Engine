@@ -64,8 +64,8 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 	}
 
 	//PROVISIONAL
-
 	static float lambda;
+	static int keyIndex;
 
 	//Gets the specific channel we want
 	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(name)->second;
@@ -76,13 +76,14 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 		std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
 		auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), currentTime);
 
-		int keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
-
 		if (upperBoundIterator != posTimeStampsVector.end()) {
+			keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
+
 			lambda = (currentTime - channel->posTimeStamps[keyIndex-1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex-1]);
 		}
 		else {
-			lambda = 0;
+			keyIndex = channel->numPositions - 1;
+			lambda = 1;
 		}
 
 
@@ -95,16 +96,19 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 		//Iterating using std::upper_bound to fins the first higher number than currentTime in an ordered array
 		auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), currentTime);
 
-		//Distance between the first element and the first higher element, aka the position of the first higher element
-		int keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
-
-		//Calculating lambda if an upper bound has been found
+		//If an upper bound has been found
 		if (upperBoundIterator != rotTimeStampsVector.end()) {
-			lambda = (currentTime - channel->rotTimeStamps[keyIndex]) / (channel->rotTimeStamps[keyIndex + 1] - channel->rotTimeStamps[keyIndex]);
+			//Distance between the first element of the vector and the first higher element, aka the position of the first higher element
+			keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+
+			//Calculating lambda 
+			lambda = (currentTime - channel->rotTimeStamps[keyIndex-1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex-1]);
 		}
 		//In case there is no upper bound
 		else {
-			lambda = rotTimeStampsVector.back();
+			//The index is the last element
+			keyIndex = channel->numRotations - 1;
+			lambda = 1;
 		}
 
 
