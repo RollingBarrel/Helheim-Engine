@@ -52,6 +52,7 @@ public:
 	void SetDetailSampleMaxError(float value) { mDetailSampleMaxError = value; }
 
 
+
 private:
 	void GetGOMeshes(const GameObject* gameObj);
 	std::vector<const ResourceMesh*> mMeshesToNavMesh;

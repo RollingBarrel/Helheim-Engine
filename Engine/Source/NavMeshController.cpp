@@ -142,17 +142,29 @@ void NavMeshController::Update()
 void NavMeshController::HandleBuild() {
 	mIndices.clear();
 	mVertices.clear();
-	mMeshesToNavMesh.clear();
+	//mMeshesToNavMesh.clear();
 	mMeshRendererComponents.clear();
 
 	GameObject* root = App->GetScene()->GetRoot();
 	GetGOMeshes(root);
 	if (mMeshRendererComponents.empty())
 		return;
+	std::vector<rcPolyMeshDetail*> myPolyMeshDetails;
+	std::vector<rcPolyMesh*> myPolyMeshes;
 
-	const MeshRendererComponent* testMesh{ mMeshRendererComponents[0] };
 
-	if (testMesh) {
+	const MeshRendererComponent* testMesh;
+	
+
+	for (int index = 0; index < mMeshRendererComponents.size(); index++) {
+		
+		testMesh = mMeshRendererComponents[index];
+		if (!testMesh)
+		{
+			LOG("A mesh was not correctly loaded to the navigation controller.");
+			break;
+		}
+
 		float3 meshMax = testMesh->GetAABB().maxPoint;
 		float3 meshMin = testMesh->GetAABB().minPoint;
 		const float maxPoint[3] = { meshMax.x, meshMax.y, meshMax.z };
@@ -287,13 +299,13 @@ void NavMeshController::HandleBuild() {
 		//
 
 		// Build polygon navmesh from the contours.
-		mPolyMesh = rcAllocPolyMesh();
-		if (!mPolyMesh)
+		rcPolyMesh* tempPolyMesh = rcAllocPolyMesh();
+		if (!tempPolyMesh)
 		{
-			LOG("buildNavigation: Out of memory 'mPolyMesh'.");
+			LOG("buildNavigation: Out of memory 'tempPolyMesh'.");
 			return;
 		}
-		if (!rcBuildPolyMesh(&mRecastContext, *mContourSet, mMaxVertsPerPoly, *mPolyMesh))
+		if (!rcBuildPolyMesh(&mRecastContext, *mContourSet, mMaxVertsPerPoly, *tempPolyMesh))
 		{
 			LOG("buildNavigation: Could not triangulate contours.");
 			return;
@@ -302,18 +314,21 @@ void NavMeshController::HandleBuild() {
 		// Step 7. Create detail mesh which allows to access approximate height on each polygon.
 		//
 
-		mPolyMeshDetail = rcAllocPolyMeshDetail();
-		if (!mPolyMeshDetail)
+		rcPolyMeshDetail* tempPolyMeshDetail = rcAllocPolyMeshDetail();
+		if (!tempPolyMeshDetail)
 		{
-			LOG("buildNavigation: Out of memory 'mPolyMeshDetail'.");
+			LOG("buildNavigation: Out of memory 'tempPolyMeshDetail'.");
 			return;
 		}
 
-		if (!rcBuildPolyMeshDetail(&mRecastContext, *mPolyMesh, *mCompactHeightField, mDetailSampleDist, mDetailSampleMaxError, *mPolyMeshDetail))
+		if (!rcBuildPolyMeshDetail(&mRecastContext, *tempPolyMesh, *mCompactHeightField, mDetailSampleDist, mDetailSampleMaxError, *tempPolyMeshDetail))
 		{
 			LOG("buildNavigation: Could not build detail mesh.");
 			return;
 		}
+
+		myPolyMeshDetails.push_back(tempPolyMeshDetail);
+		myPolyMeshes.push_back(tempPolyMesh);
 
 		if (!mKeepInterResults)
 		{
@@ -323,18 +338,46 @@ void NavMeshController::HandleBuild() {
 			mContourSet = 0;
 		}
 
-		LoadDrawMesh();
+	}
+	mPolyMesh = rcAllocPolyMesh();
+	if (!mPolyMesh)
+	{
+		LOG("buildNavigation: Out of memory 'mPolyMesh'.");
+		return;
+	}
+	mPolyMeshDetail = rcAllocPolyMeshDetail();
+	if (!mPolyMeshDetail)
+	{
+ 		LOG("buildNavigation: Out of memory 'mPolyMeshDetail'.");
+		return;
 	}
 
+	if (!rcMergePolyMeshes(&mRecastContext, &myPolyMeshes[0], myPolyMeshes.size(), *mPolyMesh))
+	{
+		LOG("mergePolymeshes: Failed to merge polymeshes.");
+		return;
+
+	}
+
+	if (!rcMergePolyMeshDetails(&mRecastContext, &myPolyMeshDetails[0], myPolyMeshDetails.size(), *mPolyMeshDetail))
+	{
+		LOG("mergePolymeshdetails: Failed to merge polymeshdetails.");
+		return;
+
+	}
+	
+
+	LoadDrawMesh();
 
 }
+
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
 			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
 			if (meshRendererComponent) {
-				mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
+				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mMeshRendererComponents.push_back(meshRendererComponent);
 
 			}
