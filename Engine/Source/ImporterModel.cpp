@@ -21,18 +21,16 @@
 #include "tiny_gltf.h"
 
 
-static ModelNode ImportNode(const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int uid, bool modifyAssets)
+static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int uid, unsigned int& size, bool modifyAssets)
 {
     const auto& tinyNode = model.nodes[index];
 
-    ModelNode node;
+    node.mName = tinyNode.name;
 
-    node.mName = tinyNode.name.c_str(); //Change to Memcpy 
-
-    math::float4x4 matrix;
+    math::float4x4 matrix = float4x4::identity;
     if (tinyNode.matrix.size() == 16)
     {
-        matrix = matrix = float4x4(
+       matrix = float4x4(
             tinyNode.matrix[0], tinyNode.matrix[1], tinyNode.matrix[2], tinyNode.matrix[3],
             tinyNode.matrix[4], tinyNode.matrix[5], tinyNode.matrix[6], tinyNode.matrix[7],
             tinyNode.matrix[8], tinyNode.matrix[9], tinyNode.matrix[10], tinyNode.matrix[11],
@@ -46,11 +44,23 @@ static ModelNode ImportNode(const char* filePath, const tinygltf::Model& model, 
         if (tinyNode.translation.size() == 3) {
             node.mTranslation = { static_cast<float>(tinyNode.translation[0]),static_cast<float>(tinyNode.translation[1]), static_cast<float>(tinyNode.translation[2]) };
         }
+        else
+        {
+            node.mTranslation = float3::zero;
+        }
         if (tinyNode.rotation.size() == 4) {
             node.mRotation = { static_cast<float>(tinyNode.rotation[0]),static_cast<float>(tinyNode.rotation[1]), static_cast<float>(tinyNode.rotation[2]),static_cast<float>(tinyNode.rotation[3]) };
         }
+        else
+        {
+            node.mRotation = Quat::identity;
+        }
         if (tinyNode.scale.size() == 3) {
             node.mScale = { static_cast<float>(tinyNode.scale[0]),static_cast<float>(tinyNode.scale[1]), static_cast<float>(tinyNode.scale[2]) };
+        }
+        else
+        {
+            node.mScale = float3::zero;
         }
     }
 
@@ -70,70 +80,80 @@ static ModelNode ImportNode(const char* filePath, const tinygltf::Model& model, 
             {
                 ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], uid++, modifyAssets);
                 node.mUids.push_back({ rMesh->GetUID(), rMaterial->GetUID() });
-                uid++;
                 delete rMaterial;
             }
 
             delete rMesh;
         }
     }
-    for (const auto& child : tinyNode.children)
-    {
-        node.mChildren.push_back(ImportNode(filePath, model, child, uid, modifyAssets));
-    }
 
-    return node;
+    size += node.mName.length() + 1              //Name
+        + sizeof(float) * 3                 //Pos
+        + sizeof(float) * 4                 //Rot
+        + sizeof(float) * 3                 //Scale
+        + sizeof(int) * 3                   //Mesh/Camera/Skin 
+        + sizeof(unsigned int) * 2          //Uid Mesh & Material
+        + sizeof(unsigned int);             //Size Children   
+
+    for (const auto& child : tinyNode.children)
+    {   
+        ModelNode childNode;
+        ImportNode(childNode, filePath, model, child, uid, size, modifyAssets);
+        node.mChildren.push_back(childNode);
+    }
 }
 
-static void SaveNode(const ModelNode& currentNode, unsigned int& size, char** fileBuffer)
+static void SaveNode(const ModelNode& currentNode, char** cursor)
 {
-    unsigned int mUidsSize = currentNode.mUids.size();
-    unsigned int mChildrenSize = currentNode.mChildren.size();
-
-    unsigned int nodeSize = strlen(currentNode.mName)       //Name
-                            + sizeof(float) * 3             //Pos
-                            + sizeof(float) * 4             //Rot
-                            + sizeof(float) * 3             //Scale
-                            + sizeof(int) * 3               //Mesh/Camera/Skin 
-                            + sizeof(int) * 2               //Uid Mesh & Material
-                            + sizeof(mChildrenSize);        //Size Children      
- 
-
-    size += nodeSize;
-    char* cursor = *fileBuffer;
-
-    //TODO Save Everything;
-    unsigned int bytes = strlen(currentNode.mName);
+    
+    //Name
+    unsigned int bytes = currentNode.mName.length() + 1;
     memcpy(cursor, &currentNode.mName, bytes);
     cursor += bytes;
-
-    for (int i = 0; i < mChildrenSize; ++i)
+    //Translation
+    bytes = sizeof(float) * 3;
+    memcpy(cursor, &currentNode.mTranslation, bytes);
+    cursor += bytes;
+    //Rotation
+    bytes = sizeof(float) * 4;
+    memcpy(cursor, &currentNode.mRotation, bytes);
+    cursor += bytes;
+    //Scale
+    bytes = sizeof(float) * 3;
+    memcpy(cursor, &currentNode.mScale, bytes);
+    cursor += bytes;
+    //MeshId
+    bytes = sizeof(int);
+    memcpy(cursor, &currentNode.mMeshId, bytes);
+    cursor += bytes;
+    //CameraId
+    bytes = sizeof(int);
+    memcpy(cursor, &currentNode.mCameraId, bytes);
+    cursor += bytes;
+    //SkinId
+    bytes = sizeof(int);
+    memcpy(cursor, &currentNode.mSkinId, bytes);
+    cursor += bytes;
+    //Uids
+    for (auto it = currentNode.mUids.cbegin(); it != currentNode.mUids.cend(); ++it)
     {
-        SaveNode(currentNode.mChildren[i], size, fileBuffer);
+        bytes = sizeof(it->meshUID);
+        memcpy(cursor, &it->meshUID, bytes);
+        cursor += bytes;
+        bytes = sizeof(it->materialUID);
+        memcpy(cursor, &it->materialUID, bytes);
+        cursor += bytes;
+    } 
+    //Children
+    bytes = sizeof(unsigned int);
+    unsigned int childSize = currentNode.mChildren.size();
+    memcpy(cursor, &childSize, bytes);
+    cursor += bytes;
+
+    for (int i = 0; i < currentNode.mChildren.size(); ++i)
+    {
+        SaveNode(currentNode.mChildren[i], cursor);
     }
-    
-
-
-    //unsigned int numModels = rModel->GetUids().size();
-    //
-    //unsigned int size = sizeof(numModels) + sizeof(ResourceModel) * numModels;
-    //
-    //char* fileBuffer = new char[size];
-    //char* cursor = fileBuffer;
-    //
-    //unsigned int bytes = sizeof(numModels);
-    //memcpy(cursor, &numModels, bytes);
-    //cursor += bytes;
-    //
-    //for (auto it = rModel->GetUids().cbegin(); it != rModel->GetUids().cend(); ++it)
-    //{
-    //    bytes = sizeof(it->meshUID);
-    //    memcpy(cursor, &it->meshUID, bytes);
-    //    cursor += bytes;
-    //    bytes = sizeof(it->materialUID);
-    //    memcpy(cursor, &it->materialUID, bytes);
-    //    cursor += bytes;
-    //}
 }
 
 ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, bool modifyAssets)
@@ -150,82 +170,69 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     
     unsigned int currentUid = uid;
 
-    ModelNode rootNode = ImportNode(filePath, model, 0, currentUid, modifyAssets);
+    unsigned int bufferSize = 0;
+
+    ModelNode rootNode;
+
+    ImportNode(rootNode, filePath, model, 0, currentUid, bufferSize, modifyAssets);
 
     ResourceModel* rModel = new ResourceModel(currentUid++, rootNode);
 
     if (rModel)
-        Importer::Model::Save(rModel);
+        Importer::Model::Save(rModel, bufferSize);
 
     return rModel;
 }
 
-void Importer::Model::Save(const ResourceModel* rModel)
+void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
 {
-    
-    unsigned int size = 0;
 
-    char* fileBuffer;
-    SaveNode(rModel->GetRoot(), size, &fileBuffer);
+    char* fileBuffer = new char[size];
+
+    SaveNode(rModel->GetRoot(), &fileBuffer);
+   
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
+    App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
     
-    LOG("MAMA");
-    //unsigned int numModels = rModel->GetUids().size();
-    //
-    //unsigned int size = sizeof(numModels) + sizeof(ResourceModel) * numModels;
-    //
-    //char* fileBuffer = new char[size];
-    //char* cursor = fileBuffer;
-    //
-    //unsigned int bytes = sizeof(numModels);
-    //memcpy(cursor, &numModels, bytes);
-    //cursor += bytes;
-    //
-    //for (auto it = rModel->GetUids().cbegin(); it != rModel->GetUids().cend(); ++it)
-    //{
-    //    bytes = sizeof(it->meshUID);
-    //    memcpy(cursor, &it->meshUID, bytes);
-    //    cursor += bytes;
-    //    bytes = sizeof(it->materialUID);
-    //    memcpy(cursor, &it->materialUID, bytes);
-    //    cursor += bytes;
-    //}
-    //
-    //const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
-    //App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
-    
-    //delete[] libraryPath;
-    //delete[] fileBuffer;
+    delete[] libraryPath;
+    delete[] fileBuffer;
 }
 
 ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
 {
-    //char* fileBuffer;
+    char* fileBuffer;
     ResourceModel* rModel = nullptr;
-    //if (App->GetFileSystem()->Load(fileName, &fileBuffer))
-    //{
-    //
-    //    char* cursor = fileBuffer;
-    //
-    //    unsigned int bytes = sizeof(unsigned int);
-    //    unsigned int size = 0;
-    //    memcpy(&size, cursor, bytes);
-    //    cursor += bytes;
-    //
-    //    rModel = new ResourceModel(uid);
-    //
-    //    for (int i = 0; i < size; ++i)
-    //    {
-    //        unsigned int meshId = 0;
-    //        memcpy(&meshId, cursor, bytes);
-    //        cursor += bytes;
-    //        unsigned int materialId = 0;
-    //        memcpy(&materialId, cursor, bytes);
-    //        cursor += bytes;
-    //        rModel->SetUids(meshId, materialId);
-    //    }
-    //
-    //    delete[] fileBuffer;
-    //}
+
+    ModelNode root;
+
+    if (App->GetFileSystem()->Load(fileName, &fileBuffer))
+    { 
+        char* cursor = fileBuffer;
+        unsigned int count = 0;
+
+        while (*cursor++ != '\0')
+        {
+            count++;
+        }
+        count++;
+        cursor -= count;
+        char* name = new char[count];
+        char* ptr = name;
+        while (count--)
+        {
+            *ptr++ = *cursor++;
+        }
+
+        root.mName = name;
+        
+        unsigned int bytes = sizeof(float) * 3;
+        memcpy(&root.mTranslation, cursor, bytes);
+        cursor += bytes;
+    
+        rModel = new ResourceModel(uid, root);
+    
+        delete[] fileBuffer;
+    }
     return rModel;
 }
 

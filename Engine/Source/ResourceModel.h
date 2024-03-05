@@ -2,9 +2,11 @@
 #include "Resource.h"
 
 #include <vector>
+#include <string>
 
 #include "float3.h"
 #include "Quat.h"
+
 
 typedef struct ModelIds {
 	unsigned int meshUID;
@@ -15,7 +17,7 @@ typedef struct ModelIds {
 struct ModelNode
 {
 	//Game Object
-	const char* mName;
+	std::string mName;
 
 	math::float3 mTranslation;
 	math::Quat mRotation;
