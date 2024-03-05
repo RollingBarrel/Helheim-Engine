@@ -79,10 +79,61 @@ static ModelNode ImportNode(const char* filePath, const tinygltf::Model& model, 
     }
     for (const auto& child : tinyNode.children)
     {
-        node.mChildren.push_back(ImportNode(filePath, model, child, uid++, modifyAssets));
+        node.mChildren.push_back(ImportNode(filePath, model, child, uid, modifyAssets));
     }
 
     return node;
+}
+
+static void SaveNode(const ModelNode& currentNode, unsigned int& size, char** fileBuffer)
+{
+    unsigned int mUidsSize = currentNode.mUids.size();
+    unsigned int mChildrenSize = currentNode.mChildren.size();
+
+    unsigned int nodeSize = strlen(currentNode.mName)       //Name
+                            + sizeof(float) * 3             //Pos
+                            + sizeof(float) * 4             //Rot
+                            + sizeof(float) * 3             //Scale
+                            + sizeof(int) * 3               //Mesh/Camera/Skin 
+                            + sizeof(int) * 2               //Uid Mesh & Material
+                            + sizeof(mChildrenSize);        //Size Children      
+ 
+
+    size += nodeSize;
+    char* cursor = *fileBuffer;
+
+    //TODO Save Everything;
+    unsigned int bytes = strlen(currentNode.mName);
+    memcpy(cursor, &currentNode.mName, bytes);
+    cursor += bytes;
+
+    for (int i = 0; i < mChildrenSize; ++i)
+    {
+        SaveNode(currentNode.mChildren[i], size, fileBuffer);
+    }
+    
+
+
+    //unsigned int numModels = rModel->GetUids().size();
+    //
+    //unsigned int size = sizeof(numModels) + sizeof(ResourceModel) * numModels;
+    //
+    //char* fileBuffer = new char[size];
+    //char* cursor = fileBuffer;
+    //
+    //unsigned int bytes = sizeof(numModels);
+    //memcpy(cursor, &numModels, bytes);
+    //cursor += bytes;
+    //
+    //for (auto it = rModel->GetUids().cbegin(); it != rModel->GetUids().cend(); ++it)
+    //{
+    //    bytes = sizeof(it->meshUID);
+    //    memcpy(cursor, &it->meshUID, bytes);
+    //    cursor += bytes;
+    //    bytes = sizeof(it->materialUID);
+    //    memcpy(cursor, &it->materialUID, bytes);
+    //    cursor += bytes;
+    //}
 }
 
 ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, bool modifyAssets)
@@ -103,24 +154,6 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     ResourceModel* rModel = new ResourceModel(currentUid++, rootNode);
 
-    //for (const auto& srcMesh : model.meshes)
-    //{
-    //    for (const auto& primitive : srcMesh.primitives)
-    //    {   
-    //        ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, currUid++);
-    //
-    //        if (primitive.material != -1) {
-    //            ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], currUid++, modifyAssets);
-    //
-    //            rModel->SetUids(rMesh->GetUID(), rMaterial->GetUID());
-    //            currUid = rMaterial->GetUID() + 1;
-    //            delete rMaterial;
-    //        }
-    //
-    //        delete rMesh;
-    //    }
-    //}
-
     if (rModel)
         Importer::Model::Save(rModel);
 
@@ -129,6 +162,13 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
 void Importer::Model::Save(const ResourceModel* rModel)
 {
+    
+    unsigned int size = 0;
+
+    char* fileBuffer;
+    SaveNode(rModel->GetRoot(), size, &fileBuffer);
+    
+    LOG("MAMA");
     //unsigned int numModels = rModel->GetUids().size();
     //
     //unsigned int size = sizeof(numModels) + sizeof(ResourceModel) * numModels;
@@ -152,7 +192,7 @@ void Importer::Model::Save(const ResourceModel* rModel)
     //
     //const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
     //App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
-    //
+    
     //delete[] libraryPath;
     //delete[] fileBuffer;
 }

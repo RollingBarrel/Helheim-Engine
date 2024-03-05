@@ -21,12 +21,11 @@ struct ModelNode
 	math::Quat mRotation;
 	math::float3 mScale;
 
-	int mMeshId;
-
 	std::vector<ModelIds> mUids;
 	std::vector<ModelNode> mChildren;
 
 	//Components
+	int mMeshId;
 	int mCameraId;
 	int mSkinId;
 
@@ -35,7 +34,10 @@ struct ModelNode
 class ResourceModel : public Resource
 {
 public:
+
 	ResourceModel(unsigned int uid, ModelNode root);
+
+	const ModelNode& GetRoot() const { return mRoot; }
 
 private:
 
