@@ -1,4 +1,4 @@
-#include "NavMeshControllerComponent.h"
+#include "NavMeshController.h"
 #include "GameObject.h"
 #include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
@@ -10,32 +10,36 @@
 #include "ImporterMesh.h"
 #include "ModuleDebugDraw.h"
 
-NavMeshControllerComponent::NavMeshControllerComponent(GameObject* ownerGameObject)
-	:Component(ownerGameObject, ComponentType::NAVMESHCONTROLLER)
+NavMeshController::NavMeshController()
 {
 	mRecastContext = rcContext(false);
 
-	HandleBuild();
+	//HandleBuild(); No se llama al inicar ya que no hay escena aún, llamar solo con boton imgui
 
-	
+
 }
 
-NavMeshControllerComponent::NavMeshControllerComponent(const NavMeshControllerComponent& original, GameObject* owner)
-	:Component(owner, ComponentType::NAVMESHCONTROLLER)
+NavMeshController::~NavMeshController()
 {
-	HandleBuild();
+	mVertices.clear();
+	mIndices.clear();
+	mMeshesToNavMesh.clear();
+	mMeshRendererComponents.clear();
+
+	delete mPolyMeshDetail;
+	delete mPolyMesh;
+	delete mContourSet;
+	delete mCompactHeightField;
+	delete mHeightField;
+	delete mTriangleAreas;
 
 }
 
-NavMeshControllerComponent::~NavMeshControllerComponent()
-{
-}
-
-void NavMeshControllerComponent::Reset() {
+void NavMeshController::Reset() {
 	//Change variables to default values.
 }
 
-void NavMeshControllerComponent::TranslateIndices()
+void NavMeshController::TranslateIndices()
 {
 	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
 	{
@@ -75,13 +79,20 @@ void NavMeshControllerComponent::TranslateIndices()
 			mIndices.push_back(indexA);
 			mIndices.push_back(indexB);
 			mIndices.push_back(indexC);
-			
+
 		}
 	}
 }
 
-void NavMeshControllerComponent::DebugDrawPolyMesh()
+void NavMeshController::DebugDrawPolyMesh()
 {
+
+	if (mPolyMeshDetail == nullptr)
+		return;
+	if (mPolyMeshDetail->nmeshes < 1)
+		return;
+	
+	
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
 	glBindVertexArray(0);
 	glUseProgram(0);
@@ -89,7 +100,7 @@ void NavMeshControllerComponent::DebugDrawPolyMesh()
 	float4x4 identity = float4x4::identity;
 	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
 	glBindVertexArray(mVao);
-	glDrawElements(GL_TRIANGLES,mIndices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
 
 
 	/*	Old draw polymesh with debug draw
@@ -117,8 +128,10 @@ void NavMeshControllerComponent::DebugDrawPolyMesh()
 
 }
 
-void NavMeshControllerComponent::Update()
+void NavMeshController::Update()
 {
+	if (mPolyMesh == nullptr)
+		return;
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	DebugDrawPolyMesh();
@@ -126,43 +139,47 @@ void NavMeshControllerComponent::Update()
 
 }
 
-Component* NavMeshControllerComponent::Clone(GameObject* owner) const
-{
-    return new NavMeshControllerComponent(*this, owner); //Calls the copy contrustctor of your component
-}
+void NavMeshController::HandleBuild() {
+	mIndices.clear();
+	mVertices.clear();
+	//mMeshesToNavMesh.clear();
+	mMeshRendererComponents.clear();
 
-void NavMeshControllerComponent::Save(Archive& archive) const {
-	archive.AddString("type", Component::GetNameFromType(ComponentType::NAVMESHCONTROLLER));
-}
-
-void NavMeshControllerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {
-	
-}
-
-void NavMeshControllerComponent::HandleBuild() {
-	GameObject* root= App->GetScene()->GetRoot();
+	GameObject* root = App->GetScene()->GetRoot();
 	GetGOMeshes(root);
 	if (mMeshRendererComponents.empty())
 		return;
-	
-	const MeshRendererComponent* testMesh{mMeshRendererComponents[0]};
-	
-	if (testMesh) {
-		 float3 meshMax = testMesh->GetAABB().maxPoint;
-		 float3 meshMin = testMesh->GetAABB().minPoint;
-		 const float maxPoint[3] = { meshMax.x, meshMax.y, meshMax.z};
-		 const float minPoint[3] = { meshMin.x, meshMin.y, meshMin.z };
-		 int gridWidth=0;
-		 int gridHeight=0;
+	std::vector<rcPolyMeshDetail*> myPolyMeshDetails;
+	std::vector<rcPolyMesh*> myPolyMeshes;
 
-		rcCalcGridSize(minPoint, maxPoint,mCellSize, &gridWidth,&gridHeight);
+
+	const MeshRendererComponent* testMesh;
+	
+
+	for (int index = 0; index < mMeshRendererComponents.size(); index++) {
+		
+		testMesh = mMeshRendererComponents[index];
+		if (!testMesh)
+		{
+			LOG("A mesh was not correctly loaded to the navigation controller.");
+			break;
+		}
+
+		float3 meshMax = testMesh->GetAABB().maxPoint;
+		float3 meshMin = testMesh->GetAABB().minPoint;
+		const float maxPoint[3] = { meshMax.x, meshMax.y, meshMax.z };
+		const float minPoint[3] = { meshMin.x, meshMin.y, meshMin.z };
+		int gridWidth = 0;
+		int gridHeight = 0;
+
+		rcCalcGridSize(minPoint, maxPoint, mCellSize, &gridWidth, &gridHeight);
 		mHeightField = rcAllocHeightfield();
 		if (!mHeightField)
 		{
 			LOG("buildNavigation: Out of memory 'mHeightField'.");
 			return;
 		}
-		if (!rcCreateHeightfield(&mRecastContext, *mHeightField, gridWidth,gridHeight, minPoint, maxPoint, mCellSize, mCellHeight))
+		if (!rcCreateHeightfield(&mRecastContext, *mHeightField, gridWidth, gridHeight, minPoint, maxPoint, mCellSize, mCellHeight))
 		{
 			LOG("buildNavigation: Could not create solid rcCreateHeightfield.");
 			return;
@@ -171,25 +188,40 @@ void NavMeshControllerComponent::HandleBuild() {
 		// Allocate array that can hold triangle area types.
 		// If you have multiple meshes you need to process, allocate
 		// and array which can hold the max number of triangles you need to process.
-		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->GetNumberIndices()/3;
+		unsigned int numberOfTriangles = testMesh->GetResourceMesh()->GetNumberIndices() / 3;
 		mTriangleAreas = new unsigned char[numberOfTriangles];
 		if (!mTriangleAreas)
 		{
 			LOG("buildNavigation: Out of memory 'mTriangleAreas'");
 			return;
 		}
-		float* vertices= (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS));
+		float* vertices = (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS)); // TODO: Translate using testMesh->WorldTransform
+		float4x4 objectTransform = testMesh->GetOwner()->GetWorldTransform();
+		std::vector<float> transformedVerts;
+
 		int numberOfVertices = testMesh->GetResourceMesh()->GetNumberVertices();
+
+		for (int i = 0; i < numberOfVertices * 3; i += 3) 
+		{
+			float4 operationTemp = objectTransform * float4(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f) ;
+			operationTemp = operationTemp / operationTemp.w;
+			transformedVerts.push_back(operationTemp.x);
+			transformedVerts.push_back(operationTemp.y);
+			transformedVerts.push_back(operationTemp.z);
+
+
+		}
+		
 
 
 		const int* triangle = (const int*)(testMesh->GetResourceMesh()->mIndices);
-		
 
-		
+
+
 		memset(mTriangleAreas, 0, numberOfTriangles * sizeof(unsigned char));
-		rcMarkWalkableTriangles(&mRecastContext, mMaxSlopeAngle,vertices , numberOfVertices,triangle, numberOfTriangles, mTriangleAreas);
+		rcMarkWalkableTriangles(&mRecastContext, mMaxSlopeAngle, &transformedVerts[0], numberOfVertices, triangle, numberOfTriangles, mTriangleAreas);
 
-		if (!rcRasterizeTriangles(&mRecastContext, vertices, numberOfVertices, triangle, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
+		if (!rcRasterizeTriangles(&mRecastContext, &transformedVerts[0], numberOfVertices, triangle, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
 		{
 			LOG("buildNavigation: Could not rasterize triangles.");
 			return;
@@ -240,7 +272,7 @@ void NavMeshControllerComponent::HandleBuild() {
 			mHeightField = 0;
 		}
 		// Erode the walkable area by agent radius.
-		if (!rcErodeWalkableArea(&mRecastContext, mWalkableRadius,*mCompactHeightField))
+		if (!rcErodeWalkableArea(&mRecastContext, mWalkableRadius, *mCompactHeightField))
 		{
 			LOG("buildNavigation: Could not erode.");
 		}
@@ -282,33 +314,36 @@ void NavMeshControllerComponent::HandleBuild() {
 		//
 
 		// Build polygon navmesh from the contours.
-		mPolyMesh = rcAllocPolyMesh();
-		if (!mPolyMesh)
+		rcPolyMesh* tempPolyMesh = rcAllocPolyMesh();
+		if (!tempPolyMesh)
 		{
-			LOG( "buildNavigation: Out of memory 'mPolyMesh'.");
+			LOG("buildNavigation: Out of memory 'tempPolyMesh'.");
 			return;
 		}
-		if (!rcBuildPolyMesh(&mRecastContext, *mContourSet, mMaxVertsPerPoly, *mPolyMesh))
+		if (!rcBuildPolyMesh(&mRecastContext, *mContourSet, mMaxVertsPerPoly, *tempPolyMesh))
 		{
-			LOG( "buildNavigation: Could not triangulate contours.");
+			LOG("buildNavigation: Could not triangulate contours.");
 			return;
 		}
 		//
 		// Step 7. Create detail mesh which allows to access approximate height on each polygon.
 		//
 
-		mPolyMeshDetail = rcAllocPolyMeshDetail();
-		if (!mPolyMeshDetail)
+		rcPolyMeshDetail* tempPolyMeshDetail = rcAllocPolyMeshDetail();
+		if (!tempPolyMeshDetail)
 		{
-			LOG( "buildNavigation: Out of memory 'mPolyMeshDetail'.");
+			LOG("buildNavigation: Out of memory 'tempPolyMeshDetail'.");
 			return;
 		}
 
-		if (!rcBuildPolyMeshDetail(&mRecastContext, *mPolyMesh, *mCompactHeightField, mDetailSampleDist, mDetailSampleMaxError, *mPolyMeshDetail))
+		if (!rcBuildPolyMeshDetail(&mRecastContext, *tempPolyMesh, *mCompactHeightField, mDetailSampleDist, mDetailSampleMaxError, *tempPolyMeshDetail))
 		{
 			LOG("buildNavigation: Could not build detail mesh.");
 			return;
 		}
+
+		myPolyMeshDetails.push_back(tempPolyMeshDetail);
+		myPolyMeshes.push_back(tempPolyMesh);
 
 		if (!mKeepInterResults)
 		{
@@ -318,18 +353,46 @@ void NavMeshControllerComponent::HandleBuild() {
 			mContourSet = 0;
 		}
 
-		LoadDrawMesh();
+	}
+	mPolyMesh = rcAllocPolyMesh();
+	if (!mPolyMesh)
+	{
+		LOG("buildNavigation: Out of memory 'mPolyMesh'.");
+		return;
+	}
+	mPolyMeshDetail = rcAllocPolyMeshDetail();
+	if (!mPolyMeshDetail)
+	{
+ 		LOG("buildNavigation: Out of memory 'mPolyMeshDetail'.");
+		return;
 	}
 
+	if (!rcMergePolyMeshes(&mRecastContext, &myPolyMeshes[0], myPolyMeshes.size(), *mPolyMesh))
+	{
+		LOG("mergePolymeshes: Failed to merge polymeshes.");
+		return;
+
+	}
+
+	if (!rcMergePolyMeshDetails(&mRecastContext, &myPolyMeshDetails[0], myPolyMeshDetails.size(), *mPolyMeshDetail))
+	{
+		LOG("mergePolymeshdetails: Failed to merge polymeshdetails.");
+		return;
+
+	}
 	
+
+	LoadDrawMesh();
+
 }
 
-void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
+
+void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
 			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
 			if (meshRendererComponent) {
-				mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
+				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mMeshRendererComponents.push_back(meshRendererComponent);
 
 			}
@@ -341,10 +404,12 @@ void NavMeshControllerComponent::GetGOMeshes(const GameObject* gameObj){
 
 
 
-void NavMeshControllerComponent::LoadDrawMesh()
+void NavMeshController::LoadDrawMesh()
 {
-	if (mPolyMesh != nullptr)
-	{		
+	if (mPolyMeshDetail != nullptr)
+	{
+		if (mPolyMeshDetail->nmeshes < 1)
+			return; // Maybe remove the vao from memory until new call? Warn user?
 		TranslateIndices();
 		// Now you can create the VAO and fill it with the mesh data
 		glGenVertexArrays(1, &mVao);
@@ -359,7 +424,7 @@ void NavMeshControllerComponent::LoadDrawMesh()
 		glGenBuffers(1, &mEbo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
-	
+
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 		glEnableVertexAttribArray(0);
 
@@ -370,14 +435,14 @@ void NavMeshControllerComponent::LoadDrawMesh()
 	return;
 }
 
-int NavMeshControllerComponent::FindVertexIndex(float3 vert)
+int NavMeshController::FindVertexIndex(float3 vert)
 {
-	
+
 	for (int i = 0; i < mVertices.size(); ++i) {
 		if (mVertices[i].x == vert.x && mVertices[i].y == vert.y && mVertices[i].z == vert.z) {
 			return i;
 		}
 	}
 	return -1; // Not found
-		
+
 }
