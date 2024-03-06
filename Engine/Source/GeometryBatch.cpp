@@ -75,35 +75,37 @@ void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
 
 void GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 {
-	unsigned int offset = 0;
-	for (const MeshRendererComponent* mesh : mMeshComponents) {
-
-		if (mesh == cMesh)
-		{
-			//const ResourceMaterial* rMaterial = mesh->GetMaterial();
-			//Material material;
-			//memcpy(material.diffuseColor, rMaterial->mDiffuseFactor.ptr(), sizeof(float) * 4);
-			//material.diffuseTexture = rMaterial->mDiffuseTexture->mTextureHandle;
-			//memcpy(material.specularColor, rMaterial->mSpecularFactor.ptr(), sizeof(float) * 4);
-			//material.specularTexture = rMaterial->mSpecularGlossinessTexture->mTextureHandle;
-			//material.normalTexture = rMaterial->mNormalTexture->mTextureHandle;
-			//material.shininess = rMaterial->mGlossinessFactor;
-			//material.hasDiffuseMap = rMaterial->mEnableDiffuseTexture;
-			//material.hasSpecularMap = rMaterial->mEnableSpecularGlossinessTexture;
-			//material.hasShininessMap = rMaterial->mEnableShinessMap;
-			//material.hasNormalMap = rMaterial->mEnableNormalMap;
-			//
-			//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-			//glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
-			//glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-			break;
-		}
-		offset += sizeof(Material);
-	}
+	//unsigned int offset = 0;
+	//for (const MeshRendererComponent* mesh : mMeshComponents) {
+	//
+	//	if (mesh == cMesh)
+	//	{
+	//		//const ResourceMaterial* rMaterial = mesh->GetMaterial();
+	//		//Material material;
+	//		//memcpy(material.diffuseColor, rMaterial->mDiffuseFactor.ptr(), sizeof(float) * 4);
+	//		//material.diffuseTexture = rMaterial->mDiffuseTexture->mTextureHandle;
+	//		//memcpy(material.specularColor, rMaterial->mSpecularFactor.ptr(), sizeof(float) * 4);
+	//		//material.specularTexture = rMaterial->mSpecularGlossinessTexture->mTextureHandle;
+	//		//material.normalTexture = rMaterial->mNormalTexture->mTextureHandle;
+	//		//material.shininess = rMaterial->mGlossinessFactor;
+	//		//material.hasDiffuseMap = rMaterial->mEnableDiffuseTexture;
+	//		//material.hasSpecularMap = rMaterial->mEnableSpecularGlossinessTexture;
+	//		//material.hasShininessMap = rMaterial->mEnableShinessMap;
+	//		//material.hasNormalMap = rMaterial->mEnableNormalMap;
+	//		//
+	//		//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
+	//		//glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
+	//		//glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	//		break;
+	//	}
+	//	offset += sizeof(Material);
+	//}
 }
 
 void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 {
+	mMeshComponents.emplace_back(cMesh);
+
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferData(GL_DRAW_INDIRECT_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
@@ -132,7 +134,6 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 		mSsboIndicesData[i] = mSsboIndicesData[0] + ((size * i) / sizeof(uint32_t));
 	}
 
-	mMeshComponents.emplace_back(cMesh);
 
 	uint32_t matIdx = 0;
 	bool found = false;
@@ -147,26 +148,26 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	}
 	if (!found)
 	{
-		mUniqueMaterials.push_back(&resourceMaterial);
 		mMeshComponents.back().materialIdx = mUniqueMaterials.size();
+		mUniqueMaterials.push_back(&resourceMaterial);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, mUniqueMaterials.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
 		unsigned int offset = 0;
 		for (const ResourceMaterial* rMaterial : mUniqueMaterials) {
 			Material material;
 			memcpy(material.diffuseColor, rMaterial->GetDiffuseFactor().ptr(), sizeof(float) * 4);
-			material.diffuseTexture = rMaterial->GetDiffuseTexture()->GetTextureHandle();
+			
+			material.diffuseTexture = (rMaterial->GetDiffuseTexture()) ? rMaterial->GetDiffuseTexture()->GetTextureHandle() : 0;
 			memcpy(material.specularColor, rMaterial->GetSpecularFactor().ptr(), sizeof(float) * 4);
-			material.specularTexture = rMaterial->GetSpecularGlossinessTexture()->GetTextureHandle();
-			material.normalTexture = rMaterial->GetNormalTexture()->GetTextureHandle();
+			material.specularTexture = (rMaterial->GetSpecularGlossinessTexture()) ? rMaterial->GetSpecularGlossinessTexture()->GetTextureHandle() : 0;
+			material.normalTexture = (rMaterial->GetNormalTexture()) ? rMaterial->GetNormalTexture()->GetTextureHandle() : 0;
 			material.shininess = rMaterial->GetGlossinessFactor();
 			material.hasDiffuseMap = rMaterial->IsDiffuseTextureEnabled();
 			material.hasSpecularMap = rMaterial->IsSpecularGlossinessTextureEnabled();
 			material.hasShininessMap = rMaterial->IsShininessMapEnabled();
 			material.hasNormalMap = rMaterial->IsNormalMapEnabled();
 
-			glNamedBufferSubData(mSsboMaterials, offset, sizeof(Material), &material);
-			glNamedBufferSubData(mSsboIndices, offset, sizeof(Material), &material);
+			glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 			offset += sizeof(Material);
 		}
 	}
@@ -216,55 +217,55 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 
 void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 {
-	const ResourceMesh& rMesh = *component->GetResourceMesh();
-	unsigned int found = 0;
-	for (std::vector<const MeshRendererComponent*>::iterator it = mMeshComponents.begin(); it != mMeshComponents.end();)
-	{
-		if ((*it)->GetResourceMesh()->GetUID() == rMesh.GetUID())
-		{
-			++found;
-		}
-		if (component == *it)
-		{
-			//unsigned int offset = rMesh.GetVertexBase() * rMesh.GetVertexSize() / sizeof(float);
-			//unsigned int size = rMesh.GetNumberVertices() * GetVertexSize();
-			//memmove(mVboData + offset, mVboData + offset + size / sizeof(float), size);
-			//mVboNumElements -= size / sizeof(float);
-			//float* tmp = new float[mVboNumElements];
-			//delete[] mVboData;
-			//mVboData = tmp;
-			//glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-			//glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
-			//glBindBuffer(GL_ARRAY_BUFFER, 0);
-			//
-			//memmove(mEboData + rMesh.GetEboPosition(), mEboData + rMesh.GetEboPosition() + rMesh.GetNumberIndices(), rMesh.GetNumberIndices() * sizeof(unsigned int));
-			//mEboNumElements -= rMesh.GetNumberIndices();
-			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-			//glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements, mEboData, GL_STATIC_DRAW);
-			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			it = mMeshComponents.erase(it);
-			continue;
-		}
-		//if(found >= 1)
-		//{
-		//	ResourceMesh* rMesh2 = const_cast<ResourceMesh*>((*it)->GetResourceMesh());
-		//	rMesh2->SetEboPosition(rMesh2->GetEboPosition() - rMesh.GetNumIndices());
-		//	int a = (rMesh.GetNumVertices() * (rMesh.GetVertexSize() / sizeof(float)));
-		//	rMesh2->SetVertexBase(rMesh2->GetVertexBase() - a);
-		//}
-		++it;
-	}
-	if (found == 1)
-	{
-		for (std::vector<const ResourceMesh*>::iterator it = mUniqueMeshes.begin(); it != mUniqueMeshes.end(); ++it)
-		{
-			if (&rMesh == *it)
-			{
-				mUniqueMeshes.erase(it);
-				break;
-			}
-		}
-	}
+	//const ResourceMesh& rMesh = *component->GetResourceMesh();
+	//unsigned int found = 0;
+	//for (std::vector<const MeshRendererComponent*>::iterator it = mMeshComponents.begin(); it != mMeshComponents.end();)
+	//{
+	//	if ((*it)->GetResourceMesh()->GetUID() == rMesh.GetUID())
+	//	{
+	//		++found;
+	//	}
+	//	if (component == *it)
+	//	{
+	//		//unsigned int offset = rMesh.GetVertexBase() * rMesh.GetVertexSize() / sizeof(float);
+	//		//unsigned int size = rMesh.GetNumberVertices() * GetVertexSize();
+	//		//memmove(mVboData + offset, mVboData + offset + size / sizeof(float), size);
+	//		//mVboNumElements -= size / sizeof(float);
+	//		//float* tmp = new float[mVboNumElements];
+	//		//delete[] mVboData;
+	//		//mVboData = tmp;
+	//		//glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+	//		//glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
+	//		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//		//
+	//		//memmove(mEboData + rMesh.GetEboPosition(), mEboData + rMesh.GetEboPosition() + rMesh.GetNumberIndices(), rMesh.GetNumberIndices() * sizeof(unsigned int));
+	//		//mEboNumElements -= rMesh.GetNumberIndices();
+	//		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+	//		//glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements, mEboData, GL_STATIC_DRAW);
+	//		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//		it = mMeshComponents.erase(it);
+	//		continue;
+	//	}
+	//	//if(found >= 1)
+	//	//{
+	//	//	ResourceMesh* rMesh2 = const_cast<ResourceMesh*>((*it)->GetResourceMesh());
+	//	//	rMesh2->SetEboPosition(rMesh2->GetEboPosition() - rMesh.GetNumIndices());
+	//	//	int a = (rMesh.GetNumVertices() * (rMesh.GetVertexSize() / sizeof(float)));
+	//	//	rMesh2->SetVertexBase(rMesh2->GetVertexBase() - a);
+	//	//}
+	//	++it;
+	//}
+	//if (found == 1)
+	//{
+	//	for (std::vector<const ResourceMesh*>::iterator it = mUniqueMeshes.begin(); it != mUniqueMeshes.end(); ++it)
+	//	{
+	//		if (&rMesh == *it)
+	//		{
+	//			mUniqueMeshes.erase(it);
+	//			break;
+	//		}
+	//	}
+	//}
 }
 
 void GeometryBatch::Draw()
@@ -306,8 +307,8 @@ void GeometryBatch::Draw()
 	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
 
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * sizeof(float) * 16, mMeshComponents.size() * sizeof(float) * 16);
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * sizeof(BufferIndices), mMeshComponents.size() * sizeof(BufferIndices));
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * sizeof(BufferIndices), mMeshComponents.size() * sizeof(BufferIndices));
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
 	
 	glDeleteSync(mSync[idx]);

@@ -8,31 +8,40 @@ struct ResourceMaterial;
 typedef struct Attribute;
 typedef struct __GLsync* GLsync;
 
-typedef struct BatchMeshRendererComponent
+class BatchMeshRendererComponent
 {
+public:
+	BatchMeshRendererComponent(const MeshRendererComponent* comp, uint32_t matIdx = 999999999, unsigned int fIndex = 0, unsigned int bVertex = 0) 
+		: component(comp), materialIdx(matIdx), firstIndex(fIndex), baseVertex(bVertex) {}
 	const MeshRendererComponent* component;
-	uint32_t materialIdx = 999999999;
-	unsigned int firstIndex = 0;	// Index offset in the EBO
-	unsigned int baseVertex = 0;	// Vertex offset in the VBO
-} BatchMeshRendererComponent;
+	uint32_t materialIdx;
+	unsigned int firstIndex;
+	unsigned int baseVertex;
+};
 
-typedef struct BatchMeshRendererResource
+class BatchMeshRendererResource
 {
+public:
+	BatchMeshRendererResource(const ResourceMesh* res, unsigned int fIndex = 0, unsigned int bVertex = 0)
+		: resource(res), firstIndex(fIndex), baseVertex(bVertex) {}
 	const ResourceMesh* resource;
-	unsigned int firstIndex = 0;	// Index offset in the EBO
-	unsigned int baseVertex = 0;	// Vertex offset in the VBO
-}BatchMeshRendererResource;
+	unsigned int firstIndex;
+	unsigned int baseVertex;
+};
 
 
-typedef struct Command
+class Command
 {
-	unsigned int mCount = 0;		 // Number of indices in the mesh
-	unsigned int mInstanceCount = 0; // Number of instances to render
-	unsigned int firstIndex = 0;	 // Index offset in the EBO
-	unsigned int baseVertex = 0;	 // Vertex offset in the VBO
-	unsigned int baseInstance = 0;   // Instance Index
+public:
+	Command(unsigned int count = 0, unsigned int instanceCount = 0, unsigned int fIndex = 0, unsigned int bVertex = 0, unsigned int bInstance = 0)
+		: mCount(count), mInstanceCount(instanceCount), firstIndex(fIndex), baseVertex(bVertex), baseInstance(bInstance) {}
+	unsigned int mCount;		 // Number of indices in the mesh
+	unsigned int mInstanceCount; // Number of instances to render
+	unsigned int firstIndex;	 // Index offset in the EBO
+	unsigned int baseVertex;	 // Vertex offset in the VBO
+	unsigned int baseInstance;   // Instance Index
 
-} Command;
+};
 
 typedef struct Material {
 	uint32_t  hasShininessMap = false;

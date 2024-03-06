@@ -26,19 +26,15 @@ public:
 	void RefreshBoundingBoxes();
 	const OBB getOBB() const { return mOBB; }
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
-	const GeometryBatch* GetBatch() const { return mBatch; }
-	void SetBatch(GeometryBatch* batch) { mBatch = batch; }
 	const AABB GetAABB() const { return mAABB; }
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 	bool IsInsideFrustum() const { return mInsideFrustum;  }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
-	void EditMaterial() const;
 private:
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;
-	GeometryBatch* mBatch = nullptr;
 
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;

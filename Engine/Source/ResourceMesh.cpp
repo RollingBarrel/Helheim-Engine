@@ -117,6 +117,7 @@ int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
 float* ResourceMesh::GetInterleavedData() const
 {
     float* ret = new float[mNumVertices * mVertexSize / sizeof(float)];
+    unsigned int vertexFloats = mVertexSize / sizeof(float);
     for (unsigned int vertexIdx = 0; vertexIdx < mNumVertices; ++vertexIdx)
     {
         for (unsigned int attributeIdx = 0; attributeIdx < mAttributes.size(); ++attributeIdx)
@@ -124,7 +125,7 @@ float* ResourceMesh::GetInterleavedData() const
             unsigned int attributeSize = mAttributes[attributeIdx].size / sizeof(float);
             unsigned int attributeOffset = mAttributes[attributeIdx].offset / sizeof(float);
             const float* attributeData = mAttributesData[attributeIdx];
-            memcpy(&ret[vertexIdx * attributeSize + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
+            memcpy(&ret[vertexIdx * vertexFloats + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
         }
     }
     return ret;

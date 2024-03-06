@@ -458,10 +458,10 @@ void ModuleOpenGL::AddMeshRendererComponent(MeshRendererComponent* mesh)
 	mBatchManager.AddMeshRendererComponent(mesh);
 }
 
-void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& renderList)
+void ModuleOpenGL::Draw()
 {
 	BindSceneFramebuffer();
-	mBatchManager.Draw(renderList);
+	mBatchManager.Draw();
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??

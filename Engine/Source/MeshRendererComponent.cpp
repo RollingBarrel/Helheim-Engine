@@ -61,11 +61,6 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::EditMaterial() const
-{
-	mBatch->EditMaterial(this);
-}
-
 void MeshRendererComponent::RefreshBoundingBoxes()
 {
 	mOBB = OBB(mAABB);

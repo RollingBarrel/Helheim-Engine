@@ -27,6 +27,7 @@ static float* GetInterleavedData(const std::vector<Attribute>& attributes, const
         vertexSize += attributes[i].size;
     }
     float* ret = new float[numVertices * vertexSize / sizeof(float)];
+    unsigned int vertexFloats = vertexSize / sizeof(float);
     for (unsigned int vertexIdx = 0; vertexIdx < numVertices; ++vertexIdx)
     {
         for (unsigned int attributeIdx = 0; attributeIdx < attributes.size(); ++attributeIdx)
@@ -34,7 +35,7 @@ static float* GetInterleavedData(const std::vector<Attribute>& attributes, const
             unsigned int attributeSize = attributes[attributeIdx].size / sizeof(float);
             unsigned int attributeOffset = attributes[attributeIdx].offset / sizeof(float);
             const float* attributeData = attributesData[attributeIdx];
-            memcpy(&ret[vertexIdx * attributeSize + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
+            memcpy(&ret[vertexIdx * vertexFloats + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
         }
     }
     return ret;
