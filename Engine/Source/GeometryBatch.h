@@ -11,6 +11,7 @@ typedef struct __GLsync* GLsync;
 typedef struct BatchMeshRendererComponent
 {
 	const MeshRendererComponent* component;
+	uint32_t materialIdx = 999999999;
 	unsigned int firstIndex = 0;	// Index offset in the EBO
 	unsigned int baseVertex = 0;	// Vertex offset in the VBO
 } BatchMeshRendererComponent;

@@ -48,6 +48,14 @@ readonly layout(std430, binding = 11) buffer Materials
 {
 	Material materials[];
 };
+struct Index
+{
+	uint matIdx;
+};
+readonly layout(std430, binding = 12) buffer Indices 
+{
+	Index indices[];
+};
 
 
 in VertToFrag {
@@ -87,25 +95,9 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 }
 
 
-void main() {
-
-	Material material = materials[instace_index];
-	
-	//if (instace_index == 0)
-	//{
-		//outColor = vec4(1,0,0, 1);
-
-	//}
-
-	//if (instace_index == 1)
-	//{
-		//outColor = vec4(0,1,0, 1);
-
-	//}
-	//if (instace_index == 2){
-		//outColor = vec4(0,0,1, 1);
-	//}
-	
+void main() 
+{
+	Material material = materials[indices[instace_index].matIdx];
 
 	//Diffuse
 	if(material.hasDiffuseMap)

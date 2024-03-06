@@ -132,17 +132,23 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 		mSsboIndicesData[i] = mSsboIndicesData[0] + ((size * i) / sizeof(uint32_t));
 	}
 
+	mMeshComponents.emplace_back(cMesh);
+
+	uint32_t matIdx = 0;
 	bool found = false;
 	const ResourceMaterial& resourceMaterial = *cMesh->GetResourceMaterial();
 	for (const ResourceMaterial* material : mUniqueMaterials) {
 		if (material->GetUID() == resourceMaterial.GetUID()) {
 			found = true;
+			mMeshComponents.back().materialIdx = matIdx;
 			break;
 		}
+		matIdx++;
 	}
 	if (!found)
 	{
 		mUniqueMaterials.push_back(&resourceMaterial);
+		mMeshComponents.back().materialIdx = mUniqueMaterials.size();
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, mUniqueMaterials.size() * sizeof(Material), nullptr, GL_STATIC_DRAW);
 		unsigned int offset = 0;
@@ -166,7 +172,6 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
-	mMeshComponents.emplace_back(cMesh);
 	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();
 	for (const BatchMeshRendererResource mesh : mUniqueMeshes) 
 	{
@@ -279,6 +284,7 @@ void GeometryBatch::Draw()
 
 	mCommands.clear();
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
+	unsigned int i = 0;
 	for (const BatchMeshRendererComponent batchMeshRenderer : mMeshComponents)
 	{
 		const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
@@ -288,18 +294,16 @@ void GeometryBatch::Draw()
 		{
 			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()) 
 			{
+				memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+				memcpy(mSsboIndicesData[idx] + i, &batchMeshRenderer.materialIdx, sizeof(uint32_t));
 				mCommands.emplace_back(rMesh->GetNumberIndices(), 1, batchMeshRenderer.firstIndex, batchMeshRenderer.baseVertex, mCommands.size());
 			}
 		}
+		++i;
 	}
 
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
-
-
-	for (unsigned int i = 0; i < mMeshComponents.size(); ++i) {
-		memcpy(mSsboModelMatricesData[idx] + 16 * i, mMeshComponents[i]->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
-	}
 
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * sizeof(float) * 16, mMeshComponents.size() * sizeof(float) * 16);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * sizeof(BufferIndices), mMeshComponents.size() * sizeof(BufferIndices));
