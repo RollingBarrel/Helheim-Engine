@@ -10,6 +10,7 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
+#include "AIAGentComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
@@ -287,6 +288,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				}
+				case ComponentType::AIAGENT: {
+					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
+					break;
+				}
 				case ComponentType::POINTLIGHT: {
 					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
 					break;
@@ -386,6 +391,61 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
 		component->SetShouldDraw(shouldDraw);
 	}
+}
+
+void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
+{
+	ImGui::SeparatorText("Agent Parameters");
+
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float height = component->GetHeight();
+	if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
+	{
+		component->SetHeight(height);
+	}
+	float stepHeight = component->GetStepHeight();
+	if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
+	{
+		component->SetStepHeight(stepHeight);
+	}
+
+	int maxSlope = component->GetMaxSlope();
+	if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
+		component->SetMaxSlope(maxSlope);
+	}
+
+	ImGui::SeparatorText("Steering Parameters");
+
+	float speed = component->GetSpeed();
+	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f))
+	{
+		component->SetSpeed(speed);
+	}
+
+	float angularSpeed = component->GetAngularSpeed();
+	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))
+	{
+		component->SetAngularSpeed(angularSpeed);
+	}
+
+	float acceleration = component->GetAcceleration();
+	if (ImGui::DragFloat("acceleration", &acceleration, 1.0f, 0.0f))
+	{
+		component->SetAcceleration(acceleration);
+	}
+
+	float stoppingDistance = component->GetStoppingDistance();
+	if (ImGui::DragFloat("Stopping Distance", &stoppingDistance, 1.0f, 0.0f))
+	{
+		component->SetStoppingDistance(stoppingDistance);
+	}
+
+
+
 }
 
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
