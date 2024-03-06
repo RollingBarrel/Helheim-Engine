@@ -60,7 +60,7 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
         }
         else
         {
-            node.mScale = float3::zero;
+            node.mScale = float3(1.f);
         }
     }
 
@@ -112,20 +112,20 @@ static void SaveNode(const ModelNode& currentNode, char** cursor)
     //Name
     unsigned int bytes = currentNode.mName.length() + 1;
     memcpy((*cursor), &bytes, sizeof(unsigned int));
-    *cursor += bytes;
-    memcpy((*cursor), &currentNode.mName, bytes);
+    *cursor += sizeof(unsigned int);
+    memcpy((*cursor), currentNode.mName.c_str(), bytes);
     *cursor += bytes;
     //Translation
     bytes = sizeof(float) * 3;
-    memcpy((*cursor), &currentNode.mTranslation, bytes);
+    memcpy((*cursor), currentNode.mTranslation.ptr(), bytes);
     *cursor += bytes;
     //Rotation
     bytes = sizeof(float) * 4;
-    memcpy((*cursor), &currentNode.mRotation, bytes);
+    memcpy((*cursor), currentNode.mRotation.ptr(), bytes);
     *cursor += bytes;
     //Scale
     bytes = sizeof(float) * 3;
-    memcpy((*cursor), &currentNode.mScale, bytes);
+    memcpy((*cursor), currentNode.mScale.ptr(), bytes);
     *cursor += bytes;
     //MeshId
     bytes = sizeof(int);
@@ -192,14 +192,15 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
 {
     char* fileBuffer = new char[size];
+    char* ptr = fileBuffer;
 
-    const ModelNode& temp = rModel->GetRoot();
-    SaveNode(temp, &fileBuffer);
+    SaveNode(rModel->GetRoot(), &ptr);
    
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
     
     delete[] libraryPath;
+    delete[] fileBuffer;
 }
 
 ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
