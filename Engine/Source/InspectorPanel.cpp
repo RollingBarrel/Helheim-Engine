@@ -185,10 +185,10 @@ void InspectorPanel::ShowSameComponentPopup()
 void InspectorPanel::RightClickPopup(Component* component) {
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
-		ImGui::OpenPopup(std::to_string(component->mID).c_str());
+		ImGui::OpenPopup(std::to_string(component->GetID()).c_str());
 	}
 
-	if (ImGui::BeginPopup(std::to_string(component->mID).c_str())) {
+	if (ImGui::BeginPopup(std::to_string(component->GetID()).c_str())) {
 		if (ImGui::MenuItem("Delete Component")) {
 			component->mOwner->AddComponentToDelete(component);
 			ImGui::CloseCurrentPopup();

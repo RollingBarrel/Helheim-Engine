@@ -222,17 +222,13 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 {
 	const ResourceMesh& rMesh = *component->GetResourceMesh();
 	unsigned int timesFound = 0;
-	unsigned int numRemovedIndices = 0;
-	unsigned int numRemovedVertices = 0;
 	for (std::vector<BatchMeshRendererComponent>::iterator it = mMeshComponents.begin(); it != mMeshComponents.end();)
 	{
 		if (it->component->GetResourceMesh()->GetUID() == rMesh.GetUID())
+			++timesFound;
+		if (it->component->GetID() == component->GetID())
 		{
 			++timesFound;
-			if (timesFound == 2)
-				break;
-			numRemovedVertices = rMesh.GetNumberVertices() * GetVertexSize() / sizeof(float);
-			numRemovedIndices = rMesh.GetNumberIndices();
 			it = mMeshComponents.erase(it);
 			continue;
 		}
@@ -240,6 +236,8 @@ void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
 	}
 	if (timesFound == 1)
 	{
+		unsigned int numRemovedIndices = 0;
+		unsigned int numRemovedVertices = 0;
 		bool found = false;
 		for (std::vector<BatchMeshRendererResource>::iterator it = mUniqueMeshes.begin(); it != mUniqueMeshes.end();)
 		{

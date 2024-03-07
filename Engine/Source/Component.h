@@ -24,7 +24,7 @@ public:
 	ComponentType GetType() const { return mType; }
 	const GameObject* const GetOwner() const { return mOwner; }
 
-	int GetID() { return mID; }
+	unsigned int GetID() const { return mID; }
 
 	virtual	void Enable() { mIsEnabled = true; };
 	virtual	void Disable() { mIsEnabled = false; }
