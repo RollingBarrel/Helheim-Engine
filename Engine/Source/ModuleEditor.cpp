@@ -71,6 +71,7 @@ bool ModuleEditor::Init()
 	icons_config.MergeMode = true;
 	icons_config.PixelSnapH = true;
 	icons_config.GlyphMinAdvanceX = iconFontSize;
+	icons_config.GlyphOffset = ImVec2(0, 5); 
 	io->Fonts->AddFontFromFileTTF("Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
 
 	return true;
