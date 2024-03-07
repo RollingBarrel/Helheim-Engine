@@ -64,6 +64,8 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 
 	//Milliseconds to seconds
 	float currentTime = mCurrentTime / 1000.0f;
+
+	//NOT IN GET TRANSFORM
 	//In case the animation loops, if the current time is greater than the animation duration, we change the time so it's in range
 	if (mLoop) {
 		currentTime = std::fmod(currentTime, mAnimation->GetDuration());
@@ -90,7 +92,7 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 
 		pos = Interpolate(channel->positions[keyIndex-1], channel->positions[keyIndex], lambda);
 	}
-	else if (channel->hasRotation)
+	if (channel->hasRotation)
 	{
 		//Conversion of std::unique_ptr<float[]> to std::vector<float>
 		std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);

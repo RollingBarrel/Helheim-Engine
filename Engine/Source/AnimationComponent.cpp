@@ -6,6 +6,8 @@
 
 #include "AnimationComponent.h"
 
+#include "GameObject.h"
+
 AnimationComponent::AnimationComponent(GameObject* owner, unsigned int animationUid) :Component(owner, ComponentType::ANIMATION) 
 {
 	if (animationUid != 0) {
@@ -32,4 +34,14 @@ AnimationComponent::~AnimationComponent()
 		App->GetResource()->ReleaseResource(mAnimation->GetUID());
 		mAnimation = nullptr;
 	}
+}
+
+void AnimationComponent::CreateNodeTree()
+{
+	GameObject rootNode = new GameObject(mOwner);
+}
+
+void AnimationComponent::DeleteNodeTree()
+{
+	
 }

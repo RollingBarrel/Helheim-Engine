@@ -39,7 +39,7 @@ ResourceAnimation::AnimationChannel* ResourceAnimation::GetChannel(const std::st
 	return nullptr;
 }
 
-void ResourceAnimation::addChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel) {
+void ResourceAnimation::AddChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel) {
     if (!ourAnimation)
         return;
 

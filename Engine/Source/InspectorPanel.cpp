@@ -14,6 +14,7 @@
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
 
 #include "ResourceMaterial.h"
 
@@ -134,7 +135,6 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 	}
 	ImGui::PopID();
 }
-
 
 void InspectorPanel::AddComponentButton(GameObject* object) {
 	float windowWidth = ImGui::GetWindowWidth();
@@ -306,6 +306,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::NAVMESHOBSTACLE: {
 					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
+					break;
+				}
+				case ComponentType::ANIMATION: {
+					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
 					break;
 				}
 				case ComponentType::TEST: {
@@ -550,4 +554,10 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling
+}
+
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+
+	ImGui::SeparatorText("Animation");
+	ImGui::Text("HELLO");
 }

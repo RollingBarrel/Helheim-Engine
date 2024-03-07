@@ -14,6 +14,9 @@ public:
 	const ResourceAnimation* GetAnimation() { return mAnimation; }
 	const AnimationController* GetAnimationController() { return mController; }
 
+	void CreateNodeTree(); 
+	void DeleteNodeTree();
+
 	void OnStart();
 	void OnStop();
 	void OnUpdate();

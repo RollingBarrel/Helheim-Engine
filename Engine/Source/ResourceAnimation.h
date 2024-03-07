@@ -33,7 +33,7 @@ public:
 
     };
 
-    void addChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
+    void AddChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation* ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
     AnimationChannel* GetChannel(const std::string& name) const;
    
     const std::unordered_map<std::string, AnimationChannel*>& GetChannels() { return mChannels; }

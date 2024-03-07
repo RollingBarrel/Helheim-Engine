@@ -29,15 +29,14 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
         {
             //create a new channel
           ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel; 
-            ourAnimation->addChannels(model, animation, srcChannel, ourAnimation, ourChannel);
+            ourAnimation->AddChannels(model, animation, srcChannel, ourAnimation, ourChannel);
 
             for (const auto& srcChannel2 : animation.channels)
             {
 
                 if (srcChannel2.target_node == srcChannel.target_node && (ourChannel->hasTranslation == false || ourChannel->hasRotation == false))
                 {
-
-                    ourAnimation->addChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
+                    ourAnimation->AddChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
                 }
             }
             
