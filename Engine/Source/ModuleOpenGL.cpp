@@ -91,6 +91,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Initialize scene framebuffer
 	glGenFramebuffers(1, &sFbo);
@@ -117,6 +118,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
@@ -150,28 +152,19 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Draw the skybox
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-
-	glUseProgram(App->GetOpenGL()->GetSkyboxProgramId());
-
+	glUseProgram(mSkyBoxProgramId);
 	glBindVertexArray(mSkyVao);
-
 	glDepthMask(GL_FALSE);
-
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glDepthMask(GL_TRUE);
-
 	glBindVertexArray(0);
 	glUseProgram(0);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	return UPDATE_CONTINUE;
 }
@@ -210,12 +203,10 @@ bool ModuleOpenGL::CleanUp()
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
-	App->GetCamera()->WindowResized(width, height);
 }
 
 void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 {
-	App->GetCamera()->WindowResized(width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
@@ -233,7 +224,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		mCameraUniBuffer->UpdateData(App->GetCamera()->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
 		mCameraUniBuffer->UpdateData(App->GetCamera()->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
-		glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+		glUseProgram(mPbrProgramId);
 		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
 		glUseProgram(0);
 	}
