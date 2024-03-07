@@ -95,7 +95,7 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
         node.mMeshUID = 0;
     }
 
-    size += sizeof(unsigned int) + node.mName.length() + 1         //Name
+    size += node.mName.length() + 1         //Name
         + sizeof(float) * 3                 //Pos
         + sizeof(float) * 4                 //Rot
         + sizeof(float) * 3                 //Scale
@@ -113,12 +113,8 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
 
 static void SaveNode(const ModelNode& currentNode, char** cursor)
 {
-    unsigned int bytes = sizeof(unsigned int);
-    unsigned int nameSize = currentNode.mName.length() + 1;
-    memcpy((*cursor), &nameSize, bytes);
-    *cursor += bytes;
     //Name
-    bytes = currentNode.mName.length() + 1;
+    unsigned int bytes = currentNode.mName.length() + 1;
     memcpy((*cursor), currentNode.mName.c_str(), bytes);
     *cursor += bytes;
     //Translation
@@ -167,20 +163,23 @@ static void SaveNode(const ModelNode& currentNode, char** cursor)
 
 static void LoadNode(ModelNode& node, char** cursor)
 {
-
-    unsigned int bytes = sizeof(unsigned int);
-    unsigned int nameSize = 0;
-    memcpy(&nameSize, *cursor, bytes);
-    *cursor += bytes;
-
-    bytes = nameSize;
-    char* name = new char[nameSize];
-    memcpy(name, *cursor, bytes);
-    *cursor += bytes;
+    unsigned int count = 0;
+    while (*(*cursor)++ != '\0')
+    {
+        count++;
+    }
+    count++;
+    *cursor -= count;
+    char* name = new char[count];
+    char* ptr = name;
+    while (count--)
+    {
+        *ptr++ = *(*cursor)++;
+    }
 
     node.mName = name;
 
-    bytes = sizeof(float) * 3;
+    unsigned int bytes = sizeof(float) * 3;
     memcpy(node.mTranslation.ptr(), *cursor, bytes);
     *cursor += bytes;
 
