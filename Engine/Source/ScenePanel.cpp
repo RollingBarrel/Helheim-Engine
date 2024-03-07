@@ -18,6 +18,26 @@
 #include "Math/float2.h"
 #include "imgui.h"
 
+static void DragToScene(const ModelNode& node, GameObject* parent)
+{
+	GameObject* gameObject = new GameObject(node.mName.c_str(), parent);
+
+	gameObject->SetPosition(node.mTranslation);
+	gameObject->SetRotation(node.mRotation);
+	gameObject->SetScale(node.mScale);
+	gameObject->RecalculateMatrices();
+
+	if (node.mMeshId > -1)
+	{
+		MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gameObject->CreateComponent(ComponentType::MESHRENDERER, node.mMeshUID, node.mMaterialUID));
+	}
+
+	for (int i = 0; i < node.mChildren.size(); ++i)
+	{
+		DragToScene(node.mChildren[i], gameObject);
+	}
+}
+
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
 {
 
@@ -70,12 +90,7 @@ void ScenePanel::Draw(int windowFlags)
 						break;
 					case Resource::Type::Model:
 					{
-						GameObject* nGO = new GameObject(asset->mName, App->GetScene()->GetRoot());
-						//for (auto it = reinterpret_cast<ResourceModel*>(resource)->GetUids().cbegin(); it != reinterpret_cast<ResourceModel*>(resource)->GetUids().cend(); ++it)
-						//{
-						//	GameObject* go = new GameObject(nGO);
-						//	MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER, it->meshUID, it->materialUID));
-						//}
+						DragToScene(reinterpret_cast<ResourceModel*>(resource)->GetRoot(), App->GetScene()->GetRoot());
 						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
 					}

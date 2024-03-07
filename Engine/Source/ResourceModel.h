@@ -8,12 +8,6 @@
 #include "Quat.h"
 
 
-typedef struct ModelIds {
-	unsigned int meshUID;
-	unsigned int materialUID;
-}ModelIds;
-
-
 struct ModelNode
 {
 	//Game Object
@@ -23,7 +17,9 @@ struct ModelNode
 	math::Quat mRotation;
 	math::float3 mScale;
 
-	std::vector<ModelIds> mUids;
+	unsigned int mMeshUID;
+	unsigned int mMaterialUID;
+
 	std::vector<ModelNode> mChildren;
 
 	//Components
