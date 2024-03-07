@@ -39,8 +39,8 @@ void EditorControlPanel::Draw(int windowFlags)
 		mCurrentGuizmoOperation = ImGuizmo::SCALE;
 	}
 	ImGui::SameLine();
-	const char* buttonLabel = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ICON_FA_CUBE " Local" : ICON_FA_GLOBE " World";
-	if (ImGui::Button(buttonLabel, ImVec2(80,30))) {
+	const char* buttonLabel = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? "Local" : "World";
+	if (ImGui::Button(buttonLabel, ImVec2(70,30))) {
 		mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
 	}
 
