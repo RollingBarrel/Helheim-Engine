@@ -149,6 +149,8 @@
     <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AgentProfile.cpp" />
+    <ClCompile Include="AIAGentComponent.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
@@ -285,6 +287,8 @@
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AgentProfile.h" />
+    <ClInclude Include="AIAGentComponent.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
     <ClInclude Include="CanvasComponent.h" />
