@@ -71,6 +71,7 @@ bool ModuleEditor::Init()
 	icons_config.MergeMode = true;
 	icons_config.PixelSnapH = true;
 	icons_config.GlyphMinAdvanceX = iconFontSize;
+	icons_config.GlyphOffset = ImVec2(0, 5); // This Y offset works with the Guizmo buttons and its pertinent icons, but could be different for other button sizes
 	io->Fonts->AddFontFromFileTTF("Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
 
 	return true;
