@@ -10,8 +10,12 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
+#include "AIAGentComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
+#include "NavMeshObstacleComponent.h"
+
+#include "ResourceMaterial.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -19,6 +23,11 @@ void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
+
+	if (mLockedGameObject != nullptr) {
+		focusedObject = mLockedGameObject;
+	}
+
 	if (focusedObject == nullptr) return;
 
 	char nameArray[100];
@@ -41,6 +50,16 @@ void InspectorPanel::Draw(int windowFlags)
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
+		// Lock
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Lock", &mLocked)) {
+			if (mLocked) {
+				mLockedGameObject = focusedObject;
+			}
+			else {
+				mLockedGameObject = nullptr;
+			}
+		}
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
 		ImGui::Separator();
@@ -269,6 +288,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				}
+				case ComponentType::AIAGENT: {
+					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
+					break;
+				}
 				case ComponentType::POINTLIGHT: {
 					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
 					break;
@@ -279,6 +302,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::CAMERA: {
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+					break;
+				}
+				case ComponentType::NAVMESHOBSTACLE: {
+					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
 					break;
 				}
 				case ComponentType::TEST: {
@@ -366,28 +393,113 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	}
 }
 
+void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
+{
+	ImGui::SeparatorText("Agent Parameters");
+
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float height = component->GetHeight();
+	if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
+	{
+		component->SetHeight(height);
+	}
+	float stepHeight = component->GetStepHeight();
+	if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
+	{
+		component->SetStepHeight(stepHeight);
+	}
+
+	int maxSlope = component->GetMaxSlope();
+	if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
+		component->SetMaxSlope(maxSlope);
+	}
+
+	ImGui::SeparatorText("Steering Parameters");
+
+	float speed = component->GetSpeed();
+	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f))
+	{
+		component->SetSpeed(speed);
+	}
+
+	float angularSpeed = component->GetAngularSpeed();
+	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))
+	{
+		component->SetAngularSpeed(angularSpeed);
+	}
+
+	float acceleration = component->GetAcceleration();
+	if (ImGui::DragFloat("acceleration", &acceleration, 1.0f, 0.0f))
+	{
+		component->SetAcceleration(acceleration);
+	}
+
+	float stoppingDistance = component->GetStoppingDistance();
+	if (ImGui::DragFloat("Stopping Distance", &stoppingDistance, 1.0f, 0.0f))
+	{
+		component->SetStoppingDistance(stoppingDistance);
+	}
+
+
+
+}
+
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
 
+	bool enableDiffuse = material->IsDiffuseTextureEnabled();
+	if (ImGui::Checkbox("Enable Diffuse map", &enableDiffuse))
+		material->EnableDiffuseTexture(enableDiffuse);
 
-	ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture);
-	ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture);
-	ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap);
-	ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap);
+	bool enableSpecular = material->IsSpecularGlossinessTextureEnabled();
+	if (ImGui::Checkbox("Enable Specular map", &enableSpecular))
+		material->EnableSpecularGlossinessTexture(enableSpecular);
+	
+	bool enableShinines = material->IsShininessMapEnabled();
+	if (ImGui::Checkbox("Enable Shininess map", &enableShinines))
+		material->EnableShininessTexture(enableShinines);
 
-	if (!material->mEnableDiffuseTexture)
+	bool enableNormal = material->IsNormalMapEnabled();
+	if (ImGui::Checkbox("Enable Normal map", &enableNormal))
+		material->EnableNormalTexture(enableNormal);
+
+	if (!enableDiffuse)
 	{
-		ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr());
+		float4 diffuseFactor = material->GetDiffuseFactor();
+		if (ImGui::ColorPicker3("Diffuse", diffuseFactor.ptr()))
+			material->SetDiffuseFactor(diffuseFactor);
 	}
-	if (!material->mEnableSpecularGlossinessTexture)
+	if (!enableSpecular)
 	{
-		ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr());
+		float3 specularFactor = material->GetSpecularFactor();
+		if (ImGui::ColorPicker3("Specular", specularFactor.ptr()))
+			material->SetSpecularFactor(specularFactor);
 	}
-	if (!material->mEnableShinessMap)
+	if (!enableShinines)
 	{
-		ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f");
+		float shininessFactor = material->GetGlossinessFactor();
+		if (ImGui::DragFloat("Shininess", &shininessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+			material->SetGlossinessFactor(shininessFactor);
 	}
+}
+
+void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)
+{
+	ImGui::SeparatorText("Navigation Mesh Obstacle");
+	
+	float Radius = component->GetRadius();
+	ImGui::InputFloat("Radius", &Radius);
+	component->SetRadius(Radius);
+
+	float Height = component->GetHeight();
+	ImGui::InputFloat("Height", &Height);
+	component->SetHeight(Height);
+	
 }
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)

@@ -15,10 +15,12 @@
 #include "HierarchyPanel.h"
 #include "ScenePanel.h"
 #include "QuadtreePanel.h"
+#include "NavMeshControllerPanel.h"
 #include "DebugPanel.h"
 #include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
+#include "ResourcePanel.h"
 #include "TimerPanel.h"
 #include "EditorControlPanel.h"
 
@@ -26,6 +28,7 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 #include "ImGuizmo.h"
+#include "OptickAdapter.h"
 #include "IconsFontAwesome6.h"
 
 ModuleEditor::ModuleEditor()
@@ -36,10 +39,12 @@ ModuleEditor::ModuleEditor()
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[SCENEPANEL] = new ScenePanel();
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
+	mPanels[NAVMESHPANEL] = new NavMeshControllerPanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
+	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
 }
@@ -74,6 +79,8 @@ bool ModuleEditor::Init()
 	icons_config.GlyphOffset = ImVec2(0, 5); // This Y offset works with the Guizmo buttons and its pertinent icons, but could be different for other button sizes
 
 	io->Fonts->AddFontFromFileTTF("Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
+
+	mOptick = new OptickAdapter();
 
 	return true;
 }
@@ -136,12 +143,14 @@ bool ModuleEditor::CleanUp()
 		delete panel.second;
 	}
 	mPanels.clear();
+	delete mOptick;
 
 	return true;
 }
 
 void ModuleEditor::ShowMainMenuBar() 
 {
+
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -188,12 +197,22 @@ void ModuleEditor::ShowMainMenuBar()
 					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
 			}
+			Panel* navMeshPanel = mPanels[NAVMESHPANEL];
+			if (ImGui::MenuItem("NavMeshController", NULL, navMeshPanel->IsOpen())) {
+				if (navMeshPanel)
+				{
+					navMeshPanel->IsOpen() ? navMeshPanel->Close() : navMeshPanel->Open();
+				}
+			}
 			Panel* debugPanel = mPanels[DEBUGPANEL];
 			if (ImGui::MenuItem("Debug", NULL, debugPanel->IsOpen())) {
 				if (debugPanel)
 				{
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
 				}
+			}
+			if (ImGui::MenuItem("Optick", NULL, false, !mOptick->IsOpen())) {
+				mOptick->Startup();
 			}
 			ImGui::EndMenu();
 		}
@@ -312,6 +331,8 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* timerPanel = mPanels[TIMERPANEL];
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* debugPanel = mPanels[DEBUGPANEL];
+	Panel* navMeshController = mPanels[NAVMESHPANEL];
+
 
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* console = mPanels[CONSOLEPANEL];
@@ -321,6 +342,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* inspector = mPanels[INSPECTORPANEL];
 	Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
+	Panel* resourcePanel = mPanels[RESOURCEPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 
@@ -328,6 +350,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		timerPanel->Open();
 		quadTree->Open();
 		debugPanel->Open();
+		navMeshController->Open();
 		
 		projectPanel->Open();
 		console->Open();
@@ -337,10 +360,12 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		inspector->Open();
 		editorControlPanel->Open();
 		lightningPanel->Open();
+		resourcePanel->Open();
 	}
 	else {
 		timerPanel->Close();
 		quadTree->Close();
+		navMeshController->Close();
 		debugPanel->Close();
 
 		projectPanel->Close();
@@ -351,6 +376,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		inspector->Close();
 		editorControlPanel->Close();
 		lightningPanel->Close();
+		resourcePanel->Close();
 
 		aboutPanel->Close();
 	}

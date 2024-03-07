@@ -147,7 +147,6 @@ bool ModuleOpenGL::Init()
 
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
-
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -210,14 +209,15 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
+	SetOpenGlCameraUniforms();
 }
 
 void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 {
-	App->GetCamera()->WindowResized(width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
+	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
@@ -420,6 +420,8 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 	mPointLights.push_back(newComponent);
 	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
 	uint32_t size = mPointLights.size();
+	newComponent->SetIntensity(50);
+	newComponent->SetRadius(25);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 
 	return newComponent;
@@ -460,7 +462,8 @@ SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObje
 	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-
+	newComponent->SetIntensity(50);
+	newComponent->SetRadius(25);
 	return newComponent;
 }
 

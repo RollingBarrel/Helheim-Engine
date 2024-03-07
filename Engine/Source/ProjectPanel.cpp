@@ -20,38 +20,57 @@ void ProjectPanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		for (auto i = 0; i < root->mChildren.size(); ++i)
+		if (ImGui::BeginChild("Favs##"))
 		{
-			if (strcmp(root->mChildren[i]->mName, "Library/Models") == 0) {
-				if (ImGui::TreeNodeEx(root->mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen))
-				{
-					for (auto j = 0; j < root->mChildren[i]->assets.size(); ++j)
-					{
-						if (ImGui::TreeNodeEx(root->mChildren[i]->assets[j]->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
-						{
-							if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-							{
-								ImGui::SetDragDropPayload("_SCENE", root->mChildren[i]->assets[j], sizeof(*root->mChildren[i]->assets[j]));
-
-								ImGui::Text(root->mChildren[i]->assets[j]->mName);
-								ImGui::EndDragDropSource();
-							}
-							ImGui::TreePop();
-						}
-					}
-					ImGui::TreePop();
-				}
-			}
+			DrawAssetsFolder(*root);
 		}
+		ImGui::EndChild();
 
-
+		if (ImGui::BeginChild("Assets"))
+		{
+			ImGui::Button("HI");
+		}
+		ImGui::EndChild();
 	}
 	ImGui::End();
 }
 
-AssetDisplay::AssetDisplay(const char* name, PathNode* parent) : mParent(parent)
+const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 {
-	unsigned int size = strlen(name) + 1;
-	mName = new char[size];
-	strcpy_s(const_cast<char*>(mName), size, name);
+	//Discard Meta file but, read .emeta data
+	for (auto i = 0; i < current.mChildren.size(); ++i)
+	{
+		if (ImGui::TreeNodeEx(current.mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			for (auto j = 0; j < current.mChildren[i]->assets.size(); ++j)
+			{
+				if (ImGui::TreeNodeEx(current.mChildren[i]->assets[j]->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
+				{
+					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+					{
+						ImGui::SetDragDropPayload("_SCENE", current.mChildren[i]->assets[j], sizeof(*current.mChildren[i]->assets[j]));
+
+						ImGui::Text(current.mChildren[i]->assets[j]->mName);
+						ImGui::EndDragDropSource();
+					}
+					ImGui::TreePop();
+				}
+			}
+			DrawAssetsFolder(*current.mChildren[i]);
+			ImGui::TreePop();
+		}
+	}
 }
+
+AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent) : mParent(parent)
+{
+	unsigned int sizeName = strlen(name) + 1;
+	mName = new char[sizeName];
+	strcpy_s(const_cast<char*>(mName), sizeName, name);
+
+	unsigned int sizePath = strlen(path) + 1;
+	mPath = new char[sizePath];
+	strcpy_s(const_cast<char*>(mPath), sizePath, path);
+}
+
+

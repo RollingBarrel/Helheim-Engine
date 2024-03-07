@@ -42,6 +42,7 @@ jobs:
             # in a pull request's thread. Set it to false to disable the comment.
             # Set it to true to post a new comment (and delete the old comment).
             thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+            step-summary: true
 
   build:
     runs-on: windows-latest
