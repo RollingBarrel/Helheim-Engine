@@ -95,7 +95,7 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
         node.mMeshUID = 0;
     }
 
-    size += node.mName.length() + 1         //Name
+    size += sizeof(unsigned int) + node.mName.length() + 1         //Name
         + sizeof(float) * 3                 //Pos
         + sizeof(float) * 4                 //Rot
         + sizeof(float) * 3                 //Scale
@@ -113,8 +113,12 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
 
 static void SaveNode(const ModelNode& currentNode, char** cursor)
 {
+    unsigned int bytes = sizeof(unsigned int);
+    unsigned int nameSize = currentNode.mName.length() + 1;
+    memcpy((*cursor), &nameSize, bytes);
+    *cursor += bytes;
     //Name
-    unsigned int bytes = currentNode.mName.length() + 1;
+    bytes = currentNode.mName.length() + 1;
     memcpy((*cursor), currentNode.mName.c_str(), bytes);
     *cursor += bytes;
     //Translation
@@ -161,60 +165,57 @@ static void SaveNode(const ModelNode& currentNode, char** cursor)
     }
 }
 
-static void LoadNode(ModelNode& node, char* cursor)
+static void LoadNode(ModelNode& node, char** cursor)
 {
-    unsigned int count = 0;
-    while (*cursor++ != '\0')
-    {
-        count++;
-    }
-    count++;
-    cursor -= count;
-    char* name = new char[count];
-    char* ptr = name;
-    while (count--)
-    {
-        *ptr++ = *cursor++;
-    }
+
+    unsigned int bytes = sizeof(unsigned int);
+    unsigned int nameSize = 0;
+    memcpy(&nameSize, *cursor, bytes);
+    *cursor += bytes;
+
+    bytes = nameSize;
+    char* name = new char[nameSize];
+    memcpy(name, *cursor, bytes);
+    *cursor += bytes;
 
     node.mName = name;
 
-    unsigned int bytes = sizeof(float) * 3;
-    memcpy(&node.mTranslation, cursor, bytes);
-    cursor += bytes;
+    bytes = sizeof(float) * 3;
+    memcpy(node.mTranslation.ptr(), *cursor, bytes);
+    *cursor += bytes;
 
     bytes = sizeof(float) * 4;
-    memcpy(&node.mRotation, cursor, bytes);
-    cursor += bytes;
+    memcpy(node.mRotation.ptr(), *cursor, bytes);
+    *cursor += bytes;
 
     bytes = sizeof(float) * 3;
-    memcpy(&node.mScale, cursor, bytes);
-    cursor += bytes;
+    memcpy(node.mScale.ptr(), *cursor, bytes);
+    *cursor += bytes;
 
     bytes = sizeof(int);
-    memcpy(&node.mMeshId, cursor, bytes);
-    cursor += bytes;
+    memcpy(&node.mMeshId, *cursor, bytes);
+    *cursor += bytes;
 
     bytes = sizeof(int);
-    memcpy(&node.mCameraId, cursor, bytes);
-    cursor += bytes;
+    memcpy(&node.mCameraId, *cursor, bytes);
+    *cursor += bytes;
 
     bytes = sizeof(int);
-    memcpy(&node.mSkinId, cursor, bytes);
-    cursor += bytes;
+    memcpy(&node.mSkinId, *cursor, bytes);
+    *cursor += bytes;
 
     bytes = sizeof(unsigned int);
-    memcpy(&node.mMeshUID, cursor, bytes);
-    cursor += bytes;
+    memcpy(&node.mMeshUID, *cursor, bytes);
+    *cursor += bytes;
 
     bytes = sizeof(unsigned int);
-    memcpy(&node.mMaterialUID, cursor, bytes);
-    cursor += bytes;
+    memcpy(&node.mMaterialUID, *cursor, bytes);
+    *cursor += bytes;
 
     unsigned int childSize = 0;
     bytes = sizeof(unsigned int);
-    memcpy(&childSize, cursor, bytes);
-    cursor += bytes;
+    memcpy(&childSize, *cursor, bytes);
+    *cursor += bytes;
 
     for (int i = 0; i < childSize; ++i)
     {
@@ -277,7 +278,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
     { 
         char* cursor = fileBuffer;
 
-        LoadNode(root, cursor);
+        LoadNode(root, &cursor);
 
         rModel = new ResourceModel(uid, root);
     
