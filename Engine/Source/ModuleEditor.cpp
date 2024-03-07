@@ -15,6 +15,7 @@
 #include "HierarchyPanel.h"
 #include "ScenePanel.h"
 #include "QuadtreePanel.h"
+#include "NavMeshControllerPanel.h"
 #include "DebugPanel.h"
 #include "PausePanel.h"
 #include "ProjectPanel.h"
@@ -38,6 +39,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[SCENEPANEL] = new ScenePanel();
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
+	mPanels[NAVMESHPANEL] = new NavMeshControllerPanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
@@ -195,6 +197,13 @@ void ModuleEditor::ShowMainMenuBar()
 					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
 			}
+			Panel* navMeshPanel = mPanels[NAVMESHPANEL];
+			if (ImGui::MenuItem("NavMeshController", NULL, navMeshPanel->IsOpen())) {
+				if (navMeshPanel)
+				{
+					navMeshPanel->IsOpen() ? navMeshPanel->Close() : navMeshPanel->Open();
+				}
+			}
 			Panel* debugPanel = mPanels[DEBUGPANEL];
 			if (ImGui::MenuItem("Debug", NULL, debugPanel->IsOpen())) {
 				if (debugPanel)
@@ -315,6 +324,8 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* timerPanel = mPanels[TIMERPANEL];
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* debugPanel = mPanels[DEBUGPANEL];
+	Panel* navMeshController = mPanels[NAVMESHPANEL];
+
 
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* console = mPanels[CONSOLEPANEL];
@@ -331,6 +342,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		timerPanel->Open();
 		quadTree->Open();
 		debugPanel->Open();
+		navMeshController->Open();
 		
 		projectPanel->Open();
 		console->Open();
@@ -344,6 +356,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	else {
 		timerPanel->Close();
 		quadTree->Close();
+		navMeshController->Close();
 		debugPanel->Close();
 
 		projectPanel->Close();

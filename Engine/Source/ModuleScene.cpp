@@ -14,6 +14,7 @@
 #include "Archive.h"
 #include "Tag.h"
 #include "Globals.h"
+#include "NavMeshController.h"
 
 #include <algorithm>
 #include <iterator>
@@ -25,12 +26,16 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(3, "EditorOnly", TagType::SYSTEM));
 	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
+	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
+	mNavMeshController = new NavMeshController();
 }
 
 ModuleScene::~ModuleScene()
 {
 	mQuadtreeRoot->CleanUp();
 	delete mQuadtreeRoot;
+	delete mNavMeshController;
 
 	delete mRoot;
 
@@ -252,7 +257,7 @@ update_status ModuleScene::Update(float dt)
 		mQuadtreeRoot->Draw();
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
-
+	mNavMeshController->Update();
 	GenerateRenderList(mRoot);
 	DrawRenderList();
 	mRenderList.clear();

@@ -8,6 +8,7 @@ class Quadtree;
 class GameObject;
 class Archive;
 class Tag;
+class NavMeshController;
 
 class ModuleScene : public Module
 {
@@ -20,6 +21,7 @@ public:
 	update_status PostUpdate(float dt) override;
 
 	GameObject* GetRoot() const { return mRoot; }
+	NavMeshController* GetNavController() const { return mNavMeshController; }
 
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
@@ -69,6 +71,7 @@ private:
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
+	NavMeshController* mNavMeshController;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
