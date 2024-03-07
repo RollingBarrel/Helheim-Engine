@@ -111,6 +111,16 @@ ResourceScript* Importer::Script::Load(const char* filePath, unsigned int uid)
 #include <string>
 #include <vector>
 
+
+std::string trim(const std::string& str) {
+    size_t first = str.find_first_not_of(" \t");
+    if (std::string::npos == first) {
+        return str;
+    }
+    size_t last = str.find_last_not_of(" \t");
+    return str.substr(first, (last - first + 1));
+}
+
 // Function to parse a header file and extract attribute names and types
 std::vector<std::pair<std::string, std::string>> parseHeaderFile(const std::string& filename) {
     std::vector<std::pair<std::string, std::string>> attributes;
@@ -120,19 +130,44 @@ std::vector<std::pair<std::string, std::string>> parseHeaderFile(const std::stri
         std::cerr << "Error: Unable to open file " << filename << std::endl;
         return attributes;
     }
-    std::string serializingMacro = "SERIALIZE_FIELD";
+
+
+
 
     std::string line;
     while (std::getline(file, line)) {
-        std::smatch match;
-        if (std::regex_search(line, match, attributeRegex)) {
-            if (match.size() == 2) {
-                std::string attributeName = match[1].str();
-                std::string attributeType = line.substr(0, match.position(1));
-                attributes.push_back(std::make_pair(attributeName, attributeType));
-            }
+        std::string trimmedLine = trim(line);
+
+        if (trimmedLine.find("DISPLAY") == 0) {
+            std::cout << "Found line starting with DISPLAY: " << trimmedLine << std::endl;
+        }
+        else if (trimmedLine.find("SERIALIZED_FIELD") == 0) {
+            std::cout << "Found line starting with UNSERIALIZED_FIELD: " << trimmedLine << std::endl;
+        }
+        else if (trimmedLine.find("TOOLTIP") == 0) {
+            std::cout << "Found line starting with TOOLTIP: " << trimmedLine << std::endl;
+            std::string lastPart = trimmedLine.substr(trimmedLine.find("TOOLTIP") + strlen("TOOLTIP"));
+            std::cout << "Last part: " << lastPart << std::endl;
+        }
+        else if (trimmedLine.find("RANGE") == 0) {
+            std::cout << "Found line starting with RANGE: " << trimmedLine << std::endl;
+        }
+        else if (trimmedLine.find("HEADER") == 0) {
+            std::cout << "Found line starting with HEADER: " << trimmedLine << std::endl;
+        }
+        else if (trimmedLine.find("SPACE") == 0) {
+            std::cout << "Found line starting with SPACE: " << trimmedLine << std::endl;
         }
     }
 
     return attributes;
+}
+
+std::string trim(const std::string& pre, const std::string& line) {
+    size_t first = str.find_first_not_of(" \t");
+    if (std::string::npos == first) {
+        return str;
+    }
+    size_t last = str.find_last_not_of(" \t");
+    return str.substr(first, (last - first + 1));
 }

@@ -2,7 +2,13 @@
 #include "Script.h"
 #include "Macros.h"
 
-#define SERIALIZE_FIELD
+#define SERIALIZED_FIELD
+#define DISPLAY
+#define TOOLTIP(tooltip)
+#define RANGE(min,max)
+#define HEADER(header) 
+#define SPACE 
+
 // To create a script you have to locate the .h in Game/Assets/Scripts
 
 extern "C" class SCRIPTING_API TestScript : public Script {
@@ -14,15 +20,19 @@ public:
     void Update() override;
 
 private:
-    SERIALIZE_FIELD float speed = 1;
-    SERIALIZE_FIELD float coolDown = 2;
-    SERIALIZE_FIELD float height = 1;
-    SERIALIZE_FIELD float movement = 0;
-    SERIALIZE_FIELD bool up = false, startCounter = false;
-    float timePassed = 0;
+    HEADER("My Header")
+    RANGE (1,100)
+    DISPLAY float speed = 1;
+    TOOLTIP("This is a tooltip for the next field.")
+    DISPLAY float coolDown = 2;
+    SPACE
+    DISPLAY float height = 1;
+    DISPLAY float movement = 0;
+    DISPLAY bool up = false;
+    bool startCounter = false;
+    SERIALIZED_FIELD float timePassed = 0;
 
     GameObject* gameObject;
-
 };
 
 extern "C" SCRIPTING_API Script* CreateTestScript(GameObject* owner) { return new TestScript(owner); }
