@@ -31,11 +31,11 @@ void EditorControlPanel::Draw(int windowFlags)
 		mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button(ICON_FA_UP_RIGHT_AND_DOWN_LEFT_FROM_CENTER, buttonSize)) {
+	if (ImGui::Button(ICON_FA_ROTATE, buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::ROTATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button(ICON_FA_ROTATE, buttonSize)) {
+	if (ImGui::Button(ICON_FA_UP_RIGHT_AND_DOWN_LEFT_FROM_CENTER, buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::SCALE;
 	}
 	ImGui::SameLine();
