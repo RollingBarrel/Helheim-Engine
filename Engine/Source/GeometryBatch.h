@@ -8,17 +8,6 @@ struct ResourceMaterial;
 typedef struct Attribute;
 typedef struct __GLsync* GLsync;
 
-class BatchMeshRendererComponent
-{
-public:
-	BatchMeshRendererComponent(const MeshRendererComponent* comp, uint32_t matIdx = 999999999, unsigned int fIndex = 0, unsigned int bVertex = 0) 
-		: component(comp), materialIdx(matIdx), firstIndex(fIndex), baseVertex(bVertex) {}
-	const MeshRendererComponent* component;
-	uint32_t materialIdx;
-	unsigned int firstIndex;
-	unsigned int baseVertex;
-};
-
 class BatchMeshRendererResource
 {
 public:
@@ -27,6 +16,16 @@ public:
 	const ResourceMesh* resource;
 	unsigned int firstIndex;
 	unsigned int baseVertex;
+};
+
+class BatchMeshRendererComponent
+{
+public:
+	BatchMeshRendererComponent(const MeshRendererComponent* comp, uint32_t matIdx = 999999999, unsigned int res = 999999999)
+		: component(comp), materialIdx(matIdx), resource(res) {}
+	const MeshRendererComponent* component;
+	uint32_t materialIdx;
+	unsigned int resource;
 };
 
 
@@ -54,8 +53,6 @@ typedef struct Material {
 	uint64_t diffuseTexture = 0;
 	uint64_t specularTexture = 0;
 	uint64_t normalTexture = 0;
-private:
-	uint64_t padding = 0;
 }Material;
 
 typedef struct BufferIndices{
