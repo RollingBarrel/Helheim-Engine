@@ -213,6 +213,8 @@ void GeometryBatch::AddMesh(const MeshRendererComponent* cMesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	mUniqueMeshes.emplace_back(&rMesh, firstIndex, baseVertex);
+	mMeshComponents.back().firstIndex = firstIndex;
+	mMeshComponents.back().baseVertex = baseVertex;
 }
 
 void GeometryBatch::RemoveMesh(const MeshRendererComponent* component)
