@@ -26,6 +26,7 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 #include "ImGuizmo.h"
+#include "IconsFontAwesome6.h"
 
 ModuleEditor::ModuleEditor()
 {
@@ -59,6 +60,18 @@ bool ModuleEditor::Init()
 	io->ConfigDragClickToInputText = true;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
+
+	io->Fonts->AddFontDefault();
+	float baseFontSize = 34.0f; // 13.0f is the size of the default font. Change to the font size you use.
+	float iconFontSize = baseFontSize * 2.0f / 3.0f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+
+	// Merge in icons from Font Awesome
+	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+	ImFontConfig icons_config;
+	icons_config.MergeMode = true;
+	icons_config.PixelSnapH = true;
+	icons_config.GlyphMinAdvanceX = iconFontSize;
+	io->Fonts->AddFontFromFileTTF("Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
 
 	return true;
 }

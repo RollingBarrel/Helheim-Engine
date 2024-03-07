@@ -384,6 +384,7 @@
     <ClInclude Include="EditorControlPanel.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />

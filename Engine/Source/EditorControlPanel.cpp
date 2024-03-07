@@ -7,6 +7,8 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 
+#include "IconsFontAwesome6.h"
+
 
 EditorControlPanel::EditorControlPanel() : Panel(EDITORCONTROLPANEL, true)
 {
@@ -23,29 +25,24 @@ void EditorControlPanel::Draw(int windowFlags)
 	windowFlags |= ImGuiWindowFlags_NoTitleBar;
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	ImVec2 buttonSize(70, 30);
+	ImVec2 buttonSize(30, 30);
 
-	ImGui::BeginGroup();
-	if (ImGui::Button("Translate", buttonSize)) {
+	if (ImGui::Button(ICON_FA_ARROWS_UP_DOWN_LEFT_RIGHT, buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Rotate", buttonSize)) {
+	if (ImGui::Button(ICON_FA_UP_RIGHT_AND_DOWN_LEFT_FROM_CENTER, buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::ROTATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Scale", buttonSize)) {
+	if (ImGui::Button(ICON_FA_ROTATE, buttonSize)) {
 		mCurrentGuizmoOperation = ImGuizmo::SCALE;
 	}
-	ImGui::EndGroup();
-
 	ImGui::SameLine();
-	ImGui::BeginGroup();
 	const char* buttonLabel = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? "Local" : "World";
-	if (ImGui::Button(buttonLabel, buttonSize)) {
+	if (ImGui::Button(buttonLabel, ImVec2(70,30))) {
 		mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
 	}
-	ImGui::EndGroup();
 
 	//Change the Guizmo operation using W,E & R keywords and the coordinate mode with G
 	if (ImGui::IsKeyPressed(ImGuiKey_W))
