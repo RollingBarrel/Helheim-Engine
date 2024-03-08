@@ -16,6 +16,8 @@
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+#include "AIAgentComponent.h"
+#include "NavMeshObstacleComponent.h"
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
@@ -330,8 +332,14 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 		case ComponentType::TEST:
 			newComponent = new TestComponent(this);
 			break;
+		case ComponentType::AIAGENT:
+			newComponent = new AIAgentComponent(this);
+			break;
 		case ComponentType::NAVMESHCONTROLLER:
 			newComponent = new NavMeshControllerComponent(this);
+			break;
+		case ComponentType::NAVMESHOBSTACLE:
+			newComponent = new NavMeshObstacleComponent(this);
 			break;
 		default:
 			break;
