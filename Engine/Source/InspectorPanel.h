@@ -11,6 +11,7 @@ class PointLightComponent;
 class SpotLightComponent;
 class AIAgentComponent;
 class NavMeshObstacleComponent;
+class AnimationComponent;
 
 class InspectorPanel : public Panel
 {
@@ -41,4 +42,5 @@ private:
 	void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
+	void DrawAnimationComponent(AnimationComponent* component);
 };

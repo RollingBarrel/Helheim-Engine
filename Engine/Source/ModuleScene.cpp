@@ -51,7 +51,7 @@ bool ModuleScene::Init()
 	//test.TestSceneWithGameObjects();
 
 	//Save("Scene");
-	Load("scene");
+	//Load("scene");
 
 	return true;
 }
