@@ -23,6 +23,7 @@
 #include "ResourcePanel.h"
 #include "TimerPanel.h"
 #include "EditorControlPanel.h"
+#include "TagsManagerPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -33,6 +34,7 @@
 
 ModuleEditor::ModuleEditor()
 {
+	// Panels
 	mPanels[ABOUTPANEL] = new AboutPanel();
 	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
@@ -47,6 +49,10 @@ ModuleEditor::ModuleEditor()
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
+	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
+
+	// Panels closed by default
+	mPanels[TAGSMANAGERPANEL]->Close();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -103,7 +109,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 		}
 	}
 
-	//static bool show = true;
+	static bool show = true;
 	//ImGui::ShowDemoWindow(&show);
 
 	ShowMainMenuBar();
@@ -146,6 +152,17 @@ bool ModuleEditor::CleanUp()
 	delete mOptick;
 
 	return true;
+}
+
+void ModuleEditor::OpenPanel(const char* name, const bool focus)
+{
+	if (focus)
+	{
+		ImGui::SetNextWindowFocus();
+	}
+	
+	Panel* panel = mPanels[name];
+	panel->Open();
 }
 
 void ModuleEditor::ShowMainMenuBar() 
