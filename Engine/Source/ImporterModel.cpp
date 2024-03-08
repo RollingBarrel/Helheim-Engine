@@ -11,6 +11,7 @@
 
 #include "ResourceAnimation.h"
 #include "ResourceMesh.h"
+#include "ResourceModel.h"
 #include "ResourceMaterial.h"
 
 #define TINYGLTF_IMPLEMENTATION
@@ -101,9 +102,7 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
     {
         for (const auto& srcAnimation : model.animations)
         {
-            ResourceAnimation* ourAnimation = new ResourceAnimation(currUid++,srcAnimation.name);
-
-            Importer::Animation::Import(model, srcAnimation, ourAnimation);
+            ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, uid++);
                      
             delete ourAnimation;           
         }

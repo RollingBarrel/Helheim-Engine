@@ -17,30 +17,34 @@
 
 
 
-void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, ResourceAnimation* ourAnimation) {
+ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, unsigned int uid) {
+
+    std::string rootName = model.nodes[0].name;
+
+    ResourceAnimation* rAnimation = new ResourceAnimation(uid, rootName);
 
     for (const auto& srcChannel : animation.channels)
     {
         std::string name = model.nodes[srcChannel.target_node].name;
 
         //check if the channel already exists
-        ResourceAnimation::AnimationChannel* ourChannel = ourAnimation->GetChannel(name);
+        ResourceAnimation::AnimationChannel* ourChannel = rAnimation->GetChannel(name);
         if (ourChannel == nullptr)
         {
             //create a new channel
           ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel; 
-            ourAnimation->AddChannels(model, animation, srcChannel, ourAnimation, ourChannel);
+          rAnimation->AddChannels(model, animation, srcChannel, rAnimation, ourChannel);
 
             for (const auto& srcChannel2 : animation.channels)
             {
 
                 if (srcChannel2.target_node == srcChannel.target_node && (ourChannel->hasTranslation == false || ourChannel->hasRotation == false))
                 {
-                    ourAnimation->AddChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
+                    rAnimation->AddChannels(model, animation, srcChannel2, rAnimation, ourChannel);
                 }
             }
             
-            ourAnimation->mChannels[name] = ourChannel;
+            rAnimation->mChannels[name] = ourChannel;
 
         }
         //animation -> mUID = math::LCG().Int();
@@ -48,16 +52,18 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
     }
         
     
-    if (ourAnimation) {
-        Importer::Animation::Save(ourAnimation);
+
+    if (rAnimation) {
+        Importer::Animation::Save(rAnimation);
        
     }
 
+    return rAnimation;
 }
 
 
 
-void Importer::Animation::Save (ResourceAnimation* ourAnimation)
+void Importer::Animation::Save(ResourceAnimation* ourAnimation)
 {
     unsigned int header[] = {(ourAnimation->GetChannels().size()), ourAnimation->GetDuration()};
 
