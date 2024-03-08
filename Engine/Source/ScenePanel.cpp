@@ -20,7 +20,14 @@
 
 static void DragToScene(const ModelNode& node, GameObject* parent)
 {
-	GameObject* gameObject = new GameObject(node.mName.c_str(), parent);
+	const char* name = "";
+
+	if (node.mName == name)
+		name = "GameObject";
+	else
+		name = node.mName.c_str();
+
+	GameObject* gameObject = new GameObject(name, parent);
 
 	gameObject->SetPosition(node.mTranslation);
 	gameObject->SetRotation(node.mRotation);
@@ -29,7 +36,11 @@ static void DragToScene(const ModelNode& node, GameObject* parent)
 
 	if (node.mMeshId > -1)
 	{
-		MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gameObject->CreateComponent(ComponentType::MESHRENDERER, node.mMeshUID, node.mMaterialUID));
+		for (int i = 0; i < node.mUids.size(); ++i)
+		{
+			GameObject* gO = new GameObject(name, gameObject);
+			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER, node.mUids[i].first, node.mUids[i].second));
+		}
 	}
 
 	for (int i = 0; i < node.mChildren.size(); ++i)
@@ -101,6 +112,7 @@ void ScenePanel::Draw(int windowFlags)
 					}
 				}
 			}
+
 			ImGui::EndDragDropTarget();
 		}
 

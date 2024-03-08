@@ -70,29 +70,31 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
 
     node.mSkinId = tinyNode.skin;
 
+    unsigned int count = 0;
+    unsigned int meshId = 0;
+    unsigned int materialId = 0;
+
     if (node.mMeshId != -1)
     {
         for (const auto& primitive : model.meshes[node.mMeshId].primitives)
         {
             ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, uid++);
-            node.mMeshUID = rMesh->GetUID();
+            meshId = rMesh->GetUID();
             if (primitive.material != -1)
             {
                 ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], uid, modifyAssets);
-                node.mMaterialUID = rMaterial->GetUID();
+                materialId = rMaterial->GetUID();
                 delete rMaterial;
             }
             else
             {
-                node.mMaterialUID = 0;
+                materialId = 0;
             }
 
             delete rMesh;
+            count++;
+            node.mUids.push_back({meshId, materialId});
         }
-    }
-    else
-    {
-        node.mMeshUID = 0;
     }
 
     size += node.mName.length() + 1         //Name
@@ -100,11 +102,16 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
         + sizeof(float) * 4                 //Rot
         + sizeof(float) * 3                 //Scale
         + sizeof(int) * 3                   //Mesh/Camera/Skin 
-        + sizeof(unsigned int) * 2          //Uid Mesh & Material
         + sizeof(unsigned int);             //Size Children   
 
+    if (node.mMeshId > -1)
+    {
+        size += sizeof(unsigned int)              //vector size
+                + (sizeof(unsigned int) * 2) * node.mUids.size();  //Uid Mesh & Material
+    }
+
     for (const auto& child : tinyNode.children)
-    {   
+    {
         ModelNode childNode;
         ImportNode(childNode, filePath, model, child, uid, size, modifyAssets);
         node.mChildren.push_back(childNode);
@@ -141,14 +148,23 @@ static void SaveNode(const ModelNode& currentNode, char** cursor)
     bytes = sizeof(int);
     memcpy((*cursor), &currentNode.mSkinId, bytes);
     *cursor += bytes;
-    //Library Uids
-    bytes = sizeof(unsigned int);
-    memcpy((*cursor), &currentNode.mMeshUID, bytes);
-    *cursor += bytes;
-    bytes = sizeof(unsigned int);
-    memcpy((*cursor), &currentNode.mMaterialUID, bytes);
-    *cursor += bytes;
-    
+    if (currentNode.mMeshId > -1)
+    {
+        //Library Uids
+        unsigned int uidsSize = currentNode.mUids.size();
+        bytes = sizeof(unsigned int);
+        memcpy((*cursor), &uidsSize, bytes);
+        *cursor += bytes;
+        for (int i = 0; i < uidsSize; ++i)
+        {
+            bytes = sizeof(unsigned int);
+            memcpy((*cursor), &currentNode.mUids[i].first, bytes);
+            *cursor += bytes;
+            bytes = sizeof(unsigned int);
+            memcpy((*cursor), &currentNode.mUids[i].second, bytes);
+            *cursor += bytes;
+        }
+    }
     //Children
     bytes = sizeof(unsigned int);
     unsigned int childSize = currentNode.mChildren.size();
@@ -203,14 +219,27 @@ static void LoadNode(ModelNode& node, char** cursor)
     memcpy(&node.mSkinId, *cursor, bytes);
     *cursor += bytes;
 
-    bytes = sizeof(unsigned int);
-    memcpy(&node.mMeshUID, *cursor, bytes);
-    *cursor += bytes;
+    if (node.mMeshId > -1)
+    {
+        unsigned int meshId = 0;
+        unsigned int materialId = 0;
+        //Library Uids
+        unsigned int uidsSize = 0;
+        bytes = sizeof(unsigned int);
+        memcpy(&uidsSize, *cursor, bytes);
+        *cursor += bytes;
+        for (int i = 0; i < uidsSize; ++i)
+        {
+            bytes = sizeof(unsigned int);
+            memcpy(&meshId, *cursor, bytes);
+            *cursor += bytes;
+            bytes = sizeof(unsigned int);
+            memcpy(&materialId, *cursor, bytes);
+            *cursor += bytes;
 
-    bytes = sizeof(unsigned int);
-    memcpy(&node.mMaterialUID, *cursor, bytes);
-    *cursor += bytes;
-
+            node.mUids.push_back({meshId, materialId});
+        }
+    }
     unsigned int childSize = 0;
     bytes = sizeof(unsigned int);
     memcpy(&childSize, *cursor, bytes);
@@ -240,9 +269,11 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     unsigned int bufferSize = 0;
 
+    unsigned int index = 0;
+
     ModelNode rootNode;
 
-    ImportNode(rootNode, filePath, model, 0, currentUid, bufferSize, modifyAssets);
+    ImportNode(rootNode, filePath, model, index, currentUid, bufferSize, modifyAssets);
 
     ResourceModel* rModel = new ResourceModel(currentUid++, rootNode);
 

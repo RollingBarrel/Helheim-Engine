@@ -17,8 +17,7 @@ struct ModelNode
 	math::Quat mRotation;
 	math::float3 mScale;
 
-	unsigned int mMeshUID;
-	unsigned int mMaterialUID;
+	std::vector<std::pair<unsigned int, unsigned int>> mUids;
 
 	std::vector<ModelNode> mChildren;
 
@@ -26,7 +25,6 @@ struct ModelNode
 	int mMeshId;
 	int mCameraId;
 	int mSkinId;
-
 };
 
 class ResourceModel : public Resource
