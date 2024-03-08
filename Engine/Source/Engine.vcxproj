@@ -147,6 +147,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
+    <ClCompile Include="AnimationComponent.cpp" />
+    <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AgentProfile.cpp" />
     <ClCompile Include="AIAGentComponent.cpp" />
     <ClCompile Include="Application.cpp" />
@@ -230,6 +232,7 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
     <ClCompile Include="Importer.cpp" />
+    <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterNavMesh.cpp" />
@@ -238,6 +241,7 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
@@ -283,6 +287,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
+    <ClInclude Include="AnimationComponent.h" />
+    <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AgentProfile.h" />
     <ClInclude Include="AIAGentComponent.h" />
     <ClInclude Include="Application.h" />
@@ -402,6 +408,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Importer.h" />
+    <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="ImporterNavMesh.h" />
@@ -409,6 +416,7 @@
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
+    <ClInclude Include="ResourceAnimation.h" />
     <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshControllerPanel.h" />
     <ClInclude Include="ResourcePanel.h" />
