@@ -38,6 +38,7 @@ public:
 
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
+	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 
 private:
 	void DeleteGameObjects();
@@ -46,7 +47,6 @@ private:
 	void DrawRenderList();
 	void AddToRenderList(GameObject* root); // Can be public if needed 
 
-	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
 	
 	Quadtree* mQuadtreeRoot;
