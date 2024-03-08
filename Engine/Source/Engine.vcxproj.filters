@@ -379,6 +379,12 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="TagsManagerPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Tag.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
     <ClCompile Include="AIAGentComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -394,8 +400,18 @@
     <ClCompile Include="Transform2DComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ImporterAnimation.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceAnimation.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="NavMeshObstacleComponent.cpp">
       <Filter>GameObjects\Components</Filter>
@@ -976,6 +992,12 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="TagsManagerPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Tag.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
     <ClInclude Include="AIAGentComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
@@ -991,6 +1013,9 @@
     <ClInclude Include="Transform2DComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ImporterAnimation.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -999,6 +1024,13 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceAnimation.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="NavMeshObstacleComponent.h">
       <Filter>GameObjects\Components</Filter>

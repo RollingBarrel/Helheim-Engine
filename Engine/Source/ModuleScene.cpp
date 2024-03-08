@@ -12,13 +12,22 @@
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "Archive.h"
+#include "Tag.h"
 #include "Globals.h"
 #include "NavMeshController.h"
 
+#include <algorithm>
+#include <iterator>
+
 ModuleScene::ModuleScene() {
-	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
 	mNavMeshController = new NavMeshController();
+
+	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
+	mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
+	mTags.push_back(new Tag(2, "Finish", TagType::SYSTEM));
+	mTags.push_back(new Tag(3, "EditorOnly", TagType::SYSTEM));
+	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
+	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
 }
 
 ModuleScene::~ModuleScene()
@@ -28,10 +37,16 @@ ModuleScene::~ModuleScene()
 	delete mNavMeshController;
 
 	delete mRoot;
+
+	for (Tag* tag : mTags) {
+		delete tag;
+	}
 }
 
 bool ModuleScene::Init()
 {
+	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
 	//TestSceneGameObjects test = TestSceneGameObjects();
 	//test.TestSceneWithGameObjects();
 
@@ -39,6 +54,107 @@ bool ModuleScene::Init()
 	//Load("scene");
 
 	return true;
+}
+
+GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
+{
+	if (root->GetTag()->GetID() == tagid && root != mRoot) {
+		return root;
+	}
+
+	for (GameObject* child : root->GetChildren())
+	{
+		GameObject* foundObject = FindGameObjectWithTag(child, tagid);
+		if (foundObject != nullptr) {
+			return foundObject;
+		}
+	}
+
+	return nullptr;
+}
+
+void ModuleScene::FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects)
+{
+	if (root->GetTag()->GetID() == tagid && root != mRoot) {
+		foundGameObjects.push_back(root);
+	}
+
+	for (GameObject* child : root->GetChildren())
+	{
+		FindGameObjectsWithTag(child, tagid, foundGameObjects);
+	}
+}
+
+void ModuleScene::AddTag(std::string tagname)
+{
+	if (GetTagByName(tagname) == nullptr) {
+		Tag* newTag = new Tag(mLastTagIndex, tagname, TagType::CUSTOM);
+		mTags.push_back(newTag);
+
+		++mLastTagIndex;
+	}
+}
+
+int ModuleScene::GetCustomTagsSize()
+{
+	std::vector<Tag*> customs = GetCustomTag();
+	return customs.size();
+}
+
+std::vector<Tag*> ModuleScene::GetSystemTag()
+{
+	std::vector<Tag*> systemTags;
+	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
+		[](Tag* tag) { return tag->GetType() == TagType::SYSTEM; });
+
+	return systemTags;
+}
+
+std::vector<Tag*> ModuleScene::GetCustomTag()
+{
+	std::vector<Tag*> systemTags;
+	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
+		[](Tag* tag) { return tag->GetType() == TagType::CUSTOM; });
+
+	return systemTags;
+}
+
+Tag* ModuleScene::GetTagByName(std::string tagname)
+{
+	for (Tag* tag : mTags) {
+		if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0) {
+			return tag;
+		}
+	}
+	return nullptr;
+}
+
+Tag* ModuleScene::GetTagByID(unsigned id)
+{
+	for (Tag* tag : mTags) {
+		if (tag->GetID() == id) {
+			return tag;
+		}
+	}
+	return nullptr;
+}
+
+void ModuleScene::DeleteTag(Tag* tag)
+{
+	auto it = std::find(mTags.begin(), mTags.end(), tag);
+
+	if (it != mTags.end()) {
+
+		// 1. Set tags to untagged
+		std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
+		for (auto object : objects) {
+			object->SetTag(GetTagByName("Untagged"));
+		}
+
+		// 2. Delete it
+		mTags.erase(it);
+		delete tag;
+	}
 }
 
 void ModuleScene::Save(const char* sceneName) {

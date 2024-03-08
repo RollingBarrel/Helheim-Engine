@@ -5,12 +5,12 @@
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
-#include "Algorithm/Random/LCG.h"
+#include "ImporterAnimation.h"
 
 #include "Math/float4x4.h"
 
+#include "ResourceAnimation.h"
 #include "ResourceMesh.h"
-#include "ResourceModel.h"
 #include "ResourceMaterial.h"
 
 #define TINYGLTF_IMPLEMENTATION
@@ -95,6 +95,19 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
             count++;
             node.mUids.push_back({meshId, materialId});
         }
+    }
+    
+    if (!model.animations.empty())
+    {
+        for (const auto& srcAnimation : model.animations)
+        {
+            ResourceAnimation* ourAnimation = new ResourceAnimation(currUid++,srcAnimation.name);
+
+            Importer::Animation::Import(model, srcAnimation, ourAnimation);
+                     
+            delete ourAnimation;           
+        }
+        
     }
 
     size += node.mName.length() + 1         //Name
@@ -264,7 +277,6 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
-    
     unsigned int currentUid = uid;
 
     unsigned int bufferSize = 0;
