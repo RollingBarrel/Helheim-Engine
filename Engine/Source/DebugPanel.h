@@ -21,5 +21,6 @@ private:
 	int mRenderMode = 0;
 
 	void SetShouldDrawForAll(GameObject* root, bool shouldDraw);
+	int GetTotalTriangleCount(GameObject* root);
 };
 

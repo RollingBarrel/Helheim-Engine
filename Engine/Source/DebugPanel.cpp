@@ -12,6 +12,7 @@
 #include "Timer.h"
 #include "TimerPanel.h"
 #include "HierarchyPanel.h"
+#include "ResourceMesh.h"
 
 DebugPanel::DebugPanel() : Panel(DEBUGPANEL, false)
 {
@@ -24,13 +25,6 @@ DebugPanel::~DebugPanel()
 void DebugPanel::Draw(int windowFlags) {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-        //Timer precision (turns microseconds into milliseconds if the timer is in micros)
-        static float precision = 1000.0f / App->GetCurrentClock()->GetTimerPrecision();
-        const char* timeUnit = "micro secs";
-        if (precision == 1) {
-            timeUnit = "ms";
-        }
-
         if (ImGui::TreeNode("Editor Scene##2"))
         {
             ImGui::Text("Render Mode");
@@ -42,7 +36,7 @@ void DebugPanel::Draw(int windowFlags) {
                 SetShouldDrawForAll(root, mDrawColliders);
             }
             // TODO Add a function to calculate the number of triangles on the editor scene
-            ImGui::Text("Number of triangles: %i", 0);
+            ImGui::Text("Number of triangles: %i", GetTotalTriangleCount(App->GetScene()->GetRoot()));
             ImGui::TreePop();
 		}
 
@@ -95,6 +89,21 @@ void DebugPanel::SetShouldDrawForAll(GameObject* root, bool shouldDraw) {
             SetShouldDrawForAll(root->GetChildren()[i], shouldDraw);
         }
     }
+}
+
+int DebugPanel::GetTotalTriangleCount(GameObject* root) {
+	int total = 0;
+	if (root != nullptr) {
+		MeshRendererComponent* renderer = root->GetMeshRenderer();
+		if (renderer != nullptr) {
+			total += renderer->GetResourceMesh()->GetNumberIndices() / 3;
+		}
+
+		for (int i = 0; i < root->GetChildren().size(); i++) {
+			total += GetTotalTriangleCount(root->GetChildren()[i]);
+		}
+	}
+	return total;
 }
 
 /*/
