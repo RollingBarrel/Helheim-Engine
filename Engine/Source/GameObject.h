@@ -41,6 +41,9 @@ public:
 	const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
 	const float3& GetLocalPosition() const { return mLocalTransformMatrix.TranslatePart(); }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
+	const float3& GetPositionMember() const { return mPosition; }
+	const float3& GetScaleMember() const { return mScale; }
+	const Quat& GetRotationMember() const { return mRotation; }
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }

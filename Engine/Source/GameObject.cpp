@@ -489,6 +489,7 @@ void GameObject::Save(Archive& archive) const {
 GameObject* findGameObjectParent(const std::vector<GameObject*>& gameObjects, GameObject* gameObject) {
 	for (int i = 0; i < gameObjects.size(); i++) {
 		if (gameObjects[i]->GetID() == gameObject->GetParentID()) {
+			GameObject* go = new GameObject(gameObjects[i]->GetName().c_str(), gameObjects[i]->GetID(), gameObjects[i], gameObjects[i]->GetPositionMember(), gameObjects[i]->GetScaleMember(), gameObjects[i]->GetRotationMember());
 			gameObject->SetParentID(gameObjects[i]->GetID());
 			gameObjects[i]->AddChild(gameObject);
 		}
@@ -590,8 +591,7 @@ void GameObject::Load(const rapidjson::Value& sceneJson) {
 		
 		for (int i = 0; i < gameObjects.size(); i++) {
 			if (gameObjects[i]->GetParentID() == 1) {
-				gameObjects[i]->mParentID = 1;
-				scene->AddChild(gameObjects[i]);
+				GameObject* go = new GameObject(gameObjects[i]->GetName().c_str(), gameObjects[i]->GetID(), scene, gameObjects[i]->GetPositionMember(), gameObjects[i]->GetScaleMember(), gameObjects[i]->GetRotationMember());
 			}
 			else {
 				findGameObjectParent(scene->GetChildren(), gameObjects[i]);
