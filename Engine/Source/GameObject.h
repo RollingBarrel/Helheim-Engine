@@ -12,6 +12,7 @@
 #include "rapidjson/document.h"
 
 class MeshRendererComponent;
+class AIAgentComponent;
 class CameraComponent;
 class Component;
 class Tag;
@@ -68,6 +69,7 @@ public:
 
 	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
 	MeshRendererComponent* GetMeshRenderer() const;
+	AIAgentComponent* GetAIAgent() const;
 	CameraComponent* getCamera() const;
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);

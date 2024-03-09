@@ -9,7 +9,7 @@
 #include "float4x4.h"
 #include "ImporterMesh.h"
 #include "ModuleDebugDraw.h"
-
+#include "AIAgentComponent.h"
 NavMeshController::NavMeshController()
 {
 	mRecastContext = rcContext(false);
@@ -390,10 +390,13 @@ void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
 			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
+			AIAgentComponent* agentComponent = child->GetAIAgent();
 			if (meshRendererComponent) {
 				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mMeshRendererComponents.push_back(meshRendererComponent);
-
+			}
+			if (agentComponent) {
+				mAIAgentComponents.push_back(agentComponent);
 			}
 			GetGOMeshes(child);
 		}

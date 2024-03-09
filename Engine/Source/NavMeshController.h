@@ -5,6 +5,7 @@
 class Material;
 struct ResourceMesh;
 class MeshRendererComponent;
+class AIAgentComponent;
 class GameObject;
 
 class NavMeshController
@@ -57,6 +58,7 @@ private:
 	void GetGOMeshes(const GameObject* gameObj);
 	std::vector<const ResourceMesh*> mMeshesToNavMesh;
 	std::vector<const MeshRendererComponent*> mMeshRendererComponents;
+	std::vector<const AIAgentComponent*>mAIAgentComponents;
 	void TranslateIndices();
 	void DebugDrawPolyMesh();
 	void LoadDrawMesh();
