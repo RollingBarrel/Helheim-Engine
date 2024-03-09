@@ -54,6 +54,7 @@ public:
 	bool IsActive() const { return mIsEnabled && mIsActive; }
 	
 	unsigned int GetID() const { return mID; }
+	unsigned int GetParentID() const { return mParentID; }
 	bool IsRoot() const { return mIsRoot; }
 	void AddChild(GameObject* child, const int aboveThisId = 0);
 	void DeleteChild(GameObject* child);
@@ -63,6 +64,9 @@ public:
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
+	void SetParentID(unsigned int parentID) {
+		mParentID = parentID;
+	}
 
 	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
 	MeshRendererComponent* GetMeshRenderer() const;
@@ -86,6 +90,7 @@ private:
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
 	const unsigned int mID;
+	unsigned int mParentID;
 	std::string mName = "GameObject";
 	float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;
