@@ -35,8 +35,7 @@ void DebugPanel::Draw(int windowFlags) {
                 GameObject* root = App->GetScene()->GetRoot();
                 SetShouldDrawForAll(root, mDrawColliders);
             }
-            // TODO Add a function to calculate the number of triangles on the editor scene
-            ImGui::Text("Number of triangles: %i", GetTotalTriangleCount(App->GetScene()->GetRoot()));
+            ImGui::Text("Total number of triangles on scene: %i", GetTotalTriangleCount(App->GetScene()->GetRoot()));
             ImGui::TreePop();
 		}
 
@@ -44,7 +43,7 @@ void DebugPanel::Draw(int windowFlags) {
         {
             if (ImGui::Checkbox("Show fps on editor", &mShowFpsOnEditor))
             {
-                // TODO Add the code to draw colliders
+                // TODO Add the code to show the FPS on the editor window (top right corner)
             }
             ImGui::TreePop();
         }
