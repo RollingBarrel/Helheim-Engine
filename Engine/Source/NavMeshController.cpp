@@ -14,7 +14,7 @@ NavMeshController::NavMeshController()
 {
 	mRecastContext = rcContext(false);
 
-	//HandleBuild(); No se llama al inicar ya que no hay escena aún, llamar solo con boton imgui
+	//HandleBuild(); No se llama al inicar ya que no hay escena aï¿½n, llamar solo con boton imgui
 
 
 }

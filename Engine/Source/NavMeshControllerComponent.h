@@ -18,10 +18,11 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
 
 private:
+		void Save(Archive& archive) const override;
+	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 	void GetGOMeshes(const GameObject* gameObj);
 	std::vector<const ResourceMesh*> mMeshesToNavMesh;
 	std::vector<const MeshRendererComponent*> mMeshRendererComponents;

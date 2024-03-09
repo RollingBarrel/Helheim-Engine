@@ -18,6 +18,9 @@ public:
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
+	// Just for test
+	int mTestSavedTag1 = 0;
+
 private:
 	int number = 0;
 };

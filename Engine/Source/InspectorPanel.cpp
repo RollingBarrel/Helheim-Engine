@@ -4,15 +4,19 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
+#include "TagsManagerPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
+#include "AIAGentComponent.h"
 #include "ImporterMaterial.h"
+#include "Tag.h"
 #include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
 
 #include "ResourceMaterial.h"
 
@@ -44,10 +48,36 @@ void InspectorPanel::Draw(int windowFlags)
 			focusedObject->SetEnabled(enabled);
 		}
 		ImGui::SameLine();
+
+
+		// Rename
 		ImGui::PushID(focusedObject->mID);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
+
+		// Tag
+		ImGui::Text("Tag");
+		ImGui::SameLine();
+		std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+
+		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
+		{
+			for (auto i = 0; i < tags.size(); i++) {
+				if (ImGui::Selectable(tags[i]->GetName().c_str()))
+				{
+					focusedObject->SetTag(tags[i]);
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Edit")) {
+			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
+		}
 
 		// Lock
 		ImGui::SameLine();
@@ -133,7 +163,6 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 	}
 	ImGui::PopID();
 }
-
 
 void InspectorPanel::AddComponentButton(GameObject* object) {
 	float windowWidth = ImGui::GetWindowWidth();
@@ -287,6 +316,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				}
+				case ComponentType::AIAGENT: {
+					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
+					break;
+				}
 				case ComponentType::POINTLIGHT: {
 					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
 					break;
@@ -303,6 +336,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
 					break;
 				}
+				case ComponentType::ANIMATION: {
+					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
+					break;
+				}
 				case ComponentType::TEST: {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
@@ -317,6 +354,41 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text");
 	ImGui::Text("Demo Text 2 ");
+
+	ImGui::SeparatorText("TAGS SYSYEM TEST");
+	ImGui::Text("The first name of game object found with");
+	ImGui::SameLine();
+	std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+
+	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
+	{
+		for (auto i = 0; i < tags.size(); i++) {
+			if (ImGui::Selectable(tags[i]->GetName().c_str()))
+			{
+				component->mTestSavedTag1 = i;
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+	ImGui::Text("tag is ");
+	ImGui::SameLine();
+	GameObject* found = GameObject::FindGameObjectWithTag(tags[component->mTestSavedTag1]->GetName());
+	if (found != nullptr)
+	{
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
+	}
+	else {
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
+	}
+	
+
+	ImGui::Separator();
+	ImGui::Text("There is ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), std::to_string(GameObject::FindGameObjectsWithTag(tags[component->mTestSavedTag1]->GetName()).capacity()).c_str());
+	ImGui::SameLine();
+	ImGui::Text(" gameobjects with the same tag.");
 }
 
 void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
@@ -386,6 +458,61 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
 		component->SetShouldDraw(shouldDraw);
 	}
+}
+
+void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
+{
+	ImGui::SeparatorText("Agent Parameters");
+
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float height = component->GetHeight();
+	if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
+	{
+		component->SetHeight(height);
+	}
+	float stepHeight = component->GetStepHeight();
+	if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
+	{
+		component->SetStepHeight(stepHeight);
+	}
+
+	int maxSlope = component->GetMaxSlope();
+	if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
+		component->SetMaxSlope(maxSlope);
+	}
+
+	ImGui::SeparatorText("Steering Parameters");
+
+	float speed = component->GetSpeed();
+	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f))
+	{
+		component->SetSpeed(speed);
+	}
+
+	float angularSpeed = component->GetAngularSpeed();
+	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))
+	{
+		component->SetAngularSpeed(angularSpeed);
+	}
+
+	float acceleration = component->GetAcceleration();
+	if (ImGui::DragFloat("acceleration", &acceleration, 1.0f, 0.0f))
+	{
+		component->SetAcceleration(acceleration);
+	}
+
+	float stoppingDistance = component->GetStoppingDistance();
+	if (ImGui::DragFloat("Stopping Distance", &stoppingDistance, 1.0f, 0.0f))
+	{
+		component->SetStoppingDistance(stoppingDistance);
+	}
+
+
+
 }
 
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
@@ -490,4 +617,10 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling
+}
+
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+
+	ImGui::SeparatorText("Animation");
+	ImGui::Text("HELLO");
 }
