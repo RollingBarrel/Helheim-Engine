@@ -41,17 +41,13 @@ void ProjectPanel::Draw(int windowFlags)
 
 const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 {
-	PathNode toDirectory = current;
-	std::string directory = current.mName;
-	while (toDirectory.mParent != nullptr) {
-		toDirectory = *toDirectory.mParent;
-		directory = toDirectory.mName + "/" + directory;
-	}
+	std::string bar = "/";
+	
 	//Discard Meta file but, read .emeta data
 	for (auto i = 0; i < current.mChildren.size(); ++i)
-	{
+	{		
 		bool open = ImGui::TreeNodeEx(current.mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen);
-		SavePrefab(current.mChildren[i]->mName);
+		SavePrefab(*current.mChildren[i]);
 		if (open)
 		{
 			for (auto j = 0; j < current.mChildren[i]->assets.size(); ++j)
@@ -74,23 +70,25 @@ const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 	}
 }
 
-void ProjectPanel::SavePrefab(const char* dir) const
+void ProjectPanel::SavePrefab(const PathNode& dir) const
 {
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
-			Archive* archive = new Archive();
-			std::vector<Archive> gameObjectsArchiveVector;
 			HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
 			for (auto object : hierarchyPanel->FilterMarked()) {
+				Archive* archive = new Archive();
+				std::vector<Archive> gameObjectsArchiveVector;
 				App->GetScene()->SaveGameObjectRecursive(object, gameObjectsArchiveVector);
-			}
-			archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+				std::string file = dir.mName;
+				file.append('/' + object->GetName() + ".json");
+				archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 
-			std::string out = archive->Serialize();
-			App->GetFileSystem()->Save(dir, out.c_str(), static_cast<unsigned int>(out.length()));
-			delete archive;
+				std::string out = archive->Serialize();
+				App->GetFileSystem()->Save(file.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+				delete archive;
+			}
 		}
 		ImGui::EndDragDropTarget();
 	}
