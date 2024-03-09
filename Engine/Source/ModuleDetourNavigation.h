@@ -14,9 +14,11 @@ public:
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
+	bool CleanUp() override;
 	void CreateDetourData();
+	std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 private:
-	std::vector<const AIAgentComponent*>mAIAgentComponents;
+	std::vector<AIAgentComponent*>mAIAgentComponents;
 	dtNavMeshCreateParams* mNavMeshParams = nullptr;
 	dtNavMesh* mDetourNavMesh=nullptr;
 	dtNavMeshQuery* mNavQuery = nullptr;

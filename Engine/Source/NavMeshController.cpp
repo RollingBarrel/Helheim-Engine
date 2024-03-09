@@ -400,6 +400,7 @@ void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 			}
 			if (agentComponent) {
 				mAIAgentComponents.push_back(agentComponent);
+				App->GetNavigation()->GetAiAgentComponent().push_back(agentComponent);
 			}
 			GetGOMeshes(child);
 		}

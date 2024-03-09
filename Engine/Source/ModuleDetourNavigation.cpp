@@ -21,7 +21,7 @@ ModuleDetourNavigation::~ModuleDetourNavigation()
 bool ModuleDetourNavigation::Init()
 {
 
-	return false;
+	return true;
 }
 
 update_status ModuleDetourNavigation::PreUpdate(float dt)
@@ -37,6 +37,11 @@ update_status ModuleDetourNavigation::Update(float dt)
 update_status ModuleDetourNavigation::PostUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleDetourNavigation::CleanUp()
+{
+	return true;
 }
 
 
