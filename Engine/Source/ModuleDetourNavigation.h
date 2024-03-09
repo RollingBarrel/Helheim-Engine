@@ -4,6 +4,7 @@
 struct dtNavMeshCreateParams;
 class AIAgentComponent;
 class dtNavMesh;
+class dtNavMeshQuery;
 class ModuleDetourNavigation :public Module
 {
 public:
@@ -17,6 +18,7 @@ public:
 private:
 	std::vector<const AIAgentComponent*>mAIAgentComponents;
 	dtNavMeshCreateParams* mNavMeshParams = nullptr;
-	dtNavMesh* mDetourNavMesh;
+	dtNavMesh* mDetourNavMesh=nullptr;
+	dtNavMeshQuery* mNavQuery = nullptr;
 };
 

@@ -5,6 +5,8 @@
 #include "AIAgentComponent.h"
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMesh.h"
+#include "ModuleScene.h"
+#include "DetourNavMeshQuery.h"
 
 ModuleDetourNavigation::ModuleDetourNavigation()
 {
@@ -38,23 +40,28 @@ update_status ModuleDetourNavigation::PostUpdate(float dt)
 }
 
 
-void NavMeshController::CreateDetourData() {
+void ModuleDetourNavigation::CreateDetourData() {
 	const AIAgentComponent* agentComponent = mAIAgentComponents[0];
+
+	NavMeshController* navController = App->GetScene()->GetNavController();
+	rcPolyMesh* polyMesh = navController->getPolyMesh();
+	rcPolyMeshDetail* polyMeshDetail = navController->getPolyMeshDetail();
+
 	unsigned char* navData = 0;
 	int navDataSize = 0;
 	if (agentComponent) {
-		mNavMeshParams->verts = mPolyMesh->verts;
-		mNavMeshParams->vertCount = mPolyMesh->nverts;
-		mNavMeshParams->polys = mPolyMesh->polys;
-		mNavMeshParams->polyAreas = mPolyMesh->areas;
-		mNavMeshParams->polyFlags = mPolyMesh->flags;
-		mNavMeshParams->polyCount = mPolyMesh->npolys;
-		mNavMeshParams->nvp = mPolyMesh->nvp;
-		mNavMeshParams->detailMeshes = mPolyMeshDetail->meshes;
-		mNavMeshParams->detailVerts = mPolyMeshDetail->verts;
-		mNavMeshParams->detailVertsCount = mPolyMeshDetail->nverts;
-		mNavMeshParams->detailTris = mPolyMeshDetail->tris;
-		mNavMeshParams->detailTriCount = mPolyMeshDetail->ntris;
+		mNavMeshParams->verts = polyMesh->verts;
+		mNavMeshParams->vertCount = polyMesh->nverts;
+		mNavMeshParams->polys = polyMesh->polys;
+		mNavMeshParams->polyAreas = polyMesh->areas;
+		mNavMeshParams->polyFlags = polyMesh->flags;
+		mNavMeshParams->polyCount = polyMesh->npolys;
+		mNavMeshParams->nvp = polyMesh->nvp;
+		mNavMeshParams->detailMeshes = polyMeshDetail->meshes;
+		mNavMeshParams->detailVerts = polyMeshDetail->verts;
+		mNavMeshParams->detailVertsCount = polyMeshDetail->nverts;
+		mNavMeshParams->detailTris = polyMeshDetail->tris;
+		mNavMeshParams->detailTriCount = polyMeshDetail->ntris;
 		mNavMeshParams->offMeshConVerts = nullptr;
 		mNavMeshParams->offMeshConRad = nullptr;
 		mNavMeshParams->offMeshConDir = nullptr;
@@ -65,10 +72,10 @@ void NavMeshController::CreateDetourData() {
 		mNavMeshParams->walkableHeight = agentComponent->GetHeight();
 		mNavMeshParams->walkableRadius = agentComponent->GetRadius();
 		mNavMeshParams->walkableClimb = agentComponent->GetMaxSlope();
-		rcVcopy(mNavMeshParams->bmin, mPolyMesh->bmin);
-		rcVcopy(mNavMeshParams->bmax, mPolyMesh->bmax);
-		mNavMeshParams->cs = mCellSize;
-		mNavMeshParams->ch = mCellHeight;
+		rcVcopy(mNavMeshParams->bmin, polyMesh->bmin);
+		rcVcopy(mNavMeshParams->bmax, polyMesh->bmax);
+		mNavMeshParams->cs = navController->GetCellSize();
+		mNavMeshParams->ch = navController->GetCellHeight();
 		mNavMeshParams->buildBvTree = true;
 	}
 	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
