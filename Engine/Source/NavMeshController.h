@@ -7,7 +7,7 @@ struct ResourceMesh;
 class MeshRendererComponent;
 class AIAgentComponent;
 class GameObject;
-
+struct dtNavMeshCreateParams;
 class NavMeshController
 {
 public:
@@ -17,6 +17,9 @@ public:
 	void HandleBuild();
 	void Update();
 
+
+	rcPolyMesh* getPolyMesh()const { return mPolyMesh; }
+	rcPolyMeshDetail* getPolyMeshDetail()const { return mPolyMeshDetail; }
 
 	//IMGUI VALUES
 	float GetCellSize() const { return mCellSize; }
@@ -64,6 +67,9 @@ private:
 	void LoadDrawMesh();
 	int FindVertexIndex(float3 vert);
 
+	void CreateDetourData();
+
+	dtNavMeshCreateParams* mNavMeshParams;
 	rcHeightfield* mHeightField = nullptr;
 	rcCompactHeightfield* mCompactHeightField = nullptr;
 	rcContourSet* mContourSet = nullptr;

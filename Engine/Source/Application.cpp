@@ -8,6 +8,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
+#include "ModuleDetourNavigation.h"
 #include "ModuleUI.h"
 
 #include "Timer.h"
@@ -35,6 +36,7 @@ Application::Application()
 	modules[7] = scene = new ModuleScene();
 	modules[8] = editor = new ModuleEditor();
 	modules[9] = ui = new ModuleUI();
+	modules[10] = navigation = new ModuleDetourNavigation();
 }
 
 Application::~Application()
