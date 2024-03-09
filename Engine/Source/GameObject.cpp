@@ -499,8 +499,6 @@ GameObject* findGameObjectParent(const std::vector<GameObject*>& gameObjects, Ga
 	for (int i = 0; i < gameObjects.size(); i++) {
 		if (gameObjects[i]->GetID() == gameObject->GetParentID()) {
 			GameObject* go = new GameObject(gameObjects[i]->GetName().c_str(), gameObjects[i]->GetID(), gameObjects[i], gameObjects[i]->GetPositionMember(), gameObjects[i]->GetScaleMember(), gameObjects[i]->GetRotationMember());
-			gameObject->SetParentID(gameObjects[i]->GetID());
-			gameObjects[i]->AddChild(gameObject);
 		}
 		else if (gameObjects[i]->GetChildren().size() != 0) {
 			findGameObjectParent(gameObjects[i]->GetChildren(), gameObject);
@@ -594,9 +592,10 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, std::vector<Game
 	if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
 		loadComponentsFromJSON(gameObject["Components"], go);
 	}
-	gameObjects->push_back(go);
-
+	
 	go->SetTag(tag);
+
+	gameObjects->push_back(go);
 }
 
 void GameObject::Load(const rapidjson::Value& sceneJson) {
