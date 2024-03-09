@@ -7,7 +7,9 @@
 #include "ModuleCamera.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "GameObject.h"
+#include "DebugPanel.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 
@@ -147,6 +149,21 @@ bool ModuleOpenGL::Init()
 
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
+	switch (((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->GetRenderMode())
+	{
+		case RenderMode::Shaded:
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			break;
+		case RenderMode::Wireframe:
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			break;
+		case RenderMode::ShadedWireframe:
+			//TODO Shaded + Wireframe rendering
+			break;
+		default:
+			break;
+	}
+		
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
