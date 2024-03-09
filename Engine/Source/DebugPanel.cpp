@@ -4,9 +4,14 @@
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "GameObject.h"
+#include "MeshRendererComponent.h"
+#include "Panel.h"
 #include "Timer.h"
 #include "TimerPanel.h"
+#include "HierarchyPanel.h"
 
 DebugPanel::DebugPanel() : Panel(DEBUGPANEL, false)
 {
@@ -31,11 +36,10 @@ void DebugPanel::Draw(int windowFlags) {
             ImGui::Text("Render Mode");
             static const char* mRenderOptions[3] = { "Shaded", "Wireframe", "Shaded + Wireframe" };
             ImGui::Combo(" ", &mRenderMode, mRenderOptions, IM_ARRAYSIZE(mRenderOptions));
-            bool drawColliders = false;
-            if (ImGui::Checkbox("Draw Colliders", &drawColliders))
+            if (ImGui::Checkbox("Draw Colliders", &mDrawColliders))
             {
-                drawColliders = !drawColliders;
-                // TODO Add the code to draw colliders
+                GameObject* root = App->GetScene()->GetRoot();
+                SetShouldDrawForAll(root, mDrawColliders);
             }
             // TODO Add a function to calculate the number of triangles on the editor scene
             ImGui::Text("Number of triangles: %i", 0);
@@ -44,10 +48,8 @@ void DebugPanel::Draw(int windowFlags) {
 
         if (ImGui::TreeNode("Frames##2"))
         {
-            bool showFPS = false;
-            if (ImGui::Checkbox("Show fps on editor", &showFPS))
+            if (ImGui::Checkbox("Show fps on editor", &mShowFpsOnEditor))
             {
-                showFPS = !showFPS;
                 // TODO Add the code to draw colliders
             }
             ImGui::TreePop();
@@ -81,6 +83,20 @@ void DebugPanel::Draw(int windowFlags) {
 	}
 	ImGui::End();
 }
+
+void DebugPanel::SetShouldDrawForAll(GameObject* root, bool shouldDraw) {
+    if (root != nullptr) {
+        MeshRendererComponent* renderer = root->GetMeshRenderer();
+        if (renderer != nullptr) {
+            renderer->SetShouldDraw(shouldDraw);
+        }
+
+        for (int i = 0; i < root->GetChildren().size(); i++) {
+            SetShouldDrawForAll(root->GetChildren()[i], shouldDraw);
+        }
+    }
+}
+
 /*/
     Settings
     ImGui::SeparatorText("Vsync");

@@ -6,7 +6,9 @@
 #include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "DebugPanel.h"
 
 #include "ImporterMaterial.h"
 
@@ -21,6 +23,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int mes
 	
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
+	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 	
 	if (meshUid != 0 && materialUid != 0) {
 		mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
