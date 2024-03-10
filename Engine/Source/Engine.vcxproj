@@ -268,6 +268,7 @@
     <ClCompile Include="QuadtreePanel.cpp" />
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="SettingsPanel.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -414,6 +415,7 @@
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="OptickAdapter.h" />
+    <ClInclude Include="SettingsPanel.h" />
     <ClInclude Include="TimerPanel.h" />
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>

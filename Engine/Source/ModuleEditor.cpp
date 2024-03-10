@@ -21,6 +21,7 @@
 #include "LightningPanel.h"
 #include "ResourcePanel.h"
 #include "TimerPanel.h"
+#include "SettingsPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -42,6 +43,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
+	mPanels[SETTINGSPANEL] = new SettingsPanel();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -151,6 +153,13 @@ void ModuleEditor::ShowMainMenuBar()
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
+			Panel* settingsPanel = mPanels[SETTINGSPANEL];
+			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) {
+				if (settingsPanel)
+				{
+					settingsPanel->IsOpen() ? settingsPanel->Close() : settingsPanel->Open();
+				}
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Assets")) {
@@ -307,6 +316,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* inspector = mPanels[INSPECTORPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
 	Panel* resourcePanel = mPanels[RESOURCEPANEL];
+	Panel* settingsPanel = mPanels[SETTINGSPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 
@@ -323,6 +333,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		inspector->Open();
 		lightningPanel->Open();
 		resourcePanel->Open();
+		settingsPanel->Open();
 	}
 	else {
 		timerPanel->Close();
@@ -337,6 +348,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		inspector->Close();
 		lightningPanel->Close();
 		resourcePanel->Close();
+		settingsPanel->Close();
 
 		aboutPanel->Close();
 	}
