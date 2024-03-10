@@ -6,6 +6,7 @@
 #include "Quat.h"
 
 class ResourceAnimation;
+class GameObject;
 
 class AnimationController
 {
@@ -15,10 +16,9 @@ public:
 
 	void Play(unsigned int resource, bool loop);
 	void Stop();
-	void Update();
+	void Update(GameObject* model);
 
-	//should there be a transform class?
-	void GetTransform(char* name, float3& pos, Quat& rot);
+	void GetTransform(GameObject* model);
 
 	float3 Interpolate(const float3& first, const float3& second, float lambda);
 	Quat Interpolate(const Quat& first, const Quat& second, float lambda);

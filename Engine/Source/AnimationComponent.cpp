@@ -36,12 +36,17 @@ AnimationComponent::~AnimationComponent()
 	}
 }
 
-void AnimationComponent::CreateNodeTree()
+void AnimationComponent::OnStart()
 {
-	GameObject rootNode = new GameObject(mOwner);
+	mController->Play(0, true);
 }
 
-void AnimationComponent::DeleteNodeTree()
+void AnimationComponent::OnUpdate()
 {
-	
+	mController->Update(mOwner);
+}
+
+void AnimationComponent::OnStop()
+{
+	mController->Stop();
 }

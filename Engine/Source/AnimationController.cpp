@@ -2,6 +2,7 @@
 #include "ResourceAnimation.h"
 
 #include "Application.h"
+#include "GameObject.h"
 #include "Timer.h"
 
 #include <cmath>
@@ -20,11 +21,16 @@ void AnimationController::Play(unsigned int resource, bool loop)
 	mStartTime = App->GetGameClock()->GetTotalTime();
 }
 
-void AnimationController::Update()
+void AnimationController::Update(GameObject* model)
 {
 	mCurrentTime = App->GetGameClock()->GetTotalTime() - mStartTime;
 
+	GetTransform(model);
 
+	for (const auto& child : model->GetChildren()) 
+	{
+		GetTransform(model);
+	}
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) 
@@ -54,10 +60,10 @@ Quat AnimationController::Interpolate(const Quat& first, const Quat& second, flo
 	return result;
 }
 
-void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
+void AnimationController::GetTransform(GameObject* model)
 {
 	//Checks and gets the channel we want
-	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(name)->second;
+	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(model->GetName())->second;
 	if (channel == nullptr) {
 		return;
 	}
@@ -89,8 +95,7 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 			lambda = 1;
 		}
 
-
-		pos = Interpolate(channel->positions[keyIndex-1], channel->positions[keyIndex], lambda);
+		model->SetPosition(Interpolate(channel->positions[keyIndex-1], channel->positions[keyIndex], lambda));
 	}
 	if (channel->hasRotation)
 	{
@@ -115,11 +120,13 @@ void AnimationController::GetTransform(char* name, float3& pos, Quat& rot)
 		}
 
 
-		rot = Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda);
+		model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 	}
 	//else if (name == "scale") {
 	//}
 	else {
 		return;
 	}
+
+	model->RecalculateMatrices();
 }
