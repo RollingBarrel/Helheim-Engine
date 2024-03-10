@@ -9,6 +9,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
 #include "ModuleUI.h"
+#include "ModuleAudio.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -35,6 +36,7 @@ Application::Application()
 	modules[7] = scene = new ModuleScene();
 	modules[8] = editor = new ModuleEditor();
 	modules[9] = ui = new ModuleUI();
+	modules[10] = audio = new ModuleAudio();
 }
 
 Application::~Application()

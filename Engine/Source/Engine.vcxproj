@@ -100,13 +100,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\Optick\lib\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\Optick\lib\x64\debug;$(ProjectDir)Dependencies\Wwise\x64_vc170\Debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;OptickCore.lib;CommunicationCentral.lib;AkSoundEngine.lib;ws2_32.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -241,6 +241,7 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
@@ -404,6 +405,46 @@
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\tiny_gltf.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAtomic.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAudioMarker.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesCount.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesMem.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCallback.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCommonDefs.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicDialogue.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicSequence.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkErrorMessageTranslator.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkFPUtilities.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableFuncs.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableTypes.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgr.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgrFuncs.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiTypes.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiWwiseCmds.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMixerTypes.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkModule.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkNumeralTypes.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkQueryParameters.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimd.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdMath.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdTypes.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngine.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngineExport.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerConfig.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerVolumes.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkStreamMgrModule.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkTypes.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkVirtualAcoustics.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWavDefs.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWwiseErrorHandler.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkXMLErrorMessageTranslator.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlatformContext.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlugin.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginHashTable.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginMemAlloc.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkProcessorFeatures.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkRTPCSubscriber.h" />
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkStreamMgr.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -416,6 +457,7 @@
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
+    <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ResourceAnimation.h" />
     <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshControllerPanel.h" />
