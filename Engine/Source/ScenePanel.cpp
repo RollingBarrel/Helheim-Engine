@@ -14,6 +14,8 @@
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
 #include "ResourceModel.h"
+#include "debugdraw.h"
+
 
 #include "Math/float2.h"
 #include "imgui.h"
@@ -33,6 +35,8 @@ static void DragToScene(const ModelNode& node, GameObject* parent)
 	gameObject->SetRotation(node.mRotation);
 	gameObject->SetScale(node.mScale);
 	gameObject->RecalculateMatrices();
+
+	dd::axisTriad(gameObject->GetWorldTransform(),0.1f,1.0f);
 
 	if (node.mMeshId > -1)
 	{
