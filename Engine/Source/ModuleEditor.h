@@ -24,6 +24,7 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	Panel* GetPanel(const char* name) { return mPanels[name]; }
+	std::map<const char*, Panel*> GetPanelList() { return mPanels; }
 
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
