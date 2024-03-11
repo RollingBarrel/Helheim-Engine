@@ -12,5 +12,9 @@ namespace Importer
 		void Save(const ResourceScript* ourTexture);
 
 		ResourceScript* Load(const char* filePath, unsigned int uid);
+
+		std::vector<ScriptAttribute> parseHeaderFile(const std::string& filename);
+
 	}
 };
+

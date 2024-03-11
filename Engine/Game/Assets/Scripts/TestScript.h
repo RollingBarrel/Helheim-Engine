@@ -2,16 +2,11 @@
 #include "Script.h"
 #include "Macros.h"
 
-#define SERIALIZED_FIELD
-#define DISPLAY
-#define TOOLTIP(tooltip)
-#define RANGE(min,max)
-#define HEADER(header) 
-#define SPACE 
+
 
 // To create a script you have to locate the .h in Game/Assets/Scripts
 
-extern "C" class SCRIPTING_API TestScript : public Script {
+class TestScript : public Script {
 
 public:
     TestScript(GameObject* owner);
@@ -30,7 +25,7 @@ private:
     DISPLAY float movement = 0;
     DISPLAY bool up = false;
     bool startCounter = false;
-    SERIALIZED_FIELD float timePassed = 0;
+    UNSERIALIZED float timePassed = 0;
 
     GameObject* gameObject;
 };

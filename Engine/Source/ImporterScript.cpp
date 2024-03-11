@@ -1,4 +1,8 @@
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
 
 #include "Application.h"
 #include "ModuleFileSystem.h"
@@ -10,56 +14,57 @@
 ResourceScript* Importer::Script::Import(const char* filePath, unsigned int uid)
 {
     std::string filename = (filePath);
-    std::vector<std::pair<std::string, std::string>> attributes = parseHeaderFile(filename);
-
-    std::cout << "Attributes found in " << filename << ":" << std::endl;
-    for (const auto& attribute : attributes) {
-        std::cout << "Type: " << attribute.second << ", Name: " << attribute.first << std::endl;
-    }
-
-    ScriptAttribute scriptAttributes[10];
-    
-
-    ResourceScript* rScript = new ResourceScript(uid, scriptAttributes);
+    ResourceScript* rScript = new ResourceScript(uid);
+    parseHeaderFile(filename, rScript);
     Importer::Script::Save(rScript);
     return rScript;
 }
 
-void Importer::Script::Save(const ResourceScript* rTexture)
+void Importer::Script::Save(const ResourceScript* rScript)
 {
     // TODO: Save also UID (and assetsFile?)
-    unsigned int header[7] = {
-        rTexture->GetWidth(),
-        rTexture->GetHeight(),
-        rTexture->GetInternalFormat(),
-        rTexture->GetTexFormat(),
-        rTexture->GetDataType(),
-        rTexture->GetMipLevels(),
-        rTexture->GetNumPixels()
-    };
+    size_t sizeAttributes = rScript->GetAttributes().size();
+    size_t sizeDisplayAttributes = rScript->GetDisplayAttributes().size();
+    size_t sizeScriptName = rScript->GetScriptName().length();
 
-    unsigned int numPixels = rTexture->GetNumPixels();
-    bool hasAlpha = rTexture->HasAlpha();
-    unsigned int size = sizeof(header) +
-        sizeof(hasAlpha) +
-        sizeof(unsigned char) * numPixels;
-
+    unsigned int size = sizeof(size_t) * 3 +
+        sizeof(rScript->GetScriptName()) +
+        sizeof(ScriptAttribute) * sizeAttributes +
+        sizeof(ScriptAttribute) * sizeDisplayAttributes;
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
 
-    unsigned int bytes = sizeof(header);
-    memcpy(cursor, header, bytes);
+    unsigned int bytes = sizeof(size_t);
+    memcpy(cursor, &sizeAttributes, bytes);
+    cursor += bytes;
+    unsigned int bytes = sizeof(size_t);
+    memcpy(cursor, &sizeDisplayAttributes, bytes);
+    cursor += bytes;
+    unsigned int bytes = sizeof(size_t);
+    memcpy(cursor, &sizeScriptName, bytes);
     cursor += bytes;
 
-    bytes = sizeof(hasAlpha);
-    memcpy(cursor, &hasAlpha, bytes);
+    unsigned int bytes = sizeof(rScript->GetScriptName());
+    memcpy(cursor, &rScript->GetScriptName(), bytes);
     cursor += bytes;
 
-    bytes = sizeof(unsigned char) * numPixels;
-    memcpy(cursor, rTexture->GetPixels(), bytes);
-    cursor += bytes;
+    for (size_t i = 0; i < sizeAttributes; ++i)
+    {
+        const ScriptAttribute attribute = rScript->GetAttributes()[i];
+        unsigned int bytes = sizeof(ScriptAttribute);
+        memcpy(cursor, &attribute, bytes);
+        cursor += bytes;
+    }
 
-    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rTexture->GetUID(), true);
+    for (size_t i = 0; i < sizeDisplayAttributes; ++i)
+    {
+        const ScriptAttribute attribute = rScript->GetDisplayAttributes()[i];
+        unsigned int bytes = sizeof(ScriptAttribute);
+        memcpy(cursor, &attribute, bytes);
+        cursor += bytes;
+    }
+
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rScript->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
     delete[] libraryPath;
@@ -69,105 +74,210 @@ void Importer::Script::Save(const ResourceScript* rTexture)
 ResourceScript* Importer::Script::Load(const char* filePath, unsigned int uid)
 {
     char* fileBuffer;
-    ResourceTexture* texture = nullptr;
+    ResourceScript* rScript = new ResourceScript(uid);
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
         char* cursor = fileBuffer;
-        unsigned int header[7];
-        unsigned int bytes = sizeof(header);
-        memcpy(header, cursor, bytes);
+
+        size_t sizeAttributes;
+        unsigned int bytes = sizeof(size_t);
+        memcpy(&sizeAttributes, cursor, bytes);
         cursor += bytes;
-        unsigned int width = header[0];
-        unsigned int height = header[1];
-        unsigned int internalFormat = header[2];
-        unsigned int texFormat = header[3];
-        unsigned int dataType = header[4];
-        unsigned int mipLevels = header[5];
-        unsigned int numPixels = header[6];
-
-
-        bool hasAlpha;
-        bytes = sizeof(hasAlpha);
-        memcpy(&hasAlpha, cursor, bytes);
+        size_t sizeDisplayAttributes;
+        unsigned int bytes = sizeof(size_t);
+        memcpy(&sizeDisplayAttributes, cursor, bytes);
+        cursor += bytes;
+        size_t sizeScriptName;
+        unsigned int bytes = sizeof(size_t);
+        memcpy(&sizeScriptName, cursor, bytes);
         cursor += bytes;
 
-        bytes = sizeof(unsigned char) * numPixels;
-        unsigned char* pixels = nullptr;
-        pixels = new unsigned char[numPixels];
-        memcpy(pixels, cursor, bytes);
+        std::string scriptName;
+        memcpy(&scriptName, cursor, sizeScriptName);
+        cursor += bytes;
+        rScript->SetScriptName(scriptName);
 
-        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
-        unsigned int texId = texture->CreateTexture();
+        for (size_t i = 0; i < sizeAttributes; ++i)
+        {
+            ScriptAttribute attribute;
+            unsigned int bytes = sizeof(ScriptAttribute);
+            memcpy(&attribute, cursor, bytes);
+            cursor += bytes;
+            rScript->addAttribute(attribute);
+        }
+
+        for (size_t i = 0; i < sizeDisplayAttributes; ++i)
+        {
+            ScriptAttribute attribute;
+            unsigned int bytes = sizeof(ScriptAttribute);
+            memcpy(&attribute, cursor, bytes);
+            cursor += bytes;
+            rScript->addDisplayAttribute(attribute);
+
+        }
 
         delete[] fileBuffer;
     }
 
-    return texture;
+    return rScript;
 }
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-
-
-std::string trim(const std::string& str) {
-    size_t first = str.find_first_not_of(" \t");
+std::string trim(const std::string& str, const char* errasable) {
+    size_t first = str.find_first_not_of(errasable);
     if (std::string::npos == first) {
         return str;
     }
-    size_t last = str.find_last_not_of(" \t");
+    size_t last = str.find_last_not_of(errasable);
     return str.substr(first, (last - first + 1));
 }
 
 // Function to parse a header file and extract attribute names and types
-std::vector<std::pair<std::string, std::string>> parseHeaderFile(const std::string& filename) {
-    std::vector<std::pair<std::string, std::string>> attributes;
+bool parseHeaderFile(const std::string& filename, ResourceScript* rScript)
+{
 
     std::ifstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open()) 
+    {
         std::cerr << "Error: Unable to open file " << filename << std::endl;
-        return attributes;
+        return false;
     }
-
-
-
-
     std::string line;
-    while (std::getline(file, line)) {
-        std::string trimmedLine = trim(line);
+    std::string scriptName;
+    while (scriptName == "" and std::getline(file, line))
+    {
+        size_t classPos = line.find("class ");
+        if (classPos != std::string::npos) {
+            // Find the position of the first space after "class"
+            classPos += 6;
+            size_t spacePos = line.find_first_of(" ", classPos);
+            if (spacePos != std::string::npos) {
+                // Extract the word after "class"
+                scriptName = line.substr(classPos, spacePos - classPos);
+            }
+            else
+            {
+                scriptName = line.substr(classPos);
+            }
+        }
+    }
+    rScript->SetScriptName(scriptName);
 
-        if (trimmedLine.find("DISPLAY") == 0) {
-            std::cout << "Found line starting with DISPLAY: " << trimmedLine << std::endl;
+    // Init a ScriptAttribute
+    ScriptAttribute attribute = ScriptAttribute();
+    bool display = false;
+    bool serializable = true;
+
+    // Read line by line in the .h file
+    std::string line;
+    while (std::getline(file, line)) 
+    {
+        std::string trimmedLine = trim(line, " \t"); // get rid of white spaces
+        std::string firstWord;
+        size_t firstSpacePos = trimmedLine.find(' ');
+        if (firstSpacePos != std::string::npos) 
+        {
+            firstWord = trimmedLine.substr(0, firstSpacePos);
         }
-        else if (trimmedLine.find("SERIALIZED_FIELD") == 0) {
-            std::cout << "Found line starting with UNSERIALIZED_FIELD: " << trimmedLine << std::endl;
+        else {
+            firstWord = trimmedLine;
         }
-        else if (trimmedLine.find("TOOLTIP") == 0) {
-            std::cout << "Found line starting with TOOLTIP: " << trimmedLine << std::endl;
-            std::string lastPart = trimmedLine.substr(trimmedLine.find("TOOLTIP") + strlen("TOOLTIP"));
-            std::cout << "Last part: " << lastPart << std::endl;
+        if (firstWord == "DISPLAY") 
+        {
+            std::cout << "Found line starting with DISPLAY: " << trimmedLine << std::endl; // Errasable
+            display = true;
         }
-        else if (trimmedLine.find("RANGE") == 0) {
-            std::cout << "Found line starting with RANGE: " << trimmedLine << std::endl;
+        else if (firstWord == "UNSERIALIZED") 
+        {
+            std::cout << "Found line starting with UNSERIALIZED: " << trimmedLine << std::endl; // Errasable
+            serializable = false;
         }
-        else if (trimmedLine.find("HEADER") == 0) {
-            std::cout << "Found line starting with HEADER: " << trimmedLine << std::endl;
+        else if (firstWord == "TOOLTIP") 
+        {
+            std::cout << "Found line starting with TOOLTIP: " << trimmedLine << std::endl; // Errasable
+            std::string parameter = trim(trimmedLine.substr(firstWord.length()), "()\" \t");
+            std::cout << "Tooltip: " << parameter << std::endl;
+
+
+            attribute.setTooltip(parameter);
         }
-        else if (trimmedLine.find("SPACE") == 0) {
-            std::cout << "Found line starting with SPACE: " << trimmedLine << std::endl;
+        else if (firstWord == "RANGE") 
+        {
+            std::cout << "Found line starting with RANGE: " << trimmedLine << std::endl; // Errasable
+            std::string parameters = trimmedLine.substr(firstWord.length());
+            parameters = trim(parameters, "() \t");
+
+            std::pair<int, int> range;
+
+            size_t foundPos = parameters.find(',');
+            if (foundPos != std::string::npos) 
+            {
+                range.first = std::stoi(trim(parameters.substr(0, foundPos), " \t"));
+                range.second = std::stoi(trim(parameters.substr(foundPos + 1), " \t"));
+            }
+        }
+        else if (firstWord == "HEADER") 
+        {
+            std::cout << "Found line starting with HEADER: " << trimmedLine << std::endl; // Errasable
+            std::string parameter = trim(trimmedLine.substr(firstWord.length()), "() \t");
+
+            attribute.setHeader(parameter);
+        }
+        else if (firstWord == "SPACE") 
+        {
+            std::cout << "Found line starting with SPACE: " << trimmedLine << std::endl; // Errasable
+            attribute.setHeader("");
+        }
+        // if this line has a declaration of a variable
+        if (trimmedLine.find(';') != std::string::npos and trimmedLine.find('(') == std::string::npos)
+        {
+            trimmedLine = trimmedLine.substr(0, trimmedLine.find(';'));
+            std::istringstream iss(trimmedLine);
+            
+            // Extract the variable type
+            std::string type;
+            if (!(iss >> type))
+            {
+                // se esperaba el tipo de la variable
+                return false;
+            }
+            // when there is a keyword before the type extract the type again
+            if (type == "const")
+            {
+                if (!(iss >> type))
+                {
+                    // se esperaba el tipo de la variable
+                    return false;
+                }
+            }
+            // try to convert the 'type' to a ScriptAttributeType and set it in the ScriptAttribute
+            if (!attribute.setTypeFromString(type))
+            {
+                // el tipo de la variable no es valido
+                return false;
+            }
+            // Extract the variable name
+            std::string name;
+            if (!(iss >> name))
+            {
+                // se esperaba el nombre de la variable
+                return false;
+            }
+            attribute.setName(name);
+
+            if (display)
+            {
+                rScript->addDisplayAttribute(attribute);
+            }
+            if (serializable)
+            {
+                rScript->addAttribute(attribute);
+            }
+            attribute = ScriptAttribute();
+            bool display = false;
+            bool serializable = true;
         }
     }
 
-    return attributes;
-}
-
-std::string trim(const std::string& pre, const std::string& line) {
-    size_t first = str.find_first_not_of(" \t");
-    if (std::string::npos == first) {
-        return str;
-    }
-    size_t last = str.find_last_not_of(" \t");
-    return str.substr(first, (last - first + 1));
+    return true;
 }

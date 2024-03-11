@@ -23,6 +23,5 @@ private:
 
 	const char* name = nullptr;
 
-
 };
 
