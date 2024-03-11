@@ -271,6 +271,9 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* 
 		break;
 	case Resource::Type::NavMesh:
 		break;
+	case Resource::Type::Object:
+		ret = new Resource(uid, type);
+		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;

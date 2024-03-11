@@ -6,6 +6,7 @@
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleResource.h"
 #include "GameObject.h"
 
 #include "imgui.h"
@@ -82,11 +83,12 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 				std::vector<Archive> gameObjectsArchiveVector;
 				App->GetScene()->SaveGameObjectRecursive(object, gameObjectsArchiveVector);
 				std::string file = dir.mName;
-				file.append('/' + object->GetName() + ".json");
+				file.append('/' + object->GetName() + ".hlhm");
 				archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 
 				std::string out = archive->Serialize();
 				App->GetFileSystem()->Save(file.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+				App->GetResource()->ImportFile(file.c_str(), object->GetID());
 				delete archive;
 			}
 		}
