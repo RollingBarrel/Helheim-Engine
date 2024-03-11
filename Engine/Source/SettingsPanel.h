@@ -15,9 +15,6 @@ struct WindowState
 	bool IsOpen;
 	ImVec2 position;
 	ImVec2 size;
-	ImGuiID dockId;
-	bool isAppearing;
-	bool isCollapsed;
 };
 
 class SettingsPanel : public Panel

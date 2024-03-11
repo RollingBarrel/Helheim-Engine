@@ -95,6 +95,7 @@ void SettingsPanel::SaveSettings()
 	mOpenedWindowsInfo.clear();
 	// Save the settings for all the windows
 	std::ofstream out_file("config.txt");
+	out_file << App->GetEditor()->GetPanelList().size() << "\n";
 	for (const auto& panels : App->GetEditor()->GetPanelList())	{
 		WindowState* windowState = new WindowState();
 		ImGui::Begin(panels.first);
@@ -102,9 +103,6 @@ void SettingsPanel::SaveSettings()
 		windowState->IsOpen = panels.second->IsOpen();
 		windowState->position = ImGui::GetWindowPos();
 		windowState->size = ImGui::GetWindowSize();
-		windowState->dockId = ImGui::GetWindowDockID();
-		windowState->isAppearing = ImGui::IsWindowAppearing();
-		windowState->isCollapsed = ImGui::IsWindowCollapsed();
 		ImGui::End();
 		mOpenedWindowsInfo.push_back(windowState);
 		
@@ -115,22 +113,13 @@ void SettingsPanel::SaveSettings()
 			out_file << windowState->IsOpen << "\n";
 			out_file << windowState->position.x << " " << windowState->position.y << "\n";
 			out_file << windowState->size.x << " " << windowState->size.y << "\n";
-			out_file << windowState->dockId << "\n";
-			out_file << windowState->isAppearing << "\n";
-			out_file << windowState->isCollapsed << "\n";
 		}
 	}
 	if (out_file.is_open())
 	{
-		out_file.close();
-	}
-
-	// Save the docking layout
-	size_t settings_len;
-	const char* settings = ImGui::SaveIniSettingsToMemory(&settings_len);
-	std::ofstream out_file("docking_layout.ini");
-	if (out_file.is_open())
-	{
+		// Save the docking layout
+		size_t settings_len;
+		const char* settings = ImGui::SaveIniSettingsToMemory(&settings_len);
 		out_file.write(settings, settings_len);
 		out_file.close();
 	}
@@ -144,12 +133,15 @@ void SettingsPanel::LoadSettings()
 	if (in_file.is_open())
 	{
 		std::string line;
-		while (std::getline(in_file, line))
-		{
+		int numWindows = 0;
+		if (std::getline(in_file, line)) {
+			numWindows = std::stoi(line);
+		}
+		for (int i = 0; i < numWindows; ++i) {
 			WindowState* windowState = new WindowState();
 
 			// Read the window state from the file
-			windowState->name = line;
+			if (std::getline(in_file, line)) windowState->name = line;
 			if (std::getline(in_file, line)) windowState->IsOpen = std::stoi(line);
 			if (std::getline(in_file, line)) {
 				std::istringstream iss(line);
@@ -159,12 +151,11 @@ void SettingsPanel::LoadSettings()
 				std::istringstream iss(line);
 				iss >> windowState->size.x >> windowState->size.y;
 			}
-			if (std::getline(in_file, line)) windowState->dockId = std::stoi(line);
-			if (std::getline(in_file, line)) windowState->isAppearing = std::stoi(line);
-			if (std::getline(in_file, line)) windowState->isCollapsed = std::stoi(line);
-
 			mOpenedWindowsInfo.push_back(windowState);
 		}
+		// Load the docking layout
+		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
+		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
 		in_file.close();
 	}
 
@@ -175,18 +166,7 @@ void SettingsPanel::LoadSettings()
 		{
 			ImGui::SetWindowPos(windowState->position);
 			ImGui::SetWindowSize(windowState->size);
-
-			if (windowState->isCollapsed) ImGui::SetWindowCollapsed(true);
 		}
 		ImGui::End();
-	}
-
-	// Load the docking layout
-	std::ifstream in_file("docking_layout.ini");
-	if (in_file.is_open())
-	{
-		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
-		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
-		in_file.close();
 	}
 }
