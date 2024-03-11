@@ -34,10 +34,10 @@ public:
 
 protected:
 	virtual	void Reset() = 0;
-	const unsigned int mID = 0;
 	GameObject* mOwner = nullptr;
 	bool mIsEnabled = true;
 private:
+	unsigned int mID = 0;
 	ComponentType mType = ComponentType::NONE;
 };
 

@@ -5,7 +5,7 @@
 #include "GameObject.h"
 
 class Mesh;
-class Material;
+struct Material;
 class ResourceMesh;
 class ResourceMaterial;
 class GeometryBatch;

@@ -1,31 +1,40 @@
 #pragma once
-#include <vector>;
+#include <vector>
 #include "float4.h"
+#include "ResourceMesh.h"
 
 class MeshRendererComponent;
-struct ResourceMesh;
-struct ResourceMaterial;
-typedef struct Attribute;
+class ResourceMaterial;
 typedef struct __GLsync* GLsync;
 
-class BatchMeshRendererResource
+class BatchMaterialResource
 {
 public:
-	BatchMeshRendererResource(const ResourceMesh* res, unsigned int fIndex = 0, unsigned int bVertex = 0)
-		: resource(res), firstIndex(fIndex), baseVertex(bVertex) {}
+	BatchMaterialResource(const ResourceMaterial* res)
+		: resource(res), referenceCount(1) {}
+	const ResourceMaterial* resource;
+	unsigned int referenceCount;
+};
+
+class BatchMeshResource
+{
+public:
+	BatchMeshResource(const ResourceMesh* res, unsigned int fIndex = 0, unsigned int bVertex = 0)
+		: resource(res), firstIndex(fIndex), baseVertex(bVertex), referenceCount(1) {}
 	const ResourceMesh* resource;
 	unsigned int firstIndex;
 	unsigned int baseVertex;
+	unsigned int referenceCount;
 };
 
 class BatchMeshRendererComponent
 {
 public:
-	BatchMeshRendererComponent(const MeshRendererComponent* comp, uint32_t matIdx = 999999999, unsigned int res = 999999999)
-		: component(comp), materialIdx(matIdx), resource(res) {}
+	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx)
+		: component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx) {}
 	const MeshRendererComponent* component;
-	uint32_t materialIdx;
-	unsigned int resource;
+	unsigned int bMeshIdx;
+	unsigned int bMaterialIdx;
 };
 
 
@@ -69,16 +78,16 @@ public:
 
 	void GetAttributes(std::vector<Attribute>& attributes) const;
 	unsigned int GetVertexSize() { return mVertexSize; };
-	void AddMesh(const MeshRendererComponent* component );
+	void AddMeshComponent(const MeshRendererComponent* component);
 	void EditMaterial(const MeshRendererComponent* component);
-	void RemoveMesh(const MeshRendererComponent* component);
+    bool RemoveMeshComponent(const MeshRendererComponent* component);
 	void Draw();
 
 private:
 
 	std::vector<BatchMeshRendererComponent> mMeshComponents;
-	std::vector<BatchMeshRendererResource> mUniqueMeshes;
-	std::vector<const ResourceMaterial*> mUniqueMaterials;
+	std::vector<BatchMeshResource> mUniqueMeshes;
+	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
 	unsigned int mVertexSize = 0;

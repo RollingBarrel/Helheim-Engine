@@ -3,13 +3,14 @@
 
 class GeometryBatch;
 class MeshRendererComponent;
-struct ResourceMesh;
+class ResourceMesh;
 class BatchManager
 {
 public:
 	BatchManager();
 	~BatchManager();
-	void AddMeshRendererComponent(MeshRendererComponent* meshComponent);
+	void AddMeshComponent(MeshRendererComponent* meshComponent);
+	void RemoveMeshComponent(MeshRendererComponent* meshComponent);
 
 	void Draw();
 

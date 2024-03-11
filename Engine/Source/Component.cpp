@@ -23,7 +23,7 @@ const char* Component::GetNameFromType(ComponentType type)
 		case ComponentType::CANVAS:
 			return "Canvas";
 		case ComponentType::TRANSFORM2D:
-return "Transform2D";
+			return "Transform2D";
 		default:
 			return "None";
 		}

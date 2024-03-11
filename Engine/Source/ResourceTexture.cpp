@@ -32,7 +32,8 @@ ResourceTexture::ResourceTexture(
 }
 ResourceTexture::~ResourceTexture()
 {
-    glMakeTextureHandleNonResidentARB(mTexHandle);
+    if(mTexHandle)
+        glMakeTextureHandleNonResidentARB(mTexHandle);
     glDeleteTextures(1, &mOpenGLId);
     if(mPixels)
         delete[] mPixels;

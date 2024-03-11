@@ -29,7 +29,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int mes
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
-	App->GetOpenGL()->AddMeshRendererComponent(this);
+	App->GetOpenGL()->BatchAddMesh(this);
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -39,11 +39,12 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
 
-	App->GetOpenGL()->AddMeshRendererComponent(this);
+	App->GetOpenGL()->BatchAddMesh(this);
 }
 
 MeshRendererComponent::~MeshRendererComponent()
 {
+	App->GetOpenGL()->BatchRemoveMesh(this);
 	if (mMesh)
 	{
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
@@ -69,7 +70,7 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 }
 
 void MeshRendererComponent::Save(Archive& archive) const {
-	archive.AddInt("ID", mID);
+	archive.AddInt("ID", GetID());
 	archive.AddInt("MeshID",mMesh->GetUID());
 	archive.AddInt("MaterialID", mMaterial->GetUID());
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));

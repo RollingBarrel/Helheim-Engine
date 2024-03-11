@@ -71,7 +71,8 @@ public:
 	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
 	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
-	void AddMeshRendererComponent(MeshRendererComponent* mesh);
+	void BatchAddMesh(MeshRendererComponent* mesh);
+	void BatchRemoveMesh(MeshRendererComponent* mesh);
 	void Draw();
 
 

@@ -444,9 +444,14 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 	}
 }
 
-void ModuleOpenGL::AddMeshRendererComponent(MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchAddMesh(MeshRendererComponent* mesh)
 {
-	mBatchManager.AddMeshRendererComponent(mesh);
+	mBatchManager.AddMeshComponent(mesh);
+}
+
+void ModuleOpenGL::BatchRemoveMesh(MeshRendererComponent* mesh)
+{
+	mBatchManager.RemoveMeshComponent(mesh);
 }
 
 void ModuleOpenGL::Draw()
