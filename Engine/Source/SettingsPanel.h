@@ -9,8 +9,7 @@
 
 #define SETTINGSPANEL "Settings##"
 
-struct WindowState
-{
+struct WindowState {
 	std::string name;
 	bool IsOpen;
 	ImVec2 position;
