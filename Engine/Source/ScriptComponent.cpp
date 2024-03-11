@@ -34,6 +34,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 
 void ScriptComponent::LoadScript(const char* scriptName)
 {
+	// TODO: Deberia recibir el UID del resource y con el resorce se puede obtener el scriptName y los attributos a mostrar en el inspector
 	mName = scriptName;
 
 	Script* (*script)(GameObject*) = (Script * (*)(GameObject*))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());

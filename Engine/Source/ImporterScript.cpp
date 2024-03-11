@@ -47,7 +47,7 @@ void Importer::Script::Save(const ResourceScript* rScript)
     unsigned int bytes = sizeof(rScript->GetScriptName());
     memcpy(cursor, &rScript->GetScriptName(), bytes);
     cursor += bytes;
-
+    // TODO: Redo the save of Script Attributes 
     for (size_t i = 0; i < sizeAttributes; ++i)
     {
         const ScriptAttribute attribute = rScript->GetAttributes()[i];

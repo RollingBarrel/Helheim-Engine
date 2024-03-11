@@ -467,6 +467,8 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 	//ImGui::SeparatorText("Script");
 
+	// TODO: desde los .emeta files que hay en los assets se puede obtener el nombre de cada Script con su UID relacionado
+	// Lo que se manda al scriptComponent deberia ser el UID
 	const char* items[] = { "Select Script", "TestScript", "MissionScript", "Dash", "EEEE", "FFFF", "GGGG", "HHHH", "IIIIIII", "JJJJ", "KKKKKKK" };
     static int currentItem = 0;
 	
