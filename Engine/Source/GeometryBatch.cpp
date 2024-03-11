@@ -250,6 +250,7 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 		memmove(mVboData + offset, mVboData + offset + size / sizeof(float), size);
 		mVboNumElements -= size / sizeof(float);
 		float* tmp = new float[mVboNumElements];
+		memcpy(tmp, mVboData, mVboNumElements * sizeof(float));
 		delete[] mVboData;
 		mVboData = tmp;
 		glBindBuffer(GL_ARRAY_BUFFER, mVbo);
@@ -258,6 +259,10 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 
 		memmove(mEboData + mUniqueMeshes[bMeshIdx].firstIndex, mEboData + mUniqueMeshes[bMeshIdx].firstIndex + rMesh.GetNumberIndices(), rMesh.GetNumberIndices() * sizeof(unsigned int));
 		mEboNumElements -= rMesh.GetNumberIndices();
+		unsigned int* indicesTmp = new unsigned int[mEboNumElements];
+		memcpy(indicesTmp, mEboData, mEboNumElements * sizeof(unsigned int));
+		delete[] mEboData;
+		mEboData = indicesTmp;
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboNumElements, mEboData, GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
