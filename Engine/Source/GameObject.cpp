@@ -310,6 +310,13 @@ void GameObject::AddSuffix()
 	}
 }
 
+/*void GameObject::SetComponents(std::vector<Component*> components)
+{
+	for (auto component : components) {
+		mComponents.push_back(component);
+	}
+}*/
+
 //TODO: Crate a component that requires ids not clean now
 Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
 	Component* newComponent = nullptr;
@@ -500,6 +507,7 @@ void findGameObjectParent(const std::vector<GameObject*>& gameObjects, GameObjec
 		if (gameObjects[i]->GetID() == gameObject->GetParentID()) {
 			GameObject* go = new GameObject(gameObject->GetName().c_str(), gameObject->GetID(), gameObjects[i], gameObject->GetPositionMember(), gameObject->GetScaleMember(), gameObject->GetRotationMember());
 			go->SetParentID(gameObjects[i]->GetID());
+			go->SetComponents(gameObject->GetComponents());
 		}
 		else if (gameObjects[i]->GetChildren().size() != 0) {
 			findGameObjectParent(gameObjects[i]->GetChildren(), gameObject);
@@ -612,6 +620,8 @@ void GameObject::Load(const rapidjson::Value& sceneJson) {
 		for (int i = 0; i < gameObjects.size(); i++) {
 			if (gameObjects[i]->GetParentID() == 1) {
 				GameObject* go = new GameObject(gameObjects[i]->GetName().c_str(), gameObjects[i]->GetID(), scene, gameObjects[i]->GetPositionMember(), gameObjects[i]->GetScaleMember(), gameObjects[i]->GetRotationMember());
+				go->SetComponents(gameObjects[i]->GetComponents());
+				
 			}
 			else {
 				findGameObjectParent(scene->GetChildren(), gameObjects[i]);

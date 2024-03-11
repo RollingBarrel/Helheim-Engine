@@ -48,6 +48,7 @@ public:
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	Tag* GetTag() const { return mTag; }
+	std::vector<Component*> GetComponents() { return mComponents; }
 
 	void ResetTransform();
 
@@ -72,6 +73,7 @@ public:
 		mParentID = parentID;
 	}
 	void SetTag(Tag* tag) { mTag = tag; };
+	void SetComponents(std::vector<Component*> components) { mComponents = components; }
 
 	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
 	MeshRendererComponent* GetMeshRenderer() const;
