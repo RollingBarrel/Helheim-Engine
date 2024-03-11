@@ -22,7 +22,6 @@ ResourceScript* Importer::Script::Import(const char* filePath, unsigned int uid)
 
 void Importer::Script::Save(const ResourceScript* rScript)
 {
-    // TODO: Save also UID (and assetsFile?)
     size_t sizeAttributes = rScript->GetAttributes().size();
     size_t sizeDisplayAttributes = rScript->GetDisplayAttributes().size();
     size_t sizeScriptName = rScript->GetScriptName().length();
@@ -44,9 +43,11 @@ void Importer::Script::Save(const ResourceScript* rScript)
     memcpy(cursor, &sizeScriptName, bytes);
     cursor += bytes;
 
+    //TODO: Redo the save of name
     unsigned int bytes = sizeof(rScript->GetScriptName());
     memcpy(cursor, &rScript->GetScriptName(), bytes);
     cursor += bytes;
+
     // TODO: Redo the save of Script Attributes 
     for (size_t i = 0; i < sizeAttributes; ++i)
     {
@@ -148,11 +149,11 @@ bool parseHeaderFile(const std::string& filename, ResourceScript* rScript)
     {
         size_t classPos = line.find("class ");
         if (classPos != std::string::npos) {
-            // Find the position of the first space after "class"
+            // Find the position of the first space after "class "
             classPos += 6;
             size_t spacePos = line.find_first_of(" ", classPos);
             if (spacePos != std::string::npos) {
-                // Extract the word after "class"
+                // Extract the word after "class "
                 scriptName = line.substr(classPos, spacePos - classPos);
             }
             else
