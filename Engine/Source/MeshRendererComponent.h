@@ -25,6 +25,8 @@ public:
 	void RefreshBoundingBoxes();
 	const OBB getOBB() const { return mOBB; }
 	const AABB GetAABB() const { return mAABB; }
+	const AABB GetAABBWorld() const { return mAABBWorld; }
+
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }

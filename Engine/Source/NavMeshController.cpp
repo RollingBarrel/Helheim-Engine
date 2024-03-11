@@ -165,8 +165,8 @@ void NavMeshController::HandleBuild() {
 			break;
 		}
 
-		float3 meshMax = testMesh->GetAABB().maxPoint;
-		float3 meshMin = testMesh->GetAABB().minPoint;
+		float3 meshMax = testMesh->GetAABBWorld().maxPoint;
+		float3 meshMin = testMesh->GetAABBWorld().minPoint;
 		const float maxPoint[3] = { meshMax.x, meshMax.y, meshMax.z };
 		const float minPoint[3] = { meshMin.x, meshMin.y, meshMin.z };
 		int gridWidth = 0;
@@ -204,10 +204,9 @@ void NavMeshController::HandleBuild() {
 		for (int i = 0; i < numberOfVertices * 3; i += 3) 
 		{
 			float4 operationTemp = objectTransform * float4(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f) ;
-			operationTemp = operationTemp / operationTemp.w;
-			transformedVerts.push_back(operationTemp.x);
-			transformedVerts.push_back(operationTemp.y);
-			transformedVerts.push_back(operationTemp.z);
+			transformedVerts.push_back(operationTemp.x / operationTemp.w);
+			transformedVerts.push_back(operationTemp.y / operationTemp.w);
+			transformedVerts.push_back(operationTemp.z / operationTemp.w);
 
 
 		}
