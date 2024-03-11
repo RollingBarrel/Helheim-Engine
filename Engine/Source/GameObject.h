@@ -73,7 +73,7 @@ public:
 		mParentID = parentID;
 	}
 	void SetTag(Tag* tag) { mTag = tag; };
-	void SetComponents(std::vector<Component*> components) { mComponents = components; }
+	void SetComponents(std::vector<Component*> components);
 
 	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
 	MeshRendererComponent* GetMeshRenderer() const;

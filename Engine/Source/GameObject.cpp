@@ -310,12 +310,13 @@ void GameObject::AddSuffix()
 	}
 }
 
-/*void GameObject::SetComponents(std::vector<Component*> components)
+void GameObject::SetComponents(std::vector<Component*> components)
 {
-	for (auto component : components) {
+	for (const auto& component : components) {
 		mComponents.push_back(component);
 	}
-}*/
+
+}
 
 //TODO: Crate a component that requires ids not clean now
 Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
