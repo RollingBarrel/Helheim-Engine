@@ -496,20 +496,26 @@ void GameObject::Save(Archive& archive) const {
 }
 
 GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
+	GameObject* gameObjectParent = nullptr;
 	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
 	for (int i = 0; i < gameObjects.size(); i++) {
 		if (gameObjects[i]->GetID() == UID) {
-			return gameObjects[i];
+			// Found the parent
+			gameObjectParent = gameObjects[i];
+			break;
 		}
-		else if (gameObjects[i]->GetChildren().size() != 0) {
-			for (int j = 0; j < gameObjects[i]->GetChildren().size(); j++) {
-				findGameObjectParent(gameObjects[i]->GetChildren()[j], UID);
+		else {
+			// Recursively search in children
+			GameObject* gameObjectChild = findGameObjectParent(gameObjects[i], UID);
+			if (gameObjectChild != nullptr) {
+				// Found a match in children, return it as the gameobject parent
+				gameObjectParent = gameObjectChild;
+				break;
 			}
-
 		}
 	}
-
-	return nullptr;
+	
+	return gameObjectParent;
 }
 
 void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
