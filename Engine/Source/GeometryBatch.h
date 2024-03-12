@@ -84,6 +84,7 @@ public:
 	void Draw();
 
 private:
+	void RecreatePersistentSsbosAndIbo();
 
 	std::vector<BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;

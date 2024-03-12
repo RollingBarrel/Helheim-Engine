@@ -106,6 +106,37 @@ void GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 }
 
 #define ALIGNED_STRUCT_SIZE(STRUCT_SIZE, ALIGNMENT) ((STRUCT_SIZE + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
+void GeometryBatch::RecreatePersistentSsbosAndIbo()
+{
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
+	glBufferData(GL_DRAW_INDIRECT_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+
+	GLbitfield flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
+
+	glDeleteBuffers(1, &mSsboModelMatrices);
+	glGenBuffers(1, &mSsboModelMatrices);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
+	unsigned int size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
+	mSsboModelMatricesData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+	for (int i = 1; i < NUM_BUFFERS; ++i)
+	{
+		mSsboModelMatricesData[i] = mSsboModelMatricesData[0] + ((size * i) / sizeof(float));
+	}
+
+	glDeleteBuffers(1, &mSsboIndices);
+	glGenBuffers(1, &mSsboIndices);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboIndices);
+	size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
+	mSsboIndicesData[0] = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+	for (int i = 1; i < NUM_BUFFERS; ++i)
+	{
+		mSsboIndicesData[i] = mSsboIndicesData[0] + ((size * i) / sizeof(uint32_t));
+	}
+}
+
 void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 {
 	bool found = false;
@@ -247,7 +278,7 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 	{
 		unsigned int offset = mUniqueMeshes[bMeshIdx].baseVertex * rMesh.GetVertexSize() / sizeof(float);
 		unsigned int size = rMesh.GetNumberVertices() * GetVertexSize();
-		memmove(mVboData + offset, mVboData + offset + size / sizeof(float), size);
+		memmove(mVboData + offset, mVboData + (offset + size / sizeof(float)) - 1, size);
 		mVboNumElements -= size / sizeof(float);
 		float* tmp = new float[mVboNumElements];
 		memcpy(tmp, mVboData, mVboNumElements * sizeof(float));
@@ -257,7 +288,7 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 		glBufferData(GL_ARRAY_BUFFER, mVboNumElements * sizeof(float), mVboData, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		memmove(mEboData + mUniqueMeshes[bMeshIdx].firstIndex, mEboData + mUniqueMeshes[bMeshIdx].firstIndex + rMesh.GetNumberIndices(), rMesh.GetNumberIndices() * sizeof(unsigned int));
+		memmove(mEboData + mUniqueMeshes[bMeshIdx].firstIndex, mEboData + mUniqueMeshes[bMeshIdx].firstIndex + rMesh.GetNumberIndices() - 1, rMesh.GetNumberIndices() * sizeof(unsigned int));
 		mEboNumElements -= rMesh.GetNumberIndices();
 		unsigned int* indicesTmp = new unsigned int[mEboNumElements];
 		memcpy(indicesTmp, mEboData, mEboNumElements * sizeof(unsigned int));
