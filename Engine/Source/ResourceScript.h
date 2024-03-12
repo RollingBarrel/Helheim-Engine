@@ -24,6 +24,7 @@ public:
 	void setRangeMin(const int min) { mRangeMin = min; }
 	void setRangeMax(const int max) { mRangeMax = max; }
 	//void setHeader(const std::string& header) { mHeader = header; }
+
 private:
 	std::string mVariableName;
 	ScriptAttributeType mAttributeType;
