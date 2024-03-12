@@ -236,6 +236,7 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
     <ClCompile Include="log.cpp" />

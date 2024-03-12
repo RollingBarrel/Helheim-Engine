@@ -314,6 +314,9 @@ std::string ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 		App->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
 		break;
 	}
+	case Resource::Type::Object:
+		assetsFilePath = importedFilePath;
+		break;
 	default:
 		LOG("Unable to Copy, this file %s", importedFilePath);
 		break;
