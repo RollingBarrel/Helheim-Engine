@@ -8,6 +8,9 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 
+#include "Math/float3.h"
+#include "Math/float4.h"
+
 #include "ImporterMaterial.h"
 
 #include "ResourceMesh.h"
@@ -22,9 +25,12 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int mes
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
 	
-	if (meshUid != 0 && materialUid != 0) {
+	if (meshUid != 0) {
 		mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
-		mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
+		if(materialUid != 0)
+			mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
+
+		mMaterial = new ResourceMaterial(0, float4(0), float3(0.0f), 0,0,0,0);
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
