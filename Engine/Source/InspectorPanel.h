@@ -21,6 +21,7 @@ public:
 
 private:
 	bool mSameComponentPopup = false;
+
 	Component* mComponent = nullptr;
 
 	void DrawTransform(GameObject* object);
