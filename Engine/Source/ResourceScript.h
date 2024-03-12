@@ -20,18 +20,18 @@ public:
 	~ScriptAttribute();
 	bool setTypeFromString(const std::string& type);
 	void setName(const std::string& name) { mVariableName = name; }
-	void setTooltip(const std::string& tooltip) { mTooltip = tooltip; }
+	//void setTooltip(const std::string& tooltip) { mTooltip = tooltip; }
 	void setRangeMin(const int min) { mRangeMin = min; }
 	void setRangeMax(const int max) { mRangeMax = max; }
-	void setHeader(const std::string& header) { mHeader = header; }
+	//void setHeader(const std::string& header) { mHeader = header; }
 private:
 	std::string mVariableName;
 	ScriptAttributeType mAttributeType;
 	void* mValue;
-	std::string mTooltip;
+	//std::string mTooltip;
 	int mRangeMin;
 	int mRangeMax;
-	std::string mHeader;
+	//std::string mHeader;
 };
 
 class ResourceScript : public Resource
