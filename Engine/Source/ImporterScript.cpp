@@ -193,15 +193,15 @@ bool parseHeaderFile(const std::string& filename, ResourceScript* rScript)
             std::cout << "Found line starting with UNSERIALIZED: " << trimmedLine << std::endl; // Errasable
             serializable = false;
         }
-        else if (firstWord == "TOOLTIP") 
-        {
-            std::cout << "Found line starting with TOOLTIP: " << trimmedLine << std::endl; // Errasable
-            std::string parameter = trim(trimmedLine.substr(firstWord.length()), "()\" \t");
-            std::cout << "Tooltip: " << parameter << std::endl;
+        //else if (firstWord == "TOOLTIP") 
+        //{
+        //    std::cout << "Found line starting with TOOLTIP: " << trimmedLine << std::endl; // Errasable
+        //    std::string parameter = trim(trimmedLine.substr(firstWord.length()), "()\" \t");
+        //    std::cout << "Tooltip: " << parameter << std::endl;
 
 
-            attribute.setTooltip(parameter);
-        }
+        //    attribute.setTooltip(parameter);
+        //}
         else if (firstWord == "RANGE") 
         {
             std::cout << "Found line starting with RANGE: " << trimmedLine << std::endl; // Errasable
@@ -217,18 +217,18 @@ bool parseHeaderFile(const std::string& filename, ResourceScript* rScript)
                 range.second = std::stoi(trim(parameters.substr(foundPos + 1), " \t"));
             }
         }
-        else if (firstWord == "HEADER") 
-        {
-            std::cout << "Found line starting with HEADER: " << trimmedLine << std::endl; // Errasable
-            std::string parameter = trim(trimmedLine.substr(firstWord.length()), "() \t");
+        //else if (firstWord == "HEADER") 
+        //{
+        //    std::cout << "Found line starting with HEADER: " << trimmedLine << std::endl; // Errasable
+        //    std::string parameter = trim(trimmedLine.substr(firstWord.length()), "() \t");
 
-            attribute.setHeader(parameter);
-        }
-        else if (firstWord == "SPACE") 
-        {
-            std::cout << "Found line starting with SPACE: " << trimmedLine << std::endl; // Errasable
-            attribute.setHeader("");
-        }
+        //    attribute.setHeader(parameter);
+        //}
+        //else if (firstWord == "SPACE") 
+        //{
+        //    std::cout << "Found line starting with SPACE: " << trimmedLine << std::endl; // Errasable
+        //    attribute.setHeader("");
+        //}
         // if this line has a declaration of a variable
         if (trimmedLine.find(';') != std::string::npos and trimmedLine.find('(') == std::string::npos)
         {
