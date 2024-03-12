@@ -16,17 +16,11 @@
 #include "Geometry/Triangle.h"
 #include "Quadtree.h"
 
+#include "CameraComponent.h"
 
 bool ModuleCamera::Init()
 {
-	mFrustum.type = FrustumType::PerspectiveFrustum;
-	mFrustum.nearPlaneDistance = 0.1f;
-	mFrustum.farPlaneDistance = 2000.0f;
-	mFrustum.verticalFov = math::pi / 4.0f;
-	int w = App->GetWindow()->GetWidth();
-	int h = App->GetWindow()->GetHeight();
-	mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * (float)w / (float)h);
-	LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY);
+	CameraComponent* camera = new CameraComponent(nullptr);
 
 	return true;
 }

@@ -9,13 +9,21 @@
 CameraComponent::CameraComponent(GameObject* owner)
 	:Component(owner, ComponentType::CAMERA)
 {
-	//mCamera = InitiateCamera(float3(0.0f, 0.0f, 0.0f));
+	mFrustum.type = FrustumType::PerspectiveFrustum;
+	mFrustum.nearPlaneDistance = 0.1f;
+	mFrustum.farPlaneDistance = 2000.0f;
+	mFrustum.verticalFov = math::pi / 4.0f;
+	int w = App->GetWindow()->GetWidth();
+	int h = App->GetWindow()->GetHeight();
+	mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * (float)w / (float)h);
+
+	LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY);
 }
 
 CameraComponent::CameraComponent(const CameraComponent& original, GameObject* owner)
 	:Component(owner, ComponentType::CAMERA)
 {
-	mCamera = original.mCamera;
+	mFrustum = original.mFrustum;
 }
 
 CameraComponent::~CameraComponent()
@@ -24,7 +32,7 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Update()
 {
-	App->GetDebugDraw()->DrawFrustum(*mCamera);
+	//App->GetDebugDraw()->DrawFrustum(mFrustum);
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
