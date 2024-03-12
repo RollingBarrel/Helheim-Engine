@@ -48,5 +48,5 @@ void AnimationComponent::OnUpdate()
 
 void AnimationComponent::OnStop()
 {
-	mController->Stop();
+	//mController->Stop();
 }
