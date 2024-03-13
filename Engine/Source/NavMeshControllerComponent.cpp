@@ -14,7 +14,7 @@
 NavMeshControllerComponent::NavMeshControllerComponent(GameObject* ownerGameObject)
 	:Component(ownerGameObject, ComponentType::NAVMESHCONTROLLER)
 {
-	*mRecastContext = rcContext(false);
+	*mRecastContext = new rcContext(false);
 
 	HandleBuild();
 
