@@ -126,14 +126,10 @@ void ModuleScene::LoadPrefab(const char* saveFilePath) {
 		return;
 	}
 
-	GameObject* newObject = new GameObject(saveFilePath, mRoot);
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) {
 		const rapidjson::Value& s = d["Prefab"];
-		newObject->Load(s);
+		mRoot->Load(s);
 	}
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
-	hierarchyPanel->SetFocus(newObject);
-	mQuadtreeRoot->UpdateTree();
 
 	// Free the loaded buffer
 	delete[] loadedBuffer;
