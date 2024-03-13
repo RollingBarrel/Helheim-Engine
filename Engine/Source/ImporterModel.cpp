@@ -283,7 +283,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         for (const auto& srcAnimation : model.animations)
         {
-            ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, uid++);
+            ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, currentUid);
             animationId = ourAnimation->GetUID();
 
             delete ourAnimation;
@@ -295,8 +295,10 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         animationId = 0;
     }
 
-    //rModel->mAnimationUids.push_back(animationId);
-    
+    rModel->mAnimationUids.push_back(animationId); 
+
+    bufferSize += sizeof(unsigned int);                                     //Tamaño vector
+    bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
 
     if (rModel)
         Importer::Model::Save(rModel, bufferSize);
@@ -310,6 +312,18 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     char* ptr = fileBuffer;
 
     SaveNode(rModel->GetRoot(), &ptr);
+
+    //Library Uids
+    unsigned int uidsSize = rModel->mAnimationUids.size();
+    unsigned int bytes = sizeof(unsigned int);
+    memcpy(ptr, &uidsSize, bytes);
+    ptr += bytes;
+    for (int i = 0; i < uidsSize; ++i)
+    {
+        bytes = sizeof(unsigned int);
+        memcpy(ptr, &rModel->mAnimationUids[i], bytes);
+        ptr += bytes;
+    }
    
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
@@ -332,7 +346,20 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         LoadNode(root, &cursor);
 
         rModel = new ResourceModel(uid, root);
-    
+
+        unsigned int uidsSize = 0;
+        unsigned int bytes = sizeof(unsigned int);
+        memcpy(&uidsSize, cursor, bytes);
+        cursor += bytes;
+        for (int i = 0; i < uidsSize; ++i)
+        {
+            unsigned int animationUID = 0;
+            bytes = sizeof(unsigned int);
+            memcpy(&animationUID, cursor, bytes);
+            *cursor += bytes;
+
+            rModel->mAnimationUids.push_back({ animationUID });
+        }
         delete[] fileBuffer;
     }
     return rModel;

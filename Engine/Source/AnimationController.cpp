@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include "Globals.h"
+
 AnimationController::AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop) {
 	mAnimation = animation;
 	mResource = resource;
@@ -26,11 +28,6 @@ void AnimationController::Update(GameObject* model)
 	mCurrentTime = App->GetGameClock()->GetTotalTime() - mStartTime;
 
 	GetTransform(model);
-
-	for (const auto& child : model->GetChildren()) 
-	{
-		GetTransform(model);
-	}
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) 
@@ -63,6 +60,8 @@ Quat AnimationController::Interpolate(const Quat& first, const Quat& second, flo
 void AnimationController::GetTransform(GameObject* model)
 {
 	//Checks and gets the channel we want
+	std::string name = model->GetName();
+	LOG("%s", name.c_str());
 	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(model->GetName())->second;
 	if (channel == nullptr) {
 		return;
@@ -129,4 +128,9 @@ void AnimationController::GetTransform(GameObject* model)
 	}
 
 	model->RecalculateMatrices();
+
+	for (const auto& child : model->GetChildren())
+	{
+		GetTransform(child);
+	}	
 }

@@ -20,7 +20,7 @@ struct ResourceAnimation;
 
 namespace Importer {
     namespace Animation {
-        ResourceAnimation* Import(const tinygltf::Model& model, const tinygltf::Animation& animation, unsigned int uid);
+        ResourceAnimation* Import(const tinygltf::Model& model, const tinygltf::Animation& animation, unsigned int& uid);
 
         void Save(ResourceAnimation* ourAnimation);
 

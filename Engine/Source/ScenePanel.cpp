@@ -16,11 +16,13 @@
 #include "ResourceModel.h"
 #include "debugdraw.h"
 
+#include "AnimationComponent.h"
+
 
 #include "Math/float2.h"
 #include "imgui.h"
 
-static void DragToScene(const ModelNode& node, GameObject* parent)
+static void DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids,GameObject* parent)
 {
 	const char* name = "";
 
@@ -47,9 +49,17 @@ static void DragToScene(const ModelNode& node, GameObject* parent)
 		}
 	}
 
+	if (strcmp(name,"Root") == 0)
+	{
+		if (!animationUids.empty())
+		{
+			AnimationComponent* cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->CreateComponent(ComponentType::ANIMATION,0,0,animationUids[0]));
+		}
+	}
+
 	for (int i = 0; i < node.mChildren.size(); ++i)
 	{
-		DragToScene(node.mChildren[i], gameObject);
+		DragToScene(node.mChildren[i], animationUids, gameObject);
 	}
 }
 
@@ -105,7 +115,7 @@ void ScenePanel::Draw(int windowFlags)
 						break;
 					case Resource::Type::Model:
 					{
-						DragToScene(reinterpret_cast<ResourceModel*>(resource)->GetRoot(), App->GetScene()->GetRoot());
+						DragToScene(reinterpret_cast<ResourceModel*>(resource)->GetRoot(), reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, App->GetScene()->GetRoot());
 						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
 					}

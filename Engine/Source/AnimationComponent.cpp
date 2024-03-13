@@ -38,12 +38,12 @@ AnimationComponent::~AnimationComponent()
 
 void AnimationComponent::OnStart()
 {
-	mController->Play(0, true);
+	mController->Play(mAnimation->GetUID(), true);
 }
 
 void AnimationComponent::OnUpdate()
 {
-	mController->Update(mOwner);
+	mController->Update(mOwner->GetChildren()[0]);
 }
 
 void AnimationComponent::OnStop()
