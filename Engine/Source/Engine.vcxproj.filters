@@ -411,6 +411,7 @@
     </ClCompile>
     <ClCompile Include="ScriptComponent.cpp">
       <Filter>GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="ImporterAnimation.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
@@ -422,6 +423,7 @@
     </ClCompile>
     <ClCompile Include="ImporterScript.cpp">
       <Filter>Importers</Filter>
+    </ClCompile>
     <ClCompile Include="ResourceAnimation.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -1009,6 +1011,7 @@
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Script.h">
+    </ClInclude>
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -1041,6 +1044,7 @@
     </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="ImporterAnimation.h">
       <Filter>Importers</Filter>
     </ClInclude>
@@ -1058,6 +1062,7 @@
     </ClInclude>
     <ClInclude Include="ImporterScript.h">
       <Filter>Importers</Filter>
+    </ClInclude>
     <ClInclude Include="ResourceAnimation.h">
       <Filter>Resources</Filter>
     </ClInclude>
