@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleOpenGL.h"
 
 DebugPanel::DebugPanel() : Panel(DEBUGPANEL, false)
 {
@@ -26,9 +27,9 @@ void DebugPanel::Draw(int windowFlags) {
 			App->GetCamera()->DrawRayCast(mDrawRaycast);
 		}
 
-
-
-
+		ImGui::Text("Render Mode");
+		static const char* mRenderOptions[3] = { "Shaded", "Wireframe", "Shaded + Wireframe" };
+		ImGui::Combo(" ", (int*)&mRenderMode, mRenderOptions, IM_ARRAYSIZE(mRenderOptions));
 	}
 	ImGui::End();
 }
