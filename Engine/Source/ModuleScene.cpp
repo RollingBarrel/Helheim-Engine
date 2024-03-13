@@ -11,6 +11,7 @@
 #include "ModuleFileSystem.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
+#include "ModuleResource.h"
 #include "Archive.h"
 #include "Globals.h"
 
@@ -54,6 +55,21 @@ void ModuleScene::Save(const char* sceneName) {
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
 
+void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) {
+	Archive* prefabArchive = new Archive();
+	Archive* archive = new Archive();
+	std::vector<Archive> gameObjectsArchiveVector;
+	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
+	//SaveGame(gameObject->GetChildren(), *archive);
+	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	prefabArchive->AddObject("Prefab", *archive);
+
+	std::string out = prefabArchive->Serialize();
+	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
+	App->GetResource()->ImportFile(saveFilePath, gameObject->GetID());
+	delete archive;
+}
+
 void ModuleScene::Load(const char* sceneName) {
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) {
@@ -89,6 +105,31 @@ void ModuleScene::Load(const char* sceneName) {
 
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	hierarchyPanel->SetFocus(mRoot);
+	mQuadtreeRoot->UpdateTree();
+
+	// Free the loaded buffer
+	delete[] loadedBuffer;
+}
+
+void ModuleScene::LoadPrefab(const char* saveFilePath) {
+	char* loadedBuffer = nullptr;
+	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
+
+	rapidjson::Document d;
+	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
+	if (!ok) {
+		// Handle parsing error
+		LOG("Object was not loaded.");
+		return;
+	}
+
+	GameObject* newObject = new GameObject(saveFilePath, mRoot);
+	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) {
+		const rapidjson::Value& s = d["Prefab"];
+		newObject->Load(s);
+	}
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	hierarchyPanel->SetFocus(newObject);
 	mQuadtreeRoot->UpdateTree();
 
 	// Free the loaded buffer

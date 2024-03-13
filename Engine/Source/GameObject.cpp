@@ -493,10 +493,7 @@ GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
 			return gameObjects[i];
 		}
 		else if (gameObjects[i]->GetChildren().size() != 0) {
-			for (int j = 0; j < gameObjects[i]->GetChildren().size(); j++) {
-				findGameObjectParent(gameObjects[i]->GetChildren()[j], UID);
-			}
-
+			findGameObjectParent(gameObjects[i], UID);
 		}
 	}
 
@@ -595,7 +592,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
 		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
 			if (gameObjects[i].IsObject()) {
-				loadGameObjectFromJSON(gameObjects[i], scene);
+				loadGameObjectFromJSON(gameObjects[i], this);
 			}
 		}
 	}

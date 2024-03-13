@@ -38,6 +38,8 @@ public:
 
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
+	void SavePrefab(const GameObject* gameObject, const char* saveFilePath);
+	void LoadPrefab(const char* saveFilePath);
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 
 private:

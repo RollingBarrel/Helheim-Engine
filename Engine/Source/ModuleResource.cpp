@@ -219,6 +219,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Model::Load(lPath, uid);
 		break;
 	}
+	case Resource::Type::Object:
+	{
+		ret = new Resource(uid, type);
+		break;
+	}
 	default:
 		break;
 	}
