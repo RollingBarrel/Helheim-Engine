@@ -153,6 +153,7 @@
     <ClCompile Include="AIAGentComponent.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
+    <ClCompile Include="BatchManager.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CameraUtils.cpp" />
@@ -231,6 +232,7 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
+    <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
@@ -294,6 +296,7 @@
     <ClInclude Include="AIAGentComponent.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
+    <ClInclude Include="BatchManager.h" />
     <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CameraUtils.h" />
@@ -447,6 +450,7 @@
     <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkStreamMgr.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterAnimation.h" />
