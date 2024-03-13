@@ -15,32 +15,41 @@
 #include "HierarchyPanel.h"
 #include "ScenePanel.h"
 #include "QuadtreePanel.h"
+#include "NavMeshControllerPanel.h"
 #include "DebugPanel.h"
 #include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
 #include "ResourcePanel.h"
 #include "TimerPanel.h"
+#include "TagsManagerPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui.h"
 #include "ImGuizmo.h"
+#include "OptickAdapter.h"
 
 ModuleEditor::ModuleEditor()
 {
+	// Panels
 	mPanels[ABOUTPANEL] = new AboutPanel();
-	mPanels[CONSOLEPANEL] = new ConsolePanel();
+	mPanels[CONSOLEPANEL] = new ConsolePanel(                                                                                                                );
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[SCENEPANEL] = new ScenePanel();
 	mPanels[QUADTREEPANEL] = new QuadtreePanel();
+	mPanels[NAVMESHPANEL] = new NavMeshControllerPanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
+	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
+
+	// Panels closed by default
+	mPanels[TAGSMANAGERPANEL]->Close();
 }
 
 ModuleEditor::~ModuleEditor()
@@ -59,6 +68,8 @@ bool ModuleEditor::Init()
 	io->ConfigDragClickToInputText = true;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
+
+	mOptick = new OptickAdapter();
 
 	return true;
 }
@@ -81,7 +92,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 		}
 	}
 
-	//static bool show = true;
+	static bool show = true;
 	//ImGui::ShowDemoWindow(&show);
 
 	ShowMainMenuBar();
@@ -121,12 +132,25 @@ bool ModuleEditor::CleanUp()
 		delete panel.second;
 	}
 	mPanels.clear();
+	delete mOptick;
 
 	return true;
 }
 
+void ModuleEditor::OpenPanel(const char* name, const bool focus)
+{
+	if (focus)
+	{
+		ImGui::SetNextWindowFocus();
+	}
+	
+	Panel* panel = mPanels[name];
+	panel->Open();
+}
+
 void ModuleEditor::ShowMainMenuBar() 
 {
+
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -173,12 +197,22 @@ void ModuleEditor::ShowMainMenuBar()
 					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
 				}
 			}
+			Panel* navMeshPanel = mPanels[NAVMESHPANEL];
+			if (ImGui::MenuItem("NavMeshController", NULL, navMeshPanel->IsOpen())) {
+				if (navMeshPanel)
+				{
+					navMeshPanel->IsOpen() ? navMeshPanel->Close() : navMeshPanel->Open();
+				}
+			}
 			Panel* debugPanel = mPanels[DEBUGPANEL];
 			if (ImGui::MenuItem("Debug", NULL, debugPanel->IsOpen())) {
 				if (debugPanel)
 				{
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
 				}
+			}
+			if (ImGui::MenuItem("Optick", NULL, false, !mOptick->IsOpen())) {
+				mOptick->Startup();
 			}
 			ImGui::EndMenu();
 		}
@@ -290,6 +324,8 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* timerPanel = mPanels[TIMERPANEL];
 	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* debugPanel = mPanels[DEBUGPANEL];
+	Panel* navMeshController = mPanels[NAVMESHPANEL];
+
 
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* console = mPanels[CONSOLEPANEL];
@@ -306,6 +342,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		timerPanel->Open();
 		quadTree->Open();
 		debugPanel->Open();
+		navMeshController->Open();
 		
 		projectPanel->Open();
 		console->Open();
@@ -319,6 +356,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	else {
 		timerPanel->Close();
 		quadTree->Close();
+		navMeshController->Close();
 		debugPanel->Close();
 
 		projectPanel->Close();

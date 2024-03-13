@@ -10,6 +10,7 @@
 
 struct ImGuiIO;
 class Panel;
+class OptickAdapter;
 
 class ModuleEditor : public Module
 {
@@ -23,6 +24,7 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	Panel* GetPanel(const char* name) { return mPanels[name]; }
+	void OpenPanel(const char* name, const bool focus);
 
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
@@ -31,6 +33,7 @@ private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
+	OptickAdapter* mOptick;
 	void OpenLoadScene();
 };
 

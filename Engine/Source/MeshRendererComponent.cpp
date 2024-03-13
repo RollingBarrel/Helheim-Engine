@@ -24,8 +24,16 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int mes
 	assert(mMaterial && "Component Mesh without resource material");
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+	
+	if (meshUid != 0 && materialUid != 0) {
+		mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
+		mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
+		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+		mAABBWorld = mOBB.MinimalEnclosingAABB();
+
+	}
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
@@ -40,6 +48,8 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	mAABB = other.mAABB;
 
 	App->GetOpenGL()->BatchAddMesh(this);
+	mAABBWorld = mOBB.MinimalEnclosingAABB();
+
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -94,5 +104,8 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshID, Resource::Type::Mesh));
 	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialID, Resource::Type::Material));
 
+	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 }
 
