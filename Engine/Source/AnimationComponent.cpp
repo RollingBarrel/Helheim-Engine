@@ -50,3 +50,23 @@ void AnimationComponent::OnStop()
 {
 	//mController->Stop();
 }
+
+void AnimationComponent::Update()
+{
+
+}
+
+Component* AnimationComponent::Clone(GameObject* owner) const
+{
+	return nullptr;
+}
+
+void AnimationComponent::Save(Archive& archive) const
+{
+	
+}
+
+void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+{
+
+}

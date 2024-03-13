@@ -35,6 +35,8 @@ public:
 
 	const ModelNode& GetRoot() const { return mRoot; }
 
+	std::vector<unsigned int> mAnimationUids;
+
 private:
 
 	ModelNode mRoot;

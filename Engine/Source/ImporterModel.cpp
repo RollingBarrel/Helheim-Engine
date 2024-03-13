@@ -97,17 +97,6 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
             node.mUids.push_back({meshId, materialId});
         }
     }
-    
-    if (!model.animations.empty())
-    {
-        for (const auto& srcAnimation : model.animations)
-        {
-            ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, uid++);
-                     
-            delete ourAnimation;           
-        }
-        
-    }
 
     size += node.mName.length() + 1         //Name
         + sizeof(float) * 3                 //Pos
@@ -282,11 +271,32 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     unsigned int index = 0;
 
+    unsigned int animationId = 0;
+
     ModelNode rootNode;
 
     ImportNode(rootNode, filePath, model, index, currentUid, bufferSize, modifyAssets);
 
     ResourceModel* rModel = new ResourceModel(currentUid++, rootNode);
+
+    if (!model.animations.empty())
+    {
+        for (const auto& srcAnimation : model.animations)
+        {
+            ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, uid++);
+            animationId = ourAnimation->GetUID();
+
+            delete ourAnimation;
+        }
+
+    }
+    else
+    {
+        animationId = 0;
+    }
+
+    //rModel->mAnimationUids.push_back(animationId);
+    
 
     if (rModel)
         Importer::Model::Save(rModel, bufferSize);

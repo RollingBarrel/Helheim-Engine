@@ -11,6 +11,13 @@ public:
 	AnimationComponent(const AnimationComponent& other, GameObject* owner);
 	~AnimationComponent();
 
+	void Reset() override {}
+	void Update() override; 
+	Component* Clone(GameObject* owner) const override;
+
+	void Save(Archive& archive) const override;
+	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
 	const ResourceAnimation* GetAnimation() { return mAnimation; }
 	const AnimationController* GetAnimationController() { return mController; }
 

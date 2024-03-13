@@ -20,6 +20,7 @@
 #include "Tag.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -311,7 +312,7 @@ void GameObject::AddSuffix()
 }
 
 //TODO: Crate a component that requires ids not clean now
-Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
+Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid, unsigned int animationUid) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
@@ -344,6 +345,9 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 			break;
 		case ComponentType::NAVMESHOBSTACLE:
 			newComponent = new NavMeshObstacleComponent(this);
+			break;
+		case ComponentType::ANIMATION:
+			newComponent = new AnimationComponent(this, animationUid);
 			break;
 		default:
 			break;
