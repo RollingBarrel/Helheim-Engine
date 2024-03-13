@@ -14,6 +14,7 @@ class ModuleDebugDraw;
 class ModuleScriptManager;
 class ModuleResource;
 class ModuleUI;
+class ModuleAudio;
 
 class Timer;
 class PreciseTimer;
@@ -39,6 +40,7 @@ public:
     ModuleScene* GetScene() { return scene; }
     ModuleScriptManager* GetScriptManager() { return scriptManager; }
     ModuleResource* GetResource() { return resource; }
+    ModuleAudio* GeAudio() { return audio; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
@@ -67,6 +69,7 @@ private:
     ModuleScene* scene = nullptr;
     ModuleScriptManager* scriptManager = nullptr;
     ModuleResource* resource = nullptr;
+    ModuleAudio* audio = nullptr;
     ModuleUI* ui = nullptr;
 
 #define NUM_MODULES 11

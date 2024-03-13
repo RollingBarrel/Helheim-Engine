@@ -8,6 +8,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
 #include "ResourceScript.h"
+#include "ResourceAnimation.h"
 
 #include <algorithm>
 
@@ -19,6 +20,7 @@
 #include "ImporterModel.h"
 #include "ImporterMaterial.h"
 #include "ImporterScript.h"
+#include "ImporterAnimation.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -224,6 +226,10 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 	case Resource::Type::Script:
 	{
 		ret = Importer::Script::Load(lPath, uid);
+	}
+	case Resource::Type::Animation:
+	{
+		ret = Importer::Animation::Load(lPath, uid);
 		break;
 	}
 	default:

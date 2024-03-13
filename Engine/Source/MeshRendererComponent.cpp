@@ -28,6 +28,8 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int mes
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+		mAABBWorld = mOBB.MinimalEnclosingAABB();
+
 	}
 
 }
@@ -38,6 +40,8 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material));
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
+	mAABBWorld = mOBB.MinimalEnclosingAABB();
+
 }
 
 MeshRendererComponent::~MeshRendererComponent()
