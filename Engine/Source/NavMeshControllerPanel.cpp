@@ -3,6 +3,7 @@
 #include "Quadtree.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleDetourNavigation.h"
 #include "NavMeshController.h"
 
 
@@ -89,6 +90,21 @@ void NavMeshControllerPanel::Draw(int windowFlags)
         if (ImGui::Button("Build Navigation"))
         {
             navController->HandleBuild();
+        }
+
+
+        ImGui::Text("Player simulation");
+
+        float3 playerPos = App->GetNavigation()->GetQueryCenter();
+        if (ImGui::DragFloat3("Character position: ", &playerPos[0], 0.5f, -20.0f, 20.0f))
+        {
+            App->GetNavigation()->SetQueryCenter(playerPos);
+        }
+
+        float3 navQuerySize = App->GetNavigation()->GetQueryHalfSize();
+        if (ImGui::DragFloat3("Query size: ", &navQuerySize[0], 0.5f, 0.0f, 20.0f))
+        {
+            App->GetNavigation()->SetQueryHalfSize(navQuerySize);
         }
 
 

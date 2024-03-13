@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "vector"
+#include "float3.h"
+
 struct dtNavMeshCreateParams;
 class AIAgentComponent;
 class dtNavMesh;
@@ -17,10 +19,30 @@ public:
 	bool CleanUp() override;
 	void CreateDetourData();
 	std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
+
+
+	float3 GetQueryCenter() const { return mQueryCenter; }
+	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
+
+	void SetQueryCenter(float3 center) { mQueryCenter = center; }
+	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
+
+
+
+
+
 private:
 	std::vector<AIAgentComponent*>mAIAgentComponents;
 	dtNavMeshCreateParams* mNavMeshParams = nullptr;
 	dtNavMesh* mDetourNavMesh=nullptr;
 	dtNavMeshQuery* mNavQuery = nullptr;
+
+
+	float3 mQueryCenter = float3(0.0f);
+	float3 mQueryHalfSize = float3(0.0f);
+	float3 mQueryResult = float3(0.0f);
+
+
+
 };
 
