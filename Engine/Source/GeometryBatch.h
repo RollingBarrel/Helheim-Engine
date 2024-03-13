@@ -33,8 +33,8 @@ public:
 	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx)
 		: component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx) {}
 	const MeshRendererComponent* component;
-	unsigned int bMeshIdx;
-	unsigned int bMaterialIdx;
+	uint32_t bMeshIdx;
+	uint32_t bMaterialIdx;
 };
 
 
@@ -85,6 +85,8 @@ public:
 
 private:
 	void RecreatePersistentSsbosAndIbo();
+	void RecreateVboAndEbo(unsigned int newVboDataSize, unsigned int newEboDataSize);
+	void RecreateMaterials();
 
 	std::vector<BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
@@ -109,8 +111,10 @@ private:
 	unsigned int mSsboMaterials = 0;
 
 	float* mVboData = nullptr;
+	unsigned int mVboDataSize = 0;
 	unsigned int mVboNumElements = 0;
 	unsigned int* mEboData = nullptr;
+	unsigned int mEboDataSize = 0;
 	unsigned int mEboNumElements = 0;
 
 	int mSsboAligment = 0;
