@@ -72,9 +72,9 @@ void ResourceAnimation::AddChannels(const tinygltf::Model& model, const tinygltf
 
         for (size_t i = 0; i < numKeyframes; ++i) {
 
-            size_t translationIndex = i * inputAccessor.count;
+            size_t translationIndex = i * 3;
 
-            ourChannel->positions[i] = float3(reinterpret_cast<const float*>(outputBuffer)[translationIndex], reinterpret_cast<const float*>(outputBuffer)[translationIndex + 1], reinterpret_cast<const float*>(outputBuffer)[translationIndex + 2]); // Store the position for each keyframe
+            ourChannel->positions[i] = float3(outputPtr[translationIndex], outputPtr[translationIndex + 1], outputPtr[translationIndex + 2]); // Store the position for each keyframe
             ourChannel->posTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
             ourChannel->numPositions++;
             
@@ -90,9 +90,9 @@ void ResourceAnimation::AddChannels(const tinygltf::Model& model, const tinygltf
 
         for (size_t i = 0; i < numKeyframes; ++i) {
 
-            size_t rotationIndex = i * inputAccessor.count;
+            size_t rotationIndex = i * 4;
 
-            ourChannel->rotations[i] = Quat(reinterpret_cast<const float*>(outputBuffer)[rotationIndex], reinterpret_cast<const float*>(outputBuffer)[rotationIndex + 1], reinterpret_cast<const float*>(outputBuffer)[rotationIndex + 2], reinterpret_cast<const float*>(outputBuffer)[rotationIndex + 3]); // Store the rotation for each keyframe
+            ourChannel->rotations[i] = Quat(outputPtr[rotationIndex], outputPtr[rotationIndex + 1], outputPtr[rotationIndex + 2], outputPtr[rotationIndex + 3]); // Store the rotation for each keyframe
             ourChannel->rotTimeStamps[i] = inputPtr[i]; // Store the time stamp for each keyframe
             ourChannel->numRotations++;
 

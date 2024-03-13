@@ -29,7 +29,7 @@ void AnimationController::Update(GameObject* model)
 
 	GetTransform(model);
 
-	model->RecalculateMatrices();
+	//model->RecalculateMatrices();
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) 
