@@ -74,6 +74,7 @@ public:
 	void BatchAddMesh(MeshRendererComponent* mesh);
 	void BatchRemoveMesh(MeshRendererComponent* mesh);
 	void Draw();
+	void SetWireframe(bool wireframe);
 
 
 private:

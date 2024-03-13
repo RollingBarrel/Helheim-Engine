@@ -7,7 +7,6 @@
 #include "ModuleCamera.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
 #include "GameObject.h"
 #include "BatchManager.h"
 #include "PointLightComponent.h"
@@ -150,22 +149,7 @@ bool ModuleOpenGL::Init()
 }
 
 update_status ModuleOpenGL::PreUpdate(float dt)
-{
-	/*switch (((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->GetRenderMode())
-	{
-		case RenderMode::Shaded:
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			break;
-		case RenderMode::Wireframe:
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			break;
-		case RenderMode::ShadedWireframe:
-			//TODO Shaded + Wireframe rendering
-			break;
-		default:
-			break;
-	}*/
-		
+{	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -213,6 +197,14 @@ bool ModuleOpenGL::CleanUp()
 	SDL_GL_DeleteContext(context);
 
 	return true;
+}
+
+void ModuleOpenGL::SetWireframe(bool wireframe)
+{
+	if(wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
