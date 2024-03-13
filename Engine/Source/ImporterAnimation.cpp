@@ -33,14 +33,13 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
         {
             //create a new channel
           ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel; 
-          rAnimation->AddChannels(model, animation, srcChannel, rAnimation, ourChannel);
+          rAnimation->AddChannels(model, animation, srcChannel, *rAnimation, ourChannel);
 
             for (const auto& srcChannel2 : animation.channels)
-            {
-
+            {        
                 if (srcChannel2.target_node == srcChannel.target_node && (ourChannel->hasTranslation == false || ourChannel->hasRotation == false))
                 {
-                    rAnimation->AddChannels(model, animation, srcChannel2, rAnimation, ourChannel);
+                    rAnimation->AddChannels(model, animation, srcChannel2, *rAnimation, ourChannel);
                 }
             }
             
@@ -148,6 +147,8 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
+        ourAnimation = new ResourceAnimation(uid, "");
+
         // Load Header
         char* cursor = fileBuffer;
         unsigned int header[2];
@@ -155,9 +156,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
         memcpy(header, cursor, bytes);
         cursor += bytes;
         unsigned int numChannels = header[0];
-        float duration = header[1];
-
-        ourAnimation = new ResourceAnimation(uid, "");
+        ourAnimation->mDuration = header[1];
 
         // Load Channels
         for (unsigned int i = 0; i < numChannels; ++i)

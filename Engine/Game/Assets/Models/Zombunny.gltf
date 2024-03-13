@@ -891,7 +891,7 @@
 				1.0
 			],
 			"emissiveTexture": {
-				"index": 2
+				"index": 0
 			},
 			"extensions": {
 				"KHR_materials_pbrSpecularGlossiness": {
@@ -902,7 +902,7 @@
 						1.0
 					],
 					"diffuseTexture": {
-						"index": 0
+						"index": 3
 					},
 					"glossinessFactor": 1.0,
 					"specularFactor": [
@@ -911,7 +911,7 @@
 						1.0
 					],
 					"specularGlossinessTexture": {
-						"index": 1
+						"index": 4
 					}
 				}
 			},
@@ -923,11 +923,11 @@
 			},
 			"name": "ZombunnyMaterial",
 			"normalTexture": {
-				"index": 3,
+				"index": 1,
 				"scale": 3.0
 			},
 			"occlusionTexture": {
-				"index": 4
+				"index": 2
 			},
 			"pbrMetallicRoughness": {}
 		},

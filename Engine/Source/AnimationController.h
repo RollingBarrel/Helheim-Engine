@@ -26,8 +26,8 @@ public:
 private:
 
 	//Time in milliseconds
-	unsigned int mCurrentTime;
-	unsigned int mStartTime;
+	float mCurrentTime;
+	float mStartTime;
 
 	bool mLoop = true;
 
