@@ -28,6 +28,8 @@ void AnimationController::Update(GameObject* model)
 	mCurrentTime = App->GetGameClock()->GetTotalTime() - mStartTime;
 
 	GetTransform(model);
+
+	model->RecalculateMatrices();
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda) 
@@ -62,6 +64,11 @@ void AnimationController::GetTransform(GameObject* model)
 	//Checks and gets the channel we want
 	std::string name = model->GetName();
 	LOG("%s", name.c_str());
+	ResourceAnimation::AnimationChannel* newChannel = mAnimation->GetChannel(name);
+
+	if (newChannel != nullptr)
+	{	
+
 	ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(model->GetName())->second;
 	if (channel == nullptr) {
 		return;
@@ -128,7 +135,7 @@ void AnimationController::GetTransform(GameObject* model)
 	}
 
 	model->RecalculateMatrices();
-
+	}
 	for (const auto& child : model->GetChildren())
 	{
 		GetTransform(child);
