@@ -336,6 +336,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::SCRIPT: {
 					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
+					break;
 				}
 				case ComponentType::NAVMESHOBSTACLE: {
 					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
