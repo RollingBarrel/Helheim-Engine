@@ -74,7 +74,9 @@ void ScenePanel::Draw(int windowFlags)
 						for (auto it = reinterpret_cast<ResourceModel*>(resource)->GetUids().cbegin(); it != reinterpret_cast<ResourceModel*>(resource)->GetUids().cend(); ++it)
 						{
 							GameObject* go = new GameObject(nGO);
-							MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER, it->meshUID, it->materialUID));
+							MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
+							cMesh->SetMesh(it->meshUID);
+							cMesh->SetMaterial(it->materialUID);
 						}
 						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
