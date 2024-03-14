@@ -102,8 +102,8 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 				name = array[i]["VariableName"].GetString();
 
 				for (auto data : mData) {
-					if (data->mName == name) {
-						if (array[i].HasMember("VariableData") && array[i]["VariableData"].IsString()) {
+					if (strcmp(data->mName, name) == 0) {
+						if (array[i].HasMember("VariableData")) {
 							//data->mData = (void*)array[i]["VariableData"].GetString();
 							switch (data->mType)
 							{

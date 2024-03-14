@@ -2,6 +2,114 @@
     "Scene": {
         "GameObjects": [
             {
+                "UID": 2033868620,
+                "ParentUID": 1,
+                "Name": "Canelita",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    2.84529447555542
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "TestScript",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPlayerSpeed",
+                                "VariableType": 1,
+                                "VariableData": 3
+                            },
+                            {
+                                "VariableName": "speed",
+                                "VariableType": 1,
+                                "VariableData": -4
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2035121798,
+                "ParentUID": 2033868620,
+                "Name": "GameObject (1)",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 2130314410,
+                        "MeshID": 1990151256,
+                        "MaterialID": 1990151260,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 2086153991,
+                "ParentUID": 2033868620,
+                "Name": "GameObject (2)",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 1584353750,
+                        "MeshID": 1990151261,
+                        "MaterialID": 1990151262,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
                 "UID": 291244444,
                 "ParentUID": 1,
                 "Name": "Robot.gltf",
@@ -51,7 +159,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 296814124,
+                        "ID": 318526545,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -109,7 +217,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 2146457321,
+                        "ID": 1466655763,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -142,7 +250,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 471715826,
+                        "ID": 1570739158,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -200,7 +308,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1110324544,
+                        "ID": 1643562724,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -233,7 +341,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 616315745,
+                        "ID": 1740196672,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -291,7 +399,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1472787320,
+                        "ID": 1813298722,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -324,7 +432,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1519990358,
+                        "ID": 1909375702,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -382,7 +490,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1723139058,
+                        "ID": 2026199740,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -440,7 +548,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 2135761579,
+                        "ID": 66135825,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -498,7 +606,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1204367703,
+                        "ID": 257384712,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -556,7 +664,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 186590059,
+                        "ID": 443690508,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -614,7 +722,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 710608773,
+                        "ID": 663901731,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -672,7 +780,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1240635290,
+                        "ID": 852574641,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -730,7 +838,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 202205078,
+                        "ID": 1037975364,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -763,7 +871,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 275098265,
+                        "ID": 1241199063,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -821,7 +929,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1602649503,
+                        "ID": 1322237907,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -854,7 +962,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1689954237,
+                        "ID": 1423397220,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -912,7 +1020,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1615538091,
+                        "ID": 1637899521,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -945,7 +1053,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1684532502,
+                        "ID": 1804293711,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -1003,7 +1111,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1639016244,
+                        "ID": 1941934428,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -1036,7 +1144,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1695687738,
+                        "ID": 7699904,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -1094,7 +1202,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1463152875,
+                        "ID": 100504697,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -1152,7 +1260,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 495812836,
+                        "ID": 333943910,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -1210,7 +1318,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1775923497,
+                        "ID": 542806910,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -1243,98 +1351,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1842968520,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 2033868620,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    2.84529447555542
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": []
-            },
-            {
-                "UID": 2035121798,
-                "ParentUID": 2033868620,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 2036026871,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 2086153991,
-                "ParentUID": 2033868620,
-                "Name": "GameObject (2)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 2087824895,
+                        "ID": 703004831,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -1392,7 +1409,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 563654138,
+                        "ID": 798246359,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -1425,7 +1442,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 711181037,
+                        "ID": 960045563,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
