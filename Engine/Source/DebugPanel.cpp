@@ -13,6 +13,7 @@
 #include "TimerPanel.h"
 #include "HierarchyPanel.h"
 #include "ResourceMesh.h"
+#include "Quadtree.h"
 
 DebugPanel::DebugPanel() : Panel(DEBUGPANEL, false)
 {
@@ -29,7 +30,23 @@ void DebugPanel::Draw(int windowFlags) {
         {
             ImGui::Text("Render Mode");
             static const char* mRenderOptions[3] = { "Shaded", "Wireframe", "Shaded + Wireframe" };
-            ImGui::Combo(" ", &mRenderMode, mRenderOptions, IM_ARRAYSIZE(mRenderOptions));
+            if (ImGui::Combo(" ", (int*)&mRenderMode, mRenderOptions, IM_ARRAYSIZE(mRenderOptions)))
+            {
+                switch (mRenderMode)
+                {
+                case RenderMode::Shaded:
+                    App->GetOpenGL()->SetWireframe(false);
+                    break;
+                case RenderMode::Wireframe:
+                    App->GetOpenGL()->SetWireframe(true);
+                    break;
+                case RenderMode::ShadedWireframe:
+                    //TODO Shaded + Wireframe rendering
+                    break;
+                default:
+                    break;
+                }
+            }
             if (ImGui::Checkbox("Draw Colliders", &mDrawColliders))
             {
                 GameObject* root = App->GetScene()->GetRoot();
@@ -103,53 +120,4 @@ int DebugPanel::GetTotalTriangleCount(GameObject* root) {
 		}
 	}
 	return total;
-}
-
-/*/
-    Settings
-    ImGui::SeparatorText("Vsync");
-    ImGui::Checkbox("Vsync enabled", &vsyncEnabled);
-    if (vsyncEnabled != App->GetCurrentClock()->GetVsyncStatus()) {
-        App->GetCurrentClock()->SetVsyncStatus(vsyncEnabled);
-    }
-
-    ImGui::SeparatorText("FPS");
-    if (!vsyncEnabled) {
-        ImGui::Checkbox("Enable FPS Limit", &fpsLimitEnabled);
-        int fps_limit = 0;
-        if (fpsLimitEnabled) {
-            fps_limit = App->GetCurrentClock()->GetFpsLimit();
-            ImGui::SliderInt("FPS Limit", &fps_limit, 10, 240);
-
-        }
-        App->GetCurrentClock()->SetFpsLimit(fps_limit);
-
-    }
-
-    bool grid = App->GetDebugDraw()->GetShouldRenderGrid();
-    if (ImGui::Checkbox("Draw Grid", &grid)) {
-        App->GetDebugDraw()->SetRenderGrid(grid);
-    }
-*/
-		ImGui::Text("Render Mode");
-		static const char* mRenderOptions[3] = { "Shaded", "Wireframe", "Shaded + Wireframe" };
-		if (ImGui::Combo(" ", (int*)&mRenderMode, mRenderOptions, IM_ARRAYSIZE(mRenderOptions)))
-		{
-			switch(mRenderMode)
-			{
-			case RenderMode::Shaded:
-				App->GetOpenGL()->SetWireframe(false);
-				break;
-			case RenderMode::Wireframe:
-				App->GetOpenGL()->SetWireframe(true);
-				break;
-			case RenderMode::ShadedWireframe:
-				//TODO Shaded + Wireframe rendering
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	ImGui::End();
 }
