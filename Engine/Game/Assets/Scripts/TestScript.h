@@ -1,13 +1,12 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
-
+#include "Math/float3.h"
 //#define GET_VARIABLE_NAME(Variable) (#Variable)
 
 // To create a script you have to locate the .h in Game/Assets/Scripts
 
 class TestScript : public Script {
-    friend class InspectorPanel;
 
 public:
     TestScript(GameObject* owner);
@@ -16,6 +15,7 @@ public:
     void Update() override;
     float mPlayerSpeed = 1;
     float speed = 1;
+    float3 mTestFloat3 = float3(5,15,-4);
 
 private:
     float coolDown = 2; 
@@ -35,6 +35,7 @@ extern "C" SCRIPTING_API Script* CreateTestScript(GameObject* owner, std::vector
    
     data.push_back(new ScriptVariable("mPlayerSpeed", VariableType::FLOAT, &script->mPlayerSpeed));
     data.push_back(new ScriptVariable("speed", VariableType::FLOAT, &script->speed));
+    data.push_back(new ScriptVariable("mTestFloat3", VariableType::FLOAT3, &script->mTestFloat3));
 
 
     return script;

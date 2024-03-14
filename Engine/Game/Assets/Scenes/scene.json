@@ -38,6 +38,15 @@
                                 "VariableName": "speed",
                                 "VariableType": 1,
                                 "VariableData": -4
+                            },
+                            {
+                                "VariableName": "mTestFloat3",
+                                "VariableType": 4,
+                                "VariableData": [
+                                    5.0,
+                                    15.0,
+                                    -4.0
+                                ]
                             }
                         ]
                     }
@@ -68,7 +77,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 2130314410,
+                        "ID": 2087091523,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -101,7 +110,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1584353750,
+                        "ID": 172779997,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -159,7 +168,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 318526545,
+                        "ID": 1108392714,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -217,7 +226,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1466655763,
+                        "ID": 1417262594,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -250,7 +259,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1570739158,
+                        "ID": 1611853289,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -308,7 +317,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1643562724,
+                        "ID": 1764462521,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -341,7 +350,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1740196672,
+                        "ID": 1974578699,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -399,7 +408,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1813298722,
+                        "ID": 2117928338,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -432,7 +441,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1909375702,
+                        "ID": 116857654,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -490,7 +499,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 2026199740,
+                        "ID": 404740489,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -548,7 +557,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 66135825,
+                        "ID": 799561180,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -606,7 +615,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 257384712,
+                        "ID": 1183729858,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -664,7 +673,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 443690508,
+                        "ID": 1590803845,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -722,7 +731,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 663901731,
+                        "ID": 1946497534,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -780,7 +789,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 852574641,
+                        "ID": 140504892,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -838,7 +847,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1037975364,
+                        "ID": 434096649,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -871,7 +880,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1241199063,
+                        "ID": 785682699,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -929,7 +938,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1322237907,
+                        "ID": 871316529,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -962,7 +971,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1423397220,
+                        "ID": 1045577892,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -1020,7 +1029,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1637899521,
+                        "ID": 1444784706,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -1053,7 +1062,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1804293711,
+                        "ID": 1743180312,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -1111,7 +1120,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1941934428,
+                        "ID": 1981562616,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -1144,7 +1153,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 7699904,
+                        "ID": 193392950,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -1202,7 +1211,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 100504697,
+                        "ID": 339736292,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -1260,7 +1269,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 333943910,
+                        "ID": 661733417,
                         "MeshID": 1317105084,
                         "MaterialID": 1317105088,
                         "ComponentType": 0,
@@ -1318,7 +1327,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 542806910,
+                        "ID": 953723891,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -1351,7 +1360,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 703004831,
+                        "ID": 1121232017,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,
@@ -1409,7 +1418,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 798246359,
+                        "ID": 1267923464,
                         "MeshID": 1990151256,
                         "MaterialID": 1990151260,
                         "ComponentType": 0,
@@ -1442,7 +1451,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 960045563,
+                        "ID": 1561793705,
                         "MeshID": 1990151261,
                         "MaterialID": 1990151262,
                         "ComponentType": 0,

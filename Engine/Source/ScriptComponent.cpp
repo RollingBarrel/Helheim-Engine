@@ -116,6 +116,13 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 							case VariableType::BOOL:
 								*(bool*)data->mData = array[i]["VariableData"].GetBool();
 								break;
+							case VariableType::FLOAT3:
+							{
+								const auto& floatArray = array[i]["VariableData"].GetArray();
+								*(float3*)data->mData = float3(floatArray[0].GetFloat(), floatArray[1].GetFloat(), floatArray[2].GetFloat());
+								break;
+							}
+								
 							default:
 								break;
 							}
