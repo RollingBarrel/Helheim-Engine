@@ -45,7 +45,7 @@ private:
 	rcPolyMesh* mPolyMesh = nullptr;
 	rcPolyMeshDetail* mPolyMeshDetail= nullptr;
 	unsigned char* mTriangleAreas = nullptr;
-	rcContext* mRecastContext;
+	rcContext* mRecastContext = nullptr;
 	bool mKeepInterResults = false;
 	bool mFilterLowHangingObstacles;
 	bool mFilterLedgeSpans;
