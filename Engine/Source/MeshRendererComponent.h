@@ -5,9 +5,11 @@
 #include "GameObject.h"
 
 class Mesh;
-class Material;
+struct Material;
 class ResourceMesh;
 class ResourceMaterial;
+class GeometryBatch;
+
 
 class MeshRendererComponent : public Component
 {
@@ -15,25 +17,27 @@ public:
 	MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid);
 	MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner);
 	~MeshRendererComponent();
-
-	void Draw();
+	
 	void Reset() override {}
 
-	void Update() override;
+	void Update() override {}
 	Component* Clone(GameObject* owner) const override;
 
 	void RefreshBoundingBoxes();
 	const OBB getOBB() const { return mOBB; }
+	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const AABB GetAABB() const { return mAABB; }
+	const AABB GetAABBWorld() const { return mAABBWorld; }
+
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
-
-	const ResourceMaterial* GetMaterial() const { return mMaterial; }
-	const ResourceMesh* GetResourceMesh() const { return mMesh; }
+	bool IsInsideFrustum() const { return mInsideFrustum;  }
+	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 private:
-	ResourceMesh* mMesh;
-	ResourceMaterial* mMaterial;
+	ResourceMesh* mMesh = nullptr;
+	ResourceMaterial* mMaterial = nullptr;
+
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
@@ -42,6 +46,7 @@ private:
 	AABB mAABBWorld;
 	bool mDrawBox = false;
 	bool mInsideFrustum = true;
-
 	int mTemporalID = -1;
+
+	
 };

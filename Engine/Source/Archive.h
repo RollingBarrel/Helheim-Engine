@@ -6,6 +6,7 @@
 #define NOMINMAX
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include <vector>
 #include "Math/float4x4.h"

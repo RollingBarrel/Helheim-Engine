@@ -5,6 +5,12 @@
 
 #define DEBUGPANEL "Debugger"
 
+enum class RenderMode {
+	Shaded,
+	Wireframe,
+	ShadedWireframe
+};
+
 class DebugPanel : public Panel
 {
 public:
@@ -13,12 +19,13 @@ public:
 
 	void Draw(int windowFlags) override;
 	bool ShouldDrawColliders() const { return mDrawColliders; }
+	RenderMode GetRenderMode() const { return mRenderMode; }
 
 private:
 	bool mDrawRaycast = false;
 	bool mDrawColliders = false;
 	bool mShowFpsOnEditor = false;
-	int mRenderMode = 0;
+	RenderMode mRenderMode = RenderMode::Shaded;
 
 	void SetShouldDrawForAll(GameObject* root, bool shouldDraw);
 	int GetTotalTriangleCount(GameObject* root);

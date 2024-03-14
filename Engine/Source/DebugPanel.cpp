@@ -1,11 +1,11 @@
 #include "DebugPanel.h"
 #include "imgui.h"
-#include "Quadtree.h"
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleOpenGL.h"
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
 #include "Panel.h"
@@ -131,3 +131,25 @@ int DebugPanel::GetTotalTriangleCount(GameObject* root) {
         App->GetDebugDraw()->SetRenderGrid(grid);
     }
 */
+		ImGui::Text("Render Mode");
+		static const char* mRenderOptions[3] = { "Shaded", "Wireframe", "Shaded + Wireframe" };
+		if (ImGui::Combo(" ", (int*)&mRenderMode, mRenderOptions, IM_ARRAYSIZE(mRenderOptions)))
+		{
+			switch(mRenderMode)
+			{
+			case RenderMode::Shaded:
+				App->GetOpenGL()->SetWireframe(false);
+				break;
+			case RenderMode::Wireframe:
+				App->GetOpenGL()->SetWireframe(true);
+				break;
+			case RenderMode::ShadedWireframe:
+				//TODO Shaded + Wireframe rendering
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	ImGui::End();
+}
