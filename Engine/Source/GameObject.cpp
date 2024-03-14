@@ -337,12 +337,12 @@ void GameObject::AddSuffix()
 }
 
 //TODO: Crate a component that requires ids not clean now
-Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
+Component* GameObject::CreateComponent(ComponentType type) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
 		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this, meshUid, materialUid);
+			newComponent = new MeshRendererComponent(this);
 			break;
 		case ComponentType::CAMERA:
 			newComponent = new CameraComponent(this);
@@ -524,7 +524,7 @@ void GameObject::Save(Archive& archive) const {
 	}*/
 }
 
-GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
+static GameObject* FindGameObjectParent(GameObject* gameObject, int UID) {
 	GameObject* gameObjectParent = nullptr;
 	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
 	for (int i = 0; i < gameObjects.size(); i++) {
@@ -535,7 +535,7 @@ GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
 		}
 		else {
 			// Recursively search in children
-			GameObject* gameObjectChild = findGameObjectParent(gameObjects[i], UID);
+			GameObject* gameObjectChild = FindGameObjectParent(gameObjects[i], UID);
 			if (gameObjectChild != nullptr) {
 				// Found a match in children, return it as the gameobject parent
 				gameObjectParent = gameObjectChild;
@@ -547,7 +547,7 @@ GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
 	return gameObjectParent;
 }
 
-void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
+static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
 	for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
 		if (components[i].IsObject()) {
 			const rapidjson::Value& componentValue = components[i];
@@ -560,7 +560,7 @@ void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) 
 	}
 }
 
-void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) {
+static void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
 	const char* name = { "" };
@@ -630,15 +630,15 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 		go = new GameObject(name, uuid, scene, position, scale, rotation);
 		// Manage Components
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
-			loadComponentsFromJSON(gameObject["Components"], go);
+			LoadComponentsFromJSON(gameObject["Components"], go);
 		}
 	}
 	else {
-		GameObject* gameObjectParent = findGameObjectParent(scene, parentUID);
+		GameObject* gameObjectParent = FindGameObjectParent(scene, parentUID);
 		go = new GameObject(name, uuid, gameObjectParent, position, scale, rotation);
 		// Manage Components
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
-			loadComponentsFromJSON(gameObject["Components"], go);
+			LoadComponentsFromJSON(gameObject["Components"], go);
 		}
 	}
 
@@ -652,7 +652,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
 		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
 			if (gameObjects[i].IsObject()) {
-				loadGameObjectFromJSON(gameObjects[i], scene);
+				LoadGameObjectFromJSON(gameObjects[i], scene);
 			}
 		}
 	}
