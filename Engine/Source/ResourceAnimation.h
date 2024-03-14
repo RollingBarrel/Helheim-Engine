@@ -46,7 +46,7 @@ public:
     std::unordered_map<std::string, AnimationChannel*> mChannels;
 
     std::string mName;
-    float mDuration;
+    float mDuration = 0;
 };
 
 
