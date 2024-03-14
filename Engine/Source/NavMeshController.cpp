@@ -90,6 +90,8 @@ void NavMeshController::TranslateIndices()
 
 void NavMeshController::DebugDrawPolyMesh()
 {
+	if (!mDraw)
+		return;
 
 	if (mPolyMeshDetail == nullptr)
 		return;
@@ -130,15 +132,18 @@ void NavMeshController::DebugDrawPolyMesh()
 	*/
 	
 
-	float3 center = App->GetNavigation()->GetQueryCenter();
-	float3 halfsize = App->GetNavigation()->GetQueryHalfSize();
-	float3 nearest = FindNearestPoint(center, halfsize);
 
 	float3 color = float3(1.0f, 0.0f, 0.0f);
-	App->GetDebugDraw()->DrawSphere(&nearest[0], &color[0], 1.0f);
+	App->GetDebugDraw()->DrawSphere(&mQueryNearestPoint[0], &color[0], 1.0f);
 
+	float3 color2 = float3(1.0f, 1.0f, 0.0f);
+	App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
 
-	
+	float3 color3 = float3(0.0f, 0.0f, 1.0f);
+	float3 minAABB = mQueryCenter - mQueryHalfSize;
+	float3 maxAABB = mQueryCenter + mQueryHalfSize;
+	OBB cube = OBB(AABB(minAABB, maxAABB));
+	App->GetDebugDraw()->DrawCube(cube, color3);
 
 }
 
@@ -146,6 +151,8 @@ void NavMeshController::Update()
 {
 	if (mPolyMesh == nullptr)
 		return;
+	mQueryNearestPoint = FindNearestPoint(mQueryCenter, mQueryHalfSize);
+
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	DebugDrawPolyMesh();

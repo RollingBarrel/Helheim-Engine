@@ -57,6 +57,15 @@ public:
 
 	float3 FindNearestPoint(float3 center, float3 halfsize) const;
 
+	float3 GetQueryCenter() const { return mQueryCenter; }
+	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
+
+	void SetQueryCenter(float3 center) { mQueryCenter = center; }
+	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
+
+	bool GetShouldDraw() const { return mDraw; }
+	void SetShouldDraw(bool draw) { mDraw = draw; }
+
 
 
 private:
@@ -109,5 +118,10 @@ private:
 	unsigned int mEbo = 0;
 	std::vector<float3> mVertices;
 	std::vector<int> mIndices;
+
+
+	float3 mQueryCenter = float3(10.0f, 0.0f, -3.0f);
+	float3 mQueryHalfSize = float3(5.0f);
+	float3 mQueryNearestPoint = float3(0.0f);
 };
 

@@ -7,10 +7,8 @@
 #include "DetourNavMesh.h"
 #include "ModuleScene.h"
 #include "DetourNavMeshQuery.h"
-#include "ModuleDebugDraw.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
-#include "ModuleOpenGL.h"
 
 ModuleDetourNavigation::ModuleDetourNavigation()
 {
@@ -38,27 +36,15 @@ update_status ModuleDetourNavigation::PreUpdate(float dt)
 update_status ModuleDetourNavigation::Update(float dt)
 {
 
+	/*
 	if (mNavQuery && mDetourNavMesh)
 	{
-		App->GetOpenGL()->BindSceneFramebuffer();
 		dtPolyRef result;
 		dtQueryFilter temp;
-		//mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
-		//float3 color = float3(1.0f, 0.0f, 0.0f);
-		//App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
-
-		float3 color2 = float3(1.0f, 1.0f, 0.0f);
-		App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
-
-		float3 color3 = float3(0.0f, 0.0f, 1.0f);
-		float3 minAABB = mQueryCenter - mQueryHalfSize;
-		float3 maxAABB = mQueryCenter + mQueryHalfSize;
-		OBB cube = OBB(AABB(minAABB, maxAABB));
-		App->GetDebugDraw()->DrawCube(cube, color3);
-		App->GetOpenGL()->UnbindSceneFramebuffer();
-
+		mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
 
 	}
+	*/
 	return UPDATE_CONTINUE;
 }
 

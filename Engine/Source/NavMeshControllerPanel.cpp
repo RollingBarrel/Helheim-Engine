@@ -3,7 +3,6 @@
 #include "Quadtree.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleDetourNavigation.h"
 #include "NavMeshController.h"
 
 
@@ -22,6 +21,13 @@ void NavMeshControllerPanel::Draw(int windowFlags)
         NavMeshController* navController = App->GetScene()->GetNavController();
 
         //IMGUI VALUES
+        bool draw = navController->GetShouldDraw();
+        if (ImGui::Checkbox("Debug draw navmesh", &draw))
+        {
+            navController->SetShouldDraw(draw);
+        }
+
+
         float cellSize = navController->GetCellSize();
         if (ImGui::DragFloat("Cell Size", &cellSize, 0.01f, 0.1f, 1.0f))
         {
@@ -95,16 +101,16 @@ void NavMeshControllerPanel::Draw(int windowFlags)
 
         ImGui::Text("Player simulation");
 
-        float3 playerPos = App->GetNavigation()->GetQueryCenter();
+        float3 playerPos = navController->GetQueryCenter();
         if (ImGui::DragFloat3("Character position: ", &playerPos[0], 0.5f, -1000.0f, 1000.0f))
         {
-            App->GetNavigation()->SetQueryCenter(playerPos);
+            navController->SetQueryCenter(playerPos);
         }
 
-        float3 navQuerySize = App->GetNavigation()->GetQueryHalfSize();
+        float3 navQuerySize = navController->GetQueryHalfSize();
         if (ImGui::DragFloat3("Query size: ", &navQuerySize[0], 0.5f, 0.0f, 500.0f))
         {
-            App->GetNavigation()->SetQueryHalfSize(navQuerySize);
+            navController->SetQueryHalfSize(navQuerySize);
         }
 
 
