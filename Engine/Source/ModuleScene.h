@@ -6,6 +6,7 @@
 #include <string>
 class Quadtree;
 class GameObject;
+class MeshRendererComponent;
 class Archive;
 class Tag;
 class NavMeshController;
@@ -38,8 +39,6 @@ public:
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 
-	const std::vector<GameObject*> GetRenderList() { return mRenderList; }
-
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagid);
 	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
 
@@ -61,9 +60,6 @@ public:
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
-	void GenerateRenderList(GameObject* root);
-	void DrawRenderList();
-	void AddToRenderList(GameObject* root); // Can be public if needed 
 
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
@@ -77,7 +73,6 @@ private:
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	std::vector<GameObject*> mRenderList;
 
 	std::vector<Tag*> mTags;
 

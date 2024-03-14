@@ -7,9 +7,8 @@
 #include "ModuleCamera.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
 #include "GameObject.h"
-#include "DebugPanel.h"
+#include "BatchManager.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 
@@ -92,6 +91,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Initialize scene framebuffer
 	glGenFramebuffers(1, &sFbo);
@@ -118,6 +118,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
@@ -148,45 +149,21 @@ bool ModuleOpenGL::Init()
 }
 
 update_status ModuleOpenGL::PreUpdate(float dt)
-{
-	switch (((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->GetRenderMode())
-	{
-		case RenderMode::Shaded:
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			break;
-		case RenderMode::Wireframe:
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			break;
-		case RenderMode::ShadedWireframe:
-			//TODO Shaded + Wireframe rendering
-			break;
-		default:
-			break;
-	}
-		
+{	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Draw the skybox
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-
-	glUseProgram(App->GetOpenGL()->GetSkyboxProgramId());
-
+	glUseProgram(mSkyBoxProgramId);
 	glBindVertexArray(mSkyVao);
-
 	glDepthMask(GL_FALSE);
-
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glDepthMask(GL_TRUE);
-
 	glBindVertexArray(0);
 	glUseProgram(0);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	return UPDATE_CONTINUE;
 }
@@ -222,6 +199,14 @@ bool ModuleOpenGL::CleanUp()
 	return true;
 }
 
+void ModuleOpenGL::SetWireframe(bool wireframe)
+{
+	if(wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
@@ -249,7 +234,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		mCameraUniBuffer->UpdateData(App->GetCamera()->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
 		mCameraUniBuffer->UpdateData(App->GetCamera()->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
-		glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+		glUseProgram(mPbrProgramId);
 		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
 		glUseProgram(0);
 	}
@@ -471,6 +456,22 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 	}
 }
 
+void ModuleOpenGL::BatchAddMesh(MeshRendererComponent* mesh)
+{
+	mBatchManager.AddMeshComponent(mesh);
+}
+
+void ModuleOpenGL::BatchRemoveMesh(MeshRendererComponent* mesh)
+{
+	mBatchManager.RemoveMeshComponent(mesh);
+}
+
+void ModuleOpenGL::Draw()
+{
+	BindSceneFramebuffer();
+	mBatchManager.Draw();
+	UnbindSceneFramebuffer();
+}
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
 SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
 {

@@ -232,10 +232,10 @@ void InspectorPanel::ShowSameComponentPopup()
 void InspectorPanel::RightClickPopup(Component* component) {
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
-		ImGui::OpenPopup(std::to_string(component->mID).c_str());
+		ImGui::OpenPopup(std::to_string(component->GetID()).c_str());
 	}
 
-	if (ImGui::BeginPopup(std::to_string(component->mID).c_str())) {
+	if (ImGui::BeginPopup(std::to_string(component->GetID()).c_str())) {
 		if (ImGui::MenuItem("Delete Component")) {
 			component->mOwner->AddComponentToDelete(component);
 			ImGui::CloseCurrentPopup();
@@ -522,42 +522,32 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
-	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
-
-	bool enableDiffuse = material->IsDiffuseTextureEnabled();
-	if (ImGui::Checkbox("Enable Diffuse map", &enableDiffuse))
-		material->EnableDiffuseTexture(enableDiffuse);
-
-	bool enableSpecular = material->IsSpecularGlossinessTextureEnabled();
-	if (ImGui::Checkbox("Enable Specular map", &enableSpecular))
-		material->EnableSpecularGlossinessTexture(enableSpecular);
-	
-	bool enableShinines = material->IsShininessMapEnabled();
-	if (ImGui::Checkbox("Enable Shininess map", &enableShinines))
-		material->EnableShininessTexture(enableShinines);
-
-	bool enableNormal = material->IsNormalMapEnabled();
-	if (ImGui::Checkbox("Enable Normal map", &enableNormal))
-		material->EnableNormalTexture(enableNormal);
-
-	if (!enableDiffuse)
-	{
-		float4 diffuseFactor = material->GetDiffuseFactor();
-		if (ImGui::ColorPicker3("Diffuse", diffuseFactor.ptr()))
-			material->SetDiffuseFactor(diffuseFactor);
-	}
-	if (!enableSpecular)
-	{
-		float3 specularFactor = material->GetSpecularFactor();
-		if (ImGui::ColorPicker3("Specular", specularFactor.ptr()))
-			material->SetSpecularFactor(specularFactor);
-	}
-	if (!enableShinines)
-	{
-		float shininessFactor = material->GetGlossinessFactor();
-		if (ImGui::DragFloat("Shininess", &shininessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
-			material->SetGlossinessFactor(shininessFactor);
-	}
+	//ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
+	//
+	////if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
+	////	renderComponent->EditMaterial();
+	////if(ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
+	////	renderComponent->EditMaterial();
+	////if(ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap))
+	////	renderComponent->EditMaterial();
+	////if(ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
+	////	renderComponent->EditMaterial();
+	////
+	////if (!material->mEnableDiffuseTexture)
+	////{
+	////	if(ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
+	////		renderComponent->EditMaterial();
+	////}
+	////if (!material->mEnableSpecularGlossinessTexture)
+	////{
+	////	if(ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
+	////		renderComponent->EditMaterial();
+	////}
+	////if (!material->mEnableShinessMap)
+	////{
+	////	if(ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+	////		renderComponent->EditMaterial();
+	////}
 }
 
 void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)

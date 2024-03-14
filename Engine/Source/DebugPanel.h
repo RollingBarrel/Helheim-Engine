@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Panel.h"
-#include "ModuleOpenGL.h"
 #define DEBUGPANEL "Debugger"
 
 enum class RenderMode {

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "BatchManager.h"
 #include <vector>
 
 typedef struct DirectionalAmbient {
@@ -61,7 +62,6 @@ public:
 	void* GetOpenGlContext() { return context; }
 
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
-	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
 	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
@@ -71,8 +71,16 @@ public:
 	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
 	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
+	void BatchAddMesh(MeshRendererComponent* mesh);
+	void BatchRemoveMesh(MeshRendererComponent* mesh);
+	void Draw();
+	void SetWireframe(bool wireframe);
+
+
 private:
 	void* context = nullptr;
+
+	BatchManager mBatchManager;
 
 	//Framebuffer
 	unsigned int sFbo;

@@ -183,7 +183,7 @@ void NavMeshControllerComponent::HandleBuild() {
 		int numberOfVertices = testMesh->GetResourceMesh()->GetNumberVertices();
 
 
-		const int* triangle = (const int*)(testMesh->GetResourceMesh()->mIndices);
+		const int* triangle = reinterpret_cast<const int*>(testMesh->GetResourceMesh()->GetIndices());
 		
 
 		

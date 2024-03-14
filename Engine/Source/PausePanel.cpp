@@ -58,7 +58,6 @@ void PausePanel::Play() {
 
 void PausePanel::Pause() {
 	App->GetGameClock()->SetTimeScale(0.0f);
-
 	mState = GameState::PAUSED;
 }
 
