@@ -43,9 +43,9 @@ update_status ModuleDetourNavigation::Update(float dt)
 		App->GetOpenGL()->BindSceneFramebuffer();
 		dtPolyRef result;
 		dtQueryFilter temp;
-		mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
-		float3 color = float3(1.0f, 0.0f, 0.0f);
-		App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
+		//mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
+		//float3 color = float3(1.0f, 0.0f, 0.0f);
+		//App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
 
 		float3 color2 = float3(1.0f, 1.0f, 0.0f);
 		App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);

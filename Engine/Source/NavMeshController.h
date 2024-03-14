@@ -55,6 +55,8 @@ public:
 	float GetDetailSampleMaxError() const { return mDetailSampleMaxError; }
 	void SetDetailSampleMaxError(float value) { mDetailSampleMaxError = value; }
 
+	float3 FindNearestPoint(float3 center, float3 halfsize) const;
+
 
 
 private:

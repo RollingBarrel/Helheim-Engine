@@ -31,6 +31,8 @@ public:
     void DrawLine(const float3& position, const float3& direction, const float3& color);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3);
 
+    void DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color);
+
 
 private:
 

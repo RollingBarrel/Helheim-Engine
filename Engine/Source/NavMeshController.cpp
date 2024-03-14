@@ -12,6 +12,8 @@
 #include "ModuleDebugDraw.h"
 #include "AIAgentComponent.h"
 #include "DetourNavMeshBuilder.h"
+#include "Geometry/Triangle.h"
+
 NavMeshController::NavMeshController()
 {
 	mRecastContext = rcContext(false);
@@ -106,7 +108,6 @@ void NavMeshController::DebugDrawPolyMesh()
 
 
 	/*	Old draw polymesh with debug draw
-
 	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
 	{
 		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
@@ -127,6 +128,17 @@ void NavMeshController::DebugDrawPolyMesh()
 		}
 	}
 	*/
+	
+
+	float3 center = App->GetNavigation()->GetQueryCenter();
+	float3 halfsize = App->GetNavigation()->GetQueryHalfSize();
+	float3 nearest = FindNearestPoint(center, halfsize);
+
+	float3 color = float3(1.0f, 0.0f, 0.0f);
+	App->GetDebugDraw()->DrawSphere(&nearest[0], &color[0], 1.0f);
+
+
+	
 
 }
 
@@ -388,6 +400,36 @@ void NavMeshController::HandleBuild() {
 
 }
 
+
+float3 NavMeshController::FindNearestPoint(float3 center, float3 halfsize) const
+{
+	float nearestDist = 99999.0f;
+	float3 nearest_point = float3(0.0);
+	AABB box = AABB(center - halfsize, halfsize + center);
+
+	for (int i = 0; i < mIndices.size(); i+=3)
+	{
+		float3 v0 = mVertices[mIndices[i]];
+		float3 v1 = mVertices[mIndices[i + 1]];
+		float3 v2 = mVertices[mIndices[i + 2]];
+		Triangle tri = Triangle(v0, v1, v2);
+		
+		if (tri.Intersects(box))
+		{
+			float3 closest_point = tri.ClosestPoint(center);
+			float distance_to_center = closest_point.Distance(center);
+			if (distance_to_center < nearestDist)
+			{
+				nearest_point = closest_point;
+				nearestDist = distance_to_center;
+			}
+
+		}
+		
+	}
+
+	return nearest_point;
+}
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
