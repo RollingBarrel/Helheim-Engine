@@ -3,6 +3,7 @@
 #include "ModuleScriptManager.h"
 #include <Windows.h>
 #include "Script.h"
+#include "GameObject.h"
 
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
@@ -54,6 +55,12 @@ void::ScriptComponent::Save(Archive& archive) const
 			break;
 		case VariableType::BOOL:
 			dataArchive.AddInt("VariableData", *(bool*)data->mData);
+			break;
+		case VariableType::FLOAT3:
+			dataArchive.AddFloat3("VariableData", *(float3*)data->mData);
+			break;
+		case VariableType::GAMEOBJECT:
+			dataArchive.AddInt("VariableData", ((GameObject*)data->mData)->GetID());
 			break;
 		default:
 			break;

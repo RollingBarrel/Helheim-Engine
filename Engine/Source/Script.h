@@ -11,7 +11,6 @@ enum class  VariableType : int
 	BOOL = 2, 
 	GAMEOBJECT = 3, 
 	FLOAT3 = 4, 
-	FLOAT3X3 = 5
 };
 
 struct ScriptVariable {
