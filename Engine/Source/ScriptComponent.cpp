@@ -42,22 +42,23 @@ void::ScriptComponent::Save(Archive& archive) const
 		Archive dataArchive;	
 		dataArchive.AddString("VariableName", data->mName);
 		dataArchive.AddInt("VariableType", (int)data->mType);
-
+		std::string datastr = std::to_string(*(float*)data->mData);
+		//dataArchive.AddString("VariableData", std::to_string(*(float*)data->mData).c_str());
 		switch (data->mType)
 		{
 		case VariableType::INT:
 			dataArchive.AddInt("VariableData", *(int*)data->mData);
 			break;
 		case VariableType::FLOAT:
-			dataArchive.AddString("VariableData" , (const char*)data->mData);
+			dataArchive.AddInt("VariableData", *(float*)data->mData);
 			break;
 		case VariableType::BOOL:
-			dataArchive.AddBool("VariableData", *(bool*)data->mData);
+			dataArchive.AddInt("VariableData", *(bool*)data->mData);
 			break;
 		default:
 			break;
 		}
-
+		
 
 		objectArray.push_back(dataArchive);
 	}
@@ -95,8 +96,22 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 
 				for (auto data : mData) {
 					if (data->mName == name) {
-						if (array[i].HasMember("VariableData") && array[i]["VariableData"].IsFloat()) {
-							data->mData = (void*)array[i]["VariableData"].GetString();
+						if (array[i].HasMember("VariableData") && array[i]["VariableData"].IsString()) {
+							//data->mData = (void*)array[i]["VariableData"].GetString();
+							switch (data->mType)
+							{
+							case VariableType::INT:
+								*(int*)data->mData = array[i]["VariableData"].GetInt();
+								break;
+							case VariableType::FLOAT:
+								*(float*)data->mData = array[i]["VariableData"].GetFloat();
+								break;
+							case VariableType::BOOL:
+								*(bool*)data->mData = array[i]["VariableData"].GetBool();
+								break;
+							default:
+								break;
+							}
 						}
 
 					}
