@@ -29,6 +29,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
+#include "ModuleUI.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -363,9 +364,11 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::IMAGE: {
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+					break;
 				}
 				case ComponentType::CANVAS: {
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+					break;
 				}
 			}
 		}
@@ -758,4 +761,23 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 }
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
+	const char* renderModes[] = { "World Space", "Screen Space" };
+	static int selectedRenderMode = 0;
+
+	ImGui::Text("Render Mode");
+	ImGui::SameLine();
+	ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes));
+
+	if (selectedRenderMode == 0) {
+		App->GetUI()->SetScreenSpace(false);
+	}
+	else {
+		App->GetUI()->SetScreenSpace(true);
+	}
 }
+
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+	ImGui::SeparatorText("Animation");
+	ImGui::Text("HELLO");
+}
+	

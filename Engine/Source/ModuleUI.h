@@ -22,6 +22,8 @@ public:
 	inline unsigned int GetQuadVAO() const { return mQuadVAO; }
 	inline unsigned int GetProgram() const { return mUIProgramId; }
 
+	void SetScreenSpace(bool screen);
+
 private:
 	void DrawWidget(const GameObject* gameObject);
 
@@ -36,5 +38,6 @@ private:
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned int CompileShader(unsigned type, const char* source) const;
 
+	bool mScreenSpace = false;
 };
 
