@@ -96,13 +96,13 @@ void NavMeshControllerPanel::Draw(int windowFlags)
         ImGui::Text("Player simulation");
 
         float3 playerPos = App->GetNavigation()->GetQueryCenter();
-        if (ImGui::DragFloat3("Character position: ", &playerPos[0], 0.5f, -20.0f, 20.0f))
+        if (ImGui::DragFloat3("Character position: ", &playerPos[0], 0.5f, -1000.0f, 1000.0f))
         {
             App->GetNavigation()->SetQueryCenter(playerPos);
         }
 
         float3 navQuerySize = App->GetNavigation()->GetQueryHalfSize();
-        if (ImGui::DragFloat3("Query size: ", &navQuerySize[0], 0.5f, 0.0f, 20.0f))
+        if (ImGui::DragFloat3("Query size: ", &navQuerySize[0], 0.5f, 0.0f, 500.0f))
         {
             App->GetNavigation()->SetQueryHalfSize(navQuerySize);
         }

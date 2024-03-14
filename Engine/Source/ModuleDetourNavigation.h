@@ -38,8 +38,8 @@ private:
 	dtNavMeshQuery* mNavQuery = nullptr;
 
 
-	float3 mQueryCenter = float3(0.0f);
-	float3 mQueryHalfSize = float3(0.0f);
+	float3 mQueryCenter = float3(10.0f,0.0f,-3.0f);
+	float3 mQueryHalfSize = float3(21.0f,0.0f,14.0f);
 	float3 mQueryResult = float3(0.0f);
 
 

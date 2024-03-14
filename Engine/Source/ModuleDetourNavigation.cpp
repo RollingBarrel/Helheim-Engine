@@ -12,11 +12,13 @@
 ModuleDetourNavigation::ModuleDetourNavigation()
 {
 	mNavMeshParams = new dtNavMeshCreateParams();
+	mNavQuery = new dtNavMeshQuery();
 }
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
 {
 	delete mNavMeshParams;
+	delete mNavQuery;
 }
 
 bool ModuleDetourNavigation::Init()
@@ -33,7 +35,7 @@ update_status ModuleDetourNavigation::PreUpdate(float dt)
 update_status ModuleDetourNavigation::Update(float dt)
 {
 
-	if (mNavQuery)
+	if (mNavQuery && mDetourNavMesh)
 	{
 		dtPolyRef result;
 		dtQueryFilter temp;
