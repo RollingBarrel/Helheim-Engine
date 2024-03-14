@@ -574,6 +574,12 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 	
 }
 
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+
+	ImGui::SeparatorText("Animation");
+	ImGui::Text("HELLO");
+}
+
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
 	ImGui::SeparatorText("Camera");
@@ -701,4 +707,4 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	
 }
 
-}
+
