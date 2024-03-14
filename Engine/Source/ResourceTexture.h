@@ -41,6 +41,7 @@ public:
 	unsigned char* GetPixels() const { return mPixels; }
 	bool HasAlpha() const { return mHasAlpha; }
 	unsigned int GetOpenGLId() const { return mOpenGLId; }
+	unsigned int GetTextureHandle() const { return mTexHandle; }
 
 private:
 	unsigned int mWidth;
@@ -56,5 +57,6 @@ private:
 	bool mHasAlpha;
 
 	unsigned int mOpenGLId;
+	uint64_t mTexHandle;
 };
 

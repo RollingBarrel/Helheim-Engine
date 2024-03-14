@@ -12,9 +12,8 @@
 #include "ResourceMesh.h"
 #include "Geometry/Triangle.h"
 #include "imgui.h"
-#include <iostream>
-#include <cstring>
 #include <utility>
+#include <map>
 
 Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
@@ -229,7 +228,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 				intersects = localRay.Intersects(rMesh->GetAABB());
 				if (intersects)
 				{
-					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
+					const unsigned int* indices = rMesh->GetResourceMesh()->GetIndices();
 					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 
 					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices() / 3; i += 3) {

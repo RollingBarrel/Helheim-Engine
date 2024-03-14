@@ -687,6 +687,15 @@ void ModuleDebugDraw::DrawLine(const float3& position, const float3& direction, 
     dd::line(position, direction, color);
 }
 
+void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)
+{
+    dd::line(v1, v2, dd::colors::Red);
+    dd::line(v1, v3, dd::colors::Red);
+    dd::line(v3, v2, dd::colors::Red);
+
+
+}
+
 void ModuleDebugDraw::DrawGrid()
 {
     dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);

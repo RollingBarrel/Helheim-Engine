@@ -32,8 +32,12 @@ ResourceTexture::ResourceTexture(
 }
 ResourceTexture::~ResourceTexture()
 {
+    if(mTexHandle)
+        glMakeTextureHandleNonResidentARB(mTexHandle);
     glDeleteTextures(1, &mOpenGLId);
-    delete[] mPixels;
+    if(mPixels)
+        delete[] mPixels;
+    //glMakeTextureHandleNonResidentARB(mTextureHandle);
 }
 
 unsigned int ResourceTexture::CreateTexture()
@@ -66,6 +70,8 @@ unsigned int ResourceTexture::CreateTexture()
 
     // Store OpenGL texture ID
     mOpenGLId = texId;
+    mTexHandle = glGetTextureHandleARB(mOpenGLId);
+    glMakeTextureHandleResidentARB(mTexHandle);
 
     return texId;
 }

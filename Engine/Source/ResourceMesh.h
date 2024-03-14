@@ -1,8 +1,7 @@
-#pragma once
+#ifndef _RESOURCE_MESH_H_
+#define _RESOURCE_MESH_H_
 
 #include <vector>
-
-#include "ImporterMesh.h"
 #include "Resource.h"
 
 typedef struct Attribute {
@@ -20,62 +19,36 @@ typedef struct Attribute {
 	Type type;
 }Attribute;
 
-float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize);
-
-
 class ResourceMesh : public Resource
 {
 public:
 
-	ResourceMesh(unsigned int uid,
-		unsigned int numIndices,
-		unsigned int numVertices);
-
-	//ResourceMesh(const ResourceMesh& other);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, const unsigned int* indices, unsigned int numVertices, const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, unsigned int*&& indices, unsigned int numVertices, std::vector<Attribute>&& attributes, std::vector<float*>&& attributesData);
+	ResourceMesh(const ResourceMesh& other);
+	ResourceMesh(ResourceMesh&& other);
 	~ResourceMesh();
 
 	unsigned int GetNumberVertices() const { return mNumVertices; }
 	unsigned int GetNumberIndices() const { return mNumIndices; }
-
-	const void SetNumberVertices(unsigned int numVertices) { mNumVertices = numVertices; }
-	const void SetNumberIndices(unsigned int numIndices) { mNumIndices = numIndices; }
-
-	void AddIndices(unsigned int* indices);
-	unsigned int* GetIndices() const { return mIndices; }
-
-	unsigned int GetVao() const { return mVao; }
-
-	const std::vector<Attribute>& GetAttributes() const { return mAttributes; }
+	const unsigned int* GetIndices() const { return mIndices; }
+	void GetAttributes(std::vector<Attribute>&) const;
+	unsigned int GetNumberAttributes() const { return mAttributes.size(); }
+	bool HasAttribute(Attribute::Type type) const;
 	unsigned int GetVertexSize() const { return mVertexSize; }
-
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
-	void AddAttribute(const Attribute& attribute, float* attributeData, unsigned int dataSize);
-	void AddAttribute(const Attribute& attribute, float*&& attributeData);
-	bool LoadInterleavedAttribute(float* fillBuffer, const Attribute& attribute, unsigned int vertexSize) const;
+	//This allocates memory in the return pointer that you must delete
 	float* GetInterleavedData() const;
-	void LoadToMemory();
-
-
-	void GenerateTangents();
-
-	void CleanUp();
-
-	//TODO Make it Private
-	std::vector<float*> mAttributesData;
-	unsigned int* mIndices = nullptr;
 
 private:
-
+	unsigned int* mIndices = nullptr;
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
 
-
-	unsigned int mVao = 0;
-	unsigned int mVbo = 0;
-	unsigned int mEbo = 0;
-
+	std::vector<float*> mAttributesData;
 	std::vector<Attribute> mAttributes;
 	unsigned int mVertexSize = 0;
 };
 
+#endif // _RESOURCE_MESH_H_

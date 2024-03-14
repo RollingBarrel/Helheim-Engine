@@ -17,7 +17,6 @@ void Timer::Update()
 	++mUpdateFrames;
 	++mTotalFrames;
 
-	//Calculates the time it takes to execute the last frame
 	if (mChangeSpeed) {
 		mDeltaTime = SetSpeed(mNewSpeed);
 		mChangeSpeed = false;

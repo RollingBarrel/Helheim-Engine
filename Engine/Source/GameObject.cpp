@@ -15,12 +15,16 @@
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
 #include "TestComponent.h"
-#include "NavMeshControllerComponent.h"
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
+#include "ModuleScene.h"
+#include "Tag.h"
+#include "AIAgentComponent.h"
+#include "NavMeshControllerComponent.h"
+#include "NavMeshObstacleComponent.h"
 
 GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent),
+	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -35,7 +39,7 @@ GameObject::GameObject(GameObject* parent)
 GameObject::GameObject(const GameObject& original)
 	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(original.GetTag())
 {
 
 	AddSuffix();
@@ -54,7 +58,8 @@ GameObject::GameObject(const GameObject& original)
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix)
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
+	mTag(original.GetTag())
 {
 
 	for (auto child : original.mChildren) {
@@ -69,7 +74,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 }
 
 GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent),
+	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 
@@ -82,7 +87,8 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
 	:mID(id), mName(name), mParent(parent), mPosition(position),
-	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr)
+	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr),
+	mTag(App->GetScene()->GetTagByName("Untagged"))
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 	if (!mIsRoot) {
@@ -345,6 +351,9 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 		case ComponentType::TEST:
 			newComponent = new TestComponent(this);
 			break;
+		case ComponentType::AIAGENT:
+			newComponent = new AIAgentComponent(this);
+			break;
 		case ComponentType::NAVMESHCONTROLLER:
 			newComponent = new NavMeshControllerComponent(this);
 			break;
@@ -353,6 +362,9 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 			break;
 		case ComponentType::CANVAS:
 			newComponent = new CanvasComponent(this);
+			break;
+		case ComponentType::NAVMESHOBSTACLE:
+			newComponent = new NavMeshObstacleComponent(this);
 			break;
 		default:
 			break;
@@ -481,6 +493,7 @@ void GameObject::Save(Archive& archive) const {
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);
+	archive.AddInt("Tag", mTag->GetID());
 
 	// Save components
 	std::vector<Archive> componentsArchiveVector;
@@ -504,20 +517,26 @@ void GameObject::Save(Archive& archive) const {
 }
 
 GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
+	GameObject* gameObjectParent = nullptr;
 	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
 	for (int i = 0; i < gameObjects.size(); i++) {
 		if (gameObjects[i]->GetID() == UID) {
-			return gameObjects[i];
+			// Found the parent
+			gameObjectParent = gameObjects[i];
+			break;
 		}
-		else if (gameObjects[i]->GetChildren().size() != 0) {
-			for (int j = 0; j < gameObjects[i]->GetChildren().size(); j++) {
-				findGameObjectParent(gameObjects[i]->GetChildren()[j], UID);
+		else {
+			// Recursively search in children
+			GameObject* gameObjectChild = findGameObjectParent(gameObjects[i], UID);
+			if (gameObjectChild != nullptr) {
+				// Found a match in children, return it as the gameobject parent
+				gameObjectParent = gameObjectChild;
+				break;
 			}
-
 		}
 	}
-
-	return nullptr;
+	
+	return gameObjectParent;
 }
 
 void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
@@ -540,6 +559,8 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	float3 position;
 	float3 scale;
 	Quat rotation;
+	Tag* tag = App->GetScene()->GetTagByName("Untagged");
+
 	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) {
 		uuid = gameObject["UID"].GetInt();
 	}
@@ -585,6 +606,16 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 		scale = float3(x, y, z);
 	}
 
+	if (gameObject.HasMember("Tag")) {
+		const rapidjson::Value& tagint = gameObject["Tag"];
+		int tagid = tagint.GetInt();
+		Tag* loadedTag = App->GetScene()->GetTagByID(tagid);
+
+		if (loadedTag != nullptr) {
+			tag = loadedTag;
+		}
+	}
+
 	GameObject* go;
 
 	if (parentUID == 1) {
@@ -601,8 +632,9 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
 			loadComponentsFromJSON(gameObject["Components"], go);
 		}
-
 	}
+
+	go->SetTag(tag);
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
@@ -616,6 +648,28 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 			}
 		}
 	}
+}
+
+GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
+{
+	Tag* tag = App->GetScene()->GetTagByName(tagname);
+
+	if (tag != nullptr) {
+		return App->GetScene()->FindGameObjectWithTag(App->GetScene()->GetRoot(), tag->GetID());
+	}
+	else {
+		return nullptr;
+	}
+	
+}
+
+std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
+{
+	std::vector<GameObject*> foundGameObjects;
+	Tag* tag = App->GetScene()->GetTagByName(tagname);
+	App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetRoot(), tag->GetID(), foundGameObjects);
+
+	return foundGameObjects;
 }
 
 
