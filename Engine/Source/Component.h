@@ -24,7 +24,7 @@ public:
 	ComponentType GetType() const { return mType; }
 	const GameObject* const GetOwner() const { return mOwner; }
 
-	int GetID() { return mID; }
+	unsigned int GetID() const { return mID; }
 
 	virtual	void Enable() { mIsEnabled = true; };
 	virtual	void Disable() { mIsEnabled = false; }
@@ -34,10 +34,10 @@ public:
 
 protected:
 	virtual	void Reset() = 0;
-	const unsigned int mID = 0;
 	GameObject* mOwner = nullptr;
 	bool mIsEnabled = true;
 private:
+	unsigned int mID = 0;
 	ComponentType mType = ComponentType::NONE;
 };
 
