@@ -5,7 +5,7 @@
 class AnimationController;
 class ResourceAnimation;
 
-class AnimationComponent : public Component {
+class ENGINE_API AnimationComponent : public Component {
 public:
 	AnimationComponent(GameObject* owner, unsigned int animationUid);
 	AnimationComponent(const AnimationComponent& other, GameObject* owner);
