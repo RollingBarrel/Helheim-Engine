@@ -49,7 +49,7 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
-	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	mRoot = new GameObject("SampleScene", nullptr);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
 	//TestSceneGameObjects test = TestSceneGameObjects();
 	//test.TestSceneWithGameObjects();
@@ -181,14 +181,14 @@ void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFileP
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
-	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
+	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
 	//SaveGame(gameObject->GetChildren(), *archive);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 	prefabArchive->AddObject("Prefab", *archive);
 
 	std::string out = prefabArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	App->GetResource()->ImportFile(saveFilePath, gameObject->GetID());
+	App->GetResource()->ImportFile(saveFilePath, gameObject->GetID()); //TODO Generate UUID
 	PathNode* root = App->GetFileSystem()->GetRootNode();
 	root->mChildren.clear();
 	App->GetFileSystem()->DiscoverFiles("Assets", root);
@@ -220,7 +220,7 @@ void ModuleScene::Load(const char* sceneName) {
 	}*/
 	mQuadtreeRoot->CleanUp();
 	delete mRoot;
-	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	mRoot = new GameObject("SampleScene", nullptr);
 	
 
 	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
@@ -257,17 +257,17 @@ void ModuleScene::LoadPrefab(const char* saveFilePath) {
 	delete[] loadedBuffer;
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
-	gameObject->Save(gameObjectArchive);
+	gameObject->Save(gameObjectArchive, parentUuid);
 	gameObjectsArchive.push_back(gameObjectArchive);
 
 	// Save children game objects
 	const std::vector<GameObject*>& children = gameObject->GetChildren();
 	if (!children.empty()) {
 		for (GameObject* child : children) {
-			SaveGameObjectRecursive(child, gameObjectsArchive);
+			SaveGameObjectRecursive(child, gameObjectsArchive, parentUuid);
 		}
 	}
 }
@@ -278,7 +278,7 @@ void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive&
 
 	// Save each GameObject to the gameObjectsArchiveVector
 	for (GameObject* gameObject : gameObjects) {
-		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
+		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, mRoot->GetID());
 	}
 
 	// Add the gameObjectsArchiveVector to the root archive under the key "gameobjects"

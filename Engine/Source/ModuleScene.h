@@ -56,7 +56,7 @@ public:
 	void Load(const char* saveFilePath);
 	void SavePrefab(const GameObject* gameObject, const char* saveFilePath);
 	void LoadPrefab(const char* saveFilePath);
-	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
+	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid);
 
 private:
 	void DeleteGameObjects();

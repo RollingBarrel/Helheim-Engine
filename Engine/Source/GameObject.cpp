@@ -10,6 +10,7 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include <algorithm>
+#include <unordered_map>
 #include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
@@ -78,19 +79,6 @@ GameObject::GameObject(const char* name, GameObject* parent)
 
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
-		mIsActive = parent->mIsActive;
-		parent->AddChild(this);
-	}
-}
-
-GameObject::GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation)
-	:mID(id), mName(name), mParent(parent), mPosition(position),
-	mScale(scale), mRotation(rotation), mIsRoot(parent == nullptr),
-	mTag(App->GetScene()->GetTagByName("Untagged"))
-{
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-	if (!mIsRoot) {
-		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
 		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
@@ -463,9 +451,12 @@ void GameObject::SetActiveInHierarchy(bool active)
 	}
 }
 
-void GameObject::Save(Archive& archive) const {
+void GameObject::Save(Archive& archive, int parentId) const {
 	archive.AddInt("UID", mID);
-	archive.AddInt("ParentUID", mParent->GetID());
+	if (mParent->GetID() == parentId) {
+		archive.AddInt("ParentUID", 1);
+	}
+	else { archive.AddInt("ParentUID", mParent->GetID()); }
 	archive.AddString("Name", mName.c_str());
 	archive.AddBool("isEnabled", mIsEnabled);
 	archive.AddBool("isActive", mIsActive);
@@ -531,7 +522,7 @@ void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) 
 	}
 }
 
-void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) {
+void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene, std::unordered_map<int, int>* convertUuid) {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
 	const char* name = { "" };
@@ -598,32 +589,39 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	GameObject* go;
 
 	if (parentUID == 1) {
-		go = new GameObject(name, uuid, scene, position, scale, rotation);
+		go = new GameObject(name, scene);
+		go->SetPosition(position);
+		go->SetRotation(rotation);
+		go->SetScale(scale);
 		// Manage Components
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
 			loadComponentsFromJSON(gameObject["Components"], go);
 		}
 	}
 	else {
-		GameObject* gameObjectParent = findGameObjectParent(scene, parentUID);
-		go = new GameObject(name, uuid, gameObjectParent, position, scale, rotation);
+		GameObject* gameObjectParent = findGameObjectParent(scene, (*convertUuid)[parentUID]);
+		go = new GameObject(name, gameObjectParent);
+		go->SetPosition(position);
+		go->SetRotation(rotation);
+		go->SetScale(scale);
 		// Manage Components
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
 			loadComponentsFromJSON(gameObject["Components"], go);
 		}
 	}
-
+	(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 	GameObject* scene = App->GetScene()->GetRoot();
+	std::unordered_map<int, int> uuids;
 	// Manage GameObjects inside the Scene
 	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray()) {
 		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
 		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
 			if (gameObjects[i].IsObject()) {
-				loadGameObjectFromJSON(gameObjects[i], this);
+				loadGameObjectFromJSON(gameObjects[i], this, &uuids);
 			}
 		}
 	}

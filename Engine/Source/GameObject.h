@@ -27,7 +27,6 @@ public:
 	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
-	GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation);
 
 	~GameObject();
 
@@ -69,7 +68,7 @@ public:
 	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
 	MeshRendererComponent* GetMeshRenderer() const;
 	CameraComponent* getCamera() const;
-	void Save(Archive& archive) const;
+	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);
