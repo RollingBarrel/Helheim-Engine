@@ -15,13 +15,13 @@
 class MeshRendererComponent;
 class CameraComponent;
 class Component;
+class Tag;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject
 {
 	friend class HierarchyPanel;
 	friend class InspectorPanel;
-	friend class ShaderPanel;
 
 public:
 	GameObject(GameObject* parent);
@@ -46,6 +46,7 @@ public:
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	const float3& GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); }
+	Tag* GetTag() const { return mTag; }
 
 	void ResetTransform();
 
@@ -65,6 +66,7 @@ public:
 	void SetRotation(const Quat& rotation);
 	void SetPosition(const float3& position);
 	void SetScale(const float3& scale);
+	void SetTag(Tag* tag) { mTag = tag; };
 
 	GameObject* Find(const char* name);
 
@@ -73,6 +75,9 @@ public:
 	CameraComponent* getCamera() const;
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
+
+	static GameObject* FindGameObjectWithTag(std::string tagname);
+	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 
 private:
 	GameObject* RemoveChild(const int id);
@@ -87,6 +92,7 @@ private:
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
+	Tag* mTag = nullptr;
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;
 	const unsigned int mID;

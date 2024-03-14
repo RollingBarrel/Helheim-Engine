@@ -10,6 +10,7 @@
 #include "ModuleScriptManager.h"
 #include "ModuleResource.h"
 #include "ModuleUI.h"
+#include "ModuleAudio.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"

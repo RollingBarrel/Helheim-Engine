@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,10 +157,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Dash.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Dash.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Keys.h" />
-    <ClInclude Include="TestScript.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

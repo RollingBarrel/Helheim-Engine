@@ -1,7 +1,14 @@
 #pragma once
 
 #include "Panel.h"
+#include "ModuleOpenGL.h"
 #define DEBUGPANEL "Debugger"
+
+enum class RenderMode {
+	Shaded,
+	Wireframe,
+	ShadedWireframe
+};
 
 class DebugPanel : public Panel
 {
@@ -10,8 +17,10 @@ public:
 	~DebugPanel();
 
 	void Draw(int windowFlags) override;
+	RenderMode GetRenderMode() const { return mRenderMode; }
 
 private:
 	bool mDrawRaycast = false;
+	RenderMode mRenderMode = RenderMode::Shaded;
 };
 

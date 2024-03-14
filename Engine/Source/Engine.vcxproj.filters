@@ -379,6 +379,18 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
+    <ClCompile Include="TagsManagerPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Tag.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="AIAGentComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AgentProfile.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleUI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -400,8 +412,36 @@
     <ClCompile Include="ScriptComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ImporterAnimation.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceScript.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterScript.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceAnimation.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMeshObstacleComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMeshControllerPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMeshController.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleAudio.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -971,6 +1011,17 @@
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Script.h">
+    </ClInclude>
+    <ClInclude Include="TagsManagerPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Tag.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="AIAGentComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentProfile.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ModuleUI.h">
@@ -994,6 +1045,9 @@
     <ClInclude Include="Script.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ImporterAnimation.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -1002,6 +1056,151 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceScript.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterScript.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceAnimation.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshObstacleComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshControllerPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshController.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerConfig.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerVolumes.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkStreamMgrModule.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkTypes.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkVirtualAcoustics.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWavDefs.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWwiseErrorHandler.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkXMLErrorMessageTranslator.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlatformContext.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlugin.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginHashTable.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginMemAlloc.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkProcessorFeatures.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkRTPCSubscriber.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkStreamMgr.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAtomic.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAudioMarker.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesCount.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesMem.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCallback.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCommonDefs.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicDialogue.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicSequence.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkErrorMessageTranslator.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkFPUtilities.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableFuncs.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableTypes.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgr.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgrFuncs.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiTypes.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiWwiseCmds.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMixerTypes.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkModule.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkNumeralTypes.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkQueryParameters.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimd.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdMath.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdTypes.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngine.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngineExport.h">
+      <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleAudio.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1088,6 +1287,9 @@
     </Filter>
     <Filter Include="Dependencies\Optick">
       <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\Wwise">
+      <UniqueIdentifier>{1d4dfa01-de34-4740-97cb-507eee2df210}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
