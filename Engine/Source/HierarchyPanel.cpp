@@ -94,7 +94,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			if (ImGui::Selectable("Save as Prefab")) {
 				for (auto object : FilterMarked()) {
 					std::string file = "Assets/Prefabs/";
-					file.append('/' + object->GetName() + ".hlhm");
+					file.append('/' + object->GetName() + ".prfb");
 					App->GetScene()->SavePrefab(object, file.c_str());
 				}
 			}

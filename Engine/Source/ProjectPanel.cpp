@@ -79,7 +79,7 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 			HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
 			for (auto object : hierarchyPanel->FilterMarked()) {
 				std::string file = dir.mName;
-				file.append('/' + object->GetName() + ".hlhm");
+				file.append('/' + object->GetName() + ".prfb");
 				App->GetScene()->SavePrefab(object, file.c_str());
 			}
 		}
