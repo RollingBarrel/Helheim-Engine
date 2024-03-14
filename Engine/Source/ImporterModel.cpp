@@ -5,8 +5,11 @@
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
-#include "Algorithm/Random/LCG.h"
+#include "ImporterAnimation.h"
 
+
+#include "Algorithm/Random/LCG.h"
+#include "ResourceAnimation.h"
 #include "ResourceMesh.h"
 #include "ResourceModel.h"
 #include "ResourceMaterial.h"
@@ -32,6 +35,22 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
+
+    if (!model.animations.empty())
+    {
+
+        for (const auto& srcAnimation : model.animations)
+        {
+            ResourceAnimation* ourAnimation = new ResourceAnimation(currUid++,srcAnimation.name);
+
+            Importer::Animation::Import(model, srcAnimation, ourAnimation);
+                     
+            delete ourAnimation;
+            
+        }
+        
+    }
+
     
     for (const auto& srcMesh : model.meshes)
     {
