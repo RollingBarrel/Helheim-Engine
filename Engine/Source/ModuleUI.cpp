@@ -12,6 +12,7 @@
 #include "glew.h"
 #include "SDL.h"
 
+#include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
 {
@@ -38,39 +39,73 @@ update_status ModuleUI::PreUpdate(float dt) {
 }
 
 update_status ModuleUI::Update(float dt) {
+	// Actual Screen Resolution 1280x720
+	float aspect_ratio = App->GetWindow()->GetAspectRatio();
 
 	// Save current frustum state
 	Frustum* originalFrustum = new Frustum();
 	*originalFrustum = *(App->GetCamera()->GetFrustum());
 
-	// Set Orthografic configuration
-	/*int width, height;
-	SDL_GetWindowSize(App->GetWindow()->window, &width, &height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, width, height, 0, 1, -1);
-	glMatrixMode(GL_MODELVIEW);
-	glDisable(GL_DEPTH_TEST);
-
 	Frustum* UIfrustum = new Frustum();
-	UIfrustum->type = FrustumType::OrthographicFrustum;
-	App->GetCamera()->SetFrustum(UIfrustum);*/
 
-	// Draw the UI
-	App->GetOpenGL()->BindSceneFramebuffer();
-	DrawWidget(mCanvas);
-	App->GetOpenGL()->UnbindSceneFramebuffer();
+	if (mScreenSpace == true) {
+		// Set Orthografic configuration
+		float height, width;
+		height = App->GetWindow()->GetHeight();
+		width = App->GetWindow()->GetWidth();
+		
+		UIfrustum->type = FrustumType::OrthographicFrustum;
+		UIfrustum->orthographicWidth = static_cast<float>(width);
+		UIfrustum->orthographicHeight = static_cast<float>(height); // Cast a float para evitar divisiones enteras
+		
+		UIfrustum->front = -float3::unitZ;
+		UIfrustum->up = float3::unitY;
+		UIfrustum->pos = float3::zero;
 
-	// Restore original frustum state
-	/*glEnable(GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-1, 1, -1, 1, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	App->GetCamera()->SetFrustum(originalFrustum);*/
+		UIfrustum->nearPlaneDistance = -1.0f; // Negative distance for orthographic perspective
+		UIfrustum->farPlaneDistance = 1.0f;
+				
+		UIfrustum->verticalFov = 2.f * Atan(Tan(math::DegToRad(110) * 0.5f) / aspect_ratio);
+		UIfrustum->horizontalFov = 2.f * Atan(Tan(math::DegToRad(145) * 0.5f) * aspect_ratio);
 
+		glDisable(GL_DEPTH_TEST);
+
+		App->GetCamera()->SetFrustum(UIfrustum);
+
+		// Draw the UI	
+		App->GetOpenGL()->BindSceneFramebuffer();
+		DrawWidget(mCanvas);
+		App->GetOpenGL()->UnbindSceneFramebuffer();
+	}
+	else {
+		glEnable(GL_DEPTH_TEST);
+
+		// Draw the UI
+		App->GetOpenGL()->BindSceneFramebuffer();
+		DrawWidget(mCanvas);
+		App->GetOpenGL()->UnbindSceneFramebuffer();
+
+		UIfrustum->type = FrustumType::PerspectiveFrustum;
+		
+		UIfrustum->pos = float3::zero;				
+		UIfrustum->front = -float3::unitZ;
+		UIfrustum->up = float3::unitY;
+		
+		UIfrustum->nearPlaneDistance = 0.1f;
+		UIfrustum->farPlaneDistance = 100.0f;
+		UIfrustum->verticalFov = math::pi / 4.0f;
+
+		float aspect_ratio = App->GetWindow()->GetAspectRatio();
+		UIfrustum->horizontalFov = 2.f * atanf(tanf(UIfrustum->verticalFov * 0.5f) * aspect_ratio);
+		
+		App->GetCamera()->SetFrustum(originalFrustum);
+	}
 	return UPDATE_CONTINUE;
 };
+
+void ModuleUI::SetScreenSpace(bool screen) {
+	mScreenSpace = screen;
+}
 
 update_status ModuleUI::PostUpdate(float dt) {
 	return UPDATE_CONTINUE;

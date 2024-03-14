@@ -24,6 +24,7 @@ public:
 
 private:
 	bool mSameComponentPopup = false;
+
 	Component* mComponent = nullptr;
 
 	bool mLocked = false;
