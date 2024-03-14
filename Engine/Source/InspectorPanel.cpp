@@ -13,6 +13,9 @@
 #include "CameraComponent.h"
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
+#include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
+#include "Script.h"
 
 #include "ResourceMaterial.h"
 
@@ -467,20 +470,77 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 	//ImGui::SeparatorText("Script");
 
-	const char* items[] = { "Select Script", "TestScript", "MissionScript", "Dash", "EEEE", "FFFF", "GGGG", "HHHH", "IIIIIII", "JJJJ", "KKKKKKK" };
-    static int currentItem = 0;
-	
-	if (ImGui::Combo("script", &currentItem, items, IM_ARRAYSIZE(items))) {
-				
-		if (currentItem != 0) {
-			component->LoadScript(items[currentItem]);
-		}
-				
-	}
-			
-			
-					
-			
+	// TODO: desde los .emeta files que hay en los assets se puede obtener el nombre de cada Script con su UID relacionado
+	// Lo que se manda al scriptComponent deberia ser el UID
 
+	const char* items[] = { "Select Script", "TestScript", "MissionScript", "Dash", "EEEE", "FFFF", "GGGG", "HHHH", "IIIIIII", "JJJJ", "KKKKKKK" };
+	 static const char* currentItem = component->GetScriptName();
+	
+	if (ImGui::BeginCombo("##combo", currentItem)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			bool is_selected = (currentItem == items[n]); // You can store your selection however you want, outside or inside your objects
+			if (ImGui::Selectable(items[n], is_selected)) {
+				currentItem = items[n];
+				component->LoadScript(currentItem);
+			}
+				
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus(); // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+			}
+				  
+		}
+		ImGui::EndCombo();
+	}
+
+	component->mScript;
+	std::vector<std::pair<std::string, std::pair<VariableType, void*>>> variables;
+
+	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mPlayerSpeed", std::pair<VariableType, void*>(VariableType::FLOAT, (void*)&component->mPlayerSpeed)));
+	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mCoolDown", std::pair<VariableType, void*>(VariableType::FLOAT, (void*)&component->mCoolDown)));
+	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mHeight", std::pair<VariableType, void*>(VariableType::FLOAT, (void*)&component->mHeight)));
+	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mObjectSpeed", component->mScript->mData[0]));
+
+
+
+	ImGui::SeparatorText("Attributes");
+/*
+	for (const auto& variable : variables) {
+		switch (variable.second.first)
+		{
+		case VariableType::INT:
+			
+			break;
+		case VariableType::FLOAT:
+			if (ImGui::DragFloat(variable.first.c_str(), (float*)variable.second.second)) {
+
+			}
+			break;
+		default:
+			break;
+		}
+	}
+					
+*/		
+	for (const auto& variable : component->mData) {
+		switch (variable->mType)
+		{
+		case VariableType::INT:
+			if (ImGui::DragInt(variable->mName, (int*)variable->mData)) {
+
+			}
+			break;
+		case VariableType::FLOAT:
+			if (ImGui::DragFloat(variable->mName, (float*)variable->mData)) {
+
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	
+}
 
 }

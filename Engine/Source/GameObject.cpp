@@ -354,10 +354,8 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 			break;
 		}
 		case ComponentType::SCRIPT:
-		{
 			newComponent = new ScriptComponent(this);
 			break;
-		}
 		case ComponentType::TEST:
 			newComponent = new TestComponent(this);
 			break;
@@ -533,11 +531,11 @@ GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
 void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
 	for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
 		if (components[i].IsObject()) {
-			const rapidjson::Value& component = components[i];
-			if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
-				ComponentType cType = ComponentType(component["ComponentType"].GetInt());
-				Component* c = go->CreateComponent(cType);
-				c->LoadFromJSON(component, go);
+			const rapidjson::Value& componentValue = components[i];
+			if (componentValue.HasMember("ComponentType") && componentValue["ComponentType"].IsInt()) {
+				ComponentType cType = ComponentType(componentValue["ComponentType"].GetInt());
+				Component* component = go->CreateComponent(cType);
+				component->LoadFromJSON(componentValue, go);
 			}
 		}
 	}

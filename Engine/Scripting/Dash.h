@@ -18,7 +18,9 @@ private:
     float timePassed = 0;
 
     bool isDashActive = false;
-
 };
 
-extern "C" SCRIPTING_API Script * CreateDash(GameObject * owner) { return new Dash(owner); }
+extern "C" SCRIPTING_API Script * CreateDash(GameObject * owner, std::vector<ScriptVariable*> data)
+{ 
+    return new Dash(owner); 
+}
