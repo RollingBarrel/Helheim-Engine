@@ -15,7 +15,7 @@ public:
     void Update() override {}
     Component* Clone(GameObject* owner) const override;
 
-    void Draw(bool useOrthographicProjection) const;
+    void Draw() const;
 
     void SetImage(ResourceTexture* image) { mImage = image; }
     unsigned int GetResourceId() const { return mResourceId; }
