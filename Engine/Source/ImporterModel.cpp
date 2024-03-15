@@ -265,6 +265,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
+    unsigned int modelUid = uid++;
     unsigned int currentUid = uid;
 
     unsigned int bufferSize = 0;
@@ -277,7 +278,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     ImportNode(rootNode, filePath, model, index, currentUid, bufferSize, modifyAssets);
 
-    ResourceModel* rModel = new ResourceModel(currentUid++, rootNode);
+    ResourceModel* rModel = new ResourceModel(modelUid, rootNode);
 
     if (!model.animations.empty())
     {
