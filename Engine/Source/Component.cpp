@@ -30,13 +30,10 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Canvas";
 		case ComponentType::TRANSFORM2D:
 			return "Transform2D";
-<<<<<<< HEAD
 		case ComponentType::ANIMATION:
 			return "Animation";
-=======
 		case ComponentType::IMAGE:
 			return "Image";
->>>>>>> a5c51ef (Module UI initial structure)
 		default:
 			return "None";
 		}

@@ -409,7 +409,7 @@ FodyWeavers.xsd
 !/Engine/Source/Dependencies/Wwise/x64_vc170/Release
 
 # IMGUI
-imgui.ini
+/Engine/Game/imgui.ini
 
 /Engine/Game/Library/*
 /Engine/Game/Assets/Scenes/TemporalScene.json

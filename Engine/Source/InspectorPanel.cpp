@@ -776,8 +776,3 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 	}
 }
 
-void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
-	ImGui::SeparatorText("Animation");
-	ImGui::Text("HELLO");
-}
-	

@@ -11,28 +11,19 @@
 #include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
-<<<<<<< HEAD
 #include "ModuleScene.h"
-=======
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
->>>>>>> ad6ffa9 (Canvas Component)
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
-<<<<<<< HEAD
 #include "ScriptComponent.h"
 #include "Tag.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
-=======
 #include "ImageComponent.h"
-<<<<<<< HEAD
->>>>>>> 2cbcff0 (First modifications on ImageComponent)
-=======
 #include "CanvasComponent.h"
->>>>>>> ad6ffa9 (Canvas Component)
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -124,12 +115,7 @@ GameObject::~GameObject()
 
 }
 
-<<<<<<< HEAD
-
-Component* GameObject::GetComponent(ComponentType type)
-=======
 Component* GameObject::GetComponent(ComponentType type) const
->>>>>>> a5c51ef (Module UI initial structure)
 {
 	for (auto component : mComponents) {
 		if (component->GetType() == type) {
@@ -424,24 +410,18 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		case ComponentType::NAVMESHCONTROLLER:
 			newComponent = new NavMeshControllerComponent(this);
 			break;
-<<<<<<< HEAD
 		case ComponentType::NAVMESHOBSTACLE:
 			newComponent = new NavMeshObstacleComponent(this);
 			break;
 		case ComponentType::ANIMATION:
 			newComponent = new AnimationComponent(this);
 			break;
-=======
 		case ComponentType::IMAGE:
 			newComponent = new ImageComponent(this);
-<<<<<<< HEAD
->>>>>>> 2cbcff0 (First modifications on ImageComponent)
-=======
 			break;
 		case ComponentType::CANVAS:
 			newComponent = new CanvasComponent(this);
 			break;
->>>>>>> ad6ffa9 (Canvas Component)
 		default:
 			break;
 	}
