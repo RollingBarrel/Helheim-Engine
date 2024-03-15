@@ -15,7 +15,7 @@
 GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 {
 	glGetIntegerv(GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT, &mSsboAligment);
-	
+
 	memset(mSsboModelMatricesData, 0, sizeof(mSsboModelMatricesData));
 	memset(mSsboIndicesData, 0, sizeof(mSsboIndicesData));
 	memset(mSync, 0, sizeof(mSync));
@@ -38,7 +38,7 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glGenBuffers(1, &mSsboMaterials);
 	glGenBuffers(1, &mSsboIndices);
 	glGenBuffers(1, &mIbo);
-	
+
 	unsigned int idx = 0;
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
@@ -76,36 +76,46 @@ void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
 	}
 }
 
-void GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
+#define ALIGNED_STRUCT_SIZE(STRUCT_SIZE, ALIGNMENT) ((STRUCT_SIZE + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
+bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 {
-	//unsigned int offset = 0;
-	//for (const MeshRendererComponent* mesh : mMeshComponents) {
-	//
-	//	if (mesh == cMesh)
-	//	{
-	//		//const ResourceMaterial* rMaterial = mesh->GetMaterial();
-	//		//Material material;
-	//		//memcpy(material.diffuseColor, rMaterial->mDiffuseFactor.ptr(), sizeof(float) * 4);
-	//		//material.diffuseTexture = rMaterial->mDiffuseTexture->mTextureHandle;
-	//		//memcpy(material.specularColor, rMaterial->mSpecularFactor.ptr(), sizeof(float) * 4);
-	//		//material.specularTexture = rMaterial->mSpecularGlossinessTexture->mTextureHandle;
-	//		//material.normalTexture = rMaterial->mNormalTexture->mTextureHandle;
-	//		//material.shininess = rMaterial->mGlossinessFactor;
-	//		//material.hasDiffuseMap = rMaterial->mEnableDiffuseTexture;
-	//		//material.hasSpecularMap = rMaterial->mEnableSpecularGlossinessTexture;
-	//		//material.hasShininessMap = rMaterial->mEnableShinessMap;
-	//		//material.hasNormalMap = rMaterial->mEnableNormalMap;
-	//		//
-	//		//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-	//		//glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
-	//		//glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	//		break;
-	//	}
-	//	offset += sizeof(Material);
-	//}
+	const ResourceMaterial* rMat = cMesh->GetResourceMaterial();
+	unsigned int offset = 0;
+	int idx = 0;
+	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), mSsboAligment);
+	for (BatchMaterialResource bRMaterial : mUniqueMaterials)
+	{
+		if (rMat->GetUID() == bRMaterial.resource->GetUID())
+		{
+			break;
+		}
+		offset += materialSize;
+		++idx;
+	}
+	if (idx - 1 > 0)
+		return false;
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
+	const BatchMaterialResource& rMaterial = mUniqueMaterials[idx];
+	Material material;
+	memcpy(material.diffuseColor, rMaterial.resource->GetDiffuseFactor().ptr(), sizeof(float) * 4);
+
+	material.diffuseTexture = (rMaterial.resource->GetDiffuseTexture()) ? rMaterial.resource->GetDiffuseTexture()->GetTextureHandle() : 0;
+	memcpy(material.specularColor, rMaterial.resource->GetSpecularFactor().ptr(), sizeof(float) * 4);
+	material.specularTexture = (rMaterial.resource->GetSpecularGlossinessTexture()) ? rMaterial.resource->GetSpecularGlossinessTexture()->GetTextureHandle() : 0;
+	material.normalTexture = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
+	material.shininess = rMaterial.resource->GetGlossinessFactor();
+	material.hasDiffuseMap = rMaterial.resource->IsDiffuseTextureEnabled();
+	material.hasSpecularMap = rMaterial.resource->IsSpecularGlossinessTextureEnabled();
+	material.hasShininessMap = rMaterial.resource->IsShininessMapEnabled();
+	material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
+
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	return true;
 }
 
-#define ALIGNED_STRUCT_SIZE(STRUCT_SIZE, ALIGNMENT) ((STRUCT_SIZE + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
 void GeometryBatch::RecreatePersistentSsbosAndIbo()
 {
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
@@ -189,7 +199,7 @@ void GeometryBatch::RecreateMaterials()
 
 void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 {
-	
+
 	bool foundMaterial = false;
 	uint32_t matIdx = 0;
 	const ResourceMaterial& resourceMaterial = *cMesh->GetResourceMaterial();
@@ -295,7 +305,7 @@ void GeometryBatch::Draw()
 	if (mSync[idx])
 	{
 		GLenum waitReturn = GL_UNSIGNALED;
-		while (waitReturn != GL_ALREADY_SIGNALED && waitReturn != GL_CONDITION_SATISFIED) 
+		while (waitReturn != GL_ALREADY_SIGNALED && waitReturn != GL_CONDITION_SATISFIED)
 		{
 			waitReturn = glClientWaitSync(mSync[idx], GL_SYNC_FLUSH_COMMANDS_BIT, 1000000000);
 		}
@@ -329,11 +339,11 @@ void GeometryBatch::Draw()
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0 , mCommands.size(), 0);
-	
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
+
 	glDeleteSync(mSync[idx]);
 	mSync[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-	
+
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);

@@ -127,9 +127,9 @@ void main()
 	if(material.hasShininessMap)
 	{
 		if(material.hasSpecularMap)
-			shininess = exp2(15*specularTex.a + 1);
+			shininess = exp2(7*specularTex.a + 1);
 		else
-			shininess = exp2(15*texture(material.specularTexture, uv).a+1);
+			shininess = exp2(7*texture(material.specularTexture, uv).a+1);
 	}
 	else
 	{

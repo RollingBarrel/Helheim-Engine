@@ -56,9 +56,18 @@ void BatchManager::RemoveMeshComponent(const MeshRendererComponent* meshComponen
 	}
 }
 
+void BatchManager::EditMaterial(const MeshRendererComponent* meshComponent)
+{
+	for (GeometryBatch* batch : mBatches)
+	{
+		if (batch->EditMaterial(meshComponent))
+			return;
+	}
+}
+
 void BatchManager::Draw()
 {
-	for (GeometryBatch* batch : mBatches) 
+	for (GeometryBatch* batch : mBatches)
 	{
 		batch->Draw();
 	}

@@ -50,7 +50,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
- 	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -149,7 +149,7 @@ bool ModuleOpenGL::Init()
 }
 
 update_status ModuleOpenGL::PreUpdate(float dt)
-{	
+{
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -201,7 +201,7 @@ bool ModuleOpenGL::CleanUp()
 
 void ModuleOpenGL::SetWireframe(bool wireframe)
 {
-	if(wireframe)
+	if (wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -443,7 +443,7 @@ void ModuleOpenGL::UpdatePoinLightInfo(const PointLightComponent& cPointLight)
 
 void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 {
-	for(int i = 0; i < mPointLights.size(); ++i)
+	for (int i = 0; i < mPointLights.size(); ++i)
 	{
 		if (mPointLights[i] == &cPointLight)
 		{
@@ -464,6 +464,11 @@ void ModuleOpenGL::BatchAddMesh(MeshRendererComponent* mesh)
 void ModuleOpenGL::BatchRemoveMesh(MeshRendererComponent* mesh)
 {
 	mBatchManager.RemoveMeshComponent(mesh);
+}
+
+void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
+{
+	mBatchManager.EditMaterial(mesh);
 }
 
 void ModuleOpenGL::Draw()
@@ -515,7 +520,7 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 OpenGLBuffer::OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding, unsigned int size, const void* data) : mType(type), mUsage(usage), mBinding(binding), mIdx(0), mDataSize(size), mDataCapacity(size) {
 	glGenBuffers(1, &mIdx);
 	glBindBuffer(mType, mIdx);
-	if(mDataSize != 0)
+	if (mDataSize != 0)
 		glBufferData(mType, mDataSize, data, mUsage);
 	if (mBinding != -1)
 		glBindBufferBase(mType, mBinding, mIdx);

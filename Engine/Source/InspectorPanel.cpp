@@ -17,6 +17,7 @@
 #include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+#include "ModuleOpenGL.h"
 
 #include "ResourceMaterial.h"
 
@@ -24,7 +25,7 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) {
@@ -41,7 +42,7 @@ void InspectorPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	if (!focusedObject->IsRoot()) 
+	if (!focusedObject->IsRoot())
 	{
 		if (ImGui::Checkbox("##enabled", &enabled))
 		{
@@ -94,7 +95,7 @@ void InspectorPanel::Draw(int windowFlags)
 		ImGui::Separator();
 		AddComponentButton(focusedObject);
 	}
-	
+
 	if (mSameComponentPopup)
 	{
 		ShowSameComponentPopup();
@@ -244,24 +245,24 @@ void InspectorPanel::RightClickPopup(Component* component) {
 		}
 
 		switch (component->GetType()) {
-			case ComponentType::TEST: {
-				if (ImGui::MenuItem("Custom Test Component Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				if (ImGui::MenuItem("Custom Test Component Option 2")) {
-					ImGui::CloseCurrentPopup();
-				}
-				break;
+		case ComponentType::TEST: {
+			if (ImGui::MenuItem("Custom Test Component Option")) {
+				ImGui::CloseCurrentPopup();
 			}
-			case ComponentType::MESHRENDERER: {
-				if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				break;
+			if (ImGui::MenuItem("Custom Test Component Option 2")) {
+				ImGui::CloseCurrentPopup();
 			}
+			break;
+		}
+		case ComponentType::MESHRENDERER: {
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+				ImGui::CloseCurrentPopup();
+			}
+			break;
+		}
 		}
 
 		ImGui::EndPopup();
@@ -312,38 +313,38 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		RightClickPopup(component);
 		if (isOpen) {
 			switch (component->GetType()) {
-				case ComponentType::MESHRENDERER: {
-					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
-					break;
-				}
-				case ComponentType::AIAGENT: {
-					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
-					break;
-				}
-				case ComponentType::POINTLIGHT: {
-					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
-					break;
-				}
-				case ComponentType::SPOTLIGHT: {
-					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
-					break;
-				}
-				case ComponentType::CAMERA: {
-					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
-					break;
-				}
-				case ComponentType::NAVMESHOBSTACLE: {
-					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
-					break;
-				}
-				case ComponentType::ANIMATION: {
-					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
-					break;
-				}
-				case ComponentType::TEST: {
-					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
-					break;
-				}
+			case ComponentType::MESHRENDERER: {
+				DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
+				break;
+			}
+			case ComponentType::AIAGENT: {
+				DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
+				break;
+			}
+			case ComponentType::POINTLIGHT: {
+				DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
+				break;
+			}
+			case ComponentType::SPOTLIGHT: {
+				DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
+				break;
+			}
+			case ComponentType::CAMERA: {
+				DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+				break;
+			}
+			case ComponentType::NAVMESHOBSTACLE: {
+				DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
+				break;
+			}
+			case ComponentType::ANIMATION: {
+				DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
+				break;
+			}
+			case ComponentType::TEST: {
+				DrawTestComponent(reinterpret_cast<TestComponent*>(component));
+				break;
+			}
 			}
 		}
 		ImGui::PopID();
@@ -381,7 +382,7 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	else {
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
 	}
-	
+
 
 	ImGui::Separator();
 	ImGui::Text("There is ");
@@ -517,38 +518,52 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
-	//ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
-	//
-	////if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
-	////	renderComponent->EditMaterial();
-	////if(ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
-	////	renderComponent->EditMaterial();
-	////if(ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap))
-	////	renderComponent->EditMaterial();
-	////if(ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
-	////	renderComponent->EditMaterial();
-	////
-	////if (!material->mEnableDiffuseTexture)
-	////{
-	////	if(ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
-	////		renderComponent->EditMaterial();
-	////}
-	////if (!material->mEnableSpecularGlossinessTexture)
-	////{
-	////	if(ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
-	////		renderComponent->EditMaterial();
-	////}
-	////if (!material->mEnableShinessMap)
-	////{
-	////	if(ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
-	////		renderComponent->EditMaterial();
-	////}
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
+
+	if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::Checkbox("Enable Shininess map", &material->mEnableShininessMap))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+
+	if (!material->IsDiffuseTextureEnabled())
+	{
+		if (ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
+	if (!material->IsSpecularGlossinessTextureEnabled())
+	{
+		if (ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
+	if (!material->IsShininessMapEnabled())
+	{
+		if (ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
 }
 
 void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)
 {
 	ImGui::SeparatorText("Navigation Mesh Obstacle");
-	
+
 	float Radius = component->GetRadius();
 	ImGui::InputFloat("Radius", &Radius);
 	component->SetRadius(Radius);
@@ -556,7 +571,7 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 	float Height = component->GetHeight();
 	ImGui::InputFloat("Height", &Height);
 	component->SetHeight(Height);
-	
+
 }
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
