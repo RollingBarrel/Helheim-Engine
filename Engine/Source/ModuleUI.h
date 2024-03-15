@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "Geometry/Frustum.h"
 
 class GameObject;
 class CanvasComponent;
@@ -21,11 +22,14 @@ public:
 
 	inline unsigned int GetQuadVAO() const { return mQuadVAO; }
 	inline unsigned int GetProgram() const { return mUIProgramId; }
+	inline Frustum* GetFrustum() const { return UIfrustum; }
 
 	void SetScreenSpace(bool screen);
 
 private:
 	void DrawWidget(const GameObject* gameObject);
+
+	Frustum* UIfrustum;
 
 	unsigned int mQuadVBO;
 	unsigned int mQuadVAO;

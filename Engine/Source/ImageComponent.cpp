@@ -39,20 +39,20 @@ void ImageComponent::Draw(bool useOrthographicProjection) const
         glUseProgram(program);
 
         float4x4 proj;
-        if (useOrthographicProjection) {
+        //if (useOrthographicProjection) {
             // Use orthographic projection matrix for UI rendering
-            float screenWidth = static_cast<float>(App->GetWindow()->GetWidth());
-            float screenHeight = static_cast<float>(App->GetWindow()->GetHeight());
-            proj = float4x4::D3DOrthoProjLH(-1.0f, 1.0f, screenWidth, screenHeight);
-        }
-        else {
+            //float screenWidth = static_cast<float>(App->GetWindow()->GetWidth());
+            //float screenHeight = static_cast<float>(App->GetWindow()->GetHeight());
+            //proj = float4x4::D3DOrthoProjLH(-1.0f, 1.0f, screenWidth, screenHeight);
+        //}
+        //else {
             // Use perspective projection matrix for regular rendering
-            proj = App->GetCamera()->GetFrustum()->ProjectionMatrix();
-        }
+            proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
+        //}
 
         float4x4 model = float4x4::identity;
 
-        float4x4 view = App->GetCamera()->GetViewMatrix();
+        float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 
         glBindVertexArray(App->GetUI()->GetQuadVAO());
 
