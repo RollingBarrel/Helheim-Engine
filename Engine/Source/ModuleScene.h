@@ -32,6 +32,10 @@ public:
 		mGameObjectsToDuplicate.push_back(gameObject);
 	}
 
+	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject*> pair) {
+		mGameObjectsToLoadIntoScripts.push_back(pair);
+	}
+
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 	bool GetShouldRenderQuadtree() const { return mDrawQuadtree; }
 	void SetShouldRenderQuadtree(bool a) { mDrawQuadtree = a; }
@@ -56,10 +60,12 @@ public:
 	void Load(const char* saveFilePath);
 
 	GameObject* Find(const char* name);
+	GameObject* Find(unsigned int UID);
 
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
+	void LoadGameObjectsIntoScripts();
 
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
@@ -73,6 +79,8 @@ private:
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
+	std::vector<std::pair<unsigned int, GameObject*>> mGameObjectsToLoadIntoScripts;
+
 
 	std::vector<Tag*> mTags;
 

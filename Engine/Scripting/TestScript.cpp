@@ -25,13 +25,13 @@ TestScript::TestScript(GameObject* owner) : Script(owner)
 
 void TestScript::Start()
 {
-	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
-	CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
+	//LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
+	//CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
 	//NavMeshControllerComponent* component2 = (NavMeshControllerComponent*)mGameObject->CreateComponent(ComponentType::NAVMESHCONTROLLER);
-	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
-	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
+	//PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
+	//SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
-    gameObject = App->GetScene()->Find("Robot.gltf");
+    //mRobot = App->GetScene()->Find("Robot.gltf");
 }
 
 void TestScript::Update()
@@ -50,7 +50,7 @@ void TestScript::Update()
 	}
 	
 
-    if (gameObject != nullptr) {
+    if (mRobot != nullptr) {
         if (movement >= height)
         {
             startCounter = true;
@@ -76,12 +76,12 @@ void TestScript::Update()
             if (up)
             {
                 //transform.position = new Vector3(transform.position.x, transform.position.y + speed * App->GetGameDt(), transform.position.z);
-                gameObject->SetPosition(float3(gameObject->GetPosition().x, gameObject->GetPosition().y + speed * App->GetGameDt(), gameObject->GetPosition().z));
+                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y + speed * App->GetGameDt(), mRobot->GetPosition().z));
             }
             else
             {
                 //transform.position = new Vector3(transform.position.x, transform.position.y - speed * App->GetGameDt(), transform.position.z);
-                gameObject->SetPosition(float3(gameObject->GetPosition().x, gameObject->GetPosition().y - speed * App->GetGameDt(), gameObject->GetPosition().z));
+                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - speed * App->GetGameDt(), mRobot->GetPosition().z));
             }
         }
 

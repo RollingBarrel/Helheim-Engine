@@ -682,15 +682,46 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 		switch (variable->mType)
 		{
 		case VariableType::INT:
-			if (ImGui::DragInt(variable->mName, (int*)variable->mData)) {
-
-			}
+			ImGui::DragInt(variable->mName, (int*)variable->mData);
 			break;
 		case VariableType::FLOAT:
-			if (ImGui::DragFloat(variable->mName, (float*)variable->mData)) {
-
-			}
+			ImGui::DragFloat(variable->mName, (float*)variable->mData);
 			break;
+		case VariableType::BOOL:
+			ImGui::Checkbox(variable->mName, (bool*)variable->mData);
+			break;
+		case VariableType::FLOAT3:
+			ImGui::DragFloat3(variable->mName, (float*)variable->mData);
+			break;
+		case VariableType::GAMEOBJECT:
+		{
+			
+			GameObject* go = (GameObject*)variable->mData;
+			ImGui::Text(variable->mName);
+			ImGui::SameLine();
+			const char* str;
+			if (!go) {
+				str = "Drop a GameObject Here";
+			}
+			else {
+				str = go->GetName().c_str();
+			}
+			ImGui::BulletText(str);
+			if (ImGui::BeginDragDropTarget()) {
+
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
+					GameObject* gay = (GameObject*)payload->Data;
+					//variable->mData = (GameObject*)payload->Data;
+					gay = (GameObject*)variable->mData;
+					int num = 2;
+				}
+				GameObject* go2 = (GameObject*)variable->mData;
+				ImGui::EndDragDropTarget();
+			}
+
+
+			break;
+		}
 		default:
 			break;
 		}

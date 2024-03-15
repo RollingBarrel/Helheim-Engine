@@ -261,6 +261,29 @@ GameObject* GameObject::Find(const char* name)
 	return gameObject;
 }
 
+GameObject* GameObject::Find(unsigned int UID)
+{
+	GameObject* gameObject = nullptr;
+
+	for (auto child : mChildren) {
+
+		if (child->GetID() == UID) {
+			gameObject = child;
+			break;
+		}
+		else {
+			gameObject = child->Find(UID);
+
+			if (gameObject) {
+				break;
+			}
+		}
+
+	}
+
+	return gameObject;
+}
+
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
 {
 	child->mParent = this;

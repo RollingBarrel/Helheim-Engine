@@ -69,6 +69,7 @@ public:
 	void SetTag(Tag* tag) { mTag = tag; };
 
 	GameObject* Find(const char* name);
+	GameObject* Find(unsigned int UID);
 
 	Component* CreateComponent(ComponentType type);
 	MeshRendererComponent* GetMeshRenderer() const;

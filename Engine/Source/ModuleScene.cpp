@@ -55,7 +55,7 @@ bool ModuleScene::Init()
 
 	//Save("Scene");
 	Load("scene");
-
+	LoadGameObjectsIntoScripts();
 	return true;
 }
 
@@ -223,6 +223,17 @@ GameObject* ModuleScene::Find(const char* name)
 
 }
 
+GameObject* ModuleScene::Find(unsigned int UID)
+{
+	if (UID != 1) {
+		return mRoot->Find(UID);
+	}
+	else {
+		return mRoot;
+	}
+	
+}
+
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
@@ -304,4 +315,13 @@ void ModuleScene::DuplicateGameObjects() {
 	mGameObjectsToDuplicate.clear();
 	mQuadtreeRoot->UpdateTree();
 
+}
+
+void ModuleScene::LoadGameObjectsIntoScripts()
+{
+
+	for (auto& pair : mGameObjectsToLoadIntoScripts) {
+		pair.second = Find(pair.first);
+
+	}
 }

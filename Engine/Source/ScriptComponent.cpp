@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include "Script.h"
 #include "GameObject.h"
+#include "ModuleScene.h"
 
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
@@ -122,6 +123,9 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 								*(float3*)data->mData = float3(floatArray[0].GetFloat(), floatArray[1].GetFloat(), floatArray[2].GetFloat());
 								break;
 							}
+							case VariableType::GAMEOBJECT:
+								App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject*>(array[i]["VariableData"].GetInt(), (GameObject*)data->mData));
+								break;
 								
 							default:
 								break;
