@@ -26,9 +26,7 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 ImageComponent:: ~ImageComponent() {
 }
 
-
-
-void ImageComponent::Draw(bool useOrthographicProjection) const
+void ImageComponent::Draw() const
 {
     unsigned int program = App->GetUI()->GetProgram();
     if (program)
@@ -38,17 +36,7 @@ void ImageComponent::Draw(bool useOrthographicProjection) const
 
         glUseProgram(program);
 
-        float4x4 proj;
-        //if (useOrthographicProjection) {
-            // Use orthographic projection matrix for UI rendering
-            //float screenWidth = static_cast<float>(App->GetWindow()->GetWidth());
-            //float screenHeight = static_cast<float>(App->GetWindow()->GetHeight());
-            //proj = float4x4::D3DOrthoProjLH(-1.0f, 1.0f, screenWidth, screenHeight);
-        //}
-        //else {
-            // Use perspective projection matrix for regular rendering
-            proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
-        //}
+        float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
 
         float4x4 model = float4x4::identity;
 
@@ -58,8 +46,6 @@ void ImageComponent::Draw(bool useOrthographicProjection) const
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-
-        // TODO Bind mColor
 
         glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
         glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
