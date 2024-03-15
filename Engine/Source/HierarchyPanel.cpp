@@ -151,7 +151,7 @@ void HierarchyPanel::DragAndDropSource(GameObject* source)
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
 		mUnmarkFlag = false;
-		ImGui::SetDragDropPayload("_TREENODE", source, sizeof(*source));
+		ImGui::SetDragDropPayload("_TREENODE", &source, sizeof(*source));
 		if (mMarked.size() > 1) {
 			ImGui::Text(source->mName.c_str());
 		}

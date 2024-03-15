@@ -678,7 +678,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	}
 					
 */		
-	for (const auto& variable : component->mData) {
+	for (ScriptVariable* variable : component->mData) { 
 		switch (variable->mType)
 		{
 		case VariableType::INT:
@@ -699,7 +699,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			GameObject* go = (GameObject*)variable->mData;
 			ImGui::Text(variable->mName);
 			ImGui::SameLine();
-			const char* str;
+			const char* str ="";
 			if (!go) {
 				str = "Drop a GameObject Here";
 			}
@@ -710,16 +710,10 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			if (ImGui::BeginDragDropTarget()) {
 
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
-					GameObject* gay = (GameObject*)payload->Data;
-					//variable->mData = (GameObject*)payload->Data;
-					gay = (GameObject*)variable->mData;
-					int num = 2;
+					variable->mData = *(GameObject**)payload->Data;
 				}
-				GameObject* go2 = (GameObject*)variable->mData;
 				ImGui::EndDragDropTarget();
 			}
-
-
 			break;
 		}
 		default:
