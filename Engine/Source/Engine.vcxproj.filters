@@ -427,6 +427,9 @@
     <ClCompile Include="ScriptComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="EditorControlPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
     <ClCompile Include="ImporterAnimation.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
@@ -1108,6 +1111,9 @@
     </ClInclude>
     <ClInclude Include="NavMeshController.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorControlPanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerConfig.h">
       <Filter>Dependencies\Wwise</Filter>
