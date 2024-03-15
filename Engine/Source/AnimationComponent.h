@@ -7,7 +7,7 @@ class ResourceAnimation;
 
 class AnimationComponent : public Component {
 public:
-	AnimationComponent(GameObject* owner, unsigned int animationUid);
+	AnimationComponent(GameObject* owner);
 	AnimationComponent(const AnimationComponent& other, GameObject* owner);
 	~AnimationComponent();
 
@@ -27,6 +27,8 @@ public:
 	void OnStart();
 	void OnStop();
 	void OnUpdate();
+
+	void SetAnimation(unsigned int uid);
 
 private:
 

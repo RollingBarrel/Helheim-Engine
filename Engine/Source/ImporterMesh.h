@@ -7,6 +7,7 @@
 #include <vector>
 
 
+class GeometryBatch;
 class ResourceMesh;
 
 namespace Importer

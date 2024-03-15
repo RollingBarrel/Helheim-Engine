@@ -8,13 +8,8 @@
 
 #include "GameObject.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner, unsigned int animationUid) :Component(owner, ComponentType::ANIMATION) 
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimation(nullptr), mController(nullptr)
 {
-	if (animationUid != 0) {
-		mAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(animationUid, Resource::Type::Animation));
-	}
-
-	mController = new AnimationController(mAnimation, animationUid, true);
 }
 
 AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION)
@@ -44,6 +39,21 @@ void AnimationComponent::OnStart()
 void AnimationComponent::OnUpdate()
 {
 	mController->Update(mOwner->GetChildren()[0]);
+}
+
+void AnimationComponent::SetAnimation(unsigned int uid)
+{
+	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(uid, Resource::Type::Animation));
+	if (tmpAnimation && mAnimation)
+	{
+		App->GetResource()->ReleaseResource(mAnimation->GetUID());
+	}
+	if (tmpAnimation)
+	{
+		mAnimation = tmpAnimation;
+
+		mController = new AnimationController(mAnimation, uid, true);
+	}
 }
 
 void AnimationComponent::OnStop()

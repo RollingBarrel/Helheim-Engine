@@ -66,7 +66,7 @@ public:
 	void SetScale(const float3& scale);
 	void SetTag(Tag* tag) { mTag = tag; };
 
-	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0, unsigned int animationUid = 0);
+	Component* CreateComponent(ComponentType type);
 	MeshRendererComponent* GetMeshRenderer() const;
 	CameraComponent* getCamera() const;
 	void Save(Archive& archive) const;

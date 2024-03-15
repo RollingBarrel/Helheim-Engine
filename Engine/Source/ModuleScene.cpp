@@ -19,6 +19,9 @@
 #include <algorithm>
 #include <iterator>
 
+#include "GeometryBatch.h"
+#include "ImporterMesh.h"
+
 ModuleScene::ModuleScene() {
 	mNavMeshController = new NavMeshController();
 
@@ -256,10 +259,8 @@ update_status ModuleScene::Update(float dt)
 		mQuadtreeRoot->Draw();
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
-	mNavMeshController->Update();
-	GenerateRenderList(mRoot);
-	DrawRenderList();
-	mRenderList.clear();
+
+	App->GetOpenGL()->Draw();
 
 	return UPDATE_CONTINUE;
 }
@@ -297,38 +298,4 @@ void ModuleScene::DuplicateGameObjects() {
 	mGameObjectsToDuplicate.clear();
 	mQuadtreeRoot->UpdateTree();
 
-}
-
-void ModuleScene::AddToRenderList(GameObject* root)
-{
-	mRenderList.push_back(root);
-}
-
-void ModuleScene::GenerateRenderList(GameObject* root)
-{
-	// if engine slows down there is an optimization 
-	// HERE on getMeshRenderer
-	if (root->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		AddToRenderList(root);
-	}
-	for (GameObject* child : root->GetChildren())
-	{
-		GenerateRenderList(child);
-	}
-}
-
-void ModuleScene::DrawRenderList()
-{
-	for (GameObject* objectToRender : mRenderList)
-	{
-		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
-		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
-
-		// Enable/disable mesh renderer component
-		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
-		{
-			meshRenderer->Draw();
-		}
-	}
 }

@@ -1,1 +1,924 @@
-{"Scene":{"GameObjects":[{"UID":386524399,"ParentUID":1,"Name":"RootNode","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":479259571,"ParentUID":386524399,"Name":"Zombunny","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":521658760,"ParentUID":479259571,"Name":"Zombunny","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[{"ID":527715787,"MeshID":958681511,"MaterialID":958681515,"ComponentType":0,"isEnabled":true}]},{"UID":366787329,"ParentUID":479259571,"Name":"Zombunny","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[{"ID":379040625,"MeshID":958681516,"MaterialID":958681517,"ComponentType":0,"isEnabled":true}]},{"UID":1177961332,"ParentUID":386524399,"Name":"Ctrl_Grp","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1256633062,"ParentUID":1177961332,"Name":"Root","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.0],"Rotation":[0.0,0.0,0.7071067690849304,0.7071067690849304],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[{}]},{"UID":62678631,"ParentUID":1256633062,"Name":"Hips","isEnabled":true,"isActive":true,"Translation":[0.2909983694553375,0.0027264284435659649,0.0002082364517264068],"Rotation":[-0.5340902805328369,0.48241564631462099,-0.47549593448638918,0.5058916211128235],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":157223949,"ParentUID":62678631,"Name":"Spine","isEnabled":true,"isActive":true,"Translation":[0.0002581339213065803,-0.00005960099588264711,0.19401027262210847],"Rotation":[0.09070304781198502,-0.11479450762271881,0.0038652895018458368,0.9892321228981018],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":240351423,"ParentUID":157223949,"Name":"Head","isEnabled":true,"isActive":true,"Translation":[7.105427198782324e-17,8.881783998477906e-18,0.23028619587421418],"Rotation":[0.11890615522861481,0.05964769795536995,-0.03455062583088875,0.9905098080635071],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":311434464,"ParentUID":240351423,"Name":"HeadEnd","isEnabled":true,"isActive":true,"Translation":[1.376676561123106e-16,-3.552713599391162e-17,0.36048606038093569],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":380776980,"ParentUID":240351423,"Name":"LeftEar","isEnabled":true,"isActive":true,"Translation":[0.33966490626335146,0.06945112347602844,0.40904220938682558],"Rotation":[-0.1281338781118393,0.46012216806411745,0.03681415319442749,0.8777892589569092],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":426935703,"ParentUID":380776980,"Name":"LeftEarEnd","isEnabled":true,"isActive":true,"Translation":[-1.4210854397564649e-16,2.4868995857482627e-16,0.21373941004276277],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":468290577,"ParentUID":240351423,"Name":"RightEar","isEnabled":true,"isActive":true,"Translation":[-0.3396649956703186,0.06945109367370606,0.4090425372123718],"Rotation":[0.9452946186065674,-0.03366024047136307,0.2971512973308563,0.1303311288356781],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":531854550,"ParentUID":468290577,"Name":"RightEarEnd","isEnabled":true,"isActive":true,"Translation":[-8.285292665277666e-7,-9.097042408257039e-8,-0.2137383073568344],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":576551232,"ParentUID":157223949,"Name":"LeftUpperArm","isEnabled":true,"isActive":true,"Translation":[0.17286542057991029,0.06917708367109299,0.1919027417898178],"Rotation":[0.37590306997299197,0.6522644758224487,-0.3564247786998749,0.5533618330955505],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":618045348,"ParentUID":576551232,"Name":"LeftLowerArm","isEnabled":true,"isActive":true,"Translation":[0.0,0.0,0.2511610686779022],"Rotation":[0.011576068587601185,-0.029623854905366899,-0.008396320044994355,0.9994587898254395],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":658843254,"ParentUID":618045348,"Name":"LeftWrist","isEnabled":true,"isActive":true,"Translation":[2.8421708795129299e-16,0.0,0.23802845180034638],"Rotation":[2.7469248700954909e-17,-0.014149601571261883,-2.043004756724705e-17,0.9998998641967773],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":699432297,"ParentUID":157223949,"Name":"LeftUpperArmFK","isEnabled":true,"isActive":true,"Translation":[0.17286542057991029,0.06917708367109299,0.1919027417898178],"Rotation":[0.37590306997299197,0.6522644758224487,-0.3564247786998749,0.5533618330955505],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":740926413,"ParentUID":699432297,"Name":"LeftLowerArmFK","isEnabled":true,"isActive":true,"Translation":[-1.4210854397564649e-16,3.552713599391162e-17,0.2511610686779022],"Rotation":[0.011576068587601185,-0.029623854905366899,-0.008396320044994355,0.9994587898254395],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":786945894,"ParentUID":740926413,"Name":"LeftWristFK","isEnabled":true,"isActive":true,"Translation":[2.8421708795129299e-16,-7.105427198782324e-17,0.23802845180034638],"Rotation":[-2.805857849145199e-17,-0.014149601571261883,-2.1215822827058124e-17,0.9998998641967773],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":829414704,"ParentUID":157223949,"Name":"LeftUpperArmIK","isEnabled":true,"isActive":true,"Translation":[0.17286542057991029,0.06917708367109299,0.1919027417898178],"Rotation":[0.8927685618400574,-0.003494823584333062,0.4503646194934845,0.011125014163553715],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":873206313,"ParentUID":829414704,"Name":"LeftLowerArmIK","isEnabled":true,"isActive":true,"Translation":[1.4210854397564649e-16,-3.552713599391162e-17,0.2511610686779022],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":949023582,"ParentUID":873206313,"Name":"LeftWristIK","isEnabled":true,"isActive":true,"Translation":[4.2632563192693947e-16,0.0,0.23802845180034638],"Rotation":[0.16060243546962739,0.010572995990514756,0.9848306775093079,0.06483478844165802],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1024910472,"ParentUID":157223949,"Name":"RightUpperArm","isEnabled":true,"isActive":true,"Translation":[-0.17286500334739686,0.06917709857225418,0.19190272688865663],"Rotation":[0.5234715938568115,0.4341411590576172,0.6424335241317749,-0.3532394766807556],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1106018937,"ParentUID":1024910472,"Name":"RightLowerArm","isEnabled":true,"isActive":true,"Translation":[-1.4210854397564649e-16,-3.552713599391162e-17,-0.25116100907325747],"Rotation":[-0.019711928442120553,0.03358307108283043,0.006860698107630014,0.9992179870605469],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1183228626,"ParentUID":1106018937,"Name":"RightWrist","isEnabled":true,"isActive":true,"Translation":[-1.4210854397564649e-16,-9.769962563761818e-17,-0.23802900314331056],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1254381288,"ParentUID":157223949,"Name":"RightUpperArmFK","isEnabled":true,"isActive":true,"Translation":[-0.17286500334739686,0.06917709857225418,0.19190272688865663],"Rotation":[0.5234715938568115,0.4341411590576172,0.6424335241317749,-0.3532394766807556],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1326160539,"ParentUID":1254381288,"Name":"RightLowerArmFK","isEnabled":true,"isActive":true,"Translation":[-2.8421708795129299e-16,-5.773159516292577e-17,-0.25116100907325747],"Rotation":[-0.019711928442120553,0.03358307108283043,0.006860698107630014,0.9992179870605469],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1398427137,"ParentUID":1326160539,"Name":"RightWristFK","isEnabled":true,"isActive":true,"Translation":[-1.4210854397564649e-16,-3.552713599391162e-17,-0.23802900314331056],"Rotation":[0.0,0.0,0.0,1.0],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1473548196,"ParentUID":157223949,"Name":"RightUpperArmIK","isEnabled":true,"isActive":true,"Translation":[-0.17286500334739686,0.06917709857225418,0.19190272688865663],"Rotation":[0.02874944359064102,0.558962345123291,-0.002436212031170726,0.8286908864974976],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1546441383,"ParentUID":1473548196,"Name":"RightLowerArmIK","isEnabled":true,"isActive":true,"Translation":[-2.1316281596346973e-16,-3.552713599391162e-17,-0.25116100907325747],"Rotation":[-4.463939526182237e-14,0.4854694902896881,2.4788075306020515e-14,0.8742536306381226],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1620726990,"ParentUID":1546441383,"Name":"RightWristIK","isEnabled":true,"isActive":true,"Translation":[-1.4210854397564649e-16,-3.552713599391162e-17,-0.23802900314331056],"Rotation":[-0.15728804469108582,-0.015486222691833973,0.9826798439025879,0.0967523604631424],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1693550556,"ParentUID":62678631,"Name":"LeftLeg","isEnabled":true,"isActive":true,"Translation":[0.15488280355930329,-0.12964345514774323,0.00019751557556446642],"Rotation":[0.9999510049819946,-4.076128923750525e-18,0.009899534285068512,6.12636894657517e-17],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1766861469,"ParentUID":1693550556,"Name":"LeftFoot","isEnabled":true,"isActive":true,"Translation":[0.048644665628671649,0.07756918668746948,0.12021666020154953],"Rotation":[-0.5085270404815674,-0.008523808792233467,-0.005034427624195814,0.8609890937805176],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1840242003,"ParentUID":62678631,"Name":"RightLeg","isEnabled":true,"isActive":true,"Translation":[-0.1548829972743988,-0.12964299321174622,0.0001973873731913045],"Rotation":[3.487133314220917e-18,0.009899534285068512,-1.7693312652399539e-18,0.9999510049819946],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]},{"UID":1914179505,"ParentUID":1840242003,"Name":"RightFoot","isEnabled":true,"isActive":true,"Translation":[-0.00982758030295372,0.09173905849456787,-0.24033106863498689],"Rotation":[-0.5085270404815674,-0.008523808792233467,-0.005034427624195814,0.8609890937805176],"Scale":[1.0,1.0,1.0],"Tag":0,"Components":[]}]}}
+{
+    "Scene": {
+        "GameObjects": [
+            {
+                "UID": 1071059248,
+                "ParentUID": 1,
+                "Name": "RootNode",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1201180897,
+                "ParentUID": 1071059248,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1250959912,
+                "ParentUID": 1201180897,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 1255346035,
+                        "MeshID": 1747787081,
+                        "MaterialID": 1747787085,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1342174814,
+                "ParentUID": 1201180897,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 1355472425,
+                        "MeshID": 1747787086,
+                        "MaterialID": 1747787087,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 2141025900,
+                "ParentUID": 1071059248,
+                "Name": "Ctrl_Grp",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 55992290,
+                "ParentUID": 2141025900,
+                "Name": "Root",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.7071067690849304,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {}
+                ]
+            },
+            {
+                "UID": 1224404729,
+                "ParentUID": 55992290,
+                "Name": "Hips",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.2683923840522766,
+                    0.003400599816814065,
+                    0.0002597276761662215
+                ],
+                "Rotation": [
+                    0.5334559679031372,
+                    -0.4874299168586731,
+                    0.47750070691108706,
+                    -0.49983009696006777
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1282120538,
+                "ParentUID": 1224404729,
+                "Name": "Spine",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    2.8865797581462889e-17,
+                    1.1102229584507076e-17,
+                    0.1933436542749405
+                ],
+                "Rotation": [
+                    0.1409420520067215,
+                    -0.11960913985967636,
+                    0.0104711027815938,
+                    0.9827103018760681
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1326956462,
+                "ParentUID": 1282120538,
+                "Name": "Head",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    1.776356799695581e-17,
+                    -5.329070399086743e-17,
+                    0.23028619587421418
+                ],
+                "Rotation": [
+                    0.043935783207416537,
+                    0.06987513601779938,
+                    -0.029820533469319345,
+                    0.9961414933204651
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1371444281,
+                "ParentUID": 1326956462,
+                "Name": "HeadEnd",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    1.376676561123106e-16,
+                    -3.552713599391162e-17,
+                    0.36048606038093569
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1416001721,
+                "ParentUID": 1326956462,
+                "Name": "LeftEar",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.33966490626335146,
+                    0.06945112347602844,
+                    0.40904220938682558
+                ],
+                "Rotation": [
+                    -0.22381876409053803,
+                    0.47029075026512148,
+                    0.07092369347810745,
+                    0.8507065176963806
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1460489540,
+                "ParentUID": 1416001721,
+                "Name": "LeftEarEnd",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    2.4868995857482627e-16,
+                    0.21373941004276277
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1509224240,
+                "ParentUID": 1326956462,
+                "Name": "RightEar",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.3396649956703186,
+                    0.06945109367370606,
+                    0.4090425372123718
+                ],
+                "Rotation": [
+                    0.9232462048530579,
+                    -0.04189930856227875,
+                    0.27540794014930727,
+                    0.2645966708660126
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1554965237,
+                "ParentUID": 1509224240,
+                "Name": "RightEarEnd",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -8.285292665277666e-7,
+                    -9.097042408257039e-8,
+                    -0.2137383073568344
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1599244193,
+                "ParentUID": 1282120538,
+                "Name": "LeftUpperArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
+                ],
+                "Rotation": [
+                    0.3736009895801544,
+                    0.6488285064697266,
+                    -0.35872846841812136,
+                    0.5574564933776856
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1658561285,
+                "ParentUID": 1599244193,
+                "Name": "LeftLowerArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.2511610686779022
+                ],
+                "Rotation": [
+                    -5.551115123125783e-17,
+                    2.7755575615628916e-17,
+                    4.163336342344337e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1706947880,
+                "ParentUID": 1658561285,
+                "Name": "LeftWrist",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    2.8421708795129299e-16,
+                    0.0,
+                    0.23802845180034638
+                ],
+                "Rotation": [
+                    -2.7755575615628916e-17,
+                    2.7755575615628916e-17,
+                    -1.3877787807814458e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1751714183,
+                "ParentUID": 1282120538,
+                "Name": "LeftUpperArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
+                ],
+                "Rotation": [
+                    0.3736009895801544,
+                    0.6488285064697266,
+                    -0.35872846841812136,
+                    0.5574564933776856
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1796550107,
+                "ParentUID": 1751714183,
+                "Name": "LeftLowerArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    3.552713599391162e-17,
+                    0.2511610686779022
+                ],
+                "Rotation": [
+                    -5.551115123125783e-17,
+                    2.7755575615628916e-17,
+                    4.163336342344337e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1840968305,
+                "ParentUID": 1796550107,
+                "Name": "LeftWristFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    2.8421708795129299e-16,
+                    -7.105427198782324e-17,
+                    0.23802845180034638
+                ],
+                "Rotation": [
+                    -2.7755575615628916e-17,
+                    2.7755575615628916e-17,
+                    -1.3877787807814458e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1888519448,
+                "ParentUID": 1282120538,
+                "Name": "LeftUpperArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
+                ],
+                "Rotation": [
+                    0.8849786520004273,
+                    -0.02153843641281128,
+                    0.46495479345321658,
+                    0.012881130911409855
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1933842719,
+                "ParentUID": 1888519448,
+                "Name": "LeftLowerArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    0.2511610686779022
+                ],
+                "Rotation": [
+                    -6.938893903907229e-18,
+                    2.83136557754915e-7,
+                    1.9646545345788565e-24,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1978609022,
+                "ParentUID": 1933842719,
+                "Name": "LeftWristIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    4.2632563192693947e-16,
+                    0.0,
+                    0.23802845180034638
+                ],
+                "Rotation": [
+                    0.14673450589179994,
+                    0.017967477440834047,
+                    0.9816806316375732,
+                    0.12020602077245712
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 2022748736,
+                "ParentUID": 1282120538,
+                "Name": "RightUpperArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
+                ],
+                "Rotation": [
+                    0.5363539457321167,
+                    0.45776230096817019,
+                    0.6237511038780212,
+                    -0.3372131288051605
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 2067236555,
+                "ParentUID": 2022748736,
+                "Name": "RightLowerArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.25116100907325747
+                ],
+                "Rotation": [
+                    -8.326672684688674e-17,
+                    4.622231866529366e-33,
+                    -5.551115123125783e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 2111097785,
+                "ParentUID": 2067236555,
+                "Name": "RightWrist",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -9.769962563761818e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    6.7407548053553259e-34,
+                    1.3877787807814458e-17,
+                    -4.85722573273506e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 8101957,
+                "ParentUID": 1282120538,
+                "Name": "RightUpperArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
+                ],
+                "Rotation": [
+                    0.5363539457321167,
+                    0.45776230096817019,
+                    0.6237511038780212,
+                    -0.3372131288051605
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 52450534,
+                "ParentUID": 8101957,
+                "Name": "RightLowerArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -2.8421708795129299e-16,
+                    -5.773159516292577e-17,
+                    -0.25116100907325747
+                ],
+                "Rotation": [
+                    -8.326672684688674e-17,
+                    4.622231866529366e-33,
+                    -5.551115123125783e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 96659869,
+                "ParentUID": 52450534,
+                "Name": "RightWristFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    6.7407548053553259e-34,
+                    1.3877787807814458e-17,
+                    -4.85722573273506e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 140451478,
+                "ParentUID": 1282120538,
+                "Name": "RightUpperArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
+                ],
+                "Rotation": [
+                    0.126082181930542,
+                    0.5597498416900635,
+                    0.013207169249653817,
+                    0.8189072012901306
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 189743146,
+                "ParentUID": 140451478,
+                "Name": "RightLowerArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -2.1316281596346973e-16,
+                    -3.552713599391162e-17,
+                    -0.25116100907325747
+                ],
+                "Rotation": [
+                    -4.344877525797562e-14,
+                    0.491324782371521,
+                    2.4541668339466556e-14,
+                    0.870976448059082
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 239313298,
+                "ParentUID": 189743146,
+                "Name": "RightWristIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    -0.17141912877559663,
+                    -0.04202427342534065,
+                    0.9559926390647888,
+                    0.2343662828207016
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 284288464,
+                "ParentUID": 1224404729,
+                "Name": "LeftLeg",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.15488280355930329,
+                    -0.12964345514774323,
+                    0.00019751557556446642
+                ],
+                "Rotation": [
+                    0.9999510049819946,
+                    -4.076128923750525e-18,
+                    0.009899534285068512,
+                    6.12636894657517e-17
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 328706662,
+                "ParentUID": 284288464,
+                "Name": "LeftFoot",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.05863787978887558,
+                    0.06042201444506645,
+                    0.12020477652549744
+                ],
+                "Rotation": [
+                    -0.5085270404815674,
+                    -0.008523808792233467,
+                    -0.005034427624195814,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 372985618,
+                "ParentUID": 1224404729,
+                "Name": "RightLeg",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.1548829972743988,
+                    -0.12964299321174622,
+                    0.0001973873731913045
+                ],
+                "Rotation": [
+                    3.487133314220917e-18,
+                    0.009899534285068512,
+                    -1.7693312652399539e-18,
+                    0.9999510049819946
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 417264574,
+                "ParentUID": 372985618,
+                "Name": "RightFoot",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.009163187816739083,
+                    0.08219043910503388,
+                    -0.23080822825431825
+                ],
+                "Rotation": [
+                    -0.5085270404815674,
+                    -0.008523808792233467,
+                    -0.005034427624195814,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            }
+        ]
+    }
+}
