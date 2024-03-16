@@ -639,7 +639,8 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-    if (mDrawGrid) {
+    if (mDrawGrid) 
+    {
        DrawGrid();
     }
     if (((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
@@ -735,7 +736,8 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 {
     dd::axisTriad(model->GetWorldTransform(), 0.02f, 0.1f);
 
-    for (const auto& child : model->GetChildren()) {
+    for (const auto& child : model->GetChildren()) 
+    {
 
         DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
         DrawSkeleton(child);
@@ -745,14 +747,17 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 
 void ModuleDebugDraw::DrawColliders(GameObject* root)
 {
-    if (root != nullptr) {
-        MeshRendererComponent* meshRenderer = root->GetMeshRenderer();
-        if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) {
+    if (root != nullptr) 
+    {
+        MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
+        if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) 
+        {
             App->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
             App->GetDebugDraw()->DrawCube(meshRenderer->GetAABBWorld(), float3(1.0f, 0.65f, 0.0f)); //Orange
         }
 
-        for (int i = 0; i < root->GetChildren().size(); i++) {
+        for (int i = 0; i < root->GetChildren().size(); i++) 
+        {
             DrawColliders(root->GetChildren()[i]);
         }
     }

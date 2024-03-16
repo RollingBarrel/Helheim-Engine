@@ -86,7 +86,8 @@ void DebugPanel::Draw(int windowFlags) {
 
         if (ImGui::TreeNode("Others##2"))
         {
-            if (ImGui::Checkbox("Draw Mouse Picking RayCast", &mDrawRaycast)) {
+            if (ImGui::Checkbox("Draw Mouse Picking RayCast", &mDrawRaycast)) 
+            {
                 App->GetCamera()->DrawRayCast(mDrawRaycast);
             }
             ImGui::TreePop();
@@ -95,28 +96,36 @@ void DebugPanel::Draw(int windowFlags) {
 	ImGui::End();
 }
 
-void DebugPanel::SetShouldDrawForAll(GameObject* root, bool shouldDraw) {
-    if (root != nullptr) {
-        MeshRendererComponent* renderer = root->GetMeshRenderer();
-        if (renderer != nullptr) {
+void DebugPanel::SetShouldDrawForAll(GameObject* root, bool shouldDraw) 
+{
+    if (root != nullptr) 
+    {
+        MeshRendererComponent* renderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
+        if (renderer != nullptr) 
+        {
             renderer->SetShouldDraw(shouldDraw);
         }
 
-        for (int i = 0; i < root->GetChildren().size(); i++) {
+        for (int i = 0; i < root->GetChildren().size(); i++) 
+        {
             SetShouldDrawForAll(root->GetChildren()[i], shouldDraw);
         }
     }
 }
 
-int DebugPanel::GetTotalTriangleCount(GameObject* root) {
+int DebugPanel::GetTotalTriangleCount(GameObject* root) 
+{
 	int total = 0;
-	if (root != nullptr) {
-		MeshRendererComponent* renderer = root->GetMeshRenderer();
-		if (renderer != nullptr) {
+	if (root != nullptr) 
+    {
+		MeshRendererComponent* renderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
+		if (renderer != nullptr) 
+        {
 			total += renderer->GetResourceMesh()->GetNumberIndices() / 3;
 		}
 
-		for (int i = 0; i < root->GetChildren().size(); i++) {
+		for (int i = 0; i < root->GetChildren().size(); i++) 
+        {
 			total += GetTotalTriangleCount(root->GetChildren()[i]);
 		}
 	}
