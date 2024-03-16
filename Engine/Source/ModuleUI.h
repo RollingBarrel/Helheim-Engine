@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "Geometry/Frustum.h"
 
 class GameObject;
 class CanvasComponent;
@@ -21,9 +22,15 @@ public:
 
 	inline unsigned int GetQuadVAO() const { return mQuadVAO; }
 	inline unsigned int GetProgram() const { return mUIProgramId; }
+	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
+
+	void SetScreenSpace(bool screen);
 
 private:
 	void DrawWidget(const GameObject* gameObject);
+
+	Frustum* mUIfrustum;
+	Frustum* mCurrentFrustum;
 
 	unsigned int mQuadVBO;
 	unsigned int mQuadVAO;
@@ -36,5 +43,6 @@ private:
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned int CompileShader(unsigned type, const char* source) const;
 
+	bool mScreenSpace = false;
 };
 

@@ -12,6 +12,7 @@
 #include "glew.h"
 #include "SDL.h"
 
+#include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
 {
@@ -30,6 +31,26 @@ bool ModuleUI::Init() {
 
 	mUIProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
 
+	mUIfrustum = new Frustum();
+
+	// Set Orthografic configuration
+	float aspect_ratio = App->GetWindow()->GetAspectRatio();
+	float height, width;
+	height = App->GetWindow()->GetHeight();
+	width = App->GetWindow()->GetWidth();
+
+	mUIfrustum->type = FrustumType::OrthographicFrustum;
+	mUIfrustum->orthographicWidth = 1; //2.f * Atan(Tan(math::DegToRad(90) * 0.5f) / aspect_ratio);  //width;
+	mUIfrustum->orthographicHeight = 1; //2.f * Atan(Tan(UIfrustum->orthographicWidth * 0.5f) * aspect_ratio);  //height; // Cast a float para evitar divisiones enteras
+
+
+	mUIfrustum->front = -float3::unitZ;
+	mUIfrustum->up = float3::unitY;
+	mUIfrustum->pos = float3::zero;
+
+	mUIfrustum->nearPlaneDistance = 0.1f;
+	mUIfrustum->farPlaneDistance = 100.0f;
+
 	return true;
 };
 
@@ -39,38 +60,26 @@ update_status ModuleUI::PreUpdate(float dt) {
 
 update_status ModuleUI::Update(float dt) {
 
-	// Save current frustum state
-	Frustum* originalFrustum = new Frustum();
-	*originalFrustum = *(App->GetCamera()->GetFrustum());
-
-	// Set Orthografic configuration
-	/*int width, height;
-	SDL_GetWindowSize(App->GetWindow()->window, &width, &height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, width, height, 0, 1, -1);
-	glMatrixMode(GL_MODELVIEW);
-	glDisable(GL_DEPTH_TEST);
-
-	Frustum* UIfrustum = new Frustum();
-	UIfrustum->type = FrustumType::OrthographicFrustum;
-	App->GetCamera()->SetFrustum(UIfrustum);*/
+	if (mScreenSpace == true) {
+		mCurrentFrustum = mUIfrustum;
+		glDisable(GL_DEPTH_TEST);
+	}
+	else {
+		mCurrentFrustum = const_cast<Frustum*>( App->GetCamera()->GetFrustum());
+		glEnable(GL_DEPTH_TEST);
+	}
 
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(mCanvas);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 
-	// Restore original frustum state
-	/*glEnable(GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-1, 1, -1, 1, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	App->GetCamera()->SetFrustum(originalFrustum);*/
-
 	return UPDATE_CONTINUE;
 };
+
+void ModuleUI::SetScreenSpace(bool screen) {
+	mScreenSpace = screen;
+}
 
 update_status ModuleUI::PostUpdate(float dt) {
 	return UPDATE_CONTINUE;
@@ -80,6 +89,10 @@ bool ModuleUI::CleanUp() {
 	glDeleteProgram(mUIProgramId);
 	glDeleteVertexArrays(1, &mQuadVAO);
 	glDeleteBuffers(1, &mQuadVBO);
+
+	delete mCurrentFrustum;
+	delete mUIfrustum;
+
 	return true;
 }
 
@@ -92,7 +105,7 @@ void ModuleUI::DrawWidget(const GameObject* gameObject)
 				const ImageComponent* image = (const ImageComponent*) component;
 				if (image->IsEnabled())
 				{
-					image->Draw(false);
+					image->Draw();
 				}
 			}
 
