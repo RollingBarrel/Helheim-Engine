@@ -44,6 +44,25 @@ bool ModuleScriptManager::CleanUp()
 	return true;
 }
 
+void ModuleScriptManager::AddScript(Script* script) 
+{ 
+	mScripts.push_back(script); 
+}
+
+void ModuleScriptManager::RemoveScript(Script* script)
+{
+	std::vector<Script*>::iterator deletePos;
+	for (std::vector<Script*>::iterator it = mScripts.begin(); it != mScripts.end(); ++it) {
+
+		if (*it == script) {
+			deletePos = it;
+			break;
+		}
+		
+	}
+	mScripts.erase(deletePos);
+}
+
 void ModuleScriptManager::Play()
 {
 	mIsPlaying = true;

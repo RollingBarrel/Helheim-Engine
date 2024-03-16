@@ -26,7 +26,6 @@ public:
 private:
 	Script* mScript = nullptr;
 	std::string mName = "";
-	unsigned int ID = 0;
 
 	float mPlayerSpeed = 1;
 	float mCoolDown = 2;

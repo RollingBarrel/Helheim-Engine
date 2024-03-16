@@ -55,7 +55,7 @@ bool ModuleScene::Init()
 
 	//Save("Scene");
 	Load("scene");
-	LoadGameObjectsIntoScripts();
+	
 	return true;
 }
 
@@ -215,6 +215,9 @@ void ModuleScene::Load(const char* sceneName) {
 
 	// Free the loaded buffer
 	delete[] loadedBuffer;
+
+	LoadGameObjectsIntoScripts();
+
 }
 
 GameObject* ModuleScene::Find(const char* name)
@@ -321,7 +324,6 @@ void ModuleScene::LoadGameObjectsIntoScripts()
 {
 
 	for (auto& pair : mGameObjectsToLoadIntoScripts) {
-		pair.second = Find(pair.first);
-
+		*pair.second = Find(pair.first);
 	}
 }

@@ -17,6 +17,12 @@ ScriptComponent::~ScriptComponent()
 
 		delete data;
 	}
+
+	//if (mScript)
+	delete mScript;
+
+	App->GetScriptManager()->RemoveScript(mScript);
+
 }
 
 void ScriptComponent::Update()
@@ -61,8 +67,10 @@ void::ScriptComponent::Save(Archive& archive) const
 			dataArchive.AddFloat3("VariableData", *(float3*)data->mData);
 			break;
 		case VariableType::GAMEOBJECT:
-			(data->mData) ? dataArchive.AddInt("VariableData", ((GameObject*)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
+		{
+			(data->mData) ? dataArchive.AddInt("VariableData", (*(GameObject**)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
 			break;
+		}
 		default:
 			break;
 		}
@@ -127,7 +135,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 							{
 								int  UID = array[i]["VariableData"].GetInt();
 								if (UID != -1) {
-									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject*>(array[i]["VariableData"].GetInt(), (GameObject*)data->mData));
+									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(array[i]["VariableData"].GetInt(), (GameObject**)data->mData));
 								}
 								break;
 							}

@@ -18,7 +18,9 @@ public:
 	update_status PostUpdate(float dt) override;
 	void* GetDLLHandle() { return mHandle; }
 	bool CleanUp() override;
-	void AddScript(Script* script) { mScripts.push_back(script); }
+	void AddScript(Script* script);
+	void RemoveScript(Script* script);
+
 	void Play();
 	void Stop();
 

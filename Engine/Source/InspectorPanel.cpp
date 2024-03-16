@@ -652,32 +652,10 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	component->mScript;
 	std::vector<std::pair<std::string, std::pair<VariableType, void*>>> variables;
 
-	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mPlayerSpeed", std::pair<VariableType, void*>(VariableType::FLOAT, (void*)&component->mPlayerSpeed)));
-	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mCoolDown", std::pair<VariableType, void*>(VariableType::FLOAT, (void*)&component->mCoolDown)));
-	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mHeight", std::pair<VariableType, void*>(VariableType::FLOAT, (void*)&component->mHeight)));
-	//variables.push_back(std::pair<std::string, std::pair<VariableType, void*>>("mObjectSpeed", component->mScript->mData[0]));
-
 
 
 	ImGui::SeparatorText("Attributes");
-/*
-	for (const auto& variable : variables) {
-		switch (variable.second.first)
-		{
-		case VariableType::INT:
-			
-			break;
-		case VariableType::FLOAT:
-			if (ImGui::DragFloat(variable.first.c_str(), (float*)variable.second.second)) {
-
-			}
-			break;
-		default:
-			break;
-		}
-	}
-					
-*/		
+	
 	for (ScriptVariable* variable : component->mData) { 
 		switch (variable->mType)
 		{
@@ -696,7 +674,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 		case VariableType::GAMEOBJECT:
 		{
 			
-			GameObject* go = (GameObject*)variable->mData;
+			GameObject* go = *(GameObject**)variable->mData;
 			ImGui::Text(variable->mName);
 			ImGui::SameLine();
 			const char* str ="";
@@ -710,7 +688,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			if (ImGui::BeginDragDropTarget()) {
 
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
-					variable->mData = *(GameObject**)payload->Data;
+					*(GameObject**)variable->mData = *(GameObject**)payload->Data;
 				}
 				ImGui::EndDragDropTarget();
 			}
