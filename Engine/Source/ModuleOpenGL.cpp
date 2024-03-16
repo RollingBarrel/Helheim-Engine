@@ -154,13 +154,16 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Draw the skybox
-	glUseProgram(mSkyBoxProgramId);
-	glBindVertexArray(mSkyVao);
-	glDepthMask(GL_FALSE);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glDepthMask(GL_TRUE);
-	glBindVertexArray(0);
-	glUseProgram(0);
+	if (mSkyBoxTexture != 0)
+	{
+		glUseProgram(mSkyBoxProgramId);
+		glBindVertexArray(mSkyVao);
+		glDepthMask(GL_FALSE);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthMask(GL_TRUE);
+		glBindVertexArray(0);
+		glUseProgram(0);
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
