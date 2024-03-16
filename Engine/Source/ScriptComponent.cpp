@@ -172,3 +172,23 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		LOG("LOADING SCRIPT ERROR");
 	}
 }
+
+void ScriptComponent::Enable()
+{
+	if (!mIsEnabled) {
+		//App->GetScriptManager()->RemoveScript(mScript); I dont know if I should add this to prevent copies (maybe too much defensive programing?)
+		App->GetScriptManager()->AddScript(mScript);
+		mIsEnabled = true;
+	}
+		
+}
+
+void ScriptComponent::Disable()
+{
+	if (mIsEnabled) {
+		App->GetScriptManager()->RemoveScript(mScript);
+		mIsEnabled = false;
+	}
+		
+
+}

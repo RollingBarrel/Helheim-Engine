@@ -51,7 +51,7 @@ void ModuleScriptManager::AddScript(Script* script)
 
 void ModuleScriptManager::RemoveScript(Script* script)
 {
-	std::vector<Script*>::iterator deletePos;
+	std::vector<Script*>::iterator deletePos = mScripts.end();
 	for (std::vector<Script*>::iterator it = mScripts.begin(); it != mScripts.end(); ++it) {
 
 		if (*it == script) {
@@ -60,7 +60,10 @@ void ModuleScriptManager::RemoveScript(Script* script)
 		}
 		
 	}
-	mScripts.erase(deletePos);
+	if (deletePos != mScripts.end()) {
+		mScripts.erase(deletePos);
+	}
+		
 }
 
 void ModuleScriptManager::Play()

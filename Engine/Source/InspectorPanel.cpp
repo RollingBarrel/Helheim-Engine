@@ -309,7 +309,11 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 		//checkbox for enable/disable
-		ImGui::Checkbox("Enable", &component->mIsEnabled);
+
+		bool isEnabled = component->IsEnabled();
+		if (ImGui::Checkbox("Enable", &isEnabled)) {
+			(isEnabled) ? component->Enable() : component->Disable();
+		}
 
 		DragAndDropSource(component);
 		RightClickPopup(component);
