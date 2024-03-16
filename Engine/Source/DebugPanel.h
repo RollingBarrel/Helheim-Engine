@@ -3,9 +3,10 @@
 #include "Panel.h"
 #include "GameObject.h"
 
-#define DEBUGPANEL "Debugger"
+#define DEBUGPANEL "Debug"
 
-enum class RenderMode {
+enum class RenderMode 
+{
 	Shaded,
 	Wireframe,
 	ShadedWireframe

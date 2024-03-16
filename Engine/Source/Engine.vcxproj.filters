@@ -172,9 +172,6 @@
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClCompile>
-    <ClCompile Include="QuadtreePanel.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="PausePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -821,9 +818,6 @@
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClInclude>
-    <ClInclude Include="QuadtreePanel.h">
-      <Filter>Panels</Filter>
-    </ClInclude>
     <ClInclude Include="PausePanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -1238,6 +1232,7 @@
     <ClInclude Include="ModuleAudio.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="IconsFontAwesome6.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
