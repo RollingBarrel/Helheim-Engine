@@ -44,7 +44,7 @@ void::ScriptComponent::Save(Archive& archive) const
 		Archive dataArchive;	
 		dataArchive.AddString("VariableName", data->mName);
 		dataArchive.AddInt("VariableType", (int)data->mType);
-		std::string datastr = std::to_string(*(float*)data->mData);
+		//std::string datastr = std::to_string(*(float*)data->mData);
 		//dataArchive.AddString("VariableData", std::to_string(*(float*)data->mData).c_str());
 		switch (data->mType)
 		{
@@ -61,7 +61,7 @@ void::ScriptComponent::Save(Archive& archive) const
 			dataArchive.AddFloat3("VariableData", *(float3*)data->mData);
 			break;
 		case VariableType::GAMEOBJECT:
-			dataArchive.AddInt("VariableData", ((GameObject*)data->mData)->GetID());
+			(data->mData) ? dataArchive.AddInt("VariableData", ((GameObject*)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
 			break;
 		default:
 			break;
@@ -124,9 +124,13 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 								break;
 							}
 							case VariableType::GAMEOBJECT:
-								App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject*>(array[i]["VariableData"].GetInt(), (GameObject*)data->mData));
+							{
+								int  UID = array[i]["VariableData"].GetInt();
+								if (UID != -1) {
+									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject*>(array[i]["VariableData"].GetInt(), (GameObject*)data->mData));
+								}
 								break;
-								
+							}
 							default:
 								break;
 							}

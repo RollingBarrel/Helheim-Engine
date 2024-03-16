@@ -367,7 +367,7 @@ typedef enum KeyboardKeys
 
     /* Add any other keys here. */
 
-    SDL_NUM_SCANCODES = 512 /**< not a key, just marks the number of scancodes
+        KeyboardKeys_NUM_SCANCODES = 512 /**< not a key, just marks the number of scancodes
                                  for array bounds */
 } KeyboardKeys;
 

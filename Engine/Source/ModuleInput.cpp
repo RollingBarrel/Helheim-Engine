@@ -7,7 +7,7 @@
 #include "imgui_impl_sdl2.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
-#include "SDL_scancode.h"
+//#include "SDL_scancode.h"
 
 ModuleInput::ModuleInput()
 {
@@ -120,7 +120,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
     //keyboard snapshot
     const Uint8* keys = SDL_GetKeyboardState(NULL);
-    for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+    for (int i = 0; i < KeyboardKeys::KeyboardKeys_NUM_SCANCODES; ++i)
     {
         if (keys[i] == SDL_PRESSED)
         {

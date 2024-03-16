@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "KeyboardKeys.h"
 
 
 enum class KeyState : unsigned char
