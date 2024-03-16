@@ -4,7 +4,7 @@
 #include "float3.h"
 
 struct dtNavMeshCreateParams;
-class AIAgentComponent;
+//class AIAgentComponent;
 class dtNavMesh;
 class dtNavMeshQuery;
 class ModuleDetourNavigation :public Module
@@ -18,7 +18,7 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	void CreateDetourData();
-	std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
+	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 
 
 	float3 GetQueryCenter() const { return mQueryCenter; }
@@ -33,7 +33,7 @@ public:
 
 
 private:
-	std::vector<AIAgentComponent*>mAIAgentComponents;
+	//std::vector<AIAgentComponent*>mAIAgentComponents;
 	dtNavMeshCreateParams* mNavMeshParams = nullptr;
 	dtNavMesh* mDetourNavMesh=nullptr;
 	dtNavMeshQuery* mNavQuery = nullptr;

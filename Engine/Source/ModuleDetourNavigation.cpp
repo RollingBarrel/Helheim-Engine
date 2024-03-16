@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "NavMeshController.h"
-#include "AIAgentComponent.h"
+//#include "AIAgentComponent.h"
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMesh.h"
 #include "ModuleScene.h"
@@ -60,7 +60,7 @@ bool ModuleDetourNavigation::CleanUp()
 
 
 void ModuleDetourNavigation::CreateDetourData() {
-	const AIAgentComponent* agentComponent = mAIAgentComponents[0];
+	//const AIAgentComponent* agentComponent = mAIAgentComponents[0];
 
 	NavMeshController* navController = App->GetScene()->GetNavController();
 	rcPolyMesh* polyMesh = navController->getPolyMesh();
@@ -68,7 +68,7 @@ void ModuleDetourNavigation::CreateDetourData() {
 
 	unsigned char* navData = 0;
 	int navDataSize = 0;
-	if (agentComponent) {
+	/*if (agentComponent) {*/
 		mNavMeshParams->verts = polyMesh->verts;
 		mNavMeshParams->vertCount = polyMesh->nverts;
 		mNavMeshParams->polys = polyMesh->polys;
@@ -88,15 +88,14 @@ void ModuleDetourNavigation::CreateDetourData() {
 		mNavMeshParams->offMeshConFlags = nullptr;
 		mNavMeshParams->offMeshConUserID = nullptr;
 		mNavMeshParams->offMeshConCount = 0;
-		mNavMeshParams->walkableHeight = agentComponent->GetHeight();
-		mNavMeshParams->walkableRadius = agentComponent->GetRadius();
-		mNavMeshParams->walkableClimb = agentComponent->GetMaxSlope();
+		mNavMeshParams->walkableHeight =  1.0f;
+		mNavMeshParams->walkableRadius =0.5f;
+		mNavMeshParams->walkableClimb = 0.0f;
 		rcVcopy(mNavMeshParams->bmin, polyMesh->bmin);
 		rcVcopy(mNavMeshParams->bmax, polyMesh->bmax);
 		mNavMeshParams->cs = navController->GetCellSize();
 		mNavMeshParams->ch = navController->GetCellHeight();
 		mNavMeshParams->buildBvTree = true;
-	}
 	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
 	{
 		LOG("Could not build Detour navmesh.");
