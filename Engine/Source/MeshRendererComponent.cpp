@@ -5,7 +5,9 @@
 #include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "DebugPanel.h"
 #include "GeometryBatch.h"
 
 #include "ImporterMaterial.h"
@@ -23,6 +25,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 {
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
+	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
@@ -34,6 +37,7 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	mMaterial = (other.mMaterial) ? reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material)) : nullptr;
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
+	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	App->GetOpenGL()->BatchAddMesh(this);
 	mAABBWorld = mOBB.MinimalEnclosingAABB();
