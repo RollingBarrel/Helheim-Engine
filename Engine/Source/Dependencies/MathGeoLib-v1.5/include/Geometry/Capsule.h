@@ -23,7 +23,7 @@
 MATH_BEGIN_NAMESPACE
 
 /// A 3D cylinder with spherical ends.
-class Capsule
+class ENGINE_API Capsule
 {
 public:
 	/// Specifies the two inner points of this capsule.

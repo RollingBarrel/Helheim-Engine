@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-class NavMeshObstacleComponent : public Component
+class ENGINE_API NavMeshObstacleComponent : public Component
 {
 public:
 	NavMeshObstacleComponent(GameObject* ownerGameObject);

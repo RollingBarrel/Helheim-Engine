@@ -10,6 +10,7 @@
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ScriptComponent.h"
 #include "CameraComponent.h"
 #include "AIAGentComponent.h"
 #include "ImporterMaterial.h"
@@ -18,6 +19,7 @@
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
 #include "ModuleOpenGL.h"
+#include "Script.h"
 #include "AnimationController.h"
 
 #include "ResourceMaterial.h"
@@ -308,44 +310,52 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 		//checkbox for enable/disable
-		ImGui::Checkbox("Enable", &component->mIsEnabled);
+
+		bool isEnabled = component->IsEnabled();
+		if (ImGui::Checkbox("Enable", &isEnabled)) {
+			(isEnabled) ? component->Enable() : component->Disable(); //Enable and Disable of your component should change mIsEnabled value, not the inspector.
+		}
 
 		DragAndDropSource(component);
 		RightClickPopup(component);
 		if (isOpen) {
 			switch (component->GetType()) {
-			case ComponentType::MESHRENDERER: {
-				DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
-				break;
-			}
-			case ComponentType::AIAGENT: {
-				DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
-				break;
-			}
-			case ComponentType::POINTLIGHT: {
-				DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
-				break;
-			}
-			case ComponentType::SPOTLIGHT: {
-				DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
-				break;
-			}
-			case ComponentType::CAMERA: {
-				DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
-				break;
-			}
-			case ComponentType::NAVMESHOBSTACLE: {
-				DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
-				break;
-			}
-			case ComponentType::ANIMATION: {
-				DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
-				break;
-			}
-			case ComponentType::TEST: {
-				DrawTestComponent(reinterpret_cast<TestComponent*>(component));
-				break;
-			}
+				case ComponentType::MESHRENDERER: {
+					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
+					break;
+				}
+				case ComponentType::AIAGENT: {
+					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
+					break;
+				}
+				case ComponentType::POINTLIGHT: {
+					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
+					break;
+				}
+				case ComponentType::SPOTLIGHT: {
+					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
+					break;
+				}
+				case ComponentType::CAMERA: {
+					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+					break;
+				}
+				case ComponentType::SCRIPT: {
+					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
+					break;
+				}
+				case ComponentType::NAVMESHOBSTACLE: {
+					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
+					break;
+				}
+				case ComponentType::ANIMATION: {
+					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
+					break;
+				}
+				case ComponentType::TEST: {
+					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
+					break;
+				}
 			}
 		}
 		ImGui::PopID();
@@ -575,6 +585,7 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 
 }
 
+
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
 	ImGui::SeparatorText("Camera");
@@ -624,6 +635,83 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling
 }
+
+void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
+{
+
+	const char* items[] = { "Select Script", "TestScript", "Dash" };
+	const char* currentItem = component->GetScriptName();
+	
+
+	if (ImGui::BeginCombo("##combo", currentItem))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			bool is_selected = (currentItem == items[n]);
+			if (ImGui::Selectable(items[n], is_selected)) {
+				currentItem = items[n];
+				component->LoadScript(currentItem);
+			}		
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus(); 
+			}
+				  
+		}
+		ImGui::EndCombo();
+	}
+
+	component->mScript;
+	std::vector<std::pair<std::string, std::pair<VariableType, void*>>> variables;
+
+
+
+	ImGui::SeparatorText("Attributes");
+	
+	for (ScriptVariable* variable : component->mData) { 
+		switch (variable->mType)
+		{
+		case VariableType::INT:
+			ImGui::DragInt(variable->mName, (int*)variable->mData);
+			break;
+		case VariableType::FLOAT:
+			ImGui::DragFloat(variable->mName, (float*)variable->mData);
+			break;
+		case VariableType::BOOL:
+			ImGui::Checkbox(variable->mName, (bool*)variable->mData);
+			break;
+		case VariableType::FLOAT3:
+			ImGui::DragFloat3(variable->mName, (float*)variable->mData);
+			break;
+		case VariableType::GAMEOBJECT:
+		{
+			
+			GameObject* go = *(GameObject**)variable->mData;
+			ImGui::Text(variable->mName);
+			ImGui::SameLine();
+			const char* str ="";
+			if (!go) {
+				str = "Drop a GameObject Here";
+			}
+			else {
+				str = go->GetName().c_str();
+			}
+			ImGui::BulletText(str);
+			if (ImGui::BeginDragDropTarget()) {
+
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
+					*(GameObject**)variable->mData = *(GameObject**)payload->Data;
+				}
+				ImGui::EndDragDropTarget();
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	
+}
+
 
 void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 

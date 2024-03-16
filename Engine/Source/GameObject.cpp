@@ -17,6 +17,7 @@
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+#include "ScriptComponent.h"
 #include "Tag.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
@@ -111,6 +112,7 @@ GameObject::~GameObject()
 	mComponents.clear();
 
 }
+
 
 Component* GameObject::GetComponent(ComponentType type)
 {
@@ -236,6 +238,53 @@ void GameObject::SetScale(const float3& scale)
 	isTransformModified = true;
 }
 
+GameObject* GameObject::Find(const char* name)
+{
+	
+	GameObject* gameObject = nullptr;
+
+	for (auto child : mChildren) {
+
+		if (child->GetName()._Equal(std::string(name))) {
+			gameObject = child;
+			break;
+		}
+		else {
+			gameObject = child->Find(name);
+
+			if (gameObject) {
+				break;
+			}
+		}
+
+	}
+
+	return gameObject;
+}
+
+GameObject* GameObject::Find(unsigned int UID)
+{
+	GameObject* gameObject = nullptr;
+
+	for (auto child : mChildren) {
+
+		if (child->GetID() == UID) {
+			gameObject = child;
+			break;
+		}
+		else {
+			gameObject = child->Find(UID);
+
+			if (gameObject) {
+				break;
+			}
+		}
+
+	}
+
+	return gameObject;
+}
+
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
 {
 	child->mParent = this;
@@ -335,6 +384,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 			newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
 			break;
 		}
+		case ComponentType::SCRIPT:
+			newComponent = new ScriptComponent(this);
+			break;
 		case ComponentType::TEST:
 			newComponent = new TestComponent(this);
 			break;
@@ -526,11 +578,11 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID) {
 static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
 	for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
 		if (components[i].IsObject()) {
-			const rapidjson::Value& component = components[i];
-			if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
-				ComponentType cType = ComponentType(component["ComponentType"].GetInt());
-				Component* c = go->CreateComponent(cType);
-				c->LoadFromJSON(component, go);
+			const rapidjson::Value& componentValue = components[i];
+			if (componentValue.HasMember("ComponentType") && componentValue["ComponentType"].IsInt()) {
+				ComponentType cType = ComponentType(componentValue["ComponentType"].GetInt());
+				Component* component = go->CreateComponent(cType);
+				component->LoadFromJSON(componentValue, go);
 			}
 		}
 	}

@@ -36,7 +36,7 @@ enum FrustumType
 };
 
 /// Represents either an orthographic or a perspective viewing frustum.
-class Frustum
+class ENGINE_API Frustum
 {
 public:
 	/// Specifies whether this frustum is a perspective or an orthographic frustum.
