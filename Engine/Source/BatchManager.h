@@ -3,7 +3,7 @@
 
 class GeometryBatch;
 class MeshRendererComponent;
-class ResourceMesh;
+
 class BatchManager
 {
 public:
@@ -11,6 +11,7 @@ public:
 	~BatchManager();
 	void AddMeshComponent(const MeshRendererComponent* meshComponent);
 	void RemoveMeshComponent(const MeshRendererComponent* meshComponent);
+	void EditMaterial(const MeshRendererComponent* meshComponent);
 
 	void Draw();
 
