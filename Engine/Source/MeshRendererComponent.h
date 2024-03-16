@@ -11,10 +11,10 @@ class ResourceMaterial;
 class GeometryBatch;
 
 
-class MeshRendererComponent : public Component
+class ENGINE_API MeshRendererComponent : public Component
 {
 public:
-	MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid);
+	MeshRendererComponent(GameObject* owner);
 	MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner);
 	~MeshRendererComponent();
 	
@@ -26,6 +26,7 @@ public:
 	void RefreshBoundingBoxes();
 	const OBB getOBB() const { return mOBB; }
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
+	void SetMesh(unsigned int uid);
 	const AABB GetAABB() const { return mAABB; }
 	const AABB GetAABBWorld() const { return mAABBWorld; }
 
@@ -34,6 +35,7 @@ public:
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
 	bool IsInsideFrustum() const { return mInsideFrustum;  }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
+	void SetMaterial(unsigned int uid);
 private:
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;

@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-class AIAgentComponent :public Component
+class ENGINE_API AIAgentComponent :public Component
 {
 public:
 	AIAgentComponent(GameObject* ownerGameObject);

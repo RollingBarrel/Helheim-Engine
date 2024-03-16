@@ -23,7 +23,7 @@
 MATH_BEGIN_NAMESPACE
 
 /// A 3D sphere.
-class Sphere
+class ENGINE_API Sphere
 {
 public:
 	/// The center point of this sphere.

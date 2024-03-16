@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
 
-#include "Resource.h"
-
 class ResourceModel;
 
 namespace Importer
@@ -11,9 +9,10 @@ namespace Importer
 	{
 		ResourceModel* Import(const char* filePath, unsigned int uid, bool modifyAssets = true);
 
-		void Save(const ResourceModel* ourModel);
+		void Save(const ResourceModel* ourModel, unsigned int& size);
 
 		ResourceModel* Load(const char* fileName, unsigned int uid);
-	}
+
+	};
 };
 

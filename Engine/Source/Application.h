@@ -11,6 +11,7 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
+class ModuleScriptManager;
 class ModuleResource;
 class ModuleUI;
 class ModuleAudio;
@@ -18,7 +19,7 @@ class ModuleAudio;
 class Timer;
 class PreciseTimer;
 
-class Application
+class ENGINE_API Application
 {
 public:
 
@@ -37,6 +38,7 @@ public:
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
+    ModuleScriptManager* GetScriptManager() { return scriptManager; }
     ModuleResource* GetResource() { return resource; }
     ModuleAudio* GeAudio() { return audio; }
 
@@ -65,11 +67,12 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
+    ModuleScriptManager* scriptManager = nullptr;
     ModuleResource* resource = nullptr;
     ModuleAudio* audio = nullptr;
     ModuleUI* ui = nullptr;
 
-#define NUM_MODULES 11
+#define NUM_MODULES 12
     Module* modules[NUM_MODULES];
 
     //Timer
@@ -86,4 +89,4 @@ private:
     bool mEnableVsync = true;
 };
 
-extern Application* App;
+ extern ENGINE_API Application* App;
