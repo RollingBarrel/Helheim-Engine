@@ -441,7 +441,7 @@ float3 NavMeshController::FindNearestPoint(float3 center, float3 halfsize) const
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
-			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
+			MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)(child->GetComponent(ComponentType::MESHRENDERER));
 			//AIAgentComponent* agentComponent = child->GetComponent(AIAGENT);
 			if (meshRendererComponent) {
 				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
