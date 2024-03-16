@@ -5,8 +5,9 @@
 class Material;
 struct ResourceMesh;
 class MeshRendererComponent;
+class AIAgentComponent;
 class GameObject;
-
+struct dtNavMeshCreateParams;
 class NavMeshController
 {
 public:
@@ -16,6 +17,9 @@ public:
 	void HandleBuild();
 	void Update();
 
+
+	rcPolyMesh* getPolyMesh()const { return mPolyMesh; }
+	rcPolyMeshDetail* getPolyMeshDetail()const { return mPolyMeshDetail; }
 
 	//IMGUI VALUES
 	float GetCellSize() const { return mCellSize; }
@@ -51,17 +55,32 @@ public:
 	float GetDetailSampleMaxError() const { return mDetailSampleMaxError; }
 	void SetDetailSampleMaxError(float value) { mDetailSampleMaxError = value; }
 
+	float3 FindNearestPoint(float3 center, float3 halfsize) const;
+
+	float3 GetQueryCenter() const { return mQueryCenter; }
+	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
+
+	void SetQueryCenter(float3 center) { mQueryCenter = center; }
+	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
+
+	bool GetShouldDraw() const { return mDraw; }
+	void SetShouldDraw(bool draw) { mDraw = draw; }
+
 
 
 private:
 	void GetGOMeshes(const GameObject* gameObj);
 	std::vector<const ResourceMesh*> mMeshesToNavMesh;
 	std::vector<const MeshRendererComponent*> mMeshRendererComponents;
+	std::vector<const AIAgentComponent*>mAIAgentComponents;
 	void TranslateIndices();
 	void DebugDrawPolyMesh();
 	void LoadDrawMesh();
 	int FindVertexIndex(float3 vert);
 
+	void CreateDetourData();
+
+	dtNavMeshCreateParams* mNavMeshParams;
 	rcHeightfield* mHeightField = nullptr;
 	rcCompactHeightfield* mCompactHeightField = nullptr;
 	rcContourSet* mContourSet = nullptr;
@@ -99,5 +118,10 @@ private:
 	unsigned int mEbo = 0;
 	std::vector<float3> mVertices;
 	std::vector<int> mIndices;
+
+
+	float3 mQueryCenter = float3(10.0f, 0.0f, -3.0f);
+	float3 mQueryHalfSize = float3(5.0f);
+	float3 mQueryNearestPoint = float3(0.0f);
 };
 

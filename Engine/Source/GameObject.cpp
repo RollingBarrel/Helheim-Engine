@@ -165,8 +165,8 @@ void GameObject::ResetTransform()
 	SetRotation(float3::zero);
 	SetScale(float3::one);
 
-	if (getCamera() != nullptr) {
-		CameraComponent* camera = getCamera();
+	if (GetComponent(ComponentType::CAMERA) != nullptr) {
+		CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
 		camera->Reset();
 	}
 }
@@ -201,8 +201,8 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
 
-	if (getCamera() != nullptr) {
-		CameraComponent* camera = getCamera();
+	if (GetComponent(ComponentType::CAMERA) != nullptr) {
+		CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
 		camera->SetRotation(difference);
 	}
 
@@ -225,8 +225,8 @@ void GameObject::SetPosition(const float3& position)
 
 	isTransformModified = true;
 
-	if (getCamera() != nullptr) {
-		CameraComponent* camera = getCamera();
+	if (GetComponent(ComponentType::CAMERA) != nullptr) {
+		CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
 		camera->SetPosition(difference);
 	}
 }
@@ -452,31 +452,6 @@ void GameObject::AddComponent(Component* component, Component* position)
 	}
 }
 
-MeshRendererComponent* GameObject::GetMeshRenderer() const
-{
-	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
-		return comp->GetType() == ComponentType::MESHRENDERER;
-		});
-
-	if (it != mComponents.end()) {
-		return static_cast<MeshRendererComponent*>(*it);
-	}
-
-	return nullptr;
-}
-
-CameraComponent* GameObject::getCamera() const
-{
-	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
-		return comp->GetType() == ComponentType::CAMERA;
-		});
-
-	if (it != mComponents.end()) {
-		return static_cast<CameraComponent*>(*it);
-	}
-
-	return nullptr;
-}
 
 void GameObject::RecalculateLocalTransform() {
 
@@ -492,9 +467,9 @@ void GameObject::RecalculateLocalTransform() {
 
 void GameObject::RefreshBoundingBoxes()
 {
-	if (GetMeshRenderer() != nullptr)
+	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
-		GetMeshRenderer()->RefreshBoundingBoxes();
+		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
 	}
 	else
 	{

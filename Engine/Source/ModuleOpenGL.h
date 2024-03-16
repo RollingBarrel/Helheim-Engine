@@ -10,7 +10,7 @@
 typedef struct DirectionalAmbient {
 	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
 	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity
-	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
+	float mAmbientCol[4] = { 1.0f, 1.0f, 1.0f, 0.0f }; //w is padding
 }DirectionalAmbient;
 
 class PointLightComponent;
@@ -73,6 +73,7 @@ public:
 
 	void BatchAddMesh(MeshRendererComponent* mesh);
 	void BatchRemoveMesh(MeshRendererComponent* mesh);
+	void BatchEditMaterial(const MeshRendererComponent* mesh);
 	void Draw();
 	void SetWireframe(bool wireframe);
 

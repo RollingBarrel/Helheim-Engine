@@ -12,6 +12,9 @@
 
 #include "ImporterMaterial.h"
 
+#include "float4.h"
+#include "float3.h"
+
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -30,8 +33,8 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material));
+	mMesh = (other.mMesh) ? reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh)) : nullptr;
+	mMaterial = (other.mMaterial) ? reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material)) : nullptr;
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
 	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
@@ -71,7 +74,13 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	{
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
 	}
-	mMaterial = tmpMaterial;
+	if(tmpMaterial)
+		mMaterial = tmpMaterial;
+	else
+	{
+		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
+	}
+
 	if (mMaterial && mMesh)
 	{
 		App->GetOpenGL()->BatchRemoveMesh(this);
@@ -90,7 +99,7 @@ MeshRendererComponent::~MeshRendererComponent()
 	if (mMaterial)
 	{
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMesh = nullptr;
+		mMaterial = nullptr;
 	}
 }
 
@@ -108,7 +117,7 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", GetID());
-	archive.AddInt("MeshID",mMesh->GetUID());
+	archive.AddInt("MeshID", mMesh->GetUID());
 	archive.AddInt("MaterialID", mMaterial->GetUID());
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
