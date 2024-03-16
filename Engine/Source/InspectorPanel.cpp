@@ -308,8 +308,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		DragAndDropTarget(object, component);
 
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
-
-		//checkbox for enable/disable
+		RightClickPopup(component);
 
 		bool isEnabled = component->IsEnabled();
 		if (ImGui::Checkbox("Enable", &isEnabled)) {
@@ -317,7 +316,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		}
 
 		DragAndDropSource(component);
-		RightClickPopup(component);
+		
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
