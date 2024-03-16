@@ -69,41 +69,7 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
 
     node.mCameraId = tinyNode.camera;
 
-    //Import Skin information from gltf node
     node.mSkinId = tinyNode.skin;
-
-    if (node.mSkinId != -1)
-    {
-        //TODO: Import joints and inverseBindMatrices
-        const auto& skin = model.skins[node.mSkinId];
-
-        //import joints
-        node.mJoints.resize(skin.joints.size());
-        for (int i = 0; i < skin.joints.size(); ++i)
-		{
-            const auto& jointNode = model.nodes[skin.joints[i]];
-            node.mJoints[i] = jointNode.name;
-		}
-
-        //import inverseBindMatrices
-        const auto& inverseBindMatricesAccessor = model.accessors[skin.inverseBindMatrices];
-		const auto& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccessor.bufferView];
-		const auto& inverseBindMatricesBuffer = model.buffers[inverseBindMatricesBufferView.buffer];
-        const float* inverseBindMatricesData = reinterpret_cast<const float*>(&inverseBindMatricesBuffer.data[inverseBindMatricesAccessor.byteOffset + inverseBindMatricesBufferView.byteOffset]);
-
-        node.mInverseBindMatrices.resize(skin.joints.size());
-        for (size_t i = 0; i < skin.joints.size(); ++i)
-        {
-            const float* matrixData = &inverseBindMatricesData[i * 16];
-            // Assuming the matrix is stored in column-major order
-            node.mInverseBindMatrices[i] = math::float4x4(
-                matrixData[0], matrixData[4], matrixData[8], matrixData[12],
-                matrixData[1], matrixData[5], matrixData[9], matrixData[13],
-                matrixData[2], matrixData[6], matrixData[10], matrixData[14],
-                matrixData[3], matrixData[7], matrixData[11], matrixData[15]
-            );
-        }
-    }
 
     unsigned int count = 0;
     unsigned int meshId = 0;
@@ -183,31 +149,6 @@ static void SaveNode(const ModelNode& currentNode, char** cursor)
     bytes = sizeof(int);
     memcpy((*cursor), &currentNode.mSkinId, bytes);
     *cursor += bytes;
-    if (currentNode.mSkinId > -1) 
-    {
-        //Joints
-        unsigned int jointsSize = currentNode.mJoints.size();
-		bytes = sizeof(unsigned int);
-		memcpy((*cursor), &jointsSize, bytes);
-		*cursor += bytes;
-		for (int i = 0; i < jointsSize; ++i)
-		{
-			bytes = currentNode.mJoints[i].length() + 1;
-			memcpy((*cursor), currentNode.mJoints[i].c_str(), bytes);
-			*cursor += bytes;
-		}
-		//InverseBindMatrices
-		unsigned int inverseBindMatricesSize = currentNode.mInverseBindMatrices.size();
-		bytes = sizeof(unsigned int);
-		memcpy((*cursor), &inverseBindMatricesSize, bytes);
-		*cursor += bytes;
-		for (int i = 0; i < inverseBindMatricesSize; ++i)
-		{
-			bytes = sizeof(float) * 16;
-			memcpy((*cursor), currentNode.mInverseBindMatrices[i].ptr(), bytes);
-			*cursor += bytes;
-		}
-    }
     if (currentNode.mMeshId > -1)
     {
         //Library Uids
@@ -278,42 +219,6 @@ static void LoadNode(ModelNode& node, char** cursor)
     bytes = sizeof(int);
     memcpy(&node.mSkinId, *cursor, bytes);
     *cursor += bytes;
-    if (node.mSkinId > -1) {
-
-		unsigned int jointsSize = 0;
-		bytes = sizeof(unsigned int);
-		memcpy(&jointsSize, *cursor, bytes);
-		*cursor += bytes;
-		for (int i = 0; i < jointsSize; ++i)
-		{
-			unsigned int count = 0;
-			while (*(*cursor)++ != '\0')
-			{
-				count++;
-			}
-			count++;
-			*cursor -= count;
-			char* name = new char[count];
-			char* ptr = name;
-			while (count--)
-			{
-				*ptr++ = *(*cursor)++;
-			}
-			node.mJoints.push_back(name);
-		}
-		unsigned int inverseBindMatricesSize = 0;
-		bytes = sizeof(unsigned int);
-		memcpy(&inverseBindMatricesSize, *cursor, bytes);
-		*cursor += bytes;
-		for (int i = 0; i < inverseBindMatricesSize; ++i)
-		{
-			math::float4x4 matrix;
-			bytes = sizeof(float) * 16;
-			memcpy(matrix.ptr(), *cursor, bytes);
-			*cursor += bytes;
-			node.mInverseBindMatrices.push_back(matrix);
-		}
-    }
 
     if (node.mMeshId > -1)
     {
