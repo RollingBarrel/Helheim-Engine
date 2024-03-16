@@ -10,6 +10,9 @@
 
 #include "ImporterMaterial.h"
 
+#include "float4.h"
+#include "float3.h"
+
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -67,7 +70,13 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	{
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
 	}
-	mMaterial = tmpMaterial;
+	if(tmpMaterial)
+		mMaterial = tmpMaterial;
+	else
+	{
+		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
+	}
+
 	if (mMaterial && mMesh)
 	{
 		App->GetOpenGL()->BatchRemoveMesh(this);
@@ -86,7 +95,7 @@ MeshRendererComponent::~MeshRendererComponent()
 	if (mMaterial)
 	{
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMesh = nullptr;
+		mMaterial = nullptr;
 	}
 }
 
