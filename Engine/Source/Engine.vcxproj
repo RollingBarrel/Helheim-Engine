@@ -232,6 +232,7 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
+    <ClCompile Include="EditorControlPanel.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
@@ -449,9 +450,11 @@
     <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkRTPCSubscriber.h" />
     <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkStreamMgr.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="EditorControlPanel.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterMesh.h" />
