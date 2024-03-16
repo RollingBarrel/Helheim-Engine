@@ -9,6 +9,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
 #include "ModuleResource.h"
+#include "ModuleDetourNavigation.h"
 #include "ModuleUI.h"
 #include "ModuleAudio.h"
 
@@ -36,10 +37,10 @@ Application::Application()
 	modules[6] = scriptManager = new ModuleScriptManager();
 	modules[7] = debugDraw = new ModuleDebugDraw();
 	modules[8] = scene = new ModuleScene();
-	modules[9] = editor = new ModuleEditor();
-	modules[10] = ui = new ModuleUI();
-	
-	modules[11] = audio = new ModuleAudio();
+	modules[9] = navigation = new ModuleDetourNavigation();
+	modules[10] = editor = new ModuleEditor();
+	modules[11] = ui = new ModuleUI();
+	modules[12] = audio = new ModuleAudio();
 }
 
 Application::~Application()

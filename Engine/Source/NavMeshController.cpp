@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
+#include "ModuleDetourNavigation.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
 #include "Application.h"
@@ -9,12 +10,15 @@
 #include "float4x4.h"
 #include "ImporterMesh.h"
 #include "ModuleDebugDraw.h"
+#include "AIAgentComponent.h"
+#include "DetourNavMeshBuilder.h"
+#include "Geometry/Triangle.h"
 
 NavMeshController::NavMeshController()
 {
 	mRecastContext = rcContext(false);
 
-	//HandleBuild(); No se llama al inicar ya que no hay escena aún, llamar solo con boton imgui
+	//HandleBuild(); No se llama al inicar ya que no hay escena aï¿½n, llamar solo con boton imgui
 
 
 }
@@ -86,6 +90,8 @@ void NavMeshController::TranslateIndices()
 
 void NavMeshController::DebugDrawPolyMesh()
 {
+	if (!mDraw)
+		return;
 
 	if (mPolyMeshDetail == nullptr)
 		return;
@@ -104,7 +110,6 @@ void NavMeshController::DebugDrawPolyMesh()
 
 
 	/*	Old draw polymesh with debug draw
-
 	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
 	{
 		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
@@ -125,6 +130,20 @@ void NavMeshController::DebugDrawPolyMesh()
 		}
 	}
 	*/
+	
+
+
+	float3 color = float3(1.0f, 0.0f, 0.0f);
+	App->GetDebugDraw()->DrawSphere(&mQueryNearestPoint[0], &color[0], 1.0f);
+
+	float3 color2 = float3(1.0f, 1.0f, 0.0f);
+	App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
+
+	float3 color3 = float3(0.0f, 0.0f, 1.0f);
+	float3 minAABB = mQueryCenter - mQueryHalfSize;
+	float3 maxAABB = mQueryCenter + mQueryHalfSize;
+	OBB cube = OBB(AABB(minAABB, maxAABB));
+	App->GetDebugDraw()->DrawCube(cube, color3);
 
 }
 
@@ -132,6 +151,8 @@ void NavMeshController::Update()
 {
 	if (mPolyMesh == nullptr)
 		return;
+	mQueryNearestPoint = FindNearestPoint(mQueryCenter, mQueryHalfSize);
+
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	DebugDrawPolyMesh();
@@ -382,19 +403,54 @@ void NavMeshController::HandleBuild() {
 	
 
 	LoadDrawMesh();
+	App->GetNavigation()->CreateDetourData();
 
 }
 
 
+float3 NavMeshController::FindNearestPoint(float3 center, float3 halfsize) const
+{
+	float nearestDist = 99999.0f;
+	float3 nearest_point = float3(0.0);
+	AABB box = AABB(center - halfsize, halfsize + center);
+
+	for (int i = 0; i < mIndices.size(); i+=3)
+	{
+		float3 v0 = mVertices[mIndices[i]];
+		float3 v1 = mVertices[mIndices[i + 1]];
+		float3 v2 = mVertices[mIndices[i + 2]];
+		Triangle tri = Triangle(v0, v1, v2);
+		
+		if (tri.Intersects(box))
+		{
+			float3 closest_point = tri.ClosestPoint(center);
+			float distance_to_center = closest_point.Distance(center);
+			if (distance_to_center < nearestDist)
+			{
+				nearest_point = closest_point;
+				nearestDist = distance_to_center;
+			}
+
+		}
+		
+	}
+
+	return nearest_point;
+}
+
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
-			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
+			MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)(child->GetComponent(ComponentType::MESHRENDERER));
+			//AIAgentComponent* agentComponent = child->GetComponent(AIAGENT);
 			if (meshRendererComponent) {
 				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mMeshRendererComponents.push_back(meshRendererComponent);
-
 			}
+		/*	if (agentComponent) {
+				mAIAgentComponents.push_back(agentComponent);
+				App->GetNavigation()->GetAiAgentComponent().push_back(agentComponent);
+			}*/
 			GetGOMeshes(child);
 		}
 	}
@@ -445,3 +501,66 @@ int NavMeshController::FindVertexIndex(float3 vert)
 	return -1; // Not found
 
 }
+
+//void NavMeshController::CreateDetourData() {
+//	const AIAgentComponent* agentComponent = mAIAgentComponents[0];
+//	unsigned char* navData = 0;
+//	int navDataSize = 0;
+//	if (agentComponent) {
+//		mNavMeshParams->verts = mPolyMesh->verts;
+//		mNavMeshParams->vertCount = mPolyMesh->nverts;
+//		mNavMeshParams->polys = mPolyMesh->polys;
+//		mNavMeshParams->polyAreas = mPolyMesh->areas;
+//		mNavMeshParams->polyFlags = mPolyMesh->flags;
+//		mNavMeshParams->polyCount = mPolyMesh->npolys;
+//		mNavMeshParams->nvp = mPolyMesh->nvp;
+//		mNavMeshParams->detailMeshes = mPolyMeshDetail->meshes;
+//		mNavMeshParams->detailVerts = mPolyMeshDetail->verts;
+//		mNavMeshParams->detailVertsCount = mPolyMeshDetail->nverts;
+//		mNavMeshParams->detailTris = mPolyMeshDetail->tris;
+//		mNavMeshParams->detailTriCount = mPolyMeshDetail->ntris;
+//		mNavMeshParams->offMeshConVerts =nullptr;
+//		mNavMeshParams->offMeshConRad = nullptr;
+//		mNavMeshParams->offMeshConDir = nullptr;
+//		mNavMeshParams->offMeshConAreas = nullptr;
+//		mNavMeshParams->offMeshConFlags = nullptr;
+//		mNavMeshParams->offMeshConUserID = nullptr;
+//		mNavMeshParams->offMeshConCount = 0;
+//		mNavMeshParams->walkableHeight = agentComponent->GetHeight();
+//		mNavMeshParams->walkableRadius = agentComponent->GetRadius();
+//		mNavMeshParams->walkableClimb = agentComponent->GetMaxSlope();
+//		rcVcopy(mNavMeshParams->bmin, mPolyMesh->bmin);
+//		rcVcopy(mNavMeshParams->bmax, mPolyMesh->bmax);
+//		mNavMeshParams->cs = mCellSize;
+//		mNavMeshParams->ch = mCellHeight;
+//		mNavMeshParams->buildBvTree = true;
+//	}
+//	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
+//	{
+//		LOG("Could not build Detour navmesh.");
+//		return;
+//	}
+//	mDetourNavMesh = dtAllocNavMesh();
+//	if (!mDetourNavMesh)
+//	{
+//		dtFree(navData);
+//		LOG("Could not create Detour navmesh");
+//		return;
+//	}
+//
+//	dtStatus status;
+//	status = mDetourNavMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
+//	if (dtStatusFailed(status))
+//	{
+//		dtFree(navData);
+//		LOG("Could not init Detour navmesh");
+//		return;
+//	}
+//
+//	status = mNavQuery->init(mDetourNavMesh, 2048);
+//	if (dtStatusFailed(status))
+//	{
+//		LOG("Could not init Detour navmesh query");
+//		return;
+//	}
+//}
