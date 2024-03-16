@@ -33,7 +33,7 @@ public:
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3);
 
     void DrawSkeleton(GameObject* model);
-
+    void DrawColliders(GameObject* root);
 
 private:
 

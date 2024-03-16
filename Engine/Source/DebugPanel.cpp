@@ -56,14 +56,15 @@ void DebugPanel::Draw(int windowFlags) {
             ImGui::TreePop();
 		}
 
-        if (ImGui::TreeNode("Frames##2"))
+        // TODO Frames section with a button to show the FPS on the editor window (top right corner)
+        /*if (ImGui::TreeNode("Frames##2"))
         {
             if (ImGui::Checkbox("Show fps on editor", &mShowFpsOnEditor))
             {
-                // TODO Add the code to show the FPS on the editor window (top right corner)
+                
             }
             ImGui::TreePop();
-        }
+        }*/
 
         if (ImGui::TreeNode("Quadtree##2"))
         {
