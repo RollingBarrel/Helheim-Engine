@@ -33,7 +33,7 @@ public:
 
 	~GameObject();
 
-	Component* GetComponent(ComponentType type);
+
 	void RecalculateMatrices();
 	void Update();
 	
@@ -73,8 +73,9 @@ public:
 	GameObject* Find(unsigned int UID);
 
 	Component* CreateComponent(ComponentType type);
+	Component* GetComponent(ComponentType type);
+
 	MeshRendererComponent* GetMeshRenderer() const;
-	AIAgentComponent* GetAIAgent() const;
 	CameraComponent* getCamera() const;
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);

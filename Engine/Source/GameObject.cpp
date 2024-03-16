@@ -465,19 +465,6 @@ MeshRendererComponent* GameObject::GetMeshRenderer() const
 	return nullptr;
 }
 
-AIAgentComponent* GameObject::GetAIAgent() const
-{
-	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {
-		return comp->GetType() == ComponentType::AIAGENT;
-		});
-
-	if (it != mComponents.end()) {
-		return static_cast<AIAgentComponent*>(*it);
-	}
-
-	return nullptr;
-}
-
 CameraComponent* GameObject::getCamera() const
 {
 	auto it = std::find_if(mComponents.begin(), mComponents.end(), [](const Component* comp) {

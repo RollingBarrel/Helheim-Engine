@@ -442,7 +442,7 @@ void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
 			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
-			AIAgentComponent* agentComponent = child->GetAIAgent();
+			//AIAgentComponent* agentComponent = child->GetComponent(AIAGENT);
 			if (meshRendererComponent) {
 				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mMeshRendererComponents.push_back(meshRendererComponent);
