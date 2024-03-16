@@ -20,8 +20,9 @@ public:
 	void LoadScript(const char* scriptName);
 	const char* GetScriptName() const { return mName.c_str(); }
 
-	//void Disable() override;
-	//void Enable() override;
+	void Enable() override;
+	void Disable() override;
+	
 
 private:
 	Script* mScript = nullptr;

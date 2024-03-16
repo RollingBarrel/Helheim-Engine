@@ -2,7 +2,6 @@
 #include "Script.h"
 #include "Macros.h"
 #include "Math/float3.h"
-//#define GET_VARIABLE_NAME(Variable) (#Variable)
 
 // To create a script you have to locate the .h in Game/Assets/Scripts
 

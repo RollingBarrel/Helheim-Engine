@@ -49,8 +49,6 @@ void::ScriptComponent::Save(Archive& archive) const
 		Archive dataArchive;	
 		dataArchive.AddString("VariableName", data->mName);
 		dataArchive.AddInt("VariableType", (int)data->mType);
-		//std::string datastr = std::to_string(*(float*)data->mData);
-		//dataArchive.AddString("VariableData", std::to_string(*(float*)data->mData).c_str());
 		switch (data->mType)
 		{
 		case VariableType::INT:
@@ -112,7 +110,6 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 				for (auto data : mData) {
 					if (strcmp(data->mName, name) == 0) {
 						if (array[i].HasMember("VariableData")) {
-							//data->mData = (void*)array[i]["VariableData"].GetString();
 							switch (data->mType)
 							{
 							case VariableType::INT:
@@ -154,7 +151,6 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 
 void ScriptComponent::LoadScript(const char* scriptName)
 {
-	// TODO: Deberia recibir el UID del resource y con el resorce se puede obtener el scriptName y los attributos a mostrar en el inspector
 	mName = scriptName;
 
 	for (auto data : mData) {

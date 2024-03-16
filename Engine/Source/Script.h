@@ -15,9 +15,9 @@ enum class  VariableType : int
 
 struct ScriptVariable {
 
-	const char* mName;
+	const char* mName = "";
 	VariableType mType;
-	void* mData;
+	void* mData = nullptr;
 
 	ScriptVariable() {}
 	ScriptVariable(const char* name, VariableType type, void* data) : mName(name), mType(type), mData(data) {}
@@ -37,6 +37,7 @@ public:
 	virtual void Update() = 0;
 
 protected:
+
 	GameObject* mGameObject = nullptr;
 
 private:
