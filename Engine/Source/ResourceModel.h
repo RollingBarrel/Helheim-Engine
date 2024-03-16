@@ -5,6 +5,7 @@
 #include <string>
 
 #include "float3.h"
+#include "float4x4.h"
 #include "Quat.h"
 
 
@@ -25,6 +26,9 @@ struct ModelNode
 	int mMeshId;
 	int mCameraId;
 	int mSkinId;
+	std::vector<std::string> mJoints;                // Joint names
+	std::vector<float4x4> mInverseBindMatrices; // Inverse bind matrices
+
 };
 
 class ResourceModel : public Resource
