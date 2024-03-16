@@ -10,7 +10,7 @@ typedef struct SpotLight {
 	float col[4];//w cos outer angle
 }SpotLight;
 
-class SpotLightComponent : public Component {
+class ENGINE_API SpotLightComponent : public Component {
 public:
 	~SpotLightComponent();
 

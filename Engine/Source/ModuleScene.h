@@ -6,11 +6,12 @@
 #include <string>
 class Quadtree;
 class GameObject;
+class MeshRendererComponent;
 class Archive;
 class Tag;
 class NavMeshController;
 
-class ModuleScene : public Module
+class ENGINE_API ModuleScene : public Module
 {
 public:
 	ModuleScene();
@@ -31,14 +32,16 @@ public:
 		mGameObjectsToDuplicate.push_back(gameObject);
 	}
 
+	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**> pair) {
+		mGameObjectsToLoadIntoScripts.push_back(pair);
+	}
+
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 	bool GetShouldRenderQuadtree() const { return mDrawQuadtree; }
 	void SetShouldRenderQuadtree(bool a) { mDrawQuadtree = a; }
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
-
-	const std::vector<GameObject*> GetRenderList() { return mRenderList; }
 
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagid);
 	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
@@ -56,12 +59,13 @@ public:
 	void Save(const char* saveFilePath);
 	void Load(const char* saveFilePath);
 
+	GameObject* Find(const char* name);
+	GameObject* Find(unsigned int UID);
+
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
-	void GenerateRenderList(GameObject* root);
-	void DrawRenderList();
-	void AddToRenderList(GameObject* root); // Can be public if needed 
+	void LoadGameObjectsIntoScripts();
 
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
@@ -75,7 +79,8 @@ private:
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	std::vector<GameObject*> mRenderList;
+	std::vector<std::pair<unsigned int, GameObject**>> mGameObjectsToLoadIntoScripts;
+
 
 	std::vector<Tag*> mTags;
 

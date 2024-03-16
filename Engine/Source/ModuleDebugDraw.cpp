@@ -640,6 +640,8 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
        DrawGrid();
     }
     dd::flush();
+
+    DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
 }
 
 void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
@@ -719,4 +721,16 @@ void ModuleDebugDraw::DrawAxis()
 void ModuleDebugDraw::DrawFrustum(const Frustum& frustum)
 {
     dd::frustum(frustum.ViewProjMatrix().Inverted(), dd::colors::White);
+}
+
+void ModuleDebugDraw::DrawSkeleton(GameObject* model) 
+{
+    dd::axisTriad(model->GetWorldTransform(), 0.02f, 0.1f);
+
+    for (const auto& child : model->GetChildren()) {
+
+        DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
+        DrawSkeleton(child);
+    }
+    
 }

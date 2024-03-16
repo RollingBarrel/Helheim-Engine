@@ -2,26 +2,44 @@
 #include "Resource.h"
 
 #include <vector>
+#include <string>
 
-#include "ImporterModel.h"
+#include "float3.h"
+#include "Quat.h"
+
+
+struct ModelNode
+{
+	//Game Object
+	std::string mName;
+
+	math::float3 mTranslation;
+	math::Quat mRotation;
+	math::float3 mScale;
+
+	std::vector<std::pair<unsigned int, unsigned int>> mUids;
+
+	std::vector<ModelNode> mChildren;
+
+	//Components
+	int mMeshId;
+	int mCameraId;
+	int mSkinId;
+};
 
 class ResourceModel : public Resource
 {
-	typedef struct ModelIds {
-		unsigned int meshUID;
-		unsigned int materialUID;
-	}ModelIds;
+public:
 
-public: 
+	ResourceModel(unsigned int uid, ModelNode root);
 
-	ResourceModel(unsigned int uid);
+	const ModelNode& GetRoot() const { return mRoot; }
 
-	const std::vector<ModelIds>& GetUids() const { return mUids; }
-	void SetUids(unsigned int meshUID, unsigned int materialUID);
+	std::vector<unsigned int> mAnimationUids;
 
 private:
 
-	std::vector<ModelIds>mUids;
+	ModelNode mRoot;
 };
 
 /*

@@ -22,6 +22,8 @@
 
 #include "../../Math/MathTypes.h"
 
+#include "../MathGeoLibFwd.h"
+
 /** @brief A linear congruential random number generator.
 
 	Uses D.H. Lehmer's Linear Congruential Method (1949) for generating random numbers.
@@ -60,7 +62,7 @@
 
 MATH_BEGIN_NAMESPACE
 
-class LCG
+class ENGINE_API LCG
 {
 public:
 	/// Initializes the generator from the current system clock.

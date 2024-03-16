@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Globals.h"
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
@@ -18,7 +19,7 @@ class Component;
 class Tag;
 enum class ComponentType : unsigned int;
 
-class GameObject
+class ENGINE_API GameObject
 {
 	friend class HierarchyPanel;
 	friend class InspectorPanel;
@@ -40,11 +41,12 @@ public:
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mLocalTransformMatrix.ToEulerXYZ(); }
 	const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
-	const float3& GetLocalPosition() const { return mLocalTransformMatrix.TranslatePart(); }
+	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
+	const float3& GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
 
 	void ResetTransform();
@@ -67,7 +69,10 @@ public:
 	void SetScale(const float3& scale);
 	void SetTag(Tag* tag) { mTag = tag; };
 
-	Component* CreateComponent(ComponentType type, unsigned int meshUid = 0, unsigned int materialUid = 0);
+	GameObject* Find(const char* name);
+	GameObject* Find(unsigned int UID);
+
+	Component* CreateComponent(ComponentType type);
 	MeshRendererComponent* GetMeshRenderer() const;
 	AIAgentComponent* GetAIAgent() const;
 	CameraComponent* getCamera() const;
@@ -105,8 +110,5 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool isTransformModified = false;
-
-
-	
 };
 

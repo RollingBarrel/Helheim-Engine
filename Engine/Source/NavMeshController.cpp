@@ -234,7 +234,7 @@ void NavMeshController::HandleBuild() {
 		
 
 
-		const int* triangle = (const int*)(testMesh->GetResourceMesh()->mIndices);
+		const int* triangle = (const int*)(testMesh->GetResourceMesh()->GetIndices());
 
 
 

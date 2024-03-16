@@ -19,6 +19,9 @@
 #include <algorithm>
 #include <iterator>
 
+#include "GeometryBatch.h"
+#include "ImporterMesh.h"
+
 ModuleScene::ModuleScene() {
 	mNavMeshController = new NavMeshController();
 
@@ -51,8 +54,8 @@ bool ModuleScene::Init()
 	//test.TestSceneWithGameObjects();
 
 	//Save("Scene");
-	//Load("scene");
-
+	Load("scene");
+	
 	return true;
 }
 
@@ -182,8 +185,8 @@ void ModuleScene::Load(const char* sceneName) {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer);
 
-	rapidjson::Document d;
-	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
+	rapidjson::Document document;
+	rapidjson::ParseResult ok = document.Parse(loadedBuffer);
 	if (!ok) {
 		// Handle parsing error
 		LOG("Scene was not loaded.");
@@ -201,9 +204,9 @@ void ModuleScene::Load(const char* sceneName) {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
 	
 
-	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
-		const rapidjson::Value& s = d["Scene"];
-		mRoot->Load(s);
+	if (document.HasMember("Scene") && document["Scene"].IsObject()) {
+		const rapidjson::Value& sceneValue = document["Scene"];
+		mRoot->Load(sceneValue);
 	}
 
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
@@ -212,6 +215,26 @@ void ModuleScene::Load(const char* sceneName) {
 
 	// Free the loaded buffer
 	delete[] loadedBuffer;
+
+	LoadGameObjectsIntoScripts();
+
+}
+
+GameObject* ModuleScene::Find(const char* name)
+{
+	return mRoot->Find(name);
+
+}
+
+GameObject* ModuleScene::Find(unsigned int UID)
+{
+	if (UID != 1) {
+		return mRoot->Find(UID);
+	}
+	else {
+		return mRoot;
+	}
+	
 }
 
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
@@ -256,10 +279,8 @@ update_status ModuleScene::Update(float dt)
 		mQuadtreeRoot->Draw();
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
-	mNavMeshController->Update();
-	GenerateRenderList(mRoot);
-	DrawRenderList();
-	mRenderList.clear();
+
+	App->GetOpenGL()->Draw();
 
 	return UPDATE_CONTINUE;
 }
@@ -299,36 +320,10 @@ void ModuleScene::DuplicateGameObjects() {
 
 }
 
-void ModuleScene::AddToRenderList(GameObject* root)
+void ModuleScene::LoadGameObjectsIntoScripts()
 {
-	mRenderList.push_back(root);
-}
 
-void ModuleScene::GenerateRenderList(GameObject* root)
-{
-	// if engine slows down there is an optimization 
-	// HERE on getMeshRenderer
-	if (root->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		AddToRenderList(root);
-	}
-	for (GameObject* child : root->GetChildren())
-	{
-		GenerateRenderList(child);
-	}
-}
-
-void ModuleScene::DrawRenderList()
-{
-	for (GameObject* objectToRender : mRenderList)
-	{
-		Component* component = objectToRender->GetComponent(ComponentType::MESHRENDERER);
-		MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
-
-		// Enable/disable mesh renderer component
-		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
-		{
-			meshRenderer->Draw();
-		}
+	for (auto& pair : mGameObjectsToLoadIntoScripts) {
+		*pair.second = Find(pair.first);
 	}
 }

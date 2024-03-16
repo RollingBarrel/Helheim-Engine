@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="SricptCode">
+      <UniqueIdentifier>{adea13f6-df24-498c-8695-591149a489c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptHeaders">
+      <UniqueIdentifier>{e1c46372-ff12-408a-8bfc-3a56552ae226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{c6e27a37-576d-4ba4-96c5-6b19a29a42e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Keys.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Dash.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\TestScript.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Macros.h">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Dash.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScript.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

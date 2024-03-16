@@ -17,9 +17,11 @@
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+#include "ScriptComponent.h"
 #include "Tag.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -110,6 +112,7 @@ GameObject::~GameObject()
 	mComponents.clear();
 
 }
+
 
 Component* GameObject::GetComponent(ComponentType type)
 {
@@ -235,6 +238,53 @@ void GameObject::SetScale(const float3& scale)
 	isTransformModified = true;
 }
 
+GameObject* GameObject::Find(const char* name)
+{
+	
+	GameObject* gameObject = nullptr;
+
+	for (auto child : mChildren) {
+
+		if (child->GetName()._Equal(std::string(name))) {
+			gameObject = child;
+			break;
+		}
+		else {
+			gameObject = child->Find(name);
+
+			if (gameObject) {
+				break;
+			}
+		}
+
+	}
+
+	return gameObject;
+}
+
+GameObject* GameObject::Find(unsigned int UID)
+{
+	GameObject* gameObject = nullptr;
+
+	for (auto child : mChildren) {
+
+		if (child->GetID() == UID) {
+			gameObject = child;
+			break;
+		}
+		else {
+			gameObject = child->Find(UID);
+
+			if (gameObject) {
+				break;
+			}
+		}
+
+	}
+
+	return gameObject;
+}
+
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
 {
 	child->mParent = this;
@@ -311,12 +361,13 @@ void GameObject::AddSuffix()
 }
 
 //TODO: Crate a component that requires ids not clean now
-Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid, unsigned int materialUid) {
+Component* GameObject::CreateComponent(ComponentType type) {
+
 	Component* newComponent = nullptr;
 
 	switch (type) {
 		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this, meshUid, materialUid);
+			newComponent = new MeshRendererComponent(this);
 			break;
 		case ComponentType::CAMERA:
 			newComponent = new CameraComponent(this);
@@ -333,6 +384,9 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 			newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
 			break;
 		}
+		case ComponentType::SCRIPT:
+			newComponent = new ScriptComponent(this);
+			break;
 		case ComponentType::TEST:
 			newComponent = new TestComponent(this);
 			break;
@@ -344,6 +398,9 @@ Component* GameObject::CreateComponent(ComponentType type, unsigned int meshUid,
 			break;
 		case ComponentType::NAVMESHOBSTACLE:
 			newComponent = new NavMeshObstacleComponent(this);
+			break;
+		case ComponentType::ANIMATION:
+			newComponent = new AnimationComponent(this);
 			break;
 		default:
 			break;
@@ -508,37 +565,43 @@ void GameObject::Save(Archive& archive) const {
 	}*/
 }
 
-GameObject* findGameObjectParent(GameObject* gameObject, int UID) {
+static GameObject* FindGameObjectParent(GameObject* gameObject, int UID) {
+	GameObject* gameObjectParent = nullptr;
 	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
 	for (int i = 0; i < gameObjects.size(); i++) {
 		if (gameObjects[i]->GetID() == UID) {
-			return gameObjects[i];
+			// Found the parent
+			gameObjectParent = gameObjects[i];
+			break;
 		}
-		else if (gameObjects[i]->GetChildren().size() != 0) {
-			for (int j = 0; j < gameObjects[i]->GetChildren().size(); j++) {
-				findGameObjectParent(gameObjects[i]->GetChildren()[j], UID);
+		else {
+			// Recursively search in children
+			GameObject* gameObjectChild = FindGameObjectParent(gameObjects[i], UID);
+			if (gameObjectChild != nullptr) {
+				// Found a match in children, return it as the gameobject parent
+				gameObjectParent = gameObjectChild;
+				break;
 			}
-
 		}
 	}
-
-	return nullptr;
+	
+	return gameObjectParent;
 }
 
-void loadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
+static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) {
 	for (rapidjson::SizeType i = 0; i < components.Size(); i++) {
 		if (components[i].IsObject()) {
-			const rapidjson::Value& component = components[i];
-			if (component.HasMember("ComponentType") && component["ComponentType"].IsInt()) {
-				ComponentType cType = ComponentType(component["ComponentType"].GetInt());
-				Component* c = go->CreateComponent(cType);
-				c->LoadFromJSON(component, go);
+			const rapidjson::Value& componentValue = components[i];
+			if (componentValue.HasMember("ComponentType") && componentValue["ComponentType"].IsInt()) {
+				ComponentType cType = ComponentType(componentValue["ComponentType"].GetInt());
+				Component* component = go->CreateComponent(cType);
+				component->LoadFromJSON(componentValue, go);
 			}
 		}
 	}
 }
 
-void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) {
+static void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
 	const char* name = { "" };
@@ -608,15 +671,15 @@ void loadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 		go = new GameObject(name, uuid, scene, position, scale, rotation);
 		// Manage Components
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
-			loadComponentsFromJSON(gameObject["Components"], go);
+			LoadComponentsFromJSON(gameObject["Components"], go);
 		}
 	}
 	else {
-		GameObject* gameObjectParent = findGameObjectParent(scene, parentUID);
+		GameObject* gameObjectParent = FindGameObjectParent(scene, parentUID);
 		go = new GameObject(name, uuid, gameObjectParent, position, scale, rotation);
 		// Manage Components
 		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
-			loadComponentsFromJSON(gameObject["Components"], go);
+			LoadComponentsFromJSON(gameObject["Components"], go);
 		}
 	}
 
@@ -630,7 +693,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
 		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
 		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
 			if (gameObjects[i].IsObject()) {
-				loadGameObjectFromJSON(gameObjects[i], scene);
+				LoadGameObjectFromJSON(gameObjects[i], scene);
 			}
 		}
 	}
