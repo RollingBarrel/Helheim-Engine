@@ -2,11 +2,6 @@
 
 #include "ModuleFileSystem.h"
 
-ResourceModel::ResourceModel(unsigned int uid) : Resource(uid, Type::Model)
+ResourceModel::ResourceModel(unsigned int uid, ModelNode root) : Resource(uid, Type::Model), mRoot(root)
 {
-}
-
-void ResourceModel::SetUids(unsigned int meshUID, unsigned int materialUID)
-{
-	mUids.push_back({ meshUID, materialUID });
 }

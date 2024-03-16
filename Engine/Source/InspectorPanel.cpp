@@ -19,6 +19,7 @@
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
 #include "Script.h"
+#include "AnimationController.h"
 
 #include "ResourceMaterial.h"
 
@@ -565,11 +566,6 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 	
 }
 
-void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
-
-	ImGui::SeparatorText("Animation");
-	ImGui::Text("HELLO");
-}
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
@@ -702,3 +698,21 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 }
 
 
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+
+	ImGui::SeparatorText("Animation");
+	ImGui::Text("HELLO");
+
+	static bool play = false;
+
+	if(ImGui::Button("Play"))
+	{
+		component->OnStart();
+
+		play = true;
+	}
+
+	if(play)
+		component->OnUpdate();
+
+}

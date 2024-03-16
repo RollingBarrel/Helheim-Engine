@@ -17,30 +17,33 @@
 
 
 
-void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, ResourceAnimation* ourAnimation) {
+ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, unsigned int& uid) {
+
+    std::string rootName = model.nodes[0].name;
+
+    ResourceAnimation* rAnimation = new ResourceAnimation(uid++, rootName);
 
     for (const auto& srcChannel : animation.channels)
     {
         std::string name = model.nodes[srcChannel.target_node].name;
 
         //check if the channel already exists
-        ResourceAnimation::AnimationChannel* ourChannel = ourAnimation->GetChannel(name);
+        ResourceAnimation::AnimationChannel* ourChannel = rAnimation->GetChannel(name);
         if (ourChannel == nullptr)
         {
             //create a new channel
           ResourceAnimation::AnimationChannel* ourChannel = new ResourceAnimation::AnimationChannel; 
-            ourAnimation->AddChannels(model, animation, srcChannel, ourAnimation, ourChannel);
+          rAnimation->AddChannels(model, animation, srcChannel, *rAnimation, ourChannel);
 
             for (const auto& srcChannel2 : animation.channels)
-            {
-
+            {        
                 if (srcChannel2.target_node == srcChannel.target_node && (ourChannel->hasTranslation == false || ourChannel->hasRotation == false))
                 {
-                    ourAnimation->AddChannels(model, animation, srcChannel2, ourAnimation, ourChannel);
+                    rAnimation->AddChannels(model, animation, srcChannel2, *rAnimation, ourChannel);
                 }
             }
             
-            ourAnimation->mChannels[name] = ourChannel;
+            rAnimation->mChannels[name] = ourChannel;
 
         }
         //animation -> mUID = math::LCG().Int();
@@ -48,28 +51,35 @@ void Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::A
     }
         
     
-    if (ourAnimation) {
-        Importer::Animation::Save(ourAnimation);
+
+    if (rAnimation) {
+        Importer::Animation::Save(rAnimation);
        
     }
 
+    return rAnimation;
 }
 
 
 
-void Importer::Animation::Save (ResourceAnimation* ourAnimation)
+void Importer::Animation::Save(ResourceAnimation* ourAnimation)
 {
-    unsigned int header[] = {(ourAnimation->GetChannels().size()), ourAnimation->GetDuration()};
+    unsigned int header[2] = {(ourAnimation->GetChannels().size()), ourAnimation->GetDuration()};
 
-    unsigned int size = sizeof(header) ;
+    unsigned int size = sizeof(header);
     for (const auto& channel : ourAnimation->GetChannels()) {
-        size += sizeof(unsigned int) + channel.first.size();
+        size += sizeof(unsigned int) + channel.first.length() + 1;
 
+        size += sizeof(bool);
         if (channel.second->hasTranslation) {
+            size += sizeof(unsigned int);
             size += sizeof(float) * 3 * channel.second->numPositions; 
             size += sizeof(float) * channel.second->numPositions;
         }
+        size += sizeof(bool);
         if (channel.second->hasRotation) {
+
+            size += sizeof(unsigned int);
             size += sizeof(float) * 4 * channel.second->numRotations; 
             size += sizeof(float) * channel.second->numRotations;
         }
@@ -83,13 +93,21 @@ void Importer::Animation::Save (ResourceAnimation* ourAnimation)
     cursor += bytes;
 
     for (const auto& channel : ourAnimation->GetChannels()) {
-        unsigned int nodeNameSize = static_cast<unsigned int>(channel.first.size());
+
+        unsigned int nodeNameSize = channel.first.length() + 1;
         memcpy(cursor, &nodeNameSize, sizeof(unsigned int));
         cursor += sizeof(unsigned int);
         memcpy(cursor, channel.first.data(), nodeNameSize);
         cursor += nodeNameSize;
 
+        bytes = sizeof(bool);
+        memcpy(cursor, &channel.second->hasTranslation, bytes);
+        cursor += bytes;
+
         if (channel.second->hasTranslation) {
+            bytes = sizeof(unsigned int);
+            memcpy(cursor, &channel.second->numPositions, bytes);
+            cursor += bytes;
             bytes = sizeof(float) * channel.second->numPositions;
             memcpy(cursor, channel.second->posTimeStamps.get(), bytes);
             cursor += bytes;
@@ -98,7 +116,13 @@ void Importer::Animation::Save (ResourceAnimation* ourAnimation)
             cursor += bytes;
         }
 
+        bytes = sizeof(bool);
+        memcpy(cursor, &channel.second->hasRotation, bytes);
+        cursor += bytes;
         if (channel.second->hasRotation) {
+            bytes = sizeof(unsigned int);
+            memcpy(cursor, &channel.second->numRotations, bytes);
+            cursor += bytes;
             bytes = sizeof(float) * channel.second->numRotations;
             memcpy(cursor, channel.second->rotTimeStamps.get(), bytes);
             cursor += bytes;
@@ -109,6 +133,7 @@ void Importer::Animation::Save (ResourceAnimation* ourAnimation)
     }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
+    LOG("Animation:");
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
     delete[] libraryPath;
@@ -122,6 +147,8 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
+        ourAnimation = new ResourceAnimation(uid, "");
+
         // Load Header
         char* cursor = fileBuffer;
         unsigned int header[2];
@@ -129,57 +156,73 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
         memcpy(header, cursor, bytes);
         cursor += bytes;
         unsigned int numChannels = header[0];
-        float duration = *reinterpret_cast<float*>(cursor);
-        cursor += sizeof(float);
-
-        ourAnimation = new ResourceAnimation(uid, "");
+        ourAnimation->mDuration = header[1];
 
         // Load Channels
         for (unsigned int i = 0; i < numChannels; ++i)
         {
-            unsigned int nodeNameSize;
+            unsigned int nodeNameSize = 0;
             memcpy(&nodeNameSize, cursor, sizeof(unsigned int));
             cursor += sizeof(unsigned int);
 
-            std::string nodeName(cursor, nodeNameSize);
+            char* name = new char[nodeNameSize];
+            memcpy(name, cursor, nodeNameSize);
             cursor += nodeNameSize;
 
             ResourceAnimation::AnimationChannel* channel = new ResourceAnimation::AnimationChannel;
 
             float* posTimeStamps = nullptr;
-            float* positions = nullptr;
+            float3* positions = nullptr;
             float* rotTimeStamps = nullptr;
-            float* rotations = nullptr;
+            Quat* rotations = nullptr;
+
+            bytes = sizeof(bool);
+            memcpy(&channel->hasTranslation, cursor, bytes);
+            cursor += bytes;
 
             if (channel->hasTranslation)
             {
+                bytes = sizeof(unsigned int);
+                memcpy(&channel->numPositions, cursor, bytes);
+                cursor += bytes;
+
                 bytes = sizeof(float) * channel->numPositions;
                 posTimeStamps = new float[channel->numPositions];
                 memcpy(posTimeStamps, cursor, bytes);
                 cursor += bytes;
+                channel->posTimeStamps.reset(posTimeStamps);
 
                 bytes = sizeof(float) * 3 * channel->numPositions;
-                positions = new float[3 * channel->numPositions];
+                positions = new float3[channel->numPositions];
                 memcpy(positions, cursor, bytes);
                 cursor += bytes;
+                channel->positions.reset(positions);
             }
+
+            bytes = sizeof(bool);
+            memcpy(&channel->hasRotation, cursor, bytes);
+            cursor += bytes;
 
             if (channel->hasRotation)
             {
+                bytes = sizeof(unsigned int);
+                memcpy(&channel->numRotations, cursor, bytes);
+                cursor += bytes;
+
                 bytes = sizeof(float) * channel->numRotations;
                 rotTimeStamps = new float[channel->numRotations];
                 memcpy(rotTimeStamps, cursor, bytes);
                 cursor += bytes;
+                channel->rotTimeStamps.reset(rotTimeStamps);
 
                 bytes = sizeof(float) * 4 * channel->numRotations;
-                rotations = new float[4 * channel->numRotations];
+                rotations = new Quat[ channel->numRotations];
                 memcpy(rotations, cursor, bytes);
                 cursor += bytes;
+                channel->rotations.reset(rotations);
             }
             
-            ourAnimation->mChannels[nodeName] = channel;
-
-
+            ourAnimation->mChannels[name] = channel;
         }
 
         delete[] fileBuffer;

@@ -2,466 +2,13 @@
     "Scene": {
         "GameObjects": [
             {
-                "UID": 2033868620,
+                "UID": 1071059248,
                 "ParentUID": 1,
-                "Name": "Canelita",
+                "Name": "RootNode",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
                     0.0,
-                    0.0,
-                    2.84529447555542
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "ScriptName": "TestScript",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mPlayerSpeed",
-                                "VariableType": 1,
-                                "VariableData": 3
-                            },
-                            {
-                                "VariableName": "speed",
-                                "VariableType": 1,
-                                "VariableData": -4
-                            },
-                            {
-                                "VariableName": "mTestFloat3",
-                                "VariableType": 4,
-                                "VariableData": [
-                                    10.0,
-                                    15.0,
-                                    6.0
-                                ]
-                            },
-                            {
-                                "VariableName": "mRobot",
-                                "VariableType": 3,
-                                "VariableData": 1803148704
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 2035121798,
-                "ParentUID": 2033868620,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1239870441,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 2086153991,
-                "ParentUID": 2033868620,
-                "Name": "GameObject (2)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 2138992296,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 291244444,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    -3.6817777156829836,
-                    2.1770517826080324,
-                    -4.667073726654053
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": []
-            },
-            {
-                "UID": 295700188,
-                "ParentUID": 291244444,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 756213203,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 2142488924,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    3.6680684089660646,
-                    0.0,
-                    -1.7524741888046265
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": []
-            },
-            {
-                "UID": 2145343385,
-                "ParentUID": 2142488924,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1807001838,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 468165155,
-                "ParentUID": 2142488924,
-                "Name": "GameObject (2)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 2012453409,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1106704252,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    -6.9292449951171879
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": []
-            },
-            {
-                "UID": 1109419471,
-                "ParentUID": 1106704252,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 11591588,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 614296736,
-                "ParentUID": 1106704252,
-                "Name": "GameObject (2)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 218992547,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1469515133,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    -0.16205325722694398,
-                    0.0,
-                    5.6426167488098148
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": []
-            },
-            {
-                "UID": 1471812626,
-                "ParentUID": 1469515133,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 388798166,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1518458696,
-                "ParentUID": 1469515133,
-                "Name": "GameObject (2)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 535559234,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1719518766,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    8.012581825256348,
                     0.0,
                     0.0
                 ],
@@ -480,46 +27,13 @@
                 "Components": []
             },
             {
-                "UID": 1722233985,
-                "ParentUID": 1719518766,
-                "Name": "GameObject (1)",
+                "UID": 1201180897,
+                "ParentUID": 1071059248,
+                "Name": "Zombunny",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
                     0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 803530463,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 2133255223,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    -7.389102458953857,
                     0.0,
                     0.0
                 ],
@@ -538,9 +52,9 @@
                 "Components": []
             },
             {
-                "UID": 2134717264,
-                "ParentUID": 2133255223,
-                "Name": "GameObject (1)",
+                "UID": 1250959912,
+                "ParentUID": 1201180897,
+                "Name": "Zombunny",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
@@ -562,43 +76,18 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1131863099,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
+                        "ID": 1255346035,
+                        "MeshID": 1747787081,
+                        "MaterialID": 1747787085,
                         "ComponentType": 0,
                         "isEnabled": true
                     }
                 ]
             },
             {
-                "UID": 1200608169,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    -3.593306541442871,
-                    0.0,
-                    6.532957077026367
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": []
-            },
-            {
-                "UID": 1203323388,
-                "ParentUID": 1200608169,
-                "Name": "GameObject (1)",
+                "UID": 1342174814,
+                "ParentUID": 1201180897,
+                "Name": "Zombunny",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
@@ -620,80 +109,22 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1496189792,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
+                        "ID": 1355472425,
+                        "MeshID": 1747787086,
+                        "MaterialID": 1747787087,
                         "ComponentType": 0,
                         "isEnabled": true
                     }
                 ]
             },
             {
-                "UID": 184640671,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
+                "UID": 2141025900,
+                "ParentUID": 1071059248,
+                "Name": "Ctrl_Grp",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
                     0.0,
-                    5.054426670074463,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": []
-            },
-            {
-                "UID": 185684986,
-                "ParentUID": 184640671,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1813104584,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 708520143,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    3.946237564086914,
                     0.0,
                     0.0
                 ],
@@ -712,9 +143,9 @@
                 "Components": []
             },
             {
-                "UID": 709703700,
-                "ParentUID": 708520143,
-                "Name": "GameObject (1)",
+                "UID": 55992290,
+                "ParentUID": 2141025900,
+                "Name": "Root",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
@@ -725,8 +156,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.0,
-                    1.0
+                    0.7071067690849304,
+                    0.7071067690849304
                 ],
                 "Scale": [
                     1.0,
@@ -735,25 +166,94 @@
                 ],
                 "Tag": 0,
                 "Components": [
-                    {
-                        "ID": 174202342,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
+                    {}
                 ]
             },
             {
-                "UID": 1237154240,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
+                "UID": 1224404729,
+                "ParentUID": 55992290,
+                "Name": "Hips",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    5.5813679695129398,
-                    0.0,
-                    -5.121317386627197
+                    0.2683923840522766,
+                    0.003400599816814065,
+                    0.0002597276761662215
+                ],
+                "Rotation": [
+                    0.5334559679031372,
+                    -0.4874299168586731,
+                    0.47750070691108706,
+                    -0.49983009696006777
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1282120538,
+                "ParentUID": 1224404729,
+                "Name": "Spine",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    2.8865797581462889e-17,
+                    1.1102229584507076e-17,
+                    0.1933436542749405
+                ],
+                "Rotation": [
+                    0.1409420520067215,
+                    -0.11960913985967636,
+                    0.0104711027815938,
+                    0.9827103018760681
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1326956462,
+                "ParentUID": 1282120538,
+                "Name": "Head",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    1.776356799695581e-17,
+                    -5.329070399086743e-17,
+                    0.23028619587421418
+                ],
+                "Rotation": [
+                    0.043935783207416537,
+                    0.06987513601779938,
+                    -0.029820533469319345,
+                    0.9961414933204651
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1371444281,
+                "ParentUID": 1326956462,
+                "Name": "HeadEnd",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    1.376676561123106e-16,
+                    -3.552713599391162e-17,
+                    0.36048606038093569
                 ],
                 "Rotation": [
                     0.0,
@@ -770,21 +270,21 @@
                 "Components": []
             },
             {
-                "UID": 1239730217,
-                "ParentUID": 1237154240,
-                "Name": "GameObject (1)",
+                "UID": 1416001721,
+                "ParentUID": 1326956462,
+                "Name": "LeftEar",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    0.33966490626335146,
+                    0.06945112347602844,
+                    0.40904220938682558
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.22381876409053803,
+                    0.47029075026512148,
+                    0.07092369347810745,
+                    0.8507065176963806
                 ],
                 "Scale": [
                     1.0,
@@ -792,26 +292,18 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 662524036,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 199768343,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
+                "UID": 1460489540,
+                "ParentUID": 1416001721,
+                "Name": "LeftEarEnd",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    5.947301864624023,
-                    2.3522911071777345,
-                    -3.4015798568725588
+                    -1.4210854397564649e-16,
+                    2.4868995857482627e-16,
+                    0.21373941004276277
                 ],
                 "Rotation": [
                     0.0,
@@ -828,21 +320,21 @@
                 "Components": []
             },
             {
-                "UID": 201300005,
-                "ParentUID": 199768343,
-                "Name": "GameObject (1)",
+                "UID": 1509224240,
+                "ParentUID": 1326956462,
+                "Name": "RightEar",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -0.3396649956703186,
+                    0.06945109367370606,
+                    0.4090425372123718
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.9232462048530579,
+                    -0.04189930856227875,
+                    0.27540794014930727,
+                    0.2645966708660126
                 ],
                 "Scale": [
                     1.0,
@@ -850,59 +342,18 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1010837899,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 273427361,
-                "ParentUID": 199768343,
-                "Name": "GameObject (2)",
+                "UID": 1554965237,
+                "ParentUID": 1509224240,
+                "Name": "RightEarEnd",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1484678425,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1600003905,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    -4.236117362976074,
-                    0.0,
-                    0.0
+                    -8.285292665277666e-7,
+                    -9.097042408257039e-8,
+                    -0.2137383073568344
                 ],
                 "Rotation": [
                     0.0,
@@ -919,21 +370,21 @@
                 "Components": []
             },
             {
-                "UID": 1601535567,
-                "ParentUID": 1600003905,
-                "Name": "GameObject (1)",
+                "UID": 1599244193,
+                "ParentUID": 1282120538,
+                "Name": "LeftUpperArm",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.3736009895801544,
+                    0.6488285064697266,
+                    -0.35872846841812136,
+                    0.5574564933776856
                 ],
                 "Scale": [
                     1.0,
@@ -941,64 +392,23 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1661863870,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 1688144091,
-                "ParentUID": 1600003905,
-                "Name": "GameObject (2)",
+                "UID": 1658561285,
+                "ParentUID": 1599244193,
+                "Name": "LeftLowerArm",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    0.0
+                    0.2511610686779022
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1842739228,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1613588703,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    2.6356163024902345,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    -5.551115123125783e-17,
+                    2.7755575615628916e-17,
+                    4.163336342344337e-17,
                     1.0
                 ],
                 "Scale": [
@@ -1010,86 +420,20 @@
                 "Components": []
             },
             {
-                "UID": 1614702639,
-                "ParentUID": 1613588703,
-                "Name": "GameObject (1)",
+                "UID": 1706947880,
+                "ParentUID": 1658561285,
+                "Name": "LeftWrist",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
+                    2.8421708795129299e-16,
                     0.0,
-                    0.0,
-                    0.0
+                    0.23802845180034638
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 169374591,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1682861598,
-                "ParentUID": 1613588703,
-                "Name": "GameObject (2)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 463314453,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1635395952,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    7.75341796875
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    -2.7755575615628916e-17,
+                    2.7755575615628916e-17,
+                    -1.3877787807814458e-17,
                     1.0
                 ],
                 "Scale": [
@@ -1101,21 +445,21 @@
                 "Components": []
             },
             {
-                "UID": 1637832687,
-                "ParentUID": 1635395952,
-                "Name": "GameObject (1)",
+                "UID": 1751714183,
+                "ParentUID": 1282120538,
+                "Name": "LeftUpperArmFK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.3736009895801544,
+                    0.6488285064697266,
+                    -0.35872846841812136,
+                    0.5574564933776856
                 ],
                 "Scale": [
                     1.0,
@@ -1123,64 +467,23 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 705317049,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 1694016834,
-                "ParentUID": 1635395952,
-                "Name": "GameObject (2)",
+                "UID": 1796550107,
+                "ParentUID": 1751714183,
+                "Name": "LeftLowerArmFK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -1.4210854397564649e-16,
+                    3.552713599391162e-17,
+                    0.2511610686779022
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1105916283,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1460925003,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    -2.9949607849121095,
-                    6.056499481201172,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    -5.551115123125783e-17,
+                    2.7755575615628916e-17,
+                    4.163336342344337e-17,
                     1.0
                 ],
                 "Scale": [
@@ -1192,53 +495,20 @@
                 "Components": []
             },
             {
-                "UID": 1462247802,
-                "ParentUID": 1460925003,
-                "Name": "GameObject (1)",
+                "UID": 1840968305,
+                "ParentUID": 1796550107,
+                "Name": "LeftWristFK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    2.8421708795129299e-16,
+                    -7.105427198782324e-17,
+                    0.23802845180034638
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1422134865,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 493445722,
-                "ParentUID": 1,
-                "Name": "Robot.gltf",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    8.205240249633789,
-                    4.4542236328125,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    -2.7755575615628916e-17,
+                    2.7755575615628916e-17,
+                    -1.3877787807814458e-17,
                     1.0
                 ],
                 "Scale": [
@@ -1250,21 +520,21 @@
                 "Components": []
             },
             {
-                "UID": 494698900,
-                "ParentUID": 493445722,
-                "Name": "GameObject (1)",
+                "UID": 1888519448,
+                "ParentUID": 1282120538,
+                "Name": "LeftUpperArmIK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.8849786520004273,
+                    -0.02153843641281128,
+                    0.46495479345321658,
+                    0.012881130911409855
                 ],
                 "Scale": [
                     1.0,
@@ -1272,31 +542,23 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 1905791952,
-                        "MeshID": 1317105084,
-                        "MaterialID": 1317105088,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 1773069036,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
+                "UID": 1933842719,
+                "ParentUID": 1888519448,
+                "Name": "LeftLowerArmIK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    -2.3470022678375246,
-                    0.0,
-                    0.0
+                    1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    0.2511610686779022
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    -6.938893903907229e-18,
+                    2.83136557754915e-7,
+                    1.9646545345788565e-24,
                     1.0
                 ],
                 "Scale": [
@@ -1308,21 +570,21 @@
                 "Components": []
             },
             {
-                "UID": 1774600698,
-                "ParentUID": 1773069036,
-                "Name": "GameObject (1)",
+                "UID": 1978609022,
+                "ParentUID": 1933842719,
+                "Name": "LeftWristIK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
+                    4.2632563192693947e-16,
                     0.0,
-                    0.0,
-                    0.0
+                    0.23802845180034638
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.14673450589179994,
+                    0.017967477440834047,
+                    0.9816806316375732,
+                    0.12020602077245712
                 ],
                 "Scale": [
                     1.0,
@@ -1330,32 +592,24 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 94577735,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 1840949511,
-                "ParentUID": 1773069036,
-                "Name": "GameObject (2)",
+                "UID": 2022748736,
+                "ParentUID": 1282120538,
+                "Name": "RightUpperArm",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.5363539457321167,
+                    0.45776230096817019,
+                    0.6237511038780212,
+                    -0.3372131288051605
                 ],
                 "Scale": [
                     1.0,
@@ -1363,31 +617,23 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 361365407,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 561495887,
-                "ParentUID": 1,
-                "Name": "Zombunny.gltf",
+                "UID": 2067236555,
+                "ParentUID": 2022748736,
+                "Name": "RightLowerArm",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    -3.657193183898926
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.25116100907325747
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    -8.326672684688674e-17,
+                    4.622231866529366e-33,
+                    -5.551115123125783e-17,
                     1.0
                 ],
                 "Scale": [
@@ -1399,20 +645,20 @@
                 "Components": []
             },
             {
-                "UID": 562749065,
-                "ParentUID": 561495887,
-                "Name": "GameObject (1)",
+                "UID": 2111097785,
+                "ParentUID": 2067236555,
+                "Name": "RightWrist",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -1.4210854397564649e-16,
+                    -9.769962563761818e-17,
+                    -0.23802900314331056
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    6.7407548053553259e-34,
+                    1.3877787807814458e-17,
+                    -4.85722573273506e-17,
                     1.0
                 ],
                 "Scale": [
@@ -1421,32 +667,24 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 527063387,
-                        "MeshID": 1990151256,
-                        "MaterialID": 1990151260,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 709301270,
-                "ParentUID": 561495887,
-                "Name": "GameObject (2)",
+                "UID": 8101957,
+                "ParentUID": 1282120538,
+                "Name": "RightUpperArmFK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.5363539457321167,
+                    0.45776230096817019,
+                    0.6237511038780212,
+                    -0.3372131288051605
                 ],
                 "Scale": [
                     1.0,
@@ -1454,31 +692,23 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ID": 879136784,
-                        "MeshID": 1990151261,
-                        "MaterialID": 1990151262,
-                        "ComponentType": 0,
-                        "isEnabled": true
-                    }
-                ]
+                "Components": []
             },
             {
-                "UID": 1498421423,
-                "ParentUID": 1,
-                "Name": "GameObject (1)",
+                "UID": 52450534,
+                "ParentUID": 8101957,
+                "Name": "RightLowerArmFK",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    -0.5648529529571533,
-                    1.1299999952316285,
-                    0.0
+                    -2.8421708795129299e-16,
+                    -5.773159516292577e-17,
+                    -0.25116100907325747
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
+                    -8.326672684688674e-17,
+                    4.622231866529366e-33,
+                    -5.551115123125783e-17,
                     1.0
                 ],
                 "Scale": [
@@ -1487,23 +717,207 @@
                     1.0
                 ],
                 "Tag": 0,
-                "Components": [
-                    {
-                        "ComponentType": 1,
-                        "Position": [
-                            -0.5648529529571533,
-                            1.1299999952316285,
-                            0.0,
-                            25.0
-                        ],
-                        "Color": [
-                            1.0,
-                            1.0,
-                            3.0,
-                            308.0
-                        ]
-                    }
-                ]
+                "Components": []
+            },
+            {
+                "UID": 96659869,
+                "ParentUID": 52450534,
+                "Name": "RightWristFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    6.7407548053553259e-34,
+                    1.3877787807814458e-17,
+                    -4.85722573273506e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 140451478,
+                "ParentUID": 1282120538,
+                "Name": "RightUpperArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
+                ],
+                "Rotation": [
+                    0.126082181930542,
+                    0.5597498416900635,
+                    0.013207169249653817,
+                    0.8189072012901306
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 189743146,
+                "ParentUID": 140451478,
+                "Name": "RightLowerArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -2.1316281596346973e-16,
+                    -3.552713599391162e-17,
+                    -0.25116100907325747
+                ],
+                "Rotation": [
+                    -4.344877525797562e-14,
+                    0.491324782371521,
+                    2.4541668339466556e-14,
+                    0.870976448059082
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 239313298,
+                "ParentUID": 189743146,
+                "Name": "RightWristIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    -0.17141912877559663,
+                    -0.04202427342534065,
+                    0.9559926390647888,
+                    0.2343662828207016
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 284288464,
+                "ParentUID": 1224404729,
+                "Name": "LeftLeg",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.15488280355930329,
+                    -0.12964345514774323,
+                    0.00019751557556446642
+                ],
+                "Rotation": [
+                    0.9999510049819946,
+                    -4.076128923750525e-18,
+                    0.009899534285068512,
+                    6.12636894657517e-17
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 328706662,
+                "ParentUID": 284288464,
+                "Name": "LeftFoot",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.05863787978887558,
+                    0.06042201444506645,
+                    0.12020477652549744
+                ],
+                "Rotation": [
+                    -0.5085270404815674,
+                    -0.008523808792233467,
+                    -0.005034427624195814,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 372985618,
+                "ParentUID": 1224404729,
+                "Name": "RightLeg",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.1548829972743988,
+                    -0.12964299321174622,
+                    0.0001973873731913045
+                ],
+                "Rotation": [
+                    3.487133314220917e-18,
+                    0.009899534285068512,
+                    -1.7693312652399539e-18,
+                    0.9999510049819946
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 417264574,
+                "ParentUID": 372985618,
+                "Name": "RightFoot",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.009163187816739083,
+                    0.08219043910503388,
+                    -0.23080822825431825
+                ],
+                "Rotation": [
+                    -0.5085270404815674,
+                    -0.008523808792233467,
+                    -0.005034427624195814,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
             }
         ]
     }

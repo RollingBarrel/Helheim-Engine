@@ -15,9 +15,57 @@
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
 #include "ResourceModel.h"
+#include "debugdraw.h"
+
+#include "AnimationComponent.h"
+
 
 #include "Math/float2.h"
 #include "imgui.h"
+
+static void DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids, GameObject* parent)
+{
+	const char* name = "";
+
+	if (node.mName == name)
+		name = "GameObject";
+	else
+		name = node.mName.c_str();
+
+	GameObject* gameObject = new GameObject(name, parent);
+
+	gameObject->SetPosition(node.mTranslation);
+	gameObject->SetRotation(node.mRotation);
+	gameObject->SetScale(node.mScale);
+	gameObject->RecalculateMatrices();
+
+	dd::axisTriad(gameObject->GetWorldTransform(),0.1f,1.0f);
+
+	if (node.mMeshId > -1)
+	{
+		for (auto it = node.mUids.cbegin(); it != node.mUids.cend(); ++it)
+		{
+			GameObject* gO = new GameObject(name, gameObject);
+			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
+			cMesh->SetMesh(it->first);
+			cMesh->SetMaterial(it->second);
+		}
+	}
+
+	if (strcmp(name,"Root") == 0)
+	{
+		if (!animationUids.empty())
+		{
+			AnimationComponent* cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->CreateComponent(ComponentType::ANIMATION));
+			cAnimation->SetAnimation(animationUids[0]);
+		}
+	}
+
+	for (int i = 0; i < node.mChildren.size(); ++i)
+	{
+		DragToScene(node.mChildren[i], animationUids, gameObject);
+	}
+}
 
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
 {
@@ -70,14 +118,7 @@ void ScenePanel::Draw(int windowFlags)
 						break;
 					case Resource::Type::Model:
 					{
-						GameObject* nGO = new GameObject(asset->mName, App->GetScene()->GetRoot());
-						for (auto it = reinterpret_cast<ResourceModel*>(resource)->GetUids().cbegin(); it != reinterpret_cast<ResourceModel*>(resource)->GetUids().cend(); ++it)
-						{
-							GameObject* go = new GameObject(nGO);
-							MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER));
-							cMesh->SetMesh(it->meshUID);
-							cMesh->SetMaterial(it->materialUID);
-						}
+						DragToScene(reinterpret_cast<ResourceModel*>(resource)->GetRoot(), reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, App->GetScene()->GetRoot());
 						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
 					}
@@ -88,6 +129,7 @@ void ScenePanel::Draw(int windowFlags)
 					}
 				}
 			}
+
 			ImGui::EndDragDropTarget();
 		}
 

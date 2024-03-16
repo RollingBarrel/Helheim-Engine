@@ -31,7 +31,6 @@ public:
 	unsigned int RemoveReferenceCount() { return --mReferenceCount; }
 
 private:
-	//Name??? To set it when generating game object
 	unsigned int mUID;
 	Type mType;
 	unsigned int mReferenceCount;

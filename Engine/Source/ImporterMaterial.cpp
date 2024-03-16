@@ -9,10 +9,8 @@
 
 #include "Algorithm/Random/LCG.h"
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int uid, bool modifyAssets)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
 {
-    unsigned int currUid = uid;
-
     float4 diffuseFactor = float4::zero; 
     float3 specularFactor = float3::zero;
     float GlossinessFactor = 0.0f;
@@ -74,7 +72,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         pngName += extension;
                     }
 
-                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
                 }
             }
         }
@@ -104,7 +102,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         pngName += extension;
                     }
 
-                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
                 }
             }
         }
@@ -136,7 +134,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                             pngName += extension;
                         }
 
-                        normalTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+                        normalTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
                     }
                 }
             }
@@ -164,11 +162,11 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                 pngName += extension;
             }
 
-            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
         }
 
     }
-    ResourceMaterial* rMaterial = new ResourceMaterial(currUid++, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
+    ResourceMaterial* rMaterial = new ResourceMaterial(uid++, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
     Importer::Material::Save(rMaterial);
     return rMaterial;
 }
