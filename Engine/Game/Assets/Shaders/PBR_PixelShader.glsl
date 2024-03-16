@@ -88,9 +88,9 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	vec3 Li = lInt * lAtt * lCol.rgb;  //Incoming radiance
 	
 	//Color with specular and no pi division
-	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
+	vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
 	//Color with specular and pi divisions
-	vec3 pbrColor = (((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL)/ PI;
+	//vec3 pbrColor = (((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL)/ PI;
 	return pbrColor;
 }
 
@@ -127,9 +127,9 @@ void main()
 	if(material.hasShininessMap)
 	{
 		if(material.hasSpecularMap)
-			shininess = exp2(15*specularTex.a + 1);
+			shininess = exp2(7*specularTex.a + 1);
 		else
-			shininess = exp2(15*texture(material.specularTexture, uv).a+1);
+			shininess = exp2(7*texture(material.specularTexture, uv).a+1);
 	}
 	else
 	{
