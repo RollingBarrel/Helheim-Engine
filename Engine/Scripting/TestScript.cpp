@@ -13,6 +13,7 @@
 #include "NavMeshControllerComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "AIAGentComponent.h"
 
 #include "Keys.h"
 #include "Geometry/AABB.h"
@@ -25,13 +26,14 @@ TestScript::TestScript(GameObject* owner) : Script(owner)
 
 void TestScript::Start()
 {
-	//LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
-	//CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
+	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
+	CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
+    //AIAgentComponent* aIAgentComponent = (AIAgentComponent*)mGameObject->CreateComponent(ComponentType::AIAGENT);
 	//NavMeshControllerComponent* component2 = (NavMeshControllerComponent*)mGameObject->CreateComponent(ComponentType::NAVMESHCONTROLLER);
-	//PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
-	//SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
+	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
+	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
-    //mRobot = App->GetScene()->Find("Robot.gltf");
+    GameObject* juan = App->GetScene()->Find("Juan");
 }
 
 void TestScript::Update()

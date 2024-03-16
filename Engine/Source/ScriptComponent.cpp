@@ -18,7 +18,7 @@ ScriptComponent::~ScriptComponent()
 		delete data;
 	}
 
-	//delete mScript; 
+	//delete mScript; //Memory leack here, this shouldbe fixed.
 
 	App->GetScriptManager()->RemoveScript(mScript);
 
@@ -157,14 +157,11 @@ void ScriptComponent::LoadScript(const char* scriptName)
 
 		delete data;
 	}
-
 	mData.clear();
 
 	Script* (*script)(GameObject*, std::vector<ScriptVariable*>&) = (Script * (*)(GameObject*, std::vector<ScriptVariable*>&))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
-	
 	if (script != nullptr) {
 		mScript = script(mOwner , mData);
-		//mScript->mGameObject = owner;
 		App->GetScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
@@ -176,7 +173,6 @@ void ScriptComponent::LoadScript(const char* scriptName)
 void ScriptComponent::Enable()
 {
 	if (!mIsEnabled) {
-		//App->GetScriptManager()->RemoveScript(mScript); I dont know if I should add this to prevent copies (maybe too much defensive programing?)
 		App->GetScriptManager()->AddScript(mScript);
 		mIsEnabled = true;
 	}

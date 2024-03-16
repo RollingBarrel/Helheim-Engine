@@ -312,7 +312,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 
 		bool isEnabled = component->IsEnabled();
 		if (ImGui::Checkbox("Enable", &isEnabled)) {
-			(isEnabled) ? component->Enable() : component->Disable();
+			(isEnabled) ? component->Enable() : component->Disable(); //Enable and Disable of your component should change mIsEnabled value, not the inspector.
 		}
 
 		DragAndDropSource(component);
@@ -623,26 +623,22 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
-	//ImGui::SeparatorText("Script");
 
-	// TODO: desde los .emeta files que hay en los assets se puede obtener el nombre de cada Script con su UID relacionado
-	// Lo que se manda al scriptComponent deberia ser el UID
-
-	const char* items[] = { "Select Script", "TestScript", "MissionScript", "Dash", "EEEE", "FFFF", "GGGG", "HHHH", "IIIIIII", "JJJJ", "KKKKKKK" };
-	 static const char* currentItem = component->GetScriptName();
+	const char* items[] = { "Select Script", "TestScript", "Dash" };
+	const char* currentItem = component->GetScriptName();
 	
-	if (ImGui::BeginCombo("##combo", currentItem)) // The second parameter is the label previewed before opening the combo.
+
+	if (ImGui::BeginCombo("##combo", currentItem))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
 		{
-			bool is_selected = (currentItem == items[n]); // You can store your selection however you want, outside or inside your objects
+			bool is_selected = (currentItem == items[n]);
 			if (ImGui::Selectable(items[n], is_selected)) {
 				currentItem = items[n];
 				component->LoadScript(currentItem);
-			}
-				
+			}		
 			if (is_selected) {
-				ImGui::SetItemDefaultFocus(); // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+				ImGui::SetItemDefaultFocus(); 
 			}
 				  
 		}
