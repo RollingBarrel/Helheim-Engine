@@ -16,7 +16,7 @@ public:
     float mPlayerSpeed = 1;
     float speed = 1;
     float3 mTestFloat3 = float3(5,15,-4);
-    GameObject* mRobot;
+    GameObject* mRobot = nullptr;
 
 private:
     float coolDown = 2; 
@@ -37,7 +37,7 @@ extern "C" SCRIPTING_API Script* CreateTestScript(GameObject* owner, std::vector
     data.push_back(new ScriptVariable("mPlayerSpeed", VariableType::FLOAT, &script->mPlayerSpeed));
     data.push_back(new ScriptVariable("speed", VariableType::FLOAT, &script->speed));
     data.push_back(new ScriptVariable("mTestFloat3", VariableType::FLOAT3, &script->mTestFloat3));
-    data.push_back(new ScriptVariable("mRobot", VariableType::GAMEOBJECT, script->mRobot));
+    data.push_back(new ScriptVariable("mRobot", VariableType::GAMEOBJECT, &script->mRobot));
 
     return script;
 }
