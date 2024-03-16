@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
 #include "SDL.h"
@@ -19,11 +18,17 @@ enum main_states
 	MAIN_EXIT
 };
 
+enum MainReturns
+{
+	EXIT_SUCCESS,
+	EXIT_FAIL
+};
+
 Application* App = NULL;
 
 int main(int argc, char ** argv)
 {
-	int main_return = EXIT_FAILURE;
+	MainReturns ret = EXIT_FAIL;
 	main_states state = MAIN_CREATION;
 
 	while (state != MAIN_EXIT)
@@ -77,7 +82,7 @@ int main(int argc, char ** argv)
 				LOG("Application CleanUp exits with error -----");
 			}
 			else
-				main_return = EXIT_SUCCESS;
+				ret = EXIT_SUCCESS;
 
 			state = MAIN_EXIT;
 
@@ -88,5 +93,5 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
-	return main_return;
+	return ret;
 }
