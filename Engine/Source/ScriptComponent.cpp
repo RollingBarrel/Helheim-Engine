@@ -18,8 +18,7 @@ ScriptComponent::~ScriptComponent()
 		delete data;
 	}
 
-	//if (mScript)
-	delete mScript;
+	//delete mScript; 
 
 	App->GetScriptManager()->RemoveScript(mScript);
 
