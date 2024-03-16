@@ -28,6 +28,7 @@ public:
 
 private:
 	void DrawWidget(const GameObject* gameObject);
+	GameObject* FindCanvas(GameObject* gameObject);
 
 	Frustum* mUIfrustum;
 	Frustum* mCurrentFrustum;
