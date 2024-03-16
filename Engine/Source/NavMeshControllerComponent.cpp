@@ -30,6 +30,7 @@ NavMeshControllerComponent::NavMeshControllerComponent(const NavMeshControllerCo
 
 NavMeshControllerComponent::~NavMeshControllerComponent()
 {
+	delete mRecastContext;
 }
 
 void NavMeshControllerComponent::Reset() {
