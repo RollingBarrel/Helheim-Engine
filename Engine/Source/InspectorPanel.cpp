@@ -17,6 +17,7 @@
 #include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+#include "AnimationController.h"
 
 #include "ResourceMaterial.h"
 
@@ -613,4 +614,17 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::SeparatorText("Animation");
 	ImGui::Text("HELLO");
+
+	static bool play = false;
+
+	if(ImGui::Button("Play"))
+	{
+		component->OnStart();
+
+		play = true;
+	}
+
+	if(play)
+		component->OnUpdate();
+
 }

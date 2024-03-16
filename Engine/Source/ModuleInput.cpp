@@ -76,8 +76,7 @@ update_status ModuleInput::PreUpdate(float dt)
             App->GetResource()->ImportFile(sdlEvent.drop.file);
 
             App->GetFileSystem()->GetRootNode()->mChildren.clear();
-            App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());;
-
+            App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());
             SDL_free(sdlEvent.drop.file);
             break;
         }
