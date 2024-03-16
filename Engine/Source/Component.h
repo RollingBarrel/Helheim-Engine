@@ -1,14 +1,14 @@
 #pragma once
 #include "Archive.h"
 
-enum class ComponentType : unsigned int
+enum class ENGINE_API ComponentType : unsigned int
 {
-	MESHRENDERER, POINTLIGHT, SPOTLIGHT, NAVMESHCONTROLLER, NAVMESHOBSTACLE, AIAGENT, CAMERA, CANVAS, TRANSFORM2D, ANIMATION, TEST, NONE
+	MESHRENDERER, POINTLIGHT, SPOTLIGHT, SCRIPT, NAVMESHCONTROLLER, NAVMESHOBSTACLE, AIAGENT, CAMERA, CANVAS, TRANSFORM2D, ANIMATION, TEST, NONE
 };
 
 class GameObject;
 
-class Component
+class ENGINE_API Component
 {
 	friend class InspectorPanel;
 public:

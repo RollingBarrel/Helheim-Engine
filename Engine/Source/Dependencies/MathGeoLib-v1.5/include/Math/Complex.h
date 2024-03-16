@@ -20,7 +20,7 @@
 MATH_BEGIN_NAMESPACE
 
 /// A complex value of form a + bi.
-class Complex
+class ENGINE_API Complex
 {
 public:
 	/// The default ctor does not initialize the Circle to any value.

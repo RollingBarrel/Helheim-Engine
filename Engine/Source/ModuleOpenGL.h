@@ -65,7 +65,7 @@ public:
 
 	//TODO: put all this calls into one without separating for light type??
 	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
-	void UpdatePoinLightInfo(const PointLightComponent& ptrPointLight);
+	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
 	SpotLightComponent* AddSpotLight(const SpotLight& pLight, GameObject* owner);
 	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);

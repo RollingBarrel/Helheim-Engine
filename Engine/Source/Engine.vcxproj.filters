@@ -415,6 +415,18 @@
     <ClCompile Include="Transform2DComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleScriptManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScriptManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="EditorControlPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -423,6 +435,12 @@
     </ClCompile>
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceScript.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterScript.cpp">
+      <Filter>Importers</Filter>
     </ClCompile>
     <ClCompile Include="ResourceAnimation.cpp">
       <Filter>Resources</Filter>
@@ -479,9 +497,6 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ConsolePanel.h">
-      <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="HierarchyPanel.h">
@@ -1028,6 +1043,8 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="Script.h">
+    </ClInclude>
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -1049,6 +1066,18 @@
     <ClInclude Include="Transform2DComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScriptManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="ImporterAnimation.h">
       <Filter>Importers</Filter>
     </ClInclude>
@@ -1060,6 +1089,12 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceScript.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterScript.h">
+      <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="ResourceAnimation.h">
       <Filter>Resources</Filter>

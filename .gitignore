@@ -412,3 +412,4 @@ FodyWeavers.xsd
 #imgui.ini
 
 /Engine/Game/Library/*
+/Engine/Game/Assets/Scenes/TemporalScene.json

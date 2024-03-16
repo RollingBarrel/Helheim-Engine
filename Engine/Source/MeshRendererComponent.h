@@ -11,7 +11,7 @@ class ResourceMaterial;
 class GeometryBatch;
 
 
-class MeshRendererComponent : public Component
+class ENGINE_API MeshRendererComponent : public Component
 {
 public:
 	MeshRendererComponent(GameObject* owner);

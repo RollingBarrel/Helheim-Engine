@@ -28,7 +28,7 @@ MATH_BEGIN_NAMESPACE
 
 /// A two-dimensional circle in 3D space.
 /** This class represents both a hollow circle (only edge) and a solid circle (disc). */
-class Circle
+class ENGINE_API Circle
 {
 public:
 	/// The center position of this circle.

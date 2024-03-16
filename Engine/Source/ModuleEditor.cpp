@@ -131,7 +131,6 @@ update_status ModuleEditor::Update(float dt)
 
 		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 	}
-
 	return UPDATE_CONTINUE;
 }
 
