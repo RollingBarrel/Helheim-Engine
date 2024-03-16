@@ -65,7 +65,7 @@ void::ScriptComponent::Save(Archive& archive) const
 			break;
 		case VariableType::GAMEOBJECT:
 		{
-			(data->mData) ? dataArchive.AddInt("VariableData", (*(GameObject**)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
+			(*(GameObject**)data->mData) ? dataArchive.AddInt("VariableData", (*(GameObject**)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
 			break;
 		}
 		default:
