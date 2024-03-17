@@ -69,28 +69,24 @@ Component* ImageComponent::Clone(GameObject* owner) const
 
 void ImageComponent::Save(Archive& archive) const
 {
-    archive.AddInt("ID", mID);
+    //archive.AddInt("ID", mID);
     archive.AddInt("ImageID", mImage->GetUID());
     archive.AddInt("ComponentType", static_cast<int>(GetType()));
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
-    int ID = { 0 };
+    //int ID = { 0 };
     int imageId = { 0 };
-    if (data.HasMember("ID") && data["ID"].IsInt()) {
+    /*if (data.HasMember("ID") && data["ID"].IsInt()) {
         ID = data["ID"].GetInt();
-    }
+    }*/
     if (data.HasMember("ImageID") && data["ImageID"].IsInt()) {
         imageId = data["ImageID"].GetInt();
     }
 
     mResourceId = imageId;
     SetImage(imageId);
-}
-
-void ImageComponent::SetImage(unsigned int resourceId) {
-    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) {

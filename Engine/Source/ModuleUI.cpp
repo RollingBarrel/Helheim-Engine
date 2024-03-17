@@ -81,10 +81,6 @@ update_status ModuleUI::Update(float dt) {
 	return UPDATE_CONTINUE;
 };
 
-void ModuleUI::SetScreenSpace(bool screen) {
-	mScreenSpace = screen;
-}
-
 update_status ModuleUI::PostUpdate(float dt) {
 	return UPDATE_CONTINUE;
 };
@@ -97,6 +93,10 @@ bool ModuleUI::CleanUp() {
 	delete mUIfrustum;
 
 	return true;
+}
+
+void ModuleUI::SetScreenSpace(bool screen) {
+	mScreenSpace = screen;
 }
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
