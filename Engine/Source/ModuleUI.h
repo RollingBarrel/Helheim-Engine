@@ -26,7 +26,7 @@ public:
 	void SetScreenSpace(bool screen);
 
 private:
-	void DrawWidget(const GameObject* gameObject);
+	void DrawWidget( GameObject* gameObject);
 
 	Frustum* mUIfrustum;
 	Frustum* mCurrentFrustum;

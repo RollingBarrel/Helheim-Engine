@@ -96,11 +96,11 @@ bool ModuleUI::CleanUp() {
 	return true;
 }
 
-void ModuleUI::DrawWidget(const GameObject* gameObject)
+void ModuleUI::DrawWidget(GameObject* gameObject)
 {
 	if (gameObject->IsEnabled())
 	{
-		for (const Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+		for (auto component : gameObject->GetComponent(ComponentType::IMAGE))
 			{
 				const ImageComponent* image = (const ImageComponent*) component;
 				if (image->IsEnabled())
