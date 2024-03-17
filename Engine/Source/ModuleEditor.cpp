@@ -70,6 +70,8 @@ bool ModuleEditor::Init()
 
 	mOptick = new OptickAdapter();
 
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
+
 	return true;
 }
 
