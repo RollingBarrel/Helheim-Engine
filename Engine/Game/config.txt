@@ -4,7 +4,7 @@ Engine FPS Limit: 60
 Game Vsync enabled: 1
 Game FPS Limit: 60
 Draw Grid: 1
-13
+15
 About##
 0
 720 410
@@ -13,10 +13,14 @@ Console##
 1
 660 935
 995 155
-Debugger
+Debug
 0
-720 410
-32 35
+898 499
+333 287
+Editor Controls##
+1
+865 369
+790 76
 Hierarchy##
 1
 660 369
@@ -25,6 +29,14 @@ Inspector##
 1
 1657 369
 243 721
+TagsManagerPanel##
+0
+720 410
+32 35
+NavMesh Parameters
+0
+721 410
+599 423
 Resource##
 1
 660 935
@@ -37,10 +49,6 @@ Scene##
 1
 865 447
 790 486
-Quadtree Info
-0
-720 410
-32 35
 Pause##
 1
 865 369
@@ -51,12 +59,12 @@ Project##
 995 155
 Timer##
 0
-720 410
-32 35
+722 410
+448 405
 Settings##
 1
-209 482
-200 357
+723 532
+287 357
 [Window][DockSpaceViewport_11111111]
 Pos=0,19
 Size=1240,721
@@ -110,9 +118,8 @@ Size=400,400
 Collapsed=0
 
 [Window][Settings##]
-ViewportPos=209,482
-ViewportId=0x7211729A
-Size=200,357
+Pos=63,182
+Size=287,357
 Collapsed=0
 
 [Window][About##]
@@ -136,8 +143,34 @@ Size=32,35
 Collapsed=0
 
 [Window][Timer##]
+Pos=62,60
+Size=448,405
+Collapsed=0
+
+[Window][Editor Controls##]
+Pos=205,19
+Size=790,76
+Collapsed=0
+DockId=0x00000007,1
+
+[Window][Debug]
+Pos=238,149
+Size=333,287
+Collapsed=0
+
+[Window][TagsManagerPanel##]
 Pos=60,60
 Size=32,35
+Collapsed=0
+
+[Window][NavMesh Parameters]
+Pos=61,60
+Size=599,423
+Collapsed=0
+
+[Window][LoadSceneWindow]
+Pos=514,323
+Size=212,94
 Collapsed=0
 
 [Docking][Data]
@@ -148,6 +181,6 @@ DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=660,369 Size=1240,721 Spli
       DockNode    ID=0x00000006 Parent=0x00000001 SizeRef=790,564 Split=Y
         DockNode  ID=0x00000007 Parent=0x00000006 SizeRef=790,76 Selected=0xC3A28A25
         DockNode  ID=0x00000008 Parent=0x00000006 SizeRef=790,486 CentralNode=1 Selected=0x15CB5A92
-    DockNode      ID=0x00000002 Parent=0x00000003 SizeRef=1240,155 Selected=0x72FEB5DD
+    DockNode      ID=0x00000002 Parent=0x00000003 SizeRef=1240,155 Selected=0x340AF55C
   DockNode        ID=0x00000004 Parent=0x8B93E3BD SizeRef=243,721 Selected=0x6493BA2F
 

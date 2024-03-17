@@ -47,7 +47,12 @@ ModuleEditor::ModuleEditor()
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
+	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
+	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
 	mPanels[SETTINGSPANEL] = new SettingsPanel();
+
+	// Panels closed by default
+	mPanels[TAGSMANAGERPANEL]->Close();
 
 	for (auto panel : mPanels) 
 	{
@@ -89,7 +94,9 @@ bool ModuleEditor::Init()
 
 	mOptick = new OptickAdapter();
 
+	// Load the saved layout when opening the engine
 	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
+	mPanels[SETTINGSPANEL]->Close();
 
 	return true;
 }
@@ -415,7 +422,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		lightningPanel->Close();
 		resourcePanel->Close();
 		settingsPanel->Close();
-
 		aboutPanel->Close();
 	}
 }
