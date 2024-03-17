@@ -29,8 +29,8 @@ public:
 private:
 	void DrawWidget(GameObject* gameObject);
 
-	Frustum* mUIfrustum;
-	Frustum* mCurrentFrustum;
+	Frustum* mUIfrustum = nullptr;
+	Frustum* mCurrentFrustum = nullptr; 
 
 	unsigned int mQuadVBO;
 	unsigned int mQuadVAO;
