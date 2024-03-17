@@ -9,7 +9,7 @@
 #include "ModuleScene.h"
 #include "NavMeshController.h"
 #include "Keys.h"
-
+#include "Math/float3.h"
  
 
 Movement::Movement(GameObject* owner) : Script(owner)
