@@ -14,10 +14,12 @@
 #include "DetourNavMeshBuilder.h"
 #include "Geometry/Triangle.h"
 #include "Recast.h"
+#include "ModuleCamera.h"
 
 NavMeshController::NavMeshController()
 {
 	mRecastContext = new rcContext();
+
 
 	//HandleBuild(); No se llama al inicar ya que no hay escena a�n, llamar solo con boton imgui
 
@@ -101,10 +103,23 @@ void NavMeshController::DebugDrawPolyMesh()
 		return;
 	
 	
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
+	unsigned int program = App->GetOpenGL()->GetDebugDrawProgramId();
+	float4x4 identity = float4x4::identity;
+	float4x4 view = App->GetCamera()->GetViewMatrix();
+	float4x4 proj = App->GetCamera()->GetProjectionMatrix();
+
+	GLint viewLoc = glGetUniformLocation(program, "view");
+	GLint projLoc = glGetUniformLocation(program, "proj");
+	GLint modelLoc = glGetUniformLocation(program, "model");
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glUseProgram(program);
+
+	glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(projLoc, 1, GL_TRUE, &proj[0][0]);
+	glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &identity[0][0]);
+
+
 	glBindVertexArray(mVao);
 	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
 
