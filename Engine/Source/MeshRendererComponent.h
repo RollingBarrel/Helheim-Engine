@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
-#include "GameObject.h"
 
 class Mesh;
 struct Material;
@@ -11,13 +10,13 @@ class ResourceMaterial;
 class GeometryBatch;
 
 
-class MeshRendererComponent : public Component
+class ENGINE_API MeshRendererComponent : public Component
 {
 public:
 	MeshRendererComponent(GameObject* owner);
 	MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner);
 	~MeshRendererComponent();
-	
+
 	void Reset() override {}
 
 	void Update() override {}
@@ -33,7 +32,7 @@ public:
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }
-	bool IsInsideFrustum() const { return mInsideFrustum;  }
+	bool IsInsideFrustum() const { return mInsideFrustum; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMaterial(unsigned int uid);
 private:
@@ -49,6 +48,4 @@ private:
 	bool mDrawBox = false;
 	bool mInsideFrustum = true;
 	int mTemporalID = -1;
-
-	
 };

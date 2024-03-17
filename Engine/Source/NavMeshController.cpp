@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
+#include "ModuleDetourNavigation.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
 #include "Application.h"
@@ -9,12 +10,18 @@
 #include "float4x4.h"
 #include "ImporterMesh.h"
 #include "ModuleDebugDraw.h"
+#include "AIAgentComponent.h"
+#include "DetourNavMeshBuilder.h"
+#include "Geometry/Triangle.h"
+#include "Recast.h"
+#include "ModuleCamera.h"
 
 NavMeshController::NavMeshController()
 {
-	mRecastContext = rcContext(false);
+	mRecastContext = new rcContext();
 
-	//HandleBuild(); No se llama al inicar ya que no hay escena aún, llamar solo con boton imgui
+
+	//HandleBuild(); No se llama al inicar ya que no hay escena aï¿½n, llamar solo con boton imgui
 
 
 }
@@ -32,6 +39,7 @@ NavMeshController::~NavMeshController()
 	delete mCompactHeightField;
 	delete mHeightField;
 	delete mTriangleAreas;
+	delete mRecastContext;
 
 }
 
@@ -86,6 +94,8 @@ void NavMeshController::TranslateIndices()
 
 void NavMeshController::DebugDrawPolyMesh()
 {
+	if (!mDraw)
+		return;
 
 	if (mPolyMeshDetail == nullptr)
 		return;
@@ -93,18 +103,28 @@ void NavMeshController::DebugDrawPolyMesh()
 		return;
 	
 	
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
+	unsigned int program = App->GetOpenGL()->GetDebugDrawProgramId();
+	float4x4 identity = float4x4::identity;
+	float4x4 view = App->GetCamera()->GetViewMatrix();
+	float4x4 proj = App->GetCamera()->GetProjectionMatrix();
+
+	GLint viewLoc = glGetUniformLocation(program, "view");
+	GLint projLoc = glGetUniformLocation(program, "proj");
+	GLint modelLoc = glGetUniformLocation(program, "model");
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glUseProgram(program);
-	float4x4 identity = float4x4::identity;
-	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
+
+	glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(projLoc, 1, GL_TRUE, &proj[0][0]);
+	glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &identity[0][0]);
+
+
 	glBindVertexArray(mVao);
 	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
 
 
 	/*	Old draw polymesh with debug draw
-
 	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
 	{
 		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
@@ -125,6 +145,20 @@ void NavMeshController::DebugDrawPolyMesh()
 		}
 	}
 	*/
+	
+
+
+	float3 color = float3(1.0f, 0.0f, 0.0f);
+	App->GetDebugDraw()->DrawSphere(&mQueryNearestPoint[0], &color[0], 1.0f);
+
+	float3 color2 = float3(1.0f, 1.0f, 0.0f);
+	App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
+
+	float3 color3 = float3(0.0f, 0.0f, 1.0f);
+	float3 minAABB = mQueryCenter - mQueryHalfSize;
+	float3 maxAABB = mQueryCenter + mQueryHalfSize;
+	OBB cube = OBB(AABB(minAABB, maxAABB));
+	App->GetDebugDraw()->DrawCube(cube, color3);
 
 }
 
@@ -132,6 +166,8 @@ void NavMeshController::Update()
 {
 	if (mPolyMesh == nullptr)
 		return;
+	mQueryNearestPoint = FindNearestPoint(mQueryCenter, mQueryHalfSize);
+
 	App->GetOpenGL()->BindSceneFramebuffer();
 
 	DebugDrawPolyMesh();
@@ -179,7 +215,7 @@ void NavMeshController::HandleBuild() {
 			LOG("buildNavigation: Out of memory 'mHeightField'.");
 			return;
 		}
-		if (!rcCreateHeightfield(&mRecastContext, *mHeightField, gridWidth, gridHeight, minPoint, maxPoint, mCellSize, mCellHeight))
+		if (!rcCreateHeightfield(mRecastContext, *mHeightField, gridWidth, gridHeight, minPoint, maxPoint, mCellSize, mCellHeight))
 		{
 			LOG("buildNavigation: Could not create solid rcCreateHeightfield.");
 			return;
@@ -218,9 +254,9 @@ void NavMeshController::HandleBuild() {
 
 
 		memset(mTriangleAreas, 0, numberOfTriangles * sizeof(unsigned char));
-		rcMarkWalkableTriangles(&mRecastContext, mMaxSlopeAngle, &transformedVerts[0], numberOfVertices, triangle, numberOfTriangles, mTriangleAreas);
+		rcMarkWalkableTriangles(mRecastContext, mMaxSlopeAngle, &transformedVerts[0], numberOfVertices, triangle, numberOfTriangles, mTriangleAreas);
 
-		if (!rcRasterizeTriangles(&mRecastContext, &transformedVerts[0], numberOfVertices, triangle, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
+		if (!rcRasterizeTriangles(mRecastContext, &transformedVerts[0], numberOfVertices, triangle, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
 		{
 			LOG("buildNavigation: Could not rasterize triangles.");
 			return;
@@ -240,11 +276,11 @@ void NavMeshController::HandleBuild() {
 		// remove unwanted overhangs caused by the conservative rasterization
 		// as well as filter spans where the character cannot possibly stand.
 		if (mFilterLowHangingObstacles)
-			rcFilterLowHangingWalkableObstacles(&mRecastContext, mWalkableClimb, *mHeightField);
+			rcFilterLowHangingWalkableObstacles(mRecastContext, mWalkableClimb, *mHeightField);
 		if (mFilterLedgeSpans)
-			rcFilterLedgeSpans(&mRecastContext, mWalkableHeight, mWalkableClimb, *mHeightField);
+			rcFilterLedgeSpans(mRecastContext, mWalkableHeight, mWalkableClimb, *mHeightField);
 		if (mFilterWalkableLowHeightSpans)
-			rcFilterWalkableLowHeightSpans(&mRecastContext, mWalkableHeight, *mHeightField);
+			rcFilterWalkableLowHeightSpans(mRecastContext, mWalkableHeight, *mHeightField);
 
 		//
 		// Step 4. Partition walkable surface to simple regions.
@@ -259,7 +295,7 @@ void NavMeshController::HandleBuild() {
 			LOG("buildNavigation: Out of memory 'mCompactHeightField'.");
 			return;
 		}
-		if (!rcBuildCompactHeightfield(&mRecastContext, mWalkableHeight, mWalkableClimb, *mHeightField, *mCompactHeightField))
+		if (!rcBuildCompactHeightfield(mRecastContext, mWalkableHeight, mWalkableClimb, *mHeightField, *mCompactHeightField))
 		{
 			LOG("buildNavigation: Could not build compact data.");
 			return;
@@ -271,20 +307,20 @@ void NavMeshController::HandleBuild() {
 			mHeightField = 0;
 		}
 		// Erode the walkable area by agent radius.
-		if (!rcErodeWalkableArea(&mRecastContext, mWalkableRadius, *mCompactHeightField))
+		if (!rcErodeWalkableArea(mRecastContext, mWalkableRadius, *mCompactHeightField))
 		{
 			LOG("buildNavigation: Could not erode.");
 		}
 
 		// Prepare for region partitioning, by calculating distance field along the walkable surface.
-		if (!rcBuildDistanceField(&mRecastContext, *mCompactHeightField))
+		if (!rcBuildDistanceField(mRecastContext, *mCompactHeightField))
 		{
 			LOG("buildNavigation: Could not build distance field.");
 			return;
 		}
 
 		// Partition the walkable surface into simple regions without holes.
-		if (!rcBuildRegions(&mRecastContext, *mCompactHeightField, 0, mMinRegionArea, mMergeRegionArea))
+		if (!rcBuildRegions(mRecastContext, *mCompactHeightField, 0, mMinRegionArea, mMergeRegionArea))
 		{
 			LOG("buildNavigation: Could not build watershed regions.");
 			return;
@@ -301,7 +337,7 @@ void NavMeshController::HandleBuild() {
 			LOG("buildNavigation: Out of memory 'mContourSet'.");
 			return;
 		}
-		if (!rcBuildContours(&mRecastContext, *mCompactHeightField, mMaxSimplificationError, mMaxEdgeLen, *mContourSet))
+		if (!rcBuildContours(mRecastContext, *mCompactHeightField, mMaxSimplificationError, mMaxEdgeLen, *mContourSet))
 		{
 			LOG("buildNavigation: Could not create contours.");
 			return;
@@ -319,7 +355,7 @@ void NavMeshController::HandleBuild() {
 			LOG("buildNavigation: Out of memory 'tempPolyMesh'.");
 			return;
 		}
-		if (!rcBuildPolyMesh(&mRecastContext, *mContourSet, mMaxVertsPerPoly, *tempPolyMesh))
+		if (!rcBuildPolyMesh(mRecastContext, *mContourSet, mMaxVertsPerPoly, *tempPolyMesh))
 		{
 			LOG("buildNavigation: Could not triangulate contours.");
 			return;
@@ -335,7 +371,7 @@ void NavMeshController::HandleBuild() {
 			return;
 		}
 
-		if (!rcBuildPolyMeshDetail(&mRecastContext, *tempPolyMesh, *mCompactHeightField, mDetailSampleDist, mDetailSampleMaxError, *tempPolyMeshDetail))
+		if (!rcBuildPolyMeshDetail(mRecastContext, *tempPolyMesh, *mCompactHeightField, mDetailSampleDist, mDetailSampleMaxError, *tempPolyMeshDetail))
 		{
 			LOG("buildNavigation: Could not build detail mesh.");
 			return;
@@ -366,14 +402,14 @@ void NavMeshController::HandleBuild() {
 		return;
 	}
 
-	if (!rcMergePolyMeshes(&mRecastContext, &myPolyMeshes[0], myPolyMeshes.size(), *mPolyMesh))
+	if (!rcMergePolyMeshes(mRecastContext, &myPolyMeshes[0], myPolyMeshes.size(), *mPolyMesh))
 	{
 		LOG("mergePolymeshes: Failed to merge polymeshes.");
 		return;
 
 	}
 
-	if (!rcMergePolyMeshDetails(&mRecastContext, &myPolyMeshDetails[0], myPolyMeshDetails.size(), *mPolyMeshDetail))
+	if (!rcMergePolyMeshDetails(mRecastContext, &myPolyMeshDetails[0], myPolyMeshDetails.size(), *mPolyMeshDetail))
 	{
 		LOG("mergePolymeshdetails: Failed to merge polymeshdetails.");
 		return;
@@ -382,19 +418,54 @@ void NavMeshController::HandleBuild() {
 	
 
 	LoadDrawMesh();
+	App->GetNavigation()->CreateDetourData();
 
 }
 
 
+float3 NavMeshController::FindNearestPoint(float3 center, float3 halfsize) const
+{
+	float nearestDist = 99999.0f;
+	float3 nearest_point = float3(0.0);
+	AABB box = AABB(center - halfsize, halfsize + center);
+
+	for (int i = 0; i < mIndices.size(); i+=3)
+	{
+		float3 v0 = mVertices[mIndices[i]];
+		float3 v1 = mVertices[mIndices[i + 1]];
+		float3 v2 = mVertices[mIndices[i + 2]];
+		Triangle tri = Triangle(v0, v1, v2);
+		
+		if (tri.Intersects(box))
+		{
+			float3 closest_point = tri.ClosestPoint(center);
+			float distance_to_center = closest_point.Distance(center);
+			if (distance_to_center < nearestDist)
+			{
+				nearest_point = closest_point;
+				nearestDist = distance_to_center;
+			}
+
+		}
+		
+	}
+
+	return nearest_point;
+}
+
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
-			MeshRendererComponent* meshRendererComponent = child->GetMeshRenderer();
+			MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)(child->GetComponent(ComponentType::MESHRENDERER));
+			//AIAgentComponent* agentComponent = child->GetComponent(AIAGENT);
 			if (meshRendererComponent) {
 				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
 				mMeshRendererComponents.push_back(meshRendererComponent);
-
 			}
+		/*	if (agentComponent) {
+				mAIAgentComponents.push_back(agentComponent);
+				App->GetNavigation()->GetAiAgentComponent().push_back(agentComponent);
+			}*/
 			GetGOMeshes(child);
 		}
 	}
@@ -445,3 +516,66 @@ int NavMeshController::FindVertexIndex(float3 vert)
 	return -1; // Not found
 
 }
+
+//void NavMeshController::CreateDetourData() {
+//	const AIAgentComponent* agentComponent = mAIAgentComponents[0];
+//	unsigned char* navData = 0;
+//	int navDataSize = 0;
+//	if (agentComponent) {
+//		mNavMeshParams->verts = mPolyMesh->verts;
+//		mNavMeshParams->vertCount = mPolyMesh->nverts;
+//		mNavMeshParams->polys = mPolyMesh->polys;
+//		mNavMeshParams->polyAreas = mPolyMesh->areas;
+//		mNavMeshParams->polyFlags = mPolyMesh->flags;
+//		mNavMeshParams->polyCount = mPolyMesh->npolys;
+//		mNavMeshParams->nvp = mPolyMesh->nvp;
+//		mNavMeshParams->detailMeshes = mPolyMeshDetail->meshes;
+//		mNavMeshParams->detailVerts = mPolyMeshDetail->verts;
+//		mNavMeshParams->detailVertsCount = mPolyMeshDetail->nverts;
+//		mNavMeshParams->detailTris = mPolyMeshDetail->tris;
+//		mNavMeshParams->detailTriCount = mPolyMeshDetail->ntris;
+//		mNavMeshParams->offMeshConVerts =nullptr;
+//		mNavMeshParams->offMeshConRad = nullptr;
+//		mNavMeshParams->offMeshConDir = nullptr;
+//		mNavMeshParams->offMeshConAreas = nullptr;
+//		mNavMeshParams->offMeshConFlags = nullptr;
+//		mNavMeshParams->offMeshConUserID = nullptr;
+//		mNavMeshParams->offMeshConCount = 0;
+//		mNavMeshParams->walkableHeight = agentComponent->GetHeight();
+//		mNavMeshParams->walkableRadius = agentComponent->GetRadius();
+//		mNavMeshParams->walkableClimb = agentComponent->GetMaxSlope();
+//		rcVcopy(mNavMeshParams->bmin, mPolyMesh->bmin);
+//		rcVcopy(mNavMeshParams->bmax, mPolyMesh->bmax);
+//		mNavMeshParams->cs = mCellSize;
+//		mNavMeshParams->ch = mCellHeight;
+//		mNavMeshParams->buildBvTree = true;
+//	}
+//	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
+//	{
+//		LOG("Could not build Detour navmesh.");
+//		return;
+//	}
+//	mDetourNavMesh = dtAllocNavMesh();
+//	if (!mDetourNavMesh)
+//	{
+//		dtFree(navData);
+//		LOG("Could not create Detour navmesh");
+//		return;
+//	}
+//
+//	dtStatus status;
+//	status = mDetourNavMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
+//	if (dtStatusFailed(status))
+//	{
+//		dtFree(navData);
+//		LOG("Could not init Detour navmesh");
+//		return;
+//	}
+//
+//	status = mNavQuery->init(mDetourNavMesh, 2048);
+//	if (dtStatusFailed(status))
+//	{
+//		LOG("Could not init Detour navmesh query");
+//		return;
+//	}
+//}

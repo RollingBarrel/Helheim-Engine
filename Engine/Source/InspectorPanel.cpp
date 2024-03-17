@@ -10,6 +10,7 @@
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ScriptComponent.h"
 #include "CameraComponent.h"
 #include "AIAGentComponent.h"
 #include "ImporterMaterial.h"
@@ -17,6 +18,8 @@
 #include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+#include "ModuleOpenGL.h"
+#include "Script.h"
 #include "AnimationController.h"
 
 #include "ResourceMaterial.h"
@@ -25,7 +28,7 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) {
@@ -42,7 +45,7 @@ void InspectorPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	if (!focusedObject->IsRoot()) 
+	if (!focusedObject->IsRoot())
 	{
 		if (ImGui::Checkbox("##enabled", &enabled))
 		{
@@ -95,7 +98,7 @@ void InspectorPanel::Draw(int windowFlags)
 		ImGui::Separator();
 		AddComponentButton(focusedObject);
 	}
-	
+
 	if (mSameComponentPopup)
 	{
 		ShowSameComponentPopup();
@@ -245,24 +248,24 @@ void InspectorPanel::RightClickPopup(Component* component) {
 		}
 
 		switch (component->GetType()) {
-			case ComponentType::TEST: {
-				if (ImGui::MenuItem("Custom Test Component Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				if (ImGui::MenuItem("Custom Test Component Option 2")) {
-					ImGui::CloseCurrentPopup();
-				}
-				break;
+		case ComponentType::TEST: {
+			if (ImGui::MenuItem("Custom Test Component Option")) {
+				ImGui::CloseCurrentPopup();
 			}
-			case ComponentType::MESHRENDERER: {
-				if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				break;
+			if (ImGui::MenuItem("Custom Test Component Option 2")) {
+				ImGui::CloseCurrentPopup();
 			}
+			break;
+		}
+		case ComponentType::MESHRENDERER: {
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+				ImGui::CloseCurrentPopup();
+			}
+			break;
+		}
 		}
 
 		ImGui::EndPopup();
@@ -305,12 +308,15 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		DragAndDropTarget(object, component);
 
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		RightClickPopup(component);
 
-		//checkbox for enable/disable
-		ImGui::Checkbox("Enable", &component->mIsEnabled);
+		bool isEnabled = component->IsEnabled();
+		if (ImGui::Checkbox("Enable", &isEnabled)) {
+			(isEnabled) ? component->Enable() : component->Disable(); //Enable and Disable of your component should change mIsEnabled value, not the inspector.
+		}
 
 		DragAndDropSource(component);
-		RightClickPopup(component);
+		
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
@@ -331,6 +337,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::CAMERA: {
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+					break;
+				}
+				case ComponentType::SCRIPT: {
+					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
 					break;
 				}
 				case ComponentType::NAVMESHOBSTACLE: {
@@ -382,7 +392,7 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	else {
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
 	}
-	
+
 
 	ImGui::Separator();
 	ImGui::Text("There is ");
@@ -518,38 +528,52 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
-	//ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
-	//
-	////if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
-	////	renderComponent->EditMaterial();
-	////if(ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
-	////	renderComponent->EditMaterial();
-	////if(ImGui::Checkbox("Enable Shininess map", &material->mEnableShinessMap))
-	////	renderComponent->EditMaterial();
-	////if(ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
-	////	renderComponent->EditMaterial();
-	////
-	////if (!material->mEnableDiffuseTexture)
-	////{
-	////	if(ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
-	////		renderComponent->EditMaterial();
-	////}
-	////if (!material->mEnableSpecularGlossinessTexture)
-	////{
-	////	if(ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
-	////		renderComponent->EditMaterial();
-	////}
-	////if (!material->mEnableShinessMap)
-	////{
-	////	if(ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
-	////		renderComponent->EditMaterial();
-	////}
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
+
+	if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::Checkbox("Enable Shininess map", &material->mEnableShininessMap))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+
+	if (!material->IsDiffuseTextureEnabled())
+	{
+		if (ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
+	if (!material->IsSpecularGlossinessTextureEnabled())
+	{
+		if (ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
+	if (!material->IsShininessMapEnabled())
+	{
+		if (ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
 }
 
 void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)
 {
 	ImGui::SeparatorText("Navigation Mesh Obstacle");
-	
+
 	float Radius = component->GetRadius();
 	ImGui::InputFloat("Radius", &Radius);
 	component->SetRadius(Radius);
@@ -557,8 +581,9 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 	float Height = component->GetHeight();
 	ImGui::InputFloat("Height", &Height);
 	component->SetHeight(Height);
-	
+
 }
+
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
@@ -610,6 +635,83 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	// Is culling
 }
 
+void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
+{
+
+	const char* items[] = { "Select Script", "TestScript", "Dash", "Movement"};
+	const char* currentItem = component->GetScriptName();
+	
+
+	if (ImGui::BeginCombo("##combo", currentItem))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			bool is_selected = (currentItem == items[n]);
+			if (ImGui::Selectable(items[n], is_selected)) {
+				currentItem = items[n];
+				component->LoadScript(currentItem);
+			}		
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus(); 
+			}
+				  
+		}
+		ImGui::EndCombo();
+	}
+
+	component->mScript;
+	std::vector<std::pair<std::string, std::pair<VariableType, void*>>> variables;
+
+
+
+	ImGui::SeparatorText("Attributes");
+	
+	for (ScriptVariable* variable : component->mData) { 
+		switch (variable->mType)
+		{
+		case VariableType::INT:
+			ImGui::DragInt(variable->mName, (int*)variable->mData);
+			break;
+		case VariableType::FLOAT:
+			ImGui::DragFloat(variable->mName, (float*)variable->mData);
+			break;
+		case VariableType::BOOL:
+			ImGui::Checkbox(variable->mName, (bool*)variable->mData);
+			break;
+		case VariableType::FLOAT3:
+			ImGui::DragFloat3(variable->mName, (float*)variable->mData);
+			break;
+		case VariableType::GAMEOBJECT:
+		{
+			
+			GameObject* go = *(GameObject**)variable->mData;
+			ImGui::Text(variable->mName);
+			ImGui::SameLine();
+			const char* str ="";
+			if (!go) {
+				str = "Drop a GameObject Here";
+			}
+			else {
+				str = go->GetName().c_str();
+			}
+			ImGui::BulletText(str);
+			if (ImGui::BeginDragDropTarget()) {
+
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
+					*(GameObject**)variable->mData = *(GameObject**)payload->Data;
+				}
+				ImGui::EndDragDropTarget();
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	
+}
+
+
 void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::SeparatorText("Animation");
@@ -619,6 +721,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if(ImGui::Button("Play"))
 	{
+		if (component->GetAnimation() == nullptr)
+			return;
 		component->OnStart();
 
 		play = true;

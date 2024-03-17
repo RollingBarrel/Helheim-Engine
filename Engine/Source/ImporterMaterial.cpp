@@ -7,13 +7,12 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
-#include "Algorithm/Random/LCG.h"
 
 ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
 {
     float4 diffuseFactor = float4::zero; 
     float3 specularFactor = float3::zero;
-    float GlossinessFactor = 0.0f;
+    float GlossinessFactor = 1.0f;
     unsigned int diffuseTexture = 0; 
     unsigned int specularGlossinessTexture = 0;
     unsigned int normalTexture = 0;

@@ -7,6 +7,7 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
+#include "ResourceScript.h"
 #include "ResourceAnimation.h"
 
 #include <algorithm>
@@ -18,6 +19,7 @@
 #include "ImporterMesh.h"
 #include "ImporterModel.h"
 #include "ImporterMaterial.h"
+#include "ImporterScript.h"
 #include "ImporterAnimation.h"
 
 #include "rapidjson/document.h"
@@ -221,6 +223,10 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Model::Load(lPath, uid);
 		break;
 	}
+	case Resource::Type::Script:
+	{
+		ret = Importer::Script::Load(lPath, uid);
+	}
 	case Resource::Type::Animation:
 	{
 		ret = Importer::Animation::Load(lPath, uid);
@@ -277,6 +283,9 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* 
 	case Resource::Type::Scene:
 		break;
 	case Resource::Type::NavMesh:
+		break;
+	case Resource::Type::Script:
+		ret = Importer::Script::Import(importedFile, uid);
 		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);

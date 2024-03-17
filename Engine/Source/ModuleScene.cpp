@@ -54,8 +54,8 @@ bool ModuleScene::Init()
 	//test.TestSceneWithGameObjects();
 
 	//Save("Scene");
-	//Load("scene");
-
+	Load("scene");
+	
 	return true;
 }
 
@@ -185,8 +185,8 @@ void ModuleScene::Load(const char* sceneName) {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer);
 
-	rapidjson::Document d;
-	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
+	rapidjson::Document document;
+	rapidjson::ParseResult ok = document.Parse(loadedBuffer);
 	if (!ok) {
 		// Handle parsing error
 		LOG("Scene was not loaded.");
@@ -204,9 +204,9 @@ void ModuleScene::Load(const char* sceneName) {
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
 	
 
-	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
-		const rapidjson::Value& s = d["Scene"];
-		mRoot->Load(s);
+	if (document.HasMember("Scene") && document["Scene"].IsObject()) {
+		const rapidjson::Value& sceneValue = document["Scene"];
+		mRoot->Load(sceneValue);
 	}
 
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
@@ -215,6 +215,26 @@ void ModuleScene::Load(const char* sceneName) {
 
 	// Free the loaded buffer
 	delete[] loadedBuffer;
+
+	LoadGameObjectsIntoScripts();
+
+}
+
+GameObject* ModuleScene::Find(const char* name)
+{
+	return mRoot->Find(name);
+
+}
+
+GameObject* ModuleScene::Find(unsigned int UID)
+{
+	if (UID != 1) {
+		return mRoot->Find(UID);
+	}
+	else {
+		return mRoot;
+	}
+	
 }
 
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
@@ -259,7 +279,10 @@ update_status ModuleScene::Update(float dt)
 		mQuadtreeRoot->Draw();
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
-
+	if (mNavMeshController)
+	{
+		mNavMeshController->Update();
+	}
 	App->GetOpenGL()->Draw();
 
 	return UPDATE_CONTINUE;
@@ -298,4 +321,12 @@ void ModuleScene::DuplicateGameObjects() {
 	mGameObjectsToDuplicate.clear();
 	mQuadtreeRoot->UpdateTree();
 
+}
+
+void ModuleScene::LoadGameObjectsIntoScripts()
+{
+
+	for (auto& pair : mGameObjectsToLoadIntoScripts) {
+		*pair.second = Find(pair.first);
+	}
 }

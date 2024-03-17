@@ -1,9 +1,5 @@
 #pragma once
-
 #include "MathGeoLibFwd.h"
-
-#include "float3.h"
-#include "float4.h"
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE

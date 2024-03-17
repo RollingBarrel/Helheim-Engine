@@ -4,7 +4,7 @@
 class Material;
 struct Mesh;
 
-class TestComponent : public Component
+class ENGINE_API TestComponent : public Component
 {
 public:
 	TestComponent(GameObject* ownerGameObject);
