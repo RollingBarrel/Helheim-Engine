@@ -274,7 +274,6 @@
     <ClCompile Include="ModuleScriptManager.cpp" />
     <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
-    <ClCompile Include="NavMeshControllerComponent.cpp" />
     <ClCompile Include="OptickAdapter.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
@@ -527,7 +526,6 @@
     <ClInclude Include="ModuleResource.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="NavMeshControllerComponent.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PausePanel.h" />
     <ClInclude Include="PointLightComponent.h" />

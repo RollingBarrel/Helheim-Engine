@@ -638,7 +638,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
-	const char* items[] = { "Select Script", "TestScript", "Dash" };
+	const char* items[] = { "Select Script", "TestScript", "Dash", "Movement"};
 	const char* currentItem = component->GetScriptName();
 	
 
@@ -721,6 +721,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if(ImGui::Button("Play"))
 	{
+		if (component->GetAnimation() == nullptr)
+			return;
 		component->OnStart();
 
 		play = true;

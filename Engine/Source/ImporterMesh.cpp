@@ -6,11 +6,9 @@
 #include "ResourceMesh.h"
 
 #include "glew.h"
-
 #include "float2.h"
-#include "float3.h"
 #include "float4.h"
-#include "Algorithm/Random/LCG.h"
+
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE

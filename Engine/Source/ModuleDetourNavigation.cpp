@@ -9,6 +9,7 @@
 #include "DetourNavMeshQuery.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
+#include "Recast.h"
 
 ModuleDetourNavigation::ModuleDetourNavigation()
 {

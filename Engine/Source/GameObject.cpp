@@ -1,27 +1,29 @@
 #include "GameObject.h"
 #include "Algorithm/Random/LCG.h"
-#include "Component.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "InspectorPanel.h"
-#include "Quadtree.h"
-#include "imgui.h"
 #include "ModuleOpenGL.h"
+
+#include "Component.h"
+#include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-#include <algorithm>
-#include "MathFunc.h"
-
-#include "MeshRendererComponent.h"
-#include "ModuleScene.h"
 #include "CameraComponent.h"
 #include "TestComponent.h"
-#include "NavMeshControllerComponent.h"
-#include "ScriptComponent.h"
-#include "Tag.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+#include "ScriptComponent.h"
+
+#include "InspectorPanel.h"
+#include "Tag.h"
+#include "Quadtree.h"
+#include "imgui.h"
+
+#include <algorithm>
+#include "MathFunc.h"
+
+
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -392,9 +394,6 @@ Component* GameObject::CreateComponent(ComponentType type) {
 			break;
 		case ComponentType::AIAGENT:
 			newComponent = new AIAgentComponent(this);
-			break;
-		case ComponentType::NAVMESHCONTROLLER:
-			newComponent = new NavMeshControllerComponent(this);
 			break;
 		case ComponentType::NAVMESHOBSTACLE:
 			newComponent = new NavMeshObstacleComponent(this);

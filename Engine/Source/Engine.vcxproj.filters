@@ -262,9 +262,6 @@
     <ClCompile Include="CameraComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="NavMeshControllerComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="PointLightComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -461,6 +458,7 @@
     <ClCompile Include="SettingsPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleDetourNavigation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -926,9 +924,6 @@
     <ClInclude Include="CameraComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="NavMeshControllerComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="PointLightComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
@@ -1239,6 +1234,7 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
+    <ClInclude Include="ModuleDetourNavigation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
