@@ -7,11 +7,15 @@
 #include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+<<<<<<< HEAD
 #include "ModuleScriptManager.h"
 #include "ModuleResource.h"
 #include "ModuleDetourNavigation.h"
 #include "ModuleUI.h"
 #include "ModuleAudio.h"
+=======
+#include "ModuleUI.h"
+>>>>>>> ff690bd (Add ModuleUI in Application)
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -33,6 +37,7 @@ Application::Application()
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
 	modules[4] = render = new ModuleOpenGL();
+<<<<<<< HEAD
 	modules[5] = resource = new ModuleResource();
 	modules[6] = scriptManager = new ModuleScriptManager();
 	modules[7] = debugDraw = new ModuleDebugDraw();
@@ -41,6 +46,12 @@ Application::Application()
 	modules[10] = editor = new ModuleEditor();
 	modules[11] = ui = new ModuleUI();
 	modules[12] = audio = new ModuleAudio();
+=======
+	modules[5] = debugDraw = new ModuleDebugDraw();
+	modules[6] = scene = new ModuleScene();
+	modules[7] = editor = new ModuleEditor();
+	modules[8] = ui = new ModuleUI();
+>>>>>>> ff690bd (Add ModuleUI in Application)
 }
 
 Application::~Application()

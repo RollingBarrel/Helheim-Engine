@@ -22,6 +22,7 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Script";
 		case ComponentType::NAVMESHCONTROLLER:
 			return "NavMeshController";
+<<<<<<< HEAD
 		case ComponentType::AIAGENT:
 			return "AI Agent";
 		case ComponentType::NAVMESHOBSTACLE:
@@ -32,6 +33,12 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Transform2D";
 		case ComponentType::ANIMATION:
 			return "Animation";
+=======
+		case ComponentType::CANVAS:
+			return "Canvas";
+		case ComponentType::TRANSFORM2D:
+return "Transform2D";
+>>>>>>> cdd4582 (Add Canvas and 2Dtransform components' skeletons)
 		default:
 			return "None";
 		}
