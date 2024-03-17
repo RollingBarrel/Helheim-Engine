@@ -39,10 +39,11 @@ void Transform2DComponent::CalculateMatrices()
 
 	for (GameObject* child : GetOwner()->GetChildren())
 	{
-		Transform2DComponent* childTransform = (Transform2DComponent*)child->GetComponent(ComponentType::TRANSFORM2D);
+		Transform2DComponent* childTransform = (Transform2DComponent*) child->GetComponent(ComponentType::TRANSFORM2D);
 		childTransform->CalculateMatrices();
 	}
 }
+
 float3 Transform2DComponent::GetPositionRelativeToParent()
 {
 	float2 parentSize(0, 0);

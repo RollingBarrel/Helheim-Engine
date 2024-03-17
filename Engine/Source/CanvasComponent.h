@@ -16,18 +16,17 @@ public:
     Component* Clone(GameObject* owner) const override;
     void Reset() override;
 
-    inline float2 GetSize() { return size; }
-    inline float GetScreenFactor() { return screenFactor; }
+    inline float2 GetSize() { return mSize; }
+    inline float GetScreenFactor() { return mScreenFactor; }
 
     void RecalculateSizeAndScreenFactor();
 
-private:
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
-    float2 size;
-    float screenFactor;
-    float2 screenReferenceSize;
+private:
 
-    ImageComponent* mImageComponent;
+    float2 mSize;
+    float mScreenFactor;
+    float2 mScreenReferenceSize;
 };

@@ -23,9 +23,10 @@ public:
 
     void SetImage(unsigned int resourceId);
 
-private:
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
+private:
 
     ResourceTexture* mImage;
     float4 mColor;

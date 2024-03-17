@@ -23,8 +23,13 @@ ModuleUI::~ModuleUI()
 };
 
 bool ModuleUI::Init() {
-	mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
-	mCanvas->CreateComponent(ComponentType::CANVAS);
+	
+	mCanvas = FindCanvas(App->GetScene()->GetRoot());
+	if (mCanvas == nullptr) 
+	{
+		mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
+		mCanvas->CreateComponent(ComponentType::CANVAS);
+	}
 
 	LoadVBO();
 	CreateVAO();
@@ -40,8 +45,8 @@ bool ModuleUI::Init() {
 	width = App->GetWindow()->GetWidth();
 
 	mUIfrustum->type = FrustumType::OrthographicFrustum;
-	mUIfrustum->orthographicWidth = 1; //2.f * Atan(Tan(math::DegToRad(90) * 0.5f) / aspect_ratio);  //width;
-	mUIfrustum->orthographicHeight = 1; //2.f * Atan(Tan(UIfrustum->orthographicWidth * 0.5f) * aspect_ratio);  //height; // Cast a float para evitar divisiones enteras
+	mUIfrustum->orthographicWidth = 1;
+	mUIfrustum->orthographicHeight = 1;
 
 
 	mUIfrustum->front = -float3::unitZ;
@@ -88,12 +93,16 @@ bool ModuleUI::CleanUp() {
 	glDeleteProgram(mUIProgramId);
 	glDeleteVertexArrays(1, &mQuadVAO);
 	glDeleteBuffers(1, &mQuadVBO);
-	
+
+	delete mUIfrustum;
+
 	return true;
 }
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
 {
+	if (gameObject == nullptr) return;
+
 	if (gameObject->IsEnabled())
 	{
 		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
@@ -110,6 +119,22 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			DrawWidget(child);
 		}
 	}
+}
+
+GameObject* ModuleUI::FindCanvas(GameObject* gameObject)
+{
+	if (gameObject->GetComponent(ComponentType::CANVAS) != nullptr) 
+	{
+		return gameObject;
+	}
+
+	for (GameObject* go : gameObject->GetChildren()) {
+		if (FindCanvas(go) != nullptr) {
+			return go;
+		}
+	}
+	
+	return nullptr;
 }
 
 void ModuleUI::LoadVBO()

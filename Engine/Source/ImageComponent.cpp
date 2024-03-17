@@ -38,7 +38,7 @@ void ImageComponent::Draw() const
 
         float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
 
-        float4x4 model = float4x4::identity;
+        float4x4 model = GetOwner()->GetWorldTransform(); //float4x4::identity;
 
         float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 
@@ -69,10 +69,28 @@ Component* ImageComponent::Clone(GameObject* owner) const
 
 void ImageComponent::Save(Archive& archive) const
 {
+    archive.AddInt("ID", mID);
+    archive.AddInt("ImageID", mImage->GetUID());
+    archive.AddInt("ComponentType", static_cast<int>(GetType()));
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+    int ID = { 0 };
+    int imageId = { 0 };
+    if (data.HasMember("ID") && data["ID"].IsInt()) {
+        ID = data["ID"].GetInt();
+    }
+    if (data.HasMember("ImageID") && data["ImageID"].IsInt()) {
+        imageId = data["ImageID"].GetInt();
+    }
+
+    mResourceId = imageId;
+    SetImage(imageId);
+}
+
+void ImageComponent::SetImage(unsigned int resourceId) {
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) {
