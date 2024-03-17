@@ -9,9 +9,7 @@
 #include "ModuleScene.h"
 #include "NavMeshController.h"
 #include "Keys.h"
-
-const float pi = (float)3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679;
-
+#include "Math/MathFunc.h"
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
@@ -31,7 +29,7 @@ void PlayerController::Update()
 
 
 }
-float DegToRad(float degrees) { return degrees * (pi / 180.f); }
+
 void PlayerController::Move() {
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
         float3 newPos = (mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt() * mPlayerSpeed);
@@ -64,16 +62,18 @@ void PlayerController::Win() {
 }
 
 void PlayerController::Rotate() {
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
-    {
+
         int mX, mY;
         App->GetInput()->GetMouseMotion(mX, mY);
         float rotation = DegToRad(mX * mPlayerRotationSpeed);
-        float3 rotMatrix = { 0.0f,0.0f, rotation };
+        /*float3 rotMatrix = { 0.0f,rotation,0.0f };*/
+        float3 vec = {0.0f, 1.0f, 0.0f};
 
 
-        mGameObject->SetRotation(rotMatrix);
-    }
+
+        //mGameObject->SetRotation(rotMatrix+ mGameObject->GetRotation());
+        mGameObject->SetRotation(mGameObject->GetRotation()+ 1*App->GetGameDt()* vec);
+
 }
 
 
