@@ -28,6 +28,9 @@ static void ImportNode(ModelNode& node, const char* filePath, const tinygltf::Mo
 
     node.mName = tinyNode.name;
 
+    if (tinyNode.name == "RootNode")
+        App->GetFileSystem()->SplitPath(filePath, &node.mName);
+
     math::float4x4 matrix = float4x4::identity;
     if (tinyNode.matrix.size() == 16)
     {

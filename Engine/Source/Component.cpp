@@ -20,8 +20,6 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Camera";
 		case ComponentType::SCRIPT:
 			return "Script";
-		case ComponentType::NAVMESHCONTROLLER:
-			return "NavMeshController";
 		case ComponentType::AIAGENT:
 			return "AI Agent";
 		case ComponentType::NAVMESHOBSTACLE:

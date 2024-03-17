@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
-#include "GameObject.h"
 
 class Mesh;
 struct Material;

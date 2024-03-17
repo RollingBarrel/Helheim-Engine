@@ -1,11 +1,10 @@
 #include "CameraComponent.h"
 
 #include "Math/MathConstants.h"
-#include "ModuleWindow.h"
 #include "Application.h"
 #include "CameraUtils.h"
-
 #include "ModuleDebugDraw.h"
+
 
 CameraComponent::CameraComponent(GameObject* owner)
 	:Component(owner, ComponentType::CAMERA)

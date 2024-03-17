@@ -279,7 +279,10 @@ update_status ModuleScene::Update(float dt)
 		mQuadtreeRoot->Draw();
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
-
+	if (mNavMeshController)
+	{
+		mNavMeshController->Update();
+	}
 	App->GetOpenGL()->Draw();
 
 	return UPDATE_CONTINUE;

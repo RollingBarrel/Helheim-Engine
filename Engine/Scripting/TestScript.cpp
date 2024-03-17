@@ -10,7 +10,6 @@
 #include "ModuleScene.h"
 #include "MeshRendererComponent.h"
 #include "CameraComponent.h"
-#include "NavMeshControllerComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "AIAGentComponent.h"
@@ -29,7 +28,6 @@ void TestScript::Start()
 	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
 	CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
     //AIAgentComponent* aIAgentComponent = (AIAgentComponent*)mGameObject->CreateComponent(ComponentType::AIAGENT);
-	//NavMeshControllerComponent* component2 = (NavMeshControllerComponent*)mGameObject->CreateComponent(ComponentType::NAVMESHCONTROLLER);
 	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
