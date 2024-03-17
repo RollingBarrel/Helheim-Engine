@@ -244,6 +244,7 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
     <ClCompile Include="EditorControlPanel.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
+    <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
@@ -257,6 +258,7 @@
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
+    <ClCompile Include="ModuleEvent.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
@@ -469,7 +471,9 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImporterScript.h" />
+    <ClInclude Include="ModuleEvent.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="Importer.h" />

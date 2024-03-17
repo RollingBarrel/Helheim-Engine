@@ -458,6 +458,12 @@
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEvent.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="HelheimEvent.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1233,6 +1239,12 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
+    <ClInclude Include="ModuleEvent.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="HelheimEvent.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
