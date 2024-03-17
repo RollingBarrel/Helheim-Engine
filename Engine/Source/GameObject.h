@@ -33,7 +33,7 @@ public:
 
 	~GameObject();
 
-
+	std::vector<Component*> GetComponents(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
 

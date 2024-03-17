@@ -19,31 +19,30 @@ void Transform2DComponent::Update()
 
 void Transform2DComponent::CalculateMatrices()
 {
-    localMatrix = float4x4::FromTRS(GetPositionRelativeToParent(), rotation, scale) *
-        float4x4::Translate(float3((-pivot + float2(0.5f, 0.5f)).Mul(size), 0.0f));
+	localMatrix = float4x4::FromTRS(GetPositionRelativeToParent(), rotation, scale) *
+		float4x4::Translate(float3((-pivot + float2(0.5f, 0.5f)).Mul(size), 0.0f));
 
-    const GameObject* parent = GetOwner()->GetParent();
+	GameObject* parent = GetOwner()->GetParent();
 
-  //  if (parent)
-  //  {
-		//Transform2DComponent* parentTransform = parent->GetComponent(ComponentType::IMAGE);
-  //      if (parentTransform)
-  //      {
-  //          globalMatrix = parentTransform->GetGlobalMatrix().Mul(localMatrix);
-  //      }
-  //      else
-  //      {
-  //          globalMatrix = localMatrix;
-  //      }
-  //  }
+	if (parent)
+	{
+		Transform2DComponent* parentTransform = (Transform2DComponent*)parent->GetComponent(ComponentType::TRANSFORM2D);
+		if (parentTransform)
+		{
+			globalMatrix = parentTransform->GetGlobalMatrix().Mul(localMatrix);
+		}
+		else
+		{
+			globalMatrix = localMatrix;
+		}
+	}
 
-  //  for (GameObject* child : GetOwner()->GetChildren())
-  //  {
-  //      Transform2DComponent* childTransform = static_cast<Transform2DComponent*>(child->GetComponent(ComponentType::TRANSFORM2D));
-  //      childTransform->CalculateMatrices();
-  //  }
+	for (GameObject* child : GetOwner()->GetChildren())
+	{
+		Transform2DComponent* childTransform = (Transform2DComponent*)child->GetComponent(ComponentType::TRANSFORM2D);
+		childTransform->CalculateMatrices();
+	}
 }
-
 float3 Transform2DComponent::GetPositionRelativeToParent()
 {
 	float2 parentSize(0, 0);

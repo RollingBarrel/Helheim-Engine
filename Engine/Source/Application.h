@@ -40,10 +40,10 @@ public:
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
     ModuleScriptManager* GetScriptManager() { return scriptManager; }
+    ModuleUI* GetUI() { return ui; }
     ModuleResource* GetResource() { return resource; }
     ModuleDetourNavigation* GetNavigation() { return navigation; }
     ModuleAudio* GeAudio() { return audio; }
-    ModuleUI* GetUI() { return ui; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }

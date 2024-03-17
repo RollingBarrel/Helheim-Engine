@@ -655,7 +655,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	const char* items[] = { "Select Script", "TestScript", "Dash" };
 	const char* currentItem = component->GetScriptName();
-	
+
 
 	if (ImGui::BeginCombo("##combo", currentItem))
 	{
@@ -665,11 +665,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			if (ImGui::Selectable(items[n], is_selected)) {
 				currentItem = items[n];
 				component->LoadScript(currentItem);
-			}		
-			if (is_selected) {
-				ImGui::SetItemDefaultFocus(); 
 			}
-				  
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+
 		}
 		ImGui::EndCombo();
 	}
@@ -680,8 +680,8 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 
 	ImGui::SeparatorText("Attributes");
-	
-	for (ScriptVariable* variable : component->mData) { 
+
+	for (ScriptVariable* variable : component->mData) {
 		switch (variable->mType)
 		{
 		case VariableType::INT:
@@ -698,11 +698,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		case VariableType::GAMEOBJECT:
 		{
-			
+
 			GameObject* go = *(GameObject**)variable->mData;
 			ImGui::Text(variable->mName);
 			ImGui::SameLine();
-			const char* str ="";
+			const char* str = "";
 			if (!go) {
 				str = "Drop a GameObject Here";
 			}
@@ -723,7 +723,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		}
 	}
-	
+
 }
 
 
@@ -775,4 +775,3 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 		App->GetUI()->SetScreenSpace(true);
 	}
 }
-

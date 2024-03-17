@@ -23,10 +23,11 @@ public:
 	inline unsigned int GetQuadVAO() const { return mQuadVAO; }
 	inline unsigned int GetProgram() const { return mUIProgramId; }
 	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
+
 	void SetScreenSpace(bool screen);
 
 private:
-	void DrawWidget( GameObject* gameObject);
+	void DrawWidget(GameObject* gameObject);
 
 	Frustum* mUIfrustum;
 	Frustum* mCurrentFrustum;

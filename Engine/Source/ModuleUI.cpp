@@ -100,16 +100,16 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 {
 	if (gameObject->IsEnabled())
 	{
-		for (auto component : gameObject->GetComponent(ComponentType::IMAGE))
+		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+		{
+			ImageComponent* image = (ImageComponent*)component;
+			if (image->IsEnabled())
 			{
-				const ImageComponent* image = (const ImageComponent*) component;
-				if (image->IsEnabled())
-				{
-					image->Draw();
-				}
+				image->Draw();
 			}
+		}
 
-		for (const GameObject* child : gameObject->GetChildren())
+		for (GameObject* child : gameObject->GetChildren())
 		{
 			DrawWidget(child);
 		}

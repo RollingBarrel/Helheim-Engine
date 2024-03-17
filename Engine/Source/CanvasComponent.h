@@ -31,4 +31,3 @@ private:
 
     ImageComponent* mImageComponent;
 };
-

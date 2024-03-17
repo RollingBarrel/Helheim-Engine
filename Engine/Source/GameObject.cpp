@@ -7,8 +7,6 @@
 #include "Quadtree.h"
 #include "imgui.h"
 #include "ModuleOpenGL.h"
-#include "PointLightComponent.h"
-#include "SpotLightComponent.h"
 #include <algorithm>
 #include "MathFunc.h"
 
@@ -24,7 +22,8 @@
 #include "AnimationComponent.h"
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
-
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -125,6 +124,19 @@ Component* GameObject::GetComponent(ComponentType type)
 		}
 	}
 	return nullptr;
+}
+
+std::vector<Component*> GameObject::GetComponents(ComponentType type)
+{
+	std::vector<Component*> matchingComponents;
+
+	for (auto component : mComponents) {
+		if (component->GetType() == type) {
+			matchingComponents.push_back(component);
+		}
+	}
+
+	return matchingComponents;
 }
 
 void GameObject::RecalculateMatrices()
@@ -404,6 +416,12 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		break;
 	case ComponentType::ANIMATION:
 		newComponent = new AnimationComponent(this);
+		break;
+	case ComponentType::IMAGE:
+		newComponent = new ImageComponent(this);
+		break;
+	case ComponentType::CANVAS:
+		newComponent = new CanvasComponent(this);
 		break;
 	default:
 		break;

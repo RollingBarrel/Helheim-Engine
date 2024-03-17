@@ -23,7 +23,6 @@ public:
 
 	GameObject* GetRoot() const { return mRoot; }
 	NavMeshController* GetNavController() const { return mNavMeshController; }
-	GameObject* GetCanvas() const { return mCanvas; }
 
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
@@ -70,14 +69,13 @@ private:
 
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
-	
+
 	Quadtree* mQuadtreeRoot;
 	bool mDrawQuadtree = false;
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
 	NavMeshController* mNavMeshController;
-	GameObject* mCanvas = nullptr;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;

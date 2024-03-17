@@ -4,19 +4,19 @@
 #include "ImageComponent.h"
 #include "ModuleWindow.h"
 
-CanvasComponent::CanvasComponent(bool active, GameObject* owner): Component(owner, ComponentType::CANVAS), 
-	screenReferenceSize(1920, 1080),
-	size(1920, 1080),
-	screenFactor(0.0f) {
+CanvasComponent::CanvasComponent(bool active, GameObject* owner) : Component(owner, ComponentType::CANVAS),
+screenReferenceSize(1920, 1080),
+size(1920, 1080),
+screenFactor(0.0f) {
 
 	//mImageComponent = new ImageComponent(reinterpret_cast<GameObject*>(this));
 
 }
 
 CanvasComponent::CanvasComponent(GameObject* owner) : Component(owner, ComponentType::CANVAS),
-	screenReferenceSize(1920, 1080),
-	size(1920, 1080),
-	screenFactor(0.0f) {
+screenReferenceSize(1920, 1080),
+size(1920, 1080),
+screenFactor(0.0f) {
 
 	//mImageComponent = new ImageComponent(reinterpret_cast<GameObject*>(this));
 

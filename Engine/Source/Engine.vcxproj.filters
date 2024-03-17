@@ -430,6 +430,9 @@
     <ClCompile Include="ImporterAnimation.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="ImageComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -1086,6 +1089,9 @@
     </ClInclude>
     <ClInclude Include="ImporterAnimation.h">
       <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
