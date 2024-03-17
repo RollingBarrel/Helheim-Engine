@@ -17,11 +17,15 @@
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "NavMeshControllerComponent.h"
+<<<<<<< HEAD
 #include "ScriptComponent.h"
 #include "Tag.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+=======
+#include "ImageComponent.h"
+>>>>>>> 2cbcff0 (First modifications on ImageComponent)
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -113,8 +117,12 @@ GameObject::~GameObject()
 
 }
 
+<<<<<<< HEAD
 
 Component* GameObject::GetComponent(ComponentType type)
+=======
+Component* GameObject::GetComponent(ComponentType type) const
+>>>>>>> a5c51ef (Module UI initial structure)
 {
 	for (auto component : mComponents) {
 		if (component->GetType() == type) {
@@ -122,6 +130,19 @@ Component* GameObject::GetComponent(ComponentType type)
 		}
 	}
 	return nullptr;
+}
+
+std::vector<Component*> GameObject::GetComponents(ComponentType type) const
+{
+	std::vector<Component*> matchingComponents;
+
+	for (auto component : mComponents) {
+		if (component->GetType() == type) {
+			matchingComponents.push_back(component);
+		}
+	}
+
+	return matchingComponents;
 }
 
 void GameObject::RecalculateMatrices()
@@ -396,12 +417,17 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		case ComponentType::NAVMESHCONTROLLER:
 			newComponent = new NavMeshControllerComponent(this);
 			break;
+<<<<<<< HEAD
 		case ComponentType::NAVMESHOBSTACLE:
 			newComponent = new NavMeshObstacleComponent(this);
 			break;
 		case ComponentType::ANIMATION:
 			newComponent = new AnimationComponent(this);
 			break;
+=======
+		case ComponentType::IMAGE:
+			newComponent = new ImageComponent(this);
+>>>>>>> 2cbcff0 (First modifications on ImageComponent)
 		default:
 			break;
 	}

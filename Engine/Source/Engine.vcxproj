@@ -242,8 +242,12 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="EditorControlPanel.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
+=======
+    <ClCompile Include="ImageComponent.cpp" />
+>>>>>>> a5c51ef (Module UI initial structure)
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
@@ -469,9 +473,13 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
+<<<<<<< HEAD
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
+=======
+    <ClInclude Include="ImageComponent.h" />
+>>>>>>> a5c51ef (Module UI initial structure)
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterMesh.h" />

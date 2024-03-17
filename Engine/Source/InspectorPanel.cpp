@@ -12,7 +12,11 @@
 #include "SpotLightComponent.h"
 #include "ScriptComponent.h"
 #include "CameraComponent.h"
+<<<<<<< HEAD
 #include "AIAGentComponent.h"
+=======
+#include "ImageComponent.h"
+>>>>>>> 2cbcff0 (First modifications on ImageComponent)
 #include "ImporterMaterial.h"
 #include "Tag.h"
 #include "MathFunc.h"
@@ -355,6 +359,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				}
+				case ComponentType::IMAGE: {
+					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+				}
 			}
 		}
 		ImGui::PopID();
@@ -635,6 +642,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	// Is culling
 }
 
+<<<<<<< HEAD
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
@@ -728,5 +736,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if(play)
 		component->OnUpdate();
+=======
+void InspectorPanel::DrawImageComponent(ImageComponent* component) {
+>>>>>>> 2cbcff0 (First modifications on ImageComponent)
 
 }

@@ -22,7 +22,11 @@ public:
 	update_status PostUpdate(float dt) override;
 
 	GameObject* GetRoot() const { return mRoot; }
+<<<<<<< HEAD
 	NavMeshController* GetNavController() const { return mNavMeshController; }
+=======
+	GameObject* GetCanvas() const { return mCanvas; }
+>>>>>>> a5c51ef (Module UI initial structure)
 
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
@@ -75,7 +79,11 @@ private:
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
+<<<<<<< HEAD
 	NavMeshController* mNavMeshController;
+=======
+	GameObject* mCanvas = nullptr;
+>>>>>>> a5c51ef (Module UI initial structure)
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;

@@ -23,6 +23,7 @@
 #include "ImporterMesh.h"
 
 ModuleScene::ModuleScene() {
+<<<<<<< HEAD
 	mNavMeshController = new NavMeshController();
 
 	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
@@ -31,6 +32,11 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(3, "EditorOnly", TagType::SYSTEM));
 	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
+=======
+	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	mCanvas = new GameObject("Canvas", 2, mRoot, float3::zero, float3::one, Quat::identity);
+	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
+>>>>>>> a5c51ef (Module UI initial structure)
 }
 
 ModuleScene::~ModuleScene()

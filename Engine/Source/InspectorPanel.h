@@ -10,9 +10,13 @@ class CameraComponent;
 class ScriptComponent;
 class PointLightComponent;
 class SpotLightComponent;
+<<<<<<< HEAD
 class AIAgentComponent;
 class NavMeshObstacleComponent;
 class AnimationComponent;
+=======
+class ImageComponent;
+>>>>>>> 2cbcff0 (First modifications on ImageComponent)
 
 class InspectorPanel : public Panel
 {
@@ -39,7 +43,11 @@ private:
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
+<<<<<<< HEAD
 	void DrawAIAgentComponent(AIAgentComponent* component);
+=======
+	void DrawImageComponent(ImageComponent* component);
+>>>>>>> 2cbcff0 (First modifications on ImageComponent)
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);

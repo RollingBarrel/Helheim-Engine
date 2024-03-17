@@ -33,7 +33,12 @@ public:
 
 	~GameObject();
 
+<<<<<<< HEAD
 
+=======
+	Component* GetComponent(ComponentType type) const;
+	std::vector<Component*> GetComponents(ComponentType type) const;
+>>>>>>> a5c51ef (Module UI initial structure)
 	void RecalculateMatrices();
 	void Update();
 	

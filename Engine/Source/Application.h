@@ -11,15 +11,11 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
-<<<<<<< HEAD
 class ModuleScriptManager;
 class ModuleResource;
 class ModuleUI;
 class ModuleDetourNavigation;
 class ModuleAudio;
-=======
-class ModuleUI;
->>>>>>> ff690bd (Add ModuleUI in Application)
 
 class Timer;
 class PreciseTimer;
@@ -47,6 +43,7 @@ public:
     ModuleResource* GetResource() { return resource; }
     ModuleDetourNavigation* GetNavigation() { return navigation; }
     ModuleAudio* GeAudio() { return audio; }
+    ModuleUI* GetUI() { return ui; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
@@ -73,7 +70,6 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
-<<<<<<< HEAD
     ModuleScriptManager* scriptManager = nullptr;
     ModuleResource* resource = nullptr;
     ModuleAudio* audio = nullptr;
@@ -81,11 +77,6 @@ private:
     ModuleDetourNavigation* navigation = nullptr;
 
 #define NUM_MODULES 13
-=======
-    ModuleUI* ui = nullptr;
-
-#define NUM_MODULES 9
->>>>>>> ff690bd (Add ModuleUI in Application)
     Module* modules[NUM_MODULES];
 
     //Timer
