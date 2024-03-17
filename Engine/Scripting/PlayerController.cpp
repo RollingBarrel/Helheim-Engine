@@ -65,14 +65,9 @@ void PlayerController::Rotate() {
 
         int mX, mY;
         App->GetInput()->GetMouseMotion(mX, mY);
-        float rotation = DegToRad(mX * mPlayerRotationSpeed);
-        /*float3 rotMatrix = { 0.0f,rotation,0.0f };*/
-        float3 vec = {0.0f, 1.0f, 0.0f};
+        float3 rotation = { 0.0f, DegToRad(mX * mPlayerRotationSpeed), 0.0f };
+        mGameObject->SetRotation(rotation+ mGameObject->GetRotation());
 
-
-
-        //mGameObject->SetRotation(rotMatrix+ mGameObject->GetRotation());
-        mGameObject->SetRotation(mGameObject->GetRotation()+ 1*App->GetGameDt()* vec);
 
 }
 
