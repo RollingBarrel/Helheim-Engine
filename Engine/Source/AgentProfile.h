@@ -3,13 +3,13 @@
 class AgentProfile
 {
 public:
-	AgentProfile(std::string name, float radius, float height, float stepHeight, unsigned int maxSlope);
+	AgentProfile(const std::string& name, float radius, float height, float stepHeight, unsigned int maxSlope);
 	~AgentProfile();
-	std::string getName() { return mName; };
+	const std::string& getName() const { return mName; };
 	const float getRadius() const { return mRadius; };
-	float getHeight() { return mHeight; };
-	float getStepHeight() { return mStepHeight; };
-	unsigned int getMaxSlope() { return mMaxSlope; };
+	float getHeight() const { return mHeight; };
+	float getStepHeight() const { return mStepHeight; };
+	unsigned int getMaxSlope() const { return mMaxSlope; };
 
 private:
 	std::string mName = ""; 
@@ -17,8 +17,5 @@ private:
 	float mHeight = 0.0f;
 	float mStepHeight = 0.0f;
 	unsigned int mMaxSlope = 0;
-	
-
-
 };
 
