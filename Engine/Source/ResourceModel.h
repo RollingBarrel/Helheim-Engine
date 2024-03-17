@@ -19,8 +19,9 @@ struct ModelNode
 
 	std::vector<std::pair<unsigned int, unsigned int>> mUids;
 
-	std::vector<ModelNode> mChildren;
+	int mParentIndex = -1;
 
+	bool mHasTransform = false;
 	//Components
 	int mMeshId;
 	int mCameraId;
@@ -31,56 +32,12 @@ class ResourceModel : public Resource
 {
 public:
 
-	ResourceModel(unsigned int uid, ModelNode root);
+	ResourceModel(unsigned int uid);
 
-	const ModelNode& GetRoot() const { return mRoot; }
+	const std::vector<ModelNode>& GetNodes() { return modelNodes; }
 
 	std::vector<unsigned int> mAnimationUids;
 
-private:
+	std::vector<ModelNode> modelNodes;
 
-	ModelNode mRoot;
 };
-
-/*
-#pragma once
-#include "Resource.h"
-#include "tiny_gltf.h"
-
-#include "ImporterModel.h"
-
-#include "float3.h"
-#include "Quat.h"
-#include <vector>
-
-class ResourceModel : public Resource
-{
-	typedef struct ModelIds {
-		unsigned int meshUID;
-		unsigned int materialUID;
-	}ModelIds;
-
-	typedef struct Node {
-		const char* name;
-		unsigned int parentIndex;
-
-		//Transform
-		float3 translation;
-		Quat rotation;
-
-		std::vector<ModelIds>uids;
-	}Node;
-
-public:
-
-	ResourceModel(unsigned int uid);
-
-	const std::vector<ModelIds>& GetUids(Node node) const { return node.uids; }
-	void SetUids(Node node, unsigned int meshUID, unsigned int materialUID);
-
-	const std::vector<Node> GetNodes() { return mNodes; }
-	void CreateNodeArray(tinygltf::Model& model);
-
-private:
-	std::vector<Node> mNodes;
-};*/

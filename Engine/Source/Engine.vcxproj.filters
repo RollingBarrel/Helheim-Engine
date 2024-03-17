@@ -190,6 +190,9 @@
     <ClCompile Include="NavMeshControllerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="SettingsPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -599,6 +602,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngineExport.h">
       <Filter>Dependencies\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsPanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
   </ItemGroup>

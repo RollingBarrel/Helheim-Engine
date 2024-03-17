@@ -21,6 +21,7 @@
 #include "LightningPanel.h"
 #include "ResourcePanel.h"
 #include "TimerPanel.h"
+#include "SettingsPanel.h"
 #include "EditorControlPanel.h"
 #include "TagsManagerPanel.h"
 
@@ -48,9 +49,15 @@ ModuleEditor::ModuleEditor()
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
 	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
+	mPanels[SETTINGSPANEL] = new SettingsPanel();
 
 	// Panels closed by default
 	mPanels[TAGSMANAGERPANEL]->Close();
+
+	for (auto panel : mPanels) 
+	{
+		mPanelNames.push_back(panel.first);
+	}
 }
 
 ModuleEditor::~ModuleEditor()
@@ -67,6 +74,7 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io->ConfigDragClickToInputText = true;
+	io->IniFilename = NULL;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
@@ -85,6 +93,10 @@ bool ModuleEditor::Init()
 	io->Fonts->AddFontFromFileTTF("InternalAssets/Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
 
 	mOptick = new OptickAdapter();
+
+	// Load the saved layout when opening the engine
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
+	mPanels[SETTINGSPANEL]->Close();
 
 	return true;
 }
@@ -184,8 +196,14 @@ void ModuleEditor::ShowMainMenuBar()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Edit")) 
-		{
+		if (ImGui::BeginMenu("Edit")) {
+			Panel* settingsPanel = mPanels[SETTINGSPANEL];
+			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) {
+				if (settingsPanel)
+				{
+					settingsPanel->IsOpen() ? settingsPanel->Close() : settingsPanel->Open();
+				}
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Assets")) 
@@ -369,6 +387,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
 	Panel* resourcePanel = mPanels[RESOURCEPANEL];
+	Panel* settingsPanel = mPanels[SETTINGSPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 
@@ -386,6 +405,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		editorControlPanel->Open();
 		lightningPanel->Open();
 		resourcePanel->Open();
+		settingsPanel->Open();
 	}
 	else 
 	{
@@ -401,6 +421,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		editorControlPanel->Close();
 		lightningPanel->Close();
 		resourcePanel->Close();
+		settingsPanel->Close();
 		aboutPanel->Close();
 	}
 }

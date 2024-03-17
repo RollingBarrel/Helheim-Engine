@@ -177,47 +177,49 @@ void ModuleScene::Save(const char* sceneName) {
 }
 
 void ModuleScene::Load(const char* sceneName) {
+
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) {
 		loadFilePath += ".json";
 	}
 
 	char* loadedBuffer = nullptr;
-	App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer);
 
-	rapidjson::Document document;
-	rapidjson::ParseResult ok = document.Parse(loadedBuffer);
-	if (!ok) {
-		// Handle parsing error
-		LOG("Scene was not loaded.");
-		return;
-	}
-
-	/*const std::vector<GameObject*>& children = mRoot->GetChildren();
-	if (!children.empty()) {
-		for (GameObject* child : children) {
-			mRoot->DeleteChild(child);
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer) > 0)
+	{
+		rapidjson::Document document;
+		rapidjson::ParseResult ok = document.Parse(loadedBuffer);
+		if (!ok) {
+			// Handle parsing error
+			LOG("Scene was not loaded.");
+			return;
 		}
-	}*/
-	mQuadtreeRoot->CleanUp();
-	delete mRoot;
-	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
-	
 
-	if (document.HasMember("Scene") && document["Scene"].IsObject()) {
-		const rapidjson::Value& sceneValue = document["Scene"];
-		mRoot->Load(sceneValue);
+		/*const std::vector<GameObject*>& children = mRoot->GetChildren();
+		if (!children.empty()) {
+			for (GameObject* child : children) {
+				mRoot->DeleteChild(child);
+			}
+		}*/
+		mQuadtreeRoot->CleanUp();
+		delete mRoot;
+		mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+
+
+		if (document.HasMember("Scene") && document["Scene"].IsObject()) {
+			const rapidjson::Value& sceneValue = document["Scene"];
+			mRoot->Load(sceneValue);
+		}
+
+		HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+		hierarchyPanel->SetFocus(mRoot);
+		mQuadtreeRoot->UpdateTree();
+
+		// Free the loaded buffer
+		delete[] loadedBuffer;
+
+		LoadGameObjectsIntoScripts();
 	}
-
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
-	hierarchyPanel->SetFocus(mRoot);
-	mQuadtreeRoot->UpdateTree();
-
-	// Free the loaded buffer
-	delete[] loadedBuffer;
-
-	LoadGameObjectsIntoScripts();
-
 }
 
 GameObject* ModuleScene::Find(const char* name)

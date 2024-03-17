@@ -1,6 +1,9 @@
 #include "TimerPanel.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
+#include "ModuleEditor.h"
+#include "SettingsPanel.h"
+
 #include "imgui.h"
 #include "glew.h"
 
@@ -51,7 +54,6 @@ void TimerPanel::Draw(int windowFlags)
 	static std::vector<unsigned long long> msLog;
 
 	static bool fpsLimitEnabled = true;
-	static bool vsyncEnabled = true;
 	
 	unitSecs = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
 
@@ -65,34 +67,20 @@ void TimerPanel::Draw(int windowFlags)
 		fps = App->GetCurrentClock()->GetFPS();
 	}
 
-	ImGui::SeparatorText("Vsync");
-	ImGui::Checkbox("Vsync enabled", &vsyncEnabled);
-	if (vsyncEnabled != App->GetCurrentClock()->GetVsyncStatus()) {
-		App->GetCurrentClock()->SetVsyncStatus(vsyncEnabled);
-	}
+	
 
 	ImGui::SeparatorText("FPS");
-	if (!vsyncEnabled) {
-		ImGui::Checkbox("Enable FPS Limit", &fpsLimitEnabled);
-		int fps_limit = 0;
-		if (fpsLimitEnabled) {
-			fps_limit = App->GetCurrentClock()->GetFpsLimit();
-			ImGui::SliderInt("FPS Limit", &fps_limit, 10, 240);
-			
-		}
-		App->GetCurrentClock()->SetFpsLimit(fps_limit);
-		
-	}
 
 	ImGui::Text("Lowest FPS: %.2f on second %.2f", App->GetCurrentClock()->GetLowestFPS(), App->GetCurrentClock()->GetLowestFpsTime() / App->GetCurrentClock()->GetTimerPrecision());
 
 	ImGui::SeparatorText("Frames");
 
-	if (!vsyncEnabled) //Only works without vsync
+	if (!App->GetCurrentClock()->GetVsyncStatus()) //Only works without vsync
 	{
 		ImGui::Text("Last frame delayed for %d %s", App->GetCurrentClock()->GetFrameDelay(), timeUnit);
 		ImGui::Text("Actual execution time of the last frame: %d %s", unitSecs - App->GetCurrentClock()->GetFrameDelay(), timeUnit);
 	}
+
 
 	ImGui::Text("Slowest frame: %lld %s on frame %i", App->GetCurrentClock()->GetSlowestFrameTime(), timeUnit, App->GetCurrentClock()->GetSlowestFrame());
 

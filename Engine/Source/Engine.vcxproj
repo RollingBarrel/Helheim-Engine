@@ -210,8 +210,7 @@
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PausePanel.cpp" />
-    <ClCompile Include="TagsManagerPanel.cpp" />
-    <ClCompile Include="TimerPanel.cpp" />
+    <ClCompile Include="SettingsPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
@@ -307,7 +306,7 @@
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="OptickAdapter.h" />
-    <ClInclude Include="TimerPanel.h" />
+    <ClInclude Include="SettingsPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Panel.h" />
