@@ -10,6 +10,7 @@
 #include "NavMeshController.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
+#include "AnimationComponent.h"
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
@@ -19,6 +20,11 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 void PlayerController::Start()
 {
     mNavMeshControl = App->GetScene()->GetNavController();
+
+    if (mAnimationComponentHolder) {
+        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
+        mAnimationComponent->OnStart();
+    }
 }
 
 void PlayerController::Update()
@@ -27,6 +33,9 @@ void PlayerController::Update()
     Rotate();
     Win();
 
+    if (mAnimationComponent) {
+        mAnimationComponent->OnUpdate();
+    }
 
 }
 
@@ -54,7 +63,8 @@ void PlayerController::Win() {
      float3 winPosition= mWinArea->GetPosition();
      float3 playerPosition = mGameObject->GetPosition();
      if (((winPosition.x - playerPosition.x)<2 && (winPosition.x - playerPosition.x)> -2) && ((winPosition.z - playerPosition.z) < 2 && (winPosition.z - playerPosition.z) > -2)) {
-         mGameObject->SetPosition(float3::zero);
+         //mGameObject->SetPosition(float3::zero);
+         LOG("WIN");
      }
 
     }
