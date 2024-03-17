@@ -1,11 +1,9 @@
 #pragma once
 
 #include "Module.h"
+#include "HelheimEvent.h"
 #include <concurrent_queue.h>
 #include <vector>
-
-struct HelheimEvent;
-enum class HelheimEventType;
 
 class ModuleEvent : public Module
 {
@@ -22,7 +20,7 @@ public:
 	void AddEvent(const HelheimEvent& newEvent);
 private:
 	void ProcessEvents();
-	void ProcessEvent(const HelheimEvent& e);
+	void ProcessEvent(HelheimEvent& e);
 
 	concurrency::concurrent_queue<HelheimEvent> mEventQueue;
 	std::vector<Module*> mObservers[(int)HelheimEventType::COUNT];

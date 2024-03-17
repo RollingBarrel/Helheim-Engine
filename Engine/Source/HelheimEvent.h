@@ -1,6 +1,6 @@
 #pragma once
 
-enum class HelheimEventType
+enum class HelheimEventType : int
 {
 	UNKNOWN = 0,
 	PRESSED_PLAY,
