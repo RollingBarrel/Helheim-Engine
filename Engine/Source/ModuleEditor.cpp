@@ -44,6 +44,11 @@ ModuleEditor::ModuleEditor()
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[SETTINGSPANEL] = new SettingsPanel();
+
+	for (auto panel : mPanels) 
+	{
+		mPanelNames.push_back(panel.first);
+	}
 }
 
 ModuleEditor::~ModuleEditor()

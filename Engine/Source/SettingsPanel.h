@@ -9,7 +9,8 @@
 
 #define SETTINGSPANEL "Settings##"
 
-struct WindowState {
+struct WindowState 
+{
 	std::string name;
 	bool IsOpen;
 	ImVec2 position;
@@ -24,14 +25,14 @@ public:
 
 	void Draw(int windowFlags) override;
 private:
-	bool culling = false;
-	bool engineVsyncEnabled = false;
-	bool gameVsyncEnabled = false;
-	bool engineFpsLimitEnabled = false;
-	bool gameFpsLimitEnabled = false;
-	int engineFpsLimit = 0;
-	int gameFpsLimit = 0;
-	bool grid = false;
+	bool mCulling = false;
+	bool mEngineVsyncEnabled = false;
+	bool mGameVsyncEnabled = false;
+	bool mEngineFpsLimitEnabled = false;
+	bool mGameFpsLimitEnabled = false;
+	int mEngineFpsLimit = 0;
+	int mGameFpsLimit = 0;
+	bool mGrid = true;
 
 	std::vector<WindowState*> mOpenedWindowsInfo;
 

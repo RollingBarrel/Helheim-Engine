@@ -25,67 +25,67 @@ void SettingsPanel::Draw(int windowFlags)
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags)) 
 	{
 		//Config settings update
-		culling = App->GetScene()->GetApplyFrustumCulling();
-		engineVsyncEnabled = App->GetEngineClock()->GetVsyncStatus();
-		gameVsyncEnabled = App->GetGameClock()->GetVsyncStatus();
-		engineFpsLimit = App->GetEngineClock()->GetFpsLimit();
-		gameFpsLimit = App->GetGameClock()->GetFpsLimit();
-		grid = App->GetDebugDraw()->GetShouldRenderGrid();
+		mCulling = App->GetScene()->GetApplyFrustumCulling();
+		mEngineVsyncEnabled = App->GetEngineClock()->GetVsyncStatus();
+		mGameVsyncEnabled = App->GetGameClock()->GetVsyncStatus();
+		mEngineFpsLimit = App->GetEngineClock()->GetFpsLimit();
+		mGameFpsLimit = App->GetGameClock()->GetFpsLimit();
+		mGrid = App->GetDebugDraw()->GetShouldRenderGrid();
 
 		ImGui::SeparatorText("Graphic settings");
-		if (ImGui::Checkbox("Apply frustum culling", &culling)) 
+		if (ImGui::Checkbox("Apply frustum culling", &mCulling))
 		{
-			App->GetScene()->SetApplyFrustumCulling(culling);
+			App->GetScene()->SetApplyFrustumCulling(mCulling);
 		}
 		ImGui::Indent();
 		ImGui::SeparatorText("Engine");
-		ImGui::Checkbox("Engine Vsync enabled", &engineVsyncEnabled);
-		if (engineVsyncEnabled != App->GetEngineClock()->GetVsyncStatus()) 
+		ImGui::Checkbox("Engine Vsync enabled", &mEngineVsyncEnabled);
+		if (mEngineVsyncEnabled != App->GetEngineClock()->GetVsyncStatus())
 		{
-			App->GetEngineClock()->SetVsyncStatus(engineVsyncEnabled);
+			App->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
 		}
 
-		if (engineVsyncEnabled) 
+		if (mEngineVsyncEnabled) 
 		{
 			ImGui::BeginDisabled();
 		}
 
-		ImGui::Checkbox("Enable FPS Limit##1", &engineFpsLimitEnabled);
-		engineFpsLimit = App->GetEngineClock()->GetFpsLimit();
-		ImGui::SliderInt("FPS Limit##1", &engineFpsLimit, 10, 240);
-		if (engineVsyncEnabled) 
+		ImGui::Checkbox("Enable FPS Limit##1", &mEngineFpsLimitEnabled);
+		mEngineFpsLimit = App->GetEngineClock()->GetFpsLimit();
+		ImGui::SliderInt("FPS Limit##1", &mEngineFpsLimit, 10, 240);
+		if (mEngineVsyncEnabled) 
 		{
 			ImGui::EndDisabled();
 		}
 
-		App->GetEngineClock()->SetFpsLimit(engineFpsLimit);
+		App->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
 		ImGui::Spacing();
 		ImGui::SeparatorText("Game");
-		ImGui::Checkbox("Game Vsync enabled", &gameVsyncEnabled);
-		if (gameVsyncEnabled != App->GetGameClock()->GetVsyncStatus()) 
+		ImGui::Checkbox("Game Vsync enabled", &mGameVsyncEnabled);
+		if (mGameVsyncEnabled != App->GetGameClock()->GetVsyncStatus()) 
 		{
-			App->GetGameClock()->SetVsyncStatus(gameVsyncEnabled);
+			App->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
 		}
 
-		if (gameVsyncEnabled) 
+		if (mGameVsyncEnabled) 
 		{
 			ImGui::BeginDisabled();
 		}
 
-		ImGui::Checkbox("Enable FPS Limit##2", &gameFpsLimitEnabled);
-		ImGui::SliderInt("FPS Limit##2", &gameFpsLimit, 10, 240);
-		if (gameVsyncEnabled) 
+		ImGui::Checkbox("Enable FPS Limit##2", &mGameFpsLimitEnabled);
+		ImGui::SliderInt("FPS Limit##2", &mGameFpsLimit, 10, 240);
+		if (mGameVsyncEnabled) 
 		{
 			ImGui::EndDisabled();
 		}
 
-		App->GetGameClock()->SetFpsLimit(gameFpsLimit);
+		App->GetGameClock()->SetFpsLimit(mGameFpsLimit);
 		ImGui::Unindent();
 
 		ImGui::SeparatorText("Editor settings");
-		if (ImGui::Checkbox("Draw Grid", &grid)) 
+		if (ImGui::Checkbox("Draw Grid", &mGrid)) 
 		{
-			App->GetDebugDraw()->SetRenderGrid(grid);
+			App->GetDebugDraw()->SetRenderGrid(mGrid);
 		}
 
 		if (ImGui::Button("Save settings")) 
@@ -129,6 +129,14 @@ void SettingsPanel::SaveSettings()
 	}
 	if (out_file.is_open())	
 	{
+		//Settings variables we want to store
+		out_file << "Apply frustum culling: " << mCulling << "\n";
+		out_file << "Engine Vsync enabled: " << mEngineVsyncEnabled << "\n";
+		out_file << "Engine FPS Limit: " << mEngineFpsLimit << "\n";
+		out_file << "Game Vsync enabled: " << mGameVsyncEnabled << "\n";
+		out_file << "Game FPS Limit: " << mGameFpsLimit << "\n";
+		out_file << "Draw Grid: " << mGrid << "\n";
+
 		// Save the docking layout
 		size_t settings_len;
 		const char* settings = ImGui::SaveIniSettingsToMemory(&settings_len);
@@ -155,7 +163,7 @@ void SettingsPanel::LoadSettings()
 			WindowState* windowState = new WindowState();
 
 			// Read the window state from the file
-			if (std::getline(in_file, line)) windowState->name = line;
+			if (std::getline(in_file, line)) windowState->name = line.c_str(); 
 			if (std::getline(in_file, line)) windowState->IsOpen = std::stoi(line);
 			if (std::getline(in_file, line)) 
 			{
@@ -167,23 +175,51 @@ void SettingsPanel::LoadSettings()
 				std::istringstream iss(line);
 				iss >> windowState->size.x >> windowState->size.y;
 			}
+			const char* panelName = App->GetEditor()->GetPanelNames().at(i);
+			if (windowState->name == panelName && windowState->IsOpen)
+			{
+				App->GetEditor()->GetPanel(panelName)->Open();
+			}
+
 			mOpenedWindowsInfo.push_back(windowState);
 		}
+
+		// Load the settings variables
+		if (std::getline(in_file, line))
+		{
+			mCulling = std::stoi(line.substr(line.find(":") + 1));
+		}
+		if (std::getline(in_file, line)) 
+		{
+			mEngineVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
+		}
+		if (std::getline(in_file, line)) 
+		{
+			mEngineFpsLimit = std::stoi(line.substr(line.find(":") + 1));
+		}
+		if (std::getline(in_file, line)) 
+		{
+			mGameVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
+		}
+		if (std::getline(in_file, line)) 
+		{
+			mGameFpsLimit = std::stoi(line.substr(line.find(":") + 1));
+		}
+		if (std::getline(in_file, line)) 
+		{
+			mGrid = std::stoi(line.substr(line.find(":") + 1));
+		}
+		// Apply the loaded settings to the ImGui panel
+		App->GetScene()->SetApplyFrustumCulling(mCulling);
+		App->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
+		App->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
+		App->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
+		App->GetGameClock()->SetFpsLimit(mGameFpsLimit);
+		App->GetDebugDraw()->SetRenderGrid(mGrid);
+
 		// Load the docking layout
 		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
 		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
 		in_file.close();
-	}
-
-	// Apply the loaded settings to the windows
-	for (const auto& windowState : mOpenedWindowsInfo) 
-	{
-		if (ImGui::Begin(windowState->name.c_str())) 
-		{
-			if(windowState->IsOpen) App->GetEditor()->GetPanel(windowState->name.c_str())->Open();
-			ImGui::SetWindowPos(windowState->position);
-			ImGui::SetWindowSize(windowState->size);
-		}
-		ImGui::End();
 	}
 }
