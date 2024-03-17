@@ -6,8 +6,38 @@
 #include "GameObject.h"
 #include "ModuleScene.h"
 
+
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
+
+}
+
+ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner) : Component(owner, ComponentType::SCRIPT)
+{
+	mName = other.mName;
+	LoadScript(mName.c_str());
+
+	for (int i = 0; i < mData.size(); i++) {
+		switch (mData[i]->mType)
+		{
+		case VariableType::INT:
+			*(int*)mData[i]->mData = *(int*)other.mData[i]->mData;
+			break;
+		case VariableType::FLOAT:
+			*(float*)mData[i]->mData = *(float*)other.mData[i]->mData;
+			break;
+		case VariableType::BOOL:
+			*(bool*)mData[i]->mData = *(bool*)other.mData[i]->mData;
+			break;
+		case VariableType::FLOAT3:
+			*(float3*)mData[i]->mData = *(float3*)other.mData[i]->mData;
+			break;
+		case VariableType::GAMEOBJECT:
+			*(GameObject**)mData[i]->mData = *(GameObject**)other.mData[i]->mData;
+			break;
+		}
+	}
+
 
 }
 
@@ -30,7 +60,7 @@ void ScriptComponent::Update()
 
 Component* ScriptComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new ScriptComponent(*this, owner);
 }
 
 void ScriptComponent::Reset()
