@@ -27,7 +27,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Movement.h">
+    <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,7 +47,7 @@
     <ClCompile Include="TestScript.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
-    <ClCompile Include="Movement.cpp">
+    <ClCompile Include="PlayerController.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>
