@@ -7,7 +7,6 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
-#include "Algorithm/Random/LCG.h"
 
 ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
 {
