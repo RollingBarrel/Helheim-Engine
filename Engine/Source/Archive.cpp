@@ -315,7 +315,7 @@ void Archive::CopyFrom(const Archive& other) {
 std::string Archive::Serialize() const
 {
     rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
     mDocument->Accept(writer);
     return buffer.GetString();
 }

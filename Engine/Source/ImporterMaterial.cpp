@@ -9,13 +9,11 @@
 
 #include "Algorithm/Random/LCG.h"
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int uid, bool modifyAssets)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
 {
-    unsigned int currUid = uid;
-
     float4 diffuseFactor = float4::zero; 
     float3 specularFactor = float3::zero;
-    float GlossinessFactor = 0.0f;
+    float GlossinessFactor = 1.0f;
     unsigned int diffuseTexture = 0; 
     unsigned int specularGlossinessTexture = 0;
     unsigned int normalTexture = 0;
@@ -64,7 +62,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     unsigned filePos = pngName.find_last_of('/');
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[diffuseMap.source].uri);
-                   /* if (!App->GetFileSystem()->Exists(pngName.c_str()))
+                    if (!modifyAssets)
                     {
                         size_t sizeUntilName = pngName.find_last_of('/') + 1;
                         std::string extension = pngName.substr(pngName.find_last_of('.'));
@@ -72,9 +70,9 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         pngName = ASSETS_TEXTURE_PATH;
                         pngName += name;
                         pngName += extension;
-                    }*/
+                    }
 
-                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
                 }
             }
         }
@@ -94,7 +92,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                     unsigned filePos = pngName.find_last_of('/');
                     pngName = pngName.substr(0, filePos + 1);
                     pngName.append(tinyModel.images[specularMap.source].uri);
-                    /*if (!App->GetFileSystem()->Exists(pngName.c_str()))
+                    if (!modifyAssets)
                     {
                         size_t sizeUntilName = pngName.find_last_of('/') + 1;
                         std::string extension = pngName.substr(pngName.find_last_of('.'));
@@ -102,9 +100,9 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         pngName = ASSETS_TEXTURE_PATH;
                         pngName += name;
                         pngName += extension;
-                    }*/
+                    }
 
-                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
                 }
             }
         }
@@ -126,7 +124,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                         unsigned filePos = pngName.find_last_of('/');
                         pngName = pngName.substr(0, filePos + 1);
                         pngName.append(tinyModel.images[normalMap.source].uri);
-                        /*if (!App->GetFileSystem()->Exists(pngName.c_str()))
+                        if (!modifyAssets)
                         {
                             size_t sizeUntilName = pngName.find_last_of('/') + 1;
                             std::string extension = pngName.substr(pngName.find_last_of('.'));
@@ -134,9 +132,9 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                             pngName = ASSETS_TEXTURE_PATH;
                             pngName += name;
                             pngName += extension;
-                        }*/
+                        }
 
-                        normalTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+                        normalTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
                     }
                 }
             }
@@ -153,8 +151,8 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
             std::string pngName = filePath;
             unsigned filePos = pngName.find_last_of('/');
             pngName = pngName.substr(0, filePos + 1);
-            pngName.append(tinyModel.images[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index].uri);
-            if (!App->GetFileSystem()->Exists(pngName.c_str()))
+            pngName.append(tinyModel.images[texture.source].uri);
+            if (!modifyAssets)
             {
                 size_t sizeUntilName = pngName.find_last_of('/') + 1;
                 std::string extension = pngName.substr(pngName.find_last_of('.'));
@@ -164,11 +162,11 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
                 pngName += extension;
             }
 
-            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), currUid++, modifyAssets);
+            diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
         }
 
     }
-    ResourceMaterial* rMaterial = new ResourceMaterial(currUid++, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
+    ResourceMaterial* rMaterial = new ResourceMaterial(uid++, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
     Importer::Material::Save(rMaterial);
     return rMaterial;
 }

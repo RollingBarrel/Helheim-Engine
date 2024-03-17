@@ -18,12 +18,20 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Test";
 		case ComponentType::CAMERA:
 			return "Camera";
+		case ComponentType::SCRIPT:
+			return "Script";
 		case ComponentType::NAVMESHCONTROLLER:
 			return "NavMeshController";
+		case ComponentType::AIAGENT:
+			return "AI Agent";
+		case ComponentType::NAVMESHOBSTACLE:
+			return "NavMeshObstacle";
 		case ComponentType::CANVAS:
 			return "Canvas";
 		case ComponentType::TRANSFORM2D:
-return "Transform2D";
+			return "Transform2D";
+		case ComponentType::ANIMATION:
+			return "Animation";
 		default:
 			return "None";
 		}

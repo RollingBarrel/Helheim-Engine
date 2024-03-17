@@ -11,13 +11,16 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
 class ModuleDebugDraw;
+class ModuleScriptManager;
 class ModuleResource;
 class ModuleUI;
+class ModuleDetourNavigation;
+class ModuleAudio;
 
 class Timer;
 class PreciseTimer;
 
-class Application
+class ENGINE_API Application
 {
 public:
 
@@ -36,7 +39,10 @@ public:
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
+    ModuleScriptManager* GetScriptManager() { return scriptManager; }
     ModuleResource* GetResource() { return resource; }
+    ModuleDetourNavigation* GetNavigation() { return navigation; }
+    ModuleAudio* GeAudio() { return audio; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
@@ -63,10 +69,13 @@ private:
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
+    ModuleScriptManager* scriptManager = nullptr;
     ModuleResource* resource = nullptr;
+    ModuleAudio* audio = nullptr;
     ModuleUI* ui = nullptr;
+    ModuleDetourNavigation* navigation = nullptr;
 
-#define NUM_MODULES 10
+#define NUM_MODULES 13
     Module* modules[NUM_MODULES];
 
     //Timer
@@ -83,4 +92,4 @@ private:
     bool mEnableVsync = true;
 };
 
-extern Application* App;
+ extern ENGINE_API Application* App;
