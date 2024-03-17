@@ -455,6 +455,9 @@
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="SettingsPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleDetourNavigation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -1226,6 +1229,9 @@
     </ClInclude>
     <ClInclude Include="ModuleAudio.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsPanel.h">
+      <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ModuleDetourNavigation.h" />
