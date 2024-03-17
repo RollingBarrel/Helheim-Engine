@@ -327,6 +327,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     {
         const tinygltf::Accessor& indAcc = model.accessors[primitive.indices];
         numIndices = indAcc.count;
+        LOG("Tri: %u", numIndices/3);
         const tinygltf::BufferView& indView = model.bufferViews[indAcc.bufferView];
         const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
 
@@ -335,7 +336,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
         {
             const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
-            for (uint32_t i = 0; i < indAcc.count; ++i)
+            for (unsigned int i = 0; i < indAcc.count; ++i)
             {
                 //TODO: Change this
                 indices[i] = bufferInd[i];
@@ -344,7 +345,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
         {
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
-            for (uint16_t i = 0; i < indAcc.count; ++i)
+            for (unsigned int i = 0; i < indAcc.count; ++i)
             {
                 indices[i] = bufferInd[i];
             }
@@ -352,7 +353,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
         {
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
-            for (uint8_t i = 0; i < indAcc.count; ++i)
+            for (unsigned int i = 0; i < indAcc.count; ++i)
             {
                 indices[i] = bufferInd[i];
             }
