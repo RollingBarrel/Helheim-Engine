@@ -124,6 +124,8 @@ bool ModuleOpenGL::Init()
 	//InitializePrograms
 	mPbrProgramId = CreateShaderProgramFromPaths("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
 	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
+	mDebugDrawProgramId = CreateShaderProgramFromPaths("basic.vs", "hello_world.fs");
+
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
