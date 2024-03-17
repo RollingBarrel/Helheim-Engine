@@ -64,6 +64,11 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         texFormat = GL_BGR;
         dataType = GL_UNSIGNED_BYTE;
         break;
+    case DXGI_FORMAT_R16G16B16A16_UNORM:
+        internalFormat = GL_RGB16;
+        texFormat = GL_RGBA;
+        dataType = GL_UNSIGNED_INT16_NV;
+        break;
     default:
         assert(false && "Unsupported format");
     }
