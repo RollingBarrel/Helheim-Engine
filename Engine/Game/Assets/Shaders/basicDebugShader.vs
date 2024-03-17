@@ -1,4 +1,4 @@
-#version 430
+#version 460
 layout(location=0) in vec3 my_vertex_position;
 
 uniform mat4 view;
