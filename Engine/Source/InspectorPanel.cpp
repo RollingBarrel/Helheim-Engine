@@ -638,7 +638,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
-	const char* items[] = { "Select Script", "TestScript", "Dash" };
+	const char* items[] = { "Select Script", "TestScript", "Dash", "Movement"};
 	const char* currentItem = component->GetScriptName();
 	
 
