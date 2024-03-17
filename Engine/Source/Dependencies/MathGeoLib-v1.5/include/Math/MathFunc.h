@@ -36,6 +36,8 @@
 #endif
 
 #include "assume.h"
+#include "MathGeoLibFwd.h"
+
 
 MATH_BEGIN_NAMESPACE
 
@@ -113,110 +115,110 @@ MATH_BEGIN_NAMESPACE
 
 /// Converts the given amount of degrees into radians.
 /// 180 degrees equals pi, 360 degrees is a full circle, and equals 2pi.
-inline float3 DegToRad(const float3 &degrees) { return degrees * (pi / 180.f); }
-inline float DegToRad(float degrees) { return degrees * (pi / 180.f); }
+inline ENGINE_API float3 DegToRad(const float3 &degrees) { return degrees * (pi / 180.f); }
+inline ENGINE_API float DegToRad(float degrees) { return degrees * (pi / 180.f); }
 
 /// Converts the given amount of radians into degrees.
-inline float3 RadToDeg(const float3 &radians) { return radians * (180.f / pi); }
-inline float RadToDeg(float radians) { return radians * (180.f / pi); }
+inline ENGINE_API float3 RadToDeg(const float3 &radians) { return radians * (180.f / pi); }
+inline ENGINE_API float RadToDeg(float radians) { return radians * (180.f / pi); }
 
 /// Computes the function sin(x).
 /** @see Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Sin(float angleRadians);
+float ENGINE_API Sin(float angleRadians);
 /// Computes the function cos(x).
 /** @see Sin(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Cos(float angleRadians);
+float ENGINE_API Cos(float angleRadians);
 /// Computes the function tan(x).
 /** @see Sin(), Cos(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Tan(float angleRadians);
+float ENGINE_API Tan(float angleRadians);
 /// Simultaneously computes both sin(x) and cos(x), which yields a small performance increase over to
 /// computing them separately.
 /** @see Sin(), Cos(), Tan(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float2 SinCos(float angleRadians);
+float2 ENGINE_API SinCos(float angleRadians);
 /// Computes the function arcsin(x), in radians.
 /** @see Sin(), Cos(), Tan(), SinCos(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Asin(float x);
+float ENGINE_API Asin(float x);
 /// Computes the function arccos(x), in radians.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Acos(float x);
+float ENGINE_API Acos(float x);
 /// Computes the function arctan(x), in radians.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Acos(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Atan(float x);
+float ENGINE_API Atan(float x);
 /// Computes the signed (principal value) arc-tangent of y/x, in radians.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Sinh(), Cosh(), Tanh(). */
-float Atan2(float y, float x);
+float ENGINE_API Atan2(float y, float x);
 /// Computes the hyperbolic sine of x.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Cosh(), Tanh(). */
-float Sinh(float x);
+float ENGINE_API Sinh(float x);
 /// Computes the hyperbolic cosine of x.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Tanh(). */
-float Cosh(float x);
+float ENGINE_API Cosh(float x);
 /// Computes the hyperbolic tangent of x.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(). */
-float Tanh(float x);
+float ENGINE_API Tanh(float x);
 
 /// Returns true if the given number is a power of 2.
 /** @see RoundUpPow2(), RoundDownPow2(). */
-bool IsPow2(unsigned int number);
+bool ENGINE_API IsPow2(unsigned int number);
 /// Returns the smallest power-of-2 number (1,2,4,8,16,32,...) greater or equal than the given number.
 /** @see IsPow2(), RoundDownPow2(). */
-unsigned int RoundUpPow2(unsigned int number);
+unsigned int ENGINE_API RoundUpPow2(unsigned int number);
 /// Returns the largest power-of-2 number (1,2,4,8,16,32,...) smaller or equal than the given number.
 /** @see IsPow2(), RoundUpPow2(). */
-unsigned int RoundDownPow2(unsigned int number);
+unsigned int ENGINE_API RoundDownPow2(unsigned int number);
 
 /// Returns the given number rounded up to the next multiple of n.
 /** @param x The number to round up.
 	@param n The multiple to round x to. The value n must be a power-of-2. */
-int RoundIntUpToMultipleOfPow2(int x, int n);
+int ENGINE_API RoundIntUpToMultipleOfPow2(int x, int n);
 
 /// Raises the given base to an integral exponent.
 /** @see Pow(), Exp(). */
-float PowInt(float base, int exponent);
+float ENGINE_API PowInt(float base, int exponent);
 /// Raises the given base to a float exponent.
 /** @see PowInt(), Exp(). */
-float Pow(float base, float exponent);
+float ENGINE_API Pow(float base, float exponent);
 /// Returns e (the constant 2.71828...) raised to the given power.
 /** @see PowInt(), Pow(). */
-float Exp(float exponent);
+float ENGINE_API Exp(float exponent);
 /// Computes a logarithm of the given value in the specified base.
 /** @see Log2(), Ln(), Log10(). */
-float Log(float base, float value);
+float ENGINE_API Log(float base, float value);
 /// Computes a logarithm in base-2.
 /** @see Log(), Ln(), Log10(). */
-float Log2(float value);
+float ENGINE_API Log2(float value);
 /// Computes a logarithm in the natural base (using e=2.71828... as the base)
 /** @see Log(), Log2(), Log10(). */
-float Ln(float value);
+float ENGINE_API Ln(float value);
 /// Computes a logarithm in base-10.
 /** @see Log(), Log2(), Ln(). */
-float Log10(float value);
+float ENGINE_API Log10(float value);
 
 /// Returns f rounded up to the next integer, as float.
 /** @see CeilInt(), Floor(), FloorInt(), Round(), RoundInt(). */
-float Ceil(float f);
+float ENGINE_API Ceil(float f);
 /// Returns f rounded up to the next integer, as integer.
 /** @see Ceil(), Floor(), FloorInt(), Round(), RoundInt(). */
-int CeilInt(float f);
+int ENGINE_API CeilInt(float f);
 /// Returns f rounded down to the previous integer, as float.
 /** @see Ceil(), CeilInt(), FloorInt(), Round(), RoundInt(). */
-float Floor(float f);
+float ENGINE_API Floor(float f);
 /// Returns f rounded down to the previous integer, as integer.
 /** @see Ceil(), CeilInt(), Floor(), Round(), RoundInt(). */
-int FloorInt(float f);
+int ENGINE_API FloorInt(float f);
 /// Returns f rounded to the nearest integer, as float.
 /** @see Ceil(), CeilInt(), Floor(), FloorInt(), RoundInt(). */
-float Round(float f);
+float ENGINE_API Round(float f);
 /// Returns f rounded to the nearest integer, as integer.
 /** @see Ceil(), CeilInt(), Floor(), FloorInt(), Round(). */
-int RoundInt(float f);
+int ENGINE_API RoundInt(float f);
 
 /// Returns -1 or 1 depending on the sign of f.
 /** @see SignOrZero(). */
-float Sign(float f);
+float ENGINE_API Sign(float f);
 /// Returns 0 if f is zero up to the given epsilon. Otherwise returns -1 or 1 depending on the sign of f.
 /** @see Sign(). */
-float SignOrZero(float f, float epsilon = 1e-8f);
+float ENGINE_API SignOrZero(float f, float epsilon = 1e-8f);
 
 /// Linearly interpolates between a and b.
 /** @param t A value between [0,1].
@@ -225,38 +227,38 @@ float SignOrZero(float f, float epsilon = 1e-8f);
 	@return This function computes a + t*(b-a). That is, if t==0, this function returns a. If t==1, this function returns b.
 		Otherwise, the returned value linearly moves from a to b as t ranges from 0 to 1.
 	@see LerpMod(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float Lerp(float a, float b, float t);
+float ENGINE_API Lerp(float a, float b, float t);
 /// Linearly interpolates from a to b, under the modulus mod.
 /** This function takes evaluates a and b in the range [0, mod] and takes the shorter path to reach from a to b.
 	@see Lerp(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float LerpMod(float a, float b, float mod, float t);
+float ENGINE_API LerpMod(float a, float b, float mod, float t);
 /// Computes the lerp factor a and b have to be Lerp()ed to get x.
 /** @see Lerp(), LerpMod(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float InvLerp(float a, float b, float x);
+float ENGINE_API InvLerp(float a, float b, float x);
 /// See http://msdn.microsoft.com/en-us/library/bb509665(v=VS.85).aspx
 /** @see Lerp(), LerpMod(), InvLerp(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float Step(float y, float x);
+float ENGINE_API Step(float y, float x);
 /// See http://msdn.microsoft.com/en-us/library/bb509658(v=vs.85).aspx
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float SmoothStep(float min, float max, float x);
+float ENGINE_API SmoothStep(float min, float max, float x);
 /// Limits x to the range [0, mod], but instead of wrapping around from mod to 0, the result will move back
 /// from mod to 0 as x goes from mod to 2*mod.
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), SmoothStep(), Mod(), ModPos(), Frac(). */
-float PingPongMod(float x, float mod);
+float ENGINE_API PingPongMod(float x, float mod);
 /// Computes a floating-point modulus.
 /// This function returns a value in the range ]-mod, mod[.
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), SmoothStep(), PingPongMod(), ModPos(), Frac(). */
-float Mod(float x, float mod);
+float ENGINE_API Mod(float x, float mod);
 /// Computes a floating-point modulus using an integer as the modulus.
-float Mod(float x, int mod);
+float ENGINE_API Mod(float x, int mod);
 /// Computes a floating-point modulus, but restricts the output to the range [0, mod[.
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), Frac(). */
-float ModPos(float x, float mod);
+float ENGINE_API ModPos(float x, float mod);
 /// Computes a floating-point modulus, but restricts the output to the range [0, mod[.
-float ModPos(float x, int mod);
+float ENGINE_API ModPos(float x, int mod);
 /// Returns the fractional part of x.
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(). */
-float Frac(float x);
+float ENGINE_API Frac(float x);
 
 /// Returns the square root of x.
 FORCE_INLINE float Sqrt(float x)
@@ -333,20 +335,20 @@ FORCE_INLINE float RecipFast(float x)
 }
 
 /// Calculates n! at runtime. Use class FactorialT<N> to evaluate factorials at compile-time.
-int Factorial(int n);
+int ENGINE_API Factorial(int n);
 
 /// Calculates (N nCr K) at runtime with recursion, running time is exponential to n.
 /// Use class Combinatorial<N, K> to evaluate combinatorials at compile-time.
-int CombinatorialRec(int n, int k);
+int ENGINE_API CombinatorialRec(int n, int k);
 
 /// Calculates (N nCr K) at runtime, running time is proportional to n*k.
 /// Use class Combinatorial<N, K> to evaluate combinatorials at compile-time.
-int CombinatorialTab(int n, int k);
+int ENGINE_API CombinatorialTab(int n, int k);
 
 /// Clamps the given input value to the range [min, max].
 /** @see Clamp01(), Min(), Max(). */
 template<typename T>
-inline T Clamp(const T &val, const T &floor, const T &ceil)
+inline T ENGINE_API Clamp(const T &val, const T &floor, const T &ceil)
 {
 	assume(floor <= ceil);
 	return val <= ceil ? (val >= floor ? val : floor) : ceil;
@@ -355,12 +357,12 @@ inline T Clamp(const T &val, const T &floor, const T &ceil)
 /// Clamps the given input value to the range [0, 1].
 /** @see Clamp(), Min(), Max(). */
 template<typename T>
-inline T Clamp01(const T &val) { return Clamp(val, T(0), T(1)); }
+inline T ENGINE_API Clamp01(const T &val) { return Clamp(val, T(0), T(1)); }
 
 /// Computes the smaller of two values.
 /** @see Clamp(), Clamp01(), Max(). */
 template<typename T>
-const T Min(const T &a, const T &b)
+const T ENGINE_API Min(const T &a, const T &b)
 {
 	return a < b ? a : b;
 }
@@ -368,13 +370,13 @@ const T Min(const T &a, const T &b)
 /// Computes the larger of two values.
 /** @see Clamp(), Clamp01(), Min(). */
 template<typename T>
-const T Max(const T &a, const T &b)
+const T ENGINE_API Max(const T &a, const T &b)
 {
 	return a >= b ? a : b;
 }
 
 template<>
-inline const float Max(const float &a, const float &b)
+inline const float ENGINE_API Max(const float &a, const float &b)
 {
 #ifdef MATH_SSE
 	return M128_TO_FLOAT(_mm_max_ss(FLOAT_TO_M128(a), FLOAT_TO_M128(b)));
@@ -386,13 +388,13 @@ inline const float Max(const float &a, const float &b)
 /// Computes the smallest of three values.
 /** @see Clamp(), Clamp01(), Max(). */
 template<typename T>
-const T Min(const T &a, const T &b, const T &c)
+const T ENGINE_API Min(const T &a, const T &b, const T &c)
 {
 	return Min(Min(a, b), c);
 }
 
 template<>
-inline const float Min(const float &a, const float &b)
+inline const float ENGINE_API Min(const float &a, const float &b)
 {
 #ifdef MATH_SSE
 	return M128_TO_FLOAT(_mm_min_ss(FLOAT_TO_M128(a), FLOAT_TO_M128(b)));
@@ -404,7 +406,7 @@ inline const float Min(const float &a, const float &b)
 /// Computes the largest of three values.
 /** @see Clamp(), Clamp01(), Min(). */
 template<typename T>
-const T Max(const T &a, const T &b, const T &c)
+const T ENGINE_API Max(const T &a, const T &b, const T &c)
 {
 	return Max(Max(a, b), c);
 }
@@ -412,7 +414,7 @@ const T Max(const T &a, const T &b, const T &c)
 /// Computes the smallest of four values.
 /** @see Clamp(), Clamp01(), Max(). */
 template<typename T>
-const T Min(const T &a, const T &b, const T &c, const T &d)
+const T ENGINE_API Min(const T &a, const T &b, const T &c, const T &d)
 {
 	return Min(Min(a, b), Min(c, d));
 }
@@ -420,14 +422,14 @@ const T Min(const T &a, const T &b, const T &c, const T &d)
 /// Computes the largest of four values.
 /** @see Clamp(), Clamp01(), Min(). */
 template<typename T>
-const T Max(const T &a, const T &b, const T &c, const T &d)
+const T ENGINE_API Max(const T &a, const T &b, const T &c, const T &d)
 {
 	return Max(Max(a, b), Max(c, d));
 }
 
 /// Swaps the two values.
 template<typename T>
-void Swap(T &a, T &b)
+void ENGINE_API Swap(T &a, T &b)
 {
 	T temp = a;
 	a = b;
@@ -436,28 +438,28 @@ void Swap(T &a, T &b)
 
 /** @return True if a > b. */
 template<typename T>
-bool GreaterThan(const T &a, const T &b)
+bool ENGINE_API GreaterThan(const T &a, const T &b)
 {
 	return a > b;
 }
 
 /** @return True if a < b. */
 template<typename T>
-bool LessThan(const T &a, const T &b)
+bool ENGINE_API LessThan(const T &a, const T &b)
 {
 	return a < b;
 }
 
 /** @return The absolute value of a. */
 template<typename T>
-const T Abs(const T &a)
+const T ENGINE_API Abs(const T &a)
 {
 	return a >= 0 ? a : -a;
 }
 
 /// @return True if a and b are equal, using operator ==().
 template<typename T>
-bool Equal(const T &a, const T &b)
+bool ENGINE_API Equal(const T &a, const T &b)
 {
 	return a == b;
 }
@@ -470,19 +472,19 @@ template<> bool FORCE_INLINE Equal(const long double &a, const long double &b) {
 #endif
 
 /** Compares the two values for equality, allowing the given amount of absolute error. */
-bool EqualAbs(float a, float b, float epsilon = 1e-4f);
+bool ENGINE_API EqualAbs(float a, float b, float epsilon = 1e-4f);
 
 /// Computes the relative error of the two variables.
 float RelativeError(float a, float b);
 
 /** Compares the two values for equality, allowing the given amount of relative error.
 	Beware that for values very near 0, the relative error is significant. */
-bool EqualRel(float a, float b, float maxRelError = 1e-4f);
+bool ENGINE_API EqualRel(float a, float b, float maxRelError = 1e-4f);
 
 /** Compares two floats interpreted as integers, see
 	http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
 	Warning: This comparison is not safe with NANs or INFs. */
-bool EqualUlps(float a, float b, int maxUlps = 10000);
+bool ENGINE_API EqualUlps(float a, float b, int maxUlps = 10000);
 
 /// Returns true if the given value is not an inf or a nan.
 template<typename T> FORCE_INLINE bool IsFinite(T /*value*/) { return true; }
