@@ -10,7 +10,6 @@
 #include "SpotLightComponent.h"
 #include "CameraComponent.h"
 #include "TestComponent.h"
-#include "NavMeshControllerComponent.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
@@ -395,9 +394,6 @@ Component* GameObject::CreateComponent(ComponentType type) {
 			break;
 		case ComponentType::AIAGENT:
 			newComponent = new AIAgentComponent(this);
-			break;
-		case ComponentType::NAVMESHCONTROLLER:
-			newComponent = new NavMeshControllerComponent(this);
 			break;
 		case ComponentType::NAVMESHOBSTACLE:
 			newComponent = new NavMeshObstacleComponent(this);

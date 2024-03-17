@@ -721,6 +721,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if(ImGui::Button("Play"))
 	{
+		if (component->GetAnimation() == nullptr)
+			return;
 		component->OnStart();
 
 		play = true;
