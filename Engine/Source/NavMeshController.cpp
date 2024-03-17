@@ -105,8 +105,6 @@ void NavMeshController::DebugDrawPolyMesh()
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glUseProgram(program);
-	float4x4 identity = float4x4::identity;
-	glUniformMatrix4fv(0, 1, GL_TRUE, identity.ptr());
 	glBindVertexArray(mVao);
 	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
 
