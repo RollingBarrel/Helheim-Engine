@@ -3,12 +3,10 @@
 #include "ModuleFileSystem.h"
 #include "ResourceAnimation.h"
 #include "ImporterAnimation.h"
-
 #include "glew.h"
 
-#include "float2.h"
-#include "float3.h"
-#include "float4.h"
+
+
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
