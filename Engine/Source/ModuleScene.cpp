@@ -214,16 +214,16 @@ void ModuleScene::Load(const char* sceneName) {
 			return;
 		}
 
-	/*const std::vector<GameObject*>& children = mRoot->GetChildren();
-	if (!children.empty()) {
-		for (GameObject* child : children) {
-			mRoot->DeleteChild(child);
-		}
-	}*/
-	mQuadtreeRoot->CleanUp();
-	delete mRoot;
-	mRoot = new GameObject("SampleScene", nullptr);
-	
+		/*const std::vector<GameObject*>& children = mRoot->GetChildren();
+		if (!children.empty()) {
+			for (GameObject* child : children) {
+				mRoot->DeleteChild(child);
+			}
+		}*/
+		mQuadtreeRoot->CleanUp();
+		delete mRoot;
+		mRoot = new GameObject("SampleScene", nullptr);
+
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) {
 			const rapidjson::Value& sceneValue = document["Scene"];
@@ -234,13 +234,15 @@ void ModuleScene::Load(const char* sceneName) {
 		hierarchyPanel->SetFocus(mRoot);
 		mQuadtreeRoot->UpdateTree();
 
-	// Free the loaded buffer
-	delete[] loadedBuffer;
+		// Free the loaded buffer
+		delete[] loadedBuffer;
 
-	LoadGameObjectsIntoScripts();
+		LoadGameObjectsIntoScripts();
+	}
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath) {
+void ModuleScene::LoadPrefab(const char* saveFilePath) 
+{
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
 
