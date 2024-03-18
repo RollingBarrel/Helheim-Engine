@@ -31,10 +31,10 @@ struct ModelNode
 	int mSkinId;
 };
 
-struct Skin {
-	int index;
-	std::vector<int> mJoints;
-};
+//struct Skin {
+//	int index;
+//	std::vector<std::pair<unsigned int, unsigned int>> mJoints;
+//};
 
 class ResourceModel : public Resource
 {
@@ -48,6 +48,8 @@ public:
 
 	std::vector<ModelNode> modelNodes;
 
-	std::vector<Skin*> mSkins;
+	//std::vector<Skin*> mSkins;
+
+	std::vector<std::pair<int, float4x4>> mJoints;
 
 };

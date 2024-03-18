@@ -160,23 +160,28 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     unsigned int currentUid = uid;
 
-    for (int i = 0; i < model.scenes.size(); ++i)
-    {
-        for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
-        {
-            ImportNode(rModel->modelNodes, filePath, model, j, currentUid, bufferSize, modifyAssets);
-        }
-    }
-    if (!model.skins.empty()) 
+    if (!model.skins.empty())
     {
         int i = 0;
         for (const auto& skins : model.skins)
         {
             Skin* skin = new Skin();
             skin->mJoints = skins.joints;
-            skin->index = i;
-            i++;
+            /*skin->index = i;
+            i++;*/
             rModel->mSkins.push_back(skin);
+        }
+    }
+
+    for (int i = 0; i < model.scenes.size(); ++i)
+    {
+
+        for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
+        {
+
+
+            ImportNode(rModel->modelNodes, filePath, model, j, currentUid, bufferSize, modifyAssets);
+
         }
     }
 
@@ -200,6 +205,16 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
     bufferSize += sizeof(unsigned int);                                     //Tamaño vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
+    bufferSize += sizeof(unsigned int);
+    bufferSize += sizeof(int) * rModel->mSkins.size();
+    
+    for (size_t i = 0; i < rModel->mSkins.size(); i++)
+    {
+        bufferSize += sizeof(unsigned int) * rModel->mSkins.size();
+        bufferSize += sizeof(unsigned int) * rModel->mSkins.size() * rModel->mSkins[i]->mJoints.size();
+    }
+    
+
 
     if (rModel)
         Importer::Model::Save(rModel, bufferSize);
@@ -300,8 +315,23 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     for (int i = 0; i < skinsSize; ++i)
     {
         bytes = sizeof(unsigned int);
-        memcpy(cursor, &rModel->mSkins[i], bytes);
+        memcpy(cursor, &rModel->mSkins[i]->index, bytes);
         cursor += bytes;
+
+        bytes = sizeof(unsigned int);
+        unsigned int jointSize = rModel->mSkins[i]->mJoints.size();
+        memcpy(cursor, &jointSize, bytes);
+        
+        cursor += bytes;
+
+        for (size_t j = 0; j < jointSize; j++)
+        {
+            bytes = sizeof(int);
+            memcpy(cursor, &rModel->mSkins[i]->mJoints[j], bytes);
+            cursor += bytes;
+        }
+
+
     }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
@@ -424,7 +454,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             unsigned int animationUID = 0;
             bytes = sizeof(unsigned int);
             memcpy(&animationUID, cursor, bytes);
-            *cursor += bytes;
+            cursor += bytes;
     
             rModel->mAnimationUids.push_back({ animationUID });
         }
@@ -433,14 +463,29 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         bytes = sizeof(unsigned int);
         memcpy(&skinsSize, cursor, bytes);
         cursor += bytes;
+
+        rModel->mSkins.reserve(skinsSize);
+
         for (int i = 0; i < skinsSize; ++i)
         {
-            unsigned int skins = 0;
-            bytes = sizeof(unsigned int);
-            memcpy(&skins, cursor, bytes);
-            *cursor += bytes;
+            Skin* skin = new Skin();
 
-            rModel->mSkins.push_back({ skins });
+            bytes = sizeof(unsigned int);
+            memcpy(&skin->index, cursor, bytes);
+            cursor += bytes;
+
+            bytes = sizeof(unsigned int);
+            unsigned int jointSize = 0;
+            memcpy(&jointSize, cursor, bytes);
+            cursor += bytes;
+
+            for (size_t j = 0; j < jointSize; j++)
+            {
+                bytes = sizeof(int);
+                memcpy(&skin->mJoints[j],cursor,bytes);
+                cursor += bytes;
+            }
+            rModel->mSkins.push_back({ skin });
         }
 
 
