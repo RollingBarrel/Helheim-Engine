@@ -76,6 +76,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			GameObject* gameObject = new GameObject(node);
 			//node->AddChild(gameObject);
 			mLastClickedObject = gameObject;
+			mFocusedObject = gameObject;
 			mMarked.clear();
 		}
 
@@ -86,6 +87,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 					GameObject* gameObject = new GameObject(*object);
 					App->GetScene()->AddGameObjectToDuplicate(gameObject);
 					mLastClickedObject = gameObject;
+					mFocusedObject = gameObject;
 					selectAfter.insert(gameObject);
 				}
 				mMarked = selectAfter;
@@ -95,6 +97,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 				for (auto object : FilterMarked()) {
 					App->GetScene()->AddGameObjectToDelete(object);
 					mLastClickedObject = App->GetScene()->GetRoot();
+					mFocusedObject = App->GetScene()->GetRoot();
 				}
 				mMarked.clear();
 			}
