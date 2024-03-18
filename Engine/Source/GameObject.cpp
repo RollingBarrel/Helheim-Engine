@@ -12,7 +12,6 @@
 #include "MathFunc.h"
 
 #include "MeshRendererComponent.h"
-#include "ModuleScene.h"
 #include "CameraComponent.h"
 #include "TestComponent.h"
 #include "AIAgentComponent.h"
@@ -20,13 +19,8 @@
 #include "AnimationComponent.h"
 #include "ScriptComponent.h"
 
-#include "InspectorPanel.h"
 #include "Tag.h"
 #include "Quadtree.h"
-#include "imgui.h"
-
-#include <algorithm>
-#include "MathFunc.h"
 
 
 
