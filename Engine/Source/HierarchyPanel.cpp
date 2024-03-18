@@ -9,7 +9,7 @@ HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 void HierarchyPanel::Draw(int windowFlags)
 {
 	GameObject* root = App->GetScene()->GetRoot();
-	if (mFocusedObject == nullptr) { mFocusedObject = root; }
+	if (mLastClickedObject == nullptr) { mLastClickedObject = root; }
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
@@ -18,7 +18,7 @@ void HierarchyPanel::Draw(int windowFlags)
 		mMarked.clear();
 		mUnmarkFlag = false;
 	}
-	if (!mFocusedObject->IsRoot()) { mMarked.insert(mFocusedObject); }
+	if (!mLastClickedObject->IsRoot()) { mMarked.insert(mLastClickedObject); }
 	mLastMarkSeen = 0; mShiftClicked = 0;
 	DrawTree(root);
 	ImGui::InvisibleButton("##", ImVec2(-1, -1));
@@ -32,7 +32,8 @@ void HierarchyPanel::Draw(int windowFlags)
 void HierarchyPanel::SetFocus(GameObject* focusedObject) 
 { 
 	mUnmarkFlag = true;
-	mFocusedObject = focusedObject; 
+	mFocusedObject = focusedObject;
+	mLastClickedObject = focusedObject; 
 }
 
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
@@ -52,11 +53,10 @@ void HierarchyPanel::OnLeftCkickNode(GameObject* node)
             if (mMarked.find(node) != mMarked.end()) { mUnmarkFlag = true; }
             else { mMarked.clear(); }
         }
-        mMarked.insert(node);
+        mLastClickedObject = node;
     }
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None) && !ImGui::IsItemToggledOpen())
     {
-        mMarked.erase(mFocusedObject);
         mFocusedObject = node;
     }
 }
@@ -68,13 +68,13 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 		if (mMarked.find(node) == mMarked.end()) {
 			mMarked.clear();
 		}
-		mFocusedObject = node;
+		mLastClickedObject = node;
 	}
 	if (ImGui::BeginPopup("OptionsGO")) {
 		if (ImGui::Selectable("Create GameObject")) {
 			GameObject* gameObject = new GameObject(node);
 			//node->AddChild(gameObject);
-			mFocusedObject = gameObject;
+			mLastClickedObject = gameObject;
 			mMarked.clear();
 		}
 
@@ -84,7 +84,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 				for (auto object : FilterMarked()) {
 					GameObject* gameObject = new GameObject(*object);
 					App->GetScene()->AddGameObjectToDuplicate(gameObject);
-					mFocusedObject = gameObject;
+					mLastClickedObject = gameObject;
 					selectAfter.insert(gameObject);
 				}
 				mMarked = selectAfter;
@@ -93,7 +93,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			if (ImGui::Selectable("Delete")) {
 				for (auto object : FilterMarked()) {
 					App->GetScene()->AddGameObjectToDelete(object);
-					mFocusedObject = App->GetScene()->GetRoot();
+					mLastClickedObject = App->GetScene()->GetRoot();
 				}
 				mMarked.clear();
 			}
