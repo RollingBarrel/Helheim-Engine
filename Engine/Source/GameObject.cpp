@@ -18,7 +18,7 @@
 #include "InspectorPanel.h"
 #include "Tag.h"
 #include "Quadtree.h"
-#include "imgui.h"
+//#include "imgui.h"
 
 #include <algorithm>
 #include "MathFunc.h"

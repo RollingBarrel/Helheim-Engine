@@ -1,10 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "Application.h"
 #include "Globals.h"
 #include "ModuleFileSystem.h"
-#include "ModuleResource.h"
-#include "Importer.h"
-#include "ImporterTexture.h"
 
 #include "ProjectPanel.h"
 

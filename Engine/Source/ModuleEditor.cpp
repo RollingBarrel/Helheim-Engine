@@ -1,5 +1,7 @@
 #include "Application.h"
 #include "SDL.h"
+#include "imgui.h"
+#include "ImGuizmo.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
