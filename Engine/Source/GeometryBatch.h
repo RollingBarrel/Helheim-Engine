@@ -56,15 +56,15 @@ typedef struct Material {
 	uint32_t hasNormalMap = false;
 	uint32_t hasDiffuseMap = false;
 	uint32_t hasSpecularMap = false;
-	float diffuseColor[3] = {0.0f};
+	float diffuseColor[3] = { 0.0f };
 	float shininess = 0.0f;
-	float specularColor[4] = {0.0f};
+	float specularColor[4] = { 0.0f };
 	uint64_t diffuseTexture = 0;
 	uint64_t specularTexture = 0;
 	uint64_t normalTexture = 0;
 }Material;
 
-typedef struct BufferIndices{
+typedef struct BufferIndices {
 	uint32_t Metarial;
 }ShaderIndices;
 
@@ -79,8 +79,8 @@ public:
 	void GetAttributes(std::vector<Attribute>& attributes) const;
 	unsigned int GetVertexSize() { return mVertexSize; };
 	void AddMeshComponent(const MeshRendererComponent* component);
-	void EditMaterial(const MeshRendererComponent* component);
-    bool RemoveMeshComponent(const MeshRendererComponent* component);
+	bool EditMaterial(const MeshRendererComponent* component);
+	bool RemoveMeshComponent(const MeshRendererComponent* component);
 	void Draw();
 
 private:

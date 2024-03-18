@@ -11,7 +11,7 @@ class Archive;
 class Tag;
 class NavMeshController;
 
-class ModuleScene : public Module
+class ENGINE_API ModuleScene : public Module
 {
 public:
 	ModuleScene();
@@ -30,6 +30,10 @@ public:
 
 	void AddGameObjectToDuplicate(GameObject* gameObject) {
 		mGameObjectsToDuplicate.push_back(gameObject);
+	}
+
+	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**> pair) {
+		mGameObjectsToLoadIntoScripts.push_back(pair);
 	}
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
@@ -58,9 +62,13 @@ public:
 	void LoadPrefab(const char* saveFilePath);
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid);
 
+	GameObject* Find(const char* name);
+	GameObject* Find(unsigned int UID);
+
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
+	void LoadGameObjectsIntoScripts();
 
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
 	
@@ -73,6 +81,8 @@ private:
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
+	std::vector<std::pair<unsigned int, GameObject**>> mGameObjectsToLoadIntoScripts;
+
 
 	std::vector<Tag*> mTags;
 

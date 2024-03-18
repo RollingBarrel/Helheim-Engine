@@ -2,67 +2,42 @@
 #include "Resource.h"
 
 #include <vector>
-
-#include "ImporterModel.h"
-
-class ResourceModel : public Resource
-{
-	typedef struct ModelIds {
-		unsigned int meshUID;
-		unsigned int materialUID;
-	}ModelIds;
-
-public: 
-
-	ResourceModel(unsigned int uid);
-
-	const std::vector<ModelIds>& GetUids() const { return mUids; }
-	void SetUids(unsigned int meshUID, unsigned int materialUID);
-
-private:
-
-	std::vector<ModelIds>mUids;
-};
-
-/*
-#pragma once
-#include "Resource.h"
-#include "tiny_gltf.h"
-
-#include "ImporterModel.h"
+#include <string>
 
 #include "float3.h"
 #include "Quat.h"
-#include <vector>
+
+
+struct ModelNode
+{
+	//Game Object
+	std::string mName;
+
+	math::float3 mTranslation;
+	math::Quat mRotation;
+	math::float3 mScale;
+
+	std::vector<std::pair<unsigned int, unsigned int>> mUids;
+
+	int mParentIndex = -1;
+
+	bool mHasTransform = false;
+	//Components
+	int mMeshId;
+	int mCameraId;
+	int mSkinId;
+};
 
 class ResourceModel : public Resource
 {
-	typedef struct ModelIds {
-		unsigned int meshUID;
-		unsigned int materialUID;
-	}ModelIds;
-
-	typedef struct Node {
-		const char* name;
-		unsigned int parentIndex;
-
-		//Transform
-		float3 translation;
-		Quat rotation;
-
-		std::vector<ModelIds>uids;
-	}Node;
-
 public:
 
 	ResourceModel(unsigned int uid);
 
-	const std::vector<ModelIds>& GetUids(Node node) const { return node.uids; }
-	void SetUids(Node node, unsigned int meshUID, unsigned int materialUID);
+	const std::vector<ModelNode>& GetNodes() { return modelNodes; }
 
-	const std::vector<Node> GetNodes() { return mNodes; }
-	void CreateNodeArray(tinygltf::Model& model);
+	std::vector<unsigned int> mAnimationUids;
 
-private:
-	std::vector<Node> mNodes;
-};*/
+	std::vector<ModelNode> modelNodes;
+
+};

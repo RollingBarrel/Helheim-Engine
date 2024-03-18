@@ -23,7 +23,7 @@ void PointLightComponent::SetPosition(const float pos[3])
 	mData.pos[0] = pos[0];
 	mData.pos[1] = pos[1];
 	mData.pos[2] = pos[2];
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::SetColor(float col[3])
@@ -31,19 +31,19 @@ void PointLightComponent::SetColor(float col[3])
 	mData.col[0] = col[0];
 	mData.col[1] = col[1];
 	mData.col[2] = col[2];
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::SetIntensity(float intensity)
 {
 	mData.col[3] = intensity;
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::SetRadius(float radius)
 {
 	mData.pos[3] = radius;
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::Update()
@@ -99,7 +99,7 @@ void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Ga
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
-	App->GetOpenGL()->UpdatePoinLightInfo(*this);
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::Enable()

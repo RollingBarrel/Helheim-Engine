@@ -4,19 +4,64 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
+#include "ModuleFileSystem.h"
 #include "ProjectPanel.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "GameObject.h"
 #include "Component.h"
+#include "EditorControlPanel.h"
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
 #include "ResourceModel.h"
+#include "debugdraw.h"
+
+#include "AnimationComponent.h"
+
 
 #include "Math/float2.h"
 #include "imgui.h"
+
+GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids, GameObject* parent)
+{
+	const char* name = "";
+
+	if (node.mName == name)
+		name = "GameObject";
+	else
+		name = node.mName.c_str();
+
+	GameObject* gameObject = new GameObject(name, parent);
+
+	gameObject->SetPosition(node.mTranslation);
+	gameObject->SetRotation(node.mRotation);
+	gameObject->SetScale(node.mScale);
+	gameObject->RecalculateMatrices();
+
+	if (node.mMeshId > -1)
+	{
+		for (auto it = node.mUids.cbegin(); it != node.mUids.cend(); ++it)
+		{
+			GameObject* gO = new GameObject(name, gameObject);
+			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
+			cMesh->SetMesh(it->first);
+			cMesh->SetMaterial(it->second);
+		}
+	}
+
+	if (strcmp(name,"Root") == 0)
+	{
+		if (!animationUids.empty())
+		{
+			AnimationComponent* cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->CreateComponent(ComponentType::ANIMATION));
+			cAnimation->SetAnimation(animationUids[0]);
+		}
+	}
+
+	return gameObject;
+}
 
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
 {
@@ -45,7 +90,6 @@ void ScenePanel::Draw(int windowFlags)
 		mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 		mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
 
-
 		if (ImGui::BeginDragDropTarget())
 		{
 			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE");
@@ -70,12 +114,27 @@ void ScenePanel::Draw(int windowFlags)
 						break;
 					case Resource::Type::Model:
 					{
-						GameObject* nGO = new GameObject(asset->mName, App->GetScene()->GetRoot());
-						for (auto it = reinterpret_cast<ResourceModel*>(resource)->GetUids().cbegin(); it != reinterpret_cast<ResourceModel*>(resource)->GetUids().cend(); ++it)
+						std::string name;
+
+						App->GetFileSystem()->SplitPath(asset->mPath, &name);
+
+						GameObject* gameObjectRoot = new GameObject(name.c_str(), App->GetScene()->GetRoot());
+
+						std::vector<GameObject*> tempVec;
+
+						tempVec.reserve(reinterpret_cast<ResourceModel*>(resource)->GetNodes().size());
+
+						for (int i = 0; i < tempVec.capacity(); ++i)
 						{
-							GameObject* go = new GameObject(nGO);
-							MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(go->CreateComponent(ComponentType::MESHRENDERER, it->meshUID, it->materialUID));
+							ModelNode node = reinterpret_cast<ResourceModel*>(resource)->GetNodes()[i];
+							if(node.mParentIndex == -1)
+								tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, gameObjectRoot));
+							else
+								tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, tempVec.at(node.mParentIndex)));
 						}
+
+						tempVec.clear();
+						
 						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
 					}
@@ -91,21 +150,14 @@ void ScenePanel::Draw(int windowFlags)
 					}
 				}
 			}
+
 			ImGui::EndDragDropTarget();
 		}
 
-		//Change the Guizmo operation using W,E & R keywords and the coordinate mode with G
-		if (!ImGui::IsKeyDown(ImGuiKey_MouseRight)) {
-			if (ImGui::IsKeyPressed(ImGuiKey_W))
-				mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
-			if (ImGui::IsKeyPressed(ImGuiKey_E))
-				mCurrentGuizmoOperation = ImGuizmo::ROTATE;
-			if (ImGui::IsKeyPressed(ImGuiKey_R))
-				mCurrentGuizmoOperation = ImGuizmo::SCALE;
-			if (ImGui::IsKeyPressed(ImGuiKey_G))
-				mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
-		}
-		
+		ImGuizmo::OPERATION currentGuizmoOperation = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoOperation();
+		ImGuizmo::MODE currentGuizmoMode = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoMode();
+		bool useSnap = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetUseSnap();
+		float3 snap = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetSnap();
 
 		ImVec2 windowPos = ImGui::GetWindowPos();
 		ImGuizmo::SetDrawlist();
@@ -123,10 +175,10 @@ void ScenePanel::Draw(int windowFlags)
 			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
 			//Draws the Guizmo axis
-			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), mCurrentGuizmoOperation, mCurrentGuizmoMode, modelMatrix.ptr(), NULL, mUseSnap ? &mSnap[0] : nullptr);
+			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), currentGuizmoOperation, currentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
 
 			if (ImGuizmo::IsUsing()) {
-				mIsGuizmoUsign = true;
+				mIsGuizmoUsing = true;
 				GameObject* parent = selectedGameObject->GetParent();
 				float4x4 inverseParentMatrix = float4x4::identity;
 				float3 translation;
@@ -141,7 +193,7 @@ void ScenePanel::Draw(int windowFlags)
 				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
 				localMatrix.Decompose(translation, rotation, scale);
 
-				switch (mCurrentGuizmoOperation) {
+				switch (currentGuizmoOperation) {
 				case ImGuizmo::TRANSLATE:
 					selectedGameObject->SetPosition(translation);
 					break;
@@ -154,16 +206,16 @@ void ScenePanel::Draw(int windowFlags)
 				}
 			}
 			else {
-				mIsGuizmoUsign = false;
+				mIsGuizmoUsing = false;
 			}
 		}
 
+		//TODO: Find the way to only apply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
+		/*
 		float viewManipulateRight = windowPos.x + size.x;
 		float viewManipulateTop = windowPos.y;
 		float viewManipulateSize = 100;
 
-		//TODO: Find the way to only apply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
-		/*
 		ImGuizmo::ViewManipulate(cameraView.ptr(), 4, ImVec2(viewManipulateRight - viewManipulateSize, viewManipulateTop), ImVec2(viewManipulateSize, viewManipulateSize), 0x10101010);
 		if (ImGui::IsWindowFocused()) {
 			float4x4 newCameraView = cameraView.InverseTransposed();

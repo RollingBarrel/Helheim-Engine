@@ -35,24 +35,30 @@ void HierarchyPanel::SetFocus(GameObject* focusedObject)
 	mFocusedObject = focusedObject; 
 }
 
-void HierarchyPanel::OnLeftCkickNode(GameObject* node) {
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) {
-		if (ImGui::GetIO().KeyShift) {
-			if (mLastMarkSeen != node->GetID()) {
-				mShiftClicked = node->GetID();
-				if (mLastMarkSeen != 0) {
-					mShiftMarking[0] = mLastMarkSeen;
-					mShiftMarking[1] = mShiftClicked;
-				}
-			}
-		}
-		else if (ImGui::GetIO().KeyCtrl) {}
-		else {
-			if (mMarked.find(node) != mMarked.end()) { mUnmarkFlag = true; }
-			else { mMarked.clear(); }
-		}
-		mFocusedObject = node;
-	}
+void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
+{    
+    if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) {
+        if (ImGui::GetIO().KeyShift) {
+            if (mLastMarkSeen != node->GetID()) {
+                mShiftClicked = node->GetID();
+                if (mLastMarkSeen != 0) {
+                    mShiftMarking[0] = mLastMarkSeen;
+                    mShiftMarking[1] = mShiftClicked;
+                }
+            }
+        }
+        else if (ImGui::GetIO().KeyCtrl) {}
+        else {
+            if (mMarked.find(node) != mMarked.end()) { mUnmarkFlag = true; }
+            else { mMarked.clear(); }
+        }
+        mMarked.insert(node);
+    }
+    if (ImGui::IsMouseReleased(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None) && !ImGui::IsItemToggledOpen())
+    {
+        mMarked.erase(mFocusedObject);
+        mFocusedObject = node;
+    }
 }
 
 void HierarchyPanel::OnRightClickNode(GameObject* node) {
@@ -158,7 +164,7 @@ void HierarchyPanel::DragAndDropSource(GameObject* source)
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
 		mUnmarkFlag = false;
-		ImGui::SetDragDropPayload("_TREENODE", source, sizeof(*source));
+		ImGui::SetDragDropPayload("_TREENODE", &source, sizeof(*source));
 		if (mMarked.size() <= 1) {
 			ImGui::Text(source->mName.c_str());
 		}

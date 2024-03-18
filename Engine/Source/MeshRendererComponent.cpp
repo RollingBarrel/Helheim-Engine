@@ -5,10 +5,15 @@
 #include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "DebugPanel.h"
 #include "GeometryBatch.h"
 
 #include "ImporterMaterial.h"
+
+#include "float4.h"
+#include "float3.h"
 
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
@@ -16,54 +21,85 @@
 
 
 
-MeshRendererComponent::MeshRendererComponent(GameObject* owner, unsigned int meshUid, unsigned int materialUid) : Component(owner, ComponentType::MESHRENDERER)
+MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
-	assert(mMesh && "Component Mesh without resource mesh");
-	assert(mMaterial && "Component Mesh without resource material");
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	
-	if (meshUid != 0 && materialUid != 0) {
-		mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshUid, Resource::Type::Mesh));
-		mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialUid, Resource::Type::Material));
-		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
-		mAABBWorld = mOBB.MinimalEnclosingAABB();
-
-	}
+	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
-	App->GetOpenGL()->BatchAddMesh(this);
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
 {
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material));
+	mMesh = (other.mMesh) ? reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh)) : nullptr;
+	mMaterial = (other.mMaterial) ? reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material)) : nullptr;
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
+	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	App->GetOpenGL()->BatchAddMesh(this);
 	mAABBWorld = mOBB.MinimalEnclosingAABB();
 
 }
 
+void MeshRendererComponent::SetMesh(unsigned int uid)
+{
+	ResourceMesh* tmpMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
+	if (tmpMesh && mMesh)
+	{
+		App->GetResource()->ReleaseResource(mMesh->GetUID());
+	}
+	if (tmpMesh)
+	{
+		mMesh = tmpMesh;
+
+		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+		mAABBWorld = mOBB.MinimalEnclosingAABB();
+	}
+	if (mMaterial && mMesh)
+	{
+		App->GetOpenGL()->BatchRemoveMesh(this);
+		App->GetOpenGL()->BatchAddMesh(this);
+	}
+}
+
+void MeshRendererComponent::SetMaterial(unsigned int uid)
+{
+	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
+	if (tmpMaterial && mMaterial)
+	{
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+	}
+	if(tmpMaterial)
+		mMaterial = tmpMaterial;
+	else
+	{
+		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
+	}
+
+	if (mMaterial && mMesh)
+	{
+		App->GetOpenGL()->BatchRemoveMesh(this);
+		App->GetOpenGL()->BatchAddMesh(this);
+	}
+}
+
 MeshRendererComponent::~MeshRendererComponent()
 {
-	App->GetOpenGL()->BatchRemoveMesh(this);
 	if (mMesh)
 	{
+		App->GetOpenGL()->BatchRemoveMesh(this);
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
 		mMesh = nullptr;
 	}
 	if (mMaterial)
 	{
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMesh = nullptr;
+		mMaterial = nullptr;
 	}
 }
 
@@ -81,7 +117,7 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 
 void MeshRendererComponent::Save(Archive& archive) const {
 	archive.AddInt("ID", GetID());
-	archive.AddInt("MeshID",mMesh->GetUID());
+	archive.AddInt("MeshID", mMesh->GetUID());
 	archive.AddInt("MaterialID", mMaterial->GetUID());
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
@@ -101,11 +137,7 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 
-	mMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(meshID, Resource::Type::Mesh));
-	mMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(materialID, Resource::Type::Material));
-
-	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+	SetMesh(meshID);
+	SetMaterial(materialID);
 }
 

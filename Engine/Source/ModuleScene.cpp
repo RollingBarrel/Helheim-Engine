@@ -55,8 +55,8 @@ bool ModuleScene::Init()
 	//test.TestSceneWithGameObjects();
 
 	//Save("Scene");
-	//Load("scene");
-
+	Load("scene");
+	
 	return true;
 }
 
@@ -196,21 +196,23 @@ void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFileP
 }
 
 void ModuleScene::Load(const char* sceneName) {
+
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) {
 		loadFilePath += ".json";
 	}
 
 	char* loadedBuffer = nullptr;
-	App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer);
 
-	rapidjson::Document d;
-	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
-	if (!ok) {
-		// Handle parsing error
-		LOG("Scene was not loaded.");
-		return;
-	}
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer) > 0)
+	{
+		rapidjson::Document document;
+		rapidjson::ParseResult ok = document.Parse(loadedBuffer);
+		if (!ok) {
+			// Handle parsing error
+			LOG("Scene was not loaded.");
+			return;
+		}
 
 	/*const std::vector<GameObject*>& children = mRoot->GetChildren();
 	if (!children.empty()) {
@@ -223,17 +225,19 @@ void ModuleScene::Load(const char* sceneName) {
 	mRoot = new GameObject("SampleScene", nullptr);
 	
 
-	if (d.HasMember("Scene") && d["Scene"].IsObject()) {
-		const rapidjson::Value& s = d["Scene"];
-		mRoot->Load(s);
-	}
+		if (document.HasMember("Scene") && document["Scene"].IsObject()) {
+			const rapidjson::Value& sceneValue = document["Scene"];
+			mRoot->Load(sceneValue);
+		}
 
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
-	hierarchyPanel->SetFocus(mRoot);
-	mQuadtreeRoot->UpdateTree();
+		HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+		hierarchyPanel->SetFocus(mRoot);
+		mQuadtreeRoot->UpdateTree();
 
 	// Free the loaded buffer
 	delete[] loadedBuffer;
+
+	LoadGameObjectsIntoScripts();
 }
 
 void ModuleScene::LoadPrefab(const char* saveFilePath) {
@@ -255,6 +259,23 @@ void ModuleScene::LoadPrefab(const char* saveFilePath) {
 
 	// Free the loaded buffer
 	delete[] loadedBuffer;
+}
+
+GameObject* ModuleScene::Find(const char* name)
+{
+	return mRoot->Find(name);
+
+}
+
+GameObject* ModuleScene::Find(unsigned int UID)
+{
+	if (UID != 1) {
+		return mRoot->Find(UID);
+	}
+	else {
+		return mRoot;
+	}
+	
 }
 
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) {
@@ -299,7 +320,10 @@ update_status ModuleScene::Update(float dt)
 		mQuadtreeRoot->Draw();
 		App->GetOpenGL()->UnbindSceneFramebuffer();
 	}
-
+	if (mNavMeshController)
+	{
+		mNavMeshController->Update();
+	}
 	App->GetOpenGL()->Draw();
 
 	return UPDATE_CONTINUE;
@@ -338,4 +362,12 @@ void ModuleScene::DuplicateGameObjects() {
 	mGameObjectsToDuplicate.clear();
 	mQuadtreeRoot->UpdateTree();
 
+}
+
+void ModuleScene::LoadGameObjectsIntoScripts()
+{
+
+	for (auto& pair : mGameObjectsToLoadIntoScripts) {
+		*pair.second = Find(pair.first);
+	}
 }

@@ -14,7 +14,6 @@
 #include "InspectorPanel.h"
 #include "HierarchyPanel.h"
 #include "ScenePanel.h"
-#include "QuadtreePanel.h"
 #include "NavMeshControllerPanel.h"
 #include "DebugPanel.h"
 #include "PausePanel.h"
@@ -22,6 +21,8 @@
 #include "LightningPanel.h"
 #include "ResourcePanel.h"
 #include "TimerPanel.h"
+#include "SettingsPanel.h"
+#include "EditorControlPanel.h"
 #include "TagsManagerPanel.h"
 
 #include "imgui_impl_sdl2.h"
@@ -29,16 +30,16 @@
 #include "imgui.h"
 #include "ImGuizmo.h"
 #include "OptickAdapter.h"
+#include "IconsFontAwesome6.h"
 
 ModuleEditor::ModuleEditor()
 {
 	// Panels
 	mPanels[ABOUTPANEL] = new AboutPanel();
-	mPanels[CONSOLEPANEL] = new ConsolePanel(                                                                                                                );
+	mPanels[CONSOLEPANEL] = new ConsolePanel();
 	mPanels[INSPECTORPANEL] = new InspectorPanel();
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[SCENEPANEL] = new ScenePanel();
-	mPanels[QUADTREEPANEL] = new QuadtreePanel();
 	mPanels[NAVMESHPANEL] = new NavMeshControllerPanel();
 	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
@@ -46,10 +47,17 @@ ModuleEditor::ModuleEditor()
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
+	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
 	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
+	mPanels[SETTINGSPANEL] = new SettingsPanel();
 
 	// Panels closed by default
 	mPanels[TAGSMANAGERPANEL]->Close();
+
+	for (auto panel : mPanels) 
+	{
+		mPanelNames.push_back(panel.first);
+	}
 }
 
 ModuleEditor::~ModuleEditor()
@@ -66,10 +74,29 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io->ConfigDragClickToInputText = true;
+	io->IniFilename = NULL;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
+	io->Fonts->AddFontDefault();
+	float baseFontSize = 34.0f; // 13.0f is the size of the default font. Change to the font size you use.
+	float iconFontSize = baseFontSize * 2.0f / 3.0f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+	
+	// Merge in icons from Font Awesome
+	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+	ImFontConfig icons_config;
+	icons_config.MergeMode = true;
+	icons_config.PixelSnapH = true;
+	icons_config.GlyphMinAdvanceX = iconFontSize;
+	icons_config.GlyphOffset = ImVec2(0, 5); // This Y offset works with the Guizmo buttons and its pertinent icons, but could be different for other button sizes
+
+	io->Fonts->AddFontFromFileTTF("InternalAssets/Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
+
 	mOptick = new OptickAdapter();
+
+	// Load the saved layout when opening the engine
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
+	mPanels[SETTINGSPANEL]->Close();
 
 	return true;
 }
@@ -114,7 +141,6 @@ update_status ModuleEditor::Update(float dt)
 
 		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 	}
-
 	return UPDATE_CONTINUE;
 }
 
@@ -128,7 +154,8 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-	for (auto panel : mPanels) {
+	for (auto panel : mPanels) 
+	{
 		delete panel.second;
 	}
 	mPanels.clear();
@@ -170,60 +197,70 @@ void ModuleEditor::ShowMainMenuBar()
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
+			Panel* settingsPanel = mPanels[SETTINGSPANEL];
+			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) {
+				if (settingsPanel)
+				{
+					settingsPanel->IsOpen() ? settingsPanel->Close() : settingsPanel->Open();
+				}
+			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Assets")) {
+		if (ImGui::BeginMenu("Assets")) 
+		{
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("GameObject")) {
+		if (ImGui::BeginMenu("GameObject")) 
+		{
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Component")) {
+		if (ImGui::BeginMenu("Component")) 
+		{
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Tools"))
 		{
 			Panel* timerPanel = mPanels[TIMERPANEL];
-			if (ImGui::MenuItem("Timer", NULL, timerPanel->IsOpen())) {
+			if (ImGui::MenuItem("Timer", NULL, timerPanel->IsOpen())) 
+			{
 				if (timerPanel)
 				{
 					timerPanel->IsOpen() ? timerPanel->Close() : timerPanel->Open();
 				}
 			}
-			Panel* quadtreeDebug = mPanels[QUADTREEPANEL];
-			if (ImGui::MenuItem("Quadtree", NULL, quadtreeDebug->IsOpen())) {
-				if (quadtreeDebug)
-				{
-					quadtreeDebug->IsOpen() ? quadtreeDebug->Close() : quadtreeDebug->Open();
-				}
-			}
 			Panel* navMeshPanel = mPanels[NAVMESHPANEL];
-			if (ImGui::MenuItem("NavMeshController", NULL, navMeshPanel->IsOpen())) {
+			if (ImGui::MenuItem("NavMeshController", NULL, navMeshPanel->IsOpen())) 
+			{
 				if (navMeshPanel)
 				{
 					navMeshPanel->IsOpen() ? navMeshPanel->Close() : navMeshPanel->Open();
 				}
 			}
 			Panel* debugPanel = mPanels[DEBUGPANEL];
-			if (ImGui::MenuItem("Debug", NULL, debugPanel->IsOpen())) {
+			if (ImGui::MenuItem("Debug", NULL, debugPanel->IsOpen())) 
+			{
 				if (debugPanel)
 				{
 					debugPanel->IsOpen() ? debugPanel->Close() : debugPanel->Open();
 				}
 			}
-			if (ImGui::MenuItem("Optick", NULL, false, !mOptick->IsOpen())) {
+			if (ImGui::MenuItem("Optick", NULL, false, !mOptick->IsOpen())) 
+			{
 				mOptick->Startup();
 			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::BeginMenu("Panels")) {
-				if (ImGui::MenuItem("Close all floating panels")) {
+			if (ImGui::BeginMenu("Panels")) 
+			{
+				if (ImGui::MenuItem("Close all floating panels")) 
+				{
 					ResetFloatingPanels(false);
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Reset all floating panels")) {
+				if (ImGui::MenuItem("Reset all floating panels")) 
+				{
 					ResetFloatingPanels(true);
 				}
 				ImGui::Separator();
@@ -236,42 +273,56 @@ void ModuleEditor::ShowMainMenuBar()
 					}
 				}
 				Panel* console = mPanels[CONSOLEPANEL];
-				if (ImGui::MenuItem("2 Console", NULL, console->IsOpen())) {
+				if (ImGui::MenuItem("2 Console", NULL, console->IsOpen())) 
+				{
 					if (console)
 					{
 						console->IsOpen() ? console->Close() : console->Open();
 					}
 				}
 				Panel* hierarchy = mPanels[HIERARCHYPANEL];
-				if (ImGui::MenuItem("3 Hierarchy", NULL, hierarchy->IsOpen())) {
+				if (ImGui::MenuItem("3 Hierarchy", NULL, hierarchy->IsOpen())) 
+				{
 					if (hierarchy)
 					{
 						hierarchy->IsOpen() ? hierarchy->Close() : hierarchy->Open();
 					}
 				}
 				Panel* pause = mPanels[PAUSEPANEL];
-				if (ImGui::MenuItem("4 Pause", NULL, pause->IsOpen())) {
+				if (ImGui::MenuItem("4 Pause", NULL, pause->IsOpen())) 
+				{
 					if (pause)
 					{
 						pause->IsOpen() ? pause->Close() : pause->Open();
 					}
 				}
 				Panel* scene = mPanels[SCENEPANEL];
-				if (ImGui::MenuItem("5 Scene", NULL, scene->IsOpen())) {
+				if (ImGui::MenuItem("5 Scene", NULL, scene->IsOpen())) 
+				{
 					if (scene)
 					{
 						scene->IsOpen() ? scene->Close() : scene->Open();
 					}
 				}
 				Panel* inspector = mPanels[INSPECTORPANEL];
-				if (ImGui::MenuItem("6 Inspector", NULL, inspector->IsOpen())) {
+				if (ImGui::MenuItem("6 Inspector", NULL, inspector->IsOpen())) 
+				{
 					if (inspector)
 					{
 						inspector->IsOpen() ? inspector->Close() : inspector->Open();
 					}
 				}
+				Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
+				if (ImGui::MenuItem("7 Editor Control Panel", NULL, editorControlPanel->IsOpen())) 
+				{
+					if (editorControlPanel)
+					{
+						editorControlPanel->IsOpen() ? editorControlPanel->Close() : editorControlPanel->Open();
+					}
+				}
 				Panel* lightning = mPanels[LIGHTNINGPANEL];
-				if (ImGui::MenuItem("7 Lightning", NULL, lightning->IsOpen())) {
+				if (ImGui::MenuItem("8 Lightning", NULL, lightning->IsOpen())) 
+				{
 					if (lightning)
 					{
 						lightning->IsOpen() ? lightning->Close() : lightning->Open();
@@ -297,7 +348,8 @@ void ModuleEditor::ShowMainMenuBar()
 		ImGui::EndMainMenuBar();
 	}
 
-	if (mLoadSceneOpen) {
+	if (mLoadSceneOpen) 
+	{
 		OpenLoadScene();
 	}
 }
@@ -309,8 +361,10 @@ void ModuleEditor::OpenLoadScene() {
 		ImGui::Text("Which file you wish to load?");
 		static char fileName[128] = "";
 		ImGui::InputText(".json", fileName, IM_ARRAYSIZE(fileName));
-		if (ImGui::Button("Load")) {
-			if (!strcmp(fileName, "scene")) {
+		if (ImGui::Button("Load")) 
+		{
+			if (!strcmp(fileName, "scene")) 
+			{
 				App->GetScene()->Load(fileName);
 				ImGui::CloseCurrentPopup();
 				mLoadSceneOpen = false;
@@ -322,52 +376,52 @@ void ModuleEditor::OpenLoadScene() {
 
 void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* timerPanel = mPanels[TIMERPANEL];
-	Panel* quadTree = mPanels[QUADTREEPANEL];
 	Panel* debugPanel = mPanels[DEBUGPANEL];
 	Panel* navMeshController = mPanels[NAVMESHPANEL];
-
-
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* console = mPanels[CONSOLEPANEL];
 	Panel* hierarchy = mPanels[HIERARCHYPANEL];
 	Panel* pause = mPanels[PAUSEPANEL];
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* inspector = mPanels[INSPECTORPANEL];
+	Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
 	Panel* resourcePanel = mPanels[RESOURCEPANEL];
+	Panel* settingsPanel = mPanels[SETTINGSPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 
-	if (openPanels == true) {
+	if (openPanels == true) 
+	{
 		timerPanel->Open();
-		quadTree->Open();
 		debugPanel->Open();
 		navMeshController->Open();
-		
 		projectPanel->Open();
 		console->Open();
 		hierarchy->Open();
 		pause->Open();
 		scenePanel->Open();
 		inspector->Open();
+		editorControlPanel->Open();
 		lightningPanel->Open();
 		resourcePanel->Open();
+		settingsPanel->Open();
 	}
-	else {
+	else 
+	{
 		timerPanel->Close();
-		quadTree->Close();
 		navMeshController->Close();
 		debugPanel->Close();
-
 		projectPanel->Close();
 		console->Close();
 		hierarchy->Close();
 		pause->Close();
 		scenePanel->Close();
 		inspector->Close();
+		editorControlPanel->Close();
 		lightningPanel->Close();
 		resourcePanel->Close();
-
+		settingsPanel->Close();
 		aboutPanel->Close();
 	}
 }
