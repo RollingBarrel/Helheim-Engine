@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
-#include "ModuleDetourNavigation.h"
+//#include "ModuleDetourNavigation.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
 #include "Application.h"

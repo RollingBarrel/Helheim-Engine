@@ -29,8 +29,8 @@ public:
 	const std::pair<float, GameObject*> RayCast(Ray* ray) const;
 	void UpdateTree();
 	void Draw() const;
-	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
+	bool GetFilled() const { return mFilled; }
 
 	void UpdateDrawableGameObjects(const Frustum* myCamera);
 	void CleanUp();

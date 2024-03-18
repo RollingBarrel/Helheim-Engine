@@ -23,6 +23,39 @@ DebugPanel::~DebugPanel()
 {
 }
 
+static void RenderTreeImGui(const Quadtree& tree)
+{
+
+    if (strcmp(tree.GetName(),"") == 0)
+        return;
+    bool treeNodeOpened = ImGui::TreeNode(tree.GetName());
+
+    if (tree.GetFilled() && treeNodeOpened)
+    {
+        mChildren[0]->RenderTreeImGui();
+        mChildren[1]->RenderTreeImGui();
+        mChildren[2]->RenderTreeImGui();
+        mChildren[3]->RenderTreeImGui();
+
+    }
+    else
+    {
+        if (treeNodeOpened)
+        {
+            for (const auto& object : mGameObjects)
+            {
+                ImGui::Text(object->GetName().c_str());
+            }
+
+        }
+    }
+
+
+    if (treeNodeOpened)
+        ImGui::TreePop();
+
+}
+
 void DebugPanel::Draw(int windowFlags) {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{

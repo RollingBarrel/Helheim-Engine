@@ -316,9 +316,6 @@
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDetourNavigation.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -674,9 +671,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleAudio.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleDetourNavigation.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
