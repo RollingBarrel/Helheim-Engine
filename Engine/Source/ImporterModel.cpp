@@ -167,6 +167,18 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
             ImportNode(rModel->modelNodes, filePath, model, j, currentUid, bufferSize, modifyAssets);
         }
     }
+    if (!model.skins.empty()) 
+    {
+        int i = 0;
+        for (const auto& skins : model.skins)
+        {
+            Skin* skin = new Skin();
+            skin->mJoints = skins.joints;
+            skin->index = i;
+            i++;
+            rModel->mSkins.push_back(skin);
+        }
+    }
 
     if (!model.animations.empty())
     {
@@ -280,6 +292,18 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
         cursor += bytes;
     }
     
+    //Skins
+    unsigned int skinsSize = rModel->mSkins.size();
+    bytes = sizeof(unsigned int);
+    memcpy(cursor, &skinsSize, bytes);
+    cursor += bytes;
+    for (int i = 0; i < skinsSize; ++i)
+    {
+        bytes = sizeof(unsigned int);
+        memcpy(cursor, &rModel->mSkins[i], bytes);
+        cursor += bytes;
+    }
+
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
     
@@ -404,6 +428,22 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
     
             rModel->mAnimationUids.push_back({ animationUID });
         }
+
+        unsigned int skinsSize = 0;
+        bytes = sizeof(unsigned int);
+        memcpy(&skinsSize, cursor, bytes);
+        cursor += bytes;
+        for (int i = 0; i < skinsSize; ++i)
+        {
+            unsigned int skins = 0;
+            bytes = sizeof(unsigned int);
+            memcpy(&skins, cursor, bytes);
+            *cursor += bytes;
+
+            rModel->mSkins.push_back({ skins });
+        }
+
+
         delete[] fileBuffer;
     }
 

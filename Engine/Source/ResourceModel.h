@@ -5,8 +5,8 @@
 #include <string>
 
 #include "float3.h"
+#include "float4x4.h"
 #include "Quat.h"
-
 
 struct ModelNode
 {
@@ -22,10 +22,18 @@ struct ModelNode
 	int mParentIndex = -1;
 
 	bool mHasTransform = false;
+
+	//float4x4 mInverseMatrix;
+
 	//Components
 	int mMeshId;
 	int mCameraId;
 	int mSkinId;
+};
+
+struct Skin {
+	int index;
+	std::vector<int> mJoints;
 };
 
 class ResourceModel : public Resource
@@ -39,5 +47,7 @@ public:
 	std::vector<unsigned int> mAnimationUids;
 
 	std::vector<ModelNode> modelNodes;
+
+	std::vector<Skin*> mSkins;
 
 };
