@@ -62,15 +62,14 @@ bool ModuleUI::Init() {
 update_status ModuleUI::PreUpdate(float dt) {
 	if (mScreenSpace == true) {
 		mCurrentFrustum = mUIfrustum;
-		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 	}
 	else {
 		mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
-		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_DEPTH_TEST);
 	}
 
 	// Draw the UI
-	// TODO: Investigate rendering order so we can fix the image component rendering behind grid and models in screen space.
 	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(mCanvas);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
