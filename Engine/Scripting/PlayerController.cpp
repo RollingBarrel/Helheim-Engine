@@ -32,6 +32,7 @@ void PlayerController::Update()
     Move();
     Rotate();
     Win();
+    Dash();
 
     if (mAnimationComponent) {
         mAnimationComponent->OnUpdate();
@@ -40,11 +41,11 @@ void PlayerController::Update()
 }
 
 void PlayerController::Move() {
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
         float3 newPos = (mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
         float3 newPos = (mGameObject->GetPosition() + float3(0, 0, -1) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
@@ -62,7 +63,7 @@ void PlayerController::Win() {
     if (mWinArea) {
      float3 winPosition= mWinArea->GetPosition();
      float3 playerPosition = mGameObject->GetPosition();
-     if (((winPosition.x - playerPosition.x)<2 && (winPosition.x - playerPosition.x)> -2) && ((winPosition.z - playerPosition.z) < 2 && (winPosition.z - playerPosition.z) > -2)) {
+     if (((winPosition.x - playerPosition.x)<5 && (winPosition.x - playerPosition.x)> -5) && ((winPosition.z - playerPosition.z) < 5 && (winPosition.z - playerPosition.z) > -5)) {
          //mGameObject->SetPosition(float3::zero);
          LOG("WIN");
      }
@@ -77,6 +78,43 @@ void PlayerController::Rotate() {
         App->GetInput()->GetMouseMotion(mX, mY);
         float3 rotation = { 0.0f, DegToRad(mX * mPlayerRotationSpeed), 0.0f };
         mGameObject->SetRotation(rotation+ mGameObject->GetRotation());
+
+
+}
+
+void PlayerController::Dash()
+{
+    if (App->GetInput()->GetKey(Keys::Keys_T) == KeyState::KEY_DOWN && !mStartCounter)
+    {
+        mIsDashActive = true;
+    }
+    if (mIsDashActive)
+    {
+        if (mDashMovement >= mDashLenght)
+        {
+            mStartCounter = false;
+            mDashMovement = 0;
+            mIsDashActive = false;
+        }
+        if (mStartCounter)
+        {
+            mDashTimePassed += App->GetGameDt();
+            if (mDashTimePassed >= mDashCoolDown)
+            {
+                mDashTimePassed = 0;
+                mStartCounter = true;
+             
+            }
+        }
+        else
+        {
+            mDashMovement += mDashSpeed * App->GetGameDt();
+            //mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mDashSpeed * App->GetGameDt());
+            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
+            mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
+
+        }
+    }
 
 
 }
