@@ -639,7 +639,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
-	static const char* currentItem = component->GetScriptName();
+	const char* currentItem = component->GetScriptName();
 
 	if (ImGui::BeginCombo("##combo", currentItem)) // The second parameter is the label previewed before opening the combo.
 	{
