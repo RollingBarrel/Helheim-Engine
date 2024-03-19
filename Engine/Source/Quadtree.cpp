@@ -212,6 +212,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 	}
 	else
 	{
+		std::map<float, GameObject*> map;
 		bool intersects = false;
 		bool intersectsTriangle = false;
 
@@ -241,11 +242,14 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
 
 						if (intersectsTriangle) {
-							return std::pair<float, GameObject*>(distance, child);
+							map.insert( std::pair<float, GameObject*>(distance, child));
 						}
 					}
 				}
 			}
+		}
+		if (!map.empty()) {
+			return std::pair<float, GameObject*>(map.begin()->first, map.begin()->second);
 		}
 	}
 
