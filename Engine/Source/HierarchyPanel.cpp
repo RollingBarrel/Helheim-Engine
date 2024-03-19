@@ -82,6 +82,9 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			mFocusId = gameObject->GetID();
 			mMarked.clear();
 		}
+		if (ImGui::Selectable("Go Back")) {
+			App->GetScene()->ClosePrefabScreen("Prefab/Test.prfb");
+		}
 
 		if (!node->mIsRoot) {
 			if (ImGui::Selectable("Duplicate")) {

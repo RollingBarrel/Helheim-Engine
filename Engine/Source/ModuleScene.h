@@ -91,6 +91,7 @@ private:
 	std::vector<Tag*> mTags;
 
 	unsigned mLastTagIndex = 10;
+	const char* mTestPath = "";
 
 };
 

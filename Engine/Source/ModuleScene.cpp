@@ -266,17 +266,20 @@ void ModuleScene::LoadPrefab(const char* saveFilePath)
 
 void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
 {
-	mBackgroundScene = mRoot;
-	mRoot = new GameObject(saveFilePath, nullptr);
-	LoadPrefab(saveFilePath);
+	Resource* resource = App->GetResource()->RequestResource(saveFilePath);
+	if (resource->GetType() == Resource::Type::Object) {
+		mBackgroundScene = mRoot;
+		mBackgroundScene->SetEnabled(false);
+		mRoot = new GameObject(saveFilePath, nullptr);
+		LoadPrefab(saveFilePath);
+		mQuadtreeRoot->UpdateTree();
+	}
+	
 }
 
 void ModuleScene::ClosePrefabScreen(const char* saveFilePath)
 {
-	SavePrefab(mRoot, saveFilePath);
-	delete mRoot;
-	mRoot = mBackgroundScene;
-	mBackgroundScene = nullptr;
+	mTestPath = saveFilePath;
 }
 
 GameObject* ModuleScene::Find(const char* name)
@@ -354,6 +357,15 @@ update_status ModuleScene::PostUpdate(float dt)
 	}
 	if (!mGameObjectsToDuplicate.empty()) {
 		DuplicateGameObjects();
+	}
+	if (mTestPath != "") {
+		SavePrefab(mRoot->GetChildren()[0], mTestPath);
+		delete mRoot;
+		mRoot = mBackgroundScene;
+		mBackgroundScene = nullptr;
+		mTestPath = "";
+		mRoot->SetEnabled(true);
+		mQuadtreeRoot->UpdateTree();
 	}
 
 	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());

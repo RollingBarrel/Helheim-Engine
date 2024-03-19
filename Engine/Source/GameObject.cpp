@@ -163,7 +163,7 @@ void GameObject::SetEnabled(bool enabled)
 {
 	mIsEnabled = enabled;
 
-	if (!enabled || mParent->IsActive())
+	if (!enabled || IsRoot() || mParent->IsActive())
 	{
 		SetActiveInHierarchy(enabled);
 	}

@@ -54,6 +54,11 @@ const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 			{
 				if (ImGui::TreeNodeEx(current.mChildren[i]->assets[j]->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
 				{
+					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+					{
+						AssetDisplay* asset = current.mChildren[i]->assets[j];
+						App->GetScene()->OpenPrefabScreen(asset->mPath);
+					}
 					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 					{
 						ImGui::SetDragDropPayload("_SCENE", current.mChildren[i]->assets[j], sizeof(*current.mChildren[i]->assets[j]));
