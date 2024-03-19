@@ -47,7 +47,6 @@ void InspectorPanel::Draw(int windowFlags)
 
 	if (!focusedObject->IsRoot())
 	{
-		ImGui::Text("%d", focusedObject->GetID());
 		if (ImGui::Checkbox("##enabled", &enabled))
 		{
 			focusedObject->SetEnabled(enabled);

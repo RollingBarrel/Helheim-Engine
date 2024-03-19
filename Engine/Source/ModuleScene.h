@@ -56,9 +56,9 @@ public:
 	Tag* GetTagByID(unsigned id);
 	void DeleteTag(Tag* tag);
 
-	void Save(const char* saveFilePath);
+	void Save(const char* saveFilePath) const;
 	void Load(const char* saveFilePath);
-	void SavePrefab(const GameObject* gameObject, const char* saveFilePath);
+	void SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
 	void LoadPrefab(const char* saveFilePath);
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen(const char* saveFilePath);
@@ -72,7 +72,8 @@ private:
 	void DuplicateGameObjects();
 	void LoadGameObjectsIntoScripts();
 
-	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
+	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
+	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
 	
 	Quadtree* mQuadtreeRoot;
 	bool mDrawQuadtree = false;
