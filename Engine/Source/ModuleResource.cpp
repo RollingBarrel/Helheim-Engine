@@ -338,6 +338,11 @@ std::string ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 	case Resource::Type::Object:
 		assetsFilePath = importedFilePath;
 		break;
+	case Resource::Type::Script:
+	{
+		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
+		break;
+	}
 	default:
 		LOG("Unable to Copy, this file %s", importedFilePath);
 		break;

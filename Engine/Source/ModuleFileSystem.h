@@ -14,6 +14,8 @@
 #define ASSETS_SCENES_PATH "Assets/Scenes/"
 #define ASSETS_PREFABS_PATH "Assets/Prefabs/"
 #define ASSETS_NAVMESH_PATH "Assets/NavMeshes/"
+#define ASSETS_SCRIPT_PATH "Assets/Scripts/"
+
 
 
 #include <vector>
