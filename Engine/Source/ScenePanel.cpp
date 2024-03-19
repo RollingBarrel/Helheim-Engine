@@ -24,7 +24,7 @@
 #include "Math/float2.h"
 #include "imgui.h"
 
-GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids, GameObject* parent)
+GameObject* DragToScene(const ModelNode& node, ResourceModel& rModel, GameObject* parent)
 {
 	const char* name = "";
 
@@ -53,10 +53,10 @@ GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animat
 
 	if (strcmp(name,"Root") == 0)
 	{
-		if (!animationUids.empty())
+		if (!rModel.mAnimationUids.empty())
 		{
 			AnimationComponent* cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->CreateComponent(ComponentType::ANIMATION));
-			cAnimation->SetAnimation(animationUids[0]);
+			cAnimation->SetAnimation(rModel.mAnimationUids[0]);
 		}
 	}
 
@@ -128,9 +128,21 @@ void ScenePanel::Draw(int windowFlags)
 						{
 							ModelNode node = reinterpret_cast<ResourceModel*>(resource)->GetNodes()[i];
 							if(node.mParentIndex == -1)
-								tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, gameObjectRoot));
+								tempVec.push_back(DragToScene(node, *(reinterpret_cast<ResourceModel*>(resource)), gameObjectRoot));
 							else
-								tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, tempVec.at(node.mParentIndex)));
+								tempVec.push_back(DragToScene(node, *(reinterpret_cast<ResourceModel*>(resource)), tempVec.at(node.mParentIndex)));
+
+
+							for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
+							{
+								if (reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first == i)
+								{
+									LOG("Current Node: %u, %s", i, node.mName.c_str());
+									LOG("Joint Index: %d", reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first);
+									break;
+								}
+							}
+
 						}
 
 						tempVec.clear();

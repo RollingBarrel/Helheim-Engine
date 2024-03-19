@@ -234,11 +234,8 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         bufferSize += sizeof(unsigned int);
         bufferSize += sizeof(float) * 16;
-        //bufferSize += sizeof(unsigned int) * rModel->mJoints.size() * rModel->mJoints[i].second.s;
     }
-    
-
-
+   
     if (rModel)
         Importer::Model::Save(rModel, bufferSize);
 
@@ -341,19 +338,10 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
         memcpy(cursor, &rModel->mJoints[i].first, bytes);
         cursor += bytes;
 
-        bytes = sizeof(float4x4);
+        bytes = sizeof(float) * 16;
         //unsigned int inverse = rModel->mJoints[i]->mJoints.size();
         memcpy(cursor, &rModel->mJoints[i].second, bytes);
         cursor += bytes;
-
-        /*for (size_t j = 0; j < jointSize; j++)
-        {
-            bytes = sizeof(int);
-            memcpy(cursor, &rModel->mSkins[i]->mJoints[j], bytes);
-            cursor += bytes;
-        }*/
-
-
     }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
@@ -491,22 +479,14 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         for (int i = 0; i < jointsSize; ++i)
         {
             int indexJoint = 0;
-
             bytes = sizeof(unsigned int);
             memcpy(&rModel->mJoints[i].first, cursor, bytes);
             cursor += bytes;
 
             bytes = sizeof(float4x4);
-            //unsigned int jointSize = 0;
             memcpy(&rModel->mJoints[i].second, cursor, bytes);
             cursor += bytes;
 
-            /*for (size_t j = 0; j < jointSize; j++)
-            {
-                bytes = sizeof(int);
-                memcpy(&skin->mJoints[j],cursor,bytes);
-                cursor += bytes;
-            }*/
             rModel->mJoints.push_back({ rModel->mJoints[i].first,rModel->mJoints[i].second });
         }
 
