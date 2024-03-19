@@ -174,6 +174,10 @@ void ModuleScene::Save(const char* sceneName) {
 
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+
+	delete sceneArchive;
+	delete archive;
+
 }
 
 void ModuleScene::Load(const char* sceneName) {
