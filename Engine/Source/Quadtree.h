@@ -25,7 +25,12 @@ public:
 	const bool IsFilled() const { return mFilled; }
 	const int GetNumGameObjs() const { return mGameObjects.size(); }
 	const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
-	const Quadtree* GetChildren() const { return *mChildren; }
+	void GetChildren(const Quadtree** out) const { for (int i = 0; i < 3; ++i) out[i] = mChildren[i]; }
+	void GetGameObjects(std::vector<GameObject*>& out) const { 
+		out.reserve(mGameObjects.size());
+		for (GameObject* obj : mGameObjects) 
+			out.push_back(obj); 
+	}
 	const std::pair<float, GameObject*> RayCast(Ray* ray) const;
 	void UpdateTree();
 	void Draw() const;

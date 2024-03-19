@@ -11,7 +11,6 @@
 #include "ModuleScene.h"
 #include "ResourceMesh.h"
 #include "Geometry/Triangle.h"
-#include "imgui.h"
 #include <utility>
 #include <map>
 
@@ -132,39 +131,6 @@ void Quadtree::Draw() const
 		mChildren[2]->Draw();
 		mChildren[3]->Draw();
 	}
-}
-
-const void Quadtree::RenderTreeImGui() const
-{
-	
-	if (mName == "")
-		return;
-	bool treeNodeOpened = ImGui::TreeNode(mName.c_str());
-	
-	if (mFilled && treeNodeOpened) 
-	{
-		mChildren[0]->RenderTreeImGui();
-		mChildren[1]->RenderTreeImGui();
-		mChildren[2]->RenderTreeImGui();
-		mChildren[3]->RenderTreeImGui();
-
-	}
-	else 
-	{
-		if (treeNodeOpened)
-		{
-			for (const auto& object : mGameObjects)
-			{
-				ImGui::Text(object->GetName().c_str());
-			}
-
-		}
-	}
-	
-	
-	if(treeNodeOpened)
-		ImGui::TreePop();
-	
 }
 
 void Quadtree::AddHierarchyObjects(GameObject* node)

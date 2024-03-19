@@ -25,24 +25,27 @@ DebugPanel::~DebugPanel()
 
 static void RenderTreeImGui(const Quadtree& tree)
 {
-
-    if (strcmp(tree.GetName(),"") == 0)
+    if (strcmp(tree.GetName(), "") == 0)
         return;
     bool treeNodeOpened = ImGui::TreeNode(tree.GetName());
 
-    if (tree.GetFilled() && treeNodeOpened)
+    if (tree.IsFilled() && treeNodeOpened)
     {
-        mChildren[0]->RenderTreeImGui();
-        mChildren[1]->RenderTreeImGui();
-        mChildren[2]->RenderTreeImGui();
-        mChildren[3]->RenderTreeImGui();
+        const Quadtree* children[4];
+        tree.GetChildren(children);
+        RenderTreeImGui(*children[0]);
+        RenderTreeImGui(*children[1]);
+        RenderTreeImGui(*children[2]);
+        RenderTreeImGui(*children[3]);
 
     }
     else
     {
         if (treeNodeOpened)
         {
-            for (const auto& object : mGameObjects)
+            std::vector<GameObject*> gameObjects;
+            tree.GetGameObjects(gameObjects);
+            for (const auto& object : gameObjects)
             {
                 ImGui::Text(object->GetName().c_str());
             }
@@ -50,10 +53,8 @@ static void RenderTreeImGui(const Quadtree& tree)
         }
     }
 
-
     if (treeNodeOpened)
         ImGui::TreePop();
-
 }
 
 void DebugPanel::Draw(int windowFlags) {
@@ -113,7 +114,7 @@ void DebugPanel::Draw(int windowFlags) {
             }
             ImGui::Separator();
             ImGui::Text("Quadtree nodes:");
-            App->GetScene()->GetQuadtreeRoot()->RenderTreeImGui();
+            RenderTreeImGui(*App->GetScene()->GetQuadtreeRoot());
             ImGui::TreePop();
 		}
 
