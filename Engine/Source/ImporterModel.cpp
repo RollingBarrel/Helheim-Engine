@@ -162,14 +162,36 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     if (!model.skins.empty())
     {
-        int i = 0;
         for (const auto& skins : model.skins)
         {
-            Skin* skin = new Skin();
-            skin->mJoints = skins.joints;
-            /*skin->index = i;
-            i++;*/
-            rModel->mSkins.push_back(skin);
+
+            const int inverseBindMatricesIndex = skins.inverseBindMatrices;
+            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[inverseBindMatricesIndex];
+
+            const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
+
+            const unsigned char* inverseBindMatricesBuffer = &model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset];
+
+            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(inverseBindMatricesBuffer);
+
+            size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
+
+            for (size_t i = 0; i < num_inverseBindMatrices; i++)
+            {
+                const float* matrixPtr = reinterpret_cast<const float*>(&inverseBindMatricesPtr[i * 16 * sizeof(float)]);
+
+                float4x4 inverseBindMatrix;
+
+                for (size_t row = 0; row < 4; row++) {
+                    for (size_t col = 0; col < 4; col++) {
+                        inverseBindMatrix[row][col] = matrixPtr[row * 4 + col];
+                    }
+                }
+
+                rModel->mJoints.push_back({ skins.joints[i], inverseBindMatrix});
+
+            }
+
         }
     }
 
@@ -206,12 +228,12 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Tamaño vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
-    bufferSize += sizeof(int) * rModel->mSkins.size();
+    bufferSize += sizeof(int) * rModel->mJoints.size();
     
-    for (size_t i = 0; i < rModel->mSkins.size(); i++)
+    for (size_t i = 0; i < rModel->mJoints.size(); i++)
     {
-        bufferSize += sizeof(unsigned int) * rModel->mSkins.size();
-        bufferSize += sizeof(unsigned int) * rModel->mSkins.size() * rModel->mSkins[i]->mJoints.size();
+        bufferSize += sizeof(unsigned int) * 16;
+        //bufferSize += sizeof(unsigned int) * rModel->mJoints.size() * rModel->mJoints[i].second.s;
     }
     
 
@@ -307,29 +329,28 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
         cursor += bytes;
     }
     
-    //Skins
-    unsigned int skinsSize = rModel->mSkins.size();
+    //Joints
+    unsigned int jointsSize = rModel->mJoints.size();
     bytes = sizeof(unsigned int);
-    memcpy(cursor, &skinsSize, bytes);
+    memcpy(cursor, &jointsSize, bytes);
     cursor += bytes;
-    for (int i = 0; i < skinsSize; ++i)
+    for (int i = 0; i < jointsSize; ++i)
     {
         bytes = sizeof(unsigned int);
-        memcpy(cursor, &rModel->mSkins[i]->index, bytes);
+        memcpy(cursor, &rModel->mJoints[i].first, bytes);
         cursor += bytes;
 
-        bytes = sizeof(unsigned int);
-        unsigned int jointSize = rModel->mSkins[i]->mJoints.size();
-        memcpy(cursor, &jointSize, bytes);
-        
+        bytes = sizeof(float4x4);
+        //unsigned int inverse = rModel->mJoints[i]->mJoints.size();
+        memcpy(cursor, &rModel->mJoints[i].second, bytes);
         cursor += bytes;
 
-        for (size_t j = 0; j < jointSize; j++)
+        /*for (size_t j = 0; j < jointSize; j++)
         {
             bytes = sizeof(int);
             memcpy(cursor, &rModel->mSkins[i]->mJoints[j], bytes);
             cursor += bytes;
-        }
+        }*/
 
 
     }
@@ -459,33 +480,32 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             rModel->mAnimationUids.push_back({ animationUID });
         }
 
-        unsigned int skinsSize = 0;
+        unsigned int jointsSize = 0;
         bytes = sizeof(unsigned int);
-        memcpy(&skinsSize, cursor, bytes);
+        memcpy(&jointsSize, cursor, bytes);
         cursor += bytes;
 
-        rModel->mSkins.reserve(skinsSize);
+        rModel->mJoints.reserve(jointsSize);
 
-        for (int i = 0; i < skinsSize; ++i)
+        for (int i = 0; i < jointsSize; ++i)
         {
-            Skin* skin = new Skin();
 
             bytes = sizeof(unsigned int);
-            memcpy(&skin->index, cursor, bytes);
+            memcpy(&rModel->mJoints[i].first, cursor, bytes);
             cursor += bytes;
 
-            bytes = sizeof(unsigned int);
-            unsigned int jointSize = 0;
-            memcpy(&jointSize, cursor, bytes);
+            bytes = sizeof(float4x4);
+            //unsigned int jointSize = 0;
+            memcpy(&rModel->mJoints[i].second, cursor, bytes);
             cursor += bytes;
 
-            for (size_t j = 0; j < jointSize; j++)
+            /*for (size_t j = 0; j < jointSize; j++)
             {
                 bytes = sizeof(int);
                 memcpy(&skin->mJoints[j],cursor,bytes);
                 cursor += bytes;
-            }
-            rModel->mSkins.push_back({ skin });
+            }*/
+            rModel->mJoints.push_back({ rModel->mJoints[i].first,rModel->mJoints[i].second });
         }
 
 
