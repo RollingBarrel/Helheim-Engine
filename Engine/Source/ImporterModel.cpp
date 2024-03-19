@@ -289,7 +289,7 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
 
 ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
 {
-    char* fileBuffer;
+    char* fileBuffer = nullptr;
     ResourceModel* rModel = new ResourceModel(uid);
     
     if (App->GetFileSystem()->Load(fileName, &fileBuffer))

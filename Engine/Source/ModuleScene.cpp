@@ -176,6 +176,10 @@ void ModuleScene::Save(const char* sceneName) const {
 
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+
+	delete sceneArchive;
+	delete archive;
+
 }
 
 void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {

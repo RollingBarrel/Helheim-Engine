@@ -24,6 +24,7 @@ public:
 	void CheckRaycast();
 	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
 	const Frustum* GetFrustum() const { return mFrustum; }
+	bool CleanUp() override;
 
 private:
 	Frustum* mFrustum = nullptr;

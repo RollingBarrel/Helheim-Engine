@@ -85,6 +85,10 @@ bool ModuleResource::Init()
 			ImportFile(assetsPath.c_str(), uid, false);
 		}
 		delete[] libraryFile;
+
+		if (fileBuffer) {
+			delete[] fileBuffer;
+		}
 	}
 	return true;
 }

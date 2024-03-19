@@ -76,6 +76,7 @@ public:
 	PathNode* GetRootNode() { return mRoot; }
 
 private:
+	void CleanNode(PathNode* node);
 	PathNode* mRoot = nullptr;
 };
 
