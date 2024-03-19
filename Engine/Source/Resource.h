@@ -16,6 +16,7 @@ public:
 		Scene = 7,
 		NavMesh = 8,
 		Script = 9,
+		Object = 10,
 		Unknown = 0
 	};
 
