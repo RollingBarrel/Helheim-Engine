@@ -39,6 +39,7 @@ ModuleFileSystem::ModuleFileSystem()
 ModuleFileSystem::~ModuleFileSystem()
 {
     PHYSFS_deinit();
+
 }
 
 // Called before render is available
@@ -65,6 +66,8 @@ update_status ModuleFileSystem::Update(float dt)
 // Called before quitting
 bool ModuleFileSystem::CleanUp()
 {
+
+    CleanNode(mRoot);
     return true;
 }
 
@@ -407,6 +410,20 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
 
     if(extension != nullptr)
         *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
+}
+
+void ModuleFileSystem::CleanNode(PathNode* node)
+{
+
+    for (int i = 0; i < node->assets.size(); ++i) {
+        delete node->assets[i];
+    }
+
+    for (int i = 0; i < node->mChildren.size(); ++i) {
+        CleanNode(node->mChildren[i]);
+    }
+
+    delete node;
 }
 
 PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
