@@ -20,7 +20,7 @@
 
 ResourceAnimation::ResourceAnimation(
     unsigned int uid, 
-    const std::string inName) : Resource(uid, Type::Animation) , mName(inName)
+    const std::string& inName) : Resource(uid, Type::Animation) , mName(inName)
 {
 }
 
