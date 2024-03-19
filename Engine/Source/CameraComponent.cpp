@@ -1,8 +1,11 @@
 #include "CameraComponent.h"
 
+#include "ModuleWindow.h"
+#include "ModuleDebugDraw.h"
+
 #include "Math/MathConstants.h"
 #include "Application.h"
-#include "ModuleDebugDraw.h"
+
 
 
 CameraComponent::CameraComponent(GameObject* owner)
@@ -16,7 +19,7 @@ CameraComponent::CameraComponent(GameObject* owner)
 	int h = App->GetWindow()->GetHeight();
 	mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * (float)w / (float)h);
 
-	LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY);
+	//LookAt(float3(0.0f, 4.0f, 8.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY);
 }
 
 CameraComponent::CameraComponent(const CameraComponent& original, GameObject* owner)

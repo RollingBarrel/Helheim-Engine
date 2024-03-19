@@ -26,6 +26,8 @@ public:
     const float GetFarPlane() { return mFrustum.farPlaneDistance; };
     const float GetVerticicalFOV() { return mFrustum.verticalFov; };
 
+    Frustum& GetFrustum() { return mFrustum; };
+
 private:
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
