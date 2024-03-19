@@ -46,6 +46,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
         }
         //animation -> mUID = math::LCG().Int();
          //delete ourChannel;
+        
     }
         
     
@@ -221,6 +222,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
             }
             
             ourAnimation->mChannels[name] = channel;
+            delete[] name;
         }
 
         delete[] fileBuffer;

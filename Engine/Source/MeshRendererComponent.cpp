@@ -78,7 +78,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		mMaterial = tmpMaterial;
 	else
 	{
-		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
+		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1); //Memory Leak
 	}
 
 	if (mMaterial && mMesh)

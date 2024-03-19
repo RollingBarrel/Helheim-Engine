@@ -69,14 +69,14 @@
                     1.0
                 ],
                 "Scale": [
-                    0.9999993443489075,
+                    0.9999992251396179,
                     1.0,
                     1.0
                 ],
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 450339760,
+                        "ID": 48352335,
                         "MeshID": 84273466,
                         "MaterialID": 0,
                         "ComponentType": 0,
@@ -134,7 +134,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1829253286,
+                        "ID": 833026724,
                         "MeshID": 84273467,
                         "MaterialID": 84273468,
                         "ComponentType": 0,
@@ -192,7 +192,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 672522188,
+                        "ID": 1287743292,
                         "MeshID": 84273469,
                         "MaterialID": 84273470,
                         "ComponentType": 0,
@@ -250,7 +250,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1633546570,
+                        "ID": 1590546838,
                         "MeshID": 84273471,
                         "MaterialID": 84273472,
                         "ComponentType": 0,
@@ -308,7 +308,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1268754347,
+                        "ID": 1932338144,
                         "MeshID": 84273473,
                         "MaterialID": 84273474,
                         "ComponentType": 0,
@@ -366,7 +366,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 67674672,
+                        "ID": 262313230,
                         "MeshID": 84273475,
                         "MaterialID": 84273476,
                         "ComponentType": 0,
@@ -424,7 +424,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1090244018,
+                        "ID": 753580823,
                         "MeshID": 84273477,
                         "MaterialID": 84273478,
                         "ComponentType": 0,
@@ -482,7 +482,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1997242504,
+                        "ID": 1371489015,
                         "MeshID": 84273479,
                         "MaterialID": 84273480,
                         "ComponentType": 0,
@@ -540,7 +540,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 947518883,
+                        "ID": 1930358599,
                         "MeshID": 84273481,
                         "MaterialID": 84273482,
                         "ComponentType": 0,
@@ -598,7 +598,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1972455343,
+                        "ID": 643621192,
                         "MeshID": 84273483,
                         "MaterialID": 84273484,
                         "ComponentType": 0,
@@ -656,7 +656,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 786901151,
+                        "ID": 1563406040,
                         "MeshID": 84273485,
                         "MaterialID": 84273486,
                         "ComponentType": 0,
@@ -714,7 +714,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1824856738,
+                        "ID": 541646159,
                         "MeshID": 84273487,
                         "MaterialID": 84273488,
                         "ComponentType": 0,
@@ -772,7 +772,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 600802133,
+                        "ID": 2119210215,
                         "MeshID": 84273489,
                         "MaterialID": 84273490,
                         "ComponentType": 0,
@@ -830,7 +830,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1690068397,
+                        "ID": 522496214,
                         "MeshID": 84273491,
                         "MaterialID": 84273492,
                         "ComponentType": 0,
@@ -888,7 +888,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 927925225,
+                        "ID": 209965460,
                         "MeshID": 84273493,
                         "MaterialID": 84273494,
                         "ComponentType": 0,
@@ -946,7 +946,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 7418180,
+                        "ID": 476194079,
                         "MeshID": 84273495,
                         "MaterialID": 84273496,
                         "ComponentType": 0,
@@ -1004,7 +1004,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1009240468,
+                        "ID": 328247369,
                         "MeshID": 84273497,
                         "MaterialID": 84273498,
                         "ComponentType": 0,
@@ -1062,7 +1062,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 2099620668,
+                        "ID": 1518718665,
                         "MeshID": 84273499,
                         "MaterialID": 84273500,
                         "ComponentType": 0,
@@ -1120,7 +1120,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1098910231,
+                        "ID": 754278000,
                         "MeshID": 84273501,
                         "MaterialID": 84273502,
                         "ComponentType": 0,
@@ -1178,7 +1178,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1486372913,
+                        "ID": 1770279070,
                         "MeshID": 84273503,
                         "MaterialID": 84273504,
                         "ComponentType": 0,
@@ -1236,7 +1236,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 421054188,
+                        "ID": 1006534615,
                         "MeshID": 84273505,
                         "MaterialID": 84273506,
                         "ComponentType": 0,
@@ -1294,7 +1294,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1416262481,
+                        "ID": 76674454,
                         "MeshID": 84273507,
                         "MaterialID": 84273508,
                         "ComponentType": 0,
@@ -1352,7 +1352,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 313139553,
+                        "ID": 950230958,
                         "MeshID": 84273509,
                         "MaterialID": 84273510,
                         "ComponentType": 0,
@@ -1410,7 +1410,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1411317305,
+                        "ID": 1270972820,
                         "MeshID": 84273511,
                         "MaterialID": 84273512,
                         "ComponentType": 0,
@@ -1468,7 +1468,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 322397061,
+                        "ID": 980372681,
                         "MeshID": 84273513,
                         "MaterialID": 84273514,
                         "ComponentType": 0,
@@ -1526,7 +1526,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1455037208,
+                        "ID": 397642826,
                         "MeshID": 84273515,
                         "MaterialID": 84273516,
                         "ComponentType": 0,
@@ -1584,7 +1584,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 515732493,
+                        "ID": 242873258,
                         "MeshID": 84273517,
                         "MaterialID": 84273518,
                         "ComponentType": 0,
@@ -1642,7 +1642,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1745145830,
+                        "ID": 404043788,
                         "MeshID": 84273519,
                         "MaterialID": 84273520,
                         "ComponentType": 0,
@@ -1767,7 +1767,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1202820057,
+                        "ID": 770735510,
                         "MeshID": 173969197,
                         "MaterialID": 173969200,
                         "ComponentType": 0,
@@ -1875,7 +1875,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1222547669,
+                        "ID": 1803374881,
                         "MeshID": 270233072,
                         "MaterialID": 270233076,
                         "ComponentType": 0,
@@ -1933,7 +1933,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1060588373,
+                        "ID": 1392166150,
                         "MeshID": 270233077,
                         "MaterialID": 270233081,
                         "ComponentType": 0,
@@ -1991,13 +1991,961 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 801483880,
+                        "ID": 1857485809,
                         "MeshID": 270233082,
                         "MaterialID": 270233086,
                         "ComponentType": 0,
                         "isEnabled": true
                     }
                 ]
+            },
+            {
+                "UID": 1675117762,
+                "ParentUID": 1,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -21.57550811767578
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1732972813,
+                "ParentUID": 1675117762,
+                "Name": "RootNode",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1796467165,
+                "ParentUID": 1732972813,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1833087811,
+                "ParentUID": 1796467165,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 388662382,
+                        "MeshID": 436510898,
+                        "MaterialID": 436510902,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 504654647,
+                "ParentUID": 1796467165,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 1418736201,
+                        "MeshID": 436510903,
+                        "MaterialID": 436510904,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 2093512867,
+                "ParentUID": 1732972813,
+                "Name": "Ctrl_Grp",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 9523572,
+                "ParentUID": 2093512867,
+                "Name": "Root",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.7071068286895752,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 890911328,
+                        "AnimationID": 436510905,
+                        "ComponentType": 9,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1277182740,
+                "ParentUID": 9523572,
+                "Name": "Hips",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.2683923840522766,
+                    0.0034006000496447088,
+                    0.0002593994140625
+                ],
+                "Rotation": [
+                    0.533456027507782,
+                    -0.4874298572540283,
+                    0.47750064730644228,
+                    -0.499830037355423
+                ],
+                "Scale": [
+                    1.000000238418579,
+                    1.000000238418579,
+                    1.000000238418579
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1381126893,
+                "ParentUID": 1277182740,
+                "Name": "Spine",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.1933436393737793
+                ],
+                "Rotation": [
+                    0.14094208180904389,
+                    -0.11960916221141815,
+                    0.0104711027815938,
+                    0.9827103018760681
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1465437924,
+                "ParentUID": 1381126893,
+                "Name": "Head",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -5.960464477539063e-8,
+                    -0.0000019073486328125,
+                    0.2302861213684082
+                ],
+                "Rotation": [
+                    0.04393579065799713,
+                    0.06987514346837998,
+                    -0.029820533469319345,
+                    0.9961414933204651
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    0.9999999403953552,
+                    0.9999998807907105
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1516261254,
+                "ParentUID": 1465437924,
+                "Name": "HeadEnd",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -1.1920928955078126e-7,
+                    -0.0000019073486328125,
+                    0.3604855537414551
+                ],
+                "Rotation": [
+                    -7.4505797087454088e-9,
+                    -2.0954764590186416e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1561863009,
+                "ParentUID": 1465437924,
+                "Name": "LeftEar",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.3396647572517395,
+                    0.06945037841796875,
+                    0.4090414047241211
+                ],
+                "Rotation": [
+                    -0.2238187938928604,
+                    0.47029080986976626,
+                    0.07092369347810745,
+                    0.8507065773010254
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1613521791,
+                "ParentUID": 1561863009,
+                "Name": "LeftEarEnd",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -7.152557373046875e-7,
+                    0.0,
+                    0.21373891830444337
+                ],
+                "Rotation": [
+                    -3.725290298461914e-9,
+                    1.210719347000122e-8,
+                    -7.450580596923828e-9,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1659610893,
+                "ParentUID": 1465437924,
+                "Name": "RightEar",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.3396650552749634,
+                    0.06945037841796875,
+                    0.4090418815612793
+                ],
+                "Rotation": [
+                    0.9232462048530579,
+                    -0.041899289935827258,
+                    0.27540791034698489,
+                    0.2645966410636902
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1712522853,
+                "ParentUID": 1659610893,
+                "Name": "RightEarEnd",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -7.152557373046875e-7,
+                    0.0000019073486328125,
+                    -0.21373748779296876
+                ],
+                "Rotation": [
+                    -7.450580596923828e-9,
+                    -9.313225746154785e-9,
+                    -3.725290298461914e-9,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1758263850,
+                "ParentUID": 1381126893,
+                "Name": "LeftUpperArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.1728653609752655,
+                    0.06917572021484375,
+                    0.19190311431884767
+                ],
+                "Rotation": [
+                    0.3736010193824768,
+                    0.6488285064697266,
+                    -0.35872846841812136,
+                    0.5574564337730408
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1807834002,
+                "ParentUID": 1758263850,
+                "Name": "LeftLowerArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    4.76837158203125e-7,
+                    9.5367431640625e-7,
+                    0.25115966796875
+                ],
+                "Rotation": [
+                    0.0,
+                    -7.450580596923828e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1854549693,
+                "ParentUID": 1807834002,
+                "Name": "LeftWrist",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    9.5367431640625e-7,
+                    9.5367431640625e-7,
+                    0.23802757263183595
+                ],
+                "Rotation": [
+                    0.0,
+                    -7.450580596923828e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1900569174,
+                "ParentUID": 1381126893,
+                "Name": "LeftUpperArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.1728653609752655,
+                    0.06917572021484375,
+                    0.19190311431884767
+                ],
+                "Rotation": [
+                    0.3736010193824768,
+                    0.6488285064697266,
+                    -0.35872846841812136,
+                    0.5574564337730408
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 1951253262,
+                "ParentUID": 1900569174,
+                "Name": "LeftLowerArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    4.76837158203125e-7,
+                    9.5367431640625e-7,
+                    0.25115966796875
+                ],
+                "Rotation": [
+                    0.0,
+                    -7.450580596923828e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 2000336067,
+                "ParentUID": 1951253262,
+                "Name": "LeftWristFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    9.5367431640625e-7,
+                    9.5367431640625e-7,
+                    0.23802757263183595
+                ],
+                "Rotation": [
+                    0.0,
+                    -7.450580596923828e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 2047747968,
+                "ParentUID": 1381126893,
+                "Name": "LeftUpperArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.1728653609752655,
+                    0.06917572021484375,
+                    0.19190311431884767
+                ],
+                "Rotation": [
+                    0.884978711605072,
+                    -0.021538442000746728,
+                    0.46495476365089419,
+                    0.012881136499345303
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 2099615613,
+                "ParentUID": 2047747968,
+                "Name": "LeftLowerArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.25116097927093508
+                ],
+                "Rotation": [
+                    0.0,
+                    2.789311110973358e-7,
+                    3.725290742551124e-9,
+                    1.0
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 3303401,
+                "ParentUID": 2099615613,
+                "Name": "LeftWristIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    4.76837158203125e-7,
+                    0.0,
+                    0.2380284070968628
+                ],
+                "Rotation": [
+                    0.14673450589179994,
+                    0.017967475578188897,
+                    0.9816805720329285,
+                    0.12020599097013474
+                ],
+                "Scale": [
+                    1.000000238418579,
+                    1.000000238418579,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 50784923,
+                "ParentUID": 1381126893,
+                "Name": "RightUpperArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.172865092754364,
+                    0.06917572021484375,
+                    0.19190263748168946
+                ],
+                "Rotation": [
+                    0.5363540053367615,
+                    0.4577622711658478,
+                    0.6237511038780212,
+                    -0.3372131288051605
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 101399390,
+                "ParentUID": 50784923,
+                "Name": "RightLowerArm",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -2.384185791015625e-7,
+                    -9.5367431640625e-7,
+                    -0.25115966796875
+                ],
+                "Rotation": [
+                    0.0,
+                    7.450580596923828e-9,
+                    1.6763806343078614e-8,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 151735373,
+                "ParentUID": 101399390,
+                "Name": "RightWrist",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.23802947998046876
+                ],
+                "Rotation": [
+                    0.0,
+                    7.450580596923828e-9,
+                    1.6763806343078614e-8,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 197754854,
+                "ParentUID": 1381126893,
+                "Name": "RightUpperArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.172865092754364,
+                    0.06917572021484375,
+                    0.19190263748168946
+                ],
+                "Rotation": [
+                    0.5363540053367615,
+                    0.4577622711658478,
+                    0.6237511038780212,
+                    -0.3372131288051605
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 239388212,
+                "ParentUID": 197754854,
+                "Name": "RightLowerArmFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -2.384185791015625e-7,
+                    -9.5367431640625e-7,
+                    -0.25115966796875
+                ],
+                "Rotation": [
+                    0.0,
+                    7.450580596923828e-9,
+                    1.6763806343078614e-8,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 284154515,
+                "ParentUID": 239388212,
+                "Name": "RightWristFK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.23802947998046876
+                ],
+                "Rotation": [
+                    0.0,
+                    7.450580596923828e-9,
+                    1.6763806343078614e-8,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 329756270,
+                "ParentUID": 1381126893,
+                "Name": "RightUpperArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.172865092754364,
+                    0.06917572021484375,
+                    0.19190263748168946
+                ],
+                "Rotation": [
+                    0.126082181930542,
+                    0.5597499012947083,
+                    0.01320715807378292,
+                    0.8189071416854858
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 380022632,
+                "ParentUID": 329756270,
+                "Name": "RightLowerArmIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -4.76837158203125e-7,
+                    0.0000019073486328125,
+                    -0.2511615753173828
+                ],
+                "Rotation": [
+                    -8.554285280126806e-9,
+                    0.4913248121738434,
+                    1.710856878389677e-8,
+                    0.870976448059082
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 427364912,
+                "ParentUID": 380022632,
+                "Name": "RightWristIK",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0000019073486328125,
+                    0.0,
+                    -0.23802876472473145
+                ],
+                "Rotation": [
+                    -0.17141912877559663,
+                    -0.04202427715063095,
+                    0.9559926390647888,
+                    0.2343662828207016
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 475333781,
+                "ParentUID": 1277182740,
+                "Name": "LeftLeg",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.15488281846046449,
+                    -0.12964248657226563,
+                    0.00019752979278564453
+                ],
+                "Rotation": [
+                    0.9999510049819946,
+                    -9.313680937594882e-10,
+                    0.009899533353745938,
+                    -9.313682047817907e-10
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 526365974,
+                "ParentUID": 475333781,
+                "Name": "LeftFoot",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.058637842535972598,
+                    0.060420989990234378,
+                    0.12020468711853028
+                ],
+                "Rotation": [
+                    -0.5085271000862122,
+                    -0.008523812517523766,
+                    -0.005034430883824825,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    0.9999999403953552,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 572663939,
+                "ParentUID": 1277182740,
+                "Name": "RightLeg",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.1548830270767212,
+                    -0.12964248657226563,
+                    0.00019741058349609375
+                ],
+                "Rotation": [
+                    1.8627364095635814e-9,
+                    0.009899535216391087,
+                    -9.313680937594882e-10,
+                    0.9999510049819946
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 645974852,
+                "ParentUID": 572663939,
+                "Name": "RightFoot",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.009163200855255127,
+                    0.08218955993652344,
+                    -0.23080819845199586
+                ],
+                "Rotation": [
+                    -0.5085271000862122,
+                    -0.008523808792233467,
+                    -0.005034427158534527,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
             }
         ]
     }
