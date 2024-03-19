@@ -748,7 +748,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 			return;
 		component->OnStart();
 
-		play = true;
+
+		(play) ? play = false : play = true;
 	}
 
 	if(play)
