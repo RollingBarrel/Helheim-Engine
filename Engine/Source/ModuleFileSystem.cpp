@@ -29,6 +29,7 @@ ModuleFileSystem::ModuleFileSystem()
     CreateDirectory(ASSETS_MODEL_PATH);
     CreateDirectory(ASSETS_TEXTURE_PATH);
     CreateDirectory(ASSETS_SCENES_PATH);
+    CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(LIBRARY_PATH);
 
     mRoot = new PathNode("Assets");

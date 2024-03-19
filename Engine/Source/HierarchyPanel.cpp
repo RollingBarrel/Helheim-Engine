@@ -75,6 +75,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			GameObject* gameObject = new GameObject(node);
 			//node->AddChild(gameObject);
 			mLastClickedObject = gameObject;
+			mFocusedObject = gameObject;
 			mMarked.clear();
 		}
 
@@ -85,6 +86,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 					GameObject* gameObject = new GameObject(*object);
 					App->GetScene()->AddGameObjectToDuplicate(gameObject);
 					mLastClickedObject = gameObject;
+					mFocusedObject = gameObject;
 					selectAfter.insert(gameObject);
 				}
 				mMarked = selectAfter;
@@ -94,8 +96,16 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 				for (auto object : FilterMarked()) {
 					App->GetScene()->AddGameObjectToDelete(object);
 					mLastClickedObject = App->GetScene()->GetRoot();
+					mFocusedObject = App->GetScene()->GetRoot();
 				}
 				mMarked.clear();
+			}
+			if (ImGui::Selectable("Save as Prefab")) {
+				for (auto object : FilterMarked()) {
+					std::string file = "Assets/Prefabs/";
+					file.append('/' + object->GetName() + ".prfb");
+					App->GetScene()->SavePrefab(object, file.c_str());
+				}
 			}
 		}
 		ImGui::EndPopup();
@@ -223,7 +233,7 @@ void HierarchyPanel::ShiftClick(GameObject* node, bool selected, bool click) {
 // Excludes from the list of selected objects any that is the child (directly or indirectly) of another selected item.
 // Use this before doing any operation on all selected items that would already apply to all children
 // Ex. When you duplicate an object all it's children are allways duplicated too.
-std::vector<GameObject*> HierarchyPanel::FilterMarked() const {
+const std::vector<GameObject*> HierarchyPanel::FilterMarked() const {
 	std::vector<GameObject*> filteredList;
 	for (auto object : mMarked) {
 		GameObject* parent = object->mParent;

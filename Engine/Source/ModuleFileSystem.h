@@ -12,6 +12,7 @@
 #define ASSETS_MATERIAL_PATH "Assets/Materials/"
 #define ASSETS_MODEL_PATH "Assets/Models/"
 #define ASSETS_SCENES_PATH "Assets/Scenes/"
+#define ASSETS_PREFABS_PATH "Assets/Prefabs/"
 #define ASSETS_NAVMESH_PATH "Assets/NavMeshes/"
 
 
