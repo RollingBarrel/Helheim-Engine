@@ -73,4 +73,10 @@ AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent)
 	strcpy_s(const_cast<char*>(mPath), sizePath, path);
 }
 
+AssetDisplay::~AssetDisplay()
+{
+	delete mName;
+	delete mPath;
+}
+
 

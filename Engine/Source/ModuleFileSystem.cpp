@@ -423,6 +423,7 @@ void ModuleFileSystem::CleanNode(PathNode* node)
         CleanNode(node->mChildren[i]);
     }
 
+    delete node->mName;
     delete node;
 }
 

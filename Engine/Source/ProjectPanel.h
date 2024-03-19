@@ -10,6 +10,7 @@ class Resource;
 struct AssetDisplay
 {
 	AssetDisplay(const char* name, const char* mPath, PathNode* parent);
+	~AssetDisplay();
 	const char* mName;
 	const char* mPath;
 	std::vector<unsigned int> mUid;
