@@ -236,6 +236,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Animation::Load(lPath, uid);
 		break;
 	}
+	case Resource::Type::Object:
+	{
+		ret = new Resource(uid, type);
+		break;
+	}
 	default:
 		break;
 	}
@@ -291,6 +296,9 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* 
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);
 		break;
+	case Resource::Type::Object:
+		ret = new Resource(uid, type);
+		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
@@ -331,6 +339,9 @@ std::string ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 		App->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
 		break;
 	}
+	case Resource::Type::Object:
+		assetsFilePath = importedFilePath;
+		break;
 	default:
 		LOG("Unable to Copy, this file %s", importedFilePath);
 		break;

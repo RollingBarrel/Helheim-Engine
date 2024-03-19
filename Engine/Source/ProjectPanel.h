@@ -25,6 +25,7 @@ public:
 	~ProjectPanel();
 
 	void Draw(int windowFlags) override;
+	void SavePrefab(const PathNode& dir) const;
 
 private:
 	const void DrawAssetsFolder(const PathNode& current) const;

@@ -15,6 +15,7 @@ public:
 	void Draw(int windowFlags) override;
 	GameObject* GetFocusedObject() const { return mFocusedObject; }
 	void SetFocus(GameObject* focusedObject);
+	const std::vector<GameObject*> FilterMarked() const;
 
 private:
 	void DrawTree(GameObject* node);
@@ -23,10 +24,10 @@ private:
 	void OnRightClickNode(GameObject* node);
 	void OnLeftCkickNode(GameObject* node);
 	void ShiftClick(GameObject* node, bool selected, bool click = false);
-	std::vector<GameObject*> FilterMarked() const;
 
 	std::unordered_set<GameObject*> mMarked;
 	GameObject* mFocusedObject = nullptr;
+	GameObject* mLastClickedObject = nullptr;
 	int mShiftMarking[2] = { 0 };
 	int mShiftClicked = 0;
 	int mLastMarkSeen = 0;
