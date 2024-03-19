@@ -123,32 +123,7 @@ void NavMeshController::DebugDrawPolyMesh()
 	glBindVertexArray(mVao);
 	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
 
-
-	/*	Old draw polymesh with debug draw
-	for (int i = 0; i < mPolyMeshDetail->nmeshes; ++i)
-	{
-		const unsigned int* m = &mPolyMeshDetail->meshes[i * 4];
-		const unsigned int bverts = m[0];
-		const unsigned int btris = m[2];
-		const int ntris = (int)m[3];
-		const float* verts = &mPolyMeshDetail->verts[bverts * 3];
-		const unsigned char* tris = &mPolyMeshDetail->tris[btris * 4];
-
-
-		for (int j = 0; j < ntris; ++j)
-		{
-			float3 a = float3(verts[tris[j * 4 + 0] * 3], verts[tris[j * 4 + 0] * 3 + 1], verts[tris[j * 4 + 0] * 3 + 2]);
-			float3 b = float3(verts[tris[j * 4 + 1] * 3], verts[tris[j * 4 + 1] * 3 + 1], verts[tris[j * 4 + 1] * 3 + 2]);
-			float3 c = float3(verts[tris[j * 4 + 2] * 3], verts[tris[j * 4 + 2] * 3 + 1], verts[tris[j * 4 + 2] * 3 + 2]);
-			App->GetDebugDraw()->DrawTriangle(a, b, c);
-
-		}
-	}
-	*/
-	
-
-
-	float3 color = float3(1.0f, 0.0f, 0.0f);
+	/*float3 color = float3(1.0f, 0.0f, 0.0f);
 	App->GetDebugDraw()->DrawSphere(&mQueryNearestPoint[0], &color[0], 1.0f);
 
 	float3 color2 = float3(1.0f, 1.0f, 0.0f);
@@ -158,7 +133,7 @@ void NavMeshController::DebugDrawPolyMesh()
 	float3 minAABB = mQueryCenter - mQueryHalfSize;
 	float3 maxAABB = mQueryCenter + mQueryHalfSize;
 	OBB cube = OBB(AABB(minAABB, maxAABB));
-	App->GetDebugDraw()->DrawCube(cube, color3);
+	App->GetDebugDraw()->DrawCube(cube, color3);*/
 
 }
 
@@ -166,7 +141,7 @@ void NavMeshController::Update()
 {
 	if (mPolyMesh == nullptr)
 		return;
-	mQueryNearestPoint = FindNearestPoint(mQueryCenter, mQueryHalfSize);
+	/*mQueryNearestPoint = FindNearestPoint(mQueryCenter, mQueryHalfSize);*/
 
 	App->GetOpenGL()->BindSceneFramebuffer();
 
@@ -243,10 +218,7 @@ void NavMeshController::HandleBuild() {
 			transformedVerts.push_back(operationTemp.x / operationTemp.w);
 			transformedVerts.push_back(operationTemp.y / operationTemp.w);
 			transformedVerts.push_back(operationTemp.z / operationTemp.w);
-
-
 		}
-		
 
 
 		const int* triangle = (const int*)(testMesh->GetResourceMesh()->GetIndices());
@@ -516,66 +488,3 @@ int NavMeshController::FindVertexIndex(float3 vert)
 	return -1; // Not found
 
 }
-
-//void NavMeshController::CreateDetourData() {
-//	const AIAgentComponent* agentComponent = mAIAgentComponents[0];
-//	unsigned char* navData = 0;
-//	int navDataSize = 0;
-//	if (agentComponent) {
-//		mNavMeshParams->verts = mPolyMesh->verts;
-//		mNavMeshParams->vertCount = mPolyMesh->nverts;
-//		mNavMeshParams->polys = mPolyMesh->polys;
-//		mNavMeshParams->polyAreas = mPolyMesh->areas;
-//		mNavMeshParams->polyFlags = mPolyMesh->flags;
-//		mNavMeshParams->polyCount = mPolyMesh->npolys;
-//		mNavMeshParams->nvp = mPolyMesh->nvp;
-//		mNavMeshParams->detailMeshes = mPolyMeshDetail->meshes;
-//		mNavMeshParams->detailVerts = mPolyMeshDetail->verts;
-//		mNavMeshParams->detailVertsCount = mPolyMeshDetail->nverts;
-//		mNavMeshParams->detailTris = mPolyMeshDetail->tris;
-//		mNavMeshParams->detailTriCount = mPolyMeshDetail->ntris;
-//		mNavMeshParams->offMeshConVerts =nullptr;
-//		mNavMeshParams->offMeshConRad = nullptr;
-//		mNavMeshParams->offMeshConDir = nullptr;
-//		mNavMeshParams->offMeshConAreas = nullptr;
-//		mNavMeshParams->offMeshConFlags = nullptr;
-//		mNavMeshParams->offMeshConUserID = nullptr;
-//		mNavMeshParams->offMeshConCount = 0;
-//		mNavMeshParams->walkableHeight = agentComponent->GetHeight();
-//		mNavMeshParams->walkableRadius = agentComponent->GetRadius();
-//		mNavMeshParams->walkableClimb = agentComponent->GetMaxSlope();
-//		rcVcopy(mNavMeshParams->bmin, mPolyMesh->bmin);
-//		rcVcopy(mNavMeshParams->bmax, mPolyMesh->bmax);
-//		mNavMeshParams->cs = mCellSize;
-//		mNavMeshParams->ch = mCellHeight;
-//		mNavMeshParams->buildBvTree = true;
-//	}
-//	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
-//	{
-//		LOG("Could not build Detour navmesh.");
-//		return;
-//	}
-//	mDetourNavMesh = dtAllocNavMesh();
-//	if (!mDetourNavMesh)
-//	{
-//		dtFree(navData);
-//		LOG("Could not create Detour navmesh");
-//		return;
-//	}
-//
-//	dtStatus status;
-//	status = mDetourNavMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
-//	if (dtStatusFailed(status))
-//	{
-//		dtFree(navData);
-//		LOG("Could not init Detour navmesh");
-//		return;
-//	}
-//
-//	status = mNavQuery->init(mDetourNavMesh, 2048);
-//	if (dtStatusFailed(status))
-//	{
-//		LOG("Could not init Detour navmesh query");
-//		return;
-//	}
-//}
