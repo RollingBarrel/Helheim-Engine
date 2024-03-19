@@ -184,7 +184,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
                 for (size_t row = 0; row < 4; row++) {
                     for (size_t col = 0; col < 4; col++) {
-                        inverseBindMatrix[row][col] = matrixPtr[row * 4 + col];
+                        inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
 
@@ -232,7 +232,8 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     
     for (size_t i = 0; i < rModel->mJoints.size(); i++)
     {
-        bufferSize += sizeof(unsigned int) * 16;
+        bufferSize += sizeof(unsigned int);
+        bufferSize += sizeof(float) * 16;
         //bufferSize += sizeof(unsigned int) * rModel->mJoints.size() * rModel->mJoints[i].second.s;
     }
     
@@ -485,10 +486,11 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         memcpy(&jointsSize, cursor, bytes);
         cursor += bytes;
 
-        rModel->mJoints.reserve(jointsSize);
+        rModel->mJoints.resize(jointsSize);
 
         for (int i = 0; i < jointsSize; ++i)
         {
+            int indexJoint = 0;
 
             bytes = sizeof(unsigned int);
             memcpy(&rModel->mJoints[i].first, cursor, bytes);
