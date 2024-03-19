@@ -1,4 +1,4 @@
-Apply frustum culling: 1
+Apply frustum culling: 0
 Engine Vsync enabled: 1
 Engine FPS Limit: 60
 Game Vsync enabled: 1
@@ -7,63 +7,63 @@ Draw Grid: 1
 15
 About##
 0
-720 410
+208 122
 32 35
 Console##
 1
-660 935
+148 647
 995 155
 Debug
 0
-898 499
+386 211
 333 287
 Editor Controls##
 1
-865 369
+353 81
 790 76
 Hierarchy##
 1
-660 369
+148 81
 203 564
 Inspector##
 1
-1657 369
+1145 81
 243 721
 TagsManagerPanel##
 0
-720 410
+208 122
 32 35
 NavMesh Parameters
 0
-721 410
+209 122
 599 423
 Resource##
 1
-660 935
+148 647
 995 155
 LightningPanel##
 0
-720 410
+208 122
 32 35
 Scene##
 1
-865 447
+353 159
 790 486
 Pause##
 1
-865 369
+353 81
 790 76
 Project##
 1
-660 935
+148 647
 995 155
 Timer##
 0
-722 410
+210 122
 448 405
 Settings##
 1
-723 532
+211 244
 287 357
 [Window][DockSpaceViewport_11111111]
 Pos=0,19
@@ -174,7 +174,7 @@ Size=212,94
 Collapsed=0
 
 [Docking][Data]
-DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=660,369 Size=1240,721 Split=X
+DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=148,81 Size=1240,721 Split=X
   DockNode        ID=0x00000003 Parent=0x8B93E3BD SizeRef=995,721 Split=Y
     DockNode      ID=0x00000001 Parent=0x00000003 SizeRef=1240,564 Split=X
       DockNode    ID=0x00000005 Parent=0x00000001 SizeRef=203,564 Selected=0xF8AAC790

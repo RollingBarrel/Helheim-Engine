@@ -92,7 +92,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 		offset += materialSize;
 		++idx;
 	}
-	if (idx - 1 > 0)
+	if (idx >= mUniqueMaterials.size())
 		return false;
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);

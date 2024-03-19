@@ -529,6 +529,8 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
+	if (!material)
+		return;
 
 	if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
 	{
@@ -563,7 +565,7 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	}
 	if (!material->IsShininessMapEnabled())
 	{
-		if (ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+		if (ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.01f, 10000.0f, "%.2f"))
 		{
 			App->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
