@@ -10,6 +10,7 @@ void HierarchyPanel::Draw(int windowFlags)
 {
 	GameObject* root = App->GetScene()->GetRoot();
 	if (mLastClickedObject == nullptr) { mLastClickedObject = root; }
+	if (mFocusedObject == nullptr) { mFocusedObject == mLastClickedObject; }
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);

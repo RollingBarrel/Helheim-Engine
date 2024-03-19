@@ -9,8 +9,6 @@
 
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
-#include "HierarchyPanel.h"
-#include "ModuleEditor.h"
 #include "ModuleResource.h"
 #include "Archive.h"
 #include "Tag.h"
@@ -41,6 +39,7 @@ ModuleScene::~ModuleScene()
 	delete mNavMeshController;
 
 	delete mRoot;
+	delete mBackgroundScene;
 
 	for (Tag* tag : mTags) {
 		delete tag;
@@ -230,8 +229,6 @@ void ModuleScene::Load(const char* sceneName) {
 			mRoot->Load(sceneValue);
 		}
 
-		HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
-		hierarchyPanel->SetFocus(mRoot);
 		mQuadtreeRoot->UpdateTree();
 
 		// Free the loaded buffer
@@ -263,6 +260,21 @@ void ModuleScene::LoadPrefab(const char* saveFilePath)
 	delete[] loadedBuffer;
 }
 
+void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
+{
+	mBackgroundScene = mRoot;
+	mRoot = new GameObject(saveFilePath, nullptr);
+	LoadPrefab(saveFilePath);
+}
+
+void ModuleScene::ClosePrefabScreen(const char* saveFilePath)
+{
+	SavePrefab(mRoot, saveFilePath);
+	delete mRoot;
+	mRoot = mBackgroundScene;
+	mBackgroundScene = nullptr;
+}
+
 GameObject* ModuleScene::Find(const char* name)
 {
 	return mRoot->Find(name);
@@ -271,7 +283,7 @@ GameObject* ModuleScene::Find(const char* name)
 
 GameObject* ModuleScene::Find(unsigned int UID)
 {
-	if (UID != 1) {
+	if (UID != mRoot->GetID()) {
 		return mRoot->Find(UID);
 	}
 	else {

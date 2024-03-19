@@ -366,6 +366,7 @@ void ModuleEditor::OpenLoadScene() {
 			if (!strcmp(fileName, "scene")) 
 			{
 				App->GetScene()->Load(fileName);
+				((HierarchyPanel*)mPanels[HIERARCHYPANEL])->SetFocus(App->GetScene()->GetRoot());
 				ImGui::CloseCurrentPopup();
 				mLoadSceneOpen = false;
 			}
