@@ -5,14 +5,23 @@
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "HierarchyPanel.h"
+#include "TagsManagerPanel.h"
 #include "GameObject.h"
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ScriptComponent.h"
 #include "CameraComponent.h"
+#include "AIAGentComponent.h"
 #include "ImporterMaterial.h"
+#include "Tag.h"
 #include "MathFunc.h"
+#include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
+#include "ModuleOpenGL.h"
+#include "Script.h"
+#include "AnimationController.h"
 
 #include "ResourceMaterial.h"
 
@@ -20,8 +29,13 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel *) App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
+
+	if (mLockedGameObject != nullptr) {
+		focusedObject = mLockedGameObject;
+	}
+
 	if (focusedObject == nullptr) return;
 
 	char nameArray[100];
@@ -32,24 +46,60 @@ void InspectorPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	if (!focusedObject->IsRoot()) 
+	if (!focusedObject->IsRoot())
 	{
 		if (ImGui::Checkbox("##enabled", &enabled))
 		{
 			focusedObject->SetEnabled(enabled);
 		}
 		ImGui::SameLine();
+
+
+		// Rename
 		ImGui::PushID(focusedObject->mID);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
+		// Tag
+		ImGui::Text("Tag");
+		ImGui::SameLine();
+		std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+
+		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
+		{
+			for (auto i = 0; i < tags.size(); i++) {
+				if (ImGui::Selectable(tags[i]->GetName().c_str()))
+				{
+					focusedObject->SetTag(tags[i]);
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Edit")) {
+			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
+		}
+
+		// Lock
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Lock", &mLocked)) {
+			if (mLocked) {
+				mLockedGameObject = focusedObject;
+			}
+			else {
+				mLockedGameObject = nullptr;
+			}
+		}
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
 		ImGui::Separator();
 		AddComponentButton(focusedObject);
 	}
-	
+
 	if (mSameComponentPopup)
 	{
 		ShowSameComponentPopup();
@@ -119,7 +169,6 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PopID();
 }
 
-
 void InspectorPanel::AddComponentButton(GameObject* object) {
 	float windowWidth = ImGui::GetWindowWidth();
 	float buttonWidth = 150.0f; // Desired width for the button
@@ -186,10 +235,10 @@ void InspectorPanel::ShowSameComponentPopup()
 void InspectorPanel::RightClickPopup(Component* component) {
 
 	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
-		ImGui::OpenPopup(std::to_string(component->mID).c_str());
+		ImGui::OpenPopup(std::to_string(component->GetID()).c_str());
 	}
 
-	if (ImGui::BeginPopup(std::to_string(component->mID).c_str())) {
+	if (ImGui::BeginPopup(std::to_string(component->GetID()).c_str())) {
 		if (ImGui::MenuItem("Delete Component")) {
 			component->mOwner->AddComponentToDelete(component);
 			ImGui::CloseCurrentPopup();
@@ -200,24 +249,24 @@ void InspectorPanel::RightClickPopup(Component* component) {
 		}
 
 		switch (component->GetType()) {
-			case ComponentType::TEST: {
-				if (ImGui::MenuItem("Custom Test Component Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				if (ImGui::MenuItem("Custom Test Component Option 2")) {
-					ImGui::CloseCurrentPopup();
-				}
-				break;
+		case ComponentType::TEST: {
+			if (ImGui::MenuItem("Custom Test Component Option")) {
+				ImGui::CloseCurrentPopup();
 			}
-			case ComponentType::MESHRENDERER: {
-				if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
-					ImGui::CloseCurrentPopup();
-				}
-				break;
+			if (ImGui::MenuItem("Custom Test Component Option 2")) {
+				ImGui::CloseCurrentPopup();
 			}
+			break;
+		}
+		case ComponentType::MESHRENDERER: {
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+				ImGui::CloseCurrentPopup();
+			}
+			break;
+		}
 		}
 
 		ImGui::EndPopup();
@@ -260,16 +309,23 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		DragAndDropTarget(object, component);
 
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		RightClickPopup(component);
 
-		//checkbox for enable/disable
-		ImGui::Checkbox("Enable", &component->mIsEnabled);
+		bool isEnabled = component->IsEnabled();
+		if (ImGui::Checkbox("Enable", &isEnabled)) {
+			(isEnabled) ? component->Enable() : component->Disable(); //Enable and Disable of your component should change mIsEnabled value, not the inspector.
+		}
 
 		DragAndDropSource(component);
-		RightClickPopup(component);
+		
 		if (isOpen) {
 			switch (component->GetType()) {
 				case ComponentType::MESHRENDERER: {
 					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
+					break;
+				}
+				case ComponentType::AIAGENT: {
+					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
 					break;
 				}
 				case ComponentType::POINTLIGHT: {
@@ -282,6 +338,18 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::CAMERA: {
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+					break;
+				}
+				case ComponentType::SCRIPT: {
+					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
+					break;
+				}
+				case ComponentType::NAVMESHOBSTACLE: {
+					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
+					break;
+				}
+				case ComponentType::ANIMATION: {
+					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
 					break;
 				}
 				case ComponentType::TEST: {
@@ -298,6 +366,41 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text("Demo Text");
 	ImGui::Text("Demo Text 2 ");
+
+	ImGui::SeparatorText("TAGS SYSYEM TEST");
+	ImGui::Text("The first name of game object found with");
+	ImGui::SameLine();
+	std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+
+	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
+	{
+		for (auto i = 0; i < tags.size(); i++) {
+			if (ImGui::Selectable(tags[i]->GetName().c_str()))
+			{
+				component->mTestSavedTag1 = i;
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+	ImGui::Text("tag is ");
+	ImGui::SameLine();
+	GameObject* found = GameObject::FindGameObjectWithTag(tags[component->mTestSavedTag1]->GetName());
+	if (found != nullptr)
+	{
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
+	}
+	else {
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
+	}
+
+
+	ImGui::Separator();
+	ImGui::Text("There is ");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), std::to_string(GameObject::FindGameObjectsWithTag(tags[component->mTestSavedTag1]->GetName()).capacity()).c_str());
+	ImGui::SameLine();
+	ImGui::Text(" gameobjects with the same tag.");
 }
 
 void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
@@ -369,45 +472,119 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	}
 }
 
+void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
+{
+	ImGui::SeparatorText("Agent Parameters");
+
+	float radius = component->GetRadius();
+	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	{
+		component->SetRadius(radius);
+	}
+	float height = component->GetHeight();
+	if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
+	{
+		component->SetHeight(height);
+	}
+	float stepHeight = component->GetStepHeight();
+	if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
+	{
+		component->SetStepHeight(stepHeight);
+	}
+
+	int maxSlope = component->GetMaxSlope();
+	if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
+		component->SetMaxSlope(maxSlope);
+	}
+
+	ImGui::SeparatorText("Steering Parameters");
+
+	float speed = component->GetSpeed();
+	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f))
+	{
+		component->SetSpeed(speed);
+	}
+
+	float angularSpeed = component->GetAngularSpeed();
+	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))
+	{
+		component->SetAngularSpeed(angularSpeed);
+	}
+
+	float acceleration = component->GetAcceleration();
+	if (ImGui::DragFloat("acceleration", &acceleration, 1.0f, 0.0f))
+	{
+		component->SetAcceleration(acceleration);
+	}
+
+	float stoppingDistance = component->GetStoppingDistance();
+	if (ImGui::DragFloat("Stopping Distance", &stoppingDistance, 1.0f, 0.0f))
+	{
+		component->SetStoppingDistance(stoppingDistance);
+	}
+
+
+
+}
+
 void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
-	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetMaterial());
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
 
-	bool enableDiffuse = material->IsDiffuseTextureEnabled();
-	if (ImGui::Checkbox("Enable Diffuse map", &enableDiffuse))
-		material->EnableDiffuseTexture(enableDiffuse);
-
-	bool enableSpecular = material->IsSpecularGlossinessTextureEnabled();
-	if (ImGui::Checkbox("Enable Specular map", &enableSpecular))
-		material->EnableSpecularGlossinessTexture(enableSpecular);
-	
-	bool enableShinines = material->IsShininessMapEnabled();
-	if (ImGui::Checkbox("Enable Shininess map", &enableShinines))
-		material->EnableShininessTexture(enableShinines);
-
-	bool enableNormal = material->IsNormalMapEnabled();
-	if (ImGui::Checkbox("Enable Normal map", &enableNormal))
-		material->EnableNormalTexture(enableNormal);
-
-	if (!enableDiffuse)
+	if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
 	{
-		float4 diffuseFactor = material->GetDiffuseFactor();
-		if (ImGui::ColorPicker3("Diffuse", diffuseFactor.ptr()))
-			material->SetDiffuseFactor(diffuseFactor);
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
-	if (!enableSpecular)
+	if (ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
 	{
-		float3 specularFactor = material->GetSpecularFactor();
-		if (ImGui::ColorPicker3("Specular", specularFactor.ptr()))
-			material->SetSpecularFactor(specularFactor);
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
-	if (!enableShinines)
+	if (ImGui::Checkbox("Enable Shininess map", &material->mEnableShininessMap))
 	{
-		float shininessFactor = material->GetGlossinessFactor();
-		if (ImGui::DragFloat("Shininess", &shininessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
-			material->SetGlossinessFactor(shininessFactor);
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+
+	if (!material->IsDiffuseTextureEnabled())
+	{
+		if (ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
+	if (!material->IsSpecularGlossinessTextureEnabled())
+	{
+		if (ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+	}
+	if (!material->IsShininessMapEnabled())
+	{
+		if (ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 	}
 }
+
+void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)
+{
+	ImGui::SeparatorText("Navigation Mesh Obstacle");
+
+	float Radius = component->GetRadius();
+	ImGui::InputFloat("Radius", &Radius);
+	component->SetRadius(Radius);
+
+	float Height = component->GetHeight();
+	ImGui::InputFloat("Height", &Height);
+	component->SetHeight(Height);
+
+}
+
 
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
@@ -454,4 +631,102 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 		component->SetFarPlane(Far);
 		component->SetVerticicalFOV(DegToRad(FOV));
 	}
+}
+
+void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
+{
+
+	const char* items[] = { "Select Script", "TestScript", "Dash", "Movement"};
+	const char* currentItem = component->GetScriptName();
+	
+
+	if (ImGui::BeginCombo("##combo", currentItem))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			bool is_selected = (currentItem == items[n]);
+			if (ImGui::Selectable(items[n], is_selected)) {
+				currentItem = items[n];
+				component->LoadScript(currentItem);
+			}		
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus(); 
+			}
+				  
+		}
+		ImGui::EndCombo();
+	}
+
+	component->mScript;
+	std::vector<std::pair<std::string, std::pair<VariableType, void*>>> variables;
+
+
+
+	ImGui::SeparatorText("Attributes");
+	
+	for (ScriptVariable* variable : component->mData) { 
+		switch (variable->mType)
+		{
+		case VariableType::INT:
+			ImGui::DragInt(variable->mName, (int*)variable->mData);
+			break;
+		case VariableType::FLOAT:
+			ImGui::DragFloat(variable->mName, (float*)variable->mData);
+			break;
+		case VariableType::BOOL:
+			ImGui::Checkbox(variable->mName, (bool*)variable->mData);
+			break;
+		case VariableType::FLOAT3:
+			ImGui::DragFloat3(variable->mName, (float*)variable->mData);
+			break;
+		case VariableType::GAMEOBJECT:
+		{
+			
+			GameObject* go = *(GameObject**)variable->mData;
+			ImGui::Text(variable->mName);
+			ImGui::SameLine();
+			const char* str ="";
+			if (!go) {
+				str = "Drop a GameObject Here";
+			}
+			else {
+				str = go->GetName().c_str();
+			}
+			ImGui::BulletText(str);
+			if (ImGui::BeginDragDropTarget()) {
+
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
+					*(GameObject**)variable->mData = *(GameObject**)payload->Data;
+				}
+				ImGui::EndDragDropTarget();
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	
+}
+
+
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+
+	ImGui::SeparatorText("Animation");
+	ImGui::Text("HELLO");
+
+	static bool play = false;
+
+	if(ImGui::Button("Play"))
+	{
+		if (component->GetAnimation() == nullptr)
+			return;
+		component->OnStart();
+
+		play = true;
+	}
+
+	if(play)
+		component->OnUpdate();
+
 }

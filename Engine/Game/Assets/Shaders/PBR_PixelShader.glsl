@@ -1,41 +1,16 @@
 #version 460 core
-
-struct Material
-{
-	//Diffuse
-	vec3 diffuseColor;
-	sampler2D diffuseTexture;
-	//Specular
-	vec3 specularColor;
-	sampler2D specularTexture;
-	//Normal
-	sampler2D normalTexture;
-	
-	float shininess; //Shininess
-	//vec3 ambientColor; //Ambient color
-	
-	//Options
-	bool hasDiffuseMap;
-	bool hasSpecularMap;
-	bool hasShininessMap;
-	bool hasNormalMap;
-};
-
-in VertToFrag {
-	vec2 uv;
-	vec3 sPos;
-	vec3 norm;
-	vec4 tang;
-};
+#extension GL_ARB_bindless_texture : require
 
 //Light properties
-layout(std140, binding = 1) uniform DirAmbientLights {
+layout(std140, binding = 1) uniform DirAmbientLights 
+{
 	vec3 dirDir;
 	vec4 dirCol; //w is the intensity (0-5)
 	vec3 ambientCol;
 };
 layout (location = 1)uniform vec3 cPos;
-struct PointLight{
+struct PointLight
+{
 	vec4 pos; //w is the radius
 	vec4 col;//a is intensity
 };
@@ -44,7 +19,8 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-struct SpotLight{
+struct SpotLight
+{
 	float radius;
 	vec4 pos; //w intensity
 	vec4 aimD;//w cos inner angle
@@ -55,9 +31,40 @@ readonly layout(std430, binding = 1) buffer SpotLights
 	uint numSLights;
 	SpotLight sLights[];
 };
+struct Material
+{
+	bool hasShininessMap;
+	bool hasNormalMap;
+	bool hasDiffuseMap;
+	bool hasSpecularMap;
+	vec3 diffuseColor;
+	float shininess;
+	vec3 specularColor;
+	sampler2D diffuseTexture;
+	sampler2D specularTexture;
+	sampler2D normalTexture;
+};
+readonly layout(std430, binding = 11) buffer Materials 
+{
+	Material materials[];
+};
+struct Index
+{
+	uint matIdx;
+};
+readonly layout(std430, binding = 12) buffer Indices 
+{
+	Index indices[];
+};
 
-uniform Material material;
 
+in VertToFrag {
+	vec2 uv;
+	vec3 sPos;
+	vec3 norm;
+	vec4 tang;
+	flat uint instace_index;
+};
 out vec4 outColor;
 
 #define PI 3.1415926535897932384626433832795
@@ -66,6 +73,7 @@ vec3 specularColor;
 float shininess;
 vec3 V;
 vec3 N;
+
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
 	
@@ -80,13 +88,16 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	vec3 Li = lInt * lAtt * lCol.rgb;  //Incoming radiance
 	
 	//Color with specular and no pi division
-	//vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
+	vec3 pbrColor = ((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL;
 	//Color with specular and pi divisions
-	vec3 pbrColor = (((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL)/ PI;
+	//vec3 pbrColor = (((diffuseColor*(1-specularColor)) + ((shininess+2)/2)* RFOi * VdotRpown) * Li * NdotL)/ PI;
 	return pbrColor;
 }
 
-void main() {
+
+void main() 
+{
+	Material material = materials[indices[instace_index].matIdx];
 
 	//Diffuse
 	if(material.hasDiffuseMap)
@@ -116,9 +127,9 @@ void main() {
 	if(material.hasShininessMap)
 	{
 		if(material.hasSpecularMap)
-			shininess = exp2(15*specularTex.a + 1);
+			shininess = exp2(7*specularTex.a + 1);
 		else
-			shininess = exp2(15*texture(material.specularTexture, uv).a+1);
+			shininess = exp2(7*texture(material.specularTexture, uv).a+1);
 	}
 	else
 	{

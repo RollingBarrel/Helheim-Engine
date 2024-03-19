@@ -1,11 +1,12 @@
-# Assigment2
+[![Lint and Build with MSBuild](https://github.com/Assigment2Company/Assigment2/actions/workflows/lint_and_msbuild.yml/badge.svg?branch=develop)](https://github.com/Assigment2Company/Assigment2/actions/workflows/lint_and_msbuild.yml)
+# Helheim-Engine
 This project is a Game Engine made for UPC videogames Master´s Degree
 
-- [Game Engine Github Repository](https://github.com/Assigment2Company/Assigment2)
+- [Game Engine Github Repository](https://github.com/RollingBarrel/Helheim-Engine)
 
 ## Installation
 
-Download GameEngine.zip file in [release](https://github.com/Assigment2Company/Assigment2/releases), unzip it and execute the Engine.exe file.
+Download GameEngine.zip file in [release](https://github.com/RollingBarrel/Helheim-Engine/releases), unzip it and execute the Engine.exe file.
 
 ## Engine Guide
 
@@ -27,7 +28,11 @@ Download GameEngine.zip file in [release](https://github.com/Assigment2Company/A
   - Click Button "Add Component" in the inspector panel when a gameObject is selected to add a new component.
   - Every gameObject has a transform tha can be modified using the transform section in the inspector panel.
   - The name of a gameObject can be modified in the inspector panel.
-  
+- Guizmo
+  - W to move object.
+  - E to Rotate object.
+  - R to scale object.  
+
   - **Mesh Renderer Component**
     - All information about materials and meshes can be read and modified here. 
 - Lighting Panel

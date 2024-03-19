@@ -21,6 +21,7 @@ ResourceMaterial::ResourceMaterial(
     //if (mDiffuseTexture) mEnableDiffuseTexture = true;
     //else mEnableDiffuseTexture = false;
     mEnableDiffuseTexture = (mDiffuseTexture != nullptr) ? true : false;
+    mDiffuseFactor = float4(0.228f, 0.235f, 0.241, 1.0f);
 
     if (mSpecularGlossinessTexture) {
         mEnableSpecularGlossinessTexture = true;

@@ -27,6 +27,7 @@ private:
 
 	std::unordered_set<GameObject*> mMarked;
 	GameObject* mFocusedObject = nullptr;
+	GameObject* mLastClickedObject = nullptr;
 	int mShiftMarking[2] = { 0 };
 	int mShiftClicked = 0;
 	int mLastMarkSeen = 0;

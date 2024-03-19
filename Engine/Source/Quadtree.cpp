@@ -12,9 +12,8 @@
 #include "ResourceMesh.h"
 #include "Geometry/Triangle.h"
 #include "imgui.h"
-#include <iostream>
-#include <cstring>
 #include <utility>
+#include <map>
 
 Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
@@ -229,7 +228,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 				intersects = localRay.Intersects(rMesh->GetAABB());
 				if (intersects)
 				{
-					unsigned int* indices = rMesh->GetResourceMesh()->mIndices;
+					const unsigned int* indices = rMesh->GetResourceMesh()->GetIndices();
 					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 
 					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices() / 3; i += 3) {
@@ -279,11 +278,11 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum* myCamera)
 		for (auto& object : mGameObjects)
 		{
 			
-			if (object->GetMeshRenderer() != nullptr)
+			if (object->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 			{
-				OBB temp = object->GetMeshRenderer()->getOBB();
+				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->getOBB();
 				bool intersects = myCamera->Intersects(temp);
-				object->GetMeshRenderer()->SetInsideFrustum(intersects);
+				((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->SetInsideFrustum(intersects);
 
 			}
 		}

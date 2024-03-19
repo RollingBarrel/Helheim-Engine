@@ -15,6 +15,7 @@
 #include "imgui.h"
 #include "Geometry/Triangle.h"
 #include "Quadtree.h"
+#include "SDL_scancode.h"
 
 #include "CameraComponent.h"
 
@@ -51,16 +52,23 @@ void ModuleCamera::CheckRaycast()
 
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&mRay);
-	if (intersectGameObjectPair.second != nullptr)
-	{
-		GameObject* gameObject = intersectGameObjectPair.second;
-		while (!gameObject->GetParent()->IsRoot()) 
-		{
-			gameObject = gameObject->GetParent();
-		}
-		((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
+	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) {
+
 	}
+	else {
+		const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&mRay);
+		if (intersectGameObjectPair.second != nullptr)
+		{
+			GameObject* gameObject = intersectGameObjectPair.second;
+			while (!gameObject->GetParent()->IsRoot())
+			{
+				gameObject = gameObject->GetParent();
+			}
+			((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
+		}
+	}
+
+	
 	
 }
 
@@ -104,7 +112,7 @@ void ModuleCamera::Transform(float3 vec)
 
 
 update_status ModuleCamera::Update(float dt)
-{    
+{
 	if (mDrawRayCast) {
 		App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
 	}
@@ -188,8 +196,8 @@ update_status ModuleCamera::Update(float dt)
 
 		if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
 		{
-			float3 selectedObjectPosition = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetLocalPosition();
-			float3 initialCameraPosition = mFrustum.pos;
+			float3 selectedObjectPosition = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition();
+			float3 initialCameraPosition = mFrustum->pos;
 
 			float desiredDistance = 5.0f;
 

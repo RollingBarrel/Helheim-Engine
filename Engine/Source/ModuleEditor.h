@@ -7,9 +7,11 @@
 #include "ImGuizmo.h"
 
 #include <map>
+#include <vector>
 
 struct ImGuiIO;
 class Panel;
+class OptickAdapter;
 
 class ModuleEditor : public Module
 {
@@ -23,6 +25,9 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	Panel* GetPanel(const char* name) { return mPanels[name]; }
+	std::map<const char*, Panel*> GetPanelList() { return mPanels; }
+	std::vector<const char*> GetPanelNames() { return mPanelNames; }	
+	void OpenPanel(const char* name, const bool focus);
 
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
@@ -31,6 +36,8 @@ private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
+	std::vector<const char*> mPanelNames;
+	OptickAdapter* mOptick;
 	void OpenLoadScene();
 };
 

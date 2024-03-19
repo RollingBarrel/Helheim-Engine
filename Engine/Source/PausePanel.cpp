@@ -6,6 +6,8 @@
 #include "Timer.h"
 #include "PreciseTimer.h"
 
+#include "ModuleScriptManager.h"
+
 PausePanel::PausePanel() : Panel(PAUSEPANEL, true)
 {
 	mState = GameState::STOP;
@@ -50,11 +52,12 @@ void PausePanel::Play() {
 
 	mState = GameState::PLAYING;
 	App->GetScene()->Save("TemporalScene");
+
+	App->GetScriptManager()->Play();
 }
 
 void PausePanel::Pause() {
 	App->GetGameClock()->SetTimeScale(0.0f);
-
 	mState = GameState::PAUSED;
 }
 
@@ -69,5 +72,10 @@ void PausePanel::Stop() {
 	App->GetEngineClock()->Resume();				//Engine clock execution resumes -> mSpeed = 1.0f
 
 	mState = GameState::STOP;
+
+	App->GetScriptManager()->Stop();
+
 	App->GetScene()->Load("TemporalScene");
+
+
 }

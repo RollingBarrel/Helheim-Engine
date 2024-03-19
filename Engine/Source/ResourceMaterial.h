@@ -11,11 +11,11 @@ class ResourceMaterial : public Resource
 public:
     ResourceMaterial(
         unsigned int uid,
-        float4 diffuseFactor, 
-        float3 specularFactor, 
-        float glossinessFactor, 
-        unsigned int diffuseTextureUid, 
-        unsigned int specularGlossinessTextureUid, 
+        float4 diffuseFactor,
+        float3 specularFactor,
+        float glossinessFactor,
+        unsigned int diffuseTextureUid,
+        unsigned int specularGlossinessTextureUid,
         unsigned int normalTextureUid);
 
     ~ResourceMaterial();
@@ -32,14 +32,6 @@ public:
     bool IsNormalMapEnabled() const { return mEnableNormalMap; }
     bool IsShininessMapEnabled() const { return mEnableShininessMap; }
 
-    void SetDiffuseFactor(float4 factor) { mDiffuseFactor = factor; }
-    void SetSpecularFactor(float3 factor) { mSpecularFactor = factor; }
-    void SetGlossinessFactor(float factor) { mGlossinessFactor = factor; }
-
-    void EnableDiffuseTexture(bool state) { mEnableDiffuseTexture = state; }
-    void EnableSpecularGlossinessTexture(bool state) { mEnableSpecularGlossinessTexture = state; }
-    void EnableNormalTexture(bool state) { mEnableNormalMap = state; }
-    void EnableShininessTexture(bool state) { mEnableShininessMap = state; }
 
 private:
     float4 mDiffuseFactor;
@@ -54,5 +46,7 @@ private:
     bool mEnableSpecularGlossinessTexture;
     bool mEnableNormalMap;
     bool mEnableShininessMap;
+
+    friend class InspectorPanel;
 };
 

@@ -35,6 +35,7 @@ private:
 		{".bmp", Resource::Type::Texture},
 		{".dds", Resource::Type::Texture},
 		{".gltf", Resource::Type::Model},
+		{".h", Resource::Type::Script},
 		// Add more mappings for other resource types as needed
 	};
 

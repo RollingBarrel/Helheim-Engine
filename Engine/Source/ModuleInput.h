@@ -3,7 +3,8 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "SDL_scancode.h"
+#include "KeyboardKeys.h"
+
 
 enum class KeyState : unsigned char
 {
@@ -23,7 +24,7 @@ enum MouseKey {
 	NUM_MOUSE_BUTTONS
 };
 
-class ModuleInput : public Module
+class ENGINE_API ModuleInput : public Module
 {
 public:
 
@@ -41,7 +42,7 @@ public:
 	int GetMouseWheelMotion() const { return wheelY; }
 private:
 	KeyState mouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
-	KeyState* keyboard = NULL;
+	KeyState* keyboard = 0;
 	int mMouseMotionX = 0;
 	int mMouseMotionY = 0;
 	int mMousePositionX = 0;
