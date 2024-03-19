@@ -462,6 +462,9 @@
     <ClCompile Include="ResourceObject.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\ImGuiFileDialog\ImGuiFileDialog.cpp">
+      <Filter>Dependencies\ImGuiFileDialog</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1238,6 +1241,9 @@
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ModuleDetourNavigation.h" />
+    <ClInclude Include="..\..\..\ImGuiFileDialog\ImGuiFileDialog.h">
+      <Filter>Dependencies\ImGuiFileDialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -1326,6 +1332,9 @@
     </Filter>
     <Filter Include="Dependencies\Wwise">
       <UniqueIdentifier>{1d4dfa01-de34-4740-97cb-507eee2df210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\ImGuiFileDialog">
+      <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
     "Scene": {
         "GameObjects": [
             {
-                "UID": 1448544678,
+                "UID": 1591519936,
                 "ParentUID": 1,
                 "Name": "Canelita",
                 "isEnabled": true,
@@ -28,38 +28,13 @@
                     {
                         "ComponentType": 3,
                         "ScriptName": "TestScript",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mPlayerSpeed",
-                                "VariableType": 1,
-                                "VariableData": 3
-                            },
-                            {
-                                "VariableName": "speed",
-                                "VariableType": 1,
-                                "VariableData": 8
-                            },
-                            {
-                                "VariableName": "mTestFloat3",
-                                "VariableType": 4,
-                                "VariableData": [
-                                    5.0,
-                                    15.0,
-                                    -4.0
-                                ]
-                            },
-                            {
-                                "VariableName": "mRobot",
-                                "VariableType": 3,
-                                "VariableData": 1392679022
-                            }
-                        ]
+                        "ScriptVariables": []
                     }
                 ]
             },
             {
-                "UID": 1502500953,
-                "ParentUID": 1448544678,
+                "UID": 1994068558,
+                "ParentUID": 1591519936,
                 "Name": "Zombunny",
                 "isEnabled": true,
                 "isActive": true,
@@ -83,8 +58,8 @@
                 "Components": []
             },
             {
-                "UID": 1543995069,
-                "ParentUID": 1502500953,
+                "UID": 2013840922,
+                "ParentUID": 1994068558,
                 "Name": "Zombunny",
                 "isEnabled": true,
                 "isActive": true,
@@ -107,7 +82,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 2059117951,
+                        "ID": 2021011885,
                         "MeshID": 436510898,
                         "MaterialID": 436510902,
                         "ComponentType": 0,
@@ -116,8 +91,8 @@
                 ]
             },
             {
-                "UID": 551145550,
-                "ParentUID": 1502500953,
+                "UID": 1505688635,
+                "ParentUID": 1994068558,
                 "Name": "Zombunny",
                 "isEnabled": true,
                 "isActive": true,
@@ -140,7 +115,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 2104341444,
+                        "ID": 1521074876,
                         "MeshID": 436510903,
                         "MaterialID": 436510904,
                         "ComponentType": 0,
@@ -149,8 +124,8 @@
                 ]
             },
             {
-                "UID": 1938737799,
-                "ParentUID": 1448544678,
+                "UID": 1258231699,
+                "ParentUID": 1591519936,
                 "Name": "Ctrl_Grp",
                 "isEnabled": true,
                 "isActive": true,
@@ -174,8 +149,8 @@
                 "Components": []
             },
             {
-                "UID": 1994434599,
-                "ParentUID": 1938737799,
+                "UID": 1280301556,
+                "ParentUID": 1258231699,
                 "Name": "Root",
                 "isEnabled": true,
                 "isActive": true,
@@ -199,8 +174,8 @@
                 "Components": []
             },
             {
-                "UID": 387975743,
-                "ParentUID": 1994434599,
+                "UID": 1298681500,
+                "ParentUID": 1280301556,
                 "Name": "Hips",
                 "isEnabled": true,
                 "isActive": true,
@@ -224,8 +199,8 @@
                 "Components": []
             },
             {
-                "UID": 433090151,
-                "ParentUID": 387975743,
+                "UID": 1319219695,
+                "ParentUID": 1298681500,
                 "Name": "Spine",
                 "isEnabled": true,
                 "isActive": true,
@@ -249,8 +224,8 @@
                 "Components": []
             },
             {
-                "UID": 472913363,
-                "ParentUID": 433090151,
+                "UID": 1336694566,
+                "ParentUID": 1319219695,
                 "Name": "Head",
                 "isEnabled": true,
                 "isActive": true,
@@ -274,8 +249,8 @@
                 "Components": []
             },
             {
-                "UID": 512249228,
-                "ParentUID": 472913363,
+                "UID": 1358068213,
+                "ParentUID": 1336694566,
                 "Name": "HeadEnd",
                 "isEnabled": true,
                 "isActive": true,
@@ -299,8 +274,8 @@
                 "Components": []
             },
             {
-                "UID": 551585093,
-                "ParentUID": 472913363,
+                "UID": 1374916495,
+                "ParentUID": 1336694566,
                 "Name": "LeftEar",
                 "isEnabled": true,
                 "isActive": true,
@@ -324,8 +299,8 @@
                 "Components": []
             },
             {
-                "UID": 591477926,
-                "ParentUID": 551585093,
+                "UID": 1391973640,
+                "ParentUID": 1374916495,
                 "Name": "LeftEarEnd",
                 "isEnabled": true,
                 "isActive": true,
@@ -349,8 +324,8 @@
                 "Components": []
             },
             {
-                "UID": 630744170,
-                "ParentUID": 472913363,
+                "UID": 1408334575,
+                "ParentUID": 1336694566,
                 "Name": "RightEar",
                 "isEnabled": true,
                 "isActive": true,
@@ -374,8 +349,8 @@
                 "Components": []
             },
             {
-                "UID": 671542076,
-                "ParentUID": 630744170,
+                "UID": 1425113236,
+                "ParentUID": 1408334575,
                 "Name": "RightEarEnd",
                 "isEnabled": true,
                 "isActive": true,
@@ -399,8 +374,8 @@
                 "Components": []
             },
             {
-                "UID": 711086804,
-                "ParentUID": 433090151,
+                "UID": 1441613413,
+                "ParentUID": 1319219695,
                 "Name": "LeftUpperArm",
                 "isEnabled": true,
                 "isActive": true,
@@ -424,8 +399,8 @@
                 "Components": []
             },
             {
-                "UID": 750770774,
-                "ParentUID": 711086804,
+                "UID": 1458531316,
+                "ParentUID": 1441613413,
                 "Name": "LeftLowerArm",
                 "isEnabled": true,
                 "isActive": true,
@@ -449,8 +424,8 @@
                 "Components": []
             },
             {
-                "UID": 789967397,
-                "ParentUID": 750770774,
+                "UID": 1475101114,
+                "ParentUID": 1458531316,
                 "Name": "LeftWrist",
                 "isEnabled": true,
                 "isActive": true,
@@ -474,8 +449,8 @@
                 "Components": []
             },
             {
-                "UID": 829442504,
-                "ParentUID": 433090151,
+                "UID": 1491949396,
+                "ParentUID": 1319219695,
                 "Name": "LeftUpperArmFK",
                 "isEnabled": true,
                 "isActive": true,
@@ -499,8 +474,8 @@
                 "Components": []
             },
             {
-                "UID": 869265716,
-                "ParentUID": 829442504,
+                "UID": 1512278728,
+                "ParentUID": 1491949396,
                 "Name": "LeftLowerArmFK",
                 "isEnabled": true,
                 "isActive": true,
@@ -524,8 +499,8 @@
                 "Components": []
             },
             {
-                "UID": 908392718,
-                "ParentUID": 869265716,
+                "UID": 1530032083,
+                "ParentUID": 1512278728,
                 "Name": "LeftWristFK",
                 "isEnabled": true,
                 "isActive": true,
@@ -549,8 +524,8 @@
                 "Components": []
             },
             {
-                "UID": 947589341,
-                "ParentUID": 433090151,
+                "UID": 1546532260,
+                "ParentUID": 1319219695,
                 "Name": "LeftUpperArmIK",
                 "isEnabled": true,
                 "isActive": true,
@@ -574,8 +549,8 @@
                 "Components": []
             },
             {
-                "UID": 987064448,
-                "ParentUID": 947589341,
+                "UID": 1563589405,
+                "ParentUID": 1546532260,
                 "Name": "LeftLowerArmIK",
                 "isEnabled": true,
                 "isActive": true,
@@ -599,8 +574,8 @@
                 "Components": []
             },
             {
-                "UID": 1026191450,
-                "ParentUID": 987064448,
+                "UID": 1580368066,
+                "ParentUID": 1563589405,
                 "Name": "LeftWristIK",
                 "isEnabled": true,
                 "isActive": true,
@@ -624,8 +599,8 @@
                 "Components": []
             },
             {
-                "UID": 1065527315,
-                "ParentUID": 433090151,
+                "UID": 1596937864,
+                "ParentUID": 1319219695,
                 "Name": "RightUpperArm",
                 "isEnabled": true,
                 "isActive": true,
@@ -649,8 +624,8 @@
                 "Components": []
             },
             {
-                "UID": 1104932801,
-                "ParentUID": 1065527315,
+                "UID": 1613995009,
+                "ParentUID": 1596937864,
                 "Name": "RightLowerArm",
                 "isEnabled": true,
                 "isActive": true,
@@ -674,8 +649,8 @@
                 "Components": []
             },
             {
-                "UID": 1144616771,
-                "ParentUID": 1104932801,
+                "UID": 1630982533,
+                "ParentUID": 1613995009,
                 "Name": "RightWrist",
                 "isEnabled": true,
                 "isActive": true,
@@ -699,8 +674,8 @@
                 "Components": []
             },
             {
-                "UID": 1184022257,
-                "ParentUID": 433090151,
+                "UID": 1648457404,
+                "ParentUID": 1319219695,
                 "Name": "RightUpperArmFK",
                 "isEnabled": true,
                 "isActive": true,
@@ -724,8 +699,8 @@
                 "Components": []
             },
             {
-                "UID": 1223288501,
-                "ParentUID": 1184022257,
+                "UID": 1665375307,
+                "ParentUID": 1648457404,
                 "Name": "RightLowerArmFK",
                 "isEnabled": true,
                 "isActive": true,
@@ -749,8 +724,8 @@
                 "Components": []
             },
             {
-                "UID": 1262485124,
-                "ParentUID": 1223288501,
+                "UID": 1682293210,
+                "ParentUID": 1665375307,
                 "Name": "RightWristFK",
                 "isEnabled": true,
                 "isActive": true,
@@ -774,8 +749,8 @@
                 "Components": []
             },
             {
-                "UID": 1301542505,
-                "ParentUID": 433090151,
+                "UID": 1698654145,
+                "ParentUID": 1319219695,
                 "Name": "RightUpperArmIK",
                 "isEnabled": true,
                 "isActive": true,
@@ -799,8 +774,8 @@
                 "Components": []
             },
             {
-                "UID": 1350555689,
-                "ParentUID": 1301542505,
+                "UID": 1716059395,
+                "ParentUID": 1698654145,
                 "Name": "RightLowerArmIK",
                 "isEnabled": true,
                 "isActive": true,
@@ -824,8 +799,8 @@
                 "Components": []
             },
             {
-                "UID": 1391214353,
-                "ParentUID": 1350555689,
+                "UID": 1733116540,
+                "ParentUID": 1716059395,
                 "Name": "RightWristIK",
                 "isEnabled": true,
                 "isActive": true,
@@ -849,8 +824,8 @@
                 "Components": []
             },
             {
-                "UID": 1430759081,
-                "ParentUID": 387975743,
+                "UID": 1749825580,
+                "ParentUID": 1298681500,
                 "Name": "LeftLeg",
                 "isEnabled": true,
                 "isActive": true,
@@ -874,8 +849,8 @@
                 "Components": []
             },
             {
-                "UID": 1470930398,
-                "ParentUID": 1430759081,
+                "UID": 1767091588,
+                "ParentUID": 1749825580,
                 "Name": "LeftFoot",
                 "isEnabled": true,
                 "isActive": true,
@@ -899,8 +874,8 @@
                 "Components": []
             },
             {
-                "UID": 1510266263,
-                "ParentUID": 387975743,
+                "UID": 1783522144,
+                "ParentUID": 1298681500,
                 "Name": "RightLeg",
                 "isEnabled": true,
                 "isActive": true,
@@ -924,8 +899,8 @@
                 "Components": []
             },
             {
-                "UID": 1549602128,
-                "ParentUID": 1510266263,
+                "UID": 1800857773,
+                "ParentUID": 1783522144,
                 "Name": "RightFoot",
                 "isEnabled": true,
                 "isActive": true,
@@ -949,7 +924,7 @@
                 "Components": []
             },
             {
-                "UID": 1392679022,
+                "UID": 1817079466,
                 "ParentUID": 1,
                 "Name": "Robot",
                 "isEnabled": true,
@@ -974,8 +949,8 @@
                 "Components": []
             },
             {
-                "UID": 1447053023,
-                "ParentUID": 1392679022,
+                "UID": 1840332880,
+                "ParentUID": 1817079466,
                 "Name": "Robot",
                 "isEnabled": true,
                 "isActive": true,
@@ -999,8 +974,8 @@
                 "Components": []
             },
             {
-                "UID": 1488129413,
-                "ParentUID": 1447053023,
+                "UID": 1858016614,
+                "ParentUID": 1840332880,
                 "Name": "Robot",
                 "isEnabled": true,
                 "isActive": true,
@@ -1023,7 +998,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 1669649737,
+                        "ID": 1864839472,
                         "MeshID": 49059097,
                         "MaterialID": 49059101,
                         "ComponentType": 0,
@@ -1032,7 +1007,7 @@
                 ]
             },
             {
-                "UID": 2056405452,
+                "UID": 442585272,
                 "ParentUID": 1,
                 "Name": "Point Light",
                 "isEnabled": true,

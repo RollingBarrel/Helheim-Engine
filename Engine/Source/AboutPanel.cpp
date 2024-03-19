@@ -16,4 +16,5 @@ void AboutPanel::Draw(int windowFlags)
 		ImGui::Text("Welcum :)");
 	}
 	ImGui::End();
+	ImGui::ShowDemoWindow();
 }

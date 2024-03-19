@@ -32,6 +32,8 @@
 #include "OptickAdapter.h"
 #include "IconsFontAwesome6.h"
 
+#include "ImGuiFileDialog.h"
+
 ModuleEditor::ModuleEditor()
 {
 	// Panels
@@ -355,7 +357,7 @@ void ModuleEditor::ShowMainMenuBar()
 }
 
 void ModuleEditor::OpenLoadScene() {
-	ImGui::OpenPopup("LoadSceneWindow");
+	/*ImGui::OpenPopup("LoadSceneWindow");
 	if (ImGui::BeginPopupModal("LoadSceneWindow", &mLoadSceneOpen))
 	{
 		ImGui::Text("Which file you wish to load?");
@@ -371,7 +373,23 @@ void ModuleEditor::OpenLoadScene() {
 			}
 		}
 		ImGui::EndPopup();
+	}*/
+	IGFD::FileDialogConfig config;
+	config.path = ".";
+	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", config);
+
+	// display
+	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+		if (ImGuiFileDialog::Instance()->IsOk()) { // action if OK
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			// action
+		}
+
+		
 	}
+	// close
+	ImGuiFileDialog::Instance()->Close();
 }
 
 void ModuleEditor::ResetFloatingPanels(bool openPanels) {
