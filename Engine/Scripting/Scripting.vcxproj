@@ -157,7 +157,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Game\Assets\Scripts\Dash.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="framework.h" />
@@ -165,7 +164,6 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Dash.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="PlayerController.cpp" />
