@@ -475,10 +475,26 @@ void GameObject::SetActiveInHierarchy(bool active)
 
 	mIsActive = active;
 
+	for (Component* component : mComponents)
+	{
+		if (active)
+		{
+			component->Enable();
+		}
+		else
+		{
+			component->Disable();
+		}
+	}
+
+
 	for (GameObject* child : mChildren)
 	{
 		child->SetActiveInHierarchy(active);
 	}
+
+
+
 }
 
 void GameObject::Save(Archive& archive, int parentId) const {
