@@ -25,6 +25,8 @@ public:
 	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
 
 	void SetScreenSpace(bool screen);
+	bool GetScreenSpace();
+	void ResizeFrustum(unsigned int width, unsigned int height);
 
 private:
 	void DrawWidget(GameObject* gameObject);

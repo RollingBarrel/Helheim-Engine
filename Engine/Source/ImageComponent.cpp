@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleScene.h"
 #include "ModuleCamera.h"
 #include "ModuleResource.h"
 #include "ModuleWindow.h"
@@ -9,12 +8,10 @@
 #include "glew.h"
 #include "ResourceTexture.h"
 #include "ImporterTexture.h"
-
 #include "GameObject.h"
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
-
 
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) {
 }
@@ -37,9 +34,25 @@ void ImageComponent::Draw() const
         glUseProgram(program);
 
         float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
+        float4x4 model;
 
-        float4x4 model = GetOwner()->GetWorldTransform(); //float4x4::identity;
+        if (App->GetUI()->GetScreenSpace()) {
+            //Ortographic Mode
+            float3 OwnerTranslation = GetOwner()->GetPosition();
+            float3 scaleImage = GetOwner()->GetScale();
+            float scaleFloatX = scaleImage.x;
+            float scaleFloatY = scaleImage.y;
+            float scaledWidth = scaleFloatX * GetImage()->GetWidth();
+            float scaledHeight = scaleFloatY * GetImage()->GetHeight();
 
+            model = float4x4::FromTRS(OwnerTranslation, Quat::identity, float3(scaledWidth, scaledHeight, 1.0f));
+        }
+        else
+        {
+            //World Mode
+            model = GetOwner()->GetWorldTransform();
+        }
+        
         float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 
         glBindVertexArray(App->GetUI()->GetQuadVAO());

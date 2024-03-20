@@ -2,16 +2,14 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
+#include "ModuleUI.h"
 #include "SDL.h"
 #include "glew.h"
 #include "ModuleCamera.h"
-#include "Application.h"
-#include "ModuleScene.h"
 #include "GameObject.h"
 #include "BatchManager.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -222,6 +220,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
+	App->GetUI()->ResizeFrustum(width, height);
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);

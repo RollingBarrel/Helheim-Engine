@@ -11,7 +11,6 @@
 
 #include "glew.h"
 #include "SDL.h"
-
 #include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
@@ -35,32 +34,25 @@ bool ModuleUI::Init() {
 	CreateVAO();
 
 	mUIProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
-
+	
 	mUIfrustum = new Frustum();
-
-	// Set Orthografic configuration
-	float aspect_ratio = App->GetWindow()->GetAspectRatio();
-	float height, width;
-	height = App->GetWindow()->GetHeight();
-	width = App->GetWindow()->GetWidth();
-
+	
 	mUIfrustum->type = FrustumType::OrthographicFrustum;
-	mUIfrustum->orthographicWidth = 1;
-	mUIfrustum->orthographicHeight = 1;
-
+	mUIfrustum->orthographicWidth = SCREEN_WIDTH;
+	mUIfrustum->orthographicHeight = SCREEN_HEIGHT;
 
 	mUIfrustum->front = -float3::unitZ;
 	mUIfrustum->up = float3::unitY;
 	mUIfrustum->pos = float3::zero;
 
-	mUIfrustum->nearPlaneDistance = 0.1f;
+	mUIfrustum->nearPlaneDistance = 0.0f;
 	mUIfrustum->farPlaneDistance = 100.0f;
-
+	
 	return true;
 };
 
 update_status ModuleUI::PreUpdate(float dt) {
-	if (mScreenSpace == true) {
+	if (mScreenSpace) {
 		mCurrentFrustum = mUIfrustum;
 		glEnable(GL_DEPTH_TEST);
 	}
@@ -96,6 +88,10 @@ bool ModuleUI::CleanUp() {
 
 void ModuleUI::SetScreenSpace(bool screen) {
 	mScreenSpace = screen;
+}
+
+bool ModuleUI::GetScreenSpace() {
+	return mScreenSpace;
 }
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
@@ -247,4 +243,15 @@ unsigned int ModuleUI::CompileShader(unsigned type, const char* source) const
 		}
 	}
 	return shaderID;
+}
+
+void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height) {
+	float heightFrustum = height;
+	float widthFrustum = width;
+	
+	//float aspect_ratio = widthFrustum / heightFrustum;
+	//widthFrustum /= aspect_ratio;
+
+	mUIfrustum->orthographicWidth = widthFrustum; //Change with canvas width
+	mUIfrustum->orthographicHeight = heightFrustum; //Change with canvas height
 }
