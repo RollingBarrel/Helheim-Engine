@@ -38,7 +38,8 @@ void ImageComponent::Draw() const
 
         float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
 
-        float4x4 model = GetOwner()->GetWorldTransform(); //float4x4::identity;
+        //float4x4 model = GetOwner()->GetWorldTransform();
+        float4x4 model = GetOwner()->GetWorldTransform() * float4x4::FromTRS(float3::zero, Quat::identity, float3(mImage->GetWidth(), mImage->GetHeight(), 0));
 
         float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 

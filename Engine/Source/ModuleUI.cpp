@@ -41,22 +41,16 @@ bool ModuleUI::Init() {
 
 	mUIfrustum = new Frustum();
 
-	// Set Orthografic configuration
-	float aspect_ratio = App->GetWindow()->GetAspectRatio();
-	float height, width;
-	height = App->GetWindow()->GetHeight();
-	width = App->GetWindow()->GetWidth();
-
 	mUIfrustum->type = FrustumType::OrthographicFrustum;
-	mUIfrustum->orthographicWidth = 1;
-	mUIfrustum->orthographicHeight = 1;
+	mUIfrustum->orthographicWidth = SCREEN_WIDTH;
+	mUIfrustum->orthographicHeight = SCREEN_HEIGHT;
 
 
 	mUIfrustum->front = -float3::unitZ;
 	mUIfrustum->up = float3::unitY;
 	mUIfrustum->pos = float3::zero;
 
-	mUIfrustum->nearPlaneDistance = 0.1f;
+	mUIfrustum->nearPlaneDistance = 0.0f;
 	mUIfrustum->farPlaneDistance = 100.0f;
 
 	return true;
@@ -148,12 +142,12 @@ void ModuleUI::LoadVBO()
 {
 	float vertices[] = {
 		// texture coordinates
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
-		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
+		-0.5f,  0.5f,  0.0f,  1.0f,   // top-left vertex
+		-0.5f, -0.5f,  0.0f,  0.0f,   // bottom-left vertex
+		0.5f, -0.5f,  1.0f,  0.0f,   // bottom-right vertex
+		0.5f,  0.5f,  1.0f,  1.0f,   // top-right vertex
+		-0.5f,  0.5f,  0.0f,  1.0f,   // top-left vertex
+		0.5f, -0.5f,  1.0f,  0.0f    // bottom-right vertex
 	};
 
 	glGenBuffers(1, &mQuadVBO);
@@ -291,4 +285,16 @@ void ModuleUI::CheckRaycast()
 				
 		}
 	}
+}
+
+void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height)
+{
+	float heightFrustum = height;
+	float widthFrustum = width;
+	float aspectRatio = widthFrustum / heightFrustum;
+
+	widthFrustum /= aspectRatio;
+
+	mUIfrustum->orthographicWidth = widthFrustum;
+	mUIfrustum->orthographicHeight = heightFrustum;
 }

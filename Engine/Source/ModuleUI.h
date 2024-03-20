@@ -26,6 +26,7 @@ public:
 
 	void SetScreenSpace(bool screen);
 	void CheckRaycast();
+	void ResizeFrustum(unsigned int width, unsigned int height);
 
 private:
 	void DrawWidget(GameObject* gameObject);
