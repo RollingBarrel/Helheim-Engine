@@ -39,7 +39,7 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Update()
 {
-
+    
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
@@ -60,6 +60,8 @@ void CameraComponent::SetPosition(const float3& position)
 void CameraComponent::SetRotation(const float3& rotation)
 {
 	//CameraUtils::Rotate(rotation,-1 ,*mCamera);
+    float3 difference = GetOwner()->GetRotation() - rotation;
+
 }
 
 void CameraComponent::SetFOV(const float value)

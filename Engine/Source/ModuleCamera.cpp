@@ -16,8 +16,8 @@
 #include "Geometry/Triangle.h"
 #include "Quadtree.h"
 #include "SDL_scancode.h"
-
 #include "GameObject.h"
+#include "Quat.h"
 #include "CameraComponent.h"
 
 bool ModuleCamera::Init()
@@ -65,6 +65,8 @@ void ModuleCamera::CheckRaycast()
 	}
 }
 
+
+
 bool ModuleCamera::CleanUp()
 {
 	return true;
@@ -97,6 +99,8 @@ void ModuleCamera::SetCurrentCamera(GameObject* camera)
 	{
 		mCurrentCamera = camera;
 		mCurrentCameraComponent = (CameraComponent*) camera->GetComponent(ComponentType::CAMERA);
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
+
 	}
 	if (!camera)
 		mCurrentCamera = mEditorCamera;
@@ -207,5 +211,15 @@ update_status ModuleCamera::Update(float dt)
 			mCurrentCameraComponent->LookAt(mCurrentCameraComponent->GetFrustum().pos, selectedObjectPosition, float3::unitY);
 		}
 	}
+
+	if(mCurrentCamera && mCurrentCameraComponent){
+		float3 position = mCurrentCameraComponent->GetFrustum().pos;
+		float3x3 rotationMatrix = float3x3(mCurrentCameraComponent->GetFrustum().WorldRight(), mCurrentCameraComponent->GetFrustum().up, mCurrentCameraComponent->GetFrustum().front);
+		Quat rotation = Quat(rotationMatrix);
+
+		mCurrentCamera->SetPosition(position);
+		mCurrentCamera->SetRotation(rotation);
+	}
+
 	return UPDATE_CONTINUE;
 }
