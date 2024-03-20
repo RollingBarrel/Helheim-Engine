@@ -127,7 +127,8 @@ Component* GameObject::GetComponent(ComponentType type)
 	return nullptr;
 }
 
-std::vector<Component*> GameObject::GetComponents(ComponentType type){
+std::vector<Component*> GameObject::GetComponents(ComponentType type) const
+{
 	std::vector<Component*> matchingComponents;
 
 	for (auto component : mComponents) {

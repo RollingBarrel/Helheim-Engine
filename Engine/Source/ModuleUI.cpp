@@ -104,6 +104,7 @@ void ModuleUI::SetScreenSpace(bool screen) {
 bool ModuleUI::GetScreenSpace() {
 	return mScreenSpace;
 }
+
 void ModuleUI::DrawWidget(GameObject* gameObject)
 {
 	if (gameObject == nullptr) return;

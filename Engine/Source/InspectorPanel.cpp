@@ -781,6 +781,4 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 	}
 }
 
-void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {
-	
-}
+void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};

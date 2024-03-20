@@ -15,7 +15,6 @@ class NavMeshObstacleComponent;
 class AnimationComponent;
 class ImageComponent;
 class CanvasComponent;
-=======
 class ButtonComponent;
 
 class InspectorPanel : public Panel
