@@ -73,10 +73,19 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 
 void AnimationComponent::Save(Archive& archive) const
 {
-	
+	archive.AddInt("ID", GetID());
+	archive.AddInt("AnimationID", mAnimation->GetUID());
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	archive.AddBool("isEnabled", IsEnabled());
+
 }
 
 void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
 
+	int animationID = { 0 };
+	if (data.HasMember("AnimationID") && data["AnimationID"].IsInt()) {
+		animationID = data["AnimationID"].GetInt();
+	}
+	SetAnimation(animationID);
 }

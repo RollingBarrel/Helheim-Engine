@@ -21,6 +21,7 @@ ModuleOpenGL::ModuleOpenGL()
 // Destructor
 ModuleOpenGL::~ModuleOpenGL()
 {
+	delete mCameraUniBuffer;
 }
 
 static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
@@ -125,6 +126,8 @@ bool ModuleOpenGL::Init()
 	//InitializePrograms
 	mPbrProgramId = CreateShaderProgramFromPaths("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
 	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
+	mDebugDrawProgramId = CreateShaderProgramFromPaths("basicDebugShader.vs", "basicDebugShader.fs");
+
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -427,10 +430,9 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 	mPointLights.push_back(newComponent);
 	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
 	uint32_t size = mPointLights.size();
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(pLight.col[3]);
+	newComponent->SetRadius(pLight.pos[3]);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
-
 	return newComponent;
 }
 
@@ -490,8 +492,8 @@ SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObje
 	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(sLight.pos[3]);
+	newComponent->SetRadius(sLight.radius);
 	return newComponent;
 }
 

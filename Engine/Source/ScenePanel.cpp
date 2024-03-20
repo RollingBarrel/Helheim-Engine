@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
+#include "ModuleFileSystem.h"
 #include "ProjectPanel.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -23,7 +24,7 @@
 #include "Math/float2.h"
 #include "imgui.h"
 
-static void DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids, GameObject* parent)
+GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids, GameObject* parent)
 {
 	const char* name = "";
 
@@ -38,8 +39,6 @@ static void DragToScene(const ModelNode& node, std::vector<unsigned int>& animat
 	gameObject->SetRotation(node.mRotation);
 	gameObject->SetScale(node.mScale);
 	gameObject->RecalculateMatrices();
-
-	dd::axisTriad(gameObject->GetWorldTransform(),0.1f,1.0f);
 
 	if (node.mMeshId > -1)
 	{
@@ -61,10 +60,7 @@ static void DragToScene(const ModelNode& node, std::vector<unsigned int>& animat
 		}
 	}
 
-	for (int i = 0; i < node.mChildren.size(); ++i)
-	{
-		DragToScene(node.mChildren[i], animationUids, gameObject);
-	}
+	return gameObject;
 }
 
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
@@ -118,12 +114,37 @@ void ScenePanel::Draw(int windowFlags)
 						break;
 					case Resource::Type::Model:
 					{
-						DragToScene(reinterpret_cast<ResourceModel*>(resource)->GetRoot(), reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, App->GetScene()->GetRoot());
+						std::string name;
+
+						App->GetFileSystem()->SplitPath(asset->mPath, &name);
+
+						GameObject* gameObjectRoot = new GameObject(name.c_str(), App->GetScene()->GetRoot());
+
+						std::vector<GameObject*> tempVec;
+
+						tempVec.reserve(reinterpret_cast<ResourceModel*>(resource)->GetNodes().size());
+
+						for (int i = 0; i < tempVec.capacity(); ++i)
+						{
+							ModelNode node = reinterpret_cast<ResourceModel*>(resource)->GetNodes()[i];
+							if(node.mParentIndex == -1)
+								tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, gameObjectRoot));
+							else
+								tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, tempVec.at(node.mParentIndex)));
+						}
+
+						tempVec.clear();
+						
 						App->GetResource()->ReleaseResource(resource->GetUID());
 						break;
 					}
 					case Resource::Type::Scene:
 						break;
+					case Resource::Type::Object:
+					{
+						App->GetScene()->LoadPrefab(asset->mPath);
+						break;
+					}
 					case Resource::Type::NavMesh:
 						break;
 					}

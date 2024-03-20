@@ -11,6 +11,7 @@ class ENGINE_API ScriptComponent : public Component
 public:
 
 	ScriptComponent(GameObject* owner);
+	ScriptComponent(const ScriptComponent& other, GameObject* owner);
 	~ScriptComponent();
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;	
@@ -28,12 +29,6 @@ public:
 private:
 	Script* mScript = nullptr;
 	std::string mName = "";
-
-	float mPlayerSpeed = 1;
-	float mCoolDown = 2;
-	float mHeight = 1;
-	float mObjectSpeed = 1;
-
 	std::vector<ScriptVariable*> mData;
 };
 

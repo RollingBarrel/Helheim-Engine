@@ -3,12 +3,10 @@
 #include "ModuleFileSystem.h"
 #include "ResourceAnimation.h"
 #include "ImporterAnimation.h"
-
 #include "glew.h"
 
-#include "float2.h"
-#include "float3.h"
-#include "float4.h"
+
+
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
@@ -48,6 +46,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
         }
         //animation -> mUID = math::LCG().Int();
          //delete ourChannel;
+        
     }
         
     
@@ -223,6 +222,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
             }
             
             ourAnimation->mChannels[name] = channel;
+            delete[] name;
         }
 
         delete[] fileBuffer;

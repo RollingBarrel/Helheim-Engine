@@ -29,7 +29,6 @@ public:
 	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
-	GameObject(const char* name, unsigned int id, GameObject* parent, float3 position, float3 scale, Quat rotation);
 
 	~GameObject();
 
@@ -38,7 +37,7 @@ public:
 
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
-	const float3& GetRotation() const { return mLocalTransformMatrix.ToEulerXYZ(); }
+	const float3& GetRotation() const { return mEulerRotation; }
 	const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
@@ -75,7 +74,7 @@ public:
 	Component* GetComponent(ComponentType type);
 	std::vector<Component*> GetComponents(ComponentType type) const;
 
-	void Save(Archive& archive) const;
+	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);

@@ -21,10 +21,10 @@
     <ClInclude Include="framework.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Dash.h">
+    <ClInclude Include="..\Game\Assets\Scripts\TestScript.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\TestScript.h">
+    <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,10 +38,10 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Dash.cpp">
+    <ClCompile Include="TestScript.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
-    <ClCompile Include="TestScript.cpp">
+    <ClCompile Include="PlayerController.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>

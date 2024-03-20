@@ -9,7 +9,7 @@ HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 void HierarchyPanel::Draw(int windowFlags)
 {
 	GameObject* root = App->GetScene()->GetRoot();
-	if (mFocusedObject == nullptr) { mFocusedObject = root; }
+	if (mLastClickedObject == nullptr) { mLastClickedObject = root; }
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
@@ -18,7 +18,7 @@ void HierarchyPanel::Draw(int windowFlags)
 		mMarked.clear();
 		mUnmarkFlag = false;
 	}
-	if (!mFocusedObject->IsRoot()) { mMarked.insert(mFocusedObject); }
+	if (!mLastClickedObject->IsRoot()) { mMarked.insert(mLastClickedObject); }
 	mLastMarkSeen = 0; mShiftClicked = 0;
 	DrawTree(root);
 	ImGui::InvisibleButton("##", ImVec2(-1, -1));
@@ -32,7 +32,8 @@ void HierarchyPanel::Draw(int windowFlags)
 void HierarchyPanel::SetFocus(GameObject* focusedObject) 
 { 
 	mUnmarkFlag = true;
-	mFocusedObject = focusedObject; 
+	mFocusedObject = focusedObject;
+	mLastClickedObject = focusedObject; 
 }
 
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
@@ -52,11 +53,10 @@ void HierarchyPanel::OnLeftCkickNode(GameObject* node)
             if (mMarked.find(node) != mMarked.end()) { mUnmarkFlag = true; }
             else { mMarked.clear(); }
         }
-        mMarked.insert(node);
+        mLastClickedObject = node;
     }
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None) && !ImGui::IsItemToggledOpen())
     {
-        mMarked.erase(mFocusedObject);
         mFocusedObject = node;
     }
 }
@@ -68,12 +68,13 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 		if (mMarked.find(node) == mMarked.end()) {
 			mMarked.clear();
 		}
-		mFocusedObject = node;
+		mLastClickedObject = node;
 	}
 	if (ImGui::BeginPopup("OptionsGO")) {
 		if (ImGui::Selectable("Create GameObject")) {
 			GameObject* gameObject = new GameObject(node);
 			//node->AddChild(gameObject);
+			mLastClickedObject = gameObject;
 			mFocusedObject = gameObject;
 			mMarked.clear();
 		}
@@ -84,6 +85,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 				for (auto object : FilterMarked()) {
 					GameObject* gameObject = new GameObject(*object);
 					App->GetScene()->AddGameObjectToDuplicate(gameObject);
+					mLastClickedObject = gameObject;
 					mFocusedObject = gameObject;
 					selectAfter.insert(gameObject);
 				}
@@ -93,9 +95,17 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			if (ImGui::Selectable("Delete")) {
 				for (auto object : FilterMarked()) {
 					App->GetScene()->AddGameObjectToDelete(object);
+					mLastClickedObject = App->GetScene()->GetRoot();
 					mFocusedObject = App->GetScene()->GetRoot();
 				}
 				mMarked.clear();
+			}
+			if (ImGui::Selectable("Save as Prefab")) {
+				for (auto object : FilterMarked()) {
+					std::string file = "Assets/Prefabs/";
+					file.append('/' + object->GetName() + ".prfb");
+					App->GetScene()->SavePrefab(object, file.c_str());
+				}
 			}
 		}
 		ImGui::EndPopup();
@@ -158,11 +168,11 @@ void HierarchyPanel::DragAndDropSource(GameObject* source)
 	{
 		mUnmarkFlag = false;
 		ImGui::SetDragDropPayload("_TREENODE", &source, sizeof(*source));
-		if (mMarked.size() > 1) {
+		if (mMarked.size() <= 1) {
 			ImGui::Text(source->mName.c_str());
 		}
 		else {
-			ImGui::Text("N Elements");
+			ImGui::Text("%d Elements", mMarked.size());
 		}
 		
 		ImGui::EndDragDropSource();
@@ -223,7 +233,7 @@ void HierarchyPanel::ShiftClick(GameObject* node, bool selected, bool click) {
 // Excludes from the list of selected objects any that is the child (directly or indirectly) of another selected item.
 // Use this before doing any operation on all selected items that would already apply to all children
 // Ex. When you duplicate an object all it's children are allways duplicated too.
-std::vector<GameObject*> HierarchyPanel::FilterMarked() const {
+const std::vector<GameObject*> HierarchyPanel::FilterMarked() const {
 	std::vector<GameObject*> filteredList;
 	for (auto object : mMarked) {
 		GameObject* parent = object->mParent;

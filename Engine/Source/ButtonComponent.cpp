@@ -26,7 +26,7 @@ void ButtonComponent::OnClicked() const {
     for (Component* scriptComponent : componentList) {
         Script* script = ((ScriptComponent *)scriptComponent)->GetScriptInstance();
         if (script != nullptr) {
-            script->OnButtonClick();
+            //script->OnButtonClick();
         }
     }
 }

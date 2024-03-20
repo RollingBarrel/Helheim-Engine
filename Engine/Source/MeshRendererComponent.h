@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
-#include "GameObject.h"
 
 class Mesh;
 struct Material;
@@ -29,6 +28,9 @@ public:
 	void SetMesh(unsigned int uid);
 	const AABB GetAABB() const { return mAABB; }
 	const AABB GetAABBWorld() const { return mAABBWorld; }
+
+	void Enable() override;
+	void Disable() override;
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }

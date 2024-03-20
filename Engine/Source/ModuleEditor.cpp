@@ -21,6 +21,7 @@
 #include "LightningPanel.h"
 #include "ResourcePanel.h"
 #include "TimerPanel.h"
+#include "SettingsPanel.h"
 #include "EditorControlPanel.h"
 #include "TagsManagerPanel.h"
 
@@ -30,6 +31,8 @@
 #include "ImGuizmo.h"
 #include "OptickAdapter.h"
 #include "IconsFontAwesome6.h"
+
+#include "ImGuiFileDialog.h"
 
 ModuleEditor::ModuleEditor()
 {
@@ -48,9 +51,15 @@ ModuleEditor::ModuleEditor()
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
 	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
+	mPanels[SETTINGSPANEL] = new SettingsPanel();
 
 	// Panels closed by default
 	mPanels[TAGSMANAGERPANEL]->Close();
+
+	for (auto panel : mPanels) 
+	{
+		mPanelNames.push_back(panel.first);
+	}
 }
 
 ModuleEditor::~ModuleEditor()
@@ -67,6 +76,7 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io->ConfigDragClickToInputText = true;
+	io->IniFilename = NULL;
 	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
@@ -82,9 +92,13 @@ bool ModuleEditor::Init()
 	icons_config.GlyphMinAdvanceX = iconFontSize;
 	icons_config.GlyphOffset = ImVec2(0, 5); // This Y offset works with the Guizmo buttons and its pertinent icons, but could be different for other button sizes
 
-	io->Fonts->AddFontFromFileTTF("Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
+	io->Fonts->AddFontFromFileTTF("InternalAssets/Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
 
 	mOptick = new OptickAdapter();
+
+	// Load the saved layout when opening the engine
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
+	mPanels[SETTINGSPANEL]->Close();
 
 	return true;
 }
@@ -165,18 +179,21 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 
 void ModuleEditor::ShowMainMenuBar() 
 {
-
+	IGFD::FileDialogConfig config;
+	config.path = "./Assets/Scenes";
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Load Scene"))
 			{
+				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".json", config);
 				mLoadSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Save Scene"))
 			{
-				App->GetScene()->Save("scene.json");
+				ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+				mSaveSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Quit"))
 			{
@@ -184,8 +201,14 @@ void ModuleEditor::ShowMainMenuBar()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Edit")) 
-		{
+		if (ImGui::BeginMenu("Edit")) {
+			Panel* settingsPanel = mPanels[SETTINGSPANEL];
+			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) {
+				if (settingsPanel)
+				{
+					settingsPanel->IsOpen() ? settingsPanel->Close() : settingsPanel->Open();
+				}
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Assets")) 
@@ -334,25 +357,36 @@ void ModuleEditor::ShowMainMenuBar()
 	{
 		OpenLoadScene();
 	}
+
+	if (mSaveSceneOpen)
+	{
+		OpenSaveScene();
+	}
 }
 
 void ModuleEditor::OpenLoadScene() {
-	ImGui::OpenPopup("LoadSceneWindow");
-	if (ImGui::BeginPopupModal("LoadSceneWindow", &mLoadSceneOpen))
-	{
-		ImGui::Text("Which file you wish to load?");
-		static char fileName[128] = "";
-		ImGui::InputText(".json", fileName, IM_ARRAYSIZE(fileName));
-		if (ImGui::Button("Load")) 
-		{
-			if (!strcmp(fileName, "scene")) 
-			{
-				App->GetScene()->Load(fileName);
-				ImGui::CloseCurrentPopup();
-				mLoadSceneOpen = false;
-			}
+	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
+	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
+		if (ImGuiFileDialog::Instance()->IsOk()) {
+			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+			App->GetScene()->Load(filePathName.c_str());
 		}
-		ImGui::EndPopup();
+
+		ImGuiFileDialog::Instance()->Close();
+		mLoadSceneOpen = false;
+	}
+}
+
+void ModuleEditor::OpenSaveScene() {
+	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
+	if (ImGuiFileDialog::Instance()->Display("SaveScene")) {
+		if (ImGuiFileDialog::Instance()->IsOk()) {
+			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+			App->GetScene()->Save(filePathName.c_str());
+		}
+
+		ImGuiFileDialog::Instance()->Close();
+		mSaveSceneOpen = false;
 	}
 }
 
@@ -369,6 +403,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
 	Panel* lightningPanel = mPanels[LIGHTNINGPANEL];
 	Panel* resourcePanel = mPanels[RESOURCEPANEL];
+	Panel* settingsPanel = mPanels[SETTINGSPANEL];
 	
 	Panel* aboutPanel = mPanels[ABOUTPANEL];
 
@@ -386,6 +421,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		editorControlPanel->Open();
 		lightningPanel->Open();
 		resourcePanel->Open();
+		settingsPanel->Open();
 	}
 	else 
 	{
@@ -401,6 +437,7 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		editorControlPanel->Close();
 		lightningPanel->Close();
 		resourcePanel->Close();
+		settingsPanel->Close();
 		aboutPanel->Close();
 	}
 }

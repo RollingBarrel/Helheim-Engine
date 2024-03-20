@@ -102,7 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,6 +193,7 @@
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_draw.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_widgets.cpp" />
+    <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp" />
@@ -264,6 +265,7 @@
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
+    <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
     <ClCompile Include="log.cpp" />
@@ -280,7 +282,6 @@
     <ClCompile Include="ModuleScriptManager.cpp" />
     <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
-    <ClCompile Include="NavMeshControllerComponent.cpp" />
     <ClCompile Include="OptickAdapter.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
@@ -300,6 +301,7 @@
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
+    <ClCompile Include="SettingsPanel.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
@@ -354,6 +356,7 @@
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_textedit.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_truetype.h" />
+    <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h" />
@@ -515,6 +518,7 @@
     <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="OptickAdapter.h" />
+    <ClInclude Include="SettingsPanel.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
     <ClInclude Include="TimerPanel.h" />
     <ClInclude Include="Transform2DComponent.h" />
@@ -537,7 +541,6 @@
     <ClInclude Include="ModuleResource.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="NavMeshControllerComponent.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PausePanel.h" />
     <ClInclude Include="PointLightComponent.h" />

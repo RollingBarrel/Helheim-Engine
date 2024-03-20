@@ -67,6 +67,17 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 	}
 }
 
+void MeshRendererComponent::Enable()
+{
+	App->GetOpenGL()->BatchAddMesh(this);
+
+}
+
+void MeshRendererComponent::Disable()
+{
+	App->GetOpenGL()->BatchRemoveMesh(this);
+}
+
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
 	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
@@ -78,7 +89,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		mMaterial = tmpMaterial;
 	else
 	{
-		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
+		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1); //Memory Leak
 	}
 
 	if (mMaterial && mMesh)

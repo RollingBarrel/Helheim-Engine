@@ -40,6 +40,8 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         }
     }
     
+    delete[] pathTex;
+
     // for get all information of the texture and see the parameters it have
     unsigned int internalFormat;
     unsigned int texFormat;
@@ -63,6 +65,11 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         internalFormat = GL_RGB8;
         texFormat = GL_BGR;
         dataType = GL_UNSIGNED_BYTE;
+        break;
+    case DXGI_FORMAT_R16G16B16A16_UNORM:
+        internalFormat = GL_RGBA16;
+        texFormat = GL_RGBA;
+        dataType = GL_UNSIGNED_SHORT;
         break;
     default:
         assert(false && "Unsupported format");
@@ -157,8 +164,7 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         cursor += bytes;
 
         bytes = sizeof(unsigned char) * numPixels;
-        unsigned char* pixels = nullptr;
-        pixels = new unsigned char[numPixels];
+        unsigned char* pixels = new unsigned char[numPixels];
         memcpy(pixels, cursor, bytes);
 
         texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
