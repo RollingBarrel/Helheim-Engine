@@ -479,6 +479,10 @@
     <ClCompile Include="ImageComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleDetourNavigation.cpp" />
+    <ClCompile Include="ButtonComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1273,6 +1277,10 @@
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="ImageComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDetourNavigation.h" />
+    <ClInclude Include="ButtonComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>

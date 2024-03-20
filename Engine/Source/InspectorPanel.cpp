@@ -16,6 +16,7 @@
 #include "AIAGentComponent.h"
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
+#include "ButtonComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -370,6 +371,11 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
 					break;
 				}
+				case ComponentType::BUTTON: {
+					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
+					break;
+				}
+										
 			}
 		}
 		ImGui::PopID();
@@ -774,4 +780,8 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 	else {
 		App->GetUI()->SetScreenSpace(true);
 	}
+}
+
+void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {
+	
 }

@@ -24,6 +24,7 @@
 #include "CanvasComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ButtonComponent.h"
 
 GameObject::GameObject(GameObject* parent)
 	:mID(LCG().Int()), mName("GameObject"), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
@@ -126,7 +127,7 @@ Component* GameObject::GetComponent(ComponentType type)
 	return nullptr;
 }
 
-std::vector<Component*> GameObject::GetComponents(ComponentType type)
+std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 {
 	std::vector<Component*> matchingComponents;
 
@@ -422,6 +423,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		break;
 	case ComponentType::CANVAS:
 		newComponent = new CanvasComponent(this);
+		break;
+	case ComponentType::BUTTON:
+		newComponent = new ButtonComponent(this);
 		break;
 	default:
 		break;

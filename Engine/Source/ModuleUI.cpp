@@ -3,15 +3,18 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
+#include "ModuleEditor.h"
+#include "ModuleInput.h"
 #include "Application.h"
 
 #include "GameObject.h"
 #include "CanvasComponent.h"
 #include "ImageComponent.h"
-
+#include "ButtonComponent.h"
+#include "ScenePanel.h"
 #include "glew.h"
 #include "SDL.h"
-
+#include "Quadtree.h"
 #include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
@@ -77,6 +80,11 @@ update_status ModuleUI::PreUpdate(float dt) {
 }
 
 update_status ModuleUI::Update(float dt) {
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+	{
+		CheckRaycast();
+	}
+
 	return UPDATE_CONTINUE;
 };
 
@@ -247,4 +255,40 @@ unsigned int ModuleUI::CompileShader(unsigned type, const char* source) const
 		}
 	}
 	return shaderID;
+}
+
+void ModuleUI::CheckRaycast()
+{
+	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
+
+	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
+	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
+
+	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
+
+	LineSegment raySegment = App->GetCamera()->GetFrustum()->UnProjectLineSegment(normalizedX, normalizedY);
+
+	Ray ray;
+	ray.pos = raySegment.a;
+	ray.dir = (raySegment.b - raySegment.a);
+
+	bool intersects = false;
+	bool intersectsTriangle = false;
+
+	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
+
+	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) {
+
+	}
+	else {
+		const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&ray);
+		if (intersectGameObjectPair.second != nullptr)
+		{
+			GameObject* gameObject = intersectGameObjectPair.second;
+			ButtonComponent* component = (ButtonComponent*) gameObject->GetComponent(ComponentType::BUTTON);
+			if (component != nullptr) component->OnClicked();
+				
+		}
+	}
 }

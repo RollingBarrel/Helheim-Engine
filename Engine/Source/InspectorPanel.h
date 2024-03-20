@@ -15,6 +15,7 @@ class NavMeshObstacleComponent;
 class AnimationComponent;
 class ImageComponent;
 class CanvasComponent;
+class ButtonComponent;
 
 class InspectorPanel : public Panel
 {
@@ -36,6 +37,7 @@ private:
 	void ShowSameComponentPopup();
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
+
 	void DrawTestComponent(TestComponent* component);
 	void DrawCameraComponent(CameraComponent* component);
 	void DrawScriptComponent(ScriptComponent* component);
@@ -45,6 +47,8 @@ private:
 	void DrawAIAgentComponent(AIAgentComponent* component);
 	void DrawImageComponent(ImageComponent* component);
 	void DrawCanvasComponent(CanvasComponent* component);
+	void DrawButtonComponent(ButtonComponent* component);
+
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);

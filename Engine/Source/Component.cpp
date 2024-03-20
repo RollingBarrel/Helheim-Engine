@@ -34,6 +34,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Animation";
 		case ComponentType::IMAGE:
 			return "Image";
+		case ComponentType::BUTTON:
+			return "Button";
 		default:
 			return "None";
 		}

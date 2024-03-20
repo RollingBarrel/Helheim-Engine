@@ -25,6 +25,7 @@ public:
 	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
 
 	void SetScreenSpace(bool screen);
+	void CheckRaycast();
 
 private:
 	void DrawWidget(GameObject* gameObject);

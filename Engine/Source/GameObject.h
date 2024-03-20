@@ -33,7 +33,6 @@ public:
 
 	~GameObject();
 
-	std::vector<Component*> GetComponents(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
 
@@ -74,6 +73,7 @@ public:
 
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type);
+	std::vector<Component*> GetComponents(ComponentType type) const;
 
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
