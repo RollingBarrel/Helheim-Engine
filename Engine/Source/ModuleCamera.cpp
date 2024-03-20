@@ -113,7 +113,7 @@ update_status ModuleCamera::Update(float dt)
 	}
 	
 	const auto& io = ImGui::GetIO();
-
+	bool hasBeenUpdated = false;
 
 	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
 	{
@@ -136,6 +136,7 @@ update_status ModuleCamera::Update(float dt)
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
 			int mX, mY;
+			hasBeenUpdated = true;
 			App->GetInput()->GetMouseMotion(mX, mY);
 			mCurrentCameraComponent->Rotate(float3::unitY, -mX * rotateCameraVel);
 			mCurrentCameraComponent->Rotate(mCurrentCameraComponent->GetFrustum().WorldRight(), -mY * rotateCameraVel);
@@ -212,7 +213,7 @@ update_status ModuleCamera::Update(float dt)
 		}
 	}
 
-	if(mCurrentCamera && mCurrentCameraComponent){
+	if(mCurrentCamera && mCurrentCameraComponent && hasBeenUpdated){ //TODO: add a bool if the camera had an input
 		float3 position = mCurrentCameraComponent->GetFrustum().pos;
 		float3x3 rotationMatrix = float3x3(mCurrentCameraComponent->GetFrustum().WorldRight(), mCurrentCameraComponent->GetFrustum().up, mCurrentCameraComponent->GetFrustum().front);
 		Quat rotation = Quat(rotationMatrix);
