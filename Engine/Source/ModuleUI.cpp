@@ -3,6 +3,8 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
+#include "ModuleEditor.h"
+#include "ModuleInput.h"
 #include "Application.h"
 
 #include "GameObject.h"
@@ -11,6 +13,10 @@
 
 #include "glew.h"
 #include "SDL.h"
+#include "ButtonComponent.h"
+#include "ResourceTexture.h"
+#include "ScenePanel.h"
+#include "Quadtree.h"
 #include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
@@ -34,9 +40,9 @@ bool ModuleUI::Init() {
 	CreateVAO();
 
 	mUIProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
-	
+
 	mUIfrustum = new Frustum();
-	
+
 	mUIfrustum->type = FrustumType::OrthographicFrustum;
 	mUIfrustum->orthographicWidth = SCREEN_WIDTH;
 	mUIfrustum->orthographicHeight = SCREEN_HEIGHT;
@@ -47,7 +53,7 @@ bool ModuleUI::Init() {
 
 	mUIfrustum->nearPlaneDistance = 0.0f;
 	mUIfrustum->farPlaneDistance = 100.0f;
-	
+
 	return true;
 };
 
@@ -69,6 +75,11 @@ update_status ModuleUI::PreUpdate(float dt) {
 }
 
 update_status ModuleUI::Update(float dt) {
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+	{
+		CheckRaycast();
+	}
+
 	return UPDATE_CONTINUE;
 };
 
@@ -93,7 +104,6 @@ void ModuleUI::SetScreenSpace(bool screen) {
 bool ModuleUI::GetScreenSpace() {
 	return mScreenSpace;
 }
-
 void ModuleUI::DrawWidget(GameObject* gameObject)
 {
 	if (gameObject == nullptr) return;
@@ -248,10 +258,39 @@ unsigned int ModuleUI::CompileShader(unsigned type, const char* source) const
 void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height) {
 	float heightFrustum = height;
 	float widthFrustum = width;
-	
+
 	//float aspect_ratio = widthFrustum / heightFrustum;
 	//widthFrustum /= aspect_ratio;
 
 	mUIfrustum->orthographicWidth = widthFrustum; //Change with canvas width
 	mUIfrustum->orthographicHeight = heightFrustum; //Change with canvas height
+}
+
+void ModuleUI::CheckRaycast()
+{
+	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
+
+	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
+	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
+
+	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
+	
+	for (GameObject* gameObject : mCanvas->GetChildren())
+	{
+		ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
+		if (image != nullptr)
+		{
+			// Check if the mouse position is inside the bounds of the image
+			if (normalizedX >= gameObject->GetWorldPosition().x && normalizedX <= gameObject->GetWorldPosition().x + image->GetImage()->GetWidth() &&
+				normalizedY >= gameObject->GetWorldPosition().y && normalizedY <= gameObject->GetWorldPosition().y + image->GetImage()->GetHeight())
+			{
+				ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
+				if (button != nullptr && button->IsEnabled())
+				{
+					button->OnClicked();
+				}
+			}
+		}
+	}
 }

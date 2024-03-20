@@ -26,6 +26,7 @@ public:
 
 	void SetScreenSpace(bool screen);
 	bool GetScreenSpace();
+	void CheckRaycast();
 	void ResizeFrustum(unsigned int width, unsigned int height);
 
 private:

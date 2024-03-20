@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
+#include "ModuleScene.h"
 #include "ModuleCamera.h"
 #include "ModuleResource.h"
 #include "ModuleWindow.h"
@@ -8,6 +9,7 @@
 #include "glew.h"
 #include "ResourceTexture.h"
 #include "ImporterTexture.h"
+
 #include "GameObject.h"
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
@@ -52,7 +54,10 @@ void ImageComponent::Draw() const
             //World Mode
             model = GetOwner()->GetWorldTransform();
         }
-        
+
+        //float4x4 model = GetOwner()->GetWorldTransform();
+        float4x4 model = GetOwner()->GetWorldTransform() * float4x4::FromTRS(float3::zero, Quat::identity, float3(mImage->GetWidth(), mImage->GetHeight(), 0));
+
         float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 
         glBindVertexArray(App->GetUI()->GetQuadVAO());
