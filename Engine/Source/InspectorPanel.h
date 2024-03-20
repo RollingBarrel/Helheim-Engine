@@ -13,6 +13,8 @@ class SpotLightComponent;
 class AIAgentComponent;
 class NavMeshObstacleComponent;
 class AnimationComponent;
+class ImageComponent;
+class CanvasComponent;
 
 class InspectorPanel : public Panel
 {
@@ -23,6 +25,7 @@ public:
 
 private:
 	bool mSameComponentPopup = false;
+
 	Component* mComponent = nullptr;
 
 	bool mLocked = false;
@@ -40,6 +43,8 @@ private:
 	void DrawSpotLightComponent(SpotLightComponent* component);
 	void DrawMeshRendererComponent(MeshRendererComponent* component);
 	void DrawAIAgentComponent(AIAgentComponent* component);
+	void DrawImageComponent(ImageComponent* component);
+	void DrawCanvasComponent(CanvasComponent* component);
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);

@@ -245,6 +245,7 @@
     <ClCompile Include="EditorControlPanel.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
+    <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
@@ -476,6 +477,7 @@
     <ClInclude Include="ModuleEvent.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
+    <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterMesh.h" />
@@ -519,6 +521,8 @@
     <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
+    <None Include="..\Game\Assets\Shaders\ui.fs" />
+    <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="..\Game\Assets\Shaders\Vertex.vs" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl" />

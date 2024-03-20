@@ -6,6 +6,7 @@
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
 #include "GameObject.h"
+
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
@@ -13,6 +14,9 @@
 #include "ScriptComponent.h"
 #include "CameraComponent.h"
 #include "AIAGentComponent.h"
+#include "ImageComponent.h"
+#include "CanvasComponent.h"
+
 #include "ImporterMaterial.h"
 #include "Tag.h"
 #include "MathFunc.h"
@@ -23,6 +27,9 @@
 #include "AnimationController.h"
 
 #include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+
+#include "ModuleUI.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -355,6 +362,14 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				}
+				case ComponentType::IMAGE: {
+					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+					break;
+				}
+				case ComponentType::CANVAS: {
+					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+					break;
+				}
 			}
 		}
 		ImGui::PopID();
@@ -640,7 +655,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	const char* items[] = { "Select Script", "TestScript", "Dash" };
 	const char* currentItem = component->GetScriptName();
-	
+
 
 	if (ImGui::BeginCombo("##combo", currentItem))
 	{
@@ -650,11 +665,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			if (ImGui::Selectable(items[n], is_selected)) {
 				currentItem = items[n];
 				component->LoadScript(currentItem);
-			}		
-			if (is_selected) {
-				ImGui::SetItemDefaultFocus(); 
 			}
-				  
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+
 		}
 		ImGui::EndCombo();
 	}
@@ -665,8 +680,8 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 
 	ImGui::SeparatorText("Attributes");
-	
-	for (ScriptVariable* variable : component->mData) { 
+
+	for (ScriptVariable* variable : component->mData) {
 		switch (variable->mType)
 		{
 		case VariableType::INT:
@@ -683,11 +698,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		case VariableType::GAMEOBJECT:
 		{
-			
+
 			GameObject* go = *(GameObject**)variable->mData;
 			ImGui::Text(variable->mName);
 			ImGui::SameLine();
-			const char* str ="";
+			const char* str = "";
 			if (!go) {
 				str = "Drop a GameObject Here";
 			}
@@ -708,7 +723,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		}
 	}
-	
+
 }
 
 
@@ -719,14 +734,44 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	static bool play = false;
 
-	if(ImGui::Button("Play"))
+	if (ImGui::Button("Play"))
 	{
 		component->OnStart();
 
 		play = true;
 	}
 
-	if(play)
+	if (play)
 		component->OnUpdate();
+}
 
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
+	static int resourceId = int(imageComponent->GetResourceId());
+
+	//TODO: Handle the case where the resource is not found
+	ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		imageComponent->SetImage(resourceId);
+	}
+
+	//TODO: Decide what information to display 
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+}
+
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
+	const char* renderModes[] = { "World Space", "Screen Space" };
+	static int selectedRenderMode = 0;
+
+	ImGui::Text("Render Mode");
+	ImGui::SameLine();
+	ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes));
+
+	if (selectedRenderMode == 0) {
+		App->GetUI()->SetScreenSpace(false);
+	}
+	else {
+		App->GetUI()->SetScreenSpace(true);
+	}
 }

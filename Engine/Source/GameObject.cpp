@@ -7,8 +7,6 @@
 #include "Quadtree.h"
 #include "imgui.h"
 #include "ModuleOpenGL.h"
-#include "PointLightComponent.h"
-#include "SpotLightComponent.h"
 #include <algorithm>
 #include "MathFunc.h"
 
@@ -22,9 +20,13 @@
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+#include "ImageComponent.h"
+#include "CanvasComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 
 GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
+	:mID(LCG().Int()), mName("GameObject"), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -124,6 +126,19 @@ Component* GameObject::GetComponent(ComponentType type)
 	return nullptr;
 }
 
+std::vector<Component*> GameObject::GetComponents(ComponentType type)
+{
+	std::vector<Component*> matchingComponents;
+
+	for (auto component : mComponents) {
+		if (component->GetType() == type) {
+			matchingComponents.push_back(component);
+		}
+	}
+
+	return matchingComponents;
+}
+
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
@@ -197,7 +212,7 @@ void GameObject::AddComponentToDelete(Component* component)
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
 	float3 difference = rotationInRadians - mEulerRotation;
-	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
+	Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x, rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	mRotation = mRotation * deltaRotation;
 	mEulerRotation = rotationInRadians;
 
@@ -240,7 +255,7 @@ void GameObject::SetScale(const float3& scale)
 
 GameObject* GameObject::Find(const char* name)
 {
-	
+
 	GameObject* gameObject = nullptr;
 
 	for (auto child : mChildren) {
@@ -366,44 +381,50 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
-		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this);
-			break;
-		case ComponentType::CAMERA:
-			newComponent = new CameraComponent(this);
-			break;
-		case ComponentType::POINTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
-			break;
-		}
-		case ComponentType::SPOTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
-			break;
-		}
-		case ComponentType::SCRIPT:
-			newComponent = new ScriptComponent(this);
-			break;
-		case ComponentType::TEST:
-			newComponent = new TestComponent(this);
-			break;
-		case ComponentType::AIAGENT:
-			newComponent = new AIAgentComponent(this);
-			break;
-		case ComponentType::NAVMESHCONTROLLER:
-			newComponent = new NavMeshControllerComponent(this);
-			break;
-		case ComponentType::NAVMESHOBSTACLE:
-			newComponent = new NavMeshObstacleComponent(this);
-			break;
-		case ComponentType::ANIMATION:
-			newComponent = new AnimationComponent(this);
-			break;
-		default:
-			break;
+	case ComponentType::MESHRENDERER:
+		newComponent = new MeshRendererComponent(this);
+		break;
+	case ComponentType::CAMERA:
+		newComponent = new CameraComponent(this);
+		break;
+	case ComponentType::POINTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
+		break;
+	}
+	case ComponentType::SPOTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
+		break;
+	}
+	case ComponentType::SCRIPT:
+		newComponent = new ScriptComponent(this);
+		break;
+	case ComponentType::TEST:
+		newComponent = new TestComponent(this);
+		break;
+	case ComponentType::AIAGENT:
+		newComponent = new AIAgentComponent(this);
+		break;
+	case ComponentType::NAVMESHCONTROLLER:
+		newComponent = new NavMeshControllerComponent(this);
+		break;
+	case ComponentType::NAVMESHOBSTACLE:
+		newComponent = new NavMeshObstacleComponent(this);
+		break;
+	case ComponentType::ANIMATION:
+		newComponent = new AnimationComponent(this);
+		break;
+	case ComponentType::IMAGE:
+		newComponent = new ImageComponent(this);
+		break;
+	case ComponentType::CANVAS:
+		newComponent = new CanvasComponent(this);
+		break;
+	default:
+		break;
 	}
 
 	if (newComponent) {
@@ -546,7 +567,7 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID) {
 			}
 		}
 	}
-	
+
 	return gameObjectParent;
 }
 
@@ -671,7 +692,7 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 	else {
 		return nullptr;
 	}
-	
+
 }
 
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
@@ -682,5 +703,4 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 
 	return foundGameObjects;
 }
-
 

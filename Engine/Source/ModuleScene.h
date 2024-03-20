@@ -69,7 +69,7 @@ private:
 
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive);
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive);
-	
+
 	Quadtree* mQuadtreeRoot;
 	bool mDrawQuadtree = false;
 	bool mApplyculling = false;

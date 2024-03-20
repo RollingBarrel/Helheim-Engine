@@ -33,10 +33,10 @@ public:
 
 	~GameObject();
 
-
+	std::vector<Component*> GetComponents(ComponentType type);
 	void RecalculateMatrices();
 	void Update();
-	
+
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mLocalTransformMatrix.ToEulerXYZ(); }
@@ -46,7 +46,7 @@ public:
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
-	const float3& GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); }
+	const float3& GetFront() const { return (mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
 
 	void ResetTransform();
@@ -56,7 +56,7 @@ public:
 	bool IsEnabled() const { return mIsEnabled; }
 	// Status for this GameObject and all its ancestors
 	bool IsActive() const { return mIsEnabled && mIsActive; }
-	
+
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
 	void AddChild(GameObject* child, const int aboveThisId = 0);
@@ -110,4 +110,3 @@ private:
 	bool mIsActive = true;
 	bool isTransformModified = false;
 };
-

@@ -55,7 +55,7 @@ bool ModuleScene::Init()
 
 	//Save("Scene");
 	Load("scene");
-	
+
 	return true;
 }
 
@@ -202,7 +202,7 @@ void ModuleScene::Load(const char* sceneName) {
 	mQuadtreeRoot->CleanUp();
 	delete mRoot;
 	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
-	
+
 
 	if (document.HasMember("Scene") && document["Scene"].IsObject()) {
 		const rapidjson::Value& sceneValue = document["Scene"];
@@ -234,7 +234,7 @@ GameObject* ModuleScene::Find(unsigned int UID)
 	else {
 		return mRoot;
 	}
-	
+
 }
 
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
@@ -302,7 +302,7 @@ update_status ModuleScene::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DeleteGameObjects(){
+void ModuleScene::DeleteGameObjects() {
 
 	for (auto gameObject : mGameObjectsToDelete) {
 		gameObject->GetParent()->DeleteChild(gameObject);
