@@ -428,10 +428,9 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 	mPointLights.push_back(newComponent);
 	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
 	uint32_t size = mPointLights.size();
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(pLight.col[3]);
+	newComponent->SetRadius(pLight.pos[3]);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
-
 	return newComponent;
 }
 
@@ -491,8 +490,8 @@ SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObje
 	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(sLight.pos[3]);
+	newComponent->SetRadius(sLight.radius);
 	return newComponent;
 }
 
