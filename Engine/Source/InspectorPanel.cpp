@@ -7,6 +7,7 @@
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
 #include "GameObject.h"
+
 #include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
@@ -14,6 +15,10 @@
 #include "ScriptComponent.h"
 #include "CameraComponent.h"
 #include "AIAGentComponent.h"
+#include "ImageComponent.h"
+#include "CanvasComponent.h"
+#include "ButtonComponent.h"
+
 #include "ImporterMaterial.h"
 #include "Tag.h"
 #include "MathFunc.h"
@@ -24,6 +29,9 @@
 #include "AnimationController.h"
 
 #include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+
+#include "ModuleUI.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -354,6 +362,18 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::TEST: {
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
+					break;
+				}
+				case ComponentType::IMAGE: {
+					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+					break;
+				}
+				case ComponentType::CANVAS: {
+					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+					break;
+				}
+				case ComponentType::BUTTON: {
+					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
 				}
 			}
@@ -688,8 +708,8 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 
 	ImGui::SeparatorText("Attributes");
-	
-	for (ScriptVariable* variable : component->mData) { 
+
+	for (ScriptVariable* variable : component->mData) {
 		switch (variable->mType)
 		{
 		case VariableType::INT:
@@ -706,11 +726,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		case VariableType::GAMEOBJECT:
 		{
-			
+
 			GameObject* go = *(GameObject**)variable->mData;
 			ImGui::Text(variable->mName);
 			ImGui::SameLine();
-			const char* str ="";
+			const char* str = "";
 			if (!go) {
 				str = "Drop a GameObject Here";
 			}
@@ -731,7 +751,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		}
 	}
-	
+
 }
 
 
@@ -742,7 +762,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	static bool play = false;
 
-	if(ImGui::Button("Play"))
+	if (ImGui::Button("Play"))
 	{
 		if (component->GetAnimation() == nullptr)
 			return;
@@ -752,7 +772,40 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		(play) ? play = false : play = true;
 	}
 
-	if(play)
+	if (play)
 		component->OnUpdate();
 
 }
+
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
+	static int resourceId = int(imageComponent->GetResourceId());
+
+	//TODO: Handle the case where the resource is not found
+	ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		imageComponent->SetImage(resourceId);
+	}
+
+	//TODO: Decide what information to display 
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+}
+
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
+	const char* renderModes[] = { "World Space", "Screen Space" };
+	static int selectedRenderMode = 0;
+
+	ImGui::Text("Render Mode");
+	ImGui::SameLine();
+	ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes));
+
+	if (selectedRenderMode == 0) {
+		App->GetUI()->SetScreenSpace(false);
+	}
+	else {
+		App->GetUI()->SetScreenSpace(true);
+	}
+}
+
+void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};

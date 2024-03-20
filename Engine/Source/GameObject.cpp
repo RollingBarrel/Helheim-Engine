@@ -5,8 +5,6 @@
 #include "ModuleOpenGL.h"
 
 #include "Component.h"
-#include "PointLightComponent.h"
-#include "SpotLightComponent.h"
 #include <algorithm>
 #include <unordered_map>
 #include "MathFunc.h"
@@ -17,16 +15,19 @@
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+#include "ImageComponent.h"
+#include "CanvasComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
+#include "ButtonComponent.h"
 #include "ScriptComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
 #include <regex>
 
-
-
 GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
+	:mID(LCG().Int()), mName("GameObject"), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -116,6 +117,19 @@ Component* GameObject::GetComponent(ComponentType type)
 	return nullptr;
 }
 
+std::vector<Component*> GameObject::GetComponents(ComponentType type) const
+{
+	std::vector<Component*> matchingComponents;
+
+	for (auto component : mComponents) {
+		if (component->GetType() == type) {
+			matchingComponents.push_back(component);
+		}
+	}
+
+	return matchingComponents;
+}
+
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
@@ -191,7 +205,7 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 	//float3 difference = rotationInRadians - mEulerRotation;
 	//Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	//mRotation = mRotation * deltaRotation;
-	mRotation = Quat::FromEulerXYZ(rotationInRadians.x , rotationInRadians.y, rotationInRadians.z);
+	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
 	mEulerRotation = rotationInRadians;
 
 	//if (GetComponent(ComponentType::CAMERA) != nullptr) {
@@ -233,7 +247,7 @@ void GameObject::SetScale(const float3& scale)
 
 GameObject* GameObject::Find(const char* name)
 {
-	
+
 	GameObject* gameObject = nullptr;
 
 	for (auto child : mChildren) {
@@ -418,7 +432,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		case ComponentType::SPOTLIGHT:
 		{
 			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
+			newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
 			break;
 		}
 		case ComponentType::SCRIPT:
@@ -435,6 +449,15 @@ Component* GameObject::CreateComponent(ComponentType type) {
 			break;
 		case ComponentType::ANIMATION:
 			newComponent = new AnimationComponent(this);
+			break;
+		case ComponentType::IMAGE:
+			newComponent = new ImageComponent(this);
+			break;
+		case ComponentType::CANVAS:
+			newComponent = new CanvasComponent(this);
+			break;
+		case ComponentType::BUTTON:
+			newComponent = new ButtonComponent(this);
 			break;
 		default:
 			break;
@@ -599,7 +622,7 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID) {
 			}
 		}
 	}
-	
+
 	return gameObjectParent;
 }
 
@@ -731,7 +754,7 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 	else {
 		return nullptr;
 	}
-	
+
 }
 
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
@@ -742,5 +765,4 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 
 	return foundGameObjects;
 }
-
 

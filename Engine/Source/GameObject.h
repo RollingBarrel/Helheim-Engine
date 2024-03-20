@@ -32,10 +32,9 @@ public:
 
 	~GameObject();
 
-
 	void RecalculateMatrices();
 	void Update();
-	
+
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mEulerRotation; }
@@ -57,7 +56,7 @@ public:
 	bool IsEnabled() const { return mIsEnabled; }
 	// Status for this GameObject and all its ancestors
 	bool IsActive() const { return mIsEnabled && mIsActive; }
-	
+
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
 	void AddChild(GameObject* child, const int aboveThisId = 0);
@@ -75,6 +74,7 @@ public:
 
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type);
+	std::vector<Component*> GetComponents(ComponentType type) const;
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
@@ -111,4 +111,3 @@ private:
 	bool mIsActive = true;
 	bool isTransformModified = false;
 };
-
