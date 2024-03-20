@@ -157,18 +157,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Game\Assets\Scripts\Dash.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\Movement.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Dash.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Macros.h" />
-    <ClCompile Include="Movement.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

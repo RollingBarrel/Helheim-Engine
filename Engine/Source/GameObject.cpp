@@ -183,6 +183,11 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 	mRotation = Quat::FromEulerXYZ(rotationInRadians.x , rotationInRadians.y, rotationInRadians.z);
 	mEulerRotation = rotationInRadians;
 
+	//if (GetComponent(ComponentType::CAMERA) != nullptr) {
+		//CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
+		//camera->SetRotation(difference);
+	//}
+
 	isTransformModified = true;
 }
 

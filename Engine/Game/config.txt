@@ -1,4 +1,4 @@
-Apply frustum culling: 1
+Apply frustum culling: 0
 Engine Vsync enabled: 1
 Engine FPS Limit: 60
 Game Vsync enabled: 1

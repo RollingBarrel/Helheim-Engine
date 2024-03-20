@@ -456,6 +456,9 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleDetourNavigation.cpp" />
+    <ClCompile Include="ResourceObject.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">

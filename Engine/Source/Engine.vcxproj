@@ -259,6 +259,7 @@
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
+    <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
     <ClCompile Include="log.cpp" />

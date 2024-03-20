@@ -421,6 +421,16 @@ void NavMeshController::HandleBuild() {
 	LoadDrawMesh();
 	App->GetNavigation()->CreateDetourData();
 
+	for (auto polymesh : myPolyMeshDetails)
+	{
+		rcFreePolyMeshDetail(polymesh);
+	}
+		
+	for (auto polymesh : myPolyMeshes) 
+	{
+		rcFreePolyMesh(polymesh);
+	}
+
 }
 
 
