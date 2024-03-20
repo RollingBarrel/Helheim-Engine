@@ -186,6 +186,9 @@ void ModuleEditor::ShowMainMenuBar()
 		{
 			if (ImGui::MenuItem("Load Scene"))
 			{
+				IGFD::FileDialogConfig config;
+				config.path = "./Assets/Scenes";
+				ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", config);
 				mLoadSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Save Scene"))
@@ -374,22 +377,15 @@ void ModuleEditor::OpenLoadScene() {
 		}
 		ImGui::EndPopup();
 	}*/
-	IGFD::FileDialogConfig config;
-	config.path = ".";
-	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", config);
-
-	// display
+	ImGui::SetNextWindowSize(ImVec2(1200, 400));
 	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-		if (ImGuiFileDialog::Instance()->IsOk()) { // action if OK
-			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-			// action
+		if (ImGuiFileDialog::Instance()->IsOk()) {
+			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+			App->GetScene()->Load(filePathName.c_str());
 		}
 
-		
+		ImGuiFileDialog::Instance()->Close();
 	}
-	// close
-	ImGuiFileDialog::Instance()->Close();
 }
 
 void ModuleEditor::ResetFloatingPanels(bool openPanels) {
