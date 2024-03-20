@@ -3,6 +3,9 @@
 #include "ModuleFileSystem.h"
 #include "ImporterMaterial.h"
 #include "ImporterTexture.h"
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -296,3 +299,41 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
 }
 
 
+void Importer::Material::GenerateMaterialAsset(const ResourceMaterial* rMat)
+{
+    std::string metaName;
+    metaName += assetsFile;
+    metaName += ".emeta";
+
+    // Create a JSON document
+    rapidjson::Document document;
+    document.SetObject();
+
+    // Add uid to the JSON document
+    rapidjson::Value uidValue;
+    uidValue.SetInt(resource.GetUID());
+    document.AddMember("uid", uidValue, document.GetAllocator());
+
+    // Add resource type to the JSON document
+    rapidjson::Value typeValue;
+    typeValue.SetInt(static_cast<int>(resource.GetType()));
+    document.AddMember("type", typeValue, document.GetAllocator());
+
+    // Add modification time of asset to the JSON document
+    rapidjson::Value timeValue;
+    int64_t currentTime = App->GetFileSystem()->GetLastModTime(assetsFile);
+    timeValue.SetInt64(currentTime);
+    document.AddMember("modTime", timeValue, document.GetAllocator());
+
+    // Convert the JSON document to a string
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    document.Accept(writer);
+    const char* jsonStr = buffer.GetString();
+
+    App->GetFileSystem()->RemoveFile(metaName.c_str());
+    // Save the JSON string to the .meta file
+    ret = App->GetFileSystem()->Save(metaName.c_str(), buffer.GetString(), strlen(buffer.GetString()));
+
+    buffer.Clear();
+}

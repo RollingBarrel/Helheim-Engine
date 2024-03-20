@@ -17,34 +17,32 @@
 class Archive
 {
 public:
-    Archive();
+    Archive()
+    { 
+        mDocument.SetObject();
+    }
     ~Archive();
 
     // Copy constructor
-    Archive(const Archive& other) : mDocument(std::make_unique<rapidjson::Document>()) {
-        mDocument->CopyFrom(*other.mDocument, mDocument->GetAllocator());
+    Archive(const Archive& other) 
+    {
+        mDocument.CopyFrom(other.mDocument, mDocument.GetAllocator());
     }
 
     // Move constructor
-    Archive(Archive&& other) noexcept : mDocument(std::move(other.mDocument)) {
-        other.mDocument = nullptr;
-    }
+    Archive(Archive&& other) noexcept : mDocument(std::move(other.mDocument)) {}
 
     // Copy assignment operator
     Archive& operator=(const Archive& other) {
-        if (this != &other) {
-            mDocument = std::make_unique<rapidjson::Document>();
-            mDocument->CopyFrom(*other.mDocument, mDocument->GetAllocator());
-        }
+        assert(this != &other && "this is the same than other");
+        mDocument.CopyFrom(other.mDocument, mDocument.GetAllocator());
         return *this;
     }
 
     // Move assignment operator
     Archive& operator=(Archive&& other) noexcept {
-        if (this != &other) {
-            mDocument = std::move(other.mDocument);
-            other.mDocument = nullptr;
-        }
+        assert(this != &other && "other is the same than this");
+        mDocument = std::move(other.mDocument);
         return *this;
     }
 
@@ -52,7 +50,7 @@ public:
     void AddString(const char* key, const char* value);
     void AddFloat(const char* key, float value);
     void AddBool(const char* key, bool value);
-    void AddIntArray(const char* key, const std::vector<unsigned int>& array);
+    void AddIntArray(const char* key, const int* array, unsigned int size);
     void AddFloatArray(const char* key, const std::vector<float>& array);
     void AddFloat3(const char* key, const float3& vector);
     void AddFloat4(const char* key, const float vector[4]);
@@ -79,7 +77,7 @@ public:
     std::string Serialize() const;
 
 private:
-    std::unique_ptr<rapidjson::Document> mDocument;
+    rapidjson::Document mDocument;
 };
 
 #endif // ARCHIVE_H

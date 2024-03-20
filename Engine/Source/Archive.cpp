@@ -1,64 +1,35 @@
 #include "archive.h"
 
-Archive::Archive() : mDocument(std::make_unique<rapidjson::Document>()) {
-    mDocument->SetObject();
-}
-
 Archive::~Archive() {}
 
 void Archive::AddInt(const char* key, int value)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kNumberType);
-    jsonValue.SetInt(value);
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mDocument.AddMember(rapidjson::Value().SetString(key, mDocument.GetAllocator()), rapidjson::Value().SetInt(value), mDocument.GetAllocator());
 }
 
 void Archive::AddString(const char* key, const char* value)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kStringType);
-    jsonValue.SetString(value, strlen(value), mDocument->GetAllocator());
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mDocument.AddMember(rapidjson::Value().SetString(key, mDocument.GetAllocator()), rapidjson::Value().SetString(value, mDocument.GetAllocator()), mDocument.GetAllocator());
 }
 
 void Archive::AddFloat(const char* key, float value)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kNumberType);
-    jsonValue.SetFloat(value);
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mDocument.AddMember(rapidjson::Value().SetString(key, mDocument.GetAllocator()), rapidjson::Value().SetFloat(value), mDocument.GetAllocator());
 }
 
 void Archive::AddBool(const char* key, bool value)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kFalseType);
-    jsonValue.SetBool(value);
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mDocument.AddMember(rapidjson::Value().SetString(key, mDocument.GetAllocator()), rapidjson::Value().SetBool(value), mDocument.GetAllocator());
 }
 
-void Archive::AddIntArray(const char* key, const std::vector<unsigned int>& array) {
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
+void Archive::AddIntArray(const char* key, const int* array, unsigned int size) {
     rapidjson::Value jsonArray(rapidjson::kArrayType);
-    for (const auto& item : array) {
-        rapidjson::Value jsonItem(rapidjson::kNumberType);
-        jsonItem.SetInt(item);
-        jsonArray.PushBack(jsonItem, mDocument->GetAllocator());
+    jsonArray.Reserve(size, mDocument.GetAllocator());
+    for (unsigned int i = 0; i < size; ++i) 
+    {
+        jsonArray.PushBack(array[i], mDocument.GetAllocator());
     }
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
+    mDocument.AddMember(rapidjson::Value().SetString(key, mDocument.GetAllocator()), jsonArray, mDocument.GetAllocator());
 }
 
 void Archive::AddObjectArray(const char* key, const std::vector<Archive>& array) {

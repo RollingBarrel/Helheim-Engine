@@ -170,6 +170,8 @@ void ModuleScene::Save(const char* sceneName) const {
 
 	Archive* sceneArchive = new Archive();
 	Archive* archive = new Archive();
+	rapidjson::Document d;
+	d.SetObject();
 
 	SaveGame(mRoot->GetChildren(), *archive);
 	sceneArchive->AddObject("Scene", *archive);
