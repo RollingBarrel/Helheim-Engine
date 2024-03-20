@@ -21,6 +21,7 @@
 
 #include "Tag.h"
 #include "Quadtree.h"
+#include <regex>
 
 
 
@@ -32,8 +33,9 @@ GameObject::GameObject(GameObject* parent)
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
+		AddSuffix();
 	}
-	AddSuffix();
+	
 
 }
 
@@ -43,7 +45,9 @@ GameObject::GameObject(const GameObject& original)
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(original.GetTag())
 {
 
-	AddSuffix();
+	if (mParent) {
+		AddSuffix();
+	}
 
 	for (auto child : original.mChildren) {
 		GameObject* gameObject = new GameObject(*(child), this);
@@ -321,31 +325,75 @@ void GameObject::AddSuffix()
 {
 	bool found = true;
 	int count = 1;
-	size_t lastPos = -1;
+	bool hasNextItemSufix = false;
+	//size_t lastPos = -1;
 	while (found) {
-		std::string str = " (" + std::to_string(count) + ')';
+		std::regex regularExpression(".+\\s\\(\\d+\\)$");
+
+		std::string sufix = " (" + std::to_string(count) + ')';
 		size_t pos = std::string::npos;
+		size_t hasSufix = std::string::npos;
+		std::string nameWithoutSufix = mName;
 
-		std::string nameWithSufix = mName + str;
-		for (auto gameObject : mParent->mChildren)
+		if (std::regex_match(mName, regularExpression) || hasNextItemSufix)
 		{
-			if (pos == -1) {
-				pos = gameObject->mName.find(nameWithSufix);
+			hasSufix = mName.rfind(" (");
+
+			if (hasSufix != std::string::npos) {
+				nameWithoutSufix.erase(hasSufix);
 			}
 
-		}
+			std::string nameWithSufix = nameWithoutSufix + sufix;
 
-		if (pos == std::string::npos) {
-			if (mParent->mChildren.size() > 0) {
-				mName += str;
+			for (auto gameObject : mParent->mChildren)
+			{
+				if (pos == std::string::npos) {
+					pos = gameObject->mName.find(nameWithSufix);
+				}
+
 			}
-			found = false;
-		}
-		else {
-			count++;
-			lastPos = pos;
-		}
 
+			if (pos == std::string::npos) {
+				if (mParent->mChildren.size() > 0) {
+					mName = nameWithSufix;
+				}
+				found = false;
+			}
+			else {
+				count++;
+				//lastPos = pos;
+			}
+		}
+		else 
+		{
+			for (auto child : mParent->mChildren)
+			{
+				if (pos == std::string::npos && child != this) {
+					pos = child->mName.find(mName);
+				}
+
+			}
+
+			size_t isObjectWithSufix = std::string::npos;
+			for (auto child : mParent->mChildren) {
+				if (isObjectWithSufix == std::string::npos && child != this) {
+					isObjectWithSufix = child->mName.find(mName + sufix);
+				}
+			}
+
+			if (pos != std::string::npos && isObjectWithSufix == std::string::npos) {
+				mName += sufix;
+				found = false;
+			}
+			else if (isObjectWithSufix != std::string::npos){
+				hasNextItemSufix = true;
+			}
+			else {
+				found = false;
+			}
+			
+			
+		}
 	}
 }
 
