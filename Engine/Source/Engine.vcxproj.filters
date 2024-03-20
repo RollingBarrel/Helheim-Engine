@@ -462,7 +462,7 @@
     <ClCompile Include="ResourceObject.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\ImGuiFileDialog\ImGuiFileDialog.cpp">
+    <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1241,7 +1241,7 @@
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ModuleDetourNavigation.h" />
-    <ClInclude Include="Dependencies\ImGuiFileDialog\ImGuiFileDialog.h">
+    <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
   </ItemGroup>
