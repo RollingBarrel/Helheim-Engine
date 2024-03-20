@@ -179,21 +179,21 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 
 void ModuleEditor::ShowMainMenuBar() 
 {
-
+	IGFD::FileDialogConfig config;
+	config.path = "./Assets/Scenes";
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
 		{
 			if (ImGui::MenuItem("Load Scene"))
 			{
-				IGFD::FileDialogConfig config;
-				config.path = "./Assets/Scenes";
-				ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", config);
+				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".json", config);
 				mLoadSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Save Scene"))
 			{
-				App->GetScene()->Save("scene.json");
+				ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+				mSaveSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Quit"))
 			{
@@ -357,34 +357,36 @@ void ModuleEditor::ShowMainMenuBar()
 	{
 		OpenLoadScene();
 	}
+
+	if (mSaveSceneOpen)
+	{
+		OpenSaveScene();
+	}
 }
 
 void ModuleEditor::OpenLoadScene() {
-	/*ImGui::OpenPopup("LoadSceneWindow");
-	if (ImGui::BeginPopupModal("LoadSceneWindow", &mLoadSceneOpen))
-	{
-		ImGui::Text("Which file you wish to load?");
-		static char fileName[128] = "";
-		ImGui::InputText(".json", fileName, IM_ARRAYSIZE(fileName));
-		if (ImGui::Button("Load")) 
-		{
-			if (!strcmp(fileName, "scene")) 
-			{
-				App->GetScene()->Load(fileName);
-				ImGui::CloseCurrentPopup();
-				mLoadSceneOpen = false;
-			}
-		}
-		ImGui::EndPopup();
-	}*/
 	ImGui::SetNextWindowSize(ImVec2(1200, 400));
-	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 			App->GetScene()->Load(filePathName.c_str());
 		}
 
 		ImGuiFileDialog::Instance()->Close();
+		mLoadSceneOpen = false;
+	}
+}
+
+void ModuleEditor::OpenSaveScene() {
+	ImGui::SetNextWindowSize(ImVec2(1200, 400));
+	if (ImGuiFileDialog::Instance()->Display("SaveScene")) {
+		if (ImGuiFileDialog::Instance()->IsOk()) {
+			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+			App->GetScene()->Save(filePathName.c_str());
+		}
+
+		ImGuiFileDialog::Instance()->Close();
+		mSaveSceneOpen = false;
 	}
 }
 
