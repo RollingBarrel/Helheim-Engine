@@ -30,6 +30,6 @@ private:
 
     ResourceTexture* mImage;
     float4 mColor;
-    unsigned int texId = 0;
+    unsigned int mTexId = 0;
     unsigned int mResourceId = 818189439; // Temporary default image - Just a simple square made of four squares (Red, Green, Blue, White) 
 };
