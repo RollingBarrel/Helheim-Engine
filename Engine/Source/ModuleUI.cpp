@@ -11,6 +11,7 @@
 #include "CanvasComponent.h"
 #include "ImageComponent.h"
 #include "ButtonComponent.h"
+#include "ResourceTexture.h"
 #include "ScenePanel.h"
 #include "glew.h"
 #include "SDL.h"
@@ -260,29 +261,22 @@ void ModuleUI::CheckRaycast()
 
 	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
 	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
-
-	LineSegment raySegment = App->GetCamera()->GetFrustum()->UnProjectLineSegment(normalizedX, normalizedY);
-
-	Ray ray;
-	ray.pos = raySegment.a;
-	ray.dir = (raySegment.b - raySegment.a);
-
-	bool intersects = false;
-	bool intersectsTriangle = false;
-
-	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
-
-	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) {
-
-	}
-	else {
-		const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&ray);
-		if (intersectGameObjectPair.second != nullptr)
+	
+	for (GameObject* gameObject : mCanvas->GetChildren())
+	{
+		ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
+		if (image != nullptr)
 		{
-			GameObject* gameObject = intersectGameObjectPair.second;
-			ButtonComponent* component = (ButtonComponent*) gameObject->GetComponent(ComponentType::BUTTON);
-			if (component != nullptr) component->OnClicked();
-				
+			// Check if the mouse position is inside the bounds of the image
+			if (normalizedX >= gameObject->GetWorldPosition().x && normalizedX <= gameObject->GetWorldPosition().x + image->GetImage()->GetWidth() &&
+				normalizedY >= gameObject->GetWorldPosition().y && normalizedY <= gameObject->GetWorldPosition().y + image->GetImage()->GetHeight())
+			{
+				ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
+				if (button != nullptr && button->IsEnabled())
+				{
+					button->OnClicked();
+				}
+			}
 		}
 	}
 }
