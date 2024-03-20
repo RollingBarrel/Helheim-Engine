@@ -1,7 +1,7 @@
 #pragma once
 #include "Panel.h"
 #define PROJECTPANEL "Project##"
-
+#include <unordered_set>
 #include <vector>
 
 struct PathNode;
@@ -27,7 +27,10 @@ public:
 	void Draw(int windowFlags) override;
 	void SavePrefab(const PathNode& dir) const;
 
+	void OnRightClickNode( AssetDisplay* node)const;
+
 private:
 	const void DrawAssetsFolder(const PathNode& current) const;
+	std::unordered_set<PathNode*> mMarked;
 };
 

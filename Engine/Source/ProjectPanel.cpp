@@ -24,6 +24,7 @@ void ProjectPanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
+	
 		if (ImGui::BeginChild("Favs##"))
 		{
 			DrawAssetsFolder(*root);
@@ -37,6 +38,7 @@ void ProjectPanel::Draw(int windowFlags)
 		ImGui::EndChild();
 	}
 	ImGui::End();
+
 }
 
 const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
@@ -54,6 +56,7 @@ const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 			{
 				if (ImGui::TreeNodeEx(current.mChildren[i]->assets[j]->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
 				{
+					OnRightClickNode(current.mChildren[i]->assets[j]);
 					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 					{
 						ImGui::SetDragDropPayload("_SCENE", current.mChildren[i]->assets[j], sizeof(*current.mChildren[i]->assets[j]));
@@ -105,3 +108,15 @@ AssetDisplay::~AssetDisplay()
 }
 
 
+void ProjectPanel::OnRightClickNode(AssetDisplay* node) const{
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+		ImGui::OpenPopup("OptionsProject");
+
+	}
+	if (ImGui::BeginPopup("OptionsProject")) {
+			if (ImGui::Selectable("Delete")) {
+			}
+		
+		ImGui::EndPopup();
+	}
+}
