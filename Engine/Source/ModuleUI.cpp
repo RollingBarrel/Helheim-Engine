@@ -59,12 +59,12 @@ bool ModuleUI::Init() {
 
 update_status ModuleUI::PreUpdate(float dt) {
 	//if (mScreenSpace) {
-	//	mCurrentFrustum = mUIfrustum;
-	//	glEnable(GL_DEPTH_TEST);
+		mCurrentFrustum = mUIfrustum;
+		glEnable(GL_DEPTH_TEST);
 	//}
 	//else {
-		mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
-		glDisable(GL_DEPTH_TEST);
+		//mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
+		//glDisable(GL_DEPTH_TEST);
 	//}
 
 	// Draw the UI
