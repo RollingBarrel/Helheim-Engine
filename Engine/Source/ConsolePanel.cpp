@@ -9,6 +9,9 @@ ConsolePanel::ConsolePanel() : Panel(CONSOLEPANEL, true)
 
 ConsolePanel::~ConsolePanel()
 {
+    for (auto oneLog : log) {
+        delete[] oneLog;
+    }
 }
 
 void ConsolePanel::Draw(int windowFlags)
