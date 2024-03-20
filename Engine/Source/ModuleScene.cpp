@@ -321,6 +321,8 @@ update_status ModuleScene::PreUpdate(float dt)
 update_status ModuleScene::Update(float dt)
 {
 	mRoot->Update();
+	mQuadtreeRoot->UpdateTree();
+
 	if (mDrawQuadtree)
 	{
 		App->GetOpenGL()->BindSceneFramebuffer();

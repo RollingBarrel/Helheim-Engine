@@ -260,6 +260,7 @@
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
+    <ClCompile Include="ResourceNavmesh.cpp" />
     <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
@@ -471,6 +472,7 @@
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImporterScript.h" />
+    <ClInclude Include="ResourceNavmesh.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="Importer.h" />
