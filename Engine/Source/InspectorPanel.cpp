@@ -313,7 +313,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 
 		bool isEnabled = component->IsEnabled();
 		if (ImGui::Checkbox("Enable", &isEnabled)) {
-			(isEnabled) ? component->Enable() : component->Disable(); //Enable and Disable of your component should change mIsEnabled value, not the inspector.
+			component->SetEnable(isEnabled); //Enable and Disable of your component should change mIsEnabled value, not the inspector.
 		}
 
 		DragAndDropSource(component);

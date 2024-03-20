@@ -26,17 +26,28 @@ public:
 
 	unsigned int GetID() const { return mID; }
 
-	virtual	void Enable() { mIsEnabled = true; };
-	virtual	void Disable() { mIsEnabled = false; }
+	virtual	void Enable() { }
+	virtual	void Disable() { }
 	bool IsEnabled() const { return mIsEnabled; }
 
 	static const char* GetNameFromType(ComponentType type);
 
+	void SetEnable(bool enable)
+	{
+		if (enable == mIsEnabled)
+			return;
+		mIsEnabled = enable;
+		if (mIsEnabled)
+			Enable();
+		else
+			Disable();
+	}
+
 protected:
 	virtual	void Reset() = 0;
 	GameObject* mOwner = nullptr;
-	bool mIsEnabled = true;
 private:
+	bool mIsEnabled = true;
 	unsigned int mID = 0;
 	ComponentType mType = ComponentType::NONE;
 };
