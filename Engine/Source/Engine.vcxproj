@@ -307,7 +307,6 @@
     <ClCompile Include="Transform2DComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\ImGuiFileDialog\ImGuiFileDialog.h" />
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AnimationController.h" />
@@ -350,6 +349,7 @@
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_textedit.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_truetype.h" />
+    <ClInclude Include="Dependencies\ImGuiFileDialog\ImGuiFileDialog.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h" />

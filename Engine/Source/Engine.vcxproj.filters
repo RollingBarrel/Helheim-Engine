@@ -1241,7 +1241,7 @@
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ModuleDetourNavigation.h" />
-    <ClInclude Include="..\..\..\ImGuiFileDialog\ImGuiFileDialog.h">
+    <ClInclude Include="Dependencies\ImGuiFileDialog\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
   </ItemGroup>
