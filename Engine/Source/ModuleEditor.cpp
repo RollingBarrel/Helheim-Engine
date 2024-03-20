@@ -365,7 +365,7 @@ void ModuleEditor::ShowMainMenuBar()
 }
 
 void ModuleEditor::OpenLoadScene() {
-	//ImGui::SetNextWindowSize(ImVec2(1200, 400));
+	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
 	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
@@ -378,7 +378,7 @@ void ModuleEditor::OpenLoadScene() {
 }
 
 void ModuleEditor::OpenSaveScene() {
-	//ImGui::SetNextWindowSize(ImVec2(1200, 400));
+	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
 	if (ImGuiFileDialog::Instance()->Display("SaveScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
