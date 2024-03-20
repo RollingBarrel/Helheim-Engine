@@ -11,10 +11,12 @@
 #include "ModuleScene.h"
 #include "DebugPanel.h"
 #include "MeshRendererComponent.h"
+#include "CameraComponent.h"
 
 //This will be removed when functional gizmos are implmented
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
+#include "InspectorPanel.h"
 #include "GameObject.h"
 
 
@@ -628,7 +630,7 @@ update_status  ModuleDebugDraw::Update(float dt)
 {
     App->GetOpenGL()->BindSceneFramebuffer();
 
-    float4x4 viewproj = App->GetCamera()->GetProjectionMatrix() * App->GetCamera()->GetViewMatrix();
+    float4x4 viewproj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix() * ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
     Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
     App->GetOpenGL()->UnbindSceneFramebuffer();
 	return UPDATE_CONTINUE;
@@ -648,9 +650,17 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         DrawColliders(App->GetScene()->GetRoot());
 	}
 
+    GameObject* focusGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+    
+    if(focusGameObject->GetComponent(ComponentType::CAMERA))
+        DrawFrustum(((CameraComponent*)focusGameObject->GetComponent(ComponentType::CAMERA))->GetFrustum());
+    
     dd::flush();
-
-    DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
+    
+    if (((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetComponent(ComponentType::ANIMATION)) {
+        DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
+    }
+    
 }
 
 void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)

@@ -18,21 +18,36 @@ public:
     void SetPosition(const float3& position);
     void SetRotation(const float3& rotation);
 
-    void SetNearPlane(const float value) { mFrustum.nearPlaneDistance = value;};
-    void SetFarPlane(const float value) { mFrustum.farPlaneDistance = value; };
-    void SetVerticicalFOV(const float value) { mFrustum.verticalFov = value; };
+    const Frustum& GetFrustum() { return mFrustum; }
 
-    const float GetNearPlane() { return mFrustum.nearPlaneDistance; };
-    const float GetFarPlane() { return mFrustum.farPlaneDistance; };
-    const float GetVerticicalFOV() { return mFrustum.verticalFov; };
+    const float4x4 GetViewMatrix() const { return mFrustum.ViewMatrix(); }
+    const float4x4 GetProjectionMatrix() const { return mFrustum.ProjectionMatrix(); }
+    const float4x4 GetViewProjectionMatrix() const { return mFrustum.ViewProjMatrix(); }
 
-    Frustum& GetFrustum() { return mFrustum; };
+    void SetPos(const float3& value) { mFrustum.pos = value; }
+    void SetNearPlane(const float value) { mFrustum.nearPlaneDistance = value;}
+    void SetFarPlane(const float value) { mFrustum.farPlaneDistance = value; }
+    void SetFOV(const float value);
+    void SetAspectRatio(const float value);
+
+    float GetNearPlane() { return mFrustum.nearPlaneDistance; };
+    float GetFarPlane() { return mFrustum.farPlaneDistance; };
+    float GetVerticicalFOV() { return mFrustum.verticalFov; };
+
+
+    void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
+    void Rotate(const float3& axis, float angleRad);
+    void Transform(float3 vec);
+    void CameraComponentTransform(float3 vec);
 
 private:
+
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
     Frustum mFrustum;
     bool mEnableCulling;
+
+    float mAspectRatio;
 };
 

@@ -11,6 +11,7 @@
 #include "ModuleCamera.h"
 #include "GameObject.h"
 #include "Component.h"
+#include "CameraComponent.h"
 #include "EditorControlPanel.h"
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
@@ -158,7 +159,7 @@ void ScenePanel::Draw(int windowFlags)
 		ImGuizmo::SetDrawlist();
 		ImGuizmo::SetRect(windowPos.x, windowPos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-		const ModuleCamera* camera = App->GetCamera();
+		const CameraComponent* camera = App->GetCamera()->GetEditorCamera();
 		float4x4 cameraView = camera->GetViewMatrix().Transposed();
 		float4x4 cameraProjection = camera->GetProjectionMatrix().Transposed();
 

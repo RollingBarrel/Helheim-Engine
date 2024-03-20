@@ -15,6 +15,7 @@
 #include "Geometry/Triangle.h"
 #include "Recast.h"
 #include "ModuleCamera.h"
+#include "CameraComponent.h"
 
 NavMeshController::NavMeshController()
 {
@@ -105,8 +106,8 @@ void NavMeshController::DebugDrawPolyMesh()
 	
 	unsigned int program = App->GetOpenGL()->GetDebugDrawProgramId();
 	float4x4 identity = float4x4::identity;
-	float4x4 view = App->GetCamera()->GetViewMatrix();
-	float4x4 proj = App->GetCamera()->GetProjectionMatrix();
+	float4x4 view = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
+	float4x4 proj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix();
 
 	GLint viewLoc = glGetUniformLocation(program, "view");
 	GLint projLoc = glGetUniformLocation(program, "proj");

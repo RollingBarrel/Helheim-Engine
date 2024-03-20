@@ -17,18 +17,14 @@
 #include "Quadtree.h"
 #include "SDL_scancode.h"
 
+#include "GameObject.h"
 #include "CameraComponent.h"
 
 bool ModuleCamera::Init()
 {
-	CameraComponent* camera = new CameraComponent(nullptr);
+	CreateEditorCamera();
 
 	return true;
-}
-
-void ModuleCamera::WindowResized(int w, int h)
-{
-	mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * (float)w / (float)h);
 }
 
 void ModuleCamera::CheckRaycast()
@@ -42,7 +38,7 @@ void ModuleCamera::CheckRaycast()
 	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
 	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
 
-	LineSegment raySegment = mFrustum.UnProjectLineSegment(normalizedX, normalizedY);
+	LineSegment raySegment = mCurrentCameraComponent->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
 
 	mRay.pos = raySegment.a;
 	mRay.dir = (raySegment.b - raySegment.a);
@@ -67,49 +63,44 @@ void ModuleCamera::CheckRaycast()
 			((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
 		}
 	}
-
-	
-	
 }
 
-void ModuleCamera::LookAt(float3 eyePos, float3 targetPos, float3 upVector)
+bool ModuleCamera::CleanUp()
 {
-	float3 forward = (targetPos - eyePos);
-	forward.Normalize();
-	float3 right = math::Cross(forward, upVector);
-	right.Normalize();
-	float3 up = math::Cross(right, forward);
-	up.Normalize();
-
-	mFrustum.pos = eyePos;
-	mFrustum.front = forward;
-	mFrustum.up = up;
-
-	App->GetOpenGL()->SetOpenGlCameraUniforms();
+	return true;
 }
 
-void ModuleCamera::Rotate(const float3& axis, float angleRad)
+const void ModuleCamera::CreateEditorCamera()
 {
-	float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis, angleRad);
+	mEditorCamera = new GameObject("EditorCamera", nullptr);
 
-	mFrustum.front = rotationMatrix.Mul(mFrustum.front).Normalized();
-	mFrustum.up = rotationMatrix.Mul(mFrustum.up).Normalized();
+	mEditorCamera->CreateComponent(ComponentType::CAMERA);
 
-	App->GetOpenGL()->SetOpenGlCameraUniforms();
+	CameraComponent* camera = reinterpret_cast<CameraComponent*>(mEditorCamera->GetComponent(ComponentType::CAMERA));
+
+	if (App != nullptr)
+	{
+		float w = App->GetWindow()->GetWidth();
+		float h = App->GetWindow()->GetHeight();
+
+		camera->SetAspectRatio(w / h);
+	}
+
+	mCurrentCameraComponent = camera;
+
+	mCurrentCamera = mEditorCamera;
 }
 
-void ModuleCamera::Transform(float3 vec)
+void ModuleCamera::SetCurrentCamera(GameObject* camera)
 {
-	vec.z = -vec.z;
-	float3x4 world = mFrustum.WorldMatrix();
-	float3 newTrans = world.TransformDir(vec).Normalized();
-	world.SetTranslatePart(world.TranslatePart() + newTrans);
-
-	mFrustum.SetWorldMatrix(world);
-
-	App->GetOpenGL()->SetOpenGlCameraUniforms();
+	if (camera->GetComponent(ComponentType::CAMERA))
+	{
+		mCurrentCamera = camera;
+		mCurrentCameraComponent = (CameraComponent*) camera->GetComponent(ComponentType::CAMERA);
+	}
+	if (!camera)
+		mCurrentCamera = mEditorCamera;
 }
-
 
 update_status ModuleCamera::Update(float dt)
 {
@@ -136,38 +127,38 @@ update_status ModuleCamera::Update(float dt)
 		
 		if (App->GetInput()->GetMouseWheelMotion() != 0)
 		{
-			Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
+			mCurrentCameraComponent->Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Rotate(float3::unitY, -mX * rotateCameraVel);
-			Rotate(mFrustum.WorldRight(), -mY * rotateCameraVel);
-			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
-			{
-				Transform(float3(0, -dtSpeed, 0));
-			}
-			if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
-			{
-				Transform(float3(0, dtSpeed, 0));
-			}
-
+			mCurrentCameraComponent->Rotate(float3::unitY, -mX * rotateCameraVel);
+			mCurrentCameraComponent->Rotate(mCurrentCameraComponent->GetFrustum().WorldRight(), -mY * rotateCameraVel);
+		if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(0, -dtSpeed, 0));
+		}
+		if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(0, dtSpeed, 0));
+		}
+		
 			if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, dtSpeed));
+				mCurrentCameraComponent->Transform(float3(0, 0, dtSpeed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(0, 0, -dtSpeed));
+				mCurrentCameraComponent->Transform(float3(0, 0, -dtSpeed));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(-dtSpeed, 0, 0));
+				mCurrentCameraComponent->Transform(float3(-dtSpeed, 0, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 			{
-				Transform(float3(dtSpeed, 0, 0));
+				mCurrentCameraComponent->Transform(float3(dtSpeed, 0, 0));
 			}
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
@@ -179,33 +170,41 @@ update_status ModuleCamera::Update(float dt)
 		{
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			Transform(float3(-mX * speed, 0, 0));
-			Transform(float3(0, mY * speed, 0));
+			mCurrentCameraComponent->Transform(float3(-mX * speed, 0, 0));
+			mCurrentCameraComponent->Transform(float3(0, mY * speed, 0));
 		}
 		//orbiting camera
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
 		{
-			float3 right = mFrustum.WorldRight();
-			float3 focus = mFrustum.pos;
+			float3 focus = mCurrentCameraComponent->GetFrustum().pos;
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
-			float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3::unitY, -mX * rotateCameraVel) * float3x3::RotateAxisAngle(right, -mY * rotateCameraVel);
-			focus = rotationMatrix.MulDir(focus);
-			LookAt(focus, float3(0, 0, 0), float3::unitY);
-		}
 
+			if (mX != 0)
+			{
+				float3x3 rotationMatrixX = float3x3::RotateAxisAngle(mCurrentCameraComponent->GetFrustum().up,-mX * rotateCameraVel);
+				focus = rotationMatrixX.Mul(focus);
+			}
+			if (mY != 0)
+			{
+				float3x3 rotationMatrixY = float3x3::RotateAxisAngle(mCurrentCameraComponent->GetFrustum().WorldRight(), mY * rotateCameraVel);
+				focus = rotationMatrixY.Mul(focus);
+			}
+
+			mCurrentCameraComponent->LookAt(focus, ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition(), float3::unitY);
+		}
 		if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
 		{
 			float3 selectedObjectPosition = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition();
-			float3 initialCameraPosition = mFrustum.pos;
-
+			float3 initialCameraPosition = mCurrentCameraComponent->GetFrustum().pos;
+		
 			float desiredDistance = 5.0f;
-
+		
 			float3 finalCameraPosition = selectedObjectPosition - (desiredDistance * (selectedObjectPosition - initialCameraPosition).Normalized());
-
-			mFrustum.pos = finalCameraPosition;
-
-			LookAt(mFrustum.pos, selectedObjectPosition, float3::unitY);
+		
+			mCurrentCameraComponent->SetPos(finalCameraPosition);
+		
+			mCurrentCameraComponent->LookAt(mCurrentCameraComponent->GetFrustum().pos, selectedObjectPosition, float3::unitY);
 		}
 	}
 	return UPDATE_CONTINUE;

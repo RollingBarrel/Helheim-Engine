@@ -5,12 +5,14 @@
 #include "ModuleCamera.h"
 #include "glew.h"
 #include "MeshRendererComponent.h"
+#include "CameraComponent.h"
 #include "Component.h"
 
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
+#include "ModuleResource.h"
 #include "Archive.h"
 #include "Tag.h"
 #include "Globals.h"
@@ -18,6 +20,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include "Algorithm/Random/LCG.h"
 
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
@@ -48,7 +51,7 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
-	mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+	mRoot = new GameObject("SampleScene", nullptr);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
 	//TestSceneGameObjects test = TestSceneGameObjects();
 	//test.TestSceneWithGameObjects();
@@ -160,7 +163,7 @@ void ModuleScene::DeleteTag(Tag* tag)
 	}
 }
 
-void ModuleScene::Save(const char* sceneName) {
+void ModuleScene::Save(const char* sceneName) const {
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos) {
 		saveFilePath += ".json";
@@ -174,6 +177,28 @@ void ModuleScene::Save(const char* sceneName) {
 
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+
+	delete sceneArchive;
+	delete archive;
+
+}
+
+void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {
+	Archive* prefabArchive = new Archive();
+	Archive* archive = new Archive();
+	std::vector<Archive> gameObjectsArchiveVector;
+	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
+	//SaveGame(gameObject->GetChildren(), *archive);
+	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	prefabArchive->AddObject("Prefab", *archive);
+
+	std::string out = prefabArchive->Serialize();
+	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
+	App->GetResource()->ImportFile(saveFilePath, LCG().Int()); //TODO Generate UUID
+	PathNode* root = App->GetFileSystem()->GetRootNode();
+	root->mChildren.clear();
+	App->GetFileSystem()->DiscoverFiles("Assets", root);
+	delete archive;
 }
 
 void ModuleScene::Load(const char* sceneName) {
@@ -203,7 +228,7 @@ void ModuleScene::Load(const char* sceneName) {
 		}*/
 		mQuadtreeRoot->CleanUp();
 		delete mRoot;
-		mRoot = new GameObject("SampleScene", 1, nullptr, float3::zero, float3::one, Quat::identity);
+		mRoot = new GameObject("SampleScene", nullptr);
 
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) {
@@ -220,6 +245,28 @@ void ModuleScene::Load(const char* sceneName) {
 
 		LoadGameObjectsIntoScripts();
 	}
+}
+
+void ModuleScene::LoadPrefab(const char* saveFilePath) 
+{
+	char* loadedBuffer = nullptr;
+	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
+
+	rapidjson::Document d;
+	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
+	if (!ok) {
+		// Handle parsing error
+		LOG("Object was not loaded.");
+		return;
+	}
+
+	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) {
+		const rapidjson::Value& s = d["Prefab"];
+		mRoot->Load(s);
+	}
+
+	// Free the loaded buffer
+	delete[] loadedBuffer;
 }
 
 GameObject* ModuleScene::Find(const char* name)
@@ -239,28 +286,28 @@ GameObject* ModuleScene::Find(unsigned int UID)
 	
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) {
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const  {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
-	gameObject->Save(gameObjectArchive);
+	gameObject->Save(gameObjectArchive, parentUuid);
 	gameObjectsArchive.push_back(gameObjectArchive);
 
 	// Save children game objects
 	const std::vector<GameObject*>& children = gameObject->GetChildren();
 	if (!children.empty()) {
 		for (GameObject* child : children) {
-			SaveGameObjectRecursive(child, gameObjectsArchive);
+			SaveGameObjectRecursive(child, gameObjectsArchive, parentUuid);
 		}
 	}
 }
 
-void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) {
+void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const {
 	// Create a vector to store individual game object archives
 	std::vector<Archive> gameObjectsArchiveVector;
 
 	// Save each GameObject to the gameObjectsArchiveVector
 	for (GameObject* gameObject : gameObjects) {
-		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
+		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, mRoot->GetID());
 	}
 
 	// Add the gameObjectsArchiveVector to the root archive under the key "gameobjects"
@@ -299,7 +346,8 @@ update_status ModuleScene::PostUpdate(float dt)
 		DuplicateGameObjects();
 	}
 
-	mQuadtreeRoot->UpdateDrawableGameObjects(&App->GetCamera()->GetFrustum());
+	const Frustum frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
+	mQuadtreeRoot->UpdateDrawableGameObjects(&frustum);
 
 	return UPDATE_CONTINUE;
 }
