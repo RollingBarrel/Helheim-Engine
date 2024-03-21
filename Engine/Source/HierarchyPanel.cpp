@@ -83,7 +83,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			mMarked.clear();
 		}
 		if (ImGui::Selectable("Go Back")) {
-			App->GetScene()->ClosePrefabScreen("Prefab/Test.prfb");
+			App->GetScene()->ClosePrefabScreen("Assets/Prefabs/Test.prfb");
 		}
 
 		if (!node->mIsRoot) {

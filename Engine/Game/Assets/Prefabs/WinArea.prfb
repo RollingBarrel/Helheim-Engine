@@ -1,0 +1,64 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 734335488,
+                "ParentUID": 1,
+                "Name": "WinArea",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.5614339113235474,
+                    -0.25067365169525149,
+                    -16.387540817260743
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 773323248,
+                "ParentUID": 734335488,
+                "Name": "OB_Office_Table.007",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 784671471,
+                        "MeshID": 868682698,
+                        "MaterialID": 868682701,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            }
+        ]
+    }
+}

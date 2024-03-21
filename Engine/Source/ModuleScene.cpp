@@ -192,7 +192,7 @@ void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFileP
 
 	std::string out = prefabArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	App->GetResource()->ImportFile(saveFilePath, LCG().Int()); //TODO Generate UUID
+	App->GetResource()->ImportFile(saveFilePath, LCG().Int());
 	PathNode* root = App->GetFileSystem()->GetRootNode();
 	root->mChildren.clear();
 	App->GetFileSystem()->DiscoverFiles("Assets", root);

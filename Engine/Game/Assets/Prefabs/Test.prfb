@@ -1,0 +1,64 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 444918195,
+                "ParentUID": 1,
+                "Name": "LoseArea",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -7.159999847412109,
+                    -0.25067365169525149,
+                    -31.389999389648439
+                ],
+                "Rotation": [
+                    -0.007192659191787243,
+                    0.7071937918663025,
+                    -0.007189717143774033,
+                    0.706946611404419
+                ],
+                "Scale": [
+                    4.5699992179870609,
+                    4.569999694824219,
+                    4.569999694824219
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 473045079,
+                "ParentUID": 444918195,
+                "Name": "OB_Office_Table.007",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 481190736,
+                        "MeshID": 868682698,
+                        "MaterialID": 868682701,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            }
+        ]
+    }
+}
