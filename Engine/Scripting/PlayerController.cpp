@@ -43,19 +43,23 @@ void PlayerController::Update()
 
 void PlayerController::Move() {
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
-        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mPlayerSpeed);
+        //float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mPlayerSpeed);
+        float3 newPos = (mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
-        float3 newPos = (mGameObject->GetPosition() + (mGameObject->GetFront() * -1) * App->GetGameDt() * mPlayerSpeed);
+        //float3 newPos = (mGameObject->GetPosition() + (mGameObject->GetFront() * -1) * App->GetGameDt() * mPlayerSpeed);
+        float3 newPos = (mGameObject->GetPosition() + float3(0, 0, -1) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT) {
-        float3 newPos = (mGameObject->GetPosition() + (mGameObject->GetRight() * -1) * App->GetGameDt() * mPlayerSpeed);
+        //float3 newPos = (mGameObject->GetPosition() + (mGameObject->GetRight() * -1) * App->GetGameDt() * mPlayerSpeed);
+        float3 newPos = (mGameObject->GetPosition() + float3(-1, 0, 0) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) {
-        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetRight() * App->GetGameDt() * mPlayerSpeed);
+        //float3 newPos = (mGameObject->GetPosition() + mGameObject->GetRight() * App->GetGameDt() * mPlayerSpeed);
+        float3 newPos = (mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
 }
