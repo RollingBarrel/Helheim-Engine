@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 #include "Archive.h"
 
 enum class ENGINE_API ComponentType : unsigned int
