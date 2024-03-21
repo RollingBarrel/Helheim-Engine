@@ -72,6 +72,12 @@ void ModuleCamera::CheckRaycast()
 	
 }
 
+bool ModuleCamera::CleanUp()
+{
+	delete mFrustum;
+	return true;
+}
+
 
 
 update_status ModuleCamera::Update(float dt)

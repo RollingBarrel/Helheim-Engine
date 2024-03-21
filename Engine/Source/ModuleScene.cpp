@@ -9,6 +9,8 @@
 
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
+#include "HierarchyPanel.h"
+#include "ModuleEditor.h"
 #include "ModuleResource.h"
 #include "Archive.h"
 #include "Tag.h"
@@ -56,7 +58,7 @@ bool ModuleScene::Init()
 
 	//Save("Scene");
 	Load("scene");
-	
+
 	return true;
 }
 
@@ -296,7 +298,7 @@ GameObject* ModuleScene::Find(unsigned int UID)
 	else {
 		return mRoot;
 	}
-	
+
 }
 
 void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const  {
@@ -373,7 +375,7 @@ update_status ModuleScene::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DeleteGameObjects(){
+void ModuleScene::DeleteGameObjects() {
 
 	for (auto gameObject : mGameObjectsToDelete) {
 		gameObject->GetParent()->DeleteChild(gameObject);
