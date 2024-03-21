@@ -159,12 +159,11 @@ int* JsonObject::GetInts(const char* key) const
 {
     assert(mObject.HasMember(key) && "Document does not have this member");
     assert(mObject[key].IsArray() && "This member is not an array");
-    const rapidjson::Value::ConstArray& ints = mObject[key].GetArray();
+    const rapidjson::Value::Array& ints = mObject[key].GetArray();
     rapidjson::SizeType numInts = ints.Size();
     int* ret = new int[numInts];
     for (rapidjson::SizeType i = 0; i < numInts; ++i)
     {
-        assert(ints[i].isInt(), && "This member is not an int");
         ret[i] = ints[i].GetInt();
     }
     return ret;
@@ -174,11 +173,10 @@ unsigned int JsonObject::GetInts(const char* key, int* fillInts) const
 {
     assert(mObject.HasMember(key) && "Document does not have this member");
     assert(mObject[key].IsArray() && "This member is not an array");
-    const auto& ints = mObject[key].GetArray();
+    const rapidjson::Value::Array& ints = mObject[key].GetArray();
     rapidjson::SizeType numInts = ints.Size();
     for (rapidjson::SizeType i = 0; i < numInts; ++i)
     {
-        assert(fillInts[i].isInt(), && "This member is not an int");
         fillInts[i] = ints[i].GetInt();
     }
     return numInts;
@@ -200,7 +198,6 @@ float* JsonObject::GetFloats(const char* key) const
     float* ret = new float[numFloats];
     for (rapidjson::SizeType i = 0; i < numFloats; ++i)
     {
-        assert(floats[i].isFloat(), && "This member is not a float");
         ret[i] = floats[i].GetFloat();
     }
     return ret;
@@ -210,11 +207,10 @@ unsigned int JsonObject::GetFloats(const char* key, float* fillFloats) const
 {
     assert(mObject.HasMember(key) && "Document does not have this member");
     assert(mObject[key].IsArray() && "This member is not an array");
-    rapidjson::Value& floats = mObject[key].GetArray();
+    const rapidjson::Value::Array& floats = mObject[key].GetArray();
     rapidjson::SizeType numFloats = floats.Size();
     for (rapidjson::SizeType i = 0; i < numFloats; ++i)
     {
-        assert(floats[i].isFloat(), && "This member is not a float");
         fillFloats[i] = floats[i].GetFloat();
     }
     return numFloats;
@@ -246,17 +242,6 @@ bool JsonObject::HasMember(const char* key) const
     return mObject.FindMember(key) != mObject.MemberEnd();
 }
 
-//void Archive::CopyFrom(const rapidjson::Value& value)
-//{
-//    mDocument.CopyFrom(value, mDocument.GetAllocator());
-//}
-//
-//void Archive::CopyFrom(const Archive& other) {
-//    rapidjson::Document tempDocument;
-//    tempDocument.CopyFrom(*other.mDocument, tempDocument.GetAllocator());
-//    mDocument.Swap(tempDocument);
-//}
-
 JsonObject Archive::GetRootObject()
 {
     return JsonObject(mDocument.GetObject(), mDocument.GetAllocator());
@@ -268,9 +253,4 @@ std::string Archive::Serialize() const
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
     mDocument.Accept(writer);
     return buffer.GetString();
-}
-
-rapidjson::MemoryPoolAllocator<>& Archive::GetAllocator()
-{ 
-    return mDocument.GetAllocator(); 
 }
