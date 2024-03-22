@@ -10,7 +10,8 @@
 
 #include "DirectXTex.h"
 
-
+//Headers                  //HasAlpha
+#define TEXTURE_PIXEL_LIB_OFFSET sizeof(unsigned int) * 7 + sizeof(bool)
 ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int uid)
 {
     std::string gltfPath = (filePath);
@@ -80,25 +81,19 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     unsigned int mipLevels = image.GetMetadata().mipLevels;
     unsigned int numPixels = image.GetPixelsSize();
 
-    unsigned char* pixels = new unsigned char[numPixels];
-    for (auto i = 0; i < image.GetPixelsSize(); ++i)
-    {
-        pixels[i] = image.GetPixels()[i];
-    }
     bool hasAlpha = false;
     if (DirectX::HasAlpha(image.GetMetadata().format))
     {
         hasAlpha = true;
     }
 
-    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
-    Importer::Texture::Save(rTex);
+    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, TEXTURE_PIXEL_LIB_OFFSET, hasAlpha);
+    Importer::Texture::Save(rTex, image.GetPixels());
     return rTex;
 }
 
-void Importer::Texture::Save(const ResourceTexture* rTexture)
+void Importer::Texture::Save(const ResourceTexture* rTexture, const unsigned char* pixelData)
 {
-    // TODO: Save also UID (and assetsFile?)
     unsigned int header[7] = {
         rTexture->GetWidth(),
         rTexture->GetHeight(),
@@ -127,7 +122,7 @@ void Importer::Texture::Save(const ResourceTexture* rTexture)
     cursor += bytes;
 
     bytes = sizeof(unsigned char) * numPixels;
-    memcpy(cursor, rTexture->GetPixels(), bytes);
+    memcpy(cursor, pixelData, bytes);
     cursor += bytes;
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rTexture->GetUID(), true);
@@ -163,12 +158,10 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         memcpy(&hasAlpha, cursor, bytes);
         cursor += bytes;
 
-        bytes = sizeof(unsigned char) * numPixels;
-        unsigned char* pixels = new unsigned char[numPixels];
-        memcpy(pixels, cursor, bytes);
+        unsigned char* pixels = reinterpret_cast<unsigned char*>(cursor);
 
-        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
-        unsigned int texId = texture->CreateTexture();
+        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, TEXTURE_PIXEL_LIB_OFFSET, hasAlpha);
+        unsigned int texId = texture->CreateTexture(pixels);
 
         delete[] fileBuffer;
     }

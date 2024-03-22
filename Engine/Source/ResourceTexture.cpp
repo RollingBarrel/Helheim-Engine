@@ -19,29 +19,44 @@ ResourceTexture::ResourceTexture(
     unsigned int dataType,
     unsigned int mipLevels,
     unsigned int numPixels,
-    unsigned char* pixels,
+    unsigned int libFilePixelOffset,
     bool hasAlpha)
     : Resource(uid, Type::Texture), mWidth(width), mHeight(height),
     mInternalFormat(internalFormat), mTexFormat(texFormat), mDataType(dataType), 
     mMipLevels(mipLevels),
     mNumPixels(numPixels), 
-    mPixels(pixels), 
+    mLibFilePixelOffset(),
     mHasAlpha(hasAlpha), 
-    mOpenGLId(0)
+    mOpenGLId(0),
+    mTexHandle(0)
 {
-}
-ResourceTexture::~ResourceTexture()
-{
-    if(mTexHandle)
-        glMakeTextureHandleNonResidentARB(mTexHandle);
-    glDeleteTextures(1, &mOpenGLId);
-    if(mPixels)
-        delete[] mPixels;
-    //glMakeTextureHandleNonResidentARB(mTextureHandle);
 }
 
-unsigned int ResourceTexture::CreateTexture()
+ResourceTexture::~ResourceTexture()
 {
+    CleanUp();
+}
+
+unsigned int ResourceTexture::CreateTexture(const unsigned char* pixels)
+{
+    const unsigned char* mPixels = nullptr;
+    char* fileBuffer = nullptr;
+    if (pixels == nullptr)
+    {
+        //Get the pixel data from file
+        const char* path = App->GetFileSystem()->GetLibraryFile(GetUID());
+        unsigned int readedBytes = App->GetFileSystem()->Load(path, &fileBuffer);
+        if (readedBytes)
+        {
+            mPixels = reinterpret_cast<unsigned char*>(fileBuffer + mLibFilePixelOffset);
+        }
+        delete[] path;
+        assert(readedBytes && "Error reading texture pixels from file");
+    }
+    else
+        mPixels = pixels;
+
+    CleanUp();
     unsigned int texId;
 
     // Generate OpenGL texture
@@ -53,6 +68,9 @@ unsigned int ResourceTexture::CreateTexture()
     {
         glTexImage2D(GL_TEXTURE_2D, i, mInternalFormat, mWidth, mHeight, 0, mTexFormat, mDataType, mPixels);
     }
+
+    if (pixels == nullptr)
+        delete[] fileBuffer;
 
     // Generate mipmaps if only one mip level is present
     if (mMipLevels == 1)
@@ -74,4 +92,14 @@ unsigned int ResourceTexture::CreateTexture()
     glMakeTextureHandleResidentARB(mTexHandle);
 
     return texId;
+}
+
+void ResourceTexture::CleanUp()
+{
+    if (mTexHandle)
+        glMakeTextureHandleNonResidentARB(mTexHandle);
+    if(mOpenGLId)
+        glDeleteTextures(1, &mOpenGLId);
+    mOpenGLId = 0;
+    mTexHandle = 0;
 }
