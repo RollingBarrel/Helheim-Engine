@@ -30,6 +30,10 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Transform2D";
 		case ComponentType::ANIMATION:
 			return "Animation";
+		case ComponentType::IMAGE:
+			return "Image";
+		case ComponentType::BUTTON:
+			return "Button";
 		default:
 			return "None";
 		}

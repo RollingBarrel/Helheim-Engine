@@ -12,6 +12,7 @@
 #include "ModuleDetourNavigation.h"
 #include "ModuleUI.h"
 #include "ModuleAudio.h"
+#include "ModuleEvent.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -41,6 +42,7 @@ Application::Application()
 	modules[10] = editor = new ModuleEditor();
 	modules[11] = ui = new ModuleUI();
 	modules[12] = audio = new ModuleAudio();
+	modules[13] = event = new ModuleEvent();
 }
 
 Application::~Application()

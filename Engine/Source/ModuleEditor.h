@@ -35,10 +35,12 @@ public:
 private:
 	ImGuiIO* io = nullptr;
 	bool mLoadSceneOpen = false;
+	bool mSaveSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
 	std::vector<const char*> mPanelNames;
 	OptickAdapter* mOptick;
 	void OpenLoadScene();
+	void OpenSaveScene();
 };
 
 #endif /* _MODULE_EDITOR_H_ */
