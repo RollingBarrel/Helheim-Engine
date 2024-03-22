@@ -85,7 +85,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         hasAlpha = true;
     }
 
-    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha);
+    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha, 0, 0);
     Importer::Texture::Save(rTex, image.GetPixels());
     return rTex;
 }
@@ -156,8 +156,38 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
 
         unsigned char* pixels = reinterpret_cast<unsigned char*>(cursor);
 
-        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha);
-        texture->LoadToMemory(pixels);
+        //Load the texture to memory
+        unsigned int openGLId = 0;
+        unsigned int texHandle = 0;
+        // Generate OpenGL texture
+        glGenTextures(1, &openGLId);
+        glBindTexture(GL_TEXTURE_2D, openGLId);
+
+        // Set texture data for each mip level
+        for (size_t i = 0; i < mipLevels; ++i)
+        {
+            glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+        }
+
+        // Generate mipmaps if only one mip level is present
+        if (mipLevels == 1)
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+        // Set texture parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels - 1);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+
+        // Unbind texture
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        // Store OpenGL texture handle ID
+        texHandle = glGetTextureHandleARB(openGLId);
+        glMakeTextureHandleResidentARB(texHandle);
+
+        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha, openGLId, texHandle);
 
         delete[] fileBuffer;
     }
