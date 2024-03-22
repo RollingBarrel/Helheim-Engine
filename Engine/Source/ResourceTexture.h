@@ -1,6 +1,13 @@
 #pragma once
 #include "Resource.h"
 
+class ResourceTexture;
+namespace Importer {
+	namespace Texture {
+		ResourceTexture* Load(const char* filePath, unsigned int uid);
+	}
+}
+
 class ResourceTexture : public Resource
 {
 public:
@@ -23,12 +30,10 @@ public:
 		unsigned int dataType, 
 		unsigned int mipLevels, 
 		unsigned int numPixels,
-		unsigned int libFilePixelOffset,
 		bool hasAlpha);
 
 	~ResourceTexture();
 
-	unsigned int CreateTexture(const unsigned char* pixels = nullptr);
 
 	// Getters for attributes
 	unsigned int GetWidth() const { return mWidth; }
@@ -43,7 +48,9 @@ public:
 	unsigned int GetTextureHandle() const { return mTexHandle; }
 
 private:
-	void CleanUp();
+	void UnloadFromMemory();
+	friend ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid);
+	void LoadToMemory(const unsigned char* pixels);
 
 	unsigned int mWidth;
 	unsigned int mHeight;
@@ -53,7 +60,6 @@ private:
 	unsigned int mDataType;
 	unsigned int mMipLevels;
 	unsigned int mNumPixels;
-	unsigned int mLibFilePixelOffset;
 
 	bool mHasAlpha;
 

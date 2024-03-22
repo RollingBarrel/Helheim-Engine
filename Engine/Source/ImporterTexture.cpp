@@ -10,8 +10,6 @@
 
 #include "DirectXTex.h"
 
-//Headers                  //HasAlpha
-#define TEXTURE_PIXEL_LIB_OFFSET sizeof(unsigned int) * 7 + sizeof(bool)
 ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int uid)
 {
     std::string gltfPath = (filePath);
@@ -87,7 +85,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         hasAlpha = true;
     }
 
-    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, TEXTURE_PIXEL_LIB_OFFSET, hasAlpha);
+    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha);
     Importer::Texture::Save(rTex, image.GetPixels());
     return rTex;
 }
@@ -106,9 +104,7 @@ void Importer::Texture::Save(const ResourceTexture* rTexture, const unsigned cha
 
     unsigned int numPixels = rTexture->GetNumPixels();
     bool hasAlpha = rTexture->HasAlpha();
-    unsigned int size = sizeof(header) +
-        sizeof(hasAlpha) +
-        sizeof(unsigned char) * numPixels;
+    unsigned int size = sizeof(header)  + sizeof(hasAlpha) + sizeof(unsigned char) * numPixels;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -160,8 +156,8 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
 
         unsigned char* pixels = reinterpret_cast<unsigned char*>(cursor);
 
-        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, TEXTURE_PIXEL_LIB_OFFSET, hasAlpha);
-        unsigned int texId = texture->CreateTexture(pixels);
+        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha);
+        texture->LoadToMemory(pixels);
 
         delete[] fileBuffer;
     }

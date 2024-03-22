@@ -19,13 +19,11 @@ ResourceTexture::ResourceTexture(
     unsigned int dataType,
     unsigned int mipLevels,
     unsigned int numPixels,
-    unsigned int libFilePixelOffset,
     bool hasAlpha)
     : Resource(uid, Type::Texture), mWidth(width), mHeight(height),
     mInternalFormat(internalFormat), mTexFormat(texFormat), mDataType(dataType), 
     mMipLevels(mipLevels),
     mNumPixels(numPixels), 
-    mLibFilePixelOffset(),
     mHasAlpha(hasAlpha), 
     mOpenGLId(0),
     mTexHandle(0)
@@ -34,43 +32,23 @@ ResourceTexture::ResourceTexture(
 
 ResourceTexture::~ResourceTexture()
 {
-    CleanUp();
+    UnloadFromMemory();
 }
 
-unsigned int ResourceTexture::CreateTexture(const unsigned char* pixels)
+void ResourceTexture::LoadToMemory(const unsigned char* pixels)
 {
-    const unsigned char* mPixels = nullptr;
-    char* fileBuffer = nullptr;
-    if (pixels == nullptr)
-    {
-        //Get the pixel data from file
-        const char* path = App->GetFileSystem()->GetLibraryFile(GetUID());
-        unsigned int readedBytes = App->GetFileSystem()->Load(path, &fileBuffer);
-        if (readedBytes)
-        {
-            mPixels = reinterpret_cast<unsigned char*>(fileBuffer + mLibFilePixelOffset);
-        }
-        delete[] path;
-        assert(readedBytes && "Error reading texture pixels from file");
-    }
-    else
-        mPixels = pixels;
-
-    CleanUp();
-    unsigned int texId;
+    assert(!mTexHandle && "Loading a texture handle with one still loaded");
+    assert(!mOpenGLId && "Loading a texture with one still loaded");
 
     // Generate OpenGL texture
-    glGenTextures(1, &texId);
-    glBindTexture(GL_TEXTURE_2D, texId);
+    glGenTextures(1, &mOpenGLId);
+    glBindTexture(GL_TEXTURE_2D, mOpenGLId);
 
     // Set texture data for each mip level
     for (size_t i = 0; i < mMipLevels; ++i)
     {
-        glTexImage2D(GL_TEXTURE_2D, i, mInternalFormat, mWidth, mHeight, 0, mTexFormat, mDataType, mPixels);
+        glTexImage2D(GL_TEXTURE_2D, i, mInternalFormat, mWidth, mHeight, 0, mTexFormat, mDataType, pixels);
     }
-
-    if (pixels == nullptr)
-        delete[] fileBuffer;
 
     // Generate mipmaps if only one mip level is present
     if (mMipLevels == 1)
@@ -86,15 +64,12 @@ unsigned int ResourceTexture::CreateTexture(const unsigned char* pixels)
     // Unbind texture
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    // Store OpenGL texture ID
-    mOpenGLId = texId;
+    // Store OpenGL texture handle ID
     mTexHandle = glGetTextureHandleARB(mOpenGLId);
     glMakeTextureHandleResidentARB(mTexHandle);
-
-    return texId;
 }
 
-void ResourceTexture::CleanUp()
+void ResourceTexture::UnloadFromMemory()
 {
     if (mTexHandle)
         glMakeTextureHandleNonResidentARB(mTexHandle);
