@@ -96,69 +96,73 @@ void Importer::NavMesh::Load(ResourceNavMesh& navMesh, const char* fileName)
 	std::string path = LIBRARY_NAVMESH_PATH;
 	path += fileName;
 	path += ".navmesshi";
-	char* fileBuffer;
-	App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
+	char* fileBuffer = nullptr;
+	//App->GetFileSystem()->Load(path.c_str(), &fileBuffer);
+	if (App->GetFileSystem()->Load(path.c_str(), &fileBuffer))
+	{
+		//Load Header
+		char* cursor = fileBuffer;
+		unsigned int header[3];
+		unsigned int bytes = sizeof(header);
+		memcpy(header, cursor, bytes);
+		cursor += bytes;
+		navMesh.numberOfVertices = header[0];
+		navMesh.maxPolygons = header[1];
+		navMesh.verticesPerPolygon = header[2];
 
-	//Load Header
-	char* cursor = fileBuffer;
-	unsigned int header[3];
-	unsigned int bytes = sizeof(header);
-	memcpy(header, cursor, bytes);
-	cursor += bytes;
-	navMesh.numberOfVertices = header[0];
-	navMesh.maxPolygons = header[1];
-	navMesh.verticesPerPolygon = header[2];
+		//Load Celldata
+		float cellData[2];
+		bytes = sizeof(cellData);
+		memcpy(cellData, cursor, bytes);
+		cursor += bytes;
+		navMesh.cellSize = cellData[0];
+		navMesh.cellHeight = cellData[1];
 
-	//Load Celldata
-	float cellData[2];
-	bytes = sizeof(cellData);
-	memcpy(cellData, cursor, bytes);
-	cursor += bytes;
-	navMesh.cellSize = cellData[0];
-	navMesh.cellHeight = cellData[1];
+		//Load Vertices
+		bytes = sizeof(unsigned short) * navMesh.numberOfVertices;
+		memcpy(&navMesh.meshVertices, cursor, bytes);
+		cursor += bytes;
 
-	//Load Vertices
-	bytes = sizeof(unsigned short) * navMesh.numberOfVertices;
-	memcpy(&navMesh.meshVertices, cursor, bytes);
-	cursor += bytes;
+		//Load Polygons
+		bytes = sizeof(unsigned short) * navMesh.maxPolygons * 2 * navMesh.verticesPerPolygon;
+		memcpy(&navMesh.polygons, cursor, bytes);
+		cursor += bytes;
 
-	//Load Polygons
-	bytes = sizeof(unsigned short) * navMesh.maxPolygons * 2 * navMesh.verticesPerPolygon;
-	memcpy(&navMesh.polygons,cursor, bytes);
-	cursor += bytes;
+		//Load PolygonRegionId
+		bytes = sizeof(unsigned short) * navMesh.maxPolygons;
+		memcpy(&navMesh.polygonRegionID, cursor, bytes);
+		cursor += bytes;
 
-	//Load PolygonRegionId
-	bytes = sizeof(unsigned short) * navMesh.maxPolygons;
-	memcpy( &navMesh.polygonRegionID, cursor, bytes);
-	cursor += bytes;
+		//Load PolygonFlags
+		bytes = sizeof(unsigned short) * navMesh.maxPolygons;
+		memcpy(&navMesh.polygonFlags, cursor, bytes);
+		cursor += bytes;
 
-	//Load PolygonFlags
-	bytes = sizeof(unsigned short) * navMesh.maxPolygons;
-	memcpy( &navMesh.polygonFlags, cursor, bytes);
-	cursor += bytes;
+		//Load PolygonAreaID
+		bytes = sizeof(unsigned short) * navMesh.maxPolygons;
+		memcpy(&navMesh.polygonAreaID, cursor, bytes);
+		cursor += bytes;
 
-	//Load PolygonAreaID
-	bytes = sizeof(unsigned short) * navMesh.maxPolygons;
-	memcpy( &navMesh.polygonAreaID, cursor, bytes);
-	cursor += bytes;
+		//Load boundMin
+		bytes = sizeof(navMesh.boundMin);
+		memcpy(navMesh.boundMin, cursor, bytes);
+		cursor += bytes;
 
-	//Load boundMin
-	bytes = sizeof(navMesh.boundMin);
-	memcpy( navMesh.boundMin, cursor, bytes);
-	cursor += bytes;
+		//Load boundMax
+		bytes = sizeof(navMesh.boundMax);
+		memcpy(navMesh.boundMax, cursor, bytes);
+		cursor += bytes;
 
-	//Load boundMax
-	bytes = sizeof(navMesh.boundMax);
-	memcpy( navMesh.boundMax, cursor, bytes);
-	cursor += bytes;
+		//Load BorderSize
+		bytes = sizeof(int);
+		memcpy(&navMesh.borderSize, cursor, bytes);
+		cursor += bytes;
 
-	//Load BorderSize
-	bytes = sizeof(int);
-	memcpy( &navMesh.borderSize, cursor, bytes);
-	cursor += bytes;
+		//Load MaxEdgeError
+		bytes = sizeof(float);
+		memcpy(&navMesh.maxEdgeError, cursor, bytes);
+		cursor += bytes;
 
-	//Load MaxEdgeError
-	bytes = sizeof(float);
-	memcpy( &navMesh.maxEdgeError, cursor, bytes);
-	cursor += bytes;
+		delete[] fileBuffer;
+	}
 }

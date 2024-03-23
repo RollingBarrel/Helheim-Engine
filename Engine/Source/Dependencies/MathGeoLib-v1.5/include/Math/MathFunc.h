@@ -362,7 +362,7 @@ inline T ENGINE_API Clamp01(const T &val) { return Clamp(val, T(0), T(1)); }
 /// Computes the smaller of two values.
 /** @see Clamp(), Clamp01(), Max(). */
 template<typename T>
-const T ENGINE_API Min(const T &a, const T &b)
+const T Min(const T &a, const T &b)
 {
 	return a < b ? a : b;
 }
@@ -370,7 +370,7 @@ const T ENGINE_API Min(const T &a, const T &b)
 /// Computes the larger of two values.
 /** @see Clamp(), Clamp01(), Min(). */
 template<typename T>
-const T ENGINE_API Max(const T &a, const T &b)
+const T Max(const T &a, const T &b)
 {
 	return a >= b ? a : b;
 }
@@ -388,7 +388,7 @@ inline const float ENGINE_API Max(const float &a, const float &b)
 /// Computes the smallest of three values.
 /** @see Clamp(), Clamp01(), Max(). */
 template<typename T>
-const T ENGINE_API Min(const T &a, const T &b, const T &c)
+const T Min(const T &a, const T &b, const T &c)
 {
 	return Min(Min(a, b), c);
 }
@@ -406,7 +406,7 @@ inline const float ENGINE_API Min(const float &a, const float &b)
 /// Computes the largest of three values.
 /** @see Clamp(), Clamp01(), Min(). */
 template<typename T>
-const T ENGINE_API Max(const T &a, const T &b, const T &c)
+const T Max(const T &a, const T &b, const T &c)
 {
 	return Max(Max(a, b), c);
 }
@@ -414,7 +414,7 @@ const T ENGINE_API Max(const T &a, const T &b, const T &c)
 /// Computes the smallest of four values.
 /** @see Clamp(), Clamp01(), Max(). */
 template<typename T>
-const T ENGINE_API Min(const T &a, const T &b, const T &c, const T &d)
+const T Min(const T &a, const T &b, const T &c, const T &d)
 {
 	return Min(Min(a, b), Min(c, d));
 }
@@ -422,14 +422,14 @@ const T ENGINE_API Min(const T &a, const T &b, const T &c, const T &d)
 /// Computes the largest of four values.
 /** @see Clamp(), Clamp01(), Min(). */
 template<typename T>
-const T ENGINE_API Max(const T &a, const T &b, const T &c, const T &d)
+const T Max(const T &a, const T &b, const T &c, const T &d)
 {
 	return Max(Max(a, b), Max(c, d));
 }
 
 /// Swaps the two values.
 template<typename T>
-void ENGINE_API Swap(T &a, T &b)
+void Swap(T &a, T &b)
 {
 	T temp = a;
 	a = b;
@@ -438,28 +438,28 @@ void ENGINE_API Swap(T &a, T &b)
 
 /** @return True if a > b. */
 template<typename T>
-bool ENGINE_API GreaterThan(const T &a, const T &b)
+bool GreaterThan(const T &a, const T &b)
 {
 	return a > b;
 }
 
 /** @return True if a < b. */
 template<typename T>
-bool ENGINE_API LessThan(const T &a, const T &b)
+bool LessThan(const T &a, const T &b)
 {
 	return a < b;
 }
 
 /** @return The absolute value of a. */
 template<typename T>
-const T ENGINE_API Abs(const T &a)
+const T Abs(const T &a)
 {
 	return a >= 0 ? a : -a;
 }
 
 /// @return True if a and b are equal, using operator ==().
 template<typename T>
-bool ENGINE_API Equal(const T &a, const T &b)
+bool Equal(const T &a, const T &b)
 {
 	return a == b;
 }

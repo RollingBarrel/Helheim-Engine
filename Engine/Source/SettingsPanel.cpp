@@ -18,6 +18,9 @@ SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
 
 SettingsPanel::~SettingsPanel()
 {
+	for (auto window : mOpenedWindowsInfo) {
+		delete window;
+	}
 }
 
 void SettingsPanel::Draw(int windowFlags) 

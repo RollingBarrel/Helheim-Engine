@@ -202,19 +202,11 @@ void ScriptComponent::LoadScript(const char* scriptName)
 
 void ScriptComponent::Enable()
 {
-	if (!mIsEnabled) {
-		App->GetScriptManager()->AddScript(mScript);
-		mIsEnabled = true;
-	}
+	App->GetScriptManager()->AddScript(mScript);
 		
 }
 
 void ScriptComponent::Disable()
 {
-	if (mIsEnabled) {
 		App->GetScriptManager()->RemoveScript(mScript);
-		mIsEnabled = false;
-	}
-		
-
 }

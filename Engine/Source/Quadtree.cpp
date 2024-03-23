@@ -132,6 +132,7 @@ void Quadtree::Draw() const
 		mChildren[2]->Draw();
 		mChildren[3]->Draw();
 	}
+
 }
 
 const void Quadtree::RenderTreeImGui() const
@@ -212,6 +213,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 	}
 	else
 	{
+		std::map<float, GameObject*> map;
 		bool intersects = false;
 		bool intersectsTriangle = false;
 
@@ -231,21 +233,24 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 					const unsigned int* indices = rMesh->GetResourceMesh()->GetIndices();
 					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 
-					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices() / 3; i += 3) {
-						float3 verticeA = float3(triangles[indices[i]], triangles[indices[i] + 1], triangles[indices[i] + 2]);
-						float3 verticeB = float3(triangles[indices[i + 1]], triangles[indices[i + 1] + 1], triangles[indices[i + 1] + 2]);
-						float3 verticeC = float3(triangles[indices[i + 2]], triangles[indices[i + 2] + 1], triangles[indices[i + 2] + 2]);
+					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices(); i += 3) {
+						float3 verticeA = float3(triangles[indices[i]*3], triangles[indices[i]*3 + 1], triangles[indices[i]*3 + 2]);
+						float3 verticeB = float3(triangles[indices[i + 1]*3], triangles[indices[i + 1]*3 + 1], triangles[indices[i + 1]*3 + 2]);
+						float3 verticeC = float3(triangles[indices[i + 2]*3], triangles[indices[i + 2]*3 + 1], triangles[indices[i + 2]*3 + 2]);
 
 						float distance;
 						float3 hitPoint;
 						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
 
 						if (intersectsTriangle) {
-							return std::pair<float, GameObject*>(distance, child);
+							map.insert( std::pair<float, GameObject*>(distance, child));							
 						}
 					}
 				}
 			}
+		}
+		if (!map.empty()) {
+			return std::pair<float, GameObject*>(map.begin()->first, map.begin()->second);
 		}
 	}
 

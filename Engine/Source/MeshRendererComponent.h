@@ -29,6 +29,9 @@ public:
 	const AABB GetAABB() const { return mAABB; }
 	const AABB GetAABBWorld() const { return mAABBWorld; }
 
+	void Enable() override;
+	void Disable() override;
+
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }
 	void SetShouldDraw(bool draw) { mDrawBox = draw; }

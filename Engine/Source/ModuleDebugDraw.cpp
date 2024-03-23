@@ -650,7 +650,13 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
 
     dd::flush();
 
-    DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
+
+
+    
+    if (((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetComponent(ComponentType::ANIMATION)) {
+        DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
+    }
+    
 }
 
 void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)

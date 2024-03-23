@@ -253,7 +253,7 @@ void Importer::Material::Save(const ResourceMaterial* rMaterial)
 
 ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned int uid )
 {
-    char* fileBuffer;
+    char* fileBuffer = nullptr;
     ResourceMaterial* ret = nullptr;
     if (App->GetFileSystem()->Load(fileName, &fileBuffer))
     {

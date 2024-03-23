@@ -2,6 +2,7 @@
 #define _MODULE_H_
 
 #include "Globals.h"
+#include "HelheimEvent.h"
 
 class Module
 {
@@ -38,6 +39,10 @@ public:
 	virtual bool CleanUp() 
 	{ 
 		return true; 
+	}
+
+	virtual void ReceiveEvent(HelheimEvent& e)
+	{
 	}
 };
 
