@@ -349,8 +349,29 @@ void NavMeshController::HandleBuild() {
 			return;
 		}
 
-		myPolyMeshDetails.push_back(tempPolyMeshDetail);
-		myPolyMeshes.push_back(tempPolyMesh);
+		if (tempPolyMesh->npolys > 0)
+		{
+			for (int i = 0; i < tempPolyMesh->npolys; ++i)
+			{
+				if (tempPolyMesh->areas[i] == RC_WALKABLE_AREA)
+				{
+					tempPolyMesh->flags[i] = 1;
+				}
+				else
+				{
+					tempPolyMesh->flags[i] = 0;
+				}
+			}
+
+			myPolyMeshDetails.push_back(tempPolyMeshDetail);
+			myPolyMeshes.push_back(tempPolyMesh);
+		}
+		else
+		{
+			rcFreePolyMesh(tempPolyMesh);
+			rcFreePolyMeshDetail(tempPolyMeshDetail);
+		}
+
 
 		if (!mKeepInterResults)
 		{
