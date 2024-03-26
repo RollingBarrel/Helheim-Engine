@@ -1,0 +1,154 @@
+<html>
+<head>
+<title>Welcome to the FMOD Engine | New in FMOD Engine 2.02</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Engine User Manual 2.02</p>
+<ul>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="welcome.html">Welcome to the FMOD Engine</a><ul class="subchapters"><li class="manual-current-chapter manual-active-chapter"><a href="welcome-whats-new-202.html">New in FMOD Engine 2.02</a></li><li><a href="welcome-whats-new-201.html">New in FMOD Engine 2.01</a></li><li><a href="welcome-whats-new-200.html">New in FMOD Engine 2.00</a></li><li><a href="welcome-whats-new-110.html">New in FMOD Engine 1.10</a></li><li><a href="welcome-revision-history.html">Detailed Revision History</a></li></ul></li>
+<li><a href="studio-guide.html">Studio API Guide</a></li>
+<li><a href="core-guide.html">Core API Guide</a></li>
+<li><a href="platforms.html">Platform Details</a></li>
+<li><a href="white-papers.html">White Papers</a></li>
+<li><a href="studio-api.html">Studio API Reference</a></li>
+<li><a href="core-api.html">Core API Reference</a></li>
+<li><a href="fsbank-api.html">FSBank API Reference</a></li>
+<li><a href="plugin-api.html">Plugin API Reference</a></li>
+<li><a href="effects-reference.html">Effects Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+</ul>
+</div>
+<div class="manual-content api">
+<h1>1. Welcome to the FMOD Engine | New in FMOD Engine 2.02</h1>
+<div class="toc">
+<ul>
+<li><a href="#whats-new-in-202">What's New in 2.02?</a><ul>
+<li><a href="#minimum-maximum-distance">Minimum / Maximum Distance</a></li>
+<li><a href="#labeled-parameters">Labeled Parameters</a></li>
+<li><a href="#ports">Ports</a></li>
+<li><a href="#platform-notes">Platform Notes</a></li>
+<li><a href="#api-differences">API Differences</a><ul>
+<li><a href="#studio-api">Studio API</a></li>
+<li><a href="#core-api">Core API</a></li>
+<li><a href="#output-plugin-api">Output Plugin API</a></li>
+<li><a href="#codec-plugin-api">Codec Plugin API</a></li>
+<li><a href="#fsbank-api">FSBank API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#whats-new-since-201-initial-release">What's new since 2.01 initial release?</a><ul>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#api-differences_1">API differences</a><ul>
+<li><a href="#studio-api_1">Studio API</a></li>
+<li><a href="#core-api_1">Core API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="whats-new-in-202"><a href="#whats-new-in-202">What's New in 2.02?</a></h2>
+<p>This section describes the major features introduced in the 2.02 release. See the <a href="welcome-revision-history.html">Detailed Revision History</a> for information regarding each patch release.</p>
+<h3 id="minimum-maximum-distance"><a href="#minimum-maximum-distance">Minimum / Maximum Distance</a></h3>
+<p>Events (rather than spatializer DSPs) now encapsulate the functionality of minimum and maximum distance.</p>
+<p>As a result, <code>Studio::EventDescription::getMinimumDistance</code> and <code>Studio::EventDescription::getMaximumDistance</code> have been removed. Those APIs which returned values reported by FMOD spatializers have been replaced with the new <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getminmaxdistance">Studio::EventDescription::getMinMaxDistance</a>. The new API returns the initial values specified for minimum and maximum distance as set in FMOD Studio. If the minimum or maximum distance have been automated you can query the runtime value per EventInstance using <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_getminmaxdistance">Studio::EventInstance::getMinMaxDistance</a>.</p>
+<p>DSP plugins interested in receiving the new Event level min/max distance information can now add a data parameter of data type <a class="apilink" href="plugin-api-dsp.html#fmod_dsp_parameter_attenuation_range">FMOD_DSP_PARAMETER_ATTENUATION_RANGE</a>. For compatibility with the old behavior of each spatializer DSP having its own min/max distance, <a class="apilink" href="core-api-common-dsp-effects.html#fmod_dsp_type_pan">FMOD_DSP_TYPE_PAN</a> and <a class="apilink" href="core-api-common-dsp-effects.html#fmod_dsp_type_objectpan">FMOD_DSP_TYPE_OBJECTPAN</a> now have override properties that ignore the Event level values. Resonance Audio has been updated to use the new method, so if the old method is desired please use the Resonance plugin from v2.01.xx.</p>
+<p>Using the new Event level min/max we are able to provide a new built-in parameter, <a class="apilink" href="studio-api-common.html#fmod_studio_parameter_automatic_distance_normalized">FMOD_STUDIO_PARAMETER_AUTOMATIC_DISTANCE_NORMALIZED</a>, that presents the range from min to max as 0 to 1.</p>
+<h3 id="labeled-parameters"><a href="#labeled-parameters">Labeled Parameters</a></h3>
+<p>Labeled or enumerated parameters have existed in FMOD Studio for a while, however until now they have been unavailable in the API.</p>
+<p>With this release we have introduced a way to query all of the labels associated with one of these parameters. You can fetch labels for global parameters via <a class="apilink" href="studio-api-system.html#studio_system_getparameterlabelbyid">Studio::System::getParameterLabelByID</a> or <a class="apilink" href="studio-api-system.html#studio_system_getparameterlabelbyname">Studio::System::getParameterLabelByName</a> and you can fetch labels for local parameter via <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getparameterlabelbyid">Studio::EventDescription::getParameterLabelByID</a>, <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getparameterlabelbyname">Studio::EventDescription::getParameterLabelByName</a> or <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getparameterlabelbyindex">Studio::EventDescription::getParameterLabelByIndex</a>. The main purpose of this API is to expose these strings to your level editor for ease of value selection. We recommend still storing the related index in you level data for best performance at runtime when setting enumerated parameters.</p>
+<p>Despite this advice, we also provide some new APIs for setting enumerated parameter with their string value. For global parameters you can use <a class="apilink" href="studio-api-system.html#studio_system_setparameterbyidwithlabel">Studio::System::setParameterByIDWithLabel</a> or <a class="apilink" href="studio-api-system.html#studio_system_setparameterbynamewithlabel">Studio::System::setParameterByNameWithLabel</a> to lookup the parameter by ID or name respectively then set the value string. For local parameters you can use <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setparameterbyidwithlabel">Studio::EventInstance::setParameterByIDWithLabel</a> or <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setparameterbynamewithlabel">Studio::EventInstance::setParameterByNameWithLabel</a> to lookup the parameter by ID or name respectively then set the value string.</p>
+<h3 id="ports"><a href="#ports">Ports</a></h3>
+<p>To accompany the addition of Ports into the FMOD Studio tool an additional API was necessary for setting the port index. In the Core API, <a class="apilink" href="core-api-system.html#system_attachchannelgrouptoport">System::attachChannelGroupToPort</a> would accept both a port type and an index in order to disambiguate between multiple ports targeting the same device type, for example controller speakers. In the Studio API the port type is set on a bus at design time, for ports that require disambiguation you can now use <a class="apilink" href="studio-api-bus.html#studio_bus_setportindex">Studio::Bus::setPortIndex</a> to provide that value and <a class="apilink" href="studio-api-bus.html#studio_bus_getportindex">Studio::Bus::getPortIndex</a> to query it back.</p>
+<p>With this change we have now unified all port types previously spread over platform specific APIs in the form of <code>FMOD_&lt;PLATFORM&gt;_PORT_TYPE</code>. Now you can find the complete set in the <a class="apilink" href="core-api-system.html#fmod_port_type">FMOD_PORT_TYPE</a> enumeration with information of availability in each platforms getting started guide.</p>
+<h3 id="platform-notes"><a href="#platform-notes">Platform Notes</a></h3>
+<ul>
+<li>Added support for Windows N versions by separating MediaFoundation into a separate DLL</li>
+<li>Linux is now built with LLVM / Clang 10, lifting 32bit min-spec to ARMv7 (with NEON) and adding 64bit support</li>
+<li>Android minimum API version raised to 16 for 32bit</li>
+<li>Renamed PS5 specific APIs and headers from codename to official name</li>
+</ul>
+<h3 id="api-differences"><a href="#api-differences">API Differences</a></h3>
+<p>APIs that have changed with this release that haven't been called out explicitly above.</p>
+<h4 id="studio-api"><a href="#studio-api">Studio API</a></h4>
+<ul>
+<li>Renamed <code>Studio::EventInstance::triggerCue</code> to <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_keyoff">Studio::EventInstance::keyOff</a></li>
+<li>Renamed <code>Studio::EventDescription::hasCue</code> to <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_hassustainpoint">Studio::EventDescription::hasSustainPoint</a></li>
+<li>Modified <a class="apilink" href="studio-api-common.html#fmod_studio_parameter_description">FMOD_STUDIO_PARAMETER_DESCRIPTION</a> to add <code>guid</code></li>
+<li>Modified <a class="apilink" href="studio-api-system.html#studio_system_getcpuusage">Studio::System::getCPUUsage</a> to take <code>usage_core</code> as <a class="apilink" href="core-api-common.html#fmod_cpu_usage">FMOD_CPU_USAGE</a></li>
+<li>Modified <a class="apilink" href="studio-api-system.html#fmod_studio_cpu_usage">FMOD_STUDIO_CPU_USAGE</a> to remove <code>dspusage</code>, <code>streamusage</code>, <code>geometryusage</code> and <code>updateusage</code></li>
+<li>Modified <a class="apilink" href="studio-api-system.html#fmod_studio_cpu_usage">FMOD_STUDIO_CPU_USAGE</a> to rename <code>studiousage</code> to <code>update</code></li>
+</ul>
+<h4 id="core-api"><a href="#core-api">Core API</a></h4>
+<ul>
+<li>Added <a class="apilink" href="core-api-common.html#fmod_cpu_usage">FMOD_CPU_USAGE</a></li>
+<li>Removed <code>System::getCPUUsageEx</code></li>
+<li>Modified <a class="apilink" href="core-api-system.html#system_getcpuusage">System::getCPUUsage</a> to take <code>usage</code> as <a class="apilink" href="core-api-common.html#fmod_cpu_usage">FMOD_CPU_USAGE</a></li>
+<li>Modified the type of <a class="apilink" href="core-api-system.html#fmod_port_type">FMOD_PORT_TYPE</a></li>
+<li>Modified the type of <a class="apilink" href="core-api-common.html#fmod_thread_affinity">FMOD_THREAD_AFFINITY</a></li>
+<li>Modified the value of <a class="apilink" href="core-api-common.html#fmod_thread_affinity_group_default">FMOD_THREAD_AFFINITY_GROUP_DEFAULT</a>, <a class="apilink" href="core-api-common.html#fmod_thread_affinity_group_a">FMOD_THREAD_AFFINITY_GROUP_A</a>, <a class="apilink" href="core-api-common.html#fmod_thread_affinity_group_b">FMOD_THREAD_AFFINITY_GROUP_B</a> and <a class="apilink" href="core-api-common.html#fmod_thread_affinity_group_c">FMOD_THREAD_AFFINITY_GROUP_C</a></li>
+<li>Modified <a class="apilink" href="core-api-system.html#system_create">System_Create</a> to take <code>headerversion</code></li>
+</ul>
+<h4 id="output-plugin-api"><a href="#output-plugin-api">Output Plugin API</a></h4>
+<ul>
+<li>Removed <code>FMOD_OUTPUT_METHOD_POLLING</code></li>
+<li>Removed <code>FMOD_OUTPUT_GETPOSITION_CALLBACK</code>, <code>FMOD_OUTPUT_LOCK_CALLBACK</code> and <code>FMOD_OUTPUT_UNLOCK_CALLBACK</code></li>
+<li>Modified <a class="apilink" href="plugin-api-output.html#fmod_output_description">FMOD_OUTPUT_DESCRIPTION</a> to remove <code>getposition</code>, <code>lock</code> and <code>unlock</code></li>
+<li>Modified <a class="apilink" href="plugin-api-output.html#fmod_output_init_callback">FMOD_OUTPUT_INIT_CALLBACK</a> to allow output via <code>dspnumbuffers</code></li>
+<li>Modified <a class="apilink" href="plugin-api-output.html#fmod_output_init_callback">FMOD_OUTPUT_INIT_CALLBACK</a> to take <code>dspnumadditionalbuffers</code></li>
+<li>Modified the value of <a class="apilink" href="plugin-api-output.html#fmod_output_plugin_version">FMOD_OUTPUT_PLUGIN_VERSION</a></li>
+<li>Modified the value of <a class="apilink" href="plugin-api-output.html#fmod_output_method_mix_buffered">FMOD_OUTPUT_METHOD_MIX_BUFFERED</a></li>
+</ul>
+<h4 id="codec-plugin-api"><a href="#codec-plugin-api">Codec Plugin API</a></h4>
+<ul>
+<li>Added <a class="apilink" href="plugin-api-codec.html#fmod_codec_state_functions">FMOD_CODEC_STATE_FUNCTIONS</a></li>
+<li>Added <a class="apilink" href="plugin-api-codec.html#fmod_codec_plugin_version">FMOD_CODEC_PLUGIN_VERSION</a></li>
+<li>Added <a class="apilink" href="plugin-api-codec.html#fmod_codec_seek_method">FMOD_CODEC_SEEK_METHOD</a> with <code>SET</code>, <code>CURRENT</code> and <code>END</code> values</li>
+<li>Added <a class="apilink" href="plugin-api-codec.html#fmod_codec_alloc_func">FMOD_CODEC_ALLOC_FUNC</a>, <a class="apilink" href="plugin-api-codec.html#fmod_codec_free_func">FMOD_CODEC_FREE_FUNC</a> and <a class="apilink" href="plugin-api-codec.html#fmod_codec_log_func">FMOD_CODEC_LOG_FUNC</a></li>
+<li>Added <a class="apilink" href="plugin-api-codec.html#fmod_codec_file_read_func">FMOD_CODEC_FILE_READ_FUNC</a>, <a class="apilink" href="plugin-api-codec.html#fmod_codec_file_seek_func">FMOD_CODEC_FILE_SEEK_FUNC</a>, <a class="apilink" href="plugin-api-codec.html#fmod_codec_file_tell_func">FMOD_CODEC_FILE_TELL_FUNC</a> and <a class="apilink" href="plugin-api-codec.html#fmod_codec_file_size_func">FMOD_CODEC_FILE_SIZE_FUNC</a></li>
+<li>Added <code>FMOD_CODEC_METADATA</code>, <code>FMOD_CODEC_ALLOC</code>, <code>FMOD_CODEC_FREE</code>, <code>FMOD_CODEC_LOG</code>, <code>FMOD_CODEC_FILE_READ</code>, <code>FMOD_CODEC_FILE_SEEK</code>, <code>FMOD_CODEC_FILE_TELL</code>, <code>FMOD_CODEC_FILE_SIZE</code></li>
+<li>Removed <code>FMOD_CODEC_WAVEFORMAT_VERSION</code></li>
+<li>Modified <a class="apilink" href="plugin-api-codec.html#fmod_codec_description">FMOD_CODEC_DESCRIPTION</a> to add <code>apiversion</code></li>
+<li>Modified <a class="apilink" href="plugin-api-codec.html#fmod_codec_state">FMOD_CODEC_STATE</a> to remove <code>filehandle</code>, <code>filesize</code>, <code>fileread</code>, <code>fileseek</code>, <code>metadata</code>, <code>waveformatversion</code></li>
+<li>Modified <a class="apilink" href="plugin-api-codec.html#fmod_codec_state">FMOD_CODEC_STATE</a> to add <code>functions</code></li>
+</ul>
+<h4 id="fsbank-api"><a href="#fsbank-api">FSBank API</a></h4>
+<ul>
+<li>Modified <a class="apilink" href="fsbank-api.html#fsbank_format">FSBANK_FORMAT</a> to remove <code>FSBANK_FORMAT_PCM_BIGENDIAN</code> and <code>FSBANK_FORMAT_AT9_PSVITA</code> and <code>FSBANK_FORMAT_AT9_PS4</code></li>
+<li>Modified <a class="apilink" href="fsbank-api.html#fsbank_format">FSBANK_FORMAT</a> to add <a class="apilink" href="fsbank-api.html#fsbank_format_at9">FSBANK_FORMAT_AT9</a></li>
+</ul>
+<h2 id="whats-new-since-201-initial-release"><a href="#whats-new-since-201-initial-release">What's new since 2.01 initial release?</a></h2>
+<p>This section describes any major changes that occurred in 2.01.xx leading up to the release of 2.02.</p>
+<h3 id="platforms"><a href="#platforms">Platforms</a></h3>
+<ul>
+<li>Added Apple Silicon, PS5 and Game Core platforms</li>
+<li>Added microphone recording support to Stadia</li>
+<li>Optimized convolution reverb performance and memory usage</li>
+</ul>
+<h3 id="api-differences_1"><a href="#api-differences_1">API differences</a></h3>
+<p>APIs that have changed with this release that haven't been called out explicitly above.</p>
+<h4 id="studio-api_1"><a href="#studio-api_1">Studio API</a></h4>
+<ul>
+<li>Added <a class="apilink" href="studio-api-system.html#fmod_studio_system_callback_liveupdate_connected">FMOD_STUDIO_SYSTEM_CALLBACK_LIVEUPDATE_CONNECTED</a> and <a class="apilink" href="studio-api-system.html#fmod_studio_system_callback_liveupdate_disconnected">FMOD_STUDIO_SYSTEM_CALLBACK_LIVEUPDATE_DISCONNECTED</a></li>
+<li>Added <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_isdopplerenabled">Studio::EventDescription::isDopplerEnabled</a></li>
+<li>Modified <a class="apilink" href="studio-api-common.html#fmod_studio_parameter_flags">FMOD_STUDIO_PARAMETER_FLAGS</a> to add <code>FMOD_STUDIO_PARAMETER_DISCRETE</code></li>
+</ul>
+<h4 id="core-api_1"><a href="#core-api_1">Core API</a></h4>
+<ul>
+<li>Added <a class="apilink" href="core-api-system.html#fmod_system_callback_outputunderrun">FMOD_SYSTEM_CALLBACK_OUTPUTUNDERRUN</a></li>
+<li>Added <a class="apilink" href="core-api-system.html#fmod_system_callback_devicereinitialize">FMOD_SYSTEM_CALLBACK_DEVICEREINITIALIZE</a></li>
+<li>Added <a class="apilink" href="core-api-system.html#fmod_system_callback_bufferednomix">FMOD_SYSTEM_CALLBACK_BUFFEREDNOMIX</a></li>
+<li>Added <a class="apilink" href="core-api-system.html#system_getdspinfobytype">System::getDSPInfoByType</a></li>
+</ul></div>
+
+<p class="manual-footer">FMOD Engine User Manual 2.02.21 (2024-03-10). &copy; 2024 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

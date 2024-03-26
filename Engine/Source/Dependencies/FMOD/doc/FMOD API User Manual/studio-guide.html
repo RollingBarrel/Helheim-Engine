@@ -1,0 +1,270 @@
+<html>
+<head>
+<title>Studio API Guide</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Engine User Manual 2.02</p>
+<ul>
+<li><a href="welcome.html">Welcome to the FMOD Engine</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="studio-guide.html">Studio API Guide</a><ul>
+<li><a href="#what-is-the-studio-api">What is the Studio API?</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#creating-the-studio-system">Creating the Studio System</a></li>
+<li><a href="#studio-system-processing">Studio System Processing</a></li>
+<li><a href="#bank-layout">Bank Layout</a><ul>
+<li><a href="#strings-bank">Strings Bank</a></li>
+<li><a href="#master-bank">Master Bank</a></li>
+<li><a href="#bank-separation">Bank Separation</a></li>
+<li><a href="#referenced-events">Referenced Events</a></li>
+</ul>
+</li>
+<li><a href="#bank-loading">Bank Loading</a></li>
+<li><a href="#bank-unload">Bank Unload</a></li>
+<li><a href="#sample-data-loading">Sample Data loading</a><ul>
+<li><a href="#idle-pool">Idle Pool</a></li>
+</ul>
+</li>
+<li><a href="#dialogue-and-localization">Dialogue and Localization</a><ul>
+<li><a href="#scripting-example">Scripting Example</a></li>
+</ul>
+</li>
+<li><a href="#playing-events">Playing Events</a></li>
+<li><a href="#event-callbacks">Event Callbacks</a></li>
+<li><a href="#setting-parameters">Setting Parameters</a></li>
+<li><a href="#spatialization-3d">Spatialization (3D)</a></li>
+<li><a href="#working-with-reverb">Working with Reverb</a></li>
+<li><a href="#signal-paths">Signal Paths</a></li>
+</ul>
+</li>
+<li><a href="core-guide.html">Core API Guide</a></li>
+<li><a href="platforms.html">Platform Details</a></li>
+<li><a href="white-papers.html">White Papers</a></li>
+<li><a href="studio-api.html">Studio API Reference</a></li>
+<li><a href="core-api.html">Core API Reference</a></li>
+<li><a href="fsbank-api.html">FSBank API Reference</a></li>
+<li><a href="plugin-api.html">Plugin API Reference</a></li>
+<li><a href="effects-reference.html">Effects Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+</ul>
+</div>
+<div class="manual-content api">
+<h1>2. Studio API Guide</h1>
+<h2 id="what-is-the-studio-api"><a href="#what-is-the-studio-api">2.1 What is the Studio API?</a></h2>
+<p>The FMOD Studio API allows programmers to interact with the data driven projects created via FMOD Studio at run time. It is built on top of the Core API and provides additional functionality to what the Core API provides.</p>
+<p>Studio API wrappers are available for C, C++ and C# as fmod_studio.h, fmod_studio.hpp and fmod_studio.cs respectively. Any includes and libraries required by the Core API are also required for the Studio API.</p>
+<h2 id="getting-started"><a href="#getting-started">2.2 Getting Started</a></h2>
+<p>At the most basic level, this is achieved by creating the <a class="apilink" href="studio-api-system.html">Studio::System</a> object and calling <a class="apilink" href="studio-api-system.html#studio_system_initialize">Studio::System::initialize</a> on it. You need to do this once when your game starts before you can use FMOD, once the system has been initialized you can start loading banks and creating event instances without having to do any other preparations. A more detailed description of initialization can be found in the FMOD <a href="white-papers-getting-started.html">Getting Started</a> white paper.</p>
+<p>If using the C# wrapper you will need to call a Core API function before calling anything else in the Studio API. Some runtimes do not perform dependency loading, and because the Studio API depends on the Core API, fmod.dll needs to be loaded before fmod_studio.dll - this can be ensured by calling a Core API function before <a class="apilink" href="studio-api-system.html#studio_system_create">Studio::System::create</a></p>
+<h2 id="creating-the-studio-system"><a href="#creating-the-studio-system">2.3 Creating the Studio System</a></h2>
+<p>Instances of <a class="apilink" href="studio-api-system.html">Studio::System</a> must be created by calling <a class="apilink" href="studio-api-system.html#studio_system_create">Studio::System::create</a>. Once created an instance must be initialized with a call to <a class="apilink" href="studio-api-system.html#studio_system_initialize">Studio::System::initialize</a> before it can be used. <a class="apilink" href="studio-api-system.html#studio_system_create">Studio::System::create</a> also creates an FMOD <a class="apilink" href="core-api-system.html">System</a> instance which can be retrieved using <a class="apilink" href="studio-api-system.html#studio_system_getcoresystem">Studio::System::getCoreSystem</a>.</p>
+<p>Pre-initialization configuration of both the Studio System and the Core System may be performed prior to calling <a class="apilink" href="studio-api-system.html#studio_system_initialize">Studio::System::initialize</a>:</p>
+<ul>
+<li><a class="apilink" href="studio-api-system.html#studio_system_setadvancedsettings">Studio::System::setAdvancedSettings</a> can be called to configure various advanced settings.</li>
+<li><a class="apilink" href="core-api-system.html#system_setsoftwareformat">System::setSoftwareFormat</a> should be called on the Core System object with speakermode corresponding to the project's output format if there is a possibility of the output audio device not matching the project's format. Any differences between the project format and the Core System's speakermode will cause the mix to be incorrect.</li>
+</ul>
+<p>The Studio System is shut down and released by calling <a class="apilink" href="studio-api-system.html#studio_system_release">Studio::System::release</a>, make sure to call this before your game is exited.</p>
+<h2 id="studio-system-processing"><a href="#studio-system-processing">2.4 Studio System Processing</a></h2>
+<p>FMOD Studio is built on a multithreaded processing model where API calls on a game thread try to be fast by only reading shadow data, writing shadow data, or enqueuing commands to a buffer, while a separate Studio update thread triggered by the mixer asynchronously processes the API commands and performs all the logic required by event playback and automation. </p>
+<p>When running in this default asynchronous processing mode, calling <a class="apilink" href="studio-api-system.html#studio_system_update">Studio::System::update</a> from your game is a fast operation which submits the queued command buffer to the asynchronous thread and performs any asynchronous callbacks due to processing on the Studio update thread.</p>
+<p>Studio may also be initialized in synchronous mode with the <a class="apilink" href="studio-api-system.html#fmod_studio_init_synchronous_update">FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE</a> flag. When operating in synchronous mode, API calls behave the same but all the processing of queued commands and event playback and automation is performed when your game calls <a class="apilink" href="studio-api-system.html#studio_system_update">Studio::System::update</a>.</p>
+<p>If you do not call <a class="apilink" href="studio-api-system.html#studio_system_update">Studio::System::update</a> then previous commands will not be executed.  While most of the API hides this behavior with use of shadowed variables, it can cause unexpected results if waiting in a loop for <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getsampleloadingstate">Studio::EventDescription::getSampleLoadingState</a> or <a class="apilink" href="studio-api-bank.html#studio_bank_getloadingstate">Studio::Bank::getLoadingState</a> without calling update first.</p>
+<h2 id="bank-layout"><a href="#bank-layout">2.5 Bank Layout</a></h2>
+<p>The FMOD Studio Bank file contains event metadata and sound data in the one file.</p>
+<p><img alt="Studio Bank Layout" src="images/studio-bank-layout.png" /></p>
+<p>Loading a bank will load all metadata, which contains information about all the events, parameters, and other data needed for all events associated with that bank.</p>
+<p>The sound sample data has two different types, normal sample data, and streaming sound data. Normal sample data can be loaded per event type. Streaming data is streamed in on demand as events are played, and is never fully loaded ahead of time. Streaming data is good for music, voice over, and other sounds which are of a long duration. Whether sound data is streamed or not is set up by the designer in FMOD Studio and cannot be changed at runtime.</p>
+<h3 id="strings-bank"><a href="#strings-bank">2.5.1 Strings Bank</a></h3>
+<p>The Strings bank is a special bank which contains the string lookup of event path to GUID. The strings bank functions identically to a normal bank except that it never contains sample or streaming sound data.</p>
+<h3 id="master-bank"><a href="#master-bank">2.5.2 Master Bank</a></h3>
+<p>Master banks contain the global mixer and are required for creating instances of events, regardless of which bank the event's metadata and sample data exist in. At least one master bank should remain loaded at all times.</p>
+<h3 id="bank-separation"><a href="#bank-separation">2.5.3 Bank Separation</a></h3>
+<p>While banks normally contain both sample data and metadata, FMOD Studio also <a href="https://fmod.com/docs/2.02/studio/getting-events-into-your-game.html#building-metadata-and-assets-to-separate-banks">allows for metadata and assets to be built to separate banks</a>. This is commonly done to lower patch size when patching a project with updated banks, as separating sample data and metadata means that it is possible to update a bank's metadata without updating its sample data, or vice versa.</p>
+<h3 id="referenced-events"><a href="#referenced-events">2.5.4 Referenced Events</a></h3>
+<p>FMOD Studio optionally <a href="https://fmod.com/docs/2.02/studio/getting-events-into-your-game.html#including-referenced-events-in-banks">allows referenced events to not be automatically included in the same banks as the events by which they are referenced</a>. If this is the case, referenced events may be assigned to a different bank than the event they are referenced by.</p>
+<h2 id="bank-loading"><a href="#bank-loading">2.6 Bank Loading</a></h2>
+<p>Banks are loaded by calling <a class="apilink" href="studio-api-system.html#studio_system_loadbankfile">Studio::System::loadBankFile</a>. They are unloaded by <a class="apilink" href="studio-api-bank.html#studio_bank_unload">Studio::Bank::unload</a>.</p>
+<p>Bank loading can be controlled with the <a class="apilink" href="studio-api-system.html#fmod_studio_load_bank_flags">FMOD_STUDIO_LOAD_BANK_FLAGS</a>. When loading banks with <a class="apilink" href="studio-api-system.html#fmod_studio_load_bank_normal">FMOD_STUDIO_LOAD_BANK_NORMAL</a>, the function will not return until the bank has completed loading. When using the <a class="apilink" href="studio-api-system.html#fmod_studio_load_bank_nonblocking">FMOD_STUDIO_LOAD_BANK_NONBLOCKING</a> flag, the load bank function will return before the bank has completed loading.</p>
+<p>As soon as a bank has completed loading, all metadata in it can be accessed. This means that event descriptions can be found with <a class="apilink" href="studio-api-system.html#studio_system_getevent">Studio::System::getEvent</a>, and instances created from those descriptions. The bank loading state can be queried with <a class="apilink" href="studio-api-bank.html#studio_bank_getloadingstate">Studio::Bank::getLoadingState</a>.</p>
+<p>If a bank's sample data and metadata have been built separately, it is possible to load a bank's metadata and not its sample data, or vice-versa. If a bank's metadata is loaded and its sample data is not, events belonging to that bank can be still instantiated and played. However, doing so will cause FMOD to log a warning, and all instruments that use sample data that has not been loaded will be silent during playback.</p>
+<p>If referenced events have not been automatically included in the same banks as the events by which they are referenced by, it is possible to play a loaded parent event that contains a referenced child event that is not assigned to the same bank, and therefore has not been loaded. Instead, FMOD will log a warning, and any event instruments that would play the child event will silent during playback.</p>
+<h2 id="bank-unload"><a href="#bank-unload">2.7 Bank Unload</a></h2>
+<p>Banks can be unloaded by calling <a class="apilink" href="studio-api-bank.html#studio_bank_unload">Studio::Bank::unload</a>. Unloading a bank will free all sample data, invalidate the events descriptions belonging to that bank, and destroy associated instances.</p>
+<p>If the bank containing the sample data was loaded via <a class="apilink" href="studio-api-system.html#studio_system_loadbankmemory">Studio::System::loadBankMemory</a> then the system must immediately unload sample data when the bank is unloaded. This may lead to playback errors if any instances of events in the bank are still playing. This can occur even if multiple copies of the sample data are loaded from different banks and only one of the copies is being unloaded.</p>
+<h2 id="sample-data-loading"><a href="#sample-data-loading">2.8 Sample Data loading</a></h2>
+<p>Sample data is loaded from one of the three actions:</p>
+<ul>
+<li><a class="apilink" href="studio-api-bank.html#studio_bank_loadsampledata">Studio::Bank::loadSampleData</a></li>
+<li><a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_loadsampledata">Studio::EventDescription::loadSampleData</a></li>
+<li><a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_createinstance">Studio::EventDescription::createInstance</a></li>
+</ul>
+<p>For cases where most or all of the events may play at any time, then loading calling <a class="apilink" href="studio-api-bank.html#studio_bank_loadsampledata">Studio::Bank::loadSampleData</a> to load all data up front may be the best approach. Once the bank sample data has loaded, then all event instances can be created or destroyed and use that existing data immediately. However, it does have the highest memory overhead. Repeated calls to <a class="apilink" href="studio-api-bank.html#studio_bank_loadsampledata">Studio::Bank::loadSampleData</a> are reference counted, and the bank's sample data is only unloaded when <a class="apilink" href="studio-api-bank.html#studio_bank_unloadsampledata">Studio::Bank::unloadSampleData</a> has been called an equal number of times.</p>
+<p>Sample data can be loaded for a selected event using <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_loadsampledata">Studio::EventDescription::loadSampleData</a>. It is best to load the sample data ahead of time, so that the event's sound sample data is ready when needed. For cases of very common events, the sample data could be loaded for the duration of the game or level. For less common events, the sample data may be loaded in or out as needed. Repeated calls to <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_loadsampledata">Studio::EventDescription::loadSampleData</a> are reference counted, and the bank's sample data is only unloaded when <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_unloadsampledata">Studio::EventDescription::unloadSampleData</a> has been called an equal number of times, or if the entire bank is unloaded.</p>
+<p>When either of these reference counts is incremented to one the system begins loading the referenced sample data. The sample data is loaded asynchronously and the loading state may be polled by calling <a class="apilink" href="studio-api-bank.html#studio_bank_getsampleloadingstate">Studio::Bank::getSampleLoadingState</a> or <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getsampleloadingstate">Studio::EventDescription::getSampleLoadingState</a>. Alternatively, you can call <a class="apilink" href="studio-api-system.html#studio_system_flushsampleloading">Studio::System::flushSampleLoading</a>, which will block until all sample loading and unloading has completed.</p>
+<p>When an instance of an event is created by calling <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_createinstance">Studio::EventDescription::createInstance</a> the system begins loading any non-streaming sample data which is not already loaded or loading. Once again the sample data is loaded asynchronously and the loading state may be polled by calling <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getsampleloadingstate">Studio::EventDescription::getSampleLoadingState</a>. If playback of the instance is started by calling <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_start">Studio::EventInstance::start</a> before the sample data has finished loading then the instance will stay in the <a class="apilink" href="studio-api-common.html#fmod_studio_playback_starting">FMOD_STUDIO_PLAYBACK_STARTING</a> state until loading of the sampled data has completed.</p>
+<p>The automatic loading of sample data is the simplest approach and uses the least amount of memory. However it has the following disadvantages:</p>
+<ul>
+<li>Sample data will only start loading when the instance is created, which may be just before <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_start">Studio::EventInstance::start</a> is called.</li>
+<li>Sample data will only stay loaded for as long as at least one instance exists.</li>
+</ul>
+<p>For the case of one-shots, this may mean that the sample data is constantly loaded and unloaded whenever a one-shot plays, which is not a good approach. For these sort of common sounds, it is better to call <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_loadsampledata">Studio::EventDescription::loadSampleData</a> so the sample data stays in memory rather than constantly unloading then reloading it.</p>
+<p>The three approaches to bank loading can be combined. The sample data will stay loaded for as long as at least one of the three conditions are met.</p>
+<h3 id="idle-pool"><a href="#idle-pool">2.8.1 Idle Pool</a></h3>
+<p>For users who don't explicitly load sample data, sounds will be loaded and unloaded on demand. To help avoid unnecessary file access, there is an idle pool for recently used sounds. When a sound is no longer needed (e.g due to an event instance finishing), its sample data will be placed into the idle pool to be reused later if needed.</p>
+<p>By default, the idle pool is set to 256kB in size. This can be customized via the <a class="apilink" href="studio-api-system.html#fmod_studio_advancedsettings_idlesampledatapoolsize">FMOD_STUDIO_ADVANCEDSETTINGS::idleSampleDataPoolSize</a> field.</p>
+<h2 id="dialogue-and-localization"><a href="#dialogue-and-localization">2.9 Dialogue and Localization</a></h2>
+<p>Start by <a href="#bank-loading">loading the banks</a> that contain the audio tables. Next, create an instance of an event that contains a programmer instrument. Using this instance, you will be able to register for <a href="#event-callbacks">event callbacks</a>, specifically <a class="apilink" href="studio-api-eventinstance.html#fmod_studio_event_callback_create_programmer_sound">FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND</a>. Using the callbacks you will be able to create and assign sounds from the asset tables.</p>
+<p>For localized dialogue, make sure that the required localized bank has been loaded. Ensure that any other localizations on the same bank are unloaded before loading a new localization.</p>
+<p>See the <a href="https://fmod.com/docs/2.02/studio/dialogue-and-localization.html">FMOD Studio Documentation</a> for more information. </p>
+<h3 id="scripting-example"><a href="#scripting-example">2.9.1 Scripting Example</a></h3>
+<p>This is a modified excerpt of the programmer instrument example that is included in the C++ FMOD Studio API installation folder. The error checking has been removed for brevity.</p>
+<div class="highlight language-cpp"><pre><span></span><span class="k">struct</span> <span class="n">ProgrammerSoundContext</span>
+<span class="p">{</span>
+    <span class="n">FMOD</span><span class="o">::</span><span class="n">System</span><span class="o">*</span> <span class="n">coreSystem</span><span class="p">;</span>
+    <span class="n">FMOD</span><span class="o">::</span><span class="n">Studio</span><span class="o">::</span><span class="n">System</span><span class="o">*</span> <span class="n">system</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">dialogueString</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">ProgrammerSoundContext</span> <span class="n">programmerSoundContext</span><span class="p">;</span>
+<span class="n">programmerSoundContext</span><span class="p">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">system</span><span class="p">;</span>
+<span class="n">programmerSoundContext</span><span class="p">.</span><span class="n">coreSystem</span> <span class="o">=</span> <span class="n">coreSystem</span><span class="p">;</span>
+</pre></div>
+
+<p>This section is to set up a struct to contain the various systems required for injecting audio files or loading keys into a programmer instrument.</p>
+<div class="highlight language-cpp"><pre><span></span><span class="n">eventInstance</span><span class="o">-&gt;</span><span class="n">setUserData</span><span class="p">(</span><span class="o">&amp;</span><span class="n">programmerSoundContext</span><span class="p">);</span>
+<span class="n">eventInstance</span><span class="o">-&gt;</span><span class="n">setCallback</span><span class="p">(</span><span class="n">programmerSoundCallback</span><span class="p">,</span> <span class="n">FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND</span> <span class="o">|</span> <span class="n">FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND</span><span class="p">);</span>
+</pre></div>
+
+<p>The <code>setUserData()</code> function allows you to attach any kind of data to the event instance. In this case, the Studio system, Core system, and the dialogue string are being attached to this event instance.</p>
+<p>The <code>setCallback()</code> function attaches the callback to the event instance. This callback will be set up outside the main thread and explained more later on.</p>
+<div class="highlight language-cpp"><pre><span></span><span class="c1">// Available banks</span>
+<span class="c1">// &quot;Dialogue_EN.bank&quot;, &quot;Dialogue_JP.bank&quot;, &quot;Dialogue_CN.bank&quot;</span>
+<span class="n">FMOD</span><span class="o">::</span><span class="n">Studio</span><span class="o">::</span><span class="n">Bank</span><span class="o">*</span> <span class="n">localizedBank</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="n">system</span><span class="o">-&gt;</span><span class="n">loadBankFile</span><span class="p">(</span><span class="n">Common_MediaPath</span><span class="p">(</span><span class="s">&quot;Dialogue_JP.bank&quot;</span><span class="p">),</span> <span class="n">FMOD_STUDIO_LOAD_BANK_NORMAL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">localizedBank</span><span class="p">);</span>
+<span class="n">programmerSoundContext</span><span class="p">.</span><span class="n">dialogueString</span> <span class="o">=</span> <span class="s">&quot;welcome&quot;</span><span class="p">;</span>
+<span class="n">eventInstance</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+</pre></div>
+
+<p>The way to set up different localizations is to separate the languages into different banks with their own audio tables. The <code>programmerSoundContext.dialogueString</code> variable is the audio table key you wish to use. In this example, "welcome" is used.</p>
+<p>With "welcome" as the key, what sound plays depends on the bank loaded. In this example, it will play the Japanese bank's "welcome" audio file.</p>
+<div class="highlight language-cpp"><pre><span></span><span class="n">FMOD_RESULT</span> <span class="n">F_CALLBACK</span> <span class="n">programmerSoundCallback</span><span class="p">(</span><span class="n">FMOD_STUDIO_EVENT_CALLBACK_TYPE</span> <span class="n">type</span><span class="p">,</span> <span class="n">FMOD_STUDIO_EVENTINSTANCE</span><span class="o">*</span> <span class="n">event</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+
+<p>This function is to set up what happens when a programmer instrument callback is called.</p>
+<div class="highlight language-cpp"><pre><span></span><span class="p">{</span>
+    <span class="n">FMOD</span><span class="o">::</span><span class="n">Studio</span><span class="o">::</span><span class="n">EventInstance</span><span class="o">*</span> <span class="n">eventInstance</span> <span class="o">=</span> <span class="p">(</span><span class="n">FMOD</span><span class="o">::</span><span class="n">Studio</span><span class="o">::</span><span class="n">EventInstance</span><span class="o">*</span><span class="p">)</span><span class="n">event</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="n">FMOD_STUDIO_EVENT_CALLBACK_CREATE_PROGRAMMER_SOUND</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Get our context from the event instance user data</span>
+        <span class="n">ProgrammerSoundContext</span><span class="o">*</span> <span class="n">context</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">eventInstance</span><span class="o">-&gt;</span><span class="n">getUserData</span><span class="p">((</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">context</span><span class="p">);</span>
+
+        <span class="c1">// Find the audio file in the audio table with the key</span>
+        <span class="n">FMOD_STUDIO_SOUND_INFO</span> <span class="n">info</span><span class="p">;</span>
+        <span class="n">context</span><span class="o">-&gt;</span><span class="n">system</span><span class="o">-&gt;</span><span class="n">getSoundInfo</span><span class="p">(</span><span class="n">context</span><span class="o">-&gt;</span><span class="n">dialogueString</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">);</span>
+
+        <span class="n">FMOD</span><span class="o">::</span><span class="n">Sound</span><span class="o">*</span> <span class="n">sound</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">context</span><span class="o">-&gt;</span><span class="n">coreSystem</span><span class="o">-&gt;</span><span class="n">createSound</span><span class="p">(</span><span class="n">info</span><span class="p">.</span><span class="n">name_or_data</span><span class="p">,</span> <span class="n">FMOD_LOOP_NORMAL</span> <span class="o">|</span> <span class="n">FMOD_CREATECOMPRESSEDSAMPLE</span> <span class="o">|</span> <span class="n">FMOD_NONBLOCKING</span> <span class="o">|</span> <span class="n">info</span><span class="p">.</span><span class="n">mode</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">.</span><span class="n">exinfo</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sound</span><span class="p">);</span>
+
+        <span class="n">FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES</span><span class="o">*</span> <span class="n">props</span> <span class="o">=</span> <span class="p">(</span><span class="n">FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES</span><span class="o">*</span><span class="p">)</span><span class="n">parameters</span><span class="p">;</span>
+
+        <span class="c1">// Pass the sound to FMOD</span>
+        <span class="n">props</span><span class="o">-&gt;</span><span class="n">sound</span> <span class="o">=</span> <span class="p">(</span><span class="n">FMOD_SOUND</span><span class="o">*</span><span class="p">)</span><span class="n">sound</span><span class="p">;</span>
+        <span class="n">props</span><span class="o">-&gt;</span><span class="n">subsoundIndex</span> <span class="o">=</span> <span class="n">info</span><span class="p">.</span><span class="n">subsoundindex</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+
+<p>The <code>context</code> struct set up previously is attached to the event with <code>getUserData()</code>. As mentioned previously, these are the Core system, the Studio system, and the dialogue string.</p>
+<p>The <code>context</code> struct's dialogue string is passed to the <code>context</code> struct's Studio system. The system will search all loaded audio tables for the string provided. The sound info is then passed into the <code>info</code> variable. If multiple audio tables are loaded that contain the same key, the latest loaded audio table is used.</p>
+<p>A Core level FMOD::Sound is then instantiated using the information gathered in the <code>info</code> variable. The audio table is passed in as <code>info.name_or_data</code> but the specific audio file to be used will be specified later.</p>
+<p>In the event of a programmer instrument being created (triggered) the programmer instrument expects a <code>FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES</code> to be passed into it. The audio table, in the FMOD::Sound, is provided to the <code>props</code> properties and the <code>subsoundIndex</code> is the actual audio file (subsound of the audio table) chosen with the key string.</p>
+<div class="highlight language-cpp"><pre><span></span>    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="n">FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES</span><span class="o">*</span> <span class="n">props</span> <span class="o">=</span> <span class="p">(</span><span class="n">FMOD_STUDIO_PROGRAMMER_SOUND_PROPERTIES</span><span class="o">*</span><span class="p">)</span><span class="n">parameters</span><span class="p">;</span>
+
+        <span class="c1">// Obtain the sound</span>
+        <span class="n">FMOD</span><span class="o">::</span><span class="n">Sound</span><span class="o">*</span> <span class="n">sound</span> <span class="o">=</span> <span class="p">(</span><span class="n">FMOD</span><span class="o">::</span><span class="n">Sound</span><span class="o">*</span><span class="p">)</span><span class="n">props</span><span class="o">-&gt;</span><span class="n">sound</span><span class="p">;</span>
+
+        <span class="c1">// Release the sound</span>
+        <span class="n">sound</span><span class="o">-&gt;</span><span class="n">release</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>When the programmer instrument has been untriggered, either by the instrument no longer meeting its conditions in the event or by the event stopping, then it will fire the <code>FMOD_STUDIO_EVENT_CALLBACK_DESTROY_PROGRAMMER_SOUND</code> callback. In the above code, when the programmer instrument is destroyed, it will find the FMOD::Sound passed into it and release it, freeing the memory.</p>
+<h2 id="playing-events"><a href="#playing-events">2.10 Playing Events</a></h2>
+<p>An event is an instanceable unit of sound content that can be triggered, controlled, and stopped from game code. Everything that produces a sound in a game should have a corresponding event.</p>
+<p>An event contains and is composed of tracks, instruments, and parameters. The parameters trigger the instruments, which route audio content into the tracks. The tracks route into other tracks, or into the event's master track; The output of the event's master track routes into the project mixer. In addition, the event's parameters can control and manipulate most properties of the event, of the event's instruments and logic markers, and of effect modules on the event's tracks.</p>
+<p>To play an event with the Studio API, typically you do the following:</p>
+<ol>
+<li>Load a <a class="apilink" href="studio-api-bank.html">Studio::Bank</a> containing the event you want to play, if one is not already loaded.</li>
+<li>Get the <a class="apilink" href="studio-api-eventdescription.html">Studio::EventDescription</a> for the event you want to play. This can be done by either using <a class="apilink" href="studio-api-system.html#studio_system_getevent">Studio::System::getEvent</a> or <a class="apilink" href="studio-api-system.html#studio_system_geteventbyid">Studio::System::getEventbyID</a>, or finding the event description in the list returned by <a class="apilink" href="studio-api-bank.html#studio_bank_geteventlist">Studio::Bank::getEventList</a>.</li>
+<li>Create an instance of the event with <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_createinstance">Studio::EventDescription::createInstance</a>. This returns a <a href="white-papers-handle-system.html">handle</a> to the new <a class="apilink" href="studio-api-eventinstance.html">Studio::EventInstance</a>, and causes the Studio system to begin <a href="studio-guide.html#sample-data-loading">loading the event's non-streaming sample data</a>. </li>
+<li>Play the event instance with <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_start">Studio::EventInstance::start</a>. This causes the event instance to begin playback, unless the event's sample data has not finished loading, in which case the event instance will start playback when loading has completed.</li>
+<li>Release the event instance with <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_release">Studio::EventInstance::release</a>. This can be done at any point while the event is playing, and marks it to be destroyed by the Studio system when it is no longer playing, i.e. when it is no longer in the playback state <a href="studio-api-common.html#fmod_studio_playback_state">FMOD_STUDIO_PLAYBACK_PLAYING</a>.</li>
+</ol>
+<p>Generally, best practice is to release event instances immediately after starting them unless you want to continue to act on them in the future. For example, you may wish to play an instance multiple times, explicitly stop an instance and start it again later, or set an instance's parameters while it is still playing. This is because if the released event instance has stopped playing, it will be destroyed by the Studio system while you're still trying to act on it.</p>
+<h2 id="event-callbacks"><a href="#event-callbacks">2.11 Event Callbacks</a></h2>
+<p>FMOD Studio allows the user to specify a callback function to call when various state changes occur in an event instance. See <a class="apilink" href="studio-api-eventinstance.html#fmod_studio_event_callback_type">FMOD_STUDIO_EVENT_CALLBACK_TYPE</a> for the full list of callbacks available. The callback can be set automatically for all new instances of an event using <a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_setcallback">Studio::EventDescription::setCallback</a>, or it can be set manually for individual event instances using <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setcallback">Studio::EventInstance::setCallback</a>.</p>
+<p>Some callbacks may be fired asynchronously on a thread owned by FMOD, depending on Studio initialization flags.</p>
+<p>When Studio has been initialized in asynchronous mode (the default mode), callbacks are fired from the Studio asynchronous thread as they occur.</p>
+<p>If Studio has been initialized with <a class="apilink" href="studio-api-system.html#fmod_studio_init_deferred_callbacks">FMOD_STUDIO_INIT_DEFERRED_CALLBACKS</a> then the <a class="apilink" href="studio-api-eventinstance.html#fmod_studio_event_callback_timeline_marker">FMOD_STUDIO_EVENT_CALLBACK_TIMELINE_MARKER</a> and<br />
+<a class="apilink" href="studio-api-eventinstance.html#fmod_studio_event_callback_timeline_beat">FMOD_STUDIO_EVENT_CALLBACK_TIMELINE_BEAT</a> callbacks will be fired from the next call to <a class="apilink" href="studio-api-system.html#studio_system_update">Studio::System::update</a>.</p>
+<p>If Studio has been initialized with <a class="apilink" href="studio-api-system.html#fmod_studio_init_synchronous_update">FMOD_STUDIO_INIT_SYNCHRONOUS_UPDATE</a> then all callbacks will be fired from the next call to <a class="apilink" href="studio-api-system.html#studio_system_update">Studio::System::update</a>.</p>
+<p><strong>See Also:</strong> <a href="glossary.html#callback-behavior">Callback Behavior</a></p>
+<h2 id="setting-parameters"><a href="#setting-parameters">2.12 Setting Parameters</a></h2>
+<p>Parameters are used to control the behavior of events, snapshots, and the mixer at run time.</p>
+<p>In <a href="https://fmod.com/docs/2.02/studio/glossary.html#fmod-studio">FMOD Studio</a>, parameters can be used to affect various behaviors, such as automating event, snapshot, and mixer properties, and acting as a trigger condition for instruments and logic markers. Parameter values can then be set at run time using the <a href="studio-api.html">FMOD Studio API</a>, causing automated properties to change, and dependent behaviour to trigger when trigger conditions are met.</p>
+<p>Parameters can exist locally or globally. Local parameters exist on a per-event instance basis; each event instance that uses a given parameter has a single instance of that parameter, the value of which is independent from all other instances of the same parameter. A global parameter only ever has a single instance, which is shared between all events that make use of it, as well as the mixer.</p>
+<p>Local parameters can be set using the following <a class="apilink" href="studio-api-eventinstance.html">Studio::EventInstance</a> functions:</p>
+<ul>
+<li><a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setparameterbyname">Studio::EventInstance::setParameterByName</a></li>
+<li><a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setparameterbynamewithlabel">Studio::EventInstance::setParameterByNameWithLabel</a></li>
+<li><a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setparameterbyid">Studio::EventInstance::setParameterByID</a></li>
+<li><a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setparameterbyidwithlabel">Studio::EventInstance::setParameterByIDWithLabel</a></li>
+<li><a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setparametersbyids">Studio::EventInstance::setParametersByIDs</a></li>
+</ul>
+<p>Global parameters can be set using the following <a class="apilink" href="studio-api-system.html">Studio::System</a> functions:</p>
+<ul>
+<li><a class="apilink" href="studio-api-system.html#studio_system_setparameterbyname">Studio::System::setParameterByName</a></li>
+<li><a class="apilink" href="studio-api-system.html#studio_system_setparameterbynamewithlabel">Studio::System::setParameterByNameWithLabel</a></li>
+<li><a class="apilink" href="studio-api-system.html#studio_system_setparameterbyid">Studio::System::setParameterByID</a></li>
+<li><a class="apilink" href="studio-api-system.html#studio_system_setparameterbyidwithlabel">Studio::System::setParameterByIDWithLabel</a></li>
+<li><a class="apilink" href="studio-api-system.html#studio_system_setparametersbyids">Studio::System::setParametersByIDs</a></li>
+</ul>
+<p>Parameters can be set by name (case-insensitive), or by ID. A parameter's ID, <a class="apilink" href="studio-api-common.html#fmod_studio_parameter_id">FMOD_STUDIO_PARAMETER_ID</a>, can be found in its corresponding <a class="apilink" href="studio-api-common.html#fmod_studio_parameter_description">FMOD_STUDIO_PARAMETER_DESCRIPTION</a>. A parameter's ID is not that same as its GUID, and parameter values cannot be set using GUIDs. For local parameters, parameter descriptions can be retrieved using the following <a class="apilink" href="studio-api-eventdescription.html">Studio::EventDescription</a> functions:</p>
+<ul>
+<li><a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getparameterdescriptionbyname">Studio::EventDescription::getParameterDescriptionByName</a></li>
+<li><a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getparameterdescriptionbyid">Studio::EventDescription::getParameterDescriptionByID</a></li>
+<li><a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getparameterdescriptionbyindex">Studio::EventDescription::getParameterDescriptionByIndex</a></li>
+<li><a class="apilink" href="studio-api-eventdescription.html#studio_eventdescription_getparameterdescriptioncount">Studio::EventDescription::getParameterDescriptionCount</a></li>
+</ul>
+<p>Likewise, similar functions can be called from <a class="apilink" href="studio-api-system.html">Studio::System</a> for global parameters:</p>
+<ul>
+<li><a class="apilink" href="studio-api-system.html#studio_system_getparameterdescriptionbyname">Studio::System::getParameterDescriptionByName</a></li>
+<li><a class="apilink" href="studio-api-system.html#studio_system_getparameterdescriptionbyid">Studio::System::getParameterDescriptionByID</a></li>
+<li><a class="apilink" href="studio-api-system.html#studio_system_getparameterdescriptioncount">Studio::System::getParameterDescriptionCount</a></li>
+<li><a class="apilink" href="studio-api-system.html#studio_system_getparameterdescriptionlist">Studio::System::getParameterDescriptionList</a></li>
+</ul>
+<p>For more information about parameters, see the <a href="https://fmod.com/docs/2.02/studio/parameters.html">Parameters</a> chapter of the <a href="https://fmod.com/docs/2.02/studio/welcome-to-fmod-studio.html">FMOD Studio User Manual</a>.</p>
+<h2 id="spatialization-3d"><a href="#spatialization-3d">2.13 Spatialization (3D)</a></h2>
+<p>Audio spatialization is the process of taking an audio file and making it sound "in the world".<br />
+See the <a href="white-papers-studio-3d-events.html">Studio API 3D Events</a> and <a href="white-papers-spatial-audio.html">Spatial Audio</a> white papers.</p>
+<h2 id="working-with-reverb"><a href="#working-with-reverb">2.14 Working with Reverb</a></h2>
+<p>Reverb in the FMOD Studio API can be handled in two ways. The sound designer can add reverb effects to the master bus or individual events, and control the levels sent to those effects using Studio. The second approach is to use the core reverb system. </p>
+<p>The core system has four user configurable 3d reverbs. Studio event instances can interact with the core reverb system by sending their signal to the core reverbs. The send level can be set with <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_setreverblevel">Studio::EventInstance::setReverbLevel</a> and queried with <a class="apilink" href="studio-api-eventinstance.html#studio_eventinstance_getreverblevel">Studio::EventInstance::getReverbLevel</a>.</p>
+<h2 id="signal-paths"><a href="#signal-paths">2.15 Signal Paths</a></h2>
+<p>Each event or bus has a signal path to the master bus. The signal path is composed of all buses that receive signal from the event or bus. This includes any buses on the direct path to the master bus as well as any buses that are targeted by sends.</p>
+<p>By default, when an event instance is created, the system ensures that every bus on its signal path has a corresponding <a class="apilink" href="core-api-channelgroup.html">ChannelGroup</a>. When an event instance is destroyed, the system destroys any <a class="apilink" href="core-api-channelgroup.html">ChannelGroup</a>s which are no longer required.</p>
+<p>You can override the default behavior by calling <a class="apilink" href="studio-api-bus.html#studio_bus_lockchannelgroup">Studio::Bus::lockChannelGroup</a>. This forces the system to ensure the <a class="apilink" href="core-api-channelgroup.html">ChannelGroup</a> exists for that bus and each bus on its signal path. The system cannot destroy any of these <a class="apilink" href="core-api-channelgroup.html">ChannelGroup</a>s until you call <a class="apilink" href="studio-api-bus.html#studio_bus_unlockchannelgroup">Studio::Bus::unlockChannelGroup</a>.</p></div>
+
+<p class="manual-footer">FMOD Engine User Manual 2.02.21 (2024-03-10). &copy; 2024 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>
