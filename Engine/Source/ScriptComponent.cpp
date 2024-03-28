@@ -5,6 +5,8 @@
 #include "Script.h"
 #include "GameObject.h"
 #include "ModuleScene.h"
+#include "ModuleResource.h"
+#include "ModuleFileSystem.h"
 
 
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
@@ -111,7 +113,6 @@ void::ScriptComponent::Save(Archive& archive) const
 
 void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
 {
-
 	bool check = data.HasMember("ScriptVariables");
 	bool check2 = data["ScriptVariables"].IsString();
 
@@ -169,29 +170,47 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 								break;
 							}
 						}
-
 					}
 				}
 			}
-			
 		}
 	}
-
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
 {
-	mName = scriptName;
-
-	for (auto data : mData) {
-
+	std::string scriptPath = ASSETS_SCRIPT_PATH + std::string(scriptName) + ".h";
+	
+	//Release the old scriptResource
+	if (!App->GetFileSystem()->Exists(scriptPath.c_str()))
+	{
+		LOG("SCRIPT ASSET NOT FOUND");
+	}
+	if (mResourceScript != nullptr) 
+	{
+		App->GetResource()->ReleaseResource(mResourceScript->GetUID());
+		mResourceScript = nullptr;
+	}
+	// Release the old script with its data
+	mScript = nullptr;
+	for (auto data : mData) 
+	{
 		delete data;
 	}
 	mData.clear();
-
+	// Load the new script
+	mName = scriptName;
 	Script* (*script)(GameObject*, std::vector<ScriptVariable*>&) = (Script * (*)(GameObject*, std::vector<ScriptVariable*>&))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
-	if (script != nullptr) {
+	if (script != nullptr) {	
 		mScript = script(mOwner , mData);
+		mScript->SetName(mName);
+		// Load the script resource
+		// This cast can be done because we know that the resource is a ResourceScript
+		// If some problem arises, check the type of the resource
+		mResourceScript = (ResourceScript*)(App->GetResource()->RequestResource(scriptPath.c_str()));
+		if (mResourceScript == nullptr) {
+			LOG("SCRIPT RESOURCE NOT FOUND");
+		}
 		App->GetScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
