@@ -276,20 +276,21 @@ void ModuleUI::CheckRaycast()
 
 	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
 	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
-	
-	for (GameObject* gameObject : mCanvas->GetChildren())
-	{
-		ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
-		if (image != nullptr)
+	if (!mCanvas->GetChildren().empty()) {
+		for (GameObject* gameObject : mCanvas->GetChildren())
 		{
-			// Check if the mouse position is inside the bounds of the image
-			if (normalizedX >= gameObject->GetWorldPosition().x && normalizedX <= gameObject->GetWorldPosition().x + image->GetImage()->GetWidth() &&
-				normalizedY >= gameObject->GetWorldPosition().y && normalizedY <= gameObject->GetWorldPosition().y + image->GetImage()->GetHeight())
+			ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
+			if (image != nullptr)
 			{
-				ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
-				if (button != nullptr && button->IsEnabled())
+				// Check if the mouse position is inside the bounds of the image
+				if (normalizedX >= gameObject->GetWorldPosition().x && normalizedX <= gameObject->GetWorldPosition().x + image->GetImage()->GetWidth() &&
+					normalizedY >= gameObject->GetWorldPosition().y && normalizedY <= gameObject->GetWorldPosition().y + image->GetImage()->GetHeight())
 				{
-					button->OnClicked();
+					ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
+					if (button != nullptr && button->IsEnabled())
+					{
+						button->OnClicked();
+					}
 				}
 			}
 		}
