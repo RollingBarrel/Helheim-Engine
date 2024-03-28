@@ -57,7 +57,7 @@ bool ModuleScene::Init()
 
 	//Save("Scene");
 	Load("scene");
-	
+
 	return true;
 }
 
@@ -176,6 +176,10 @@ void ModuleScene::Save(const char* sceneName) const {
 
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+
+	delete sceneArchive;
+	delete archive;
+
 }
 
 void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {
@@ -242,7 +246,7 @@ void ModuleScene::Load(const char* sceneName) {
 	}
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath) 
+void ModuleScene::LoadPrefab(const char* saveFilePath)
 {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
@@ -278,10 +282,10 @@ GameObject* ModuleScene::Find(unsigned int UID)
 	else {
 		return mRoot;
 	}
-	
+
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const  {
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
 	gameObject->Save(gameObjectArchive, parentUuid);
@@ -346,7 +350,7 @@ update_status ModuleScene::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DeleteGameObjects(){
+void ModuleScene::DeleteGameObjects() {
 
 	for (auto gameObject : mGameObjectsToDelete) {
 		gameObject->GetParent()->DeleteChild(gameObject);

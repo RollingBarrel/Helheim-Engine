@@ -26,7 +26,7 @@ ResourceAnimation::ResourceAnimation(
 
 ResourceAnimation::~ResourceAnimation()
 {
-   // CleanUp();
+   CleanUp();
 }
 
 ResourceAnimation::AnimationChannel* ResourceAnimation::GetChannel(const std::string& name) const
@@ -117,6 +117,10 @@ void ResourceAnimation::CleanUp()
 
     for (auto& channel : mChannels)
     {
+        channel.second->positions.reset();
+        channel.second->rotations.reset();
+        channel.second->posTimeStamps.reset();
+        channel.second->rotTimeStamps.reset();
 		delete channel.second;
 	}
 	mChannels.clear();

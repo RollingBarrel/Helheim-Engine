@@ -20,10 +20,14 @@ public:
 	float4x4 GetViewMatrix() const { return mFrustum->ViewMatrix(); }
 	float4x4 GetProjectionMatrix() const { return mFrustum->ProjectionMatrix(); }
 	float4x4 GetViewProjMatrix() const { return mFrustum->ViewProjMatrix(); }
+	const Frustum* GetFrustum() const { return mFrustum; }
+	
+	void SetFrustum(Frustum* frustum) { mFrustum = frustum; }
+
 	void WindowResized(int w, int h);
 	void CheckRaycast();
 	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
-	const Frustum* GetFrustum() const { return mFrustum; }
+	bool CleanUp() override;
 
 private:
 	Frustum* mFrustum = nullptr;

@@ -1,0 +1,89 @@
+{
+    "Scene": {
+        "GameObjects": [
+            {
+                "UID": 397830448,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 601332631,
+                "ParentUID": 397830448,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": []
+            },
+            {
+                "UID": 612402370,
+                "ParentUID": 601332631,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "Components": [
+                    {
+                        "ID": 616301146,
+                        "MeshID": 501396549,
+                        "MaterialID": 0,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            }
+        ]
+    }
+}

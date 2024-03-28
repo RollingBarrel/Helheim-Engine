@@ -102,7 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,6 +164,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="BatchManager.cpp" />
+    <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CameraUtils.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_draw.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_widgets.cpp" />
+    <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp" />
@@ -244,6 +246,8 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
     <ClCompile Include="EditorControlPanel.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
+    <ClCompile Include="HelheimEvent.cpp" />
+    <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
@@ -257,6 +261,7 @@
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
+    <ClCompile Include="ModuleEvent.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
@@ -269,7 +274,9 @@
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModuleOpenGL.cpp" />
+    <ClCompile Include="ModuleOpenGL.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
     <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
     <ClCompile Include="ModuleScriptManager.cpp" />
@@ -314,6 +321,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
     <ClInclude Include="BatchManager.h" />
+    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CameraUtils.h" />
@@ -348,6 +356,7 @@
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_textedit.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_truetype.h" />
+    <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h" />
@@ -470,9 +479,12 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImporterScript.h" />
+    <ClInclude Include="ModuleEvent.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
+    <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterMesh.h" />
@@ -517,6 +529,8 @@
     <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
+    <None Include="..\Game\Assets\Shaders\ui.fs" />
+    <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="..\Game\Assets\Shaders\Vertex.vs" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl" />
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl" />
