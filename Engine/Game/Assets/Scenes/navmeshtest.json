@@ -2,14 +2,14 @@
     "Scene": {
         "GameObjects": [
             {
-                "UID": 718875026,
+                "UID": 397830448,
                 "ParentUID": 1,
                 "Name": "Cube",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    -0.7709683775901794,
-                    0.04382133483886719,
+                    0.0,
+                    0.0,
                     0.0
                 ],
                 "Rotation": [
@@ -27,8 +27,8 @@
                 "Components": []
             },
             {
-                "UID": 745609490,
-                "ParentUID": 718875026,
+                "UID": 601332631,
+                "ParentUID": 397830448,
                 "Name": "Cube",
                 "isEnabled": true,
                 "isActive": true,
@@ -52,8 +52,8 @@
                 "Components": []
             },
             {
-                "UID": 759255206,
-                "ParentUID": 745609490,
+                "UID": 612402370,
+                "ParentUID": 601332631,
                 "Name": "Cube",
                 "isEnabled": true,
                 "isActive": true,
@@ -76,7 +76,7 @@
                 "Tag": 0,
                 "Components": [
                     {
-                        "ID": 764894507,
+                        "ID": 616301146,
                         "MeshID": 501396549,
                         "MaterialID": 0,
                         "ComponentType": 0,

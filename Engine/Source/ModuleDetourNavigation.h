@@ -18,6 +18,7 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	void CreateDetourData();
+	void DrawDebug();
 	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 
 
