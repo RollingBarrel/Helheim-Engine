@@ -173,12 +173,13 @@ void NavMeshController::HandleBuild() {
 	}
 
 	int* triangles = new int[indicesSize];
-	int* trianglesCursor = triangles;
+	//int* trianglesCursor = triangles;
 
 	float* vertices = new float[verticesSize];
 	float* verticesCursor = vertices;
 
 	std::vector<float> transformedVerts;
+	int lastIndex = 0;
 	for (int index = 0; index < mMeshRendererComponents.size(); index++) {
 		testMesh = mMeshRendererComponents[index];
 		if (!testMesh)
@@ -186,11 +187,15 @@ void NavMeshController::HandleBuild() {
 			LOG("A mesh was not correctly loaded to the navigation controller.");
 			break;
 		}
-		int meshTriSize = testMesh->GetResourceMesh()->GetNumberIndices();
-		const unsigned int* meshTriangles = testMesh->GetResourceMesh()->GetIndices();
-		unsigned int triBytes = sizeof(meshTriSize * 4);
-		memcpy(trianglesCursor, meshTriangles, triBytes);
-		trianglesCursor += triBytes;
+		int meshIndiceNumber= testMesh->GetResourceMesh()->GetNumberIndices();
+		const unsigned int* meshIndices = testMesh->GetResourceMesh()->GetIndices();
+		for (int i = 0; i < meshIndiceNumber; i++) {
+			triangles[i + lastIndex] = meshIndices[i]+lastIndex;
+		}
+		lastIndex += meshIndiceNumber;
+		//unsigned int triBytes = sizeof(meshTriSize * 4);
+		//memcpy(trianglesCursor, meshTriangles, triBytes);
+		//trianglesCursor += triBytes;
 
 
 
