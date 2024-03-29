@@ -469,6 +469,12 @@
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
+    <ClCompile Include="AudioSourceComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FmodUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1164,6 +1170,12 @@
     </ClInclude>
     <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio_common.h">
       <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSourceComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FmodUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
