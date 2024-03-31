@@ -15,23 +15,18 @@
 #include "Geometry/Triangle.h"
 #include "Recast.h"
 #include "ModuleCamera.h"
+#include "Tag.h"
 
 NavMeshController::NavMeshController()
 {
 	mRecastContext = new rcContext();
-
-
-	//HandleBuild(); No se llama al inicar ya que no hay escena a�n, llamar solo con boton imgui
-
-
 }
 
 NavMeshController::~NavMeshController()
 {
 	mVertices.clear();
 	mIndices.clear();
-	mMeshesToNavMesh.clear();
-	mMeshRendererComponents.clear();
+	mGameObjects.clear();
 
 	delete mPolyMeshDetail;
 	delete mPolyMesh;
@@ -123,25 +118,12 @@ void NavMeshController::DebugDrawPolyMesh()
 	glBindVertexArray(mVao);
 	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
 
-	/*float3 color = float3(1.0f, 0.0f, 0.0f);
-	App->GetDebugDraw()->DrawSphere(&mQueryNearestPoint[0], &color[0], 1.0f);
-
-	float3 color2 = float3(1.0f, 1.0f, 0.0f);
-	App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
-
-	float3 color3 = float3(0.0f, 0.0f, 1.0f);
-	float3 minAABB = mQueryCenter - mQueryHalfSize;
-	float3 maxAABB = mQueryCenter + mQueryHalfSize;
-	OBB cube = OBB(AABB(minAABB, maxAABB));
-	App->GetDebugDraw()->DrawCube(cube, color3);*/
-
 }
 
 void NavMeshController::Update()
 {
 	if (mPolyMesh == nullptr)
 		return;
-	/*mQueryNearestPoint = FindNearestPoint(mQueryCenter, mQueryHalfSize);*/
 
 	App->GetOpenGL()->BindSceneFramebuffer();
 
@@ -153,12 +135,11 @@ void NavMeshController::Update()
 void NavMeshController::HandleBuild() {
 	mIndices.clear();
 	mVertices.clear();
-	//mMeshesToNavMesh.clear();
-	mMeshRendererComponents.clear();
-
+	mGameObjects.clear();
+	mObstaclesTriangles.clear();
 	GameObject* root = App->GetScene()->GetRoot();
 	GetGOMeshes(root);
-	if (mMeshRendererComponents.empty())
+	if (mGameObjects.empty())
 		return;
 	std::vector<rcPolyMeshDetail*> myPolyMeshDetails;
 	std::vector<rcPolyMesh*> myPolyMeshes;
@@ -167,52 +148,50 @@ void NavMeshController::HandleBuild() {
 	const MeshRendererComponent* testMesh;
 	int indicesSize = 0;
 	int verticesSize = 0;
-	for (int index = 0; index < mMeshRendererComponents.size(); index++) {
-		indicesSize += mMeshRendererComponents[index]->GetResourceMesh()->GetNumberIndices();
-		verticesSize += mMeshRendererComponents[index]->GetResourceMesh()->GetNumberVertices();
+	for (int index = 0; index < mGameObjects.size(); index++) {
+		MeshRendererComponent* meshRenderer = (MeshRendererComponent*)(mGameObjects[index]->GetComponent(ComponentType::MESHRENDERER));
+
+		indicesSize += meshRenderer->GetResourceMesh()->GetNumberIndices();
+		verticesSize += meshRenderer->GetResourceMesh()->GetNumberVertices();
 	}
 
-	int* triangles = new int[indicesSize];
-	//int* trianglesCursor = triangles;
+	int* indices = new int[indicesSize];
+	float3* vertices = new float3[verticesSize];
+	float3* verticesCursor = vertices;
 
-	float* vertices = new float[verticesSize];
-	float* verticesCursor = vertices;
-
-	std::vector<float> transformedVerts;
 	int lastIndex = 0;
-	for (int index = 0; index < mMeshRendererComponents.size(); index++) {
-		testMesh = mMeshRendererComponents[index];
+	int lastVertex = 0;
+	for (int index = 0; index < mGameObjects.size(); index++) {
+		testMesh = (MeshRendererComponent*)(mGameObjects[index]->GetComponent(ComponentType::MESHRENDERER));
+
 		if (!testMesh)
 		{
 			LOG("A mesh was not correctly loaded to the navigation controller.");
 			break;
 		}
-		int meshIndiceNumber= testMesh->GetResourceMesh()->GetNumberIndices();
+		int meshIndiceNumber = testMesh->GetResourceMesh()->GetNumberIndices();
 		const unsigned int* meshIndices = testMesh->GetResourceMesh()->GetIndices();
+		Tag* goTag = mGameObjects[index]->GetTag();
+		if (goTag && goTag->GetName() == "Obstacle") {
+			ObstacleTriangle obstacle{ lastIndex,meshIndiceNumber };
+			mObstaclesTriangles.push_back(obstacle);
+		}
+
 		for (int i = 0; i < meshIndiceNumber; i++) {
-			triangles[i + lastIndex] = meshIndices[i]+lastIndex;
+			indices[i + lastIndex] = meshIndices[i]+lastVertex;
 		}
 		lastIndex += meshIndiceNumber;
-		//unsigned int triBytes = sizeof(meshTriSize * 4);
-		//memcpy(trianglesCursor, meshTriangles, triBytes);
-		//trianglesCursor += triBytes;
-
 
 
 		int meshVertiSize = testMesh->GetResourceMesh()->GetNumberVertices();
-		float* meshVertices = (float*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS)); // TODO: Translate using testMesh->WorldTransform
-		float4x4 objectTransform = mMeshRendererComponents[index]->GetOwner()->GetWorldTransform();
-		for (int i = 0; i < meshVertiSize * 3; i += 3)
+		float3* meshVertices = (float3*)(testMesh->GetResourceMesh()->GetAttributeData(Attribute::POS));
+		float4x4 objectTransform = mGameObjects[index]->GetWorldTransform();
+		for (int i = 0; i < meshVertiSize; ++i)
 		{
-			float4 operationTemp = objectTransform * float4(meshVertices[i], meshVertices[i + 1], meshVertices[i + 2], 1.0f);
-			transformedVerts.push_back(operationTemp.x / operationTemp.w);
-			transformedVerts.push_back(operationTemp.y / operationTemp.w);
-			transformedVerts.push_back(operationTemp.z / operationTemp.w);
+			vertices[i + lastVertex] = objectTransform.TransformPos(meshVertices[i]);
 		}
 
-		unsigned int vertiBytes = sizeof(meshVertiSize * 4);
-		memcpy(verticesCursor, meshVertices, vertiBytes);
-		verticesCursor += vertiBytes;
+		lastVertex += meshVertiSize;
 	}
 
 	mAABB.SetFrom((float3*)vertices, verticesSize);
@@ -247,9 +226,20 @@ void NavMeshController::HandleBuild() {
 	}
 
 	memset(mTriangleAreas, 0, numberOfTriangles * sizeof(unsigned char));
-	rcMarkWalkableTriangles(mRecastContext, mMaxSlopeAngle, &transformedVerts[0], verticesSize, triangles, numberOfTriangles, mTriangleAreas);
+	rcMarkWalkableTriangles(mRecastContext, mMaxSlopeAngle, (float*)vertices, verticesSize, indices, numberOfTriangles, mTriangleAreas);
 
-	if (!rcRasterizeTriangles(mRecastContext, &transformedVerts[0], verticesSize, triangles, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
+	//Check
+	for (const auto& obstacleTriangle : mObstaclesTriangles)
+	{
+		int lastObstacleIndex = obstacleTriangle.startIndicePos + obstacleTriangle.numberOfIndices;
+		for (size_t i = obstacleTriangle.startIndicePos; i < lastObstacleIndex; i++)
+		{
+			mTriangleAreas[i] = 0;
+		}
+	}
+
+
+	if (!rcRasterizeTriangles(mRecastContext, (float*)vertices, verticesSize, indices, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
 		return;
@@ -369,7 +359,7 @@ void NavMeshController::HandleBuild() {
 		LOG("buildNavigation: Could not build detail mesh.");
 		return;
 	}
-
+	//This makes the polygon walkable for the Detour library, per default they are not walkable so you have to put them manually
 	if (tempPolyMesh->npolys > 0)
 	{
 		for (int i = 0; i < tempPolyMesh->npolys; ++i)
@@ -447,7 +437,7 @@ void NavMeshController::HandleBuild() {
 		LoadDrawMesh();
 		
 		App->GetNavigation()->CreateDetourData();
-		delete[] triangles;
+		delete[] indices;
 		delete[] vertices;
 	}
 }
@@ -486,15 +476,9 @@ void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) {
 		for (const auto& child : gameObj->GetChildren()) {
 			MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)(child->GetComponent(ComponentType::MESHRENDERER));
-			//AIAgentComponent* agentComponent = child->GetComponent(AIAGENT);
 			if (meshRendererComponent) {
-				//mMeshesToNavMesh.push_back(meshRendererComponent->GetResourceMesh());
-				mMeshRendererComponents.push_back(meshRendererComponent);
+				mGameObjects.push_back(child);
 			}
-		/*	if (agentComponent) {
-				mAIAgentComponents.push_back(agentComponent);
-				App->GetNavigation()->GetAiAgentComponent().push_back(agentComponent);
-			}*/
 			GetGOMeshes(child);
 		}
 	}

@@ -14,6 +14,11 @@ class rcContourSet;
 class rcPolyMesh;
 class rcPolyMeshDetail;
 class rcContext;
+
+struct ObstacleTriangle {
+	int startIndicePos=0;
+	int numberOfIndices=0;
+};
 class ENGINE_API NavMeshController
 {
 public:
@@ -76,15 +81,13 @@ public:
 
 private:
 	void GetGOMeshes(const GameObject* gameObj);
-	std::vector<const ResourceMesh*> mMeshesToNavMesh;
-	std::vector<const MeshRendererComponent*> mMeshRendererComponents;
+	std::vector<GameObject*>mGameObjects;
 	std::vector<const AIAgentComponent*>mAIAgentComponents;
+	std::vector<ObstacleTriangle> mObstaclesTriangles;
 	void TranslateIndices();
 	void DebugDrawPolyMesh();
 	void LoadDrawMesh();
 	int FindVertexIndex(float3 vert);
-
-	void CreateDetourData();
 
 	dtNavMeshCreateParams* mNavMeshParams;
 	rcHeightfield* mHeightField = nullptr;
