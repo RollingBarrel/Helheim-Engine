@@ -2,6 +2,8 @@
 #include "Component.h"
 
 #include "fmod_studio.hpp"
+#include <vector>
+#include <map>
 
 class AudioSourceComponent :
     public Component
@@ -9,8 +11,30 @@ class AudioSourceComponent :
 public:
     AudioSourceComponent(GameObject* ownerGameObject);
     ~AudioSourceComponent();
+
+    std::string GetName() {return mName;};
+
+    void SetEventInstance(FMOD::Studio::EventInstance* event);
+    void SetEventByName(const char* eventName);
+    
+    void Update();
+    Component* Clone(GameObject* owner) const;
+    void Save(Archive& archive) const;
+    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
+
+    void Enable();
+    void Disable();
+
+protected:
+    void Reset();
 private:
-    FMOD::Studio::EventInstance* currentInstance = nullptr; 
+    std::string mName = "";
+
+    FMOD::Studio::EventInstance* mCurrentInstance = nullptr; 
+    FMOD::Studio::EventDescription* mEventDescription = nullptr;
+    std::map<FMOD_STUDIO_PARAMETER_ID, float> mParameters;
+
+    void UpdateParameters();
 
 };
 

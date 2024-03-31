@@ -18,6 +18,7 @@
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
+#include "AudioSourceComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -27,6 +28,7 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
+#include "FmodUtils.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -374,6 +376,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				}
 				case ComponentType::BUTTON: {
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
+					break;
+				}
+				case ComponentType::AUDIOSOURCE: {
+					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
 					break;
 				}
 			}
@@ -808,4 +814,25 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 	}
 }
 
-void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};
+void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {}
+
+void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
+{
+	std::vector<const char*> events = FmodUtils::GetEventsNames();
+	ImGui::Text("Launch event");
+	ImGui::SameLine();
+
+	std::string name = component->GetName();
+	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
+	{
+		for (auto i = 0; i < events.size(); i++) {
+			if (ImGui::Selectable(events[i]))
+			{
+				component->SetEventByName(events[i]);
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+}
+;

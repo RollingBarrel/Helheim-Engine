@@ -21,6 +21,8 @@
 #include "SpotLightComponent.h"
 #include "ButtonComponent.h"
 #include "ScriptComponent.h"
+#include "AudioSourceComponent.h"
+#include "AudioListenerComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -459,6 +461,12 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		case ComponentType::BUTTON:
 			newComponent = new ButtonComponent(this);
 			break;
+		case ComponentType::AUDIOSOURCE:
+			newComponent = new AudioSourceComponent(this);
+			break;
+		//case ComponentType::AUDIOLISTENER:
+		//	newComponent = new AudioListenerComponent(this);
+		//	break;
 		default:
 			break;
 	}

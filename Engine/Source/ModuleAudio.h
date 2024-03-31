@@ -2,6 +2,10 @@
 #include "Module.h"
 
 #include "fmod_studio.hpp"
+#include <map>
+
+#define CheckError(result) FmodUtils::CheckFmodError(result)
+#define EVENT_BANK_UPPERLIMIT 64
 
 class ModuleAudio :
     public Module
@@ -14,6 +18,8 @@ public:
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
+
+	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
 
 	bool CleanUp();
 

@@ -4,7 +4,6 @@
 #include "fmod.hpp"
 #include "FmodUtils.h"
 
-#define CheckError(result) FmodUtils::CheckFmodError(result)
 
 ModuleAudio::ModuleAudio()
 {
@@ -31,28 +30,27 @@ bool ModuleAudio::Init()
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank) );
 
-	const int maxEvents = 100; 
-	FMOD::Studio::EventDescription* eventArray[maxEvents];
-	int eventDescriptionCount = 0;
+	//FMOD::Studio::EventDescription* eventArray[EVENT_BANK_UPPERLIMIT];
+	//int eventDescriptionCount = 0;
 
-	CheckError( mSFXBank->getEventList(eventArray, maxEvents, &eventDescriptionCount));
+	//CheckError( mSFXBank->getEventList(eventArray, EVENT_BANK_UPPERLIMIT, &eventDescriptionCount));
 
-	for (int i = 0; i < eventDescriptionCount; ++i) {
-		const int bufferSize = 256; 
+	//for (int i = 0; i < eventDescriptionCount; ++i) {
+	//	const int bufferSize = 256; 
 
-		char pathBuffer[bufferSize]; 
-		int retrievedSize = 0; 
-		CheckError( eventArray[i]->getPath(pathBuffer, bufferSize, &retrievedSize ));
-	}
+	//	char pathBuffer[bufferSize]; 
+	//	int retrievedSize = 0; 
+	//	CheckError( eventArray[i]->getPath(pathBuffer, bufferSize, &retrievedSize ));
+	//}
 
-	FMOD::Studio::EventDescription* eventDescription = nullptr;
-	CheckError( mSystem->getEvent("event:/Ambience/Country", &eventDescription));
+	//FMOD::Studio::EventDescription* eventDescription = nullptr;
+	//CheckError( mSystem->getEvent("event:/Ambience/Country", &eventDescription));
 
-	FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
-	CheckError( eventDescription->getParameterDescriptionByName("Surface", &paramDesc));
+	//FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
+	//CheckError( eventDescription->getParameterDescriptionByName("Surface", &paramDesc));
 
-	CheckError( eventDescription->createInstance(&currentInstance));
-	CheckError( currentInstance->start());
+	//CheckError( eventDescription->createInstance(&currentInstance));
+	//CheckError( currentInstance->start());
 	return true;
 }
 
