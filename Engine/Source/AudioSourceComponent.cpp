@@ -38,6 +38,17 @@ void AudioSourceComponent::SetEventByName(const char* eventName)
 	mName = eventName;
 }
 
+void AudioSourceComponent::UpdateParameterValue(const char* name, float value)
+{
+	mCurrentInstance->setParameterByName(name, value);
+
+	auto it = mParameters.find(name);
+	if (it != mParameters.end()) {
+		it->second = value;
+	}
+
+}
+
 void AudioSourceComponent::Update()
 {
 
@@ -70,6 +81,7 @@ void AudioSourceComponent::Reset()
 
 void AudioSourceComponent::UpdateParameters()
 {
+	mParameters.clear();
 	int count = 0;
 	mEventDescription->getParameterDescriptionCount(&count);
 
@@ -78,7 +90,7 @@ void AudioSourceComponent::UpdateParameters()
 		FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
 		mEventDescription->getParameterDescriptionByIndex(i, &parameter);
 
-		//mParameters.insert(std::make_pair(parameter.id, parameter.defaultvalue));
+		mParameters.insert(std::make_pair(parameter.name, parameter.defaultvalue));
 	}
 
 }

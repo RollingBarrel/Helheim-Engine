@@ -3,6 +3,7 @@
 #include <vector>
 
 #define CheckError(result) FmodUtils::CheckFmodError(result)
+class AudioSourceComponent;
 
 class FmodUtils
 {
@@ -18,5 +19,5 @@ public:
 
 	// Event Parameters
 	static std::vector<FMOD_STUDIO_PARAMETER_DESCRIPTION> GetParametersByEvent(FMOD::Studio::EventInstance* event);
+	static void GetParametersMaxMinByComponent(AudioSourceComponent* audioSource, const char* eventName, float&max, float& min);
 };
-

@@ -12,10 +12,14 @@ public:
     AudioSourceComponent(GameObject* ownerGameObject);
     ~AudioSourceComponent();
 
-    std::string GetName() {return mName;};
+    std::string GetName() { return mName; };
+    std::map<const char*, float> GetParameters() { return mParameters; };
+    FMOD::Studio::EventDescription* GetEventDescription() {return mEventDescription;};
 
     void SetEventInstance(FMOD::Studio::EventInstance* event);
     void SetEventByName(const char* eventName);
+
+    void UpdateParameterValue(const char* name, float value);
     
     void Update();
     Component* Clone(GameObject* owner) const;
@@ -32,9 +36,10 @@ private:
 
     FMOD::Studio::EventInstance* mCurrentInstance = nullptr; 
     FMOD::Studio::EventDescription* mEventDescription = nullptr;
-    std::map<FMOD_STUDIO_PARAMETER_ID, float> mParameters;
+    std::map<const char*, float> mParameters;
 
     void UpdateParameters();
+    
 
 };
 

@@ -4,6 +4,7 @@
 #include "fmod.hpp"
 #include "fmod_errors.h"
 #include "ModuleAudio.h"
+#include "AudioSourceComponent.h"
 #include <vector>
 
 void FmodUtils::CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line)
@@ -75,4 +76,14 @@ std::vector<FMOD_STUDIO_PARAMETER_DESCRIPTION> FmodUtils::GetParametersByEvent(F
 
 	return std::vector<FMOD_STUDIO_PARAMETER_DESCRIPTION>();
 }
+
+void FmodUtils::GetParametersMaxMinByComponent(AudioSourceComponent* audioSource, const char* eventName, float& max, float& min)
+{
+	FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
+	CheckError(audioSource->GetEventDescription()->getParameterDescriptionByName(eventName, &paramDesc));
+
+	max = paramDesc.maximum;
+	min = paramDesc.minimum;
+}
+
 
