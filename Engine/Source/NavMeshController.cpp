@@ -173,7 +173,8 @@ void NavMeshController::HandleBuild() {
 		const unsigned int* meshIndices = testMesh->GetResourceMesh()->GetIndices();
 		Tag* goTag = mGameObjects[index]->GetTag();
 		if (goTag && goTag->GetName() == "Obstacle") {
-			ObstacleTriangle obstacle{ lastIndex,meshIndiceNumber };
+
+			ObstacleTriangle obstacle{ lastIndex/3,meshIndiceNumber };
 			mObstaclesTriangles.push_back(obstacle);
 		}
 
@@ -228,10 +229,10 @@ void NavMeshController::HandleBuild() {
 	memset(mTriangleAreas, 0, numberOfTriangles * sizeof(unsigned char));
 	rcMarkWalkableTriangles(mRecastContext, mMaxSlopeAngle, (float*)vertices, verticesSize, indices, numberOfTriangles, mTriangleAreas);
 
-	//Check
+	//Check manually if htere is obstacle and make them not count towards the navmesh
 	for (const auto& obstacleTriangle : mObstaclesTriangles)
 	{
-		int lastObstacleIndex = obstacleTriangle.startIndicePos + obstacleTriangle.numberOfIndices;
+		int lastObstacleIndex = obstacleTriangle.startIndicePos + obstacleTriangle.numberOfIndices/3;
 		for (size_t i = obstacleTriangle.startIndicePos; i < lastObstacleIndex; i++)
 		{
 			mTriangleAreas[i] = 0;
@@ -258,7 +259,7 @@ void NavMeshController::HandleBuild() {
 	// Once all geometry is rasterized, we do initial pass of filtering to
 	// remove unwanted overhangs caused by the conservative rasterization
 	// as well as filter spans where the character cannot possibly stand.
-	if (mFilterLowHangingObstacles)
+	if  (mFilterLowHangingObstacles)
 		rcFilterLowHangingWalkableObstacles(mRecastContext, mWalkableClimb, *mHeightField);
 	if (mFilterLedgeSpans)
 		rcFilterLedgeSpans(mRecastContext, mWalkableHeight, mWalkableClimb, *mHeightField);
