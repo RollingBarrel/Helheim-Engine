@@ -1,6 +1,7 @@
 #pragma once
 #include "vector"
 #include "Geometry/OBB.h"
+#include "Geometry/AABB.h"
 class Material;
 struct ResourceMesh;
 class MeshRendererComponent;
@@ -94,12 +95,14 @@ private:
 	unsigned char* mTriangleAreas = nullptr;
 	rcContext* mRecastContext;
 	bool mKeepInterResults = false;
-	bool mFilterLowHangingObstacles;
-	bool mFilterLedgeSpans;
-	bool mFilterWalkableLowHeightSpans;
+	bool mFilterLowHangingObstacles=true;
+	bool mFilterLedgeSpans=true;
+	bool mFilterWalkableLowHeightSpans=true;
+
+
 
 	int mWalkableClimb = 1;   // no imgui
-	int mWalkableHeight = 1; // no imgui
+	int mWalkableHeight = 0; // no imgui
 
 
 	//IMGUI VALUES
@@ -115,7 +118,9 @@ private:
 	int mMaxVertsPerPoly = 6; // 3 - 12
 	float mDetailSampleDist = 6; // 0 - 16
 	float mDetailSampleMaxError = 1; // 0 - 16
-
+	OBB mOBB;
+	AABB mAABB;
+	AABB mAABBWorld;
 	//DEBUG DRAW VARIABLES
 	bool mDraw = true;
 	unsigned int mVao = 0;
