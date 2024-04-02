@@ -26,8 +26,17 @@
 #include "Quadtree.h"
 #include <regex>
 
-GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
+
+GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
+{
+}
+
+GameObject::GameObject(const char* name, GameObject* parent) : GameObject(LCG().Int(), name, parent)
+{
+}
+
+GameObject::GameObject(unsigned int ID, const char* name, GameObject* parent)
+	:mID(ID), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -36,28 +45,12 @@ GameObject::GameObject(GameObject* parent)
 		parent->AddChild(this);
 		AddSuffix();
 	}
-	
-
 }
 
-GameObject::GameObject(const GameObject& original)
-	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(original.GetTag())
+GameObject::GameObject(const GameObject& original) : GameObject(original, original.mParent)
 {
-
 	if (mParent) {
 		AddSuffix();
-	}
-
-	for (auto child : original.mChildren) {
-		GameObject* gameObject = new GameObject(*(child), this);
-		gameObject->mParent = this;
-		mChildren.push_back(gameObject);
-	}
-
-	for (auto component : original.mComponents) {
-		mComponents.push_back(component->Clone(this));
 	}
 }
 
@@ -79,31 +72,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	}
 }
 
-GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
-	mIsRoot(parent == nullptr)
-{
 
-	if (!mIsRoot) {
-		mWorldTransformMatrix = mParent->GetWorldTransform();
-		mIsActive = parent->mIsActive;
-		parent->AddChild(this);
-	}
-}
-
-GameObject::GameObject(unsigned int ID, const char* name, GameObject* parent)
-	:mID(ID), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
-	mIsRoot(parent == nullptr)
-{
-	if (!mIsRoot) {
-		mWorldTransformMatrix = mParent->GetWorldTransform();
-		mIsActive = parent->mIsActive;
-		parent->AddChild(this);
-		AddSuffix();
-	}
-
-
-}
 
 GameObject::~GameObject()
 {
