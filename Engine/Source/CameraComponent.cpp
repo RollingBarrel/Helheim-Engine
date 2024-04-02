@@ -9,6 +9,10 @@
 #include "ModuleOpenGl.h"
 
 
+#include "ModuleScene.h"
+#include "Quadtree.h"
+#include "MeshRendererComponent.h"
+
 CameraComponent::CameraComponent(GameObject* owner)
 	:Component(owner, ComponentType::CAMERA)
 {
@@ -39,7 +43,17 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Update()
 {
-    
+    App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
+    std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
+
+    for (const auto& object : drawableObjects)
+    {
+        MeshRendererComponent* meshComponent = (MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER);
+        if (meshComponent != nullptr)
+        {
+            meshComponent->SetInsideFrustum(true);
+        }
+    }
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const

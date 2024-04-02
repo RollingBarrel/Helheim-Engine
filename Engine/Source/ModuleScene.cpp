@@ -62,6 +62,20 @@ bool ModuleScene::Init()
 	return true;
 }
 
+void ModuleScene::ResetFrustumCulling(GameObject* obj)
+{
+	MeshRendererComponent* meshRend = (MeshRendererComponent*)obj->GetComponent(ComponentType::MESHRENDERER);
+	if (meshRend != nullptr)
+	{
+		meshRend->SetInsideFrustum(false);
+	}
+	for (GameObject* child : obj->GetChildren())
+	{
+		ResetFrustumCulling(child);
+	}
+
+}
+
 GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
 {
 	if (root->GetTag()->GetID() == tagid && root != mRoot) {
@@ -347,7 +361,7 @@ update_status ModuleScene::PostUpdate(float dt)
 	}
 
 	const Frustum frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
-	mQuadtreeRoot->UpdateDrawableGameObjects(&frustum);
+	//mQuadtreeRoot->UpdateDrawableGameObjects(&frustum);
 
 	return UPDATE_CONTINUE;
 }

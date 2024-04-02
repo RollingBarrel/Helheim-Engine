@@ -46,7 +46,7 @@ private:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
     Frustum mFrustum;
-    bool mEnableCulling;
+    bool mEnableCulling = true;
 
     float mAspectRatio;
 };
