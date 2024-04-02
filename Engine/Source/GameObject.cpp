@@ -91,6 +91,20 @@ GameObject::GameObject(const char* name, GameObject* parent)
 	}
 }
 
+GameObject::GameObject(unsigned int ID, const char* name, GameObject* parent)
+	:mID(ID), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
+	mIsRoot(parent == nullptr)
+{
+	if (!mIsRoot) {
+		mWorldTransformMatrix = mParent->GetWorldTransform();
+		mIsActive = parent->mIsActive;
+		parent->AddChild(this);
+		AddSuffix();
+	}
+
+
+}
+
 GameObject::~GameObject()
 {
 	for (GameObject* gameObject : mChildren) {
@@ -706,7 +720,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	GameObject* go;
 
 	if (parentUID == 1) {
-		go = new GameObject(name, scene);
+		go = new GameObject(uuid, name, scene);
 		go->SetPosition(position);
 		go->SetRotation(rotation);
 		go->SetScale(scale);
@@ -717,7 +731,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	else {
 		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
-		go = new GameObject(name, gameObjectParent);
+		go = new GameObject(uuid, name, gameObjectParent);
 		go->SetPosition(position);
 		go->SetRotation(rotation);
 		go->SetScale(scale);

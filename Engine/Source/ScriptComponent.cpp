@@ -87,7 +87,7 @@ void::ScriptComponent::Save(Archive& archive) const
 			dataArchive.AddInt("VariableData", *(int*)data->mData);
 			break;
 		case VariableType::FLOAT:
-			dataArchive.AddInt("VariableData", *(float*)data->mData);
+			dataArchive.AddFloat("VariableData", *(float*)data->mData);
 			break;
 		case VariableType::BOOL:
 			dataArchive.AddInt("VariableData", *(bool*)data->mData);
@@ -162,7 +162,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 							{
 								int  UID = array[i]["VariableData"].GetInt();
 								if (UID != -1) {
-									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(array[i]["VariableData"].GetInt(), (GameObject**)data->mData));
+									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, (GameObject**)data->mData));
 								}
 								break;
 							}
@@ -181,7 +181,6 @@ void ScriptComponent::LoadScript(const char* scriptName)
 {
 	std::string scriptPath = ASSETS_SCRIPT_PATH + std::string(scriptName) + ".h";
 	
-	//Release the old scriptResource
 	if (!App->GetFileSystem()->Exists(scriptPath.c_str()))
 	{
 		LOG("SCRIPT ASSET NOT FOUND");
@@ -191,22 +190,19 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		App->GetResource()->ReleaseResource(mResourceScript->GetUID());
 		mResourceScript = nullptr;
 	}
-	// Release the old script with its data
+
 	mScript = nullptr;
 	for (auto data : mData) 
 	{
 		delete data;
 	}
 	mData.clear();
-	// Load the new script
+
 	mName = scriptName;
 	Script* (*script)(GameObject*, std::vector<ScriptVariable*>&) = (Script * (*)(GameObject*, std::vector<ScriptVariable*>&))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
 	if (script != nullptr) {	
 		mScript = script(mOwner , mData);
 		mScript->SetName(mName);
-		// Load the script resource
-		// This cast can be done because we know that the resource is a ResourceScript
-		// If some problem arises, check the type of the resource
 		mResourceScript = (ResourceScript*)(App->GetResource()->RequestResource(scriptPath.c_str()));
 		if (mResourceScript == nullptr) {
 			LOG("SCRIPT RESOURCE NOT FOUND");

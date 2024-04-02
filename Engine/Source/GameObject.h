@@ -29,6 +29,7 @@ public:
 	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
 	GameObject(const char* name, GameObject* parent);
+	GameObject(unsigned int ID, const char* name, GameObject* parent);
 
 	~GameObject();
 
