@@ -473,6 +473,9 @@
     <ClCompile Include="ModuleDetourNavigation.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1259,6 +1262,9 @@
     </ClInclude>
     <ClInclude Include="ModuleEvent.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -262,6 +262,7 @@
     <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
@@ -482,6 +483,7 @@
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ModuleEvent.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ImageComponent.h" />
