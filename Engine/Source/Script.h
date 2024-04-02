@@ -2,6 +2,9 @@
 #include "Globals.h"
 #include <vector>
 #include <string>
+#include "Physics.h"
+#include "Debug.h"
+
 class GameObject;
 
 enum class  VariableType : int

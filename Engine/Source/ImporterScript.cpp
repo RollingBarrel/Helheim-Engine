@@ -183,7 +183,7 @@ ResourceScript* Importer::Script::Load(const char* filePath, unsigned int uid)
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
-        char* cursor = fileBuffer;
+       /* char* cursor = fileBuffer;
 
         size_t sizeTBytes = sizeof(size_t);
 
@@ -221,10 +221,10 @@ ResourceScript* Importer::Script::Load(const char* filePath, unsigned int uid)
 
             rScript->addAttribute(attribute);
         }
-
+        */
         delete[] fileBuffer;
     }
-
+    
     return rScript;
 }
 
