@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include <vector>
+#include <string>
 class GameObject;
 
 enum class  VariableType : int
@@ -15,7 +16,7 @@ enum class  VariableType : int
 
 struct ScriptVariable {
 
-	const char* mName = "";
+	const char* mName = nullptr;
 	VariableType mType;
 	void* mData = nullptr;
 
@@ -32,6 +33,7 @@ public:
 
 	Script(GameObject* owner);
 	virtual ~Script() {}
+	void SetName(const std::string name);
 
 	virtual void Start() = 0;
 	virtual void Update() = 0;
@@ -44,6 +46,6 @@ protected:
 
 private:
 
-	const char* name = nullptr;
+	std::string mName;
 };
 
