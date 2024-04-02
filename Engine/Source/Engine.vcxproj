@@ -170,6 +170,7 @@
     <ClCompile Include="CameraUtils.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
@@ -328,6 +329,7 @@
     <ClInclude Include="CameraUtils.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
     <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
     <ClInclude Include="DebugPanel.h" />

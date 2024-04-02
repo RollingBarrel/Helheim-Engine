@@ -30,6 +30,7 @@ public:
     void DrawSphere(const float center[3], const float color[3], const float radius);
     void DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius);
     void DrawLine(const float3& position, const float3& direction, const float3& color);
+    void DrawLine(const float3& start, const float3& end, const float3& color, float duration, bool depthTest);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color);
     void DrawSkeleton(GameObject* model);

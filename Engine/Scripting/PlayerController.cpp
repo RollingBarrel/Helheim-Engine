@@ -47,15 +47,13 @@ void PlayerController::Update()
         Ray ray;
         ray.pos = mGameObject->GetPosition();
         ray.dir = mGameObject->GetFront();
+        float distance = 100;
         hits = Physics::Raycast(&ray);
-
+        Debug::DrawLine(ray.pos, ray.dir*distance, float3(1.0f, 0.0f, 0.0f));
         for (const auto& hit : hits) {
             LOG("Object %s has been hit at distance: %f", hit.second->GetName().c_str(), hit.first);
         }
     }
-
-
-
 }
 
 void PlayerController::Move() {
