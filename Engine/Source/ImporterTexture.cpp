@@ -10,7 +10,6 @@
 
 #include "DirectXTex.h"
 
-
 ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int uid)
 {
     std::string gltfPath = (filePath);
@@ -40,6 +39,8 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         }
     }
     
+    delete[] pathTex;
+
     // for get all information of the texture and see the parameters it have
     unsigned int internalFormat;
     unsigned int texFormat;
@@ -64,6 +65,11 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         texFormat = GL_BGR;
         dataType = GL_UNSIGNED_BYTE;
         break;
+    case DXGI_FORMAT_R16G16B16A16_UNORM:
+        internalFormat = GL_RGBA16;
+        texFormat = GL_RGBA;
+        dataType = GL_UNSIGNED_SHORT;
+        break;
     default:
         assert(false && "Unsupported format");
     }
@@ -73,25 +79,19 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     unsigned int mipLevels = image.GetMetadata().mipLevels;
     unsigned int numPixels = image.GetPixelsSize();
 
-    unsigned char* pixels = new unsigned char[numPixels];
-    for (auto i = 0; i < image.GetPixelsSize(); ++i)
-    {
-        pixels[i] = image.GetPixels()[i];
-    }
     bool hasAlpha = false;
     if (DirectX::HasAlpha(image.GetMetadata().format))
     {
         hasAlpha = true;
     }
 
-    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
-    Importer::Texture::Save(rTex);
+    ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha, 0, 0);
+    Importer::Texture::Save(rTex, image.GetPixels());
     return rTex;
 }
 
-void Importer::Texture::Save(const ResourceTexture* rTexture)
+void Importer::Texture::Save(const ResourceTexture* rTexture, const unsigned char* pixelData)
 {
-    // TODO: Save also UID (and assetsFile?)
     unsigned int header[7] = {
         rTexture->GetWidth(),
         rTexture->GetHeight(),
@@ -104,9 +104,7 @@ void Importer::Texture::Save(const ResourceTexture* rTexture)
 
     unsigned int numPixels = rTexture->GetNumPixels();
     bool hasAlpha = rTexture->HasAlpha();
-    unsigned int size = sizeof(header) +
-        sizeof(hasAlpha) +
-        sizeof(unsigned char) * numPixels;
+    unsigned int size = sizeof(header)  + sizeof(hasAlpha) + sizeof(unsigned char) * numPixels;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -120,7 +118,7 @@ void Importer::Texture::Save(const ResourceTexture* rTexture)
     cursor += bytes;
 
     bytes = sizeof(unsigned char) * numPixels;
-    memcpy(cursor, rTexture->GetPixels(), bytes);
+    memcpy(cursor, pixelData, bytes);
     cursor += bytes;
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rTexture->GetUID(), true);
@@ -156,13 +154,40 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         memcpy(&hasAlpha, cursor, bytes);
         cursor += bytes;
 
-        bytes = sizeof(unsigned char) * numPixels;
-        unsigned char* pixels = nullptr;
-        pixels = new unsigned char[numPixels];
-        memcpy(pixels, cursor, bytes);
+        unsigned char* pixels = reinterpret_cast<unsigned char*>(cursor);
 
-        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, pixels, hasAlpha);
-        unsigned int texId = texture->CreateTexture();
+        //Load the texture to memory
+        unsigned int openGLId = 0;
+        unsigned int texHandle = 0;
+        // Generate OpenGL texture
+        glGenTextures(1, &openGLId);
+        glBindTexture(GL_TEXTURE_2D, openGLId);
+
+        // Set texture data for each mip level
+        for (size_t i = 0; i < mipLevels; ++i)
+        {
+            glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+        }
+
+        // Generate mipmaps if only one mip level is present
+        if (mipLevels == 1)
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+        // Set texture parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipLevels - 1);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+
+        // Unbind texture
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        // Store OpenGL texture handle ID
+        texHandle = glGetTextureHandleARB(openGLId);
+        glMakeTextureHandleResidentARB(texHandle);
+
+        texture = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha, openGLId, texHandle);
 
         delete[] fileBuffer;
     }

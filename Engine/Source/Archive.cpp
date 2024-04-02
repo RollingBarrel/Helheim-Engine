@@ -90,6 +90,17 @@ std::vector<Archive> Archive::GetObjectArray(const char* key) const {
     return std::vector<Archive>();
 }
 
+void Archive::AddFloat2(const char* key, const float2& vector)
+{
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
+
+    jsonArray.PushBack(vector.x, mDocument->GetAllocator());
+    jsonArray.PushBack(vector.y, mDocument->GetAllocator());
+
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
+}
+
 void Archive::AddFloat3(const char* key, const float3& vector)
 {
     rapidjson::Value jsonKey(key, mDocument->GetAllocator());
@@ -219,6 +230,20 @@ std::vector<Archive> Archive::GetArray(const char* key) const
     return std::vector<Archive>();
 }
 
+float2 Archive::GetFloat2(const char* key) const
+{
+    auto it = mDocument->FindMember(key);
+    if (it != mDocument->MemberEnd() && it->value.IsObject())
+    {
+        const auto& object = it->value.GetObject();
+        float x = object["x"].GetFloat();
+        float y = object["y"].GetFloat();
+        return float2(x, y);
+    }
+    // Handle error or return a default value
+    return float2(0.0f, 0.0f);
+}
+
 float3 Archive::GetFloat3(const char* key) const
 {
     auto it = mDocument->FindMember(key);
@@ -315,7 +340,7 @@ void Archive::CopyFrom(const Archive& other) {
 std::string Archive::Serialize() const
 {
     rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
     mDocument->Accept(writer);
     return buffer.GetString();
 }

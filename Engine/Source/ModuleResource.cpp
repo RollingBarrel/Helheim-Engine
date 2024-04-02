@@ -7,6 +7,8 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
+#include "ResourceScript.h"
+#include "ResourceAnimation.h"
 
 #include <algorithm>
 
@@ -17,6 +19,8 @@
 #include "ImporterMesh.h"
 #include "ImporterModel.h"
 #include "ImporterMaterial.h"
+#include "ImporterScript.h"
+#include "ImporterAnimation.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -81,6 +85,10 @@ bool ModuleResource::Init()
 			ImportFile(assetsPath.c_str(), uid, false);
 		}
 		delete[] libraryFile;
+
+		if (fileBuffer) {
+			delete[] fileBuffer;
+		}
 	}
 	return true;
 }
@@ -219,6 +227,20 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Model::Load(lPath, uid);
 		break;
 	}
+	case Resource::Type::Script:
+	{
+		ret = Importer::Script::Load(lPath, uid);
+	}
+	case Resource::Type::Animation:
+	{
+		ret = Importer::Animation::Load(lPath, uid);
+		break;
+	}
+	case Resource::Type::Object:
+	{
+		ret = new Resource(uid, type);
+		break;
+	}
 	default:
 		break;
 	}
@@ -271,6 +293,12 @@ Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* 
 		break;
 	case Resource::Type::NavMesh:
 		break;
+	case Resource::Type::Script:
+		ret = Importer::Script::Import(importedFile, uid);
+		break;
+	case Resource::Type::Object:
+		ret = new Resource(uid, type);
+		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
@@ -309,6 +337,14 @@ std::string ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath
 		importedBinFilePath = importedBinFilePath.substr(0,dotPos);
 		importedBinFilePath += ".bin";
 		App->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
+		break;
+	}
+	case Resource::Type::Object:
+		assetsFilePath = importedFilePath;
+		break;
+	case Resource::Type::Script:
+	{
+		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
 		break;
 	}
 	default:

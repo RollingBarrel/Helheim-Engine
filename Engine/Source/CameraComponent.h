@@ -4,7 +4,7 @@
 #include "Math/float3.h"
 #include "Geometry/Frustum.h"
 
-class CameraComponent :
+class ENGINE_API CameraComponent :
     public Component
 {
 public:

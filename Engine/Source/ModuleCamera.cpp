@@ -16,6 +16,7 @@
 #include "imgui.h"
 #include "Geometry/Triangle.h"
 #include "Quadtree.h"
+#include "SDL_scancode.h"
 
 
 bool ModuleCamera::Init()
@@ -69,6 +70,12 @@ void ModuleCamera::CheckRaycast()
 
 	
 	
+}
+
+bool ModuleCamera::CleanUp()
+{
+	delete mFrustum;
+	return true;
 }
 
 
@@ -159,7 +166,7 @@ update_status ModuleCamera::Update(float dt)
 
 		if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
 		{
-			float3 selectedObjectPosition = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetLocalPosition();
+			float3 selectedObjectPosition = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition();
 			float3 initialCameraPosition = mFrustum->pos;
 
 			float desiredDistance = 5.0f;

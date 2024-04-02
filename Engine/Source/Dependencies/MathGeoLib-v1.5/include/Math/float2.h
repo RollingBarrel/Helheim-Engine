@@ -37,7 +37,7 @@
 MATH_BEGIN_NAMESPACE
 
 /// A vector of form (x,y).
-class float2
+class ENGINE_API float2
 {
 public:
 	enum

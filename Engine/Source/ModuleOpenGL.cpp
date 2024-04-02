@@ -2,15 +2,17 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
+#include "ModuleUI.h"
 #include "SDL.h"
 #include "glew.h"
 #include "ModuleCamera.h"
+#include "ModuleUI.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "BatchManager.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -19,6 +21,7 @@ ModuleOpenGL::ModuleOpenGL()
 // Destructor
 ModuleOpenGL::~ModuleOpenGL()
 {
+	delete mCameraUniBuffer;
 }
 
 static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
@@ -49,7 +52,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
- 	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -90,6 +93,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Initialize scene framebuffer
 	glGenFramebuffers(1, &sFbo);
@@ -116,11 +120,14 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
 	mPbrProgramId = CreateShaderProgramFromPaths("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
 	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
+	mDebugDrawProgramId = CreateShaderProgramFromPaths("basicDebugShader.vs", "basicDebugShader.fs");
+
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -148,28 +155,22 @@ bool ModuleOpenGL::Init()
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Draw the skybox
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+	if (mSkyBoxTexture != 0)
+	{
+		glUseProgram(mSkyBoxProgramId);
+		glBindVertexArray(mSkyVao);
+		glDepthMask(GL_FALSE);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthMask(GL_TRUE);
+		glBindVertexArray(0);
+		glUseProgram(0);
+	}
 
-	glUseProgram(App->GetOpenGL()->GetSkyboxProgramId());
-
-	glBindVertexArray(mSkyVao);
-
-	glDepthMask(GL_FALSE);
-
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glDepthMask(GL_TRUE);
-
-	glBindVertexArray(0);
-	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	return UPDATE_CONTINUE;
 }
@@ -205,6 +206,14 @@ bool ModuleOpenGL::CleanUp()
 	return true;
 }
 
+void ModuleOpenGL::SetWireframe(bool wireframe)
+{
+	if (wireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
@@ -217,6 +226,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	App->GetCamera()->WindowResized(width, height);
+	App->GetUI()->ResizeFrustum(width, height);
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -232,7 +242,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		mCameraUniBuffer->UpdateData(App->GetCamera()->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
 		mCameraUniBuffer->UpdateData(App->GetCamera()->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
-		glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+		glUseProgram(mPbrProgramId);
 		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
 		glUseProgram(0);
 	}
@@ -420,14 +430,13 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 	mPointLights.push_back(newComponent);
 	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
 	uint32_t size = mPointLights.size();
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(pLight.col[3]);
+	newComponent->SetRadius(pLight.pos[3]);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
-
 	return newComponent;
 }
 
-void ModuleOpenGL::UpdatePoinLightInfo(const PointLightComponent& cPointLight)
+void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
@@ -441,7 +450,7 @@ void ModuleOpenGL::UpdatePoinLightInfo(const PointLightComponent& cPointLight)
 
 void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 {
-	for(int i = 0; i < mPointLights.size(); ++i)
+	for (int i = 0; i < mPointLights.size(); ++i)
 	{
 		if (mPointLights[i] == &cPointLight)
 		{
@@ -454,6 +463,27 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 	}
 }
 
+void ModuleOpenGL::BatchAddMesh(MeshRendererComponent* mesh)
+{
+	mBatchManager.AddMeshComponent(mesh);
+}
+
+void ModuleOpenGL::BatchRemoveMesh(MeshRendererComponent* mesh)
+{
+	mBatchManager.RemoveMeshComponent(mesh);
+}
+
+void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
+{
+	mBatchManager.EditMaterial(mesh);
+}
+
+void ModuleOpenGL::Draw()
+{
+	BindSceneFramebuffer();
+	mBatchManager.Draw();
+	UnbindSceneFramebuffer();
+}
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
 SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
 {
@@ -462,8 +492,8 @@ SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObje
 	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(sLight.pos[3]);
+	newComponent->SetRadius(sLight.radius);
 	return newComponent;
 }
 
@@ -497,7 +527,7 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 OpenGLBuffer::OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding, unsigned int size, const void* data) : mType(type), mUsage(usage), mBinding(binding), mIdx(0), mDataSize(size), mDataCapacity(size) {
 	glGenBuffers(1, &mIdx);
 	glBindBuffer(mType, mIdx);
-	if(mDataSize != 0)
+	if (mDataSize != 0)
 		glBufferData(mType, mDataSize, data, mUsage);
 	if (mBinding != -1)
 		glBindBufferBase(mType, mBinding, mIdx);

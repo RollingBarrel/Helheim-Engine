@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Math/float2.h"
 
 class ImageComponent;
 
@@ -15,13 +16,17 @@ public:
     Component* Clone(GameObject* owner) const override;
     void Reset() override;
 
-private:
+    inline float2 GetSize() { return mSize; }
+    inline float GetScreenFactor() { return mScreenFactor; }
+
+    void RecalculateSizeAndScreenFactor();
+
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
-    std::pair<int, int> screenReferenceSize;
-    std::pair<int, int> size;
-    float screenFactor;
-    ImageComponent* mImageComponent;
-};
+private:
 
+    float2 mSize;
+    float mScreenFactor;
+    float2 mScreenReferenceSize;
+};

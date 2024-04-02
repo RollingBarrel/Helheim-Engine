@@ -3,6 +3,10 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ProjectPanel.h"
+#include "HierarchyPanel.h"
+#include "ModuleEditor.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
 
 #include "imgui.h"
 
@@ -37,10 +41,14 @@ void ProjectPanel::Draw(int windowFlags)
 
 const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 {
+	std::string bar = "/";
+	
 	//Discard Meta file but, read .emeta data
 	for (auto i = 0; i < current.mChildren.size(); ++i)
-	{
-		if (ImGui::TreeNodeEx(current.mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen))
+	{		
+		bool open = ImGui::TreeNodeEx(current.mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen);
+		SavePrefab(*current.mChildren[i]);
+		if (open)
 		{
 			for (auto j = 0; j < current.mChildren[i]->assets.size(); ++j)
 			{
@@ -62,6 +70,23 @@ const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
 	}
 }
 
+void ProjectPanel::SavePrefab(const PathNode& dir) const
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
+		{
+			HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+			for (auto object : hierarchyPanel->FilterMarked()) {
+				std::string file = dir.mName;
+				file.append('/' + object->GetName() + ".prfb");
+				App->GetScene()->SavePrefab(object, file.c_str());
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+}
+
 AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent) : mParent(parent)
 {
 	unsigned int sizeName = strlen(name) + 1;
@@ -71,6 +96,12 @@ AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent)
 	unsigned int sizePath = strlen(path) + 1;
 	mPath = new char[sizePath];
 	strcpy_s(const_cast<char*>(mPath), sizePath, path);
+}
+
+AssetDisplay::~AssetDisplay()
+{
+	delete mName;
+	delete mPath;
 }
 
 

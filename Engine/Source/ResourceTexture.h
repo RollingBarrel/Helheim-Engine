@@ -23,12 +23,12 @@ public:
 		unsigned int dataType, 
 		unsigned int mipLevels, 
 		unsigned int numPixels,
-		unsigned char* pixels, 
-		bool hasAlpha);
+		bool hasAlpha,
+		unsigned int openGLId,
+		unsigned int texHandle);
 
 	~ResourceTexture();
 
-	unsigned int CreateTexture();	
 
 	// Getters for attributes
 	unsigned int GetWidth() const { return mWidth; }
@@ -38,9 +38,9 @@ public:
 	unsigned int GetDataType() const { return mDataType; }
 	unsigned int GetMipLevels() const { return mMipLevels; }
 	unsigned int GetNumPixels() const { return mNumPixels; }
-	unsigned char* GetPixels() const { return mPixels; }
 	bool HasAlpha() const { return mHasAlpha; }
 	unsigned int GetOpenGLId() const { return mOpenGLId; }
+	unsigned int GetTextureHandle() const { return mTexHandle; }
 
 private:
 	unsigned int mWidth;
@@ -51,10 +51,10 @@ private:
 	unsigned int mDataType;
 	unsigned int mMipLevels;
 	unsigned int mNumPixels;
-	unsigned char* mPixels;
 
 	bool mHasAlpha;
 
 	unsigned int mOpenGLId;
+	uint64_t mTexHandle;
 };
 

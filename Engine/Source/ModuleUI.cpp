@@ -3,6 +3,8 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
+#include "ModuleEditor.h"
+#include "ModuleInput.h"
 #include "Application.h"
 
 #include "GameObject.h"
@@ -11,7 +13,10 @@
 
 #include "glew.h"
 #include "SDL.h"
-
+#include "ButtonComponent.h"
+#include "ResourceTexture.h"
+#include "ScenePanel.h"
+#include "Quadtree.h"
 #include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
@@ -23,8 +28,13 @@ ModuleUI::~ModuleUI()
 };
 
 bool ModuleUI::Init() {
-	mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
-	mCanvas->CreateComponent(ComponentType::CANVAS);
+	
+	mCanvas = FindCanvas(App->GetScene()->GetRoot());
+	if (mCanvas == nullptr) 
+	{
+		mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
+		mCanvas->CreateComponent(ComponentType::CANVAS);
+	}
 
 	LoadVBO();
 	CreateVAO();
@@ -33,53 +43,45 @@ bool ModuleUI::Init() {
 
 	mUIfrustum = new Frustum();
 
-	// Set Orthografic configuration
-	float aspect_ratio = App->GetWindow()->GetAspectRatio();
-	float height, width;
-	height = App->GetWindow()->GetHeight();
-	width = App->GetWindow()->GetWidth();
-
 	mUIfrustum->type = FrustumType::OrthographicFrustum;
-	mUIfrustum->orthographicWidth = 1; //2.f * Atan(Tan(math::DegToRad(90) * 0.5f) / aspect_ratio);  //width;
-	mUIfrustum->orthographicHeight = 1; //2.f * Atan(Tan(UIfrustum->orthographicWidth * 0.5f) * aspect_ratio);  //height; // Cast a float para evitar divisiones enteras
-
+	mUIfrustum->orthographicWidth = SCREEN_WIDTH;
+	mUIfrustum->orthographicHeight = SCREEN_HEIGHT;
 
 	mUIfrustum->front = -float3::unitZ;
 	mUIfrustum->up = float3::unitY;
 	mUIfrustum->pos = float3::zero;
 
-	mUIfrustum->nearPlaneDistance = 0.1f;
+	mUIfrustum->nearPlaneDistance = 0.0f;
 	mUIfrustum->farPlaneDistance = 100.0f;
 
 	return true;
 };
 
 update_status ModuleUI::PreUpdate(float dt) {
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleUI::Update(float dt) {
-
-	if (mScreenSpace == true) {
+	//if (mScreenSpace) {
 		mCurrentFrustum = mUIfrustum;
-		glDisable(GL_DEPTH_TEST);
-	}
-	else {
-		mCurrentFrustum = const_cast<Frustum*>( App->GetCamera()->GetFrustum());
 		glEnable(GL_DEPTH_TEST);
-	}
+	//}
+	//else {
+		//mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
+		//glDisable(GL_DEPTH_TEST);
+	//}
 
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(mCanvas);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleUI::Update(float dt) {
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+	{
+		CheckRaycast();
+	}
 
 	return UPDATE_CONTINUE;
 };
-
-void ModuleUI::SetScreenSpace(bool screen) {
-	mScreenSpace = screen;
-}
 
 update_status ModuleUI::PostUpdate(float dt) {
 	return UPDATE_CONTINUE;
@@ -90,30 +92,55 @@ bool ModuleUI::CleanUp() {
 	glDeleteVertexArrays(1, &mQuadVAO);
 	glDeleteBuffers(1, &mQuadVBO);
 
-	delete mCurrentFrustum;
 	delete mUIfrustum;
 
 	return true;
 }
 
-void ModuleUI::DrawWidget(const GameObject* gameObject)
+void ModuleUI::SetScreenSpace(bool screen) {
+	mScreenSpace = screen;
+}
+
+bool ModuleUI::GetScreenSpace() {
+	return mScreenSpace;
+}
+
+void ModuleUI::DrawWidget(GameObject* gameObject)
 {
+	if (gameObject == nullptr) return;
+
 	if (gameObject->IsEnabled())
 	{
-		for (const Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+		{
+			ImageComponent* image = (ImageComponent*)component;
+			if (image->IsEnabled())
 			{
-				const ImageComponent* image = (const ImageComponent*) component;
-				if (image->IsEnabled())
-				{
-					image->Draw();
-				}
+				image->Draw();
 			}
+		}
 
-		for (const GameObject* child : gameObject->GetChildren())
+		for (GameObject* child : gameObject->GetChildren())
 		{
 			DrawWidget(child);
 		}
 	}
+}
+
+GameObject* ModuleUI::FindCanvas(GameObject* gameObject)
+{
+	if (gameObject->GetComponent(ComponentType::CANVAS) != nullptr) 
+	{
+		return gameObject;
+	}
+
+	for (GameObject* go : gameObject->GetChildren()) {
+		if (FindCanvas(go) != nullptr) {
+			return go;
+		}
+	}
+	
+	return nullptr;
 }
 
 void ModuleUI::LoadVBO()
@@ -227,4 +254,45 @@ unsigned int ModuleUI::CompileShader(unsigned type, const char* source) const
 		}
 	}
 	return shaderID;
+}
+
+void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height) {
+	float heightFrustum = height;
+	float widthFrustum = width;
+
+	//float aspect_ratio = widthFrustum / heightFrustum;
+	//widthFrustum /= aspect_ratio;
+
+	mUIfrustum->orthographicWidth = widthFrustum; //Change with canvas width
+	mUIfrustum->orthographicHeight = heightFrustum; //Change with canvas height
+}
+
+void ModuleUI::CheckRaycast()
+{
+	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
+
+	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
+	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
+
+	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
+	if (!mCanvas->GetChildren().empty()) {
+		for (GameObject* gameObject : mCanvas->GetChildren())
+		{
+			ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
+			if (image != nullptr)
+			{
+				// Check if the mouse position is inside the bounds of the image
+				if (normalizedX >= gameObject->GetWorldPosition().x && normalizedX <= gameObject->GetWorldPosition().x + image->GetImage()->GetWidth() &&
+					normalizedY >= gameObject->GetWorldPosition().y && normalizedY <= gameObject->GetWorldPosition().y + image->GetImage()->GetHeight())
+				{
+					ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
+					if (button != nullptr && button->IsEnabled())
+					{
+						button->OnClicked();
+					}
+				}
+			}
+		}
+	}
 }

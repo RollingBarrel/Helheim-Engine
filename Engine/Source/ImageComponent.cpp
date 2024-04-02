@@ -15,7 +15,6 @@
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 
-
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) {
 }
 
@@ -37,8 +36,26 @@ void ImageComponent::Draw() const
         glUseProgram(program);
 
         float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
+        float4x4 model;
 
-        float4x4 model = float4x4::identity;
+        if (App->GetUI()->GetScreenSpace()) {
+            //Ortographic Mode
+            float3 OwnerTranslation = GetOwner()->GetPosition();
+            float3 scaleImage = GetOwner()->GetScale();
+            float scaleFloatX = scaleImage.x;
+            float scaleFloatY = scaleImage.y;
+            float scaledWidth = scaleFloatX * GetImage()->GetWidth();
+            float scaledHeight = scaleFloatY * GetImage()->GetHeight();
+
+            model = float4x4::FromTRS(OwnerTranslation, Quat::identity, float3(scaledWidth, scaledHeight, 1.0f));
+        }
+        else
+        {
+            //World Mode
+            model = GetOwner()->GetWorldTransform();
+        }
+
+        //float4x4 model = GetOwner()->GetWorldTransform();
 
         float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 
@@ -69,10 +86,24 @@ Component* ImageComponent::Clone(GameObject* owner) const
 
 void ImageComponent::Save(Archive& archive) const
 {
+    //archive.AddInt("ID", mID);
+    archive.AddInt("ImageID", mImage->GetUID());
+    archive.AddInt("ComponentType", static_cast<int>(GetType()));
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+    //int ID = { 0 };
+    int imageId = { 0 };
+    /*if (data.HasMember("ID") && data["ID"].IsInt()) {
+        ID = data["ID"].GetInt();
+    }*/
+    if (data.HasMember("ImageID") && data["ImageID"].IsInt()) {
+        imageId = data["ImageID"].GetInt();
+    }
+
+    mResourceId = imageId;
+    SetImage(imageId);
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) {

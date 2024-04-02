@@ -4,12 +4,13 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "BatchManager.h"
 #include <vector>
 
 typedef struct DirectionalAmbient {
 	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
 	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity
-	float mAmbientCol[4] = { 0.3f, 0.4f, 0.6f, 0.0f }; //w is padding
+	float mAmbientCol[4] = { 1.0f, 1.0f, 1.0f, 0.0f }; //w is padding
 }DirectionalAmbient;
 
 class PointLightComponent;
@@ -61,18 +62,28 @@ public:
 	void* GetOpenGlContext() { return context; }
 
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
-	unsigned int GetSkyboxProgramId() const { return mSkyBoxProgramId; }
+	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
+
 
 	//TODO: put all this calls into one without separating for light type??
 	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
-	void UpdatePoinLightInfo(const PointLightComponent& ptrPointLight);
+	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
 	SpotLightComponent* AddSpotLight(const SpotLight& pLight, GameObject* owner);
 	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
 	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
+	void BatchAddMesh(MeshRendererComponent* mesh);
+	void BatchRemoveMesh(MeshRendererComponent* mesh);
+	void BatchEditMaterial(const MeshRendererComponent* mesh);
+	void Draw();
+	void SetWireframe(bool wireframe);
+
+
 private:
 	void* context = nullptr;
+
+	BatchManager mBatchManager;
 
 	//Framebuffer
 	unsigned int sFbo;
@@ -95,6 +106,7 @@ private:
 	unsigned int CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
 	unsigned int mPbrProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
+	unsigned int mDebugDrawProgramId = 0;
 
 
 	//Lighting uniforms

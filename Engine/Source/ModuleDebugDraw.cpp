@@ -8,6 +8,9 @@
 #include "ModuleOpenGL.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
+#include "DebugPanel.h"
+#include "MeshRendererComponent.h"
 
 //This will be removed when functional gizmos are implmented
 #include "ModuleEditor.h"
@@ -636,10 +639,24 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-    if (mDrawGrid) {
+    if (mDrawGrid) 
+    {
        DrawGrid();
     }
+    if (((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
+    {
+        DrawColliders(App->GetScene()->GetRoot());
+	}
+
     dd::flush();
+
+
+
+    
+    if (((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetComponent(ComponentType::ANIMATION)) {
+        DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
+    }
+    
 }
 
 void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
@@ -687,6 +704,24 @@ void ModuleDebugDraw::DrawLine(const float3& position, const float3& direction, 
     dd::line(position, direction, color);
 }
 
+void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)
+{
+    dd::line(v1, v2, dd::colors::Red);
+    dd::line(v1, v3, dd::colors::Red);
+    dd::line(v3, v2, dd::colors::Red);
+
+
+}
+
+void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color)
+{
+    dd::line(v1, v2, color);
+    dd::line(v1, v3, color);
+    dd::line(v3, v2, color);
+
+
+}
+
 void ModuleDebugDraw::DrawGrid()
 {
     dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);
@@ -701,4 +736,35 @@ void ModuleDebugDraw::DrawAxis()
 void ModuleDebugDraw::DrawFrustum(const Frustum& frustum)
 {
     dd::frustum(frustum.ViewProjMatrix().Inverted(), dd::colors::White);
+}
+
+void ModuleDebugDraw::DrawSkeleton(GameObject* model) 
+{
+    dd::axisTriad(model->GetWorldTransform(), 0.02f, 0.1f);
+
+    for (const auto& child : model->GetChildren()) 
+    {
+
+        DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
+        DrawSkeleton(child);
+    }
+    
+}
+
+void ModuleDebugDraw::DrawColliders(GameObject* root)
+{
+    if (root != nullptr) 
+    {
+        MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
+        if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) 
+        {
+            App->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
+            App->GetDebugDraw()->DrawCube(meshRenderer->GetAABBWorld(), float3(1.0f, 0.65f, 0.0f)); //Orange
+        }
+
+        for (int i = 0; i < root->GetChildren().size(); i++) 
+        {
+            DrawColliders(root->GetChildren()[i]);
+        }
+    }
 }

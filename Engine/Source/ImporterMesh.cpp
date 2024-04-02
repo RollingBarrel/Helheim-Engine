@@ -7,31 +7,219 @@
 
 #include "glew.h"
 
-#include "float2.h"
-#include "float3.h"
-#include "float4.h"
-#include "Algorithm/Random/LCG.h"
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
+
+
+static float* GetInterleavedData(const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData, unsigned int numVertices)
+{
+    unsigned int vertexSize = 0;
+    for (int i = 0; i < attributes.size(); ++i)
+    {
+        vertexSize += attributes[i].size;
+    }
+    float* ret = new float[numVertices * vertexSize / sizeof(float)];
+    unsigned int vertexFloats = vertexSize / sizeof(float);
+    for (unsigned int vertexIdx = 0; vertexIdx < numVertices; ++vertexIdx)
+    {
+        for (unsigned int attributeIdx = 0; attributeIdx < attributes.size(); ++attributeIdx)
+        {
+            unsigned int attributeSize = attributes[attributeIdx].size / sizeof(float);
+            unsigned int attributeOffset = attributes[attributeIdx].offset / sizeof(float);
+            const float* attributeData = attributesData[attributeIdx];
+            memcpy(&ret[vertexIdx * vertexFloats + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
+        }
+    }
+    return ret;
+}
+
+static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize)
+{
+    unsigned int numVertices = (bufferSize / vertexSize);
+    unsigned int attributeNumFloats = (attr.size / sizeof(float));
+    float* ret = new float[numVertices * attributeNumFloats];
+    unsigned int floatOffset = attr.offset / sizeof(float);
+    unsigned int j = 0;
+    for (int i = 0; i < numVertices; ++i)
+    {
+        const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize / sizeof(float) + floatOffset];
+        for (unsigned int j = 0; j < attributeNumFloats; ++j)
+        {
+            ret[i * attributeNumFloats + j] = vert[j];
+            //LOG("%f", ret[i * attributeNumFloats + j]);
+        }
+
+    }
+    return ret;
+}
+
+#include "mikktspace.h"
+#include "weldmesh.h"
+
+typedef struct {
+    int numVertices;
+    int posOffset;
+    int texCoordOffset;
+    int normOffset;
+    int vertexSize;
+    char* vertices;
+    char* tVertices;
+} MikkTSpaceStruct;
+
+static int GetNumFaces(const SMikkTSpaceContext* pContext)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    return ptr->numVertices / 3;
+}
+static int GetNumVerticesOfFace(const SMikkTSpaceContext* pContext, const int iFace) {
+    return 3;
+}
+static void GetPosition(const SMikkTSpaceContext* pContext, float fvPosOut[], const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* posOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->posOffset];
+    fvPosOut[0] = posOut[0];
+    fvPosOut[1] = posOut[1];
+    fvPosOut[2] = posOut[2];
+}
+static void GetTexCoord(const SMikkTSpaceContext* pContext, float fvTexcOut[], const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* texCOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->texCoordOffset];
+    fvTexcOut[0] = texCOut[0];
+    fvTexcOut[1] = texCOut[1];
+}
+static void GetNormal(const SMikkTSpaceContext* pContext, float fvNormOut[], const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    float* normalOut = (float*)&ptr->vertices[(iFace * 3 + iVert) * ptr->vertexSize + ptr->normOffset];
+    fvNormOut[0] = normalOut[0];
+    fvNormOut[1] = normalOut[1];
+    fvNormOut[2] = normalOut[2];
+}
+
+static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTangent[], const float fSign, const int iFace, const int iVert)
+{
+    MikkTSpaceStruct* ptr = (MikkTSpaceStruct*)pContext->m_pUserData;
+    //Escriure tota la info del vertex + les tangents
+    const unsigned int vertexIdx = (iFace * 3 + iVert) * ptr->vertexSize;
+    const unsigned int vertexTIdx = (iFace * 3 + iVert) * (ptr->vertexSize + sizeof(float) * 4);
+    memcpy(&ptr->tVertices[vertexTIdx], &ptr->vertices[vertexIdx], ptr->vertexSize);
+    memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize], fvTangent, 3 * sizeof(float));
+    memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
+}
+
+static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int*& indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData)
+{
+#ifdef _DEBUG
+    bool foundPos = false;
+    bool foundUv = false;
+    bool foundNormal = false;
+    for (const Attribute attribute : attributes)
+    {
+        switch (attribute.type)
+        {
+        case Attribute::POS:
+            foundPos = true;
+            break;
+        case Attribute::UV:
+            foundUv = true;
+            break;
+        case Attribute::NORMAL:
+            foundNormal = true;
+            break;
+        }
+        if (foundPos && foundUv && foundNormal)
+            break;
+    }
+    if (!foundPos || !foundUv || !foundNormal)
+        return;
+#endif // _DEBUG
+
+    const char* vertices = reinterpret_cast<const char*>(vertexData);
+    char* unweldedVertices = new char[numIndices * vertexSize];
+
+    for (int i = 0; i < numIndices; ++i)
+    {
+        memcpy(&unweldedVertices[i * vertexSize], &vertices[indexData[i] * vertexSize], vertexSize);
+    }
+
+    SMikkTSpaceInterface interfaceInput = {};
+    interfaceInput.m_getNumFaces = GetNumFaces;
+    interfaceInput.m_getNumVerticesOfFace = GetNumVerticesOfFace;
+    interfaceInput.m_getNormal = GetNormal;
+    interfaceInput.m_getPosition = GetPosition;
+    interfaceInput.m_getTexCoord = GetTexCoord;
+    interfaceInput.m_setTSpaceBasic = SetTSpaceBasic;
+    MikkTSpaceStruct mikkInput = {};
+    mikkInput.numVertices = numIndices;
+    mikkInput.posOffset = 0;
+    mikkInput.texCoordOffset = 3 * sizeof(float);
+    mikkInput.normOffset = 5 * sizeof(float);
+    mikkInput.vertexSize = 8 * sizeof(float);
+    mikkInput.vertices = unweldedVertices;
+    //Les mikktangents son vec4
+    char* unweldedTVertices = new char[numIndices * (vertexSize + 4 * sizeof(float))];
+    mikkInput.tVertices = unweldedTVertices;
+    SMikkTSpaceContext tangContext = {};
+    tangContext.m_pInterface = &interfaceInput;
+    tangContext.m_pUserData = &mikkInput;
+    if (!genTangSpaceDefault(&tangContext))
+    {
+        LOG("ERROR: Could not generate the tangent space");
+        delete[] unweldedTVertices;
+        delete[] unweldedVertices;
+        return;
+    }
+
+    int* piRemapTable = new int[mikkInput.numVertices];
+    float* pfVertexDataOut = new float[mikkInput.numVertices * 12];
+    unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut, reinterpret_cast<float*>(mikkInput.tVertices), mikkInput.numVertices, 12);
+    delete[] unweldedTVertices;
+    delete[] unweldedVertices;
+
+    delete[] indexData;
+    delete[] vertexData;
+    attributes.clear();
+    for (float* data : attributeData)
+        delete[] data;
+    attributeData.clear();
+
+    numVertices = uniqueVertices;
+    numIndices = mikkInput.numVertices;
+    attributes.emplace_back(Attribute::POS, sizeof(float) * 3, 0);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::UV, sizeof(float) * 2, sizeof(float) * 3);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, sizeof(float) * 5);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, sizeof(float) * 8);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+
+    numIndices = mikkInput.numVertices;
+    indexData = reinterpret_cast<unsigned int*>(piRemapTable);
+    delete[] pfVertexDataOut;
+}
+
 ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, unsigned int uid)
 {
-    //TODO: Use the function Add attribute to import to the resource mesh
-    // Try not to use friend func import on resourceMesh
-    // Put the indices private
 
-    //TODO: Constructor abaix per evitar el set num vertices i set num indices
-    ResourceMesh* rMesh = new ResourceMesh(uid, 0, 0);
+    unsigned int numVertices = 0;
+    unsigned int numIndices = 0;
+    unsigned int vertexSize = 0;
+    unsigned int* indices = nullptr;
+    std::vector<Attribute>attributes;
+    std::vector<float*>attributesData;
 
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
     const auto& itNorm = primitive.attributes.find("NORMAL");
     const auto& itTang = primitive.attributes.find("TANGENT");
 
-    Attribute attr = Attribute(Attribute::POS,sizeof(float)*3, 0);
     if (itPos != primitive.attributes.end())
     {
         const tinygltf::Accessor& posAcc = model.accessors[itPos->second];
@@ -40,28 +228,28 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& posView = model.bufferViews[posAcc.bufferView];
         const tinygltf::Buffer& posBuffer = model.buffers[posView.buffer];
 
-        rMesh->SetNumberVertices(posAcc.count);
+        numVertices = posAcc.count;
 
-        const unsigned char* bufferPos = &posBuffer.data[posView.byteOffset + posAcc.byteOffset];
+        const float* bufferPos = reinterpret_cast<const float*>(& posBuffer.data[posView.byteOffset + posAcc.byteOffset]);
 
-        attr = Attribute(Attribute::POS, sizeof(float) * 3, 0);
+        attributes.emplace_back(Attribute::POS, sizeof(float) * 3, vertexSize);
+        vertexSize += sizeof(float) * 3;
         float* data = new float[posAcc.count * 3];
         //Add vertices Pos to this buffer taking into acc byteStride
-        for (auto i = 0; i < posAcc.count; ++i)
+        for (unsigned int i = 0; i < posAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(data)[i] = *reinterpret_cast<const float3*>(bufferPos);
+            data[i * 3] = bufferPos[0];
+            data[i * 3 + 1] = bufferPos[1];
+            data[i * 3 + 2] = bufferPos[2];
 
             if (posView.byteStride != 0) {
-                bufferPos += posView.byteStride;
+                bufferPos = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferPos) + posView.byteStride);
             }
             else {
-                bufferPos += sizeof(float) * 3;
+                bufferPos += 3;
             }
-
-            //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
-        rMesh->AddAttribute(attr, data, posAcc.count * 3 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -72,29 +260,28 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& texCoordView = model.bufferViews[texCoordAcc.bufferView];
         const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordView.buffer];
 
-        const unsigned char* bufferTexCoord = &texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset];
+        const float* bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset]);
 
-
-        attr = Attribute(Attribute::UV, sizeof(float) * 2, 0);
+        attributes.emplace_back(Attribute::UV, sizeof(float) * 2, vertexSize);
+        vertexSize += sizeof(float) * 2;
         float* data = new float[texCoordAcc.count * 2];
         //Add vertices TexCoord to this buffer taking into acc byteStride
-        for (auto i = 0; i < texCoordAcc.count; ++i)
+        for (unsigned int i = 0; i < texCoordAcc.count; ++i)
         {
-            reinterpret_cast<float2*>(data)[i] = *reinterpret_cast<const float2*>(bufferTexCoord);
+            data[i*2] = bufferTexCoord[0];
+            data[i*2 + 1] = bufferTexCoord[1];
 
             if (texCoordView.byteStride != 0)
             {
                 bufferTexCoord += texCoordView.byteStride;
+                bufferTexCoord = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferTexCoord) + texCoordView.byteStride);
             }
             else
             {
-                bufferTexCoord += sizeof(float) * 2;
+                bufferTexCoord += 2;
             }
-
-            //LOG("%f %f", reinterpret_cast<float2*>(data)[i].x, reinterpret_cast<float2*>(data)[i].y);
         }
-        rMesh->AddAttribute(attr, data, texCoordAcc.count * 2 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
 
     if (itNorm != primitive.attributes.end())
@@ -105,64 +292,64 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& normView = model.bufferViews[normAcc.bufferView];
         const tinygltf::Buffer& normBuffer = model.buffers[normView.buffer];
 
-        const unsigned char* bufferNorm = &normBuffer.data[normView.byteOffset + normAcc.byteOffset];
+        const float* bufferNorm = reinterpret_cast<const float*>(& normBuffer.data[normView.byteOffset + normAcc.byteOffset]);
 
-        attr = Attribute(Attribute::NORMAL, sizeof(float) * 3, 0);
+        attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, vertexSize);
+        vertexSize += sizeof(float) * 3;
         float* data = new float[normAcc.count * 3];
 
         //Add vertices Normal to this buffer taking into acc byteStride
-        for (auto i = 0; i < normAcc.count; ++i)
+        for (unsigned int i = 0; i < normAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(data)[i] = *reinterpret_cast<const float3*>(bufferNorm);
+            data[i*3] = bufferNorm[0];
+            data[i*3 + 1] = bufferNorm[1];
+            data[i*3 + 2] = bufferNorm[2];
 
             if (normView.byteStride != 0)
             {
-                bufferNorm += normView.byteStride;
+                bufferNorm = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferNorm) + normView.byteStride);
             }
             else
             {
-                bufferNorm += sizeof(float) * 3;
+                bufferNorm += 3;
             }
-
-            //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
-        rMesh->AddAttribute(attr, data, normAcc.count * 3 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
 
     //Indices part
     if (primitive.indices >= 0)
     {
         const tinygltf::Accessor& indAcc = model.accessors[primitive.indices];
-        rMesh->SetNumberIndices(indAcc.count);
+        numIndices = indAcc.count;
+        LOG("Tri: %u", numIndices/3);
         const tinygltf::BufferView& indView = model.bufferViews[indAcc.bufferView];
         const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
 
-        rMesh->mIndices = new unsigned int[rMesh->GetNumberIndices()];
+        indices = new unsigned int[numIndices];
 
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
         {
             const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
-            for (uint32_t i = 0; i < indAcc.count; ++i)
+            for (unsigned int i = 0; i < indAcc.count; ++i)
             {
-                //TODO: Change this
-                rMesh->mIndices[i] = bufferInd[i];
+                indices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
         {
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
-            for (uint16_t i = 0; i < indAcc.count; ++i)
+            for (unsigned int i = 0; i < indAcc.count; ++i)
             {
-                rMesh->mIndices[i] = bufferInd[i];
+                indices[i] = bufferInd[i];
             }
         }
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
         {
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
-            for (uint8_t i = 0; i < indAcc.count; ++i)
+            for (unsigned int i = 0; i < indAcc.count; ++i)
             {
-                rMesh->mIndices[i] = bufferInd[i];
+                indices[i] = bufferInd[i];
             }
         }
     }
@@ -175,47 +362,51 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& tangView = model.bufferViews[tangAcc.bufferView];
         const tinygltf::Buffer& tangBuffer = model.buffers[tangView.buffer];
 
-        const unsigned char* bufferTang = &tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset];
+        const float* bufferTang = reinterpret_cast<const float*>(&tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset]);
 
-        attr = Attribute(Attribute::TANGENT, sizeof(float) * 4, 0);
+        attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, vertexSize);
+        vertexSize += sizeof(float) * 4;
         float* data = new float[tangAcc.count * 4];
 
         //Add vertices Tangent to this buffer taking into acc byteStride
-        for (auto i = 0; i < tangAcc.count; ++i)
+        for (unsigned int i = 0; i < tangAcc.count; ++i)
         {
-            reinterpret_cast<float4*>(data)[i] = *reinterpret_cast<const float4*>(bufferTang);
+            data[i * 4] = bufferTang[0];
+            data[i * 4 + 1] = bufferTang[1];
+            data[i * 4 + 2] = bufferTang[2];
+            data[i * 4 + 3] = bufferTang[3];
 
             if (tangView.byteStride != 0)
             {
-                bufferTang += tangView.byteStride;
+                bufferTang = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferTang) + tangView.byteStride);
             }
             else
             {
-                bufferTang += sizeof(float) * 4;
+                bufferTang += 4;
             }
-
-            //LOG("%f %f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z, reinterpret_cast<float4*>(data)[i].w);
         }
-        rMesh->AddAttribute(attr, data, tangAcc.count * 4 * sizeof(float));
-        delete[] data;
+        attributesData.push_back(data);
     }
     else
     {
         //Generate Tangents
-        rMesh->GenerateTangents();
+        float* interleavedVertices = GetInterleavedData(attributes, attributesData, numVertices);
+        GenerateTangents(attributes, attributesData, numIndices, indices, vertexSize, numVertices, interleavedVertices);
     }
 
-    if (rMesh)
-        Importer::Mesh::Save(rMesh);
+    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
+    Importer::Mesh::Save(rMesh);
     return rMesh;
 }
 
 void Importer::Mesh::Save(const ResourceMesh* rMesh)
 {
-    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), rMesh->GetAttributes().size()};
+    std::vector<Attribute> attributes;
+    rMesh->GetAttributes(attributes);
+    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), attributes.size()};
 
     unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices();
-    for (std::vector<Attribute>::const_iterator it = rMesh->GetAttributes().cbegin(); it != rMesh->GetAttributes().cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
     {
         size += it->size * rMesh->GetNumberVertices() + sizeof(Attribute);
     }
@@ -230,19 +421,20 @@ void Importer::Mesh::Save(const ResourceMesh* rMesh)
 
     //Save Indices
     bytes = sizeof(unsigned int) * rMesh->GetNumberIndices();
-    memcpy(cursor, rMesh->mIndices, bytes);
+    memcpy(cursor, rMesh->GetIndices(), bytes);
     cursor += bytes;
 
     //Save attributes and data
     unsigned int idx = 0;
-    for (std::vector<Attribute>::const_iterator it = rMesh->GetAttributes().cbegin(); it != rMesh->GetAttributes().cend(); ++it)
+    for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
     {
         //save attribute metadata
         memcpy(cursor, &(*it), sizeof(Attribute));
         cursor += sizeof(Attribute);
         //save attribute data
         bytes = it->size * rMesh->GetNumberVertices();
-        memcpy(cursor, rMesh->mAttributesData[idx], bytes);
+        assert(rMesh->GetAttributeData(it->type) && "Mesh does not have this attribute");
+        memcpy(cursor, rMesh->GetAttributeData(it->type), bytes);
         cursor += bytes;
         ++idx;
     }
@@ -261,7 +453,6 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
-
         //Load Header
         char* cursor = fileBuffer;
         unsigned int header[3];
@@ -279,24 +470,21 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
         memcpy(indices, cursor, bytes);
         cursor += bytes;
 
-        rMesh = new ResourceMesh(uid, numIndices, numVertices);
 
-        rMesh->mIndices = new unsigned int[numIndices];
-
-        for (int i = 0; i < numIndices; ++i)
-        {
-            rMesh->mIndices[i] = indices[i];
-        }
-
+        std::vector<Attribute> attributes;
+        std::vector<float*> attributesData;
         for (int i = 0; i < numAttributes; ++i)
         {
             Attribute* attr = reinterpret_cast<Attribute*>(cursor);
+            attributes.push_back(*attr);
             cursor += sizeof(Attribute);
-            rMesh->AddAttribute(*attr, reinterpret_cast<float*>(cursor), attr->size * numVertices);
+            float* newAttributeData = new float[numVertices * attr->size / sizeof(float)];
+            memcpy(newAttributeData, cursor, numVertices * attr->size);
+            attributesData.push_back(newAttributeData);
             cursor += attr->size * numVertices;
         }
-        rMesh->LoadToMemory();
 
+        rMesh = new ResourceMesh(uid, numIndices,  std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
         delete[] fileBuffer;
     }
 

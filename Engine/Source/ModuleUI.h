@@ -25,12 +25,16 @@ public:
 	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
 
 	void SetScreenSpace(bool screen);
+	bool GetScreenSpace();
+	void CheckRaycast();
+	void ResizeFrustum(unsigned int width, unsigned int height);
 
 private:
-	void DrawWidget(const GameObject* gameObject);
+	void DrawWidget(GameObject* gameObject);
+	GameObject* FindCanvas(GameObject* gameObject);
 
-	Frustum* mUIfrustum;
-	Frustum* mCurrentFrustum;
+	Frustum* mUIfrustum = nullptr;
+	Frustum* mCurrentFrustum = nullptr; 
 
 	unsigned int mQuadVBO;
 	unsigned int mQuadVAO;
