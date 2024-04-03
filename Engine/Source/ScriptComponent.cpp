@@ -53,7 +53,11 @@ ScriptComponent::~ScriptComponent()
 	//delete mScript; //Memory leack here, this shouldbe fixed.
 
 	App->GetScriptManager()->RemoveScript(mScript);
-
+	if (mResourceScript)
+	{
+		delete mResourceScript;
+	}
+	
 }
 
 void ScriptComponent::Update()

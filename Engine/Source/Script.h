@@ -38,7 +38,7 @@ public:
 
 	Script(GameObject* owner);
 	virtual ~Script() {}
-	void SetName(const std::string name);
+	void SetName(const std::string& name) { mName = name; }
 
 	virtual void Start() = 0;
 	virtual void Update() = 0;
