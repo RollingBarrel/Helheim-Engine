@@ -2,17 +2,17 @@
 #include "vector"
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
-class Material;
-struct ResourceMesh;
+
+class ResourceMesh;
 class MeshRendererComponent;
 class AIAgentComponent;
 class GameObject;
 struct dtNavMeshCreateParams;
-class rcHeightfield;
-class rcCompactHeightfield;
-class rcContourSet;
-class rcPolyMesh;
-class rcPolyMeshDetail;
+struct rcHeightfield;
+struct rcCompactHeightfield;
+struct rcContourSet;
+struct rcPolyMesh;
+struct rcPolyMeshDetail;
 class rcContext;
 
 struct ObstacleTriangle {
