@@ -33,7 +33,7 @@ public:
 	unsigned int GetNumberIndices() const { return mNumIndices; }
 	const unsigned int* GetIndices() const { return mIndices; }
 	void GetAttributes(std::vector<Attribute>&) const;
-	unsigned int GetNumberAttributes() const { return mAttributes.size(); }
+	unsigned int GetNumberAttributes() const { return static_cast<unsigned int>(mAttributes.size()); }
 	bool HasAttribute(Attribute::Type type) const;
 	unsigned int GetVertexSize() const { return mVertexSize; }
 	const float* GetAttributeData(Attribute::Type type) const;

@@ -23,7 +23,7 @@ public:
 	bool Intersects(const OBB* boundingBox) const;
 	bool Intersects(const Ray* ray) const;
 	const bool IsFilled() const { return mFilled; }
-	const int GetNumGameObjs() const { return mGameObjects.size(); }
+	const unsigned int GetNumGameObjs() const { return static_cast<unsigned int>(mGameObjects.size()); }
 	const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
 	const Quadtree* GetChildren() const { return *mChildren; }
 	const std::map<float, GameObject*> RayCast(Ray* ray) const;

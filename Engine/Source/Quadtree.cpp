@@ -233,7 +233,7 @@ const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 					const unsigned int* indices = rMesh->GetResourceMesh()->GetIndices();
 					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 
-					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices(); i += 3) {
+					for (unsigned int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices(); i += 3) {
 						float3 verticeA = float3(triangles[indices[i]*3], triangles[indices[i]*3 + 1], triangles[indices[i]*3 + 2]);
 						float3 verticeB = float3(triangles[indices[i + 1]*3], triangles[indices[i + 1]*3 + 1], triangles[indices[i + 1]*3 + 2]);
 						float3 verticeC = float3(triangles[indices[i + 2]*3], triangles[indices[i + 2]*3 + 1], triangles[indices[i + 2]*3 + 2]);
