@@ -230,6 +230,7 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 	case Resource::Type::Script:
 	{
 		ret = Importer::Script::Load(lPath, uid);
+		break;
 	}
 	case Resource::Type::Animation:
 	{
