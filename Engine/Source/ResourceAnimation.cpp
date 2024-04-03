@@ -113,7 +113,7 @@ void ResourceAnimation::AddChannels(const tinygltf::Model& model, const tinygltf
 void ResourceAnimation::CleanUp()
 {
     mName.clear();
-    mDuration = 0.0f;
+    mDuration = 0;
 
     for (auto& channel : mChannels)
     {

@@ -4,7 +4,7 @@
 #include "Globals.h"
 #include "HelheimEvent.h"
 
-class Module
+class ENGINE_API Module
 {
 public:
 

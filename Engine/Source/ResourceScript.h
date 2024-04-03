@@ -17,7 +17,7 @@ public:
 
 private:
 	std::string mName;
-	VariableType mType;
+	VariableType mType = VariableType::NONE;
 
 };
 

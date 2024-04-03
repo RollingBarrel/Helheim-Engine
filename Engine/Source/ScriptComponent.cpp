@@ -53,7 +53,11 @@ ScriptComponent::~ScriptComponent()
 	//delete mScript; //Memory leack here, this shouldbe fixed.
 
 	App->GetScriptManager()->RemoveScript(mScript);
-
+	if (mResourceScript)
+	{
+		delete mResourceScript;
+	}
+	
 }
 
 void ScriptComponent::Update()
@@ -133,7 +137,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 	{
 		const auto& array = data["ScriptVariables"].GetArray();
 		
-		for (int i = 0; i < array.Size(); ++i) {
+		for (unsigned int i = 0; i < array.Size(); ++i) {
 			const char* name;
 			if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) {
 				name = array[i]["VariableName"].GetString();

@@ -17,6 +17,9 @@
 	@brief A 4-by-4 matrix for affine and perspective projection operations in 3D space. */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
 #include "../MathBuildConfig.h"
 #include "SSEMath.h"
 
@@ -948,3 +951,6 @@ inline float4x4 *AlignedNew<float4x4>(size_t numElements) { return AlignedNew<fl
 #endif
 
 MATH_END_NAMESPACE
+
+
+#pragma warning( pop )

@@ -17,6 +17,10 @@
 	@brief The Sphere geometry object. */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
+
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
 
@@ -383,3 +387,6 @@ std::ostream &operator <<(std::ostream &o, const Sphere &sphere);
 #endif
 
 MATH_END_NAMESPACE
+
+
+#pragma warning( pop )
