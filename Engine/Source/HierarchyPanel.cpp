@@ -152,6 +152,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			if (ImGui::ArrowButton("Go Back", ImGuiDir_Left)) {
 				App->GetScene()->ClosePrefabScreen();
 			}
+			ImGui::SameLine();
 		}
 		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		ImGui::PopStyleVar();
