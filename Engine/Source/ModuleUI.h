@@ -24,8 +24,9 @@ public:
 	inline unsigned int GetProgram() const { return mUIProgramId; }
 	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
 
-	void SetScreenSpace(bool screen);
-	bool GetScreenSpace();
+	void SetScreenSpace(bool screen) { mScreenSpace = screen; }
+	inline bool GetScreenSpace() { return mScreenSpace; }
+	
 	void CheckRaycast();
 	void ResizeFrustum(unsigned int width, unsigned int height);
 

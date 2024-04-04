@@ -62,11 +62,11 @@ update_status ModuleUI::PreUpdate(float dt) {
 		mCurrentFrustum = mUIfrustum;
 		mUIfrustum->orthographicWidth = App->GetWindow()->GetWidth();
 		mUIfrustum->orthographicHeight = App->GetWindow()->GetHeight();
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 	}
 	else {
 		mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
-		glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
 	}
 
 	// Draw the UI
@@ -97,14 +97,6 @@ bool ModuleUI::CleanUp() {
 	delete mUIfrustum;
 
 	return true;
-}
-
-void ModuleUI::SetScreenSpace(bool screen) {
-	mScreenSpace = screen;
-}
-
-bool ModuleUI::GetScreenSpace() {
-	return mScreenSpace;
 }
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
@@ -261,9 +253,6 @@ unsigned int ModuleUI::CompileShader(unsigned type, const char* source) const
 void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height) {
 	float heightFrustum = height;
 	float widthFrustum = width;
-
-	//float aspect_ratio = widthFrustum / heightFrustum;
-	//widthFrustum /= aspect_ratio;
 
 	mUIfrustum->orthographicWidth = widthFrustum; //Change with canvas width
 	mUIfrustum->orthographicHeight = heightFrustum; //Change with canvas height

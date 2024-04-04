@@ -817,8 +817,6 @@ void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};
 
 void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 	
-	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
-
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
 
 		ImGui::OpenPopup("TransformOptions");
@@ -830,66 +828,64 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 		ImGui::EndPopup();
 	}
 
-	if (headerOpen) {
-		if (ImGui::BeginTable("transformTable", 4)) {
-			//ImGui::TableSetupColumn("columns", 0 , -FLT_MIN);
+	if (ImGui::BeginTable("transformTable", 4)) {
 
-			bool modifiedTransform = false;
-			float3 newPosition = component->GetPosition();
-			float2 newSize = component->GetSize();
-			float3 newRotation = RadToDeg(component->GetRotation());
+		bool modifiedTransform = false;
+		float3 newPosition = component->GetPosition();
+		float2 newSize = component->GetSize();
+		float3 newRotation = RadToDeg(component->GetRotation());
 
-			const char* labels[2] = { "Position", "Rotation"};
-			const char* axisLabels[3] = { "X", "Y", "Z" };
-			float3* vectors[4] = { &newPosition, &newRotation };
+		const char* labels[2] = { "Position", "Rotation"};
+		const char* axisLabels[3] = { "X", "Y", "Z" };
+		float3* vectors[4] = { &newPosition, &newRotation };
 
-			for (int i = 0; i < 2; ++i) {
-				ImGui::PushID(i);
-				ImGui::TableNextRow();
-
-				ImGui::TableNextColumn();
-				ImGui::PushItemWidth(-FLT_MIN);
-				ImGui::Text(labels[i]);
-				ImGui::PopItemWidth();
-
-				for (int j = 0; j < 3; ++j) {
-					ImGui::TableNextColumn();
-					ImGui::PushItemWidth(-FLT_MIN);
-					ImGui::AlignTextToFramePadding();
-					ImGui::Text(axisLabels[j]);
-					ImGui::SameLine();
-					modifiedTransform = ImGui::DragFloat(axisLabels[j], &(*vectors[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
-					ImGui::PopItemWidth();
-				}
-				ImGui::PopID();
-			}
-			
-			ImGui::PushID(2);
+		for (int i = 0; i < 2; ++i) {
+			ImGui::PushID(i);
 			ImGui::TableNextRow();
 
 			ImGui::TableNextColumn();
 			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::Text("Size");
+			ImGui::Text(labels[i]);
 			ImGui::PopItemWidth();
 
-			for (int j = 0; j < 2; ++j) {
+			for (int j = 0; j < 3; ++j) {
 				ImGui::TableNextColumn();
 				ImGui::PushItemWidth(-FLT_MIN);
 				ImGui::AlignTextToFramePadding();
 				ImGui::Text(axisLabels[j]);
 				ImGui::SameLine();
-				modifiedTransform = ImGui::DragFloat(axisLabels[j], &(newSize)[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+				modifiedTransform = ImGui::DragFloat(axisLabels[j], &(*vectors[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
 				ImGui::PopItemWidth();
 			}
 			ImGui::PopID();
-
-
-			if (modifiedTransform) {
-				component->SetPosition(newPosition);
-				component->SetRotation(DegToRad(newRotation));
-				component->SetSize(newSize);
-			}
 		}
-		ImGui::EndTable();
+			
+		ImGui::PushID(2);
+		ImGui::TableNextRow();
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Size");
+		ImGui::PopItemWidth();
+
+		for (int j = 0; j < 2; ++j) {
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text(axisLabels[j]);
+			ImGui::SameLine();
+			modifiedTransform = ImGui::DragFloat(axisLabels[j], &(newSize)[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+			ImGui::PopItemWidth();
+		}
+		ImGui::PopID();
+
+
+		if (modifiedTransform) {
+			component->SetPosition(newPosition);
+			component->SetRotation(DegToRad(newRotation));
+			component->SetSize(newSize);
+		}
 	}
+	ImGui::EndTable();
+	
 }
