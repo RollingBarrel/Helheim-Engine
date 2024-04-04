@@ -53,7 +53,7 @@ void ImageComponent::Draw() const
             Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
             if (component != nullptr) 
             {
-                model = component->GetGlobalMatrix() * float4x4(GetImage()->GetWidth(), 0,0,0,0, GetImage()->GetHeight(),0,0,0,0,0,1,0,0,0, 1);
+                model = component->GetGlobalMatrix();
             }
             else 
             {
