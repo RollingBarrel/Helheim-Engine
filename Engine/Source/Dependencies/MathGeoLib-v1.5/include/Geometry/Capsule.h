@@ -15,6 +15,10 @@
 /** @file Capsule.h
 	@author Jukka Jylänki
 	@brief The Capsule geometry object. */
+
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
 #pragma once
 
 #include "../MathGeoLibFwd.h"
@@ -287,3 +291,5 @@ std::ostream &operator <<(std::ostream &o, const Capsule &capsule);
 #endif
 
 MATH_END_NAMESPACE
+
+#pragma warning( pop )
