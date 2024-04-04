@@ -75,6 +75,7 @@ void ModuleCamera::CheckRaycast()
 
 bool ModuleCamera::CleanUp()
 {
+	mEditorCamera->~GameObject();
 	return true;
 }
 

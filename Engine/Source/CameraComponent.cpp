@@ -35,6 +35,7 @@ CameraComponent::CameraComponent(const CameraComponent& original, GameObject* ow
 	:Component(owner, ComponentType::CAMERA)
 {
 	mFrustum = original.mFrustum;
+    mAspectRatio = original.mFrustum.AspectRatio();
 }
 
 CameraComponent::~CameraComponent()
