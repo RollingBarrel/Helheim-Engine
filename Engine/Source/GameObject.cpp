@@ -21,6 +21,7 @@
 #include "SpotLightComponent.h"
 #include "ButtonComponent.h"
 #include "ScriptComponent.h"
+#include "Transform2DComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -441,6 +442,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 			break;
 		case ComponentType::BUTTON:
 			newComponent = new ButtonComponent(this);
+			break;
+		case ComponentType::TRANSFORM2D:
+			newComponent = new Transform2DComponent(this);
 			break;
 		default:
 			break;

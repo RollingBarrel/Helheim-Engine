@@ -5,7 +5,11 @@
 
 #include "Math/TransformOps.h"
 
-Transform2DComponent::Transform2DComponent(const bool active, GameObject* owner): Component(owner, ComponentType::TRANSFORM2D)
+Transform2DComponent::Transform2DComponent(GameObject* owner): Component(owner, ComponentType::TRANSFORM2D)
+{
+}
+
+Transform2DComponent::Transform2DComponent(const bool active, GameObject* owner) : Component(owner, ComponentType::TRANSFORM2D)
 {
 }
 
@@ -17,10 +21,27 @@ void Transform2DComponent::Update()
 {
 }
 
+Component* Transform2DComponent::Clone(GameObject* owner) const
+{
+	return nullptr;
+}
+
+void Transform2DComponent::Reset()
+{
+}
+
+void Transform2DComponent::Save(Archive& archive) const
+{
+}
+
+void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+{
+}
+
 void Transform2DComponent::CalculateMatrices()
 {
-	localMatrix = float4x4::FromTRS(GetPositionRelativeToParent(), rotation, scale) *
-		float4x4::Translate(float3((-pivot + float2(0.5f, 0.5f)).Mul(size), 0.0f));
+	mLocalMatrix = float4x4::FromTRS(GetPositionRelativeToParent(), mRotation, float3(mSize,0)) *
+		float4x4::Translate(float3((-mPivot + float2(0.5f, 0.5f)).Mul(mSize), 0.0f));
 
 	GameObject* parent = GetOwner()->GetParent();
 
@@ -29,11 +50,11 @@ void Transform2DComponent::CalculateMatrices()
 		Transform2DComponent* parentTransform = (Transform2DComponent*)parent->GetComponent(ComponentType::TRANSFORM2D);
 		if (parentTransform)
 		{
-			globalMatrix = parentTransform->GetGlobalMatrix().Mul(localMatrix);
+			mGlobalMatrix = parentTransform->GetGlobalMatrix().Mul(mLocalMatrix);
 		}
 		else
 		{
-			globalMatrix = localMatrix;
+			mGlobalMatrix = mLocalMatrix;
 		}
 	}
 
@@ -68,9 +89,9 @@ float3 Transform2DComponent::GetPositionRelativeToParent()
 	}
 
 	float3 positionRelativeToParent;
-	positionRelativeToParent.x = position.x + (parentSize.x * (anchorMin.x - 0.5f));
-	positionRelativeToParent.y = position.y + (parentSize.y * (anchorMin.y - 0.5f));
-	positionRelativeToParent.z = position.z;
+	positionRelativeToParent.x = mPosition.x + (parentSize.x * (mAnchorMin.x - 0.5f));
+	positionRelativeToParent.y = mPosition.y + (parentSize.y * (mAnchorMin.y - 0.5f));
+	positionRelativeToParent.z = mPosition.z;
 	return positionRelativeToParent;
 }
 
@@ -89,4 +110,18 @@ float3 Transform2DComponent::GetScreenPosition()
 	}
 
 	return screenPosition;
+}
+
+void Transform2DComponent::ResetTransform() {
+	mPosition = float3::zero;
+	mEulerRotation = float3::zero;
+	mRotation = Quat::identity;
+	mSize = float2::zero;
+
+	mAnchorMin = float2(0.5, 0.5);
+	mAnchorMax = float2(0.5, 0.5);
+	mPivot = float2::zero;
+
+	mLocalMatrix = float4x4::identity;
+	mGlobalMatrix = float4x4::identity;
 }
