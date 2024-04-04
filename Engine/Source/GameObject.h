@@ -69,15 +69,16 @@ public:
 	void SetScale(const float3& scale);
 	void SetTag(Tag* tag) { mTag = tag; };
 
-	GameObject* Find(const char* name);
-	GameObject* Find(unsigned int UID);
+	GameObject* Find(const char* name) const;
+	GameObject* Find(unsigned int UID) const;
 
 	Component* CreateComponent(ComponentType type);
-	Component* GetComponent(ComponentType type);
+	Component* GetComponent(ComponentType type) const;
 	std::vector<Component*> GetComponents(ComponentType type) const;
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
+	void LoadChangesPrefab(const rapidjson::Value& oldJson, const rapidjson::Value& newJson);
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
@@ -110,4 +111,6 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool isTransformModified = false;
+	int mPrefabResourceId = 0;
+	int mPrefabId = 0;
 };
