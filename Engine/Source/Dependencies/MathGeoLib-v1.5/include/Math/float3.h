@@ -43,6 +43,9 @@
 
 MATH_BEGIN_NAMESPACE
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
 /// A vector of form (x,y,z).
 class ENGINE_API float3
 {
@@ -723,3 +726,5 @@ Q_DECLARE_METATYPE(float3*)
 #endif
 
 MATH_END_NAMESPACE
+
+#pragma warning( pop )

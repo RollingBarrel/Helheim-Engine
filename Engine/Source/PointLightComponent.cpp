@@ -86,7 +86,7 @@ void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Ga
 	if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
 	{
 		const auto& posArray = componentJson["Position"].GetArray();
-		for (int i = 0; i < posArray.Size(); ++i)
+		for (unsigned int i = 0; i < posArray.Size(); ++i)
 		{
 			mData.pos[i] = posArray[i].GetFloat();
 		}
@@ -94,7 +94,7 @@ void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Ga
 	if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
 	{
 		const auto& posArray = componentJson["Color"].GetArray();
-		for (int i = 0; i < posArray.Size(); ++i)
+		for (unsigned int i = 0; i < posArray.Size(); ++i)
 		{
 			mData.col[i] = posArray[i].GetFloat();
 		}

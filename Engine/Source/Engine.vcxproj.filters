@@ -412,9 +412,6 @@
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Script.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -472,6 +469,15 @@
     </ClCompile>
     <ClCompile Include="ModuleDetourNavigation.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Utils\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1049,8 +1055,6 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="Script.h">
-    </ClInclude>
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -1260,6 +1264,15 @@
     <ClInclude Include="ModuleEvent.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -1351,6 +1364,9 @@
     </Filter>
     <Filter Include="Dependencies\ImGuiFileDialog">
       <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Scripting">
+      <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

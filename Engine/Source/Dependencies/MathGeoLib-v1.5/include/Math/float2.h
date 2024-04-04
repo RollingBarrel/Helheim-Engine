@@ -17,6 +17,9 @@
 	@brief A 2D (x,y) ordered pair. */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
 #include "../MathBuildConfig.h"
 
 #ifdef MATH_ENABLE_STL_SUPPORT
@@ -640,3 +643,5 @@ Q_DECLARE_METATYPE(float2*)
 #endif
 
 MATH_END_NAMESPACE
+
+#pragma warning( pop )
