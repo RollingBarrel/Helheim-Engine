@@ -114,6 +114,8 @@ void ModuleCamera::SetCurrentCamera(GameObject* camera)
 
 update_status ModuleCamera::Update(float dt)
 {
+
+
 	if (mDrawRayCast) {
 		App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
 	}

@@ -228,7 +228,6 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	((CameraComponent*)App->GetCamera()->GetCurrentCamera())->SetAspectRatio((float)width / (float)height);
-	App->GetCamera()->WindowResized(width, height); // Necessary?
 	App->GetUI()->ResizeFrustum(width, height); // Necessary?
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);

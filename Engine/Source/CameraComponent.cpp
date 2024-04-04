@@ -7,7 +7,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGl.h"
-
+#include "ModuleCamera.h"
 
 #include "ModuleScene.h"
 #include "Quadtree.h"
@@ -39,6 +39,10 @@ CameraComponent::CameraComponent(const CameraComponent& original, GameObject* ow
 
 CameraComponent::~CameraComponent()
 {
+    if (this == App->GetCamera()->GetCurrentCamera())
+    {
+        App->GetCamera()->SetCurrentCamera(App->GetCamera()->GetEditorCamera()->mOwner); //Change to create a function that looks for other camera components before setting the editor camera for ingame.
+    }
 }
 
 void CameraComponent::Update()
