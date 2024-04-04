@@ -22,7 +22,7 @@ public:
 	virtual void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) = 0;
 
 	ComponentType GetType() const { return mType; }
-	const GameObject* const GetOwner() const { return mOwner; }
+	GameObject* const GetOwner() const { return mOwner; }
 
 	unsigned int GetID() const { return mID; }
 

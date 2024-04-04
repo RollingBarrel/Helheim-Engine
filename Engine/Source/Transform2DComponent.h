@@ -27,9 +27,9 @@ public:
 	inline const float3& GetRotation() const { return mEulerRotation; }
 	inline const float2& GetSize() const { return mSize; }
 
-	inline void SetPosition(const float3& position) { this->mPosition = position; }
-	inline void SetRotation(const float3& rotation) { this->mRotation = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z); mEulerRotation = rotation;}
-	inline void SetSize(const float2 size) { this->mSize = size; }
+	void SetPosition(const float3& position);
+	void SetRotation(const float3& rotation);
+	void SetSize(const float2 size);
 
 	void CalculateMatrices();
 	void ResetTransform();
@@ -38,16 +38,16 @@ private:
 	float3 GetPositionRelativeToParent();
 	float3 GetScreenPosition();
 
-	float3 mPosition;
-	float3 mEulerRotation;
-	Quat mRotation;
-	float2 mSize;
+	float3 mPosition= float3::zero;
+	float3 mEulerRotation = float3::zero;
+	Quat mRotation = Quat::identity;
+	float2 mSize = float2::one;
 
 	float2 mAnchorMin = float2(0.5, 0.5);
 	float2 mAnchorMax = float2(0.5, 0.5);
 	float2 mPivot;
 
-	float4x4 mLocalMatrix;
-	float4x4 mGlobalMatrix;
+	float4x4 mLocalMatrix = float4x4::identity;
+	float4x4 mGlobalMatrix = float4x4::identity;
 };
 

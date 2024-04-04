@@ -15,6 +15,8 @@
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 
+#include "Math/TransformOps.h"
+
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) {
 }
 
@@ -38,20 +40,28 @@ void ImageComponent::Draw() const
         float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
         float4x4 model;
 
-        if (App->GetUI()->GetScreenSpace()) {
-            //Ortographic Mode
-            float3 OwnerTranslation = GetOwner()->GetPosition();
+        if (App->GetUI()->GetScreenSpace()) {  //Ortographic Mode
+            /*float3 OwnerTranslation = GetOwner()->GetPosition();
+
             float3 scaleImage = GetOwner()->GetScale();
             float scaleFloatX = scaleImage.x;
             float scaleFloatY = scaleImage.y;
             float scaledWidth = scaleFloatX * GetImage()->GetWidth();
             float scaledHeight = scaleFloatY * GetImage()->GetHeight();
 
-            model = float4x4::FromTRS(OwnerTranslation, Quat::identity, float3(scaledWidth, scaledHeight, 1.0f));
+            model = float4x4::FromTRS(OwnerTranslation, Quat::identity, float3(scaledWidth, scaledHeight, 1.0f));*/
+            Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+            if (component != nullptr) 
+            {
+                model = component->GetGlobalMatrix() * float4x4(GetImage()->GetWidth(), 0,0,0,0, GetImage()->GetHeight(),0,0,0,0,0,1,0,0,0, 1);
+            }
+            else 
+            {
+                model = float4x4::identity;
+            }
         }
-        else
+        else //World Mode
         {
-            //World Mode
             model = GetOwner()->GetWorldTransform();
         }
 

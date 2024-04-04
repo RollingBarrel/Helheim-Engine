@@ -7,10 +7,12 @@
 
 Transform2DComponent::Transform2DComponent(GameObject* owner): Component(owner, ComponentType::TRANSFORM2D)
 {
+	CalculateMatrices();
 }
 
 Transform2DComponent::Transform2DComponent(const bool active, GameObject* owner) : Component(owner, ComponentType::TRANSFORM2D)
 {
+	CalculateMatrices();
 }
 
 Transform2DComponent::~Transform2DComponent()
@@ -40,8 +42,8 @@ void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 
 void Transform2DComponent::CalculateMatrices()
 {
-	mLocalMatrix = float4x4::FromTRS(GetPositionRelativeToParent(), mRotation, float3(mSize,0)) *
-		float4x4::Translate(float3((-mPivot + float2(0.5f, 0.5f)).Mul(mSize), 0.0f));
+	mLocalMatrix = float4x4::FromTRS(GetPositionRelativeToParent(), mRotation, float3(mSize,0))
+		/** float4x4::Translate(float3((-mPivot + float2(0.5f, 0.5f))/*.Mul(mSize), 0.0f))*/;
 
 	GameObject* parent = GetOwner()->GetParent();
 
@@ -116,7 +118,7 @@ void Transform2DComponent::ResetTransform() {
 	mPosition = float3::zero;
 	mEulerRotation = float3::zero;
 	mRotation = Quat::identity;
-	mSize = float2::zero;
+	mSize = float2::one;
 
 	mAnchorMin = float2(0.5, 0.5);
 	mAnchorMax = float2(0.5, 0.5);
@@ -124,4 +126,24 @@ void Transform2DComponent::ResetTransform() {
 
 	mLocalMatrix = float4x4::identity;
 	mGlobalMatrix = float4x4::identity;
+
+	CalculateMatrices();
+}
+
+void Transform2DComponent::SetPosition(const float3& position)
+{ 
+	mPosition = position; CalculateMatrices();
+}
+
+void Transform2DComponent::SetRotation(const float3& rotation)
+{ 
+	mRotation = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z); 
+	mEulerRotation = rotation; 
+	CalculateMatrices(); 
+}
+
+void Transform2DComponent::SetSize(const float2 size)
+{ 
+	mSize = size; 
+	CalculateMatrices(); 
 }

@@ -44,8 +44,8 @@ bool ModuleUI::Init() {
 	mUIfrustum = new Frustum();
 
 	mUIfrustum->type = FrustumType::OrthographicFrustum;
-	mUIfrustum->orthographicWidth = SCREEN_WIDTH;
-	mUIfrustum->orthographicHeight = SCREEN_HEIGHT;
+	//mUIfrustum->orthographicWidth = App->GetWindow()->GetWidth();
+	//mUIfrustum->orthographicHeight = App->GetWindow()->GetHeight();
 
 	mUIfrustum->front = -float3::unitZ;
 	mUIfrustum->up = float3::unitY;
@@ -58,14 +58,16 @@ bool ModuleUI::Init() {
 };
 
 update_status ModuleUI::PreUpdate(float dt) {
-	//if (mScreenSpace) {
+	if (mScreenSpace) {
 		mCurrentFrustum = mUIfrustum;
+		mUIfrustum->orthographicWidth = App->GetWindow()->GetWidth();
+		mUIfrustum->orthographicHeight = App->GetWindow()->GetHeight();
 		glEnable(GL_DEPTH_TEST);
-	//}
-	//else {
-		//mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
-		//glDisable(GL_DEPTH_TEST);
-	//}
+	}
+	else {
+		mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
+		glDisable(GL_DEPTH_TEST);
+	}
 
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
