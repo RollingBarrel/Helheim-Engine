@@ -260,6 +260,9 @@ void ModuleScene::LoadPrefab(const char* saveFilePath)
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) {
 		const rapidjson::Value& s = d["Prefab"];
 		mRoot->Load(s);
+		for(GameObject * child : mRoot->GetChildren()) {
+			child->SetPosition(float3::zero);
+		}
 	}
 
 	// Free the loaded buffer
@@ -268,20 +271,15 @@ void ModuleScene::LoadPrefab(const char* saveFilePath)
 
 void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
 {
-	Resource* resource = App->GetResource()->RequestResource(saveFilePath);
-	if (resource->GetType() == Resource::Type::Object) {
-		mBackgroundScene = mRoot;
-		mBackgroundScene->SetEnabled(false);
-		mRoot = new GameObject(saveFilePath, nullptr);
-		LoadPrefab(saveFilePath);
-		mQuadtreeRoot->UpdateTree();
-	}
-	
+	if (mBackgroundScene != nullptr) { mClosePrefab = true; }
+	mPrefabPath = saveFilePath;
 }
 
-void ModuleScene::ClosePrefabScreen(const char* saveFilePath)
+void ModuleScene::ClosePrefabScreen()
 {
-	mTestPath = saveFilePath;
+	if (mBackgroundScene != nullptr) {
+		mClosePrefab = true;
+	}
 }
 
 GameObject* ModuleScene::Find(const char* name)
@@ -360,14 +358,25 @@ update_status ModuleScene::PostUpdate(float dt)
 	if (!mGameObjectsToDuplicate.empty()) {
 		DuplicateGameObjects();
 	}
-	if (mTestPath != "") {
-		SavePrefab(mRoot->GetChildren()[0], mTestPath);
+	if (mClosePrefab) {
+		SavePrefab(mRoot->GetChildren()[0], mPrefabPath);
 		delete mRoot;
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
-		mTestPath = "";
+		mPrefabPath = "";
 		mRoot->SetEnabled(true);
 		mQuadtreeRoot->UpdateTree();
+		mClosePrefab = false;
+	}
+	if (mPrefabPath != "" && mBackgroundScene == nullptr) {
+		Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+		if (resource->GetType() == Resource::Type::Object) {
+			mBackgroundScene = mRoot;
+			mBackgroundScene->SetEnabled(false);
+			mRoot = new GameObject(mPrefabPath, nullptr);
+			LoadPrefab(mPrefabPath);
+			mQuadtreeRoot->UpdateTree();
+		}
 	}
 
 	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());

@@ -82,9 +82,6 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			mFocusId = gameObject->GetID();
 			mMarked.clear();
 		}
-		if (ImGui::Selectable("Go Back")) {
-			App->GetScene()->ClosePrefabScreen("Assets/Prefabs/Test.prfb");
-		}
 
 		if (!node->mIsRoot) {
 			if (ImGui::Selectable("Duplicate")) {
@@ -151,6 +148,11 @@ void HierarchyPanel::DrawTree(GameObject* node)
 		OnRightClickNode(node);
 	}
 	else {
+		if (App->GetScene()->IsPrefabScene()) {
+			if (ImGui::ArrowButton("Go Back", ImGuiDir_Left)) {
+				App->GetScene()->ClosePrefabScreen();
+			}
+		}
 		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		ImGui::PopStyleVar();
 		OnRightClickNode(node);

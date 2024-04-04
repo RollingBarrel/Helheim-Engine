@@ -61,8 +61,9 @@ public:
 	void SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
 	void LoadPrefab(const char* saveFilePath);
 	void OpenPrefabScreen(const char* saveFilePath);
-	void ClosePrefabScreen(const char* saveFilePath);
+	void ClosePrefabScreen();
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid);
+	bool IsPrefabScene() { return mBackgroundScene != nullptr; }
 
 	GameObject* Find(const char* name);
 	GameObject* Find(unsigned int UID);
@@ -81,6 +82,8 @@ private:
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
+	const char* mPrefabPath = "";
+	bool mClosePrefab = false;
 	NavMeshController* mNavMeshController;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
@@ -91,7 +94,6 @@ private:
 	std::vector<Tag*> mTags;
 
 	unsigned mLastTagIndex = 10;
-	const char* mTestPath = "";
 
 };
 
