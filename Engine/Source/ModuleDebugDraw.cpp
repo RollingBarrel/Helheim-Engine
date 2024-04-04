@@ -645,6 +645,7 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     {
        DrawGrid();
     }
+
     if (((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
     {
         DrawColliders(App->GetScene()->GetRoot());
@@ -652,15 +653,12 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
 
     GameObject* focusGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
     
-    if(focusGameObject->GetComponent(ComponentType::CAMERA))
-        DrawFrustum(((CameraComponent*)focusGameObject->GetComponent(ComponentType::CAMERA))->GetFrustum());
-    
-    dd::flush();
-    
-    if (((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetComponent(ComponentType::ANIMATION)) {
+    if (((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetComponent(ComponentType::ANIMATION)) 
+    {
         DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
     }
     
+    dd::flush();
 }
 
 void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
@@ -706,6 +704,11 @@ void ModuleDebugDraw::DrawCone(const float pos[3], const float dir[3], const flo
 void ModuleDebugDraw::DrawLine(const float3& position, const float3& direction, const float3& color)
 {
     dd::line(position, direction, color);
+}
+
+void ModuleDebugDraw::DrawLine(const float3& start, const float3& end, const float3& color, float duration, bool depthTest)
+{
+    dd::line(start, end, color, duration, depthTest);
 }
 
 void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)

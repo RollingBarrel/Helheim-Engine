@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "ResourceScript.h"
 
 class Script;
 
@@ -20,12 +21,14 @@ public:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 	void LoadScript(const char* scriptName);
 	const char* GetScriptName() const { return mName.c_str(); }
+	Script* GetScriptInstance() const { return mScript; }
 
 	void Enable() override;
 	void Disable() override;
 	
 
 private:
+	ResourceScript* mResourceScript = nullptr;
 	Script* mScript = nullptr;
 	std::string mName = "";
 	std::vector<ScriptVariable*> mData;

@@ -2,9 +2,11 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
+#include "ModuleUI.h"
 #include "SDL.h"
 #include "glew.h"
 #include "ModuleCamera.h"
+#include "ModuleUI.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
@@ -226,6 +228,8 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	((CameraComponent*)App->GetCamera()->GetCurrentCamera())->SetAspectRatio((float)width / (float)height);
+	App->GetCamera()->WindowResized(width, height); // Necessary?
+	App->GetUI()->ResizeFrustum(width, height); // Necessary?
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -429,10 +433,9 @@ PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameO
 	mPointLights.push_back(newComponent);
 	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
 	uint32_t size = mPointLights.size();
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(pLight.col[3]);
+	newComponent->SetRadius(pLight.pos[3]);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
-
 	return newComponent;
 }
 
@@ -492,8 +495,8 @@ SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObje
 	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-	newComponent->SetIntensity(50);
-	newComponent->SetRadius(25);
+	newComponent->SetIntensity(sLight.pos[3]);
+	newComponent->SetRadius(sLight.radius);
 	return newComponent;
 }
 

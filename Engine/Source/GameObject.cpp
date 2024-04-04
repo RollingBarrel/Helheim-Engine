@@ -5,8 +5,6 @@
 #include "ModuleOpenGL.h"
 
 #include "Component.h"
-#include "PointLightComponent.h"
-#include "SpotLightComponent.h"
 #include <algorithm>
 #include <unordered_map>
 #include "MathFunc.h"
@@ -17,41 +15,42 @@
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
+#include "ImageComponent.h"
+#include "CanvasComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
+#include "ButtonComponent.h"
 #include "ScriptComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
+#include <regex>
 
 
+GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
+{
+}
 
-GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent),mTag(App->GetScene()->GetTagByName("Untagged")),
+GameObject::GameObject(const char* name, GameObject* parent) : GameObject(LCG().Int(), name, parent)
+{
+}
+
+GameObject::GameObject(unsigned int ID, const char* name, GameObject* parent)
+	:mID(ID), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
+		AddSuffix();
 	}
-	AddSuffix();
 }
 
-GameObject::GameObject(const GameObject& original)
-	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(original.GetTag())
+GameObject::GameObject(const GameObject& original) : GameObject(original, original.mParent)
 {
-
-	AddSuffix();
-
-	for (auto child : original.mChildren) {
-		GameObject* gameObject = new GameObject(*(child), this);
-		gameObject->mParent = this;
-		mChildren.push_back(gameObject);
-	}
-
-	for (auto component : original.mComponents) {
-		mComponents.push_back(component->Clone(this));
+	if (mParent) {
+		AddSuffix();
 	}
 }
 
@@ -73,17 +72,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	}
 }
 
-GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
-	mIsRoot(parent == nullptr)
-{
 
-	if (!mIsRoot) {
-		mWorldTransformMatrix = mParent->GetWorldTransform();
-		mIsActive = parent->mIsActive;
-		parent->AddChild(this);
-	}
-}
 
 GameObject::~GameObject()
 {
@@ -109,6 +98,19 @@ Component* GameObject::GetComponent(ComponentType type)
 		}
 	}
 	return nullptr;
+}
+
+std::vector<Component*> GameObject::GetComponents(ComponentType type) const
+{
+	std::vector<Component*> matchingComponents;
+
+	for (auto component : mComponents) {
+		if (component->GetType() == type) {
+			matchingComponents.push_back(component);
+		}
+	}
+
+	return matchingComponents;
 }
 
 void GameObject::RecalculateMatrices()
@@ -180,7 +182,7 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 	//float3 difference = rotationInRadians - mEulerRotation;
 	//Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
 	//mRotation = mRotation * deltaRotation;
-	mRotation = Quat::FromEulerXYZ(rotationInRadians.x , rotationInRadians.y, rotationInRadians.z);
+	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
 	mEulerRotation = rotationInRadians;
 
 	//if (GetComponent(ComponentType::CAMERA) != nullptr) {
@@ -217,7 +219,7 @@ void GameObject::SetScale(const float3& scale)
 
 GameObject* GameObject::Find(const char* name)
 {
-	
+
 	GameObject* gameObject = nullptr;
 
 	for (auto child : mChildren) {
@@ -309,31 +311,75 @@ void GameObject::AddSuffix()
 {
 	bool found = true;
 	int count = 1;
-	size_t lastPos = -1;
+	bool hasNextItemSufix = false;
+	//size_t lastPos = -1;
 	while (found) {
-		std::string str = " (" + std::to_string(count) + ')';
+		std::regex regularExpression(".+\\s\\(\\d+\\)$");
+
+		std::string sufix = " (" + std::to_string(count) + ')';
 		size_t pos = std::string::npos;
+		size_t hasSufix = std::string::npos;
+		std::string nameWithoutSufix = mName;
 
-		std::string nameWithSufix = mName + str;
-		for (auto gameObject : mParent->mChildren)
+		if (std::regex_match(mName, regularExpression) || hasNextItemSufix)
 		{
-			if (pos == -1) {
-				pos = gameObject->mName.find(nameWithSufix);
+			hasSufix = mName.rfind(" (");
+
+			if (hasSufix != std::string::npos) {
+				nameWithoutSufix.erase(hasSufix);
 			}
 
-		}
+			std::string nameWithSufix = nameWithoutSufix + sufix;
 
-		if (pos == std::string::npos) {
-			if (mParent->mChildren.size() > 0) {
-				mName += str;
+			for (auto gameObject : mParent->mChildren)
+			{
+				if (pos == std::string::npos) {
+					pos = gameObject->mName.find(nameWithSufix);
+				}
+
 			}
-			found = false;
-		}
-		else {
-			count++;
-			lastPos = pos;
-		}
 
+			if (pos == std::string::npos) {
+				if (mParent->mChildren.size() > 0) {
+					mName = nameWithSufix;
+				}
+				found = false;
+			}
+			else {
+				count++;
+				//lastPos = pos;
+			}
+		}
+		else 
+		{
+			for (auto child : mParent->mChildren)
+			{
+				if (pos == std::string::npos && child != this) {
+					pos = child->mName.find(mName);
+				}
+
+			}
+
+			size_t isObjectWithSufix = std::string::npos;
+			for (auto child : mParent->mChildren) {
+				if (isObjectWithSufix == std::string::npos && child != this) {
+					isObjectWithSufix = child->mName.find(mName + sufix);
+				}
+			}
+
+			if (pos != std::string::npos && isObjectWithSufix == std::string::npos) {
+				mName += sufix;
+				found = false;
+			}
+			else if (isObjectWithSufix != std::string::npos){
+				hasNextItemSufix = true;
+			}
+			else {
+				found = false;
+			}
+			
+			
+		}
 	}
 }
 
@@ -352,13 +398,13 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		case ComponentType::POINTLIGHT:
 		{
 			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 1.f, 1.f, 1.f, 3.f }, this);
+			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
 			break;
 		}
 		case ComponentType::SPOTLIGHT:
 		{
 			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddSpotLight({ 3.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 1.5f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f))}, this);
+			newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
 			break;
 		}
 		case ComponentType::SCRIPT:
@@ -375,6 +421,15 @@ Component* GameObject::CreateComponent(ComponentType type) {
 			break;
 		case ComponentType::ANIMATION:
 			newComponent = new AnimationComponent(this);
+			break;
+		case ComponentType::IMAGE:
+			newComponent = new ImageComponent(this);
+			break;
+		case ComponentType::CANVAS:
+			newComponent = new CanvasComponent(this);
+			break;
+		case ComponentType::BUTTON:
+			newComponent = new ButtonComponent(this);
 			break;
 		default:
 			break;
@@ -463,10 +518,26 @@ void GameObject::SetActiveInHierarchy(bool active)
 
 	mIsActive = active;
 
+	for (Component* component : mComponents)
+	{
+		if (active)
+		{
+			component->Enable();
+		}
+		else
+		{
+			component->Disable();
+		}
+	}
+
+
 	for (GameObject* child : mChildren)
 	{
 		child->SetActiveInHierarchy(active);
 	}
+
+
+
 }
 
 void GameObject::Save(Archive& archive, int parentId) const {
@@ -523,7 +594,7 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID) {
 			}
 		}
 	}
-	
+
 	return gameObjectParent;
 }
 
@@ -607,7 +678,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	GameObject* go;
 
 	if (parentUID == 1) {
-		go = new GameObject(name, scene);
+		go = new GameObject(uuid, name, scene);
 		go->SetPosition(position);
 		go->SetRotation(rotation);
 		go->SetScale(scale);
@@ -618,7 +689,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	else {
 		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
-		go = new GameObject(name, gameObjectParent);
+		go = new GameObject(uuid, name, gameObjectParent);
 		go->SetPosition(position);
 		go->SetRotation(rotation);
 		go->SetScale(scale);
@@ -655,7 +726,7 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 	else {
 		return nullptr;
 	}
-	
+
 }
 
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
@@ -666,5 +737,4 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 
 	return foundGameObjects;
 }
-
 

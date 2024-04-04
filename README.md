@@ -33,7 +33,7 @@ Download GameEngine.zip file in [release](https://github.com/RollingBarrel/Helhe
   - E to Rotate object.
   - R to scale object.  
 
-  - **Mesh Renderer Component**
+- **Mesh Renderer Component**
     - All information about materials and meshes can be read and modified here. 
 - Lighting Panel
   - In this panel you are able to modify: ambient color, brightness and KD (Diffuse Attenuation Coefficient).
@@ -55,3 +55,8 @@ Download GameEngine.zip file in [release](https://github.com/RollingBarrel/Helhe
     - Help
       - About
         - Show License and some information about the Engine.
+  - Scripting
+    - .h files have to be CREATED from VS in the path Engine\Game\Assets\Scripts.
+    - Use the TestScript.h and .cpp files as an example to use and create scripts. It is mandatori to create the extern function CreateTestScript.
+    - When the .h file is created u have to drag&drop it into the engine to add it as a resource.
+    - If it does not compile because linking problems try to rebuild the Scripting project.

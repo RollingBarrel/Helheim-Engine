@@ -34,6 +34,7 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(3, "EditorOnly", TagType::SYSTEM));
 	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
+	mTags.push_back(new Tag(6, "Obstacle", TagType::SYSTEM));
 }
 
 ModuleScene::~ModuleScene()
@@ -58,7 +59,7 @@ bool ModuleScene::Init()
 
 	//Save("Scene");
 	Load("scene");
-	
+
 	return true;
 }
 
@@ -261,7 +262,7 @@ void ModuleScene::Load(const char* sceneName) {
 	}
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath) 
+void ModuleScene::LoadPrefab(const char* saveFilePath)
 {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
@@ -297,10 +298,10 @@ GameObject* ModuleScene::Find(unsigned int UID)
 	else {
 		return mRoot;
 	}
-	
+
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const  {
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
 	gameObject->Save(gameObjectArchive, parentUuid);
@@ -366,7 +367,7 @@ update_status ModuleScene::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DeleteGameObjects(){
+void ModuleScene::DeleteGameObjects() {
 
 	for (auto gameObject : mGameObjectsToDelete) {
 		gameObject->GetParent()->DeleteChild(gameObject);

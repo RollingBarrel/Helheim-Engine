@@ -16,6 +16,18 @@ class ModuleCamera : public Module
 public:
 	bool Init() override;
 	update_status Update(float dt) override;
+
+	const float3& GetPos() const { return mFrustum->pos; }
+	float4x4 GetViewMatrix() const { return mFrustum->ViewMatrix(); }
+	float4x4 GetProjectionMatrix() const { return mFrustum->ProjectionMatrix(); }
+	float4x4 GetViewProjMatrix() const { return mFrustum->ViewProjMatrix(); }
+	const Frustum* GetFrustum() const { return mFrustum; }
+	
+	void SetFrustum(Frustum* frustum) { mFrustum = frustum; }
+
+	void WindowResized(int w, int h);
+	void CheckRaycast();
+	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
 	bool CleanUp() override;
 
 	const void CreateEditorCamera();

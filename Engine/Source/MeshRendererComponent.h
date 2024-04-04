@@ -4,7 +4,6 @@
 #include "Geometry/AABB.h"
 
 class Mesh;
-struct Material;
 class ResourceMesh;
 class ResourceMaterial;
 class GeometryBatch;
@@ -28,6 +27,9 @@ public:
 	void SetMesh(unsigned int uid);
 	const AABB GetAABB() const { return mAABB; }
 	const AABB GetAABBWorld() const { return mAABBWorld; }
+
+	void Enable() override;
+	void Disable() override;
 
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
 	bool ShouldDraw() const { return mDrawBox; }

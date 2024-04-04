@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "NavMeshController.h"
+#include "ModuleDetourNavigation.h"
 
 
 NavMeshControllerPanel::NavMeshControllerPanel() : Panel(NAVMESHPANEL, false)
@@ -101,16 +102,16 @@ void NavMeshControllerPanel::Draw(int windowFlags)
 
         ImGui::Text("Player simulation");
 
-        float3 playerPos = navController->GetQueryCenter();
+        float3 playerPos = App->GetNavigation()->GetQueryCenter();
         if (ImGui::DragFloat3("Character position: ", &playerPos[0], 0.5f, -1000.0f, 1000.0f))
         {
-            navController->SetQueryCenter(playerPos);
+            App->GetNavigation()->SetQueryCenter(playerPos);
         }
 
-        float3 navQuerySize = navController->GetQueryHalfSize();
+        float3 navQuerySize = App->GetNavigation()->GetQueryHalfSize();
         if (ImGui::DragFloat3("Query size: ", &navQuerySize[0], 0.5f, 0.0f, 500.0f))
         {
-            navController->SetQueryHalfSize(navQuerySize);
+            App->GetNavigation()->SetQueryHalfSize(navQuerySize);
         }
 
 

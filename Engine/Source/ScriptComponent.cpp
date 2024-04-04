@@ -5,6 +5,8 @@
 #include "Script.h"
 #include "GameObject.h"
 #include "ModuleScene.h"
+#include "ModuleResource.h"
+#include "ModuleFileSystem.h"
 
 
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
@@ -51,7 +53,11 @@ ScriptComponent::~ScriptComponent()
 	//delete mScript; //Memory leack here, this shouldbe fixed.
 
 	App->GetScriptManager()->RemoveScript(mScript);
-
+	if (mResourceScript)
+	{
+		delete mResourceScript;
+	}
+	
 }
 
 void ScriptComponent::Update()
@@ -85,7 +91,7 @@ void::ScriptComponent::Save(Archive& archive) const
 			dataArchive.AddInt("VariableData", *(int*)data->mData);
 			break;
 		case VariableType::FLOAT:
-			dataArchive.AddInt("VariableData", *(float*)data->mData);
+			dataArchive.AddFloat("VariableData", *(float*)data->mData);
 			break;
 		case VariableType::BOOL:
 			dataArchive.AddInt("VariableData", *(bool*)data->mData);
@@ -111,7 +117,6 @@ void::ScriptComponent::Save(Archive& archive) const
 
 void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
 {
-
 	bool check = data.HasMember("ScriptVariables");
 	bool check2 = data["ScriptVariables"].IsString();
 
@@ -132,7 +137,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 	{
 		const auto& array = data["ScriptVariables"].GetArray();
 		
-		for (int i = 0; i < array.Size(); ++i) {
+		for (unsigned int i = 0; i < array.Size(); ++i) {
 			const char* name;
 			if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) {
 				name = array[i]["VariableName"].GetString();
@@ -161,7 +166,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 							{
 								int  UID = array[i]["VariableData"].GetInt();
 								if (UID != -1) {
-									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(array[i]["VariableData"].GetInt(), (GameObject**)data->mData));
+									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, (GameObject**)data->mData));
 								}
 								break;
 							}
@@ -169,29 +174,43 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 								break;
 							}
 						}
-
 					}
 				}
 			}
-			
 		}
 	}
-
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
 {
-	mName = scriptName;
+	std::string scriptPath = ASSETS_SCRIPT_PATH + std::string(scriptName) + ".h";
+	
+	if (!App->GetFileSystem()->Exists(scriptPath.c_str()))
+	{
+		LOG("SCRIPT ASSET NOT FOUND");
+	}
+	if (mResourceScript != nullptr) 
+	{
+		App->GetResource()->ReleaseResource(mResourceScript->GetUID());
+		mResourceScript = nullptr;
+	}
 
-	for (auto data : mData) {
-
+	mScript = nullptr;
+	for (auto data : mData) 
+	{
 		delete data;
 	}
 	mData.clear();
 
+	mName = scriptName;
 	Script* (*script)(GameObject*, std::vector<ScriptVariable*>&) = (Script * (*)(GameObject*, std::vector<ScriptVariable*>&))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
-	if (script != nullptr) {
+	if (script != nullptr) {	
 		mScript = script(mOwner , mData);
+		mScript->SetName(mName);
+		mResourceScript = (ResourceScript*)(App->GetResource()->RequestResource(scriptPath.c_str()));
+		if (mResourceScript == nullptr) {
+			LOG("SCRIPT RESOURCE NOT FOUND");
+		}
 		App->GetScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
@@ -202,19 +221,11 @@ void ScriptComponent::LoadScript(const char* scriptName)
 
 void ScriptComponent::Enable()
 {
-	if (!mIsEnabled) {
-		App->GetScriptManager()->AddScript(mScript);
-		mIsEnabled = true;
-	}
+	App->GetScriptManager()->AddScript(mScript);
 		
 }
 
 void ScriptComponent::Disable()
 {
-	if (mIsEnabled) {
 		App->GetScriptManager()->RemoveScript(mScript);
-		mIsEnabled = false;
-	}
-		
-
 }

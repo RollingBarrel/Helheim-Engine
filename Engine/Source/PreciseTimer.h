@@ -99,7 +99,7 @@ private:
 
     long long mFrameDelay = 0;                  //Time in microseconds the last frame was delayed for
 
-    long long mSlowestFrameTime = 0;
+    unsigned long long mSlowestFrameTime = 0;
     int mSlowestFrame = 0;
 
     //Vsync

@@ -1,22 +1,28 @@
 #pragma once
 #include "Globals.h"
 #include <vector>
+#include <string>
+#include "Physics.h"
+#include "Debug.h"
+
 class GameObject;
 
 enum class  VariableType : int
 {
 	// IF THE NUMBERS CHANGES THE SCRIPTS MAY BREAK
+	NONE = -1,
 	INT = 0, 
 	FLOAT = 1, 
 	BOOL = 2, 
 	GAMEOBJECT = 3, 
-	FLOAT3 = 4, 
+	FLOAT3 = 4
+	
 };
 
 struct ScriptVariable {
 
-	const char* mName = "";
-	VariableType mType;
+	const char* mName = nullptr;
+	VariableType mType = VariableType::NONE;
 	void* mData = nullptr;
 
 	ScriptVariable() {}
@@ -32,9 +38,12 @@ public:
 
 	Script(GameObject* owner);
 	virtual ~Script() {}
+	void SetName(const std::string& name) { mName = name; }
 
 	virtual void Start() = 0;
 	virtual void Update() = 0;
+
+	//virtual void OnButtonClick() = 0;
 
 protected:
 
@@ -42,6 +51,6 @@ protected:
 
 private:
 
-	const char* name = nullptr;
+	std::string mName;
 };
 

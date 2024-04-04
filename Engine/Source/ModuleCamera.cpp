@@ -19,6 +19,8 @@
 #include "GameObject.h"
 #include "Quat.h"
 #include "CameraComponent.h"
+#include <map>
+
 
 bool ModuleCamera::Init()
 {
@@ -52,15 +54,19 @@ void ModuleCamera::CheckRaycast()
 
 	}
 	else {
-		const std::pair<float, GameObject*> intersectGameObjectPair = root->RayCast(&mRay);
-		if (intersectGameObjectPair.second != nullptr)
-		{
-			GameObject* gameObject = intersectGameObjectPair.second;
-			while (!gameObject->GetParent()->IsRoot())
+
+		std::map<float, GameObject*> hits = root->RayCast(&mRay);
+		if (!hits.empty()) {
+			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
+			if (intersectGameObjectPair.second != nullptr)
 			{
-				gameObject = gameObject->GetParent();
+				GameObject* gameObject = intersectGameObjectPair.second;
+				while (!gameObject->GetParent()->IsRoot())
+				{
+					gameObject = gameObject->GetParent();
+				}
+				((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
 			}
-			((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
 		}
 	}
 }

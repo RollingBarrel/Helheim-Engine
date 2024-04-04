@@ -67,6 +67,17 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 	}
 }
 
+void MeshRendererComponent::Enable()
+{
+	App->GetOpenGL()->BatchAddMesh(this);
+
+}
+
+void MeshRendererComponent::Disable()
+{
+	App->GetOpenGL()->BatchRemoveMesh(this);
+}
+
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
 	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));

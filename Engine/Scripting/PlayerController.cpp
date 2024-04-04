@@ -11,6 +11,7 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
+#include "Geometry/Ray.h"
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
@@ -32,28 +33,47 @@ void PlayerController::Update()
     Move();
     Rotate();
     Win();
+    Lose();
     Dash();
 
     if (mAnimationComponent) {
         mAnimationComponent->OnUpdate();
     }
 
+    std::map<float, GameObject*> hits;
+
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) {
+        
+        Ray ray;
+        ray.pos = mGameObject->GetPosition();
+        ray.dir = mGameObject->GetFront();
+        float distance = 100;
+        hits = Physics::Raycast(&ray);
+        Debug::DrawLine(ray.pos, ray.dir*distance, float3(1.0f, 0.0f, 0.0f));
+        for (const auto& hit : hits) {
+            LOG("Object %s has been hit at distance: %f", hit.second->GetName().c_str(), hit.first);
+        }
+    }
 }
 
 void PlayerController::Move() {
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
+        //float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mPlayerSpeed);
         float3 newPos = (mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
+        //float3 newPos = (mGameObject->GetPosition() + (mGameObject->GetFront() * -1) * App->GetGameDt() * mPlayerSpeed);
         float3 newPos = (mGameObject->GetPosition() + float3(0, 0, -1) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT) {
+        //float3 newPos = (mGameObject->GetPosition() + (mGameObject->GetRight() * -1) * App->GetGameDt() * mPlayerSpeed);
         float3 newPos = (mGameObject->GetPosition() + float3(-1, 0, 0) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) {
+        //float3 newPos = (mGameObject->GetPosition() + mGameObject->GetRight() * App->GetGameDt() * mPlayerSpeed);
         float3 newPos = (mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt() * mPlayerSpeed);
         mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
     }
@@ -63,11 +83,23 @@ void PlayerController::Win() {
     if (mWinArea) {
      float3 winPosition= mWinArea->GetPosition();
      float3 playerPosition = mGameObject->GetPosition();
-     if (((winPosition.x - playerPosition.x)<5 && (winPosition.x - playerPosition.x)> -5) && ((winPosition.z - playerPosition.z) < 5 && (winPosition.z - playerPosition.z) > -5)) {
-         //mGameObject->SetPosition(float3::zero);
-         LOG("WIN");
+     
+     float distance = winPosition.Distance(playerPosition);
+     if (distance < 3.0f) {
+         LOG("You WIN");
      }
+    }
 
+}
+
+void PlayerController::Lose() {
+    if (mWinArea) {
+        float3 losePosition = mLoseArea->GetPosition();
+        float3 playerPosition = mGameObject->GetPosition();
+        if (losePosition.Distance(playerPosition) < 3.0f)
+        {
+            LOG("You have Lost");
+        }
     }
 
 }

@@ -13,7 +13,7 @@
 #include "Geometry/Triangle.h"
 #include "imgui.h"
 #include <utility>
-#include <map>
+
 
 Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
@@ -220,7 +220,7 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 	}
 }
 
-const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
+const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 {
 	if (mFilled) 
 	{
@@ -228,26 +228,26 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 		std::map<float, GameObject*> map;
 
 
-		const std::pair<float, GameObject*> p1 = mChildren[0]->RayCast(ray);
-		const std::pair<float, GameObject*> p2 = mChildren[1]->RayCast(ray);
-		const std::pair<float, GameObject*> p3 = mChildren[2]->RayCast(ray);
-		const std::pair<float, GameObject*> p4 = mChildren[3]->RayCast(ray);
+		const std::map<float, GameObject*> p1 = mChildren[0]->RayCast(ray);
+		const std::map<float, GameObject*> p2 = mChildren[1]->RayCast(ray);
+		const std::map<float, GameObject*> p3 = mChildren[2]->RayCast(ray);
+		const std::map<float, GameObject*> p4 = mChildren[3]->RayCast(ray);
 
-		if (p1.second != nullptr) {
-			map.insert(p1);
+		if (!p1.empty()) {
+			map.insert(p1.begin(), p1.end());
 		}
-		if (p2.second != nullptr) {
-			map.insert(p2);
+		if (!p2.empty()) {
+			map.insert(p2.begin(), p2.end());
 		}
-		if (p3.second != nullptr) {
-			map.insert(p3);
+		if (!p3.empty()) {
+			map.insert(p3.begin(), p3.end());
 		}
-		if (p4.second != nullptr) {
-			map.insert(p4);
+		if (!p4.empty()) {
+			map.insert(p4.begin(), p4.end());
 		}
 			
 		if (!map.empty()) {
-			return std::pair<float, GameObject*>(map.begin()->first, map.begin()->second);
+			return map;
 		}
 		
 	}
@@ -273,7 +273,7 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 					const unsigned int* indices = rMesh->GetResourceMesh()->GetIndices();
 					const float* triangles = rMesh->GetResourceMesh()->GetAttributeData(Attribute::POS);
 
-					for (int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices(); i += 3) {
+					for (unsigned int i = 0; i < rMesh->GetResourceMesh()->GetNumberIndices(); i += 3) {
 						float3 verticeA = float3(triangles[indices[i]*3], triangles[indices[i]*3 + 1], triangles[indices[i]*3 + 2]);
 						float3 verticeB = float3(triangles[indices[i + 1]*3], triangles[indices[i + 1]*3 + 1], triangles[indices[i + 1]*3 + 2]);
 						float3 verticeC = float3(triangles[indices[i + 2]*3], triangles[indices[i + 2]*3 + 1], triangles[indices[i + 2]*3 + 2]);
@@ -290,11 +290,11 @@ const std::pair<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 			}
 		}
 		if (!map.empty()) {
-			return std::pair<float, GameObject*>(map.begin()->first, map.begin()->second);
+			return map;
 		}
 	}
 
-	return std::pair<float, GameObject*>(FLT_MAX,nullptr);
+	return std::map<float, GameObject*>();
 }
 
 void Quadtree::UpdateTree()

@@ -6,8 +6,6 @@
 #include "ResourceMesh.h"
 
 #include "glew.h"
-#include "float2.h"
-#include "float4.h"
 
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
@@ -39,6 +37,25 @@ static float* GetInterleavedData(const std::vector<Attribute>& attributes, const
     return ret;
 }
 
+static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize)
+{
+    unsigned int numVertices = (bufferSize / vertexSize);
+    unsigned int attributeNumFloats = (attr.size / sizeof(float));
+    float* ret = new float[numVertices * attributeNumFloats];
+    unsigned int floatOffset = attr.offset / sizeof(float);
+    unsigned int j = 0;
+    for (unsigned int i = 0; i < numVertices; ++i)
+    {
+        const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize / sizeof(float) + floatOffset];
+        for (unsigned int j = 0; j < attributeNumFloats; ++j)
+        {
+            ret[i * attributeNumFloats + j] = vert[j];
+            //LOG("%f", ret[i * attributeNumFloats + j]);
+        }
+
+    }
+    return ret;
+}
 
 #include "mikktspace.h"
 #include "weldmesh.h"
@@ -96,26 +113,6 @@ static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTan
     memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
 }
 
-static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* interleavedBuffer, unsigned int bufferSize, unsigned int vertexSize)
-{
-    unsigned int numVertices = (bufferSize / vertexSize);
-    unsigned int attributeNumFloats = (attr.size / sizeof(float));
-    float* ret = new float[numVertices * attributeNumFloats];
-    unsigned int floatOffset = attr.offset / sizeof(float);
-    unsigned int j = 0;
-    for (int i = 0; i < numVertices; ++i)
-    {
-        const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize / sizeof(float) + floatOffset];
-        for (unsigned int j = 0; j < attributeNumFloats; ++j)
-        {
-            ret[i * attributeNumFloats + j] = vert[j];
-            //LOG("%f", ret[i * attributeNumFloats + j]);
-        }
-
-    }
-    return ret;
-}
-
 static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int*& indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData)
 {
 #ifdef _DEBUG
@@ -146,7 +143,7 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
     const char* vertices = reinterpret_cast<const char*>(vertexData);
     char* unweldedVertices = new char[numIndices * vertexSize];
 
-    for (int i = 0; i < numIndices; ++i)
+    for (unsigned int i = 0; i < numIndices; ++i)
     {
         memcpy(&unweldedVertices[i * vertexSize], &vertices[indexData[i] * vertexSize], vertexSize);
     }
@@ -233,7 +230,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
         numVertices = posAcc.count;
 
-        const unsigned char* bufferPos = &posBuffer.data[posView.byteOffset + posAcc.byteOffset];
+        const float* bufferPos = reinterpret_cast<const float*>(& posBuffer.data[posView.byteOffset + posAcc.byteOffset]);
 
         attributes.emplace_back(Attribute::POS, sizeof(float) * 3, vertexSize);
         vertexSize += sizeof(float) * 3;
@@ -241,16 +238,16 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         //Add vertices Pos to this buffer taking into acc byteStride
         for (unsigned int i = 0; i < posAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(data)[i] = *reinterpret_cast<const float3*>(bufferPos);
+            data[i * 3] = bufferPos[0];
+            data[i * 3 + 1] = bufferPos[1];
+            data[i * 3 + 2] = bufferPos[2];
 
             if (posView.byteStride != 0) {
-                bufferPos += posView.byteStride;
+                bufferPos = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferPos) + posView.byteStride);
             }
             else {
-                bufferPos += sizeof(float) * 3;
+                bufferPos += 3;
             }
-
-            //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
         attributesData.push_back(data);
     }
@@ -263,7 +260,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& texCoordView = model.bufferViews[texCoordAcc.bufferView];
         const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordView.buffer];
 
-        const unsigned char* bufferTexCoord = &texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset];
+        const float* bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset]);
 
         attributes.emplace_back(Attribute::UV, sizeof(float) * 2, vertexSize);
         vertexSize += sizeof(float) * 2;
@@ -271,18 +268,18 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         //Add vertices TexCoord to this buffer taking into acc byteStride
         for (unsigned int i = 0; i < texCoordAcc.count; ++i)
         {
-            reinterpret_cast<float2*>(data)[i] = *reinterpret_cast<const float2*>(bufferTexCoord);
+            data[i*2] = bufferTexCoord[0];
+            data[i*2 + 1] = bufferTexCoord[1];
 
             if (texCoordView.byteStride != 0)
             {
                 bufferTexCoord += texCoordView.byteStride;
+                bufferTexCoord = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferTexCoord) + texCoordView.byteStride);
             }
             else
             {
-                bufferTexCoord += sizeof(float) * 2;
+                bufferTexCoord += 2;
             }
-
-            //LOG("%f %f", reinterpret_cast<float2*>(data)[i].x, reinterpret_cast<float2*>(data)[i].y);
         }
         attributesData.push_back(data);
     }
@@ -295,7 +292,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& normView = model.bufferViews[normAcc.bufferView];
         const tinygltf::Buffer& normBuffer = model.buffers[normView.buffer];
 
-        const unsigned char* bufferNorm = &normBuffer.data[normView.byteOffset + normAcc.byteOffset];
+        const float* bufferNorm = reinterpret_cast<const float*>(& normBuffer.data[normView.byteOffset + normAcc.byteOffset]);
 
         attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, vertexSize);
         vertexSize += sizeof(float) * 3;
@@ -304,18 +301,18 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         //Add vertices Normal to this buffer taking into acc byteStride
         for (unsigned int i = 0; i < normAcc.count; ++i)
         {
-            reinterpret_cast<float3*>(data)[i] = *reinterpret_cast<const float3*>(bufferNorm);
+            data[i*3] = bufferNorm[0];
+            data[i*3 + 1] = bufferNorm[1];
+            data[i*3 + 2] = bufferNorm[2];
 
             if (normView.byteStride != 0)
             {
-                bufferNorm += normView.byteStride;
+                bufferNorm = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferNorm) + normView.byteStride);
             }
             else
             {
-                bufferNorm += sizeof(float) * 3;
+                bufferNorm += 3;
             }
-
-            //LOG("%f %f %f", reinterpret_cast<float3*>(data)[i].x, reinterpret_cast<float3*>(data)[i].y, reinterpret_cast<float3*>(data)[i].z);
         }
         attributesData.push_back(data);
     }
@@ -336,7 +333,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const uint32_t* bufferInd = reinterpret_cast<const uint32_t*>(buffer);
             for (unsigned int i = 0; i < indAcc.count; ++i)
             {
-                //TODO: Change this
                 indices[i] = bufferInd[i];
             }
         }
@@ -366,7 +362,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         const tinygltf::BufferView& tangView = model.bufferViews[tangAcc.bufferView];
         const tinygltf::Buffer& tangBuffer = model.buffers[tangView.buffer];
 
-        const unsigned char* bufferTang = &tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset];
+        const float* bufferTang = reinterpret_cast<const float*>(&tangBuffer.data[tangView.byteOffset + tangAcc.byteOffset]);
 
         attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, vertexSize);
         vertexSize += sizeof(float) * 4;
@@ -375,18 +371,19 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         //Add vertices Tangent to this buffer taking into acc byteStride
         for (unsigned int i = 0; i < tangAcc.count; ++i)
         {
-            reinterpret_cast<float4*>(data)[i] = *reinterpret_cast<const float4*>(bufferTang);
+            data[i * 4] = bufferTang[0];
+            data[i * 4 + 1] = bufferTang[1];
+            data[i * 4 + 2] = bufferTang[2];
+            data[i * 4 + 3] = bufferTang[3];
 
             if (tangView.byteStride != 0)
             {
-                bufferTang += tangView.byteStride;
+                bufferTang = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferTang) + tangView.byteStride);
             }
             else
             {
-                bufferTang += sizeof(float) * 4;
+                bufferTang += 4;
             }
-
-            //LOG("%f %f %f %f", reinterpret_cast<float4*>(data)[i].x, reinterpret_cast<float4*>(data)[i].y, reinterpret_cast<float4*>(data)[i].z, reinterpret_cast<float4*>(data)[i].w);
         }
         attributesData.push_back(data);
     }
@@ -476,7 +473,7 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
 
         std::vector<Attribute> attributes;
         std::vector<float*> attributesData;
-        for (int i = 0; i < numAttributes; ++i)
+        for (unsigned int i = 0; i < numAttributes; ++i)
         {
             Attribute* attr = reinterpret_cast<Attribute*>(cursor);
             attributes.push_back(*attr);
