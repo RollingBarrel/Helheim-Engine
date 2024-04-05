@@ -168,33 +168,10 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 			}
 
 			if (modifiedTransform) {
-				float3 rotation_diff = DegToRad(newRotation) - object->GetRotation();
-				LOG("Rotation");
-				LOG("%f, %f, %f", rotation_diff.x, rotation_diff.y, rotation_diff.z);
 
 				object->SetPosition(newPosition);
 				object->SetRotation(DegToRad(newRotation));
 				object->SetScale(newScale);
-				CameraComponent* cameraComp = static_cast<CameraComponent*>(object->GetComponent(ComponentType::CAMERA));
-				if (cameraComp)
-				{
-					float pos_angle_rotated = rotation_diff.MaxElement();
-					float neg_angle_rotated = rotation_diff.MinElement();
-					float angle_rotated = 1.0;
-					bool has_rotated = false;
-					if (pos_angle_rotated != 0) {
-						angle_rotated = pos_angle_rotated;
-						has_rotated = true;
-					}
-					else if (neg_angle_rotated != 0) {
-						angle_rotated = neg_angle_rotated;
-						has_rotated = true;
-					}
-
-					cameraComp->SetPos(newPosition);
-					if(has_rotated)
-						cameraComp->Rotate(rotation_diff/angle_rotated, angle_rotated);
-				}
 			}
 		}
 		ImGui::EndTable();
@@ -636,13 +613,13 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	ImGui::SeparatorText("Camera");
 
 	static float nearPlane = component->GetNearPlane();
-	const char* nearLabel = "NearPlane";
+	const char* nearLabel = "##NearPlane";
 
 	static float farPlane = component->GetFarPlane();
-	const char* farLabel = "FarPlane";
+	const char* farLabel = "##FarPlane";
 
 	static float FOV = RadToDeg(component->GetVerticicalFOV());
-	const char* FOVLabel = "FOV";
+	const char* FOVLabel = "##FOV";
 
 	ImGui::PushID(nearLabel);
 	ImGui::AlignTextToFramePadding();
@@ -678,6 +655,12 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	{
 		App->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
 	}
+
+	if (ImGui::Button("Return To Editor Camera"))
+	{
+		App->GetCamera()->ActivateEditorCamera();
+	}
+
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling

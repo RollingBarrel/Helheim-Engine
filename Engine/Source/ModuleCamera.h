@@ -7,9 +7,8 @@
 #include "Geometry/Frustum.h"
 #include <map>
 
-#include "CameraComponent.h"
-#include "GameObject.h"
-
+class CameraComponent;
+class GameObject;
 
 class ModuleCamera : public Module
 {
@@ -27,10 +26,11 @@ public:
 
 	void SetCurrentCamera(GameObject* camera);
 
-	const CameraComponent* GetCurrentCamera() { return (CameraComponent*)mCurrentCamera->GetComponent(ComponentType::CAMERA); }
+	const CameraComponent* GetCurrentCamera() const;
 
-	const CameraComponent* GetEditorCamera() { return (CameraComponent*)mEditorCamera->GetComponent(ComponentType::CAMERA); }
+	const CameraComponent* GetEditorCamera() const;
 
+	void ActivateEditorCamera();
 
 
 

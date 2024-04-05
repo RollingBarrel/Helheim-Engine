@@ -113,6 +113,21 @@ void ModuleCamera::SetCurrentCamera(GameObject* camera)
 		mCurrentCamera = mEditorCamera;
 }
 
+const CameraComponent* ModuleCamera::GetCurrentCamera() const
+{
+	return (CameraComponent*)mCurrentCamera->GetComponent(ComponentType::CAMERA);
+}
+
+const CameraComponent* ModuleCamera::GetEditorCamera() const
+{
+	return (CameraComponent*)mEditorCamera->GetComponent(ComponentType::CAMERA);
+}
+
+void ModuleCamera::ActivateEditorCamera()
+{
+	SetCurrentCamera(mEditorCamera);
+}
+
 update_status ModuleCamera::Update(float dt)
 {
 

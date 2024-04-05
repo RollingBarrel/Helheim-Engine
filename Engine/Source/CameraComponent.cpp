@@ -40,7 +40,7 @@ CameraComponent::CameraComponent(const CameraComponent& original, GameObject* ow
 
 CameraComponent::~CameraComponent()
 {
-    if (this == App->GetCamera()->GetCurrentCamera())
+    if (this == App->GetCamera()->GetCurrentCamera() && App->GetCamera()->GetEditorCamera() != nullptr)
     {
         App->GetCamera()->SetCurrentCamera(App->GetCamera()->GetEditorCamera()->mOwner); //Change to create a function that looks for other camera components before setting the editor camera for ingame.
     }
@@ -48,6 +48,39 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Update()
 {
+    if (mOwner->GetHasBeenUpdated() && App->GetCamera()->GetCurrentCamera() != this)
+    {
+        float3 rotation = mOwner->GetRotation();
+        float3 position = mOwner->GetPosition();
+
+        float pos_angle_rotated = rotation.MaxElement();
+        float neg_angle_rotated = rotation.MinElement();
+        float angle_rotated = 1.0;
+        bool has_rotated = false;
+        if (pos_angle_rotated != 0) {
+            angle_rotated = pos_angle_rotated;
+            has_rotated = true;
+        }
+        else if (neg_angle_rotated != 0) {
+            angle_rotated = neg_angle_rotated;
+            has_rotated = true;
+        }
+
+        SetPos(position);
+        if (has_rotated)
+        {
+
+            float3x3 rotationMatrix = float3x3::RotateAxisAngle(rotation.Abs().Normalized(), angle_rotated);
+            mFrustum.up = rotationMatrix.Mul(float3::unitY);
+            mFrustum.front = rotationMatrix.Mul(float3::unitZ);
+
+        }
+        
+        App->GetOpenGL()->SetOpenGlCameraUniforms();
+
+    }
+
+    //Frustum culling updates
     App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
     std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
 
@@ -59,6 +92,7 @@ void CameraComponent::Update()
             meshComponent->SetInsideFrustum(true);
         }
     }
+
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
@@ -71,16 +105,10 @@ void CameraComponent::Reset()
 	//mCamera = CameraUtils::InitiateCamera(float3(0.0f, 0.0f, 0.0f));
 }
 
-void CameraComponent::SetPosition(const float3& position)
-{
-	//CameraUtils::CameraComponentTransform(position, *mCamera);
-}
 
 void CameraComponent::SetRotation(const float3& rotation)
 {
-	//CameraUtils::Rotate(rotation,-1 ,*mCamera);
     float3 difference = GetOwner()->GetRotation() - rotation;
-
 }
 
 void CameraComponent::SetFOV(const float value)

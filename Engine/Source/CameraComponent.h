@@ -15,7 +15,6 @@ public:
     void Update() override;
     Component* Clone(GameObject* owner) const override;
     void Reset() override;
-    void SetPosition(const float3& position);
     void SetRotation(const float3& rotation);
 
     const Frustum& GetFrustum() { return mFrustum; }
