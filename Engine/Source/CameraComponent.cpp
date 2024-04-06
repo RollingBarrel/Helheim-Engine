@@ -48,34 +48,20 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Update()
 {
-    if (mOwner->GetHasBeenUpdated() && App->GetCamera()->GetCurrentCamera() != this)
+    if (mOwner->GetHasBeenUpdated())
     {
-        float3 rotation = mOwner->GetRotation();
         float3 position = mOwner->GetPosition();
-
-        float pos_angle_rotated = rotation.MaxElement();
-        float neg_angle_rotated = rotation.MinElement();
-        float angle_rotated = 1.0;
-        bool has_rotated = false;
-        if (pos_angle_rotated != 0) {
-            angle_rotated = pos_angle_rotated;
-            has_rotated = true;
-        }
-        else if (neg_angle_rotated != 0) {
-            angle_rotated = neg_angle_rotated;
-            has_rotated = true;
-        }
-
         SetPos(position);
-        if (has_rotated)
-        {
 
-            float3x3 rotationMatrix = float3x3::RotateAxisAngle(rotation.Abs().Normalized(), angle_rotated);
-            mFrustum.up = rotationMatrix.Mul(float3::unitY);
-            mFrustum.front = rotationMatrix.Mul(float3::unitZ);
 
-        }
-        
+        float3 rotation = mOwner->GetRotation();
+
+        float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3(1,0,0), rotation.x);
+        rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 1, 0), rotation.y);
+        rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 0, 1), rotation.z);
+  
+        LookAt(mFrustum.pos, mFrustum.pos + rotationMatrix.Mul(float3::unitZ), rotationMatrix.Mul(float3::unitY));
+
         App->GetOpenGL()->SetOpenGlCameraUniforms();
 
     }
@@ -92,6 +78,10 @@ void CameraComponent::Update()
             meshComponent->SetInsideFrustum(true);
         }
     }
+
+    App->GetOpenGL()->BindSceneFramebuffer();
+    App->GetDebugDraw()->DrawFrustum(mFrustum);
+    App->GetOpenGL()->UnbindSceneFramebuffer();
 
 }
 
