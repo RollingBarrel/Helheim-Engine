@@ -11,7 +11,7 @@
 
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
-
+	Enable();
 }
 
 ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner) : Component(owner, ComponentType::SCRIPT)
@@ -40,6 +40,7 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 		}
 	}
 
+	Enable();
 
 }
 
@@ -52,7 +53,7 @@ ScriptComponent::~ScriptComponent()
 
 	//delete mScript; //Memory leack here, this shouldbe fixed.
 
-	App->GetScriptManager()->RemoveScript(mScript);
+	App->GetScriptManager()->RemoveScript(this);
 	if (mResourceScript)
 	{
 		delete mResourceScript;
@@ -62,6 +63,11 @@ ScriptComponent::~ScriptComponent()
 
 void ScriptComponent::Update()
 {
+
+	float jorge;
+
+	LOG("%s", typeid(jorge).name());
+	LOG("%s", typeid(jorge).raw_name());;
 }
 
 Component* ScriptComponent::Clone(GameObject* owner) const
@@ -211,7 +217,7 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		if (mResourceScript == nullptr) {
 			LOG("SCRIPT RESOURCE NOT FOUND");
 		}
-		App->GetScriptManager()->AddScript(mScript);
+		//App->GetScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
 	else {
@@ -221,11 +227,11 @@ void ScriptComponent::LoadScript(const char* scriptName)
 
 void ScriptComponent::Enable()
 {
-	App->GetScriptManager()->AddScript(mScript);
+	App->GetScriptManager()->AddScript(this);
 		
 }
 
 void ScriptComponent::Disable()
 {
-		App->GetScriptManager()->RemoveScript(mScript);
+		App->GetScriptManager()->RemoveScript(this);
 }

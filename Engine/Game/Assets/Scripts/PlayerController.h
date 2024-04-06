@@ -26,6 +26,8 @@ public:
     float mDashLenght = 5.0f;
     float mDashCoolDown = 1.0f;
 
+    std::vector<Member> Serialize() override;
+
 private:
     NavMeshController* mNavMeshControl = nullptr;
     AnimationComponent* mAnimationComponent = nullptr;
@@ -33,6 +35,8 @@ private:
     bool mStartCounter = false;
     float mDashTimePassed = 0.0f;
     float mDashMovement = 0;
+
+    float mTest = 25.0f;
 
 };
 

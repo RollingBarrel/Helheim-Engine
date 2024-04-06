@@ -12,6 +12,7 @@
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
 #include "Geometry/Ray.h"
+#include <unordered_map>
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
@@ -54,8 +55,10 @@ void PlayerController::Update()
             LOG("Object %s has been hit at distance: %f", hit.second->GetName().c_str(), hit.first);
         }
     }
+    mTest++;
+    LOG("Prueba HotReload %f", mTest);
 
-    LOG("David no te cargues la escena");
+    LOG("Adri cabron");
 }
 
 void PlayerController::Move() {
@@ -151,6 +154,21 @@ void PlayerController::Dash()
     }
 
 
+}
+
+std::vector<Member> PlayerController::Serialize()
+{
+
+    offsetof(PlayerController, mPlayerSpeed);
+    
+    std::vector<Member> members;
+
+    members.push_back(Member("mPlayerSpeed", VariableType::FLOAT, offsetof(PlayerController, mPlayerSpeed)));
+    members.push_back(Member("mPlayerRotationSpeed", VariableType::FLOAT, offsetof(PlayerController, mPlayerRotationSpeed)));
+    members.push_back(Member("mWinArea", VariableType::GAMEOBJECT, offsetof(PlayerController, mWinArea)));
+    members.push_back(Member("mTest", VariableType::FLOAT, offsetof(PlayerController, mTest)));
+
+    return members;
 }
 
 

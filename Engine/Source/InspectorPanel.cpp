@@ -752,6 +752,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		}
 	}
+
+	if (ImGui::Button("HOTRELOAD", ImVec2(100,25))) {
+		App->GetScriptManager()->HotReload();
+	}
+
 }
 
 

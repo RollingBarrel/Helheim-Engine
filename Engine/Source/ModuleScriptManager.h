@@ -2,7 +2,7 @@
 #include "Module.h"
 #include <vector>
 
-class Script;
+class ScriptComponent;
 
 
 class ModuleScriptManager :	public Module
@@ -18,9 +18,10 @@ public:
 	update_status PostUpdate(float dt) override;
 	void* GetDLLHandle() { return mHandle; }
 	bool CleanUp() override;
-	void AddScript(Script* script);
-	void RemoveScript(Script* script);
+	void AddScript(ScriptComponent* script);
+	void RemoveScript(ScriptComponent* script);
 	void HotReload();
+	void ReloadScripts();
 
 	void Play();
 	void Stop();
@@ -29,7 +30,8 @@ public:
 
 private:
 
-	std::vector<Script*> mScripts;
+	//std::vector<Script*> mScripts;
+	std::vector<ScriptComponent*> mScripts;
 	void* mHandle = nullptr;
 	bool mIsPlaying = false;
 	int64_t mLastModificationTime = 0;

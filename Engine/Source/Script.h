@@ -7,6 +7,9 @@
 
 class GameObject;
 
+
+
+
 enum class  VariableType : int
 {
 	// IF THE NUMBERS CHANGES THE SCRIPTS MAY BREAK
@@ -29,6 +32,14 @@ struct ScriptVariable {
 	ScriptVariable(const char* name, VariableType type, void* data) : mName(name), mType(type), mData(data) {}
 };
 
+
+struct Member {
+	const char* mName = nullptr;
+	VariableType mType = VariableType::NONE;
+	size_t mOffset = 0;
+	Member(const char* name, VariableType type, size_t offset) : mName(name), mType(type), mOffset(offset) {}
+};
+
 class ENGINE_API Script
 {
 	friend class InspectorPanel;
@@ -39,10 +50,9 @@ public:
 	Script(GameObject* owner);
 	virtual ~Script() {}
 	void SetName(const std::string& name) { mName = name; }
-
 	virtual void Start() = 0;
 	virtual void Update() = 0;
-
+	virtual std::vector<Member> Serialize() = 0;
 	//virtual void OnButtonClick() = 0;
 
 protected:

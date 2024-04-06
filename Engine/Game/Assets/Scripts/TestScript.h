@@ -16,7 +16,7 @@ public:
     float speed = 1;
     float3 mTestFloat3 = float3(5,15,-4);
     GameObject* mRobot = nullptr;
-
+    std::vector<Member> Serialize() override;
 private:
     float coolDown = 2; 
     float height = 1;

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "Script.h"
+#include "ScriptComponent.h"
 #include <Windows.h>
 #include <string>
 
@@ -36,8 +37,8 @@ update_status ModuleScriptManager::PreUpdate(float dt)
 update_status ModuleScriptManager::Update(float dt)
 {
 	if (mIsPlaying) {
-		for (std::vector<Script*>::iterator::value_type script : mScripts) {
-			script->Update();
+		for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) {
+			script->mScript->Update();
 		}
 	}
 
@@ -55,15 +56,15 @@ bool ModuleScriptManager::CleanUp()
 	return true;
 }
 
-void ModuleScriptManager::AddScript(Script* script) 
+void ModuleScriptManager::AddScript(ScriptComponent* script) 
 { 
 	mScripts.push_back(script); 
 }
 
-void ModuleScriptManager::RemoveScript(Script* script)
+void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 {
-	std::vector<Script*>::iterator deletePos = mScripts.end();
-	for (std::vector<Script*>::iterator it = mScripts.begin(); it != mScripts.end(); ++it) {
+	std::vector<ScriptComponent*>::iterator deletePos = mScripts.end();
+	for (std::vector<ScriptComponent*>::iterator it = mScripts.begin(); it != mScripts.end(); ++it) {
 
 		if (*it == script) {
 			deletePos = it;
@@ -82,6 +83,50 @@ void ModuleScriptManager::HotReload()
 	FreeLibrary(static_cast<HMODULE>(mHandle));
 	while (CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false) == FALSE) {}
 	mHandle = LoadLibrary("Scripting.dll");
+	ReloadScripts();
+}
+
+void ModuleScriptManager::ReloadScripts()
+{
+	for (ScriptComponent* scriptComponent : mScripts) {
+
+		Script* oldScript = scriptComponent->mScript;
+
+		std::vector<Member> oldMembers = oldScript->Serialize();
+
+
+		scriptComponent->LoadScript(scriptComponent->GetScriptName());
+
+		Script* newScript = scriptComponent->mScript;
+
+		std::vector<Member> newMembers = newScript->Serialize();
+		
+		
+		for (int i = 0; i < oldMembers.size(); i++) 
+		{
+
+			for (int j = 0; j < newMembers.size(); j++) 
+			{
+				
+				if (strcmp(oldMembers[i].mName, newMembers[j].mName) == 0) {
+					char* newScriptPos = ((char*)newScript) + newMembers[j].mOffset;
+
+					char* oldScriptPos = ((char*)oldScript) + oldMembers[i].mOffset;
+
+					switch (oldMembers[i].mType) {
+					case(VariableType::FLOAT):
+						memcpy(newScriptPos, oldScriptPos, sizeof(float));
+						break;
+					}
+
+
+				}
+
+			}
+
+		}
+
+	}
 
 }
 
@@ -99,9 +144,9 @@ void ModuleScriptManager::Stop()
 
 void ModuleScriptManager::Start()
 {
-	for (std::vector<Script*>::iterator::value_type script : mScripts) {
+	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) {
 
-		script->Start();
+		script->mScript->Start();
 	}
 }
 
