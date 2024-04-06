@@ -23,16 +23,14 @@ bool ModuleScriptManager::Init()
 
 update_status ModuleScriptManager::PreUpdate(float dt)
 {
-	return update_status::UPDATE_CONTINUE;
-	
 	int64_t modificationTime = App->GetFileSystem()->GetLastModTime("../Scripting/Output/Scripting.dll");
-
 	if (mLastModificationTime != modificationTime)
 	{
 		mLastModificationTime = modificationTime;
 		HotReload();
 	}
 
+	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleScriptManager::Update(float dt)
