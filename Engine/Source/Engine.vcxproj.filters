@@ -483,6 +483,9 @@
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ModulePrograms.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1280,6 +1283,9 @@
     </ClInclude>
     <ClInclude Include="ButtonComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePrograms.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
