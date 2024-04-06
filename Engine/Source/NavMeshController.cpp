@@ -137,7 +137,8 @@ void NavMeshController::HandleBuild() {
 	const MeshRendererComponent* testMesh;
 	int indicesSize = 0;
 	int verticesSize = 0;
-	for (int index = 0; index < mGameObjects.size(); index++) {
+	for (int index = 0; index < mGameObjects.size(); index++) 
+	{
 		MeshRendererComponent* meshRenderer = (MeshRendererComponent*)(mGameObjects[index]->GetComponent(ComponentType::MESHRENDERER));
 
 		indicesSize += meshRenderer->GetResourceMesh()->GetNumberIndices();
@@ -149,7 +150,8 @@ void NavMeshController::HandleBuild() {
 	indices.reserve(indicesSize);
 	int lastIndex = 0;
 	int lastVertex = 0;
-	for (int index = 0; index < mGameObjects.size(); index++) {
+	for (int index = 0; index < mGameObjects.size(); index++) 
+	{
 		testMesh = (MeshRendererComponent*)(mGameObjects[index]->GetComponent(ComponentType::MESHRENDERER));
 
 		if (!testMesh)
@@ -160,13 +162,15 @@ void NavMeshController::HandleBuild() {
 		int meshIndiceNumber = testMesh->GetResourceMesh()->GetNumberIndices();
 		const unsigned int* meshIndices = testMesh->GetResourceMesh()->GetIndices();
 		Tag* goTag = mGameObjects[index]->GetTag();
-		if (goTag && goTag->GetName() == "Obstacle") {
+		if (goTag && goTag->GetName() == "Obstacle") 
+		{
 
 			ObstacleTriangle obstacle{ lastIndex/3,meshIndiceNumber };
 			mObstaclesTriangles.push_back(obstacle);
 		}
 
-		for (int i = 0; i < meshIndiceNumber; i++) {
+		for (int i = 0; i < meshIndiceNumber; i++) 
+		{
 			indices.push_back(meshIndices[i]+lastVertex);
 		}
 		lastIndex += meshIndiceNumber;
@@ -461,10 +465,13 @@ float3 NavMeshController::FindNearestPoint(float3 center, float3 halfsize) const
 }
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
-	if (!(gameObj->GetChildren().empty())) {
-		for (const auto& child : gameObj->GetChildren()) {
+	if (!(gameObj->GetChildren().empty())) 
+	{
+		for (const auto& child : gameObj->GetChildren()) 
+		{
 			MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)(child->GetComponent(ComponentType::MESHRENDERER));
-			if (meshRendererComponent) {
+			if (meshRendererComponent) 
+			{
 				mGameObjects.push_back(child);
 			}
 			GetGOMeshes(child);
@@ -509,7 +516,8 @@ void NavMeshController::LoadDrawMesh()
 int NavMeshController::FindVertexIndex(float3 vert)
 {
 
-	for (int i = 0; i < mVertices.size(); ++i) {
+	for (int i = 0; i < mVertices.size(); ++i) 
+	{
 		if (mVertices[i].x == vert.x && mVertices[i].y == vert.y && mVertices[i].z == vert.z) {
 			return i;
 		}
