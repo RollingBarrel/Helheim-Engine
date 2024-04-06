@@ -20,6 +20,7 @@ public:
 	bool CleanUp() override;
 	void AddScript(Script* script);
 	void RemoveScript(Script* script);
+	void HotReload();
 
 	void Play();
 	void Stop();
@@ -31,5 +32,6 @@ private:
 	std::vector<Script*> mScripts;
 	void* mHandle = nullptr;
 	bool mIsPlaying = false;
+	int64_t mLastModificationTime = 0;
 };
 

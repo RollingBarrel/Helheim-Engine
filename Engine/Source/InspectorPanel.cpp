@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScriptManager.h"
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
 #include "GameObject.h"
@@ -751,7 +752,6 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		}
 	}
-
 }
 
 

@@ -54,6 +54,8 @@ void PlayerController::Update()
             LOG("Object %s has been hit at distance: %f", hit.second->GetName().c_str(), hit.first);
         }
     }
+
+    LOG("David no te cargues la escena");
 }
 
 void PlayerController::Move() {
