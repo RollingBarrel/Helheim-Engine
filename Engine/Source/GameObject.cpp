@@ -116,10 +116,16 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	
+	mWorldTransformMatrix =  mLocalTransformMatrix;
+	if (mParent != nullptr)
+	{
+		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+	}
+	
 
-	mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
-
-	for (size_t i = 0; i < mChildren.size(); i++) {
+	for (size_t i = 0; i < mChildren.size(); i++) 
+	{
 		mChildren[i]->RecalculateMatrices();
 	}
 
@@ -140,7 +146,8 @@ void GameObject::Update()
 		}
 
 		DeleteComponents();
-		if (isTransformModified) {
+		if (isTransformModified) 
+		{
 			RecalculateMatrices();
 			RefreshBoundingBoxes();
 		}
@@ -203,8 +210,6 @@ void GameObject::SetRotation(const Quat& rotation)
 
 void GameObject::SetPosition(const float3& position)
 {
-	float3 difference = position - mPosition;
-
 	mPosition = position;
 
 	isTransformModified = true;
