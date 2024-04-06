@@ -7,108 +7,108 @@ Draw Grid: 1
 15
 About##
 0
-720 410
+700 420
 32 35
 Console##
 1
-660 935
-995 155
+640 925
+1035 155
 Debug
 0
-898 499
+878 509
 333 287
 Editor Controls##
 1
-865 369
-790 76
+845 379
+830 76
 Hierarchy##
 1
-660 369
-203 564
+640 379
+203 544
 Inspector##
 1
-1657 369
-243 721
+1677 379
+243 701
 TagsManagerPanel##
 0
-720 410
+700 420
 32 35
 NavMesh Parameters
 0
-721 410
+701 420
 599 423
 Resource##
 1
-660 935
-995 155
+640 925
+1035 155
 LightningPanel##
 0
-720 410
+700 420
 32 35
 Scene##
 1
-865 447
-790 486
+845 457
+830 466
 Pause##
 1
-865 369
-790 76
+845 379
+830 76
 Project##
 1
-660 935
-995 155
+640 925
+1035 155
 Timer##
-0
-722 410
+1
+1340 504
 448 405
 Settings##
 1
-723 532
+852 578
 287 357
 [Window][DockSpaceViewport_11111111]
 Pos=0,19
-Size=1240,721
+Size=1280,701
 Collapsed=0
 
 [Window][Console##]
-Pos=0,585
-Size=995,155
+Pos=0,565
+Size=1035,155
 Collapsed=0
 DockId=0x00000002,0
 
 [Window][Hierarchy##]
 Pos=0,19
-Size=203,564
+Size=203,544
 Collapsed=0
 DockId=0x00000005,0
 
 [Window][Inspector##]
-Pos=997,19
-Size=243,721
+Pos=1037,19
+Size=243,701
 Collapsed=0
 DockId=0x00000004,0
 
 [Window][Resource##]
-Pos=0,585
-Size=995,155
+Pos=0,565
+Size=1035,155
 Collapsed=0
 DockId=0x00000002,2
 
 [Window][Scene##]
 Pos=205,97
-Size=790,486
+Size=830,466
 Collapsed=0
 DockId=0x00000008,0
 
 [Window][Pause##]
 Pos=205,19
-Size=790,76
+Size=830,76
 Collapsed=0
 DockId=0x00000007,0
 
 [Window][Project##]
-Pos=0,585
-Size=995,155
+Pos=0,565
+Size=1035,155
 Collapsed=0
 DockId=0x00000002,1
 
@@ -118,7 +118,7 @@ Size=400,400
 Collapsed=0
 
 [Window][Settings##]
-Pos=63,182
+Pos=212,218
 Size=287,357
 Collapsed=0
 
@@ -143,13 +143,13 @@ Size=32,35
 Collapsed=0
 
 [Window][Timer##]
-Pos=62,60
+Pos=700,144
 Size=448,405
 Collapsed=0
 
 [Window][Editor Controls##]
 Pos=205,19
-Size=790,76
+Size=830,76
 Collapsed=0
 DockId=0x00000007,1
 
@@ -174,7 +174,7 @@ Size=212,94
 Collapsed=0
 
 [Docking][Data]
-DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=660,369 Size=1240,721 Split=X
+DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=640,379 Size=1280,701 Split=X
   DockNode        ID=0x00000003 Parent=0x8B93E3BD SizeRef=995,721 Split=Y
     DockNode      ID=0x00000001 Parent=0x00000003 SizeRef=1240,564 Split=X
       DockNode    ID=0x00000005 Parent=0x00000001 SizeRef=203,564 Selected=0xF8AAC790
