@@ -26,12 +26,12 @@ public:
 private:
 
 	//Time in milliseconds
-	float mCurrentTime;
-	float mStartTime;
+	unsigned long mCurrentTime = 0;
+	unsigned long mStartTime = 0;
 
 	bool mLoop = true;
 
-	unsigned int mResource;
+	unsigned int mResource = 0;
 
 	ResourceAnimation* mAnimation = nullptr;
 };

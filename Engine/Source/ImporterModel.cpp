@@ -257,7 +257,7 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
             bytes = sizeof(unsigned int);
             memcpy(cursor, &uidsSize, bytes);
             cursor += bytes;
-            for (int i = 0; i < uidsSize; ++i)
+            for (unsigned int i = 0; i < uidsSize; ++i)
             {
                 bytes = sizeof(unsigned int);
                 memcpy(cursor, &currentNode.mUids[i].first, bytes);
@@ -273,7 +273,7 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     bytes = sizeof(unsigned int);
     memcpy(cursor, &uidsSize, bytes);
     cursor += bytes;
-    for (int i = 0; i < uidsSize; ++i)
+    for (unsigned int i = 0; i < uidsSize; ++i)
     {
         bytes = sizeof(unsigned int);
         memcpy(cursor, &rModel->mAnimationUids[i], bytes);
@@ -305,7 +305,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         rModel->modelNodes.reserve(nodesSize);
 
         //Nodes Data
-        for (int i = 0; i < nodesSize; ++i)
+        for (unsigned int i = 0; i < nodesSize; ++i)
         {
             ModelNode node;
 
@@ -375,7 +375,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
                 bytes = sizeof(unsigned int);
                 memcpy(&uidsSize, cursor, bytes);
                 cursor += bytes;
-                for (int i = 0; i < uidsSize; ++i)
+                for (unsigned int i = 0; i < uidsSize; ++i)
                 {
                     bytes = sizeof(unsigned int);
                     memcpy(&meshId, cursor, bytes);
@@ -395,7 +395,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         bytes = sizeof(unsigned int);
         memcpy(&uidsSize, cursor, bytes);
         cursor += bytes;
-        for (int i = 0; i < uidsSize; ++i)
+        for (unsigned int i = 0; i < uidsSize; ++i)
         {
             unsigned int animationUID = 0;
             bytes = sizeof(unsigned int);

@@ -17,6 +17,10 @@
 	@brief A 3-by-3 matrix for linear operations in 3D space. */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
+
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include <ostream>
 #include "myassert.h"
@@ -708,3 +712,6 @@ Q_DECLARE_METATYPE(float3x3*)
 #endif
 
 MATH_END_NAMESPACE
+
+#pragma warning( pop )
+

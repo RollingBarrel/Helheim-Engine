@@ -47,7 +47,7 @@ public:
 	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
 
 	void AddTag(std::string tag);
-	int GetSize() { return mTags.size(); };
+	unsigned int GetSize() { return static_cast<unsigned int>(mTags.size()); };
 	int GetCustomTagsSize();
 	std::vector<Tag*> GetAllTags() { return mTags; };
 	std::vector<Tag*> GetSystemTag();

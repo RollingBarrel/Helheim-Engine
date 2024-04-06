@@ -16,7 +16,7 @@ struct Keyframe {
     // float3 scale;
 };
 
-struct ResourceAnimation;
+class ResourceAnimation;
 
 namespace Importer {
     namespace Animation {
