@@ -798,7 +798,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
 	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
 
-	// Image Info
+	// Image Info.
 	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
 }
 
