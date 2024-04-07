@@ -25,7 +25,9 @@ public:
     ResourceTexture* GetImage() const { return mImage; }
     float3* GetColor() { return &mColor; }
     float* GetAlpha() { return &mAlpha; }
-
+    const char* GetFileName() const { return mFileName; }
+    
+    void SetFileName(const char* fileName) { mFileName = fileName; }
     void SetImage(unsigned int resourceId);
 	void SetColor(float3 color) { mColor = color; }
     void SetAlpha(float alpha) { mAlpha = alpha; }
@@ -34,6 +36,10 @@ public:
 
 private:
     ResourceTexture* mImage = nullptr;
+
+    //TODO: Handle filename when setting the image
+    const char* mFileName = nullptr;
+
     float3 mColor = float3(1.0f, 1.0f, 1.0f);
     float mAlpha = 1.0f;
     unsigned int mTexId = 0;

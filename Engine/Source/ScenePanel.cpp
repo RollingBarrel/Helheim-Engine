@@ -12,7 +12,6 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "EditorControlPanel.h"
-#include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
 #include "ResourceModel.h"

@@ -4,8 +4,10 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResource.h"
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
+#include "ProjectPanel.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -298,7 +300,6 @@ void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
 	ImGui::InvisibleButton("##", ImVec2(-1, 5));
 	if (ImGui::BeginDragDropTarget())
 	{
-		LOG("Droped payload");
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
 		{
 			Component* movedComponent = (Component*)payload->Data;
@@ -786,11 +787,34 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 	static int resourceId = int(imageComponent->GetResourceId());
 
 	//TODO: Handle the case where the resource is not found
-	ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
-	if (ImGui::Button("Load"))
-	{
-		imageComponent->SetImage(resourceId);
+	//ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
+	//if (ImGui::Button("Load"))
+	//{
+	//	imageComponent->SetImage(resourceId);
+	//}
+
+	// Drag and drop	
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, 70.0);
+	ImGui::Image((void*)(intptr_t)imageComponent->GetImage()->GetOpenGLId(), ImVec2(50, 50));
+	if (ImGui::BeginDragDropTarget()) {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) {
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = App->GetResource()->RequestResource(asset->mPath);
+			if (resource && (resource->GetType() == Resource::Type::Texture)) {
+				imageComponent->SetImage(resource->GetUID());
+				imageComponent->SetFileName(asset->mName);
+			}
+		}
+		ImGui::EndDragDropTarget();
 	}
+	ImGui::NextColumn();
+	if (imageComponent->GetFileName() != nullptr) {
+		ImGui::Text(imageComponent->GetFileName());
+	}
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth());
+	ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+	ImGui::Columns(1);
 
 	// Color and alpha
 	float3* color = imageComponent->GetColor();
@@ -799,7 +823,9 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
 
 	// Image Info.
-	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+
 }
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
