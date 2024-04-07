@@ -792,9 +792,14 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 		imageComponent->SetImage(resourceId);
 	}
 
-	//TODO: Decide what information to display 
-	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+	// Color and alpha
+	float3* color = imageComponent->GetColor();
+	float* alpha = imageComponent->GetAlpha();
+	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
+	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
 
+	// Image Info
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
 }
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {

@@ -80,7 +80,7 @@ void ImageComponent::Draw()
 
 	glActiveTexture(GL_TEXTURE0);
 
-	glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, mColor.ptr());
+	glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 	//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
 	//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 

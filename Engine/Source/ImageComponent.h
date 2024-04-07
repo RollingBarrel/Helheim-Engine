@@ -23,15 +23,19 @@ public:
     void CreateVAO();
     unsigned int GetResourceId() const { return mResourceId; }
     ResourceTexture* GetImage() const { return mImage; }
+    float3* GetColor() { return &mColor; }
+    float* GetAlpha() { return &mAlpha; }
 
     void SetImage(unsigned int resourceId);
-
+	void SetColor(float3 color) { mColor = color; }
+    void SetAlpha(float alpha) { mAlpha = alpha; }
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
     ResourceTexture* mImage = nullptr;
-    float4 mColor = float4(1.0f, 1.0f, 1.0f, 0.5f);
+    float3 mColor = float3(1.0f, 1.0f, 1.0f);
+    float mAlpha = 1.0f;
     unsigned int mTexId = 0;
     float2 mTexOffset = float2::zero;
     bool mHasDiffuse = true;
