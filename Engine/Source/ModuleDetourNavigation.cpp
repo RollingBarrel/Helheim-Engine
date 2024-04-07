@@ -53,6 +53,40 @@ update_status ModuleDetourNavigation::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 endPos) 
+{
+	float3 queryAreafSize = float3(5.0f);
+
+	dtPolyRef startPolygon;
+	dtQueryFilter startTemp;
+	float3 queryEndPos = float3(0.0f);;
+	mNavQuery->findNearestPoly(&startPos[0], &queryAreafSize[0], &startTemp, &startPolygon, &queryEndPos[0]);
+	dtPolyRef endPolygon;
+	dtQueryFilter endTemp;
+	mNavQuery->findNearestPoly(&endPos[0], &queryAreafSize[0], &endTemp, &endPolygon, &queryEndPos[0]);
+	dtQueryFilter pathFilter;
+	dtPolyRef polygonPath;
+	int pathPoylgonCount=0;
+	int maxAllowedPolys = 999;
+	mNavQuery->findPath(startPolygon, endPolygon, &startPos[0], &endPos[0], &pathFilter, &polygonPath, &pathPoylgonCount, maxAllowedPolys);
+
+	float positionPath;
+	int numberOfPositions = 0;
+	unsigned char straightPathFlags;
+	dtPolyRef currentPoly;
+
+	mNavQuery->findStraightPath(&startPos[0], &endPos[0], &polygonPath, pathPoylgonCount, &positionPath, &straightPathFlags, &currentPoly, &numberOfPositions, 1);
+
+	std::vector<float3> positionsPathResult(numberOfPositions/3);
+	float* startPosPtr = &positionPath;
+	for (size_t i = 0; i < positionsPathResult.size(); i)
+	{
+		positionsPathResult[i] = { startPosPtr[i * 3],startPosPtr[i * 3 + 1],startPosPtr[i * 3 + 2] };
+	}
+	return positionsPathResult;
+
+}
+
 update_status ModuleDetourNavigation::PostUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
