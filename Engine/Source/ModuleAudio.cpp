@@ -20,15 +20,13 @@ bool ModuleAudio::Init()
 	// Instantiate Fmod studio
 	CheckError( FMOD::Studio::System::create(&mSystem) ); // Create the Studio System object.
 	CheckError( mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
-	result = mSystem->getCoreSystem(&mCoreSystem);
-	if (result != FMOD_OK) {
-		return false;
-	}
+	CheckError( mSystem->getCoreSystem(&mCoreSystem));
 
 	// Load bank
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.strings.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mStringBank) );
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank) );
+	CheckError(mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Vehicles.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank) );
 
 	//FMOD::Studio::EventDescription* eventArray[EVENT_BANK_UPPERLIMIT];
 	//int eventDescriptionCount = 0;

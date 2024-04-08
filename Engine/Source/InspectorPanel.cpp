@@ -861,4 +861,8 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 	}
 
 }
+void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
+{
+
+}
 ;

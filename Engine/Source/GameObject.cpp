@@ -464,9 +464,9 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		case ComponentType::AUDIOSOURCE:
 			newComponent = new AudioSourceComponent(this);
 			break;
-		//case ComponentType::AUDIOLISTENER:
-		//	newComponent = new AudioListenerComponent(this);
-		//	break;
+		case ComponentType::AUDIOLISTENER:
+			newComponent = new AudioListenerComponent(this);
+			break;
 		default:
 			break;
 	}

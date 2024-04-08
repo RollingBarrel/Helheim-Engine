@@ -1,6 +1,9 @@
 #include "AudioSourceComponent.h"
 #include "FmodUtils.h"
 
+#include "GameObject.h"
+#include "Application.h"
+
 AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Component(ownerGameObject,ComponentType::AUDIOSOURCE)
 {
 }
@@ -12,17 +15,17 @@ AudioSourceComponent::~AudioSourceComponent()
 void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 {
 	// Stop current audio
-	if (mCurrentInstance != nullptr) {
-		mCurrentInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	if (mEventInstance != nullptr) {
+		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
 	}
 
 	// Set to new event
-	mCurrentInstance = event;
+	mEventInstance = event;
 
 	// Play new audio
-	if (mCurrentInstance != nullptr) {
-		mCurrentInstance->start();
-		mCurrentInstance->release();
+	if (mEventInstance != nullptr) {
+		mEventInstance->start();
+		mEventInstance->release();
 
 		// Update parameters
 		event->getDescription(&mEventDescription);
@@ -40,7 +43,7 @@ void AudioSourceComponent::SetEventByName(const char* eventName)
 
 void AudioSourceComponent::UpdateParameterValue(const char* name, float value)
 {
-	mCurrentInstance->setParameterByName(name, value);
+	mEventInstance->setParameterByName(name, value);
 
 	auto it = mParameters.find(name);
 	if (it != mParameters.end()) {
@@ -51,7 +54,17 @@ void AudioSourceComponent::UpdateParameterValue(const char* name, float value)
 
 void AudioSourceComponent::Update()
 {
+	float3 gameobjectPosition = GetOwner()->GetPosition();
 
+	FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+	attributes.position.x = gameobjectPosition.x;
+	attributes.position.z = gameobjectPosition.z;
+
+	attributes.forward.z = 1.0f;
+	attributes.up.y = 1.0f;
+
+	mEventInstance->set3DAttributes(&attributes);
 }
 
 Component* AudioSourceComponent::Clone(GameObject* owner) const

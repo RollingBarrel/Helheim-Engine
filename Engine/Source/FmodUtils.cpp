@@ -27,8 +27,8 @@ std::vector<const char*> FmodUtils::GetEventsNames()
 	FMOD::Studio::Bank* bankArray[EVENT_BANK_UPPERLIMIT];
 	int bankCount = 0;
 
-	system->getBankList(bankArray, 64, &bankCount);
-
+	system->getBankList(bankArray, EVENT_BANK_UPPERLIMIT, &bankCount);
+	result.reserve(bankCount);
 	for (auto i = 0; i < bankCount; i++) 
 	{
 		FMOD::Studio::Bank* bank = bankArray[i];
@@ -38,6 +38,8 @@ std::vector<const char*> FmodUtils::GetEventsNames()
 		CheckError(bank->getEventList(eventArray, EVENT_BANK_UPPERLIMIT, &eventDescriptionCount));
 
 		for (int j = 0; j < eventDescriptionCount; ++j) {
+
+			// Name to string
 			const int bufferSize = 256;
 
 			char pathBuffer[bufferSize];

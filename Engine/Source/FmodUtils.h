@@ -3,13 +3,14 @@
 #include <vector>
 
 #define CheckError(result) FmodUtils::CheckFmodError(result)
+#define CheckFmodError(_result) FmodUtils::CheckFmodErrorFunction(_result, __FILE__, __LINE__)
+
 class AudioSourceComponent;
 
 class FmodUtils
 {
 public:
 	static void CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line);
-	#define CheckFmodError(_result) CheckFmodErrorFunction(_result, __FILE__, __LINE__)
 
 	// Events
 	static std::vector<const char*> GetEventsNames();

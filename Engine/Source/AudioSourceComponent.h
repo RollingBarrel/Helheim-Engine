@@ -12,6 +12,7 @@ public:
     AudioSourceComponent(GameObject* ownerGameObject);
     ~AudioSourceComponent();
 
+    // Must return by reference
     std::string GetName() { return mName; };
     std::map<const char*, float> GetParameters() { return mParameters; };
     FMOD::Studio::EventDescription* GetEventDescription() {return mEventDescription;};
@@ -34,7 +35,7 @@ protected:
 private:
     std::string mName = "";
 
-    FMOD::Studio::EventInstance* mCurrentInstance = nullptr; 
+    FMOD::Studio::EventInstance* mEventInstance = nullptr; 
     FMOD::Studio::EventDescription* mEventDescription = nullptr;
     std::map<const char*, float> mParameters;
 

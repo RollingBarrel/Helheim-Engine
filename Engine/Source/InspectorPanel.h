@@ -17,6 +17,7 @@ class ImageComponent;
 class CanvasComponent;
 class ButtonComponent;
 class AudioSourceComponent;
+class AudioListenerComponent;
 
 class InspectorPanel : public Panel
 {
@@ -50,6 +51,7 @@ private:
 	void DrawCanvasComponent(CanvasComponent* component);
 	void DrawButtonComponent(ButtonComponent* component);
 	void DrawAudioSourceComponent(AudioSourceComponent* component);
+	void DrawListenerComponent(AudioListenerComponent* component);
 
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
