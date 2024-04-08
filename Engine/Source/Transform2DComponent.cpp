@@ -41,6 +41,7 @@ void Transform2DComponent::Save(Archive& archive) const
 	archive.AddFloat2("AnchorMin", mAnchorMin);
 	archive.AddFloat2("AnchorMax", mAnchorMax);
 	archive.AddFloat2("Pivot", mPivot);
+	Component::Save(archive);
 }
 
 void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -110,6 +111,7 @@ void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 	}
 
 	CalculateMatrices();
+	Component::LoadFromJSON(data, owner);
 }
 
 void Transform2DComponent::CalculateMatrices()

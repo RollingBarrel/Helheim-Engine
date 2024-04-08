@@ -10,6 +10,7 @@
 #include "GameObject.h"
 #include "CanvasComponent.h"
 #include "ImageComponent.h"
+#include "Transform2DComponent.h"
 
 #include "glew.h"
 #include "SDL.h"
@@ -154,11 +155,16 @@ void ModuleUI::CheckRaycast()
 		for (GameObject* gameObject : mCanvas->GetChildren())
 		{
 			ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
-			if (image != nullptr)
+			Transform2DComponent* transform2D = (Transform2DComponent*)gameObject->GetComponent(ComponentType::TRANSFORM2D);
+			if (image != nullptr && transform2D != nullptr)
 			{
+				//float2 offset = float2(image->GetImage()->GetWidth(), image->GetImage()->GetHeight()) / 2.0f;
+				float2 screenOffset = scenePanel->GetWindowsSize() / 2.0f;
+				float2 minImagePoint = float2(screenOffset - transform2D->GetGlobalPosition().xy() - (transform2D->GetGlobalScale().xy() / 2.0f));
+				float2 maxImagePoint = float2(screenOffset - transform2D->GetGlobalPosition().xy() + (transform2D->GetGlobalScale().xy() / 2.0f));
 				// Check if the mouse position is inside the bounds of the image
-				if (normalizedX >= gameObject->GetWorldPosition().x && normalizedX <= gameObject->GetWorldPosition().x + image->GetImage()->GetWidth() &&
-					normalizedY >= gameObject->GetWorldPosition().y && normalizedY <= gameObject->GetWorldPosition().y + image->GetImage()->GetHeight())
+				if (normalizedX >= minImagePoint.x && normalizedY >= minImagePoint.y &&
+					normalizedX <= maxImagePoint.x && normalizedY <= maxImagePoint.y)
 				{
 					ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
 					if (button != nullptr && button->IsEnabled())

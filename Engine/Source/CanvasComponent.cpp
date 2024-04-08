@@ -46,14 +46,17 @@ void CanvasComponent::RecalculateSizeAndScreenFactor()
 
 void CanvasComponent::Save(Archive& archive)const 
 {
+	Component::Save(archive);
+
 	archive.AddFloat2("Size", mSize);
 	archive.AddFloat("ScreenFactor", mScreenFactor);
 	archive.AddFloat2("ScreenReferenceSize", mScreenReferenceSize);
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 };
 
 void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
 {
+	Component::LoadFromJSON(data, owner);
+
 	if (data.HasMember("Size") && data["Size"].IsArray()) {
 		const rapidjson::Value& values = data["Size"];
 		float x{ 0.0f }, y{ 0.0f };
