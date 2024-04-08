@@ -701,48 +701,51 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 		ImGui::EndCombo();
 	}
 
-
-
 	component->mScript;
 	std::vector<std::pair<std::string, std::pair<MemberType, void*>>> variables;
 
-
-
 	ImGui::SeparatorText("Attributes");
 
-	for (ScriptVariable* variable : component->mData) {
-		switch (variable->mType)
+	std::vector<Member*> members = component->mScript->mMembers;
+
+	for (Member* member : members) {
+		switch (member->mType)
 		{
 		case MemberType::INT:
-			ImGui::DragInt(variable->mName, (int*)variable->mData);
+			ImGui::DragInt(member->mName, reinterpret_cast<int*>((((char*)component->mScript) + member->mOffset)));
 			break;
 		case MemberType::FLOAT:
-			ImGui::DragFloat(variable->mName, (float*)variable->mData);
+			ImGui::DragFloat(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
 			break;
 		case MemberType::BOOL:
-			ImGui::Checkbox(variable->mName, (bool*)variable->mData);
+			ImGui::Checkbox(member->mName, reinterpret_cast<bool*>((((char*)component->mScript) + member->mOffset)));
 			break;
 		case MemberType::FLOAT3:
-			ImGui::DragFloat3(variable->mName, (float*)variable->mData);
+			ImGui::DragFloat3(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
 			break;
 		case MemberType::GAMEOBJECT:
 		{
 
-			GameObject* go = *(GameObject**)variable->mData;
-			ImGui::Text(variable->mName);
+			GameObject* gameObject = reinterpret_cast<GameObject*>((((char*)component->mScript) + member->mOffset));
+			ImGui::Text(member->mName);
 			ImGui::SameLine();
 			const char* str = "";
-			if (!go) {
+			if (!gameObject)
+			{
 				str = "Drop a GameObject Here";
 			}
-			else {
-				str = go->GetName().c_str();
+			else 
+			{
+				str = gameObject->GetName().c_str();
 			}
 			ImGui::BulletText(str);
-			if (ImGui::BeginDragDropTarget()) {
+			if (ImGui::BeginDragDropTarget()) 
+			{
 
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) {
-					*(GameObject**)variable->mData = *(GameObject**)payload->Data;
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) 
+				{
+					//*(GameObject**)member->mData = *(GameObject**)payload->Data;
+					gameObject = *(GameObject**)payload->Data;
 				}
 				ImGui::EndDragDropTarget();
 			}

@@ -14,55 +14,33 @@
 #include "Geometry/Ray.h"
 #include <unordered_map>
 
-/*extern "C" SCRIPTING_API Script * CreatePlayerController(GameObject * owner, std::vector<ScriptVariable*>&data)
-{
-
-    PlayerController* script = new PlayerController(owner);
-
-    data.push_back(new ScriptVariable("mPlayerSpeed", MemberType::FLOAT, &script->mPlayerSpeed));
-    data.push_back(new ScriptVariable("mPlayerRotationSpeed", MemberType::FLOAT, &script->mPlayerRotationSpeed));
-    data.push_back(new ScriptVariable("mWinArea", MemberType::GAMEOBJECT, &script->mWinArea));
-    data.push_back(new ScriptVariable("mLoseArea", MemberType::GAMEOBJECT, &script->mLoseArea));
-    data.push_back(new ScriptVariable("mAnimationComponentHolder", MemberType::GAMEOBJECT, &script->mAnimationComponentHolder));
-
-    data.push_back(new ScriptVariable("mDashSpeed", MemberType::FLOAT, &script->mDashSpeed));
-    data.push_back(new ScriptVariable("mDashLenght", MemberType::FLOAT, &script->mDashLenght));
-    data.push_back(new ScriptVariable("mDashCoolDown", MemberType::FLOAT, &script->mDashCoolDown));
-
-    return script;
-}*/
-
-/*std::vector<Member> PlayerController::Serialize()
-{
-
-    offsetof(PlayerController, mPlayerSpeed);
-
-    std::vector<Member> members;
-
-    members.push_back(Member("mPlayerSpeed", MemberType::FLOAT, offsetof(PlayerController, mPlayerSpeed)));
-    members.push_back(Member("mPlayerRotationSpeed", MemberType::FLOAT, offsetof(PlayerController, mPlayerRotationSpeed)));
-    members.push_back(Member("mWinArea", MemberType::GAMEOBJECT, offsetof(PlayerController, mWinArea)));
-    members.push_back(Member("mTest", MemberType::FLOAT, offsetof(PlayerController, mTest)));
-
-    return members;
-}*/
-extern "C" SCRIPTING_API Script * CreatePlayerController(GameObject * owner, std::vector<Member*>&data)
+CREATE(PlayerController)
 {
     
-    PlayerController* script = new PlayerController(owner);
-    return script;
-}
+    CLASS(PlayerController, owner);
 
-void PlayerController::Serialize()
-{
-
-
-    CLASS(PlayerController);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
+   // MEMBER(MemberType::GAMEOBJECT, mWinArea);
+   // MEMBER(MemberType::GAMEOBJECT, mLoseArea);
+    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+    END_CREATE;
 
-  
+    float mPlayerSpeed = 1;
+    float mPlayerRotationSpeed = 1.0f;
+    GameObject* mWinArea = nullptr;
+    GameObject* mLoseArea = nullptr;
+    GameObject* mAnimationComponentHolder = nullptr;
+    float mDashSpeed = 5.0f;
+    float mDashLenght = 5.0f;
+    float mDashCoolDown = 1.0f;
+    NavMeshController* mNavMeshControl = nullptr;
+    AnimationComponent* mAnimationComponent = nullptr;
+    bool mIsDashActive = false;
+    bool mStartCounter = false;
+    float mDashTimePassed = 0.0f;
+    float mDashMovement = 0;
 }
-
 
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
@@ -106,10 +84,6 @@ void PlayerController::Update()
             LOG("Object %s has been hit at distance: %f", hit.second->GetName().c_str(), hit.first);
         }
     }
-    mTest++;
-    LOG("Prueba HotReload %f", mTest);
-
-    LOG("Adri cabron");
 }
 
 void PlayerController::Move() {

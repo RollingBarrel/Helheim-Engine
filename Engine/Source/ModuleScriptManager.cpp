@@ -92,14 +92,14 @@ void ModuleScriptManager::ReloadScripts()
 
 		Script* oldScript = scriptComponent->mScript;
 
-		std::vector<Member> oldMembers = oldScript->Serialize();
+		const std::vector<Member*> oldMembers = oldScript->GetMembers();
 
 
 		scriptComponent->LoadScript(scriptComponent->GetScriptName());
 
 		Script* newScript = scriptComponent->mScript;
 
-		std::vector<Member> newMembers = newScript->Serialize();
+		const std::vector<Member*> newMembers = newScript->GetMembers();
 		
 		
 		for (int i = 0; i < oldMembers.size(); i++) 
@@ -108,12 +108,12 @@ void ModuleScriptManager::ReloadScripts()
 			for (int j = 0; j < newMembers.size(); j++) 
 			{
 				
-				if (strcmp(oldMembers[i].mName, newMembers[j].mName) == 0) {
-					char* newScriptPos = ((char*)newScript) + newMembers[j].mOffset;
+				if (strcmp(oldMembers[i]->mName, newMembers[j]->mName) == 0) {
+					char* newScriptPos = ((char*)newScript) + newMembers[j]->mOffset;
 
-					char* oldScriptPos = ((char*)oldScript) + oldMembers[i].mOffset;
+					char* oldScriptPos = ((char*)oldScript) + oldMembers[i]->mOffset;
 
-					switch (oldMembers[i].mType) {
+					switch (oldMembers[i]->mType) {
 					case(MemberType::FLOAT):
 						memcpy(newScriptPos, oldScriptPos, sizeof(float));
 						break;

@@ -7,11 +7,26 @@
 
 class GameObject;
 
-#define CLASS(classname) \
-	using ClassType = classname;
+#define CLASS(classname, owner) \
+	using ClassType = classname; \
+	ClassType* script = new ClassType(owner);
 
 #define MEMBER(type, member) \
-	mMembers.push_back(new Member(#member, type, offsetof(ClassType, member)))
+	script->mMembers.push_back(new Member(#member, type, offsetof(ClassType, member)))
+
+#define BODY(classname) \
+extern "C" \
+{ \
+   SCRIPTING_API Script* Create##classname(GameObject* owner); \
+}\
+
+#define FRIEND(classname) \
+	friend SCRIPTING_API Script* Create##classname(GameObject* owner);
+
+#define CREATE(classname) \
+	extern "C" SCRIPTING_API Script* Create##classname(GameObject* owner)
+
+#define END_CREATE return script
 
 enum class  MemberType : int
 {
@@ -55,8 +70,7 @@ public:
 	void SetName(const std::string& name) { mName = name; }
 	virtual void Start() = 0;
 	virtual void Update() = 0;
-	virtual void Serialize() = 0;
-	//virtual void OnButtonClick() = 0;
+	const std::vector<Member*>& GetMembers() { return mMembers; }
 
 protected:
 

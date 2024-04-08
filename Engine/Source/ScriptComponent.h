@@ -32,6 +32,5 @@ private:
 	ResourceScript* mResourceScript = nullptr;
 	Script* mScript = nullptr;
 	std::string mName = "";
-	std::vector<ScriptVariable*> mData;
 };
 
