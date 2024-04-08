@@ -34,7 +34,7 @@ void ImageComponent::Draw()
     unsigned int UIImageProgram= App->GetPrograms()->GetUIImageProgram();
     if (UIImageProgram == 0) return;
 
-	if (hasAlpha) {
+	if (mHasAlpha) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -44,16 +44,8 @@ void ImageComponent::Draw()
 	float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
 	float4x4 model;
 
-	if (App->GetUI()->GetScreenSpace()) {  //Ortographic Mode
-		/*float3 OwnerTranslation = GetOwner()->GetPosition();
-
-		float3 scaleImage = GetOwner()->GetScale();
-		float scaleFloatX = scaleImage.x;
-		float scaleFloatY = scaleImage.y;
-		float scaledWidth = scaleFloatX * GetImage()->GetWidth();
-		float scaledHeight = scaleFloatY * GetImage()->GetHeight();
-
-		model = float4x4::FromTRS(OwnerTranslation, Quat::identity, float3(scaledWidth, scaledHeight, 1.0f));*/
+	if (App->GetUI()->GetScreenSpace()) //Ortographic Mode
+	{  
 		Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 		if (component != nullptr) 
 		{
@@ -68,8 +60,6 @@ void ImageComponent::Draw()
 	{
 		model = GetOwner()->GetWorldTransform();
 	}
-
-	//float4x4 model = GetOwner()->GetWorldTransform();
 
 	float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 
@@ -107,24 +97,46 @@ Component* ImageComponent::Clone(GameObject* owner) const
 
 void ImageComponent::Save(Archive& archive) const
 {
-    //archive.AddInt("ID", mID);
     archive.AddInt("ImageID", mImage->GetUID());
     archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	archive.AddFloat3("Color", mColor);
+	archive.AddBool("HasAlpha", mHasAlpha);
+	archive.AddFloat("Alpha", mAlpha);
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
-    //int ID = { 0 };
-    int imageId = { 0 };
-    /*if (data.HasMember("ID") && data["ID"].IsInt()) {
-        ID = data["ID"].GetInt();
-    }*/
+    
     if (data.HasMember("ImageID") && data["ImageID"].IsInt()) {
-        imageId = data["ImageID"].GetInt();
+		const rapidjson::Value& imageIdValue = data["ImageID"];
+		
+		mResourceId = imageIdValue.GetInt();
+		SetImage(mResourceId);
     }
 
-    mResourceId = imageId;
-    SetImage(imageId);
+	if (data.HasMember("Color") && data["Color"].IsArray()) {
+		const rapidjson::Value& colorValues = data["Color"];
+		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
+		if (colorValues.Size() == 3 && colorValues[0].IsFloat() && colorValues[1].IsFloat() && colorValues[2].IsFloat()) {
+			x = colorValues[0].GetFloat();
+			y = colorValues[1].GetFloat();
+			z = colorValues[2].GetFloat();
+		}
+
+		mColor = float3(x, y, z);
+	}
+
+	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) {
+		const rapidjson::Value& alphaValue = data["Alpha"];
+		
+		mAlpha = alphaValue.GetFloat();
+	}
+	
+	if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) {
+		const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
+
+		mHasAlpha = hasAlphaValue.GetBool();
+	}
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) {

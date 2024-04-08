@@ -863,7 +863,6 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 
 		bool modifiedTransform = false;
 		float3 newPosition = component->GetPosition();
-		float2 newSize = component->GetSize();
 		float3 newRotation = RadToDeg(component->GetRotation());
 
 		const char* labels[2] = { "Position", "Rotation"};
@@ -890,31 +889,48 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 			}
 			ImGui::PopID();
 		}
-			
-		ImGui::PushID(2);
-		ImGui::TableNextRow();
-
-		ImGui::TableNextColumn();
-		ImGui::PushItemWidth(-FLT_MIN);
-		ImGui::Text("Size");
-		ImGui::PopItemWidth();
-
-		for (int j = 0; j < 2; ++j) {
-			ImGui::TableNextColumn();
-			ImGui::PushItemWidth(-FLT_MIN);
-			ImGui::AlignTextToFramePadding();
-			ImGui::Text(axisLabels[j]);
-			ImGui::SameLine();
-			modifiedTransform = ImGui::DragFloat(axisLabels[j], &(newSize)[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
-			ImGui::PopItemWidth();
-		}
-		ImGui::PopID();
-
 
 		if (modifiedTransform) {
 			component->SetPosition(newPosition);
 			component->SetRotation(DegToRad(newRotation));
+			modifiedTransform = false;
+		}
+
+		float2 newSize = component->GetSize();
+		float2 newAnchorMin = component->GetAnchorMin();
+		float2 newAnchorMax = component->GetAnchorMax();
+		float2 newPivot = component->GetPivot();
+
+		const char* labels2d[4] = { "Size", "Anchor Min", "Anchor Max", "Pivot" };
+		const char* axisLabels2d[2] = { "X", "Y" };
+		float2* vectors2d[4] = { &newSize, &newAnchorMin, &newAnchorMax, &newPivot };
+			
+		for (int i = 0; i < 4; ++i) {
+			ImGui::PushID(i+2);
+			ImGui::TableNextRow();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text(labels2d[i]);
+			ImGui::PopItemWidth();
+
+			for (int j = 0; j < 2; ++j) {
+				ImGui::TableNextColumn();
+				ImGui::PushItemWidth(-FLT_MIN);
+				ImGui::AlignTextToFramePadding();
+				ImGui::Text(axisLabels2d[j]);
+				ImGui::SameLine();
+				modifiedTransform = ImGui::DragFloat(axisLabels2d[j], &(*vectors2d[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+				ImGui::PopItemWidth();
+			}
+			ImGui::PopID();
+		}
+
+		if (modifiedTransform) {
 			component->SetSize(newSize);
+			component->SetAnchorMax(newAnchorMax);
+			component->SetAnchorMin(newAnchorMin);
+			component->SetPivot(newPivot);
 		}
 	}
 	ImGui::EndTable();

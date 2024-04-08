@@ -31,22 +31,24 @@ public:
     void SetImage(unsigned int resourceId);
 	void SetColor(float3 color) { mColor = color; }
     void SetAlpha(float alpha) { mAlpha = alpha; }
+
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
     ResourceTexture* mImage = nullptr;
+    unsigned int mResourceId = 818189439; // Temporary default image 
 
     //TODO: Handle filename when setting the image
     const char* mFileName = nullptr;
 
     float3 mColor = float3(1.0f, 1.0f, 1.0f);
     float mAlpha = 1.0f;
-    unsigned int mTexId = 0;
+    bool mHasAlpha = false;
+
     float2 mTexOffset = float2::zero;
     bool mHasDiffuse = true;
+
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;
-    unsigned int mResourceId = 818189439; // Temporary default image - Just a simple square made of four squares (Red, Green, Blue, White) 
-    bool hasAlpha = false;
 };

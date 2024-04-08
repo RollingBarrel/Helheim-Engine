@@ -26,10 +26,16 @@ public:
 	inline const float3& GetPosition() const { return mPosition; }
 	inline const float3& GetRotation() const { return mEulerRotation; }
 	inline const float2& GetSize() const { return mSize; }
+	inline const float2& GetAnchorMin() const { return mAnchorMin; }
+	inline const float2& GetAnchorMax() const { return mAnchorMax; }
+	inline const float2& GetPivot() const { return mPivot; } 
 
 	void SetPosition(const float3& position);
 	void SetRotation(const float3& rotation);
 	void SetSize(const float2 size);
+	void SetAnchorMin(const float2 anchorMin);
+	void SetAnchorMax(const float2 anchorMax);
+	void SetPivot(const float2 pivot);
 
 	void CalculateMatrices();
 	void ResetTransform();
