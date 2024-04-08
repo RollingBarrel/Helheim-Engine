@@ -22,19 +22,19 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 	for (int i = 0; i < mData.size(); i++) {
 		switch (mData[i]->mType)
 		{
-		case VariableType::INT:
+		case MemberType::INT:
 			*(int*)mData[i]->mData = *(int*)other.mData[i]->mData;
 			break;
-		case VariableType::FLOAT:
+		case MemberType::FLOAT:
 			*(float*)mData[i]->mData = *(float*)other.mData[i]->mData;
 			break;
-		case VariableType::BOOL:
+		case MemberType::BOOL:
 			*(bool*)mData[i]->mData = *(bool*)other.mData[i]->mData;
 			break;
-		case VariableType::FLOAT3:
+		case MemberType::FLOAT3:
 			*(float3*)mData[i]->mData = *(float3*)other.mData[i]->mData;
 			break;
-		case VariableType::GAMEOBJECT:
+		case MemberType::GAMEOBJECT:
 			*(GameObject**)mData[i]->mData = *(GameObject**)other.mData[i]->mData;
 			break;
 		}
@@ -90,22 +90,22 @@ void::ScriptComponent::Save(Archive& archive) const
 
 		Archive dataArchive;	
 		dataArchive.AddString("VariableName", data->mName);
-		dataArchive.AddInt("VariableType", (int)data->mType);
+		dataArchive.AddInt("MemberType", (int)data->mType);
 		switch (data->mType)
 		{
-		case VariableType::INT:
+		case MemberType::INT:
 			dataArchive.AddInt("VariableData", *(int*)data->mData);
 			break;
-		case VariableType::FLOAT:
+		case MemberType::FLOAT:
 			dataArchive.AddFloat("VariableData", *(float*)data->mData);
 			break;
-		case VariableType::BOOL:
+		case MemberType::BOOL:
 			dataArchive.AddInt("VariableData", *(bool*)data->mData);
 			break;
-		case VariableType::FLOAT3:
+		case MemberType::FLOAT3:
 			dataArchive.AddFloat3("VariableData", *(float3*)data->mData);
 			break;
-		case VariableType::GAMEOBJECT:
+		case MemberType::GAMEOBJECT:
 		{
 			(*(GameObject**)data->mData) ? dataArchive.AddInt("VariableData", (*(GameObject**)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
 			break;
@@ -153,22 +153,22 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 						if (array[i].HasMember("VariableData")) {
 							switch (data->mType)
 							{
-							case VariableType::INT:
+							case MemberType::INT:
 								*(int*)data->mData = array[i]["VariableData"].GetInt();
 								break;
-							case VariableType::FLOAT:
+							case MemberType::FLOAT:
 								*(float*)data->mData = array[i]["VariableData"].GetFloat();
 								break;
-							case VariableType::BOOL:
+							case MemberType::BOOL:
 								*(bool*)data->mData = array[i]["VariableData"].GetBool();
 								break;
-							case VariableType::FLOAT3:
+							case MemberType::FLOAT3:
 							{
 								const auto& floatArray = array[i]["VariableData"].GetArray();
 								*(float3*)data->mData = float3(floatArray[0].GetFloat(), floatArray[1].GetFloat(), floatArray[2].GetFloat());
 								break;
 							}
-							case VariableType::GAMEOBJECT:
+							case MemberType::GAMEOBJECT:
 							{
 								int  UID = array[i]["VariableData"].GetInt();
 								if (UID != -1) {

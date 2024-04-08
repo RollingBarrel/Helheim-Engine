@@ -114,7 +114,7 @@ void ModuleScriptManager::ReloadScripts()
 					char* oldScriptPos = ((char*)oldScript) + oldMembers[i].mOffset;
 
 					switch (oldMembers[i].mType) {
-					case(VariableType::FLOAT):
+					case(MemberType::FLOAT):
 						memcpy(newScriptPos, oldScriptPos, sizeof(float));
 						break;
 					}

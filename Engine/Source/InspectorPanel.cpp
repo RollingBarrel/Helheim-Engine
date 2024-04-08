@@ -704,7 +704,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 
 	component->mScript;
-	std::vector<std::pair<std::string, std::pair<VariableType, void*>>> variables;
+	std::vector<std::pair<std::string, std::pair<MemberType, void*>>> variables;
 
 
 
@@ -713,19 +713,19 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	for (ScriptVariable* variable : component->mData) {
 		switch (variable->mType)
 		{
-		case VariableType::INT:
+		case MemberType::INT:
 			ImGui::DragInt(variable->mName, (int*)variable->mData);
 			break;
-		case VariableType::FLOAT:
+		case MemberType::FLOAT:
 			ImGui::DragFloat(variable->mName, (float*)variable->mData);
 			break;
-		case VariableType::BOOL:
+		case MemberType::BOOL:
 			ImGui::Checkbox(variable->mName, (bool*)variable->mData);
 			break;
-		case VariableType::FLOAT3:
+		case MemberType::FLOAT3:
 			ImGui::DragFloat3(variable->mName, (float*)variable->mData);
 			break;
-		case VariableType::GAMEOBJECT:
+		case MemberType::GAMEOBJECT:
 		{
 
 			GameObject* go = *(GameObject**)variable->mData;

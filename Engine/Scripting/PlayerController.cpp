@@ -14,6 +14,57 @@
 #include "Geometry/Ray.h"
 #include <unordered_map>
 
+/*extern "C" SCRIPTING_API Script * CreatePlayerController(GameObject * owner, std::vector<ScriptVariable*>&data)
+{
+
+    PlayerController* script = new PlayerController(owner);
+
+    data.push_back(new ScriptVariable("mPlayerSpeed", MemberType::FLOAT, &script->mPlayerSpeed));
+    data.push_back(new ScriptVariable("mPlayerRotationSpeed", MemberType::FLOAT, &script->mPlayerRotationSpeed));
+    data.push_back(new ScriptVariable("mWinArea", MemberType::GAMEOBJECT, &script->mWinArea));
+    data.push_back(new ScriptVariable("mLoseArea", MemberType::GAMEOBJECT, &script->mLoseArea));
+    data.push_back(new ScriptVariable("mAnimationComponentHolder", MemberType::GAMEOBJECT, &script->mAnimationComponentHolder));
+
+    data.push_back(new ScriptVariable("mDashSpeed", MemberType::FLOAT, &script->mDashSpeed));
+    data.push_back(new ScriptVariable("mDashLenght", MemberType::FLOAT, &script->mDashLenght));
+    data.push_back(new ScriptVariable("mDashCoolDown", MemberType::FLOAT, &script->mDashCoolDown));
+
+    return script;
+}*/
+
+/*std::vector<Member> PlayerController::Serialize()
+{
+
+    offsetof(PlayerController, mPlayerSpeed);
+
+    std::vector<Member> members;
+
+    members.push_back(Member("mPlayerSpeed", MemberType::FLOAT, offsetof(PlayerController, mPlayerSpeed)));
+    members.push_back(Member("mPlayerRotationSpeed", MemberType::FLOAT, offsetof(PlayerController, mPlayerRotationSpeed)));
+    members.push_back(Member("mWinArea", MemberType::GAMEOBJECT, offsetof(PlayerController, mWinArea)));
+    members.push_back(Member("mTest", MemberType::FLOAT, offsetof(PlayerController, mTest)));
+
+    return members;
+}*/
+extern "C" SCRIPTING_API Script * CreatePlayerController(GameObject * owner, std::vector<Member*>&data)
+{
+    
+    PlayerController* script = new PlayerController(owner);
+    return script;
+}
+
+void PlayerController::Serialize()
+{
+
+
+    CLASS(PlayerController);
+    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+
+  
+}
+
+
+
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
 
@@ -156,19 +207,6 @@ void PlayerController::Dash()
 
 }
 
-std::vector<Member> PlayerController::Serialize()
-{
 
-    offsetof(PlayerController, mPlayerSpeed);
-    
-    std::vector<Member> members;
-
-    members.push_back(Member("mPlayerSpeed", VariableType::FLOAT, offsetof(PlayerController, mPlayerSpeed)));
-    members.push_back(Member("mPlayerRotationSpeed", VariableType::FLOAT, offsetof(PlayerController, mPlayerRotationSpeed)));
-    members.push_back(Member("mWinArea", VariableType::GAMEOBJECT, offsetof(PlayerController, mWinArea)));
-    members.push_back(Member("mTest", VariableType::FLOAT, offsetof(PlayerController, mTest)));
-
-    return members;
-}
 
 

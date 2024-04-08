@@ -33,10 +33,10 @@ extern "C" SCRIPTING_API Script* CreateTestScript(GameObject* owner, std::vector
 
     TestScript* script = new TestScript(owner);
    
-    data.push_back(new ScriptVariable("mPlayerSpeed", VariableType::FLOAT, &script->mPlayerSpeed));
-    data.push_back(new ScriptVariable("speed", VariableType::FLOAT, &script->speed));
-    data.push_back(new ScriptVariable("mTestFloat3", VariableType::FLOAT3, &script->mTestFloat3));
-    data.push_back(new ScriptVariable("mRobot", VariableType::GAMEOBJECT, &script->mRobot));
+    data.push_back(new ScriptVariable("mPlayerSpeed", MemberType::FLOAT, &script->mPlayerSpeed));
+    data.push_back(new ScriptVariable("speed", MemberType::FLOAT, &script->speed));
+    data.push_back(new ScriptVariable("mTestFloat3", MemberType::FLOAT3, &script->mTestFloat3));
+    data.push_back(new ScriptVariable("mRobot", MemberType::GAMEOBJECT, &script->mRobot));
 
     return script;
 }
