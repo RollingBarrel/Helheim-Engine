@@ -149,8 +149,8 @@ void ModuleUI::CheckRaycast()
 	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
 	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
 
-	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
-	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
+	float normalizedX = mouseAbsoluteX - scenePanel->GetWindowsSize().x / 2;
+	float normalizedY = -(mouseAbsoluteY - scenePanel->GetWindowsSize().y / 2);
 	if (!mCanvas->GetChildren().empty()) {
 		for (GameObject* gameObject : mCanvas->GetChildren())
 		{
@@ -159,18 +159,19 @@ void ModuleUI::CheckRaycast()
 			if (image != nullptr && transform2D != nullptr)
 			{
 				//float2 offset = float2(image->GetImage()->GetWidth(), image->GetImage()->GetHeight()) / 2.0f;
-				float2 screenOffset = scenePanel->GetWindowsSize() / 2.0f;
-				float2 minImagePoint = float2(screenOffset - transform2D->GetGlobalPosition().xy() - (transform2D->GetGlobalScale().xy() / 2.0f));
-				float2 maxImagePoint = float2(screenOffset - transform2D->GetGlobalPosition().xy() + (transform2D->GetGlobalScale().xy() / 2.0f));
+				//float2 screenOffset = scenePanel->GetWindowsSize() / 2.0f;
+				float2 minImagePoint = transform2D->GetGlobalPosition().xy() - transform2D->GetSize();
+				float2 maxImagePoint = transform2D->GetGlobalPosition().xy() + transform2D->GetSize();
 				// Check if the mouse position is inside the bounds of the image
 				if (normalizedX >= minImagePoint.x && normalizedY >= minImagePoint.y &&
 					normalizedX <= maxImagePoint.x && normalizedY <= maxImagePoint.y)
 				{
-					ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
-					if (button != nullptr && button->IsEnabled())
-					{
-						button->OnClicked();
-					}
+					LOG("Button Clicked");
+					//ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
+					//if (button != nullptr && button->IsEnabled())
+					//{
+					//	button->OnClicked();
+					//}
 				}
 			}
 		}

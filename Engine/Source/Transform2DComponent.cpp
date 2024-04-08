@@ -34,18 +34,20 @@ void Transform2DComponent::Reset()
 
 void Transform2DComponent::Save(Archive& archive) const
 {
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	Component::Save(archive);
+
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat2("Size", mSize);
 	archive.AddFloat2("AnchorMin", mAnchorMin);
 	archive.AddFloat2("AnchorMax", mAnchorMax);
 	archive.AddFloat2("Pivot", mPivot);
-	Component::Save(archive);
 }
 
 void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+	Component::LoadFromJSON(data, owner);
+
 	if (data.HasMember("Translation") && data["Translation"].IsArray()) {
 		const rapidjson::Value& translationValues = data["Translation"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
@@ -111,7 +113,6 @@ void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 	}
 
 	CalculateMatrices();
-	Component::LoadFromJSON(data, owner);
 }
 
 void Transform2DComponent::CalculateMatrices()
