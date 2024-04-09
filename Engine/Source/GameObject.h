@@ -62,6 +62,7 @@ public:
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
 	void AddChild(GameObject* child, const int aboveThisId = 0);
+	GameObject* RemoveChild(const int id);
 	void DeleteChild(GameObject* child);
 	void AddComponentToDelete(Component* component);
 
@@ -87,7 +88,6 @@ public:
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 
 private:
-	GameObject* RemoveChild(const int id);
 	void AddSuffix();
 	void DeleteComponents();
 	Component* RemoveComponent(Component* component);

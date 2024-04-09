@@ -183,6 +183,9 @@ void ModuleScene::Save(const char* sceneName) const {
 }
 
 int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {
+	unsigned int resourceId = LCG().Int();
+	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+	if (resource != nullptr) { resourceId = resource->GetUID(); }
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
@@ -193,7 +196,6 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 
 	std::string out = prefabArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	int resourceId = LCG().Int();
 	App->GetResource()->ImportFile(saveFilePath, resourceId);
 	PathNode* root = App->GetFileSystem()->GetRootNode();
 	root->mChildren.clear();
@@ -269,9 +271,10 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 			for (GameObject* child : temp->GetChildren()) {
 				child->ResetTransform();
 				child->SetPrefabId(resourceId);
-				new GameObject(*child, mRoot);
+				mRoot->AddChild(child);
+				temp->RemoveChild(child->GetID());
 			}
-			delete temp;
+			mRoot->DeleteChild(temp);
 		}
 	}
 

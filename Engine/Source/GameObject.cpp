@@ -621,42 +621,7 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 		}
 	}
 }
-void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) {
-	if (mPrefabOverride && mPrefabResourceId == id) {
-		for (GameObject* child : mChildren) {
-			DeleteChild(child);
-		}
-		std::unordered_map<int, int> uuids;
-		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray()) {
-			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
-			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
-				if (gameObjects[i].IsObject()) {
-					int parentUID{ 0 };
-					unsigned int uuid{ 0 };
 
-					if (gameObject.HasMember("ParentUID") && gameObject["ParentUID"].IsInt()) {
-						parentUID = gameObject["ParentUID"].GetInt();
-					}
-					if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) {
-						uuid = gameObject["UID"].GetInt();
-					}
-					if (parentUID != 1) {
-						uuids[uuid] = mID;
-					}
-					else {
-						LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
-					}
-				}
-			}
-		}
-	}
-	else {
-		for (GameObject* child : mChildren) {
-			child->LoadChangesPrefab(gameObject, id);
-		}
-	}
-	
-}
 
 void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene, std::unordered_map<int, int>* convertUuid) {
 	unsigned int uuid{ 0 };
@@ -740,6 +705,43 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
+}
+
+void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) {
+	if (mPrefabOverride && mPrefabResourceId == id) {
+		for (GameObject* child : mChildren) {
+			DeleteChild(child);
+		}
+		std::unordered_map<int, int> uuids;
+		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray()) {
+			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
+			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) {
+				if (gameObjects[i].IsObject()) {
+					int parentUID{ 0 };
+					unsigned int uuid{ 0 };
+
+					if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt()) {
+						parentUID = gameObjects[i]["ParentUID"].GetInt();
+					}
+					if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt()) {
+						uuid = gameObjects[i]["UID"].GetInt();
+					}
+					if (parentUID == 1) {
+						uuids[uuid] = mID;
+					}
+					else {
+						LoadGameObjectFromJSON(gameObjects[i], mParent, &uuids);
+					}
+				}
+			}
+		}
+	}
+	else {
+		for (GameObject* child : mChildren) {
+			child->LoadChangesPrefab(gameObject, id);
+		}
+	}
+
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) {
