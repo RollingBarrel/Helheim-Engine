@@ -37,8 +37,10 @@ update_status ModuleScriptManager::PreUpdate(float dt)
 
 update_status ModuleScriptManager::Update(float dt)
 {
-	if (mIsPlaying) {
-		for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) {
+	if (mIsPlaying) 
+	{
+		for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
+		{
 			script->mScript->Update();
 		}
 	}
@@ -65,15 +67,18 @@ void ModuleScriptManager::AddScript(ScriptComponent* script)
 void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 {
 	std::vector<ScriptComponent*>::iterator deletePos = mScripts.end();
-	for (std::vector<ScriptComponent*>::iterator it = mScripts.begin(); it != mScripts.end(); ++it) {
+	for (std::vector<ScriptComponent*>::iterator it = mScripts.begin(); it != mScripts.end(); ++it) 
+	{
 
-		if (*it == script) {
+		if (*it == script) 
+		{
 			deletePos = it;
 			break;
 		}
 		
 	}
-	if (deletePos != mScripts.end()) {
+	if (deletePos != mScripts.end()) 
+	{
 		mScripts.erase(deletePos);
 	}
 		
@@ -159,13 +164,12 @@ void ModuleScriptManager::Play()
 void ModuleScriptManager::Stop()
 {
 	mIsPlaying = false;
-
 }
 
 void ModuleScriptManager::Start()
 {
-	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) {
-
+	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
+	{
 		script->mScript->Start();
 	}
 }

@@ -53,7 +53,6 @@ ScriptComponent::~ScriptComponent()
 	}
 
 	//delete mScript; //Memory leack here, this shouldbe fixed.
-	
 }
 
 void ScriptComponent::Update()
@@ -75,10 +74,10 @@ void::ScriptComponent::Save(Archive& archive) const
 	archive.AddString("ScriptName",mName.c_str());
 
 	std::vector<Archive> objectArray;
-
 	std::vector<Member*> members = mScript->GetMembers();
 
-	for (const Member* member : members) {
+	for (const Member* member : members) 
+	{
 
 		Archive dataArchive;	
 		dataArchive.AddString("VariableName", member->mName);
@@ -86,7 +85,6 @@ void::ScriptComponent::Save(Archive& archive) const
 		switch (member->mType)
 		{
 		case MemberType::INT:
-			//dataArchive.AddInt("VariableData", *(int*)data->mData);
 			dataArchive.AddInt("VariableData", *reinterpret_cast<int*>((((char*)mScript) + member->mOffset)));
 			break;
 		case MemberType::FLOAT:
@@ -101,16 +99,13 @@ void::ScriptComponent::Save(Archive& archive) const
 		case MemberType::GAMEOBJECT:
 		{
 			GameObject* gameObject = *reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset));
-			gameObject ? dataArchive.AddInt("VariableData", (gameObject->GetID())) : dataArchive.AddInt("VariableData", -1);
-			//(*(GameObject**)data->mData) ? dataArchive.AddInt("VariableData", (*(GameObject**)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
-			
+			gameObject ? dataArchive.AddInt("VariableData", (gameObject->GetID())) : dataArchive.AddInt("VariableData", -1);		
 			break;
 		}
 		default:
 			break;
 		}
 		
-
 		objectArray.push_back(dataArchive);
 	}
 
@@ -129,7 +124,8 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 	{
 		mName = data["ScriptName"].GetString();
 		
-		if (!mName.empty()) {
+		if (!mName.empty()) 
+		{
 			LoadScript(mName.c_str());
 		}
 		
@@ -139,15 +135,20 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 	{
 		const auto& array = data["ScriptVariables"].GetArray();
 		
-		for (unsigned int i = 0; i < array.Size(); ++i) {
+		for (unsigned int i = 0; i < array.Size(); ++i) 
+		{
 			const char* name;
-			if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) {
+			if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) 
+			{
 				name = array[i]["VariableName"].GetString();
 
 				std::vector<Member*> members = mScript->GetMembers();
-				for (const Member* member : members) {
-					if (strcmp(member->mName, name) == 0) {
-						if (array[i].HasMember("VariableData")) {
+				for (const Member* member : members) 
+				{
+					if (strcmp(member->mName, name) == 0) 
+					{
+						if (array[i].HasMember("VariableData")) 
+						{
 							switch (member->mType)
 							{
 							case MemberType::INT:
@@ -168,10 +169,8 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 							case MemberType::GAMEOBJECT:
 							{
 								int  UID = array[i]["VariableData"].GetInt();
-								//char* cursor = *reinterpret_cast<char**>(mScript);
-								//cursor += member->mOffset;
-								//GameObject* gameObject = reinterpret_cast<GameObject*>(cursor);
-								if (UID != -1) {
+								if (UID != -1) 
+								{
 									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset))));
 								}
 								break;
@@ -210,17 +209,20 @@ void ScriptComponent::LoadScript(const char* scriptName)
 
 	mName = scriptName;
 	Script* (*script)(GameObject*) = (Script * (*)(GameObject*))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
-	if (script != nullptr) {	
+	if (script != nullptr) 
+	{	
 		mScript = script(mOwner);
 		mScript->SetName(mName);
 		mResourceScript = (ResourceScript*)(App->GetResource()->RequestResource(scriptPath.c_str()));
-		if (mResourceScript == nullptr) {
+		if (mResourceScript == nullptr) 
+		{
 			LOG("SCRIPT RESOURCE NOT FOUND");
 		}
 		//App->GetScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
-	else {
+	else 
+	{
 		LOG("LOADING SCRIPT ERROR");
 	}
 }
