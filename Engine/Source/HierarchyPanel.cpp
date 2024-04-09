@@ -82,8 +82,8 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 			mFocusId = gameObject->GetID();
 			mMarked.clear();
 		}
-
-		if (!node->mIsRoot) {
+		bool isPrefabRoot = (App->GetScene()->IsPrefabScene() && node->mParent->mIsRoot);
+		if (!node->mIsRoot && !isPrefabRoot) {
 			if (ImGui::Selectable("Duplicate")) {
 				std::unordered_set<GameObject*> selectAfter;
 				for (auto object : FilterMarked()) {
