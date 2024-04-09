@@ -564,6 +564,7 @@ void GameObject::Save(Archive& archive, int parentId) const {
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);
 	archive.AddInt("Tag", mTag->GetID());
+	archive.AddInt("PrefabId", mPrefabResourceId);
 
 	// Save components
 	std::vector<Archive> componentsArchiveVector;
@@ -626,6 +627,7 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene, std::unordered_map<int, int>* convertUuid) {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
+	int prefabId{ 0 };
 	const char* name = { "" };
 	float3 position;
 	float3 scale;
@@ -640,6 +642,9 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	if (gameObject.HasMember("Name") && gameObject["Name"].IsString()) {
 		name = gameObject["Name"].GetString();
+	}
+	if (gameObject.HasMember("PrefabId") && gameObject["PrefabId"].IsInt()) {
+		prefabId = gameObject["PrefabId"].GetInt();
 	}
 	if (gameObject.HasMember("Translation") && gameObject["Translation"].IsArray()) {
 		const rapidjson::Value& translationValues = gameObject["Translation"];
@@ -699,6 +704,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	go->SetPosition(position);
 	go->SetRotation(rotation);
 	go->SetScale(scale);
+	go->SetPrefabId(prefabId);
 	// Manage Components
 	if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
 		LoadComponentsFromJSON(gameObject["Components"], go);
