@@ -5,6 +5,7 @@
 #include "ModuleCamera.h"
 #include "glew.h"
 #include "MeshRendererComponent.h"
+#include "CameraComponent.h"
 #include "Component.h"
 
 #include "ModuleOpenGL.h"
@@ -61,6 +62,20 @@ bool ModuleScene::Init()
 	Load("scene");
 
 	return true;
+}
+
+void ModuleScene::ResetFrustumCulling(GameObject* obj)
+{
+	MeshRendererComponent* meshRend = (MeshRendererComponent*)obj->GetComponent(ComponentType::MESHRENDERER);
+	if (meshRend != nullptr)
+	{
+		meshRend->SetInsideFrustum(false);
+	}
+	for (GameObject* child : obj->GetChildren())
+	{
+		ResetFrustumCulling(child);
+	}
+
 }
 
 GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
@@ -393,7 +408,8 @@ update_status ModuleScene::PostUpdate(float dt)
 		}
 	}
 
-	mQuadtreeRoot->UpdateDrawableGameObjects(App->GetCamera()->GetFrustum());
+	const Frustum frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
+	//mQuadtreeRoot->UpdateDrawableGameObjects(&frustum);
 
 	return UPDATE_CONTINUE;
 }

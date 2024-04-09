@@ -42,6 +42,7 @@ public:
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
+	void ResetFrustumCulling(GameObject* obj);
 
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagid);
 	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
@@ -58,14 +59,11 @@ public:
 
 	void Save(const char* saveFilePath) const;
 	void Load(const char* saveFilePath);
-	int SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
-	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false);
-	void OpenPrefabScreen(const char* saveFilePath);
-	void ClosePrefabScreen();
-	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }
+	void SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
+	void LoadPrefab(const char* saveFilePath);
 
-	GameObject* Find(const char* name) const;
-	GameObject* Find(unsigned int UID) const;
+	GameObject* Find(const char* name);
+	GameObject* Find(unsigned int UID);
 
 private:
 	void DeleteGameObjects();
@@ -74,15 +72,12 @@ private:
 
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
-	
-	Quadtree* mQuadtreeRoot;
+
+	Quadtree* mQuadtreeRoot = nullptr;
 	bool mDrawQuadtree = false;
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;
-	GameObject* mBackgroundScene = nullptr;
-	const char* mPrefabPath = "";
-	bool mClosePrefab = false;
 	NavMeshController* mNavMeshController;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
