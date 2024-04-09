@@ -85,7 +85,7 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 			for (auto object : hierarchyPanel->FilterMarked()) {
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
-				object->SetPrefabId(App->GetScene()->SavePrefab(object, file.c_str()));
+				object->SetPrefabId(App->GetScene()->SavePrefab(object, file.c_str())); //Create
 			}
 		}
 		ImGui::EndDragDropTarget();
