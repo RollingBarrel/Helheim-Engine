@@ -83,7 +83,8 @@ bool ModuleCamera::CleanUp()
 const void ModuleCamera::CreateEditorCamera()
 {
 	mEditorCamera = new GameObject("EditorCamera", nullptr);
-
+	mEditorCamera->SetPosition(float3(0.0f, 5.0f, 0.0f));
+	mEditorCamera->Update();
 	mEditorCamera->CreateComponent(ComponentType::CAMERA);
 
 	CameraComponent* camera = reinterpret_cast<CameraComponent*>(mEditorCamera->GetComponent(ComponentType::CAMERA));
