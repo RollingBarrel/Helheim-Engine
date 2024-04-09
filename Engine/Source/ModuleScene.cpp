@@ -33,6 +33,7 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(3, "EditorOnly", TagType::SYSTEM));
 	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
+	mTags.push_back(new Tag(6, "Obstacle", TagType::SYSTEM));
 }
 
 ModuleScene::~ModuleScene()

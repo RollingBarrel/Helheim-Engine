@@ -26,8 +26,17 @@
 #include "Quadtree.h"
 #include <regex>
 
-GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
+
+GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
+{
+}
+
+GameObject::GameObject(const char* name, GameObject* parent) : GameObject(LCG().Int(), name, parent)
+{
+}
+
+GameObject::GameObject(unsigned int ID, const char* name, GameObject* parent)
+	:mID(ID), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -36,29 +45,12 @@ GameObject::GameObject(GameObject* parent)
 		parent->AddChild(this);
 		AddSuffix();
 	}
-	
-
 }
 
-GameObject::GameObject(const GameObject& original)
-	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive), 
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(original.GetTag()),
-	mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
+GameObject::GameObject(const GameObject& original) : GameObject(original, original.mParent)
 {
-
 	if (mParent) {
 		AddSuffix();
-	}
-
-	for (auto child : original.mChildren) {
-		GameObject* gameObject = new GameObject(*(child), this);
-		gameObject->mParent = this;
-		mChildren.push_back(gameObject);
-	}
-
-	for (auto component : original.mComponents) {
-		mComponents.push_back(component->Clone(this));
 	}
 }
 
@@ -80,17 +72,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	}
 }
 
-GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
-	mIsRoot(parent == nullptr)
-{
 
-	if (!mIsRoot) {
-		mWorldTransformMatrix = mParent->GetWorldTransform();
-		mIsActive = parent->mIsActive;
-		parent->AddChild(this);
-	}
-}
 
 GameObject::~GameObject()
 {
@@ -633,10 +615,7 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 			const rapidjson::Value& componentValue = components[i];
 			if (componentValue.HasMember("ComponentType") && componentValue["ComponentType"].IsInt()) {
 				ComponentType cType = ComponentType(componentValue["ComponentType"].GetInt());
-				Component* component = go->GetComponent(cType);
-				if (!component) { 
-					component = go->CreateComponent(cType); 
-				}
+				Component* component = go->CreateComponent(cType);
 				component->LoadFromJSON(componentValue, go);
 			}
 		}
@@ -645,7 +624,7 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) {
 	if (mPrefabOverride && mPrefabResourceId == id) {
 		for (GameObject* child : mChildren) {
-			RemoveChild(child->GetID());
+			DeleteChild(child->GetID());
 		}
 		std::unordered_map<int, int> uuids;
 		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray()) {

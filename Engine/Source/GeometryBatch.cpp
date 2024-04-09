@@ -98,7 +98,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	const BatchMaterialResource& rMaterial = mUniqueMaterials[idx];
 	Material material;
-	memcpy(material.diffuseColor, rMaterial.resource->GetDiffuseFactor().ptr(), sizeof(float) * 4);
+	memcpy(material.diffuseColor, rMaterial.resource->GetDiffuseFactor().ptr(), sizeof(float) * 3);
 
 	material.diffuseTexture = (rMaterial.resource->GetDiffuseTexture()) ? rMaterial.resource->GetDiffuseTexture()->GetTextureHandle() : 0;
 	memcpy(material.specularColor, rMaterial.resource->GetSpecularFactor().ptr(), sizeof(float) * 4);
@@ -179,7 +179,7 @@ void GeometryBatch::RecreateMaterials()
 	unsigned int offset = 0;
 	for (const BatchMaterialResource rMaterial : mUniqueMaterials) {
 		Material material;
-		memcpy(material.diffuseColor, rMaterial.resource->GetDiffuseFactor().ptr(), sizeof(float) * 4);
+		memcpy(material.diffuseColor, rMaterial.resource->GetDiffuseFactor().ptr(), sizeof(float) * 3);
 
 		material.diffuseTexture = (rMaterial.resource->GetDiffuseTexture()) ? rMaterial.resource->GetDiffuseTexture()->GetTextureHandle() : 0;
 		memcpy(material.specularColor, rMaterial.resource->GetSpecularFactor().ptr(), sizeof(float) * 4);

@@ -667,31 +667,31 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	const char* currentItem = component->GetScriptName();
 
-	if (ImGui::BeginCombo("##combo", currentItem)) // The second parameter is the label previewed before opening the combo.
+	if (ImGui::BeginCombo("##combo", currentItem)) 
 	{
 		std::vector<std::string> scriptNames;
 		App->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
 		for (int i = 0; i < scriptNames.size(); ++i)
 		{
-			// Find the position of the last occurrence of '/'
+			
 			size_t slashPos = scriptNames[i].find_last_of('/');
 			if (slashPos != std::string::npos)
 			{
-				// Erase the part before the last '/'
+				
 				scriptNames[i].erase(0, slashPos + 1);
 			}
-			// Find the position of the first occurrence of '.'
+			
 			size_t dotPos = scriptNames[i].find_first_of('.');
 			if (dotPos != std::string::npos)
 			{
-				// Erase the part starting from the first '.'
+				
 				scriptNames[i].erase(dotPos);
 			}
 		}
 
 		for (int n = 0; n < scriptNames.size(); n++)
 		{
-			bool is_selected = (currentItem == scriptNames[n]); // You can store your selection however you want, outside or inside your objects
+			bool is_selected = (currentItem == scriptNames[n]); 
 			if (ImGui::Selectable(scriptNames[n].c_str(), is_selected)) {
 				currentItem = scriptNames[n].c_str();
 				component->LoadScript(currentItem);
@@ -699,7 +699,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			}
 
 			if (is_selected) {
-				ImGui::SetItemDefaultFocus(); // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+				ImGui::SetItemDefaultFocus();
 			}
 
 		}
