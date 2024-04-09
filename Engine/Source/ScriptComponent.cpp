@@ -46,14 +46,13 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 
 ScriptComponent::~ScriptComponent()
 {
-
-	//delete mScript; //Memory leack here, this shouldbe fixed.
-
 	App->GetScriptManager()->RemoveScript(this);
 	if (mResourceScript)
 	{
 		delete mResourceScript;
 	}
+
+	//delete mScript; //Memory leack here, this shouldbe fixed.
 	
 }
 
@@ -203,7 +202,7 @@ void ScriptComponent::LoadScript(const char* scriptName)
 	}
 
 	if (mScript) {
-		delete mScript;
+		//delete mScript; //MEMORY LEAK: Crash do not know why
 		mScript = nullptr;
 	}
 	

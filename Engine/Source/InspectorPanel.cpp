@@ -733,7 +733,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			ImGui::Text(member->mName);
 			ImGui::SameLine();
 			const char* str = "";
-			if (!*gameObject)
+			if (!gameObject || !*gameObject)
 			{
 				str = "Drop a GameObject Here";
 			}
@@ -747,7 +747,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) 
 				{
-					*gameObject = *(GameObject**)payload->Data;
+					if (gameObject) 
+					{
+						*gameObject = *(GameObject**)payload->Data;
+					}
+					
 				}
 				ImGui::EndDragDropTarget();
 			}

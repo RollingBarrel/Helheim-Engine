@@ -89,11 +89,18 @@ void ModuleScriptManager::HotReload()
 
 void ModuleScriptManager::ReloadScripts()
 {
-	for (ScriptComponent* scriptComponent : mScripts) {
+	for (ScriptComponent* scriptComponent : mScripts) 
+	{
 
 		Script* oldScript = scriptComponent->mScript;
 
-		const std::vector<Member*> oldMembers = oldScript->GetMembers();
+		const std::vector<Member*> oldMembersPointer = oldScript->GetMembers();
+		std::vector<Member> oldMembers;
+
+		for (Member* member : oldMembersPointer) 
+		{
+			oldMembers.push_back(*member);
+		}
 
 
 		scriptComponent->LoadScript(scriptComponent->GetScriptName());
@@ -109,11 +116,11 @@ void ModuleScriptManager::ReloadScripts()
 			for (int j = 0; j < newMembers.size(); j++) 
 			{
 				
-				if (strcmp(oldMembers[i]->mName, newMembers[j]->mName) == 0) {
+				if (strcmp(oldMembers[i].mName, newMembers[j]->mName) == 0) {
 					char* newScriptPos = ((char*)newScript) + newMembers[j]->mOffset;
 
-					char* oldScriptPos = ((char*)oldScript) + oldMembers[i]->mOffset;
-					switch (oldMembers[i]->mType) {
+					char* oldScriptPos = ((char*)oldScript) + oldMembers[i].mOffset;
+					switch (oldMembers[i].mType) {
 						
 					case(MemberType::INT):
 						memcpy(newScriptPos, oldScriptPos, sizeof(int));

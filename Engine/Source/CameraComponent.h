@@ -31,6 +31,6 @@ private:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
     Frustum* mCamera;
-    bool mEnableCulling;
+    bool mEnableCulling = false;
 };
 
