@@ -50,7 +50,7 @@ void CameraComponent::Update()
 {
     if (mOwner->GetHasBeenUpdated())
     {
-        float3 position = mOwner->GetPosition();
+        float3 position = mOwner->GetWorldPosition();
         SetPos(position);
 
 
@@ -92,7 +92,13 @@ Component* CameraComponent::Clone(GameObject* owner) const
 
 void CameraComponent::Reset()
 {
-	//mCamera = CameraUtils::InitiateCamera(float3(0.0f, 0.0f, 0.0f));
+    mFrustum.nearPlaneDistance = 0.01f;
+    mFrustum.farPlaneDistance = 1000.0f;
+    float w = static_cast<float>(App->GetWindow()->GetWidth());
+    float h = static_cast<float>(App->GetWindow()->GetHeight());
+    mAspectRatio = w / h;
+    mFrustum.verticalFov = math::pi / 4.0f;
+    mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * mAspectRatio);
 }
 
 

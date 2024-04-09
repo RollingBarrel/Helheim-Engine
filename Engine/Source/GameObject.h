@@ -83,7 +83,11 @@ public:
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
-	const bool GetHasBeenUpdated() const { return isTransformModified; }
+	const bool GetHasBeenUpdated() const;
+
+	void Rotate(float3 axis, float angle);
+	void Transform(float3 displacement);
+	void LookAt(float3 pos, float3 front, float3 upVector);
 
 private:
 	GameObject* RemoveChild(const int id);

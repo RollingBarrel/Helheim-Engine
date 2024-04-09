@@ -743,3 +743,47 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 	return foundGameObjects;
 }
 
+const bool GameObject::GetHasBeenUpdated() const
+{
+	if (!isTransformModified && mParent != nullptr)
+	{
+		return mParent->GetHasBeenUpdated();
+	}
+	return isTransformModified;
+}
+
+void GameObject::Rotate(float3 axis, float angle)
+{
+
+	
+	float3x3 originalRotationMatrix = mLocalTransformMatrix.SubMatrix(3, 3);
+	originalRotationMatrix = originalRotationMatrix * float3x3::RotateAxisAngle(axis, angle);
+	mLocalTransformMatrix.Set3x3Part(originalRotationMatrix);
+
+
+	isTransformModified = true;
+}
+
+void GameObject::Transform(float3 displacement)
+{
+	SetPosition(mPosition + displacement);
+	isTransformModified = true;
+
+}
+
+void GameObject::LookAt(float3 pos, float3 front, float3 upVector)
+{
+	float3 forward = (front - pos);
+	forward.Normalize();
+	float3 right = math::Cross(forward, upVector);
+	right.Normalize();
+	float3 up = math::Cross(right, forward);
+	up.Normalize();
+
+	mLocalTransformMatrix = float4x4(float4(right, pos.x), float4(up, pos.y), float4(front, pos.z), float4(0, 0, 0, 1));
+	
+
+	isTransformModified = true;
+
+}
+
