@@ -728,6 +728,9 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					}
 					if (parentUID == 1) {
 						uuids[uuid] = mID;
+						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray()) {
+							LoadComponentsFromJSON(gameObjects[i]["Components"], this);
+						}
 					}
 					else {
 						LoadGameObjectFromJSON(gameObjects[i], mParent, &uuids);
