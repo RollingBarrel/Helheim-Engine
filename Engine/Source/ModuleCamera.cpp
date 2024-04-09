@@ -156,7 +156,7 @@ update_status ModuleCamera::Update(float dt)
 		
 			if (App->GetInput()->GetMouseWheelMotion() != 0)
 			{
-				mCurrentCamera->Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
+				mEditorCamera->Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
 			}
 			if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 			{
@@ -168,28 +168,28 @@ update_status ModuleCamera::Update(float dt)
 
 			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 			{
-				mCurrentCamera->Transform(float3(0, -dtSpeed, 0));
+				mEditorCamera->Transform(float3(0, -dtSpeed, 0));
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
 			{
-				mCurrentCamera->Transform(float3(0, dtSpeed, 0));
+				mEditorCamera->Transform(float3(0, dtSpeed, 0));
 			}
 		
 				if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 				{
-					mCurrentCamera->Transform(float3(0, 0, dtSpeed));
+					mEditorCamera->Transform(float3(0, 0, dtSpeed));
 				}
 				if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
 				{
-					mCurrentCamera->Transform(float3(0, 0, -dtSpeed));
+					mEditorCamera->Transform(float3(0, 0, -dtSpeed));
 				}
 				if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
 				{
-					mCurrentCamera->Transform(float3(-dtSpeed, 0, 0));
+					mEditorCamera->Transform(float3(-dtSpeed, 0, 0));
 				}
 				if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
 				{
-					mCurrentCamera->Transform(float3(dtSpeed, 0, 0));
+					mEditorCamera->Transform(float3(dtSpeed, 0, 0));
 				}
 			}
 			if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
@@ -201,8 +201,8 @@ update_status ModuleCamera::Update(float dt)
 			{
 				int mX, mY;
 				App->GetInput()->GetMouseMotion(mX, mY);
-				mCurrentCamera->Transform(float3(-mX * speed, 0, 0));
-				mCurrentCamera->Transform(float3(0, mY * speed, 0));
+				mEditorCamera->Transform(float3(-mX * speed, 0, 0));
+				mEditorCamera->Transform(float3(0, mY * speed, 0));
 			}
 			//orbiting camera
 			if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
@@ -222,7 +222,7 @@ update_status ModuleCamera::Update(float dt)
 					focus = rotationMatrixY.Mul(focus);
 				}
 
-				mCurrentCamera->LookAt(focus, ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition(), float3::unitY);
+				mEditorCamera->LookAt(focus, ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition(), float3::unitY);
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
 			{
@@ -233,9 +233,9 @@ update_status ModuleCamera::Update(float dt)
 		
 				float3 finalCameraPosition = selectedObjectPosition - (desiredDistance * (selectedObjectPosition - initialCameraPosition).Normalized());
 		
-				mCurrentCamera->SetPosition(finalCameraPosition);
+				mEditorCamera->SetPosition(finalCameraPosition);
 		
-				mCurrentCamera->LookAt(mCurrentCameraComponent->GetFrustum().pos, selectedObjectPosition, float3::unitY);
+				mEditorCamera->LookAt(mCurrentCameraComponent->GetFrustum().pos, selectedObjectPosition, float3::unitY);
 			}
 		}
 		mEditorCamera->Update();
