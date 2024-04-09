@@ -17,29 +17,35 @@ ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, Component
 ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
 	mName = other.mName;
+	mResourceScript = other.mResourceScript;
 	LoadScript(mName.c_str());
-/*
-	for (int i = 0; i < mData.size(); i++) {
-		switch (mData[i]->mType)
+
+	for (unsigned int i = 0; i < mScript->mMembers.size(); ++i) 
+	{
+		char* originalMemberPos = (reinterpret_cast<char*>(other.mScript)) + mScript->mMembers[i]->mOffset;
+		char* newMemberPos = (reinterpret_cast<char*>(mScript)) + mScript->mMembers[i]->mOffset;
+
+		switch (mScript->mMembers[i]->mType)
 		{
 		case MemberType::INT:
-			*(int*)mData[i]->mData = *(int*)other.mData[i]->mData;
+			memcpy(newMemberPos, originalMemberPos, sizeof(int));
+			//*(int*)mScript->mMembers[i]->mData = *(int*)other.mScript->mMembers[i]->mData;
 			break;
 		case MemberType::FLOAT:
-			*(float*)mData[i]->mData = *(float*)other.mData[i]->mData;
+			memcpy(newMemberPos, originalMemberPos, sizeof(float));
 			break;
 		case MemberType::BOOL:
-			*(bool*)mData[i]->mData = *(bool*)other.mData[i]->mData;
+			memcpy(newMemberPos, originalMemberPos, sizeof(bool));
 			break;
 		case MemberType::FLOAT3:
-			*(float3*)mData[i]->mData = *(float3*)other.mData[i]->mData;
+			memcpy(newMemberPos, originalMemberPos, sizeof(float)*3);
 			break;
 		case MemberType::GAMEOBJECT:
-			*(GameObject**)mData[i]->mData = *(GameObject**)other.mData[i]->mData;
+			//*(GameObject**)mScript->mMembers[i]->mData = *(GameObject**)other.mScript->mMembers[i]->mData;
+			//memcpy(newMemberPos, originalMemberPos, sizeof(GameObject));
 			break;
 		}
 	}
-*/
 	Enable();
 
 }
@@ -47,10 +53,6 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 ScriptComponent::~ScriptComponent()
 {
 	App->GetScriptManager()->RemoveScript(this);
-	if (mResourceScript)
-	{
-		delete mResourceScript;
-	}
 
 	//delete mScript; //Memory leack here, this shouldbe fixed.
 }

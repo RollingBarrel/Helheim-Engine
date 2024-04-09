@@ -123,10 +123,10 @@ void ModuleScriptManager::ReloadScripts()
 				
 				if (strcmp(oldMembers[i].mName, newMembers[j]->mName) == 0) {
 					char* newScriptPos = ((char*)newScript) + newMembers[j]->mOffset;
-
 					char* oldScriptPos = ((char*)oldScript) + oldMembers[i].mOffset;
-					switch (oldMembers[i].mType) {
-						
+
+					switch (oldMembers[i].mType) 
+					{
 					case(MemberType::INT):
 						memcpy(newScriptPos, oldScriptPos, sizeof(int));
 						break;
@@ -137,10 +137,10 @@ void ModuleScriptManager::ReloadScripts()
 						memcpy(newScriptPos, oldScriptPos, sizeof(bool));
 						break;
 					case(MemberType::GAMEOBJECT):
-						memcpy(newScriptPos, oldScriptPos, sizeof(GameObject));
+						memcpy(newScriptPos, oldScriptPos, sizeof(GameObject)); //REVIEW: MAYBE DOUBLE POINTERS HAVE SOMETHING TO SAY HERE
 						break;
 					case(MemberType::FLOAT3):
-						memcpy(newScriptPos, oldScriptPos, sizeof(float3));
+						memcpy(newScriptPos, oldScriptPos, sizeof(float)*3);
 						break;
 					}
 
