@@ -48,13 +48,15 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::Update()
 {
-    if (mOwner->GetHasBeenUpdated())
+    if (mOwner->HasUpdatedTransform())
     {
-        float3 position = mOwner->GetPosition();
+        float3 position = mOwner->GetWorldPosition();
         SetPos(position);
 
 
-        float3 rotation = mOwner->GetRotation();
+        //float3 rotation = mOwner->GetRotation();
+        float3 rotation = mOwner->GetWorldTransform().ToEulerXYZ();
+
 
         float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3(1,0,0), rotation.x);
         rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 1, 0), rotation.y);

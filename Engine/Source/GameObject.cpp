@@ -129,13 +129,17 @@ void GameObject::RecalculateMatrices()
 		mChildren[i]->RecalculateMatrices();
 	}
 
-	isTransformModified = false;
 }
 
 void GameObject::Update()
 {
 	if (IsActive())
 	{
+		if (isTransformModified)
+		{
+			RecalculateMatrices();
+			RefreshBoundingBoxes();
+		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
 			mComponents[i]->Update();
@@ -146,11 +150,7 @@ void GameObject::Update()
 		}
 
 		DeleteComponents();
-		if (isTransformModified) 
-		{
-			RecalculateMatrices();
-			RefreshBoundingBoxes();
-		}
+		isTransformModified = false;
 	}
 }
 
@@ -732,6 +732,18 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 		return nullptr;
 	}
 
+}
+
+const bool GameObject::HasUpdatedTransform() const
+{
+	if (!isTransformModified && mParent != nullptr)
+	{
+		if (mParent->HasUpdatedTransform())
+		{
+			return true;
+		}
+	}
+	return isTransformModified;
 }
 
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
