@@ -3,6 +3,7 @@
 #include "ModuleFileSystem.h"
 #include "Script.h"
 #include "ScriptComponent.h"
+#include "GameObject.h"
 #include <Windows.h>
 #include <string>
 
@@ -112,10 +113,22 @@ void ModuleScriptManager::ReloadScripts()
 					char* newScriptPos = ((char*)newScript) + newMembers[j]->mOffset;
 
 					char* oldScriptPos = ((char*)oldScript) + oldMembers[i]->mOffset;
-
 					switch (oldMembers[i]->mType) {
+						
+					case(MemberType::INT):
+						memcpy(newScriptPos, oldScriptPos, sizeof(int));
+						break;
 					case(MemberType::FLOAT):
 						memcpy(newScriptPos, oldScriptPos, sizeof(float));
+						break;
+					case(MemberType::BOOL):
+						memcpy(newScriptPos, oldScriptPos, sizeof(bool));
+						break;
+					case(MemberType::GAMEOBJECT):
+						memcpy(newScriptPos, oldScriptPos, sizeof(GameObject));
+						break;
+					case(MemberType::FLOAT3):
+						memcpy(newScriptPos, oldScriptPos, sizeof(float3));
 						break;
 					}
 
