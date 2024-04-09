@@ -137,7 +137,7 @@ void ModuleScriptManager::ReloadScripts()
 						memcpy(newScriptPos, oldScriptPos, sizeof(bool));
 						break;
 					case(MemberType::GAMEOBJECT):
-						memcpy(newScriptPos, oldScriptPos, sizeof(GameObject)); //REVIEW: MAYBE DOUBLE POINTERS HAVE SOMETHING TO SAY HERE
+						memcpy(newScriptPos, oldScriptPos, sizeof(GameObject*));
 						break;
 					case(MemberType::FLOAT3):
 						memcpy(newScriptPos, oldScriptPos, sizeof(float)*3);

@@ -20,32 +20,34 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 	mResourceScript = other.mResourceScript;
 	LoadScript(mName.c_str());
 
-	for (unsigned int i = 0; i < mScript->mMembers.size(); ++i) 
+	if(mScript)
 	{
-		char* originalMemberPos = (reinterpret_cast<char*>(other.mScript)) + mScript->mMembers[i]->mOffset;
-		char* newMemberPos = (reinterpret_cast<char*>(mScript)) + mScript->mMembers[i]->mOffset;
-
-		switch (mScript->mMembers[i]->mType)
+		for (unsigned int i = 0; i < mScript->mMembers.size(); ++i)
 		{
-		case MemberType::INT:
-			memcpy(newMemberPos, originalMemberPos, sizeof(int));
-			//*(int*)mScript->mMembers[i]->mData = *(int*)other.mScript->mMembers[i]->mData;
-			break;
-		case MemberType::FLOAT:
-			memcpy(newMemberPos, originalMemberPos, sizeof(float));
-			break;
-		case MemberType::BOOL:
-			memcpy(newMemberPos, originalMemberPos, sizeof(bool));
-			break;
-		case MemberType::FLOAT3:
-			memcpy(newMemberPos, originalMemberPos, sizeof(float)*3);
-			break;
-		case MemberType::GAMEOBJECT:
-			//*(GameObject**)mScript->mMembers[i]->mData = *(GameObject**)other.mScript->mMembers[i]->mData;
-			//memcpy(newMemberPos, originalMemberPos, sizeof(GameObject));
-			break;
+			char* originalMemberPos = (reinterpret_cast<char*>(other.mScript)) + mScript->mMembers[i]->mOffset;
+			char* newMemberPos = (reinterpret_cast<char*>(mScript)) + mScript->mMembers[i]->mOffset;
+
+			switch (mScript->mMembers[i]->mType)
+			{
+			case MemberType::INT:
+				memcpy(newMemberPos, originalMemberPos, sizeof(int));
+				break;
+			case MemberType::FLOAT:
+				memcpy(newMemberPos, originalMemberPos, sizeof(float));
+				break;
+			case MemberType::BOOL:
+				memcpy(newMemberPos, originalMemberPos, sizeof(bool));
+				break;
+			case MemberType::FLOAT3:
+				memcpy(newMemberPos, originalMemberPos, sizeof(float) * 3);
+				break;
+			case MemberType::GAMEOBJECT:
+				memcpy(newMemberPos, originalMemberPos, sizeof(GameObject*));
+				break;
+			}
 		}
 	}
+	
 	Enable();
 
 }
