@@ -5,8 +5,10 @@
 class NavMeshController;
 class AnimationComponent;
 
+BODY(PlayerController);
 class PlayerController :public Script
 {
+    FRIEND(PlayerController)
 public:
     PlayerController(GameObject* owner);
     ~PlayerController() {}
@@ -26,8 +28,6 @@ public:
     float mDashLenght = 5.0f;
     float mDashCoolDown = 1.0f;
 
-    std::vector<Member> Serialize() override;
-
 private:
     NavMeshController* mNavMeshControl = nullptr;
     AnimationComponent* mAnimationComponent = nullptr;
@@ -36,27 +36,9 @@ private:
     float mDashTimePassed = 0.0f;
     float mDashMovement = 0;
 
-    float mTest = 25.0f;
-
 };
 
-extern "C" SCRIPTING_API Script * CreatePlayerController(GameObject * owner, std::vector<ScriptVariable*>&data)
-{
 
-    PlayerController* script = new PlayerController(owner);
-
-    data.push_back(new ScriptVariable("mPlayerSpeed", VariableType::FLOAT, &script->mPlayerSpeed));
-    data.push_back(new ScriptVariable("mPlayerRotationSpeed", VariableType::FLOAT, &script->mPlayerRotationSpeed));
-    data.push_back(new ScriptVariable("mWinArea", VariableType::GAMEOBJECT, &script->mWinArea));
-    data.push_back(new ScriptVariable("mLoseArea", VariableType::GAMEOBJECT, &script->mLoseArea));
-    data.push_back(new ScriptVariable("mAnimationComponentHolder", VariableType::GAMEOBJECT, &script->mAnimationComponentHolder));
-
-    data.push_back(new ScriptVariable("mDashSpeed", VariableType::FLOAT, &script->mDashSpeed));
-    data.push_back(new ScriptVariable("mDashLenght", VariableType::FLOAT, &script->mDashLenght));
-    data.push_back(new ScriptVariable("mDashCoolDown", VariableType::FLOAT, &script->mDashCoolDown));
-
-    return script;
-}
 
 
 

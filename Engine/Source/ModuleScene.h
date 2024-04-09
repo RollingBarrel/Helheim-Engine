@@ -32,7 +32,7 @@ public:
 		mGameObjectsToDuplicate.push_back(gameObject);
 	}
 
-	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**> pair) {
+	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject*> pair) {
 		mGameObjectsToLoadIntoScripts.push_back(pair);
 	}
 
@@ -81,7 +81,7 @@ private:
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	std::vector<std::pair<unsigned int, GameObject**>> mGameObjectsToLoadIntoScripts;
+	std::vector<std::pair<unsigned int, GameObject*>> mGameObjectsToLoadIntoScripts;
 
 
 	std::vector<Tag*> mTags;

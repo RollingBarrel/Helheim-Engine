@@ -14,6 +14,35 @@
 #include "Geometry/Ray.h"
 #include <unordered_map>
 
+CREATE(PlayerController)
+{
+    
+    CLASS(PlayerController, owner);
+
+    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
+   // MEMBER(MemberType::GAMEOBJECT, mWinArea);
+   // MEMBER(MemberType::GAMEOBJECT, mLoseArea);
+    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+    END_CREATE;
+
+    float mPlayerSpeed = 1;
+    float mPlayerRotationSpeed = 1.0f;
+    GameObject* mWinArea = nullptr;
+    GameObject* mLoseArea = nullptr;
+    GameObject* mAnimationComponentHolder = nullptr;
+    float mDashSpeed = 5.0f;
+    float mDashLenght = 5.0f;
+    float mDashCoolDown = 1.0f;
+    NavMeshController* mNavMeshControl = nullptr;
+    AnimationComponent* mAnimationComponent = nullptr;
+    bool mIsDashActive = false;
+    bool mStartCounter = false;
+    float mDashTimePassed = 0.0f;
+    float mDashMovement = 0;
+}
+
+
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
 
@@ -55,10 +84,6 @@ void PlayerController::Update()
             LOG("Object %s has been hit at distance: %f", hit.second->GetName().c_str(), hit.first);
         }
     }
-    mTest++;
-    LOG("Prueba HotReload %f", mTest);
-
-    LOG("Adri cabron");
 }
 
 void PlayerController::Move() {
@@ -156,19 +181,6 @@ void PlayerController::Dash()
 
 }
 
-std::vector<Member> PlayerController::Serialize()
-{
 
-    offsetof(PlayerController, mPlayerSpeed);
-    
-    std::vector<Member> members;
-
-    members.push_back(Member("mPlayerSpeed", VariableType::FLOAT, offsetof(PlayerController, mPlayerSpeed)));
-    members.push_back(Member("mPlayerRotationSpeed", VariableType::FLOAT, offsetof(PlayerController, mPlayerRotationSpeed)));
-    members.push_back(Member("mWinArea", VariableType::GAMEOBJECT, offsetof(PlayerController, mWinArea)));
-    members.push_back(Member("mTest", VariableType::FLOAT, offsetof(PlayerController, mTest)));
-
-    return members;
-}
 
 

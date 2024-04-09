@@ -163,8 +163,8 @@ void Importer::Script::Save(const ResourceScript* rScript)
         cursor += sizeTSizeInBites;
         memcpy(cursor, attribute.GetName().c_str(), nameSizeInBytes);
         cursor += nameSizeInBytes;
-        size_t typeSizeInBytes = sizeof(VariableType);
-        VariableType type = attribute.GetType();
+        size_t typeSizeInBytes = sizeof(MemberType);
+        MemberType type = attribute.GetType();
         memcpy(cursor, &type, typeSizeInBytes);
         cursor += typeSizeInBytes;
     }
@@ -213,8 +213,8 @@ ResourceScript* Importer::Script::Load(const char* filePath, unsigned int uid)
             cursor += nameSizeInBytes;
             attribute.setName(name);
 
-            size_t typeSizeInBytes = sizeof(VariableType);
-            VariableType type;
+            size_t typeSizeInBytes = sizeof(MemberType);
+            MemberType type;
             memcpy(&type, cursor, typeSizeInBytes);
             cursor += typeSizeInBytes;
             attribute.setType(type);

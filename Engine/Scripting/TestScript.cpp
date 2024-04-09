@@ -96,9 +96,4 @@ void TestScript::Update()
 	
 }
 
-std::vector<Member> TestScript::Serialize()
-{
-    return std::vector<Member>();
-}
-
 
