@@ -559,6 +559,7 @@ void GameObject::Save(Archive& archive, int parentId) const {
 	archive.AddFloat3("Scale", mScale);
 	archive.AddInt("Tag", mTag->GetID());
 	archive.AddInt("PrefabId", mPrefabResourceId);
+	archive.AddBool("OverridePrefab", mPrefabOverride);
 
 	// Save components
 	std::vector<Archive> componentsArchiveVector;
@@ -622,6 +623,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
 	int prefabId{ 0 };
+	bool overridePrefab = true;
 	const char* name = { "" };
 	float3 position;
 	float3 scale;
@@ -639,6 +641,9 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	if (gameObject.HasMember("PrefabId") && gameObject["PrefabId"].IsInt()) {
 		prefabId = gameObject["PrefabId"].GetInt();
+	}
+	if (gameObject.HasMember("OverridePrefab") && gameObject["OverridePrefab"].IsBool()) {
+		overridePrefab = gameObject["OverridePrefab"].GetBool();
 	}
 	if (gameObject.HasMember("Translation") && gameObject["Translation"].IsArray()) {
 		const rapidjson::Value& translationValues = gameObject["Translation"];
@@ -699,6 +704,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	go->SetRotation(rotation);
 	go->SetScale(scale);
 	go->SetPrefabId(prefabId);
+	go->SetPrefabOverride(overridePrefab);
 	// Manage Components
 	if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) {
 		LoadComponentsFromJSON(gameObject["Components"], go);

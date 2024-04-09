@@ -83,6 +83,7 @@ public:
 	void Load(const rapidjson::Value& gameObjectsJson);
 	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
 	void SetPrefabId(unsigned int id) { mPrefabResourceId = id; }
+	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
