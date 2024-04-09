@@ -108,7 +108,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node) {
 				for (auto object : FilterMarked()) {
 					std::string file = "Assets/Prefabs/";
 					file.append('/' + object->GetName() + ".prfb");
-					App->GetScene()->SavePrefab(object, file.c_str()); //Create
+					App->GetScene()->SavePrefab(object, file.c_str());
 				}
 			}
 		}

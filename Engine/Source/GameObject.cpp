@@ -361,7 +361,7 @@ void GameObject::AddSuffix()
 				//lastPos = pos;
 			}
 		}
-		else 
+		else
 		{
 			for (auto child : mParent->mChildren)
 			{
@@ -382,14 +382,14 @@ void GameObject::AddSuffix()
 				mName += sufix;
 				found = false;
 			}
-			else if (isObjectWithSufix != std::string::npos){
+			else if (isObjectWithSufix != std::string::npos) {
 				hasNextItemSufix = true;
 			}
 			else {
 				found = false;
 			}
-			
-			
+
+
 		}
 	}
 }
@@ -400,50 +400,50 @@ Component* GameObject::CreateComponent(ComponentType type) {
 	Component* newComponent = nullptr;
 
 	switch (type) {
-		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this);
-			break;
-		case ComponentType::CAMERA:
-			newComponent = new CameraComponent(this);
-			break;
-		case ComponentType::POINTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
-			break;
-		}
-		case ComponentType::SPOTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
-			break;
-		}
-		case ComponentType::SCRIPT:
-			newComponent = new ScriptComponent(this);
-			break;
-		case ComponentType::TEST:
-			newComponent = new TestComponent(this);
-			break;
-		case ComponentType::AIAGENT:
-			newComponent = new AIAgentComponent(this);
-			break;
-		case ComponentType::NAVMESHOBSTACLE:
-			newComponent = new NavMeshObstacleComponent(this);
-			break;
-		case ComponentType::ANIMATION:
-			newComponent = new AnimationComponent(this);
-			break;
-		case ComponentType::IMAGE:
-			newComponent = new ImageComponent(this);
-			break;
-		case ComponentType::CANVAS:
-			newComponent = new CanvasComponent(this);
-			break;
-		case ComponentType::BUTTON:
-			newComponent = new ButtonComponent(this);
-			break;
-		default:
-			break;
+	case ComponentType::MESHRENDERER:
+		newComponent = new MeshRendererComponent(this);
+		break;
+	case ComponentType::CAMERA:
+		newComponent = new CameraComponent(this);
+		break;
+	case ComponentType::POINTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
+		break;
+	}
+	case ComponentType::SPOTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
+		break;
+	}
+	case ComponentType::SCRIPT:
+		newComponent = new ScriptComponent(this);
+		break;
+	case ComponentType::TEST:
+		newComponent = new TestComponent(this);
+		break;
+	case ComponentType::AIAGENT:
+		newComponent = new AIAgentComponent(this);
+		break;
+	case ComponentType::NAVMESHOBSTACLE:
+		newComponent = new NavMeshObstacleComponent(this);
+		break;
+	case ComponentType::ANIMATION:
+		newComponent = new AnimationComponent(this);
+		break;
+	case ComponentType::IMAGE:
+		newComponent = new ImageComponent(this);
+		break;
+	case ComponentType::CANVAS:
+		newComponent = new CanvasComponent(this);
+		break;
+	case ComponentType::BUTTON:
+		newComponent = new ButtonComponent(this);
+		break;
+	default:
+		break;
 	}
 
 	if (newComponent) {
@@ -728,6 +728,9 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					}
 					if (parentUID == 1) {
 						uuids[uuid] = mID;
+						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray()) {
+							LoadComponentsFromJSON(gameObjects[i]["Components"], this);
+						}
 					}
 					else {
 						LoadGameObjectFromJSON(gameObjects[i], mParent, &uuids);
