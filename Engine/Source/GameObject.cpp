@@ -624,7 +624,7 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) {
 	if (mPrefabOverride && mPrefabResourceId == id) {
 		for (GameObject* child : mChildren) {
-			DeleteChild(child->GetID());
+			DeleteChild(child);
 		}
 		std::unordered_map<int, int> uuids;
 		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray()) {
