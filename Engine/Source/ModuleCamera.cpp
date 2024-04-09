@@ -20,6 +20,7 @@
 #include "Quat.h"
 #include "CameraComponent.h"
 #include <map>
+#include <MathFunc.h>
 
 
 bool ModuleCamera::Init()
@@ -143,7 +144,7 @@ update_status ModuleCamera::Update(float dt)
 		{
 			const float dtTransformCameraVel = dt * 3.f;
 			float transformCameraVel = 0.03f;
-			const float rotateCameraVel = 0.01f;
+			const float rotateCameraVel = 10.0f;
 		
 			const float dtFastSpeed = dtTransformCameraVel * 3.0f;
 			const float fastSpeed = transformCameraVel * 3.0f;
@@ -162,8 +163,9 @@ update_status ModuleCamera::Update(float dt)
 				int mX, mY;
 				hasBeenUpdated = true;
 				App->GetInput()->GetMouseMotion(mX, mY);
-				mCurrentCamera->Rotate(float3::unitY, -mX * rotateCameraVel);
-				mCurrentCamera->Rotate(mCurrentCameraComponent->GetFrustum().WorldRight(), -mY * rotateCameraVel);
+				float3 rotation = { DegToRad(-mX * rotateCameraVel) ,DegToRad(-mY * rotateCameraVel), 0.0f };
+				mEditorCamera->SetRotation(rotation);
+
 			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
 			{
 				mCurrentCamera->Transform(float3(0, -dtSpeed, 0));
@@ -236,6 +238,7 @@ update_status ModuleCamera::Update(float dt)
 				mCurrentCamera->LookAt(mCurrentCameraComponent->GetFrustum().pos, selectedObjectPosition, float3::unitY);
 			}
 		}
+		mEditorCamera->Update();
 		/*
 		if(mCurrentCamera && mCurrentCameraComponent && hasBeenUpdated){ //TODO: add a bool if the camera had an input
 			float3 position = mCurrentCameraComponent->GetFrustum().pos;

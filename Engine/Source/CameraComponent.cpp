@@ -53,14 +53,17 @@ void CameraComponent::Update()
         float3 position = mOwner->GetWorldPosition();
         SetPos(position);
 
+        float3 newfront, newup;
+        float3 eulerRotation = mOwner->GetRotation();
 
-        float3 rotation = mOwner->GetRotation();
+        float3x3 rotationX = float3x3::RotateAxisAngle(mFrustum.WorldRight(), DegToRad(eulerRotation.y));
+        float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(eulerRotation.x));
+        float3x3 rotation = rotationY.Mul(rotationX);
 
-        float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3(1,0,0), rotation.x);
-        rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 1, 0), rotation.y);
-        rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 0, 1), rotation.z);
-  
-        LookAt(mFrustum.pos, mFrustum.pos + rotationMatrix.Mul(float3::unitZ), rotationMatrix.Mul(float3::unitY));
+        newfront = rotation.MulDir(mFrustum.front.Normalized());
+        newup = rotation.MulDir(mFrustum.up.Normalized());
+        mFrustum.front = newfront.Normalized();
+        mFrustum.up = newup.Normalized();
 
         App->GetOpenGL()->SetOpenGlCameraUniforms();
 
@@ -167,8 +170,8 @@ void CameraComponent::CameraComponentTransform(float3 vec)
 
 void CameraComponent::Save(Archive& archive) const
 {
-    //archive.AddInt("ID", mID);
-    //archive.AddInt("Camera", mCamera);
+    archive.AddInt("ComponentType", static_cast<int>(GetType()));
+
 }
 
 void CameraComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

@@ -41,6 +41,8 @@ private:
 
 	CameraComponent* mCurrentCameraComponent = nullptr;
 
+	int mX = 0;
+	int mY = 0;
 	Ray mRay;
 	bool mDrawRayCast; 
 	std::map<float, GameObject*> mIntersectMap;

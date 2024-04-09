@@ -108,7 +108,7 @@ void PlayerController::Rotate() {
 
         int mX, mY;
         App->GetInput()->GetMouseMotion(mX, mY);
-        float3 rotation = { 0.0f, DegToRad(mX * mPlayerRotationSpeed), 0.0f };
+        float3 rotation = { DegToRad(mY * mPlayerRotationSpeed) , DegToRad(mX * mPlayerRotationSpeed), 0.0f };
         mGameObject->SetRotation(rotation+ mGameObject->GetRotation());
 
 
