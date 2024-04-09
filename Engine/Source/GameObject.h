@@ -78,7 +78,8 @@ public:
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
-	void LoadChangesPrefab(const rapidjson::Value& oldJson, const rapidjson::Value& newJson);
+	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
+	void SetPrefabId(unsigned int id) { mPrefabResourceId = id; }
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
@@ -108,9 +109,10 @@ private:
 	Quat mRotation = Quat::identity;
 	float3 mEulerRotation = float3::zero;
 	float3 mScale = float3::one;
+
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool isTransformModified = false;
 	int mPrefabResourceId = 0;
-	int mPrefabId = 0;
+	bool mPrefabOverride = true;
 };

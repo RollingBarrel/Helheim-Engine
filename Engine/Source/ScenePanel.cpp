@@ -142,7 +142,7 @@ void ScenePanel::Draw(int windowFlags)
 						break;
 					case Resource::Type::Object:
 					{
-						App->GetScene()->LoadPrefab(asset->mPath);
+						App->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
 						break;
 					}
 					case Resource::Type::NavMesh:

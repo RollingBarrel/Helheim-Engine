@@ -102,6 +102,12 @@ void InspectorPanel::Draw(int windowFlags)
 				mLockedGameObject = nullptr;
 			}
 		}
+
+		if (focusedObject->mPrefabResourceId != 0) {
+			ImGui::Text("From Prefab");
+			ImGui::Checkbox("override after editing prefab", &focusedObject->mPrefabOverride);
+		}
+
 		DrawTransform(focusedObject);
 		DrawComponents(focusedObject);
 		ImGui::Separator();

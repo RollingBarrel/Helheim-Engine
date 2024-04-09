@@ -181,7 +181,7 @@ void ModuleScene::Save(const char* sceneName) const {
 	delete archive;
 }
 
-void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {
+int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
@@ -192,12 +192,14 @@ void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFileP
 
 	std::string out = prefabArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	App->GetResource()->ImportFile(saveFilePath, LCG().Int());
+	int resourceId = LCG().Int();
+	App->GetResource()->ImportFile(saveFilePath, resourceId);
 	PathNode* root = App->GetFileSystem()->GetRootNode();
 	root->mChildren.clear();
 	App->GetFileSystem()->DiscoverFiles("Assets", root);
 	delete prefabArchive;
 	delete archive;
+	return resourceId;
 }
 
 void ModuleScene::Load(const char* sceneName) {
@@ -244,7 +246,7 @@ void ModuleScene::Load(const char* sceneName) {
 	}
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath) 
+void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)
 {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
@@ -259,9 +261,16 @@ void ModuleScene::LoadPrefab(const char* saveFilePath)
 
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) {
 		const rapidjson::Value& s = d["Prefab"];
-		mRoot->Load(s);
-		for(GameObject * child : mRoot->GetChildren()) {
-			child->SetPosition(float3::zero);
+		if (update) { mRoot->LoadChangesPrefab(s, resourceId); }
+		else {
+			GameObject* temp = new GameObject("Temp", mRoot);
+			temp->Load(s);
+			for (GameObject* child : temp->GetChildren()) {
+				child->ResetTransform();
+				child->SetPrefabId(resourceId);
+				new GameObject(*child, mRoot);
+			}
+			delete temp;
 		}
 	}
 
@@ -282,13 +291,13 @@ void ModuleScene::ClosePrefabScreen()
 	}
 }
 
-GameObject* ModuleScene::Find(const char* name)
+GameObject* ModuleScene::Find(const char* name) const
 {
 	return mRoot->Find(name);
 
 }
 
-GameObject* ModuleScene::Find(unsigned int UID)
+GameObject* ModuleScene::Find(unsigned int UID) const
 {
 	if (UID != mRoot->GetID()) {
 		return mRoot->Find(UID);
@@ -359,13 +368,14 @@ update_status ModuleScene::PostUpdate(float dt)
 		DuplicateGameObjects();
 	}
 	if (mClosePrefab) {
-		SavePrefab(mRoot->GetChildren()[0], mPrefabPath);
+		int resourceId = SavePrefab(mRoot->GetChildren()[0], mPrefabPath);
 		delete mRoot;
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
-		mPrefabPath = "";
 		mRoot->SetEnabled(true);
+		LoadPrefab(mPrefabPath, resourceId, true);
 		mQuadtreeRoot->UpdateTree();
+		mPrefabPath = "";
 		mClosePrefab = false;
 	}
 	if (mPrefabPath != "" && mBackgroundScene == nullptr) {
@@ -374,7 +384,7 @@ update_status ModuleScene::PostUpdate(float dt)
 			mBackgroundScene = mRoot;
 			mBackgroundScene->SetEnabled(false);
 			mRoot = new GameObject(mPrefabPath, nullptr);
-			LoadPrefab(mPrefabPath);
+			LoadPrefab(mPrefabPath, resource->GetUID());
 			mQuadtreeRoot->UpdateTree();
 		}
 	}
