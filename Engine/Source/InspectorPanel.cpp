@@ -706,7 +706,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	ImGui::SeparatorText("Attributes");
 
-	std::vector<Member*> members = component->mScript->mMembers;
+	std::vector<Member*> members;
+
+	if (component->mScript) {
+		members = component->mScript->mMembers;
+	}
 
 	for (Member* member : members) {
 		switch (member->mType)
@@ -743,8 +747,6 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) 
 				{
-					//*(GameObject**)member->mData = *(GameObject**)payload->Data;
-					//*reinterpret_cast<GameObject**>((((char*)component->mScript) + member->mOffset)) = *(GameObject**)payload->Data;
 					*gameObject = *(GameObject**)payload->Data;
 				}
 				ImGui::EndDragDropTarget();

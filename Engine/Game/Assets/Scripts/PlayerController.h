@@ -5,7 +5,7 @@
 class NavMeshController;
 class AnimationComponent;
 
-BODY(PlayerController);
+GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {
     FRIEND(PlayerController)

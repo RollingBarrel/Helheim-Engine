@@ -7,14 +7,17 @@
 
 class GameObject;
 
-#define CLASS(classname, owner) \
-	using ClassType = classname; \
+#define CREATE(classname) \
+	using ClassType = classname;\
+	extern "C" SCRIPTING_API Script* Create##classname(GameObject* owner)
+
+#define CLASS(owner) \
 	ClassType* script = new ClassType(owner);
 
 #define MEMBER(type, member) \
 	script->mMembers.push_back(new Member(#member, type, offsetof(ClassType, member)))
 
-#define BODY(classname) \
+#define GENERATE_BODY(classname) \
 extern "C" \
 { \
    SCRIPTING_API Script* Create##classname(GameObject* owner); \
@@ -23,8 +26,7 @@ extern "C" \
 #define FRIEND(classname) \
 	friend SCRIPTING_API Script* Create##classname(GameObject* owner);
 
-#define CREATE(classname) \
-	extern "C" SCRIPTING_API Script* Create##classname(GameObject* owner)
+
 
 #define END_CREATE return script
 
