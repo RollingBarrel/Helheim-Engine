@@ -101,7 +101,7 @@ void::ScriptComponent::Save(Archive& archive) const
 			break;
 		case MemberType::GAMEOBJECT:
 		{
-			GameObject* gameObject = reinterpret_cast<GameObject*>((((char*)mScript) + member->mOffset));
+			GameObject* gameObject = *reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset));
 			gameObject ? dataArchive.AddInt("VariableData", (gameObject->GetID())) : dataArchive.AddInt("VariableData", -1);
 			//(*(GameObject**)data->mData) ? dataArchive.AddInt("VariableData", (*(GameObject**)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
 			
@@ -169,8 +169,11 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 							case MemberType::GAMEOBJECT:
 							{
 								int  UID = array[i]["VariableData"].GetInt();
+								//char* cursor = *reinterpret_cast<char**>(mScript);
+								//cursor += member->mOffset;
+								//GameObject* gameObject = reinterpret_cast<GameObject*>(cursor);
 								if (UID != -1) {
-									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject*>(UID, reinterpret_cast<GameObject*>((((char*)mScript) + member->mOffset))));
+									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset))));
 								}
 								break;
 							}

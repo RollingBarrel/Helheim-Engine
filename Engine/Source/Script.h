@@ -40,17 +40,6 @@ enum class  MemberType : int
 	
 };
 
-struct ScriptVariable {
-
-	const char* mName = nullptr;
-	MemberType mType = MemberType::NONE;
-	void* mData = nullptr;
-
-	ScriptVariable() {}
-	ScriptVariable(const char* name, MemberType type, void* data) : mName(name), mType(type), mData(data) {}
-};
-
-
 struct Member {
 	const char* mName = nullptr;
 	MemberType mType = MemberType::NONE;

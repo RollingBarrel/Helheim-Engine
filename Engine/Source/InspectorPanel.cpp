@@ -725,18 +725,17 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		case MemberType::GAMEOBJECT:
 		{
-
-			GameObject* gameObject = reinterpret_cast<GameObject*>((((char*)component->mScript) + member->mOffset));
+			GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)component->mScript) + member->mOffset));
 			ImGui::Text(member->mName);
 			ImGui::SameLine();
 			const char* str = "";
-			if (!gameObject)
+			if (!*gameObject)
 			{
 				str = "Drop a GameObject Here";
 			}
 			else 
 			{
-				str = gameObject->GetName().c_str();
+				str = (*gameObject)->GetName().c_str();
 			}
 			ImGui::BulletText(str);
 			if (ImGui::BeginDragDropTarget()) 
@@ -745,7 +744,8 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) 
 				{
 					//*(GameObject**)member->mData = *(GameObject**)payload->Data;
-					gameObject = *(GameObject**)payload->Data;
+					//*reinterpret_cast<GameObject**>((((char*)component->mScript) + member->mOffset)) = *(GameObject**)payload->Data;
+					*gameObject = *(GameObject**)payload->Data;
 				}
 				ImGui::EndDragDropTarget();
 			}

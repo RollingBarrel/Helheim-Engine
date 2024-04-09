@@ -21,25 +21,25 @@ CREATE(PlayerController)
 
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
     MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
-   // MEMBER(MemberType::GAMEOBJECT, mWinArea);
+    MEMBER(MemberType::GAMEOBJECT, mWinArea);
    // MEMBER(MemberType::GAMEOBJECT, mLoseArea);
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
     END_CREATE;
 
-    float mPlayerSpeed = 1;
-    float mPlayerRotationSpeed = 1.0f;
-    GameObject* mWinArea = nullptr;
-    GameObject* mLoseArea = nullptr;
-    GameObject* mAnimationComponentHolder = nullptr;
-    float mDashSpeed = 5.0f;
-    float mDashLenght = 5.0f;
-    float mDashCoolDown = 1.0f;
-    NavMeshController* mNavMeshControl = nullptr;
-    AnimationComponent* mAnimationComponent = nullptr;
-    bool mIsDashActive = false;
-    bool mStartCounter = false;
-    float mDashTimePassed = 0.0f;
-    float mDashMovement = 0;
+  // float mPlayerSpeed = 1;
+  // float mPlayerRotationSpeed = 1.0f;
+  // GameObject* mWinArea = nullptr;
+  // GameObject* mLoseArea = nullptr;
+  // GameObject* mAnimationComponentHolder = nullptr;
+  // float mDashSpeed = 5.0f;
+  // float mDashLenght = 5.0f;
+  // float mDashCoolDown = 1.0f;
+  // NavMeshController* mNavMeshControl = nullptr;
+  // AnimationComponent* mAnimationComponent = nullptr;
+  // bool mIsDashActive = false;
+  // bool mStartCounter = false;
+  // float mDashTimePassed = 0.0f;
+  // float mDashMovement = 0;
 }
 
 
