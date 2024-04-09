@@ -42,7 +42,7 @@ private:
 	CameraComponent* mCurrentCameraComponent = nullptr;
 
 	Ray mRay;
-	bool mDrawRayCast; 
+	bool mDrawRayCast = false; 
 	std::map<float, GameObject*> mIntersectMap;
 };
 

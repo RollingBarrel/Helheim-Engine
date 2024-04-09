@@ -94,7 +94,16 @@ Component* CameraComponent::Clone(GameObject* owner) const
 
 void CameraComponent::Reset()
 {
-	//mCamera = CameraUtils::InitiateCamera(float3(0.0f, 0.0f, 0.0f));
+    mFrustum.type = FrustumType::PerspectiveFrustum;
+    mFrustum.nearPlaneDistance = 0.01f;
+    mFrustum.farPlaneDistance = 1000.0f;
+
+    float w = static_cast<float>(App->GetWindow()->GetWidth());
+    float h = static_cast<float>(App->GetWindow()->GetHeight());
+    mAspectRatio = w / h;
+    mFrustum.verticalFov = math::pi / 4.0f;
+    mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * mAspectRatio);
+
 }
 
 
@@ -163,10 +172,43 @@ void CameraComponent::CameraComponentTransform(float3 vec)
 
 void CameraComponent::Save(Archive& archive) const
 {
-    //archive.AddInt("ID", mID);
-    //archive.AddInt("Camera", mCamera);
+    archive.AddInt("ComponentType", static_cast<int>(GetType()));
+    archive.AddFloat("AspectRatio", mAspectRatio);
+    archive.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
+    archive.AddFloat("FarPlane", mFrustum.farPlaneDistance);
+    archive.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
+
+    
 }
 
 void CameraComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+    
+    float w = static_cast<float>(App->GetWindow()->GetWidth());
+    float h = static_cast<float>(App->GetWindow()->GetHeight());
+
+    float aspectRatio = { w/h };
+    float nearPlane = { 0.01f };
+    float farPlane = { 1000.0f };
+    
+
+    if (data.HasMember("AspectRatio") && data["AspectRatio"].IsFloat()) {
+        aspectRatio = data["AspectRatio"].GetFloat();
+    }
+    if (data.HasMember("NearPlane") && data["NearPlane"].IsFloat()) {
+        nearPlane = data["NearPlane"].GetFloat();
+    }
+    if (data.HasMember("FarPlane") && data["FarPlane"].IsFloat()) {
+        farPlane = data["FarPlane"].GetFloat();
+    }
+    if (data.HasMember("IsOrtographic") && data["IsOrtographic"].IsBool()) {
+        if (data["IsOrtographic"].GetBool())
+            mFrustum.type = FrustumType::OrthographicFrustum;
+    }
+
+    SetAspectRatio(aspectRatio);
+    SetNearPlane(nearPlane);
+    SetFarPlane(farPlane);
+    
+
 }
