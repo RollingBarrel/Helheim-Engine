@@ -141,37 +141,36 @@ void PlayerController::Rotate() {
 
 void PlayerController::Dash()
 {
-    //if (App->GetInput()->GetKey(Keys::Keys_T) == KeyState::KEY_DOWN && !mStartCounter)
-    //{
-    //    mIsDashActive = true;
-    //}
-    //if (mIsDashActive)
-    //{
-    //    if (mDashMovement >= mDashLenght)
-    //    {
-    //        mStartCounter = false;
-    //        mDashMovement = 0;
-    //        mIsDashActive = false;
-    //    }
-    //    if (mStartCounter)
-    //    {
-    //        mDashTimePassed += App->GetGameDt();
-    //        if (mDashTimePassed >= mDashCoolDown)
-    //        {
-    //            mDashTimePassed = 0;
-    //            mStartCounter = true;
-    //         
-    //        }
-    //    }
-    //    else
-    //    {
-    //        mDashMovement += mDashSpeed * App->GetGameDt();
-    //        //mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mDashSpeed * App->GetGameDt());
-    //        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
-    //        mGameObject->SetPosition(mNavMeshControl->FindNearestPoint(newPos, float3(5.0f)));
-
-    //    }
-    //}
+    if (App->GetInput()->GetKey(Keys::Keys_T) == KeyState::KEY_DOWN && !mStartCounter)
+    {
+        mIsDashActive = true;
+    }
+    if (mIsDashActive)
+    {
+        if (mDashMovement >= mDashLenght)
+        {
+            mStartCounter = false;
+            mDashMovement = 0;
+            mIsDashActive = false;
+        }
+        if (mStartCounter)
+        {
+            mDashTimePassed += App->GetGameDt();
+            if (mDashTimePassed >= mDashCoolDown)
+            {
+                mDashTimePassed = 0;
+                mStartCounter = true;
+             
+            }
+        }
+        else
+        {
+            mDashMovement += mDashSpeed * App->GetGameDt();
+            //mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mDashSpeed * App->GetGameDt());
+            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
+            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+        }
+    }
 
 
 }

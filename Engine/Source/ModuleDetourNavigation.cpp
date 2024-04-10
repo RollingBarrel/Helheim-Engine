@@ -86,6 +86,9 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 	{
 		positionsPathResult.push_back({ positionPath[i * 3],positionPath[i * 3 + 1],positionPath[i * 3 + 2] });
 	}
+	delete[] positionPath;
+	delete[] polygonPath;
+	delete[] straightPathFlags;
 	return positionsPathResult;
 
 }
