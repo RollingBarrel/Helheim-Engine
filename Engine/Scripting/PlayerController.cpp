@@ -59,7 +59,8 @@ void PlayerController::Update()
 
 }
 
-void PlayerController::CheckRoute() {
+void PlayerController::CheckRoute() 
+{
     if (App->GetInput()->GetKey(Keys::Keys_P) == KeyState::KEY_REPEAT) 
     {
         float3 winPosition = mWinArea->GetPosition();
@@ -86,7 +87,8 @@ void PlayerController::CheckRoute() {
 
 }
 
-void PlayerController::Move() {
+void PlayerController::Move() 
+{
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
         //float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mPlayerSpeed);
         float3 newPos = (mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt() * mPlayerSpeed);
@@ -109,7 +111,8 @@ void PlayerController::Move() {
     }
 }
 
-void PlayerController::Win() {
+void PlayerController::Win() 
+{
     if (mWinArea) {
      float3 winPosition= mWinArea->GetPosition();
      float3 playerPosition = mGameObject->GetPosition();
@@ -122,7 +125,8 @@ void PlayerController::Win() {
 
 }
 
-void PlayerController::Lose() {
+void PlayerController::Lose() 
+{
     if (mWinArea) {
         float3 losePosition = mLoseArea->GetPosition();
         float3 playerPosition = mGameObject->GetPosition();
@@ -134,7 +138,8 @@ void PlayerController::Lose() {
 
 }
 
-void PlayerController::Rotate() {
+void PlayerController::Rotate() 
+{
 
         int mX, mY;
         App->GetInput()->GetMouseMotion(mX, mY);

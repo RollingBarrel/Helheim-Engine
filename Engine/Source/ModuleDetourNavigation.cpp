@@ -104,7 +104,8 @@ bool ModuleDetourNavigation::CleanUp()
 }
 
 
-void ModuleDetourNavigation::CreateDetourData() {
+void ModuleDetourNavigation::CreateDetourData() 
+{
 	//const AIAgentComponent* agentComponent = mAIAgentComponents[0];
 
 	NavMeshController* navController = App->GetScene()->GetNavController();
@@ -171,7 +172,8 @@ void ModuleDetourNavigation::CreateDetourData() {
 	}
 }
 
-float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize) {
+float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize) 
+{
 	dtPolyRef result;
 	dtQueryFilter temp;
 	float3 queryResult = float3(0.0f);
@@ -181,7 +183,8 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize) 
 
 
 
-void ModuleDetourNavigation::DrawDebug() {
+void ModuleDetourNavigation::DrawDebug() 
+{
 	float3 color = float3(1.0f, 0.0f, 0.0f);
 	App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
 
