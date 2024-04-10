@@ -35,5 +35,6 @@ private:
 	void* mHandle = nullptr;
 	bool mIsPlaying = false;
 	int64_t mLastModificationTime = 0;
+	size_t mPdbCounter = 0;
 };
 
