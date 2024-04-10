@@ -19,6 +19,8 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	void CreateDetourData();
+
+	float3 FindNearestPoint(float3 center, float3 halfSize);
 	void DrawDebug();
 	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 
