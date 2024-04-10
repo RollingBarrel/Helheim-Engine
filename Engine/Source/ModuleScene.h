@@ -42,6 +42,7 @@ public:
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
+	void ResetFrustumCulling(GameObject* obj);
 
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagid);
 	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
@@ -72,7 +73,7 @@ private:
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
 
-	Quadtree* mQuadtreeRoot;
+	Quadtree* mQuadtreeRoot = nullptr;
 	bool mDrawQuadtree = false;
 	bool mApplyculling = false;
 

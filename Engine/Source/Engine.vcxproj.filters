@@ -256,9 +256,6 @@
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="CameraUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -937,9 +934,6 @@
     </ClInclude>
     <ClInclude Include="ResourcePanel.h">
       <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraUtils.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="CameraComponent.h">
       <Filter>GameObjects\Components</Filter>
