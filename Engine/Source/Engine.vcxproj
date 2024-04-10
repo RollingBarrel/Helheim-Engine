@@ -109,6 +109,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\Optick\lib\x64\debug;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;OptickCore.lib;ws2_32.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;fmod_vc.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -141,6 +142,8 @@
       <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\Wwise\include\;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +152,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\Optick\lib\x64\release;$(ProjectDir)Dependencies\Wwise\x64_vc170\Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;OptickCore.lib;ws2_32.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;AkSoundEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -169,9 +173,9 @@
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
-    <ClCompile Include="CameraUtils.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
@@ -265,6 +269,7 @@
     <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
@@ -329,9 +334,9 @@
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="CameraComponent.h" />
-    <ClInclude Include="CameraUtils.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
     <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
     <ClInclude Include="DebugPanel.h" />
@@ -459,6 +464,7 @@
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ModuleEvent.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ImageComponent.h" />

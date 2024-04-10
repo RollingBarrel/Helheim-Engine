@@ -15,8 +15,8 @@ typedef struct DirectionalAmbient {
 
 class PointLightComponent;
 class SpotLightComponent;
-class PointLight;
-class SpotLight;
+struct PointLight;
+struct SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;

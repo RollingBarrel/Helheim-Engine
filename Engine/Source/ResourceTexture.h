@@ -40,7 +40,7 @@ public:
 	unsigned int GetNumPixels() const { return mNumPixels; }
 	bool HasAlpha() const { return mHasAlpha; }
 	unsigned int GetOpenGLId() const { return mOpenGLId; }
-	unsigned int GetTextureHandle() const { return mTexHandle; }
+	unsigned int GetTextureHandle() const { return static_cast<unsigned int>(mTexHandle); }
 
 private:
 	unsigned int mWidth;

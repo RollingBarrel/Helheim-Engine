@@ -40,6 +40,8 @@ public:
     unsigned int GetTotalFrames() const { return mTotalFrames; }
     void SetTotalFrames(unsigned int gameFrames) { mTotalFrames += gameFrames; }    //Adds the frames of the game execution to the total frames of the engine
 
+    bool IsFpsLimitEnabled() const { return mFpsLimitEnabled; }
+    void EnableFpsLimit(bool enable) { mFpsLimitEnabled = enable; }
     unsigned int GetFpsLimit() const { return mFpsLimit; }
     void SetFpsLimit(unsigned int limit) { mFpsLimit = limit; }
 
@@ -77,6 +79,7 @@ private:
 
     unsigned long mDeltaTime = 0;   //Time of the last frame
 
+    bool mFpsLimitEnabled = true;
     unsigned int mFpsLimit = 60;    //Limit of FPS
 
     float mUpdateTime = 0;           //Time since last FPS calculation (reset every 500 ms)
@@ -99,7 +102,7 @@ private:
 
     long mFrameDelay = 0;               //Time in ms the last frame was delayed for
 
-    long mSlowestFrameTime = 0;
+    unsigned long mSlowestFrameTime = 0;
     int mSlowestFrame = 0;
 
     //Vsync

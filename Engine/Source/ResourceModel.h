@@ -23,9 +23,9 @@ struct ModelNode
 
 	bool mHasTransform = false;
 	//Components
-	int mMeshId;
-	int mCameraId;
-	int mSkinId;
+	int mMeshId = -1;
+	int mCameraId = -1;
+	int mSkinId = -1;
 };
 
 class ResourceModel : public Resource

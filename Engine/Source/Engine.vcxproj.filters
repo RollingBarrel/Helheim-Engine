@@ -256,9 +256,6 @@
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="CameraUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -412,9 +409,6 @@
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Script.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -458,7 +452,6 @@
     <ClCompile Include="SettingsPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ResourceObject.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -477,6 +470,21 @@
     </ClCompile>
     <ClCompile Include="AudioListenerComponent.cpp">
       <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEvent.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleDetourNavigation.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Utils\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -937,9 +945,6 @@
     <ClInclude Include="ResourcePanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="CameraUtils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="CameraComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
@@ -1054,8 +1059,6 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="Script.h">
-    </ClInclude>
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -1133,7 +1136,6 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
-    <ClInclude Include="ModuleDetourNavigation.h" />
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
@@ -1182,6 +1184,22 @@
     </ClInclude>
     <ClInclude Include="AudioListenerComponent.h">
       <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageComponent.h" />
+    <ClInclude Include="ModuleDetourNavigation.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEvent.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Utils\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1274,6 +1292,9 @@
     </Filter>
     <Filter Include="Dependencies\FMOD">
       <UniqueIdentifier>{50e594d7-4ca7-4694-9414-b607c6890154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Scripting">
+      <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

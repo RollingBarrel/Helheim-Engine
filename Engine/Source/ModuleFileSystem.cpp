@@ -232,7 +232,9 @@ bool ModuleFileSystem::CreateDirectory(const char* directory) const
             LOG("Error creating file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));            
             return false;
         }
-    }  
+    }
+
+    return false;
 }
 
 bool ModuleFileSystem::Exists(const char* filePath) const

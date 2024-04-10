@@ -24,6 +24,8 @@
  *
  *  This is a general header that includes C language support.
  */
+#pragma warning( push )
+#pragma warning( disable : 26819 )
 
 #ifndef SDL_stdinc_h_
 #define SDL_stdinc_h_
@@ -692,3 +694,5 @@ SDL_FORCE_INLINE void *SDL_memcpy4(SDL_OUT_BYTECAP(dwords*4) void *dst, SDL_IN_B
 #endif /* SDL_stdinc_h_ */
 
 /* vi: set ts=4 sw=4 expandtab: */
+
+#pragma warning( pop )

@@ -17,6 +17,10 @@
 	@brief */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
+
 MATH_BEGIN_NAMESPACE
 
 /// A complex value of form a + bi.
@@ -65,3 +69,7 @@ Q_DECLARE_METATYPE(Complex*)
 #endif
 
 MATH_END_NAMESPACE
+
+
+#pragma warning( pop )
+

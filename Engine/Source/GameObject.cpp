@@ -28,8 +28,17 @@
 #include "Quadtree.h"
 #include <regex>
 
-GameObject::GameObject(GameObject* parent)
-	:mID(LCG().Int()), mName("GameObject"), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
+
+GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
+{
+}
+
+GameObject::GameObject(const char* name, GameObject* parent) : GameObject(LCG().Int(), name, parent)
+{
+}
+
+GameObject::GameObject(unsigned int ID, const char* name, GameObject* parent)
+	:mID(ID), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
 	mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot) {
@@ -38,28 +47,12 @@ GameObject::GameObject(GameObject* parent)
 		parent->AddChild(this);
 		AddSuffix();
 	}
-	
-
 }
 
-GameObject::GameObject(const GameObject& original)
-	:mID(LCG().Int()), mName(original.mName), mParent(original.mParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(original.mIsActive),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix), mTag(original.GetTag())
+GameObject::GameObject(const GameObject& original) : GameObject(original, original.mParent)
 {
-
 	if (mParent) {
 		AddSuffix();
-	}
-
-	for (auto child : original.mChildren) {
-		GameObject* gameObject = new GameObject(*(child), this);
-		gameObject->mParent = this;
-		mChildren.push_back(gameObject);
-	}
-
-	for (auto component : original.mComponents) {
-		mComponents.push_back(component->Clone(this));
 	}
 }
 
@@ -81,17 +74,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	}
 }
 
-GameObject::GameObject(const char* name, GameObject* parent)
-	:mID(LCG().Int()), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
-	mIsRoot(parent == nullptr)
-{
 
-	if (!mIsRoot) {
-		mWorldTransformMatrix = mParent->GetWorldTransform();
-		mIsActive = parent->mIsActive;
-		parent->AddChild(this);
-	}
-}
 
 GameObject::~GameObject()
 {
@@ -135,14 +118,18 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	
+	mWorldTransformMatrix =  mLocalTransformMatrix;
+	if (mParent != nullptr)
+	{
+		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+	}
+	
 
-	mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
-
-	for (size_t i = 0; i < mChildren.size(); i++) {
+	for (size_t i = 0; i < mChildren.size(); i++) 
+	{
 		mChildren[i]->RecalculateMatrices();
 	}
-
-	isTransformModified = false;
 
 }
 
@@ -150,6 +137,11 @@ void GameObject::Update()
 {
 	if (IsActive())
 	{
+		if (isTransformModified)
+		{
+			RecalculateMatrices();
+			RefreshBoundingBoxes();
+		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
 			mComponents[i]->Update();
@@ -160,10 +152,7 @@ void GameObject::Update()
 		}
 
 		DeleteComponents();
-		if (isTransformModified) {
-			RecalculateMatrices();
-			RefreshBoundingBoxes();
-		}
+		isTransformModified = false;
 	}
 }
 
@@ -172,11 +161,6 @@ void GameObject::ResetTransform()
 	SetPosition(float3::zero);
 	SetRotation(float3::zero);
 	SetScale(float3::one);
-
-	if (GetComponent(ComponentType::CAMERA) != nullptr) {
-		CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
-		camera->Reset();
-	}
 }
 
 void GameObject::SetEnabled(bool enabled)
@@ -228,16 +212,9 @@ void GameObject::SetRotation(const Quat& rotation)
 
 void GameObject::SetPosition(const float3& position)
 {
-	float3 difference = position - mPosition;
-
 	mPosition = position;
 
 	isTransformModified = true;
-
-	if (GetComponent(ComponentType::CAMERA) != nullptr) {
-		CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
-		camera->SetPosition(difference);
-	}
 }
 
 void GameObject::SetScale(const float3& scale)
@@ -714,7 +691,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	GameObject* go;
 
 	if (parentUID == 1) {
-		go = new GameObject(name, scene);
+		go = new GameObject(uuid, name, scene);
 		go->SetPosition(position);
 		go->SetRotation(rotation);
 		go->SetScale(scale);
@@ -725,7 +702,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	else {
 		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
-		go = new GameObject(name, gameObjectParent);
+		go = new GameObject(uuid, name, gameObjectParent);
 		go->SetPosition(position);
 		go->SetRotation(rotation);
 		go->SetScale(scale);
@@ -763,6 +740,18 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 		return nullptr;
 	}
 
+}
+
+const bool GameObject::HasUpdatedTransform() const
+{
+	if (!isTransformModified && mParent != nullptr)
+	{
+		if (mParent->HasUpdatedTransform())
+		{
+			return true;
+		}
+	}
+	return isTransformModified;
 }
 
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)

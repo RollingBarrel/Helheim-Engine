@@ -4,7 +4,6 @@
 #include "Geometry/AABB.h"
 
 class Mesh;
-struct Material;
 class ResourceMesh;
 class ResourceMaterial;
 class GeometryBatch;

@@ -44,7 +44,7 @@ static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* inter
     float* ret = new float[numVertices * attributeNumFloats];
     unsigned int floatOffset = attr.offset / sizeof(float);
     unsigned int j = 0;
-    for (int i = 0; i < numVertices; ++i)
+    for (unsigned int i = 0; i < numVertices; ++i)
     {
         const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize / sizeof(float) + floatOffset];
         for (unsigned int j = 0; j < attributeNumFloats; ++j)
@@ -143,7 +143,7 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
     const char* vertices = reinterpret_cast<const char*>(vertexData);
     char* unweldedVertices = new char[numIndices * vertexSize];
 
-    for (int i = 0; i < numIndices; ++i)
+    for (unsigned int i = 0; i < numIndices; ++i)
     {
         memcpy(&unweldedVertices[i * vertexSize], &vertices[indexData[i] * vertexSize], vertexSize);
     }
@@ -473,7 +473,7 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
 
         std::vector<Attribute> attributes;
         std::vector<float*> attributesData;
-        for (int i = 0; i < numAttributes; ++i)
+        for (unsigned int i = 0; i < numAttributes; ++i)
         {
             Attribute* attr = reinterpret_cast<Attribute*>(cursor);
             attributes.push_back(*attr);

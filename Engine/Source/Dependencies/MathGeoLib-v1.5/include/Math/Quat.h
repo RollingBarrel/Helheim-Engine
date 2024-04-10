@@ -17,6 +17,10 @@
 	@brief Quaternions represent rotations and orientations of 3D objects. */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
+
 #include "../MathBuildConfig.h"
 #include "SSEMath.h"
 
@@ -446,3 +450,6 @@ Q_DECLARE_METATYPE(Quat*)
 #endif
 
 MATH_END_NAMESPACE
+
+#pragma warning( pop )
+

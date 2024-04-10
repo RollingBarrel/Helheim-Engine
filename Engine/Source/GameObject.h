@@ -26,10 +26,12 @@ class ENGINE_API GameObject
 
 public:
 	GameObject(GameObject* parent);
+	GameObject(const char* name, GameObject* parent);
+	GameObject(unsigned int ID, const char* name, GameObject* parent);
+
 	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
-	GameObject(const char* name, GameObject* parent);
-
+	
 	~GameObject();
 
 	void RecalculateMatrices();
@@ -38,15 +40,15 @@ public:
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mEulerRotation; }
-	const float3& GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
+	float3 GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
 	const float3& GetPosition() const { return mPosition; }
-	const float3& GetScale() const { return mLocalTransformMatrix.GetScale(); }
+	const float3& GetScale() const { return mScale; }
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
-	const float3& GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); }
-	const float3& GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
-	const float3& GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
+	float3 GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); } 
+	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
+	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
 
 	void ResetTransform();
@@ -81,6 +83,7 @@ public:
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
+	const bool HasUpdatedTransform() const;
 
 private:
 	GameObject* RemoveChild(const int id);

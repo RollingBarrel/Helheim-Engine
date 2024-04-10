@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "ResourceScript.h"
 
 class Script;
 
@@ -27,6 +28,7 @@ public:
 	
 
 private:
+	ResourceScript* mResourceScript = nullptr;
 	Script* mScript = nullptr;
 	std::string mName = "";
 	std::vector<ScriptVariable*> mData;

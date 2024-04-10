@@ -17,6 +17,10 @@
 	@brief The Cylinder geometry object. */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
+
 #include "../MathGeoLibFwd.h"
 #include "LineSegment.h"
 
@@ -69,3 +73,5 @@ public:
 
 };
 MATH_END_NAMESPACE
+
+#pragma warning( pop )

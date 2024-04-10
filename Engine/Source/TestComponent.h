@@ -1,8 +1,7 @@
 #pragma once
 #include "Component.h"
 
-class Material;
-struct Mesh;
+class Mesh;
 
 class ENGINE_API TestComponent : public Component
 {

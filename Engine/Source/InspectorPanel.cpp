@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
+#include "ModuleCamera.h"
 #include "ModuleFileSystem.h"
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
@@ -169,6 +170,7 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 			}
 
 			if (modifiedTransform) {
+
 				object->SetPosition(newPosition);
 				object->SetRotation(DegToRad(newRotation));
 				object->SetScale(newScale);
@@ -616,47 +618,55 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
 	ImGui::SeparatorText("Camera");
 
-	float Near = component->GetNearPlane();
-	float* NearBar = &Near;
-	const char* NearLabel = "NearPlane";
+	static float nearPlane = component->GetNearPlane();
+	const char* nearLabel = "##NearPlane";
 
-	float Far = component->GetFarPlane();
-	float* FarBar = &Far;
-	const char* FarLabel = "FarPlane";
+	static float farPlane = component->GetFarPlane();
+	const char* farLabel = "##FarPlane";
 
-	float FOV = RadToDeg(component->GetVerticicalFOV());
-	float* FOVBar = &FOV;
-	const char* FOVLabel = "FOV";
+	static float FOV = RadToDeg(component->GetVerticicalFOV());
+	const char* FOVLabel = "##FOV";
 
-	bool modifiedValue = false;
-
-	ImGui::PushID(NearLabel);
+	ImGui::PushID(nearLabel);
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Near Plane");
 	ImGui::SameLine();
-	modifiedValue = ImGui::DragFloat(NearLabel, &(*NearBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	if (ImGui::DragFloat(nearLabel, &nearPlane, 0.05f, 0.0f, 2000, "%.2f"))
+	{
+		component->SetNearPlane(nearPlane);
+	}
 	ImGui::PopID();
 
-	ImGui::PushID(FarLabel);
+	ImGui::PushID(farLabel);
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Far Plane");
 	ImGui::SameLine();
-	modifiedValue = ImGui::DragFloat(FarLabel, &(*FarBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	if (ImGui::DragFloat(farLabel, &farPlane, 0.05f, 0.0f, 2000, "%.2f"))
+	{
+		component->SetFarPlane(farPlane);
+	}
 	ImGui::PopID();
 
 	ImGui::PushID(FOVLabel);
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("FOV");
 	ImGui::SameLine();
-	modifiedValue = ImGui::DragFloat(FOVLabel, &(*FOVBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
+	if (ImGui::DragFloat(FOVLabel, &FOV, 0.05f, 0.0f, 2000, "%.2f"))
+	{
+		component->SetFOV(FOV);
+	}
 	ImGui::PopID();
 
-	if (modifiedValue)
+	if(ImGui::Button("Make Current Camera"))
 	{
-		component->SetNearPlane(Near);
-		component->SetFarPlane(Far);
-		component->SetVerticicalFOV(DegToRad(FOV));
+		App->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
 	}
+
+	if (ImGui::Button("Return To Editor Camera"))
+	{
+		App->GetCamera()->ActivateEditorCamera();
+	}
+
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling
@@ -667,31 +677,31 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	const char* currentItem = component->GetScriptName();
 
-	if (ImGui::BeginCombo("##combo", currentItem)) // The second parameter is the label previewed before opening the combo.
+	if (ImGui::BeginCombo("##combo", currentItem)) 
 	{
 		std::vector<std::string> scriptNames;
 		App->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
 		for (int i = 0; i < scriptNames.size(); ++i)
 		{
-			// Find the position of the last occurrence of '/'
+			
 			size_t slashPos = scriptNames[i].find_last_of('/');
 			if (slashPos != std::string::npos)
 			{
-				// Erase the part before the last '/'
+				
 				scriptNames[i].erase(0, slashPos + 1);
 			}
-			// Find the position of the first occurrence of '.'
+			
 			size_t dotPos = scriptNames[i].find_first_of('.');
 			if (dotPos != std::string::npos)
 			{
-				// Erase the part starting from the first '.'
+				
 				scriptNames[i].erase(dotPos);
 			}
 		}
 
 		for (int n = 0; n < scriptNames.size(); n++)
 		{
-			bool is_selected = (currentItem == scriptNames[n]); // You can store your selection however you want, outside or inside your objects
+			bool is_selected = (currentItem == scriptNames[n]); 
 			if (ImGui::Selectable(scriptNames[n].c_str(), is_selected)) {
 				currentItem = scriptNames[n].c_str();
 				component->LoadScript(currentItem);
@@ -699,7 +709,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			}
 
 			if (is_selected) {
-				ImGui::SetItemDefaultFocus(); // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+				ImGui::SetItemDefaultFocus();
 			}
 
 		}
