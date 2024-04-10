@@ -51,7 +51,8 @@ void PlayerController::Update()
         float distance = 100;
         hits = Physics::Raycast(&ray);
         Debug::DrawLine(ray.pos, ray.dir*distance, float3(1.0f, 0.0f, 0.0f));
-        for (const auto& hit : hits) {
+        for (const auto& hit : hits)
+        {
             LOG("Object %s has been hit at distance: %f", hit.second->GetName().c_str(), hit.first);
         }
     }
@@ -59,20 +60,24 @@ void PlayerController::Update()
 }
 
 void PlayerController::CheckRoute() {
-    if (App->GetInput()->GetKey(Keys::Keys_P) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_P) == KeyState::KEY_REPEAT) 
+    {
         float3 winPosition = mWinArea->GetPosition();
         float3 playerPosition = mGameObject->GetPosition();
         std::vector<float3> pathPoints = App->GetNavigation()->FindNavPath(playerPosition, winPosition);
 
         for (size_t i = 0; i < pathPoints.size() - 1; i++)
         {
-            if (i == 0) {
+            if (i == 0) 
+            {
                 Debug::DrawLine(playerPosition, pathPoints[i], float3(1.0f, 0.0f, 0.0f));
             }
-            else if (i < pathPoints.size()-1) {
+            else if (i < pathPoints.size()-1) 
+            {
                 Debug::DrawLine(pathPoints[i], pathPoints[i + 1], float3(1.0f, 0.0f, 0.0f));
             }
-            else {
+            else 
+            {
                 Debug::DrawLine(pathPoints[i], winPosition, float3(1.0f, 0.0f, 0.0f));
             }
         
