@@ -55,7 +55,8 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 ScriptComponent::~ScriptComponent()
 {
 	App->GetScriptManager()->RemoveScript(this);
-
+	App->GetResource()->ReleaseResource(mResourceScript->GetUID());
+	mResourceScript = nullptr;
 	//delete mScript; //Memory leack here, this shouldbe fixed.
 }
 
