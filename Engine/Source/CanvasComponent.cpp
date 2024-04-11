@@ -3,15 +3,18 @@
 #include "Application.h"
 #include "ImageComponent.h"
 #include "ModuleWindow.h"
+#include "Application.h"
+#include "ScenePanel.h"
+#include "ModuleEditor.h"
 
 CanvasComponent::CanvasComponent(bool active, GameObject* owner): Component(owner, ComponentType::CANVAS), 
-	mScreenReferenceSize(1920, 1080),
+	//mScreenReferenceSize(1920, 1080),
 	mSize(1920, 1080),
 	mScreenFactor(0.0f) {
 }
 
 CanvasComponent::CanvasComponent(GameObject* owner) : Component(owner, ComponentType::CANVAS),
-	mScreenReferenceSize(1920, 1080),
+	//mScreenReferenceSize(1920, 1080),
 	mSize(1920, 1080),
 	mScreenFactor(0.0f) {
 }
@@ -22,7 +25,7 @@ CanvasComponent:: ~CanvasComponent()
 
 void CanvasComponent::Update() 
 {
-
+	RecalculateSizeAndScreenFactor();
 };
 
 Component* CanvasComponent::Clone(GameObject* owner) const 
@@ -38,10 +41,11 @@ void CanvasComponent::Reset()
 
 void CanvasComponent::RecalculateSizeAndScreenFactor()
 {
-	mSize = float2(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+	//mSize = float2(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+	mSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
 
-	float2 factor = mSize.Div(mScreenReferenceSize);
-	mScreenFactor = factor.x < factor.y ? factor.x : factor.y;
+	//float2 factor = mSize.Div(mScreenReferenceSize);
+	//mScreenFactor = factor.x < factor.y ? factor.x : factor.y;
 }
 
 void CanvasComponent::Save(Archive& archive)const 
@@ -50,7 +54,7 @@ void CanvasComponent::Save(Archive& archive)const
 
 	archive.AddFloat2("Size", mSize);
 	archive.AddFloat("ScreenFactor", mScreenFactor);
-	archive.AddFloat2("ScreenReferenceSize", mScreenReferenceSize);
+	//archive.AddFloat2("ScreenReferenceSize", mScreenReferenceSize);
 };
 
 void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
@@ -70,7 +74,7 @@ void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* own
 	if (data.HasMember("ScreenFactor") && data["ScreenFactor"].IsFloat()) {
 		mScreenFactor = data["ScreenFactor"].GetFloat();
 	}
-	if (data.HasMember("ScreenReferenceSize") && data["ScreenReferenceSize"].IsArray()) {
+	/*if (data.HasMember("ScreenReferenceSize") && data["ScreenReferenceSize"].IsArray()) {
 		const rapidjson::Value& values = data["ScreenReferenceSize"];
 		float x{ 0.0f }, y{ 0.0f };
 		if (values.Size() == 2 && values[0].IsFloat() && values[1].IsFloat()) {
@@ -79,7 +83,7 @@ void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* own
 		}
 
 		mScreenReferenceSize = float2(x, y);
-	}
+	}*/
 
 	RecalculateSizeAndScreenFactor();
 };

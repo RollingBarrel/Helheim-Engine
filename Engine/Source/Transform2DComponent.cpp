@@ -30,6 +30,7 @@ Component* Transform2DComponent::Clone(GameObject* owner) const
 
 void Transform2DComponent::Reset()
 {
+	ResetTransform();
 }
 
 void Transform2DComponent::Save(Archive& archive) const
@@ -152,16 +153,17 @@ float3 Transform2DComponent::GetPositionRelativeToParent()
 		CanvasComponent* parentCanvas = (CanvasComponent*) parent->GetComponent(ComponentType::CANVAS);
 		Transform2DComponent* parentTransform2D = (Transform2DComponent*) parent->GetComponent(ComponentType::TRANSFORM2D);
 
-		if (parentTransform2D != nullptr)
+		if (parentCanvas != nullptr)
 		{
-			if (parentCanvas != nullptr)
-			{
-				parentSize = parentCanvas->GetSize() / parentCanvas->GetScreenFactor();
-			}
-			else
+			parentSize = parentCanvas->GetSize(); // / parentCanvas->GetScreenFactor();
+		}
+		else
+		{
+			if (parentTransform2D != nullptr)
 			{
 				parentSize = parentTransform2D->GetSize();
-			}
+				
+			}	
 		}
 	}
 
@@ -207,7 +209,8 @@ void Transform2DComponent::ResetTransform() {
 
 void Transform2DComponent::SetPosition(const float3& position)
 { 
-	mPosition = position; CalculateMatrices();
+	mPosition = position; 
+	CalculateMatrices();
 }
 
 void Transform2DComponent::SetRotation(const float3& rotation)

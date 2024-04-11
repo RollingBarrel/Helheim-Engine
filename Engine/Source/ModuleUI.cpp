@@ -134,27 +134,29 @@ void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height) {
 	float heightFrustum = height;
 	float widthFrustum = width;
 
-	mUIfrustum->orthographicWidth = widthFrustum; //Change with canvas width
-	mUIfrustum->orthographicHeight = heightFrustum; //Change with canvas height
+	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
+
+	mUIfrustum->orthographicWidth = scenePanel->GetWindowsSize().x;  //widthFrustum; //Change with canvas width
+	mUIfrustum->orthographicHeight = scenePanel->GetWindowsSize().y;  //heightFrustum; //Change with canvas height
 }
 
 void ModuleUI::CheckRaycast()
 {
 	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
 
-	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
-	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
+	float mouseSceneX = scenePanel->GetMousePosition().x - scenePanel->GetWindowsPos().x;
+	float mouseSceneY = scenePanel->GetMousePosition().y - scenePanel->GetWindowsPos().y;
 
 	//float2 pos = scenePanel->GetWindowsPos();
 
-	//float normalizedX = (mouseAbsoluteX-pos.x) - scenePanel->GetWindowsSize().x / 2;
-	//float normalizedY = -((mouseAbsoluteY-pos.y) - scenePanel->GetWindowsSize().y / 2);
+	float mouseX = (mouseSceneX) - scenePanel->GetWindowsSize().x / 2;
+	float mouseY = -((mouseSceneY) - scenePanel->GetWindowsSize().y / 2);
 
-	float normalizedX = (- 1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x) * (float)scenePanel->GetWindowsSize().x;
-	float normalizedY = (1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y) * (float)scenePanel->GetWindowsSize().y;
+	//float normalizedX = (- 1.0 + 2.0 * (float)(mouseSceneX) / (float)scenePanel->GetWindowsSize().x) * (float)scenePanel->GetWindowsSize().x;
+	//float normalizedY = (1.0 - 2.0 * (float)(mouseSceneY) / (float)scenePanel->GetWindowsSize().y) * (float)scenePanel->GetWindowsSize().y;
 
-	float mouseX = normalizedX - 70;
-	float mouseY = normalizedY + 70;
+	//float mouseX = normalizedX - 70;
+	//float mouseY = normalizedY + 70;
 	
 	if (!mCanvas->GetChildren().empty()) {
 		for (GameObject* gameObject : mCanvas->GetChildren())
