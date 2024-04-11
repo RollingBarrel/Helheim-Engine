@@ -1408,5 +1408,11 @@
     </None>
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
