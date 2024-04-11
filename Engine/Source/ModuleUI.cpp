@@ -60,11 +60,9 @@ update_status ModuleUI::PreUpdate(float dt) {
 		mCurrentFrustum = mUIfrustum;
 		mUIfrustum->orthographicWidth = App->GetWindow()->GetWidth();
 		mUIfrustum->orthographicHeight = App->GetWindow()->GetHeight();
-		//glEnable(GL_DEPTH_TEST);
 	}
 	else {
 		mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
-		//glDisable(GL_DEPTH_TEST);
 	}
 
 	// Draw the UI
@@ -88,8 +86,6 @@ update_status ModuleUI::PostUpdate(float dt) {
 };
 
 bool ModuleUI::CleanUp() {
-
-
 
 	delete mUIfrustum;
 
@@ -149,8 +145,17 @@ void ModuleUI::CheckRaycast()
 	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
 	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
 
-	float normalizedX = mouseAbsoluteX - scenePanel->GetWindowsSize().x / 2;
-	float normalizedY = -(mouseAbsoluteY - scenePanel->GetWindowsSize().y / 2);
+	//float2 pos = scenePanel->GetWindowsPos();
+
+	//float normalizedX = (mouseAbsoluteX-pos.x) - scenePanel->GetWindowsSize().x / 2;
+	//float normalizedY = -((mouseAbsoluteY-pos.y) - scenePanel->GetWindowsSize().y / 2);
+
+	float normalizedX = (- 1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x) * (float)scenePanel->GetWindowsSize().x;
+	float normalizedY = (1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y) * (float)scenePanel->GetWindowsSize().y;
+
+	float mouseX = normalizedX - 70;
+	float mouseY = normalizedY + 70;
+	
 	if (!mCanvas->GetChildren().empty()) {
 		for (GameObject* gameObject : mCanvas->GetChildren())
 		{
@@ -158,13 +163,12 @@ void ModuleUI::CheckRaycast()
 			Transform2DComponent* transform2D = (Transform2DComponent*)gameObject->GetComponent(ComponentType::TRANSFORM2D);
 			if (image != nullptr && transform2D != nullptr)
 			{
-				//float2 offset = float2(image->GetImage()->GetWidth(), image->GetImage()->GetHeight()) / 2.0f;
-				//float2 screenOffset = scenePanel->GetWindowsSize() / 2.0f;
-				float2 minImagePoint = transform2D->GetGlobalPosition().xy() - transform2D->GetSize();
-				float2 maxImagePoint = transform2D->GetGlobalPosition().xy() + transform2D->GetSize();
+				float2 minImagePoint = transform2D->GetGlobalPosition().xy() - transform2D->GetSize()/2;
+				float2 maxImagePoint = transform2D->GetGlobalPosition().xy() + transform2D->GetSize()/2;
+				
 				// Check if the mouse position is inside the bounds of the image
-				if (normalizedX >= minImagePoint.x && normalizedY >= minImagePoint.y &&
-					normalizedX <= maxImagePoint.x && normalizedY <= maxImagePoint.y)
+				if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y &&
+					mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y)
 				{
 					LOG("Button Clicked");
 					//ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
@@ -172,6 +176,7 @@ void ModuleUI::CheckRaycast()
 					//{
 					//	button->OnClicked();
 					//}
+					image->SetColor((image->GetColor()->x == 1.0f) ? float3(0, 0, 0) : float3(1, 1, 1));
 				}
 			}
 		}
