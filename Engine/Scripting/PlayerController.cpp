@@ -52,6 +52,8 @@ void PlayerController::Update()
     Lose();
     Dash();
 
+
+    LOG("hfadsfsdafs");
     if (mAnimationComponent) {
         mAnimationComponent->OnUpdate();
     }

@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include <Windows.h>
 #include <string>
+#include "ModuleInput.h"
 
 static bool PDBReplace(const std::string& filename, const std::string& namePDB);
 
@@ -19,16 +20,16 @@ ModuleScriptManager::~ModuleScriptManager()
 
 bool ModuleScriptManager::Init()
 {
-
-	mLastModificationTime = App->GetFileSystem()->GetLastModTime("../Scripting/Output/Scripting.dll");
-	HotReload();
+	mHandle = LoadLibrary("Scripting.dll");
+	mLastModificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
+	//HotReload();
 	return true;
 }
 
 update_status ModuleScriptManager::PreUpdate(float dt)
 {
-	int64_t modificationTime = App->GetFileSystem()->GetLastModTime("../Scripting/Output/Scripting.dll");
-	if (mLastModificationTime != modificationTime)
+	int64_t modificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
+	if (mLastModificationTime != modificationTime && App->GetInput()->GetKey(KeyboardKeys_Q)==KeyState::KEY_DOWN)
 	{
 		mLastModificationTime = modificationTime;
 		HotReload();
@@ -105,15 +106,18 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 void ModuleScriptManager::HotReload()
 {
 	
+
+
 	FreeLibrary(static_cast<HMODULE>(mHandle));
-	bool replaced = PDBReplace("./Scripting.dll", "../Scripting/Output/Scripting.pdb");
+	//bool replaced = PDBReplace("./Scripting.dll", "../Scripting/Output/Scripting.pdb");
 	while (CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false) == FALSE) {}
-	while (CopyFile("../Scripting/Output/Scripting.pdb", "./Scripting.pdb", false) == FALSE) {}
-	replaced = PDBReplace("./Scripting.dll", "./Scripting.pdb");
+	 //while (CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll") == FALSE) {}
+	//while (CopyFile("../Scripting/Output/Scripting.pdb", "./Scripting.pdb", false) == FALSE) {}
+	bool replaced = PDBReplace("./Scripting.dll", "./Scripting.pdb");
 	mHandle = LoadLibrary("Scripting.dll");
 	ReloadScripts();
 
-	mPdbCounter++;
+	//mPdbCounter++;
 }
 
 void ModuleScriptManager::ReloadScripts()

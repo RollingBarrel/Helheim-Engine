@@ -21,6 +21,7 @@ ModuleFileSystem::ModuleFileSystem()
         LOG("File System error while creating write dir: %s\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
     }
 
+    AddToSearchPath("../Scripting/Output");
     AddToSearchPath(".");
     //AddToSearchPath(LIBRARY_PATH);
     //AddToSearchPath(ASSETS_PATH);
