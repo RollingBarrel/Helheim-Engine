@@ -12,7 +12,7 @@
 struct WindowState 
 {
 	std::string name;
-	bool IsOpen;
+	bool IsOpen = false;
 	ImVec2 position;
 	ImVec2 size;
 };

@@ -28,5 +28,5 @@ private:
 
     float2 mSize;
     float mScreenFactor;
-    //float2 mScreenReferenceSize;
+    float2 mScreenReferenceSize;
 };

@@ -256,9 +256,6 @@
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="CameraUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -461,7 +458,9 @@
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
+    <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="ModuleEvent.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -945,9 +944,6 @@
     <ClInclude Include="ResourcePanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="CameraUtils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="CameraComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
@@ -1262,7 +1258,9 @@
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
+    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="HelheimEvent.h" />
+    <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="ModuleDetourNavigation.h">
       <Filter>Modules</Filter>
     </ClInclude>

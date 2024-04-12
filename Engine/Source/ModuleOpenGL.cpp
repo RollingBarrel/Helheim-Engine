@@ -13,6 +13,8 @@
 #include "BatchManager.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "CameraComponent.h"
+
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -138,7 +140,7 @@ bool ModuleOpenGL::Init()
 	//Lighting uniforms
 	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
 	glUseProgram(program);
-	glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
+	glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 	glUseProgram(0);
 
 	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirAmb), &mDirAmb);
@@ -217,7 +219,6 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
-	App->GetCamera()->WindowResized(width, height);
 	SetOpenGlCameraUniforms();
 }
 
@@ -225,8 +226,8 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
-	App->GetCamera()->WindowResized(width, height);
-	App->GetUI()->ResizeFrustum(width, height);
+	((CameraComponent*)App->GetCamera()->GetCurrentCamera())->SetAspectRatio((float)width / (float)height);
+	App->GetUI()->ResizeFrustum(width, height); // Necessary?
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -239,11 +240,11 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
 	if (mCameraUniBuffer != nullptr)
 	{
-		mCameraUniBuffer->UpdateData(App->GetCamera()->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(App->GetCamera()->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 		glUseProgram(mPbrProgramId);
-		glUniform3fv(1, 1, App->GetCamera()->GetPos().ptr());
+		glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 		glUseProgram(0);
 	}
 }
