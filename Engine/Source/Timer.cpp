@@ -1,16 +1,13 @@
 #include "Timer.h"
-#include "Application.h"
 #include "SDL.h"
 
 
-void Timer::Start() 
-{
+void Timer::Start() {
 	mLastReadTime = SDL_GetTicks();
 	SetTimeScale(1.f);
 }
 
-void Timer::StartWithRunTime() 
-{
+void Timer::StartWithRunTime() {
 	mLastReadTime = SDL_GetTicks();
 	mTotalTime = mLastReadTime;
 }
@@ -20,18 +17,16 @@ void Timer::Update()
 	++mUpdateFrames;
 	++mTotalFrames;
 
-	if (mChangeSpeed) 
-	{
+	if (mChangeSpeed) {
 		mDeltaTime = SetSpeed(mNewSpeed);
 		mChangeSpeed = false;
 	}
-	else 
-	{ 
+	else { 
 		mDeltaTime = ReadDelta(); 
 	}
 
-	//Delay the frame so the FPS match the limit if mDeltaTime if vsync isn't enabled
-	if (!mEnabledVsync && mFpsLimitEnabled && (mDeltaTime / mSpeed < (MILLI_IN_SECONDS / mFpsLimit)))
+	//Delay the frame so the FPS match the limit if mDeltaTime if  vsync isn't enabled
+	if (!mEnabledVsync && (mFpsLimit > 0 && mDeltaTime / mSpeed < (MILLI_IN_SECONDS / mFpsLimit)))
 	{
 		mFrameDelay = (MILLI_IN_SECONDS / mFpsLimit) - mDeltaTime / mSpeed;
 
@@ -47,14 +42,12 @@ void Timer::Update()
 	}
 
 	//Checks if the frame is the slowest of all (doesn't check the first 50 because the first ones are always very slow)
-	if (mTotalFrames > 50) 
-	{
+	if (mTotalFrames > 50) {
 		SetSlowestFrame();
 	}
 
 	//Logs the frames' time 
-	if (mMsLog.size() >= 100) 
-	{
+	if (mMsLog.size() >= 100) {
 		mMsLog.erase(mMsLog.begin());
 	}
 	mMsLog.push_back(mDeltaTime / mSpeed);
@@ -62,10 +55,8 @@ void Timer::Update()
 	mUpdateTime += mDeltaTime / mSpeed;
 
 	//Logs the average FPS every half a second
-	if (mUpdateTime > 0.5f * MILLI_IN_SECONDS) 
-	{
-		if (mFpsLog.size() >= 100) 
-		{
+	if (mUpdateTime > 0.5f * MILLI_IN_SECONDS) {
+		if (mFpsLog.size() >= 100) {
 			mFpsLog.erase(mFpsLog.begin());
 		}
 		mFpsLog.push_back(mUpdateFrames * MILLI_IN_SECONDS / mUpdateTime);
@@ -78,18 +69,14 @@ void Timer::Update()
 
 		mUpdateFpsLog = true;
 	}
-
-	if(App->GetCurrentClock() == this ) SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
 }
 
-long Timer::Read() 
-{
+long Timer::Read() {
 	ReadDelta();
 	return mTotalTime;
 }
 
-long Timer::ReadDelta() 
-{
+long Timer::ReadDelta() {
 	Uint32 newTime = SDL_GetTicks();
 	Uint32 elapsedTime = newTime - mLastReadTime;
 	mLastReadTime = newTime;
@@ -99,8 +86,7 @@ long Timer::ReadDelta()
 	return convertedTime;
 }
 
-void Timer::ResetVariables() 
-{
+void Timer::ResetVariables() {
 	mLastReadTime = 0;
 
 	mDeltaTime = 0;
@@ -131,19 +117,16 @@ void Timer::ResetVariables()
 	mSlowestFrame = 0;
 }
 
-void Timer::Pause() 
-{ 
+void Timer::Pause() { 
 	SetTimeScale(0.f); 
 }
 
-void Timer::Resume() 
-{
+void Timer::Resume() {
 	SetTimeScale(1.f);
 	mDeltaTime = ReadDelta();
 }
 
-long Timer::Stop() 
-{
+long Timer::Stop() {
 	Uint32 finalTime = Read();
 
 	//We reset all variables
@@ -154,38 +137,32 @@ long Timer::Stop()
 	return finalTime;
 }
 
-long Timer::SetSpeed(float speed) 
-{
+long Timer::SetSpeed(float speed) {
 	long currentTime = ReadDelta();
 	mSpeed = speed;
 	return currentTime;
 }
 
-void Timer::SetTimeScale(float speed) 
-{
+void Timer::SetTimeScale(float speed) {
 	mNewSpeed = speed;
 	mChangeSpeed = true;
 }
 
-void Timer::SetSlowestFrame() 
-{
-	if (mDeltaTime > mSlowestFrameTime) 
-	{
+void Timer::SetSlowestFrame() {
+	if (mDeltaTime > mSlowestFrameTime) {
 		mSlowestFrameTime = mDeltaTime;
 		mSlowestFrame = mTotalFrames;
 	}
 }
 
-void Timer::SetLowestFps() 
-{
-	if (mFpsLog.back() < mLowestFps) 
-	{
+void Timer::SetLowestFps() {
+	if (mFpsLog.back() < mLowestFps) {
 		mLowestFps = mFpsLog.back();
 		mLowestFpsTime = mRealTime;
 	}
 }
 
-void Timer::SetVsyncStatus(bool vsyncStatus) 
-{
+void Timer::SetVsyncStatus(bool vsyncStatus) {
 	mEnabledVsync = vsyncStatus;
+	SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
 }

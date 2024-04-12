@@ -1,13 +1,13 @@
 #pragma once
 #include "Module.h"
 #include "vector"
-#include "Math/float3.h"
+#include "float3.h"
 
 struct dtNavMeshCreateParams;
 //class AIAgentComponent;
 class dtNavMesh;
 class dtNavMeshQuery;
-class ENGINE_API ModuleDetourNavigation :public Module
+class ModuleDetourNavigation :public Module
 {
 public:
 	ModuleDetourNavigation();
@@ -15,12 +15,9 @@ public:
 	bool Init() override;
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
-	std::vector<float3> FindNavPath(float3 startPos, float3 endPos);
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	void CreateDetourData();
-
-	float3 FindNearestPoint(float3 center, float3 halfSize);
 	void DrawDebug();
 	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 

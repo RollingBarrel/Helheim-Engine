@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <string>
-#include <set>
 #include <map>
 
 #include "Geometry/AABB.h"
@@ -32,7 +31,6 @@ public:
 	void Draw() const;
 	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
-	const std::set<GameObject*> GetObjectsInFrustum(Frustum* cam) const;
 
 	void UpdateDrawableGameObjects(const Frustum* myCamera);
 	void CleanUp();

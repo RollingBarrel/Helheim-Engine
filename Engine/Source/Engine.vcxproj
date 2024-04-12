@@ -173,6 +173,7 @@
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
+    <ClCompile Include="CameraUtils.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="Debug.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="CameraUtils.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Debug.h" />

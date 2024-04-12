@@ -15,7 +15,6 @@
 #include "Geometry/Triangle.h"
 #include "Recast.h"
 #include "ModuleCamera.h"
-#include "CameraComponent.h"
 #include "Tag.h"
 
 NavMeshController::NavMeshController()
@@ -61,17 +60,28 @@ void NavMeshController::TranslateIndices()
 			float3 c = float3(verts[tris[j * 4 + 2] * 3], verts[tris[j * 4 + 2] * 3 + 1], verts[tris[j * 4 + 2] * 3 + 2]);
 
 			// Check and update indices
-			
-			
-			int index = mVertices.size();
-			mVertices.push_back(a);			
-			mVertices.push_back(b);
-			mVertices.push_back(c);
+			int indexA = FindVertexIndex(a);
+			if (indexA == -1) {
+				mVertices.push_back(a);
+				indexA = mVertices.size() - 1;
+			}
+
+			int indexB = FindVertexIndex(b);
+			if (indexB == -1) {
+				mVertices.push_back(b);
+				indexB = mVertices.size() - 1;
+			}
+
+			int indexC = FindVertexIndex(c);
+			if (indexC == -1) {
+				mVertices.push_back(c);
+				indexC = mVertices.size() - 1;
+			}
 
 			// Add indices to mIndices
-			mIndices.push_back(index);
-			mIndices.push_back(index+1);
-			mIndices.push_back(index+2);
+			mIndices.push_back(indexA);
+			mIndices.push_back(indexB);
+			mIndices.push_back(indexC);
 
 		}
 	}
@@ -90,8 +100,8 @@ void NavMeshController::DebugDrawPolyMesh()
 	
 	unsigned int program = App->GetOpenGL()->GetDebugDrawProgramId();
 	float4x4 identity = float4x4::identity;
-	float4x4 view = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
-	float4x4 proj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix();
+	float4x4 view = App->GetCamera()->GetViewMatrix();
+	float4x4 proj = App->GetCamera()->GetProjectionMatrix();
 
 	GLint viewLoc = glGetUniformLocation(program, "view");
 	GLint projLoc = glGetUniformLocation(program, "proj");
@@ -138,21 +148,20 @@ void NavMeshController::HandleBuild() {
 	const MeshRendererComponent* testMesh;
 	int indicesSize = 0;
 	int verticesSize = 0;
-	for (int index = 0; index < mGameObjects.size(); index++) 
-	{
+	for (int index = 0; index < mGameObjects.size(); index++) {
 		MeshRendererComponent* meshRenderer = (MeshRendererComponent*)(mGameObjects[index]->GetComponent(ComponentType::MESHRENDERER));
 
 		indicesSize += meshRenderer->GetResourceMesh()->GetNumberIndices();
 		verticesSize += meshRenderer->GetResourceMesh()->GetNumberVertices();
 	}
-	std::vector<float3> vertices;
-	vertices.reserve(verticesSize);
-	std::vector<int>indices;
-	indices.reserve(indicesSize);
+
+	int* indices = new int[indicesSize];
+	float3* vertices = new float3[verticesSize];
+	float3* verticesCursor = vertices;
+
 	int lastIndex = 0;
 	int lastVertex = 0;
-	for (int index = 0; index < mGameObjects.size(); index++) 
-	{
+	for (int index = 0; index < mGameObjects.size(); index++) {
 		testMesh = (MeshRendererComponent*)(mGameObjects[index]->GetComponent(ComponentType::MESHRENDERER));
 
 		if (!testMesh)
@@ -163,16 +172,14 @@ void NavMeshController::HandleBuild() {
 		int meshIndiceNumber = testMesh->GetResourceMesh()->GetNumberIndices();
 		const unsigned int* meshIndices = testMesh->GetResourceMesh()->GetIndices();
 		Tag* goTag = mGameObjects[index]->GetTag();
-		if (goTag && goTag->GetName() == "Obstacle") 
-		{
+		if (goTag && goTag->GetName() == "Obstacle") {
 
 			ObstacleTriangle obstacle{ lastIndex/3,meshIndiceNumber };
 			mObstaclesTriangles.push_back(obstacle);
 		}
 
-		for (int i = 0; i < meshIndiceNumber; i++) 
-		{
-			indices.push_back(meshIndices[i]+lastVertex);
+		for (int i = 0; i < meshIndiceNumber; i++) {
+			indices[i + lastIndex] = meshIndices[i]+lastVertex;
 		}
 		lastIndex += meshIndiceNumber;
 
@@ -182,14 +189,13 @@ void NavMeshController::HandleBuild() {
 		float4x4 objectTransform = mGameObjects[index]->GetWorldTransform();
 		for (int i = 0; i < meshVertiSize; ++i)
 		{
-			float3 vertTransformed = objectTransform.TransformPos(meshVertices[i]);
-			vertices.push_back(vertTransformed);
+			vertices[i + lastVertex] = objectTransform.TransformPos(meshVertices[i]);
 		}
 
 		lastVertex += meshVertiSize;
 	}
 
-	mAABB.SetFrom(&vertices[0], verticesSize);
+	mAABB.SetFrom((float3*)vertices, verticesSize);
 	mOBB.SetFrom(mAABB, float4x4::identity);
 	mAABBWorld = mOBB.MinimalEnclosingAABB();
 	float3 meshMax = mAABBWorld.maxPoint;
@@ -221,7 +227,7 @@ void NavMeshController::HandleBuild() {
 	}
 
 	memset(mTriangleAreas, 0, numberOfTriangles * sizeof(unsigned char));
-	rcMarkWalkableTriangles(mRecastContext, mMaxSlopeAngle, vertices[0].ptr(), verticesSize, &indices[0], numberOfTriangles, mTriangleAreas);
+	rcMarkWalkableTriangles(mRecastContext, mMaxSlopeAngle, (float*)vertices, verticesSize, indices, numberOfTriangles, mTriangleAreas);
 
 	//Check manually if htere is obstacle and make them not count towards the navmesh
 	for (const auto& obstacleTriangle : mObstaclesTriangles)
@@ -234,7 +240,7 @@ void NavMeshController::HandleBuild() {
 	}
 
 
-	if (!rcRasterizeTriangles(mRecastContext,vertices[0].ptr(), verticesSize, &indices[0], mTriangleAreas, numberOfTriangles, *mHeightField, 1))
+	if (!rcRasterizeTriangles(mRecastContext, (float*)vertices, verticesSize, indices, mTriangleAreas, numberOfTriangles, *mHeightField, 1))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
 		return;
@@ -432,19 +438,46 @@ void NavMeshController::HandleBuild() {
 		LoadDrawMesh();
 		
 		App->GetNavigation()->CreateDetourData();
+		delete[] indices;
+		delete[] vertices;
 	}
 }
 
+float3 NavMeshController::FindNearestPoint(float3 center, float3 halfsize) const
+{
+	float nearestDist = 99999.0f;
+	float3 nearest_point = float3(0.0);
+	AABB box = AABB(center - halfsize, halfsize + center);
 
+	for (int i = 0; i < mIndices.size(); i+=3)
+	{
+		float3 v0 = mVertices[mIndices[i]];
+		float3 v1 = mVertices[mIndices[i + 1]];
+		float3 v2 = mVertices[mIndices[i + 2]];
+		Triangle tri = Triangle(v0, v1, v2);
+		
+		if (tri.Intersects(box))
+		{
+			float3 closest_point = tri.ClosestPoint(center);
+			float distance_to_center = closest_point.Distance(center);
+			if (distance_to_center < nearestDist)
+			{
+				nearest_point = closest_point;
+				nearestDist = distance_to_center;
+			}
+
+		}
+		
+	}
+
+	return nearest_point;
+}
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
-	if (!(gameObj->GetChildren().empty())) 
-	{
-		for (const auto& child : gameObj->GetChildren()) 
-		{
+	if (!(gameObj->GetChildren().empty())) {
+		for (const auto& child : gameObj->GetChildren()) {
 			MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)(child->GetComponent(ComponentType::MESHRENDERER));
-			if (meshRendererComponent) 
-			{
+			if (meshRendererComponent) {
 				mGameObjects.push_back(child);
 			}
 			GetGOMeshes(child);
@@ -489,8 +522,7 @@ void NavMeshController::LoadDrawMesh()
 int NavMeshController::FindVertexIndex(float3 vert)
 {
 
-	for (int i = 0; i < mVertices.size(); ++i) 
-	{
+	for (int i = 0; i < mVertices.size(); ++i) {
 		if (mVertices[i].x == vert.x && mVertices[i].y == vert.y && mVertices[i].z == vert.z) {
 			return i;
 		}

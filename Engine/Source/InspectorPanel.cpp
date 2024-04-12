@@ -8,8 +8,6 @@
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
 #include "ProjectPanel.h"
-#include "ModuleCamera.h"
-#include "TagsManagerPanel.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -172,7 +170,6 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 			}
 
 			if (modifiedTransform) {
-
 				object->SetPosition(newPosition);
 				object->SetRotation(DegToRad(newRotation));
 				object->SetScale(newScale);
@@ -619,55 +616,47 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
 	ImGui::SeparatorText("Camera");
 
-	static float nearPlane = component->GetNearPlane();
-	const char* nearLabel = "##NearPlane";
+	float Near = component->GetNearPlane();
+	float* NearBar = &Near;
+	const char* NearLabel = "NearPlane";
 
-	static float farPlane = component->GetFarPlane();
-	const char* farLabel = "##FarPlane";
+	float Far = component->GetFarPlane();
+	float* FarBar = &Far;
+	const char* FarLabel = "FarPlane";
 
-	static float FOV = RadToDeg(component->GetVerticicalFOV());
-	const char* FOVLabel = "##FOV";
+	float FOV = RadToDeg(component->GetVerticicalFOV());
+	float* FOVBar = &FOV;
+	const char* FOVLabel = "FOV";
 
-	ImGui::PushID(nearLabel);
+	bool modifiedValue = false;
+
+	ImGui::PushID(NearLabel);
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Near Plane");
 	ImGui::SameLine();
-	if (ImGui::DragFloat(nearLabel, &nearPlane, 0.05f, 0.0f, 2000, "%.2f"))
-	{
-		component->SetNearPlane(nearPlane);
-	}
+	modifiedValue = ImGui::DragFloat(NearLabel, &(*NearBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
 	ImGui::PopID();
 
-	ImGui::PushID(farLabel);
+	ImGui::PushID(FarLabel);
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Far Plane");
 	ImGui::SameLine();
-	if (ImGui::DragFloat(farLabel, &farPlane, 0.05f, 0.0f, 2000, "%.2f"))
-	{
-		component->SetFarPlane(farPlane);
-	}
+	modifiedValue = ImGui::DragFloat(FarLabel, &(*FarBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
 	ImGui::PopID();
 
 	ImGui::PushID(FOVLabel);
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("FOV");
 	ImGui::SameLine();
-	if (ImGui::DragFloat(FOVLabel, &FOV, 0.05f, 0.0f, 2000, "%.2f"))
-	{
-		component->SetFOV(FOV);
-	}
+	modifiedValue = ImGui::DragFloat(FOVLabel, &(*FOVBar), 0.05f, 0.0f, 2000, "%.2f") || modifiedValue;
 	ImGui::PopID();
 
-	if(ImGui::Button("Make Current Camera"))
+	if (modifiedValue)
 	{
-		App->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
+		component->SetNearPlane(Near);
+		component->SetFarPlane(Far);
+		component->SetVerticicalFOV(DegToRad(FOV));
 	}
-
-	if (ImGui::Button("Return To Editor Camera"))
-	{
-		App->GetCamera()->ActivateEditorCamera();
-	}
-
 
 	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
 	// Is culling

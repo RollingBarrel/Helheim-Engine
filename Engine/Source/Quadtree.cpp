@@ -168,46 +168,6 @@ const void Quadtree::RenderTreeImGui() const
 	
 }
 
-const std::set<GameObject*> Quadtree::GetObjectsInFrustum(Frustum* cam) const
-{
-	std::set<GameObject*> out;
-	if (!cam->Intersects(mBoundingBox))
-	{
-		return out;
-	}
-
-	if (mFilled)
-	{
-		std::set<GameObject*> setA = mChildren[0]->GetObjectsInFrustum(cam);
-		std::set<GameObject*> setB = mChildren[1]->GetObjectsInFrustum(cam);
-		std::set<GameObject*> setC = mChildren[2]->GetObjectsInFrustum(cam);
-		std::set<GameObject*> setD = mChildren[3]->GetObjectsInFrustum(cam);
-		out.insert(setA.begin(), setA.end());
-		out.insert(setB.begin(), setB.end());
-		out.insert(setC.begin(), setC.end());
-		out.insert(setD.begin(), setD.end());
-
-
-	}
-	else
-	{
-		for (auto& object : mGameObjects)
-		{
-
-			if (object->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-			{
-				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->getOBB();
-				if (cam->Intersects(temp)) {
-					out.insert(object);
-				}
-
-			}
-		}
-	}
-
-	return out;
-}
-
 void Quadtree::AddHierarchyObjects(GameObject* node)
 {
 	for (const auto& child : node->GetChildren()) {

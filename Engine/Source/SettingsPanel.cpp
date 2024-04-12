@@ -31,8 +31,6 @@ void SettingsPanel::Draw(int windowFlags)
 		mCulling = App->GetScene()->GetApplyFrustumCulling();
 		mEngineVsyncEnabled = App->GetEngineClock()->GetVsyncStatus();
 		mGameVsyncEnabled = App->GetGameClock()->GetVsyncStatus();
-		mEngineFpsLimitEnabled = App->GetEngineClock()->IsFpsLimitEnabled();
-		mGameFpsLimitEnabled = App->GetGameClock()->IsFpsLimitEnabled();
 		mEngineFpsLimit = App->GetEngineClock()->GetFpsLimit();
 		mGameFpsLimit = App->GetGameClock()->GetFpsLimit();
 		mGrid = App->GetDebugDraw()->GetShouldRenderGrid();
@@ -55,21 +53,15 @@ void SettingsPanel::Draw(int windowFlags)
 			ImGui::BeginDisabled();
 		}
 
-		if (ImGui::Checkbox("Enable FPS Limit##1", &mEngineFpsLimitEnabled))
-		{
-			App->GetEngineClock()->EnableFpsLimit(mEngineFpsLimitEnabled);
-		}
-
-		if (ImGui::SliderInt("FPS Limit##1", &mEngineFpsLimit, 10, 240))
-		{
-			App->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
-		}
-		
+		ImGui::Checkbox("Enable FPS Limit##1", &mEngineFpsLimitEnabled);
+		mEngineFpsLimit = App->GetEngineClock()->GetFpsLimit();
+		ImGui::SliderInt("FPS Limit##1", &mEngineFpsLimit, 10, 240);
 		if (mEngineVsyncEnabled) 
 		{
 			ImGui::EndDisabled();
 		}
 
+		App->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
 		ImGui::Spacing();
 		ImGui::SeparatorText("Game");
 		ImGui::Checkbox("Game Vsync enabled", &mGameVsyncEnabled);
@@ -83,21 +75,14 @@ void SettingsPanel::Draw(int windowFlags)
 			ImGui::BeginDisabled();
 		}
 
-		if (ImGui::Checkbox("Enable FPS Limit##2", &mGameFpsLimitEnabled))
-		{
-			App->GetGameClock()->EnableFpsLimit(mGameFpsLimitEnabled);
-		}
-
-		if (ImGui::SliderInt("FPS Limit##2", &mGameFpsLimit, 10, 240))
-		{
-			App->GetGameClock()->SetFpsLimit(mGameFpsLimit);
-		}
-
+		ImGui::Checkbox("Enable FPS Limit##2", &mGameFpsLimitEnabled);
+		ImGui::SliderInt("FPS Limit##2", &mGameFpsLimit, 10, 240);
 		if (mGameVsyncEnabled) 
 		{
 			ImGui::EndDisabled();
 		}
 
+		App->GetGameClock()->SetFpsLimit(mGameFpsLimit);
 		ImGui::Unindent();
 
 		ImGui::SeparatorText("Editor settings");

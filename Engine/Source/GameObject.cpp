@@ -117,18 +117,14 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-	
-	mWorldTransformMatrix =  mLocalTransformMatrix;
-	if (mParent != nullptr)
-	{
-		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
-	}
-	
 
-	for (size_t i = 0; i < mChildren.size(); i++) 
-	{
+	mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+
+	for (size_t i = 0; i < mChildren.size(); i++) {
 		mChildren[i]->RecalculateMatrices();
 	}
+
+	isTransformModified = false;
 
 }
 
@@ -136,11 +132,6 @@ void GameObject::Update()
 {
 	if (IsActive())
 	{
-		if (isTransformModified)
-		{
-			RecalculateMatrices();
-			RefreshBoundingBoxes();
-		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
 			mComponents[i]->Update();
@@ -151,7 +142,10 @@ void GameObject::Update()
 		}
 
 		DeleteComponents();
-		isTransformModified = false;
+		if (isTransformModified) {
+			RecalculateMatrices();
+			RefreshBoundingBoxes();
+		}
 	}
 }
 
@@ -160,6 +154,11 @@ void GameObject::ResetTransform()
 	SetPosition(float3::zero);
 	SetRotation(float3::zero);
 	SetScale(float3::one);
+
+	if (GetComponent(ComponentType::CAMERA) != nullptr) {
+		CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
+		camera->Reset();
+	}
 }
 
 void GameObject::SetEnabled(bool enabled)
@@ -211,9 +210,16 @@ void GameObject::SetRotation(const Quat& rotation)
 
 void GameObject::SetPosition(const float3& position)
 {
+	float3 difference = position - mPosition;
+
 	mPosition = position;
 
 	isTransformModified = true;
+
+	if (GetComponent(ComponentType::CAMERA) != nullptr) {
+		CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
+		camera->SetPosition(difference);
+	}
 }
 
 void GameObject::SetScale(const float3& scale)
@@ -736,18 +742,6 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 		return nullptr;
 	}
 
-}
-
-const bool GameObject::HasUpdatedTransform() const
-{
-	if (!isTransformModified && mParent != nullptr)
-	{
-		if (mParent->HasUpdatedTransform())
-		{
-			return true;
-		}
-	}
-	return isTransformModified;
 }
 
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
