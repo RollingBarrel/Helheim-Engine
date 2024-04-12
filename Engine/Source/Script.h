@@ -65,7 +65,7 @@ public:
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	const std::vector<Member*>& GetMembers() { return mMembers; }
-
+	virtual void OnButtonClick() {}
 protected:
 
 	GameObject* mGameObject = nullptr;

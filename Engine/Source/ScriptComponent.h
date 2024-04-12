@@ -23,7 +23,7 @@ public:
 	void LoadScript(const char* scriptName);
 	const char* GetScriptName() const { return mName.c_str(); }
 	Script* GetScriptInstance() const { return mScript; }
-
+	
 	void Enable() override;
 	void Disable() override;
 	
