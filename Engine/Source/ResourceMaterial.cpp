@@ -5,46 +5,29 @@
 
 ResourceMaterial::ResourceMaterial(
     unsigned int uid,
-    float4 diffuseFactor,
-    float3 specularFactor,
-    float glossinessFactor,
-    unsigned int diffuseTextureUid,
-    unsigned int specularGlossinessTextureUid,
-    unsigned int normalTextureUid) :
+    float4 baseColorFactor,
+    float metallicFactor,
+    float roughnessFactor,
+    unsigned int baseColorTexUid,
+    unsigned int metallicRoughTexUid,
+    unsigned int normalTexUid) :
     Resource(uid, Type::Material),
-    mDiffuseFactor(diffuseFactor), mSpecularFactor(specularFactor), mGlossinessFactor(glossinessFactor),
-    mDiffuseTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(diffuseTextureUid, Resource::Type::Texture))),
-    mSpecularGlossinessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(specularGlossinessTextureUid, Resource::Type::Texture))),
-    mNormalTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTextureUid, Resource::Type::Texture)))
+    mBaseColorFactor(baseColorFactor), mMetallicFactor(metallicFactor), mRoughnessFactor(roughnessFactor),
+    mBaseColorTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture))),
+    mMetallicRoughnessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture))),
+    mNormalTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture))),
+    mEnableBaseColorTexture((mBaseColorTexture != nullptr) ? true : false),
+    mEnableMetallicRoughnessTexture((mMetallicRoughnessTexture != nullptr) ? true : false),
+    mEnableNormalMap((mNormalTexture != nullptr) ? true : false)
 {
-    
-    //if (mDiffuseTexture) mEnableDiffuseTexture = true;
-    //else mEnableDiffuseTexture = false;
-    mEnableDiffuseTexture = (mDiffuseTexture != nullptr) ? true : false;
-    mDiffuseFactor = float4(0.228f, 0.235f, 0.241f, 1.0f);
-
-    if (mSpecularGlossinessTexture) {
-        mEnableSpecularGlossinessTexture = true;
-        if (mSpecularGlossinessTexture->HasAlpha())
-            mEnableShininessMap = true;
-        else mEnableShininessMap = false;
-    }
-    else {
-        mEnableSpecularGlossinessTexture = false;
-        mEnableShininessMap = false;
-    }
-
-    //if (mNormalTexture) mEnableNormalMap = true;
-    //else mEnableNormalMap = false;
-    mEnableNormalMap = (mNormalTexture != nullptr) ? true : false;
 }
 
 ResourceMaterial::~ResourceMaterial()
 { 
-    if (mDiffuseTexture)
-        App->GetResource()->ReleaseResource(mDiffuseTexture->GetUID());
-    if(mSpecularGlossinessTexture)
-        App->GetResource()->ReleaseResource(mSpecularGlossinessTexture->GetUID());
+    if (mBaseColorTexture)
+        App->GetResource()->ReleaseResource(mBaseColorTexture->GetUID());
+    if(mMetallicRoughnessTexture)
+        App->GetResource()->ReleaseResource(mMetallicRoughnessTexture->GetUID());
     if(mNormalTexture)
         App->GetResource()->ReleaseResource(mNormalTexture->GetUID());
 }
