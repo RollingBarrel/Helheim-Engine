@@ -14,6 +14,7 @@ public:
     ~PlayerController() {}
     void Start() override;
     void Update() override;
+    void CheckRoute();
     void Move();
     void Win();
     void Lose();

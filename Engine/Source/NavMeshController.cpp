@@ -15,6 +15,7 @@
 #include "Geometry/Triangle.h"
 #include "Recast.h"
 #include "ModuleCamera.h"
+#include "CameraComponent.h"
 #include "Tag.h"
 
 NavMeshController::NavMeshController()
@@ -89,8 +90,8 @@ void NavMeshController::DebugDrawPolyMesh()
 	
 	unsigned int program = App->GetOpenGL()->GetDebugDrawProgramId();
 	float4x4 identity = float4x4::identity;
-	float4x4 view = App->GetCamera()->GetViewMatrix();
-	float4x4 proj = App->GetCamera()->GetProjectionMatrix();
+	float4x4 view = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
+	float4x4 proj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix();
 
 	GLint viewLoc = glGetUniformLocation(program, "view");
 	GLint projLoc = glGetUniformLocation(program, "proj");
@@ -434,35 +435,7 @@ void NavMeshController::HandleBuild() {
 	}
 }
 
-float3 NavMeshController::FindNearestPoint(float3 center, float3 halfsize) const
-{
-	float nearestDist = 99999.0f;
-	float3 nearest_point = float3(0.0);
-	AABB box = AABB(center - halfsize, halfsize + center);
 
-	for (int i = 0; i < mIndices.size(); i+=3)
-	{
-		float3 v0 = mVertices[mIndices[i]];
-		float3 v1 = mVertices[mIndices[i + 1]];
-		float3 v2 = mVertices[mIndices[i + 2]];
-		Triangle tri = Triangle(v0, v1, v2);
-		
-		if (tri.Intersects(box))
-		{
-			float3 closest_point = tri.ClosestPoint(center);
-			float distance_to_center = closest_point.Distance(center);
-			if (distance_to_center < nearestDist)
-			{
-				nearest_point = closest_point;
-				nearestDist = distance_to_center;
-			}
-
-		}
-		
-	}
-
-	return nearest_point;
-}
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) 

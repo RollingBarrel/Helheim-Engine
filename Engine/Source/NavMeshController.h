@@ -66,8 +66,6 @@ public:
 	float GetDetailSampleMaxError() const { return mDetailSampleMaxError; }
 	void SetDetailSampleMaxError(float value) { mDetailSampleMaxError = value; }
 
-	float3 FindNearestPoint(float3 center, float3 halfsize) const;
-
 	float3 GetQueryCenter() const { return mQueryCenter; }
 	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
 
