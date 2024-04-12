@@ -135,7 +135,8 @@ void ModuleUI::CheckRaycast()
 	float mouseX = normalizedX;
 	float mouseY = normalizedY;
 	
-	if (!mCanvas->GetChildren().empty()) {
+	if (!mCanvas->GetChildren().empty())
+	{
 		for (GameObject* gameObject : mCanvas->GetChildren())
 		{
 			ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
@@ -153,12 +154,13 @@ void ModuleUI::CheckRaycast()
 					mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y)
 				{
 					LOG("Button Clicked");
-					//ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
-					//if (button != nullptr && button->IsEnabled())
-					//{
-					//	button->OnClicked();
-					//}
 					image->SetColor((image->GetColor()->x == 1.0f) ? float3(0, 0, 0) : float3(1, 1, 1));
+
+					ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
+					if (button != nullptr && button->IsEnabled())
+					{
+						button->OnClicked();
+					}
 				}
 			}
 		}

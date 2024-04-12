@@ -21,12 +21,15 @@ Component* ButtonComponent::Clone(GameObject* owner) const
     return nullptr;
 }
 
-void ButtonComponent::OnClicked() const {
+void ButtonComponent::OnClicked() const
+{
     std::vector<Component*> componentList = GetOwner()->GetComponents(ComponentType::SCRIPT);
-    for (Component* scriptComponent : componentList) {
-        Script* script = ((ScriptComponent *)scriptComponent)->GetScriptInstance();
-        if (script != nullptr) {
-            //script->OnButtonClick();
+    for (Component* scriptComponent : componentList)
+    {
+        Script* script = static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance();
+        if (script != nullptr)
+        {
+            script->OnButtonClick();
         }
     }
 }
