@@ -15,12 +15,7 @@ public:
     ~TestScript() {}
     void Start() override;
     void Update() override;
-   
     void OnButtonClick() override;
-    float mPlayerSpeed = 1;
-    float speed = 1;
-    float3 mTestFloat3 = float3(5,15,-4);
-    GameObject* mRobot = nullptr;
 
 private:
     float mPlayerSpeed = 1;

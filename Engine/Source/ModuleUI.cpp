@@ -153,8 +153,8 @@ void ModuleUI::CheckRaycast()
 				if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y &&
 					mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y)
 				{
-					LOG("Button Clicked");
-					image->SetColor((image->GetColor()->x == 1.0f) ? float3(0, 0, 0) : float3(1, 1, 1));
+					//LOG("Button Clicked");
+					//image->SetColor((image->GetColor()->x == 1.0f) ? float3(0, 0, 0) : float3(1, 1, 1));
 
 					ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
 					if (button != nullptr && button->IsEnabled())

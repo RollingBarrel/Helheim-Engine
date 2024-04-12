@@ -389,7 +389,6 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::CAMERA:
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
 					break;
-				}
 				case ComponentType::SCRIPT: {
 					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
 					break;
