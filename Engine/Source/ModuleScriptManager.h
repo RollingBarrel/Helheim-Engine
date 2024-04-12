@@ -25,8 +25,6 @@ public:
 	void Play();
 	void Stop();
 
-	
-
 private:
 	void HotReload();
 	void Start();

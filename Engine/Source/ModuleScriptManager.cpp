@@ -1,6 +1,7 @@
 #include "ModuleScriptManager.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResource.h"
 #include "Script.h"
 #include "ScriptComponent.h"
 #include "GameObject.h"

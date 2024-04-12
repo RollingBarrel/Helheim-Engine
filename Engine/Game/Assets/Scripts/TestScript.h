@@ -4,6 +4,7 @@
 #include "Math/float3.h"
 
 // To create a script you have to locate the .h in Game/Assets/Scripts
+// To show it in the inspector, drago and drop the .h file into the Project Panel
 
 GENERATE_BODY(TestScript);
 class TestScript : public Script 

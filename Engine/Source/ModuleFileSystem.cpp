@@ -57,7 +57,15 @@ bool ModuleFileSystem::Init()
 
     //CreateDirectoryLibrary();
 
+    UpdateScripts();
+
     return true;
+}
+
+update_status ModuleFileSystem::PreUpdate(float dt)
+{
+    UpdateScripts();
+    return UPDATE_CONTINUE;
 }
 
 // Called every draw update
@@ -415,6 +423,44 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
 
     if(extension != nullptr)
         *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
+}
+
+void ModuleFileSystem::UpdateScripts()
+{
+    char** files = PHYSFS_enumerateFiles("Assets/Scripts");
+
+    for (char** file = files; *file != nullptr; ++file)
+    {
+        std::string filePath = "Assets/Scripts/";
+        filePath += *file;
+
+        if (!IsDirectory(filePath.c_str()))
+        {
+            if (filePath.back() == 'h') {
+                std::string filePathWithMeta;
+                filePathWithMeta = filePath + ".emeta";
+                if (!Exists(filePathWithMeta.c_str())) 
+                {
+                    filePath = "./" + filePath;
+                    App->GetResource()->ImportFile(filePath.c_str());
+                }
+            }
+            else if (filePath.find(".emeta") != std::string::npos) 
+            {
+                int pos = filePath.find(".emeta");
+                filePath.erase(pos);
+                if (!Exists(filePath.c_str())) 
+                {
+                    RemoveFile(filePath.c_str());
+                }
+            }
+
+        }
+
+    }
+
+    PHYSFS_freeList(files);
+
 }
 
 void ModuleFileSystem::CleanNode(PathNode* node)
