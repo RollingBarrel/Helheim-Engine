@@ -3,7 +3,7 @@
 #include <vector>
 
 class ScriptComponent;
-class Member;
+struct Member;
 
 class ModuleScriptManager :	public Module
 {
@@ -32,7 +32,6 @@ private:
 
 	void ReloadScripts(const std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	void SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
-	//std::vector<Script*> mScripts;
 	std::vector<ScriptComponent*> mScripts;
 	void* mHandle = nullptr;
 	bool mIsPlaying = false;
