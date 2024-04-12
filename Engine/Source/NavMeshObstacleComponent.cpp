@@ -34,11 +34,13 @@ void NavMeshObstacleComponent::LoadFromJSON(const rapidjson::Value& data, GameOb
 {
 	float radius{ 0.0f };
 	float height{ 0.0f };
-	if (data.HasMember("Radius") && data["Radius"].IsFloat()) {
+	if (data.HasMember("Radius") && data["Radius"].IsFloat()) 
+	{
 		radius = data["Radius"].GetFloat();
 	}
 
-	if (data.HasMember("Height") && data["Height"].IsFloat()) {
+	if (data.HasMember("Height") && data["Height"].IsFloat()) 
+	{
 		height = data["Height"].GetFloat();
 	}
 

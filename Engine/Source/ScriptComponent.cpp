@@ -205,7 +205,8 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		mResourceScript = nullptr;
 	}
 
-	if (mScript) {
+	if (mScript) 
+	{
 		//delete mScript; //MEMORY LEAK: Crash do not know why
 		mScript = nullptr;
 	}

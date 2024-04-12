@@ -276,7 +276,8 @@ void ModuleUI::CheckRaycast()
 
 	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
 	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
-	if (!mCanvas->GetChildren().empty()) {
+	if (!mCanvas->GetChildren().empty()) 
+	{
 		for (GameObject* gameObject : mCanvas->GetChildren())
 		{
 			ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
