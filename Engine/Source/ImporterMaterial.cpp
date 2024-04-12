@@ -10,6 +10,10 @@
 
 ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
 {
+    const tinygltf::PbrMetallicRoughness& material = tinyMaterial.pbrMetallicRoughness;
+    int baseColorTexIdx = material.baseColorTexture.index;
+    int metalRoughTexIdx = material.metallicRoughnessTexture.index;
+    
     float4 diffuseFactor = float4::zero; 
     float3 specularFactor = float3::zero;
     float GlossinessFactor = 1.0f;
