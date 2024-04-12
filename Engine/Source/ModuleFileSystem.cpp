@@ -467,11 +467,13 @@ void ModuleFileSystem::UpdateScripts()
 void ModuleFileSystem::CleanNode(PathNode* node)
 {
 
-    for (int i = 0; i < node->assets.size(); ++i) {
+    for (int i = 0; i < node->assets.size(); ++i) 
+    {
         delete node->assets[i];
     }
 
-    for (int i = 0; i < node->mChildren.size(); ++i) {
+    for (int i = 0; i < node->mChildren.size(); ++i) 
+    {
         CleanNode(node->mChildren[i]);
     }
 
