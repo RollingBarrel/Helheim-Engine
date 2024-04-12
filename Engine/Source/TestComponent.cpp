@@ -13,7 +13,8 @@ TestComponent::TestComponent(const TestComponent& original, GameObject* owner)
 {
 
 }
-void TestComponent::Reset() {
+void TestComponent::Reset() 
+{
 	//Change variables to default values.
 	number = 0;
 }
@@ -30,10 +31,12 @@ Component* TestComponent::Clone(GameObject* owner) const
     return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }
 
-void TestComponent::Save(Archive& archive) const {
+void TestComponent::Save(Archive& archive) const 
+{
 	archive.AddString("type", Component::GetNameFromType(ComponentType::TEST));
 }
 
-void TestComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {
+void TestComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
+{
 	
 }

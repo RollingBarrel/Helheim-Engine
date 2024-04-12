@@ -18,8 +18,17 @@
 #include "Geometry/AABB.h"
 
 
-TestScript::TestScript(GameObject* owner) : Script(owner)
+CREATE(TestScript)
 {
+
+    CLASS(owner);
+    SEPARATOR("STATS");
+    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    MEMBER(MemberType::FLOAT, mSpeed);
+    MEMBER(MemberType::FLOAT3, mTestFloat3);
+    SEPARATOR("GAME OBJECTS");
+    MEMBER(MemberType::GAMEOBJECT, mRobot);
+    END_CREATE;
 
 }
 
@@ -27,7 +36,6 @@ void TestScript::Start()
 {
 	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
 	CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
-    //AIAgentComponent* aIAgentComponent = (AIAgentComponent*)mGameObject->CreateComponent(ComponentType::AIAGENT);
 	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
@@ -51,49 +59,48 @@ void TestScript::Update()
 	
 
     if (mRobot != nullptr) {
-        if (movement >= height)
+        if (mMovement >= mHeight)
         {
-            startCounter = true;
-            movement = 0;
-            up = up ? false : true;
+            mStartCounter = true;
+            mMovement = 0;
+            mUp = mUp ? false : true;
         }
 
 
 
-        if (startCounter)
+        if (mStartCounter)
         {
-            timePassed += App->GetGameDt();
+            mTimePassed += App->GetGameDt();
 
-            if (timePassed >= coolDown)
+            if (mTimePassed >= mCoolDown)
             {
-                timePassed = 0;
-                startCounter = false;
+                mTimePassed = 0;
+                mStartCounter = false;
             }
         }
         else
         {
-            movement += speed * App->GetGameDt();
-            if (up)
+            mMovement += mSpeed * App->GetGameDt();
+            if (mUp)
             {
-                //transform.position = new Vector3(transform.position.x, transform.position.y + speed * App->GetGameDt(), transform.position.z);
-                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y + speed * App->GetGameDt(), mRobot->GetPosition().z));
+                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y + mSpeed * App->GetGameDt(), mRobot->GetPosition().z));
             }
             else
             {
-                //transform.position = new Vector3(transform.position.x, transform.position.y - speed * App->GetGameDt(), transform.position.z);
-                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - speed * App->GetGameDt(), mRobot->GetPosition().z));
+                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - mSpeed * App->GetGameDt(), mRobot->GetPosition().z));
             }
         }
 
     }
-
-
 
     if (mGameObject->GetPosition().x > 10.0f) {
 
         LOG("YOU WIN");
     }
 	
+
+    LOG("hola %s" , typeid(mTestFloat3).name());
+
 }
 
 

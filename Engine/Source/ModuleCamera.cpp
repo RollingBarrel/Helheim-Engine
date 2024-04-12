@@ -50,13 +50,16 @@ void ModuleCamera::CheckRaycast()
 
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) {
+	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) 
+	{
 
 	}
-	else {
+	else 
+	{
 
 		std::map<float, GameObject*> hits = root->RayCast(&mRay);
-		if (!hits.empty()) {
+		if (!hits.empty()) 
+		{
 			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
 			if (intersectGameObjectPair.second != nullptr)
 			{
@@ -71,9 +74,11 @@ void ModuleCamera::CheckRaycast()
 	}
 }
 
+
+
 bool ModuleCamera::CleanUp()
 {
-	mEditorCamera->~GameObject();
+	delete mEditorCamera;
 	return true;
 }
 
@@ -130,7 +135,8 @@ update_status ModuleCamera::Update(float dt)
 {
 
 
-	if (mDrawRayCast) {
+	if (mDrawRayCast) 
+	{
 		App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
 	}
 	

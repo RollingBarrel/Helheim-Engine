@@ -3,11 +3,11 @@
 
 bool ScriptAttribute::setTypeFromString(const std::string& type)
 {
-	if (type == "int") mType = VariableType::INT;
-	else if (type == "float") mType = VariableType::FLOAT;
-	else if (type == "bool") mType = VariableType::BOOL;
-	else if (type == "float3") mType = VariableType::FLOAT3;
-	else if (type == "GameObject*") mType = VariableType::GAMEOBJECT;
+	if (type == "int") mType = MemberType::INT;
+	else if (type == "float") mType = MemberType::FLOAT;
+	else if (type == "bool") mType = MemberType::BOOL;
+	else if (type == "float3") mType = MemberType::FLOAT3;
+	else if (type == "GameObject*") mType = MemberType::GAMEOBJECT;
 
 	else return false;
 	return true;
@@ -18,7 +18,7 @@ void ScriptAttribute::setName(std::string name)
 	mName = name;
 }
 
-void ScriptAttribute::setType(const VariableType type)
+void ScriptAttribute::setType(const MemberType type)
 {
 	mType = type;
 }
@@ -27,18 +27,18 @@ size_t ScriptAttribute::sizeOfScriptVariable() const
 {
 	size_t sizeTSizeInBytes = sizeof(size_t);
 	size_t nameSizeInBytes = mName.size() * sizeof(char);
-	size_t typeSizeInBytes = sizeof(VariableType);
+	size_t typeSizeInBytes = sizeof(MemberType);
 	//switch (mType)
 	//{
-	//case VariableType::INT:
+	//case MemberType::INT:
 	//	return nameSizeInBytes + typeSizeInBytes + sizeof(int);
-	//case VariableType::FLOAT:
+	//case MemberType::FLOAT:
 	//	return nameSizeInBytes + typeSizeInBytes + sizeof(float);
-	//case VariableType::BOOL:
+	//case MemberType::BOOL:
 	//	return nameSizeInBytes + typeSizeInBytes + sizeof(bool);
-	//case VariableType::FLOAT3:
+	//case MemberType::FLOAT3:
 	//	return nameSizeInBytes + typeSizeInBytes + sizeof(float3);
-	//case VariableType::GAMEOBJECT:
+	//case MemberType::GAMEOBJECT:
 	//	return nameSizeInBytes + typeSizeInBytes + sizeof(GameObject*);
 	//default:
 	//	return 0;

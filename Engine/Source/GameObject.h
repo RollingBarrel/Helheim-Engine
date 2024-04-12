@@ -62,6 +62,7 @@ public:
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
 	void AddChild(GameObject* child, const int aboveThisId = 0);
+	GameObject* RemoveChild(const int id);
 	void DeleteChild(GameObject* child);
 	void AddComponentToDelete(Component* component);
 
@@ -71,22 +72,28 @@ public:
 	void SetScale(const float3& scale);
 	void SetTag(Tag* tag) { mTag = tag; };
 
-	GameObject* Find(const char* name);
-	GameObject* Find(unsigned int UID);
+	GameObject* Find(const char* name) const;
+	GameObject* Find(unsigned int UID) const;
 
 	Component* CreateComponent(ComponentType type);
-	Component* GetComponent(ComponentType type);
+	Component* GetComponent(ComponentType type) const;
 	std::vector<Component*> GetComponents(ComponentType type) const;
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
+	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
+	void SetPrefabId(unsigned int id) { mPrefabResourceId = id; }
+	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }
+
+	static GameObject* FindGameObjectWithTag(std::string tagname);
+	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
+	const bool HasUpdatedTransform() const;
 
 	static GameObject* FindGameObjectWithTag(std::string tagname);
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 	const bool HasUpdatedTransform() const;
 
 private:
-	GameObject* RemoveChild(const int id);
 	void AddSuffix();
 	void DeleteComponents();
 	Component* RemoveComponent(Component* component);
@@ -110,7 +117,10 @@ private:
 	Quat mRotation = Quat::identity;
 	float3 mEulerRotation = float3::zero;
 	float3 mScale = float3::one;
+
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool isTransformModified = false;
+	int mPrefabResourceId = 0;
+	bool mPrefabOverride = true;
 };
