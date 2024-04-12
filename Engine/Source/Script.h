@@ -44,7 +44,8 @@ enum class  MemberType : int
 	
 };
 
-struct Member {
+struct Member 
+{
 	const char* mName = nullptr;
 	MemberType mType = MemberType::NONE;
 	size_t mOffset = 0;

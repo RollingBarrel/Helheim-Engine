@@ -186,7 +186,8 @@ void ModuleScene::DeleteTag(Tag* tag)
 	}
 }
 
-void ModuleScene::Save(const char* sceneName) const {
+void ModuleScene::Save(const char* sceneName) const 
+{
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos) 
 	{
@@ -207,7 +208,8 @@ void ModuleScene::Save(const char* sceneName) const {
 
 }
 
-void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {
+void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const 
+{
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
@@ -225,7 +227,8 @@ void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFileP
 	delete archive;
 }
 
-void ModuleScene::Load(const char* sceneName) {
+void ModuleScene::Load(const char* sceneName) 
+{
 
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) 
@@ -306,7 +309,8 @@ GameObject* ModuleScene::Find(unsigned int UID)
 
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const {
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const 
+{
 	Archive gameObjectArchive;
 	gameObject->Save(gameObjectArchive, parentUuid);
 	gameObjectsArchive.push_back(gameObjectArchive);
@@ -321,7 +325,8 @@ void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vec
 	}
 }
 
-void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const {
+void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const 
+{
 	
 	std::vector<Archive> gameObjectsArchiveVector;
 
@@ -372,7 +377,8 @@ update_status ModuleScene::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DeleteGameObjects() {
+void ModuleScene::DeleteGameObjects() 
+{
 
 	for (auto gameObject : mGameObjectsToDelete) 
 	{
@@ -383,7 +389,8 @@ void ModuleScene::DeleteGameObjects() {
 	mQuadtreeRoot->UpdateTree();
 }
 
-void ModuleScene::DuplicateGameObjects() {
+void ModuleScene::DuplicateGameObjects() 
+{
 
 	for (auto gameObject : mGameObjectsToDuplicate) 
 	{
