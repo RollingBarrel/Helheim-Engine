@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include <string>
 #include "ModuleInput.h"
+#include <any>
 
 static bool PDBReplace(const std::string& filename, const std::string& namePDB);
 
@@ -20,16 +21,16 @@ ModuleScriptManager::~ModuleScriptManager()
 
 bool ModuleScriptManager::Init()
 {
+	CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false);
 	mHandle = LoadLibrary("Scripting.dll");
 	mLastModificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
-	//HotReload();
 	return true;
 }
 
 update_status ModuleScriptManager::PreUpdate(float dt)
 {
 	int64_t modificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
-	if (mLastModificationTime != modificationTime && App->GetInput()->GetKey(KeyboardKeys_Q)==KeyState::KEY_DOWN)
+	if (mLastModificationTime != modificationTime && !mIsPlaying)
 	{
 		mLastModificationTime = modificationTime;
 		HotReload();
@@ -87,92 +88,66 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 		
 }
 
-/*void ModuleScriptManager::HotReload()
-{
-	std::string pdbName = "./Scripting";
-	pdbName += std::to_string(mPdbCounter);
-	pdbName += ".pdb";
-
-	FreeLibrary(static_cast<HMODULE>(mHandle));
-	while (CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false) == FALSE) {}
-	while (CopyFile("../Scripting/Output/Scripting.pdb", pdbName.c_str(), false) == FALSE) {}
-	bool replaced = PDBReplace("./Scripting.dll", pdbName.c_str());
-	mHandle = LoadLibrary("Scripting.dll");
-	ReloadScripts();
-
-	mPdbCounter++;
-}*/
-
 void ModuleScriptManager::HotReload()
 {
-	
-
+	std::vector<std::vector<std::pair<Member, void*>>> oldScripts;
+	SaveOldScript(oldScripts);
 
 	FreeLibrary(static_cast<HMODULE>(mHandle));
-	//bool replaced = PDBReplace("./Scripting.dll", "../Scripting/Output/Scripting.pdb");
 	while (CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false) == FALSE) {}
-	 //while (CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll") == FALSE) {}
 	//while (CopyFile("../Scripting/Output/Scripting.pdb", "./Scripting.pdb", false) == FALSE) {}
-	bool replaced = PDBReplace("./Scripting.dll", "./Scripting.pdb");
+	//bool replaced = PDBReplace("./Scripting.dll", "./Scripting.pdb");
 	mHandle = LoadLibrary("Scripting.dll");
-	ReloadScripts();
-
-	//mPdbCounter++;
+	ReloadScripts(oldScripts);
+	LOG("HOTRELOADING COMPLETE");
 }
 
-void ModuleScriptManager::ReloadScripts()
+void ModuleScriptManager::ReloadScripts(const std::vector<std::vector<std::pair<Member, void*>>>& oldScripts)
 {
-	for (ScriptComponent* scriptComponent : mScripts) 
+	for (unsigned int i = 0; i < mScripts.size(); ++i) 
 	{
 
-		Script* oldScript = scriptComponent->mScript;
-
-		const std::vector<Member*> oldMembersPointer = oldScript->GetMembers();
-		std::vector<Member> oldMembers;
-
-		for (Member* member : oldMembersPointer) 
-		{
-			oldMembers.push_back(*member);
-		}
+		std::vector<std::pair<Member, void*>> oldScript = oldScripts[i];
 
 
-		scriptComponent->LoadScript(scriptComponent->GetScriptName());
+		
+		mScripts[i]->LoadScript(mScripts[i]->GetScriptName());
 
-		Script* newScript = scriptComponent->mScript;
+		Script* newScript = mScripts[i]->mScript;
 
 		const std::vector<Member*> newMembers = newScript->GetMembers();
 		
 		
-		for (int i = 0; i < oldMembers.size(); i++) 
+		for (unsigned int j = 0; j < oldScript.size(); ++j) 
 		{
 
-			for (int j = 0; j < newMembers.size(); j++) 
+			for (unsigned int k = 0; k < newMembers.size(); ++k) 
 			{
 				
-				if (strcmp(oldMembers[i].mName, newMembers[j]->mName) == 0) {
-					char* newScriptPos = ((char*)newScript) + newMembers[j]->mOffset;
-					char* oldScriptPos = ((char*)oldScript) + oldMembers[i].mOffset;
-
-					switch (oldMembers[i].mType) 
+				if (strcmp(oldScript[j].first.mName, newMembers[k]->mName) == 0) {
+					char* newScriptPos = ((char*)newScript) + newMembers[k]->mOffset;
+					switch (newMembers[k]->mType)
 					{
 					case(MemberType::INT):
-						memcpy(newScriptPos, oldScriptPos, sizeof(int));
+						*reinterpret_cast<int*>(newScriptPos) = *reinterpret_cast<int*>(oldScript[j].second);
+						delete reinterpret_cast<int*>(oldScript[j].second);
 						break;
 					case(MemberType::FLOAT):
-						memcpy(newScriptPos, oldScriptPos, sizeof(float));
+						*reinterpret_cast<float*>(newScriptPos) = *reinterpret_cast<float*>(oldScript[j].second);
+						delete reinterpret_cast<float*>(oldScript[j].second);
 						break;
 					case(MemberType::BOOL):
-						memcpy(newScriptPos, oldScriptPos, sizeof(bool));
+						*reinterpret_cast<bool*>(newScriptPos) = *reinterpret_cast<bool*>(oldScript[j].second);
+						delete reinterpret_cast<bool*>(oldScript[j].second);
 						break;
 					case(MemberType::GAMEOBJECT):
-						memcpy(newScriptPos, oldScriptPos, sizeof(GameObject*));
+						*reinterpret_cast<GameObject**>(newScriptPos) = reinterpret_cast<GameObject*>(oldScript[j].second);
 						break;
 					case(MemberType::FLOAT3):
-						memcpy(newScriptPos, oldScriptPos, sizeof(float)*3);
+						*reinterpret_cast<float3*>(newScriptPos) = *reinterpret_cast<float3*>(oldScript[j].second);
+						delete reinterpret_cast<float3*>(oldScript[j].second);
 						break;
 					}
-
-
 				}
 
 			}
@@ -181,6 +156,52 @@ void ModuleScriptManager::ReloadScripts()
 
 	}
 
+}
+
+void ModuleScriptManager::SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts)
+{
+	for (ScriptComponent* scriptComponent : mScripts)
+	{
+
+		Script* oldScript = scriptComponent->mScript;
+
+		const std::vector<Member*> oldMembersPointer = oldScript->GetMembers();
+		std::vector<std::pair<Member, void*>> oldMembers;
+
+		for (Member* member : oldMembersPointer)
+		{
+			oldMembers.push_back(std::pair<Member, void*>(*member, nullptr));
+			oldMembers.back().first.mName = new char[strlen(member->mName)];
+			strcpy(const_cast<char*>(oldMembers.back().first.mName), member->mName);
+
+			char* oldScriptPos = ((char*)oldScript) + oldMembers.back().first.mOffset;
+
+			switch (member->mType)
+			{
+			case(MemberType::INT):
+				oldMembers.back().second = new int(*reinterpret_cast<int*>(oldScriptPos));
+				break;
+			case(MemberType::FLOAT):
+				oldMembers.back().second = new float(*reinterpret_cast<float*>(oldScriptPos));
+				break;
+			case(MemberType::BOOL):
+				oldMembers.back().second = new bool(*reinterpret_cast<bool*>(oldScriptPos));
+				break;
+			case(MemberType::GAMEOBJECT):
+				oldMembers.back().second = *reinterpret_cast<GameObject**>(oldScriptPos);
+				break;
+			case(MemberType::FLOAT3):
+				oldMembers.back().second = new float3(*reinterpret_cast<float3*>(oldScriptPos));
+				break;
+			default:
+				break;
+			}
+
+		}
+
+
+		oldScripts.push_back(oldMembers);
+	}
 }
 
 void ModuleScriptManager::Play()
@@ -204,6 +225,7 @@ void ModuleScriptManager::Start()
 
 
 
+//DO NOT ERASE THESE FUNCTIONS UNTIL WE ARE SURE WE DOES NOT NEED IT AFTER ENGINE/GAME SPLIT
 
 
 template<class T>

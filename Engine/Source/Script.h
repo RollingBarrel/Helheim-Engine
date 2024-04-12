@@ -26,19 +26,21 @@ extern "C" \
 #define FRIEND(classname) \
 	friend SCRIPTING_API Script* Create##classname(GameObject* owner);
 
-
-
 #define END_CREATE return script
+
+#define SEPARATOR(name) script->mMembers.push_back(new Member(name, MemberType::SEPARATOR, 0))
 
 enum class  MemberType : int
 {
-	// IF THE NUMBERS CHANGES THE SCRIPTS MAY BREAK
+	// IF THE NUMBERS CHANGE THE SCRIPTS MAY BREAK
 	NONE = -1,
 	INT = 0, 
 	FLOAT = 1, 
 	BOOL = 2, 
 	GAMEOBJECT = 3, 
-	FLOAT3 = 4
+	FLOAT3 = 4,
+	SEPARATOR = 5
+
 	
 };
 

@@ -19,11 +19,13 @@ CREATE(PlayerController)
     
     CLASS(owner);
 
+    SEPARATOR("Player Stats");
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
     MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
     MEMBER(MemberType::GAMEOBJECT, mWinArea);
     MEMBER(MemberType::GAMEOBJECT, mLoseArea);
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+    MEMBER(MemberType::FLOAT, testeando2);
     END_CREATE;
 
 }
@@ -52,8 +54,6 @@ void PlayerController::Update()
     Lose();
     Dash();
 
-
-    LOG("hfadsfsdafs");
     if (mAnimationComponent) {
         mAnimationComponent->OnUpdate();
     }

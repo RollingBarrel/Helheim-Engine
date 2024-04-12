@@ -19,6 +19,15 @@ public:
     void Lose();
     void Rotate();
     void Dash();
+   
+
+private:
+    NavMeshController* mNavMeshControl = nullptr;
+    AnimationComponent* mAnimationComponent = nullptr;
+    bool mIsDashActive = false;
+    bool mStartCounter = false;
+    float mDashTimePassed = 0.0f;
+    float mDashMovement = 0;
     float mPlayerSpeed = 1;
     float mPlayerRotationSpeed = 1.0f;
     GameObject* mWinArea = nullptr;
@@ -28,13 +37,7 @@ public:
     float mDashLenght = 5.0f;
     float mDashCoolDown = 1.0f;
 
-private:
-    NavMeshController* mNavMeshControl = nullptr;
-    AnimationComponent* mAnimationComponent = nullptr;
-    bool mIsDashActive = false;
-    bool mStartCounter = false;
-    float mDashTimePassed = 0.0f;
-    float mDashMovement = 0;
+    float testeando2 = 543.0f;
 
 };
 

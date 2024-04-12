@@ -22,9 +22,11 @@ CREATE(TestScript)
 {
 
     CLASS(owner);
+    SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT3, mTestFloat3);
+    SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mRobot);
     END_CREATE;
 

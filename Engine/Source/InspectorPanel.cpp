@@ -715,6 +715,9 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	for (Member* member : members) {
 		switch (member->mType)
 		{
+		case MemberType::SEPARATOR:
+			ImGui::SeparatorText(member->mName);
+			break;
 		case MemberType::INT:
 			ImGui::DragInt(member->mName, reinterpret_cast<int*>((((char*)component->mScript) + member->mOffset)));
 			break;
@@ -761,11 +764,6 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			break;
 		}
 	}
-
-	if (ImGui::Button("HOTRELOAD", ImVec2(100,25))) {
-		App->GetScriptManager()->HotReload();
-	}
-
 }
 
 
