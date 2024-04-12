@@ -60,7 +60,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mTag(original.GetTag())
+	mTag(original.GetTag()), mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
 {
 
 	for (auto child : original.mChildren) 
@@ -96,7 +96,7 @@ GameObject::~GameObject()
 }
 
 
-Component* GameObject::GetComponent(ComponentType type)
+Component* GameObject::GetComponent(ComponentType type) const
 {
 	for (auto component : mComponents) 
 	{
@@ -176,7 +176,7 @@ void GameObject::SetEnabled(bool enabled)
 {
 	mIsEnabled = enabled;
 
-	if (!enabled || mParent->IsActive())
+	if (!enabled || IsRoot() || mParent->IsActive())
 	{
 		SetActiveInHierarchy(enabled);
 	}
@@ -222,7 +222,7 @@ void GameObject::SetScale(const float3& scale)
 	isTransformModified = true;
 }
 
-GameObject* GameObject::Find(const char* name)
+GameObject* GameObject::Find(const char* name) const
 {
 
 	GameObject* gameObject = nullptr;
@@ -250,7 +250,7 @@ GameObject* GameObject::Find(const char* name)
 	return gameObject;
 }
 
-GameObject* GameObject::Find(unsigned int UID)
+GameObject* GameObject::Find(unsigned int UID) const
 {
 	GameObject* gameObject = nullptr;
 
@@ -376,7 +376,7 @@ void GameObject::AddSuffix()
 				//lastPos = pos;
 			}
 		}
-		else 
+		else
 		{
 			for (auto child : mParent->mChildren)
 			{
@@ -401,7 +401,7 @@ void GameObject::AddSuffix()
 				mName += sufix;
 				found = false;
 			}
-			else if (isObjectWithSufix != std::string::npos)
+			else if (isObjectWithSufix != std::string::npos) 
 			{
 				hasNextItemSufix = true;
 			}
@@ -409,8 +409,8 @@ void GameObject::AddSuffix()
 			{
 				found = false;
 			}
-			
-			
+
+
 		}
 	}
 }
@@ -423,50 +423,50 @@ Component* GameObject::CreateComponent(ComponentType type)
 
 	switch (type) 
 	{
-		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this);
-			break;
-		case ComponentType::CAMERA:
-			newComponent = new CameraComponent(this);
-			break;
-		case ComponentType::POINTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
-			break;
-		}
-		case ComponentType::SPOTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
-			break;
-		}
-		case ComponentType::SCRIPT:
-			newComponent = new ScriptComponent(this);
-			break;
-		case ComponentType::TEST:
-			newComponent = new TestComponent(this);
-			break;
-		case ComponentType::AIAGENT:
-			newComponent = new AIAgentComponent(this);
-			break;
-		case ComponentType::NAVMESHOBSTACLE:
-			newComponent = new NavMeshObstacleComponent(this);
-			break;
-		case ComponentType::ANIMATION:
-			newComponent = new AnimationComponent(this);
-			break;
-		case ComponentType::IMAGE:
-			newComponent = new ImageComponent(this);
-			break;
-		case ComponentType::CANVAS:
-			newComponent = new CanvasComponent(this);
-			break;
-		case ComponentType::BUTTON:
-			newComponent = new ButtonComponent(this);
-			break;
-		default:
-			break;
+	case ComponentType::MESHRENDERER:
+		newComponent = new MeshRendererComponent(this);
+		break;
+	case ComponentType::CAMERA:
+		newComponent = new CameraComponent(this);
+		break;
+	case ComponentType::POINTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
+		break;
+	}
+	case ComponentType::SPOTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
+		break;
+	}
+	case ComponentType::SCRIPT:
+		newComponent = new ScriptComponent(this);
+		break;
+	case ComponentType::TEST:
+		newComponent = new TestComponent(this);
+		break;
+	case ComponentType::AIAGENT:
+		newComponent = new AIAgentComponent(this);
+		break;
+	case ComponentType::NAVMESHOBSTACLE:
+		newComponent = new NavMeshObstacleComponent(this);
+		break;
+	case ComponentType::ANIMATION:
+		newComponent = new AnimationComponent(this);
+		break;
+	case ComponentType::IMAGE:
+		newComponent = new ImageComponent(this);
+		break;
+	case ComponentType::CANVAS:
+		newComponent = new CanvasComponent(this);
+		break;
+	case ComponentType::BUTTON:
+		newComponent = new ButtonComponent(this);
+		break;
+	default:
+		break;
 	}
 
 	if (newComponent) 
@@ -523,7 +523,7 @@ void GameObject::AddComponent(Component* component, Component* position)
 }
 
 
-void GameObject::RecalculateLocalTransform()
+void GameObject::RecalculateLocalTransform() 
 {
 
 	mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
@@ -580,13 +580,17 @@ void GameObject::SetActiveInHierarchy(bool active)
 	}
 }
 
-void GameObject::Save(Archive& archive, int parentId) const {
+void GameObject::Save(Archive& archive, int parentId) const 
+{
 	archive.AddInt("UID", mID);
 	if (mParent->GetID() == parentId) 
 	{
 		archive.AddInt("ParentUID", 1);
 	}
-	else { archive.AddInt("ParentUID", mParent->GetID()); }
+	else 
+	{ 
+		archive.AddInt("ParentUID", mParent->GetID()); 
+	}
 	archive.AddString("Name", mName.c_str());
 	archive.AddBool("isEnabled", mIsEnabled);
 	archive.AddBool("isActive", mIsActive);
@@ -594,11 +598,13 @@ void GameObject::Save(Archive& archive, int parentId) const {
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);
 	archive.AddInt("Tag", mTag->GetID());
+	archive.AddInt("PrefabId", mPrefabResourceId);
+	archive.AddBool("OverridePrefab", mPrefabOverride);
 
 	// Save components
 	std::vector<Archive> componentsArchiveVector;
 
-	for (const auto& component : mComponents)
+	for (const auto& component : mComponents) 
 	{
 		Archive componentArchive;
 		component->Save(componentArchive);
@@ -617,14 +623,17 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID)
 	{
 		if (gameObjects[i]->GetID() == UID) 
 		{
+			// Found the parent
 			gameObjectParent = gameObjects[i];
 			break;
 		}
 		else 
 		{
+			// Recursively search in children
 			GameObject* gameObjectChild = FindGameObjectParent(gameObjects[i], UID);
 			if (gameObjectChild != nullptr) 
 			{
+				// Found a match in children, return it as the gameobject parent
 				gameObjectParent = gameObjectChild;
 				break;
 			}
@@ -654,6 +663,8 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
+	int prefabId{ 0 };
+	bool overridePrefab = true;
 	const char* name = { "" };
 	float3 position;
 	float3 scale;
@@ -671,6 +682,14 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	if (gameObject.HasMember("Name") && gameObject["Name"].IsString()) 
 	{
 		name = gameObject["Name"].GetString();
+	}
+	if (gameObject.HasMember("PrefabId") && gameObject["PrefabId"].IsInt()) 
+	{
+		prefabId = gameObject["PrefabId"].GetInt();
+	}
+	if (gameObject.HasMember("OverridePrefab") && gameObject["OverridePrefab"].IsBool()) 
+	{
+		overridePrefab = gameObject["OverridePrefab"].GetBool();
 	}
 	if (gameObject.HasMember("Translation") && gameObject["Translation"].IsArray()) 
 	{
@@ -730,31 +749,77 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 
 	if (parentUID == 1) 
 	{
-		go = new GameObject(uuid, name, scene);
-		go->SetPosition(position);
-		go->SetRotation(rotation);
-		go->SetScale(scale);
-		// Manage Components
-		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) 
-		{
-			LoadComponentsFromJSON(gameObject["Components"], go);
-		}
+		go = new GameObject(name, scene);
 	}
 	else 
 	{
 		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
-		go = new GameObject(uuid, name, gameObjectParent);
-		go->SetPosition(position);
-		go->SetRotation(rotation);
-		go->SetScale(scale);
-		// Manage Components
-		if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) 
-		{
-			LoadComponentsFromJSON(gameObject["Components"], go);
-		}
+		go = new GameObject(name, gameObjectParent);
+	}
+	go->SetPosition(position);
+	go->SetRotation(rotation);
+	go->SetScale(scale);
+	go->SetPrefabId(prefabId);
+	go->SetPrefabOverride(overridePrefab);
+	// Manage Components
+	if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) 
+	{
+		LoadComponentsFromJSON(gameObject["Components"], go);
 	}
 	(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
+}
+
+void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) 
+{
+	if (mPrefabOverride && mPrefabResourceId == id) 
+	{
+		for (GameObject* child : mChildren) 
+		{
+			DeleteChild(child);
+		}
+		std::unordered_map<int, int> uuids;
+		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray()) 
+		{
+			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
+			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++) 
+			{
+				if (gameObjects[i].IsObject()) 
+				{
+					int parentUID{ 0 };
+					unsigned int uuid{ 0 };
+
+					if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt()) 
+					{
+						parentUID = gameObjects[i]["ParentUID"].GetInt();
+					}
+					if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt()) 
+					{
+						uuid = gameObjects[i]["UID"].GetInt();
+					}
+					if (parentUID == 1) {
+						uuids[uuid] = mID;
+						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray()) 
+						{
+							LoadComponentsFromJSON(gameObjects[i]["Components"], this);
+						}
+					}
+					else 
+					{
+						LoadGameObjectFromJSON(gameObjects[i], mParent, &uuids);
+					}
+				}
+			}
+		}
+	}
+	else 
+	{
+		for (GameObject* child : mChildren) 
+		{
+			child->LoadChangesPrefab(gameObject, id);
+		}
+	}
+
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) 
@@ -810,4 +875,3 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 
 	return foundGameObjects;
 }
-

@@ -44,6 +44,7 @@ ModuleScene::~ModuleScene()
 	delete mNavMeshController;
 
 	delete mRoot;
+	delete mBackgroundScene;
 
 	for (Tag* tag : mTags) 
 	{
@@ -202,14 +203,15 @@ void ModuleScene::Save(const char* sceneName) const
 
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
-
 	delete sceneArchive;
 	delete archive;
-
 }
 
-void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const 
+int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const 
 {
+	unsigned int resourceId = LCG().Int();
+	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+	if (resource != nullptr) { resourceId = resource->GetUID(); }
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
@@ -220,11 +222,13 @@ void ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFileP
 
 	std::string out = prefabArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	App->GetResource()->ImportFile(saveFilePath, LCG().Int()); //TODO Generate UUID
+	App->GetResource()->ImportFile(saveFilePath, resourceId);
 	PathNode* root = App->GetFileSystem()->GetRootNode();
 	root->mChildren.clear();
 	App->GetFileSystem()->DiscoverFiles("Assets", root);
+	delete prefabArchive;
 	delete archive;
+	return resourceId;
 }
 
 void ModuleScene::Load(const char* sceneName) 
@@ -259,8 +263,6 @@ void ModuleScene::Load(const char* sceneName)
 			mRoot->Load(sceneValue);
 		}
 
-		HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
-		hierarchyPanel->SetFocus(mRoot);
 		mQuadtreeRoot->UpdateTree();
 
 		delete[] loadedBuffer;
@@ -269,7 +271,7 @@ void ModuleScene::Load(const char* sceneName)
 	}
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath)
+void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)
 {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
@@ -285,20 +287,47 @@ void ModuleScene::LoadPrefab(const char* saveFilePath)
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) 
 	{
 		const rapidjson::Value& s = d["Prefab"];
-		mRoot->Load(s);
+		if (update) { mRoot->LoadChangesPrefab(s, resourceId); }
+		else 
+		{
+			GameObject* temp = new GameObject("Temp", mRoot);
+			temp->Load(s);
+			for (GameObject* child : temp->GetChildren()) 
+			{
+				child->ResetTransform();
+				child->SetPrefabId(resourceId);
+				mRoot->AddChild(child);
+				temp->RemoveChild(child->GetID());
+			}
+			mRoot->DeleteChild(temp);
+		}
 	}
 
 	delete[] loadedBuffer;
 }
 
-GameObject* ModuleScene::Find(const char* name)
+void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
+{
+	if (mBackgroundScene != nullptr) { mClosePrefab = true; }
+	mPrefabPath = saveFilePath;
+}
+
+void ModuleScene::ClosePrefabScreen()
+{
+	if (mBackgroundScene != nullptr) 
+	{
+		mClosePrefab = true;
+	}
+}
+
+GameObject* ModuleScene::Find(const char* name) const
 {
 	return mRoot->Find(name);
 }
 
-GameObject* ModuleScene::Find(unsigned int UID)
+GameObject* ModuleScene::Find(unsigned int UID) const
 {
-	if (UID != 1) 
+	if (UID != mRoot->GetID()) 
 	{
 		return mRoot->Find(UID);
 	}
@@ -309,8 +338,9 @@ GameObject* ModuleScene::Find(unsigned int UID)
 
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const 
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const  
 {
+	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
 	gameObject->Save(gameObjectArchive, parentUuid);
 	gameObjectsArchive.push_back(gameObjectArchive);
@@ -370,6 +400,30 @@ update_status ModuleScene::PostUpdate(float dt)
 	if (!mGameObjectsToDuplicate.empty()) 
 	{
 		DuplicateGameObjects();
+	}
+	if (mClosePrefab)
+	{
+		int resourceId = SavePrefab(mRoot->GetChildren()[0], mPrefabPath);
+		delete mRoot;
+		mRoot = mBackgroundScene;
+		mBackgroundScene = nullptr;
+		mRoot->SetEnabled(true);
+		LoadPrefab(mPrefabPath, resourceId, true);
+		mQuadtreeRoot->UpdateTree();
+		mPrefabPath = "";
+		mClosePrefab = false;
+	}
+	if (mPrefabPath != "" && mBackgroundScene == nullptr) 
+	{
+		Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+		if (resource->GetType() == Resource::Type::Object) 
+		{
+			mBackgroundScene = mRoot;
+			mBackgroundScene->SetEnabled(false);
+			mRoot = new GameObject(mPrefabPath, nullptr);
+			LoadPrefab(mPrefabPath, resource->GetUID());
+			mQuadtreeRoot->UpdateTree();
+		}
 	}
 
 	const Frustum frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
