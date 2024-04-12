@@ -267,23 +267,27 @@ deferrer<F> operator*(defer_dummy, F f) {
 #endif // DEFER
 
 static bool DebugDirRelativeVirtualAddress(PIMAGE_OPTIONAL_HEADER optionalHeader, DWORD& debugDirRva, DWORD& debugDirSize) {
-	if (optionalHeader->Magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC) {
+	if (optionalHeader->Magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC) 
+	{
 		// Represents the optional header format.
 		PIMAGE_OPTIONAL_HEADER64 optionalHeader64 = struct_cast<PIMAGE_OPTIONAL_HEADER64>(optionalHeader);
 		debugDirRva = optionalHeader64->DataDirectory[IMAGE_DIRECTORY_ENTRY_DEBUG].VirtualAddress;
 		debugDirSize = optionalHeader64->DataDirectory[IMAGE_DIRECTORY_ENTRY_DEBUG].Size;
 	}
-	else {
+	else 
+	{
 		// Represents the optional header format.
 		PIMAGE_OPTIONAL_HEADER32 optionalHeader32 = struct_cast<PIMAGE_OPTIONAL_HEADER32>(optionalHeader);
 		debugDirRva = optionalHeader32->DataDirectory[IMAGE_DIRECTORY_ENTRY_DEBUG].VirtualAddress;
 		debugDirSize = optionalHeader32->DataDirectory[IMAGE_DIRECTORY_ENTRY_DEBUG].Size;
 	}
 
-	if (debugDirRva == 0 && debugDirSize == 0) {
+	if (debugDirRva == 0 && debugDirSize == 0) 
+	{
 		return true;
 	}
-	else if (debugDirRva == 0 || debugDirSize == 0) {
+	else if (debugDirRva == 0 || debugDirSize == 0) 
+	{
 		return false;
 	}
 
@@ -295,16 +299,20 @@ static bool FileOffsetRelativeVirtualAdress(PIMAGE_NT_HEADERS ntHeaders, DWORD r
 
 	// Represents the image section header format.
 	IMAGE_SECTION_HEADER* sectionHeader = IMAGE_FIRST_SECTION(ntHeaders);
-	for (int i = 0; i < ntHeaders->FileHeader.NumberOfSections && !found; ++i, ++sectionHeader) {
-		if (sectionHeader->VirtualAddress <= rva) {
-			if (sectionHeader->VirtualAddress + sectionHeader->Misc.VirtualSize > rva) {
+	for (int i = 0; i < ntHeaders->FileHeader.NumberOfSections && !found; ++i, ++sectionHeader) 
+	{
+		if (sectionHeader->VirtualAddress <= rva) 
+		{
+			if (sectionHeader->VirtualAddress + sectionHeader->Misc.VirtualSize > rva) 
+			{
 				found = true;
 				fileOffset = rva - sectionHeader->VirtualAddress + sectionHeader->PointerToRawData;
 			}
 		}
 	}
 
-	if (!found) {
+	if (!found) 
+	{
 		return false;
 	}
 
@@ -317,26 +325,33 @@ static char* PDBFind(LPBYTE imageBase, PIMAGE_DEBUG_DIRECTORY debugDir) {
 	LPBYTE debugInfo = const_cast<LPBYTE>(imageBase + debugDir->PointerToRawData);
 	const DWORD debugInfoSize = debugDir->SizeOfData;
 
-	if (debugInfo == 0 || debugInfoSize == 0) {
+	if (debugInfo == 0 || debugInfoSize == 0) 
+	{
 		return nullptr;
 	}
 
-	if (IsBadReadPtr(debugInfo, debugInfoSize)) {
+	if (IsBadReadPtr(debugInfo, debugInfoSize)) 
+	{
 		return nullptr;
 	}
 
-	if (debugInfoSize < sizeof(DWORD)) {
+	if (debugInfoSize < sizeof(DWORD)) 
+	{
 		return nullptr;
 	}
 
-	if (debugDir->Type == IMAGE_DEBUG_TYPE_CODEVIEW) {
+	if (debugDir->Type == IMAGE_DEBUG_TYPE_CODEVIEW) 
+	{
 		auto signature = *(DWORD*)debugInfo;
-		if (signature == 'SDSR') {
+		if (signature == 'SDSR') 
+		{
 			auto* info = (RSDSHeader*)(debugInfo);
-			if (IsBadReadPtr(debugInfo, sizeof(RSDSHeader))) {
+			if (IsBadReadPtr(debugInfo, sizeof(RSDSHeader))) 
+			{
 				return nullptr;
 			}
-			if (IsBadStringPtrA((const char*)info->filename, UINT_MAX)) {
+			if (IsBadStringPtrA((const char*)info->filename, UINT_MAX)) 
+			{
 				return nullptr;
 			}
 			return info->filename;
@@ -352,126 +367,153 @@ static bool PDBReplace(const std::string& filename, const std::string& namePDB) 
 	LPVOID mem = nullptr;
 	bool result = false;
 
-	DEFER{
-		if (mem != nullptr) {
+	DEFER
+	{
+		if (mem != nullptr) 
+		{
 			UnmapViewOfFile(mem);
 		}
 
-		if (filemap != nullptr) {
+		if (filemap != nullptr) 
+		{
 			CloseHandle(filemap);
 		}
 
-		if ((fp != nullptr) && (fp != INVALID_HANDLE_VALUE)) {
+		if ((fp != nullptr) && (fp != INVALID_HANDLE_VALUE)) 
+		{
 			CloseHandle(fp);
 		}
 	};
 
 	fp = CreateFileA(filename.c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-	if ((fp == INVALID_HANDLE_VALUE) || (fp == nullptr)) {
+	if ((fp == INVALID_HANDLE_VALUE) || (fp == nullptr)) 
+	{
 		return false;
 	}
 
 	// Creates or opens a named or unnamed file mapping object for a specified file.
 	filemap = CreateFileMapping(fp, nullptr, PAGE_READWRITE, 0, 0, nullptr);
-	if (filemap == nullptr) {
+	if (filemap == nullptr) 
+	{
 		return false;
 	}
 
 	// Maps a view of a file mapping into the address space of a calling process.
 	mem = MapViewOfFile(filemap, FILE_MAP_ALL_ACCESS, 0, 0, 0);
-	if (mem == nullptr) {
+	if (mem == nullptr) 
+	{
 		return false;
 	}
 
 	//  Represents the DOS header format.
 	PIMAGE_DOS_HEADER dosHeader = struct_cast<PIMAGE_DOS_HEADER>(mem);
-	if (dosHeader == 0) {
+	if (dosHeader == 0) 
+	{
 		return false;
 	}
 
 	// Verifies that the calling process has read access to the specified range of memory.
-	if (IsBadReadPtr(dosHeader, sizeof(IMAGE_DOS_HEADER))) {
+	if (IsBadReadPtr(dosHeader, sizeof(IMAGE_DOS_HEADER))) 
+	{
 		return false;
 	}
 
-	if (dosHeader->e_magic != IMAGE_DOS_SIGNATURE) {
+	if (dosHeader->e_magic != IMAGE_DOS_SIGNATURE) 
+	{
 		return false;
 	}
 
 	// Represents the PE header format.
 	PIMAGE_NT_HEADERS ntHeaders = struct_cast<PIMAGE_NT_HEADERS>(dosHeader, dosHeader->e_lfanew);
-	if (ntHeaders == 0) {
+	if (ntHeaders == 0) 
+	{
 		return false;
 	}
 
 	// Verifies that the calling process has read access to the specified range of memory.
-	if (IsBadReadPtr(ntHeaders, sizeof(ntHeaders->Signature))) {
+	if (IsBadReadPtr(ntHeaders, sizeof(ntHeaders->Signature))) 
+	{
 		return false;
 	}
 
 	// Check if signature of the NT header is the correct one
-	if (ntHeaders->Signature != IMAGE_NT_SIGNATURE) {
+	if (ntHeaders->Signature != IMAGE_NT_SIGNATURE) 
+	{
 		return false;
 	}
 
 	// Verifies that the calling process has read access to the specified range of memory.
-	if (IsBadReadPtr(&ntHeaders->FileHeader, sizeof(IMAGE_FILE_HEADER))) {
+	if (IsBadReadPtr(&ntHeaders->FileHeader, sizeof(IMAGE_FILE_HEADER))) 
+	{
 		return false;
 	}
 
-	if (IsBadReadPtr(&ntHeaders->OptionalHeader, ntHeaders->FileHeader.SizeOfOptionalHeader)) {
+	if (IsBadReadPtr(&ntHeaders->OptionalHeader, ntHeaders->FileHeader.SizeOfOptionalHeader)) 
+	{
 		return false;
 	}
 
-	if (ntHeaders->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR32_MAGIC && ntHeaders->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC) {
+	if (ntHeaders->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR32_MAGIC && ntHeaders->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR64_MAGIC) 
+	{
 		return false;
 	}
 
 	// Retrieve the contents of PE file sections
 	auto sectionHeaders = IMAGE_FIRST_SECTION(ntHeaders);
-	if (IsBadReadPtr(sectionHeaders, ntHeaders->FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER))) {
+	if (IsBadReadPtr(sectionHeaders, ntHeaders->FileHeader.NumberOfSections * sizeof(IMAGE_SECTION_HEADER))) 
+	{
 		return false;
 	}
 
 	DWORD debugDirVRA = 0;
 	DWORD debugDirSize = 0;
-	if (!DebugDirRelativeVirtualAddress(&ntHeaders->OptionalHeader, debugDirVRA, debugDirSize)) {
+	if (!DebugDirRelativeVirtualAddress(&ntHeaders->OptionalHeader, debugDirVRA, debugDirSize)) 
+	{
 		return false;
 	}
 
-	if (debugDirVRA == 0 || debugDirSize == 0) {
+	if (debugDirVRA == 0 || debugDirSize == 0) 
+	{
 		return false;
 	}
 
 	DWORD offset = 0;
-	if (!FileOffsetRelativeVirtualAdress(ntHeaders, debugDirVRA, offset)) {
+	if (!FileOffsetRelativeVirtualAdress(ntHeaders, debugDirVRA, offset)) 
+	{
 		return false;
 	}
 
 	// Represents the debug directory format.
 	PIMAGE_DEBUG_DIRECTORY debugDir = struct_cast<PIMAGE_DEBUG_DIRECTORY>(mem, offset);
-	if (debugDir == 0) {
+	if (debugDir == 0) 
+	{
 		return false;
 	}
 
-	if (IsBadReadPtr(debugDir, debugDirSize)) {
+	if (IsBadReadPtr(debugDir, debugDirSize)) 
+	{
 		return false;
 	}
 
-	if (debugDirSize < sizeof(IMAGE_DEBUG_DIRECTORY)) {
+	if (debugDirSize < sizeof(IMAGE_DEBUG_DIRECTORY)) 
+	{
 		return false;
 	}
 
 	int numEntries = debugDirSize / sizeof(IMAGE_DEBUG_DIRECTORY);
-	if (numEntries == 0) {
+	if (numEntries == 0) 
+	{
 		return false;
 	}
 
-	for (int i = 1; i <= numEntries; ++i, ++debugDir) {
+	for (int i = 1; i <= numEntries; ++i, ++debugDir) 
+	{
 		char* pdb = PDBFind((LPBYTE)mem, debugDir);
-		if (pdb) {
+		if (pdb) 
+		{
 			size_t len = strlen(pdb);
-			if (len >= strlen(namePDB.c_str())) {
+			if (len >= strlen(namePDB.c_str())) 
+			{
 				memcpy_s(pdb, len, namePDB.c_str(), namePDB.length());
 				pdb[namePDB.length()] = 0;
 				result = true;
