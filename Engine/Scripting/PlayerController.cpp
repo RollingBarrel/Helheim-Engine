@@ -18,7 +18,6 @@ CREATE(PlayerController)
 {
     
     CLASS(owner);
-
     SEPARATOR("Player Stats");
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
     MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
