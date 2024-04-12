@@ -436,7 +436,8 @@ void ModuleFileSystem::UpdateScripts()
 
         if (!IsDirectory(filePath.c_str()))
         {
-            if (filePath.back() == 'h') {
+            if (filePath.back() == 'h') 
+            {
                 std::string filePathWithMeta;
                 filePathWithMeta = filePath + ".emeta";
                 if (!Exists(filePathWithMeta.c_str())) 
