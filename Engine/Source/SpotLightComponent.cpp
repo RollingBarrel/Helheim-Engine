@@ -5,7 +5,8 @@
 
 #include "SpotLightComponent.h"
 
-SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) {
+SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) 
+{
 	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;

@@ -13,6 +13,22 @@
 #include "AnimationComponent.h"
 #include "Geometry/Ray.h"
 
+CREATE(PlayerController)
+{
+    
+    CLASS(owner);
+    SEPARATOR("Player Stats");
+    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
+    MEMBER(MemberType::GAMEOBJECT, mWinArea);
+    MEMBER(MemberType::GAMEOBJECT, mLoseArea);
+    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+    MEMBER(MemberType::FLOAT, testeando2);
+    END_CREATE;
+
+}
+
+
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
 
@@ -184,5 +200,7 @@ void PlayerController::Dash()
 
 
 }
+
+
 
 

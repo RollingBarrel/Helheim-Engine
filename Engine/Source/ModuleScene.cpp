@@ -46,7 +46,8 @@ ModuleScene::~ModuleScene()
 	delete mRoot;
 	delete mBackgroundScene;
 
-	for (Tag* tag : mTags) {
+	for (Tag* tag : mTags) 
+	{
 		delete tag;
 	}
 }
@@ -55,10 +56,7 @@ bool ModuleScene::Init()
 {
 	mRoot = new GameObject("SampleScene", nullptr);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
-	//TestSceneGameObjects test = TestSceneGameObjects();
-	//test.TestSceneWithGameObjects();
 
-	//Save("Scene");
 	Load("scene");
 
 	return true;
@@ -80,14 +78,16 @@ void ModuleScene::ResetFrustumCulling(GameObject* obj)
 
 GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
 {
-	if (root->GetTag()->GetID() == tagid && root != mRoot) {
+	if (root->GetTag()->GetID() == tagid && root != mRoot) 
+	{
 		return root;
 	}
 
 	for (GameObject* child : root->GetChildren())
 	{
 		GameObject* foundObject = FindGameObjectWithTag(child, tagid);
-		if (foundObject != nullptr) {
+		if (foundObject != nullptr) 
+		{
 			return foundObject;
 		}
 	}
@@ -97,7 +97,8 @@ GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
 
 void ModuleScene::FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects)
 {
-	if (root->GetTag()->GetID() == tagid && root != mRoot) {
+	if (root->GetTag()->GetID() == tagid && root != mRoot) 
+	{
 		foundGameObjects.push_back(root);
 	}
 
@@ -109,7 +110,8 @@ void ModuleScene::FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::
 
 void ModuleScene::AddTag(std::string tagname)
 {
-	if (GetTagByName(tagname) == nullptr) {
+	if (GetTagByName(tagname) == nullptr) 
+	{
 		Tag* newTag = new Tag(mLastTagIndex, tagname, TagType::CUSTOM);
 		mTags.push_back(newTag);
 
@@ -143,8 +145,10 @@ std::vector<Tag*> ModuleScene::GetCustomTag()
 
 Tag* ModuleScene::GetTagByName(std::string tagname)
 {
-	for (Tag* tag : mTags) {
-		if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0) {
+	for (Tag* tag : mTags) 
+	{
+		if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0) 
+		{
 			return tag;
 		}
 	}
@@ -153,8 +157,10 @@ Tag* ModuleScene::GetTagByName(std::string tagname)
 
 Tag* ModuleScene::GetTagByID(unsigned id)
 {
-	for (Tag* tag : mTags) {
-		if (tag->GetID() == id) {
+	for (Tag* tag : mTags) 
+	{
+		if (tag->GetID() == id) 
+		{
 			return tag;
 		}
 	}
@@ -165,11 +171,13 @@ void ModuleScene::DeleteTag(Tag* tag)
 {
 	auto it = std::find(mTags.begin(), mTags.end(), tag);
 
-	if (it != mTags.end()) {
+	if (it != mTags.end()) 
+	{
 
 		// 1. Set tags to untagged
 		std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
-		for (auto object : objects) {
+		for (auto object : objects) 
+		{
 			object->SetTag(GetTagByName("Untagged"));
 		}
 
@@ -179,9 +187,11 @@ void ModuleScene::DeleteTag(Tag* tag)
 	}
 }
 
-void ModuleScene::Save(const char* sceneName) const {
+void ModuleScene::Save(const char* sceneName) const 
+{
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
-	if (saveFilePath.find(".json") == std::string::npos) {
+	if (saveFilePath.find(".json") == std::string::npos) 
+	{
 		saveFilePath += ".json";
 	}
 
@@ -197,7 +207,8 @@ void ModuleScene::Save(const char* sceneName) const {
 	delete archive;
 }
 
-int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const {
+int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const 
+{
 	unsigned int resourceId = LCG().Int();
 	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
 	if (resource != nullptr) { resourceId = resource->GetUID(); }
@@ -220,10 +231,12 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	return resourceId;
 }
 
-void ModuleScene::Load(const char* sceneName) {
+void ModuleScene::Load(const char* sceneName) 
+{
 
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
-	if (loadFilePath.find(".json") == std::string::npos) {
+	if (loadFilePath.find(".json") == std::string::npos) 
+	{
 		loadFilePath += ".json";
 	}
 
@@ -233,31 +246,25 @@ void ModuleScene::Load(const char* sceneName) {
 	{
 		rapidjson::Document document;
 		rapidjson::ParseResult ok = document.Parse(loadedBuffer);
-		if (!ok) {
-			// Handle parsing error
+		if (!ok) 
+		{
 			LOG("Scene was not loaded.");
 			return;
 		}
 
-		/*const std::vector<GameObject*>& children = mRoot->GetChildren();
-		if (!children.empty()) {
-			for (GameObject* child : children) {
-				mRoot->DeleteChild(child);
-			}
-		}*/
 		mQuadtreeRoot->CleanUp();
 		delete mRoot;
 		mRoot = new GameObject("SampleScene", nullptr);
 
 
-		if (document.HasMember("Scene") && document["Scene"].IsObject()) {
+		if (document.HasMember("Scene") && document["Scene"].IsObject()) 
+		{
 			const rapidjson::Value& sceneValue = document["Scene"];
 			mRoot->Load(sceneValue);
 		}
 
 		mQuadtreeRoot->UpdateTree();
 
-		// Free the loaded buffer
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
@@ -271,19 +278,22 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 
 	rapidjson::Document d;
 	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
-	if (!ok) {
-		// Handle parsing error
+	if (!ok) 
+	{
 		LOG("Object was not loaded.");
 		return;
 	}
 
-	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) {
+	if (d.HasMember("Prefab") && d["Prefab"].IsObject()) 
+	{
 		const rapidjson::Value& s = d["Prefab"];
 		if (update) { mRoot->LoadChangesPrefab(s, resourceId); }
-		else {
+		else 
+		{
 			GameObject* temp = new GameObject("Temp", mRoot);
 			temp->Load(s);
-			for (GameObject* child : temp->GetChildren()) {
+			for (GameObject* child : temp->GetChildren()) 
+			{
 				child->ResetTransform();
 				child->SetPrefabId(resourceId);
 				mRoot->AddChild(child);
@@ -293,7 +303,6 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 		}
 	}
 
-	// Free the loaded buffer
 	delete[] loadedBuffer;
 }
 
@@ -305,7 +314,8 @@ void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
 
 void ModuleScene::ClosePrefabScreen()
 {
-	if (mBackgroundScene != nullptr) {
+	if (mBackgroundScene != nullptr) 
+	{
 		mClosePrefab = true;
 	}
 }
@@ -313,45 +323,48 @@ void ModuleScene::ClosePrefabScreen()
 GameObject* ModuleScene::Find(const char* name) const
 {
 	return mRoot->Find(name);
-
 }
 
 GameObject* ModuleScene::Find(unsigned int UID) const
 {
-	if (UID != mRoot->GetID()) {
+	if (UID != mRoot->GetID()) 
+	{
 		return mRoot->Find(UID);
 	}
-	else {
+	else 
+	{
 		return mRoot;
 	}
 
 }
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const  {
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const  
+{
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
 	gameObject->Save(gameObjectArchive, parentUuid);
 	gameObjectsArchive.push_back(gameObjectArchive);
 
-	// Save children game objects
 	const std::vector<GameObject*>& children = gameObject->GetChildren();
-	if (!children.empty()) {
-		for (GameObject* child : children) {
+	if (!children.empty()) 
+	{
+		for (GameObject* child : children) 
+		{
 			SaveGameObjectRecursive(child, gameObjectsArchive, parentUuid);
 		}
 	}
 }
 
-void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const {
-	// Create a vector to store individual game object archives
+void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const 
+{
+	
 	std::vector<Archive> gameObjectsArchiveVector;
 
-	// Save each GameObject to the gameObjectsArchiveVector
-	for (GameObject* gameObject : gameObjects) {
+	for (GameObject* gameObject : gameObjects) 
+	{
 		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, mRoot->GetID());
 	}
 
-	// Add the gameObjectsArchiveVector to the root archive under the key "gameobjects"
 	rootArchive.AddObjectArray("GameObjects", gameObjectsArchiveVector);
 }
 
@@ -380,13 +393,16 @@ update_status ModuleScene::Update(float dt)
 
 update_status ModuleScene::PostUpdate(float dt)
 {
-	if (!mGameObjectsToDelete.empty()) {
+	if (!mGameObjectsToDelete.empty()) 
+	{
 		DeleteGameObjects();
 	}
-	if (!mGameObjectsToDuplicate.empty()) {
+	if (!mGameObjectsToDuplicate.empty()) 
+	{
 		DuplicateGameObjects();
 	}
-	if (mClosePrefab) {
+	if (mClosePrefab)
+	{
 		int resourceId = SavePrefab(mRoot->GetChildren()[0], mPrefabPath);
 		delete mRoot;
 		mRoot = mBackgroundScene;
@@ -397,9 +413,11 @@ update_status ModuleScene::PostUpdate(float dt)
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
-	if (mPrefabPath != "" && mBackgroundScene == nullptr) {
+	if (mPrefabPath != "" && mBackgroundScene == nullptr) 
+	{
 		Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-		if (resource->GetType() == Resource::Type::Object) {
+		if (resource->GetType() == Resource::Type::Object) 
+		{
 			mBackgroundScene = mRoot;
 			mBackgroundScene->SetEnabled(false);
 			mRoot = new GameObject(mPrefabPath, nullptr);
@@ -409,14 +427,15 @@ update_status ModuleScene::PostUpdate(float dt)
 	}
 
 	const Frustum frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
-	//mQuadtreeRoot->UpdateDrawableGameObjects(&frustum);
 
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScene::DeleteGameObjects() {
+void ModuleScene::DeleteGameObjects() 
+{
 
-	for (auto gameObject : mGameObjectsToDelete) {
+	for (auto gameObject : mGameObjectsToDelete) 
+	{
 		gameObject->GetParent()->DeleteChild(gameObject);
 	}
 
@@ -424,9 +443,11 @@ void ModuleScene::DeleteGameObjects() {
 	mQuadtreeRoot->UpdateTree();
 }
 
-void ModuleScene::DuplicateGameObjects() {
+void ModuleScene::DuplicateGameObjects() 
+{
 
-	for (auto gameObject : mGameObjectsToDuplicate) {
+	for (auto gameObject : mGameObjectsToDuplicate) 
+	{
 		gameObject->GetParent()->AddChild(gameObject);
 	}
 
@@ -437,8 +458,8 @@ void ModuleScene::DuplicateGameObjects() {
 
 void ModuleScene::LoadGameObjectsIntoScripts()
 {
-
-	for (auto& pair : mGameObjectsToLoadIntoScripts) {
+	for (auto& pair : mGameObjectsToLoadIntoScripts) 
+	{
 		*pair.second = Find(pair.first);
 	}
 }

@@ -197,17 +197,8 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
-	//float3 difference = rotationInRadians - mEulerRotation;
-	//Quat deltaRotation = Quat::FromEulerXYZ(rotationInRadians.x - mEulerRotation.x , rotationInRadians.y - mEulerRotation.y, rotationInRadians.z - mEulerRotation.z);
-	//mRotation = mRotation * deltaRotation;
 	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
 	mEulerRotation = rotationInRadians;
-
-	//if (GetComponent(ComponentType::CAMERA) != nullptr) {
-		//CameraComponent* camera = (CameraComponent*)GetComponent(ComponentType::CAMERA);
-		//camera->SetRotation(difference);
-	//}
-
 	isTransformModified = true;
 }
 
@@ -215,14 +206,12 @@ void GameObject::SetRotation(const Quat& rotation)
 {
 	mRotation = rotation;
 	mEulerRotation = rotation.ToEulerXYZ();
-
 	isTransformModified = true;
 }
 
 void GameObject::SetPosition(const float3& position)
 {
 	mPosition = position;
-
 	isTransformModified = true;
 }
 
@@ -589,9 +578,6 @@ void GameObject::SetActiveInHierarchy(bool active)
 	{
 		child->SetActiveInHierarchy(active);
 	}
-
-
-
 }
 
 void GameObject::Save(Archive& archive, int parentId) const 
@@ -627,14 +613,6 @@ void GameObject::Save(Archive& archive, int parentId) const
 
 	archive.AddObjectArray("Components", componentsArchiveVector);
 
-	// Save children IDs
-	/*if (!mChildren.empty()) {
-		std::vector<unsigned int> childrenIds;
-		for (const auto& child : mChildren) {
-			childrenIds.push_back(child->GetId());
-		}
-		archive.AddIntArray("Children", childrenIds);
-	}*/
 }
 
 static GameObject* FindGameObjectParent(GameObject* gameObject, int UID) 
@@ -661,7 +639,6 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID)
 			}
 		}
 	}
-
 	return gameObjectParent;
 }
 
@@ -681,7 +658,6 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 		}
 	}
 }
-
 
 void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene, std::unordered_map<int, int>* convertUuid) 
 {
