@@ -143,9 +143,9 @@ void ModuleUI::CheckRaycast()
 			if (image != nullptr && transform2D != nullptr)
 			{
 				float2 canvasSize = ((CanvasComponent*)(image->FindCanvasOnParents(image->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
-				float2 minImagePoint = transform2D->GetGlobalPosition().xy().Mul(float2(2.0f,2.0f)).Div(canvasSize)
+				float2 minImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f,2.0f)).Div(canvasSize)
 					- transform2D->GetSize().Div(canvasSize);
-				float2 maxImagePoint = transform2D->GetGlobalPosition().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize)
+				float2 maxImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize)
 					+ transform2D->GetSize().Div(canvasSize);
 
 				// Check if the mouse position is inside the bounds of the image

@@ -19,9 +19,6 @@ public:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 	inline const float4x4& GetGlobalMatrix() const { return mGlobalMatrix; }
-	inline const float3& GetGlobalPosition() const { return mGlobalMatrix.TranslatePart(); }
-	inline const float4x4& GetGlobalRotation() const { static_cast<float4x4>(mGlobalMatrix.RotatePart()); }
-
 	inline const float3& GetPosition() const { return mPosition; }
 	inline const float3& GetRotation() const { return mEulerRotation; }
 	inline const float2& GetSize() const { return mSize; }

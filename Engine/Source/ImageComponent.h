@@ -21,6 +21,7 @@ public:
     void SetImage(ResourceTexture* image) { mImage = image; }
     void FillVBO();
     void CreateVAO();
+
     unsigned int GetResourceId() const { return mResourceId; }
     ResourceTexture* GetImage() const { return mImage; }
     float3* GetColor() { return &mColor; }
