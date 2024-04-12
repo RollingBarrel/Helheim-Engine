@@ -1026,3 +1026,172 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 	ImGui::EndTable();
 	
 }
+
+void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
+{
+
+	const char* currentItem = component->GetScriptName();
+
+	if (ImGui::BeginCombo("##combo", currentItem)) 
+	{
+		std::vector<std::string> scriptNames;
+		App->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
+		for (int i = 0; i < scriptNames.size(); ++i)
+		{
+			
+			size_t slashPos = scriptNames[i].find_last_of('/');
+			if (slashPos != std::string::npos)
+			{
+				
+				scriptNames[i].erase(0, slashPos + 1);
+			}
+			
+			size_t dotPos = scriptNames[i].find_first_of('.');
+			if (dotPos != std::string::npos)
+			{
+				
+				scriptNames[i].erase(dotPos);
+			}
+		}
+
+		for (int n = 0; n < scriptNames.size(); n++)
+		{
+			bool is_selected = (currentItem == scriptNames[n]); 
+			if (ImGui::Selectable(scriptNames[n].c_str(), is_selected)) 
+			{
+				currentItem = scriptNames[n].c_str();
+				component->LoadScript(currentItem);
+				currentItem = component->GetScriptName();
+			}
+
+			if (is_selected) 
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+
+		}
+		ImGui::EndCombo();
+	}
+
+	component->mScript;
+	std::vector<std::pair<std::string, std::pair<MemberType, void*>>> variables;
+
+	ImGui::SeparatorText("Attributes");
+
+	std::vector<Member*> members;
+
+	if (component->mScript) 
+	{
+		members = component->mScript->mMembers;
+	}
+
+	for (Member* member : members) 
+	{
+		switch (member->mType)
+		{
+		case MemberType::SEPARATOR:
+			ImGui::SeparatorText(member->mName);
+			break;
+		case MemberType::INT:
+			ImGui::DragInt(member->mName, reinterpret_cast<int*>((((char*)component->mScript) + member->mOffset)));
+			break;
+		case MemberType::FLOAT:
+			ImGui::DragFloat(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			break;
+		case MemberType::BOOL:
+			ImGui::Checkbox(member->mName, reinterpret_cast<bool*>((((char*)component->mScript) + member->mOffset)));
+			break;
+		case MemberType::FLOAT3:
+			ImGui::DragFloat3(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			break;
+		case MemberType::GAMEOBJECT:
+		{
+			GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)component->mScript) + member->mOffset));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			const char* str = "";
+			if (!gameObject || !*gameObject)
+			{
+				str = "Drop a GameObject Here";
+			}
+			else 
+			{
+				str = (*gameObject)->GetName().c_str();
+			}
+			ImGui::BulletText(str);
+			if (ImGui::BeginDragDropTarget()) 
+			{
+
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE")) 
+				{
+					if (gameObject) 
+					{
+						*gameObject = *(GameObject**)payload->Data;
+					}
+					
+				}
+				ImGui::EndDragDropTarget();
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+}
+
+
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+
+	ImGui::SeparatorText("Animation");
+	ImGui::Text("HELLO");
+
+	static bool play = false;
+
+	if (ImGui::Button("Play"))
+	{
+		if (component->GetAnimation() == nullptr)
+			return;
+		component->OnStart();
+
+
+		(play) ? play = false : play = true;
+	}
+
+	if (play)
+		component->OnUpdate();
+
+}
+
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
+	static int resourceId = int(imageComponent->GetResourceId());
+
+	//TODO: Handle the case where the resource is not found
+	ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		imageComponent->SetImage(resourceId);
+	}
+
+	//TODO: Decide what information to display 
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+}
+
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
+	const char* renderModes[] = { "World Space", "Screen Space" };
+	static int selectedRenderMode = 0;
+
+	ImGui::Text("Render Mode");
+	ImGui::SameLine();
+	ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes));
+
+	if (selectedRenderMode == 0) {
+		App->GetUI()->SetScreenSpace(false);
+	}
+	else {
+		App->GetUI()->SetScreenSpace(true);
+	}
+}
+
+void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};

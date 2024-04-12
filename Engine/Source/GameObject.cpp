@@ -21,7 +21,6 @@
 #include "SpotLightComponent.h"
 #include "ButtonComponent.h"
 #include "ScriptComponent.h"
-#include "Transform2DComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -424,53 +423,50 @@ Component* GameObject::CreateComponent(ComponentType type)
 
 	switch (type) 
 	{
-		case ComponentType::MESHRENDERER:
-			newComponent = new MeshRendererComponent(this);
-			break;
-		case ComponentType::CAMERA:
-			newComponent = new CameraComponent(this);
-			break;
-		case ComponentType::POINTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
-			break;
-		}
-		case ComponentType::SPOTLIGHT:
-		{
-			const float3& pos = GetWorldPosition();
-			newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
-			break;
-		}
-		case ComponentType::SCRIPT:
-			newComponent = new ScriptComponent(this);
-			break;
-		case ComponentType::TEST:
-			newComponent = new TestComponent(this);
-			break;
-		case ComponentType::AIAGENT:
-			newComponent = new AIAgentComponent(this);
-			break;
-		case ComponentType::NAVMESHOBSTACLE:
-			newComponent = new NavMeshObstacleComponent(this);
-			break;
-		case ComponentType::ANIMATION:
-			newComponent = new AnimationComponent(this);
-			break;
-		case ComponentType::IMAGE:
-			newComponent = new ImageComponent(this);
-			break;
-		case ComponentType::CANVAS:
-			newComponent = new CanvasComponent(this);
-			break;
-		case ComponentType::BUTTON:
-			newComponent = new ButtonComponent(this);
-			break;
-		case ComponentType::TRANSFORM2D:
-			newComponent = new Transform2DComponent(this);
-			break;
-		default:
-			break;
+	case ComponentType::MESHRENDERER:
+		newComponent = new MeshRendererComponent(this);
+		break;
+	case ComponentType::CAMERA:
+		newComponent = new CameraComponent(this);
+		break;
+	case ComponentType::POINTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
+		break;
+	}
+	case ComponentType::SPOTLIGHT:
+	{
+		const float3& pos = GetWorldPosition();
+		newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
+		break;
+	}
+	case ComponentType::SCRIPT:
+		newComponent = new ScriptComponent(this);
+		break;
+	case ComponentType::TEST:
+		newComponent = new TestComponent(this);
+		break;
+	case ComponentType::AIAGENT:
+		newComponent = new AIAgentComponent(this);
+		break;
+	case ComponentType::NAVMESHOBSTACLE:
+		newComponent = new NavMeshObstacleComponent(this);
+		break;
+	case ComponentType::ANIMATION:
+		newComponent = new AnimationComponent(this);
+		break;
+	case ComponentType::IMAGE:
+		newComponent = new ImageComponent(this);
+		break;
+	case ComponentType::CANVAS:
+		newComponent = new CanvasComponent(this);
+		break;
+	case ComponentType::BUTTON:
+		newComponent = new ButtonComponent(this);
+		break;
+	default:
+		break;
 	}
 
 	if (newComponent) 
@@ -582,9 +578,6 @@ void GameObject::SetActiveInHierarchy(bool active)
 	{
 		child->SetActiveInHierarchy(active);
 	}
-
-
-
 }
 
 void GameObject::Save(Archive& archive, int parentId) const 
