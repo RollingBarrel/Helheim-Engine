@@ -34,6 +34,7 @@ public:
 
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+    GameObject* FindCanvasOnParents(GameObject* gameObject);
 
 private:
     ResourceTexture* mImage = nullptr;

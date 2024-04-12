@@ -6,6 +6,9 @@
 #include "ModuleWindow.h"
 #include "ModuleUI.h"
 #include "ModulePrograms.h"
+#include "ModuleEditor.h"
+
+#include "ScenePanel.h"
 
 #include "glew.h"
 #include "ResourceTexture.h"
@@ -29,6 +32,24 @@ ImageComponent:: ~ImageComponent() {
 	CleanUp();
 }
 
+GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
+{
+	if (gameObject == nullptr) {
+		return nullptr;
+	}
+
+	GameObject* currentObject = gameObject;
+
+	while (currentObject != nullptr) {
+		if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr) {
+			return currentObject;
+		}
+		currentObject = currentObject->GetParent();
+	}
+
+	return nullptr; // No canvas found on parents
+}
+
 void ImageComponent::Draw()
 {
     unsigned int UIImageProgram= App->GetPrograms()->GetUIImageProgram();
@@ -41,8 +62,9 @@ void ImageComponent::Draw()
 
 	glUseProgram(UIImageProgram);
 
-	float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
-	float4x4 model;
+	float4x4 proj = float4x4::identity;
+	float4x4 model = float4x4::identity;
+	float4x4 view = float4x4::identity;
 
 	if (App->GetUI()->GetScreenSpace()) //Ortographic Mode
 	{  
@@ -50,18 +72,21 @@ void ImageComponent::Draw()
 		if (component != nullptr) 
 		{
 			model = component->GetGlobalMatrix();
-		}
-		else 
-		{
-			model = float4x4::identity;
+
+			float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+			float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+			
+			model = float4x4::Scale(1/canvasSize.x*2, 1/canvasSize.y*2, 0) * model;
+			
 		}
 	}
 	else //World Mode
 	{
-		model = GetOwner()->GetWorldTransform();
+		// WE NEED A METHOD TO GET CURRENT CAMERA AND CORRESPONDING FRUSTUM
+		//proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
+		//model = GetOwner()->GetWorldTransform();
+		//view = App->GetUI()->GetFrustum()->ViewMatrix();
 	}
-
-	float4x4 view = App->GetUI()->GetFrustum()->ViewMatrix();
 
 	FillVBO();
 	CreateVAO();

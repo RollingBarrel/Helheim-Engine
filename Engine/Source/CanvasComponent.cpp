@@ -8,15 +8,11 @@
 #include "ModuleEditor.h"
 
 CanvasComponent::CanvasComponent(bool active, GameObject* owner): Component(owner, ComponentType::CANVAS), 
-	//mScreenReferenceSize(1920, 1080),
-	mSize(1920, 1080),
-	mScreenFactor(0.0f) {
+	mSize(1920, 1080) {
 }
 
 CanvasComponent::CanvasComponent(GameObject* owner) : Component(owner, ComponentType::CANVAS),
-	//mScreenReferenceSize(1920, 1080),
-	mSize(1920, 1080),
-	mScreenFactor(0.0f) {
+	mSize(1920, 1080) {
 }
 
 CanvasComponent:: ~CanvasComponent() 
@@ -25,7 +21,6 @@ CanvasComponent:: ~CanvasComponent()
 
 void CanvasComponent::Update() 
 {
-	RecalculateSizeAndScreenFactor();
 };
 
 Component* CanvasComponent::Clone(GameObject* owner) const 
@@ -36,25 +31,13 @@ Component* CanvasComponent::Clone(GameObject* owner) const
 
 void CanvasComponent::Reset() 
 {
-
 };
-
-void CanvasComponent::RecalculateSizeAndScreenFactor()
-{
-	//mSize = float2(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
-	mSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
-
-	//float2 factor = mSize.Div(mScreenReferenceSize);
-	//mScreenFactor = factor.x < factor.y ? factor.x : factor.y;
-}
 
 void CanvasComponent::Save(Archive& archive)const 
 {
 	Component::Save(archive);
 
 	archive.AddFloat2("Size", mSize);
-	archive.AddFloat("ScreenFactor", mScreenFactor);
-	//archive.AddFloat2("ScreenReferenceSize", mScreenReferenceSize);
 };
 
 void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
@@ -71,19 +54,4 @@ void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* own
 
 		mSize = float2(x, y);
 	}
-	if (data.HasMember("ScreenFactor") && data["ScreenFactor"].IsFloat()) {
-		mScreenFactor = data["ScreenFactor"].GetFloat();
-	}
-	/*if (data.HasMember("ScreenReferenceSize") && data["ScreenReferenceSize"].IsArray()) {
-		const rapidjson::Value& values = data["ScreenReferenceSize"];
-		float x{ 0.0f }, y{ 0.0f };
-		if (values.Size() == 2 && values[0].IsFloat() && values[1].IsFloat()) {
-			x = values[0].GetFloat();
-			y = values[1].GetFloat();
-		}
-
-		mScreenReferenceSize = float2(x, y);
-	}*/
-
-	RecalculateSizeAndScreenFactor();
 };

@@ -839,9 +839,9 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 
 }
 
-void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) {
 	const char* renderModes[] = { "World Space", "Screen Space" };
-	static int selectedRenderMode = 0;
+	static int selectedRenderMode = 1;
 
 	ImGui::Text("Render Mode");
 	ImGui::SameLine();
@@ -853,6 +853,36 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
 	else {
 		App->GetUI()->SetScreenSpace(true);
 	}
+
+	if (ImGui::BeginTable("transformTable", 4)) {
+		ImGui::PushID(0);
+		ImGui::TableNextRow();
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Size");
+		ImGui::PopItemWidth(); 
+		
+		bool modifiedTransform = false;
+		float2 newSize = canvasComponent->GetSize();
+		const char* axisLabels2d[2] = { "Width", "Height" };
+
+		for (int j = 0; j < 2; ++j) {
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text(axisLabels2d[j]);
+			modifiedTransform = ImGui::DragFloat(axisLabels2d[j], &newSize[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+			ImGui::PopItemWidth();
+		}
+		ImGui::PopID();
+
+
+		if (modifiedTransform) {
+			canvasComponent->SetSize(newSize);
+		}
+	}
+	ImGui::EndTable();
 }
 
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};
@@ -878,7 +908,7 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 
 		const char* labels[2] = { "Position", "Rotation"};
 		const char* axisLabels[3] = { "X", "Y", "Z" };
-		float3* vectors[4] = { &newPosition, &newRotation };
+		float3* vectors[2] = { &newPosition, &newRotation };
 
 		for (int i = 0; i < 2; ++i) {
 			ImGui::PushID(i);

@@ -73,14 +73,6 @@ void ModuleCamera::CheckRaycast()
 
 bool ModuleCamera::CleanUp()
 {
-	delete mFrustum;
-	return true;
-}
-
-
-
-bool ModuleCamera::CleanUp()
-{
 	mEditorCamera->~GameObject();
 	return true;
 }

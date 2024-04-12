@@ -37,38 +37,15 @@ bool ModuleUI::Init() {
 		mCanvas->CreateComponent(ComponentType::CANVAS);
 	}
 
-
-
-	mUIfrustum = new Frustum();
-
-	mUIfrustum->type = FrustumType::OrthographicFrustum;
-	//mUIfrustum->orthographicWidth = App->GetWindow()->GetWidth();
-	//mUIfrustum->orthographicHeight = App->GetWindow()->GetHeight();
-
-	mUIfrustum->front = -float3::unitZ;
-	mUIfrustum->up = float3::unitY;
-	mUIfrustum->pos = float3::zero;
-
-	mUIfrustum->nearPlaneDistance = 0.0f;
-	mUIfrustum->farPlaneDistance = 100.0f;
-
 	return true;
 };
 
 update_status ModuleUI::PreUpdate(float dt) {
-	if (mScreenSpace) {
-		mCurrentFrustum = mUIfrustum;
-		mUIfrustum->orthographicWidth = App->GetWindow()->GetWidth();
-		mUIfrustum->orthographicHeight = App->GetWindow()->GetHeight();
-	}
-	else {
-		mCurrentFrustum = (Frustum*)(App->GetCamera()->GetFrustum());
-	}
-
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(mCanvas);
 	App->GetOpenGL()->UnbindSceneFramebuffer();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -79,16 +56,13 @@ update_status ModuleUI::Update(float dt) {
 	}
 
 	return UPDATE_CONTINUE;
-};
+}
 
 update_status ModuleUI::PostUpdate(float dt) {
 	return UPDATE_CONTINUE;
-};
+}
 
 bool ModuleUI::CleanUp() {
-
-	delete mUIfrustum;
-
 	return true;
 }
 
@@ -136,27 +110,30 @@ void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height) {
 
 	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
 
-	mUIfrustum->orthographicWidth = scenePanel->GetWindowsSize().x;  //widthFrustum; //Change with canvas width
-	mUIfrustum->orthographicHeight = scenePanel->GetWindowsSize().y;  //heightFrustum; //Change with canvas height
+	//mUIfrustum->orthographicWidth = scenePanel->GetWindowsSize().x;  //widthFrustum; //Change with canvas width
+	//mUIfrustum->orthographicHeight = scenePanel->GetWindowsSize().y;  //heightFrustum; //Change with canvas height
 }
 
 void ModuleUI::CheckRaycast()
 {
 	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
 
-	float mouseSceneX = scenePanel->GetMousePosition().x - scenePanel->GetWindowsPos().x;
-	float mouseSceneY = scenePanel->GetMousePosition().y - scenePanel->GetWindowsPos().y;
+	//float mouseSceneX = scenePanel->GetMousePosition().x - scenePanel->GetWindowsPos().x;
+	//float mouseSceneY = scenePanel->GetMousePosition().y - scenePanel->GetWindowsPos().y;
+
+	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
+	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
 
 	//float2 pos = scenePanel->GetWindowsPos();
 
-	float mouseX = (mouseSceneX) - scenePanel->GetWindowsSize().x / 2;
-	float mouseY = -((mouseSceneY) - scenePanel->GetWindowsSize().y / 2);
+	//float mouseX = (mouseSceneX) - scenePanel->GetWindowsSize().x / 2;
+	//float mouseY = -((mouseSceneY) - scenePanel->GetWindowsSize().y / 2);
 
-	//float normalizedX = (- 1.0 + 2.0 * (float)(mouseSceneX) / (float)scenePanel->GetWindowsSize().x) * (float)scenePanel->GetWindowsSize().x;
-	//float normalizedY = (1.0 - 2.0 * (float)(mouseSceneY) / (float)scenePanel->GetWindowsSize().y) * (float)scenePanel->GetWindowsSize().y;
+	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
 
-	//float mouseX = normalizedX - 70;
-	//float mouseY = normalizedY + 70;
+	float mouseX = normalizedX;
+	float mouseY = normalizedY;
 	
 	if (!mCanvas->GetChildren().empty()) {
 		for (GameObject* gameObject : mCanvas->GetChildren())
@@ -165,9 +142,12 @@ void ModuleUI::CheckRaycast()
 			Transform2DComponent* transform2D = (Transform2DComponent*)gameObject->GetComponent(ComponentType::TRANSFORM2D);
 			if (image != nullptr && transform2D != nullptr)
 			{
-				float2 minImagePoint = transform2D->GetGlobalPosition().xy() - transform2D->GetSize()/2;
-				float2 maxImagePoint = transform2D->GetGlobalPosition().xy() + transform2D->GetSize()/2;
-				
+				float2 canvasSize = ((CanvasComponent*)(image->FindCanvasOnParents(image->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+				float2 minImagePoint = transform2D->GetGlobalPosition().xy().Mul(float2(2.0f,2.0f)).Div(canvasSize)
+					- transform2D->GetSize().Div(canvasSize);
+				float2 maxImagePoint = transform2D->GetGlobalPosition().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize)
+					+ transform2D->GetSize().Div(canvasSize);
+
 				// Check if the mouse position is inside the bounds of the image
 				if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y &&
 					mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y)

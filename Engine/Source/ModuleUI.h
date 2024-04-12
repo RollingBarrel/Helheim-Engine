@@ -27,16 +27,15 @@ public:
 	
 	void CheckRaycast();
 	void ResizeFrustum(unsigned int width, unsigned int height);
+	GameObject* FindCanvas(GameObject* gameObject);
 
 private:
 	void DrawWidget(GameObject* gameObject);
-	GameObject* FindCanvas(GameObject* gameObject);
 
-	Frustum* mUIfrustum = nullptr;
 	Frustum* mCurrentFrustum = nullptr; 
 
 	GameObject* mCanvas = nullptr;
 
-	bool mScreenSpace = false;
+	bool mScreenSpace = true;
 };
 
