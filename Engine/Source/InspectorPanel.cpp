@@ -42,7 +42,8 @@ void InspectorPanel::Draw(int windowFlags)
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
-	if (mLockedGameObject != nullptr) {
+	if (mLockedGameObject != nullptr) 
+	{
 		focusedObject = mLockedGameObject;
 	}
 
@@ -78,7 +79,8 @@ void InspectorPanel::Draw(int windowFlags)
 
 		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
 		{
-			for (auto i = 0; i < tags.size(); i++) {
+			for (auto i = 0; i < tags.size(); i++) 
+			{
 				if (ImGui::Selectable(tags[i]->GetName().c_str()))
 				{
 					focusedObject->SetTag(tags[i]);
@@ -90,17 +92,20 @@ void InspectorPanel::Draw(int windowFlags)
 
 		ImGui::SameLine();
 
-		if (ImGui::Button("Edit")) {
+		if (ImGui::Button("Edit")) 
+		{
 			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
 		}
 
 		// Lock
 		ImGui::SameLine();
-		if (ImGui::Checkbox("Lock", &mLocked)) {
+		if (ImGui::Checkbox("Lock", &mLocked)) 
+		{
 			if (mLocked) {
 				mLockedGameObject = focusedObject;
 			}
-			else {
+			else 
+			{
 				mLockedGameObject = nullptr;
 			}
 		}
@@ -123,19 +128,24 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PushID(object->mID);
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) 
+	{
 
 		ImGui::OpenPopup("TransformOptions");
 	}
-	if (ImGui::BeginPopup("TransformOptions")) {
-		if (ImGui::Selectable("Reset")) {
+	if (ImGui::BeginPopup("TransformOptions")) 
+	{
+		if (ImGui::Selectable("Reset")) 
+		{
 			object->ResetTransform();
 		}
 		ImGui::EndPopup();
 	}
 
-	if (headerOpen) {
-		if (ImGui::BeginTable("transformTable", 4)) {
+	if (headerOpen) 
+	{
+		if (ImGui::BeginTable("transformTable", 4)) 
+		{
 			//ImGui::TableSetupColumn("columns", 0 , -FLT_MIN);
 
 			bool modifiedTransform = false;
@@ -147,7 +157,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 			const char* axisLabels[3] = { "X", "Y", "Z" };
 			float3* vectors[3] = { &newPosition, &newRotation, &newScale };
 
-			for (int i = 0; i < 3; ++i) {
+			for (int i = 0; i < 3; ++i) 
+			{
 				ImGui::PushID(i);
 				ImGui::TableNextRow();
 
@@ -156,7 +167,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 				ImGui::Text(labels[i]);
 				ImGui::PopItemWidth();
 
-				for (int j = 0; j < 3; ++j) {
+				for (int j = 0; j < 3; ++j) 
+				{
 					ImGui::TableNextColumn();
 					ImGui::PushItemWidth(-FLT_MIN);
 					ImGui::AlignTextToFramePadding();
@@ -168,7 +180,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 				ImGui::PopID();
 			}
 
-			if (modifiedTransform) {
+			if (modifiedTransform) 
+			{
 
 				object->SetPosition(newPosition);
 				object->SetRotation(DegToRad(newRotation));
@@ -187,20 +200,25 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 
 	ImGui::SetCursorPosX(posX);
 
-	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) {
+	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) 
+	{
 		ImGui::OpenPopup("AddComponentPopup");
 	}
 
-	if (ImGui::BeginPopup("AddComponentPopup")) {
-		for (unsigned int i = 0; i <= static_cast<unsigned int>(ComponentType::NONE) - 1; ++i) {
+	if (ImGui::BeginPopup("AddComponentPopup")) 
+	{
+		for (unsigned int i = 0; i <= static_cast<unsigned int>(ComponentType::NONE) - 1; ++i) 
+		{
 			ComponentType currentComponent = static_cast<ComponentType>(i);
-			if (ImGui::MenuItem(Component::GetNameFromType(currentComponent))) {
+			if (ImGui::MenuItem(Component::GetNameFromType(currentComponent))) 
+			{
 				mComponent = object->GetComponent(currentComponent);
 				if (!mComponent)
 				{
 					object->CreateComponent(currentComponent);
 				}
-				else {
+				else 
+				{
 					mSameComponentPopup = true;
 				}
 			}
@@ -234,7 +252,8 @@ void InspectorPanel::ShowSameComponentPopup()
 
 	ImGui::SetCursorPosX(buttonPosX);
 
-	if (ImGui::Button("Cancel", ImVec2(120, 25))) {
+	if (ImGui::Button("Cancel", ImVec2(120, 25))) 
+	{
 		mSameComponentPopup = false;
 	}
 
@@ -245,35 +264,46 @@ void InspectorPanel::ShowSameComponentPopup()
 
 void InspectorPanel::RightClickPopup(Component* component) {
 
-	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) {
+	if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right)) 
+	{
 		ImGui::OpenPopup(std::to_string(component->GetID()).c_str());
 	}
 
-	if (ImGui::BeginPopup(std::to_string(component->GetID()).c_str())) {
-		if (ImGui::MenuItem("Delete Component")) {
+	if (ImGui::BeginPopup(std::to_string(component->GetID()).c_str())) 
+	{
+		if (ImGui::MenuItem("Delete Component")) 
+		{
 			component->mOwner->AddComponentToDelete(component);
 			ImGui::CloseCurrentPopup();
 		}
-		if (ImGui::MenuItem("Reset Component")) {
+		if (ImGui::MenuItem("Reset Component")) 
+		{
 			component->Reset();
 			ImGui::CloseCurrentPopup();
 		}
 
-		switch (component->GetType()) {
-		case ComponentType::TEST: {
-			if (ImGui::MenuItem("Custom Test Component Option")) {
+		switch (component->GetType()) 
+		{
+		case ComponentType::TEST: 
+		{
+			if (ImGui::MenuItem("Custom Test Component Option")) 
+			{
 				ImGui::CloseCurrentPopup();
 			}
-			if (ImGui::MenuItem("Custom Test Component Option 2")) {
+			if (ImGui::MenuItem("Custom Test Component Option 2")) 
+			{
 				ImGui::CloseCurrentPopup();
 			}
 			break;
 		}
-		case ComponentType::MESHRENDERER: {
-			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+		case ComponentType::MESHRENDERER: 
+		{
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) 
+			{
 				ImGui::CloseCurrentPopup();
 			}
-			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) {
+			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) 
+			{
 				ImGui::CloseCurrentPopup();
 			}
 			break;
@@ -304,7 +334,8 @@ void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
 		{
 			Component* movedComponent = (Component*)payload->Data;
-			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) {
+			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) 
+			{
 				Component* pMovedComponent = object->RemoveComponent(movedComponent);
 				object->AddComponent(pMovedComponent, target);
 			}
@@ -315,7 +346,8 @@ void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
 }
 
 void InspectorPanel::DrawComponents(GameObject* object) {
-	for (auto component : object->mComponents) {
+	for (auto component : object->mComponents) 
+	{
 		ImGui::PushID(component->mID);
 		DragAndDropTarget(object, component);
 
@@ -323,62 +355,53 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 		RightClickPopup(component);
 
 		bool isEnabled = component->IsEnabled();
-		if (ImGui::Checkbox("Enable", &isEnabled)) {
-			component->SetEnable(isEnabled); //Enable and Disable of your component should change mIsEnabled value, not the inspector.
+		if (ImGui::Checkbox("Enable", &isEnabled)) 
+		{
+			component->SetEnable(isEnabled);
 		}
 
 		DragAndDropSource(component);
 		
-		if (isOpen) {
-			switch (component->GetType()) {
-				case ComponentType::MESHRENDERER: {
+		if (isOpen) 
+		{
+			switch (component->GetType()) 
+			{
+				case ComponentType::MESHRENDERER:
 					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
 					break;
-				}
-				case ComponentType::AIAGENT: {
+				case ComponentType::AIAGENT:
 					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
 					break;
-				}
-				case ComponentType::POINTLIGHT: {
+				case ComponentType::POINTLIGHT:
 					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
 					break;
-				}
-				case ComponentType::SPOTLIGHT: {
+				case ComponentType::SPOTLIGHT:
 					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
 					break;
-				}
-				case ComponentType::CAMERA: {
+				case ComponentType::CAMERA:
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
 					break;
-				}
-				case ComponentType::SCRIPT: {
+				case ComponentType::SCRIPT:
 					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
 					break;
-				}
-				case ComponentType::NAVMESHOBSTACLE: {
+				case ComponentType::NAVMESHOBSTACLE:
 					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
 					break;
-				}
-				case ComponentType::ANIMATION: {
+				case ComponentType::ANIMATION:
 					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
 					break;
-				}
-				case ComponentType::TEST: {
+				case ComponentType::TEST:
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
-				}
-				case ComponentType::IMAGE: {
+				case ComponentType::IMAGE:
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
 					break;
-				}
-				case ComponentType::CANVAS: {
+				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
 					break;
-				}
-				case ComponentType::BUTTON: {
+				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
-				}
 			}
 		}
 		ImGui::PopID();
@@ -397,7 +420,8 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 
 	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
 	{
-		for (auto i = 0; i < tags.size(); i++) {
+		for (auto i = 0; i < tags.size(); i++) 
+		{
 			if (ImGui::Selectable(tags[i]->GetName().c_str()))
 			{
 				component->mTestSavedTag1 = i;
@@ -413,7 +437,8 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	{
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
 	}
-	else {
+	else 
+	{
 		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
 	}
 
@@ -661,10 +686,6 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	{
 		App->GetCamera()->ActivateEditorCamera();
 	}
-
-
-	//ImGui::Checkbox("Enable Diffuse map", &(new bool(true)));
-	// Is culling
 }
 
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
@@ -697,13 +718,15 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 		for (int n = 0; n < scriptNames.size(); n++)
 		{
 			bool is_selected = (currentItem == scriptNames[n]); 
-			if (ImGui::Selectable(scriptNames[n].c_str(), is_selected)) {
+			if (ImGui::Selectable(scriptNames[n].c_str(), is_selected)) 
+			{
 				currentItem = scriptNames[n].c_str();
 				component->LoadScript(currentItem);
 				currentItem = component->GetScriptName();
 			}
 
-			if (is_selected) {
+			if (is_selected) 
+			{
 				ImGui::SetItemDefaultFocus();
 			}
 
@@ -718,11 +741,13 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	std::vector<Member*> members;
 
-	if (component->mScript) {
+	if (component->mScript) 
+	{
 		members = component->mScript->mMembers;
 	}
 
-	for (Member* member : members) {
+	for (Member* member : members) 
+	{
 		switch (member->mType)
 		{
 		case MemberType::SEPARATOR:
