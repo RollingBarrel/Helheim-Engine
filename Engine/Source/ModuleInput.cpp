@@ -11,26 +11,26 @@
 
 ModuleInput::ModuleInput()
 {
-	keyboard = new KeyState[SDL_NUM_SCANCODES];
-	memset(keyboard, 0, SDL_NUM_SCANCODES);
+	mKeyboard = new KeyState[SDL_NUM_SCANCODES];
+	memset(mKeyboard, 0, SDL_NUM_SCANCODES);
 
-    gameController.mButtons = new ButtonState[NUM_CONTROLLER_BUTTONS];
-    memset(gameController.mButtons, 0, sizeof(ButtonState) * NUM_CONTROLLER_BUTTONS);		// 0 = BUTTON_IDLE
+    mGameController.mButtons = new ButtonState[NUM_CONTROLLER_BUTTONS];
+    memset(mGameController.mButtons, 0, sizeof(ButtonState) * NUM_CONTROLLER_BUTTONS);		// 0 = BUTTON_IDLE
 
-    gameController.mTriggers = new ButtonState[NUM_CONTROLLER_TRIGGERS];						// Only 2 triggers are supported for a given game controller.
-    memset(gameController.mTriggers, 0, sizeof(ButtonState) * NUM_CONTROLLER_TRIGGERS);		// 0 = BUTTON_IDLE
+	mGameController.mTriggers = new ButtonState[NUM_CONTROLLER_TRIGGERS];						// Only 2 triggers are supported for a given game controller.
+    memset(mGameController.mTriggers, 0, sizeof(ButtonState) * NUM_CONTROLLER_TRIGGERS);		// 0 = BUTTON_IDLE
 
-    gameController.mAxis = new AxisState[NUM_CONTROLLER_AXIS];								// Only 4 axis are supported for a given game controller.
-    memset(gameController.mAxis, 0, sizeof(AxisState) * NUM_CONTROLLER_AXIS);				// 0 = AXIS_IDLE
+	mGameController.mAxis = new AxisState[NUM_CONTROLLER_AXIS];								// Only 4 axis are supported for a given game controller.
+    memset(mGameController.mAxis, 0, sizeof(AxisState) * NUM_CONTROLLER_AXIS);				// 0 = AXIS_IDLE
 }
 
 // Destructor
 ModuleInput::~ModuleInput()
 {
-	delete[] keyboard;
-    delete gameController.mButtons;
-    delete gameController.mTriggers;
-    delete gameController.mAxis;
+	delete[] mKeyboard;
+    delete mGameController.mButtons;
+    delete mGameController.mTriggers;
+    delete mGameController.mAxis;
 }
 
 bool ModuleInput::Init()
@@ -68,9 +68,9 @@ bool ModuleInput::Init()
 update_status ModuleInput::PreUpdate(float dt)
 {
     //TODO: ugly reset !!
-    if (wheelY != 0)
+    if (mWheelY != 0)
     {
-        wheelY = 0;
+		mWheelY = 0;
     }
 
     //MOUSE
@@ -83,14 +83,14 @@ update_status ModuleInput::PreUpdate(float dt)
         unsigned int pressed = mouseBitmask & SDL_BUTTON(i + 1);
         if (pressed)
         {
-            switch (mouse[i])
+            switch (mMouse[i])
             {
             case KeyState::KEY_IDLE:
             case KeyState::KEY_UP:
-                mouse[i] = KeyState::KEY_DOWN;
+				mMouse[i] = KeyState::KEY_DOWN;
                 break;
             default:
-                mouse[i] = KeyState::KEY_REPEAT;
+				mMouse[i] = KeyState::KEY_REPEAT;
                 break;
             }
 
@@ -98,15 +98,15 @@ update_status ModuleInput::PreUpdate(float dt)
         }
         else
         {
-            switch (mouse[i])
+            switch (mMouse[i])
             {
             case KeyState::KEY_DOWN:
             case KeyState::KEY_REPEAT:
-                mouse[i] = KeyState::KEY_UP;
+				mMouse[i] = KeyState::KEY_UP;
                 mMouseReceivedInput = true;
                 break;
             default:
-                mouse[i] = KeyState::KEY_IDLE;
+				mMouse[i] = KeyState::KEY_IDLE;
                 break;
             }
         }
@@ -119,29 +119,29 @@ update_status ModuleInput::PreUpdate(float dt)
     {
         if (keys[i] == SDL_PRESSED)
         {
-            switch (keyboard[i])
+            switch (mKeyboard[i])
             {
             case KeyState::KEY_IDLE:
             case KeyState::KEY_UP:
-                keyboard[i] = KeyState::KEY_DOWN;
+				mKeyboard[i] = KeyState::KEY_DOWN;
                 break;
             default:
-                keyboard[i] = KeyState::KEY_REPEAT;
+				mKeyboard[i] = KeyState::KEY_REPEAT;
                 break;
             }
             mKeyboardReceivedInput = true;
         }
         else
         {
-            switch (keyboard[i])
+            switch (mKeyboard[i])
             {
             case KeyState::KEY_REPEAT:
             case KeyState::KEY_DOWN:
-                keyboard[i] = KeyState::KEY_UP;
+				mKeyboard[i] = KeyState::KEY_UP;
 				mKeyboardReceivedInput = true;
                 break;
             default:
-                keyboard[i] = KeyState::KEY_IDLE;
+				mKeyboard[i] = KeyState::KEY_IDLE;
                 break;
             }
         }
@@ -174,17 +174,17 @@ update_status ModuleInput::PreUpdate(float dt)
             }
             break;
         case SDL_MOUSEWHEEL:
-            wheelY = sdlEvent.wheel.y;
+            mWheelY = sdlEvent.wheel.y;
             break;
 		case SDL_CONTROLLERDEVICEADDED:
-			if (gameController.mId == nullptr)
+			if (mGameController.mId == nullptr)
 			{
 				if (SDL_NumJoysticks() > 0)
 				{
 					if (SDL_IsGameController(CONTROLLER_INDEX))
 					{
-						gameController.mId = SDL_GameControllerOpen(CONTROLLER_INDEX);
-						gameController.mJoystick = SDL_GameControllerGetJoystick(gameController.mId);
+						mGameController.mId = SDL_GameControllerOpen(CONTROLLER_INDEX);
+						mGameController.mJoystick = SDL_GameControllerGetJoystick(mGameController.mId);
 					}
 				}
 				else
@@ -216,18 +216,18 @@ bool ModuleInput::CleanUp()
 
 int ModuleInput::GetGameControllerAxisValue(int id) const
 {
-	if (gameController.mId != nullptr)
+	if (mGameController.mId != nullptr)
 	{
 		if (id < 2)
 		{
-			if (gameController.mAxis[id] != AxisState::AXIS_IDLE)
-				return SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(id));
+			if (mGameController.mAxis[id] != AxisState::AXIS_IDLE)
+				return SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id));
 		}
 		else if (id > 1)
 		{
-			if (SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(id)) > JOYSTICK_THRESHOLD ||
-				SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(id)) < -JOYSTICK_THRESHOLD)
-				return SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(id));
+			if (SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) > JOYSTICK_THRESHOLD ||
+				SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) < -JOYSTICK_THRESHOLD)
+				return SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id));
 		}
 
 	}
@@ -237,16 +237,16 @@ int ModuleInput::GetGameControllerAxisValue(int id) const
 
 int ModuleInput::GetGameControllerAxisRaw(int id) const
 {
-	if (gameController.mId != nullptr)
+	if (mGameController.mId != nullptr)
 	{
 		if (id < 2)
 		{
-			if (gameController.mAxis[id] != AxisState::AXIS_IDLE)
-				return SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(id));
+			if (mGameController.mAxis[id] != AxisState::AXIS_IDLE)
+				return SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id));
 		}
 		else if (id > 1)
 		{
-			return SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(id));
+			return SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id));
 		}
 	}
 
@@ -255,50 +255,50 @@ int ModuleInput::GetGameControllerAxisRaw(int id) const
 
 int ModuleInput::GetGameControllerAxisInput(int id) const
 {
-	return ((gameController.mId != nullptr) ? SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(id)) : 0);
+	return ((mGameController.mId != nullptr) ? SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) : 0);
 }
 
 void ModuleInput::HandleGameControllerInput()
 {
 	mGameControllerReceivedInput = false;
 
-	if (!SDL_GameControllerGetAttached(gameController.mId))													
+	if (!SDL_GameControllerGetAttached(mGameController.mId))
 	{
-		if (gameController.mId != nullptr)
+		if (mGameController.mId != nullptr)
 		{
-			SDL_GameControllerClose(gameController.mId);
-			gameController.mId = nullptr;
+			SDL_GameControllerClose(mGameController.mId);
+			mGameController.mId = nullptr;
 		}
 		return;
 	}
 
 	for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; ++i)														
 	{
-		if (SDL_GameControllerGetButton(gameController.mId, SDL_GameControllerButton(i)) == SDL_PRESSED)		// Gets the current state of a button in a controller. 1 = PRESSED / 0 = RELEASED.
+		if (SDL_GameControllerGetButton(mGameController.mId, SDL_GameControllerButton(i)) == SDL_PRESSED)		// Gets the current state of a button in a controller. 1 = PRESSED / 0 = RELEASED.
 		{
-			switch (gameController.mButtons[i])
+			switch (mGameController.mButtons[i])
 			{
 			case ButtonState::BUTTON_IDLE:
 			case ButtonState::BUTTON_UP:
-				gameController.mButtons[i] = ButtonState::BUTTON_DOWN;
+				mGameController.mButtons[i] = ButtonState::BUTTON_DOWN;
 				break;
 			default:
-				gameController.mButtons[i] = ButtonState::BUTTON_REPEAT;
+				mGameController.mButtons[i] = ButtonState::BUTTON_REPEAT;
 				break;
 			}
 			mGameControllerReceivedInput = true;
 		}
 		else
 		{
-			switch (gameController.mButtons[i])
+			switch (mGameController.mButtons[i])
 			{
 			case ButtonState::BUTTON_REPEAT:
 			case ButtonState::BUTTON_DOWN:
-				gameController.mButtons[i] = ButtonState::BUTTON_UP;
+				mGameController.mButtons[i] = ButtonState::BUTTON_UP;
 				mGameControllerReceivedInput = true;
 				break;
 			default:
-				gameController.mButtons[i] = ButtonState::BUTTON_IDLE;
+				mGameController.mButtons[i] = ButtonState::BUTTON_IDLE;
 				break;
 			}
 		}
@@ -306,33 +306,33 @@ void ModuleInput::HandleGameControllerInput()
 
 	for (int i = 0; i < NUM_CONTROLLER_TRIGGERS; ++i)
 	{
-		int trigger_value = SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(TRIGGER_INDEX + i));
+		int trigger_value = SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(TRIGGER_INDEX + i));
 	
-		if (trigger_value > gameController.mMaxAxisInputThreshold * MAX_AXIS)
+		if (trigger_value > mGameController.mMaxAxisInputThreshold * MAX_AXIS)
 		{
-			switch (gameController.mTriggers[i])
+			switch (mGameController.mTriggers[i])
 			{
 			case ButtonState::BUTTON_IDLE:
 			case ButtonState::BUTTON_UP:
-				gameController.mTriggers[i] = ButtonState::BUTTON_DOWN;
+				mGameController.mTriggers[i] = ButtonState::BUTTON_DOWN;
 				break;
 			default:
-				gameController.mTriggers[i] = ButtonState::BUTTON_REPEAT;
+				mGameController.mTriggers[i] = ButtonState::BUTTON_REPEAT;
 				break;
 			}
 			mGameControllerReceivedInput = true;
 		}
 		else
 		{
-			switch (gameController.mTriggers[i])
+			switch (mGameController.mTriggers[i])
 			{
 			case ButtonState::BUTTON_REPEAT:
 			case ButtonState::BUTTON_DOWN:
-				gameController.mTriggers[i] = ButtonState::BUTTON_UP;
+				mGameController.mTriggers[i] = ButtonState::BUTTON_UP;
 				mGameControllerReceivedInput = true;
 				break;
 			default:
-				gameController.mTriggers[i] = ButtonState::BUTTON_IDLE;
+				mGameController.mTriggers[i] = ButtonState::BUTTON_IDLE;
 				break;
 			}
 		}
@@ -340,9 +340,9 @@ void ModuleInput::HandleGameControllerInput()
 
 	for (int i = 0; i < NUM_CONTROLLER_AXIS; ++i)
 	{
-		int axis_value = SDL_GameControllerGetAxis(gameController.mId, SDL_GameControllerAxis(i));			
+		int axis_value = SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(i));
 
-		if (abs(axis_value) < (int)(gameController.mMinAxisInputThreshold * MAX_AXIS))
+		if (abs(axis_value) < (int)(mGameController.mMinAxisInputThreshold * MAX_AXIS))
 		{
 			axis_value = 0;																					
 		}
@@ -352,61 +352,61 @@ void ModuleInput::HandleGameControllerInput()
 		}
 
 
-		if (axis_value > gameController.mMaxPositiveThreshold)												
+		if (axis_value > mGameController.mMaxPositiveThreshold)
 		{
-			switch (gameController.mAxis[i])
+			switch (mGameController.mAxis[i])
 			{
 			case AxisState::AXIS_IDLE:
-				gameController.mAxis[i] = AxisState::POSITIVE_AXIS_DOWN;
+				mGameController.mAxis[i] = AxisState::POSITIVE_AXIS_DOWN;
 				break;
 			default:
-				gameController.mAxis[i] = AxisState::POSITIVE_AXIS_REPEAT;
+				mGameController.mAxis[i] = AxisState::POSITIVE_AXIS_REPEAT;
 				break;
 			}
 			mGameControllerReceivedInput = true;
 		}
 		else
 		{
-			if (axis_value < gameController.mMinPositiveThreshold && axis_value > gameController.mMinNegativeThreshold)	
+			if (axis_value < mGameController.mMinPositiveThreshold && axis_value > mGameController.mMinNegativeThreshold)
 			{
-				switch (gameController.mAxis[i])
+				switch (mGameController.mAxis[i])
 				{
 				case AxisState::POSITIVE_AXIS_DOWN:
 				case AxisState::POSITIVE_AXIS_REPEAT:
-					gameController.mAxis[i] = AxisState::POSITIVE_AXIS_RELEASE;
+					mGameController.mAxis[i] = AxisState::POSITIVE_AXIS_RELEASE;
 					mGameControllerReceivedInput = true;
 					break;
 				default:
-					gameController.mAxis[i] = AxisState::AXIS_IDLE;
+					mGameController.mAxis[i] = AxisState::AXIS_IDLE;
 					break;
 				}
 			}
 		}
 
-		if (axis_value < gameController.mMaxNegativeThreshold)																
+		if (axis_value < mGameController.mMaxNegativeThreshold)
 		{
-			switch (gameController.mAxis[i])
+			switch (mGameController.mAxis[i])
 			{
 			case AxisState::AXIS_IDLE:
-				gameController.mAxis[i] = AxisState::NEGATIVE_AXIS_DOWN;
+				mGameController.mAxis[i] = AxisState::NEGATIVE_AXIS_DOWN;
 				break;
 			default:
-				gameController.mAxis[i] = AxisState::NEGATIVE_AXIS_REPEAT;
+				mGameController.mAxis[i] = AxisState::NEGATIVE_AXIS_REPEAT;
 				break;
 			}
 			mGameControllerReceivedInput = true;
 		}
-		else if (axis_value > gameController.mMinNegativeThreshold && axis_value < gameController.mMinPositiveThreshold)	
+		else if (axis_value > mGameController.mMinNegativeThreshold && axis_value < mGameController.mMinPositiveThreshold)
 		{
-			switch (gameController.mAxis[i])
+			switch (mGameController.mAxis[i])
 			{
 			case AxisState::NEGATIVE_AXIS_DOWN:
 			case AxisState::NEGATIVE_AXIS_REPEAT:
-				gameController.mAxis[i] = AxisState::NEGATIVE_AXIS_RELEASE;
+				mGameController.mAxis[i] = AxisState::NEGATIVE_AXIS_RELEASE;
 				mGameControllerReceivedInput = true;
 				break;
 			default:
-				gameController.mAxis[i] = AxisState::AXIS_IDLE;
+				mGameController.mAxis[i] = AxisState::AXIS_IDLE;
 				break;
 			}
 		}

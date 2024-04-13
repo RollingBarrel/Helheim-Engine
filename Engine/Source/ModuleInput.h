@@ -96,18 +96,18 @@ public:
 	update_status PreUpdate(float dt) override;
 	bool CleanUp() override;
 
-	KeyState GetKey(int id) const { return keyboard[id]; }
+	KeyState GetKey(int id) const { return mKeyboard[id]; }
 	bool GetKeyboardReciveInputs() const { return mKeyboardReceivedInput; }
 
-	KeyState GetMouseKey(MouseKey id) const { return mouse[id]; }
+	KeyState GetMouseKey(MouseKey id) const { return mMouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
 	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
-	int GetMouseWheelMotion() const { return wheelY; }
+	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
 
-	ButtonState	GetGameControllerButton(int id) const { return gameController.mButtons[id]; }
-	ButtonState	GetGameControllerTrigger(int id) const { return gameController.mTriggers[id]; }
-	AxisState GetGameControllerAxis(int id) const { return gameController.mAxis[id]; }
+	ButtonState	GetGameControllerButton(int id) const { return mGameController.mButtons[id]; }
+	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }
+	AxisState GetGameControllerAxis(int id) const { return mGameController.mAxis[id]; }
 	int	GetGameControllerAxisValue(int id) const;											
 	int	GetGameControllerAxisRaw(int id) const;												
 	int	GetGameControllerAxisInput(int id) const;											
@@ -118,20 +118,20 @@ public:
 
 private:
 
-	KeyState mouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
-	KeyState* keyboard = 0;
+	KeyState mMouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
+	KeyState* mKeyboard = 0;
 	int mMouseMotionX = 0;
 	int mMouseMotionY = 0;
 	int mMousePositionX = 0;
 	int mMousePositionY = 0;
 
-	int wheelY = 0;
+	int mWheelY = 0;
 
 	bool mKeyboardReceivedInput = false;
 	bool mMouseReceivedInput = false;
 	bool mGameControllerReceivedInput = false;
 
-	GameController  gameController;
+	GameController  mGameController;
 };
 
 #endif /* _MODULE_INPUT_H_ */
