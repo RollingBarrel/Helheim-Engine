@@ -2,80 +2,105 @@
     "Scene": {
         "GameObjects": [
             {
-                "UID": 1194592623,
+                "UID": 1785091615,
                 "ParentUID": 1,
                 "Name": "Player",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    -25.433040618896486
+                    5.220401763916016,
+                    0.27664297819137576,
+                    -18.969881057739259
                 ],
                 "Rotation": [
                     0.0,
+                    -0.8141305446624756,
                     0.0,
-                    0.0,
-                    1.0
+                    0.5806818604469299
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": 0,
+                "Tag": 5,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
                         "ComponentType": 3,
                         "ScriptName": "PlayerController",
                         "ScriptVariables": [
                             {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHealth",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mShield",
+                                "MemberType": 0,
+                                "VariableData": 100
+                            },
+                            {
+                                "VariableName": "mSanity",
+                                "MemberType": 0,
+                                "VariableData": 100
+                            },
+                            {
                                 "VariableName": "mPlayerSpeed",
-                                "VariableType": 1,
-                                "VariableData": 1.0
+                                "MemberType": 1,
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mPlayerRotationSpeed",
-                                "VariableType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mWinArea",
-                                "VariableType": 3,
-                                "VariableData": 1967813909
-                            },
-                            {
-                                "VariableName": "mLoseArea",
-                                "VariableType": 3,
-                                "VariableData": 85934377
-                            },
-                            {
-                                "VariableName": "mAnimationComponentHolder",
-                                "VariableType": 3,
-                                "VariableData": -1
+                                "MemberType": 1,
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mDashSpeed",
-                                "VariableType": 1,
+                                "MemberType": 1,
                                 "VariableData": 5.0
                             },
                             {
                                 "VariableName": "mDashLenght",
-                                "VariableType": 1,
+                                "MemberType": 1,
                                 "VariableData": 5.0
                             },
                             {
                                 "VariableName": "mDashCoolDown",
-                                "VariableType": 1,
-                                "VariableData": 0.5
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "GAME OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mWinArea",
+                                "MemberType": 3,
+                                "VariableData": 1165662674
+                            },
+                            {
+                                "VariableName": "mLoseArea",
+                                "MemberType": 3,
+                                "VariableData": 1581578528
+                            },
+                            {
+                                "VariableName": "mAnimationComponentHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 84947138,
-                "ParentUID": 1194592623,
+                "UID": 1134877194,
+                "ParentUID": 1785091615,
                 "Name": "Char_Low",
                 "isEnabled": true,
                 "isActive": true,
@@ -96,11 +121,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 126719738,
-                "ParentUID": 84947138,
+                "UID": 1300923279,
+                "ParentUID": 1134877194,
                 "Name": "Char_Low",
                 "isEnabled": true,
                 "isActive": true,
@@ -121,9 +148,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 678417623,
+                        "ID": 1399645857,
                         "MeshID": 173969197,
                         "MaterialID": 173969200,
                         "ComponentType": 0,
@@ -132,7 +161,42 @@
                 ]
             },
             {
-                "UID": 1019022905,
+                "UID": 21823332,
+                "ParentUID": 1785091615,
+                "Name": "PlayerCamera",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -3.7337169647216799,
+                    8.523357391357422,
+                    -10.433521270751954
+                ],
+                "Rotation": [
+                    0.25526875257492068,
+                    0.1594451367855072,
+                    -0.0427219495177269,
+                    0.9526751637458801
+                ],
+                "Scale": [
+                    1.000000238418579,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": 4,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "AspectRatio": 1.936948299407959,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 235699044,
                 "ParentUID": 1,
                 "Name": "OB_Blockout_with_Assets",
                 "isEnabled": true,
@@ -154,11 +218,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1061143610,
-                "ParentUID": 1019022905,
+                "UID": 355725648,
+                "ParentUID": 235699044,
                 "Name": "Canteen",
                 "isEnabled": true,
                 "isActive": true,
@@ -179,11 +245,13 @@
                     15.044550895690918
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1091011019,
-                "ParentUID": 1061143610,
+                "UID": 455979888,
+                "ParentUID": 355725648,
                 "Name": "Canteen",
                 "isEnabled": true,
                 "isActive": true,
@@ -204,9 +272,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1491224033,
+                        "ID": 528664212,
                         "MeshID": 868682669,
                         "MaterialID": 0,
                         "ComponentType": 0,
@@ -215,8 +285,8 @@
                 ]
             },
             {
-                "UID": 257969767,
-                "ParentUID": 1019022905,
+                "UID": 2064827675,
+                "ParentUID": 235699044,
                 "Name": "Corridors",
                 "isEnabled": true,
                 "isActive": true,
@@ -237,11 +307,13 @@
                     15.044550895690918
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 298071463,
-                "ParentUID": 257969767,
+                "UID": 22959085,
+                "ParentUID": 2064827675,
                 "Name": "Corridors",
                 "isEnabled": true,
                 "isActive": true,
@@ -262,9 +334,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2103284061,
+                        "ID": 67168420,
                         "MeshID": 868682670,
                         "MaterialID": 0,
                         "ComponentType": 0,
@@ -273,8 +347,8 @@
                 ]
             },
             {
-                "UID": 1943492092,
-                "ParentUID": 1019022905,
+                "UID": 1294145022,
+                "ParentUID": 235699044,
                 "Name": "Entrance",
                 "isEnabled": true,
                 "isActive": true,
@@ -295,11 +369,13 @@
                     15.044550895690918
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 2008100380,
-                "ParentUID": 1943492092,
+                "UID": 1397323344,
+                "ParentUID": 1294145022,
                 "Name": "Entrance",
                 "isEnabled": true,
                 "isActive": true,
@@ -320,9 +396,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 476656932,
+                        "ID": 1441393437,
                         "MeshID": 868682671,
                         "MaterialID": 0,
                         "ComponentType": 0,
@@ -331,8 +409,8 @@
                 ]
             },
             {
-                "UID": 578267916,
-                "ParentUID": 1019022905,
+                "UID": 679343788,
+                "ParentUID": 235699044,
                 "Name": "Hall",
                 "isEnabled": true,
                 "isActive": true,
@@ -353,11 +431,13 @@
                     15.044550895690918
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 606116316,
-                "ParentUID": 578267916,
+                "UID": 785306950,
+                "ParentUID": 679343788,
                 "Name": "Hall",
                 "isEnabled": true,
                 "isActive": true,
@@ -378,9 +458,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1049659579,
+                        "ID": 827497276,
                         "MeshID": 868682672,
                         "MaterialID": 0,
                         "ComponentType": 0,
@@ -389,8 +471,8 @@
                 ]
             },
             {
-                "UID": 35267750,
-                "ParentUID": 1019022905,
+                "UID": 62871650,
+                "ParentUID": 235699044,
                 "Name": "MachineryRoom",
                 "isEnabled": true,
                 "isActive": true,
@@ -411,11 +493,13 @@
                     15.044550895690918
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 88736678,
-                "ParentUID": 35267750,
+                "UID": 189721112,
+                "ParentUID": 62871650,
                 "Name": "MachineryRoom",
                 "isEnabled": true,
                 "isActive": true,
@@ -436,9 +520,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1932545297,
+                        "ID": 236715287,
                         "MeshID": 868682673,
                         "MaterialID": 0,
                         "ComponentType": 0,
@@ -447,8 +533,8 @@
                 ]
             },
             {
-                "UID": 1670384471,
-                "ParentUID": 1019022905,
+                "UID": 1524679885,
+                "ParentUID": 235699044,
                 "Name": "Player.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -469,11 +555,13 @@
                     0.5555555820465088
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1707979811,
-                "ParentUID": 1670384471,
+                "UID": 1634611444,
+                "ParentUID": 1524679885,
                 "Name": "Player.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -494,9 +582,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 447596903,
+                        "ID": 1680213199,
                         "MeshID": 868682674,
                         "MaterialID": 868682675,
                         "ComponentType": 0,
@@ -505,8 +595,8 @@
                 ]
             },
             {
-                "UID": 670041871,
-                "ParentUID": 1019022905,
+                "UID": 877759468,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -527,11 +617,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 735694474,
-                "ParentUID": 670041871,
+                "UID": 1011431788,
+                "ParentUID": 877759468,
                 "Name": "OB_Office_Table.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -552,9 +644,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1738089674,
+                        "ID": 1061280424,
                         "MeshID": 868682676,
                         "MaterialID": 868682679,
                         "ComponentType": 0,
@@ -563,8 +657,8 @@
                 ]
             },
             {
-                "UID": 749842948,
-                "ParentUID": 1019022905,
+                "UID": 989420009,
+                "ParentUID": 235699044,
                 "Name": "Cube.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -585,11 +679,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 791058580,
-                "ParentUID": 749842948,
+                "UID": 1111535243,
+                "ParentUID": 989420009,
                 "Name": "Cube.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -610,9 +706,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 589077049,
+                        "ID": 1157415482,
                         "MeshID": 868682680,
                         "MaterialID": 868682681,
                         "ComponentType": 0,
@@ -621,8 +719,8 @@
                 ]
             },
             {
-                "UID": 1367609813,
-                "ParentUID": 1019022905,
+                "UID": 2129276838,
+                "ParentUID": 235699044,
                 "Name": "Cube.010",
                 "isEnabled": true,
                 "isActive": true,
@@ -643,11 +741,13 @@
                     1.126700758934021
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1426996526,
-                "ParentUID": 1367609813,
+                "UID": 106623644,
+                "ParentUID": 2129276838,
                 "Name": "Cube.010",
                 "isEnabled": true,
                 "isActive": true,
@@ -668,9 +768,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 236142213,
+                        "ID": 154105166,
                         "MeshID": 868682682,
                         "MaterialID": 868682683,
                         "ComponentType": 0,
@@ -679,8 +781,8 @@
                 ]
             },
             {
-                "UID": 1324858349,
-                "ParentUID": 1019022905,
+                "UID": 1227822045,
+                "ParentUID": 235699044,
                 "Name": "small_asset.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -701,11 +803,13 @@
                     0.5
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1393713518,
-                "ParentUID": 1324858349,
+                "UID": 1364209584,
+                "ParentUID": 1227822045,
                 "Name": "small_asset.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -726,9 +830,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1755409590,
+                        "ID": 1411830348,
                         "MeshID": 868682684,
                         "MaterialID": 868682685,
                         "ComponentType": 0,
@@ -737,8 +843,8 @@
                 ]
             },
             {
-                "UID": 1037830698,
-                "ParentUID": 1019022905,
+                "UID": 254031033,
+                "ParentUID": 235699044,
                 "Name": "Cube.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -759,11 +865,13 @@
                     1.126700758934021
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1093109772,
-                "ParentUID": 1037830698,
+                "UID": 379766559,
+                "ParentUID": 254031033,
                 "Name": "Cube.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -784,9 +892,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1319904248,
+                        "ID": 425298693,
                         "MeshID": 868682686,
                         "MaterialID": 868682687,
                         "ComponentType": 0,
@@ -795,8 +905,8 @@
                 ]
             },
             {
-                "UID": 1234018506,
-                "ParentUID": 1019022905,
+                "UID": 1439141512,
+                "ParentUID": 235699044,
                 "Name": "Cube.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -817,11 +927,13 @@
                     1.126700758934021
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1276765800,
-                "ParentUID": 1234018506,
+                "UID": 1570655581,
+                "ParentUID": 1439141512,
                 "Name": "Cube.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -842,9 +954,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 897348412,
+                        "ID": 1617928240,
                         "MeshID": 868682688,
                         "MaterialID": 868682689,
                         "ComponentType": 0,
@@ -853,8 +967,8 @@
                 ]
             },
             {
-                "UID": 2003211046,
-                "ParentUID": 1019022905,
+                "UID": 502528114,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.017",
                 "isEnabled": true,
                 "isActive": true,
@@ -875,11 +989,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 2047629244,
-                "ParentUID": 2003211046,
+                "UID": 639611863,
+                "ParentUID": 502528114,
                 "Name": "OB_Office_Chair.017",
                 "isEnabled": true,
                 "isActive": true,
@@ -900,9 +1016,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 912430182,
+                        "ID": 688764289,
                         "MeshID": 868682690,
                         "MaterialID": 868682693,
                         "ComponentType": 0,
@@ -911,8 +1029,8 @@
                 ]
             },
             {
-                "UID": 763722245,
-                "ParentUID": 1019022905,
+                "UID": 314541956,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.018",
                 "isEnabled": true,
                 "isActive": true,
@@ -933,11 +1051,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 793171928,
-                "ParentUID": 763722245,
+                "UID": 446195267,
+                "ParentUID": 314541956,
                 "Name": "OB_Office_Chair.018",
                 "isEnabled": true,
                 "isActive": true,
@@ -958,9 +1078,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2108855524,
+                        "ID": 493885652,
                         "MeshID": 868682694,
                         "MaterialID": 868682697,
                         "ComponentType": 0,
@@ -969,8 +1091,8 @@
                 ]
             },
             {
-                "UID": 1926120565,
-                "ParentUID": 1019022905,
+                "UID": 1744410681,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.007",
                 "isEnabled": true,
                 "isActive": true,
@@ -991,11 +1113,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1953968965,
-                "ParentUID": 1926120565,
+                "UID": 1879545042,
+                "ParentUID": 1744410681,
                 "Name": "OB_Office_Table.007",
                 "isEnabled": true,
                 "isActive": true,
@@ -1016,9 +1140,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 652792472,
+                        "ID": 1929741783,
                         "MeshID": 868682698,
                         "MaterialID": 868682701,
                         "ComponentType": 0,
@@ -1027,8 +1153,8 @@
                 ]
             },
             {
-                "UID": 2116731320,
-                "ParentUID": 1019022905,
+                "UID": 595585102,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.019",
                 "isEnabled": true,
                 "isActive": true,
@@ -1049,11 +1175,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 2144858204,
-                "ParentUID": 2116731320,
+                "UID": 731694157,
+                "ParentUID": 595585102,
                 "Name": "OB_Office_Chair.019",
                 "isEnabled": true,
                 "isActive": true,
@@ -1074,9 +1202,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1886767435,
+                        "ID": 782447866,
                         "MeshID": 868682702,
                         "MaterialID": 868682705,
                         "ComponentType": 0,
@@ -1085,8 +1215,8 @@
                 ]
             },
             {
-                "UID": 1725425855,
-                "ParentUID": 1019022905,
+                "UID": 1798580805,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.020",
                 "isEnabled": true,
                 "isActive": true,
@@ -1107,11 +1237,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1753135013,
-                "ParentUID": 1725425855,
+                "UID": 2011969170,
+                "ParentUID": 1798580805,
                 "Name": "OB_Office_Chair.020",
                 "isEnabled": true,
                 "isActive": true,
@@ -1132,9 +1264,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1211819761,
+                        "ID": 2102476470,
                         "MeshID": 868682706,
                         "MaterialID": 868682709,
                         "ComponentType": 0,
@@ -1143,8 +1277,8 @@
                 ]
             },
             {
-                "UID": 420344765,
-                "ParentUID": 1019022905,
+                "UID": 955345697,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.008",
                 "isEnabled": true,
                 "isActive": true,
@@ -1165,11 +1299,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 448123544,
-                "ParentUID": 420344765,
+                "UID": 1153695926,
+                "ParentUID": 955345697,
                 "Name": "OB_Office_Table.008",
                 "isEnabled": true,
                 "isActive": true,
@@ -1190,9 +1326,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 845484333,
+                        "ID": 1204519256,
                         "MeshID": 868682710,
                         "MaterialID": 868682713,
                         "ComponentType": 0,
@@ -1201,8 +1339,8 @@
                 ]
             },
             {
-                "UID": 572642153,
-                "ParentUID": 1019022905,
+                "UID": 2120630720,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.021",
                 "isEnabled": true,
                 "isActive": true,
@@ -1223,11 +1361,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 601395626,
-                "ParentUID": 572642153,
+                "UID": 111344758,
+                "ParentUID": 2120630720,
                 "Name": "OB_Office_Chair.021",
                 "isEnabled": true,
                 "isActive": true,
@@ -1248,9 +1388,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 393493258,
+                        "ID": 160497184,
                         "MeshID": 868682714,
                         "MaterialID": 868682717,
                         "ComponentType": 0,
@@ -1259,8 +1401,8 @@
                 ]
             },
             {
-                "UID": 1892601136,
-                "ParentUID": 1019022905,
+                "UID": 2074510343,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.022",
                 "isEnabled": true,
                 "isActive": true,
@@ -1281,11 +1423,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1925879974,
-                "ParentUID": 1892601136,
+                "UID": 81097969,
+                "ParentUID": 2074510343,
                 "Name": "OB_Office_Chair.022",
                 "isEnabled": true,
                 "isActive": true,
@@ -1306,9 +1450,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1898293911,
+                        "ID": 129902290,
                         "MeshID": 868682718,
                         "MaterialID": 868682721,
                         "ComponentType": 0,
@@ -1317,8 +1463,8 @@
                 ]
             },
             {
-                "UID": 147051881,
-                "ParentUID": 1019022905,
+                "UID": 2040991367,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.009",
                 "isEnabled": true,
                 "isActive": true,
@@ -1339,11 +1485,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 177128153,
-                "ParentUID": 147051881,
+                "UID": 40964998,
+                "ParentUID": 2040991367,
                 "Name": "OB_Office_Table.009",
                 "isEnabled": true,
                 "isActive": true,
@@ -1364,9 +1512,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 799593367,
+                        "ID": 89769319,
                         "MeshID": 868682722,
                         "MaterialID": 868682725,
                         "ComponentType": 0,
@@ -1375,8 +1525,8 @@
                 ]
             },
             {
-                "UID": 1625422541,
-                "ParentUID": 1019022905,
+                "UID": 50282669,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.023",
                 "isEnabled": true,
                 "isActive": true,
@@ -1397,11 +1547,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1653897530,
-                "ParentUID": 1625422541,
+                "UID": 200872892,
+                "ParentUID": 50282669,
                 "Name": "OB_Office_Chair.023",
                 "isEnabled": true,
                 "isActive": true,
@@ -1422,9 +1574,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 399028309,
+                        "ID": 254968409,
                         "MeshID": 868682726,
                         "MaterialID": 868682729,
                         "ComponentType": 0,
@@ -1433,8 +1587,8 @@
                 ]
             },
             {
-                "UID": 266850706,
-                "ParentUID": 1019022905,
+                "UID": 821649989,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.024",
                 "isEnabled": true,
                 "isActive": true,
@@ -1455,11 +1609,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 295673800,
-                "ParentUID": 266850706,
+                "UID": 972518696,
+                "ParentUID": 821649989,
                 "Name": "OB_Office_Chair.024",
                 "isEnabled": true,
                 "isActive": true,
@@ -1480,9 +1636,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 901704288,
+                        "ID": 1025152172,
                         "MeshID": 868682730,
                         "MaterialID": 868682733,
                         "ComponentType": 0,
@@ -1491,8 +1649,8 @@
                 ]
             },
             {
-                "UID": 712994433,
-                "ParentUID": 1019022905,
+                "UID": 172840347,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -1513,11 +1671,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 741887148,
-                "ParentUID": 712994433,
+                "UID": 323012844,
+                "ParentUID": 172840347,
                 "Name": "OB_Office_Table.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -1538,9 +1698,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1727373903,
+                        "ID": 374114658,
                         "MeshID": 868682734,
                         "MaterialID": 868682737,
                         "ComponentType": 0,
@@ -1549,8 +1711,8 @@
                 ]
             },
             {
-                "UID": 331483712,
-                "ParentUID": 1019022905,
+                "UID": 117830299,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -1571,11 +1733,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 360794153,
-                "ParentUID": 331483712,
+                "UID": 268281280,
+                "ParentUID": 117830299,
                 "Name": "OB_Office_Table.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -1596,9 +1760,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 838672112,
+                        "ID": 317433706,
                         "MeshID": 868682738,
                         "MaterialID": 868682741,
                         "ComponentType": 0,
@@ -1607,8 +1773,8 @@
                 ]
             },
             {
-                "UID": 1266506101,
-                "ParentUID": 1019022905,
+                "UID": 842853935,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -1629,11 +1795,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1296095026,
-                "ParentUID": 1266506101,
+                "UID": 1006324043,
+                "ParentUID": 842853935,
                 "Name": "OB_Office_Table.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -1654,9 +1822,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1093473429,
+                        "ID": 1057982825,
                         "MeshID": 868682742,
                         "MaterialID": 868682745,
                         "ComponentType": 0,
@@ -1665,8 +1835,8 @@
                 ]
             },
             {
-                "UID": 553760479,
-                "ParentUID": 1019022905,
+                "UID": 156890581,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -1687,11 +1857,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 583767130,
-                "ParentUID": 553760479,
+                "UID": 307620046,
+                "ParentUID": 156890581,
                 "Name": "OB_Office_Table.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -1712,9 +1884,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 216213384,
+                        "ID": 359069965,
                         "MeshID": 868682746,
                         "MaterialID": 868682749,
                         "ComponentType": 0,
@@ -1723,8 +1897,8 @@
                 ]
             },
             {
-                "UID": 2024953921,
-                "ParentUID": 1019022905,
+                "UID": 2009635175,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -1745,11 +1919,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 2056561855,
-                "ParentUID": 2024953921,
+                "UID": 15387349,
+                "ParentUID": 2009635175,
                 "Name": "OB_Office_Table.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -1770,9 +1946,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 682360155,
+                        "ID": 66280300,
                         "MeshID": 868682750,
                         "MaterialID": 868682753,
                         "ComponentType": 0,
@@ -1781,8 +1959,8 @@
                 ]
             },
             {
-                "UID": 1273520840,
-                "ParentUID": 1019022905,
+                "UID": 1057301875,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -1803,11 +1981,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1310071865,
-                "ParentUID": 1273520840,
+                "UID": 1208449066,
+                "ParentUID": 1057301875,
                 "Name": "OB_Office_Chair.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -1828,9 +2008,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 604558053,
+                        "ID": 1256139451,
                         "MeshID": 868682754,
                         "MaterialID": 868682757,
                         "ComponentType": 0,
@@ -1839,8 +2021,8 @@
                 ]
             },
             {
-                "UID": 760328736,
-                "ParentUID": 1019022905,
+                "UID": 784515254,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -1861,11 +2043,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 792980985,
-                "ParentUID": 760328736,
+                "UID": 932877605,
+                "ParentUID": 784515254,
                 "Name": "OB_Office_Chair.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -1886,9 +2070,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1106535737,
+                        "ID": 981333821,
                         "MeshID": 868682758,
                         "MaterialID": 868682761,
                         "ComponentType": 0,
@@ -1897,8 +2083,8 @@
                 ]
             },
             {
-                "UID": 1520672036,
-                "ParentUID": 1019022905,
+                "UID": 445055617,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -1919,11 +2105,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1569267494,
-                "ParentUID": 1520672036,
+                "UID": 598152196,
+                "ParentUID": 445055617,
                 "Name": "OB_Office_Chair.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -1944,9 +2132,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 163181461,
+                        "ID": 646747654,
                         "MeshID": 868682762,
                         "MaterialID": 868682765,
                         "ComponentType": 0,
@@ -1955,8 +2145,8 @@
                 ]
             },
             {
-                "UID": 458985962,
-                "ParentUID": 1019022905,
+                "UID": 1102242412,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -1977,11 +2167,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 489201476,
-                "ParentUID": 458985962,
+                "UID": 1256313685,
+                "ParentUID": 1102242412,
                 "Name": "OB_Office_Chair.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -2002,9 +2194,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 731971403,
+                        "ID": 1305118006,
                         "MeshID": 868682766,
                         "MaterialID": 868682769,
                         "ComponentType": 0,
@@ -2013,8 +2207,8 @@
                 ]
             },
             {
-                "UID": 707939115,
-                "ParentUID": 1019022905,
+                "UID": 348740433,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -2035,11 +2229,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 738781218,
-                "ParentUID": 707939115,
+                "UID": 500514213,
+                "ParentUID": 348740433,
                 "Name": "OB_Office_Chair.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -2060,9 +2256,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 560133147,
+                        "ID": 550014744,
                         "MeshID": 868682770,
                         "MaterialID": 868682773,
                         "ComponentType": 0,
@@ -2071,8 +2269,8 @@
                 ]
             },
             {
-                "UID": 53651231,
-                "ParentUID": 1019022905,
+                "UID": 1778095824,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -2093,11 +2291,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 83797124,
-                "ParentUID": 53651231,
+                "UID": 1932167097,
+                "ParentUID": 1778095824,
                 "Name": "OB_Office_Chair.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -2118,9 +2318,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 835912202,
+                        "ID": 1981528386,
                         "MeshID": 868682774,
                         "MaterialID": 868682777,
                         "ComponentType": 0,
@@ -2129,8 +2331,8 @@
                 ]
             },
             {
-                "UID": 629638123,
-                "ParentUID": 1019022905,
+                "UID": 1099116387,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.007",
                 "isEnabled": true,
                 "isActive": true,
@@ -2151,11 +2353,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 659853637,
-                "ParentUID": 629638123,
+                "UID": 1255972500,
+                "ParentUID": 1099116387,
                 "Name": "OB_Office_Chair.007",
                 "isEnabled": true,
                 "isActive": true,
@@ -2176,9 +2380,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1729183808,
+                        "ID": 1304916063,
                         "MeshID": 868682778,
                         "MaterialID": 868682781,
                         "ComponentType": 0,
@@ -2187,8 +2393,8 @@
                 ]
             },
             {
-                "UID": 1620611894,
-                "ParentUID": 1019022905,
+                "UID": 1756792614,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.008",
                 "isEnabled": true,
                 "isActive": true,
@@ -2209,11 +2415,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1651593239,
-                "ParentUID": 1620611894,
+                "UID": 1928060274,
+                "ParentUID": 1756792614,
                 "Name": "OB_Office_Chair.008",
                 "isEnabled": true,
                 "isActive": true,
@@ -2234,9 +2442,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 231461411,
+                        "ID": 1978883604,
                         "MeshID": 868682782,
                         "MaterialID": 868682785,
                         "ComponentType": 0,
@@ -2245,8 +2455,8 @@
                 ]
             },
             {
-                "UID": 133587229,
-                "ParentUID": 1019022905,
+                "UID": 315928757,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.009",
                 "isEnabled": true,
                 "isActive": true,
@@ -2267,11 +2477,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 164498953,
-                "ParentUID": 133587229,
+                "UID": 471253208,
+                "ParentUID": 315928757,
                 "Name": "OB_Office_Chair.009",
                 "isEnabled": true,
                 "isActive": true,
@@ -2292,9 +2504,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 610442690,
+                        "ID": 520057529,
                         "MeshID": 868682786,
                         "MaterialID": 868682789,
                         "ComponentType": 0,
@@ -2303,8 +2517,8 @@
                 ]
             },
             {
-                "UID": 397996244,
-                "ParentUID": 1019022905,
+                "UID": 1365431972,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.010",
                 "isEnabled": true,
                 "isActive": true,
@@ -2325,11 +2539,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 430718114,
-                "ParentUID": 397996244,
+                "UID": 1523402021,
+                "ParentUID": 1365431972,
                 "Name": "OB_Office_Chair.010",
                 "isEnabled": true,
                 "isActive": true,
@@ -2350,9 +2566,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2068455946,
+                        "ID": 1571927858,
                         "MeshID": 868682790,
                         "MaterialID": 868682793,
                         "ComponentType": 0,
@@ -2361,8 +2579,8 @@
                 ]
             },
             {
-                "UID": 1219721364,
-                "ParentUID": 1019022905,
+                "UID": 1935873086,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.011",
                 "isEnabled": true,
                 "isActive": true,
@@ -2383,11 +2601,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1251607782,
-                "ParentUID": 1219721364,
+                "UID": 2094817829,
+                "ParentUID": 1935873086,
                 "Name": "OB_Office_Chair.011",
                 "isEnabled": true,
                 "isActive": true,
@@ -2408,9 +2628,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1148494326,
+                        "ID": 2143970255,
                         "MeshID": 868682794,
                         "MaterialID": 868682797,
                         "ComponentType": 0,
@@ -2419,8 +2641,8 @@
                 ]
             },
             {
-                "UID": 1285338522,
-                "ParentUID": 1019022905,
+                "UID": 1253275442,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.012",
                 "isEnabled": true,
                 "isActive": true,
@@ -2441,11 +2663,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1316528730,
-                "ParentUID": 1285338522,
+                "UID": 1409435345,
+                "ParentUID": 1253275442,
                 "Name": "OB_Office_Chair.012",
                 "isEnabled": true,
                 "isActive": true,
@@ -2466,9 +2690,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 470141478,
+                        "ID": 1456916867,
                         "MeshID": 868682798,
                         "MaterialID": 868682801,
                         "ComponentType": 0,
@@ -2477,8 +2703,8 @@
                 ]
             },
             {
-                "UID": 1419162443,
-                "ParentUID": 1019022905,
+                "UID": 64322180,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.013",
                 "isEnabled": true,
                 "isActive": true,
@@ -2499,11 +2725,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1450631135,
-                "ParentUID": 1419162443,
+                "UID": 221387156,
+                "ParentUID": 64322180,
                 "Name": "OB_Office_Chair.013",
                 "isEnabled": true,
                 "isActive": true,
@@ -2524,9 +2752,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 842160657,
+                        "ID": 270469961,
                         "MeshID": 868682802,
                         "MaterialID": 868682805,
                         "ComponentType": 0,
@@ -2535,8 +2765,8 @@
                 ]
             },
             {
-                "UID": 482446064,
-                "ParentUID": 1019022905,
+                "UID": 412485258,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.014",
                 "isEnabled": true,
                 "isActive": true,
@@ -2557,11 +2787,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 514819829,
-                "ParentUID": 482446064,
+                "UID": 586398516,
+                "ParentUID": 412485258,
                 "Name": "OB_Office_Chair.014",
                 "isEnabled": true,
                 "isActive": true,
@@ -2582,9 +2814,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1306832877,
+                        "ID": 643487736,
                         "MeshID": 868682806,
                         "MaterialID": 868682809,
                         "ComponentType": 0,
@@ -2593,8 +2827,8 @@
                 ]
             },
             {
-                "UID": 2067913554,
-                "ParentUID": 1019022905,
+                "UID": 1647643778,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.015",
                 "isEnabled": true,
                 "isActive": true,
@@ -2615,11 +2849,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 2102097465,
-                "ParentUID": 2067913554,
+                "UID": 1826917853,
+                "ParentUID": 1647643778,
                 "Name": "OB_Office_Chair.015",
                 "isEnabled": true,
                 "isActive": true,
@@ -2640,9 +2876,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1715818722,
+                        "ID": 1880038676,
                         "MeshID": 868682810,
                         "MaterialID": 868682813,
                         "ComponentType": 0,
@@ -2651,8 +2889,8 @@
                 ]
             },
             {
-                "UID": 1497194772,
-                "ParentUID": 1019022905,
+                "UID": 974166485,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.016",
                 "isEnabled": true,
                 "isActive": true,
@@ -2673,11 +2911,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1529986263,
-                "ParentUID": 1497194772,
+                "UID": 1181567444,
+                "ParentUID": 974166485,
                 "Name": "OB_Office_Chair.016",
                 "isEnabled": true,
                 "isActive": true,
@@ -2698,9 +2938,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 239443985,
+                        "ID": 1232251532,
                         "MeshID": 868682814,
                         "MaterialID": 868682817,
                         "ComponentType": 0,
@@ -2709,8 +2951,8 @@
                 ]
             },
             {
-                "UID": 1357986948,
-                "ParentUID": 1019022905,
+                "UID": 2046738153,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.025",
                 "isEnabled": true,
                 "isActive": true,
@@ -2731,11 +2973,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1390082229,
-                "ParentUID": 1357986948,
+                "UID": 64743623,
+                "ParentUID": 2046738153,
                 "Name": "OB_Office_Chair.025",
                 "isEnabled": true,
                 "isActive": true,
@@ -2756,9 +3000,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1697874967,
+                        "ID": 114244154,
                         "MeshID": 868682818,
                         "MaterialID": 868682821,
                         "ComponentType": 0,
@@ -2767,8 +3013,8 @@
                 ]
             },
             {
-                "UID": 886756575,
-                "ParentUID": 1019022905,
+                "UID": 2093971197,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.026",
                 "isEnabled": true,
                 "isActive": true,
@@ -2789,11 +3035,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 919478445,
-                "ParentUID": 886756575,
+                "UID": 115179233,
+                "ParentUID": 2093971197,
                 "Name": "OB_Office_Chair.026",
                 "isEnabled": true,
                 "isActive": true,
@@ -2814,9 +3062,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 83720271,
+                        "ID": 164401280,
                         "MeshID": 868682822,
                         "MaterialID": 868682825,
                         "ComponentType": 0,
@@ -2825,8 +3075,8 @@
                 ]
             },
             {
-                "UID": 1647539418,
-                "ParentUID": 1019022905,
+                "UID": 1536180104,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.027",
                 "isEnabled": true,
                 "isActive": true,
@@ -2847,11 +3097,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1682001813,
-                "ParentUID": 1647539418,
+                "UID": 1703200883,
+                "ParentUID": 1536180104,
                 "Name": "OB_Office_Chair.027",
                 "isEnabled": true,
                 "isActive": true,
@@ -2872,9 +3124,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1427135276,
+                        "ID": 1750960889,
                         "MeshID": 868682826,
                         "MaterialID": 868682829,
                         "ComponentType": 0,
@@ -2883,8 +3137,8 @@
                 ]
             },
             {
-                "UID": 458540437,
-                "ParentUID": 1019022905,
+                "UID": 601506636,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.028",
                 "isEnabled": true,
                 "isActive": true,
@@ -2905,11 +3159,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 491540791,
-                "ParentUID": 458540437,
+                "UID": 770546424,
+                "ParentUID": 601506636,
                 "Name": "OB_Office_Chair.028",
                 "isEnabled": true,
                 "isActive": true,
@@ -2930,9 +3186,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1141651646,
+                        "ID": 820186197,
                         "MeshID": 868682830,
                         "MaterialID": 868682833,
                         "ComponentType": 0,
@@ -2941,8 +3199,8 @@
                 ]
             },
             {
-                "UID": 601228042,
-                "ParentUID": 1019022905,
+                "UID": 323267760,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Table.010",
                 "isEnabled": true,
                 "isActive": true,
@@ -2963,11 +3221,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 634158775,
-                "ParentUID": 601228042,
+                "UID": 492237927,
+                "ParentUID": 323267760,
                 "Name": "OB_Office_Table.010",
                 "isEnabled": true,
                 "isActive": true,
@@ -2988,9 +3248,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1752190286,
+                        "ID": 541808079,
                         "MeshID": 868682834,
                         "MaterialID": 868682837,
                         "ComponentType": 0,
@@ -2999,8 +3261,8 @@
                 ]
             },
             {
-                "UID": 447956776,
-                "ParentUID": 1019022905,
+                "UID": 1101179454,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.029",
                 "isEnabled": true,
                 "isActive": true,
@@ -3021,11 +3283,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 482419171,
-                "ParentUID": 447956776,
+                "UID": 1276067406,
+                "ParentUID": 1101179454,
                 "Name": "OB_Office_Chair.029",
                 "isEnabled": true,
                 "isActive": true,
@@ -3046,9 +3310,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 404823262,
+                        "ID": 1325637558,
                         "MeshID": 868682838,
                         "MaterialID": 868682841,
                         "ComponentType": 0,
@@ -3057,8 +3323,8 @@
                 ]
             },
             {
-                "UID": 667227481,
-                "ParentUID": 1019022905,
+                "UID": 1119247554,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.030",
                 "isEnabled": true,
                 "isActive": true,
@@ -3079,11 +3345,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 700784803,
-                "ParentUID": 667227481,
+                "UID": 1297407693,
+                "ParentUID": 1119247554,
                 "Name": "OB_Office_Chair.030",
                 "isEnabled": true,
                 "isActive": true,
@@ -3104,9 +3372,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 50136358,
+                        "ID": 1349205717,
                         "MeshID": 868682842,
                         "MaterialID": 868682845,
                         "ComponentType": 0,
@@ -3115,8 +3385,8 @@
                 ]
             },
             {
-                "UID": 324656716,
-                "ParentUID": 1019022905,
+                "UID": 1421182288,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.031",
                 "isEnabled": true,
                 "isActive": true,
@@ -3137,11 +3407,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 358353280,
-                "ParentUID": 324656716,
+                "UID": 1628861731,
+                "ParentUID": 1421182288,
                 "Name": "OB_Office_Chair.031",
                 "isEnabled": true,
                 "isActive": true,
@@ -3162,9 +3434,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 875964947,
+                        "ID": 1682261038,
                         "MeshID": 868682846,
                         "MaterialID": 868682849,
                         "ComponentType": 0,
@@ -3173,8 +3447,8 @@
                 ]
             },
             {
-                "UID": 1447120654,
-                "ParentUID": 1019022905,
+                "UID": 1900813716,
+                "ParentUID": 235699044,
                 "Name": "OB_Office_Chair.032",
                 "isEnabled": true,
                 "isActive": true,
@@ -3195,11 +3469,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1480399492,
-                "ParentUID": 1447120654,
+                "UID": 2078416887,
+                "ParentUID": 1900813716,
                 "Name": "OB_Office_Chair.032",
                 "isEnabled": true,
                 "isActive": true,
@@ -3220,9 +3496,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 150357087,
+                        "ID": 2127499692,
                         "MeshID": 868682850,
                         "MaterialID": 868682853,
                         "ComponentType": 0,
@@ -3231,8 +3509,8 @@
                 ]
             },
             {
-                "UID": 863149980,
-                "ParentUID": 1019022905,
+                "UID": 1494957462,
+                "ParentUID": 235699044,
                 "Name": "Big_asset.011",
                 "isEnabled": true,
                 "isActive": true,
@@ -3253,11 +3531,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 896011092,
-                "ParentUID": 863149980,
+                "UID": 1671725181,
+                "ParentUID": 1494957462,
                 "Name": "Big_asset.011",
                 "isEnabled": true,
                 "isActive": true,
@@ -3278,9 +3558,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1279876648,
+                        "ID": 1718788977,
                         "MeshID": 868682854,
                         "MaterialID": 868682855,
                         "ComponentType": 0,
@@ -3289,8 +3571,8 @@
                 ]
             },
             {
-                "UID": 2005532897,
-                "ParentUID": 1019022905,
+                "UID": 1690333720,
+                "ParentUID": 235699044,
                 "Name": "Big_asset.012",
                 "isEnabled": true,
                 "isActive": true,
@@ -3311,11 +3593,13 @@
                     2.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 2038324388,
-                "ParentUID": 2005532897,
+                "UID": 1865848261,
+                "ParentUID": 1690333720,
                 "Name": "Big_asset.012",
                 "isEnabled": true,
                 "isActive": true,
@@ -3336,9 +3620,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1619087807,
+                        "ID": 1913538646,
                         "MeshID": 868682856,
                         "MaterialID": 868682857,
                         "ComponentType": 0,
@@ -3347,8 +3633,8 @@
                 ]
             },
             {
-                "UID": 1212010386,
-                "ParentUID": 1019022905,
+                "UID": 1911957095,
+                "ParentUID": 235699044,
                 "Name": "Big_asset.013",
                 "isEnabled": true,
                 "isActive": true,
@@ -3369,11 +3655,13 @@
                     2.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1245080361,
-                "ParentUID": 1212010386,
+                "UID": 2088794435,
+                "ParentUID": 1911957095,
                 "Name": "Big_asset.013",
                 "isEnabled": true,
                 "isActive": true,
@@ -3394,9 +3682,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 404149383,
+                        "ID": 2138782313,
                         "MeshID": 868682858,
                         "MaterialID": 868682859,
                         "ComponentType": 0,
@@ -3405,8 +3695,8 @@
                 ]
             },
             {
-                "UID": 724054444,
-                "ParentUID": 1019022905,
+                "UID": 378480779,
+                "ParentUID": 235699044,
                 "Name": "OB_Lab_Tank.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -3427,11 +3717,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 757472524,
-                "ParentUID": 724054444,
+                "UID": 561584009,
+                "ParentUID": 378480779,
                 "Name": "OB_Lab_Tank.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -3452,9 +3744,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1854744467,
+                        "ID": 610457951,
                         "MeshID": 868682860,
                         "MaterialID": 868682863,
                         "ComponentType": 0,
@@ -3463,8 +3757,8 @@
                 ]
             },
             {
-                "UID": 255282623,
-                "ParentUID": 1019022905,
+                "UID": 456675436,
+                "ParentUID": 235699044,
                 "Name": "Locker.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -3485,11 +3779,13 @@
                     0.4718492031097412
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 288700703,
-                "ParentUID": 255282623,
+                "UID": 619936681,
+                "ParentUID": 456675436,
                 "Name": "Locker.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -3510,9 +3806,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1061606322,
+                        "ID": 667348582,
                         "MeshID": 868682864,
                         "MaterialID": 868682867,
                         "ComponentType": 0,
@@ -3521,8 +3819,8 @@
                 ]
             },
             {
-                "UID": 348839619,
-                "ParentUID": 1019022905,
+                "UID": 1309079515,
+                "ParentUID": 235699044,
                 "Name": "Locker.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -3543,11 +3841,13 @@
                     0.4718492031097412
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 382745046,
-                "ParentUID": 348839619,
+                "UID": 1469625541,
+                "ParentUID": 1309079515,
                 "Name": "Locker.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -3568,9 +3868,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1144835508,
+                        "ID": 1515784264,
                         "MeshID": 868682868,
                         "MaterialID": 868682871,
                         "ComponentType": 0,
@@ -3579,8 +3881,8 @@
                 ]
             },
             {
-                "UID": 295565926,
-                "ParentUID": 1019022905,
+                "UID": 1823404018,
+                "ParentUID": 235699044,
                 "Name": "Locker.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -3601,11 +3903,13 @@
                     0.4718492031097412
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 354534913,
-                "ParentUID": 295565926,
+                "UID": 1983880423,
+                "ParentUID": 1823404018,
                 "Name": "Locker.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -3626,9 +3930,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1791111538,
+                        "ID": 2032336639,
                         "MeshID": 868682872,
                         "MaterialID": 868682875,
                         "ComponentType": 0,
@@ -3637,8 +3943,8 @@
                 ]
             },
             {
-                "UID": 302584019,
-                "ParentUID": 1019022905,
+                "UID": 1292158258,
+                "ParentUID": 235699044,
                 "Name": "door_low.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -3659,11 +3965,13 @@
                     0.47109121084213259
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 336907172,
-                "ParentUID": 302584019,
+                "UID": 1476514666,
+                "ParentUID": 1292158258,
                 "Name": "door_low.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -3684,9 +3992,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1397458691,
+                        "ID": 1523996188,
                         "MeshID": 868682876,
                         "MaterialID": 868682879,
                         "ComponentType": 0,
@@ -3695,8 +4005,8 @@
                 ]
             },
             {
-                "UID": 751184213,
-                "ParentUID": 1019022905,
+                "UID": 2110419975,
+                "ParentUID": 235699044,
                 "Name": "door_low.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -3717,11 +4027,13 @@
                     0.47109121084213259
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 784880777,
-                "ParentUID": 751184213,
+                "UID": 143393960,
+                "ParentUID": 2110419975,
                 "Name": "door_low.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -3742,9 +4054,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 352547108,
+                        "ID": 190109651,
                         "MeshID": 868682880,
                         "MaterialID": 868682883,
                         "ComponentType": 0,
@@ -3753,8 +4067,8 @@
                 ]
             },
             {
-                "UID": 155656453,
-                "ParentUID": 1019022905,
+                "UID": 311347733,
+                "ParentUID": 235699044,
                 "Name": "door_low.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -3775,11 +4089,13 @@
                     0.47109121084213259
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 189770743,
-                "ParentUID": 155656453,
+                "UID": 491318018,
+                "ParentUID": 311347733,
                 "Name": "door_low.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -3800,9 +4116,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 64161213,
+                        "ID": 538242572,
                         "MeshID": 868682884,
                         "MaterialID": 868682887,
                         "ComponentType": 0,
@@ -3811,8 +4129,8 @@
                 ]
             },
             {
-                "UID": 278941616,
-                "ParentUID": 1019022905,
+                "UID": 1435808863,
+                "ParentUID": 235699044,
                 "Name": "Locker.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -3833,11 +4151,13 @@
                     0.4718492031097412
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 334568795,
-                "ParentUID": 278941616,
+                "UID": 1603595473,
+                "ParentUID": 1435808863,
                 "Name": "Locker.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -3858,9 +4178,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 512202354,
+                        "ID": 1655323876,
                         "MeshID": 868682888,
                         "MaterialID": 868682891,
                         "ComponentType": 0,
@@ -3869,8 +4191,8 @@
                 ]
             },
             {
-                "UID": 283174869,
-                "ParentUID": 1019022905,
+                "UID": 52356344,
+                "ParentUID": 235699044,
                 "Name": "door_low.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -3891,11 +4213,13 @@
                     0.47109121084213259
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 327105720,
-                "ParentUID": 283174869,
+                "UID": 239079866,
+                "ParentUID": 52356344,
                 "Name": "door_low.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -3916,9 +4240,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2066105544,
+                        "ID": 285865178,
                         "MeshID": 868682892,
                         "MaterialID": 868682895,
                         "ComponentType": 0,
@@ -3927,8 +4253,8 @@
                 ]
             },
             {
-                "UID": 822584749,
-                "ParentUID": 1019022905,
+                "UID": 1548708954,
+                "ParentUID": 235699044,
                 "Name": "FloorTile_Office",
                 "isEnabled": true,
                 "isActive": true,
@@ -3949,11 +4275,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 859901605,
-                "ParentUID": 822584749,
+                "UID": 1733622330,
+                "ParentUID": 1548708954,
                 "Name": "FloorTile_Office",
                 "isEnabled": true,
                 "isActive": true,
@@ -3974,9 +4302,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1133725399,
+                        "ID": 1782148167,
                         "MeshID": 868682896,
                         "MaterialID": 868682899,
                         "ComponentType": 0,
@@ -3985,8 +4315,8 @@
                 ]
             },
             {
-                "UID": 775706881,
-                "ParentUID": 1019022905,
+                "UID": 1298657276,
+                "ParentUID": 235699044,
                 "Name": "Office_wall",
                 "isEnabled": true,
                 "isActive": true,
@@ -4007,11 +4337,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 810447760,
-                "ParentUID": 775706881,
+                "UID": 1472431292,
+                "ParentUID": 1298657276,
                 "Name": "Office_wall",
                 "isEnabled": true,
                 "isActive": true,
@@ -4032,9 +4364,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 247098761,
+                        "ID": 1520469782,
                         "MeshID": 868682900,
                         "MaterialID": 868682903,
                         "ComponentType": 0,
@@ -4043,8 +4377,8 @@
                 ]
             },
             {
-                "UID": 28859479,
-                "ParentUID": 1019022905,
+                "UID": 1666004626,
+                "ParentUID": 235699044,
                 "Name": "Office_wall.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -4065,11 +4399,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 65897851,
-                "ParentUID": 28859479,
+                "UID": 1854190189,
+                "ParentUID": 1666004626,
                 "Name": "Office_wall.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -4090,9 +4426,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 281420796,
+                        "ID": 1901323606,
                         "MeshID": 868682904,
                         "MaterialID": 868682907,
                         "ComponentType": 0,
@@ -4101,8 +4439,8 @@
                 ]
             },
             {
-                "UID": 1281015948,
-                "ParentUID": 1019022905,
+                "UID": 1744494447,
+                "ParentUID": 235699044,
                 "Name": "Office_wall.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -4123,11 +4461,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1321117644,
-                "ParentUID": 1281015948,
+                "UID": 2024788593,
+                "ParentUID": 1744494447,
                 "Name": "Office_wall.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -4148,9 +4488,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 300959277,
+                        "ID": 2074915713,
                         "MeshID": 868682908,
                         "MaterialID": 868682911,
                         "ComponentType": 0,
@@ -4159,8 +4501,8 @@
                 ]
             },
             {
-                "UID": 1403710934,
-                "ParentUID": 1019022905,
+                "UID": 1530576068,
+                "ParentUID": 235699044,
                 "Name": "Office_wall.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -4181,11 +4523,13 @@
                     1.0871564149856568
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1444160735,
-                "ParentUID": 1403710934,
+                "UID": 1727325014,
+                "ParentUID": 1530576068,
                 "Name": "Office_wall.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -4206,9 +4550,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2005930730,
+                        "ID": 1775085020,
                         "MeshID": 868682912,
                         "MaterialID": 868682915,
                         "ComponentType": 0,
@@ -4217,8 +4563,8 @@
                 ]
             },
             {
-                "UID": 319269218,
-                "ParentUID": 1019022905,
+                "UID": 539617708,
+                "ParentUID": 235699044,
                 "Name": "Office_wall.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -4239,11 +4585,13 @@
                     1.0871564149856568
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 357073421,
-                "ParentUID": 319269218,
+                "UID": 734765371,
+                "ParentUID": 539617708,
                 "Name": "Office_wall.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -4264,9 +4612,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1600944255,
+                        "ID": 782594998,
                         "MeshID": 868682916,
                         "MaterialID": 868682919,
                         "ComponentType": 0,
@@ -4275,8 +4625,8 @@
                 ]
             },
             {
-                "UID": 1425036626,
-                "ParentUID": 1019022905,
+                "UID": 528853407,
+                "ParentUID": 235699044,
                 "Name": "Office_wall.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -4297,11 +4647,13 @@
                     1.16825270652771
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1493613311,
-                "ParentUID": 1425036626,
+                "UID": 724975764,
+                "ParentUID": 528853407,
                 "Name": "Office_wall.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -4322,9 +4674,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 919120782,
+                        "ID": 773083875,
                         "MeshID": 868682920,
                         "MaterialID": 868682923,
                         "ComponentType": 0,
@@ -4333,8 +4687,8 @@
                 ]
             },
             {
-                "UID": 1079600008,
-                "ParentUID": 1019022905,
+                "UID": 624400373,
+                "ParentUID": 235699044,
                 "Name": "Trim_Sheet_1.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -4355,11 +4709,13 @@
                     1.0054539442062379
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1116151033,
-                "ParentUID": 1079600008,
+                "UID": 824282264,
+                "ParentUID": 624400373,
                 "Name": "Trim_Sheet_1.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -4380,9 +4736,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 710163141,
+                        "ID": 874339763,
                         "MeshID": 868682924,
                         "MaterialID": 868682927,
                         "ComponentType": 0,
@@ -4391,8 +4749,8 @@
                 ]
             },
             {
-                "UID": 1396922101,
-                "ParentUID": 1019022905,
+                "UID": 473871431,
+                "ParentUID": 235699044,
                 "Name": "Trim_Sheet_1.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -4413,11 +4771,13 @@
                     1.0054539442062379
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1434656683,
-                "ParentUID": 1396922101,
+                "UID": 672569765,
+                "ParentUID": 473871431,
                 "Name": "Trim_Sheet_1.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -4438,9 +4798,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1734741071,
+                        "ID": 724019684,
                         "MeshID": 868682928,
                         "MaterialID": 868682931,
                         "ComponentType": 0,
@@ -4449,8 +4811,8 @@
                 ]
             },
             {
-                "UID": 1534413151,
-                "ParentUID": 1019022905,
+                "UID": 1683551868,
+                "ParentUID": 235699044,
                 "Name": "Trim_Sheet_1.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -4471,11 +4833,13 @@
                     1.1021236181259156
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1571103418,
-                "ParentUID": 1534413151,
+                "UID": 1877515974,
+                "ParentUID": 1683551868,
                 "Name": "Trim_Sheet_1.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -4496,9 +4860,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1975804267,
+                        "ID": 1925415222,
                         "MeshID": 868682932,
                         "MaterialID": 868682935,
                         "ComponentType": 0,
@@ -4507,8 +4873,8 @@
                 ]
             },
             {
-                "UID": 44419803,
-                "ParentUID": 1019022905,
+                "UID": 149235930,
+                "ParentUID": 235699044,
                 "Name": "Trim_Sheet_1.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -4529,11 +4895,13 @@
                     1.1848406791687012
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 81667038,
-                "ParentUID": 44419803,
+                "UID": 481119237,
+                "ParentUID": 149235930,
                 "Name": "Trim_Sheet_1.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -4554,9 +4922,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1170579173,
+                        "ID": 593835636,
                         "MeshID": 868682936,
                         "MaterialID": 868682939,
                         "ComponentType": 0,
@@ -4565,8 +4935,8 @@
                 ]
             },
             {
-                "UID": 429204645,
-                "ParentUID": 1019022905,
+                "UID": 1508531896,
+                "ParentUID": 235699044,
                 "Name": "Trim_Sheet_1.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -4587,11 +4957,13 @@
                     1.0887930393218995
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 468958236,
-                "ParentUID": 429204645,
+                "UID": 1702078276,
+                "ParentUID": 1508531896,
                 "Name": "Trim_Sheet_1.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -4612,9 +4984,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1036779003,
+                        "ID": 1749977524,
                         "MeshID": 868682940,
                         "MaterialID": 868682943,
                         "ComponentType": 0,
@@ -4623,8 +4997,8 @@
                 ]
             },
             {
-                "UID": 1201221489,
-                "ParentUID": 1019022905,
+                "UID": 798458977,
+                "ParentUID": 235699044,
                 "Name": "Trim_Sheet_1.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -4645,11 +5019,13 @@
                     0.9724128246307373
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1238468724,
-                "ParentUID": 1201221489,
+                "UID": 1046100874,
+                "ParentUID": 798458977,
                 "Name": "Trim_Sheet_1.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -4670,9 +5046,11 @@
                     0.9999999403953552
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 833869082,
+                        "ID": 1113633244,
                         "MeshID": 868682944,
                         "MaterialID": 868682947,
                         "ComponentType": 0,
@@ -4681,8 +5059,8 @@
                 ]
             },
             {
-                "UID": 1956320430,
-                "ParentUID": 1019022905,
+                "UID": 242735815,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive",
                 "isEnabled": true,
                 "isActive": true,
@@ -4703,11 +5081,13 @@
                     1.0097112655639649
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1994263875,
-                "ParentUID": 1956320430,
+                "UID": 442339222,
+                "ParentUID": 242735815,
                 "Name": "Office_wall_emissive",
                 "isEnabled": true,
                 "isActive": true,
@@ -4728,9 +5108,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1890890398,
+                        "ID": 490865059,
                         "MeshID": 868682948,
                         "MaterialID": 868682951,
                         "ComponentType": 0,
@@ -4739,8 +5121,8 @@
                 ]
             },
             {
-                "UID": 1695009882,
-                "ParentUID": 1019022905,
+                "UID": 1604619150,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive_end.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -4761,11 +5143,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1732465980,
-                "ParentUID": 1695009882,
+                "UID": 1806937776,
+                "ParentUID": 1604619150,
                 "Name": "Office_wall_emissive_end.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -4786,9 +5170,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 59691751,
+                        "ID": 1858666179,
                         "MeshID": 868682952,
                         "MaterialID": 868682955,
                         "ComponentType": 0,
@@ -4797,8 +5183,8 @@
                 ]
             },
             {
-                "UID": 1601485944,
-                "ParentUID": 1019022905,
+                "UID": 360425311,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive_end.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -4819,11 +5205,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1639847115,
-                "ParentUID": 1601485944,
+                "UID": 561490759,
+                "ParentUID": 360425311,
                 "Name": "Office_wall_emissive_end.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -4844,9 +5232,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1262345604,
+                        "ID": 613149541,
                         "MeshID": 868682956,
                         "MaterialID": 868682959,
                         "ComponentType": 0,
@@ -4855,8 +5245,8 @@
                 ]
             },
             {
-                "UID": 1272062156,
-                "ParentUID": 1019022905,
+                "UID": 682727874,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive_end.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -4877,11 +5267,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1312372715,
-                "ParentUID": 1272062156,
+                "UID": 893957988,
+                "ParentUID": 682727874,
                 "Name": "Office_wall_emissive_end.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -4902,9 +5294,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 980679737,
+                        "ID": 946312980,
                         "MeshID": 868682960,
                         "MaterialID": 868682963,
                         "ComponentType": 0,
@@ -4913,8 +5307,8 @@
                 ]
             },
             {
-                "UID": 231529474,
-                "ParentUID": 1019022905,
+                "UID": 1673716240,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive_end.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -4935,11 +5329,13 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 269403298,
-                "ParentUID": 231529474,
+                "UID": 1880699473,
+                "ParentUID": 1673716240,
                 "Name": "Office_wall_emissive_end.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -4960,9 +5356,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 618207791,
+                        "ID": 1932497497,
                         "MeshID": 868682964,
                         "MaterialID": 868682967,
                         "ComponentType": 0,
@@ -4971,8 +5369,8 @@
                 ]
             },
             {
-                "UID": 686782160,
-                "ParentUID": 1019022905,
+                "UID": 280672703,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -4993,11 +5391,13 @@
                     1.0097112655639649
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 725421815,
-                "ParentUID": 686782160,
+                "UID": 520725911,
+                "ParentUID": 280672703,
                 "Name": "Office_wall_emissive.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -5018,9 +5418,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 535449121,
+                        "ID": 572175830,
                         "MeshID": 868682968,
                         "MaterialID": 868682971,
                         "ComponentType": 0,
@@ -5029,8 +5431,8 @@
                 ]
             },
             {
-                "UID": 1699187807,
-                "ParentUID": 1019022905,
+                "UID": 1782098339,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -5051,11 +5453,13 @@
                     1.0097112655639649
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1737966704,
-                "ParentUID": 1699187807,
+                "UID": 1989847403,
+                "ParentUID": 1782098339,
                 "Name": "Office_wall_emissive.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -5076,9 +5480,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 505302110,
+                        "ID": 2043803678,
                         "MeshID": 868682972,
                         "MaterialID": 868682975,
                         "ComponentType": 0,
@@ -5087,8 +5493,8 @@
                 ]
             },
             {
-                "UID": 694255358,
-                "ParentUID": 1019022905,
+                "UID": 528827783,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -5109,11 +5515,13 @@
                     1.0097112655639649
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 732616529,
-                "ParentUID": 694255358,
+                "UID": 733235039,
+                "ParentUID": 528827783,
                 "Name": "Office_wall_emissive.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -5134,9 +5542,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 211243705,
+                        "ID": 783501401,
                         "MeshID": 868682976,
                         "MaterialID": 868682979,
                         "ComponentType": 0,
@@ -5145,8 +5555,8 @@
                 ]
             },
             {
-                "UID": 378292325,
-                "ParentUID": 1019022905,
+                "UID": 2025541008,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -5167,11 +5577,13 @@
                     1.0097112655639649
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 417976295,
-                "ParentUID": 378292325,
+                "UID": 85667183,
+                "ParentUID": 2025541008,
                 "Name": "Office_wall_emissive.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -5192,9 +5604,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1774257939,
+                        "ID": 135933545,
                         "MeshID": 868682980,
                         "MaterialID": 868682983,
                         "ComponentType": 0,
@@ -5203,8 +5617,8 @@
                 ]
             },
             {
-                "UID": 1205808498,
-                "ParentUID": 1019022905,
+                "UID": 22382661,
+                "ParentUID": 235699044,
                 "Name": "Office_wall_emissive.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -5225,11 +5639,13 @@
                     1.0097112655639649
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1244796258,
-                "ParentUID": 1205808498,
+                "UID": 234169743,
+                "ParentUID": 22382661,
                 "Name": "Office_wall_emissive.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -5250,9 +5666,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 309731282,
+                        "ID": 284714589,
                         "MeshID": 868682984,
                         "MaterialID": 868682987,
                         "ComponentType": 0,
@@ -5261,8 +5679,8 @@
                 ]
             },
             {
-                "UID": 197673483,
-                "ParentUID": 1019022905,
+                "UID": 1380922103,
+                "ParentUID": 235699044,
                 "Name": "Trim_sheet_top.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -5283,11 +5701,13 @@
                     1.756696343421936
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 237427074,
-                "ParentUID": 197673483,
+                "UID": 1590620555,
+                "ParentUID": 1380922103,
                 "Name": "Trim_sheet_top.001",
                 "isEnabled": true,
                 "isActive": true,
@@ -5308,9 +5728,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1288671045,
+                        "ID": 1639703360,
                         "MeshID": 868682988,
                         "MaterialID": 868682991,
                         "ComponentType": 0,
@@ -5319,8 +5741,8 @@
                 ]
             },
             {
-                "UID": 153465115,
-                "ParentUID": 1019022905,
+                "UID": 130854113,
+                "ParentUID": 235699044,
                 "Name": "Trim_sheet_top.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -5341,11 +5763,13 @@
                     1.756696343421936
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 192661738,
-                "ParentUID": 153465115,
+                "UID": 337837346,
+                "ParentUID": 130854113,
                 "Name": "Trim_sheet_top.003",
                 "isEnabled": true,
                 "isActive": true,
@@ -5366,9 +5790,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1858006563,
+                        "ID": 390053096,
                         "MeshID": 868682992,
                         "MaterialID": 868682995,
                         "ComponentType": 0,
@@ -5377,8 +5803,8 @@
                 ]
             },
             {
-                "UID": 850185246,
-                "ParentUID": 1019022905,
+                "UID": 1277630375,
+                "ParentUID": 235699044,
                 "Name": "Trim_sheet_top.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -5399,11 +5825,13 @@
                     1.756696343421936
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 889938837,
-                "ParentUID": 850185246,
+                "UID": 1495335242,
+                "ParentUID": 1277630375,
                 "Name": "Trim_sheet_top.002",
                 "isEnabled": true,
                 "isActive": true,
@@ -5424,9 +5852,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1721826769,
+                        "ID": 1546297814,
                         "MeshID": 868682996,
                         "MaterialID": 868682999,
                         "ComponentType": 0,
@@ -5435,9 +5865,9 @@
                 ]
             },
             {
-                "UID": 653667947,
-                "ParentUID": 1019022905,
-                "Name": "Trim_sheet_top (1)",
+                "UID": 1873530958,
+                "ParentUID": 235699044,
+                "Name": "Trim_sheet_top (2)",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
@@ -5457,11 +5887,13 @@
                     1.756696343421936
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 692934191,
-                "ParentUID": 653667947,
+                "UID": 119684445,
+                "ParentUID": 1873530958,
                 "Name": "Trim_sheet_top",
                 "isEnabled": true,
                 "isActive": true,
@@ -5482,9 +5914,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 591689775,
+                        "ID": 230729940,
                         "MeshID": 868683000,
                         "MaterialID": 868683003,
                         "ComponentType": 0,
@@ -5493,8 +5927,8 @@
                 ]
             },
             {
-                "UID": 1068355492,
-                "ParentUID": 1019022905,
+                "UID": 580126464,
+                "ParentUID": 235699044,
                 "Name": "Trim_sheet_top.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -5515,11 +5949,13 @@
                     1.756696343421936
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1139020807,
-                "ParentUID": 1068355492,
+                "UID": 795324975,
+                "ParentUID": 580126464,
                 "Name": "Trim_sheet_top.004",
                 "isEnabled": true,
                 "isActive": true,
@@ -5540,9 +5976,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 752350023,
+                        "ID": 860977578,
                         "MeshID": 868683004,
                         "MaterialID": 868683007,
                         "ComponentType": 0,
@@ -5551,8 +5989,8 @@
                 ]
             },
             {
-                "UID": 1256054675,
-                "ParentUID": 1019022905,
+                "UID": 631362232,
+                "ParentUID": 235699044,
                 "Name": "Trim_sheet_top.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -5573,11 +6011,13 @@
                     1.756696343421936
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 1295599403,
-                "ParentUID": 1256054675,
+                "UID": 1037531146,
+                "ParentUID": 631362232,
                 "Name": "Trim_sheet_top.006",
                 "isEnabled": true,
                 "isActive": true,
@@ -5598,9 +6038,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1679770246,
+                        "ID": 1145304454,
                         "MeshID": 868683008,
                         "MaterialID": 868683011,
                         "ComponentType": 0,
@@ -5609,8 +6051,8 @@
                 ]
             },
             {
-                "UID": 95240807,
-                "ParentUID": 1019022905,
+                "UID": 954600992,
+                "ParentUID": 235699044,
                 "Name": "Trim_sheet_top.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -5631,11 +6073,13 @@
                     1.756696343421936
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 138336206,
-                "ParentUID": 95240807,
+                "UID": 1369054805,
+                "ParentUID": 954600992,
                 "Name": "Trim_sheet_top.005",
                 "isEnabled": true,
                 "isActive": true,
@@ -5656,9 +6100,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 674533326,
+                        "ID": 1476480008,
                         "MeshID": 868683012,
                         "MaterialID": 868683015,
                         "ComponentType": 0,
@@ -5667,7 +6113,7 @@
                 ]
             },
             {
-                "UID": 1683342503,
+                "UID": 710619818,
                 "ParentUID": 1,
                 "Name": "Light",
                 "isEnabled": true,
@@ -5689,6 +6135,8 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
                         "ComponentType": 1,
@@ -5708,9 +6156,9 @@
                 ]
             },
             {
-                "UID": 1896173900,
+                "UID": 956312327,
                 "ParentUID": 1,
-                "Name": "Light (2)",
+                "Name": "Light (1)",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
@@ -5730,6 +6178,8 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
                         "ComponentType": 1,
@@ -5749,7 +6199,7 @@
                 ]
             },
             {
-                "UID": 1967813909,
+                "UID": 1165662674,
                 "ParentUID": 1,
                 "Name": "WinArea",
                 "isEnabled": true,
@@ -5771,11 +6221,13 @@
                     0.9999998807907105
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 2006105459,
-                "ParentUID": 1967813909,
+                "UID": 1277891726,
+                "ParentUID": 1165662674,
                 "Name": "OB_Office_Table.007",
                 "isEnabled": true,
                 "isActive": true,
@@ -5796,9 +6248,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 170382645,
+                        "ID": 1326765668,
                         "MeshID": 868682698,
                         "MaterialID": 868682701,
                         "ComponentType": 0,
@@ -5807,7 +6261,7 @@
                 ]
             },
             {
-                "UID": 85934377,
+                "UID": 1581578528,
                 "ParentUID": 1,
                 "Name": "LoseArea",
                 "isEnabled": true,
@@ -5829,11 +6283,13 @@
                     0.9999998807907105
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": []
             },
             {
-                "UID": 110232106,
-                "ParentUID": 85934377,
+                "UID": 1655028683,
+                "ParentUID": 1581578528,
                 "Name": "OB_Office_Table.007",
                 "isEnabled": true,
                 "isActive": true,
@@ -5854,9 +6310,11 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 490430382,
+                        "ID": 1700143091,
                         "MeshID": 868682698,
                         "MaterialID": 868682701,
                         "ComponentType": 0,
@@ -5865,7 +6323,7 @@
                 ]
             },
             {
-                "UID": 326196448,
+                "UID": 1929683528,
                 "ParentUID": 1,
                 "Name": "Canvas",
                 "isEnabled": true,
@@ -5887,6 +6345,8 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
                         "Size": [
@@ -5903,8 +6363,8 @@
                 ]
             },
             {
-                "UID": 356829688,
-                "ParentUID": 326196448,
+                "UID": 2009329952,
+                "ParentUID": 1929683528,
                 "Name": "GameObject",
                 "isEnabled": true,
                 "isActive": true,
@@ -5925,6 +6385,8 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
                         "ImageID": 1903071950,
@@ -5933,9 +6395,9 @@
                 ]
             },
             {
-                "UID": 724520006,
-                "ParentUID": 326196448,
-                "Name": "GameObject (2)",
+                "UID": 1560435561,
+                "ParentUID": 1929683528,
+                "Name": "GameObject (1)",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
@@ -5955,10 +6417,394 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
                 "Components": [
                     {
                         "ImageID": 895059265,
                         "ComponentType": 8
+                    }
+                ]
+            },
+            {
+                "UID": 128655794,
+                "ParentUID": 1,
+                "Name": "ExplosiveEnemy",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -6.829999923706055,
+                    1.059999942779541,
+                    -24.700000762939454
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.008726627565920353,
+                    0.0,
+                    0.9999619126319885
+                ],
+                "Scale": [
+                    0.5,
+                    1.0,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "EnemyExplosive",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHealth",
+                                "MemberType": 0,
+                                "VariableData": 15
+                            },
+                            {
+                                "VariableName": "mEnemySpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mEnemyRotationSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mActivationDistance",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mAttackDistance",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "GAME OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAnimationComponentHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mOpponent",
+                                "MemberType": 3,
+                                "VariableData": 1785091615
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 239422805,
+                "ParentUID": 128655794,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 305771618,
+                "ParentUID": 239422805,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 7,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 345455588,
+                        "MeshID": 501396549,
+                        "MaterialID": 0,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 719916790,
+                "ParentUID": 1,
+                "Name": "ExpEnemyVsEnemy",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    1.059999942779541,
+                    -32.400001525878909
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    1.0,
+                    0.5
+                ],
+                "Tag": 7,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "EnemyExplosive",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHealth",
+                                "MemberType": 0,
+                                "VariableData": 15
+                            },
+                            {
+                                "VariableName": "mEnemySpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mEnemyRotationSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mActivationDistance",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mAttackDistance",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "GAME OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAnimationComponentHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mOpponent",
+                                "MemberType": 3,
+                                "VariableData": 128655794
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 195716379,
+                "ParentUID": 719916790,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 433820199,
+                "ParentUID": 195716379,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 544726452,
+                        "MeshID": 501396549,
+                        "MaterialID": 0,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1636314111,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    4.711374282836914,
+                    1.1543196439743043,
+                    -24.1025390625
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1829582007,
+                "ParentUID": 1636314111,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1967153103,
+                "ParentUID": 1829582007,
+                "Name": "Cube",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 7,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 2060793348,
+                        "MeshID": 501396549,
+                        "MaterialID": 0,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    },
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "Target",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mTargetHealth",
+                                "MemberType": 1,
+                                "VariableData": 100.0
+                            }
+                        ]
                     }
                 ]
             }

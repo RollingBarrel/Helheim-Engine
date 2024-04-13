@@ -2,6 +2,7 @@
 #include <Script.h>
 #include "Macros.h"
 #include "Math/float3.h"
+
 class NavMeshController;
 class AnimationComponent;
 
@@ -9,40 +10,74 @@ GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {
     FRIEND(PlayerController)
-public:
-    PlayerController(GameObject* owner);
-    ~PlayerController() {}
-    void Start() override;
-    void Update() override;
-    void CheckRoute();
-    void Move();
-    void Win();
-    void Lose();
-    void Rotate();
-    void Dash();
-   
+    public:
+        PlayerController(GameObject* owner);
+        ~PlayerController() {}
+        void Start() override;
+        void Update() override;
 
-private:
-    NavMeshController* mNavMeshControl = nullptr;
-    AnimationComponent* mAnimationComponent = nullptr;
-    bool mIsDashActive = false;
-    bool mStartCounter = false;
-    float mDashTimePassed = 0.0f;
-    float mDashMovement = 0;
-    float mPlayerSpeed = 1;
-    float mPlayerRotationSpeed = 1.0f;
-    GameObject* mWinArea = nullptr;
-    GameObject* mLoseArea = nullptr;
-    GameObject* mAnimationComponentHolder = nullptr;
-    float mDashSpeed = 5.0f;
-    float mDashLenght = 5.0f;
-    float mDashCoolDown = 1.0f;
+        void SetPlayerDamage(int damage);
+        bool PlayerIsDeath();
 
-    float testeando2 = 543.0f;
+        void WinTest();
+        void LoseTest();
 
+        float mPlayerSpeed = 2.0f;
+        float mPlayerRotationSpeed = 0.5f;
+        GameObject* mWinArea = nullptr;
+        GameObject* mLoseArea = nullptr;
+        GameObject* mAnimationComponentHolder = nullptr;
+        float mDashSpeed = 5.0f;
+        float mDashLenght = 5.0f;
+        float mDashCoolDown = 1.0f;
+        int mHealth = 1;
+        int mShield = 100;
+        int mSanity = 100;
+
+    private:
+        enum class PlayerState {
+            Idle,
+            Dash,
+            Forward,
+            Backward,
+            Left,
+            Right,
+            MeleeAttack,
+            RangedAttack,
+            Reload,
+            ThrowGrenade,
+            Death
+        };
+
+        void ChangeState(PlayerState newState);
+        void StateMachine();
+        void Controls();
+        void Forward();
+        void Backward();
+        void Left();
+        void Right();
+        void Move(float3 position);
+        void MeleeAttack();
+        void RangedAttack();
+        void ReloadWeapon();
+        void ThrowGrenade();
+        void Mouse_Rotation();
+        void Dash();
+        bool ShieldDamage(int damage);
+        void Sanity();
+        void Death();
+        void WinMessage();
+        void LoseMessage();
+        void CheckRoute();
+
+        NavMeshController* mNavMeshControl = nullptr;
+        AnimationComponent* mAnimationComponent = nullptr;
+        PlayerState mCurrentState;
+        PlayerState mPreviousState;
+        bool mIsDashActive = false;
+        bool mStartCounter = false;
+        float mDashTimePassed = 0.0f;
+        float mDashMovement = 0;
+        bool mPlayerIsDeath = false;
+        bool mIsMoving = false;
 };
-
-
-
-
-
