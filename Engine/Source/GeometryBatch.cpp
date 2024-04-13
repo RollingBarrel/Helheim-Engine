@@ -108,7 +108,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
 	material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
 
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	return true;
@@ -187,7 +187,7 @@ void GeometryBatch::RecreateMaterials()
 		material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
 		material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
 
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 		offset += materialSize;
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
