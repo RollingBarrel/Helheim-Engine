@@ -5,6 +5,25 @@
 #include "Globals.h"
 #include "KeyboardKeys.h"
 
+#define NUM_CONTROLLER_BUTTONS 15
+#define NUM_CONTROLLER_AXIS 4
+#define NUM_CONTROLLER_TRIGGERS 2
+
+#define MAX_AXIS 32767								
+#define CONTROLLER_INDEX 0							
+#define TRIGGER_INDEX 4		
+#define JOYSTICK_THRESHOLD 2500
+
+#define LEFT_TRIGGER 0							
+#define RIGHT_TRIGGER 1
+
+#define LEFT_JOYSTICK_X_AXIS 0
+#define LEFT_JOYSTICK_Y_AXIS 1
+#define RIGHT_JOYSTICK_X_AXIS 2
+#define RIGHT_JOYSTICK_Y_AXIS 3
+
+struct _SDL_GameController;
+struct _SDL_Joystick;
 
 enum class KeyState : unsigned char
 {
@@ -14,7 +33,8 @@ enum class KeyState : unsigned char
 	KEY_UP
 };
 
-enum MouseKey {
+enum MouseKey 
+{
 	BUTTON_LEFT,
 	BUTTON_MIDDLE,
 	BUTTON_RIGHT,
@@ -22,6 +42,47 @@ enum MouseKey {
 	BUTTON_X2,
 
 	NUM_MOUSE_BUTTONS
+};
+
+enum class ButtonState
+{
+	BUTTON_IDLE,
+	BUTTON_DOWN,
+	BUTTON_REPEAT,
+	BUTTON_UP,
+	UNKNOWN_BUTTON
+};
+
+enum class AxisState
+{
+	AXIS_IDLE,
+	POSITIVE_AXIS_DOWN,
+	POSITIVE_AXIS_REPEAT,
+	POSITIVE_AXIS_RELEASE,
+	NEGATIVE_AXIS_DOWN,
+	NEGATIVE_AXIS_REPEAT,
+	NEGATIVE_AXIS_RELEASE,
+	UNKNOWN_AXIS
+};
+
+struct GameController
+{
+	_SDL_GameController* mId = nullptr;
+	_SDL_Joystick* mJoystick = nullptr;
+	int	mIndex = CONTROLLER_INDEX;
+
+	ButtonState* mButtons = 0;
+	ButtonState* mTriggers;
+	AxisState* mAxis = 0;
+
+	float mMaxAxisInputThreshold = 1.f;
+	float mMinAxisInputThreshold = 1.f;
+
+	int	mMaxPositiveThreshold = (int)(mMaxAxisInputThreshold * MAX_AXIS);
+	int	mMaxNegativeThreshold = -(int)(mMaxAxisInputThreshold * MAX_AXIS);
+	int	mMinPositiveThreshold = (int)(mMinAxisInputThreshold * MAX_AXIS);
+	int	mMinNegativeThreshold = -(int)(mMinAxisInputThreshold * MAX_AXIS);
+
 };
 
 class ENGINE_API ModuleInput : public Module
@@ -36,11 +97,27 @@ public:
 	bool CleanUp() override;
 
 	KeyState GetKey(int id) const { return keyboard[id]; }
+	bool GetKeyboardReciveInputs() const { return mKeyboardReceivedInput; }
+
 	KeyState GetMouseKey(MouseKey id) const { return mouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
 	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
 	int GetMouseWheelMotion() const { return wheelY; }
+	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
+
+	ButtonState	GetGameControllerButton(int id) const { return gameController.mButtons[id]; }
+	ButtonState	GetGameControllerTrigger(int id) const { return gameController.mTriggers[id]; }
+	AxisState GetGameControllerAxis(int id) const { return gameController.mAxis[id]; }
+	int	GetGameControllerAxisValue(int id) const;											
+	int	GetGameControllerAxisRaw(int id) const;												
+	int	GetGameControllerAxisInput(int id) const;											
+	bool GetGameControllerReceivedInputs() const { return mGameControllerReceivedInput; }
+
+
+	void HandleGameControllerInput();
+
 private:
+
 	KeyState mouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
 	KeyState* keyboard = 0;
 	int mMouseMotionX = 0;
@@ -49,6 +126,12 @@ private:
 	int mMousePositionY = 0;
 
 	int wheelY = 0;
+
+	bool mKeyboardReceivedInput = false;
+	bool mMouseReceivedInput = false;
+	bool mGameControllerReceivedInput = false;
+
+	GameController  gameController;
 };
 
 #endif /* _MODULE_INPUT_H_ */
