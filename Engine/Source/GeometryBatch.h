@@ -52,16 +52,15 @@ public:
 };
 
 typedef struct Material {
-	uint32_t  hasShininessMap = false;
-	uint32_t hasNormalMap = false;
-	uint32_t hasDiffuseMap = false;
-	uint32_t hasSpecularMap = false;
-	float diffuseColor[3] = { 0.0f };
-	float shininess = 0.0f;
-	float specularColor[4] = { 0.0f };
-	uint64_t diffuseTexture = 0;
-	uint64_t specularTexture = 0;
-	uint64_t normalTexture = 0;
+	float baseColor[3] = {1.f};
+	uint32_t hasBaseColorTex;
+	uint64_t baseColorTex;
+	float metalness;
+	float roughness;
+	uint32_t hasMetalRoughTex;
+	uint32_t hasNormalMap;
+	uint64_t metalRoughTex;
+	uint64_t normalTex;
 }Material;
 
 typedef struct BufferIndices {

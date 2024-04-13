@@ -98,17 +98,15 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	const BatchMaterialResource& rMaterial = mUniqueMaterials[idx];
 	Material material;
-	memcpy(material.diffuseColor, rMaterial.resource->GetDiffuseFactor().ptr(), sizeof(float) * 3);
-
-	material.diffuseTexture = (rMaterial.resource->GetDiffuseTexture()) ? rMaterial.resource->GetDiffuseTexture()->GetTextureHandle() : 0;
-	memcpy(material.specularColor, rMaterial.resource->GetSpecularFactor().ptr(), sizeof(float) * 4);
-	material.specularTexture = (rMaterial.resource->GetSpecularGlossinessTexture()) ? rMaterial.resource->GetSpecularGlossinessTexture()->GetTextureHandle() : 0;
-	material.normalTexture = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
-	material.shininess = rMaterial.resource->GetGlossinessFactor();
-	material.hasDiffuseMap = rMaterial.resource->IsDiffuseTextureEnabled();
-	material.hasSpecularMap = rMaterial.resource->IsSpecularGlossinessTextureEnabled();
-	material.hasShininessMap = rMaterial.resource->IsShininessMapEnabled();
-	material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
+	memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
+	material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
+	material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
+	material.metalness = rMaterial.resource->GetMetallicFactor();
+	material.roughness = rMaterial.resource->GetRoughnessFactor();
+	material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
+	material.hasMetalRoughTex = rMaterial.resource->IsNormalMapEnabled();
+	material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
+	material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
 
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -179,17 +177,15 @@ void GeometryBatch::RecreateMaterials()
 	unsigned int offset = 0;
 	for (const BatchMaterialResource rMaterial : mUniqueMaterials) {
 		Material material;
-		memcpy(material.diffuseColor, rMaterial.resource->GetDiffuseFactor().ptr(), sizeof(float) * 3);
-
-		material.diffuseTexture = (rMaterial.resource->GetDiffuseTexture()) ? rMaterial.resource->GetDiffuseTexture()->GetTextureHandle() : 0;
-		memcpy(material.specularColor, rMaterial.resource->GetSpecularFactor().ptr(), sizeof(float) * 4);
-		material.specularTexture = (rMaterial.resource->GetSpecularGlossinessTexture()) ? rMaterial.resource->GetSpecularGlossinessTexture()->GetTextureHandle() : 0;
-		material.normalTexture = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
-		material.shininess = rMaterial.resource->GetGlossinessFactor();
-		material.hasDiffuseMap = rMaterial.resource->IsDiffuseTextureEnabled();
-		material.hasSpecularMap = rMaterial.resource->IsSpecularGlossinessTextureEnabled();
-		material.hasShininessMap = rMaterial.resource->IsShininessMapEnabled();
-		material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
+		memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
+		material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
+		material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
+		material.metalness = rMaterial.resource->GetMetallicFactor();
+		material.roughness = rMaterial.resource->GetRoughnessFactor();
+		material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
+		material.hasMetalRoughTex = rMaterial.resource->IsNormalMapEnabled();
+		material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
+		material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
 
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
 		offset += materialSize;
