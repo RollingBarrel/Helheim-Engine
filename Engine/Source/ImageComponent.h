@@ -48,5 +48,4 @@ private:
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;
     unsigned int mResourceId = 818189439; // Temporary default image - Just a simple square made of four squares (Red, Green, Blue, White) 
-    bool hasAlpha = false;
 };

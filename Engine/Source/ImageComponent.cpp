@@ -34,11 +34,6 @@ void ImageComponent::Draw()
     unsigned int UIImageProgram= App->GetPrograms()->GetUIImageProgram();
     if (UIImageProgram == 0) return;
 
-	if (hasAlpha) {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
-
 	glUseProgram(UIImageProgram);
 
 	float4x4 proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
@@ -89,6 +84,11 @@ void ImageComponent::Draw()
 	glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 	glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+
+	if (mAlpha < 1.0) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
