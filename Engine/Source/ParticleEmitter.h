@@ -27,6 +27,14 @@ public:
     const Particle& getParticle(int index) const { return particles[index]; }
 
 private:
+    float3 mPosition;
+    bool mRandomPosition;
+    float3 mDirection;
+
+    float mSpeed;
+
+
+
 
     float mEmissionRate;
     EmiterShape mShapeType;
