@@ -24,7 +24,7 @@ void Target::Update()
     // If the target health is less than or equal to 0, destroy the target
     if (mTargetHealth <= 0)
     {
-        LOG("Target Destroyed");
+        //LOG("Target Destroyed");
     }
 }
 
@@ -43,7 +43,7 @@ void Target::TakeDamage(float damage)
     LOG("Target Health: %f", mTargetHealth);
     if (mTargetHealth <= 0)
     {
-        LOG("Target Destroyed");
+        //LOG("Target Destroyed");
     }
 }
 

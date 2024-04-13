@@ -13,8 +13,7 @@
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
 #include "Geometry/Ray.h"
-
-#include "Tag.h"
+#include "Geometry/Plane.h"
 #include "EnemyBase.h"
 #include "Target.h"
 #include <ScriptComponent.h>
@@ -55,6 +54,7 @@ void PlayerController::Start()
         mAnimationComponent->OnStart();
     }
 }
+
 
 void PlayerController::Update()
 {
@@ -252,12 +252,16 @@ void PlayerController::Dash()
     }
 }
 
-void PlayerController::MeleeAttack() {
-    if (mIsMoving == false) {
+void PlayerController::MeleeAttack() 
+{
+    if (mIsMoving == false) 
+    {
         LOG("Melee attack animation");
     }
-    else {
-        switch (mPreviousState) {
+    else 
+    {
+        switch (mPreviousState) 
+        {
             case PlayerState::Forward:
                 LOG("Forward while melee animation");
                 break;
@@ -273,7 +277,29 @@ void PlayerController::MeleeAttack() {
         }
     }
 
-    //MELEE ATTACK CODE
+    ModuleScene* scene = App->GetScene();
+    std::vector<GameObject*> Enemies;
+
+    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Enemy")->GetID(), Enemies);
+
+    //recorrer el vector de enemigos y comprobar si hay colision con el player
+    for (auto enemy : Enemies) 
+    {
+        //enemy abb
+        MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
+
+       Plane plane(mGameObject->GetPosition(),mGameObject->GetFront());
+
+        if (plane.IsOnPositiveSide(enemy->GetPosition()))
+        {
+            if (plane.Distance(enemy->GetPosition()) < 5)
+            {
+                LOG("Hit");
+			}
+        }
+
+    }
+
 }
 
 void PlayerController::RangedAttack() {
@@ -319,13 +345,7 @@ void PlayerController::RangedAttack() {
     //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
     for (auto hit : hits) {
         if (hit.second->GetTag()->GetName() =="Enemy"){
-            /*
-            //Enemy hit
-            EnemyBase* enemy = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (enemy != nullptr) {
-                enemy->SetEnemyDamage(5);
-            }
-            */
+
             //Cube Hit
             Target* target = (Target*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (target != nullptr) {
