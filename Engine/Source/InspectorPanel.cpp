@@ -575,11 +575,11 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	}
 	if (!material->IsMetallicRoughnessEnabled())
 	{
-		if (ImGui::DragFloat("Metaalnes", &material->mMetallicFactor, 0.05f, 0.0f, 1.0f, "%.2f"))
+		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			App->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
-		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.05f, 0.0f, 1.0f, "%.2f"))
+		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			App->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}

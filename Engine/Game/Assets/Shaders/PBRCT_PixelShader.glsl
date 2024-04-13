@@ -79,8 +79,7 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
 	//Metalness, r, baseColor
 	vec3 cDif = baseColor*(1-metal);
-	vec3 cSpec = mix(0.04, baseColor, metal);
-	rough *= rough;
+	vec3 cSpec = mix(vec3(0.04), baseColor, metal);
 	vec3 L =  -normalize(lDir); 	//Light direction
 	vec3 H = normalize(L+V);
 	vec3 Li = lInt * lAtt * lCol.rgb;  //Incoming radiance
@@ -88,7 +87,8 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	float dotLH = max(dot(L,H),0);
 	float dotNH = max(dot(N,H),0);
 	float dotNV = max(dot(N,V),0);
-	vec3 pbrColor = ( cDif*(1-cSpec) + 0.25 * (cSpec+(1-cSpec)*pow(1-dotLH,5)) * (0.5/(dotNL*(dotNV*(1-r)+r) + dotNV*(dotNL*(1-r)+r)) * (r*r/(PI*(dotNH*dotNH*(r*r-1) + 1)*(dotNH*dotNH*(r*r-1) + 1)) )*li*dotNL;
+	vec3 pbrColor = ( cDif*(1-cSpec) + 0.25 * (cSpec+(1-cSpec)*pow(1-dotLH,5)) * (0.5/(dotNL*(dotNV*(1-rough)+rough)+dotNV*(dotNL*(1-rough)+rough))) * (rough*rough/(PI*((dotNH*dotNH*(rough*rough-1) + 1)*(dotNH*dotNH*(rough*rough-1) + 1)))) )*Li*dotNL;
+	return pbrColor;
 }
 
 
@@ -97,7 +97,7 @@ void main()
 	Material material = materials[indices[instace_index].matIdx];
 
 	//BaseColor
-	if(material.hasBaseColor)
+	if(material.hasBaseColorTex)
 	{
 		//Using  gamma correction forces to transform sRGB textures to linear space
 		baseColor = vec3(texture(material.baseColorTex, uv));
@@ -110,7 +110,7 @@ void main()
 	//MetalRoughnes
 	if(material.hasMetalRoughTex)
 	{
-		vec3 metRough = texture(material.metalRoughTex, uv);
+		vec3 metRough = texture(material.metalRoughTex, uv).rgb;
 		metal = metRough.b;
 		rough = metRough.g;
 	}
@@ -169,8 +169,10 @@ void main()
 		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att);
 	}
 
+	//TODO: ambient color on pbr
 	//HDR color  
-	vec3 hdrCol = ambientCol * diffuseColor + pbrCol;
+	//vec3 hdrCol = ambientCol * baseColor + pbrCol;
+	vec3 hdrCol = pbrCol;
 	
 	//LDR color with reinhard tone Mapping
 	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));;
