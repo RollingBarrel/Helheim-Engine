@@ -10,7 +10,7 @@ class ResourceMaterial : public Resource
 public:
     ResourceMaterial(
         unsigned int uid,
-        float4 baseColorFactor,
+        float* baseColorFactor,
         float metallicFactor,
         float roughnessFactor,
         unsigned int baseColorTexUid,

@@ -163,7 +163,7 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
         bytes = sizeof(float);
         memcpy(&roughnessFator, cursor, bytes);
         cursor += bytes;
-        ret = new ResourceMaterial(uid, baseColorFactor, metallicFactor, roughnessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
+        ret = new ResourceMaterial(uid, baseColorFactor.ptr(), metallicFactor, roughnessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
         Importer::Material::Save(ret);
 
         delete[] fileBuffer;

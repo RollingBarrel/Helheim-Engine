@@ -49,7 +49,10 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 	ResourceMesh* tmpMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
 	if (tmpMesh && mMesh)
 	{
+		if (mMaterial)
+			App->GetOpenGL()->BatchRemoveMesh(this);
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
+		mMesh = nullptr;
 	}
 	if (tmpMesh)
 	{
@@ -59,11 +62,8 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		mAABBWorld = mOBB.MinimalEnclosingAABB();
-	}
-	if (mMaterial && mMesh)
-	{
-		App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetOpenGL()->BatchAddMesh(this);
+		if (mMaterial)
+			App->GetOpenGL()->BatchAddMesh(this);
 	}
 }
 
@@ -83,21 +83,22 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
 	if (tmpMaterial && mMaterial)
 	{
+		if (mMesh)
+			App->GetOpenGL()->BatchRemoveMesh(this);
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMaterial = nullptr;
 	}
-	if(tmpMaterial)
+	if (tmpMaterial)
+	{
 		mMaterial = tmpMaterial;
-	//TODO: default material
+		if (mMesh)
+			App->GetOpenGL()->BatchAddMesh(this);
+	}
+	//TODO: Material Default
 	//else
 	//{
-	//	mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1); //Memory Leak
+	//	mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
 	//}
-
-	if (mMaterial && mMesh)
-	{
-		App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetOpenGL()->BatchAddMesh(this);
-	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()

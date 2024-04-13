@@ -5,14 +5,14 @@
 
 ResourceMaterial::ResourceMaterial(
     unsigned int uid,
-    float4 baseColorFactor,
+    float* baseColorFactor,
     float metallicFactor,
     float roughnessFactor,
     unsigned int baseColorTexUid,
     unsigned int metallicRoughTexUid,
     unsigned int normalTexUid) :
     Resource(uid, Type::Material),
-    mBaseColorFactor(baseColorFactor), mMetallicFactor(metallicFactor), mRoughnessFactor(roughnessFactor),
+    mBaseColorFactor(float4(baseColorFactor)), mMetallicFactor(metallicFactor), mRoughnessFactor(roughnessFactor),
     mBaseColorTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture))),
     mMetallicRoughnessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture))),
     mNormalTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture))),

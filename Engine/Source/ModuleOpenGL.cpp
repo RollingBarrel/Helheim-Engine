@@ -127,7 +127,7 @@ bool ModuleOpenGL::Init()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
-	mPbrProgramId = CreateShaderProgramFromPaths("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
+	mPbrProgramId = CreateShaderProgramFromPaths("PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl");
 	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
 	mDebugDrawProgramId = CreateShaderProgramFromPaths("basicDebugShader.vs", "basicDebugShader.fs");
 
