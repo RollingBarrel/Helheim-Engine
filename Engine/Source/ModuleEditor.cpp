@@ -360,7 +360,18 @@ void ModuleEditor::ShowMainMenuBar()
 		OpenSaveScene();
 	}
 
+	ImGuiViewportP* viewport = (ImGuiViewportP*)(void*)ImGui::GetMainViewport();
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
+	float height = ImGui::GetFrameHeight();
+	ImVec2 buttonSize(40, height);
 
+
+	if (ImGui::BeginViewportSideBar("##MainStatusBar", viewport, ImGuiDir_Down, height, window_flags)) {
+		if (ImGui::BeginMenuBar()) {
+			ImGui::EndMenuBar();
+		}
+		ImGui::End();
+	}
 
 }
 

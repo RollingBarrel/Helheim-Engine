@@ -11,8 +11,8 @@ About##
 32 35
 Console##
 1
-0 1245
-2315 155
+0 1036
+2207 345
 Debug
 0
 238 172
@@ -20,15 +20,15 @@ Debug
 Editor Controls##
 1
 0 42
-2560 75
+2560 63
 Hierarchy##
 1
-0 119
-203 1124
+0 107
+401 927
 Inspector##
 1
-2317 119
-243 1281
+2209 107
+351 1274
 TagsManagerPanel##
 0
 60 83
@@ -39,20 +39,20 @@ NavMesh Parameters
 599 423
 Resource##
 1
-0 1245
-2315 155
+0 1036
+2207 345
 LightningPanel##
 0
 60 83
 32 35
 Scene##
 1
-205 119
-2110 1124
+403 107
+1804 927
 Project##
 1
-0 1245
-2315 155
+0 1036
+2207 345
 Timer##
 0
 62 83
@@ -63,42 +63,42 @@ Settings##
 287 357
 [Window][DockSpaceViewport_11111111]
 Pos=0,19
-Size=2560,1358
+Size=2560,1339
 Collapsed=0
 
 [Window][Console##]
-Pos=0,1222
-Size=2315,155
+Pos=0,1013
+Size=2207,345
 Collapsed=0
 DockId=0x00000002,0
 
 [Window][Hierarchy##]
-Pos=0,96
-Size=203,1124
+Pos=0,84
+Size=401,927
 Collapsed=0
 DockId=0x00000005,0
 
 [Window][Inspector##]
-Pos=2317,96
-Size=243,1281
+Pos=2209,84
+Size=351,1274
 Collapsed=0
 DockId=0x00000004,0
 
 [Window][Resource##]
-Pos=0,1222
-Size=2315,155
+Pos=0,1013
+Size=2207,345
 Collapsed=0
 DockId=0x00000002,2
 
 [Window][Scene##]
-Pos=205,96
-Size=2110,1124
+Pos=403,84
+Size=1804,927
 Collapsed=0
 DockId=0x00000006,0
 
 [Window][Project##]
-Pos=0,1222
-Size=2315,155
+Pos=0,1013
+Size=2207,345
 Collapsed=0
 DockId=0x00000002,1
 
@@ -139,7 +139,7 @@ Collapsed=0
 
 [Window][Editor Controls##]
 Pos=0,19
-Size=2560,75
+Size=2560,63
 Collapsed=0
 DockId=0x00000007,0
 
@@ -164,13 +164,13 @@ Size=212,94
 Collapsed=0
 
 [Docking][Data]
-DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=0,42 Size=2560,1358 Split=Y
-  DockNode        ID=0x00000007 Parent=0x8B93E3BD SizeRef=2560,75 Selected=0x54FE4137
-  DockNode        ID=0x00000008 Parent=0x8B93E3BD SizeRef=2560,1281 Split=X
-    DockNode      ID=0x00000003 Parent=0x00000008 SizeRef=995,721 Split=Y
-      DockNode    ID=0x00000001 Parent=0x00000003 SizeRef=1240,564 Split=X
-        DockNode  ID=0x00000005 Parent=0x00000001 SizeRef=203,564 Selected=0xF8AAC790
-        DockNode  ID=0x00000006 Parent=0x00000001 SizeRef=790,564 CentralNode=1 Selected=0x15CB5A92
-      DockNode    ID=0x00000002 Parent=0x00000003 SizeRef=1240,155 Selected=0x340AF55C
-    DockNode      ID=0x00000004 Parent=0x00000008 SizeRef=243,721 Selected=0x6493BA2F
+DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=0,42 Size=2560,1339 Split=Y
+  DockNode        ID=0x00000007 Parent=0x8B93E3BD SizeRef=2560,63 Selected=0x54FE4137
+  DockNode        ID=0x00000008 Parent=0x8B93E3BD SizeRef=2560,1274 Split=X
+    DockNode      ID=0x00000003 Parent=0x00000008 SizeRef=2207,721 Split=Y
+      DockNode    ID=0x00000001 Parent=0x00000003 SizeRef=1240,927 Split=X
+        DockNode  ID=0x00000005 Parent=0x00000001 SizeRef=401,564 Selected=0xF8AAC790
+        DockNode  ID=0x00000006 Parent=0x00000001 SizeRef=1804,564 CentralNode=1 Selected=0x15CB5A92
+      DockNode    ID=0x00000002 Parent=0x00000003 SizeRef=1240,345 Selected=0x340AF55C
+    DockNode      ID=0x00000004 Parent=0x00000008 SizeRef=351,721 Selected=0x6493BA2F
 

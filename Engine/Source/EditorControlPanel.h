@@ -9,9 +9,9 @@
 
 
 enum class GameState {
-	PLAYING,
-	PAUSED,
-	RUN_ONCE,
+	PLAY,
+	PAUSE,
+	PLAY_PAUSE,
 	STOP
 };
 
@@ -28,15 +28,18 @@ public:
 	const bool GetUseSnap() { return mUseSnap; }
 	const float3 GetSnap() { return mSnap; }
 
+
 private:
 	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE mCurrentGuizmoMode = ImGuizmo::LOCAL;
 	bool mUseSnap = false;
 	float3 mSnap = { 1.f, 1.f, 1.f };
+	GameState mState = GameState::STOP;
 
 	void Play();
 	void Pause();
 	void Stop();
-	GameState mState = GameState::PLAYING;
+	void Step();
+	
 };
 #endif /* _EDITOR_CONTROL_PANEL_H_ */
