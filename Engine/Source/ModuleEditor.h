@@ -41,6 +41,7 @@ private:
 	OptickAdapter* mOptick;
 	void OpenLoadScene();
 	void OpenSaveScene();
+	void Style();
 };
 
 #endif /* _MODULE_EDITOR_H_ */
