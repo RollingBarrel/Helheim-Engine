@@ -3,11 +3,13 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
 #include "ModuleFileSystem.h"
-#include "ModuleScriptManager.h"
+#include "ModuleResource.h"
 #include "HierarchyPanel.h"
 #include "TagsManagerPanel.h"
+#include "ProjectPanel.h"
+#include "ModuleCamera.h"
+#include "ModuleScriptManager.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -20,6 +22,7 @@
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
+#include "Transform2DComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -336,7 +339,6 @@ void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
 	ImGui::InvisibleButton("##", ImVec2(-1, 5));
 	if (ImGui::BeginDragDropTarget())
 	{
-		LOG("Droped payload");
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
 		{
 			Component* movedComponent = (Component*)payload->Data;
@@ -390,13 +392,13 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::SCRIPT:
 					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
 					break;
-				case ComponentType::NAVMESHOBSTACLE:
+				case ComponentType::NAVMESHOBSTACLE: 
 					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
 					break;
-				case ComponentType::ANIMATION:
+				case ComponentType::ANIMATION: 
 					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
 					break;
-				case ComponentType::TEST:
+				case ComponentType::TEST: 
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				case ComponentType::IMAGE:
@@ -407,6 +409,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					break;
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
+					break;
+				case ComponentType::TRANSFORM2D:
+					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
 			}
 		}
@@ -830,35 +835,209 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 }
 
-void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) 
+{
 	static int resourceId = int(imageComponent->GetResourceId());
 
 	//TODO: Handle the case where the resource is not found
-	ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
-	if (ImGui::Button("Load"))
-	{
-		imageComponent->SetImage(resourceId);
-	}
+	//ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
+	//if (ImGui::Button("Load"))
+	//{
+	//	imageComponent->SetImage(resourceId);
+	//}
 
-	//TODO: Decide what information to display 
-	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+	// Drag and drop	
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, 70.0);
+	ImGui::Image((void*)(intptr_t)imageComponent->GetImage()->GetOpenGLId(), ImVec2(50, 50));
+	if (ImGui::BeginDragDropTarget()) {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
+		{
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = App->GetResource()->RequestResource(asset->mPath);
+			if (resource && (resource->GetType() == Resource::Type::Texture)) 
+			{
+				imageComponent->SetImage(resource->GetUID());
+				imageComponent->SetFileName(asset->mName);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	ImGui::NextColumn();
+	if (imageComponent->GetFileName() != nullptr) 
+	{
+		ImGui::Text(imageComponent->GetFileName());
+	}
+	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth());
+	ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+	ImGui::Columns(1);
+
+	// Color and alpha
+	float3* color = imageComponent->GetColor();
+	float* alpha = imageComponent->GetAlpha();
+	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
+	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
+
+	// Image Info.
+	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
 
 }
 
-void InspectorPanel::DrawCanvasComponent(CanvasComponent* imageComponent) {
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
+{
 	const char* renderModes[] = { "World Space", "Screen Space" };
-	static int selectedRenderMode = 0;
+	static int selectedRenderMode = 1;
 
 	ImGui::Text("Render Mode");
 	ImGui::SameLine();
 	ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes));
 
-	if (selectedRenderMode == 0) {
+	if (selectedRenderMode == 0) 
+	{
 		App->GetUI()->SetScreenSpace(false);
 	}
-	else {
+	else 
+	{
 		App->GetUI()->SetScreenSpace(true);
 	}
+
+	if (ImGui::BeginTable("transformTable", 4)) 
+	{
+		ImGui::PushID(0);
+		ImGui::TableNextRow();
+
+		ImGui::TableNextColumn();
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::Text("Size");
+		ImGui::PopItemWidth(); 
+		
+		bool modifiedTransform = false;
+		float2 newSize = canvasComponent->GetSize();
+		const char* axisLabels2d[2] = { "Width", "Height" };
+
+		for (int j = 0; j < 2; ++j) 
+		{
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text(axisLabels2d[j]);
+			modifiedTransform = ImGui::DragFloat(axisLabels2d[j], &newSize[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+			ImGui::PopItemWidth();
+		}
+		ImGui::PopID();
+
+
+		if (modifiedTransform) 
+		{
+			canvasComponent->SetSize(newSize);
+		}
+	}
+	ImGui::EndTable();
 }
 
-void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};
+void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
+{
+}
+
+void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 
+{
+	
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) 
+	{
+
+		ImGui::OpenPopup("TransformOptions");
+	}
+	if (ImGui::BeginPopup("TransformOptions")) 
+	{
+		if (ImGui::Selectable("Reset")) 
+		{
+			component->ResetTransform();
+		}
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginTable("transformTable", 4)) 
+	{
+
+		bool modifiedTransform = false;
+		float3 newPosition = component->GetPosition();
+		float3 newRotation = RadToDeg(component->GetRotation());
+
+		const char* labels[2] = { "Position", "Rotation"};
+		const char* axisLabels[3] = { "X", "Y", "Z" };
+		float3* vectors[2] = { &newPosition, &newRotation };
+
+		for (int i = 0; i < 2; ++i) 
+		{
+			ImGui::PushID(i);
+			ImGui::TableNextRow();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text(labels[i]);
+			ImGui::PopItemWidth();
+
+			for (int j = 0; j < 3; ++j) 
+			{
+				ImGui::TableNextColumn();
+				ImGui::PushItemWidth(-FLT_MIN);
+				ImGui::AlignTextToFramePadding();
+				ImGui::Text(axisLabels[j]);
+				ImGui::SameLine();
+				modifiedTransform = ImGui::DragFloat(axisLabels[j], &(*vectors[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+				ImGui::PopItemWidth();
+			}
+			ImGui::PopID();
+		}
+
+		if (modifiedTransform) 
+		{
+			component->SetPosition(newPosition);
+			component->SetRotation(DegToRad(newRotation));
+			modifiedTransform = false;
+		}
+
+		float2 newSize = component->GetSize();
+		float2 newAnchorMin = component->GetAnchorMin();
+		float2 newAnchorMax = component->GetAnchorMax();
+		float2 newPivot = component->GetPivot();
+
+		const char* labels2d[4] = { "Size", "Anchor Min", "Anchor Max", "Pivot" };
+		const char* axisLabels2d[2] = { "X", "Y" };
+		float2* vectors2d[4] = { &newSize, &newAnchorMin, &newAnchorMax, &newPivot };
+			
+		for (int i = 0; i < 4; ++i) 
+		{
+			ImGui::PushID(i+2);
+			ImGui::TableNextRow();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text(labels2d[i]);
+			ImGui::PopItemWidth();
+
+			for (int j = 0; j < 2; ++j) 
+			{
+				ImGui::TableNextColumn();
+				ImGui::PushItemWidth(-FLT_MIN);
+				ImGui::AlignTextToFramePadding();
+				ImGui::Text(axisLabels2d[j]);
+				ImGui::SameLine();
+				modifiedTransform = ImGui::DragFloat(axisLabels2d[j], &(*vectors2d[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || modifiedTransform;
+				ImGui::PopItemWidth();
+			}
+			ImGui::PopID();
+		}
+
+		if (modifiedTransform) 
+		{
+			component->SetSize(newSize);
+			component->SetAnchorMax(newAnchorMax);
+			component->SetAnchorMin(newAnchorMin);
+			component->SetPivot(newPivot);
+		}
+	}
+	ImGui::EndTable();
+	
+}

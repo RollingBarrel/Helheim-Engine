@@ -18,11 +18,11 @@ public:
 	virtual	void Update() = 0;
 	
 	virtual Component* Clone(GameObject* owner) const = 0;
-	virtual void Save(Archive& archive) const = 0;
-	virtual void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) = 0;
+	virtual void Save(Archive& archive) const;
+	virtual void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
 
 	ComponentType GetType() const { return mType; }
-	const GameObject* const GetOwner() const { return mOwner; }
+	GameObject* const GetOwner() const { return mOwner; }
 
 	unsigned int GetID() const { return mID; }
 
