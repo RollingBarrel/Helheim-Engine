@@ -202,6 +202,8 @@ void SettingsPanel::LoadSettings()
 			mGrid = std::stoi(line.substr(line.find(":") + 1));
 		}
 
+		std::vector<const char*> panelNames = App->GetEditor()->GetPanelNames();
+
 		// Load the windows state
 		if (std::getline(in_file, line))
 		{
@@ -223,12 +225,14 @@ void SettingsPanel::LoadSettings()
 					std::istringstream iss(line);
 					iss >> windowState->size.x >> windowState->size.y;
 				}
-				const char* panelName = App->GetEditor()->GetPanelNames().at(i);
-				if (windowState->name == panelName && windowState->IsOpen)
+				if (i < panelNames.size()) 
 				{
-					App->GetEditor()->GetPanel(panelName)->Open();
+					const char* panelName = panelNames.at(i);
+					if (windowState->name == panelName && windowState->IsOpen)
+					{
+						App->GetEditor()->GetPanel(panelName)->Open();
+					}
 				}
-
 				mOpenedWindowsInfo.push_back(windowState);
 			}
 		}
