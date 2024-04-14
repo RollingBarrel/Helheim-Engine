@@ -281,24 +281,37 @@ void PlayerController::MeleeAttack()
     std::vector<GameObject*> Enemies;
 
     scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Enemy")->GetID(), Enemies);
-
-    //recorrer el vector de enemigos y comprobar si hay colision con el player
-    for (auto enemy : Enemies) 
+    //player position
+    float3 playerPosition = mGameObject->GetPosition();
+    // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
+    for (auto enemy : Enemies)
     {
-        //enemy abb
+        // Componente de malla del enemigo
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
 
-       Plane plane(mGameObject->GetPosition(),mGameObject->GetFront());
+        // Posición del enemigo
+        float3 enemyPosition = enemy->GetPosition();
+        // Distancia entre el jugador y el enemigo
+        float distanceToEnemy = (enemyPosition - playerPosition).Length();
+        float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
+        float3 enemyToPlayer = (playerPosition - enemyPosition).Normalized();
 
-        if (plane.IsOnPositiveSide(enemy->GetPosition()))
+        // Si el enemigo está frente al jugador y dentro del rango de ataque
+        float3 playerFront = float3(mGameObject->GetFront().x, mGameObject->GetFront().y, mGameObject->GetFront().z);
+        float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
+
+        if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
-            if (plane.Distance(enemy->GetPosition()) < 5)
-            {
-                LOG("Hit");
-			}
-        }
+            LOG("Hit");
 
+            // Hacer daño al enemigo objetivo
+            Target* target = (Target*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+            if (target != nullptr) {
+                target->TakeDamage(10.0f);
+            }
+        }
     }
+
 
 }
 
