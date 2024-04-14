@@ -225,15 +225,21 @@ void SettingsPanel::LoadSettings()
 					std::istringstream iss(line);
 					iss >> windowState->size.x >> windowState->size.y;
 				}
-				if (i < panelNames.size()) 
+				bool panelExists = std::find(panelNames.begin(), panelNames.end(), windowState->name) != panelNames.end();
+				if (panelExists)
 				{
-					const char* panelName = panelNames.at(i);
+					const char* panelName = *std::find(panelNames.begin(), panelNames.end(), windowState->name);
 					if (windowState->name == panelName && windowState->IsOpen)
 					{
 						App->GetEditor()->GetPanel(panelName)->Open();
 					}
+					mOpenedWindowsInfo.push_back(windowState);
+					LOG("Panel %s found", windowState->name.c_str())
 				}
-				mOpenedWindowsInfo.push_back(windowState);
+				else
+				{
+					LOG("Panel %s not found", windowState->name.c_str())
+				}
 			}
 		}
 
