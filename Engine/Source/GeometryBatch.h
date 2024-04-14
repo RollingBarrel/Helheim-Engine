@@ -52,15 +52,15 @@ public:
 };
 
 typedef struct Material {
+	float baseColor[4] = {1.f}; //Ultim es de padding
+	uint64_t baseColorTex;
+	uint64_t metalRoughTex;
+	uint64_t normalTex;
 	uint32_t hasMetalRoughTex;
 	uint32_t hasBaseColorTex;
 	uint32_t hasNormalMap;
 	float metalness;
-	float baseColor[3] = {1.f};
 	float roughness;
-	uint64_t baseColorTex;
-	uint64_t metalRoughTex;
-	uint64_t normalTex;
 }Material;
 
 typedef struct BufferIndices {

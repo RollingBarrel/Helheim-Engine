@@ -82,7 +82,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	const ResourceMaterial* rMat = cMesh->GetResourceMaterial();
 	unsigned int offset = 0;
 	int idx = 0;
-	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), mSsboAligment);
+	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), sizeof(float)*3);
 	for (BatchMaterialResource bRMaterial : mUniqueMaterials)
 	{
 		if (rMat->GetUID() == bRMaterial.resource->GetUID())
@@ -99,16 +99,16 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	const BatchMaterialResource& rMaterial = mUniqueMaterials[idx];
 	Material material;
 	memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
-	material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
 	material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
-	material.metalness = rMaterial.resource->GetMetallicFactor();
-	material.roughness = rMaterial.resource->GetRoughnessFactor();
-	material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
-	material.hasMetalRoughTex = rMaterial.resource->IsNormalMapEnabled();
 	material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
 	material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
+	material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
+	material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
+	material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
+	material.metalness = rMaterial.resource->GetMetallicFactor();
+	material.roughness = rMaterial.resource->GetRoughnessFactor();
 
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	return true;
@@ -171,23 +171,23 @@ void GeometryBatch::RecreateVboAndEbo(unsigned int newVboDataSize, unsigned int 
 
 void GeometryBatch::RecreateMaterials()
 {
-	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), mSsboAligment);
+	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), sizeof(float)*3);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mUniqueMaterials.size() * materialSize, nullptr, GL_STATIC_DRAW);
 	unsigned int offset = 0;
 	for (const BatchMaterialResource rMaterial : mUniqueMaterials) {
 		Material material;
 		memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
-		material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
 		material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
-		material.metalness = rMaterial.resource->GetMetallicFactor();
-		material.roughness = rMaterial.resource->GetRoughnessFactor();
-		material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
-		material.hasMetalRoughTex = rMaterial.resource->IsNormalMapEnabled();
 		material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
 		material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
+		material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
+		material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
+		material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
+		material.metalness = rMaterial.resource->GetMetallicFactor();
+		material.roughness = rMaterial.resource->GetRoughnessFactor();
 
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
 		offset += materialSize;
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);

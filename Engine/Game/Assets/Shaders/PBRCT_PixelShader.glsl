@@ -35,14 +35,14 @@ readonly layout(std430, binding = 1) buffer SpotLights
 struct Material
 {
 	vec3 baseColor;
-	bool hasBaseColorTex;
 	sampler2D baseColorTex;
-	float metal;
-	float rough;
-	bool hasMetalRoughTex;
-	bool hasNormalMap;
 	sampler2D metalRoughTex;
 	sampler2D normalTex;
+	bool hasMetalRoughTex;
+	bool hasBaseColorTex;
+	bool hasNormalMap;
+	float metal;
+	float rough;
 };
 
 readonly layout(std430, binding = 11) buffer Materials 
