@@ -17,7 +17,9 @@ public:
     void Reset() override;
 
     inline float2 GetSize() { return mSize; }
-    inline float GetScreenFactor() { return mScreenFactor; }
+    //inline float GetScreenFactor() { return mScreenFactor; }
+
+    void SetSize(float2 size) { mSize = size; }
 
     void RecalculateSizeAndScreenFactor();
 
@@ -27,6 +29,7 @@ public:
 private:
 
     float2 mSize;
-    float mScreenFactor;
-    float2 mScreenReferenceSize;
+
+    //float mScreenFactor;
+    //float2 mScreenReferenceSize;
 };
