@@ -40,7 +40,7 @@ public:
 	~ModuleFileSystem();
 
 	bool Init() override;
-	//update_status PreUpdate() override;
+	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
 	//update_status PostUpdate() override;
 	bool CleanUp() override;
@@ -78,6 +78,9 @@ public:
 	PathNode* GetRootNode() { return mRoot; }
 
 private:
+
+	void UpdateScripts();
+
 	void CleanNode(PathNode* node);
 	PathNode* mRoot = nullptr;
 };

@@ -13,6 +13,7 @@
 #include "ModuleUI.h"
 #include "ModuleAudio.h"
 #include "ModuleEvent.h"
+#include "ModulePrograms.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -29,12 +30,12 @@ Application::Application()
 	//mGameTimer = new PreciseTimer();
 
 	// Order matters: they will Init/start/update in this order
-	modules[0] = audio = new ModuleAudio();
-	modules[1] = input = new ModuleInput();
-	modules[2] = window = new ModuleWindow();
-	modules[3] = camera = new ModuleCamera();
-	modules[4] = fileSystem = new ModuleFileSystem();
-	modules[5] = render = new ModuleOpenGL();
+	modules[0] = input = new ModuleInput();
+	modules[1] = window = new ModuleWindow();
+	modules[2] = camera = new ModuleCamera();
+	modules[3] = fileSystem = new ModuleFileSystem();
+	modules[4] = render = new ModuleOpenGL();
+	modules[5] = programs = new ModulePrograms();
 	modules[6] = resource = new ModuleResource();
 	modules[7] = scriptManager = new ModuleScriptManager();
 	modules[8] = debugDraw = new ModuleDebugDraw();
@@ -42,8 +43,8 @@ Application::Application()
 	modules[10] = navigation = new ModuleDetourNavigation();
 	modules[11] = editor = new ModuleEditor();
 	modules[12] = ui = new ModuleUI();
-
-	modules[13] = event = new ModuleEvent();
+	modules[13] = audio = new ModuleAudio();
+	modules[14] = event = new ModuleEvent();
 }
 
 Application::~Application()
