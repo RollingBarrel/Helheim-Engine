@@ -62,6 +62,23 @@ bool EnemyBase::OpponentDistance(float triggerDistance) {
     }
 }
 
+void EnemyBase::MeeleAttach() {
+   /* if ()
+	//player abb
+	MeshRendererComponent* playerMesh = (MeshRendererComponent*)mGameObject->GetComponent(ComponentType::MESHRENDERER);
+	//enemy abb
+	MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
+
+		// if enemy abb colllides with player abb log "hit"
+   if (playerMesh->GetAABB().Intersects(enemyMesh->GetAABB())) {
+		LOG("Hit");
+	}
+       else {
+			//LOG("Miss");
+		}
+   */
+}
+
 void EnemyBase::SearchPlayer() {
     if (mInAttackDistance == false) {
         Test_Controls(); //Enemy's test movement emulating AI

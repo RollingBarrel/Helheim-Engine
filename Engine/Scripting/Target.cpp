@@ -32,13 +32,14 @@ void Target::Start()
 // Function to take damage
 void Target::TakeDamage(float damage)
 {
+    if (mTargetHealth <= 0)
+    {
+		return;
+	}
     // Subtract the damage from the target health
     mTargetHealth -= damage;
     //LOG THE TARGET HEALTH
     LOG("Target Health: %f", mTargetHealth);
-    if (mTargetHealth <= 0)
-    {
-        LOG("Target Destroyed");
-    }
+
 }
 

@@ -7,17 +7,16 @@
 #include "string"
 #include "Archive.h"
 #include "Tag.h"
+#include "MeshRendererComponent.h"
 
 #undef max
 #undef min
 #define NOMINMAX
 #include "rapidjson/document.h"
 
-class MeshRendererComponent;
 class AIAgentComponent;
 class CameraComponent;
 class Component;
-class Tag;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject

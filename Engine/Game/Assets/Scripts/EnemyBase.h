@@ -27,6 +27,7 @@ class EnemyBase : public Script
 
 	protected:
 		bool OpponentDistance(float enemyDistance);
+		void MeeleAttach();
 		bool Delay(float delay);
 		virtual void SearchPlayer();
 				
