@@ -1,7 +1,6 @@
 #pragma once
 #include "Resource.h"
 
-#include "float3.h"
 #include "float4.h"
 
 class ResourceTexture;
@@ -11,41 +10,39 @@ class ResourceMaterial : public Resource
 public:
     ResourceMaterial(
         unsigned int uid,
-        float4 diffuseFactor,
-        float3 specularFactor,
-        float glossinessFactor,
-        unsigned int diffuseTextureUid,
-        unsigned int specularGlossinessTextureUid,
-        unsigned int normalTextureUid);
+        float* baseColorFactor,
+        float metallicFactor,
+        float roughnessFactor,
+        unsigned int baseColorTexUid,
+        unsigned int metallicRoughTexUid,
+        unsigned int normalTexUid);
 
     ~ResourceMaterial();
 
     // Getter functions
-    float4 GetDiffuseFactor() const { return mDiffuseFactor; }
-    float3 GetSpecularFactor() const { return mSpecularFactor; }
-    float GetGlossinessFactor() const { return mGlossinessFactor; }
-    ResourceTexture* GetDiffuseTexture() const { return mDiffuseTexture; }
-    ResourceTexture* GetSpecularGlossinessTexture() const { return mSpecularGlossinessTexture; }
-    ResourceTexture* GetNormalTexture() const { return mNormalTexture; }
-    bool IsDiffuseTextureEnabled() const { return mEnableDiffuseTexture; }
-    bool IsSpecularGlossinessTextureEnabled() const { return mEnableSpecularGlossinessTexture; }
+    float4 GetBaseColorFactor() const { return mBaseColorFactor; }
+    float GetMetallicFactor() const { return mMetallicFactor; }
+    float GetRoughnessFactor() const { return mRoughnessFactor; }
+    const ResourceTexture* GetBaseColorTexture() const { return mBaseColorTexture; }
+    const ResourceTexture* GetMetallicRoughnessTexture() const { return mMetallicRoughnessTexture; }
+    const ResourceTexture* GetNormalTexture() const { return mNormalTexture; }
+    bool IsBaseColorEnabled() const { return mEnableBaseColorTexture; }
+    bool IsMetallicRoughnessEnabled() const { return mEnableMetallicRoughnessTexture; }
     bool IsNormalMapEnabled() const { return mEnableNormalMap; }
-    bool IsShininessMapEnabled() const { return mEnableShininessMap; }
 
 
 private:
-    float4 mDiffuseFactor;
-    float3 mSpecularFactor;
-    float mGlossinessFactor;
+    float4 mBaseColorFactor;
+    float mMetallicFactor;
+    float mRoughnessFactor;
 
-    ResourceTexture* mDiffuseTexture = nullptr;
-    ResourceTexture* mSpecularGlossinessTexture = nullptr;
+    ResourceTexture* mBaseColorTexture = nullptr;
+    ResourceTexture* mMetallicRoughnessTexture = nullptr;
     ResourceTexture* mNormalTexture = nullptr;
 
-    bool mEnableDiffuseTexture;
-    bool mEnableSpecularGlossinessTexture;
+    bool mEnableBaseColorTexture;
+    bool mEnableMetallicRoughnessTexture;
     bool mEnableNormalMap;
-    bool mEnableShininessMap;
 
     friend class InspectorPanel;
 };
