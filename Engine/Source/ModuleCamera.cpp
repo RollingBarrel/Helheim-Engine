@@ -50,13 +50,16 @@ void ModuleCamera::CheckRaycast()
 
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) {
+	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) 
+	{
 
 	}
-	else {
+	else 
+	{
 
 		std::map<float, GameObject*> hits = root->RayCast(&mRay);
-		if (!hits.empty()) {
+		if (!hits.empty()) 
+		{
 			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
 			if (intersectGameObjectPair.second != nullptr)
 			{
@@ -75,7 +78,7 @@ void ModuleCamera::CheckRaycast()
 
 bool ModuleCamera::CleanUp()
 {
-	mEditorCamera->~GameObject();
+	delete mEditorCamera;
 	return true;
 }
 
@@ -132,7 +135,8 @@ update_status ModuleCamera::Update(float dt)
 {
 
 
-	if (mDrawRayCast) {
+	if (mDrawRayCast) 
+	{
 		App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
 	}
 	
@@ -222,7 +226,9 @@ update_status ModuleCamera::Update(float dt)
 					focus = rotationMatrixY.Mul(focus);
 				}
 
-				mCurrentCameraComponent->LookAt(focus, ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition(), float3::unitY);
+				GameObject* focusedObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+				if(focusedObject)
+					mCurrentCameraComponent->LookAt(focus, focusedObject->GetPosition(), float3::unitY);
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
 			{

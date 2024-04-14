@@ -7,17 +7,17 @@ class ScriptAttribute
 {
 public:
 	ScriptAttribute() {}
-	ScriptAttribute(std::string name, VariableType type, void* data) : mName(name), mType(type) {}
+	ScriptAttribute(std::string name, MemberType type, void* data) : mName(name), mType(type) {}
 	bool setTypeFromString(const std::string& type);
 	void setName(const std::string name);
-	void setType(const VariableType type);
+	void setType(const MemberType type);
 	size_t sizeOfScriptVariable() const;
 	const std::string GetName() const { return mName; }
-	const VariableType GetType() const { return mType; }
+	const MemberType GetType() const { return mType; }
 
 private:
 	std::string mName;
-	VariableType mType = VariableType::NONE;
+	MemberType mType = MemberType::NONE;
 
 };
 
