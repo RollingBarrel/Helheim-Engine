@@ -23,9 +23,9 @@ public:
     float4 GetBaseColorFactor() const { return mBaseColorFactor; }
     float GetMetallicFactor() const { return mMetallicFactor; }
     float GetRoughnessFactor() const { return mRoughnessFactor; }
-    ResourceTexture* GetBaseColorTexture() const { return mBaseColorTexture; }
-    ResourceTexture* GetMetallicRoughnessTexture() const { return mMetallicRoughnessTexture; }
-    ResourceTexture* GetNormalTexture() const { return mNormalTexture; }
+    const ResourceTexture* GetBaseColorTexture() const { return mBaseColorTexture; }
+    const ResourceTexture* GetMetallicRoughnessTexture() const { return mMetallicRoughnessTexture; }
+    const ResourceTexture* GetNormalTexture() const { return mNormalTexture; }
     bool IsBaseColorEnabled() const { return mEnableBaseColorTexture; }
     bool IsMetallicRoughnessEnabled() const { return mEnableMetallicRoughnessTexture; }
     bool IsNormalMapEnabled() const { return mEnableNormalMap; }
