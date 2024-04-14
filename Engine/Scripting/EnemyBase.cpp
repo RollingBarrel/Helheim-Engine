@@ -76,7 +76,6 @@ void EnemyBase::SetEnemyDamage(int damage) {
     if (mHealth > 0) {
         mHealth -= damage;
     }
-
     LOG("Enemy Health: %u", mHealth);
 }
 

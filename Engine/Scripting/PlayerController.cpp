@@ -16,7 +16,6 @@
 
 #include "Tag.h"
 #include "EnemyBase.h"
-#include "Target.h"
 #include <ScriptComponent.h>
 
 CREATE(PlayerController)
@@ -252,12 +251,16 @@ void PlayerController::Dash()
     }
 }
 
-void PlayerController::MeleeAttack() {
-    if (mIsMoving == false) {
+void PlayerController::MeleeAttack() 
+{
+    if (mIsMoving == false) 
+    {
         LOG("Melee attack animation");
     }
-    else {
-        switch (mPreviousState) {
+    else 
+    {
+        switch (mPreviousState) 
+        {
             case PlayerState::Forward:
                 LOG("Forward while melee animation");
                 break;
@@ -298,6 +301,14 @@ void PlayerController::RangedAttack() {
         }
     }
 
+}
+//función para definir disparar
+void PlayerController::Shoot(int damage) {
+	//crear un rayo que salga de la posición del player en la dirección del front
+	//recorrer todos los objetos que hay en la escena y comprobar si el rayo colisiona con alguno
+	//si colisiona, comprobar si el objeto tiene el tag de enemigo
+	//si tiene el tag de enemigo, hacer daño al enemigo
+
     std::map<float, GameObject*> hits;
 
     Ray ray;
@@ -306,9 +317,7 @@ void PlayerController::RangedAttack() {
 
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
-    //Debug::DrawLine(ray.pos, ray.dir * distance, float3(1.0f, 0.0f, 0.0f));
 
-    //**************************************************************************************
     Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
 
     //log the first object hit by the ray
@@ -319,23 +328,18 @@ void PlayerController::RangedAttack() {
     //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
     for (auto hit : hits) {
         if (hit.second->GetTag()->GetName() =="Enemy"){
-            /*
-            //Enemy hit
-            EnemyBase* enemy = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (enemy != nullptr) {
-                enemy->SetEnemyDamage(5);
-            }
-            */
-            //Cube Hit
-            Target* target = (Target*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+
+            EnemyBase* target = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (target != nullptr) {
-                target->TakeDamage(10.0f);
+                target->SetEnemyDamage(damage);
             }
         }
-	}
+    }
 }
 
-void PlayerController::ReloadWeapon() {
+
+void PlayerController::ReloadWeapon()
+{
     if (mIsMoving == false) {
         LOG("Reloading animation");
     }
@@ -355,8 +359,6 @@ void PlayerController::ReloadWeapon() {
             break;
         }
     }
-
-    //RELOAD AMMO IN A GETTER OF PISTOL CLASS
 
 }
 
