@@ -226,7 +226,9 @@ update_status ModuleCamera::Update(float dt)
 					focus = rotationMatrixY.Mul(focus);
 				}
 
-				mCurrentCameraComponent->LookAt(focus, ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition(), float3::unitY);
+				GameObject* focusedObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+				if(focusedObject)
+					mCurrentCameraComponent->LookAt(focus, focusedObject->GetPosition(), float3::unitY);
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
 			{

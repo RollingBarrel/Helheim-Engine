@@ -590,15 +590,11 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
 
-	if (ImGui::Checkbox("Enable Diffuse map", &material->mEnableDiffuseTexture))
+	if (ImGui::Checkbox("Enable BaseColor map", &material->mEnableBaseColorTexture))
 	{
 		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
-	if (ImGui::Checkbox("Enable Specular map", &material->mEnableSpecularGlossinessTexture))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
-	if (ImGui::Checkbox("Enable Shininess map", &material->mEnableShininessMap))
+	if (ImGui::Checkbox("Enable MetallicRoughness map", &material->mEnableMetallicRoughnessTexture))
 	{
 		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
@@ -607,26 +603,18 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
 
-	if (!material->IsDiffuseTextureEnabled())
+	if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 	{
-		if (ImGui::ColorPicker3("Diffuse", material->mDiffuseFactor.ptr()))
-		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
-		}
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
-	if (!material->IsSpecularGlossinessTextureEnabled())
+
+	if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 	{
-		if (ImGui::ColorPicker3("Specular", material->mSpecularFactor.ptr()))
-		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
-		}
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
-	if (!material->IsShininessMapEnabled())
+	if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 	{
-		if (ImGui::DragFloat("Shininess", &material->mGlossinessFactor, 0.05f, 0.0f, 10000.0f, "%.2f"))
-		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
-		}
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
 }
 
