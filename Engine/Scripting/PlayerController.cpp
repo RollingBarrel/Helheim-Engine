@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "AudioSourceComponent.h"
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
@@ -26,6 +27,10 @@ void PlayerController::Start()
         mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
         mAnimationComponent->OnStart();
     }
+
+    if (mAudioSourceComponentHolder) {
+        mAudioSourceComponent = (AudioSourceComponent*)mAudioSourceComponentHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
 }
 
 void PlayerController::Update()
@@ -39,6 +44,29 @@ void PlayerController::Update()
 
     if (mAnimationComponent) {
         mAnimationComponent->OnUpdate();
+    }
+
+    if (mAudioSourceComponent) {
+        if (!mStepPlayed) {
+            mAudioSourceComponent->OnUpdate(mStepAudio);
+            mStepPlayed = true;
+            mStepStartCounter = true;
+        }
+        else {
+            if (mStepStartCounter) {
+                mStepTimePassed += App->GetGameDt();
+
+                if (mStepTimePassed >= mStepCoolDown)
+                {
+                    mDashTimePassed = 0;
+                    mStepStartCounter = false;
+                    mStepPlayed = false;
+                    mStepTimePassed = 0;
+
+                }
+            }
+        }
+        
     }
 
     std::map<float, GameObject*> hits;
@@ -89,6 +117,7 @@ void PlayerController::CheckRoute()
 
 void PlayerController::Move() 
 {
+
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
         //float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mPlayerSpeed);
         float3 newPos = (mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt() * mPlayerSpeed);

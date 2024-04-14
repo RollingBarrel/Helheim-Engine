@@ -4,6 +4,7 @@
 #include "Math/float3.h"
 class NavMeshController;
 class AnimationComponent;
+class AudioSourceComponent;
 
 class PlayerController :public Script
 {
@@ -23,17 +24,27 @@ public:
     GameObject* mWinArea = nullptr;
     GameObject* mLoseArea = nullptr;
     GameObject* mAnimationComponentHolder = nullptr;
+    GameObject* mAudioSourceComponentHolder = nullptr;
     float mDashSpeed = 5.0f;
     float mDashLenght = 5.0f;
     float mDashCoolDown = 1.0f;
 
+    float mStepCoolDown = 1.0f;
+    bool mStepAudio = false;
+
 private:
     NavMeshController* mNavMeshControl = nullptr;
     AnimationComponent* mAnimationComponent = nullptr;
+    AudioSourceComponent* mAudioSourceComponent = nullptr;
     bool mIsDashActive = false;
     bool mStartCounter = false;
+
     float mDashTimePassed = 0.0f;
     float mDashMovement = 0;
+
+    float mStepTimePassed = 0.0f;
+    bool mStepPlayed = false;
+    bool mStepStartCounter = true;
 
 };
 
@@ -47,10 +58,13 @@ extern "C" SCRIPTING_API Script * CreatePlayerController(GameObject * owner, std
     data.push_back(new ScriptVariable("mWinArea", VariableType::GAMEOBJECT, &script->mWinArea));
     data.push_back(new ScriptVariable("mLoseArea", VariableType::GAMEOBJECT, &script->mLoseArea));
     data.push_back(new ScriptVariable("mAnimationComponentHolder", VariableType::GAMEOBJECT, &script->mAnimationComponentHolder));
+    data.push_back(new ScriptVariable("mAudioSourceComponentHolder", VariableType::GAMEOBJECT, &script->mAudioSourceComponentHolder));
 
     data.push_back(new ScriptVariable("mDashSpeed", VariableType::FLOAT, &script->mDashSpeed));
     data.push_back(new ScriptVariable("mDashLenght", VariableType::FLOAT, &script->mDashLenght));
     data.push_back(new ScriptVariable("mDashCoolDown", VariableType::FLOAT, &script->mDashCoolDown));
+
+    data.push_back(new ScriptVariable("mStepAudio", VariableType::BOOL, &script->mStepAudio));
 
     return script;
 }

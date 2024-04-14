@@ -5,7 +5,7 @@
 #include <vector>
 #include <map>
 
-class AudioSourceComponent :
+class ENGINE_API AudioSourceComponent :
     public Component
 {
 public:
@@ -22,7 +22,8 @@ public:
 
     void UpdateParameterValue(const char* name, float value);
     
-    void Update();
+    void Update() override;
+    void OnUpdate(bool triggerEvent);
     Component* Clone(GameObject* owner) const;
     void Save(Archive& archive) const;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);

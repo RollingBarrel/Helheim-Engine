@@ -16,7 +16,7 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 {
 	// Stop current audio
 	if (mEventInstance != nullptr) {
-		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+		//mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
 	}
 
 	// Set to new event
@@ -24,8 +24,8 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 
 	// Play new audio
 	if (mEventInstance != nullptr) {
-		mEventInstance->start();
-		mEventInstance->release();
+		//mEventInstance->start();
+		//mEventInstance->release();
 
 		// Update parameters
 		event->getDescription(&mEventDescription);
@@ -54,17 +54,53 @@ void AudioSourceComponent::UpdateParameterValue(const char* name, float value)
 
 void AudioSourceComponent::Update()
 {
-	float3 gameobjectPosition = GetOwner()->GetPosition();
+	//if (triggerEvent) {
+	//	// UPDATE 3D parameters
+	//	float3 gameobjectPosition = GetOwner()->GetPosition();
 
-	FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+	//	FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
-	attributes.position.x = gameobjectPosition.x;
-	attributes.position.z = gameobjectPosition.z;
+	//	attributes.position.x = gameobjectPosition.x;
+	//	attributes.position.z = gameobjectPosition.z;
 
-	attributes.forward.z = 1.0f;
-	attributes.up.y = 1.0f;
+	//	attributes.forward.z = 1.0f;
+	//	attributes.up.y = 1.0f;
 
-	mEventInstance->set3DAttributes(&attributes);
+	//	// Play Audio
+	//	mEventInstance->set3DAttributes(&attributes);
+	//	mEventInstance->start();
+	//	mEventInstance->release();
+	//}
+	//else {
+	//	mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	//}
+}
+
+void AudioSourceComponent::OnUpdate(bool triggerEvent)
+{
+	
+	if (triggerEvent) {
+		// UPDATE 3D parameters
+		float3 gameobjectPosition = GetOwner()->GetPosition();
+
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+		attributes.position.x = gameobjectPosition.x;
+		attributes.position.z = gameobjectPosition.z;
+
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		// Play Audio
+		mEventInstance->set3DAttributes(&attributes);
+		mEventInstance->start();
+		mEventInstance->release();
+	}
+	else {
+		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	}
+
+
 }
 
 Component* AudioSourceComponent::Clone(GameObject* owner) const
