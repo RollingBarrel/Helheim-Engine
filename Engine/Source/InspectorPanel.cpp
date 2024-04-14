@@ -389,38 +389,30 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::CAMERA:
 					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
 					break;
-				case ComponentType::SCRIPT: {
+				case ComponentType::SCRIPT:
 					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
 					break;
-				}
-				case ComponentType::NAVMESHOBSTACLE: {
+				case ComponentType::NAVMESHOBSTACLE: 
 					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
 					break;
-				}
-				case ComponentType::ANIMATION: {
+				case ComponentType::ANIMATION: 
 					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
 					break;
-				}
-				case ComponentType::TEST: {
+				case ComponentType::TEST: 
 					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
-				}
-				case ComponentType::IMAGE: {
+				case ComponentType::IMAGE:
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
 					break;
-				}
-				case ComponentType::CANVAS: {
+				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
 					break;
-				}
-				case ComponentType::BUTTON: {
+				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
-				}
-				case ComponentType::TRANSFORM2D: {
+				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
-				}
 			}
 		}
 		ImGui::PopID();
