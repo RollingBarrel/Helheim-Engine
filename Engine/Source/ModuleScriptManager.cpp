@@ -208,7 +208,6 @@ void ModuleScriptManager::SaveOldScript(std::vector<std::vector<std::pair<Member
 void ModuleScriptManager::Play()
 {
 	mIsPlaying = true;
-	Start();
 }
 
 void ModuleScriptManager::Stop()
@@ -218,6 +217,7 @@ void ModuleScriptManager::Stop()
 
 void ModuleScriptManager::Start()
 {
+	mIsPlaying = true;
 	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
 	{
 		script->mScript->Start();

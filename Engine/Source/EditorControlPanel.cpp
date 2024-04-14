@@ -89,7 +89,7 @@ void EditorControlPanel::Draw(int windowFlags)
 
 
 	//Change the Guizmo operation using W,E & R keywords and the coordinate mode with G
-	if (!ImGui::IsKeyDown(ImGuiKey_MouseRight)) 
+	if (!ImGui::IsKeyDown(ImGuiKey_MouseRight) && (mState != GameState::PLAY && mState != GameState::PLAY_PAUSE)) 
 	{
 		if (ImGui::IsKeyPressed(ImGuiKey_W))
 		{
@@ -149,11 +149,11 @@ void EditorControlPanel::Draw(int windowFlags)
 	}
 
 	ImGui::SameLine();
-	if ( mState != GameState::PLAY && mState != GameState::PLAY_PAUSE )
+	if ( mState != GameState::PLAY && mState != GameState::PLAY_PAUSE)
 	{ 
 		ImGui::BeginDisabled();
 	}
-	if (ImGui::Button(ICON_FA_FORWARD_STEP, buttonSize) && mState == GameState::PAUSE) 
+	if (ImGui::Button(ICON_FA_FORWARD_STEP, buttonSize)) 
 	{
 		Step();
 	}
@@ -171,15 +171,16 @@ void EditorControlPanel::Play()
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.05f, 0.05f, 0.07f, 1.0f };
 	App->SetCurrentClock(App->GetGameClock());
 	App->GetScene()->Save("TemporalScene");
-	App->GetScriptManager()->Play();
+	App->GetScriptManager()->Start();
+	App->GetGameClock()->Start();
 
 	switch (mState)
 	{
 	case GameState::PAUSE:
 		mState = GameState::PLAY_PAUSE;
+		App->GetScriptManager()->Stop();
 		break;
 	default:
-		App->GetGameClock()->Start();
 		mState = GameState::PLAY;
 		break;
 	}
@@ -187,18 +188,18 @@ void EditorControlPanel::Play()
 
 void EditorControlPanel::Pause() 
 {
-	App->GetGameClock()->SetTimeScale(0.0f);
-	App->GetEngineClock()->SetTimeScale(0.0f);
 	switch (mState)
 	{
 	case GameState::PLAY:
 		mState = GameState::PLAY_PAUSE;
+		App->GetScriptManager()->Stop();
 		break;
 	case GameState::PAUSE:
 		mState = GameState::STOP;
 		break;
 	case GameState::PLAY_PAUSE:
 		mState = GameState::PLAY;
+		App->GetScriptManager()->Play();
 		break;
 	default:
 		mState = GameState::PAUSE;
@@ -239,7 +240,9 @@ void EditorControlPanel::Step()
 		mState = GameState::PLAY_PAUSE;
 		[[fallthrough]];
 	case GameState::PLAY_PAUSE:
+		App->GetScriptManager()->Play();
 		App->GetScriptManager()->Update(App->GetRealDt());
+		App->GetScriptManager()->Stop();
 		break;
 	default:
 		break;
