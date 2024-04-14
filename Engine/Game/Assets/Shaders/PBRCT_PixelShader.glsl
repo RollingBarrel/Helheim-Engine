@@ -97,27 +97,22 @@ void main()
 	Material material = materials[indices[instace_index].matIdx];
 
 	//BaseColor
+	baseColor = material.baseColor;
 	if(material.hasBaseColorTex)
 	{
+		vec3 texCol = vec3(texture(material.baseColorTex, uv));
 		//Using  gamma correction forces to transform sRGB textures to linear space
-		baseColor = vec3(texture(material.baseColorTex, uv));
-		baseColor = pow(baseColor, vec3(2.2));
-	}
-	else
-	{
-		baseColor = material.baseColor;
+		texCol = pow(texCol, vec3(2.2));
+		baseColor *= texCol;
 	}
 	//MetalRoughnes
+	metal = material.metal;
+	rough = material.rough;
 	if(material.hasMetalRoughTex)
 	{
 		vec3 metRough = texture(material.metalRoughTex, uv).rgb;
-		metal = metRough.b;
-		rough = metRough.g;
-	}
-	else
-	{
-		metal = material.metal;
-		rough = material.rough;
+		metal *= metRough.b;
+		rough *= metRough.g;
 	}
 	rough *= rough;
 	if (material.hasNormalMap)

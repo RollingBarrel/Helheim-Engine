@@ -566,23 +566,18 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
 
-	if (!material->IsBaseColorEnabled())
+	if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 	{
-		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
-		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
-		}
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
-	if (!material->IsMetallicRoughnessEnabled())
+
+	if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 	{
-		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
-		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
-		}
-		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
-		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
-		}
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+	}
+	if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
+	{
+		App->GetOpenGL()->BatchEditMaterial(renderComponent);
 	}
 }
 
