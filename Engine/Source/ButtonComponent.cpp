@@ -7,13 +7,16 @@
 #include "Script.h"
 
 
-ButtonComponent::ButtonComponent(GameObject* owner, bool active) : Component(owner, ComponentType::BUTTON) {
+ButtonComponent::ButtonComponent(GameObject* owner, bool active) : Component(owner, ComponentType::BUTTON) 
+{
 }
 
-ButtonComponent::ButtonComponent(GameObject* owner) : Component(owner, ComponentType::BUTTON) {
+ButtonComponent::ButtonComponent(GameObject* owner) : Component(owner, ComponentType::BUTTON) 
+{
 }
 
-ButtonComponent:: ~ButtonComponent() {
+ButtonComponent:: ~ButtonComponent() 
+{
 }
 
 Component* ButtonComponent::Clone(GameObject* owner) const

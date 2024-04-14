@@ -28,8 +28,8 @@ ModuleUI::~ModuleUI()
 {
 };
 
-bool ModuleUI::Init() {
-	
+bool ModuleUI::Init() 
+{
 	mCanvas = FindCanvas(App->GetScene()->GetRoot());
 	if (mCanvas == nullptr) 
 	{
@@ -40,7 +40,8 @@ bool ModuleUI::Init() {
 	return true;
 };
 
-update_status ModuleUI::PreUpdate(float dt) {
+update_status ModuleUI::PreUpdate(float dt) 
+{
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(mCanvas);
@@ -49,7 +50,8 @@ update_status ModuleUI::PreUpdate(float dt) {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleUI::Update(float dt) {
+update_status ModuleUI::Update(float dt) 
+{
 	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
 	{
 		CheckRaycast();
@@ -58,11 +60,13 @@ update_status ModuleUI::Update(float dt) {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleUI::PostUpdate(float dt) {
+update_status ModuleUI::PostUpdate(float dt) 
+{
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleUI::CleanUp() {
+bool ModuleUI::CleanUp() 
+{
 	return true;
 }
 
@@ -95,8 +99,10 @@ GameObject* ModuleUI::FindCanvas(GameObject* gameObject)
 		return gameObject;
 	}
 
-	for (GameObject* go : gameObject->GetChildren()) {
-		if (FindCanvas(go) != nullptr) {
+	for (GameObject* go : gameObject->GetChildren()) 
+	{
+		if (FindCanvas(go) != nullptr) 
+		{
 			return go;
 		}
 	}
@@ -104,30 +110,12 @@ GameObject* ModuleUI::FindCanvas(GameObject* gameObject)
 	return nullptr;
 }
 
-void ModuleUI::ResizeFrustum(unsigned int width, unsigned int height) {
-	float heightFrustum = height;
-	float widthFrustum = width;
-
-	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
-
-	//mUIfrustum->orthographicWidth = scenePanel->GetWindowsSize().x;  //widthFrustum; //Change with canvas width
-	//mUIfrustum->orthographicHeight = scenePanel->GetWindowsSize().y;  //heightFrustum; //Change with canvas height
-}
-
 void ModuleUI::CheckRaycast()
 {
 	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
 
-	//float mouseSceneX = scenePanel->GetMousePosition().x - scenePanel->GetWindowsPos().x;
-	//float mouseSceneY = scenePanel->GetMousePosition().y - scenePanel->GetWindowsPos().y;
-
 	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
 	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
-
-	//float2 pos = scenePanel->GetWindowsPos();
-
-	//float mouseX = (mouseSceneX) - scenePanel->GetWindowsSize().x / 2;
-	//float mouseY = -((mouseSceneY) - scenePanel->GetWindowsSize().y / 2);
 
 	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
 	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;

@@ -49,10 +49,12 @@ void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 {
 	Component::LoadFromJSON(data, owner);
 
-	if (data.HasMember("Translation") && data["Translation"].IsArray()) {
+	if (data.HasMember("Translation") && data["Translation"].IsArray()) 
+	{
 		const rapidjson::Value& translationValues = data["Translation"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (translationValues.Size() == 3 && translationValues[0].IsFloat() && translationValues[1].IsFloat() && translationValues[2].IsFloat()) {
+		if (translationValues.Size() == 3 && translationValues[0].IsFloat() && translationValues[1].IsFloat() && translationValues[2].IsFloat()) 
+		{
 			x = translationValues[0].GetFloat();
 			y = translationValues[1].GetFloat();
 			z = translationValues[2].GetFloat();
@@ -60,10 +62,12 @@ void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 
 		mPosition = float3(x, y, z);
 	}
-	if (data.HasMember("Rotation") && data["Rotation"].IsArray()) {
+	if (data.HasMember("Rotation") && data["Rotation"].IsArray()) 
+	{
 		const rapidjson::Value& rotationValues = data["Rotation"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-		if (rotationValues.Size() == 4 && rotationValues[0].IsFloat() && rotationValues[1].IsFloat() && rotationValues[2].IsFloat() && rotationValues[3].IsFloat()) {
+		if (rotationValues.Size() == 4 && rotationValues[0].IsFloat() && rotationValues[1].IsFloat() && rotationValues[2].IsFloat() && rotationValues[3].IsFloat()) 
+		{
 			x = rotationValues[0].GetFloat();
 			y = rotationValues[1].GetFloat();
 			z = rotationValues[2].GetFloat();
@@ -72,40 +76,48 @@ void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 
 		mRotation = Quat(x, y, z, w);
 	}
-	if (data.HasMember("Size") && data["Size"].IsArray()) {
+	if (data.HasMember("Size") && data["Size"].IsArray()) 
+	{
 		const rapidjson::Value& sizeValues = data["Size"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (sizeValues.Size() == 2 && sizeValues[0].IsFloat() && sizeValues[1].IsFloat()) {
+		if (sizeValues.Size() == 2 && sizeValues[0].IsFloat() && sizeValues[1].IsFloat()) 
+		{
 			x = sizeValues[0].GetFloat();
 			y = sizeValues[1].GetFloat();
 		}
 
 		mSize = float2(x, y);
 	}
-	if (data.HasMember("AnchorMin") && data["AnchorMin"].IsArray()) {
+	if (data.HasMember("AnchorMin") && data["AnchorMin"].IsArray()) 
+	{
 		const rapidjson::Value& anchorMinValues = data["AnchorMin"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (anchorMinValues.Size() == 2 && anchorMinValues[0].IsFloat() && anchorMinValues[1].IsFloat()) {
+		if (anchorMinValues.Size() == 2 && anchorMinValues[0].IsFloat() && anchorMinValues[1].IsFloat()) 
+		{
 			x = anchorMinValues[0].GetFloat();
 			y = anchorMinValues[1].GetFloat();
 		}
 
 		mAnchorMin = float2(x, y);
 	}
-	if (data.HasMember("AnchorMax") && data["AnchorMax"].IsArray()) {
+	if (data.HasMember("AnchorMax") && data["AnchorMax"].IsArray()) 
+	{
 		const rapidjson::Value& anchorMaxValues = data["AnchorMax"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (anchorMaxValues.Size() == 2 && anchorMaxValues[0].IsFloat() && anchorMaxValues[1].IsFloat()) {
+		if (anchorMaxValues.Size() == 2 && anchorMaxValues[0].IsFloat() && anchorMaxValues[1].IsFloat()) 
+		{
 			x = anchorMaxValues[0].GetFloat();
 			y = anchorMaxValues[1].GetFloat();
 		}
 
 		mAnchorMax = float2(x, y);
 	}
-	if (data.HasMember("Pivot") && data["Pivot"].IsArray()) {
+	if (data.HasMember("Pivot") && data["Pivot"].IsArray()) 
+	{
 		const rapidjson::Value& pivotValues = data["Pivot"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (pivotValues.Size() == 2 && pivotValues[0].IsFloat() && pivotValues[1].IsFloat()) {
+		if (pivotValues.Size() == 2 && pivotValues[0].IsFloat() && pivotValues[1].IsFloat()) 
+		{
 			x = pivotValues[0].GetFloat();
 			y = pivotValues[1].GetFloat();
 		}

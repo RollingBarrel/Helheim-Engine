@@ -21,27 +21,33 @@
 
 #include "Math/TransformOps.h"
 
-ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) {
+ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) 
+{
 }
 
-ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) {
+ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
+{
     SetImage(mResourceId);
 }
 
-ImageComponent:: ~ImageComponent() {
+ImageComponent:: ~ImageComponent() 
+{
 	CleanUp();
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 {
-	if (gameObject == nullptr) {
+	if (gameObject == nullptr) 
+	{
 		return nullptr;
 	}
 
 	GameObject* currentObject = gameObject;
 
-	while (currentObject != nullptr) {
-		if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr) {
+	while (currentObject != nullptr) 
+	{
+		if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr) 
+		{
 			return currentObject;
 		}
 		currentObject = currentObject->GetParent();
@@ -55,7 +61,8 @@ void ImageComponent::Draw()
     unsigned int UIImageProgram= App->GetPrograms()->GetUIImageProgram();
     if (UIImageProgram == 0) return;
 
-	if (mHasAlpha) {
+	if (mHasAlpha) 
+	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -132,17 +139,20 @@ void ImageComponent::Save(Archive& archive) const
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
     
-    if (data.HasMember("ImageID") && data["ImageID"].IsInt()) {
+    if (data.HasMember("ImageID") && data["ImageID"].IsInt()) 
+	{
 		const rapidjson::Value& imageIdValue = data["ImageID"];
 		
 		mResourceId = imageIdValue.GetInt();
 		SetImage(mResourceId);
     }
 
-	if (data.HasMember("Color") && data["Color"].IsArray()) {
+	if (data.HasMember("Color") && data["Color"].IsArray()) 
+	{
 		const rapidjson::Value& colorValues = data["Color"];
 		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (colorValues.Size() == 3 && colorValues[0].IsFloat() && colorValues[1].IsFloat() && colorValues[2].IsFloat()) {
+		if (colorValues.Size() == 3 && colorValues[0].IsFloat() && colorValues[1].IsFloat() && colorValues[2].IsFloat()) 
+		{
 			x = colorValues[0].GetFloat();
 			y = colorValues[1].GetFloat();
 			z = colorValues[2].GetFloat();
@@ -151,20 +161,23 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 		mColor = float3(x, y, z);
 	}
 
-	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) {
+	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) 
+	{
 		const rapidjson::Value& alphaValue = data["Alpha"];
 		
 		mAlpha = alphaValue.GetFloat();
 	}
 	
-	if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) {
+	if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) 
+	{
 		const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
 
 		mHasAlpha = hasAlphaValue.GetBool();
 	}
 }
 
-void ImageComponent::SetImage(unsigned int resourceId) {
+void ImageComponent::SetImage(unsigned int resourceId) 
+{
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 

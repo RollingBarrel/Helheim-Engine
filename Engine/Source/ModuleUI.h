@@ -26,7 +26,6 @@ public:
 	inline bool GetScreenSpace() { return mScreenSpace; }
 	
 	void CheckRaycast();
-	void ResizeFrustum(unsigned int width, unsigned int height);
 	GameObject* FindCanvas(GameObject* gameObject);
 
 private:

@@ -843,7 +843,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 }
 
-void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) 
+{
 	static int resourceId = int(imageComponent->GetResourceId());
 
 	//TODO: Handle the case where the resource is not found
@@ -858,10 +859,12 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 	ImGui::SetColumnWidth(0, 70.0);
 	ImGui::Image((void*)(intptr_t)imageComponent->GetImage()->GetOpenGLId(), ImVec2(50, 50));
 	if (ImGui::BeginDragDropTarget()) {
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
+		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
 			Resource* resource = App->GetResource()->RequestResource(asset->mPath);
-			if (resource && (resource->GetType() == Resource::Type::Texture)) {
+			if (resource && (resource->GetType() == Resource::Type::Texture)) 
+			{
 				imageComponent->SetImage(resource->GetUID());
 				imageComponent->SetFileName(asset->mName);
 			}
@@ -869,7 +872,8 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 		ImGui::EndDragDropTarget();
 	}
 	ImGui::NextColumn();
-	if (imageComponent->GetFileName() != nullptr) {
+	if (imageComponent->GetFileName() != nullptr) 
+	{
 		ImGui::Text(imageComponent->GetFileName());
 	}
 	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth());
@@ -888,7 +892,8 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) {
 
 }
 
-void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) {
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
+{
 	const char* renderModes[] = { "World Space", "Screen Space" };
 	static int selectedRenderMode = 1;
 
@@ -896,14 +901,17 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) {
 	ImGui::SameLine();
 	ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes));
 
-	if (selectedRenderMode == 0) {
+	if (selectedRenderMode == 0) 
+	{
 		App->GetUI()->SetScreenSpace(false);
 	}
-	else {
+	else 
+	{
 		App->GetUI()->SetScreenSpace(true);
 	}
 
-	if (ImGui::BeginTable("transformTable", 4)) {
+	if (ImGui::BeginTable("transformTable", 4)) 
+	{
 		ImGui::PushID(0);
 		ImGui::TableNextRow();
 
@@ -916,7 +924,8 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) {
 		float2 newSize = canvasComponent->GetSize();
 		const char* axisLabels2d[2] = { "Width", "Height" };
 
-		for (int j = 0; j < 2; ++j) {
+		for (int j = 0; j < 2; ++j) 
+		{
 			ImGui::TableNextColumn();
 			ImGui::PushItemWidth(-FLT_MIN);
 			ImGui::AlignTextToFramePadding();
@@ -927,29 +936,37 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) {
 		ImGui::PopID();
 
 
-		if (modifiedTransform) {
+		if (modifiedTransform) 
+		{
 			canvasComponent->SetSize(newSize);
 		}
 	}
 	ImGui::EndTable();
 }
 
-void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) {};
+void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
+{
+}
 
-void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
+void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 
+{
 	
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) 
+	{
 
 		ImGui::OpenPopup("TransformOptions");
 	}
-	if (ImGui::BeginPopup("TransformOptions")) {
-		if (ImGui::Selectable("Reset")) {
+	if (ImGui::BeginPopup("TransformOptions")) 
+	{
+		if (ImGui::Selectable("Reset")) 
+		{
 			component->ResetTransform();
 		}
 		ImGui::EndPopup();
 	}
 
-	if (ImGui::BeginTable("transformTable", 4)) {
+	if (ImGui::BeginTable("transformTable", 4)) 
+	{
 
 		bool modifiedTransform = false;
 		float3 newPosition = component->GetPosition();
@@ -959,7 +976,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 		const char* axisLabels[3] = { "X", "Y", "Z" };
 		float3* vectors[2] = { &newPosition, &newRotation };
 
-		for (int i = 0; i < 2; ++i) {
+		for (int i = 0; i < 2; ++i) 
+		{
 			ImGui::PushID(i);
 			ImGui::TableNextRow();
 
@@ -968,7 +986,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 			ImGui::Text(labels[i]);
 			ImGui::PopItemWidth();
 
-			for (int j = 0; j < 3; ++j) {
+			for (int j = 0; j < 3; ++j) 
+			{
 				ImGui::TableNextColumn();
 				ImGui::PushItemWidth(-FLT_MIN);
 				ImGui::AlignTextToFramePadding();
@@ -980,7 +999,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 			ImGui::PopID();
 		}
 
-		if (modifiedTransform) {
+		if (modifiedTransform) 
+		{
 			component->SetPosition(newPosition);
 			component->SetRotation(DegToRad(newRotation));
 			modifiedTransform = false;
@@ -995,7 +1015,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 		const char* axisLabels2d[2] = { "X", "Y" };
 		float2* vectors2d[4] = { &newSize, &newAnchorMin, &newAnchorMax, &newPivot };
 			
-		for (int i = 0; i < 4; ++i) {
+		for (int i = 0; i < 4; ++i) 
+		{
 			ImGui::PushID(i+2);
 			ImGui::TableNextRow();
 
@@ -1004,7 +1025,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 			ImGui::Text(labels2d[i]);
 			ImGui::PopItemWidth();
 
-			for (int j = 0; j < 2; ++j) {
+			for (int j = 0; j < 2; ++j) 
+			{
 				ImGui::TableNextColumn();
 				ImGui::PushItemWidth(-FLT_MIN);
 				ImGui::AlignTextToFramePadding();
@@ -1016,7 +1038,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) {
 			ImGui::PopID();
 		}
 
-		if (modifiedTransform) {
+		if (modifiedTransform) 
+		{
 			component->SetSize(newSize);
 			component->SetAnchorMax(newAnchorMax);
 			component->SetAnchorMin(newAnchorMin);
