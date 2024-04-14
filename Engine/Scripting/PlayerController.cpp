@@ -14,7 +14,7 @@
 #include "AnimationComponent.h"
 #include "Geometry/Ray.h"
 
-#include "Tag.h"
+#include "Target.h"
 #include "EnemyBase.h"
 #include <ScriptComponent.h>
 
@@ -53,6 +53,7 @@ void PlayerController::Start()
         mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
         mAnimationComponent->OnStart();
     }
+   
 }
 
 void PlayerController::Update()
@@ -102,10 +103,10 @@ void PlayerController::StateMachine() {
             MeleeAttack();
             break;
         case PlayerState::RangedAttack:
-            RangedAttack();
+            Shoot(mIsChargedShot, mChargedShotTime);
             break;
         case PlayerState::Reload:
-            ReloadWeapon();
+            Reload();
             break;
         case PlayerState::ThrowGrenade:
             ThrowGrenade();
@@ -159,13 +160,24 @@ void PlayerController::Controls() {
         ChangeState(PlayerState::MeleeAttack);
         anyKeyPressed = true;
     }
-
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) {
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+    {
+        mChargedShotTime += App->GetGameDt();
+        if (mChargedShotTime > 5) {
+			mIsChargedShot = true;
+		}
+		else {
+			mIsChargedShot = false;
+		}
         ChangeState(PlayerState::RangedAttack);
         anyKeyPressed = true;
     }
-
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN) {
+    else {
+        mChargedShotTime = 0;
+        mIsChargedShot = false;
+    }
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN) 
+    {
         ChangeState(PlayerState::Reload);
         anyKeyPressed = true;
     }
@@ -302,13 +314,48 @@ void PlayerController::RangedAttack() {
     }
 
 }
-//función para definir disparar
-void PlayerController::Shoot(int damage) {
-	//crear un rayo que salga de la posición del player en la dirección del front
-	//recorrer todos los objetos que hay en la escena y comprobar si el rayo colisiona con alguno
-	//si colisiona, comprobar si el objeto tiene el tag de enemigo
-	//si tiene el tag de enemigo, hacer daño al enemigo
 
+
+void PlayerController::Shoot(bool isChargedShot, float chargeTime)
+{
+    if (isChargedShot) {
+        //definir que el maximo del tiempo de carga es 20 segundos y el minimo 5 segundos
+        if (chargeTime > 20) chargeTime = 20;
+
+        int mDamage = chargeTime * 5;
+        int bulletCost = chargeTime * mBulletCostPerSecond;
+        if (mBullets >= bulletCost) {
+            ShootLogic(mDamage);
+            mBullets -= bulletCost;
+            LOG("Charged shot fired. Damage:  %i", mDamage);
+            LOG("Bullets:  %i", mBullets);
+        }
+        else {
+            LOG("Not enough bullets to fire charged shot.");
+        }
+    }
+    else {
+        if (mBullets > 0) {
+            ShootLogic(mDamage);
+            mBullets--;
+            if (mBullets == 0) {
+                // Lógica para entrar en el estado de recarga
+                LOG("Out of bullets! Cannot shoot.");
+            }
+            else {
+                // Lógica para regresar al estado de reposo
+                LOG("Basic shoot fire. Remining Bullets %i", mBullets);
+            }
+        }
+        else {
+            LOG("Out of bullets! Cannot shoot.");
+        }
+    }
+}
+
+
+void PlayerController::ShootLogic(int damage)
+{
     std::map<float, GameObject*> hits;
 
     Ray ray;
@@ -323,19 +370,60 @@ void PlayerController::Shoot(int damage) {
     //log the first object hit by the ray
     if (!hits.empty()) {
         LOG("Object %s dhas been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
-    }
-    
-    //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
-    for (auto hit : hits) {
-        if (hit.second->GetTag()->GetName() =="Enemy"){
+        //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
+        for (auto hit : hits) {
+            if (hit.second->GetTag()->GetName() == "Enemy") {
 
-            EnemyBase* target = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (target != nullptr) {
-                target->SetEnemyDamage(damage);
+              EnemyBase* enemy = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+             // Target* enemy = (Target*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+                if (enemy != nullptr) {
+                    enemy->SetEnemyDamage(damage);
+                }
             }
         }
     }
 }
+
+void PlayerController::Reload()
+{
+    mBullets = mMaxBullets;
+    LOG("Reloaded!Remaining bullets : %i", mBullets);
+}
+
+////función para definir disparar
+//void PlayerController::Shoot(int damage) {
+//	//crear un rayo que salga de la posición del player en la dirección del front
+//	//recorrer todos los objetos que hay en la escena y comprobar si el rayo colisiona con alguno
+//	//si colisiona, comprobar si el objeto tiene el tag de enemigo
+//	//si tiene el tag de enemigo, hacer daño al enemigo
+//
+//    std::map<float, GameObject*> hits;
+//
+//    Ray ray;
+//    ray.pos = mGameObject->GetPosition();
+//    ray.dir = mGameObject->GetFront();
+//
+//    float distance = 100.0f;
+//    hits = Physics::Raycast(&ray);
+//
+//    Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
+//
+//    //log the first object hit by the ray
+//    if (!hits.empty()) {
+//        LOG("Object %s dhas been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
+//    }
+//    
+//    //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
+//    for (auto hit : hits) {
+//        if (hit.second->GetTag()->GetName() =="Enemy"){
+//
+//            EnemyBase* target = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+//            if (target != nullptr) {
+//                target->SetEnemyDamage(damage);
+//            }
+//        }
+//    }
+//}
 
 
 void PlayerController::ReloadWeapon()

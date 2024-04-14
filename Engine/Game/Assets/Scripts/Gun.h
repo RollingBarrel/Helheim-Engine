@@ -33,7 +33,5 @@ private:
 	//reload variables
     float mReloadTime;
 
-public:
-
 };
 

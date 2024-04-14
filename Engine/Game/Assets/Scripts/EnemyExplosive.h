@@ -10,6 +10,8 @@ class EnemyExplosive : public EnemyBase
 		~EnemyExplosive() {}
 		void Start() override;
 		void Update() override;
+		void SetEnemyDamage(int damage) override;
+
 
 	private:
 		enum class EnemyState {
@@ -25,7 +27,6 @@ class EnemyExplosive : public EnemyBase
 		void ChangeState(EnemyState newState);
 		void StateMachine();
 		void SearchPlayer() override;
-		void SetEnemyDamage(int damage) override;
 		void Armed();
 		void Explosion();
 

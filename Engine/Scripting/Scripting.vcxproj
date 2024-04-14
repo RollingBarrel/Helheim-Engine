@@ -165,7 +165,6 @@
   <ItemGroup>
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBase.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\Gun.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Target.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
@@ -177,7 +176,6 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
-    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="pch.cpp">

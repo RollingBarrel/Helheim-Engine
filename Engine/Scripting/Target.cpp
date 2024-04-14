@@ -21,11 +21,6 @@ Target::Target(GameObject* owner) : Script(owner)
 }
 void Target::Update()
 {
-    // If the target health is less than or equal to 0, destroy the target
-    if (mTargetHealth <= 0)
-    {
-        LOG("Target Destroyed");
-    }
 }
 
 void Target::Start()

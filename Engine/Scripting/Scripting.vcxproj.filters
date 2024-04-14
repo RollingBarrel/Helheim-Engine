@@ -36,7 +36,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Target.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Gun.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -63,6 +62,5 @@
     <ClCompile Include="Target.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
-    <ClCompile Include="Gun.cpp" />
   </ItemGroup>
 </Project>

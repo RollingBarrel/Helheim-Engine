@@ -5,7 +5,7 @@
 #include "Globals.h"
 #include "Geometry/Ray.h"
 #include "GameObject.h"
-#include "EnemyBase.h"
+#include "EnemyExplosive.h"
 #include "ScriptComponent.h"
 #include "Tag.h"
 
@@ -86,7 +86,7 @@ void Gun::ShootLogic(int damage)
     for (auto hit : hits) {
         if (hit.second->GetTag()->GetName() == "Enemy") {
 
-            EnemyBase* enemy = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+            EnemyExplosive* enemy = (EnemyExplosive*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (enemy != nullptr) {
                 enemy->SetEnemyDamage(damage);
             }

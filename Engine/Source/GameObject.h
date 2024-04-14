@@ -6,6 +6,7 @@
 #include "Math/Quat.h"
 #include "string"
 #include "Archive.h"
+#include "Tag.h"
 
 #undef max
 #undef min

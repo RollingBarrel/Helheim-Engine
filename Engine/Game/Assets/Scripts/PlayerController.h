@@ -66,7 +66,10 @@ class PlayerController :public Script
         void MeleeAttack();
         void RangedAttack();
 
-        void Shoot(int damage);
+        void Shoot(bool isChargedShot, float chargeTime);
+        void ShootLogic(int damage);
+        void Reload();
+
         void ReloadWeapon();
         void ThrowGrenade();
 
@@ -81,7 +84,7 @@ class PlayerController :public Script
 
         NavMeshController* mNavMeshControl = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
-        Gun* Gun = nullptr;
+        Gun* mGun = nullptr;
 
         PlayerState mCurrentState;
         PlayerState mPreviousState;
@@ -93,5 +96,16 @@ class PlayerController :public Script
         bool mIsMoving = false;
         bool mIsRecharging = false;
         float mReloadTimePassed = 0.0f;
+
+        //shooting variables
+        int mDamage = 1;
+        int mMaxBullets = 16;
+        int mBullets = 16;
+        float mChargedShotTime = 10.0f;
+        float mBulletCostPerSecond = 1.0f;
+        bool mIsChargedShot = false;
+
+        //reload variables
+        float mReloadTime = 10.0f;
 
 };
