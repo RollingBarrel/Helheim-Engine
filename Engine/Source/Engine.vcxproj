@@ -535,6 +535,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\Fragment.fs" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBR_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />

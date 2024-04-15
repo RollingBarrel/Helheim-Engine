@@ -127,10 +127,10 @@ bool ModuleOpenGL::Init()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
-	mPbrProgramId = CreateShaderProgramFromPaths("PBR_VertexShader.glsl", "PBR_PixelShader.glsl");
+	mPbrProgramId = CreateShaderProgramFromPaths("PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl");
 	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
 	mDebugDrawProgramId = CreateShaderProgramFromPaths("basicDebugShader.vs", "basicDebugShader.fs");
-
+	mUIImageProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -197,6 +197,7 @@ bool ModuleOpenGL::CleanUp()
 
 	glDeleteProgram(mPbrProgramId);
 	glDeleteProgram(mSkyBoxProgramId);
+	glDeleteProgram(mUIImageProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteBuffers(1, &mSkyVbo);
 	glDeleteFramebuffers(1, &sFbo);

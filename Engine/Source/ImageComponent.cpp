@@ -5,7 +5,6 @@
 #include "ModuleResource.h"
 #include "ModuleWindow.h"
 #include "ModuleUI.h"
-#include "ModulePrograms.h"
 #include "ModuleEditor.h"
 
 #include "ScenePanel.h"
@@ -59,7 +58,7 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 {
-    unsigned int UIImageProgram= App->GetPrograms()->GetUIImageProgram();
+    unsigned int UIImageProgram= App->GetOpenGL()->GetUIImageProgram();
     if (UIImageProgram == 0) return;
 
 	if (mHasAlpha) 

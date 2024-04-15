@@ -653,9 +653,9 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
 
     GameObject* focusGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
     
-    if (((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetComponent(ComponentType::ANIMATION)) 
+    if (focusGameObject && focusGameObject->GetComponent(ComponentType::ANIMATION))
     {
-        DrawSkeleton(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject());
+        DrawSkeleton(focusGameObject);
     }
     
     dd::flush();

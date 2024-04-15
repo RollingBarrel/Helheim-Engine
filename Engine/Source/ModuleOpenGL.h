@@ -63,6 +63,7 @@ public:
 
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
+	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 
 
 	//TODO: put all this calls into one without separating for light type??
@@ -107,6 +108,7 @@ private:
 	unsigned int mPbrProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
+	unsigned int mUIImageProgramId = 0;
 
 
 	//Lighting uniforms
