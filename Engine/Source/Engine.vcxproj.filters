@@ -472,11 +472,11 @@
     <ClCompile Include="Particle.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleEmitter.cpp">
-      <Filter>Utils\Particles</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystemComponent.cpp">
       <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EmitterShape.cpp">
+      <Filter>Utils\Particles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1264,11 +1264,14 @@
     <ClInclude Include="Particle.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleEmitter.h">
-      <Filter>Utils\Particles</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleSystemComponent.h">
       <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorGradient.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="EmitterShape.h">
+      <Filter>Utils\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -245,6 +245,7 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
     <ClCompile Include="EditorControlPanel.cpp" />
+    <ClCompile Include="EmitterShape.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
@@ -263,7 +264,6 @@
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="ParticleSystemComponent.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
@@ -328,6 +328,7 @@
     <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CameraUtils.h" />
+    <ClInclude Include="ColorGradient.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
@@ -479,13 +480,13 @@
     <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkStreamMgr.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="EditorControlPanel.h" />
+    <ClInclude Include="EmitterShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ModuleEvent.h" />
-    <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystemComponent.h" />
     <ClInclude Include="ResourceScript.h" />
