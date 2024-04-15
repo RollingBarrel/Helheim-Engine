@@ -18,6 +18,7 @@
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
+#include "CameraComponent.h"
 
 #include "Math/TransformOps.h"
 
@@ -89,10 +90,11 @@ void ImageComponent::Draw()
 	}
 	else //World Mode
 	{
-		// WE NEED A METHOD TO GET CURRENT CAMERA AND CORRESPONDING FRUSTUM
-		//proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
-		//model = GetOwner()->GetWorldTransform();
-		//view = App->GetUI()->GetFrustum()->ViewMatrix();
+		const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+		
+		proj = camera->GetProjectionMatrix();
+		model = GetOwner()->GetWorldTransform();
+		view = camera->GetViewMatrix();
 	}
 
 	FillVBO();
