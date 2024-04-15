@@ -73,6 +73,8 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     unsigned int texFormat;
     unsigned int dataType;
 
+    LOG("Texture loaded with format %s", DxgiFormatToString(image.GetMetadata().format));
+
     switch (image.GetMetadata().format) 
     {
     case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
@@ -97,11 +99,14 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         texFormat = GL_RGBA;
         dataType = GL_UNSIGNED_SHORT;
         break;
+    case DXGI_FORMAT_BC1_UNORM:
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        texFormat = GL_COMPRESSED_TEXTURE_FORMATS; // This value won't be used
+        dataType = 0; // This value won't be used
+        break;
     default:
         assert(false && "Unsupported format");
     }
-
-    LOG("Texture loaded with format %s", DxgiFormatToString(image.GetMetadata().format));
 
     unsigned int width = image.GetMetadata().width;
     unsigned int height = image.GetMetadata().height;
@@ -195,7 +200,14 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         // Set texture data for each mip level
         for (size_t i = 0; i < mipLevels; ++i)
         {
-            glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+            if (internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
+            {
+                glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, numPixels, pixels);
+            }
+            else
+            {
+                glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+            }
         }
 
         // Generate mipmaps if only one mip level is present
