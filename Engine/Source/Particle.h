@@ -14,7 +14,7 @@ public:
     float3 getSpeed() const { return mSpeed; }
     float getSize() const { return mSize; }
     float getLifetime() const { return mLifetime; }
-    float4 getcolor() const { return mColor; }
+    float4 getColor() const { return mColor; }
     //Material getmaterial() const { return mMaterial; }
 
     void setPosition(const float3& position) { mPosition = position; }

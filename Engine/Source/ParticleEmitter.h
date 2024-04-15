@@ -30,6 +30,7 @@ private:
     float3 mPosition;
     bool mRandomPosition;
     float3 mDirection;
+    unsigned int mVAO;
 
     float mSpeed;
 

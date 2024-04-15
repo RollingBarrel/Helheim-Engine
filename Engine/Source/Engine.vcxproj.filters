@@ -1411,5 +1411,11 @@
     </None>
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <None Include="particle_vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="particle_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

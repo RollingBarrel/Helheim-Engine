@@ -562,6 +562,8 @@
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Timer.h" />
+    <None Include="particle_fragment.glsl" />
+    <None Include="particle_vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\shaders\default_fragment.glsl" />
