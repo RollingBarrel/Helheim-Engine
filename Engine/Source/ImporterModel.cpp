@@ -98,7 +98,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
             }
             else
             {
-                materialId = 0;
+                materialId = 1;
             }
 
             delete rMesh;
