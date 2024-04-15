@@ -101,6 +101,7 @@ bool ModuleEditor::Init()
 
 	// Load the saved layout when opening the engine
 	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadCameraPosition();
 	mPanels[SETTINGSPANEL]->Close();
 
 	Style();
@@ -158,6 +159,7 @@ update_status ModuleEditor::PostUpdate(float dt)
 
 bool ModuleEditor::CleanUp()
 {
+	
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
@@ -180,6 +182,11 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 	
 	Panel* panel = mPanels[name];
 	panel->Open();
+}
+
+void ModuleEditor::SaveCameraPosition()
+{
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveCameraPosition();
 }
 
 void ModuleEditor::ShowMainMenuBar() 

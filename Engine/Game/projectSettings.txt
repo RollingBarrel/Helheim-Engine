@@ -7,98 +7,98 @@ Draw Grid: 1
 14
 About##
 0
-60 83
+188 132
 32 35
 Console##
 1
-0 1036
-1365 345
+128 428
+573 345
 Debug
 0
-238 172
+366 221
 333 287
 Editor Controls##
 1
-0 42
-2560 42
+128 91
+1280 42
 Scene##
 1
-403 86
-1804 948
+531 135
+524 291
 Hierarchy##
 1
-0 86
-401 948
+128 135
+401 291
 Inspector##
 1
-2209 86
-351 948
+1057 135
+351 466
 TagsManagerPanel##
 0
-60 83
+188 132
 32 35
 NavMesh Parameters
 0
-61 83
+189 132
 599 423
 Resource##
 1
-2209 1036
-351 345
+1057 603
+351 170
 LightningPanel##
 0
-60 83
+188 132
 32 35
 Project##
 1
-1367 1036
-840 345
+703 428
+352 345
 Timer##
 0
-62 83
+190 132
 448 405
 Settings##
 1
-63 205
+191 254
 287 357
 [Window][DockSpaceViewport_11111111]
 Pos=0,19
-Size=2560,1339
+Size=1280,682
 Collapsed=0
 
 [Window][Console##]
-Pos=0,1013
-Size=1365,345
+Pos=0,356
+Size=573,345
 Collapsed=0
 DockId=0x0000000B,0
 
 [Window][Hierarchy##]
 Pos=0,63
-Size=401,948
+Size=401,291
 Collapsed=0
 DockId=0x00000005,0
 
 [Window][Inspector##]
-Pos=2209,63
-Size=351,948
+Pos=929,63
+Size=351,466
 Collapsed=0
 DockId=0x00000009,0
 
 [Window][Resource##]
-Pos=2209,1013
-Size=351,345
+Pos=929,531
+Size=351,170
 Collapsed=0
 DockId=0x0000000A,0
 
 [Window][Scene##]
 Pos=403,63
-Size=1804,948
+Size=524,291
 Collapsed=0
 DockId=0x00000006,0
 
 [Window][Project##]
-Pos=1367,1013
-Size=840,345
+Pos=575,356
+Size=352,345
 Collapsed=0
 DockId=0x0000000C,0
 
@@ -139,7 +139,7 @@ Collapsed=0
 
 [Window][Editor Controls##]
 Pos=0,19
-Size=2560,42
+Size=1280,42
 Collapsed=0
 DockId=0x00000007,0
 
@@ -164,7 +164,7 @@ Size=212,94
 Collapsed=0
 
 [Docking][Data]
-DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=0,42 Size=2560,1339 Split=Y
+DockSpace         ID=0x8B93E3BD Window=0xA787BDB4 Pos=128,91 Size=1280,682 Split=Y
   DockNode        ID=0x00000007 Parent=0x8B93E3BD SizeRef=2560,42 HiddenTabBar=1 Selected=0x54FE4137
   DockNode        ID=0x00000008 Parent=0x8B93E3BD SizeRef=2560,1295 Split=X
     DockNode      ID=0x00000003 Parent=0x00000008 SizeRef=2207,721 Split=Y

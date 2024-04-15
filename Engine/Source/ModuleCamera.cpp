@@ -126,6 +126,28 @@ const CameraComponent* ModuleCamera::GetEditorCamera() const
 	return (CameraComponent*)mEditorCamera->GetComponent(ComponentType::CAMERA);
 }
 
+const float3& ModuleCamera::GetPosition()
+{
+	return mEditorCamera->GetPosition();
+}
+
+const float3& ModuleCamera::GetRotation()
+{
+	return mEditorCamera->GetRotation();
+}
+
+void ModuleCamera::SetPosition(float3 newPostion)
+{
+	mEditorCamera->SetPosition(newPostion);
+	mCurrentCameraComponent->Transform(newPostion);
+}
+
+void ModuleCamera::SetRotation(float3 newRotation)
+{
+	mEditorCamera->SetRotation(newRotation);
+	mCurrentCameraComponent->SetRotation(newRotation); //NEEDS FIX
+}
+
 void ModuleCamera::ActivateEditorCamera()
 {
 	SetCurrentCamera(mEditorCamera);

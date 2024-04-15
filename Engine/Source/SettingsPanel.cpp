@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
+#include "ModuleCamera.h"
 #include "Quadtree.h"
 #include "Timer.h"
 
@@ -14,6 +15,7 @@
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
 {
+
 }
 
 SettingsPanel::~SettingsPanel()
@@ -115,6 +117,11 @@ void SettingsPanel::Draw(int windowFlags)
 			LoadProjectSettings();
 		}
 
+		if (ImGui::Button("camara"))
+		{
+			SaveCameraPosition();
+			LoadCameraPosition();
+		}
 	}
 	ImGui::End();
 }
@@ -122,7 +129,7 @@ void SettingsPanel::Draw(int windowFlags)
 void SettingsPanel::SaveProjectSettings()
 {
 	mOpenedWindowsInfo.clear();
-	std::ofstream out_file("config.txt");
+	std::ofstream out_file("projectSettings.txt");
 
 	// Settings variables we want to store
 	if (out_file.is_open())
@@ -167,11 +174,53 @@ void SettingsPanel::SaveProjectSettings()
 	}
 }
 
+void SettingsPanel::SaveCameraPosition()
+{
+	std::ofstream userSettings("userSettings.txt");
+	float3 cameraPosition = App->GetCamera()->GetPosition();
+	float3 cameraRotation = App->GetCamera()->GetRotation();
+
+	if (userSettings.is_open())
+	{
+		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
+		userSettings << "Camera Rotation:\n" << cameraRotation.x << '\n' << cameraRotation.y << '\n' << cameraRotation.z << "\n";
+	}
+	
+	
+
+}
+
+void SettingsPanel::LoadCameraPosition()
+{
+	std::ifstream userSettings("userSettings.txt");
+
+	std::string line;
+
+	float3 cameraPosition;
+	float3 cameraRotation;
+
+	std::getline(userSettings, line);
+	for (int i = 0; i < 3; ++i)
+	{
+		std::getline(userSettings, line);
+		cameraPosition[i] = std::stof(line);
+	}
+	std::getline(userSettings, line);
+	for (int i = 0; i < 3; ++i)
+	{
+		std::getline(userSettings, line);
+		cameraRotation[i] = std::stof(line);
+	}
+
+	App->GetCamera()->SetPosition(cameraPosition);
+	App->GetCamera()->SetRotation(cameraRotation);
+}
+
 void SettingsPanel::LoadProjectSettings()
 {
 	mOpenedWindowsInfo.clear();
 	// Load the settings for all the windows
-	std::ifstream in_file("config.txt");
+	std::ifstream in_file("projectSettings.txt");
 	if (in_file.is_open()) 
 	{
 		std::string line;
