@@ -50,6 +50,9 @@ void EnemyBase::ActivateEnemy() {
 //This is the distance from the enemy (self) to an opponent (player or another enemy)
 bool EnemyBase::OpponentDistance(float triggerDistance) {
     float3 selfPosition = mGameObject->GetPosition();
+    if (mOpponent == nullptr) {
+        return false;
+    }
     float3 opponentPosition = mOpponent->GetPosition();
 
     float distance = selfPosition.Distance(opponentPosition);
@@ -63,20 +66,7 @@ bool EnemyBase::OpponentDistance(float triggerDistance) {
 }
 
 void EnemyBase::MeeleAttach() {
-   /* if ()
-	//player abb
-	MeshRendererComponent* playerMesh = (MeshRendererComponent*)mGameObject->GetComponent(ComponentType::MESHRENDERER);
-	//enemy abb
-	MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
 
-		// if enemy abb colllides with player abb log "hit"
-   if (playerMesh->GetAABB().Intersects(enemyMesh->GetAABB())) {
-		LOG("Hit");
-	}
-       else {
-			//LOG("Miss");
-		}
-   */
 }
 
 void EnemyBase::SearchPlayer() {
