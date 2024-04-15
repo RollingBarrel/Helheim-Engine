@@ -108,18 +108,18 @@ void SettingsPanel::Draw(int windowFlags)
 
 		if (ImGui::Button("Save settings")) 
 		{
-			SaveSettings();
+			SaveProjectSettings();
 		}
 		if (ImGui::Button("Load settings")) 
 		{
-			LoadSettings();
+			LoadProjectSettings();
 		}
 
 	}
 	ImGui::End();
 }
 
-void SettingsPanel::SaveSettings()
+void SettingsPanel::SaveProjectSettings()
 {
 	mOpenedWindowsInfo.clear();
 	std::ofstream out_file("config.txt");
@@ -167,7 +167,7 @@ void SettingsPanel::SaveSettings()
 	}
 }
 
-void SettingsPanel::LoadSettings()
+void SettingsPanel::LoadProjectSettings()
 {
 	mOpenedWindowsInfo.clear();
 	// Load the settings for all the windows

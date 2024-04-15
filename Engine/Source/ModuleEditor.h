@@ -36,7 +36,7 @@ private:
 	bool mSaveSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
 	std::vector<const char*> mPanelNames;
-	OptickAdapter* mOptick;
+	OptickAdapter* mOptick = nullptr;
 	void OpenLoadScene();
 	void OpenSaveScene();
 	void Style();

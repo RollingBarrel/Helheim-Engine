@@ -23,7 +23,7 @@ public:
 	SettingsPanel();
 	~SettingsPanel();
 
-	void LoadSettings();
+	void LoadProjectSettings();
 	void Draw(int windowFlags) override;
 private:
 	bool mCulling = false;
@@ -37,6 +37,6 @@ private:
 
 	std::vector<WindowState*> mOpenedWindowsInfo;
 
-	void SaveSettings();
+	void SaveProjectSettings();
 };
 
