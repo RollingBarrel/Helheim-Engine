@@ -1,5 +1,7 @@
 #include "Transform2DComponent.h"
 #include "CanvasComponent.h"
+#include "ImageComponent.h"
+#include "ResourceTexture.h"
 #include "Component.h"
 #include "GameObject.h"
 
@@ -234,7 +236,31 @@ void Transform2DComponent::SetRotation(const float3& rotation)
 
 void Transform2DComponent::SetSize(const float2 size)
 { 
-	mSize = size; 
+	ImageComponent* component = ((ImageComponent*)GetOwner()->GetComponent(ComponentType::IMAGE));
+	if ( component->GetMantainRatio() )
+	{
+		if (size.x != mSize.x)
+		{
+			float originalRatio = component->GetImage()->GetWidth() / component->GetImage()->GetHeight();
+			float currentRatio = size.x / size.y;
+			float ratio = currentRatio / originalRatio;
+			float2 newSize = float2(mSize.x * ratio, mSize.y);
+			mSize = newSize;
+		}
+		else 
+		{
+			float originalRatio = component->GetImage()->GetWidth() / component->GetImage()->GetHeight();
+			float currentRatio = size.x / size.y;
+			float ratio = currentRatio / originalRatio;
+			float2 newSize = float2(mSize.x, mSize.y * ratio);
+			mSize = newSize;
+		}
+	}
+	else 
+	{
+		mSize = size; 
+	}
+
 	CalculateMatrices(); 
 }
 

@@ -217,6 +217,26 @@ void ImageComponent::CreateVAO()
 	glBindVertexArray(0);
 }
 
+void ImageComponent::ResizeByRatio()
+{
+	float originalRatio = mImage->GetWidth() / mImage->GetHeight() ;
+	if (App->GetUI()->GetScreenSpace()) //Ortographic Mode
+	{
+		Transform2DComponent* component = ((Transform2DComponent*)GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+		float currentRatio = component->GetSize().x / component->GetSize().y;
+		float ratio = currentRatio / originalRatio;
+		float2 newSize = float2(component->GetSize().x, component->GetSize().y * ratio);
+		component->SetSize(newSize);
+	}
+	else 
+	{
+		float currentRatio = GetOwner()->GetScale().x / GetOwner()->GetScale().y;
+		float ratio = currentRatio / originalRatio;
+		float3 newScale = float3(GetOwner()->GetScale().x, GetOwner()->GetScale().y * ratio, GetOwner()->GetScale().z);
+		GetOwner()->SetScale(newScale);
+	}
+}
+
 bool ImageComponent::CleanUp()
 {
 	glDeleteBuffers(1, &mQuadVBO);
