@@ -753,12 +753,12 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 
 	if (parentUID == 1) 
 	{
-		go = new GameObject(name, scene);
+		go = new GameObject(uuid,name, scene);
 	}
 	else 
 	{
 		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
-		go = new GameObject(name, gameObjectParent);
+		go = new GameObject(uuid, name, gameObjectParent);
 	}
 	go->SetPosition(position);
 	go->SetRotation(rotation);

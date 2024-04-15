@@ -460,6 +460,6 @@ void ModuleScene::LoadGameObjectsIntoScripts()
 {
 	for (auto& pair : mGameObjectsToLoadIntoScripts) 
 	{
-		*pair.second = Find(pair.first);
+		*(pair.second) = Find(pair.first);
 	}
 }
