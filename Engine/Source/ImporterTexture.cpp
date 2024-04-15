@@ -10,6 +10,22 @@
 
 #include "DirectXTex.h"
 
+const char* DxgiFormatToString(DXGI_FORMAT format)
+{
+    switch (format)
+    {
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB: return "DXGI_FORMAT_R8G8B8A8_UNORM_SRGB";
+    case DXGI_FORMAT_R8G8B8A8_UNORM: return "DXGI_FORMAT_R8G8B8A8_UNORM";
+    case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB: return "DXGI_FORMAT_B8G8R8A8_UNORM_SRGB";
+    case DXGI_FORMAT_B8G8R8A8_UNORM: return "DXGI_FORMAT_B8G8R8A8_UNORM";
+    case DXGI_FORMAT_B5G6R5_UNORM: return "DXGI_FORMAT_B5G6R5_UNORM";
+    case DXGI_FORMAT_R16G16B16A16_UNORM: return "DXGI_FORMAT_R16G16B16A16_UNORM";
+    case DXGI_FORMAT_BC1_UNORM: return "DXGI_FORMAT_BC1_UNORM";
+        // Add more cases as needed...
+    default: return "Unknown format";
+    }
+}
+
 ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int uid)
 {
     std::string gltfPath = (filePath);
@@ -33,7 +49,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
 
             if (FAILED(hr))
             {
-                LOG("texture failed to load");
+                LOG("Texture failed to load");
                 return nullptr;
             }
         }
@@ -41,7 +57,18 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     
     delete[] pathTex;
 
-    // for get all information of the texture and see the parameters it have
+    DirectX::ScratchImage compressedImage;
+    hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_BC1_UNORM, DirectX::TEX_COMPRESS_DEFAULT, 0.5f, compressedImage);
+    if (FAILED(hr))
+    {
+        LOG("Failed to compress texture");
+        return nullptr;
+    }
+
+    // Replaces the original image with the compressed one
+    image = std::move(compressedImage);
+
+    // For get all information of the texture and see the parameters it have
     unsigned int internalFormat;
     unsigned int texFormat;
     unsigned int dataType;
@@ -73,6 +100,8 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     default:
         assert(false && "Unsupported format");
     }
+
+    LOG("Texture loaded with format %s", DxgiFormatToString(image.GetMetadata().format));
 
     unsigned int width = image.GetMetadata().width;
     unsigned int height = image.GetMetadata().height;
