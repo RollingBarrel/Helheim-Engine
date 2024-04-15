@@ -15,8 +15,7 @@
 #include "Geometry/Ray.h"
 #include "Geometry/Plane.h"
 #include "EnemyBase.h"
-#include "Target.h"
-#include "EnemyBase.h"
+#include "EnemyExplosive.h"
 #include <ScriptComponent.h>
 
 CREATE(PlayerController)
@@ -389,14 +388,11 @@ void PlayerController::MeleeAttack()
 
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
-            LOG("Hit");
 
-            // Hacer daño al enemigo objetivo
-            Target* target = (Target*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (target != nullptr) 
-            {
-                target->TakeDamage(10.0f);
-            }
+               EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+               if (enemyScript != nullptr) {
+                   enemyScript->SetEnemyDamage(mDamage);
+               }
         }
     }
 }
@@ -486,10 +482,9 @@ void PlayerController::ShootLogic(int damage)
         for (auto hit : hits) {
             if (hit.second->GetTag()->GetName() == "Enemy") {
 
-              EnemyBase* enemy = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-             // Target* enemy = (Target*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-                if (enemy != nullptr) {
-                    enemy->SetEnemyDamage(damage);
+                EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+                if (enemyScript != nullptr) {
+                    enemyScript->SetEnemyDamage(mDamage);
                 }
             }
         }
@@ -501,41 +496,6 @@ void PlayerController::Reload()
     mBullets = mMaxBullets;
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
-
-////función para definir disparar
-//void PlayerController::Shoot(int damage) {
-//	//crear un rayo que salga de la posición del player en la dirección del front
-//	//recorrer todos los objetos que hay en la escena y comprobar si el rayo colisiona con alguno
-//	//si colisiona, comprobar si el objeto tiene el tag de enemigo
-//	//si tiene el tag de enemigo, hacer daño al enemigo
-//
-//    std::map<float, GameObject*> hits;
-//
-//    Ray ray;
-//    ray.pos = mGameObject->GetPosition();
-//    ray.dir = mGameObject->GetFront();
-//
-//    float distance = 100.0f;
-//    hits = Physics::Raycast(&ray);
-//
-//    Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
-//
-//    //log the first object hit by the ray
-//    if (!hits.empty()) {
-//        LOG("Object %s dhas been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
-//    }
-//    
-//    //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
-//    for (auto hit : hits) {
-//        if (hit.second->GetTag()->GetName() =="Enemy"){
-//
-//            EnemyBase* target = (EnemyBase*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-//            if (target != nullptr) {
-//                target->SetEnemyDamage(damage);
-//            }
-//        }
-//    }
-//}
 
 
 void PlayerController::ReloadWeapon()
