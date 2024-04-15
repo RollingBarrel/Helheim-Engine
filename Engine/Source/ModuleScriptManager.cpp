@@ -44,7 +44,7 @@ update_status ModuleScriptManager::Update(float dt)
 {
 	if (mIsPlaying) 
 	{
-		for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
+		for (ScriptComponent* script : mScripts) 
 		{
 			script->mScript->Update();
 		}

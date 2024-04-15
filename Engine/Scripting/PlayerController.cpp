@@ -143,7 +143,7 @@ void PlayerController::Win()
 
 void PlayerController::Lose() 
 {
-    if (mWinArea) {
+    if (mLoseArea) {
         float3 losePosition = mLoseArea->GetPosition();
         float3 playerPosition = mGameObject->GetPosition();
         if (losePosition.Distance(playerPosition) < 3.0f)
