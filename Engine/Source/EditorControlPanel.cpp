@@ -132,6 +132,7 @@ void EditorControlPanel::Draw(int windowFlags)
 		ImGui::PopStyleColor(3);
 	}
 
+	currentState = mState;
 	ImGui::SameLine();
 	if (mState == GameState::PAUSE || mState == GameState::PLAY_PAUSE)
 	{
@@ -219,17 +220,8 @@ void EditorControlPanel::Stop()
 	App->GetScriptManager()->Stop();
 	App->GetScene()->Load("TemporalScene");
 
-	switch (mState)
-	{
-	case GameState::PLAY:
-		mState = GameState::STOP;
-		break;
-	case GameState::PLAY_PAUSE:
-		mState = GameState::PAUSE;
-		break;
-	default:
-		break;
-	}
+	mState = GameState::STOP;
+
 }
 
 void EditorControlPanel::Step()
