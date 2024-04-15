@@ -14,7 +14,7 @@ CREATE(EnemyExplosive)
 
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
-    MEMBER(MemberType::GAMEOBJECT, mOpponent);
+    //MEMBER(MemberType::GAMEOBJECT, mOpponent);
     END_CREATE;
 
 }
@@ -38,14 +38,17 @@ void EnemyExplosive::Update()
 }
 
 //Change actual animation state of the enemy
-void EnemyExplosive::ChangeState(EnemyState newState) {
+void EnemyExplosive::ChangeState(EnemyState newState) 
+{
     mCurrentState = newState;
     StateMachine();
 }
 
 //Shows actual animation state of the enemy
-void EnemyExplosive::StateMachine() {
-    switch (mCurrentState) {
+void EnemyExplosive::StateMachine() 
+{
+    switch (mCurrentState) 
+    {
         //******************************************************
         //FOR TEST UNTIL AI WILL BE AVAILABLE (will be changed the system to call the State Machine)
         case EnemyState::Deploy:
@@ -73,31 +76,38 @@ void EnemyExplosive::StateMachine() {
     }
 }
 
-void EnemyExplosive::SearchPlayer() {
+void EnemyExplosive::SearchPlayer() 
+{
     EnemyBase::SearchPlayer();
 
-    if (mInAttackDistance) {
+    if (mInAttackDistance) 
+    {
         ChangeState(EnemyState::Armed);
     }
 }
 
-void EnemyExplosive::SetEnemyDamage(int damage) {
+void EnemyExplosive::SetEnemyDamage(int damage) 
+{
     EnemyBase::SetEnemyDamage(damage);
 
-    if (mHealth = 0) {
+    if (mHealth = 0) 
+    {
         ChangeState(EnemyState::Armed);
     }
 }
 
-void EnemyExplosive::Armed() {  
+void EnemyExplosive::Armed() 
+{  
     LOG("Armed explosive animation");
 
-    if (Delay(5.0f)) {
+    if (Delay(5.0f)) 
+    {
         ChangeState(EnemyState::Explosion);
     }  
 }
 
-void EnemyExplosive::Explosion() {
+void EnemyExplosive::Explosion() 
+{
     mInAttackDistance = false;
 
     //*******************************
@@ -106,29 +116,34 @@ void EnemyExplosive::Explosion() {
 
     LOG("Explosion animation");
 
-    if (OpponentDistance(mAttackDistance)) {
+    if (OpponentDistance(mAttackDistance)) 
+    {
         //DAMAGE PLAYER AND OTHER ENEMIES IN DISTANCE RANGE
     }
 }
 
 //************************************************************************
 //FOR TEST UNTIL AI WILL BE AVAILABLE
-void EnemyExplosive::Test_Forward() {
+void EnemyExplosive::Test_Forward() 
+{
     EnemyBase::Test_Forward();
     ChangeState(EnemyState::Forward);
 }
 
-void EnemyExplosive::Test_Backward() {
+void EnemyExplosive::Test_Backward() 
+{
     EnemyBase::Test_Backward();
     ChangeState(EnemyState::Backward);
 }
 
-void EnemyExplosive::Test_Left() {
+void EnemyExplosive::Test_Left() 
+{
     EnemyBase::Test_Left();
     ChangeState(EnemyState::Left);
 }
 
-void EnemyExplosive::Test_Right() {
+void EnemyExplosive::Test_Right() 
+{
     EnemyBase::Test_Right();
     ChangeState(EnemyState::Right);
 }

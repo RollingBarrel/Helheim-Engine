@@ -18,7 +18,7 @@ class PlayerController :public Script
         void Update() override;
 
         void SetPlayerDamage(int damage);
-        bool PlayerIsDeath();
+        bool GetPlayerIsDead();
 
         void WinTest();
         void LoseTest();
@@ -29,9 +29,13 @@ class PlayerController :public Script
         GameObject* mWinArea = nullptr;
         GameObject* mLoseArea = nullptr;
         GameObject* mAnimationComponentHolder = nullptr;
-        float mDashSpeed = 5.0f;
-        float mDashLenght = 5.0f;
-        float mDashCoolDown = 1.0f;
+
+        //Dash Variables
+        float mDashSpeed = 35.0f;
+        float mDashDistance = 3.0f;
+        float mDashCoolDown = 3.0f;
+        int mDashCharges = 5;
+
         int mHealth = 1;
         int mShield = 100;
         int mSanity = 100;
@@ -88,16 +92,20 @@ class PlayerController :public Script
 
         PlayerState mCurrentState;
         PlayerState mPreviousState;
+
+        //Dash variables
         bool mIsDashActive = false;
         bool mStartCounter = false;
         float mDashTimePassed = 0.0f;
         float mDashMovement = 0;
-        bool mPlayerIsDeath = false;
+        bool mDashTrigger = false;
+
+        bool mPlayerIsDead = false;
         bool mIsMoving = false;
         bool mIsRecharging = false;
         float mReloadTimePassed = 0.0f;
 
-        //shooting variables
+        //Shooting variables
         int mDamage = 1;
         int mMaxBullets = 16;
         int mBullets = 16;
@@ -105,7 +113,6 @@ class PlayerController :public Script
         float mBulletCostPerSecond = 1.0f;
         bool mIsChargedShot = false;
 
-        //reload variables
+        //Reload variables
         float mReloadTime = 10.0f;
-
 };

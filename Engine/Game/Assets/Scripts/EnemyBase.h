@@ -19,7 +19,6 @@ class EnemyBase : public Script
 		float mEnemySpeed = 1.0f;
 		float mEnemyRotationSpeed = 1.0f;
 		GameObject* mAnimationComponentHolder = nullptr;
-		GameObject* mOpponent = nullptr;
 
 		int mHealth = 100;
 		float mActivationDistance = 15.0f;
@@ -27,7 +26,6 @@ class EnemyBase : public Script
 
 	protected:
 		bool OpponentDistance(float enemyDistance);
-		void MeeleAttach();
 		bool Delay(float delay);
 		virtual void SearchPlayer();
 				

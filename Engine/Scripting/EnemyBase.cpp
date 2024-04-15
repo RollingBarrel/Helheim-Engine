@@ -19,7 +19,8 @@ void EnemyBase::Start()
 {
     mNavMeshControl = App->GetScene()->GetNavController();
 
-    if (mAnimationComponentHolder) {
+    if (mAnimationComponentHolder) 
+    {
         mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
         mAnimationComponent->OnStart();
     }
@@ -29,68 +30,73 @@ void EnemyBase::Update()
 {
     ActivateEnemy();
 
-    if (mAnimationComponent) {
+    if (mAnimationComponent) 
+    {
         mAnimationComponent->OnUpdate();
     }
 }
 
-void EnemyBase::ActivateEnemy() {
-    if (mEnemyActivated == false) {
-        if (OpponentDistance(mActivationDistance)) {
+void EnemyBase::ActivateEnemy() 
+{
+    if (mEnemyActivated == false) 
+    {
+        if (OpponentDistance(mActivationDistance)) 
+        {
             mEnemyActivated = true;
             LOG("PLAYER IN RANGE. Movement activated");
         }
     }
     
-    if (mEnemyActivated) {
+    if (mEnemyActivated) 
+    {
         SearchPlayer();
     }
 }
 
 //This is the distance from the enemy (self) to an opponent (player or another enemy)
-bool EnemyBase::OpponentDistance(float triggerDistance) {
+bool EnemyBase::OpponentDistance(float triggerDistance) 
+{
+    ModuleScene* scene = App->GetScene();
+    std::vector<GameObject*> Opponents;
+
+    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Player")->GetID(), Opponents);
+    
     float3 selfPosition = mGameObject->GetPosition();
-    float3 opponentPosition = mOpponent->GetPosition();
 
-    float distance = selfPosition.Distance(opponentPosition);
+    for (auto opponent : Opponents)
+    {
+        float3 opponentPosition = opponent->GetPosition();
 
-    if (distance < triggerDistance) {
-        return true;
-    }
-    else {
-        return false;
+        float distance = selfPosition.Distance(opponentPosition);
+
+        if (distance < triggerDistance) 
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
     }
 }
 
-void EnemyBase::MeeleAttach() {
-   /* if ()
-	//player abb
-	MeshRendererComponent* playerMesh = (MeshRendererComponent*)mGameObject->GetComponent(ComponentType::MESHRENDERER);
-	//enemy abb
-	MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
-
-		// if enemy abb colllides with player abb log "hit"
-   if (playerMesh->GetAABB().Intersects(enemyMesh->GetAABB())) {
-		LOG("Hit");
-	}
-       else {
-			//LOG("Miss");
-		}
-   */
-}
-
-void EnemyBase::SearchPlayer() {
-    if (mInAttackDistance == false) {
+void EnemyBase::SearchPlayer() 
+{
+    if (mInAttackDistance == false) 
+    {
         Test_Controls(); //Enemy's test movement emulating AI
 
-        if (OpponentDistance(mAttackDistance)) {
+        if (OpponentDistance(mAttackDistance)) 
+        {
             mInAttackDistance = true;
         }
     }
 }
 
-void EnemyBase::SetEnemyDamage(int damage) {
-    if (mHealth > 0) {
+void EnemyBase::SetEnemyDamage(int damage) 
+{
+    if (mHealth > 0) 
+    {
         mHealth -= damage;
     }
     LOG("Enemy Health: %u", mHealth);
@@ -110,65 +116,78 @@ bool EnemyBase::Delay(float delay) //Lapse of time for doing some action
 
 //************************************************************************
 //FOR TEST UNTIL AI WILL BE AVAILABLE
-void EnemyBase::Test_Controls() {
+void EnemyBase::Test_Controls() 
+{
     Test_Mouse_Rotation();
 
     bool anyKeyPressed = false;
 
-    if (App->GetInput()->GetKey(Keys::Keys_I) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_I) == KeyState::KEY_REPEAT) 
+    {
         Test_Forward();
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_K) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_K) == KeyState::KEY_REPEAT) 
+    {
         Test_Backward();
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) 
+    {
         Test_Left();
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_L) == KeyState::KEY_REPEAT) {
+    if (App->GetInput()->GetKey(Keys::Keys_L) == KeyState::KEY_REPEAT) 
+    {
         Test_Right();
         anyKeyPressed = true;
     }
 
     //*******************************************************************************
     // DAMAGE TEST
-    if (App->GetInput()->GetKey(Keys::Keys_M) == KeyState::KEY_DOWN) {
+    if (App->GetInput()->GetKey(Keys::Keys_M) == KeyState::KEY_DOWN) 
+    {
         SetEnemyDamage(5);
     }
     //*******************************************************************************
 
-    if (!anyKeyPressed) {
+    if (!anyKeyPressed) 
+    {
         //ChangeState(EnemyState::Idle);
     }
 }
 
-void EnemyBase::Test_Forward() {
+void EnemyBase::Test_Forward() 
+{
     Move(mGameObject->GetFront());
 }
 
-void EnemyBase::Test_Backward() {
+void EnemyBase::Test_Backward() 
+{
     Move(mGameObject->GetFront() * -1);
 }
 
-void EnemyBase::Test_Left() {
+void EnemyBase::Test_Left() 
+{
     Move(mGameObject->GetRight());
 }
 
-void EnemyBase::Test_Right() {
+void EnemyBase::Test_Right() 
+{
     Move(mGameObject->GetRight() * -1);
 }
 
-void EnemyBase::Move(float3 direction) {
+void EnemyBase::Move(float3 direction) 
+{
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mEnemySpeed);
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
 }
 
-void EnemyBase::Test_Mouse_Rotation() {
+void EnemyBase::Test_Mouse_Rotation() 
+{
     int mX, mY;
     App->GetInput()->GetMouseMotion(mX, mY);
     float3 rotation = { 0.0f, DegToRad(mX * mEnemyRotationSpeed), 0.0f };

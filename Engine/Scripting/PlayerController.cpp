@@ -30,8 +30,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
     MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
     MEMBER(MemberType::FLOAT, mDashSpeed);
-    MEMBER(MemberType::FLOAT, mDashLenght);
+    MEMBER(MemberType::FLOAT, mDashDistance);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
+    MEMBER(MemberType::INT, mDashCharges);
 
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mWinArea);
@@ -162,8 +163,8 @@ void PlayerController::Controls()
         mIsMoving = true;
         anyKeyPressed = true;
     }
-
-    if (App->GetInput()->GetKey(Keys::Keys_T) == KeyState::KEY_DOWN && !mStartCounter) 
+ 
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN && !mStartCounter)
     {
         mIsDashActive = true;
         anyKeyPressed = true;
@@ -192,13 +193,13 @@ void PlayerController::Controls()
         mChargedShotTime = 0;
         mIsChargedShot = false;
     }
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN) 
+    if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN)
     {
         ChangeState(PlayerState::Reload);
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_G) == KeyState::KEY_DOWN) 
+    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN) 
     {
         ChangeState(PlayerState::ThrowGrenade);
         anyKeyPressed = true;
@@ -261,9 +262,58 @@ void PlayerController::Dash()
 {
     if (mIsDashActive)
     {
+        if (mDashCharges > 0) 
+        {
+            //LOG("Dash animation");
+
+            if (mDashMovement >= mDashDistance)
+            {
+                mStartCounter = false;
+                mDashMovement = 0;
+                mIsDashActive = false;
+                mDashTrigger = false;
+            }
+            if (mStartCounter)
+            {
+                mDashTimePassed += App->GetGameDt();
+                if (mDashTimePassed >= mDashCoolDown)
+                {
+                    mDashTimePassed = 0;
+                    mStartCounter = true;
+                }
+            }
+            else
+            {
+                mDashMovement += mDashSpeed * App->GetGameDt();
+                //mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mDashSpeed * App->GetGameDt());
+                float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
+                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+
+                
+
+            }
+
+            if (mDashTrigger = false) {
+                //mDashTrigger = true;
+                mDashCharges -= 1;
+
+                LOG("Dash Charges:  %i", mDashCharges);
+            }
+        }
+        else {
+            mDashCharges = 0;
+        }
+    }
+}
+
+/*
+void PlayerController::Dash()
+{
+    if (mIsDashActive)
+    {
         LOG("Dash animation");
 
-        if (mDashMovement >= mDashLenght)
+        if (mDashMovement >= mDashDistance)
         {
             mStartCounter = false;
             mDashMovement = 0;
@@ -287,6 +337,7 @@ void PlayerController::Dash()
         }
     }
 }
+*/
 
 void PlayerController::MeleeAttack() 
 {
@@ -348,8 +399,6 @@ void PlayerController::MeleeAttack()
             }
         }
     }
-
-
 }
 
 void PlayerController::RangedAttack() {
@@ -539,15 +588,17 @@ void PlayerController::ThrowGrenade() {
 }
 
 void PlayerController::SetPlayerDamage(int damage) {
-    if (ShieldDamage(damage)==0) {
-        if (mHealth > 0) {
-            mHealth -= damage;
+    if (mIsDashActive == false) {
+        if (ShieldDamage(damage) == 0) {
+            if (mHealth > 0) {
+                mHealth -= damage;
+            }
+            else {
+                mHealth = 0;
+                ChangeState(PlayerState::Death);
+            }
         }
-        else {
-            mHealth = 0;
-            ChangeState(PlayerState::Death);
-        }  
-    }    
+    } 
 }
 
 bool PlayerController::ShieldDamage(int damage) {
@@ -569,15 +620,15 @@ void PlayerController::Sanity() {
 }
 
 void PlayerController::Death() {
-    mPlayerIsDeath = true;
+    mPlayerIsDead = true;
     LOG("Death animation");
    
     LoseMessage();
 }
 
 //Returns if player is dead for the Game Manager
-bool PlayerController::PlayerIsDeath() {
-    return mPlayerIsDeath;
+bool PlayerController::GetPlayerIsDead() {
+    return mPlayerIsDead;
 }
 
 //PROBABLY THIS MESSAGES IS BETTER TO MANAGE IN GAME MANAGER
