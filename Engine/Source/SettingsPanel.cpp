@@ -185,9 +185,6 @@ void SettingsPanel::SaveCameraPosition()
 		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
 		userSettings << "Camera Rotation:\n" << cameraRotation.x << '\n' << cameraRotation.y << '\n' << cameraRotation.z << "\n";
 	}
-	
-	
-
 }
 
 void SettingsPanel::LoadCameraPosition()
@@ -199,21 +196,29 @@ void SettingsPanel::LoadCameraPosition()
 	float3 cameraPosition;
 	float3 cameraRotation;
 
-	std::getline(userSettings, line);
-	for (int i = 0; i < 3; ++i)
+	if (userSettings.is_open())
 	{
 		std::getline(userSettings, line);
-		cameraPosition[i] = std::stof(line);
+		for (int i = 0; i < 3; ++i)
+		{
+			std::getline(userSettings, line);
+			cameraPosition[i] = std::stof(line);
+		}
+		std::getline(userSettings, line);
+		for (int i = 0; i < 3; ++i)
+		{
+			std::getline(userSettings, line);
+			cameraRotation[i] = std::stof(line);
+		}
+
+		App->GetCamera()->SetPosition(cameraPosition);
+		App->GetCamera()->SetRotation(cameraRotation);
 	}
-	std::getline(userSettings, line);
-	for (int i = 0; i < 3; ++i)
+	else 
 	{
-		std::getline(userSettings, line);
-		cameraRotation[i] = std::stof(line);
+
 	}
 
-	App->GetCamera()->SetPosition(cameraPosition);
-	App->GetCamera()->SetRotation(cameraRotation);
 }
 
 void SettingsPanel::LoadProjectSettings()
