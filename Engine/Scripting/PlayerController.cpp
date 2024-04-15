@@ -13,9 +13,9 @@
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
 #include "Geometry/Ray.h"
-#include "Geometry/Plane.h"
-#include "EnemyBase.h"
 #include "EnemyExplosive.h"
+#include "EnemyRobot.h"
+
 #include <ScriptComponent.h>
 
 CREATE(PlayerController)
@@ -389,10 +389,18 @@ void PlayerController::MeleeAttack()
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
 
-               EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-               if (enemyScript != nullptr) {
-                   enemyScript->SetEnemyDamage(mDamage);
-               }
+            EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+            if (enemyScript != nullptr) 
+            {
+                enemyScript->SetEnemyDamage(mDamage);
+            }
+            else {
+                EnemyRobot* enemyScript = (EnemyRobot*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+                if (enemyScript != nullptr) 
+                {
+                    enemyScript->SetEnemyDamage(mDamage);
+                }
+            }
         }
     }
 }
@@ -484,7 +492,13 @@ void PlayerController::ShootLogic(int damage)
 
                 EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (enemyScript != nullptr) {
-                    enemyScript->SetEnemyDamage(mDamage);
+					enemyScript->SetEnemyDamage(damage);
+				}
+                else {
+					EnemyRobot* enemyScript = (EnemyRobot*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+                    if (enemyScript != nullptr) {
+						enemyScript->SetEnemyDamage(damage);
+					}
                 }
             }
         }

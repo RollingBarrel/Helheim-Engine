@@ -36,6 +36,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\Target.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -60,6 +63,9 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="Target.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRobot.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>
