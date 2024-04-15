@@ -703,6 +703,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
 	const char* currentItem = component->GetScriptName();
+	if (strcmp(currentItem, "") == 0)
+	{
+		currentItem = "None (Script)";
+	}
+	
 	ImVec2 scriptTextSize = ImGui::CalcTextSize("Script");
 	float inspectorWidth = ImGui::GetWindowWidth();
 	float scriptSpacing = (inspectorWidth / 2) - scriptTextSize.x;
