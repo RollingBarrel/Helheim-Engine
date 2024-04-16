@@ -37,9 +37,13 @@ void HierarchyPanel::Draw(int windowFlags)
 
 void HierarchyPanel::SetFocus(GameObject* focusedObject) 
 { 
-	/*mUnmarkFlag = true;
+	/*
 	mFocusedObject = focusedObject;
 	mLastClickedObject = focusedObject;*/ 
+	mUnmarkFlag = true;
+	mFocusId = focusedObject->GetID();
+	mLastClickedObject = focusedObject->GetID();
+
 }
 
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) 

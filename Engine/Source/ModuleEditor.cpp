@@ -105,7 +105,6 @@ bool ModuleEditor::Init()
 	mPanels[SETTINGSPANEL]->Close();
 
 	Style();
-
 	return true;
 }
 

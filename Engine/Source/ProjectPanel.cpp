@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "IconsFontAwesome6.h"
 
 #include "imgui.h"
 
@@ -30,47 +31,66 @@ void ProjectPanel::Draw(int windowFlags)
 	{
 		ImGui::Columns(2);
 		ImGui::BeginChild("Folders");
-		DrawAssetsFolder(*root);
+		//DrawAssetsFolder(*root);
+		DrawFolders(*root);
 		ImGui::EndChild();
 		ImGui::NextColumn();
 		ImGui::BeginChild("Assets");
-		//Paint Assets
+		if (mSelected)
+		{
+			DrawAssets(*mSelected);
+		}
 		ImGui::EndChild();
 	}
 	ImGui::End();
 }
 
-const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
+const void ProjectPanel::DrawFolders(const PathNode& current)
 {
 	std::string bar = "/";
 	
 	//Discard Meta file but, read .emeta data
 	for (auto i = 0; i < current.mChildren.size(); ++i)
 	{		
-		bool open = ImGui::TreeNodeEx(current.mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen);
+		std::string nameWithoutPath = current.mChildren[i]->mName;
+		nameWithoutPath = nameWithoutPath.substr(nameWithoutPath.find_last_of('/')+1);
+		std::string nameWithIcon = ICON_FA_FOLDER;
+		nameWithIcon += nameWithoutPath;
+		bool open = ImGui::TreeNodeEx(nameWithIcon.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 		SavePrefab(*current.mChildren[i]);
 		if (open)
 		{
-			for (auto j = 0; j < current.mChildren[i]->assets.size(); ++j)
-			{
-				if (ImGui::TreeNodeEx(current.mChildren[i]->assets[j]->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
-				{
-					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
-					{
-						AssetDisplay* asset = current.mChildren[i]->assets[j];
-						App->GetScene()->OpenPrefabScreen(asset->mPath);
-					}
-					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-					{
-						ImGui::SetDragDropPayload("_SCENE", current.mChildren[i]->assets[j], sizeof(*current.mChildren[i]->assets[j]));
+			DrawFolders(*current.mChildren[i]);
+			ImGui::TreePop();
+		}
+		if (ImGui::IsItemClicked()) {
+			mSelected = current.mChildren[i];
+		}
+	}
+}
 
-						ImGui::Text(current.mChildren[i]->assets[j]->mName);
-						ImGui::EndDragDropSource();
-					}
-					ImGui::TreePop();
-				}
+const void ProjectPanel::DrawAssets(const PathNode& current) const
+{
+
+	for (unsigned int i = 0; i < current.assets.size(); ++i)
+	{
+		std::string nameWithIcon = ICON_FA_FILE;
+		nameWithIcon += current.assets[i]->mName;
+
+		if (ImGui::TreeNodeEx(nameWithIcon.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
+		{
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+			{
+				AssetDisplay* asset = current.assets[i];
+				App->GetScene()->OpenPrefabScreen(asset->mPath);
 			}
-			DrawAssetsFolder(*current.mChildren[i]);
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+			{
+				ImGui::SetDragDropPayload("_SCENE", current.assets[i], sizeof(*current.assets[i]));
+
+				ImGui::Text(current.assets[i]->mName);
+				ImGui::EndDragDropSource();
+			}
 			ImGui::TreePop();
 		}
 	}

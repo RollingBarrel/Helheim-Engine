@@ -28,6 +28,9 @@ public:
 	void SavePrefab(const PathNode& dir) const;
 
 private:
-	const void DrawAssetsFolder(const PathNode& current) const;
+	const void DrawFolders(const PathNode& current);
+	const void DrawAssets(const PathNode& current) const;
+
+	PathNode* mSelected = nullptr;
 };
 

@@ -66,7 +66,6 @@ GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animat
 
 ScenePanel::ScenePanel() : Panel(SCENEPANEL, true)
 {
-
 }
 
 ScenePanel::~ScenePanel()
