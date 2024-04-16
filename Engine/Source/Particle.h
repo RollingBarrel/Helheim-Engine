@@ -6,7 +6,7 @@ class Particle
 {
 public:
     Particle();
-    Particle(float mLifeTime, float3 position, float speed);
+    Particle(float3 position, float3 direction, float rotation, float lifeTime, float speed);
     Particle(const Particle& other);
     ~Particle();
 

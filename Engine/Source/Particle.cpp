@@ -3,6 +3,7 @@
 Particle::Particle()
 {
     mPosition = float3::zero;
+    mDirection = float3::zero;
     mRotation = 0.0f;
     mSpeed = 0.0f;
     mSize = 0.0f;
@@ -10,12 +11,13 @@ Particle::Particle()
     mColor = float4::zero;
 }
 
-Particle::Particle(float mLifeTime, float3 position, float speed)
+Particle::Particle(float3 position, float3 direction, float rotation, float lifeTime, float speed)
     : mPosition(position), 
-    mRotation(0.0f), 
+    mDirection(direction),
+    mRotation(rotation),
     mSpeed(speed), 
     mSize(1.0f), 
-    mLifetime(mLifeTime), 
+    mLifetime(lifeTime),
     mColor(float4::zero)
 {
 }
@@ -23,6 +25,7 @@ Particle::Particle(float mLifeTime, float3 position, float speed)
 Particle::Particle(const Particle& other)
 {
 	mPosition = other.mPosition;
+    mDirection = other.mDirection;
 	mRotation = other.mRotation;
 	mSpeed = other.mSpeed;
 	mSize = other.mSize;
