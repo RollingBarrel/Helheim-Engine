@@ -602,31 +602,34 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
 
-	if (ImGui::Checkbox("Enable BaseColor map", &material->mEnableBaseColorTexture))
+	if (material)
 	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
-	if (ImGui::Checkbox("Enable MetallicRoughness map", &material->mEnableMetallicRoughnessTexture))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
-	if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
+		if (ImGui::Checkbox("Enable BaseColor map", &material->mEnableBaseColorTexture))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (ImGui::Checkbox("Enable MetallicRoughness map", &material->mEnableMetallicRoughnessTexture))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
-	if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
+		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
-	if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
-	if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 	}
 }
 

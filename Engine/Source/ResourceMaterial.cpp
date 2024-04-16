@@ -13,9 +13,9 @@ ResourceMaterial::ResourceMaterial(
     unsigned int normalTexUid) :
     Resource(uid, Type::Material),
     mBaseColorFactor(float4(baseColorFactor)), mMetallicFactor(metallicFactor), mRoughnessFactor(roughnessFactor),
-    mBaseColorTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture))),
-    mMetallicRoughnessTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture))),
-    mNormalTexture(reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture))),
+    mBaseColorTexture((baseColorTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture)) : nullptr),
+    mMetallicRoughnessTexture((metallicRoughTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture)) : nullptr),
+    mNormalTexture((normalTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture)) : nullptr),
     mEnableBaseColorTexture((mBaseColorTexture != nullptr) ? true : false),
     mEnableMetallicRoughnessTexture((mMetallicRoughnessTexture != nullptr) ? true : false),
     mEnableNormalMap((mNormalTexture != nullptr) ? true : false)

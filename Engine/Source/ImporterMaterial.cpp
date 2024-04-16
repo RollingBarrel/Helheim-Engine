@@ -76,6 +76,21 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
     return rMaterial;
 }
 
+ResourceMaterial* Importer::Material::ImportDefault()
+{
+    float baseColorFactor[4] = { 1.f };
+    float metalicFactor = 0.5f;
+    float roughnessFactor = 0.5f;
+    unsigned int baseColorTex = 0;
+    unsigned int metallicRoughTex = 0;
+    unsigned int normalTex = 0;
+
+    ResourceMaterial* rMaterial = new ResourceMaterial(999999999, baseColorFactor, metalicFactor, roughnessFactor, baseColorTex, metallicRoughTex, normalTex);
+    if(!App->GetFileSystem()->Exists("Library/99/999999999"))
+        Importer::Material::Save(rMaterial);
+    return rMaterial;
+}
+
 void Importer::Material::Save(const ResourceMaterial* rMaterial)
 {
     unsigned int texturesUID[3] = { (rMaterial->GetBaseColorTexture() != nullptr) ? rMaterial->GetBaseColorTexture()->GetUID() : 0,
