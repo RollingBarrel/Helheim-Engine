@@ -185,6 +185,10 @@ void EditorControlPanel::Play()
 		mState = GameState::PLAY;
 		break;
 	}
+	
+
+	ImGui::SetWindowFocus("Game");
+	
 }
 
 void EditorControlPanel::Pause() 
@@ -219,6 +223,7 @@ void EditorControlPanel::Stop()
 	App->GetEngineClock()->Resume();				
 	App->GetScriptManager()->Stop();
 	App->GetScene()->Load("TemporalScene");
+	ImGui::SetWindowFocus("Scene##");
 
 	mState = GameState::STOP;
 

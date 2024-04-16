@@ -105,6 +105,41 @@
                         ]
                     }
                 ]
+            },
+            {
+                "UID": 1128849801,
+                "ParentUID": 1,
+                "Name": "GameObject (1)",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 4,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "AspectRatio": 1.7777777910232545,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
             }
         ]
     }
