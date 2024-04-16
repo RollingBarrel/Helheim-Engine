@@ -98,7 +98,9 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
             }
             else
             {
-                materialId = 0;
+                ResourceMaterial* rMaterial = Importer::Material::ImportDefault();
+                materialId = rMaterial->GetUID();
+                delete rMaterial;
             }
 
             delete rMesh;

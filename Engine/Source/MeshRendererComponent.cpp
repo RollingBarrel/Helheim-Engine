@@ -67,16 +67,6 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 	}
 }
 
-void MeshRendererComponent::Enable()
-{
-	App->GetOpenGL()->BatchAddMesh(this);
-
-}
-
-void MeshRendererComponent::Disable()
-{
-	App->GetOpenGL()->BatchRemoveMesh(this);
-}
 
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
@@ -99,6 +89,17 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	//{
 	//	mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
 	//}
+}
+
+void MeshRendererComponent::Enable()
+{
+	App->GetOpenGL()->BatchAddMesh(this);
+
+}
+
+void MeshRendererComponent::Disable()
+{
+	App->GetOpenGL()->BatchRemoveMesh(this);
 }
 
 MeshRendererComponent::~MeshRendererComponent()
