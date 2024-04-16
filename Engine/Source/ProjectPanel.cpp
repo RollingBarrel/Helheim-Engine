@@ -20,20 +20,21 @@ ProjectPanel::~ProjectPanel()
 
 void ProjectPanel::Draw(int windowFlags)
 {
+
 	PathNode* root = App->GetFileSystem()->GetRootNode();
+
+
+
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		if (ImGui::BeginChild("Favs##"))
-		{
-			DrawAssetsFolder(*root);
-		}
+		ImGui::Columns(2);
+		ImGui::BeginChild("Folders");
+		DrawAssetsFolder(*root);
 		ImGui::EndChild();
-
-		if (ImGui::BeginChild("Assets"))
-		{
-			ImGui::Button("HI");
-		}
+		ImGui::NextColumn();
+		ImGui::BeginChild("Assets");
+		//Paint Assets
 		ImGui::EndChild();
 	}
 	ImGui::End();
