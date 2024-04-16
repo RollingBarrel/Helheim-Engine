@@ -38,6 +38,6 @@ private:
 
 	EmitterShape mShapeType;
 	ColorGradient mColorGradient;
-
 	std::vector<Particle> particles;
+	unsigned int mVAO;
 };
