@@ -1302,6 +1302,7 @@
     <ClInclude Include="EmitterShape.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>
+    <ClInclude Include="CameraUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -1452,10 +1453,10 @@
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="particle_vertex.glsl">
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="particle_fragment.glsl">
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

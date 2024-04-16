@@ -541,6 +541,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\Fragment.fs" />
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBR_PixelShader.glsl" />
@@ -574,8 +576,6 @@
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Timer.h" />
-    <None Include="particle_fragment.glsl" />
-    <None Include="particle_vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\shaders\default_fragment.glsl" />

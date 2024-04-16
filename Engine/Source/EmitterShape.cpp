@@ -46,7 +46,6 @@ float3 EmitterShapeCone::RandomInitDirection()
 {
     float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float angleA = r * 2 * 3.1415f;
-    float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float angleB = r * mShapeAngle;
     float3 dirA = positionTransform(float3(cos(angleA), sin(angleA), 0));
     float3 rotationAxis = Cross(mDirection, dirA);
