@@ -236,7 +236,7 @@ void Transform2DComponent::SetRotation(const float3& rotation)
 
 void Transform2DComponent::SetSize(const float2 size)
 { 
-	ImageComponent* component = ((ImageComponent*)GetOwner()->GetComponent(ComponentType::IMAGE));
+	/*ImageComponent* component = ((ImageComponent*)GetOwner()->GetComponent(ComponentType::IMAGE));
 	if ( component->GetMantainRatio() )
 	{
 		if (size.x != mSize.x)
@@ -257,9 +257,9 @@ void Transform2DComponent::SetSize(const float2 size)
 		}
 	}
 	else 
-	{
+	{*/
 		mSize = size; 
-	}
+	//}
 
 	CalculateMatrices(); 
 }
