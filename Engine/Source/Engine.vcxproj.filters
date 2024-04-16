@@ -256,9 +256,6 @@
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="CameraUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -412,9 +409,6 @@
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Script.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -458,17 +452,37 @@
     <ClCompile Include="SettingsPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ResourceObject.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
+    <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
-    <ClCompile Include="ModuleEvent.cpp" />
+    <ClCompile Include="ModuleEvent.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleDetourNavigation.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
@@ -937,9 +951,6 @@
     <ClInclude Include="ResourcePanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="CameraUtils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="CameraComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
@@ -1053,8 +1064,6 @@
     </ClInclude>
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="Script.h">
     </ClInclude>
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
@@ -1253,14 +1262,34 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h" />
-    <ClInclude Include="ModuleDetourNavigation.h" />
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
+    <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="HelheimEvent.h" />
-    <ClInclude Include="ModuleEvent.h" />
     <ClInclude Include="ImageComponent.h" />
+    <ClInclude Include="ModuleDetourNavigation.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEvent.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>
@@ -1362,6 +1391,9 @@
     <Filter Include="Dependencies\ImGuiFileDialog">
       <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Scripting">
+      <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Utils\Particles">
       <UniqueIdentifier>{6801651a-a7c4-4f26-95b7-6af78bcba768}</UniqueIdentifier>
     </Filter>
@@ -1411,6 +1443,12 @@
     </None>
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
     <None Include="particle_vertex.glsl">
       <Filter>Shaders</Filter>
     </None>

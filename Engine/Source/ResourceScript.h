@@ -1,38 +1,24 @@
 #pragma once
 #include "Resource.h"
+#include "Script.h"
 #include <vector>
 
-class ScriptAttribute
+class ScriptAttribute 
 {
 public:
-	enum class ScriptAttributeType
-	{
-		None,
-		Int,
-		Float,
-		Double,
-		String,
-		Bool,
-		Float3,
-	};
-	ScriptAttribute();
-	ScriptAttribute(const char* name, ScriptAttributeType type, void* value);
-	~ScriptAttribute();
+	ScriptAttribute() {}
+	ScriptAttribute(std::string name, MemberType type, void* data) : mName(name), mType(type) {}
 	bool setTypeFromString(const std::string& type);
-	void setName(const std::string& name) { mVariableName = name; }
-	//void setTooltip(const std::string& tooltip) { mTooltip = tooltip; }
-	void setRangeMin(const int min) { mRangeMin = min; }
-	void setRangeMax(const int max) { mRangeMax = max; }
-	//void setHeader(const std::string& header) { mHeader = header; }
+	void setName(const std::string name);
+	void setType(const MemberType type);
+	size_t sizeOfScriptVariable() const;
+	const std::string GetName() const { return mName; }
+	const MemberType GetType() const { return mType; }
 
 private:
-	std::string mVariableName;
-	ScriptAttributeType mAttributeType;
-	void* mValue;
-	//std::string mTooltip;
-	int mRangeMin;
-	int mRangeMax;
-	//std::string mHeader;
+	std::string mName;
+	MemberType mType = MemberType::NONE;
+
 };
 
 class ResourceScript : public Resource
@@ -42,10 +28,8 @@ public:
     ~ResourceScript();
 
 	void addAttribute(const ScriptAttribute& attribute);
-	void addDisplayAttribute(const ScriptAttribute& attribute);
 
 	const std::vector<ScriptAttribute>& GetAttributes() const { return mAttributes; }
-	const std::vector<ScriptAttribute>& GetDisplayAttributes() const  { return mDisplayAttributes; }
 	const std::string& GetScriptName() const { return mScriptName; }
 
 	void SetScriptName(const std::string& scriptName) { mScriptName = scriptName; }
@@ -53,6 +37,5 @@ public:
 private:
 	std::string mScriptName;
 	std::vector<ScriptAttribute> mAttributes;
-	std::vector<ScriptAttribute> mDisplayAttributes;
 };
 

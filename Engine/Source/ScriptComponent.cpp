@@ -5,53 +5,59 @@
 #include "Script.h"
 #include "GameObject.h"
 #include "ModuleScene.h"
+#include "ModuleResource.h"
+#include "ModuleFileSystem.h"
 
 
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
-
+	Enable();
 }
 
 ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
 	mName = other.mName;
+	mResourceScript = other.mResourceScript;
 	LoadScript(mName.c_str());
 
-	for (int i = 0; i < mData.size(); i++) {
-		switch (mData[i]->mType)
+	if(mScript)
+	{
+		for (unsigned int i = 0; i < mScript->mMembers.size(); ++i)
 		{
-		case VariableType::INT:
-			*(int*)mData[i]->mData = *(int*)other.mData[i]->mData;
-			break;
-		case VariableType::FLOAT:
-			*(float*)mData[i]->mData = *(float*)other.mData[i]->mData;
-			break;
-		case VariableType::BOOL:
-			*(bool*)mData[i]->mData = *(bool*)other.mData[i]->mData;
-			break;
-		case VariableType::FLOAT3:
-			*(float3*)mData[i]->mData = *(float3*)other.mData[i]->mData;
-			break;
-		case VariableType::GAMEOBJECT:
-			*(GameObject**)mData[i]->mData = *(GameObject**)other.mData[i]->mData;
-			break;
+			char* originalMemberPos = (reinterpret_cast<char*>(other.mScript)) + mScript->mMembers[i]->mOffset;
+			char* newMemberPos = (reinterpret_cast<char*>(mScript)) + mScript->mMembers[i]->mOffset;
+
+			switch (mScript->mMembers[i]->mType)
+			{
+			case MemberType::INT:
+				memcpy(newMemberPos, originalMemberPos, sizeof(int));
+				break;
+			case MemberType::FLOAT:
+				memcpy(newMemberPos, originalMemberPos, sizeof(float));
+				break;
+			case MemberType::BOOL:
+				memcpy(newMemberPos, originalMemberPos, sizeof(bool));
+				break;
+			case MemberType::FLOAT3:
+				memcpy(newMemberPos, originalMemberPos, sizeof(float) * 3);
+				break;
+			case MemberType::GAMEOBJECT:
+				memcpy(newMemberPos, originalMemberPos, sizeof(GameObject*));
+				break;
+			}
 		}
 	}
-
+	
+	Enable();
 
 }
 
 ScriptComponent::~ScriptComponent()
 {
-	for (auto data : mData) {
-
-		delete data;
-	}
-
+	App->GetScriptManager()->RemoveScript(this);
+	App->GetResource()->ReleaseResource(mResourceScript->GetUID());
+	mResourceScript = nullptr;
 	//delete mScript; //Memory leack here, this shouldbe fixed.
-
-	App->GetScriptManager()->RemoveScript(mScript);
-
 }
 
 void ScriptComponent::Update()
@@ -73,36 +79,38 @@ void::ScriptComponent::Save(Archive& archive) const
 	archive.AddString("ScriptName",mName.c_str());
 
 	std::vector<Archive> objectArray;
+	std::vector<Member*> members = mScript->GetMembers();
 
-	for (const auto& data : mData) {
+	for (const Member* member : members) 
+	{
 
 		Archive dataArchive;	
-		dataArchive.AddString("VariableName", data->mName);
-		dataArchive.AddInt("VariableType", (int)data->mType);
-		switch (data->mType)
+		dataArchive.AddString("VariableName", member->mName);
+		dataArchive.AddInt("MemberType", (int)member->mType);
+		switch (member->mType)
 		{
-		case VariableType::INT:
-			dataArchive.AddInt("VariableData", *(int*)data->mData);
+		case MemberType::INT:
+			dataArchive.AddInt("VariableData", *reinterpret_cast<int*>((((char*)mScript) + member->mOffset)));
 			break;
-		case VariableType::FLOAT:
-			dataArchive.AddInt("VariableData", *(float*)data->mData);
+		case MemberType::FLOAT:
+			dataArchive.AddFloat("VariableData", *reinterpret_cast<float*>((((char*)mScript) + member->mOffset)));
 			break;
-		case VariableType::BOOL:
-			dataArchive.AddInt("VariableData", *(bool*)data->mData);
+		case MemberType::BOOL:
+			dataArchive.AddInt("VariableData", *reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)));
 			break;
-		case VariableType::FLOAT3:
-			dataArchive.AddFloat3("VariableData", *(float3*)data->mData);
+		case MemberType::FLOAT3:
+			dataArchive.AddFloat3("VariableData", *reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)));
 			break;
-		case VariableType::GAMEOBJECT:
+		case MemberType::GAMEOBJECT:
 		{
-			(*(GameObject**)data->mData) ? dataArchive.AddInt("VariableData", (*(GameObject**)data->mData)->GetID()) : dataArchive.AddInt("VariableData", -1);
+			GameObject* gameObject = *reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset));
+			gameObject ? dataArchive.AddInt("VariableData", (gameObject->GetID())) : dataArchive.AddInt("VariableData", -1);		
 			break;
 		}
 		default:
 			break;
 		}
 		
-
 		objectArray.push_back(dataArchive);
 	}
 
@@ -111,7 +119,6 @@ void::ScriptComponent::Save(Archive& archive) const
 
 void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
 {
-
 	bool check = data.HasMember("ScriptVariables");
 	bool check2 = data["ScriptVariables"].IsString();
 
@@ -122,7 +129,8 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 	{
 		mName = data["ScriptName"].GetString();
 		
-		if (!mName.empty()) {
+		if (!mName.empty()) 
+		{
 			LoadScript(mName.c_str());
 		}
 		
@@ -132,36 +140,43 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 	{
 		const auto& array = data["ScriptVariables"].GetArray();
 		
-		for (int i = 0; i < array.Size(); ++i) {
+		for (unsigned int i = 0; i < array.Size(); ++i) 
+		{
 			const char* name;
-			if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) {
+			if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) 
+			{
 				name = array[i]["VariableName"].GetString();
 
-				for (auto data : mData) {
-					if (strcmp(data->mName, name) == 0) {
-						if (array[i].HasMember("VariableData")) {
-							switch (data->mType)
+				std::vector<Member*> members = mScript->GetMembers();
+				for (const Member* member : members) 
+				{
+					if (strcmp(member->mName, name) == 0) 
+					{
+						if (array[i].HasMember("VariableData")) 
+						{
+							switch (member->mType)
 							{
-							case VariableType::INT:
-								*(int*)data->mData = array[i]["VariableData"].GetInt();
+							case MemberType::INT:
+								*reinterpret_cast<int*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetInt();
 								break;
-							case VariableType::FLOAT:
-								*(float*)data->mData = array[i]["VariableData"].GetFloat();
+							case MemberType::FLOAT:
+								*reinterpret_cast<float*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetFloat();
 								break;
-							case VariableType::BOOL:
-								*(bool*)data->mData = array[i]["VariableData"].GetBool();
+							case MemberType::BOOL:
+								*reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetBool();
 								break;
-							case VariableType::FLOAT3:
+							case MemberType::FLOAT3:
 							{
 								const auto& floatArray = array[i]["VariableData"].GetArray();
-								*(float3*)data->mData = float3(floatArray[0].GetFloat(), floatArray[1].GetFloat(), floatArray[2].GetFloat());
+								*reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)) = float3(floatArray[0].GetFloat(), floatArray[1].GetFloat(), floatArray[2].GetFloat());
 								break;
 							}
-							case VariableType::GAMEOBJECT:
+							case MemberType::GAMEOBJECT:
 							{
 								int  UID = array[i]["VariableData"].GetInt();
-								if (UID != -1) {
-									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(array[i]["VariableData"].GetInt(), (GameObject**)data->mData));
+								if (UID != -1) 
+								{
+									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset))));
 								}
 								break;
 							}
@@ -169,44 +184,62 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 								break;
 							}
 						}
-
 					}
 				}
 			}
-			
 		}
 	}
-
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
 {
-	mName = scriptName;
-
-	for (auto data : mData) {
-
-		delete data;
+	std::string scriptPath = ASSETS_SCRIPT_PATH + std::string(scriptName) + ".h";
+	
+	if (!App->GetFileSystem()->Exists(scriptPath.c_str()))
+	{
+		LOG("SCRIPT ASSET NOT FOUND");
 	}
-	mData.clear();
+	if (mResourceScript != nullptr) 
+	{
+		App->GetResource()->ReleaseResource(mResourceScript->GetUID());
+		mResourceScript = nullptr;
+	}
 
-	Script* (*script)(GameObject*, std::vector<ScriptVariable*>&) = (Script * (*)(GameObject*, std::vector<ScriptVariable*>&))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
-	if (script != nullptr) {
-		mScript = script(mOwner , mData);
-		App->GetScriptManager()->AddScript(mScript);
+	if (mScript) 
+	{
+		//delete mScript; //MEMORY LEAK: Crash do not know why
+		mScript = nullptr;
+	}
+	
+	
+
+	mName = scriptName;
+	Script* (*script)(GameObject*) = (Script * (*)(GameObject*))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
+	if (script != nullptr) 
+	{	
+		mScript = script(mOwner);
+		mScript->SetName(mName);
+		mResourceScript = (ResourceScript*)(App->GetResource()->RequestResource(scriptPath.c_str()));
+		if (mResourceScript == nullptr) 
+		{
+			LOG("SCRIPT RESOURCE NOT FOUND");
+		}
+		//App->GetScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
-	else {
+	else 
+	{
 		LOG("LOADING SCRIPT ERROR");
 	}
 }
 
 void ScriptComponent::Enable()
 {
-	App->GetScriptManager()->AddScript(mScript);
+	App->GetScriptManager()->AddScript(this);
 		
 }
 
 void ScriptComponent::Disable()
 {
-		App->GetScriptManager()->RemoveScript(mScript);
+		App->GetScriptManager()->RemoveScript(this);
 }

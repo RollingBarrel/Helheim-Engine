@@ -52,7 +52,6 @@ bool parseHeaderFile(const std::string& filename, ResourceScript* rScript)
 
     // Init a ScriptAttribute
     ScriptAttribute attribute = ScriptAttribute();
-    bool display = false;
     bool serializable = true;
 
     // Read line by line in the .h file
@@ -68,52 +67,7 @@ bool parseHeaderFile(const std::string& filename, ResourceScript* rScript)
         else {
             firstWord = trimmedLine;
         }
-        if (firstWord == "DISPLAY")
-        {
-            std::cout << "Found line starting with DISPLAY: " << trimmedLine << std::endl; // Errasable
-            display = true;
-        }
-        else if (firstWord == "UNSERIALIZED")
-        {
-            std::cout << "Found line starting with UNSERIALIZED: " << trimmedLine << std::endl; // Errasable
-            serializable = false;
-        }
-        //else if (firstWord == "TOOLTIP") 
-        //{
-        //    std::cout << "Found line starting with TOOLTIP: " << trimmedLine << std::endl; // Errasable
-        //    std::string parameter = trim(trimmedLine.substr(firstWord.length()), "()\" \t");
-        //    std::cout << "Tooltip: " << parameter << std::endl;
-
-
-        //    attribute.setTooltip(parameter);
-        //}
-        else if (firstWord == "RANGE")
-        {
-            std::cout << "Found line starting with RANGE: " << trimmedLine << std::endl; // Errasable
-            std::string parameters = trimmedLine.substr(firstWord.length());
-            parameters = trim(parameters, "() \t");
-
-            std::pair<int, int> range;
-
-            size_t foundPos = parameters.find(',');
-            if (foundPos != std::string::npos)
-            {
-                range.first = std::stoi(trim(parameters.substr(0, foundPos), " \t"));
-                range.second = std::stoi(trim(parameters.substr(foundPos + 1), " \t"));
-            }
-        }
-        //else if (firstWord == "HEADER") 
-        //{
-        //    std::cout << "Found line starting with HEADER: " << trimmedLine << std::endl; // Errasable
-        //    std::string parameter = trim(trimmedLine.substr(firstWord.length()), "() \t");
-
-        //    attribute.setHeader(parameter);
-        //}
-        //else if (firstWord == "SPACE") 
-        //{
-        //    std::cout << "Found line starting with SPACE: " << trimmedLine << std::endl; // Errasable
-        //    attribute.setHeader("");
-        //}
+     
         // if this line has a declaration of a variable
         if (trimmedLine.find(';') != std::string::npos and trimmedLine.find('(') == std::string::npos)
         {
@@ -149,18 +103,13 @@ bool parseHeaderFile(const std::string& filename, ResourceScript* rScript)
                 // se esperaba el nombre de la variable
                 return false;
             }
-            attribute.setName(name);
+            attribute.setName(name.c_str());
 
-            if (display)
-            {
-                rScript->addDisplayAttribute(attribute);
-            }
             if (serializable)
             {
                 rScript->addAttribute(attribute);
             }
             attribute = ScriptAttribute();
-            bool display = false;
             bool serializable = true;
         }
     }
@@ -179,47 +128,45 @@ ResourceScript* Importer::Script::Import(const char* filePath, unsigned int uid)
 
 void Importer::Script::Save(const ResourceScript* rScript)
 {
-    size_t sizeAttributes = rScript->GetAttributes().size();
-    size_t sizeDisplayAttributes = rScript->GetDisplayAttributes().size();
     size_t sizeScriptName = rScript->GetScriptName().length();
+    size_t sizeAttributes = rScript->GetAttributes().size();
+    size_t sizeScriptAttributes = 0;
+    for (size_t i = 0; i < sizeAttributes; ++i)
+    {
+        sizeScriptAttributes += rScript->GetAttributes()[i].sizeOfScriptVariable();
+    }
 
-    unsigned int size = sizeof(size_t) * 3 +
-        sizeof(rScript->GetScriptName()) +
-        sizeof(ScriptAttribute) * sizeAttributes +
-        sizeof(ScriptAttribute) * sizeDisplayAttributes;
+    // size of all the data to be saved
+    size_t size = sizeof(size_t) * 3 +
+        sizeScriptName * sizeof(char) +
+        sizeScriptAttributes;
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
 
-    unsigned int bytes = sizeof(size_t);
-    memcpy(cursor, &sizeAttributes, bytes);
-    cursor += bytes;
-    bytes = sizeof(size_t);
-    memcpy(cursor, &sizeDisplayAttributes, bytes);
-    cursor += bytes;
-    bytes = sizeof(size_t);
+    size_t bytes = sizeof(size_t);
     memcpy(cursor, &sizeScriptName, bytes);
     cursor += bytes;
-
-    //TODO: Redo the save of name
-    bytes = sizeof(rScript->GetScriptName());
-    memcpy(cursor, &rScript->GetScriptName(), bytes);
+    memcpy(cursor, &sizeAttributes, bytes);
     cursor += bytes;
 
-    // TODO: Redo the save of Script Attributes 
+    bytes = sizeScriptName * sizeof(char);
+    memcpy(cursor, rScript->GetScriptName().c_str(), bytes);
+    cursor += bytes;
+
+    ScriptAttribute attribute;
     for (size_t i = 0; i < sizeAttributes; ++i)
     {
-        const ScriptAttribute attribute = rScript->GetAttributes()[i];
-        bytes = sizeof(ScriptAttribute);
-        memcpy(cursor, &attribute, bytes);
-        cursor += bytes;
-    }
-
-    for (size_t i = 0; i < sizeDisplayAttributes; ++i)
-    {
-        const ScriptAttribute attribute = rScript->GetDisplayAttributes()[i];
-        bytes = sizeof(ScriptAttribute);
-        memcpy(cursor, &attribute, bytes);
-        cursor += bytes;
+        attribute = rScript->GetAttributes()[i];
+        size_t nameSizeInBytes = attribute.GetName().size() * sizeof(char);
+        size_t sizeTSizeInBites = sizeof(size_t);
+        memcpy(cursor, &nameSizeInBytes, sizeTSizeInBites);
+        cursor += sizeTSizeInBites;
+        memcpy(cursor, attribute.GetName().c_str(), nameSizeInBytes);
+        cursor += nameSizeInBytes;
+        size_t typeSizeInBytes = sizeof(MemberType);
+        MemberType type = attribute.GetType();
+        memcpy(cursor, &type, typeSizeInBytes);
+        cursor += typeSizeInBytes;
     }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rScript->GetUID(), true);
@@ -236,46 +183,48 @@ ResourceScript* Importer::Script::Load(const char* filePath, unsigned int uid)
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
-        char* cursor = fileBuffer;
+       /* char* cursor = fileBuffer;
+
+        size_t sizeTBytes = sizeof(size_t);
+
+        size_t sizeScriptName;
+        memcpy( &sizeScriptName, cursor, sizeTBytes);
+        cursor += sizeTBytes;
 
         size_t sizeAttributes;
-        unsigned int bytes = sizeof(size_t);
-        memcpy(&sizeAttributes, cursor, bytes);
-        cursor += bytes;
-        size_t sizeDisplayAttributes;
-        memcpy(&sizeDisplayAttributes, cursor, bytes);
-        cursor += bytes;
-        size_t sizeScriptName;
-        memcpy(&sizeScriptName, cursor, bytes);
-        cursor += bytes;
+        memcpy( &sizeAttributes, cursor, sizeTBytes);
+        cursor += sizeTBytes;
 
         std::string scriptName;
         memcpy(&scriptName, cursor, sizeScriptName);
-        cursor += bytes;
+        cursor += sizeScriptName;
         rScript->SetScriptName(scriptName);
 
         for (size_t i = 0; i < sizeAttributes; ++i)
         {
             ScriptAttribute attribute;
-            bytes = sizeof(ScriptAttribute);
-            memcpy(&attribute, cursor, bytes);
-            cursor += bytes;
+
+            size_t nameSizeInBytes;
+            size_t sizeTSizeInBites = sizeof(size_t);
+            memcpy(&nameSizeInBytes, cursor, sizeTSizeInBites);
+            cursor += sizeTSizeInBites;
+            char* name = new char[nameSizeInBytes];
+            memcpy(name, cursor, nameSizeInBytes);
+            cursor += nameSizeInBytes;
+            attribute.setName(name);
+
+            size_t typeSizeInBytes = sizeof(MemberType);
+            MemberType type;
+            memcpy(&type, cursor, typeSizeInBytes);
+            cursor += typeSizeInBytes;
+            attribute.setType(type);
+
             rScript->addAttribute(attribute);
         }
-
-        for (size_t i = 0; i < sizeDisplayAttributes; ++i)
-        {
-            ScriptAttribute attribute;
-            bytes = sizeof(ScriptAttribute);
-            memcpy(&attribute, cursor, bytes);
-            cursor += bytes;
-            rScript->addDisplayAttribute(attribute);
-
-        }
-
+        */
         delete[] fileBuffer;
     }
-
+    
     return rScript;
 }
 

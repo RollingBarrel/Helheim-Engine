@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "ResourceScript.h"
 
 class Script;
 
@@ -8,6 +9,7 @@ struct ScriptVariable;
 class ENGINE_API ScriptComponent : public Component
 {
 	friend class InspectorPanel;
+	friend class ModuleScriptManager;
 public:
 
 	ScriptComponent(GameObject* owner);
@@ -27,8 +29,8 @@ public:
 	
 
 private:
+	ResourceScript* mResourceScript = nullptr;
 	Script* mScript = nullptr;
 	std::string mName = "";
-	std::vector<ScriptVariable*> mData;
 };
 

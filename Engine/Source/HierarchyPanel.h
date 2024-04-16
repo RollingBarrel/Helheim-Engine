@@ -13,7 +13,7 @@ public:
 	//~HierarchyPanel();
 
 	void Draw(int windowFlags) override;
-	GameObject* GetFocusedObject() const { return mFocusedObject; }
+	GameObject* GetFocusedObject() const;
 	void SetFocus(GameObject* focusedObject);
 	const std::vector<GameObject*> FilterMarked() const;
 
@@ -26,8 +26,8 @@ private:
 	void ShiftClick(GameObject* node, bool selected, bool click = false);
 
 	std::unordered_set<GameObject*> mMarked;
-	GameObject* mFocusedObject = nullptr;
-	GameObject* mLastClickedObject = nullptr;
+	int mFocusId = 0;
+	int mLastClickedObject = 0;
 	int mShiftMarking[2] = { 0 };
 	int mShiftClicked = 0;
 	int mLastMarkSeen = 0;

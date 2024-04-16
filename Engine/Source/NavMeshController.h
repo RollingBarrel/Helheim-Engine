@@ -1,18 +1,24 @@
 #pragma once
 #include "vector"
 #include "Geometry/OBB.h"
-class Material;
-struct ResourceMesh;
+#include "Geometry/AABB.h"
+
+class ResourceMesh;
 class MeshRendererComponent;
 class AIAgentComponent;
 class GameObject;
 struct dtNavMeshCreateParams;
-class rcHeightfield;
-class rcCompactHeightfield;
-class rcContourSet;
-class rcPolyMesh;
-class rcPolyMeshDetail;
+struct rcHeightfield;
+struct rcCompactHeightfield;
+struct rcContourSet;
+struct rcPolyMesh;
+struct rcPolyMeshDetail;
 class rcContext;
+
+struct ObstacleTriangle {
+	int startIndicePos=0;
+	int numberOfIndices=0;
+};
 class ENGINE_API NavMeshController
 {
 public:
@@ -60,8 +66,6 @@ public:
 	float GetDetailSampleMaxError() const { return mDetailSampleMaxError; }
 	void SetDetailSampleMaxError(float value) { mDetailSampleMaxError = value; }
 
-	float3 FindNearestPoint(float3 center, float3 halfsize) const;
-
 	float3 GetQueryCenter() const { return mQueryCenter; }
 	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
 
@@ -75,15 +79,13 @@ public:
 
 private:
 	void GetGOMeshes(const GameObject* gameObj);
-	std::vector<const ResourceMesh*> mMeshesToNavMesh;
-	std::vector<const MeshRendererComponent*> mMeshRendererComponents;
+	std::vector<GameObject*>mGameObjects;
 	std::vector<const AIAgentComponent*>mAIAgentComponents;
+	std::vector<ObstacleTriangle> mObstaclesTriangles;
 	void TranslateIndices();
 	void DebugDrawPolyMesh();
 	void LoadDrawMesh();
 	int FindVertexIndex(float3 vert);
-
-	void CreateDetourData();
 
 	dtNavMeshCreateParams* mNavMeshParams;
 	rcHeightfield* mHeightField = nullptr;
@@ -94,12 +96,14 @@ private:
 	unsigned char* mTriangleAreas = nullptr;
 	rcContext* mRecastContext;
 	bool mKeepInterResults = false;
-	bool mFilterLowHangingObstacles;
-	bool mFilterLedgeSpans;
-	bool mFilterWalkableLowHeightSpans;
+	bool mFilterLowHangingObstacles=true;
+	bool mFilterLedgeSpans=true;
+	bool mFilterWalkableLowHeightSpans=true;
+
+
 
 	int mWalkableClimb = 1;   // no imgui
-	int mWalkableHeight = 1; // no imgui
+	int mWalkableHeight = 0; // no imgui
 
 
 	//IMGUI VALUES
@@ -115,7 +119,9 @@ private:
 	int mMaxVertsPerPoly = 6; // 3 - 12
 	float mDetailSampleDist = 6; // 0 - 16
 	float mDetailSampleMaxError = 1; // 0 - 16
-
+	OBB mOBB;
+	AABB mAABB;
+	AABB mAABBWorld;
 	//DEBUG DRAW VARIABLES
 	bool mDraw = true;
 	unsigned int mVao = 0;

@@ -17,6 +17,9 @@
 	@brief A 3-by-4 matrix for affine operations in 3D space. */
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 26495 )
+
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include "myassert.h"
 #endif
@@ -812,3 +815,5 @@ Q_DECLARE_METATYPE(float3x4*)
 #endif
 
 MATH_END_NAMESPACE
+
+#pragma warning( pop )
