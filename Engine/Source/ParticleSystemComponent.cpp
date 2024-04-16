@@ -75,14 +75,12 @@ void ParticleSystemComponent::Update()
 		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
 		if (particles.size() < mMaxParticles) 
 		{
-			float3 position = InitParticlePosition();
-			particles.push_back(Particle(mLifeTime, position, mSpeed));
+			float3 position = mShapeType.RandomInitPosition();
+            float3 direction = mShapeType.RandomInitDirection();
+            float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
+			particles.push_back(Particle(position, direction, rotation, mLifeTime, mSpeed));
 		}
 	}
 }
 
-float3 ParticleSystemComponent::InitParticlePosition()
-{
-	float3 position = mShapeType.RandomInitPosition();
-	return position;
-}

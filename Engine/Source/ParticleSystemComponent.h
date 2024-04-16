@@ -24,7 +24,6 @@ public:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
-	float3 InitParticlePosition();
 
 	float mEmitterTime;
 	float mEmitterDeltaTime;
