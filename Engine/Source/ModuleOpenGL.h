@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
+#include "ParticleSystemComponent.h"
 #include <vector>
 
 typedef struct DirectionalAmbient {
@@ -81,6 +82,8 @@ public:
 	void Draw();
 	void SetWireframe(bool wireframe);
 
+	void AddParticleSystem(ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+
 
 private:
 	void* context = nullptr;
@@ -121,6 +124,8 @@ private:
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
+
+	std::vector<ParticleSystemComponent*> mParticleSystems;
 };
 
 #endif /* _MODULEOPENGL_H_ */

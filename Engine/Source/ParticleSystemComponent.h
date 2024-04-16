@@ -29,10 +29,10 @@ private:
 	float mEmitterTime = 0.0f;
 	float mEmitterDeltaTime = 0.0f;
 
-	float mDuration = 0.0f;
-	float mLifeTime = 0.0f;
-	float mSpeed = 0.0f;
-	float mEmissionRate = 0.0f;
+	float mDuration = 5.0f;
+	float mLifeTime = 10.0f;
+	float mSpeed = 1.0f;
+	float mEmissionRate = 1.0f;
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 

@@ -30,7 +30,7 @@ public:
 
 private:
     float3 mPosition;
-    float3 mDirection;
+    float3 mDirection = float3::unitX;
     float mRotation;
     float mSpeed;
     float mSize;

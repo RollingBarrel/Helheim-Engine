@@ -42,59 +42,58 @@ void ParticleSystemComponent::Init()
     glBindVertexArray(0);
 
     // create this->amount default particle instances
-    for (unsigned int i = 0; i < 10; ++i)
+    for (unsigned int i = 0; i < 100; ++i)
         this->particles.push_back(Particle());
+
+    App->GetOpenGL()->AddParticleSystem(this);
 }
 
 
 void ParticleSystemComponent::Draw() const
 {
-    unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glUseProgram(programId);
-    for (Particle particle : particles)
+    if (IsEnabled()) 
     {
-        if (particle.getLifetime() > 0.0f)
+        unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        glUseProgram(programId);
+        for (Particle particle : particles)
         {
-            glUniform2f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y);
-            glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
-            //particleTexture.Bind();
-            glBindVertexArray(mVAO);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            glBindVertexArray(0);
+            if (particle.getLifetime() > 0.0f)
+            {
+                glUniform2f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y);
+                glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
+                //particleTexture.Bind();
+                glBindVertexArray(mVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                glBindVertexArray(0);
+            }
         }
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void ParticleSystemComponent::Update() 
+void ParticleSystemComponent::Update()
 {
-	mEmitterTime += App->GetGameDt();
-	mEmitterDeltaTime += App->GetGameDt();
+    mEmitterTime += App->GetGameDt();
+    mEmitterDeltaTime += App->GetGameDt();
 
-	for (int i = 0; i < particles.size(); i++)
-	{
-		particles[i].Update();
-	}
+    for (int i = 0; i < particles.size(); i++)
+    {
+        particles[i].Update();
+    }
 
-	if (mEmitterDeltaTime > 1 / mEmissionRate)// deltaTime in seconds Use Timer
-	{
-		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
-		if (particles.size() < mMaxParticles) 
-		{
-			float3 position = mShapeType.RandomInitPosition();
+    if (mEmitterDeltaTime > 1 / mEmissionRate)// deltaTime in seconds Use Timer
+    {
+        mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
+        if (particles.size() < mMaxParticles)
+        {
+            float3 position = mShapeType.RandomInitPosition();
             float3 direction = mShapeType.RandomInitDirection();
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
-			particles.push_back(Particle(position, direction, rotation, mLifeTime, mSpeed));
-		}
-	}
-}
-
-float3 ParticleSystemComponent::InitParticlePosition()
-{
-	float3 position = mShapeType.RandomInitPosition();
-	return position;
+            particles.push_back(Particle(position, direction, rotation, mLifeTime, mSpeed));
+        }
+    }
 }
 
 void ParticleSystemComponent::Reset()

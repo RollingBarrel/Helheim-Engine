@@ -3,12 +3,12 @@
 Particle::Particle()
 {
     mPosition = float3::zero;
-    mDirection = float3::zero;
+    mDirection = float3::unitX;
     mRotation = 0.0f;
-    mSpeed = 0.0f;
+    mSpeed = 0.001f;
     mSize = 0.0f;
-    mLifetime = 0.0f;
-    mColor = float4::zero;
+    mLifetime = 1000.0f;
+    mColor = { 0.5f, 0.7f, 0.3f, 0.5 };
 }
 
 Particle::Particle(float3 position, float3 direction, float rotation, float lifeTime, float speed)
