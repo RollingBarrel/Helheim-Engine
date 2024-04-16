@@ -22,6 +22,7 @@
 #include "ButtonComponent.h"
 #include "ScriptComponent.h"
 #include "Transform2DComponent.h"
+#include "ParticleSystemComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -468,6 +469,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::TRANSFORM2D:
 		newComponent = new Transform2DComponent(this);
+		break;
+	case ComponentType::PARTICLESYSTEM:
+		newComponent = new ParticleSystemComponent(this);
 		break;
 	default:
 		break;

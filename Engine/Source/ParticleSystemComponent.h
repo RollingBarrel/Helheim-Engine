@@ -10,6 +10,7 @@ struct Mesh;
 
 class ENGINE_API ParticleSystemComponent : public Component
 {
+	friend class InspectorPanel;
 public:
 	ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
@@ -32,7 +33,7 @@ private:
 	float mLifeTime = 0.0f;
 	float mSpeed = 0.0f;
 	float mEmissionRate = 0.0f;
-	int mMaxParticles = 0.0f;
+	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 
 	EmitterShape mShapeType;

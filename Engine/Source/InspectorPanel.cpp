@@ -23,6 +23,7 @@
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
 #include "Transform2DComponent.h"
+#include "ParticleSystemComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -1034,5 +1035,9 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
 {
-
+	ImGui::InputFloat("Duration", &(component->mDuration));
+	ImGui::Checkbox("Looping", &(component->mLooping));
+	ImGui::InputFloat("Start speed", &(component->mSpeed));
+	ImGui::InputFloat("Start lifetime", &(component->mLifeTime));
+	//ImGui::InputFloat("Start size", &(component->mSize));
 }
