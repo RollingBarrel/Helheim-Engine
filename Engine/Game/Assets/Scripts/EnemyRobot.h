@@ -1,12 +1,8 @@
 #pragma once
-#pragma once
 #include <EnemyBase.h>
-
 #include "Target.h"
 #include "Geometry/Ray.h"
-
 #include <ScriptComponent.h>
-
 
 GENERATE_BODY(EnemyRobot);
 class EnemyRobot : public EnemyBase
@@ -52,11 +48,10 @@ private:
 
 	EnemyState mCurrentState;
 	EnemyState mPreviousState;
-	float mRangetoAttack = 5.0f;
+	float mMeleetoAttack;
 	int mChargeTime = 0.5f;
 	int mMeeleDamage = 10;
-	int mRangeDamage = 10;
-
+	int mRangeDamage = 15;
 	bool mIsMoving = false;
 	bool mIsReadyToShoot = false;
 };

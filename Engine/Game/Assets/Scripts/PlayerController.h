@@ -31,10 +31,10 @@ class PlayerController :public Script
         GameObject* mAnimationComponentHolder = nullptr;
 
         //Dash Variables
-        float mDashSpeed = 35.0f;
+        float mDashSpeed = 5.0f;//35
         float mDashDistance = 3.0f;
         float mDashCoolDown = 3.0f;
-        int mDashCharges = 5;
+        int mDashCharges = 5;//3
 
         int mHealth = 1;
         int mShield = 100;
@@ -102,8 +102,8 @@ class PlayerController :public Script
 
         bool mPlayerIsDead = false;
         bool mIsMoving = false;
-        bool mIsRecharging = false;
-        float mReloadTimePassed = 0.0f;
+        //bool mIsRecharging = false;
+        //float mReloadTimePassed = 0.0f;
 
         //Shooting variables
         int mDamage = 1;
@@ -114,5 +114,5 @@ class PlayerController :public Script
         bool mIsChargedShot = false;
 
         //Reload variables
-        float mReloadTime = 10.0f;
+        //float mReloadTime = 10.0f;
 };

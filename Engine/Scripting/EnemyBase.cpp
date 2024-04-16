@@ -85,11 +85,6 @@ void EnemyBase::SearchPlayer()
     if (mInAttackDistance == false) 
     {
         Test_Controls(); //Enemy's test movement emulating AI
-
-        if (OpponentDistance(mAttackDistance)) 
-        {
-            mInAttackDistance = true;
-        }
     }
 }
 

@@ -80,8 +80,8 @@ void EnemyExplosive::SearchPlayer()
 {
     EnemyBase::SearchPlayer();
 
-    if (mInAttackDistance) 
-    {
+    if (OpponentDistance(mAttackDistance)) {
+        mInAttackDistance = true;
         ChangeState(EnemyState::Armed);
     }
 }

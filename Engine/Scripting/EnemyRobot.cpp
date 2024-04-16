@@ -8,10 +8,8 @@
 #include "EnemyRobot.h"
 #include "PlayerController.h"
 
-
 CREATE(EnemyRobot)
 {
-
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mEnemySpeed);
@@ -20,17 +18,17 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mHealth);
     MEMBER(MemberType::FLOAT, mActivationDistance);
     MEMBER(MemberType::FLOAT, mAttackDistance);
+    MEMBER(MemberType::FLOAT, mMeleetoAttack);
     END_CREATE;
-
 }
 
 EnemyRobot::EnemyRobot(GameObject* owner) : EnemyBase(owner)
 {
     mCurrentState = EnemyState::Deploy;
     mHealth = 15;
-    mActivationDistance = 10.0f;
-    mAttackDistance = 1.0f;
-    mRangetoAttack = 5.0f;
+    mActivationDistance = 12.0f;
+    mAttackDistance = 9.0f;
+    mMeleetoAttack = 2.0f;
 }
 
 void EnemyRobot::Start()
@@ -85,13 +83,17 @@ void EnemyRobot::StateMachine() {
 void EnemyRobot::SearchPlayer() {
     EnemyBase::SearchPlayer();
 
-    if (mInAttackDistance) 
-    {
-        ChangeState(EnemyState::MeleeAttack);
-    }
-    if (OpponentDistance(mRangetoAttack))
-    {
-		ChangeState(EnemyState::RangeAttack);
+    if (OpponentDistance(mAttackDistance)) {
+        mInAttackDistance = true;
+
+        if (OpponentDistance(mMeleetoAttack))
+        {    
+            ChangeState(EnemyState::MeleeAttack);
+        }
+        else
+        {
+            ChangeState(EnemyState::RangeAttack);
+        }
     }
 }
 
@@ -106,7 +108,6 @@ void EnemyRobot::SetEnemyDamage(int damage) {
 //Melee attack function
 void EnemyRobot::MeleeAttack() {
 	LOG("Starting MeleeAttack");
-
 
     if (mIsMoving == false) {
 		LOG("Melee attack animation by Robot");
@@ -154,7 +155,6 @@ void EnemyRobot::MeleeAttack() {
 
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
-
             PlayerController* playerScript = (PlayerController*)((ScriptComponent*)player->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (playerScript != nullptr)
             {
@@ -190,8 +190,6 @@ void EnemyRobot::RangeAttack() {
     }
 
     Shoot();
-
-
 }
 
 void EnemyRobot::Shoot( )
@@ -235,7 +233,7 @@ void EnemyRobot::ShootLogic(int damage)
                 PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)
                 {
-                    playerScript->SetPlayerDamage(mMeeleDamage);
+                    playerScript->SetPlayerDamage(damage);
                 }
             }
         }
@@ -276,7 +274,4 @@ void EnemyRobot::Test_Right() {
     EnemyBase::Test_Right();
     ChangeState(EnemyState::Right);
 }
-
-
-
 //************************************************************************

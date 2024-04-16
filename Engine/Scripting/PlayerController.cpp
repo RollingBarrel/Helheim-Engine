@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "PlayerController.h"
-
 #include <utility>
 #include <limits.h>
 #include "Globals.h"
@@ -15,7 +14,6 @@
 #include "Geometry/Ray.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
-
 #include <ScriptComponent.h>
 
 CREATE(PlayerController)
@@ -163,17 +161,18 @@ void PlayerController::Controls()
         anyKeyPressed = true;
     }
  
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN && !mStartCounter)
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mStartCounter)
     {
         mIsDashActive = true;
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN) 
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
     {
         ChangeState(PlayerState::MeleeAttack);
         anyKeyPressed = true;
     }
+
     if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
         mChargedShotTime += App->GetGameDt();
@@ -192,7 +191,8 @@ void PlayerController::Controls()
         mChargedShotTime = 0;
         mIsChargedShot = false;
     }
-    if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN)
+
+    if (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN)
     {
         ChangeState(PlayerState::Reload);
         anyKeyPressed = true;
@@ -221,25 +221,25 @@ void PlayerController::Controls()
 
 void PlayerController::Forward() 
 {
-    LOG("Forward animation");
+    //LOG("Forward animation");
     Move(mGameObject->GetFront());
 }
 
 void PlayerController::Backward() 
 {
-    LOG("Backward animation");
+    //LOG("Backward animation");
     Move(mGameObject->GetFront() * -1);
 }
 
 void PlayerController::Left() 
 {
-    LOG("Left animation");
+    //LOG("Left animation");
     Move(mGameObject->GetRight());
 }
 
 void PlayerController::Right() 
 {
-    LOG("Right animation");
+    //LOG("Right animation");
     Move(mGameObject->GetRight() * -1);
 }
 
@@ -261,9 +261,22 @@ void PlayerController::Dash()
 {
     if (mIsDashActive)
     {
-        if (mDashCharges > 0) 
+        if (mDashCharges >= 0) 
         {
             //LOG("Dash animation");
+
+            if (mDashTrigger == false) {
+                mDashCharges -= 1;
+             
+                /*
+                if (mDashCharges == 0) {
+                    mDashCharges = 0;
+                }
+                */
+                LOG("Dash Charges:  %i", mDashCharges);
+
+                mDashTrigger = true;
+            }
 
             if (mDashMovement >= mDashDistance)
             {
@@ -287,20 +300,7 @@ void PlayerController::Dash()
                 //mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mDashSpeed * App->GetGameDt());
                 float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
                 mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-
-                
-
             }
-
-            if (mDashTrigger = false) {
-                //mDashTrigger = true;
-                mDashCharges -= 1;
-
-                LOG("Dash Charges:  %i", mDashCharges);
-            }
-        }
-        else {
-            mDashCharges = 0;
         }
     }
 }
