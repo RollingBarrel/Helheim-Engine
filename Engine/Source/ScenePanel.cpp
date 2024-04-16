@@ -76,19 +76,6 @@ ScenePanel::~ScenePanel()
 void ScenePanel::Draw(int windowFlags)
 {
 	windowFlags |= ImGuiWindowFlags_NoMove;
-	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
-	{
-		if (ImGui::IsWindowAppearing())
-		{
-			App->GetCamera()->ActivateEditorCamera();
-			
-		}
-
-		DrawScene();
-		
-	}
-	ImGui::End();
-
 
 	if (ImGui::Begin("Game", &mOpen, windowFlags))
 	{
@@ -104,6 +91,23 @@ void ScenePanel::Draw(int windowFlags)
 		DrawScene();
 	}
 	ImGui::End();
+
+
+	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
+	{
+		if (ImGui::IsWindowAppearing())
+		{
+			App->GetCamera()->ActivateEditorCamera();
+			
+		}
+
+		DrawScene();
+		
+	}
+	ImGui::End();
+
+
+	
 }
 
 void ScenePanel::DrawScene()
