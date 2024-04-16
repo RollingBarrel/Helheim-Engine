@@ -17,6 +17,7 @@ class ImageComponent;
 class CanvasComponent;
 class ButtonComponent;
 class Transform2DComponent;
+class ParticleSystemComponent;
 
 class InspectorPanel : public Panel
 {
@@ -50,6 +51,7 @@ private:
 	void DrawCanvasComponent(CanvasComponent* component);
 	void DrawButtonComponent(ButtonComponent* component);
 	void DrawTransform2DComponent(Transform2DComponent* component);
+	void DrawParticleSystemComponent(ParticleSystemComponent* component);
 
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);

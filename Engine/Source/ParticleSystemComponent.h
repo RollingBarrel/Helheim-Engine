@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "Particle.h"
 #include "EmitterShape.h"
-#include "ColorGradient.h"
+#include <map>
 
 class Material;
 struct Mesh;
@@ -26,18 +26,18 @@ public:
 private:
 	float3 InitParticlePosition();
 
-	float mEmitterTime;
-	float mEmitterDeltaTime;
+	float mEmitterTime = 0.0f;
+	float mEmitterDeltaTime = 0.0f;
 
-	float mDuration;
-	float mLifeTime;
-	float mSpeed;
-	float mEmissionRate;
-	int mMaxParticles;
-	bool mLooping;
+	float mDuration = 0.0f;
+	float mLifeTime = 0.0f;
+	float mSpeed = 0.0f;
+	float mEmissionRate = 0.0f;
+	int mMaxParticles = 0.0f;
+	bool mLooping = true;
 
 	EmitterShape mShapeType;
-	ColorGradient mColorGradient;
+	std::map<float, float4> mColorGradient;
 	std::vector<Particle> particles;
 	unsigned int mVAO;
 };

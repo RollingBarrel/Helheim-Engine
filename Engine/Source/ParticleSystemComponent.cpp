@@ -2,13 +2,19 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "glew.h"
+#include "ColorGradient.h"
 
-ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject)
+ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
 }
 
-ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner)
+ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) : ParticleSystemComponent(owner)
 {
+}
+
+Component* ParticleSystemComponent::Clone(GameObject* owner) const
+{
+    return new ParticleSystemComponent(*this, owner);
 }
 
 void ParticleSystemComponent::Init()
@@ -41,7 +47,8 @@ void ParticleSystemComponent::Init()
 }
 
 
-void ParticleSystemComponent::Draw() const{
+void ParticleSystemComponent::Draw() const
+{
     unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glUseProgram(programId);
@@ -85,4 +92,91 @@ float3 ParticleSystemComponent::InitParticlePosition()
 {
 	float3 position = mShapeType.RandomInitPosition();
 	return position;
+}
+
+void ParticleSystemComponent::Reset()
+{
+
+}
+
+void ParticleSystemComponent::Save(Archive& archive) const
+{
+    Component::Save(archive);
+    archive.AddFloat("Duration", mDuration);
+    archive.AddFloat("Life Time", mLifeTime);
+    archive.AddFloat("Emission Rate", mEmissionRate);
+    archive.AddFloat("Speed", mSpeed);
+    archive.AddInt("Max Particles", mMaxParticles);
+    archive.AddBool("Looping", mLooping);
+    
+    std::vector<Archive> objectArray;
+    for (auto const& [time, color] : mColorGradient)
+    {
+        Archive colorArchive;
+        colorArchive.AddFloat("Time", time);
+        const float c[4] = { color.x, color.y, color.z, color.w };
+        colorArchive.AddFloat4("Color", c);
+        objectArray.push_back(colorArchive);
+    }
+    archive.AddObjectArray("Color Gradient", objectArray);
+}
+
+void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+{
+    Component::LoadFromJSON(data, owner);
+    if (data.HasMember("Duration") && data["Duration"].IsFloat())
+    {
+        mDuration = data["Duration"].GetFloat();
+    }
+
+    if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
+    {
+        mLifeTime = data["Life Time"].GetFloat();
+    }
+    if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
+    {
+        mEmissionRate = data["Emission Rate"].GetFloat();
+    }
+    if (data.HasMember("Speed") && data["Speed"].IsFloat())
+    {
+        mSpeed = data["Speed"].GetFloat();
+    }
+    if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
+    {
+        mMaxParticles = data["Max Particles"].GetFloat();
+    }
+    if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
+    {
+        mMaxParticles = data["Max Particles"].GetFloat();
+    }
+    if (data.HasMember("Looping") && data["Looping"].IsBool())
+    {
+        mLooping = data["Looping"].GetBool();
+    }
+
+    if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
+    {
+        const auto& colorArray = data["Color Gradient"].GetArray();
+        for (unsigned int i = 0; i < colorArray.Size(); ++i)
+        {
+            float time = 0.0f;
+            if (colorArray[i].HasMember("Time") && colorArray[i]["Time"].IsFloat())
+            {
+                time = colorArray[i]["Time"].GetFloat();
+            }
+            if (colorArray[i].HasMember("Color") && colorArray[i]["Color"].IsArray())
+            {
+                float colorVec[4] { 0 };
+                const auto& colArray = colorArray[i]["Color"].GetArray();
+                if (colArray.Size() == 4)
+                for (unsigned int j = 0; j < colArray.Size(); ++j)
+                {
+                    if (colArray[j].IsFloat() && j < 4) {
+                        colorVec[j] = colArray[j].GetFloat();
+                    }
+                }
+                mColorGradient[time] = float4(colorVec);
+            }
+        }
+    }
 }

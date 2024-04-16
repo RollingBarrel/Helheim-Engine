@@ -413,6 +413,8 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
+				case ComponentType::PARTICLESYSTEM:
+					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
 			}
 		}
 		ImGui::PopID();
@@ -1028,4 +1030,9 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	}
 	ImGui::EndTable();
 	
+}
+
+void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
+{
+
 }
