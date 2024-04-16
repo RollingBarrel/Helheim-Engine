@@ -126,12 +126,12 @@ const CameraComponent* ModuleCamera::GetEditorCamera() const
 	return (CameraComponent*)mEditorCamera->GetComponent(ComponentType::CAMERA);
 }
 
-const float3& ModuleCamera::GetPosition()
+const float3& ModuleCamera::GetPosition() const
 {
 	return mEditorCamera->GetPosition();
 }
 
-const float3& ModuleCamera::GetRotation()
+const float3& ModuleCamera::GetRotation() const
 {
 	return mEditorCamera->GetRotation();
 }
@@ -139,13 +139,23 @@ const float3& ModuleCamera::GetRotation()
 void ModuleCamera::SetPosition(float3 newPostion)
 {
 	mEditorCamera->SetPosition(newPostion);
-	mCurrentCameraComponent->Transform(newPostion);
+	mCurrentCameraComponent->SetPos(newPostion);
 }
 
 void ModuleCamera::SetRotation(float3 newRotation)
 {
-	mEditorCamera->SetRotation(newRotation);
-	mCurrentCameraComponent->SetRotation(newRotation); //NEEDS FIX
+	mCurrentCamera->SetRotation(newRotation);
+	mCurrentCameraComponent->UpdateRotation();
+}
+
+void ModuleCamera::SetFrontUp(float3 front, float3 up) 
+{ 
+	mCurrentCameraComponent->SetFrontUp(front, up); 
+	//float3x3 rotationMatrix = float3x3(Cross(front, up), up, front);
+	//Quat rotation = Quat(rotationMatrix);
+	//mEditorCamera->SetRotation(rotation);
+
+	//mEditorCamera->Update();
 }
 
 void ModuleCamera::ActivateEditorCamera()
@@ -274,6 +284,7 @@ update_status ModuleCamera::Update(float dt)
 
 			mCurrentCamera->SetPosition(position);
 			mCurrentCamera->SetRotation(rotation);
+
 		}
 	}
 	return UPDATE_CONTINUE;

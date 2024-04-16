@@ -254,7 +254,7 @@ void ModuleScene::Load(const char* sceneName)
 
 		mQuadtreeRoot->CleanUp();
 		delete mRoot;
-		mRoot = new GameObject("SampleScene", nullptr);
+		mRoot = new GameObject(sceneName, nullptr);
 
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) 

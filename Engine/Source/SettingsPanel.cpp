@@ -4,6 +4,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "CameraComponent.h"
 #include "Quadtree.h"
 #include "Timer.h"
 
@@ -177,13 +178,15 @@ void SettingsPanel::SaveProjectSettings()
 void SettingsPanel::SaveCameraPosition()
 {
 	std::ofstream userSettings("userSettings.txt");
-	float3 cameraPosition = App->GetCamera()->GetPosition();
-	float3 cameraRotation = App->GetCamera()->GetRotation();
+	float3 cameraPosition = App->GetCamera()->GetEditorCamera()->GetFrustum().pos;
+	float3 cameraFront = App->GetCamera()->GetEditorCamera()->GetFrustum().front;
+	float3 cameraUp = App->GetCamera()->GetEditorCamera()->GetFrustum().up;
 
 	if (userSettings.is_open())
 	{
 		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
-		userSettings << "Camera Rotation:\n" << cameraRotation.x << '\n' << cameraRotation.y << '\n' << cameraRotation.z << "\n";
+		userSettings << "Camera Front:\n" << cameraFront.x << '\n' << cameraFront.y << '\n' << cameraFront.z << "\n";
+		userSettings << "Camera Up:\n" << cameraUp.x << '\n' << cameraUp.y << '\n' << cameraUp.z << "\n";
 	}
 }
 
@@ -194,30 +197,43 @@ void SettingsPanel::LoadCameraPosition()
 	std::string line;
 
 	float3 cameraPosition;
-	float3 cameraRotation;
+	float3 cameraFront;
+	float3 cameraUp;
+
+	float3 rotation;
 
 	if (userSettings.is_open())
 	{
 		std::getline(userSettings, line);
 		for (int i = 0; i < 3; ++i)
 		{
-			std::getline(userSettings, line);
+			if (std::getline(userSettings, line))
 			cameraPosition[i] = std::stof(line);
 		}
 		std::getline(userSettings, line);
 		for (int i = 0; i < 3; ++i)
 		{
-			std::getline(userSettings, line);
-			cameraRotation[i] = std::stof(line);
+			if (std::getline(userSettings, line))
+			cameraFront[i] = std::stof(line);
+		}
+		std::getline(userSettings, line);
+		for (int i = 0; i < 3; ++i)
+		{
+			if (std::getline(userSettings, line))
+			cameraUp[i] = std::stof(line);
+		}
+		std::getline(userSettings, line);
+		for (int i = 0; i < 3; ++i)
+		{
+			if (std::getline(userSettings, line))
+				rotation[i] = std::stof(line);
 		}
 
 		App->GetCamera()->SetPosition(cameraPosition);
-		App->GetCamera()->SetRotation(cameraRotation);
+		App->GetCamera()->SetFrontUp(cameraFront, cameraUp);
+		
 	}
-	else 
-	{
 
-	}
 
 }
 
