@@ -17,11 +17,8 @@ public:
     void Reset() override;
 
     inline float2 GetSize() { return mSize; }
-    //inline float GetScreenFactor() { return mScreenFactor; }
 
-    void SetSize(float2 size) { mSize = size; }
-
-    void RecalculateSizeAndScreenFactor();
+    inline void SetSize(float2 size) { mSize = size; }
 
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;

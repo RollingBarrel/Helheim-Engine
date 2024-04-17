@@ -21,17 +21,20 @@ public:
     void SetImage(ResourceTexture* image) { mImage = image; }
     void FillVBO();
     void CreateVAO();
+    void ResizeByRatio();
 
     unsigned int GetResourceId() const { return mResourceId; }
     ResourceTexture* GetImage() const { return mImage; }
     float3* GetColor() { return &mColor; }
     float* GetAlpha() { return &mAlpha; }
     const char* GetFileName() const { return mFileName; }
+    bool* GetMantainRatio() { return &mMantainRatio; }
     
-    void SetFileName(const char* fileName) { mFileName = fileName; }
-    void SetImage(unsigned int resourceId);
-	void SetColor(float3 color) { mColor = color; }
-    void SetAlpha(float alpha) { mAlpha = alpha; }
+    inline void SetFileName(const char* fileName) { mFileName = fileName; }
+    inline void SetImage(unsigned int resourceId);
+    inline void SetColor(float3 color) { mColor = color; }
+    inline void SetAlpha(float alpha) { mAlpha = alpha; }
+    inline void SetMantainRatio(bool ratio) { mMantainRatio = ratio; }
 
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
@@ -50,6 +53,7 @@ private:
 
     float2 mTexOffset = float2::zero;
     bool mHasDiffuse = true;
+    bool mMantainRatio = true;
 
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;

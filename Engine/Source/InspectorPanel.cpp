@@ -951,7 +951,13 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	// Image Info.
 	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
 
-
+	if (ImGui::Checkbox("Mantain Ratio", imageComponent->GetMantainRatio()))
+	{
+		if (imageComponent->GetMantainRatio())
+		{
+			imageComponent->ResizeByRatio();
+		}
+	}
 }
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 

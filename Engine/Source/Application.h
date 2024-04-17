@@ -17,7 +17,6 @@ class ModuleUI;
 class ModuleDetourNavigation;
 class ModuleAudio;
 class ModuleEvent;
-class ModulePrograms;
 
 class Timer;
 class PreciseTimer;
