@@ -480,6 +480,9 @@
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
     <ClCompile Include="TextComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
@@ -1418,6 +1421,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Freetype\include\ft2build.h">
       <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">
       <Filter>GameObjects\Components\UI</Filter>

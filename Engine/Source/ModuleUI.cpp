@@ -19,6 +19,7 @@
 #include "ScenePanel.h"
 #include "Quadtree.h"
 #include <MathGeoLib.h>
+#include "TextComponent.h"
 
 ModuleUI::ModuleUI() 
 {
@@ -86,6 +87,15 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			if (image->IsEnabled())
 			{
 				image->Draw();
+			}
+		}
+
+		for (Component* component : gameObject->GetComponents(ComponentType::TEXT))
+		{
+			TextComponent* text = (TextComponent*)component;
+			if (text->IsEnabled())
+			{
+				text->Draw();
 			}
 		}
 

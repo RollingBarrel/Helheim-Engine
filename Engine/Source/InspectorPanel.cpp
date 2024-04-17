@@ -23,6 +23,7 @@
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
 #include "Transform2DComponent.h"
+#include "TextComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -425,6 +426,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
+				case ComponentType::TEXT:
+					DrawTextComponent(reinterpret_cast<TextComponent*>(component));
+					break;
 			}
 		}
 		ImGui::PopID();
@@ -647,7 +651,6 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 
 }
 
-
 void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 {
 	ImGui::SeparatorText("Camera");
@@ -866,7 +869,6 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	}
 }
 
-
 void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::SeparatorText("Animation");
@@ -1014,7 +1016,7 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	ImGui::EndTable();
 }
 
-void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
+void InspectorPanel::DrawButtonComponent(ButtonComponent* buttonComponent) 
 {
 }
 
@@ -1118,4 +1120,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	}
 	ImGui::EndTable();
 	
+}
+
+void InspectorPanel::DrawTextComponent(TextComponent* textComponent)
+{
 }

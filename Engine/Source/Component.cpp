@@ -57,6 +57,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Image";
 		case ComponentType::BUTTON:
 			return "Button";
+		case ComponentType::TEXT:
+			return "Text";
 		default:
 			return "None";
 		}

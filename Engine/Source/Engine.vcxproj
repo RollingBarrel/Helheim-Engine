@@ -314,6 +314,7 @@
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TagsManagerPanel.cpp" />
     <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerPanel.cpp" />
@@ -575,6 +576,7 @@
     <ClInclude Include="OptickAdapter.h" />
     <ClInclude Include="SettingsPanel.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="TimerPanel.h" />
     <ClInclude Include="Transform2DComponent.h" />
