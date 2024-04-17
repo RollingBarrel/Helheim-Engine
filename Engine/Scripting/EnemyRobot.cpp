@@ -12,13 +12,17 @@ CREATE(EnemyRobot)
 {
     CLASS(owner);
     SEPARATOR("STATS");
+    MEMBER(MemberType::INT, mHealth);
+
     MEMBER(MemberType::FLOAT, mEnemySpeed);
     MEMBER(MemberType::FLOAT, mEnemyRotationSpeed);
-    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
-    MEMBER(MemberType::FLOAT, mHealth);
     MEMBER(MemberType::FLOAT, mActivationDistance);
     MEMBER(MemberType::FLOAT, mAttackDistance);
     MEMBER(MemberType::FLOAT, mMeleetoAttack);
+    
+    SEPARATOR("GAME OBJECTS");
+    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+    //MEMBER(MemberType::GAMEOBJECT, mOpponent);
     END_CREATE;
 }
 
