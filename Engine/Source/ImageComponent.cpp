@@ -116,7 +116,8 @@ void ImageComponent::Draw()
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
 		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
-		if (mAlpha < 1.0) {
+		if (mAlpha < 1.0) 
+		{
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
