@@ -161,6 +161,10 @@ void HierarchyPanel::DrawTree(GameObject* node)
 		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (selected) {
 			baseFlags |= ImGuiTreeNodeFlags_Selected;
+			ImVec4 pressedColor = ImVec4{ 0.37f, 0.29f, 0.49f, 1.0f };
+			ImGui::PushStyleColor(ImGuiCol_Header, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, pressedColor);
 		}			
 		if (node->mChildren.size() == 0) 
 		{
@@ -176,6 +180,10 @@ void HierarchyPanel::DrawTree(GameObject* node)
 		if (!node->IsActive())
 		{
 			ImGui::PopStyleColor();
+		}
+		if (selected)
+		{
+			ImGui::PopStyleColor(3);
 		}
 		DragAndDropSource(node);
 		OnLeftCkickNode(node);

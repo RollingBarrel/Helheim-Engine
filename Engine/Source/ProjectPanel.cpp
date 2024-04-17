@@ -36,9 +36,9 @@ void ProjectPanel::Draw(int windowFlags)
 		ImGui::EndChild();
 		ImGui::NextColumn();
 		ImGui::BeginChild("Assets");
-		if (mSelected)
+		if (mSelectedNode)
 		{
-			DrawAssets(*mSelected);
+			DrawAssets(*mSelectedNode);
 		}
 		ImGui::EndChild();
 	}
@@ -51,7 +51,13 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 	
 	//Discard Meta file but, read .emeta data
 	for (auto i = 0; i < current.mChildren.size(); ++i)
-	{		
+	{	
+		bool selected = false;
+		if (mSelectedNode) {
+			selected = strcmp(mSelectedNode->mName, current.mChildren[i]->mName) == 0;
+		}
+		
+
 		std::string nameWithoutPath = current.mChildren[i]->mName;
 		nameWithoutPath = nameWithoutPath.substr(nameWithoutPath.find_last_of('/')+1);
 		std::string nameWithIconClose = ICON_FA_FOLDER;
@@ -65,30 +71,66 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 			flags |= ImGuiTreeNodeFlags_Leaf;
 		}
 
+		if (selected)
+		{
+			flags |= ImGuiTreeNodeFlags_Selected;
+			ImVec4 pressedColor = ImVec4{ 0.37f, 0.29f, 0.49f, 1.0f };
+			ImGui::PushStyleColor(ImGuiCol_Header, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, pressedColor);
+		}
 		bool open = ImGui::TreeNodeEx(nameWithIconClose.c_str(), flags);
+		if (selected)
+		{
+			ImGui::PopStyleColor(3);
+		}
 		SavePrefab(*current.mChildren[i]);
 		if (open)
 		{
 			DrawFolders(*current.mChildren[i]);
 			ImGui::TreePop();
 		}
+		
 		if (ImGui::IsItemClicked()) 
 		{
-			mSelected = current.mChildren[i];
+			mSelectedNode = current.mChildren[i];
 		}
+
 	}
 }
 
-const void ProjectPanel::DrawAssets(const PathNode& current) const
+const void ProjectPanel::DrawAssets(const PathNode& current)
 {
 
 	for (unsigned int i = 0; i < current.assets.size(); ++i)
 	{
+		int flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_FramePadding;
 		std::string nameWithIcon = ICON_FA_FILE;
-		nameWithIcon += current.assets[i]->mName;
+		nameWithIcon += " " + std::string(current.assets[i]->mName);
 
-		if (ImGui::TreeNodeEx(nameWithIcon.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_FramePadding))
+		bool selected = false;
+		if (mSelectedAsset) {
+			selected = strcmp(mSelectedAsset->mName, current.assets[i]->mName) == 0;
+		}
+
+		if (selected)
 		{
+			flags |= ImGuiTreeNodeFlags_Selected;
+			ImVec4 pressedColor = ImVec4{ 0.37f, 0.29f, 0.49f, 1.0f };
+			ImGui::PushStyleColor(ImGuiCol_Header, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, pressedColor);
+		}
+		if (ImGui::TreeNodeEx(nameWithIcon.c_str(), flags))
+		{
+			if (selected)
+			{
+				ImGui::PopStyleColor(3);
+			}
+			if (ImGui::IsItemClicked())
+			{
+				mSelectedAsset = current.assets[i];
+			}
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
 				AssetDisplay* asset = current.assets[i];

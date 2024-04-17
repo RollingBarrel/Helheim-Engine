@@ -29,8 +29,9 @@ public:
 
 private:
 	const void DrawFolders(const PathNode& current);
-	const void DrawAssets(const PathNode& current) const;
+	const void DrawAssets(const PathNode& current);
 
-	PathNode* mSelected = nullptr;
+	PathNode* mSelectedNode = nullptr;
+	AssetDisplay* mSelectedAsset = nullptr;
 };
 
