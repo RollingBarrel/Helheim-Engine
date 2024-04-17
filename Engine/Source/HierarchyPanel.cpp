@@ -146,11 +146,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 {
 	ImGui::PushID(node->GetID());
 	bool nodeOpen = true;
-	if (mNodesToOpen.find(node->GetID()) != mNodesToOpen.end())
-	{
-		mNodesToOpen.erase(node->GetID());
-		ImGui::SetNextItemOpen(true);
-	}
+	
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 	if (!node->mIsRoot) 
 	{
@@ -169,6 +165,11 @@ void HierarchyPanel::DrawTree(GameObject* node)
 		if (node->mChildren.size() == 0) 
 		{
 			baseFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+		}
+		if (mNodesToOpen.find(node->GetID()) != mNodesToOpen.end())
+		{
+			mNodesToOpen.erase(node->GetID());
+			ImGui::SetNextItemOpen(true);
 		}
 		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->mID, baseFlags, node->mName.c_str()) && (node->mChildren.size() > 0);
 		ImGui::PopStyleVar();
