@@ -44,7 +44,7 @@ update_status ModuleScriptManager::Update(float dt)
 {
 	if (mIsPlaying) 
 	{
-		for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
+		for (ScriptComponent* script : mScripts) 
 		{
 			script->mScript->Update();
 		}
@@ -208,7 +208,6 @@ void ModuleScriptManager::SaveOldScript(std::vector<std::vector<std::pair<Member
 void ModuleScriptManager::Play()
 {
 	mIsPlaying = true;
-	Start();
 }
 
 void ModuleScriptManager::Stop()
@@ -218,6 +217,7 @@ void ModuleScriptManager::Stop()
 
 void ModuleScriptManager::Start()
 {
+	mIsPlaying = true;
 	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
 	{
 		script->mScript->Start();

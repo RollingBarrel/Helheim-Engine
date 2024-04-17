@@ -16,7 +16,6 @@
 #include "ScenePanel.h"
 #include "NavMeshControllerPanel.h"
 #include "DebugPanel.h"
-#include "PausePanel.h"
 #include "ProjectPanel.h"
 #include "LightningPanel.h"
 #include "ResourcePanel.h"
@@ -27,12 +26,17 @@
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
+#include "imgui_internal.h"
 #include "imgui.h"
 #include "ImGuizmo.h"
+#include "ImGuiFileDialog.h"
+
+
 #include "OptickAdapter.h"
 #include "IconsFontAwesome6.h"
 
-#include "ImGuiFileDialog.h"
+
+
 
 ModuleEditor::ModuleEditor()
 {
@@ -43,7 +47,6 @@ ModuleEditor::ModuleEditor()
 	mPanels[HIERARCHYPANEL] = new HierarchyPanel();
 	mPanels[SCENEPANEL] = new ScenePanel();
 	mPanels[NAVMESHPANEL] = new NavMeshControllerPanel();
-	mPanels[PAUSEPANEL] = new PausePanel();
 	mPanels[PROJECTPANEL] = new ProjectPanel();
 	mPanels[DEBUGPANEL] = new DebugPanel();
 	mPanels[LIGHTNINGPANEL] = new LightningPanel();
@@ -97,9 +100,11 @@ bool ModuleEditor::Init()
 	mOptick = new OptickAdapter();
 
 	// Load the saved layout when opening the engine
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadCameraPosition();
 	mPanels[SETTINGSPANEL]->Close();
 
+	Style();
 	return true;
 }
 
@@ -153,6 +158,7 @@ update_status ModuleEditor::PostUpdate(float dt)
 
 bool ModuleEditor::CleanUp()
 {
+	
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
@@ -175,6 +181,11 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 	
 	Panel* panel = mPanels[name];
 	panel->Open();
+}
+
+void ModuleEditor::SaveCameraPosition()
+{
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveCameraPosition();
 }
 
 void ModuleEditor::ShowMainMenuBar() 
@@ -293,14 +304,6 @@ void ModuleEditor::ShowMainMenuBar()
 						hierarchy->IsOpen() ? hierarchy->Close() : hierarchy->Open();
 					}
 				}
-				Panel* pause = mPanels[PAUSEPANEL];
-				if (ImGui::MenuItem("4 Pause", NULL, pause->IsOpen())) 
-				{
-					if (pause)
-					{
-						pause->IsOpen() ? pause->Close() : pause->Open();
-					}
-				}
 				Panel* scene = mPanels[SCENEPANEL];
 				if (ImGui::MenuItem("5 Scene", NULL, scene->IsOpen())) 
 				{
@@ -362,6 +365,21 @@ void ModuleEditor::ShowMainMenuBar()
 	{
 		OpenSaveScene();
 	}
+
+	ImGuiViewportP* viewport = (ImGuiViewportP*)(void*)ImGui::GetMainViewport();
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
+	float height = ImGui::GetFrameHeight();
+	ImVec2 buttonSize(40, height);
+
+
+	if (ImGui::BeginViewportSideBar("##MainStatusBar", viewport, ImGuiDir_Down, height, window_flags)) {
+		if (ImGui::BeginMenuBar()) 
+		{
+			ImGui::EndMenuBar();
+		}
+		ImGui::End();
+	}
+
 }
 
 void ModuleEditor::OpenLoadScene() {
@@ -390,6 +408,84 @@ void ModuleEditor::OpenSaveScene() {
 	}
 }
 
+void ModuleEditor::Style()
+{
+	auto& colors = ImGui::GetStyle().Colors;
+	colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
+	colors[ImGuiCol_MenuBarBg] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+
+	// Border
+	colors[ImGuiCol_Border] = ImVec4{ 0.44f, 0.37f, 0.61f, 0.29f };
+	colors[ImGuiCol_BorderShadow] = ImVec4{ 0.0f, 0.0f, 0.0f, 0.24f };
+
+	// Text
+	colors[ImGuiCol_Text] = ImVec4{ 1.0f, 1.0f, 1.0f, 1.0f };
+	colors[ImGuiCol_TextDisabled] = ImVec4{ 0.5f, 0.5f, 0.5f, 1.0f };
+
+	// Headers
+	colors[ImGuiCol_Header] = ImVec4{ 0.13f, 0.13f, 0.17f, 1.0f };
+	colors[ImGuiCol_HeaderHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+	colors[ImGuiCol_HeaderActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+
+	// Buttons
+	colors[ImGuiCol_Button] = ImVec4{ 0.13f, 0.13f, 0.17f, 1.0f };
+	colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+	colors[ImGuiCol_ButtonActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+	colors[ImGuiCol_CheckMark] = ImVec4{ 0.74f, 0.58f, 0.98f, 1.0f };
+
+	// Popups
+	colors[ImGuiCol_PopupBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 0.92f };
+
+	// Slider
+	colors[ImGuiCol_SliderGrab] = ImVec4{ 0.44f, 0.37f, 0.61f, 0.54f };
+	colors[ImGuiCol_SliderGrabActive] = ImVec4{ 0.74f, 0.58f, 0.98f, 0.54f };
+
+	// Frame BG
+	colors[ImGuiCol_FrameBg] = ImVec4{ 0.13f, 0.13f, 0.17f, 1.0f };
+	colors[ImGuiCol_FrameBgHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+	colors[ImGuiCol_FrameBgActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+
+	// Tabs
+	colors[ImGuiCol_Tab] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+	colors[ImGuiCol_TabHovered] = ImVec4{ 0.24f, 0.24f, 0.32f, 1.0f };
+	colors[ImGuiCol_TabActive] = ImVec4{ 0.2f, 0.22f, 0.27f, 1.0f };
+	colors[ImGuiCol_TabUnfocused] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+	colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+
+	// Title
+	colors[ImGuiCol_TitleBg] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+	colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+	colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+
+	// Scrollbar
+	colors[ImGuiCol_ScrollbarBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
+	colors[ImGuiCol_ScrollbarGrab] = ImVec4{ 0.16f, 0.16f, 0.21f, 1.0f };
+	colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4{ 0.19f, 0.2f, 0.25f, 1.0f };
+	colors[ImGuiCol_ScrollbarGrabActive] = ImVec4{ 0.24f, 0.24f, 0.32f, 1.0f };
+
+	// Seperator
+	colors[ImGuiCol_Separator] = ImVec4{ 0.44f, 0.37f, 0.61f, 1.0f };
+	colors[ImGuiCol_SeparatorHovered] = ImVec4{ 0.74f, 0.58f, 0.98f, 1.0f };
+	colors[ImGuiCol_SeparatorActive] = ImVec4{ 0.84f, 0.58f, 1.0f, 1.0f };
+
+	// Resize Grip
+	colors[ImGuiCol_ResizeGrip] = ImVec4{ 0.44f, 0.37f, 0.61f, 0.29f };
+	colors[ImGuiCol_ResizeGripHovered] = ImVec4{ 0.74f, 0.58f, 0.98f, 0.29f };
+	colors[ImGuiCol_ResizeGripActive] = ImVec4{ 0.84f, 0.58f, 1.0f, 0.29f };
+
+	// Docking
+	colors[ImGuiCol_DockingPreview] = ImVec4{ 0.44f, 0.37f, 0.61f, 1.0f };
+
+	auto& style = ImGui::GetStyle();
+	style.TabRounding = 4;
+	style.ScrollbarRounding = 9;
+	style.WindowRounding = 7;
+	style.GrabRounding = 3;
+	style.FrameRounding = 3;
+	style.PopupRounding = 4;
+	style.ChildRounding = 4;
+}
+
 void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* timerPanel = mPanels[TIMERPANEL];
 	Panel* debugPanel = mPanels[DEBUGPANEL];
@@ -397,7 +493,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 	Panel* projectPanel = mPanels[PROJECTPANEL];
 	Panel* console = mPanels[CONSOLEPANEL];
 	Panel* hierarchy = mPanels[HIERARCHYPANEL];
-	Panel* pause = mPanels[PAUSEPANEL];
 	Panel* scenePanel = mPanels[SCENEPANEL];
 	Panel* inspector = mPanels[INSPECTORPANEL];
 	Panel* editorControlPanel = mPanels[EDITORCONTROLPANEL];
@@ -415,7 +510,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		projectPanel->Open();
 		console->Open();
 		hierarchy->Open();
-		pause->Open();
 		scenePanel->Open();
 		inspector->Open();
 		editorControlPanel->Open();
@@ -431,7 +525,6 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		projectPanel->Close();
 		console->Close();
 		hierarchy->Close();
-		pause->Close();
 		scenePanel->Close();
 		inspector->Close();
 		editorControlPanel->Close();

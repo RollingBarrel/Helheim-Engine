@@ -414,4 +414,5 @@ FodyWeavers.xsd
 /Engine/Game/Library/*
 /Engine/Game/Assets/Scenes/TemporalScene.json
 /Engine/Game/Scripting.dll
+/Engine/Game/userSettings.txt
 /Engine/Scripting/Output/*

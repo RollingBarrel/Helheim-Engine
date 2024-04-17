@@ -58,7 +58,7 @@ bool ModuleScene::Init()
 	mRoot = new GameObject("SampleScene", nullptr);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
 
-	//Load("scene");
+	Load("scene");
 
 	return true;
 }
@@ -77,16 +77,16 @@ void ModuleScene::ResetFrustumCulling(GameObject* obj)
 
 }
 
-GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
+GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagID)
 {
-	if (root->GetTag()->GetID() == tagid && root != mRoot) 
+	if (root->GetTag()->GetID() == tagID && root != mRoot) 
 	{
 		return root;
 	}
 
 	for (GameObject* child : root->GetChildren())
 	{
-		GameObject* foundObject = FindGameObjectWithTag(child, tagid);
+		GameObject* foundObject = FindGameObjectWithTag(child, tagID);
 		if (foundObject != nullptr) 
 		{
 			return foundObject;
@@ -94,6 +94,17 @@ GameObject* ModuleScene::FindGameObjectWithTag(GameObject* root, unsigned tagid)
 	}
 
 	return nullptr;
+}
+
+GameObject* ModuleScene::FindGameObjectWithTag(unsigned tagID)
+{
+	return FindGameObjectWithTag(mRoot, tagID);
+}
+
+GameObject* ModuleScene::FindGameObjectWithTag(const char* tagName)
+{
+	Tag* tag = App->GetScene()->GetTagByName(tagName);
+	return FindGameObjectWithTag(mRoot, tag->GetID());
 }
 
 void ModuleScene::FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects)
@@ -255,7 +266,7 @@ void ModuleScene::Load(const char* sceneName)
 
 		mQuadtreeRoot->CleanUp();
 		delete mRoot;
-		mRoot = new GameObject("SampleScene", nullptr);
+		mRoot = new GameObject(sceneName, nullptr);
 
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) 
@@ -461,6 +472,6 @@ void ModuleScene::LoadGameObjectsIntoScripts()
 {
 	for (auto& pair : mGameObjectsToLoadIntoScripts) 
 	{
-		*pair.second = Find(pair.first);
+		*(pair.second) = Find(pair.first);
 	}
 }

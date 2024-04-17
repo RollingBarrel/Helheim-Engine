@@ -38,6 +38,8 @@
 
 #include "ModuleUI.h"
 
+#include "IconsFontAwesome6.h"
+
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
@@ -75,6 +77,29 @@ void InspectorPanel::Draw(int windowFlags)
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
+		// Lock
+		ImVec2 buttonSize = ImVec2(30, 20);
+		//float inspectorWidth = ImGui::GetWindowWidth();
+		//float spacing = (inspectorWidth / 2) - buttonSize.x;
+		//ImGui::SameLine();
+		//ImGui::Dummy(ImVec2(spacing, 0.0f));
+		ImGui::SameLine();
+		//ImGui::PushItemWidth(inspectorWidth - buttonSize.x - spacing);
+		const char* buttonLabel = (mLocked) ? ICON_FA_LOCK : ICON_FA_LOCK_OPEN;
+		ImGui::SameLine();
+		if (ImGui::Button(buttonLabel, buttonSize))
+		{
+			mLocked = !mLocked;
+			if (mLocked) {
+				mLockedGameObject = focusedObject;
+			}
+			else
+			{
+				mLockedGameObject = nullptr;
+			}
+		}
+		//ImGui::PopItemWidth();
+
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
@@ -95,22 +120,9 @@ void InspectorPanel::Draw(int windowFlags)
 
 		ImGui::SameLine();
 
-		if (ImGui::Button("Edit")) 
+		if (ImGui::Button("Add Tag")) 
 		{
 			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
-		}
-
-		// Lock
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Lock", &mLocked)) 
-		{
-			if (mLocked) {
-				mLockedGameObject = focusedObject;
-			}
-			else 
-			{
-				mLockedGameObject = nullptr;
-			}
 		}
 
 		if (focusedObject->mPrefabResourceId != 0) {
@@ -207,8 +219,8 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 	float buttonWidth = 150.0f; // Desired width for the button
 	float posX = (windowWidth - buttonWidth) * 0.5f;
 
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
 	ImGui::SetCursorPosX(posX);
-
 	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) 
 	{
 		ImGui::OpenPopup("AddComponentPopup");
@@ -694,7 +706,21 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
 	const char* currentItem = component->GetScriptName();
+	if (strcmp(currentItem, "") == 0)
+	{
+		currentItem = "None (Script)";
+	}
+	
+	ImVec2 scriptTextSize = ImGui::CalcTextSize("Script");
+	float inspectorWidth = ImGui::GetWindowWidth();
+	float scriptSpacing = (inspectorWidth / 2) - scriptTextSize.x;
 
+
+	ImGui::Text("Script");
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(scriptSpacing, 0.0f));
+	ImGui::SameLine();
+	ImGui::PushItemWidth(inspectorWidth - scriptTextSize.x - scriptSpacing);
 	if (ImGui::BeginCombo("##combo", currentItem)) 
 	{
 		std::vector<std::string> scriptNames;
@@ -735,11 +761,12 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::PopItemWidth();
+	ImGui::Dummy(ImVec2(0,5.0f));
 
 	component->mScript;
 	std::vector<std::pair<std::string, std::pair<MemberType, void*>>> variables;
 
-	ImGui::SeparatorText("Attributes");
 
 	std::vector<Member*> members;
 
@@ -750,37 +777,72 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	for (Member* member : members) 
 	{
+		std::string label = member->mName;
+		label = "##" + label;
+		ImVec2 textSize = ImGui::CalcTextSize(member->mName);
+		float inspectorWidth = ImGui::GetWindowWidth();
+		float spacing = (inspectorWidth / 2) - textSize.x;
+
 		switch (member->mType)
 		{
 		case MemberType::SEPARATOR:
 			ImGui::SeparatorText(member->mName);
 			break;
 		case MemberType::INT:
-			ImGui::DragInt(member->mName, reinterpret_cast<int*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::DragInt(label.c_str(), reinterpret_cast<int*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::FLOAT:
-			ImGui::DragFloat(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::DragFloat(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::BOOL:
-			ImGui::Checkbox(member->mName, reinterpret_cast<bool*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::Checkbox(label.c_str(), reinterpret_cast<bool*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::FLOAT3:
-			ImGui::DragFloat3(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::DragFloat3(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::GAMEOBJECT:
 		{
+			
 			GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)component->mScript) + member->mOffset));
-			ImGui::Text(member->mName);
-			ImGui::SameLine();
 			const char* str = "";
 			if (!gameObject || !*gameObject)
 			{
-				str = "Drop a GameObject Here";
+				str = "None (Game Object)";
 			}
 			else 
 			{
 				str = (*gameObject)->GetName().c_str();
 			}
+
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
 			ImGui::BulletText(str);
 			if (ImGui::BeginDragDropTarget()) 
 			{
@@ -795,6 +857,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 				}
 				ImGui::EndDragDropTarget();
 			}
+			ImGui::PopItemWidth();
 			break;
 		}
 		default:
@@ -840,8 +903,21 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	// Drag and drop	
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 70.0);
-	ImGui::Image((void*)(intptr_t)imageComponent->GetImage()->GetOpenGLId(), ImVec2(50, 50));
-	if (ImGui::BeginDragDropTarget()) {
+	
+	ResourceTexture* image = imageComponent->GetImage();
+	
+	if (image)
+	{
+		ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+		ImGui::Image(imageID, ImVec2(50, 50));
+	}
+	else 
+	{
+		ImGui::Text("Drop Image");
+	}
+	
+	if (ImGui::BeginDragDropTarget()) 
+	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
@@ -859,8 +935,13 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	{
 		ImGui::Text(imageComponent->GetFileName());
 	}
-	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth());
-	ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+	if (image)
+	{
+		ImGui::Text("Width:%dpx", image->GetWidth());
+		ImGui::Text("Height:%dpx", image->GetHeight());
+		
+	}
 	ImGui::Columns(1);
 
 	// Color and alpha

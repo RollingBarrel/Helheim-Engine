@@ -13,11 +13,12 @@ public:
     ~CameraComponent();
 
     void Update() override;
+    void UpdateRotation();
     Component* Clone(GameObject* owner) const override;
     void Reset() override;
     void SetRotation(const float3& rotation);
 
-    const Frustum& GetFrustum() { return mFrustum; }
+    const Frustum& GetFrustum() const { return mFrustum; }
 
     const float4x4 GetViewMatrix() const { return mFrustum.ViewMatrix(); }
     const float4x4 GetProjectionMatrix() const { return mFrustum.ProjectionMatrix(); }
@@ -29,9 +30,11 @@ public:
     void SetFOV(const float value);
     void SetAspectRatio(const float value);
 
-    float GetNearPlane() { return mFrustum.nearPlaneDistance; };
-    float GetFarPlane() { return mFrustum.farPlaneDistance; };
-    float GetVerticicalFOV() { return mFrustum.verticalFov; };
+    void SetFrontUp(float3 front, float3 up);
+
+    float GetNearPlane() { return mFrustum.nearPlaneDistance; }
+    float GetFarPlane() { return mFrustum.farPlaneDistance; }
+    float GetVerticicalFOV() { return mFrustum.verticalFov; }
 
 
     void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
