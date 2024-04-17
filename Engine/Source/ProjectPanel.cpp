@@ -54,9 +54,21 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 	{		
 		std::string nameWithoutPath = current.mChildren[i]->mName;
 		nameWithoutPath = nameWithoutPath.substr(nameWithoutPath.find_last_of('/')+1);
-		std::string nameWithIcon = ICON_FA_FOLDER;
-		nameWithIcon += nameWithoutPath;
-		bool open = ImGui::TreeNodeEx(nameWithIcon.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
+		std::string nameWithIconClose = ICON_FA_FOLDER;
+		std::string nameWithIconOpen = ICON_FA_FOLDER_OPEN;
+		
+		nameWithIconClose += " " + nameWithoutPath;
+		nameWithIconOpen += " " + nameWithoutPath;
+
+
+		int flags = ImGuiTreeNodeFlags_FramePadding;
+
+		if (current.mChildren[i]->mChildren.empty())
+		{
+			flags |= ImGuiTreeNodeFlags_Leaf;
+		}
+
+		bool open = ImGui::TreeNodeEx(nameWithIconClose.c_str(), flags);
 		SavePrefab(*current.mChildren[i]);
 		if (open)
 		{
@@ -77,7 +89,7 @@ const void ProjectPanel::DrawAssets(const PathNode& current) const
 		std::string nameWithIcon = ICON_FA_FILE;
 		nameWithIcon += current.assets[i]->mName;
 
-		if (ImGui::TreeNodeEx(nameWithIcon.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
+		if (ImGui::TreeNodeEx(nameWithIcon.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_FramePadding))
 		{
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
