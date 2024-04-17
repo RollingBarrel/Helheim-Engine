@@ -49,7 +49,7 @@ private:
 	bool mDrawRayCast = false; 
 	std::map<float, GameObject*> mIntersectMap;
 
-	float mShiftSpeed = 5;
+	float mShiftSpeed = 3.0f;
 };
 
 #endif /* _MODULE_CAMERA_H_ */
