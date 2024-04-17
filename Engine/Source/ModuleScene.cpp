@@ -7,6 +7,7 @@
 #include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "Component.h"
+#include "ModuleUI.h"
 
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
@@ -265,6 +266,7 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->CleanUp();
+		App->GetUI()->CleanUp();
 		delete mRoot;
 		mRoot = new GameObject(sceneName, nullptr);
 
@@ -276,7 +278,7 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->UpdateTree();
-
+		App->GetUI()->FindCanvas(mRoot);
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();

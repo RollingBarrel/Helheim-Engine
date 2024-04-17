@@ -24,7 +24,7 @@ public:
 	inline bool GetScreenSpace() { return mScreenSpace; }
 	
 	void CheckRaycast();
-	GameObject* FindCanvas(GameObject* gameObject);
+	void FindCanvas(GameObject* gameObject);
 
 private:
 	void DrawWidget(GameObject* gameObject);
