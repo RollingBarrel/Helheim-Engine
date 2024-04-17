@@ -17,6 +17,7 @@
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
+#include "CameraComponent.h"
 
 #include "Math/TransformOps.h"
 
@@ -88,10 +89,11 @@ void ImageComponent::Draw()
 	}
 	else //World Mode
 	{
-		// WE NEED A METHOD TO GET CURRENT CAMERA AND CORRESPONDING FRUSTUM
-		//proj = App->GetUI()->GetFrustum()->ProjectionMatrix();
-		//model = GetOwner()->GetWorldTransform();
-		//view = App->GetUI()->GetFrustum()->ViewMatrix();
+		const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+		
+		proj = camera->GetProjectionMatrix();
+		model = GetOwner()->GetWorldTransform();
+		view = camera->GetViewMatrix();
 	}
 
 	FillVBO();
@@ -110,6 +112,11 @@ void ImageComponent::Draw()
 	glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 	glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+
+	if (mAlpha < 1.0) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -208,6 +215,26 @@ void ImageComponent::CreateVAO()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 	glBindVertexArray(0);
+}
+
+void ImageComponent::ResizeByRatio()
+{
+	float originalRatio = mImage->GetWidth() / mImage->GetHeight() ;
+	if (App->GetUI()->GetScreenSpace()) //Ortographic Mode
+	{
+		Transform2DComponent* component = ((Transform2DComponent*)GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+		float currentRatio = component->GetSize().x / component->GetSize().y;
+		float ratio = currentRatio / originalRatio;
+		float2 newSize = float2(component->GetSize().x, component->GetSize().y * ratio);
+		component->SetSize(newSize);
+	}
+	else 
+	{
+		float currentRatio = GetOwner()->GetScale().x / GetOwner()->GetScale().y;
+		float ratio = currentRatio / originalRatio;
+		float3 newScale = float3(GetOwner()->GetScale().x, GetOwner()->GetScale().y * ratio, GetOwner()->GetScale().z);
+		GetOwner()->SetScale(newScale);
+	}
 }
 
 bool ImageComponent::CleanUp()

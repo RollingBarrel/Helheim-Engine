@@ -13,7 +13,6 @@
 #include "Component.h"
 #include "CameraComponent.h"
 #include "EditorControlPanel.h"
-#include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
 #include "ResourceModel.h"
