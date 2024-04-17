@@ -20,33 +20,17 @@ public:
 	void LoadVBO();
 	void CreateVAO();
 
-	inline unsigned int GetQuadVAO() const { return mQuadVAO; }
-	inline unsigned int GetProgram() const { return mUIProgramId; }
-	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
-
-	void SetScreenSpace(bool screen);
-	bool GetScreenSpace();
+	void SetScreenSpace(bool screen) { mScreenSpace = screen; }
+	inline bool GetScreenSpace() { return mScreenSpace; }
+	
 	void CheckRaycast();
-	void ResizeFrustum(unsigned int width, unsigned int height);
+	GameObject* FindCanvas(GameObject* gameObject);
 
 private:
 	void DrawWidget(GameObject* gameObject);
-	GameObject* FindCanvas(GameObject* gameObject);
 
-	Frustum* mUIfrustum = nullptr;
-	Frustum* mCurrentFrustum = nullptr; 
-
-	unsigned int mQuadVBO;
-	unsigned int mQuadVAO;
 	GameObject* mCanvas = nullptr;
 
-	unsigned int mUIProgramId = 0;
-
-	unsigned int CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const;
-	unsigned int CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
-	char* LoadShaderSource(const char* shaderFileName) const;
-	unsigned int CompileShader(unsigned type, const char* source) const;
-
-	bool mScreenSpace = false;
+	bool mScreenSpace = true;
 };
 
