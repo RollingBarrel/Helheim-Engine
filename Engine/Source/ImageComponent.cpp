@@ -27,7 +27,7 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
 {
-    //SetImage(mResourceId);
+    SetImage(mResourceId);
 }
 
 ImageComponent:: ~ImageComponent() 
@@ -57,9 +57,10 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 }
 
 void ImageComponent::Draw()
-{
+{ 
 	if (mImage)
 	{
+
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
 
@@ -68,46 +69,67 @@ void ImageComponent::Draw()
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
+
+		glUseProgram(UIImageProgram);
+
+		float4x4 proj = float4x4::identity;
+		float4x4 model = float4x4::identity;
+		float4x4 view = float4x4::identity;
+
+		if (App->GetUI()->GetScreenSpace()) //Ortographic Mode
+		{
+			Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+			if (component != nullptr)
+			{
+				model = component->GetGlobalMatrix();
+
+				float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+				float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+
+				model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+
+			}
+		}
+		else //World Mode
+		{
+			const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+
+			proj = camera->GetProjectionMatrix();
+			model = GetOwner()->GetWorldTransform();
+			view = camera->GetViewMatrix();
+		}
+
+		FillVBO();
+		CreateVAO();
+
+		glBindVertexArray(mQuadVAO);
+
+		glActiveTexture(GL_TEXTURE0);
+
+		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
+		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
+		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
+
+		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+
+		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
+		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+
+		if (mAlpha < 1.0) {
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		glUseProgram(0);
+		glDisable(GL_BLEND);
 	}
-	else //World Mode
-	{
-		const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
-		
-		proj = camera->GetProjectionMatrix();
-		model = GetOwner()->GetWorldTransform();
-		view = camera->GetViewMatrix();
-	}
-
-	FillVBO();
-	CreateVAO();
-
-	glBindVertexArray(mQuadVAO);
-
-	glActiveTexture(GL_TEXTURE0);
-
-	glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
-	//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
-	//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
-
-	glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-
-	glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
-	glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
-
-	if (mAlpha < 1.0) {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
-
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glUseProgram(0);
-	glDisable(GL_BLEND);
 }
 
 Component* ImageComponent::Clone(GameObject* owner) const
