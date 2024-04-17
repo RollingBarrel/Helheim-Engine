@@ -6,6 +6,9 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "Timer.h"
+#include "PreciseTimer.h"
+#include "ModuleScriptManager.h"
 
 #include "IconsFontAwesome6.h"
 
@@ -25,27 +28,68 @@ void EditorControlPanel::Draw(int windowFlags)
 	windowFlags |= ImGuiWindowFlags_NoTitleBar;
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	ImVec2 buttonSize(30, 30);
+	ImVec2 buttonSize(30, 25);
+	ImVec4 pressedColor = ImVec4{ 0.74f, 0.58f, 0.98f, 1.0f };
 
-	if (ImGui::Button(ICON_FA_ARROWS_UP_DOWN_LEFT_RIGHT, buttonSize)) {
+	if (mCurrentGuizmoOperation == ImGuizmo::TRANSLATE)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, pressedColor);
+	}
+
+	if (ImGui::Button(ICON_FA_ARROWS_UP_DOWN_LEFT_RIGHT, buttonSize)) 
+	{
 		mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	}
-	ImGui::SameLine();
-	if (ImGui::Button(ICON_FA_ROTATE, buttonSize)) {
-		mCurrentGuizmoOperation = ImGuizmo::ROTATE;
+	else if (mCurrentGuizmoOperation == ImGuizmo::TRANSLATE) 
+	{
+		ImGui::PopStyleColor(3);
 	}
+	
 	ImGui::SameLine();
-	if (ImGui::Button(ICON_FA_UP_RIGHT_AND_DOWN_LEFT_FROM_CENTER, buttonSize)) {
+	if (mCurrentGuizmoOperation == ImGuizmo::ROTATE)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, pressedColor);
+	}
+	if (ImGui::Button(ICON_FA_ROTATE, buttonSize)) 
+	{
+		mCurrentGuizmoOperation = ImGuizmo::ROTATE;
+		bool change = true;
+	}
+	else if (mCurrentGuizmoOperation == ImGuizmo::ROTATE) 
+	{
+		ImGui::PopStyleColor(3);
+	}
+
+	ImGui::SameLine();
+	if (mCurrentGuizmoOperation == ImGuizmo::SCALE)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, pressedColor);
+	}
+	if (ImGui::Button(ICON_FA_UP_RIGHT_AND_DOWN_LEFT_FROM_CENTER, buttonSize)) 
+	{
 		mCurrentGuizmoOperation = ImGuizmo::SCALE;
 	}
+	else if (mCurrentGuizmoOperation == ImGuizmo::SCALE)
+	{
+		ImGui::PopStyleColor(3);
+	}
+
 	ImGui::SameLine();
-	const char* buttonLabel = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ICON_FA_CUBE " Local" : ICON_FA_GLOBE " World";
-	if (ImGui::Button(buttonLabel, ImVec2(80,30))) {
+	const char* buttonLabel = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ICON_FA_CUBE : ICON_FA_GLOBE;
+	if (ImGui::Button(buttonLabel, buttonSize)) 
+	{
 		mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
 	}
 
+
 	//Change the Guizmo operation using W,E & R keywords and the coordinate mode with G
-	if (!ImGui::IsKeyDown(ImGuiKey_MouseRight)) 
+	if (!ImGui::IsKeyDown(ImGuiKey_MouseRight) && (mState != GameState::PLAY && mState != GameState::PLAY_PAUSE)) 
 	{
 		if (ImGui::IsKeyPressed(ImGuiKey_W))
 		{
@@ -64,5 +108,140 @@ void EditorControlPanel::Draw(int windowFlags)
 			mCurrentGuizmoMode = (mCurrentGuizmoMode == ImGuizmo::LOCAL) ? ImGuizmo::WORLD : ImGuizmo::LOCAL;
 		}
 	}
+	
+	float menuBarWidth = ImGui::GetWindowWidth();
+	float spacing = (menuBarWidth - (buttonSize.x * 14)) * 0.5f;
+	
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(spacing, 0.0f));
+
+	ImGui::SameLine();
+	GameState currentState = mState;
+	if (mState == GameState::PLAY || mState == GameState::PLAY_PAUSE) 
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, pressedColor);
+	}
+	if (ImGui::Button(ICON_FA_PLAY, buttonSize)) 
+	{	
+		(mState == GameState::PLAY || mState == GameState::PLAY_PAUSE) ? Stop() : Play();
+	}
+	if (currentState == GameState::PLAY || currentState == GameState::PLAY_PAUSE)
+	{
+		ImGui::PopStyleColor(3);
+	}
+
+	currentState = mState;
+	ImGui::SameLine();
+	if (mState == GameState::PAUSE || mState == GameState::PLAY_PAUSE)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, pressedColor);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, pressedColor);
+	}
+	if (ImGui::Button(ICON_FA_PAUSE, buttonSize)) 
+	{
+		Pause();
+	}
+	if (currentState == GameState::PAUSE || currentState == GameState::PLAY_PAUSE)
+	{
+		ImGui::PopStyleColor(3);
+	}
+
+	ImGui::SameLine();
+	if ( mState != GameState::PLAY && mState != GameState::PLAY_PAUSE)
+	{ 
+		ImGui::BeginDisabled();
+	}
+	if (ImGui::Button(ICON_FA_FORWARD_STEP, buttonSize)) 
+	{
+		Step();
+	}
+	if (mState != GameState::PLAY && mState != GameState::PLAY_PAUSE)
+	{
+		ImGui::EndDisabled();
+	}
 	ImGui::End();
+}
+
+
+void EditorControlPanel::Play() 
+{
+	auto& colors = ImGui::GetStyle().Colors;
+	colors[ImGuiCol_WindowBg] = ImVec4{ 0.05f, 0.05f, 0.07f, 1.0f };
+	App->SetCurrentClock(App->GetGameClock());
+	App->GetScene()->Save("TemporalScene");
+	App->GetScriptManager()->Start();
+	App->GetGameClock()->Start();
+
+	switch (mState)
+	{
+	case GameState::PAUSE:
+		mState = GameState::PLAY_PAUSE;
+		App->GetScriptManager()->Stop();
+		break;
+	default:
+		mState = GameState::PLAY;
+		break;
+	}
+	
+
+	ImGui::SetWindowFocus("Game");
+	
+}
+
+void EditorControlPanel::Pause() 
+{
+	switch (mState)
+	{
+	case GameState::PLAY:
+		mState = GameState::PLAY_PAUSE;
+		App->GetScriptManager()->Stop();
+		break;
+	case GameState::PAUSE:
+		mState = GameState::STOP;
+		break;
+	case GameState::PLAY_PAUSE:
+		mState = GameState::PLAY;
+		App->GetScriptManager()->Play();
+		break;
+	default:
+		mState = GameState::PAUSE;
+		break;
+	}
+}
+
+void EditorControlPanel::Stop() 
+{
+	auto& colors = ImGui::GetStyle().Colors;
+	colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
+
+	App->GetEngineClock()->SetTotalFrames(App->GetGameClock()->GetTotalFrames());
+	App->GetGameClock()->Stop();		
+	App->SetCurrentClock(App->GetEngineClock());	
+	App->GetEngineClock()->Resume();				
+	App->GetScriptManager()->Stop();
+	App->GetScene()->Load("TemporalScene");
+	ImGui::SetWindowFocus("Scene##");
+
+	mState = GameState::STOP;
+
+}
+
+void EditorControlPanel::Step()
+{
+	switch (mState)
+	{
+	case GameState::PLAY:
+		mState = GameState::PLAY_PAUSE;
+		[[fallthrough]];
+	case GameState::PLAY_PAUSE:
+		App->GetScriptManager()->Play();
+		App->GetScriptManager()->Update(App->GetRealDt());
+		App->GetScriptManager()->Stop();
+		break;
+	default:
+		break;
+	}
 }

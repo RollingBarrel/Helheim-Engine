@@ -54,17 +54,7 @@ void CameraComponent::Update()
         SetPos(position);
 
 
-        //float3 rotation = mOwner->GetRotation();
-        float3 rotation = mOwner->GetWorldTransform().ToEulerXYZ();
-
-
-        float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3(1,0,0), rotation.x);
-        rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 1, 0), rotation.y);
-        rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 0, 1), rotation.z);
-  
-        LookAt(mFrustum.pos, mFrustum.pos + rotationMatrix.Mul(float3::unitZ), rotationMatrix.Mul(float3::unitY));
-
-        App->GetOpenGL()->SetOpenGlCameraUniforms();
+        UpdateRotation();
 
     }
 
@@ -85,6 +75,18 @@ void CameraComponent::Update()
     App->GetDebugDraw()->DrawFrustum(mFrustum);
     App->GetOpenGL()->UnbindSceneFramebuffer();
 
+}
+
+void CameraComponent::UpdateRotation()
+{
+    float3 rotation = mOwner->GetWorldTransform().ToEulerXYZ();
+    float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3(1, 0, 0), rotation.x);
+    rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 1, 0), rotation.y);
+    rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 0, 1), rotation.z);
+
+    LookAt(mFrustum.pos, mFrustum.pos + rotationMatrix.Mul(float3::unitZ), rotationMatrix.Mul(float3::unitY));
+
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
@@ -109,7 +111,14 @@ void CameraComponent::Reset()
 
 void CameraComponent::SetRotation(const float3& rotation)
 {
-    float3 difference = GetOwner()->GetRotation() - rotation;
+    //Rotate(rotation, -1);
+
+    float3x3 rotmat = float3x3::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+
+    mFrustum.front = rotmat.MulDir(float3::unitZ);
+    
+    mFrustum.up = rotmat.MulDir(float3::unitY);
+
 }
 
 void CameraComponent::SetFOV(const float value)
@@ -122,6 +131,21 @@ void CameraComponent::SetAspectRatio(const float value)
 {
     mAspectRatio = value;
     mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
+}
+
+inline void CameraComponent::SetFrontUp(float3 front, float3 up) 
+{ 
+
+    mFrustum.front = front; 
+    mFrustum.up = up; 
+
+    float3 right = mFrustum.WorldRight();
+
+    mFrustum.up = Cross(right, front).Normalized();
+    
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
+
+   
 }
 
 void CameraComponent::LookAt(float3 eyePos, float3 targetPos, float3 upVector)

@@ -55,8 +55,12 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 ScriptComponent::~ScriptComponent()
 {
 	App->GetScriptManager()->RemoveScript(this);
-	App->GetResource()->ReleaseResource(mResourceScript->GetUID());
-	mResourceScript = nullptr;
+	if (mResourceScript)
+	{
+		App->GetResource()->ReleaseResource(mResourceScript->GetUID());
+		mResourceScript = nullptr;
+	}
+
 	//delete mScript; //Memory leack here, this shouldbe fixed.
 }
 
@@ -119,12 +123,6 @@ void::ScriptComponent::Save(Archive& archive) const
 
 void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
 {
-	bool check = data.HasMember("ScriptVariables");
-	bool check2 = data["ScriptVariables"].IsString();
-
-	LOG("%i", check);
-	LOG("%i", check2);
-
 	if (data.HasMember("ScriptName") && data["ScriptName"].IsString())
 	{
 		mName = data["ScriptName"].GetString();

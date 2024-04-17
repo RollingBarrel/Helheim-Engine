@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+#include "IconsFontAwesome6.h"
 
 #include "imgui.h"
 
@@ -20,56 +21,130 @@ ProjectPanel::~ProjectPanel()
 
 void ProjectPanel::Draw(int windowFlags)
 {
+
 	PathNode* root = App->GetFileSystem()->GetRootNode();
+
+
+
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		if (ImGui::BeginChild("Favs##"))
-		{
-			DrawAssetsFolder(*root);
-		}
+		ImGui::Columns(2);
+		ImGui::BeginChild("Folders");
+		//DrawAssetsFolder(*root);
+		DrawFolders(*root);
 		ImGui::EndChild();
-
-		if (ImGui::BeginChild("Assets"))
+		ImGui::NextColumn();
+		ImGui::BeginChild("Assets");
+		if (mSelectedNode)
 		{
-			ImGui::Button("HI");
+			DrawAssets(*mSelectedNode);
 		}
 		ImGui::EndChild();
 	}
 	ImGui::End();
 }
 
-const void ProjectPanel::DrawAssetsFolder(const PathNode& current) const
+const void ProjectPanel::DrawFolders(const PathNode& current)
 {
 	std::string bar = "/";
 	
 	//Discard Meta file but, read .emeta data
 	for (auto i = 0; i < current.mChildren.size(); ++i)
-	{		
-		bool open = ImGui::TreeNodeEx(current.mChildren[i]->mName, ImGuiTreeNodeFlags_DefaultOpen);
+	{	
+		bool selected = false;
+		if (mSelectedNode) 
+		{
+			selected = strcmp(mSelectedNode->mName, current.mChildren[i]->mName) == 0;
+		}
+		
+
+		std::string nameWithoutPath = current.mChildren[i]->mName;
+		nameWithoutPath = nameWithoutPath.substr(nameWithoutPath.find_last_of('/')+1);
+		std::string nameWithIconClose = ICON_FA_FOLDER;
+		std::string nameWithIconOpen = ICON_FA_FOLDER_OPEN;
+		nameWithIconClose += " " + nameWithoutPath;
+		nameWithIconOpen += " " + nameWithoutPath;
+
+		int flags = ImGuiTreeNodeFlags_FramePadding;
+		if (current.mChildren[i]->mChildren.empty())
+		{
+			flags |= ImGuiTreeNodeFlags_Leaf;
+		}
+
+		if (selected)
+		{
+			flags |= ImGuiTreeNodeFlags_Selected;
+			ImVec4 pressedColor = ImVec4{ 0.37f, 0.29f, 0.49f, 1.0f };
+			ImGui::PushStyleColor(ImGuiCol_Header, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, pressedColor);
+		}
+		bool open = ImGui::TreeNodeEx(nameWithIconClose.c_str(), flags);
+		if (selected)
+		{
+			ImGui::PopStyleColor(3);
+		}
 		SavePrefab(*current.mChildren[i]);
 		if (open)
 		{
-			for (auto j = 0; j < current.mChildren[i]->assets.size(); ++j)
-			{
-				if (ImGui::TreeNodeEx(current.mChildren[i]->assets[j]->mName, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf))
-				{
-					if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
-					{
-						AssetDisplay* asset = current.mChildren[i]->assets[j];
-						App->GetScene()->OpenPrefabScreen(asset->mPath);
-					}
-					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-					{
-						ImGui::SetDragDropPayload("_SCENE", current.mChildren[i]->assets[j], sizeof(*current.mChildren[i]->assets[j]));
+			DrawFolders(*current.mChildren[i]);
+			ImGui::TreePop();
+		}
+		
+		if (ImGui::IsItemClicked()) 
+		{
+			mSelectedNode = current.mChildren[i];
+		}
 
-						ImGui::Text(current.mChildren[i]->assets[j]->mName);
-						ImGui::EndDragDropSource();
-					}
-					ImGui::TreePop();
-				}
+	}
+}
+
+const void ProjectPanel::DrawAssets(const PathNode& current)
+{
+
+	for (unsigned int i = 0; i < current.assets.size(); ++i)
+	{
+		int flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_FramePadding;
+		std::string nameWithIcon = ICON_FA_FILE;
+		nameWithIcon += " " + std::string(current.assets[i]->mName);
+
+		bool selected = false;
+		if (mSelectedAsset) 
+		{
+			selected = strcmp(mSelectedAsset->mName, current.assets[i]->mName) == 0;
+		}
+
+		if (selected)
+		{
+			flags |= ImGuiTreeNodeFlags_Selected;
+			ImVec4 pressedColor = ImVec4{ 0.37f, 0.29f, 0.49f, 1.0f };
+			ImGui::PushStyleColor(ImGuiCol_Header, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, pressedColor);
+		}
+		if (ImGui::TreeNodeEx(nameWithIcon.c_str(), flags))
+		{
+			if (selected)
+			{
+				ImGui::PopStyleColor(3);
 			}
-			DrawAssetsFolder(*current.mChildren[i]);
+			if (ImGui::IsItemClicked())
+			{
+				mSelectedAsset = current.assets[i];
+			}
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+			{
+				AssetDisplay* asset = current.assets[i];
+				App->GetScene()->OpenPrefabScreen(asset->mPath);
+			}
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+			{
+				ImGui::SetDragDropPayload("_SCENE", current.assets[i], sizeof(*current.assets[i]));
+
+				ImGui::Text(current.assets[i]->mName);
+				ImGui::EndDragDropSource();
+			}
 			ImGui::TreePop();
 		}
 	}
@@ -82,7 +157,8 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
 			HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
-			for (auto object : hierarchyPanel->FilterMarked()) {
+			for (auto object : hierarchyPanel->FilterMarked()) 
+			{
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
 				object->SetPrefabId(App->GetScene()->SavePrefab(object, file.c_str()));

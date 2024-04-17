@@ -166,7 +166,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
         {
-            ImportNode(rModel->modelNodes, filePath, model, j, currentUid, bufferSize, modifyAssets);
+            ImportNode(rModel->modelNodes, filePath, model, model.scenes[i].nodes[j], currentUid, bufferSize, modifyAssets);
         }
     }
 

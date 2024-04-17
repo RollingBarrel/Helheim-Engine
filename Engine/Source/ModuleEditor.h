@@ -3,8 +3,6 @@
 
 #include "Module.h"
 
-#include "imgui.h"
-#include "ImGuizmo.h"
 
 #include <map>
 #include <vector>
@@ -28,7 +26,7 @@ public:
 	std::map<const char*, Panel*> GetPanelList() { return mPanels; }
 	std::vector<const char*> GetPanelNames() { return mPanelNames; }	
 	void OpenPanel(const char* name, const bool focus);
-
+	void SaveCameraPosition();
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
 
@@ -38,9 +36,10 @@ private:
 	bool mSaveSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
 	std::vector<const char*> mPanelNames;
-	OptickAdapter* mOptick;
+	OptickAdapter* mOptick = nullptr;
 	void OpenLoadScene();
 	void OpenSaveScene();
+	void Style();
 };
 
 #endif /* _MODULE_EDITOR_H_ */
