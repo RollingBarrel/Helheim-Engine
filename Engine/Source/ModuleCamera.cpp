@@ -63,12 +63,27 @@ void ModuleCamera::CheckRaycast()
 			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
 			if (intersectGameObjectPair.second != nullptr)
 			{
-				GameObject* gameObject = intersectGameObjectPair.second;
-				while (!gameObject->GetParent()->IsRoot())
+				GameObject* parentGameObject = intersectGameObjectPair.second;
+				while (!parentGameObject->GetParent()->IsRoot())
 				{
-					gameObject = gameObject->GetParent();
+					parentGameObject = parentGameObject->GetParent();
 				}
-				((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
+
+				GameObject* focusedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+
+				if (focusedGameObject->GetID() == parentGameObject->GetID())
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second);
+				}
+				else 
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
+				}
+
+				
+
+
+
 			}
 		}
 	}
