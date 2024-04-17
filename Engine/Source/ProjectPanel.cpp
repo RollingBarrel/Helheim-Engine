@@ -56,13 +56,10 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 		nameWithoutPath = nameWithoutPath.substr(nameWithoutPath.find_last_of('/')+1);
 		std::string nameWithIconClose = ICON_FA_FOLDER;
 		std::string nameWithIconOpen = ICON_FA_FOLDER_OPEN;
-		
 		nameWithIconClose += " " + nameWithoutPath;
 		nameWithIconOpen += " " + nameWithoutPath;
 
-
 		int flags = ImGuiTreeNodeFlags_FramePadding;
-
 		if (current.mChildren[i]->mChildren.empty())
 		{
 			flags |= ImGuiTreeNodeFlags_Leaf;
@@ -75,7 +72,8 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 			DrawFolders(*current.mChildren[i]);
 			ImGui::TreePop();
 		}
-		if (ImGui::IsItemClicked()) {
+		if (ImGui::IsItemClicked()) 
+		{
 			mSelected = current.mChildren[i];
 		}
 	}
@@ -115,7 +113,8 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
 			HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
-			for (auto object : hierarchyPanel->FilterMarked()) {
+			for (auto object : hierarchyPanel->FilterMarked()) 
+			{
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
 				object->SetPrefabId(App->GetScene()->SavePrefab(object, file.c_str()));
