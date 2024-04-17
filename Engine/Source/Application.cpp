@@ -90,6 +90,7 @@ update_status Application::Update(float dt)
 
 bool Application::CleanUp()
 {
+	editor->SaveCameraPosition();
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)

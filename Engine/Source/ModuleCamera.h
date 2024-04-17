@@ -29,7 +29,11 @@ public:
 	const CameraComponent* GetCurrentCamera() const;
 
 	const CameraComponent* GetEditorCamera() const;
-
+	const float3& GetPosition() const;
+	const float3& GetRotation() const;
+	void SetPosition(float3 newPostion);
+	void SetRotation(float3 newRotation);
+	void SetFrontUp(float3 front, float3 up);
 	void ActivateEditorCamera();
 
 

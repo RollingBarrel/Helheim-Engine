@@ -172,9 +172,6 @@
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClCompile>
-    <ClCompile Include="PausePanel.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="ProjectPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -842,9 +839,6 @@
     </ClInclude>
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h">
       <Filter>Dependencies\MikkTspace</Filter>
-    </ClInclude>
-    <ClInclude Include="PausePanel.h">
-      <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ProjectPanel.h">
       <Filter>Panels</Filter>

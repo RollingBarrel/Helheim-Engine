@@ -23,7 +23,9 @@ public:
 	SettingsPanel();
 	~SettingsPanel();
 
-	void LoadSettings();
+	void SaveCameraPosition();
+	void LoadCameraPosition();
+	void LoadProjectSettings();
 	void Draw(int windowFlags) override;
 private:
 	bool mCulling = false;
@@ -36,7 +38,7 @@ private:
 	bool mGrid = true;
 
 	std::vector<WindowState*> mOpenedWindowsInfo;
+	void SaveProjectSettings();
 
-	void SaveSettings();
 };
 
