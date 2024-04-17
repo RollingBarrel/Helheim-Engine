@@ -37,13 +37,15 @@ void HierarchyPanel::Draw(int windowFlags)
 
 void HierarchyPanel::SetFocus(GameObject* focusedObject) 
 { 
-	/*
-	mFocusedObject = focusedObject;
-	mLastClickedObject = focusedObject;*/ 
 	mUnmarkFlag = true;
 	mFocusId = focusedObject->GetID();
 	mLastClickedObject = focusedObject->GetID();
-
+	GameObject* parent = focusedObject->GetParent();
+	while (parent != nullptr)
+	{
+		mNodesToOpen.insert(parent->GetID());
+		parent = parent->GetParent();
+	}
 }
 
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
@@ -144,6 +146,11 @@ void HierarchyPanel::DrawTree(GameObject* node)
 {
 	ImGui::PushID(node->GetID());
 	bool nodeOpen = true;
+	if (mNodesToOpen.find(node->GetID()) != mNodesToOpen.end())
+	{
+		mNodesToOpen.erase(node->GetID());
+		ImGui::SetNextItemOpen(true);
+	}
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 	if (!node->mIsRoot) 
 	{
