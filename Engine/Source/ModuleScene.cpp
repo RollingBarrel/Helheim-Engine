@@ -56,7 +56,7 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("SampleScene", nullptr);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
+	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 
 	Load("scene");
 

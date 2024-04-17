@@ -48,6 +48,8 @@ private:
 	Ray mRay;
 	bool mDrawRayCast = false; 
 	std::map<float, GameObject*> mIntersectMap;
+
+	float mShiftSpeed = 5;
 };
 
 #endif /* _MODULE_CAMERA_H_ */
