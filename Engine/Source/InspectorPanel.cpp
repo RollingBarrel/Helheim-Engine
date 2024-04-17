@@ -903,7 +903,18 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	// Drag and drop	
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 70.0);
-	ImGui::Image((void*)(intptr_t)imageComponent->GetImage()->GetOpenGLId(), ImVec2(50, 50));
+	
+	ResourceTexture* image = imageComponent->GetImage();
+	
+	if (image)
+	{
+		ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+		ImGui::Image(imageID, ImVec2(50, 50));
+	}
+	else {
+		ImGui::Text("Drop Image");
+	}
+	
 	if (ImGui::BeginDragDropTarget()) {
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
 		{
@@ -922,8 +933,13 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	{
 		ImGui::Text(imageComponent->GetFileName());
 	}
-	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth());
-	ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+	if (image)
+	{
+		ImGui::Text("Width:%dpx", image->GetWidth());
+		ImGui::Text("Height:%dpx", image->GetHeight());
+		
+	}
 	ImGui::Columns(1);
 
 	// Color and alpha
