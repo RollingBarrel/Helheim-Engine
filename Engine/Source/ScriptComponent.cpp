@@ -123,12 +123,6 @@ void::ScriptComponent::Save(Archive& archive) const
 
 void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
 {
-	bool check = data.HasMember("ScriptVariables");
-	bool check2 = data["ScriptVariables"].IsString();
-
-	LOG("%i", check);
-	LOG("%i", check2);
-
 	if (data.HasMember("ScriptName") && data["ScriptName"].IsString())
 	{
 		mName = data["ScriptName"].GetString();
