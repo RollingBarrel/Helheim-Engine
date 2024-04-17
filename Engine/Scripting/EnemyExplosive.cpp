@@ -10,7 +10,7 @@ CREATE(EnemyExplosive)
     MEMBER(MemberType::FLOAT, mEnemySpeed);
     MEMBER(MemberType::FLOAT, mEnemyRotationSpeed);
     MEMBER(MemberType::FLOAT, mActivationDistance);
-    MEMBER(MemberType::FLOAT, mAttackDistance);
+    MEMBER(MemberType::FLOAT, mArmedDistance);
 
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
@@ -24,7 +24,7 @@ EnemyExplosive::EnemyExplosive(GameObject* owner) : EnemyBase(owner)
     mCurrentState = EnemyState::Deploy;
     mHealth = 15;
     mActivationDistance = 10.0f;
-    mAttackDistance = 5.0f;
+    mArmedDistance = 5.0f;
 }
 
 void EnemyExplosive::Start()
@@ -80,7 +80,7 @@ void EnemyExplosive::SearchPlayer()
 {
     EnemyBase::SearchPlayer();
 
-    if (OpponentDistance(mAttackDistance)) {
+    if (OpponentDistance(mArmedDistance)) {
         mInAttackDistance = true;
         ChangeState(EnemyState::Armed);
     }
@@ -116,7 +116,7 @@ void EnemyExplosive::Explosion()
 
     LOG("Explosion animation");
 
-    if (OpponentDistance(mAttackDistance)) 
+    if (OpponentDistance(mArmedDistance))
     {
         //DAMAGE PLAYER AND OTHER ENEMIES IN DISTANCE RANGE
     }

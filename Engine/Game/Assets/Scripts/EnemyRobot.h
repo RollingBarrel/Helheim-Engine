@@ -48,10 +48,13 @@ private:
 
 	EnemyState mCurrentState;
 	EnemyState mPreviousState;
-	float mMeleetoAttack;
+	float mRangeDistance;
+	float mMeleeDistance;
 	int mChargeTime = 0.5f;
-	int mMeeleDamage = 10;
-	int mRangeDamage = 15;
+	bool mMeleeActive;
+	bool mRangeActive;
+	int mMeeleDamage;
+	int mRangeDamage;
 	bool mIsMoving = false;
 	bool mIsReadyToShoot = false;
 };

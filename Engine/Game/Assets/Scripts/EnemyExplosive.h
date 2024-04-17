@@ -12,7 +12,6 @@ class EnemyExplosive : public EnemyBase
 		void Update() override;
 		void SetEnemyDamage(int damage) override;
 
-
 	private:
 		enum class EnemyState {
 			Deploy,
@@ -39,4 +38,6 @@ class EnemyExplosive : public EnemyBase
 		//*****************************************************
 
 		EnemyState mCurrentState;	
+
+		float mArmedDistance;
 };

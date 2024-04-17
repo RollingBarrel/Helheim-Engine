@@ -19,11 +19,9 @@ class EnemyBase : public Script
 		float mEnemySpeed = 1.0f;
 		float mEnemyRotationSpeed = 1.0f;
 		GameObject* mAnimationComponentHolder = nullptr;
-
 		int mHealth = 100;
 		float mActivationDistance = 15.0f;
-		float mAttackDistance = 3.0f;
-
+		
 	protected:
 		bool OpponentDistance(float enemyDistance);
 		bool Delay(float delay);

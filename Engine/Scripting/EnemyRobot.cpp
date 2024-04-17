@@ -1,11 +1,8 @@
 #include "pch.h"
+#include "EnemyRobot.h"
+
 #include "ModuleScene.h"
 #include "Application.h"
-
-//************************************
-#include "GameObject.h"
-//************************************
-#include "EnemyRobot.h"
 #include "PlayerController.h"
 
 CREATE(EnemyRobot)
@@ -13,26 +10,37 @@ CREATE(EnemyRobot)
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::INT, mHealth);
-
     MEMBER(MemberType::FLOAT, mEnemySpeed);
     MEMBER(MemberType::FLOAT, mEnemyRotationSpeed);
     MEMBER(MemberType::FLOAT, mActivationDistance);
-    MEMBER(MemberType::FLOAT, mAttackDistance);
-    MEMBER(MemberType::FLOAT, mMeleetoAttack);
-    
+
+    MEMBER(MemberType::BOOL, mRangeActive);
+    MEMBER(MemberType::FLOAT, mRangeDistance);
+    MEMBER(MemberType::INT, mRangeDamage);
+
+    MEMBER(MemberType::BOOL, mMeleeActive);
+    MEMBER(MemberType::FLOAT, mMeleeDistance);
+    MEMBER(MemberType::INT, mMeeleDamage);
+   
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
-    //MEMBER(MemberType::GAMEOBJECT, mOpponent);
     END_CREATE;
 }
 
 EnemyRobot::EnemyRobot(GameObject* owner) : EnemyBase(owner)
 {
     mCurrentState = EnemyState::Deploy;
+    mPreviousState = mCurrentState;
     mHealth = 15;
     mActivationDistance = 12.0f;
-    mAttackDistance = 9.0f;
-    mMeleetoAttack = 2.0f;
+
+    mRangeActive = true;
+    mRangeDistance = 9.0f;
+    mRangeDamage = 15;
+
+    mMeleeActive = true;
+    mMeleeDistance = 2.0f;
+    mMeeleDamage = 10;
 }
 
 void EnemyRobot::Start()
@@ -87,16 +95,18 @@ void EnemyRobot::StateMachine() {
 void EnemyRobot::SearchPlayer() {
     EnemyBase::SearchPlayer();
 
-    if (OpponentDistance(mAttackDistance)) {
+    if (OpponentDistance(mRangeDistance)) {
         mInAttackDistance = true;
 
-        if (OpponentDistance(mMeleetoAttack))
-        {    
+        if (OpponentDistance(mMeleeDistance) && mMeleeActive)
+        {   
             ChangeState(EnemyState::MeleeAttack);
         }
         else
         {
-            ChangeState(EnemyState::RangeAttack);
+            if (mRangeActive) {
+                ChangeState(EnemyState::RangeAttack);
+            }
         }
     }
 }
@@ -215,7 +225,6 @@ void EnemyRobot::Shoot( )
 
 }
 
-
 void EnemyRobot::ShootLogic(int damage)
 {
     LOG("Robot is shooting");
@@ -251,10 +260,6 @@ void EnemyRobot::Death() {
     //*******************************
 
     LOG("Robot Death animation");
-
-    if (OpponentDistance(mAttackDistance)) {
-        //DAMAGE PLAYER AND OTHER ENEMIES IN DISTANCE RANGE
-    }
 }
 
 //************************************************************************
