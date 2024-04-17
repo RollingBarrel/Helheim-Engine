@@ -53,7 +53,8 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 	for (auto i = 0; i < current.mChildren.size(); ++i)
 	{	
 		bool selected = false;
-		if (mSelectedNode) {
+		if (mSelectedNode) 
+		{
 			selected = strcmp(mSelectedNode->mName, current.mChildren[i]->mName) == 0;
 		}
 		
@@ -109,7 +110,8 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 		nameWithIcon += " " + std::string(current.assets[i]->mName);
 
 		bool selected = false;
-		if (mSelectedAsset) {
+		if (mSelectedAsset) 
+		{
 			selected = strcmp(mSelectedAsset->mName, current.assets[i]->mName) == 0;
 		}
 

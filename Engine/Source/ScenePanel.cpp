@@ -204,14 +204,16 @@ void ScenePanel::DrawScene()
 	GameObject* selectedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 
 	//If there's a selected object in the hierarchy and it's not the root
-	if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot())) {
+	if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot())) 
+	{
 		const float4x4* transform = &selectedGameObject->GetWorldTransform();
 		float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
 		//Draws the Guizmo axis
 		ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), currentGuizmoOperation, currentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
 
-		if (ImGuizmo::IsUsing()) {
+		if (ImGuizmo::IsUsing()) 
+		{
 			mIsGuizmoUsing = true;
 			GameObject* parent = selectedGameObject->GetParent();
 			float4x4 inverseParentMatrix = float4x4::identity;
@@ -219,7 +221,8 @@ void ScenePanel::DrawScene()
 			Quat rotation;
 			float3 scale;
 
-			if (parent != nullptr) {
+			if (parent != nullptr) 
+			{
 				const float4x4* parentTransform = &parent->GetWorldTransform();
 				inverseParentMatrix = parent->GetWorldTransform().Inverted();
 			}
@@ -227,7 +230,8 @@ void ScenePanel::DrawScene()
 			float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
 			localMatrix.Decompose(translation, rotation, scale);
 
-			switch (currentGuizmoOperation) {
+			switch (currentGuizmoOperation) 
+			{
 			case ImGuizmo::TRANSLATE:
 				selectedGameObject->SetPosition(translation);
 				break;
@@ -239,7 +243,8 @@ void ScenePanel::DrawScene()
 				break;
 			}
 		}
-		else {
+		else 
+		{
 			mIsGuizmoUsing = false;
 		}
 	}

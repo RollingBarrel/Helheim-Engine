@@ -911,11 +911,13 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
 		ImGui::Image(imageID, ImVec2(50, 50));
 	}
-	else {
+	else 
+	{
 		ImGui::Text("Drop Image");
 	}
 	
-	if (ImGui::BeginDragDropTarget()) {
+	if (ImGui::BeginDragDropTarget()) 
+	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);

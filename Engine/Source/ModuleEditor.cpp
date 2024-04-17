@@ -373,7 +373,8 @@ void ModuleEditor::ShowMainMenuBar()
 
 
 	if (ImGui::BeginViewportSideBar("##MainStatusBar", viewport, ImGuiDir_Down, height, window_flags)) {
-		if (ImGui::BeginMenuBar()) {
+		if (ImGui::BeginMenuBar()) 
+		{
 			ImGui::EndMenuBar();
 		}
 		ImGui::End();
