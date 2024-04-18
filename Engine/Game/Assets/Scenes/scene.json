@@ -39,9 +39,63 @@
                 ]
             },
             {
-                "UID": 1002828494,
+                "UID": 446227850,
                 "ParentUID": 1,
-                "Name": "GameObject",
+                "Name": "Level_1(1)",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 567020285,
+                "ParentUID": 446227850,
+                "Name": "Player.025",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -24.208818435668947,
+                    1.02021062374115,
+                    8.456709861755371
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 617565131,
+                "ParentUID": 567020285,
+                "Name": "Player.025",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
@@ -65,6 +119,5097 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
+                        "ID": 71878723,
+                        "MeshID": 261869569,
+                        "MaterialID": 261869570,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 742323878,
+                "ParentUID": 446227850,
+                "Name": "Plane.020",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.106926828622818,
+                    -0.12021088600158692,
+                    -0.05929684638977051
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    4.050724506378174,
+                    4.050724506378174,
+                    4.050724506378174
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 878641796,
+                "ParentUID": 742323878,
+                "Name": "Plane.020",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 522581175,
+                        "MeshID": 261869571,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 418492705,
+                "ParentUID": 446227850,
+                "Name": "Plane.021",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -8.920268058776856,
+                    -0.12021088600158692,
+                    0.1576831340789795
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    4.050724506378174,
+                    4.050724506378174,
+                    4.050724506378174
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 502316389,
+                "ParentUID": 418492705,
+                "Name": "Plane.021",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 360966932,
+                        "MeshID": 261869572,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 681033496,
+                "ParentUID": 446227850,
+                "Name": "Plane.022",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -23.554975509643556,
+                    -0.12021088600158692,
+                    7.105147361755371
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    10.190957069396973,
+                    10.190957069396973,
+                    10.190957069396973
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 722527612,
+                "ParentUID": 681033496,
+                "Name": "Plane.022",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 768249782,
+                        "MeshID": 261869573,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 883073638,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.026",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -40.076446533203128,
+                    0.0834345892071724,
+                    6.223967552185059
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    4.730276584625244,
+                    4.730276584625244,
+                    4.730276584625244
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 923244955,
+                "ParentUID": 883073638,
+                "Name": "Cylinder.026",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1173583244,
+                        "MeshID": 261869574,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1083999844,
+                "ParentUID": 446227850,
+                "Name": "Plane.023",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -64.55457305908203,
+                    0.0,
+                    10.069487571716309
+                ],
+                "Rotation": [
+                    0.0,
+                    0.2588190734386444,
+                    0.0,
+                    0.965925931930542
+                ],
+                "Scale": [
+                    18.0,
+                    10.190957069396973,
+                    13.530957221984864
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1122152152,
+                "ParentUID": 1083999844,
+                "Name": "Plane.023",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -1.1920928955078126e-7
+                ],
+                "Rotation": [
+                    0.0,
+                    1.4901161193847657e-8,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1559422826,
+                        "MeshID": 261869575,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1284369082,
+                "ParentUID": 446227850,
+                "Name": "Cube.024",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -65.97117614746094,
+                    1.0,
+                    15.492796897888184
+                ],
+                "Rotation": [
+                    0.0,
+                    0.8660253882408142,
+                    0.0,
+                    0.4999999701976776
+                ],
+                "Scale": [
+                    2.5,
+                    1.0,
+                    6.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1323913810,
+                "ParentUID": 1284369082,
+                "Name": "Cube.024",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    4.76837158203125e-7,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.725290298461914e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1933009112,
+                        "MeshID": 261869576,
+                        "MaterialID": 261869577,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 847821510,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -94.47596740722656,
+                    0.08466410636901856,
+                    47.179779052734378
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 927467934,
+                "ParentUID": 847821510,
+                "Name": "Cylinder.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.00000762939453125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1739090725,
+                        "MeshID": 261869578,
+                        "MaterialID": 261869579,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 586927721,
+                "ParentUID": 446227850,
+                "Name": "Plane.024",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -72.93962860107422,
+                    0.0,
+                    17.596860885620118
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 633016823,
+                "ParentUID": 586927721,
+                "Name": "Plane.024",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1723402098,
+                        "MeshID": 261869580,
+                        "MaterialID": 261869581,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 11555875,
+                "ParentUID": 446227850,
+                "Name": "Plane.025",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -61.703033447265628,
+                    0.0,
+                    8.716460227966309
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 56809525,
+                "ParentUID": 11555875,
+                "Name": "Plane.025",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1226121112,
+                        "MeshID": 261869582,
+                        "MaterialID": 261869583,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1584224644,
+                "ParentUID": 446227850,
+                "Name": "Plane.026",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -62.9024658203125,
+                    0.0,
+                    11.717131614685059
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1627528906,
+                "ParentUID": 1584224644,
+                "Name": "Plane.026",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1313332323,
+                        "MeshID": 261869584,
+                        "MaterialID": 261869585,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1004466675,
+                "ParentUID": 446227850,
+                "Name": "Plane.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -77.2750015258789,
+                    0.0,
+                    24.052656173706056
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1050207672,
+                "ParentUID": 1004466675,
+                "Name": "Plane.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1262693954,
+                        "MeshID": 261869586,
+                        "MaterialID": 261869587,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 365948582,
+                "ParentUID": 446227850,
+                "Name": "Player.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -70.16397857666016,
+                    1.02021062374115,
+                    12.491820335388184
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 408974360,
+                "ParentUID": 365948582,
+                "Name": "Player.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1143687763,
+                        "MeshID": 261869588,
+                        "MaterialID": 261869589,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1900534664,
+                "ParentUID": 446227850,
+                "Name": "Player.028",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -31.4879093170166,
+                    1.02021062374115,
+                    7.560759544372559
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1947389597,
+                "ParentUID": 1900534664,
+                "Name": "Player.028",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 948655440,
+                        "MeshID": 261869590,
+                        "MaterialID": 261869591,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1386290056,
+                "ParentUID": 446227850,
+                "Name": "Player.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -31.389822006225587,
+                    1.02021062374115,
+                    3.2153613567352297
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1440524815,
+                "ParentUID": 1386290056,
+                "Name": "Player.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1227045917,
+                        "MeshID": 261869592,
+                        "MaterialID": 261869593,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 847538856,
+                "ParentUID": 446227850,
+                "Name": "Player.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -29.887048721313478,
+                    1.0202105045318604,
+                    10.574049949645996
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 895089999,
+                "ParentUID": 847538856,
+                "Name": "Player.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1566006664,
+                        "MeshID": 261869594,
+                        "MaterialID": 261869595,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 254761760,
+                "ParentUID": 446227850,
+                "Name": "Player.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -29.78896141052246,
+                    1.0202105045318604,
+                    6.228652000427246
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 300850862,
+                "ParentUID": 254761760,
+                "Name": "Player.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1353638712,
+                        "MeshID": 261869596,
+                        "MaterialID": 261869597,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1803272042,
+                "ParentUID": 446227850,
+                "Name": "Player.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -65.575439453125,
+                    1.02021062374115,
+                    8.683684349060059
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1849152281,
+                "ParentUID": 1803272042,
+                "Name": "Player.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1686751295,
+                        "MeshID": 261869598,
+                        "MaterialID": 261869599,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1169348935,
+                "ParentUID": 446227850,
+                "Name": "Cube.025",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -79.0270004272461,
+                    1.0,
+                    6.323256492614746
+                ],
+                "Rotation": [
+                    0.0,
+                    0.8660253882408142,
+                    0.0,
+                    0.4999999701976776
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1218431740,
+                "ParentUID": 1169348935,
+                "Name": "Cube.025",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1504250752,
+                        "MeshID": 261869600,
+                        "MaterialID": 261869601,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 577059186,
+                "ParentUID": 446227850,
+                "Name": "Cube.026",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -83.08668518066406,
+                    1.0,
+                    8.807585716247559
+                ],
+                "Rotation": [
+                    0.0,
+                    0.8660253882408142,
+                    0.0,
+                    0.4999999701976776
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 623914119,
+                "ParentUID": 577059186,
+                "Name": "Cube.026",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.0000019073486328125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1906427367,
+                        "MeshID": 261869602,
+                        "MaterialID": 261869603,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 388083890,
+                "ParentUID": 446227850,
+                "Name": "Cube.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -58.11763000488281,
+                    1.0,
+                    21.00123405456543
+                ],
+                "Rotation": [
+                    0.0,
+                    0.8660253882408142,
+                    0.0,
+                    0.4999999701976776
+                ],
+                "Scale": [
+                    1.3200000524520875,
+                    1.0,
+                    6.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 434172992,
+                "ParentUID": 388083890,
+                "Name": "Cube.027",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -9.5367431640625e-7,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    2.9802322387695315e-8,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 110366626,
+                        "MeshID": 261869604,
+                        "MaterialID": 261869605,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1952676623,
+                "ParentUID": 446227850,
+                "Name": "Plane.028",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -64.55457305908203,
+                    0.05155547708272934,
+                    10.069487571716309
+                ],
+                "Rotation": [
+                    0.0,
+                    0.2588190734386444,
+                    0.0,
+                    0.965925931930542
+                ],
+                "Scale": [
+                    18.0,
+                    10.190957069396973,
+                    13.530957221984864
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 2019930509,
+                "ParentUID": 1952676623,
+                "Name": "Plane.028",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -1.1920928955078126e-7
+                ],
+                "Rotation": [
+                    0.0,
+                    1.4901161193847657e-8,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 436934835,
+                        "MeshID": 261869606,
+                        "MaterialID": 261869607,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1391228977,
+                "ParentUID": 446227850,
+                "Name": "Cube.028",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -50.115116119384769,
+                    0.3200000524520874,
+                    10.505446434020996
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.9659258127212524,
+                    0.0,
+                    0.2588191330432892
+                ],
+                "Scale": [
+                    0.1900000423192978,
+                    0.3199999928474426,
+                    5.800000190734863
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1448318197,
+                "ParentUID": 1391228977,
+                "Name": "Cube.028",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -4.76837158203125e-7
+                ],
+                "Rotation": [
+                    -0.0,
+                    -7.150229066610336e-7,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 656077841,
+                        "MeshID": 261869608,
+                        "MaterialID": 261869609,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 764059107,
+                "ParentUID": 446227850,
+                "Name": "Plane.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -117.48649597167969,
+                    0.0,
+                    54.03057861328125
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    20.0,
+                    10.190957069396973,
+                    16.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 811610250,
+                "ParentUID": 764059107,
+                "Name": "Plane.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -7.450581485102248e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 696851845,
+                        "MeshID": 261869610,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1003903452,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -93.59654235839844,
+                    0.0,
+                    29.402372360229493
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    53.88076400756836,
+                    53.88076400756836,
+                    53.88076400756836
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1054935645,
+                "ParentUID": 1003903452,
+                "Name": "Cylinder.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1647944326,
+                        "MeshID": 261869611,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1249665582,
+                "ParentUID": 446227850,
+                "Name": "Cube.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -107.68516540527344,
+                    1.0,
+                    48.775146484375
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1297495209,
+                "ParentUID": 1249665582,
+                "Name": "Cube.029",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.00000762939453125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1834783188,
+                        "MeshID": 261869612,
+                        "MaterialID": 261869613,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 617900726,
+                "ParentUID": 446227850,
+                "Name": "Player.033",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -109.31444549560547,
+                    1.02021062374115,
+                    37.50224304199219
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951580032706261,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 682369772,
+                "ParentUID": 617900726,
+                "Name": "Player.033",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0000152587890625,
+                    0.0,
+                    -0.00000762939453125
+                ],
+                "Rotation": [
+                    0.0,
+                    1.862645149230957e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 68589856,
+                        "MeshID": 261869614,
+                        "MaterialID": 261869615,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 114516994,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -117.65571594238281,
+                    0.08466410636901856,
+                    78.34507751464844
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 171606214,
+                "ParentUID": 114516994,
+                "Name": "Cylinder.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.00000762939453125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 207111744,
+                        "MeshID": 261869616,
+                        "MaterialID": 261869617,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1660660162,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -141.048095703125,
+                    0.08466410636901856,
+                    60.980247497558597
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1715451889,
+                "ParentUID": 1660660162,
+                "Name": "Cylinder.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 351133691,
+                        "MeshID": 261869618,
+                        "MaterialID": 261869619,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1078674321,
+                "ParentUID": 446227850,
+                "Name": "Plane.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -95.44338989257813,
+                    0.0,
+                    47.043739318847659
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1130263482,
+                "ParentUID": 1078674321,
+                "Name": "Plane.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 776285236,
+                        "MeshID": 261869620,
+                        "MaterialID": 261869621,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 489796001,
+                "ParentUID": 446227850,
+                "Name": "Plane.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -117.92603302001953,
+                    0.0,
+                    77.77525329589844
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 563455019,
+                "ParentUID": 489796001,
+                "Name": "Plane.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1311437961,
+                        "MeshID": 261869622,
+                        "MaterialID": 261869623,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 2113009616,
+                "ParentUID": 446227850,
+                "Name": "Plane.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -140.44329833984376,
+                    0.0,
+                    61.070281982421878
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 18298687,
+                "ParentUID": 2113009616,
+                "Name": "Plane.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 2094580688,
+                        "MeshID": 261869624,
+                        "MaterialID": 261869625,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1522947739,
+                "ParentUID": 446227850,
+                "Name": "Player.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -125.75993347167969,
+                    1.02021062374115,
+                    61.844032287597659
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951580032706261,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1573422964,
+                "ParentUID": 1522947739,
+                "Name": "Player.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0000152587890625,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    1.862645149230957e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 568719048,
+                        "MeshID": 261869626,
+                        "MaterialID": 261869627,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 906708366,
+                "ParentUID": 446227850,
+                "Name": "Player.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -123.22834014892578,
+                    1.020210862159729,
+                    71.29676818847656
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951580032706261,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 968601435,
+                "ParentUID": 906708366,
+                "Name": "Player.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    1.862645149230957e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1973623024,
+                        "MeshID": 261869628,
+                        "MaterialID": 261869629,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 397058744,
+                "ParentUID": 446227850,
+                "Name": "Player.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -121.45094299316406,
+                    1.02021062374115,
+                    62.59925842285156
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7219937443733215,
+                    0.0,
+                    0.6918995976448059
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 450318809,
+                "ParentUID": 397058744,
+                "Name": "Player.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.0000152587890625
+                ],
+                "Rotation": [
+                    -0.0,
+                    9.313224635931761e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 974026523,
+                        "MeshID": 261869630,
+                        "MaterialID": 261869631,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 2120526599,
+                "ParentUID": 446227850,
+                "Name": "Plane.033",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -117.32135772705078,
+                    0.0,
+                    30.99225425720215
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 38208208,
+                "ParentUID": 2120526599,
+                "Name": "Plane.033",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 2028412666,
+                        "MeshID": 261869632,
+                        "MaterialID": 261869633,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1698390574,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -117.06805419921875,
+                    0.08466410636901856,
+                    30.060712814331056
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1770239446,
+                "ParentUID": 1698390574,
+                "Name": "Cylinder.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1072190048,
+                        "MeshID": 261869634,
+                        "MaterialID": 261869635,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1246456761,
+                "ParentUID": 446227850,
+                "Name": "Cube.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -102.90258026123047,
+                    1.0,
+                    52.401695251464847
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1303267497,
+                "ParentUID": 1246456761,
+                "Name": "Cube.030",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0000019073486328125
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 173056650,
+                        "MeshID": 261869636,
+                        "MaterialID": 261869637,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 720376583,
+                "ParentUID": 446227850,
+                "Name": "Cube.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -111.20282745361328,
+                    1.0,
+                    53.26337432861328
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 786795017,
+                "ParentUID": 720376583,
+                "Name": "Cube.031",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.000003814697265625
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1317601988,
+                        "MeshID": 261869638,
+                        "MaterialID": 261869639,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 222284047,
+                "ParentUID": 446227850,
+                "Name": "Cube.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -106.42024230957031,
+                    1.0,
+                    56.889923095703128
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 275126386,
+                "ParentUID": 222284047,
+                "Name": "Cube.032",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 186143313,
+                        "MeshID": 261869640,
+                        "MaterialID": 261869641,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1970328115,
+                "ParentUID": 446227850,
+                "Name": "Cube.033",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -120.04304504394531,
+                    1.0,
+                    39.039703369140628
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 2023170454,
+                "ParentUID": 1970328115,
+                "Name": "Cube.033",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.000003814697265625,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1504532288,
+                        "MeshID": 261869642,
+                        "MaterialID": 261869643,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1932082284,
+                "ParentUID": 446227850,
+                "Name": "Cube.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -115.45133972167969,
+                    1.0,
+                    42.46373748779297
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1999684275,
+                "ParentUID": 1932082284,
+                "Name": "Cube.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.000003814697265625,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1715784219,
+                        "MeshID": 261869644,
+                        "MaterialID": 261869645,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1414913594,
+                "ParentUID": 446227850,
+                "Name": "Cube.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -123.56070709228516,
+                    1.0,
+                    43.52793884277344
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1488920717,
+                "ParentUID": 1414913594,
+                "Name": "Cube.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 2075189638,
+                        "MeshID": 261869646,
+                        "MaterialID": 261869647,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 940701061,
+                "ParentUID": 446227850,
+                "Name": "Cube.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -118.96900939941406,
+                    1.0,
+                    46.95196533203125
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 999600427,
+                "ParentUID": 940701061,
+                "Name": "Cube.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1423628516,
+                        "MeshID": 261869648,
+                        "MaterialID": 261869649,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 444488292,
+                "ParentUID": 446227850,
+                "Name": "Cube.037",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -118.07381439208985,
+                    1.0,
+                    62.924644470214847
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 503109174,
+                "ParentUID": 444488292,
+                "Name": "Cube.037",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.000003814697265625,
+                    0.0,
+                    0.0000019073486328125
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 738161967,
+                        "MeshID": 261869650,
+                        "MaterialID": 261869651,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 2124164538,
+                "ParentUID": 446227850,
+                "Name": "Cube.038",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -113.2912368774414,
+                    1.0,
+                    66.55119323730469
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 32656175,
+                "ParentUID": 2124164538,
+                "Name": "Cube.038",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1572824234,
+                        "MeshID": 261869652,
+                        "MaterialID": 261869653,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1577685407,
+                "ParentUID": 446227850,
+                "Name": "Cube.039",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -121.59148406982422,
+                    1.0,
+                    67.41287231445313
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1633451828,
+                "ParentUID": 1577685407,
+                "Name": "Cube.039",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.0000019073486328125
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 540366621,
+                        "MeshID": 261869654,
+                        "MaterialID": 261869655,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1010389597,
+                "ParentUID": 446227850,
+                "Name": "Cube.040",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -116.80889892578125,
+                    1.0,
+                    71.0394287109375
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1081890364,
+                "ParentUID": 1010389597,
+                "Name": "Cube.040",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.0000019073486328125
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1277977214,
+                        "MeshID": 261869656,
+                        "MaterialID": 261869657,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 598835964,
+                "ParentUID": 446227850,
+                "Name": "Cube.041",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -130.4317169189453,
+                    1.0,
+                    53.189208984375
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 657317604,
+                "ParentUID": 598835964,
+                "Name": "Cube.041",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 2064322507,
+                        "MeshID": 261869658,
+                        "MaterialID": 261869659,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 98097830,
+                "ParentUID": 446227850,
+                "Name": "Cube.042",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -125.8399887084961,
+                    1.0,
+                    56.61323547363281
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 158876963,
+                "ParentUID": 98097830,
+                "Name": "Cube.042",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.000003814697265625
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 504764303,
+                        "MeshID": 261869660,
+                        "MaterialID": 261869661,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1676475521,
+                "ParentUID": 446227850,
+                "Name": "Cube.043",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -133.94937133789063,
+                    1.0,
+                    57.67743682861328
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1734957161,
+                "ParentUID": 1676475521,
+                "Name": "Cube.043",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 991948159,
+                        "MeshID": 261869662,
+                        "MaterialID": 261869663,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1147332019,
+                "ParentUID": 446227850,
+                "Name": "Cube.044",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -129.35768127441407,
+                    1.0,
+                    61.101470947265628
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715458393097,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    2.0,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1207763047,
+                "ParentUID": 1147332019,
+                "Name": "Cube.044",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.000003814697265625,
+                    0.0,
+                    -0.000003814697265625
+                ],
+                "Rotation": [
+                    0.0,
+                    -8.881784197001253e-16,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1512062748,
+                        "MeshID": 261869664,
+                        "MaterialID": 261869665,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 636498840,
+                "ParentUID": 446227850,
+                "Name": "Plane.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -142.3789520263672,
+                    0.0,
+                    101.39606475830078
+                ],
+                "Rotation": [
+                    0.0,
+                    0.578599750995636,
+                    0.0,
+                    0.8156116604804993
+                ],
+                "Scale": [
+                    20.0,
+                    10.190957069396973,
+                    15.999999046325684
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 695467827,
+                "ParentUID": 636498840,
+                "Name": "Plane.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -1.1175871783564162e-8,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 366262147,
+                        "MeshID": 261869666,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1031876499,
+                "ParentUID": 446227850,
+                "Name": "Plane.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -131.6600341796875,
+                    -1.4832205772399903,
+                    44.443206787109378
+                ],
+                "Rotation": [
+                    -0.009175644256174565,
+                    -0.3052912652492523,
+                    -0.0008962124702520669,
+                    0.9522144794464111
+                ],
+                "Scale": [
+                    0.9999923706054688,
+                    0.018437862396240236,
+                    1.9996752738952637
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1088965719,
+                "ParentUID": 1031876499,
+                "Name": "Plane.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.00000762939453125,
+                    0.0,
+                    0.000003814697265625
+                ],
+                "Rotation": [
+                    -2.9809598345309499e-8,
+                    -1.4901161193847657e-8,
+                    3.637979240772582e-12,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 395061339,
+                        "MeshID": 261869667,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1340715255,
+                "ParentUID": 446227850,
+                "Name": "Plane.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -97.57048797607422,
+                    0.0,
+                    60.31774139404297
+                ],
+                "Rotation": [
+                    0.0,
+                    0.4475715756416321,
+                    0.0,
+                    0.8942481279373169
+                ],
+                "Scale": [
+                    10.920141220092774,
+                    4.973258972167969,
+                    3.958113193511963
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1396690539,
+                "ParentUID": 1340715255,
+                "Name": "Plane.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    9.5367431640625e-7
+                ],
+                "Rotation": [
+                    0.0,
+                    2.9802322387695315e-8,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1827443793,
+                        "MeshID": 261869668,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1644402057,
+                "ParentUID": 446227850,
+                "Name": "Cube.045",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -137.54322814941407,
+                    0.3200000524520874,
+                    124.67697143554688
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.8171595931053162,
+                    0.0,
+                    0.5764115452766419
+                ],
+                "Scale": [
+                    0.19000005722045899,
+                    0.3199999928474426,
+                    3.5900001525878908
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1700725446,
+                "ParentUID": 1644402057,
+                "Name": "Cube.045",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1335965252,
+                        "MeshID": 261869669,
+                        "MaterialID": 261869670,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1112404094,
+                "ParentUID": 446227850,
+                "Name": "Cube.046",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -142.9722900390625,
+                    0.3200000524520874,
+                    129.82920837402345
+                ],
+                "Rotation": [
+                    0.0,
+                    0.9852421879768372,
+                    0.0,
+                    0.17116622626781465
+                ],
+                "Scale": [
+                    0.19000005722045899,
+                    0.3199999928474426,
+                    6.639999866485596
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1170816113,
+                "ParentUID": 1112404094,
+                "Name": "Cube.046",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.00006103515625,
+                    0.0,
+                    0.0000019073486328125
+                ],
+                "Rotation": [
+                    0.0,
+                    -2.384185791015625e-7,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 349666362,
+                        "MeshID": 261869671,
+                        "MaterialID": 261869672,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 587855578,
+                "ParentUID": 446227850,
+                "Name": "Player.046",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -154.3831787109375,
+                    1.020210862159729,
+                    97.81665802001953
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951580032706261,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 647660017,
+                "ParentUID": 587855578,
+                "Name": "Player.046",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    1.862645149230957e-9,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1380102881,
+                        "MeshID": 261869673,
+                        "MaterialID": 261869674,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 64490619,
+                "ParentUID": 446227850,
+                "Name": "Player.047",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -152.3866729736328,
+                    1.02021062374115,
+                    91.5721435546875
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7219937443733215,
+                    0.0,
+                    0.6918995976448059
+                ],
+                "Scale": [
+                    0.5555555820465088,
+                    1.0,
+                    0.5555555820465088
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 126662172,
+                "ParentUID": 64490619,
+                "Name": "Player.047",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.000030517578125
+                ],
+                "Rotation": [
+                    -0.0,
+                    9.313224635931761e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 589230138,
+                        "MeshID": 261869675,
+                        "MaterialID": 261869676,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1712558931,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -153.8827667236328,
+                    1.034510850906372,
+                    96.46009063720703
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.6128783226013184,
+                    1.0,
+                    0.6128783226013184
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1785382497,
+                "ParentUID": 1712558931,
+                "Name": "Cylinder.034",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1398759224,
+                        "MeshID": 261869677,
+                        "MaterialID": 261869678,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1247188265,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -147.80908203125,
+                    1.0345109701156617,
+                    89.8375473022461
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.6128783226013184,
+                    1.0,
+                    0.6128783226013184
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1320011831,
+                "ParentUID": 1247188265,
+                "Name": "Cylinder.035",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1363455122,
+                        "MeshID": 261869679,
+                        "MaterialID": 261869680,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 873926182,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -146.09474182128907,
+                    1.034510850906372,
+                    94.03010559082031
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.6128783226013184,
+                    1.0,
+                    0.6128783226013184
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 950230798,
+                "ParentUID": 873926182,
+                "Name": "Cylinder.036",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1008409839,
+                        "MeshID": 261869681,
+                        "MaterialID": 261869682,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 496695702,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.037",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -131.4505615234375,
+                    2.7043495178222658,
+                    107.61349487304688
+                ],
+                "Rotation": [
+                    0.0,
+                    0.026278289034962655,
+                    0.0,
+                    0.9996547698974609
+                ],
+                "Scale": [
+                    2.236518621444702,
+                    2.731529712677002,
+                    2.236518621444702
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 568544574,
+                "ParentUID": 496695702,
+                "Name": "Cylinder.037",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.000003814697265625,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    9.31322685637781e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 719922232,
+                        "MeshID": 261869683,
+                        "MaterialID": 261869684,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 186371003,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.038",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -133.75955200195313,
+                    2.7043495178222658,
+                    113.2879638671875
+                ],
+                "Rotation": [
+                    0.0,
+                    0.026278289034962655,
+                    0.0,
+                    0.9996547698974609
+                ],
+                "Scale": [
+                    2.236518621444702,
+                    2.731529712677002,
+                    2.236518621444702
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 261213578,
+                "ParentUID": 186371003,
+                "Name": "Cylinder.038",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.000003814697265625
+                ],
+                "Rotation": [
+                    0.0,
+                    9.31322685637781e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 202151,
+                        "MeshID": 261869685,
+                        "MaterialID": 261869686,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1934902418,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.039",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -135.81951904296876,
+                    2.7043495178222658,
+                    118.66209411621094
+                ],
+                "Rotation": [
+                    0.0,
+                    0.026278289034962655,
+                    0.0,
+                    0.9996547698974609
+                ],
+                "Scale": [
+                    2.236518621444702,
+                    2.731529712677002,
+                    2.236518621444702
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 2007725984,
+                "ParentUID": 1934902418,
+                "Name": "Cylinder.039",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    9.31322685637781e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1543049230,
+                        "MeshID": 261869687,
+                        "MaterialID": 261869688,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1559969431,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.040",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -160.40213012695313,
+                    2.7043495178222658,
+                    114.77970123291016
+                ],
+                "Rotation": [
+                    0.0,
+                    0.026278289034962655,
+                    0.0,
+                    0.9996547698974609
+                ],
+                "Scale": [
+                    2.236518621444702,
+                    2.731529712677002,
+                    2.236518621444702
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1634324659,
+                "ParentUID": 1559969431,
+                "Name": "Cylinder.040",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.000003814697265625
+                ],
+                "Rotation": [
+                    0.0,
+                    9.31322685637781e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 993552494,
+                        "MeshID": 261869689,
+                        "MaterialID": 261869690,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1611952416,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.041",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -162.71112060546876,
+                    2.7043495178222658,
+                    120.45417022705078
+                ],
+                "Rotation": [
+                    0.0,
+                    0.026278289034962655,
+                    0.0,
+                    0.9996547698974609
+                ],
+                "Scale": [
+                    2.236518621444702,
+                    2.731529712677002,
+                    2.236518621444702
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1709561058,
+                "ParentUID": 1611952416,
+                "Name": "Cylinder.041",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.00000762939453125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    9.31322685637781e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 756140714,
+                        "MeshID": 261869691,
+                        "MaterialID": 261869692,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1521142730,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.042",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -164.77108764648438,
+                    2.7043495178222658,
+                    125.82830047607422
+                ],
+                "Rotation": [
+                    0.0,
+                    0.026278289034962655,
+                    0.0,
+                    0.9996547698974609
+                ],
+                "Scale": [
+                    2.236518621444702,
+                    2.731529712677002,
+                    2.236518621444702
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1600858775,
+                "ParentUID": 1521142730,
+                "Name": "Cylinder.042",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -0.000003814697265625
+                ],
+                "Rotation": [
+                    0.0,
+                    9.31322685637781e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1798597764,
+                        "MeshID": 261869693,
+                        "MaterialID": 261869694,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1254748882,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.043",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -137.9739532470703,
+                    0.0846642255783081,
+                    122.33057403564453
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1330566151,
+                "ParentUID": 1254748882,
+                "Name": "Cylinder.043",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.00000762939453125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 801298756,
+                        "MeshID": 261869695,
+                        "MaterialID": 261869696,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 924234093,
+                "ParentUID": 446227850,
+                "Name": "Plane.037",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -138.24427795410157,
+                    0.0,
+                    121.76074981689453
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 988842381,
+                "ParentUID": 924234093,
+                "Name": "Plane.037",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.0000152587890625,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1673069016,
+                        "MeshID": 261869697,
+                        "MaterialID": 261869698,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 588080003,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.044",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -161.0365447998047,
+                    0.0846642255783081,
+                    128.2508087158203
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 666125144,
+                "ParentUID": 588080003,
+                "Name": "Cylinder.044",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.0000152587890625,
+                    0.0,
+                    -0.0000152587890625
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 2085688781,
+                        "MeshID": 261869699,
+                        "MaterialID": 261869700,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 290426326,
+                "ParentUID": 446227850,
+                "Name": "Plane.038",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -161.30686950683595,
+                    0.0,
+                    127.68098449707031
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 361927093,
+                "ParentUID": 290426326,
+                "Name": "Plane.038",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.000030517578125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1285486824,
+                        "MeshID": 261869701,
+                        "MaterialID": 261869702,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 2126262475,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.045",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -140.6675567626953,
+                    0.0846642255783081,
+                    82.106201171875
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 57450558,
+                "ParentUID": 2126262475,
+                "Name": "Cylinder.045",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.0000152587890625,
+                    0.0,
+                    0.00000762939453125
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1617555092,
+                        "MeshID": 261869703,
+                        "MaterialID": 261869704,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1988876340,
+                "ParentUID": 446227850,
+                "Name": "Plane.039",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -140.93788146972657,
+                    0.0,
+                    81.536376953125
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 2068940490,
+                "ParentUID": 1988876340,
+                "Name": "Plane.039",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.000030517578125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1898591167,
+                        "MeshID": 261869705,
+                        "MaterialID": 261869706,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1781590721,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.046",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -153.53770446777345,
+                    0.08466373383998871,
+                    104.666015625
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    4.0,
+                    3.6889352798461916,
+                    4.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1865692889,
+                "ParentUID": 1781590721,
+                "Name": "Cylinder.046",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.000003814697265625,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 84220103,
+                        "MeshID": 261869707,
+                        "MaterialID": 261869708,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1543184515,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.047",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -144.1279754638672,
+                    0.0846637487411499,
+                    118.1797103881836
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.05951579660177231,
+                    0.0,
+                    0.9982273578643799
+                ],
+                "Scale": [
+                    4.0,
+                    1.9965900182724,
+                    4.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1636058929,
+                "ParentUID": 1543184515,
+                "Name": "Cylinder.047",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.000003814697265625,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 22348851,
+                        "MeshID": 261869709,
+                        "MaterialID": 261869710,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1281664137,
+                "ParentUID": 446227850,
+                "Name": "Cube.047",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -144.2926483154297,
+                    1.0000001192092896,
+                    98.60832977294922
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.15412497520446778,
+                    0.0,
+                    0.9880513548851013
+                ],
+                "Scale": [
+                    4.25,
+                    1.0,
+                    2.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1351285137,
+                "ParentUID": 1281664137,
+                "Name": "Cube.047",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -0.0000019073486328125,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 863531590,
+                        "MeshID": 261869711,
+                        "MaterialID": 261869712,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1054327670,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.048",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -151.7677459716797,
+                    1.0345109701156617,
+                    123.92925262451172
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.6128783226013184,
+                    1.0,
+                    0.6128783226013184
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1142607098,
+                "ParentUID": 1054327670,
+                "Name": "Cylinder.048",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1567352096,
+                        "MeshID": 261869713,
+                        "MaterialID": 261869714,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 903922408,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.049",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -150.05340576171876,
+                    1.034510850906372,
+                    128.12181091308595
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.6128783226013184,
+                    1.0,
+                    0.6128783226013184
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1005499447,
+                "ParentUID": 903922408,
+                "Name": "Cylinder.049",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1179376080,
+                        "MeshID": 261869715,
+                        "MaterialID": 261869716,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 788258025,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.050",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -141.87344360351563,
+                    1.0345112085342408,
+                    107.37305450439453
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.6128783226013184,
+                    1.0,
+                    0.6128783226013184
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 892619904,
+                "ParentUID": 788258025,
+                "Name": "Cylinder.050",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 2072171882,
+                        "MeshID": 261869717,
+                        "MaterialID": 261869718,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 822487655,
+                "ParentUID": 446227850,
+                "Name": "Cylinder.051",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -140.1591033935547,
+                    1.0345110893249512,
+                    111.56562042236328
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.6128783226013184,
+                    1.0,
+                    0.6128783226013184
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 913343060,
+                "ParentUID": 822487655,
+                "Name": "Cylinder.051",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1754095350,
+                        "MeshID": 261869719,
+                        "MaterialID": 261869720,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 533828535,
+                "ParentUID": 1,
+                "Name": "DamagedHelmet",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    -11.409294128417969,
+                    0.4896102845668793,
+                    7.064681053161621
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 605886270,
+                "ParentUID": 533828535,
+                "Name": "node_damagedHelmet_-6514",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    -0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 641044875,
+                "ParentUID": 605886270,
+                "Name": "node_damagedHelmet_-6514",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1698977335,
+                        "MeshID": 1088336016,
+                        "MaterialID": 1088336020,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 109564326,
+                "ParentUID": 1,
+                "Name": "SciFiHelmet",
+                "isEnabled": true,
+                "isActive": true,
+                "Translation": [
+                    0.516913652420044,
+                    0.33827924728393557,
+                    -2.3519983291625978
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1541089266,
+                        "MeshID": 1574482348,
+                        "MaterialID": 1574482352,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    },
+                    {
                         "ComponentType": 3,
                         "ScriptName": "PlayerController",
                         "ScriptVariables": [
@@ -85,10 +5230,15 @@
                             {
                                 "VariableName": "mWinArea",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 533828535
                             },
                             {
                                 "VariableName": "mLoseArea",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mObjective",
                                 "MemberType": 3,
                                 "VariableData": -1
                             },
@@ -103,41 +5253,6 @@
                                 "VariableData": 543.0
                             }
                         ]
-                    }
-                ]
-            },
-            {
-                "UID": 1128849801,
-                "ParentUID": 1,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "isActive": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 4,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ComponentType": 6,
-                        "AspectRatio": 1.7777777910232545,
-                        "NearPlane": 0.009999999776482582,
-                        "FarPlane": 1000.0,
-                        "IsOrtographic": false
                     }
                 ]
             }

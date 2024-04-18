@@ -547,26 +547,26 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 {
 	ImGui::SeparatorText("Agent Parameters");
 
-	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
-	{
-		component->SetRadius(radius);
-	}
-	float height = component->GetHeight();
-	if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
-	{
-		component->SetHeight(height);
-	}
-	float stepHeight = component->GetStepHeight();
-	if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
-	{
-		component->SetStepHeight(stepHeight);
-	}
+	//float radius = component->GetRadius();
+	//if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	//{
+	//	component->SetRadius(radius);
+	//}
+	//float height = component->GetHeight();
+	//if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
+	//{
+	//	component->SetHeight(height);
+	//}
+	//float stepHeight = component->GetStepHeight();
+	//if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
+	//{
+	//	component->SetStepHeight(stepHeight);
+	//}
 
-	int maxSlope = component->GetMaxSlope();
-	if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
-		component->SetMaxSlope(maxSlope);
-	}
+	//int maxSlope = component->GetMaxSlope();
+	//if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
+	//	component->SetMaxSlope(maxSlope);
+	//}
 
 	ImGui::SeparatorText("Steering Parameters");
 
@@ -576,7 +576,7 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 		component->SetSpeed(speed);
 	}
 
-	float angularSpeed = component->GetAngularSpeed();
+	/*float angularSpeed = component->GetAngularSpeed();
 	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))
 	{
 		component->SetAngularSpeed(angularSpeed);
@@ -592,7 +592,7 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 	if (ImGui::DragFloat("Stopping Distance", &stoppingDistance, 1.0f, 0.0f))
 	{
 		component->SetStoppingDistance(stoppingDistance);
-	}
+	}*/
 
 
 

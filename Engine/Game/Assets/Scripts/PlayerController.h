@@ -32,6 +32,7 @@ private:
     float mPlayerSpeed = 1;
     float mPlayerRotationSpeed = 1.0f;
     GameObject* mWinArea = nullptr;
+    GameObject* mObjective = nullptr;
     GameObject* mLoseArea = nullptr;
     GameObject* mAnimationComponentHolder = nullptr;
     float mDashSpeed = 5.0f;
