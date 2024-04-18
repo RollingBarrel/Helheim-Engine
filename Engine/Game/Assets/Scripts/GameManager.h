@@ -12,8 +12,6 @@ public:
     void Start() override;
     void Update() override;
 
-    //void TakeDamage(float damage);
-
 private:
-    float mTest = 100.0f;
+    bool mSplashScreen = false;
 };

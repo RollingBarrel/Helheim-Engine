@@ -12,9 +12,13 @@ public:
     void Start() override;
     void Update() override;
 
-    //void TakeDamage(float damage);
+    void SetMenu(bool active, bool pause);
 
 private:
-    float mTest = 100.0f;
+    void MenuStatus();
+    void Controls();
+
+    bool mActiveMenu;
+    bool mPauseMenu;
 };
 

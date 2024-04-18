@@ -1,29 +1,66 @@
 #include "pch.h"
 #include "MainMenu.h"
 
+#include "GameObject.h"
+
 CREATE(MainMenu)
 {
     CLASS(owner);
     SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mTest);
+    MEMBER(MemberType::BOOL, mActiveMenu);
     END_CREATE;
 }
 
-
-//inicialize the target 
 MainMenu::MainMenu(GameObject* owner) : Script(owner)
 {
+    //LOG("MENU_CONSTRUCTOR");
 
+    mActiveMenu = true;
+    mPauseMenu = false;
 }
+
 void MainMenu::Update()
 {
+    //LOG("MAIN_UPDATE");
+    MenuStatus();
 }
 
-void MainMenu::Start()
+void MainMenu::Start() 
 {
-    // Set the target health to 100
-    mTest = 100.0f;
+    LOG("MAIN_START");
 }
 
+void MainMenu::SetMenu(bool active, bool pause)
+{
+    mActiveMenu = active;
+    mPauseMenu = pause;
+}
 
+void MainMenu::MenuStatus()
+{
+    //LOG("MAIN_STATUS");
+    if (mActiveMenu) {
+        //LOG("MENU");
 
+        mGameObject->SetEnabled(mActiveMenu);
+        //mGameObject->GetName().
+
+        /*
+        if (mPauseMenu) //Si esta pausado activa el menu de pausa
+        {
+
+        }
+        else
+        {
+            mGameObject->SetEnabled(true);
+        }
+        */
+
+        Controls();
+    }
+}
+
+void MainMenu::Controls()
+{
+
+}
