@@ -61,6 +61,30 @@ void Archive::AddIntArray(const char* key, const std::vector<unsigned int>& arra
     mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
 }
 
+void Archive::AddFloatArray(const char* key, const std::vector<float>& array)
+{
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
+    for (const auto& item : array) {
+        rapidjson::Value jsonItem(rapidjson::kNumberType);
+        jsonItem.SetFloat(item);
+        jsonArray.PushBack(jsonItem, mDocument->GetAllocator());
+    }
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
+}
+
+void Archive::AddStringArray(const char* key, const std::vector<const char*>& array)
+{
+    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
+    for (const auto& item : array) {
+        rapidjson::Value jsonItem(rapidjson::kNumberType);
+        jsonItem.SetString(item, strlen(item), mDocument->GetAllocator());
+        jsonArray.PushBack(jsonItem, mDocument->GetAllocator());
+    }
+    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
+}
+
 void Archive::AddObjectArray(const char* key, const std::vector<Archive>& array) {
     rapidjson::Value jsonKey(key, mDocument->GetAllocator());
     rapidjson::Value jsonArray(rapidjson::kArrayType);

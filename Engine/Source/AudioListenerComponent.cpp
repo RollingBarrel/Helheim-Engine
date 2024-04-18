@@ -36,6 +36,7 @@ Component* AudioListenerComponent::Clone(GameObject* owner) const
 
 void AudioListenerComponent::Save(Archive& archive) const
 {
+
 }
 
 void AudioListenerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

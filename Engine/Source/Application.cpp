@@ -34,16 +34,16 @@ Application::Application()
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
-	modules[4] = render = new ModuleOpenGL();
-	modules[5] = programs = new ModulePrograms();
-	modules[6] = resource = new ModuleResource();
-	modules[7] = scriptManager = new ModuleScriptManager();
-	modules[8] = debugDraw = new ModuleDebugDraw();
-	modules[9] = scene = new ModuleScene();
-	modules[10] = navigation = new ModuleDetourNavigation();
-	modules[11] = editor = new ModuleEditor();
-	modules[12] = ui = new ModuleUI();
-	modules[13] = audio = new ModuleAudio();
+	modules[4] = audio = new ModuleAudio();
+	modules[5] = render = new ModuleOpenGL();
+	modules[6] = programs = new ModulePrograms();
+	modules[7] = resource = new ModuleResource();
+	modules[8] = scriptManager = new ModuleScriptManager();
+	modules[9] = debugDraw = new ModuleDebugDraw();
+	modules[10] = scene = new ModuleScene();
+	modules[11] = navigation = new ModuleDetourNavigation();
+	modules[12] = editor = new ModuleEditor();
+	modules[13] = ui = new ModuleUI();
 	modules[14] = event = new ModuleEvent();
 }
 

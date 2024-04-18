@@ -23,7 +23,9 @@ public:
     void UpdateParameterValue(const char* name, float value);
     
     void Update() override;
-    void OnUpdate(bool triggerEvent);
+    void Play();
+    void PlayOneShot();
+    void Stop();
     Component* Clone(GameObject* owner) const;
     void Save(Archive& archive) const;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);

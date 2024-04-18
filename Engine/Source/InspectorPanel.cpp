@@ -412,11 +412,11 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
-				}
-				case ComponentType::AUDIOSOURCE: {
+				
+				case ComponentType::AUDIOSOURCE: 
 					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
 					break;
-				}
+				
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;

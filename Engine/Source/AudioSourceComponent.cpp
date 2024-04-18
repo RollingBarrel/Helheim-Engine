@@ -4,28 +4,21 @@
 #include "GameObject.h"
 #include "Application.h"
 
+
 AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Component(ownerGameObject,ComponentType::AUDIOSOURCE)
 {
 }
 
 AudioSourceComponent::~AudioSourceComponent()
 {
+	Reset();
 }
 
 void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 {
-	// Stop current audio
-	if (mEventInstance != nullptr) {
-		//mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-	}
-
-	// Set to new event
 	mEventInstance = event;
 
-	// Play new audio
 	if (mEventInstance != nullptr) {
-		//mEventInstance->start();
-		//mEventInstance->release();
 
 		// Update parameters
 		event->getDescription(&mEventDescription);
@@ -54,53 +47,38 @@ void AudioSourceComponent::UpdateParameterValue(const char* name, float value)
 
 void AudioSourceComponent::Update()
 {
-	//if (triggerEvent) {
-	//	// UPDATE 3D parameters
-	//	float3 gameobjectPosition = GetOwner()->GetPosition();
+	// UPDATE 3D parameters
+	float3 gameobjectPosition = GetOwner()->GetPosition();
 
-	//	FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+	FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
-	//	attributes.position.x = gameobjectPosition.x;
-	//	attributes.position.z = gameobjectPosition.z;
+	attributes.position.x = gameobjectPosition.x;
+	attributes.position.z = gameobjectPosition.z;
 
-	//	attributes.forward.z = 1.0f;
-	//	attributes.up.y = 1.0f;
+	attributes.forward.z = 1.0f;
+	attributes.up.y = 1.0f;
 
-	//	// Play Audio
-	//	mEventInstance->set3DAttributes(&attributes);
-	//	mEventInstance->start();
-	//	mEventInstance->release();
-	//}
-	//else {
-	//	mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-	//}
+	// Play Audio
+	mEventInstance->set3DAttributes(&attributes);
 }
 
-void AudioSourceComponent::OnUpdate(bool triggerEvent)
+void AudioSourceComponent::Play()
 {
-	
-	if (triggerEvent) {
-		// UPDATE 3D parameters
-		float3 gameobjectPosition = GetOwner()->GetPosition();
+	mEventInstance->start();
+}
 
-		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+void AudioSourceComponent::PlayOneShot()
+{
+	FMOD::Studio::EventInstance* eventInstance = NULL;
+	mEventDescription->createInstance(&eventInstance);
 
-		attributes.position.x = gameobjectPosition.x;
-		attributes.position.z = gameobjectPosition.z;
+	eventInstance->start();
+	eventInstance->release();
+}
 
-		attributes.forward.z = 1.0f;
-		attributes.up.y = 1.0f;
-
-		// Play Audio
-		mEventInstance->set3DAttributes(&attributes);
-		mEventInstance->start();
-		mEventInstance->release();
-	}
-	else {
-		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-	}
-
-
+void AudioSourceComponent::Stop()
+{
+	mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
 }
 
 Component* AudioSourceComponent::Clone(GameObject* owner) const
@@ -110,22 +88,83 @@ Component* AudioSourceComponent::Clone(GameObject* owner) const
 
 void AudioSourceComponent::Save(Archive& archive) const
 {
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+
+	archive.AddString("EventName", mName.c_str());
+
+	std::vector<const char*> parameterKeys;
+	std::vector<float> parameterValues;
+
+	for (const auto& pair : mParameters) {
+		parameterKeys.push_back(pair.first);
+		parameterValues.push_back(pair.second);
+	}
+
+	std::vector<Archive> objectArray;
+	for (auto i = 0; i < parameterKeys.size(); i++)
+	{
+		Archive dataArchive;
+		dataArchive.AddString("ParametersKey", parameterKeys[i]);
+		dataArchive.AddFloat("ParametersValue", parameterValues[i]);
+
+		objectArray.push_back(dataArchive);
+	}
+
+	archive.AddObjectArray("ParametersVariables", objectArray);
 }
 
 void AudioSourceComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+	if (data.HasMember("EventName") && data["EventName"].IsString()) {
+		SetEventByName(data["EventName"].GetString());
+	}
+
+	if (data.HasMember("ParametersVariables") && data["ParametersVariables"].IsArray()) {
+		UpdateParameters();
+
+		const auto& array = data["ParametersVariables"].GetArray();
+
+		for (unsigned int i = 0; i < array.Size(); ++i)
+		{
+			LOG("Element %d: Has ParametersKey: %s\n     Has ParametersValue: %s\n",
+				i, array[i]["ParametersKey"].IsString() ? "true" : "false", array[i]["ParametersValue"].IsFloat() ? "true" : "false");
+			const char* value;
+			//if (array[i].HasMember("ParametersKey") && array[i]["ParametersKey"].IsString()
+			//	&& array[i].HasMember("ParametersValue") && array[i]["ParametersValue"].IsFloat()) {
+				value = array[i]["ParametersKey"].GetString();
+				float key = array[i]["ParametersValue"].GetFloat();
+
+				UpdateParameterValue(value, key);
+			//}
+		}
+
+		
+	}
 }
 
 void AudioSourceComponent::Enable()
 {
+	Play();
 }
 
 void AudioSourceComponent::Disable()
 {
+	Stop();
 }
 
 void AudioSourceComponent::Reset()
 {
+	if (mEventInstance != nullptr) {
+		delete mEventInstance;
+		mEventInstance = nullptr;
+	}
+
+	if (mEventDescription != nullptr) {
+		delete mEventDescription;
+		mEventDescription = nullptr;
+	}
+
+	mParameters.clear();
 }
 
 void AudioSourceComponent::UpdateParameters()

@@ -28,27 +28,6 @@ bool ModuleAudio::Init()
 	CheckError(mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Vehicles.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank) );
 
-	//FMOD::Studio::EventDescription* eventArray[EVENT_BANK_UPPERLIMIT];
-	//int eventDescriptionCount = 0;
-
-	//CheckError( mSFXBank->getEventList(eventArray, EVENT_BANK_UPPERLIMIT, &eventDescriptionCount));
-
-	//for (int i = 0; i < eventDescriptionCount; ++i) {
-	//	const int bufferSize = 256; 
-
-	//	char pathBuffer[bufferSize]; 
-	//	int retrievedSize = 0; 
-	//	CheckError( eventArray[i]->getPath(pathBuffer, bufferSize, &retrievedSize ));
-	//}
-
-	//FMOD::Studio::EventDescription* eventDescription = nullptr;
-	//CheckError( mSystem->getEvent("event:/Ambience/Country", &eventDescription));
-
-	//FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
-	//CheckError( eventDescription->getParameterDescriptionByName("Surface", &paramDesc));
-
-	//CheckError( eventDescription->createInstance(&currentInstance));
-	//CheckError( currentInstance->start());
 	return true;
 }
 
