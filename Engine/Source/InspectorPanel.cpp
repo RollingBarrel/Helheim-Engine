@@ -965,25 +965,31 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 	ImGui::Separator();
 	ImGui::Text("Event parameters");
 
-	std::map<const char*, float> parameters = component->GetParameters();
+	std::vector<unsigned int> parameterKeys1;
+	std::vector<unsigned int> parameterKeys2;
+	std::vector<const char*> names;
+	std::vector<float> parameterValues;
 
-	for (auto it = parameters.begin(); it != parameters.end(); ++it) {
-		const char* name = it->first;
-		float value = it->second;
+	component->GetParametersIDsAndValues(parameterKeys1, parameterKeys2, names, parameterValues);
+
+	for (auto i = 0; i < parameterKeys1.size(); i++)
+	{
+		const char* name = names[i];
+		float value = parameterValues[i];
 
 		float max = 0;
 		float min = 0;
 
 		FmodUtils::GetParametersMaxMinByComponent(component, name, max, min);
 
-		ImGui::Text("%s: ", it->first);
+		ImGui::Text("%s: ", name);
 		ImGui::SameLine();
 
 		std::string str(name);
 		std::string tagName = "##" + str;
 
-		if(ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.3f")) {
-			component->UpdateParameterValue(name, value);
+		if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.3f")) {
+			component->UpdateParameterValueByIds(parameterKeys1[i], parameterKeys1[2], value);
 		}
 	}
 

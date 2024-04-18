@@ -14,13 +14,15 @@ public:
 
     // Must return by reference
     std::string GetName() { return mName; };
-    std::map<const char*, float> GetParameters() { return mParameters; };
+    std::map<FMOD_STUDIO_PARAMETER_ID, float> GetParameters() { return mParameters; };
+    void GetParametersIDsAndValues(std::vector<unsigned int>& data1, std::vector<unsigned int>& data2, std::vector<const char*>& names, std::vector<float>& value);
     FMOD::Studio::EventDescription* GetEventDescription() {return mEventDescription;};
 
     void SetEventInstance(FMOD::Studio::EventInstance* event);
     void SetEventByName(const char* eventName);
 
     void UpdateParameterValue(const char* name, float value);
+    void UpdateParameterValueByIds(unsigned data1, unsigned data2, float value);
     
     void Update() override;
     void Play();
@@ -40,7 +42,7 @@ private:
 
     FMOD::Studio::EventInstance* mEventInstance = nullptr; 
     FMOD::Studio::EventDescription* mEventDescription = nullptr;
-    std::map<const char*, float> mParameters;
+    std::map<FMOD_STUDIO_PARAMETER_ID, float> mParameters;
 
     void UpdateParameters();
     
