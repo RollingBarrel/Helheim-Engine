@@ -74,7 +74,12 @@ void ParticleSystemComponent::Update()
 
 	for (int i = 0; i < particles.size(); i++)
 	{
-		particles[i].Update();
+		bool isAlive = particles[i].Update(mEmitterDeltaTime);
+        if (!isAlive)
+        {
+			particles.erase(particles.begin() + i);
+			i--;
+		}
 	}
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)// deltaTime in seconds Use Timer

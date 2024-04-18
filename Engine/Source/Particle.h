@@ -8,7 +8,7 @@ public:
     Particle(float3 position, float3 direction, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve);
     ~Particle();
 
-    void Update();
+    bool Update(float deltaTime);
 
     float3 GetPosition() const { return mPosition; }
     float3 GetDirection() const { return mDirection; }
@@ -19,7 +19,7 @@ public:
     bool IsSizeCurve() const { return mIsSizeCurve; }
     float GetSize() const { return mSizeLinear; }
     float4 GetSizeCurve() const { return mSizeCurve; }
-    float GetLifetime() const { return mLifetime; }
+    float GetLifetime() const { return mLifeTime; }
     float GetMaxLifetime() const { return mMaxLifeTime; }
     float4 GetColor() const { return mColor; }
 
@@ -32,7 +32,7 @@ public:
     void SetIsSizeCurve(bool isSizeCurve) { mIsSizeCurve = isSizeCurve; }
     void SetSize(float size) { mSizeLinear = size; }
     void SetSizeCurve(const float4& sizeCurve) { mSizeCurve = sizeCurve; }
-    void SetLifetime(float lifetime) { mLifetime = lifetime; }
+    void SetLifetime(float lifetime) { mLifeTime = lifetime; }
     void SetMaxLifetime(float maxLifetime) { mMaxLifeTime = maxLifetime; }
     void SetColor(const float4& color) { mColor = color; }
 
@@ -76,7 +76,7 @@ private:
     float mSizeLinear;
     float4 mSizeCurve;
 
-    float mLifetime;
+    float mLifeTime;
     float mMaxLifeTime;
     float4 mColor;
 };

@@ -59,7 +59,4 @@ private:
 	void MaterialVariables(MeshRendererComponent* renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
-
-	void CurveEdition();
-
 };

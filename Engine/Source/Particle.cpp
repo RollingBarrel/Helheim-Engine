@@ -9,7 +9,8 @@ Particle::Particle()
     mSpeedLinear = 0.0f;
     mIsSizeCurve = false;
     mSizeLinear = 0.0f;
-    mLifetime = 0.0f;
+    mMaxLifeTime = 0.0f;
+    mLifeTime = 0.0f;
     mColor = float4::zero;
 }
 
@@ -19,9 +20,11 @@ Particle::Particle(float3 position, float3 direction, float rotation, float life
     mRotation(rotation),
     mIsSpeedCurve(isSpeedCurve),
     mIsSizeCurve(isSizeCurve),
-    mSizeLinear(1.0f), 
     mMaxLifeTime(lifeTime),
-    mColor(float4::zero)
+    mColor(float4::zero),
+    mLifeTime(0.0f),
+    mSizeLinear(0.0f),
+    mSpeedLinear(0.0f)
 {
 }
 
@@ -29,9 +32,19 @@ Particle::~Particle()
 {
 }
 
-void Particle::Update()
+bool Particle::Update(float DeltaTime)
 {
-    mPosition = mPosition + mDirection * mSpeedLinear;
+    mLifeTime += DeltaTime;
+    float dt01 = mLifeTime / mMaxLifeTime;
+    // If the particle is dead exits and will be removed
+    if (dt01 > 1.0f)
+    {
+		return false;
+    }
+    float size = mIsSizeCurve ? BezierValue(dt01, mSizeCurve) : mSizeLinear;
+    float speed = mIsSpeedCurve ? BezierValue(dt01, mSpeedCurve) : mSpeedLinear;
+    mPosition = mPosition + mDirection * mSpeedLinear * speed;
+    return true;
 }
 
 float Particle::BezierValue(float dt01, float4 P) {
