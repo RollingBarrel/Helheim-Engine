@@ -54,10 +54,10 @@ void ParticleSystemComponent::Draw() const
     glUseProgram(programId);
     for (Particle particle : particles)
     {
-        if (particle.getLifetime() > 0.0f)
+        if (particle.GetLifetime() > 0.0f)
         {
-            glUniform2f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y);
-            glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
+            glUniform2f(glGetUniformLocation(programId, "offset"), particle.GetPosition().x, particle.GetPosition().y);
+            glUniform4f(glGetUniformLocation(programId, "color"), particle.GetColor().x, particle.GetColor().y, particle.GetColor().z, particle.GetColor().w);
             //particleTexture.Bind();
             glBindVertexArray(mVAO);
             glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -82,19 +82,28 @@ void ParticleSystemComponent::Update()
 		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
 		if (particles.size() < mMaxParticles) 
 		{
+            // Initializes a particle with a random position, direction and rotation 
+            // considering the shape of emission
 			float3 position = mShapeType.RandomInitPosition();
+
             float3 direction = mShapeType.RandomInitDirection();
+
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
-			particles.push_back(Particle(position, direction, rotation, mLifeTime, mSpeed));
+
+            // Create the particle and sets its speed and size 
+            // considering if they are linear or curve
+            Particle particle = Particle(position, direction, rotation, mLifeTime, mIsSpeedCurve, mIsSizeCurve);
+            
+            if (mIsSpeedCurve) particle.SetSpeedCurve(mSpeedCurve);
+            else particle.SetSpeedLineal(mSpeedLineal);
+            
+            if (mIsSizeCurve) particle.SetSizeCurve(mSizeCurve);
+            else particle.SetSize(mSizeLineal);
+
+			particles.push_back(particle);
 		}
 	}
-}
-
-float3 ParticleSystemComponent::InitParticlePosition()
-{
-	float3 position = mShapeType.RandomInitPosition();
-	return position;
 }
 
 void ParticleSystemComponent::Reset()
@@ -108,7 +117,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddFloat("Duration", mDuration);
     archive.AddFloat("Life Time", mLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
-    archive.AddFloat("Speed", mSpeed);
+    archive.AddFloat("Speed", mSpeedLineal);
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
     
@@ -142,7 +151,7 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     }
     if (data.HasMember("Speed") && data["Speed"].IsFloat())
     {
-        mSpeed = data["Speed"].GetFloat();
+        mSpeedLineal = data["Speed"].GetFloat();
     }
     if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
     {

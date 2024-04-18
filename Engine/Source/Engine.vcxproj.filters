@@ -492,6 +492,9 @@
     <ClCompile Include="EmitterShape.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="ImBezier.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1303,6 +1306,9 @@
       <Filter>Utils\Particles</Filter>
     </ClInclude>
     <ClInclude Include="CameraUtils.h" />
+    <ClInclude Include="ImBezier.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

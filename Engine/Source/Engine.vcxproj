@@ -255,6 +255,7 @@
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
+    <ClCompile Include="ImBezier.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
@@ -493,6 +494,7 @@
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="HelheimEvent.h" />
+    <ClInclude Include="ImBezier.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ModuleEvent.h" />
     <ClInclude Include="Particle.h" />
