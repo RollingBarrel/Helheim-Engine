@@ -67,7 +67,7 @@ void ParticleSystemComponent::Draw() const
         {
             if (particle.getLifetime() > 0.0f)
             {
-                glUniform2f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y);
+                glUniform3f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y, particle.getPosition().y);
                 glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
                 glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
                 glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
