@@ -24,12 +24,12 @@ void PlayerCamera::Update()
 {
     if (mFollowTarget)
     {
-        float3 actualPosition = mGameObject->GetPosition();
-        mGameObject->SetPosition(float3(mFollowTarget->GetPosition().x, actualPosition.y, actualPosition.z));
+        float3 actualPosition = mGameObject->GetWorldPosition();
+        mGameObject->SetPosition(float3(mFollowTarget->GetWorldPosition().x, actualPosition.y, actualPosition.z));
     }
 
     if (mLookTarget && mCameraComponent)
     {
-        mCameraComponent->LookAt(mGameObject->GetPosition(), mLookTarget->GetPosition(), mGameObject->GetUp());
+        mCameraComponent->LookAt(mGameObject->GetWorldPosition(), mLookTarget->GetWorldPosition(), mGameObject->GetUp());
     }
 }
