@@ -2,6 +2,10 @@
 #include "MainMenu.h"
 
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "ModuleInput.h"
+#include "Keys.h"
 
 CREATE(MainMenu)
 {
@@ -13,15 +17,12 @@ CREATE(MainMenu)
 
 MainMenu::MainMenu(GameObject* owner) : Script(owner)
 {
-    //LOG("MENU_CONSTRUCTOR");
-
-    mActiveMenu = true;
+    mActiveMenu = false;
     mPauseMenu = false;
 }
 
 void MainMenu::Update()
 {
-    //LOG("MAIN_UPDATE");
     MenuStatus();
 }
 
@@ -38,12 +39,31 @@ void MainMenu::SetMenu(bool active, bool pause)
 
 void MainMenu::MenuStatus()
 {
-    //LOG("MAIN_STATUS");
     if (mActiveMenu) {
-        //LOG("MENU");
+        App->GetScene()->Find("Button_NewGame")->SetEnabled(true);
+        App->GetScene()->Find("Menu")->SetEnabled(true);
 
-        mGameObject->SetEnabled(mActiveMenu);
-        //mGameObject->GetName().
+        /*
+        switch (mScreen)
+        {
+            case 1:
+                App->GetScene()->Find("Button_NewGame")->SetEnabled(mResetScreen);
+                App->GetScene()->Find("Menu")->SetEnabled(mResetScreen);
+            break;
+            case 2:
+                //mResetScreen = true;
+                //App->GetScene()->Find("Options")->SetEnabled(mResetScreen);
+            break;
+        }
+        
+        */
+        /*
+        if (App->GetScene()->Find("Menu")) {
+            //LOG("ENCONTRADO MENU");
+        }
+        */
+
+        //mGameObject->SetEnabled(mActiveMenu);
 
         /*
         if (mPauseMenu) //Si esta pausado activa el menu de pausa
@@ -62,5 +82,8 @@ void MainMenu::MenuStatus()
 
 void MainMenu::Controls()
 {
-
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
+    {
+        mScreen++;
+    }
 }

@@ -20,5 +20,7 @@ private:
 
     bool mActiveMenu;
     bool mPauseMenu;
+    bool mResetScreen = false;
+    int mScreen = 1;
 };
 

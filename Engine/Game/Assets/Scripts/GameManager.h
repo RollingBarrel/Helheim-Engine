@@ -13,5 +13,5 @@ public:
     void Update() override;
 
 private:
-    bool mSplashScreen = false;
+    //bool mSplashScreen = false;
 };

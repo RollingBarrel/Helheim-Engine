@@ -10,7 +10,6 @@
 
 CREATE(TestScript)
 {
-
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
@@ -19,7 +18,6 @@ CREATE(TestScript)
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mRobot);
     END_CREATE;
-
 }
 
 void TestScript::Start()
