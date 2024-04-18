@@ -8,7 +8,7 @@ Particle::Particle()
     mSpeed = 0.001f;
     mSize = 0.0f;
     mLifetime = 1000.0f;
-    mColor = { 0.5f, 0.7f, 0.3f, 0.5 };
+    mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 Particle::Particle(float3 position, float3 direction, float rotation, float lifeTime, float speed)

@@ -3,9 +3,15 @@
 #include "ModuleOpenGL.h"
 #include "glew.h"
 #include "ColorGradient.h"
+#include "ModuleCamera.h"
+#include "CameraComponent.h"
+#include "Resource.h"
+#include "ModuleResource.h"
+#include "ResourceTexture.h"
 
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
+    SetImage(mResourceId);
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) : ParticleSystemComponent(owner)
@@ -53,6 +59,7 @@ void ParticleSystemComponent::Draw() const
 {
     if (IsEnabled()) 
     {
+        float4x4 viewproj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix() * ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);
         glUseProgram(programId);
@@ -62,9 +69,11 @@ void ParticleSystemComponent::Draw() const
             {
                 glUniform2f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y);
                 glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
-                //particleTexture.Bind();
+                glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
+                glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
                 glBindVertexArray(mVAO);
                 glDrawArrays(GL_TRIANGLES, 0, 6);
+                glBindTexture(GL_TEXTURE_2D, 0);
                 glBindVertexArray(0);
             }
         }
@@ -94,6 +103,11 @@ void ParticleSystemComponent::Update()
             particles.push_back(Particle(position, direction, rotation, mLifeTime, mSpeed));
         }
     }
+}
+
+void ParticleSystemComponent::SetImage(unsigned int resourceId)
+{
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
 void ParticleSystemComponent::Reset()

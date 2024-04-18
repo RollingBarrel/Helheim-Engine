@@ -6,6 +6,7 @@
 #include <map>
 
 class Material;
+class ResourceTexture;
 struct Mesh;
 
 class ENGINE_API ParticleSystemComponent : public Component
@@ -25,6 +26,10 @@ public:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
+	void SetImage(unsigned int resourceId);
+
+	ResourceTexture* mImage = nullptr;
+	unsigned int mResourceId = 818189439; // Temporary default image 
 
 	float mEmitterTime = 0.0f;
 	float mEmitterDeltaTime = 0.0f;
