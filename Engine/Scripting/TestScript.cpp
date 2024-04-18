@@ -91,4 +91,9 @@ void TestScript::Update()
 
 }
 
+void TestScript::OnButtonClick()
+{
+    LOG("Script Button Onclick");
+}
+
 

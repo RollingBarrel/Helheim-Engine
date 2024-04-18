@@ -15,6 +15,8 @@ public:
     ~TestScript() {}
     void Start() override;
     void Update() override;
+
+    void OnButtonClick() override;
    
 private:
     float mPlayerSpeed = 1;
