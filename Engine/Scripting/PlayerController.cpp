@@ -59,18 +59,37 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
-    //Sanity();
-    ChangeState(PlayerState::Dash);
-    Controls();
-    CheckRoute();
-   
-    WinTest();
-    LoseTest();
-
-    if (mAnimationComponent) 
+    switch (mCurrentState)
     {
-        mAnimationComponent->OnUpdate();
+    case PlayerState::IDLE:
+        break;
+    case PlayerState::DASH:
+        Dash();
+        break;
+    case PlayerState::MOVE:
+        Moving();
+        break;
+    case PlayerState::MELEE:
+        MeleeAttack();
+        break;
+    case PlayerState::RANGE:
+        RangedAttack();
+        break;
+    case PlayerState::MOVE_MELEE:
+        break;
+    case PlayerState::MOVE_RANGE:
+        break;
+    case PlayerState::RELOAD:
+        Reload();
+        break;
+    case PlayerState::GRENADE:
+        ThrowGrenade();
+        break;
+    case PlayerState::DEATH:
+        Death();
+        break;
     }
+    
 }
 
 //Change actual animation state of the player
@@ -81,91 +100,11 @@ void PlayerController::ChangeState(PlayerState newState)
     StateMachine();
 }
 
-//Shows actual animation state of the player
-void PlayerController::StateMachine() 
-{
-    switch (mCurrentState) 
-    {
-        case PlayerState::Idle:
-            //LOG("Idle animation");
-            break;
-        case PlayerState::Dash:
-            Dash();
-            break;
-        case PlayerState::Forward:
-            Forward();
-            break;
-        case PlayerState::Backward:
-            Backward();
-            break;
-        case PlayerState::Left:
-            Left();
-            break;
-        case PlayerState::Right:
-            Right();
-            break;
-        case PlayerState::MeleeAttack:
-            MeleeAttack();
-            break;
-        case PlayerState::RangedAttack:
-            RangedAttack();
-            break;
-        case PlayerState::Reload:
-            Reload();
-            break;
-        case PlayerState::ThrowGrenade:
-            ThrowGrenade();
-            break;
-        /*
-        case PlayerState::Injured:
-            Injured();
-            break;
-        */
-        case PlayerState::Death:
-            Death();
-            break;
-    }
-}
-
 void PlayerController::Controls() 
 {
     Mouse_Rotation();
 
     bool anyKeyPressed = false;
-    
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
-    {
-        ChangeState(PlayerState::Forward);
-        mIsMoving = true;
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) 
-    {
-        ChangeState(PlayerState::Backward);
-        mIsMoving = true;
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT) 
-    {
-        ChangeState(PlayerState::Left);
-        mIsMoving = true;
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) 
-    {
-        ChangeState(PlayerState::Right);
-        mIsMoving = true;
-        anyKeyPressed = true;
-    }
- 
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mStartCounter)
-    {
-        mIsDashActive = true;
-        anyKeyPressed = true;
-    }
 
     if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
     {
@@ -219,6 +158,49 @@ void PlayerController::Controls()
     }
 }
 
+void PlayerController::Moving()
+{
+
+    bool anyKeyPressed = false;
+
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && !mStartCounter)
+    {
+        mCurrentState = PlayerState::Dash;
+    }
+    else 
+    {
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+        {
+            Move(float3::unitZ);
+            anyKeyPressed = true;
+        }
+
+        if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+        {
+            Move(-float3::unitZ);
+            anyKeyPressed = true;
+        }
+
+        if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+        {
+            Move(-float3::unitX);
+            anyKeyPressed = true;
+        }
+
+        if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        {
+            Move(float3::unitX);
+            anyKeyPressed = true;
+        }
+
+        if (anyKeyPressed)
+        {
+            mCurrentState = PlayerState::Idle;
+        }
+    }
+
+}
+
 void PlayerController::Forward() 
 {
     //LOG("Forward animation");
@@ -242,6 +224,7 @@ void PlayerController::Right()
     //LOG("Right animation");
     Move(mGameObject->GetRight() * -1);
 }
+
 
 void PlayerController::Move(float3 direction) 
 {

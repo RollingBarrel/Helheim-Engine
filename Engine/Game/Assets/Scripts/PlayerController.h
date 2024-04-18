@@ -44,22 +44,20 @@ class PlayerController :public Script
     private:
 
         enum class PlayerState {
-            Idle,
-            Dash,
-            Forward,
-            Backward,
-            Left,
-            Right,
-            MeleeAttack,
-            RangedAttack,
-            Reload,
-            ThrowGrenade,
-            Death
+            IDLE,
+            DASH,
+            MOVE,
+            MELEE,
+            RANGE,
+            MOVE_MELEE,
+            MOVE_RANGE,
+            GRENADE,
+            DEATH
         };
 
         void ChangeState(PlayerState newState);
-        void StateMachine();
         void Controls();
+        void Moving();
         void Forward();
         void Backward();
         void Left();
