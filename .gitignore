@@ -407,8 +407,8 @@ FodyWeavers.xsd
 !/Engine/Source/Dependencies/Optick/lib/x64/release/
 !/Engine/Source/Dependencies/Wwise/x64_vc170/Debug
 !/Engine/Source/Dependencies/Wwise/x64_vc170/Release
-!/Engine/Source/Dependencies/FMOD/api/core/lib/x86
-!/Engine/Source/Dependencies/FMOD/api/studio/lib/x86
+!/Engine/Source/Dependencies/FMOD/api/core/lib/x64
+!/Engine/Source/Dependencies/FMOD/api/studio/lib/x64
 
 # IMGUI
 /Engine/Game/imgui.ini
