@@ -175,11 +175,14 @@ void GameObject::ResetTransform()
 
 void GameObject::SetEnabled(bool enabled)
 {
-	mIsEnabled = enabled;
-
-	if (!enabled || IsRoot() || mParent->IsActive())
+	if (mIsEnabled != enabled)
 	{
-		SetActiveInHierarchy(enabled);
+		mIsEnabled = enabled;
+
+		if (!enabled || IsRoot() || mParent->IsActive())
+		{
+			SetActiveInHierarchy(enabled);
+		}
 	}
 }
 
