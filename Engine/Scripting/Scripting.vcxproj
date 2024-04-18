@@ -166,6 +166,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBase.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Target.h" />
@@ -179,7 +181,9 @@
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Macros.h" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="pch.cpp">

@@ -1,8 +1,8 @@
 #pragma once
 #include <Script.h>
 #include "Macros.h"
-#include "Math/float3.h"
 #include "GameObject.h"
+
 class NavMeshController;
 class AnimationComponent;
 

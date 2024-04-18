@@ -1,6 +1,5 @@
 #pragma once
 #include <EnemyBase.h>
-#include "Target.h"
 #include "Geometry/Ray.h"
 #include <ScriptComponent.h>
 

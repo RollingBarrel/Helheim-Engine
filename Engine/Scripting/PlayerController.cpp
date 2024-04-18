@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "PlayerController.h"
-#include <utility>
-#include <limits.h>
-#include "Globals.h"
-#include "GameObject.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
@@ -11,10 +7,8 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
-#include "Geometry/Ray.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
-#include <ScriptComponent.h>
 
 CREATE(PlayerController)
 {

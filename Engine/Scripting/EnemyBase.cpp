@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "EnemyBase.h"
-
-#include <utility>
-#include <limits.h>
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
@@ -11,7 +7,6 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
-#include "Geometry/Ray.h"
 
 EnemyBase::EnemyBase(GameObject* owner) : Script(owner) {}
 
