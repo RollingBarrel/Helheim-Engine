@@ -8,24 +8,24 @@
 #include "ResourceTexture.h"
 
 
-static unsigned int ImportTexture(const char* filePath, const std::string& texPath, unsigned int& uid, bool modifyAssets)
-{
-    std::string pngName = filePath;
-    unsigned int filePos = pngName.find_last_of('/');
-    pngName = pngName.substr(0, filePos + 1);
-    pngName += texPath;
-    if (!modifyAssets)
-    {
-        size_t sizeUntilName = pngName.find_last_of('/') + 1;
-        std::string extension = pngName.substr(pngName.find_last_of('.'));
-        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
-        pngName = ASSETS_TEXTURE_PATH;
-        pngName += name;
-        pngName += extension;
-    }
-
-    return App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
-}
+//static unsigned int ImportTexture(const char* filePath, const std::string& texPath, unsigned int& uid, bool modifyAssets)
+//{
+//    std::string pngName = filePath;
+//    unsigned int filePos = pngName.find_last_of('/');
+//    pngName = pngName.substr(0, filePos + 1);
+//    pngName += texPath;
+//    if (!modifyAssets)
+//    {
+//        size_t sizeUntilName = pngName.find_last_of('/') + 1;
+//        std::string extension = pngName.substr(pngName.find_last_of('.'));
+//        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
+//        pngName = ASSETS_TEXTURE_PATH;
+//        pngName += name;
+//        pngName += extension;
+//    }
+//
+//    return App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
+//}
 
 ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
 {
@@ -47,7 +47,7 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
     if (metalRoughTexIdx >= 0)
     {
         const std::string textPath = tinyModel.images[tinyModel.textures[metalRoughTexIdx].source].uri;
-        metallicRoughTex = ImportTexture(filePath, textPath, uid, modifyAssets);;
+        metallicRoughTex = ImportTexture(filePath, textPath, uid, modifyAssets);
     }
 
 
