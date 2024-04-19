@@ -94,11 +94,11 @@ void ParticleSystemComponent::Draw() const
         
         for (int i = 0; i < mParticles.size(); ++i)
         {
-            if (mParticles[i]->getLifetime() > 0.0f)
+            if (mParticles[i]->GetLifetime() > 0.0f)
             {
                 Quat rotation = Quat::identity;
-                float3 scale = float3(mParticles[i]->getSize());
-                modelMatrices[i] = float4x4::FromTRS(mParticles[i]->getPosition(), rotation, scale);
+                float3 scale = float3(mParticles[i]->GetSize());
+                modelMatrices[i] = float4x4::FromTRS(mParticles[i]->GetPosition(), rotation, scale);
                 //colors[i] = mParticles[i]->getColor();
             }
         }
@@ -134,23 +134,43 @@ void ParticleSystemComponent::Update()
     mEmitterTime += App->GetGameDt();
     mEmitterDeltaTime += App->GetGameDt();
 
-    for (int i = 0; i < mParticles.size(); i++)
-    {
-        mParticles[i]->Update();
-    }
-
-    if (mEmitterDeltaTime > 1 / mEmissionRate)// deltaTime in seconds Use Timer
-    {
-        mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
-        if (mParticles.size() < mMaxParticles)
+	for (int i = 0; i < mParticles.size(); i++)
+	{
+		bool isAlive = mParticles[i]->Update(mEmitterDeltaTime);
+        if (!isAlive)
         {
-            float3 position = mShapeType->RandomInitPosition();
+			mParticles.erase(mParticles.begin() + i);
+			i--;
+		}
+	}
+
+	if (mEmitterDeltaTime > 1 / mEmissionRate)// deltaTime in seconds Use Timer
+	{
+		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
+		if (mParticles.size() < mMaxParticles)
+		{
+            // Initializes a particle with a random position, direction and rotation 
+            // considering the shape of emission
+			float3 position = mShapeType->RandomInitPosition();
+
             float3 direction = mShapeType->RandomInitDirection();
+
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
-            mParticles.push_back(new Particle(position, direction, rotation, mLifeTime, mSpeed));
-        }
-    }
+
+            // Create the particle and sets its speed and size 
+            // considering if they are linear or curve
+            Particle* particle = new Particle(position, direction, rotation, mLifeTime, mIsSpeedCurve, mIsSizeCurve);
+            
+            if (mIsSpeedCurve) particle->SetSpeedCurve(mSpeedCurve);
+            else particle->SetSpeedLineal(mSpeedLineal);
+            
+            if (mIsSizeCurve) particle->SetSizeCurve(mSizeCurve);
+            else particle->SetSize(mSizeLineal);
+
+			mParticles.push_back(particle);
+		}
+	}
 }
 
 void ParticleSystemComponent::SetImage(unsigned int resourceId)
@@ -169,7 +189,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddFloat("Duration", mDuration);
     archive.AddFloat("Life Time", mLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
-    archive.AddFloat("Speed", mSpeed);
+    archive.AddFloat("Speed", mSpeedLineal);
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
     
@@ -203,7 +223,7 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     }
     if (data.HasMember("Speed") && data["Speed"].IsFloat())
     {
-        mSpeed = data["Speed"].GetFloat();
+        mSpeedLineal = data["Speed"].GetFloat();
     }
     if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
     {

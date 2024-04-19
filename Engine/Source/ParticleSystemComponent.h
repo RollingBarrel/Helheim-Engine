@@ -26,6 +26,7 @@ public:
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
+
 private:
 	void SetImage(unsigned int resourceId);
 
@@ -37,8 +38,16 @@ private:
 
 	float mDuration = 5.0f;
 	float mLifeTime = 10.0f;
-	float mSpeed = 1.0f;
-	float mEmissionRate = 1.0f;
+
+	bool mIsSpeedCurve;
+	float mSpeedLineal = 1.0f;
+	float4 mSpeedCurve;
+
+	bool mIsSizeCurve;
+	float mSizeLineal = 1.0f;
+	float4 mSizeCurve;
+
+	float mEmissionRate = 0.0f;
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 

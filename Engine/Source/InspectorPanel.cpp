@@ -1,4 +1,5 @@
 #include "InspectorPanel.h"
+#include "ImBezier.h"
 #include "imgui.h"
 #include "Application.h"
 #include "ModuleScene.h"
@@ -1035,9 +1036,64 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
 {
+	ImGui::InputFloat("Emision Rate", &(component->mEmissionRate));
 	ImGui::InputFloat("Duration", &(component->mDuration));
 	ImGui::Checkbox("Looping", &(component->mLooping));
-	ImGui::InputFloat("Start speed", &(component->mSpeed));
+	ImGui::InputFloat("Start speed", &(component->mSpeedLineal));
 	ImGui::InputFloat("Start lifetime", &(component->mLifeTime));
 	//ImGui::InputFloat("Start size", &(component->mSize));
+	ImGui::Checkbox("Speed as a Curve", &(component->mIsSpeedCurve));
+	if (!component->mIsSpeedCurve)
+	{
+		ImGui::InputFloat("Speed", &component->mSpeedLineal);
+	}
+	else
+	{
+		ImGui::Text("Speed Curve");
+		static float points[5] = { component->mSpeedCurve[0], 
+			component->mSpeedCurve[1], 
+			component->mSpeedCurve[2], 
+			component->mSpeedCurve[3] };
+
+		ImGui::SliderFloat2("Point 1", points, 0, 1, "%.3f", 1.0f);
+		ImGui::SliderFloat2("Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+
+		if (points[0] != component->mSpeedCurve[0]) component->mSpeedCurve[0] = points[0];
+		if (points[1] != component->mSpeedCurve[1]) component->mSpeedCurve[1] = points[1];
+		if (points[2] != component->mSpeedCurve[2]) component->mSpeedCurve[2] = points[2];
+		if (points[3] != component->mSpeedCurve[3]) component->mSpeedCurve[3] = points[3];
+
+
+		ImGui::Bezier("Speed Presets", points);
+	}
+	ImGui::Checkbox("Size as a Curve", &(component->mIsSizeCurve));
+	if (!component->mIsSizeCurve)
+	{
+		ImGui::InputFloat("Size", &component->mSizeLineal);
+	}
+	else
+	{
+		ImGui::Text("Size Curve");
+		static float points[5] = { component->mSizeCurve[0],
+			component->mSizeCurve[1],
+			component->mSizeCurve[2],
+			component->mSizeCurve[3] };
+
+		ImGui::SliderFloat2("Point 1", points, 0, 1, "%.3f", 1.0f);
+		ImGui::SliderFloat2("Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+
+		if (points[0] != component->mSizeCurve[0]) component->mSizeCurve[0] = points[0];
+		if (points[1] != component->mSizeCurve[1]) component->mSizeCurve[1] = points[1];
+		if (points[2] != component->mSizeCurve[2]) component->mSizeCurve[2] = points[2];
+		if (points[3] != component->mSizeCurve[3]) component->mSizeCurve[3] = points[3];
+
+
+		ImGui::Bezier("Size Presets", points);
+	}
+
+	//static float v[5] = { 0.950f, 0.050f, 0.795f, 0.035f };
+	//ImGui::Bezier("easeInExpo", v);
+	//float value = ImGui::BezierValue(1, v);
+	//ImGui::Text("Bezier = %f", value);
 }
+
