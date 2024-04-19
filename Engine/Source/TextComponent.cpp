@@ -26,7 +26,7 @@ Component* TextComponent::Clone(GameObject* owner) const
 
 void TextComponent::Draw()
 {
-    shared_ptr<GLFont> glFont = shared_ptr<GLFont>(new GLFont("Assets\\Fonts\\ShineTypewriter-lgwzd.ttf"));
+    shared_ptr<GLFont> glFont = shared_ptr<GLFont>(new GLFont("Assets/Fonts/ShineTypewriter-lgwzd.ttf"));
 
     // Some values we will use to create our labels
     int startX = 100;
@@ -36,7 +36,7 @@ void TextComponent::Draw()
 
     unique_ptr<FTLabel> label = unique_ptr<FTLabel>(new FTLabel(
         glFont,         // Font face handle
-        "Hello world!", // Text to render
+        "Hello world", // Text to render
         startX,
         startY,
         windowWidth,
