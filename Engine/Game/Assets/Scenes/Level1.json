@@ -1069,7 +1069,7 @@
                             {
                                 "VariableName": "mFollowTarget",
                                 "MemberType": 3,
-                                "VariableData": 1542328178
+                                "VariableData": 482365159
                             }
                         ]
                     }
@@ -1083,7 +1083,7 @@
                 "Translation": [
                     0.0,
                     0.0,
-                    0.3525795042514801
+                    0.9792336821556091
                 ],
                 "Rotation": [
                     0.0,
@@ -1166,13 +1166,65 @@
                 ]
             },
             {
-                "UID": 1542328178,
+                "UID": 409840082,
                 "ParentUID": 482365159,
-                "Name": "PlayerMesh",
+                "Name": "OB_main_character_low",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.7999999523162842,
                     1.0,
+                    1.7999999523162842
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 479391461,
+                "ParentUID": 409840082,
+                "Name": "OB_main_character_low",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 522765344,
+                "ParentUID": 479391461,
+                "Name": "OB_main_character_low",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
                     0.0
                 ],
                 "Rotation": [
@@ -1191,9 +1243,9 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1616019679,
-                        "MeshID": 155576578,
-                        "MaterialID": 155576579,
+                        "ID": 1183371182,
+                        "MeshID": 17657280,
+                        "MaterialID": 17657284,
                         "ComponentType": 0,
                         "isEnabled": true
                     }
@@ -1277,7 +1329,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 310021157,
+                        "ID": 1762821477,
                         "MeshID": 155576578,
                         "MaterialID": 155576579,
                         "ComponentType": 0,
@@ -1337,7 +1389,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 460263275,
+                        "ID": 36845181,
                         "MeshID": 155576580,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -1397,7 +1449,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 970770166,
+                        "ID": 777355954,
                         "MeshID": 155576581,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -1457,7 +1509,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1511377231,
+                        "ID": 1035277857,
                         "MeshID": 155576582,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -1517,7 +1569,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1979508835,
+                        "ID": 1212717884,
                         "MeshID": 155576583,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -1577,7 +1629,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 293333934,
+                        "ID": 1393012372,
                         "MeshID": 155576584,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -1637,7 +1689,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 771560583,
+                        "ID": 1635756897,
                         "MeshID": 155576585,
                         "MaterialID": 155576586,
                         "ComponentType": 0,
@@ -1697,7 +1749,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1246212659,
+                        "ID": 2017649899,
                         "MeshID": 155576587,
                         "MaterialID": 155576588,
                         "ComponentType": 0,
@@ -1757,7 +1809,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 526144473,
+                        "ID": 1013225647,
                         "MeshID": 155576589,
                         "MaterialID": 155576590,
                         "ComponentType": 0,
@@ -1817,7 +1869,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1106481227,
+                        "ID": 1422827807,
                         "MeshID": 155576591,
                         "MaterialID": 155576592,
                         "ComponentType": 0,
@@ -1877,7 +1929,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1968665606,
+                        "ID": 1808132238,
                         "MeshID": 155576593,
                         "MaterialID": 155576594,
                         "ComponentType": 0,
@@ -1937,7 +1989,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 280399990,
+                        "ID": 27294594,
                         "MeshID": 155576595,
                         "MaterialID": 155576596,
                         "ComponentType": 0,
@@ -1997,7 +2049,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1054050359,
+                        "ID": 635177362,
                         "MeshID": 155576597,
                         "MaterialID": 155576598,
                         "ComponentType": 0,
@@ -2057,7 +2109,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1845871809,
+                        "ID": 1155128807,
                         "MeshID": 155576599,
                         "MaterialID": 155576600,
                         "ComponentType": 0,
@@ -2117,7 +2169,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 737875411,
+                        "ID": 1672156170,
                         "MeshID": 155576601,
                         "MaterialID": 155576602,
                         "ComponentType": 0,
@@ -2177,7 +2229,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1660469001,
+                        "ID": 2106056059,
                         "MeshID": 155576603,
                         "MaterialID": 155576604,
                         "ComponentType": 0,
@@ -2237,7 +2289,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 679182823,
+                        "ID": 645753499,
                         "MeshID": 155576605,
                         "MaterialID": 155576606,
                         "ComponentType": 0,
@@ -2297,7 +2349,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1549839147,
+                        "ID": 1228711949,
                         "MeshID": 155576607,
                         "MaterialID": 155576608,
                         "ComponentType": 0,
@@ -2357,7 +2409,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 430494526,
+                        "ID": 2122319301,
                         "MeshID": 155576609,
                         "MaterialID": 155576610,
                         "ComponentType": 0,
@@ -2417,7 +2469,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1385809986,
+                        "ID": 884038110,
                         "MeshID": 155576611,
                         "MaterialID": 155576612,
                         "ComponentType": 0,
@@ -2477,7 +2529,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 188420224,
+                        "ID": 1411160518,
                         "MeshID": 155576613,
                         "MaterialID": 155576614,
                         "ComponentType": 0,
@@ -2537,7 +2589,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1020436893,
+                        "ID": 2032271276,
                         "MeshID": 155576615,
                         "MaterialID": 155576616,
                         "ComponentType": 0,
@@ -2597,7 +2649,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1926739169,
+                        "ID": 421030388,
                         "MeshID": 155576617,
                         "MaterialID": 155576618,
                         "ComponentType": 0,
@@ -2657,7 +2709,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 771609354,
+                        "ID": 888696462,
                         "MeshID": 155576619,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -2717,7 +2769,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1619523513,
+                        "ID": 1283214767,
                         "MeshID": 155576620,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -2777,7 +2829,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 125989919,
+                        "ID": 1730366548,
                         "MeshID": 155576621,
                         "MaterialID": 155576622,
                         "ComponentType": 0,
@@ -2837,7 +2889,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 804283420,
+                        "ID": 278348887,
                         "MeshID": 155576623,
                         "MaterialID": 155576624,
                         "ComponentType": 0,
@@ -2897,7 +2949,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2125526856,
+                        "ID": 870566930,
                         "MeshID": 155576625,
                         "MaterialID": 155576626,
                         "ComponentType": 0,
@@ -2957,7 +3009,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1126069597,
+                        "ID": 1485620661,
                         "MeshID": 155576627,
                         "MaterialID": 155576628,
                         "ComponentType": 0,
@@ -3017,7 +3069,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 138447908,
+                        "ID": 1766145487,
                         "MeshID": 155576629,
                         "MaterialID": 155576630,
                         "ComponentType": 0,
@@ -3077,7 +3129,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1049623654,
+                        "ID": 1974682199,
                         "MeshID": 155576631,
                         "MaterialID": 155576632,
                         "ComponentType": 0,
@@ -3137,7 +3189,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2108117436,
+                        "ID": 51260747,
                         "MeshID": 155576633,
                         "MaterialID": 155576634,
                         "ComponentType": 0,
@@ -3197,7 +3249,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1251174364,
+                        "ID": 410039577,
                         "MeshID": 155576635,
                         "MaterialID": 155576636,
                         "ComponentType": 0,
@@ -3257,7 +3309,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 346610528,
+                        "ID": 677336413,
                         "MeshID": 155576637,
                         "MaterialID": 155576638,
                         "ComponentType": 0,
@@ -3317,7 +3369,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1438870495,
+                        "ID": 1253402384,
                         "MeshID": 155576639,
                         "MaterialID": 155576640,
                         "ComponentType": 0,
@@ -3377,7 +3429,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 388520285,
+                        "ID": 1539984237,
                         "MeshID": 155576641,
                         "MaterialID": 155576642,
                         "ComponentType": 0,
@@ -3437,7 +3489,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1740884308,
+                        "ID": 1955434561,
                         "MeshID": 155576643,
                         "MaterialID": 155576644,
                         "ComponentType": 0,
@@ -3497,7 +3549,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 706616549,
+                        "ID": 538923610,
                         "MeshID": 155576645,
                         "MaterialID": 155576646,
                         "ComponentType": 0,
@@ -3557,7 +3609,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1848377047,
+                        "ID": 1169154719,
                         "MeshID": 155576647,
                         "MaterialID": 155576648,
                         "ComponentType": 0,
@@ -3617,7 +3669,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 653424020,
+                        "ID": 1448635230,
                         "MeshID": 155576649,
                         "MaterialID": 155576650,
                         "ComponentType": 0,
@@ -3677,7 +3729,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1884856366,
+                        "ID": 1806787471,
                         "MeshID": 155576651,
                         "MaterialID": 155576652,
                         "ComponentType": 0,
@@ -3737,7 +3789,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 898139750,
+                        "ID": 147438472,
                         "MeshID": 155576653,
                         "MaterialID": 155576654,
                         "ComponentType": 0,
@@ -3797,7 +3849,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1905183613,
+                        "ID": 422254376,
                         "MeshID": 155576655,
                         "MaterialID": 155576656,
                         "ComponentType": 0,
@@ -3857,7 +3909,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 819257072,
+                        "ID": 870774675,
                         "MeshID": 155576657,
                         "MaterialID": 155576658,
                         "ComponentType": 0,
@@ -3917,7 +3969,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 490458906,
+                        "ID": 1194812626,
                         "MeshID": 155576659,
                         "MaterialID": 155576660,
                         "ComponentType": 0,
@@ -3977,7 +4029,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2133490604,
+                        "ID": 1542452096,
                         "MeshID": 155576661,
                         "MaterialID": 155576662,
                         "ComponentType": 0,
@@ -4037,7 +4089,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1012614321,
+                        "ID": 1928591979,
                         "MeshID": 155576663,
                         "MaterialID": 155576664,
                         "ComponentType": 0,
@@ -4097,7 +4149,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2049038246,
+                        "ID": 52512807,
                         "MeshID": 155576665,
                         "MaterialID": 155576666,
                         "ComponentType": 0,
@@ -4157,7 +4209,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1027441509,
+                        "ID": 924259165,
                         "MeshID": 155576667,
                         "MaterialID": 155576668,
                         "ComponentType": 0,
@@ -4217,7 +4269,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2028334822,
+                        "ID": 1745599919,
                         "MeshID": 155576669,
                         "MaterialID": 155576670,
                         "ComponentType": 0,
@@ -4277,7 +4329,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1033331222,
+                        "ID": 25680650,
                         "MeshID": 155576671,
                         "MaterialID": 155576672,
                         "ComponentType": 0,
@@ -4337,7 +4389,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 72026271,
+                        "ID": 382788576,
                         "MeshID": 155576673,
                         "MaterialID": 155576674,
                         "ComponentType": 0,
@@ -4397,7 +4449,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1028362144,
+                        "ID": 809587123,
                         "MeshID": 155576675,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -4457,7 +4509,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1967131708,
+                        "ID": 1212947295,
                         "MeshID": 155576676,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -4517,7 +4569,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 755215059,
+                        "ID": 1648054643,
                         "MeshID": 155576677,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -4577,7 +4629,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1582103676,
+                        "ID": 1962160693,
                         "MeshID": 155576678,
                         "MaterialID": 155576679,
                         "ComponentType": 0,
@@ -4637,7 +4689,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 437625874,
+                        "ID": 230545096,
                         "MeshID": 155576680,
                         "MaterialID": 155576681,
                         "ComponentType": 0,
@@ -4697,7 +4749,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1459081284,
+                        "ID": 607216523,
                         "MeshID": 155576682,
                         "MaterialID": 155576683,
                         "ComponentType": 0,
@@ -4757,7 +4809,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 390211888,
+                        "ID": 1124011121,
                         "MeshID": 155576684,
                         "MaterialID": 155576685,
                         "ComponentType": 0,
@@ -4817,7 +4869,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1544434545,
+                        "ID": 1455985866,
                         "MeshID": 155576686,
                         "MaterialID": 155576687,
                         "ComponentType": 0,
@@ -4877,7 +4929,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 479046199,
+                        "ID": 132279708,
                         "MeshID": 155576688,
                         "MaterialID": 155576689,
                         "ComponentType": 0,
@@ -4937,7 +4989,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1460956881,
+                        "ID": 976247287,
                         "MeshID": 155576690,
                         "MaterialID": 155576691,
                         "ComponentType": 0,
@@ -4997,7 +5049,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 647039587,
+                        "ID": 2003318096,
                         "MeshID": 155576692,
                         "MaterialID": 155576693,
                         "ComponentType": 0,
@@ -5057,7 +5109,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1770002415,
+                        "ID": 754245650,
                         "MeshID": 155576694,
                         "MaterialID": 155576695,
                         "ComponentType": 0,
@@ -5117,7 +5169,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1606345261,
+                        "ID": 124591241,
                         "MeshID": 155576696,
                         "MaterialID": 155576697,
                         "ComponentType": 0,
@@ -5177,7 +5229,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 911688740,
+                        "ID": 1043958363,
                         "MeshID": 155576698,
                         "MaterialID": 155576699,
                         "ComponentType": 0,
@@ -5237,7 +5289,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 101670222,
+                        "ID": 115838727,
                         "MeshID": 155576700,
                         "MaterialID": 155576701,
                         "ComponentType": 0,
@@ -5297,7 +5349,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1428622580,
+                        "ID": 1176814963,
                         "MeshID": 155576702,
                         "MaterialID": 155576703,
                         "ComponentType": 0,
@@ -5357,7 +5409,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 733269849,
+                        "ID": 201770773,
                         "MeshID": 155576704,
                         "MaterialID": 155576705,
                         "ComponentType": 0,
@@ -5417,7 +5469,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 4011691,
+                        "ID": 1188322160,
                         "MeshID": 155576706,
                         "MaterialID": 155576707,
                         "ComponentType": 0,
@@ -5477,7 +5529,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1346280669,
+                        "ID": 141289856,
                         "MeshID": 155576708,
                         "MaterialID": 155576709,
                         "ComponentType": 0,
@@ -5537,7 +5589,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 659212837,
+                        "ID": 1395812472,
                         "MeshID": 155576710,
                         "MaterialID": 155576711,
                         "ComponentType": 0,
@@ -5597,7 +5649,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2103337338,
+                        "ID": 279716136,
                         "MeshID": 155576712,
                         "MaterialID": 155576713,
                         "ComponentType": 0,
@@ -5657,7 +5709,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1389047695,
+                        "ID": 1410313372,
                         "MeshID": 155576714,
                         "MaterialID": 155576715,
                         "ComponentType": 0,
@@ -5717,7 +5769,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 673783358,
+                        "ID": 408604339,
                         "MeshID": 155576716,
                         "MaterialID": 155576717,
                         "ComponentType": 0,
@@ -5777,7 +5829,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 30785619,
+                        "ID": 1454727400,
                         "MeshID": 155576718,
                         "MaterialID": 155576719,
                         "ComponentType": 0,
@@ -5837,7 +5889,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1265699015,
+                        "ID": 386599933,
                         "MeshID": 155576720,
                         "MaterialID": 155576721,
                         "ComponentType": 0,
@@ -5897,7 +5949,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 568745001,
+                        "ID": 1676141912,
                         "MeshID": 155576722,
                         "MaterialID": 155576723,
                         "ComponentType": 0,
@@ -5957,7 +6009,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1958217017,
+                        "ID": 946372505,
                         "MeshID": 155576724,
                         "MaterialID": 155576725,
                         "ComponentType": 0,
@@ -6017,7 +6069,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1251446442,
+                        "ID": 2092564845,
                         "MeshID": 155576726,
                         "MaterialID": 155576727,
                         "ComponentType": 0,
@@ -6077,7 +6129,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 590486485,
+                        "ID": 949873287,
                         "MeshID": 155576728,
                         "MaterialID": 155576729,
                         "ComponentType": 0,
