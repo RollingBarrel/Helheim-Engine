@@ -1,9 +1,15 @@
 #pragma once
 #include "Component.h"
 
-#include "fmod_studio.hpp"
 #include <vector>
 #include <map>
+
+namespace FMOD {
+    namespace Studio {
+        class EventInstance; 
+        class EventDescription; 
+    }
+}
 
 class ENGINE_API AudioSourceComponent :
     public Component

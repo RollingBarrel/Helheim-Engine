@@ -3,7 +3,7 @@
 
 #include "fmod.hpp"
 #include "FmodUtils.h"
-
+#include "fmod_studio.hpp"
 
 ModuleAudio::ModuleAudio()
 {

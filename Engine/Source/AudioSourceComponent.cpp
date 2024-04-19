@@ -3,6 +3,8 @@
 
 #include "GameObject.h"
 #include "Application.h"
+
+#include "fmod_studio.hpp"
 #define CheckError(result) FmodUtils::CheckFmodError(result)
 
 AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Component(ownerGameObject,ComponentType::AUDIOSOURCE)

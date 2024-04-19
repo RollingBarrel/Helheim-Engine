@@ -1,11 +1,19 @@
 #pragma once
 #include "Module.h"
 
-#include "fmod_studio.hpp"
 #include <map>
 
 #define CheckError(result) FmodUtils::CheckFmodError(result)
 #define EVENT_BANK_UPPERLIMIT 64
+
+namespace FMOD {
+	namespace Studio {
+		class System; 
+		class Bank;
+		class EventInstance;
+	}
+	class System; 
+}
 
 class ModuleAudio :
     public Module
