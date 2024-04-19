@@ -197,7 +197,11 @@ update_status ModuleInput::PreUpdate(float dt)
             App->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
             App->GetResource()->ImportFile(sdlEvent.drop.file);
 
-            App->GetFileSystem()->GetRootNode()->mChildren.clear();
+			for (int i = 0; i < App->GetFileSystem()->GetRootNode()->mChildren.size(); ++i)
+			{
+				App->GetFileSystem()->CleanNode(App->GetFileSystem()->GetRootNode()->mChildren[i]);
+			}
+			App->GetFileSystem()->GetRootNode()->CleanUp();
             App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());
             SDL_free(sdlEvent.drop.file);
             break;
