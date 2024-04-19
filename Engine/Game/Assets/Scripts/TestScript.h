@@ -28,8 +28,6 @@ private:
     float mMovement = 0;
     bool mUp = false;
     bool mStartCounter = false;
-    float mTimePassed = 0;
-
-    
+    float mTimePassed = 0;    
 };
 

@@ -85,10 +85,8 @@ void TestScript::Update()
 
         LOG("YOU WIN");
     }
-	
 
     LOG("hola %s" , typeid(mTestFloat3).name());
-
 }
 
 void TestScript::OnButtonClick()

@@ -16,11 +16,14 @@ public:
 
 private:
     void MenuStatus();
+    void ChangeImage(const char* name, bool enabled) const;
     void Controls();
 
-    bool mActiveMenu;
-    bool mPauseMenu;
-    bool mResetScreen = false;
-    int mScreen = 1;
+    bool mActiveMenu = true;
+    bool mPauseMenu = false;
+    bool mResetScreen = true;
+    int mImage = 1;
+    const char* mActualImageName = nullptr;
+    const char* mPreviousImageName = nullptr;
 };
 
