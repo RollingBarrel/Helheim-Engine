@@ -224,6 +224,14 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
     bufferSize += sizeof(unsigned int);                                     //Tamaño vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
+    bufferSize += sizeof(unsigned int);
+    bufferSize += sizeof(int) * rModel->mJoints.size();
+
+    for (size_t i = 0; i < rModel->mJoints.size(); i++)
+    {
+        bufferSize += sizeof(unsigned int);
+        bufferSize += sizeof(float) * 16;
+    }
 
     if (rModel)
         Importer::Model::Save(rModel, bufferSize);
@@ -313,6 +321,24 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     {
         bytes = sizeof(unsigned int);
         memcpy(cursor, &rModel->mAnimationUids[i], bytes);
+        cursor += bytes;
+    }
+
+    //Joints
+    unsigned int jointsSize = rModel->mJoints.size();
+    bytes = sizeof(unsigned int);
+    memcpy(cursor, &jointsSize, bytes);
+    cursor += bytes;
+
+    for (int i = 0; i < jointsSize; ++i)
+    {
+        bytes = sizeof(unsigned int);
+        memcpy(cursor, &rModel->mJoints[i].first, bytes);
+        cursor += bytes;
+
+        bytes = sizeof(float) * 16;
+        //unsigned int inverse = rModel->mJoints[i]->mJoints.size();
+        memcpy(cursor, &rModel->mJoints[i].second, bytes);
         cursor += bytes;
     }
     
@@ -436,10 +462,30 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             unsigned int animationUID = 0;
             bytes = sizeof(unsigned int);
             memcpy(&animationUID, cursor, bytes);
-            *cursor += bytes;
+            cursor += bytes;
     
             rModel->mAnimationUids.push_back({ animationUID });
         }
+
+        unsigned int jointsSize = 0;
+        bytes = sizeof(unsigned int);
+        memcpy(&jointsSize, cursor, bytes);
+        cursor += bytes;
+
+        rModel->mJoints.resize(jointsSize);
+
+        for (int i = 0; i < jointsSize; ++i)
+        {
+            int indexJoint = 0;
+            bytes = sizeof(unsigned int);
+            memcpy(&rModel->mJoints[i].first, cursor, bytes);
+            cursor += bytes;
+
+            bytes = sizeof(float4x4);
+            memcpy(&rModel->mJoints[i].second, cursor, bytes);
+            cursor += bytes;
+        }
+
         delete[] fileBuffer;
     }
 
