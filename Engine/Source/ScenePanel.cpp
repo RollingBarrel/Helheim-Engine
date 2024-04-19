@@ -190,6 +190,16 @@ void ScenePanel::DrawScene()
 							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), gameObjectRoot, true));
 						else
 							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), tempVec.at(node.mParentIndex), false));
+					
+						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
+						//{
+						//	if (reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first == i)
+						//	{
+						//		LOG("Current Node: %u, %s", i, node.mName.c_str());
+						//		LOG("Joint Index: %d", reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first);
+						//		break;
+						//	}
+						//}
 					}
 
 					tempVec.clear();

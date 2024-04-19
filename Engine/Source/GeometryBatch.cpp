@@ -108,7 +108,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	material.metalness = rMaterial.resource->GetMetallicFactor();
 	material.roughness = rMaterial.resource->GetRoughnessFactor();
 
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	return true;
@@ -187,7 +187,7 @@ void GeometryBatch::RecreateMaterials()
 		material.metalness = rMaterial.resource->GetMetallicFactor();
 		material.roughness = rMaterial.resource->GetRoughnessFactor();
 
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 		offset += materialSize;
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
