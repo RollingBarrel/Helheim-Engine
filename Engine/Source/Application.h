@@ -79,7 +79,7 @@ private:
     ModuleDetourNavigation* navigation = nullptr;
     ModuleEvent* event = nullptr;
 
-#define NUM_MODULES 14
+#define NUM_MODULES 13
     Module* modules[NUM_MODULES];
 
     //Timer

@@ -1361,6 +1361,7 @@
     </None>
     <None Include="Dependencies\FMOD\api\studio\inc\fmod_studio.cs">
       <Filter>Dependencies\FMOD</Filter>
+    </None>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
       <Filter>Shaders</Filter>
     </None>
