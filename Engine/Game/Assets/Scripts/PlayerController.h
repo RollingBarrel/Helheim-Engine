@@ -45,7 +45,7 @@ class PlayerController :public Script
         void Move(float3 position);
 
         
-        void ShootLogic(int damage);
+        void Shoot(float damage);
         void Reload();
         
         
@@ -76,12 +76,20 @@ class PlayerController :public Script
         bool mPlayerIsDead = false;
         bool mIsMoving = false;
 
-        //Shooting variables
-        int mDamage = 1;
-        int mMaxBullets = 500000;
-        int mBullets = 50000;
-        float mChargedShotTime = 10.0f;
-        float mBulletCostPerSecond = 1.0f;
+        //Attack variables
+        float mRangeBaseDamage = 1.0f;
+        float mRangeChargeAttackMultiplier = 5.0f;
+        float mMeleeBaseDamage = 1.0f;
+        float mMeleeChargeAttackMultiplier = 5.0f;
+
+        int mAmmoCapacity = 500000;
+        int mBullets = 0;
+        float mChargedTime = 0.0f;
+        float mFireRate = 1.0f;
+        float mMaxMeleeChargeTime = 10.0f;
+        float mMaxRangeChargeTime = 10.0f;
+        float mMinMeleeChargeTime = 5.0f;
+        float mMinRangeChargeTime = 5.0f;
         bool mIsChargedAttack = false;
 
         float mPlayerSpeed = 2.0f;

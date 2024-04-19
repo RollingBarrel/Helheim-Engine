@@ -25,6 +25,20 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::INT, mMaxDashCharges);
 
+    SEPARATOR("MELEE ATTACK");
+    MEMBER(MemberType::FLOAT, mRangeBaseDamage);
+    MEMBER(MemberType::FLOAT, mFireRate);
+    MEMBER(MemberType::FLOAT, mMinMeleeChargeTime);
+    MEMBER(MemberType::FLOAT, mMaxMeleeChargeTime);
+    MEMBER(MemberType::FLOAT, mMeleeChargeAttackMultiplier);
+
+    SEPARATOR("RANGE ATTACK");
+    MEMBER(MemberType::FLOAT, mRangeBaseDamage);
+    MEMBER(MemberType::INT, mAmmoCapacity);
+    MEMBER(MemberType::FLOAT, mMinRangeChargeTime);
+    MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);
+    MEMBER(MemberType::FLOAT, mRangeChargeAttackMultiplier);
+    
     SEPARATOR("ANIMATION");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
     END_CREATE;
@@ -38,7 +52,7 @@ void PlayerController::Start()
 {
     mDashCharges = mMaxDashCharges;
     mNavMeshControl = App->GetScene()->GetNavController();
-
+    mBullets = mAmmoCapacity;
     if (mAnimationComponentHolder) 
     {
         mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
@@ -203,7 +217,7 @@ void PlayerController::Dash()
 void PlayerController::Attack()
 {
 
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_UP)
     {
         mIsChargedAttack = true;
     }
@@ -253,14 +267,14 @@ void PlayerController::MeleeAttack()
             EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (enemyScript != nullptr) 
             {
-                enemyScript->SetEnemyDamage(mDamage);
+                enemyScript->SetEnemyDamage(mMeleeBaseDamage);
             }
             else 
             {
                 EnemyRobot* enemyScript = (EnemyRobot*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (enemyScript != nullptr) 
                 {
-                    enemyScript->SetEnemyDamage(mDamage);
+                    enemyScript->SetEnemyDamage(mMeleeBaseDamage);
                 }
             }
         }
@@ -271,51 +285,65 @@ void PlayerController::RangedAttack()
 {
     if (mIsChargedAttack) 
     {
-        //definir que el maximo del tiempo de carga es 20 segundos y el minimo 5 segundos
-        if (mChargedShotTime > 20)
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
         {
-            mChargedShotTime = 20;
+            mChargedTime += App->GetGameDt();
+            LOG("Charged Time: %f ", mChargedTime);
         }
-        int mDamage = mChargedShotTime * 5;
-        int bulletCost = mChargedShotTime * mBulletCostPerSecond;
-        if (mBullets >= bulletCost) 
+        else if (mChargedTime >= mMinRangeChargeTime)
         {
-            ShootLogic(mDamage);
-            mBullets -= bulletCost;
-            LOG("Charged shot fired. Damage:  %i", mDamage);
+            mChargedTime = Min(mMaxRangeChargeTime, mChargedTime);
+            float totalDamage;
+
+            int bulletCost = mChargedTime * mFireRate;
+            if (mBullets >= bulletCost)
+            {
+                totalDamage = mChargedTime * mRangeBaseDamage * mRangeChargeAttackMultiplier;
+                Shoot(totalDamage);
+                mBullets -= bulletCost;
+                
+            }
+            else
+            {
+                totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
+                mBullets -= mBullets;
+            }
+            mChargedTime = 0.0f;
+            LOG("Charged shot fired. Damage:  %f", totalDamage);
             LOG("Bullets:  %i", mBullets);
+
         }
-        else 
+        else
         {
-            LOG("Not enough bullets to fire charged shot.");
+            mChargedTime = 0.0f;
         }
     }
     else 
     {
         if (mBullets > 0) 
         {
-            ShootLogic(mDamage);
-            mBullets--;
+            Shoot(mRangeBaseDamage * App->GetGameDt());
+            mBullets-=mFireRate * App->GetGameDt();
             if (mBullets == 0) 
             {
-                // Lógica para entrar en el estado de recarga
                 LOG("Out of bullets! Cannot shoot.");
+                Reload();
             }
             else 
             {
-                // Lógica para regresar al estado de reposo
                 LOG("Basic shoot fire. Remining Bullets %i", mBullets);
             }
         }
         else
         {
-            LOG("Out of bullets! Cannot shoot.");
+            LOG("Out of bullets! Cannot shoot2.");
+            Reload();
         }
     }
 }
 
 
-void PlayerController::ShootLogic(int damage)
+void PlayerController::Shoot(float damage)
 {
     std::map<float, GameObject*> hits;
 
@@ -359,7 +387,7 @@ void PlayerController::ShootLogic(int damage)
 
 void PlayerController::Reload()
 {
-    mBullets = mMaxBullets;
+    mBullets = mAmmoCapacity;
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
