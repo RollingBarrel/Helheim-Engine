@@ -1,7 +1,5 @@
 #pragma once
-#pragma once
 #include "Component.h"
-#include "Text.h"
 
 class TextComponent : public Component
 {
@@ -21,5 +19,4 @@ public:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
-    font_data mFont;
 };
