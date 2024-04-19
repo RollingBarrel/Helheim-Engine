@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Component.h"
-#include "Particle.h"
-#include "EmitterShape.h"
 #include <map>
 
 class Material;
 class ResourceTexture;
+class Particle;
+class EmitterShape;
 struct Mesh;
 
 class ENGINE_API ParticleSystemComponent : public Component
@@ -15,6 +15,7 @@ class ENGINE_API ParticleSystemComponent : public Component
 public:
 	ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
+	~ParticleSystemComponent();
 	void Reset();
 
 	void Init();
@@ -41,8 +42,10 @@ private:
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 
-	EmitterShape mShapeType;
+	EmitterShape* mShapeType;
 	std::map<float, float4> mColorGradient;
-	std::vector<Particle> particles;
+	std::vector<Particle*> mParticles;
 	unsigned int mVAO;
+	unsigned int mInstanceBuffer;
+	unsigned int mVBO;
 };

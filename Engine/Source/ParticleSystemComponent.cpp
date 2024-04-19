@@ -1,4 +1,6 @@
 #include "ParticleSystemComponent.h"
+#include "Particle.h"
+#include "EmitterShape.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "glew.h"
@@ -9,6 +11,8 @@
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
 
+#define MATRICES_LOCATION 1
+
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
@@ -18,15 +22,28 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 {
 }
 
+ParticleSystemComponent::~ParticleSystemComponent() 
+{
+    glDeleteBuffers(1, &mInstanceBuffer);
+    glDeleteBuffers(1, &mVBO);
+    delete mImage;
+    delete mShapeType;
+    for (auto particle : mParticles)
+    {
+        delete particle;
+    }
+    mParticles.clear();
+    mColorGradient.clear();
+}
+
 Component* ParticleSystemComponent::Clone(GameObject* owner) const
 {
     return new ParticleSystemComponent(*this, owner);
 }
 
 void ParticleSystemComponent::Init()
-{
+{   
     // set up mesh and attribute properties
-    unsigned int VBO;
     float particleQuad[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 0.0f, 1.0f, 0.0f,
@@ -37,19 +54,29 @@ void ParticleSystemComponent::Init()
         1.0f, 0.0f, 1.0f, 0.0f
     };
     glGenVertexArrays(1, &mVAO);
-    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &mVBO);
+    glGenBuffers(1, &mInstanceBuffer);
     glBindVertexArray(mVAO);
     // fill mesh buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(particleQuad), particleQuad, GL_STATIC_DRAW);
+
     // set mesh attributes
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    glBindVertexArray(0);
 
+    glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
+    for (unsigned int i = 0; i < 4; i++) {
+        glEnableVertexAttribArray(MATRICES_LOCATION + i);
+        glVertexAttribPointer(MATRICES_LOCATION + i, 4, GL_FLOAT, GL_FALSE,
+            16 * sizeof(float),
+            (const GLvoid*)(sizeof(GLfloat) * i * 4));
+        glVertexAttribDivisor(MATRICES_LOCATION + i, 1);
+    }
+    glBindVertexArray(0);
     // create this->amount default particle instances
     for (unsigned int i = 0; i < 100; ++i)
-        this->particles.push_back(Particle());
+        this->mParticles.push_back(new Particle());
 
     App->GetOpenGL()->AddParticleSystem(this);
 }
@@ -59,25 +86,46 @@ void ParticleSystemComponent::Draw() const
 {
     if (IsEnabled()) 
     {
+        glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+
+        float4x4* modelMatrices = new float4x4[mParticles.size()];
+        float4* colors = new float4[mParticles.size()];
         float4x4 viewproj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix() * ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
+        
+        for (int i = 0; i < mParticles.size(); ++i)
+        {
+            if (mParticles[i]->getLifetime() > 0.0f)
+            {
+                Quat rotation = Quat::identity;
+                float3 scale = float3(mParticles[i]->getSize());
+                modelMatrices[i] = float4x4::FromTRS(mParticles[i]->getPosition(), rotation, scale);
+                //colors[i] = mParticles[i]->getColor();
+            }
+        }
+
+        glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
+        glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 16 * sizeof(float),
+            modelMatrices, GL_DYNAMIC_DRAW);
+
+        glBindVertexArray(mVAO);
+        
+
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);
         glUseProgram(programId);
-        for (Particle particle : particles)
-        {
-            if (particle.getLifetime() > 0.0f)
-            {
-                glUniform3f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y, particle.getPosition().y);
-                glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
-                glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
-                glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-                glBindVertexArray(mVAO);
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                glBindTexture(GL_TEXTURE_2D, 0);
-                glBindVertexArray(0);
-            }
-        }
+        glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
+        glUniform4f(glGetUniformLocation(programId, "color"), 1.0f, 1.0f, 1.0f, 1.0f);
+        glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+        
+        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindVertexArray(0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glUseProgram(0);
+
+        delete[] modelMatrices;
+        delete[] colors;
     }
 }
 
@@ -86,21 +134,21 @@ void ParticleSystemComponent::Update()
     mEmitterTime += App->GetGameDt();
     mEmitterDeltaTime += App->GetGameDt();
 
-    for (int i = 0; i < particles.size(); i++)
+    for (int i = 0; i < mParticles.size(); i++)
     {
-        particles[i].Update();
+        mParticles[i]->Update();
     }
 
     if (mEmitterDeltaTime > 1 / mEmissionRate)// deltaTime in seconds Use Timer
     {
         mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
-        if (particles.size() < mMaxParticles)
+        if (mParticles.size() < mMaxParticles)
         {
-            float3 position = mShapeType.RandomInitPosition();
-            float3 direction = mShapeType.RandomInitDirection();
+            float3 position = mShapeType->RandomInitPosition();
+            float3 direction = mShapeType->RandomInitDirection();
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
-            particles.push_back(Particle(position, direction, rotation, mLifeTime, mSpeed));
+            mParticles.push_back(new Particle(position, direction, rotation, mLifeTime, mSpeed));
         }
     }
 }
