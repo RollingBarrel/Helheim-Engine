@@ -3,15 +3,15 @@
 Particle::Particle()
 {
     mPosition = float3::zero;
-    mDirection = float3::zero;
+    mDirection = float3::unitX;
     mRotation = 0.0f;
     mIsSpeedCurve = false;
-    mSpeedLinear = 0.0f;
+    mSpeedLinear = 0.01f;
     mIsSizeCurve = false;
-    mSizeLinear = 0.0f;
+    mSizeLinear = 1.0f;
     mMaxLifeTime = 0.0f;
-    mLifeTime = 0.0f;
-    mColor = float4::zero;
+    mLifeTime = 1000.0f;
+    mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 Particle::Particle(float3 position, float3 direction, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve)

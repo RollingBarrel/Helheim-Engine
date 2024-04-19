@@ -3,9 +3,15 @@
 #include "ModuleOpenGL.h"
 #include "glew.h"
 #include "ColorGradient.h"
+#include "ModuleCamera.h"
+#include "CameraComponent.h"
+#include "Resource.h"
+#include "ModuleResource.h"
+#include "ResourceTexture.h"
 
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
+    SetImage(mResourceId);
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) : ParticleSystemComponent(owner)
@@ -42,35 +48,43 @@ void ParticleSystemComponent::Init()
     glBindVertexArray(0);
 
     // create this->amount default particle instances
-    for (unsigned int i = 0; i < 10; ++i)
+    for (unsigned int i = 0; i < 100; ++i)
         this->particles.push_back(Particle());
+
+    App->GetOpenGL()->AddParticleSystem(this);
 }
 
 
 void ParticleSystemComponent::Draw() const
 {
-    unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glUseProgram(programId);
-    for (Particle particle : particles)
+    if (IsEnabled()) 
     {
-        if (particle.GetLifetime() > 0.0f)
+        float4x4 viewproj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix() * ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
+        unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        glUseProgram(programId);
+        for (Particle particle : particles)
         {
-            glUniform2f(glGetUniformLocation(programId, "offset"), particle.GetPosition().x, particle.GetPosition().y);
-            glUniform4f(glGetUniformLocation(programId, "color"), particle.GetColor().x, particle.GetColor().y, particle.GetColor().z, particle.GetColor().w);
-            //particleTexture.Bind();
-            glBindVertexArray(mVAO);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            glBindVertexArray(0);
+            if (particle.getLifetime() > 0.0f)
+            {
+                glUniform3f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y, particle.getPosition().y);
+                glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
+                glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
+                glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+                glBindVertexArray(mVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                glBindTexture(GL_TEXTURE_2D, 0);
+                glBindVertexArray(0);
+            }
         }
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void ParticleSystemComponent::Update() 
+void ParticleSystemComponent::Update()
 {
-	mEmitterTime += App->GetGameDt();
-	mEmitterDeltaTime += App->GetGameDt();
+    mEmitterTime += App->GetGameDt();
+    mEmitterDeltaTime += App->GetGameDt();
 
 	for (int i = 0; i < particles.size(); i++)
 	{
@@ -109,6 +123,11 @@ void ParticleSystemComponent::Update()
 			particles.push_back(particle);
 		}
 	}
+}
+
+void ParticleSystemComponent::SetImage(unsigned int resourceId)
+{
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
 void ParticleSystemComponent::Reset()

@@ -6,6 +6,7 @@
 #include <map>
 
 class Material;
+class ResourceTexture;
 struct Mesh;
 
 class ENGINE_API ParticleSystemComponent : public Component
@@ -26,19 +27,23 @@ public:
 
 
 private:
+	void SetImage(unsigned int resourceId);
+
+	ResourceTexture* mImage = nullptr;
+	unsigned int mResourceId = 818189439; // Temporary default image 
 
 	float mEmitterTime = 0.0f;
 	float mEmitterDeltaTime = 0.0f;
 
-	float mDuration = 0.0f;
-	float mLifeTime = 0.0f;
+	float mDuration = 5.0f;
+	float mLifeTime = 10.0f;
 
 	bool mIsSpeedCurve;
-	float mSpeedLineal = 0.0f;
+	float mSpeedLineal = 1.0f;
 	float4 mSpeedCurve;
 
 	bool mIsSizeCurve;
-	float mSizeLineal = 0.0f;
+	float mSizeLineal = 1.0f;
 	float4 mSizeCurve;
 
 	float mEmissionRate = 0.0f;

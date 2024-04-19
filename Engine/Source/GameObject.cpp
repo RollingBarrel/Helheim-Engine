@@ -471,8 +471,12 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new Transform2DComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
-		newComponent = new ParticleSystemComponent(this);
+	{
+		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
+		pc->Init();
+		newComponent = pc;
 		break;
+	}
 	default:
 		break;
 	}

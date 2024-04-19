@@ -485,6 +485,10 @@ void ModuleOpenGL::Draw()
 {
 	BindSceneFramebuffer();
 	mBatchManager.Draw();
+	for (auto partSys : mParticleSystems)
+	{
+		partSys->Draw();
+	}
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
