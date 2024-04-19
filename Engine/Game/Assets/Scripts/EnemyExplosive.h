@@ -1,8 +1,8 @@
 #pragma once
-#include <EnemyBase.h>
+#include <Enemy.h>
 
 GENERATE_BODY(EnemyExplosive);
-class EnemyExplosive : public EnemyBase
+class EnemyExplosive : public Enemy
 {
 	FRIEND(EnemyExplosive)
 	public:

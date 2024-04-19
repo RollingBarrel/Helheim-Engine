@@ -1,10 +1,10 @@
 #pragma once
-#include <EnemyBase.h>
+#include <Enemy.h>
 #include "Geometry/Ray.h"
 #include <ScriptComponent.h>
 
 GENERATE_BODY(EnemyRobot);
-class EnemyRobot : public EnemyBase
+class EnemyRobot : public Enemy
 {
 	FRIEND(EnemyRobot)
 

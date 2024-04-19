@@ -27,7 +27,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyBase.h">
+    <ClInclude Include="..\Game\Assets\Scripts\Enemy.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h">
@@ -65,7 +65,7 @@
     <ClCompile Include="PlayerController.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBase.cpp">
+    <ClCompile Include="Enemy.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="EnemyExplosive.cpp">

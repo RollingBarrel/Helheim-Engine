@@ -26,7 +26,7 @@ CREATE(EnemyRobot)
     END_CREATE;
 }
 
-EnemyRobot::EnemyRobot(GameObject* owner) : EnemyBase(owner)
+EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
     mCurrentState = EnemyState::Deploy;
     mPreviousState = mCurrentState;
@@ -44,12 +44,12 @@ EnemyRobot::EnemyRobot(GameObject* owner) : EnemyBase(owner)
 
 void EnemyRobot::Start()
 {
-    EnemyBase::Start();
+    Enemy::Start();
 }
 
 void EnemyRobot::Update()
 {
-    EnemyBase::Update();
+    Enemy::Update();
 }
 
 //Change actual animation state of the enemy
@@ -92,7 +92,7 @@ void EnemyRobot::StateMachine() {
 }
 
 void EnemyRobot::SearchPlayer() {
-    EnemyBase::SearchPlayer();
+    Enemy::SearchPlayer();
 
     if (OpponentDistance(mRangeDistance)) {
         mInAttackDistance = true;
@@ -111,7 +111,7 @@ void EnemyRobot::SearchPlayer() {
 }
 
 void EnemyRobot::SetEnemyDamage(int damage) {
-    EnemyBase::SetEnemyDamage(damage);
+    Enemy::SetEnemyDamage(damage);
 
     if (mHealth = 0) {
         ChangeState(EnemyState::Death);
@@ -264,22 +264,22 @@ void EnemyRobot::Death() {
 //************************************************************************
 //FOR TEST UNTIL AI WILL BE AVAILABLE
 void EnemyRobot::Test_Forward() {
-    EnemyBase::Test_Forward();
+    Enemy::Test_Forward();
     ChangeState(EnemyState::Forward);
 }
 
 void EnemyRobot::Test_Backward() {
-    EnemyBase::Test_Backward();
+    Enemy::Test_Backward();
     ChangeState(EnemyState::Backward);
 }
 
 void EnemyRobot::Test_Left() {
-    EnemyBase::Test_Left();
+    Enemy::Test_Left();
     ChangeState(EnemyState::Left);
 }
 
 void EnemyRobot::Test_Right() {
-    EnemyBase::Test_Right();
+    Enemy::Test_Right();
     ChangeState(EnemyState::Right);
 }
 //************************************************************************

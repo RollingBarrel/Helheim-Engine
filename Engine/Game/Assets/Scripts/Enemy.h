@@ -6,11 +6,11 @@
 class NavMeshController;
 class AnimationComponent;
 
-class EnemyBase : public Script
+class Enemy : public Script
 {
 	public:
-		EnemyBase(GameObject* owner);
-		~EnemyBase() {}
+		Enemy(GameObject* owner);
+		~Enemy() {}
 		void Start() override;
 		void Update() override;
 

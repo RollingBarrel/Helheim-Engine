@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "EnemyBase.h"
+#include "Enemy.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
@@ -8,9 +8,9 @@
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
 
-EnemyBase::EnemyBase(GameObject* owner) : Script(owner) {}
+Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
-void EnemyBase::Start()
+void Enemy::Start()
 {
     mNavMeshControl = App->GetScene()->GetNavController();
 
@@ -21,7 +21,7 @@ void EnemyBase::Start()
     }
 }
 
-void EnemyBase::Update()
+void Enemy::Update()
 {
     ActivateEnemy();
 
@@ -31,7 +31,7 @@ void EnemyBase::Update()
     }
 }
 
-void EnemyBase::ActivateEnemy() 
+void Enemy::ActivateEnemy() 
 {
     if (mEnemyActivated == false) 
     {
@@ -49,7 +49,7 @@ void EnemyBase::ActivateEnemy()
 }
 
 //This is the distance from the enemy (self) to an opponent (player or another enemy)
-bool EnemyBase::OpponentDistance(float triggerDistance) 
+bool Enemy::OpponentDistance(float triggerDistance) 
 {
     ModuleScene* scene = App->GetScene();
     std::vector<GameObject*> Opponents;
@@ -75,7 +75,7 @@ bool EnemyBase::OpponentDistance(float triggerDistance)
     }
 }
 
-void EnemyBase::SearchPlayer() 
+void Enemy::SearchPlayer() 
 {
     if (mInAttackDistance == false) 
     {
@@ -83,7 +83,7 @@ void EnemyBase::SearchPlayer()
     }
 }
 
-void EnemyBase::SetEnemyDamage(int damage) 
+void Enemy::SetEnemyDamage(int damage) 
 {
     if (mHealth > 0) 
     {
@@ -92,7 +92,7 @@ void EnemyBase::SetEnemyDamage(int damage)
     LOG("Enemy Health: %u", mHealth);
 }
 
-bool EnemyBase::Delay(float delay) //Lapse of time for doing some action
+bool Enemy::Delay(float delay) //Lapse of time for doing some action
 {
     mTimePassed += App->GetGameDt();
 
@@ -106,7 +106,7 @@ bool EnemyBase::Delay(float delay) //Lapse of time for doing some action
 
 //************************************************************************
 //FOR TEST UNTIL AI WILL BE AVAILABLE
-void EnemyBase::Test_Controls() 
+void Enemy::Test_Controls() 
 {
     Test_Mouse_Rotation();
 
@@ -150,33 +150,33 @@ void EnemyBase::Test_Controls()
     }
 }
 
-void EnemyBase::Test_Forward() 
+void Enemy::Test_Forward() 
 {
     Move(mGameObject->GetFront());
 }
 
-void EnemyBase::Test_Backward() 
+void Enemy::Test_Backward() 
 {
     Move(mGameObject->GetFront() * -1);
 }
 
-void EnemyBase::Test_Left() 
+void Enemy::Test_Left() 
 {
     Move(mGameObject->GetRight());
 }
 
-void EnemyBase::Test_Right() 
+void Enemy::Test_Right() 
 {
     Move(mGameObject->GetRight() * -1);
 }
 
-void EnemyBase::Move(float3 direction) 
+void Enemy::Move(float3 direction) 
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mEnemySpeed);
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
 }
 
-void EnemyBase::Test_Mouse_Rotation() 
+void Enemy::Test_Mouse_Rotation() 
 {
     int mX, mY;
     App->GetInput()->GetMouseMotion(mX, mY);
