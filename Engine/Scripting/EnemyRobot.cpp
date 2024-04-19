@@ -171,7 +171,7 @@ void EnemyRobot::MeleeAttack() {
             PlayerController* playerScript = (PlayerController*)((ScriptComponent*)player->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (playerScript != nullptr)
             {
-                playerScript->SetPlayerDamage(mMeeleDamage);
+                playerScript->Hit(mMeeleDamage);
             }
 
         }
@@ -245,7 +245,7 @@ void EnemyRobot::ShootLogic(int damage)
                 PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)
                 {
-                    playerScript->SetPlayerDamage(damage);
+                    playerScript->Hit(damage);
                 }
             }
         }

@@ -30,8 +30,8 @@ class PlayerController :public Script
         void Start() override;
         void Update() override;
 
-        void SetPlayerDamage(int damage);
-        bool GetPlayerIsDead();
+        void Hit(float damage);
+        bool IsDead();
 
     private:
         void Idle();
@@ -39,17 +39,13 @@ class PlayerController :public Script
         void Dash();
         void Attack();
 
-
         void MeleeAttack();
         void RangedAttack();
         void Move(float3 position);
 
-        
         void Shoot(float damage);
         void Reload();
         
-        
-        bool ShieldDamage(int damage);
         void RechargeDash();
         void Death();
         void CheckRoute();
@@ -62,7 +58,17 @@ class PlayerController :public Script
         GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
 
-        //Dash variables
+        //Stats
+        float mPlayerSpeed = 2.0f;
+        float mHealth = 0.0f;
+        float mMaxHealth = 100.0f;
+        float mShield = 0.0f;
+        float mMaxShield = 100.0f;
+        float mSanity = 0.0f;
+        float mMaxSanity = 100.0f;
+        bool mPlayerIsDead = false;
+
+        //Dash
         bool mIsDashCoolDownActive = false;
         float mDashTimePassed = 0.0f;
         float mDashMovement = 0;
@@ -73,28 +79,24 @@ class PlayerController :public Script
         float mDashDistance = 5.0f;
         float mDashCoolDown = 3.0f;
 
-        bool mPlayerIsDead = false;
-        bool mIsMoving = false;
-
-        //Attack variables
-        float mRangeBaseDamage = 1.0f;
-        float mRangeChargeAttackMultiplier = 5.0f;
-        float mMeleeBaseDamage = 1.0f;
-        float mMeleeChargeAttackMultiplier = 5.0f;
-
+        //Range
         int mAmmoCapacity = 500000;
         int mBullets = 0;
-        float mChargedTime = 0.0f;
         float mFireRate = 1.0f;
-        float mMaxMeleeChargeTime = 10.0f;
-        float mMaxRangeChargeTime = 10.0f;
-        float mMinMeleeChargeTime = 5.0f;
+        float mRangeBaseDamage = 1.0f;
+        float mRangeChargeAttackMultiplier = 5.0f;
         float mMinRangeChargeTime = 5.0f;
+        float mMaxRangeChargeTime = 10.0f;
+         
+        //Melee
+        float mMeleeBaseDamage = 1.0f;
+        float mMeleeChargeAttackMultiplier = 5.0f;
+        float mMinMeleeChargeTime = 5.0f;
+        float mMaxMeleeChargeTime = 10.0f;
+        
+        float mChargedTime = 0.0f;
         bool mIsChargedAttack = false;
 
-        float mPlayerSpeed = 2.0f;
-        int mHealth = 1;
-        int mShield = 100;
-        int mSanity = 100;
+        
 
 };

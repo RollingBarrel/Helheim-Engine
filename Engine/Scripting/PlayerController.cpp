@@ -14,9 +14,9 @@ CREATE(PlayerController)
 {
     CLASS(owner);
     SEPARATOR("STATS");
-    MEMBER(MemberType::INT, mHealth);
-    MEMBER(MemberType::INT, mShield);
-    MEMBER(MemberType::INT, mSanity);
+    MEMBER(MemberType::FLOAT, mMaxHealth);
+    MEMBER(MemberType::FLOAT, mMaxShield);
+    MEMBER(MemberType::FLOAT, mMaxSanity);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
@@ -53,6 +53,9 @@ void PlayerController::Start()
     mDashCharges = mMaxDashCharges;
     mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
+    mHealth = mMaxHealth;
+    mShield = mMaxShield;
+    mSanity = mMaxSanity;
     if (mAnimationComponentHolder) 
     {
         mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
@@ -193,7 +196,6 @@ void PlayerController::Dash()
         mDashMovement = 0;
         mDashCharges -= 1;
         LOG("Dash Charges:  %i", mDashCharges);
-
         Idle();
     }
     if (mIsDashCoolDownActive)
@@ -381,35 +383,27 @@ void PlayerController::Reload()
 }
 
 
-void PlayerController::SetPlayerDamage(int damage) 
+void PlayerController::Hit(float damage) 
 {
-    if (mDashMovement == 0) {
-        if (ShieldDamage(damage) == 0) {
-            if (mHealth > 0) {
-                mHealth -= damage;
-            }
-            else {
-                mHealth = 0;
+    if (mDashMovement == 0) 
+    {    
+        mShield -= damage;
+        float remainingDamage = -mShield;
+        mShield = Min(mShield, 0.0f);
+            
+        if (remainingDamage > 0)
+        {
+            mHealth -= remainingDamage;
+
+            if (mHealth <= 0.0f)
+            {
                 mCurrentState = PlayerState::DEATH;
             }
-        }
+        }    
     } 
 }
 
-bool PlayerController::ShieldDamage(int damage) 
-{
-    if (mShield > 0) {
-        mShield -= damage;
-    }
-    else {
-        mShield = 0;
-    }
-    
-    LOG("Shield: %u", mShield);
-    LOG("Player Health: %u", mHealth);
-    
-    return mShield;
-}
+
 
 void PlayerController::RechargeDash()
 {
@@ -426,7 +420,6 @@ void PlayerController::RechargeDash()
             actualRegenerationTime = 0.0f;
             LOG("%i", mDashCharges);
         }
-
     }
 }
 
@@ -436,7 +429,7 @@ void PlayerController::Death()
     LOG("Death animation");
 }
 
-bool PlayerController::GetPlayerIsDead() 
+bool PlayerController::IsDead() 
 {
     return mPlayerIsDead;
 }
