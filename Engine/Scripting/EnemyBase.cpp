@@ -92,7 +92,7 @@ void EnemyBase::SetEnemyDamage(int damage)
     LOG("Enemy Health: %u", mHealth);
 }
 
-bool EnemyBase::Delay(float delay) //Lapse of time for doing some action
+bool EnemyBase::Delay(float delay)
 {
     mTimePassed += App->GetGameDt();
 

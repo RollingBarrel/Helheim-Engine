@@ -15,14 +15,26 @@ public:
     void SetMenu(bool active, bool pause);
 
 private:
-    void MenuStatus();
-    void ChangeImage(const char* name, bool enabled) const;
+    void Menu();
+    void ChangeImage(const char* imageName, bool enabled) const;
+    void ResetScreen(const char* screenName, bool activeMenu);
+    void Loading();
+    void Options();
+    void Credits();
+    bool Delay(float delay);
     void Controls();
 
-    bool mActiveMenu = true;
+    bool mMenuActive = true;
+    bool mLoadingActive = false;
+    bool mOptionsActive = false;
+    bool mCreditsActive = false;
+
     bool mPauseMenu = false;
-    bool mResetScreen = true;
-    int mImage = 1;
+    
+    bool mNextScreen = false;
+    bool mPrevScreen = false;
+    int mOption = 1;
+    float mTimePassed = 0.0f;
     const char* mActualImageName = nullptr;
     const char* mPreviousImageName = nullptr;
 };
