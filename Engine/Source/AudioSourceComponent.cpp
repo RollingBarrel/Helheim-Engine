@@ -9,28 +9,27 @@ AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Compone
 {
 }
 
+AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original, GameObject* owner)
+	: Component(owner, ComponentType::AUDIOSOURCE)
+{
+	mName = original.GetName();
+	SetEventByName(mName.c_str());
+	mParameters = original.GetParameters();
+}
+
 AudioSourceComponent::~AudioSourceComponent()
 {
 	Reset();
 }
 
 
-void AudioSourceComponent::GetParametersIDsAndValues(std::vector<unsigned int>& data1, std::vector<unsigned int>& data2, std::vector<const char*>& names, std::vector<float>& values)
+void AudioSourceComponent::GetParametersNameAndValue(std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values)
 {
-
-
-
 	for (const auto& pair : mParameters) {
-		FMOD_STUDIO_PARAMETER_ID id;
 		FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
+		mEventDescription->getParameterDescriptionByIndex(pair.first, &parameter);
 
-		id.data1 = pair.first.data1;
-		id.data2 = pair.first.data2;
-
-		mEventDescription->getParameterDescriptionByID(id, &parameter);
-
-		data1.push_back(pair.first.data1);
-		data2.push_back(pair.first.data2);
+		index.push_back(pair.first);
 		names.push_back(parameter.name);
 		values.push_back(pair.second);
 	}
@@ -56,26 +55,14 @@ void AudioSourceComponent::SetEventByName(const char* eventName)
 	mName = eventName;
 }
 
-void AudioSourceComponent::UpdateParameterValue(const char* name, float value)
+void AudioSourceComponent::UpdateParameterValueByIndex(int index, float value)
 {
-	//CheckError(mEventInstance->setParameterByName(name, value));
+	FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
+	mEventDescription->getParameterDescriptionByIndex(index, &parameter);
 
-	//auto it = mParameters.find(name);
-	//if (it != mParameters.end()) {
-	//	it->second = value;
-	//}
+	CheckError(mEventInstance->setParameterByID(parameter.id, value));
 
-}
-
-void AudioSourceComponent::UpdateParameterValueByIds(unsigned data1, unsigned data2, float value)
-{
-	FMOD_STUDIO_PARAMETER_ID id;
-	id.data1 = data1;
-	id.data2 = data2;
-
-	CheckError(mEventInstance->setParameterByID(id, value));
-
-	auto it = mParameters.find(id);
+	auto it = mParameters.find(index);
 	if (it != mParameters.end()) {
 		it->second = value;
 	}
@@ -119,7 +106,7 @@ void AudioSourceComponent::Stop()
 
 Component* AudioSourceComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new AudioSourceComponent(*this, owner);
 }
 
 void AudioSourceComponent::Save(Archive& archive) const
@@ -128,23 +115,20 @@ void AudioSourceComponent::Save(Archive& archive) const
 
 	archive.AddString("EventName", mName.c_str());
 
-	std::vector<unsigned int> parameterKeys1;
-	std::vector<unsigned int> parameterKeys2;
+	std::vector<int> parameterKeys;
 	std::vector<float> parameterValues;
 
 	for (const auto& pair : mParameters) {
-		parameterKeys1.push_back(pair.first.data1);
-		parameterKeys2.push_back(pair.first.data2);
+		parameterKeys.push_back(pair.first);
 		parameterValues.push_back(pair.second);
 	}
 
 	std::vector<Archive> objectArray;
-	for (auto i = 0; i < parameterKeys1.size(); i++)
+	for (auto i = 0; i < parameterKeys.size(); i++)
 	{
 		Archive dataArchive;
-		dataArchive.AddInt("ParametersKey1", parameterKeys1[i]);
-		dataArchive.AddInt("ParametersKey2", parameterKeys2[i]);
-		dataArchive.AddInt("ParametersValue", (int)parameterValues[i]);
+		dataArchive.AddInt("ParametersKey", parameterKeys[i]);
+		dataArchive.AddFloat("ParametersValue", parameterValues[i]);
 
 		objectArray.push_back(dataArchive);
 	}
@@ -165,20 +149,11 @@ void AudioSourceComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 
 		for (unsigned int i = 0; i < array.Size(); ++i)
 		{
-			LOG("Element %d: Has ParametersKey: %s\n     Has ParametersValue: %s\n",
-				i, array[i]["ParametersKey"].IsString() ? "true" : "false", array[i]["ParametersValue"].IsFloat() ? "true" : "false");
-			//const char* value;
-			//if (array[i].HasMember("ParametersKey") && array[i]["ParametersKey"].IsString()
-			//	&& array[i].HasMember("ParametersValue") && array[i]["ParametersValue"].IsFloat()) {
-			unsigned data1 = array[i]["ParametersKey1"].GetInt();
-			unsigned data2 = array[i]["ParametersKey"].GetInt();
-				int key = array[i]["ParametersValue"].GetInt();
+			unsigned key = array[i]["ParametersKey"].GetInt();
+			int value = array[i]["ParametersValue"].GetFloat();
 
-				UpdateParameterValueByIds(data1, data2, key);
-			//}
+			UpdateParameterValueByIndex(key, value);
 		}
-
-		
 	}
 }
 
@@ -194,16 +169,6 @@ void AudioSourceComponent::Disable()
 
 void AudioSourceComponent::Reset()
 {
-	if (mEventInstance != nullptr) {
-		delete mEventInstance;
-		mEventInstance = nullptr;
-	}
-
-	if (mEventDescription != nullptr) {
-		delete mEventDescription;
-		mEventDescription = nullptr;
-	}
-
 	mParameters.clear();
 }
 
@@ -218,7 +183,7 @@ void AudioSourceComponent::UpdateParameters()
 		FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
 		mEventDescription->getParameterDescriptionByIndex(i, &parameter);
 
-		mParameters.insert(std::make_pair(parameter.id, parameter.defaultvalue));
+		mParameters.insert(std::make_pair(i, parameter.defaultvalue));
 	}
 
 }

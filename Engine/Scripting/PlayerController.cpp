@@ -59,6 +59,8 @@ void PlayerController::Update()
     Dash();
     CheckRoute();
 
+    // Hardcoded play-step-sound solution: reproduce every second 
+    // TODO play sound according the animation
     if (mIsMoving) {
         if (!mReadyToStep)
         {

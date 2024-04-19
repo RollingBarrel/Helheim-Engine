@@ -31,12 +31,13 @@ void AudioListenerComponent::Update()
 
 Component* AudioListenerComponent::Clone(GameObject* owner) const
 {
+	// Not needed be cloned
 	return nullptr;
 }
 
 void AudioListenerComponent::Save(Archive& archive) const
 {
-
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 }
 
 void AudioListenerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -49,6 +50,7 @@ void AudioListenerComponent::Enable()
 
 void AudioListenerComponent::Disable()
 {
+	// TODO (to be implement when is needed - maybe use masterChannelGroup.setMute(true);)
 }
 
 void AudioListenerComponent::Reset()
