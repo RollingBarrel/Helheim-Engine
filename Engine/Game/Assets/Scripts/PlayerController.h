@@ -4,7 +4,21 @@
 
 class NavMeshController;
 class AnimationComponent;
-class Gun;
+
+enum class PlayerState {
+    IDLE,
+    DASH,
+    MOVE,
+    ATTACK,
+    MOVE_ATTACK,
+    DEATH
+};
+
+enum class Weapon {
+    RANGE,
+    MELEE
+};
+
 
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
@@ -19,97 +33,63 @@ class PlayerController :public Script
         void SetPlayerDamage(int damage);
         bool GetPlayerIsDead();
 
-        void WinTest();
-        void LoseTest();
-
-        //Stats variables
-        float mPlayerSpeed = 2.0f;
-        float mPlayerRotationSpeed = 0.5f;
-        GameObject* mWinArea = nullptr;
-        GameObject* mLoseArea = nullptr;
-        GameObject* mAnimationComponentHolder = nullptr;
-
-        //Dash Variables
-        float mDashSpeed = 5.0f;//35
-        float mDashDistance = 3.0f;
-        float mDashCoolDown = 3.0f;
-        int mDashCharges = 5;//3
-
-        int mHealth = 1;
-        int mShield = 100;
-        int mSanity = 100;
-
-
     private:
-
-        enum class PlayerState {
-            IDLE,
-            DASH,
-            MOVE,
-            MELEE,
-            RANGE,
-            MOVE_MELEE,
-            MOVE_RANGE,
-            GRENADE,
-            DEATH
-        };
-
-        void ChangeState(PlayerState newState);
-        void Controls();
+        void Idle();
         void Moving();
-        void Forward();
-        void Backward();
-        void Left();
-        void Right();
-        void Move(float3 position);
+        void Dash();
+        void Attack();
 
-        //Attack functions
+
         void MeleeAttack();
         void RangedAttack();
+        void Move(float3 position);
 
+        
         void Shoot(bool isChargedShot, float chargeTime);
         void ShootLogic(int damage);
         void Reload();
-
-        void ReloadWeapon();
-        void ThrowGrenade();
-
-        void Mouse_Rotation();
-        void Dash();
+        
+        
         bool ShieldDamage(int damage);
-        void Sanity();
         void Death();
-        void WinMessage();
-        void LoseMessage();
         void CheckRoute();
 
-        NavMeshController* mNavMeshControl = nullptr;
-        AnimationComponent* mAnimationComponent = nullptr;
-        Gun* mGun = nullptr;
+        Weapon mWeapon = Weapon::MELEE;
+        PlayerState mCurrentState = PlayerState::IDLE;
+        PlayerState mPreviousState = PlayerState::IDLE;
 
-        PlayerState mCurrentState;
-        PlayerState mPreviousState;
+        NavMeshController* mNavMeshControl = nullptr;
+        GameObject* mAnimationComponentHolder = nullptr;
+        AnimationComponent* mAnimationComponent = nullptr;
+
+       
 
         //Dash variables
-        bool mIsDashActive = false;
-        bool mStartCounter = false;
+        bool mIsDashCoolDownActive = false;
         float mDashTimePassed = 0.0f;
         float mDashMovement = 0;
-        bool mDashTrigger = false;
+        int mDashCharges = 50;//3
+        float mDashSpeed = 35.0f;//35
+        float mDashDistance = 5.0f;
+        float mDashCoolDown = 3.0f;
 
         bool mPlayerIsDead = false;
         bool mIsMoving = false;
-        //bool mIsRecharging = false;
-        //float mReloadTimePassed = 0.0f;
 
         //Shooting variables
         int mDamage = 1;
-        int mMaxBullets = 16;
-        int mBullets = 16;
+        int mMaxBullets = 500000;
+        int mBullets = 50000;
         float mChargedShotTime = 10.0f;
         float mBulletCostPerSecond = 1.0f;
         bool mIsChargedShot = false;
 
-        //Reload variables
-        //float mReloadTime = 10.0f;
+
+      
+        
+        float mPlayerSpeed = 2.0f;
+        int mHealth = 1;
+        int mShield = 100;
+        int mSanity = 100;
+
 };

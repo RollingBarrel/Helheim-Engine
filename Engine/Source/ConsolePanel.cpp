@@ -16,6 +16,8 @@ ConsolePanel::~ConsolePanel()
 
 void ConsolePanel::Draw(int windowFlags)
 {
+    windowFlags |= ImGuiWindowFlags_HorizontalScrollbar;
+
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
 		for (const char* logs : log) {
