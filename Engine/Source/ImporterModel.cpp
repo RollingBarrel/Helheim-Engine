@@ -14,7 +14,6 @@
 #include "ResourceMesh.h"
 #include "ResourceModel.h"
 #include "ResourceMaterial.h"
-#include <set>
 #include <map>
 
 #define TINYGLTF_IMPLEMENTATION
@@ -24,27 +23,8 @@
 #define TINYGLTF_NO_EXTERNAL_IMAGE
 #include "tiny_gltf.h"
 
-static unsigned int ImportTexture(const char* filePath, const std::string& texPath, unsigned int& uid, bool modifyAssets)
-{
-    std::string pngName = filePath;
-    unsigned int filePos = pngName.find_last_of('/');
-    pngName = pngName.substr(0, filePos + 1);
-    pngName += texPath;
-    if (!modifyAssets)
-    {
-        size_t sizeUntilName = pngName.find_last_of('/') + 1;
-        std::string extension = pngName.substr(pngName.find_last_of('.'));
-        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
-        pngName = ASSETS_TEXTURE_PATH;
-        pngName += name;
-        pngName += extension;
-    }
 
-    return App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
-}
-
-
-static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, std::set<unsigned int>&importedMaterials, std::map<unsigned int,unsigned int, unsigned int>& importedTextures, std::set<unsigned int>& importedMeshes, int parentIndex = -1)
+static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, std::map<unsigned int, unsigned int>&importedMaterials, std::map<unsigned int,unsigned int>& importedTextures, std::map<unsigned int, unsigned int>& importedMeshes, int parentIndex = -1)
 {
     ModelNode node;
 
@@ -112,57 +92,28 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         {
             if (importedMeshes.find(node.mMeshId) == importedMeshes.end())
             {
-                importedMeshes.insert(node.mMeshId);
-            }
-            if (primitive.material != -1)
-            {
-                if (importedMeshes.find(primitive.material) == importedMeshes.end())
-                {
-                    importedMeshes.insert(primitive.material);
-                    
-                    const tinygltf::Material& material = model.materials[primitive.material];
-                    int baseColorTexIdx = material.pbrMetallicRoughness.baseColorTexture.index;
-                    if (baseColorTexIdx > 0 && importedTextures.find(baseColorTexIdx) == importedTextures.end())
-                    {
-                        const std::string textPath = model.images[model.textures[baseColorTexIdx].source].uri;
-                        importedTextures[baseColorTexIdx] = ImportTexture(filePath, textPath, uid, modifyAssets);
-                    }
-                    int metalRoughTexIdx = material.pbrMetallicRoughness.metallicRoughnessTexture.index;
-                    if (metalRoughTexIdx > 0 && importedTextures.find(metalRoughTexIdx) == importedTextures.end())
-                    {
-                        const std::string textPath = model.images[model.textures[metalRoughTexIdx].source].uri;
-                        importedTextures[metalRoughTexIdx] = ImportTexture(filePath, textPath, uid, modifyAssets);
-                    }
-                    int normalTexId = -1;
-                    if (material.additionalValues.size() > 0)
-                    {
-                        for (const auto& content : material.additionalValues)
-                        {
-                            if (content.first == "normalTexture")
-                            {
-                                normalTexId = content.second.TextureIndex();
-                                if (normalTexId > 0 && importedTextures.find(normalTexId) == importedTextures.end())
-                                {
-                                    const std::string textPath = model.images[model.textures[normalTexId].source].uri;
-                                    importedTextures[normalTexId] = ImportTexture(filePath, textPath, uid, modifyAssets);
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
+                ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, uid++);
+                meshId = rMesh->GetUID();
+                importedMeshes[node.mMeshId] = meshId;
+                delete rMesh;
             }
             else
             {
-                //default material ???
+                meshId = importedMeshes[node.mMeshId];
             }
-            ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, uid++);
-            meshId = rMesh->GetUID();
             if (primitive.material != -1)
             {
-                ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], uid, modifyAssets);
-                materialId = rMaterial->GetUID();
-                delete rMaterial;
+                if (importedMaterials.find(primitive.material) == importedMaterials.end())
+                {
+                    ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], uid, importedTextures, modifyAssets);
+                    materialId = rMaterial->GetUID();
+                    delete rMaterial;
+                    importedMaterials[primitive.material] = materialId;
+                }
+                else
+                {
+                    materialId = importedMaterials[primitive.material];
+                }
             }
             else
             {
@@ -171,8 +122,6 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
                 materialId = rMaterial->GetUID();
                 delete rMaterial;
             }
-
-            delete rMesh;
             node.mUids.push_back({meshId, materialId});
         }
     }
@@ -205,7 +154,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
     for (int i = 0; i < tinyNode.children.size(); ++i)
     {
         ModelNode childNode;
-        ImportNode(modelNodes, filePath, model, tinyNode.children[i], uid, size, modifyAssets, currentIdx);
+        ImportNode(modelNodes, filePath, model, tinyNode.children[i], uid, size, modifyAssets, importedMaterials, importedTextures, importedMeshes, currentIdx);
     }
 
 }
@@ -222,8 +171,8 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
 
-    std::set<unsigned int>importedMeshes;
-    std::set<unsigned int>importedMaterials;
+    std::map<unsigned int, unsigned int>importedMeshes;
+    std::map<unsigned int, unsigned int>importedMaterials;
     std::map<unsigned int,unsigned int>importedTextures;
     unsigned int bufferSize = 0;
 
@@ -237,7 +186,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
         {
-            ImportNode(rModel->modelNodes, filePath, model, model.scenes[i].nodes[j], currentUid, bufferSize, modifyAssets);
+            ImportNode(rModel->modelNodes, filePath, model, model.scenes[i].nodes[j], currentUid, bufferSize, modifyAssets, importedMaterials, importedTextures, importedMeshes);
         }
     }
 
