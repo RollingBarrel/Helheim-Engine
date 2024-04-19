@@ -13,7 +13,7 @@ public:
 	~EnemyRobot() {}
 	void Start() override;
 	void Update() override;
-	void SetEnemyDamage(int damage) override;
+	void Hit(float damage) override;
 
 
 private:

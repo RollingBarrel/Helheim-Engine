@@ -33,16 +33,16 @@ void Enemy::Update()
 
 void Enemy::ActivateEnemy() 
 {
-    if (mEnemyActivated == false) 
+    if (mIsActive == false) 
     {
-        if (OpponentDistance(mActivationDistance)) 
+        if (OpponentDistance(mActivationRange)) 
         {
-            mEnemyActivated = true;
+            mIsActive = true;
             LOG("PLAYER IN RANGE. Movement activated");
         }
     }
     
-    if (mEnemyActivated) 
+    if (mIsActive) 
     {
         SearchPlayer();
     }
@@ -83,7 +83,7 @@ void Enemy::SearchPlayer()
     }
 }
 
-void Enemy::SetEnemyDamage(int damage) 
+void Enemy::Hit(float damage) 
 {
     if (mHealth > 0) 
     {
@@ -140,7 +140,7 @@ void Enemy::Test_Controls()
     // DAMAGE TEST
     if (App->GetInput()->GetKey(Keys::Keys_M) == KeyState::KEY_DOWN) 
     {
-        SetEnemyDamage(5);
+        Hit(5.0f);
     }
     //*******************************************************************************
 
@@ -172,7 +172,7 @@ void Enemy::Test_Right()
 
 void Enemy::Move(float3 direction) 
 {
-    float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mEnemySpeed);
+    float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mSpeed);
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
 }
 
@@ -180,7 +180,7 @@ void Enemy::Test_Mouse_Rotation()
 {
     int mX, mY;
     App->GetInput()->GetMouseMotion(mX, mY);
-    float3 rotation = { 0.0f, DegToRad(mX * mEnemyRotationSpeed), 0.0f };
+    float3 rotation = { 0.0f, DegToRad(mX * mRotationSpeed), 0.0f };
     mGameObject->SetRotation(rotation + mGameObject->GetRotation());
 }
 //************************************************************************

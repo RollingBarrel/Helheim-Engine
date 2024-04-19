@@ -14,13 +14,7 @@ class Enemy : public Script
 		void Start() override;
 		void Update() override;
 
-		virtual void SetEnemyDamage(int damage);
-
-		float mEnemySpeed = 1.0f;
-		float mEnemyRotationSpeed = 1.0f;
-		GameObject* mAnimationComponentHolder = nullptr;
-		int mHealth = 100;
-		float mActivationDistance = 15.0f;
+		virtual void Hit(float damage);
 		
 	protected:
 		bool OpponentDistance(float enemyDistance);
@@ -35,7 +29,12 @@ class Enemy : public Script
 		virtual void Test_Right();
 		//*****************************************************
 
+		float mHealth = 100.0f;
+		float mSpeed = 1.0f;
+		float mRotationSpeed = 1.0f;
+		float mActivationRange = 15.0f;
 		bool mInAttackDistance = false;
+		GameObject* mAnimationComponentHolder = nullptr;
 
 	private:
 		void ActivateEnemy();
@@ -50,6 +49,11 @@ class Enemy : public Script
 		NavMeshController* mNavMeshControl = nullptr;
 		AnimationComponent* mAnimationComponent = nullptr;
 
-		bool mEnemyActivated = false;
+		bool mIsActive = false;
 		float mTimePassed = 0.0f;
+		
+		
+		
+		
+		
 };

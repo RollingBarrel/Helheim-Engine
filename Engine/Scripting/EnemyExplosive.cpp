@@ -7,9 +7,9 @@ CREATE(EnemyExplosive)
     SEPARATOR("STATS");
     MEMBER(MemberType::INT, mHealth);
 
-    MEMBER(MemberType::FLOAT, mEnemySpeed);
-    MEMBER(MemberType::FLOAT, mEnemyRotationSpeed);
-    MEMBER(MemberType::FLOAT, mActivationDistance);
+    MEMBER(MemberType::FLOAT, mSpeed);
+    MEMBER(MemberType::FLOAT, mRotationSpeed);
+    MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::FLOAT, mArmedDistance);
 
     SEPARATOR("GAME OBJECTS");
@@ -23,7 +23,7 @@ EnemyExplosive::EnemyExplosive(GameObject* owner) : Enemy(owner)
 {
     mCurrentState = EnemyState::Deploy;
     mHealth = 15;
-    mActivationDistance = 10.0f;
+    mActivationRange = 10.0f;
     mArmedDistance = 5.0f;
 }
 
@@ -86,11 +86,11 @@ void EnemyExplosive::SearchPlayer()
     }
 }
 
-void EnemyExplosive::SetEnemyDamage(int damage) 
+void EnemyExplosive::Hit(float damage) 
 {
-    Enemy::SetEnemyDamage(damage);
+    Enemy::Hit(damage);
 
-    if (mHealth = 0) 
+    if (mHealth == 0.0f) 
     {
         ChangeState(EnemyState::Armed);
     }

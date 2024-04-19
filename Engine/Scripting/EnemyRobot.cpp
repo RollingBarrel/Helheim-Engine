@@ -9,9 +9,9 @@ CREATE(EnemyRobot)
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::INT, mHealth);
-    MEMBER(MemberType::FLOAT, mEnemySpeed);
-    MEMBER(MemberType::FLOAT, mEnemyRotationSpeed);
-    MEMBER(MemberType::FLOAT, mActivationDistance);
+    MEMBER(MemberType::FLOAT, mSpeed);
+    MEMBER(MemberType::FLOAT, mRotationSpeed);
+    MEMBER(MemberType::FLOAT, mActivationRange);
 
     MEMBER(MemberType::BOOL, mRangeActive);
     MEMBER(MemberType::FLOAT, mRangeDistance);
@@ -31,7 +31,7 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
     mCurrentState = EnemyState::Deploy;
     mPreviousState = mCurrentState;
     mHealth = 15;
-    mActivationDistance = 12.0f;
+    mActivationRange = 12.0f;
 
     mRangeActive = true;
     mRangeDistance = 9.0f;
@@ -110,10 +110,10 @@ void EnemyRobot::SearchPlayer() {
     }
 }
 
-void EnemyRobot::SetEnemyDamage(int damage) {
-    Enemy::SetEnemyDamage(damage);
+void EnemyRobot::Hit(float damage) {
+    Enemy::Hit(damage);
 
-    if (mHealth = 0) {
+    if (mHealth == 0) {
         ChangeState(EnemyState::Death);
     }
 }
@@ -253,16 +253,11 @@ void EnemyRobot::ShootLogic(int damage)
 
 void EnemyRobot::Death() {
     mInAttackDistance = false;
-
-    //*******************************
     mGameObject->SetEnabled(false);
-    //*******************************
-
-    LOG("Robot Death animation");
 }
 
 //************************************************************************
-//FOR TEST UNTIL AI WILL BE AVAILABLE
+//FOR TESTING UNTIL AI IS AVAILABLE
 void EnemyRobot::Test_Forward() {
     Enemy::Test_Forward();
     ChangeState(EnemyState::Forward);

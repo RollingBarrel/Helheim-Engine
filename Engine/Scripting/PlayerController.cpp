@@ -256,29 +256,16 @@ void PlayerController::MeleeAttack()
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
         float3 enemyPosition = enemy->GetPosition();
         float distanceToEnemy = (enemyPosition - playerPosition).Length();
-        float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
         float3 enemyToPlayer = (playerPosition - enemyPosition).Normalized();
 
         // Si el enemigo está frente al jugador y dentro del rango de ataque
-        float3 playerFront = float3(mGameObject->GetFront().x, mGameObject->GetFront().y, mGameObject->GetFront().z);
+        float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
         float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
 
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
-
-            EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (enemyScript != nullptr) 
-            {
-                enemyScript->SetEnemyDamage(mMeleeBaseDamage);
-            }
-            else 
-            {
-                EnemyRobot* enemyScript = (EnemyRobot*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-                if (enemyScript != nullptr) 
-                {
-                    enemyScript->SetEnemyDamage(mMeleeBaseDamage);
-                }
-            }
+            Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+            enemyScript->SetEnemyDamage(mMeleeBaseDamage);
         }
     }
 }
