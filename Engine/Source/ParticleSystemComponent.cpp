@@ -25,6 +25,22 @@ Component* ParticleSystemComponent::Clone(GameObject* owner) const
 
 void ParticleSystemComponent::Init()
 {
+    // set up shape properties
+    switch(mShapeType)
+	{
+        case EmitterShape::Type::CONE:
+			mShape = EmitterShapeCone(mOwner->GetPosition(), float3(0,0,1));
+			break;
+        case EmitterShape::Type::SQUARE:
+            //mShape = EmitterShapeBox();
+            break;
+        case EmitterShape::Type::CIRCLE:
+            //mShape = EmitterShapeBox();
+            break;
+        case EmitterShape::Type::NONE:
+			break;
+    }
+
     // set up mesh and attribute properties
     unsigned int VBO;
     float particleQuad[] = {
@@ -65,10 +81,10 @@ void ParticleSystemComponent::Draw() const
         glUseProgram(programId);
         for (Particle particle : particles)
         {
-            if (particle.getLifetime() > 0.0f)
+            if (particle.GetLifetime() > 0.0f)
             {
-                glUniform3f(glGetUniformLocation(programId, "offset"), particle.getPosition().x, particle.getPosition().y, particle.getPosition().y);
-                glUniform4f(glGetUniformLocation(programId, "color"), particle.getColor().x, particle.getColor().y, particle.getColor().z, particle.getColor().w);
+                glUniform3f(glGetUniformLocation(programId, "offset"), particle.GetPosition().x, particle.GetPosition().y, particle.GetPosition().y);
+                glUniform4f(glGetUniformLocation(programId, "color"), particle.GetColor().x, particle.GetColor().y, particle.GetColor().z, particle.GetColor().w);
                 glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
                 glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
                 glBindVertexArray(mVAO);
@@ -103,9 +119,9 @@ void ParticleSystemComponent::Update()
 		{
             // Initializes a particle with a random position, direction and rotation 
             // considering the shape of emission
-			float3 position = mShapeType.RandomInitPosition();
+			float3 position = mShape.RandomInitPosition();
 
-            float3 direction = mShapeType.RandomInitDirection();
+            float3 direction = mShape.RandomInitDirection();
 
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
