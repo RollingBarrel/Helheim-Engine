@@ -120,10 +120,10 @@ void EnemyRobot::SetEnemyDamage(int damage) {
 
 //Melee attack function
 void EnemyRobot::MeleeAttack() {
-	LOG("Starting MeleeAttack");
+	//LOG("Starting MeleeAttack");
 
     if (mIsMoving == false) {
-		LOG("Melee attack animation by Robot");
+		//LOG("Melee attack animation by Robot");
 	}
     else
     {

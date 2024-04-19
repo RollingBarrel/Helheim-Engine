@@ -354,33 +354,21 @@ void PlayerController::Shoot(float damage)
 
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
-
     Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
 
     if (!hits.empty()) 
     {
-        //LOG("Object %s dhas been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
         for (auto hit : hits) 
         {
             if (hit.second->GetTag()->GetName() == "Enemy") 
             {
                 LOG("Enemy %s has been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
 
-                
-
-                EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-                if (enemyScript != nullptr) 
+                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+                if (enemy)
                 {
-					enemyScript->SetEnemyDamage(damage);
-				}
-                else 
-                {
-					EnemyRobot* enemyScript = (EnemyRobot*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-                    if (enemyScript != nullptr) 
-                    {
-						enemyScript->SetEnemyDamage(damage);
-					}
-                }
+                    enemy->SetEnemyDamage(damage);
+                }   
             }
         }
     }
