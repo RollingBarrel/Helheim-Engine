@@ -571,7 +571,7 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 	ImGui::SeparatorText("Steering Parameters");
 
 	float speed = component->GetSpeed();
-	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f,0.0f))
 	{
 		component->SetSpeed(speed);
 	}

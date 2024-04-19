@@ -48,16 +48,31 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 	return new AIAgentComponent(*this, owner);
 }
 
-void AIAgentComponent::MoveAgent(float3 destination)
+void AIAgentComponent::MoveAgent(float3 destination )
 {
 	std::vector<float3> positions= App->GetNavigation()->FindNavPath(this->GetOwner()->GetPosition(), destination);
-	float3 direction = (positions[1] - positions[0]).Normalized();
-	this->GetOwner()->SetPosition(this->GetOwner()->GetPosition() + direction);
-	int a = 0;
+	if (positions.size() > 1 ) 
+	{
+		if (!IsClose(positions[positions.size() - 1]))
+		{
+			float3 direction = (positions[1] - positions[0]).Normalized();
+			direction = direction / 50 * mSpeed;
+			this->GetOwner()->SetPosition(this->GetOwner()->GetPosition() + direction);
+		}
+	}
+	
+}
+
+bool AIAgentComponent::IsClose(float3 destination) 
+{
+	float3 result = destination - this->GetOwner()->GetPosition();
+	return (result.x < 0.5 && result.x> -0.5) || (result.z < 0.5 && result.z> -0.5);
+	
 }
 
 void AIAgentComponent::Save(Archive& archive) const
 {
+	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	//archive.AddFloat("Radius", mRadius);
 	//archive.AddFloat("Height", mHeight);
 	//archive.AddFloat("StepHeight", mStepHeight);

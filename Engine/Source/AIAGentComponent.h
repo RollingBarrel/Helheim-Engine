@@ -31,6 +31,7 @@ public:
 
 
 	void MoveAgent(float3 destination);
+	bool IsClose(float3 destination);
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 private:
@@ -40,7 +41,7 @@ private:
 	//float mStepHeight = 0.0f;
 	//unsigned int mMaxSlope = 0;
 	////Steering Parameters:
-	float mSpeed = 0.0f;
+	float mSpeed = 1.0f;
 	//float mAngularSpeed = 0.0f; //Maximum speed of rotation
 	//float mAcceleration = 0.0f; 
 	//float mStoppingDistance = 0.0f; //The GO will stop when this close to the goal location.
