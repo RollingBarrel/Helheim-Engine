@@ -56,7 +56,7 @@ void PlayerController::Update()
 
     if (mAnimationComponent) 
     {
-        mAnimationComponent->OnUpdate();
+        //mAnimationComponent->OnUpdate();
     }
 
     std::map<float, GameObject*> hits;

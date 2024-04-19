@@ -1,0 +1,33 @@
+#version 460 core
+
+layout(std430, binding = 15) readonly buffer Palette {mat4 palette[];};
+layout(std430, binding = 16) readonly buffer boneIndices {uvec4 boneIndices[];};
+layout(std430, binding = 17) readonly buffer Weights {vec4 weights[];};
+layout(std430, binding = 18) readonly buffer Positions {vec3 inPos[];};
+layout(std430, binding = 19) readonly buffer Normals {vec3 inNorm[];};
+layout(std430, binding = 20) readonly buffer Tangents {vec4 inTang[];};
+layout(location binding = 25) uniform int numVertices;
+struct Vertex
+{
+    vec4 pos; // w == uv.x
+    vec4 norm; // x == uv.y
+    vec4 tang;
+};
+layout(std430, binding = 21) writeonly buffer Vertices {Vertex outVertices[];};
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+void main()
+{
+	uint index = gl_GlobalInvocationID.x;
+    if(index < numVertices) 
+    {
+       mat4 skinTransform = palette[boneIndices[0]]*weights[index][0]+ palette[boneIndices[1]]*weights[index][1]+
+       palette[boneIndices[2]]*weights[index][2]+palette[boneIndices[3]]*weights[index][3];
+       Vertex vertex = outVertices[index];
+       vertex.pos.xyz = (skinTransform*vec4(inPos[index],1.0)).xyz;
+       vertex.norm.yzw = (skinTransform*vec4(inNorm[index],0.0)).xyz;
+       vertex.tang.w = inTang[index].w;
+       vertex.tang.xyz = (skinTransform*vec4(inTang[index].xyz,0.0)).xyz;
+    }
+}

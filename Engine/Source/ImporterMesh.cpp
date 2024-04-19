@@ -219,6 +219,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
     const auto& itNorm = primitive.attributes.find("NORMAL");
     const auto& itTang = primitive.attributes.find("TANGENT");
+    const auto& itJoints = primitive.attributes.find("JOINTS_0");
+    const auto& itWeights = primitive.attributes.find("WEIGHTS_0");
 
     if (itPos != primitive.attributes.end())
     {
@@ -392,6 +394,104 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         //Generate Tangents
         float* interleavedVertices = GetInterleavedData(attributes, attributesData, numVertices);
         GenerateTangents(attributes, attributesData, numIndices, indices, vertexSize, numVertices, interleavedVertices);
+    }
+
+    if (!model.skins.empty())
+    {
+        if (itJoints != primitive.attributes.end())
+        {
+            const tinygltf::Accessor& jointsAcc = model.accessors[itJoints->second];
+            assert(jointsAcc.type == TINYGLTF_TYPE_VEC4);
+            assert(jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT || jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT);
+
+            const tinygltf::BufferView& jointsView = model.bufferViews[jointsAcc.bufferView];
+            const tinygltf::Buffer& jointsBuffer = model.buffers[jointsView.buffer];
+
+            float* data = new float[jointsAcc.count * 4];
+            switch (jointsAcc.componentType) {
+            case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
+            {
+                const unsigned short* bufferJointsShort = reinterpret_cast<const unsigned short*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
+
+                attributes.emplace_back(Attribute::JOINTS, sizeof(float) * 4, vertexSize);
+                vertexSize += sizeof(float) * 4;
+
+                for (unsigned int i = 0; i < jointsAcc.count; ++i)
+                {
+                    data[i * 4] = static_cast<float>(bufferJointsShort[0]);
+                    data[i * 4 + 1] = static_cast<float>(bufferJointsShort[1]);
+                    data[i * 4 + 2] = static_cast<float>(bufferJointsShort[2]);
+                    data[i * 4 + 3] = static_cast<float>(bufferJointsShort[3]);
+
+                    if (jointsView.byteStride != 0) {
+                        bufferJointsShort = reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(bufferJointsShort) + jointsView.byteStride);
+                    }
+                    else {
+                        bufferJointsShort += 4;
+                    }
+                }
+                break;
+            }
+            case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
+            {
+                const unsigned int* bufferJointsInt = reinterpret_cast<const unsigned int*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
+
+                attributes.emplace_back(Attribute::JOINTS, sizeof(float) * 4, vertexSize);
+                vertexSize += sizeof(float) * 4;
+
+                for (unsigned int i = 0; i < jointsAcc.count; ++i)
+                {
+                    data[i * 4] = static_cast<float>(bufferJointsInt[0]);
+                    data[i * 4 + 1] = static_cast<float>(bufferJointsInt[1]);
+                    data[i * 4 + 2] = static_cast<float>(bufferJointsInt[2]);
+                    data[i * 4 + 3] = static_cast<float>(bufferJointsInt[3]);
+
+                    if (jointsView.byteStride != 0) {
+                        bufferJointsInt = reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(bufferJointsInt) + jointsView.byteStride);
+                    }
+                    else {
+                        bufferJointsInt += 4;
+                    }
+                }
+                // These are valid component types
+                break;
+            }
+            default:
+                //ERROR handling
+                break;
+            }
+            attributesData.push_back(data);
+        }
+
+        if (itWeights != primitive.attributes.end())
+        {
+            const tinygltf::Accessor& weightsAcc = model.accessors[itWeights->second];
+            assert(weightsAcc.type == TINYGLTF_TYPE_VEC4);
+            assert(weightsAcc.componentType == GL_FLOAT);
+            const tinygltf::BufferView& weightsView = model.bufferViews[weightsAcc.bufferView];
+            const tinygltf::Buffer& weightsBuffer = model.buffers[weightsView.buffer];
+
+            const float* bufferWeights = reinterpret_cast<const float*>(&weightsBuffer.data[weightsView.byteOffset + weightsAcc.byteOffset]);
+
+            attributes.emplace_back(Attribute::WEIGHTS, sizeof(float) * 4, vertexSize);
+            vertexSize += sizeof(float) * 4;
+            float* data = new float[weightsAcc.count * 4];
+            for (unsigned int i = 0; i < weightsAcc.count; ++i)
+            {
+                data[i * 4] = bufferWeights[0];
+                data[i * 4 + 1] = bufferWeights[1];
+                data[i * 4 + 2] = bufferWeights[2];
+                data[i * 4 + 3] = bufferWeights[3];
+
+                if (weightsView.byteStride != 0) {
+                    bufferWeights = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferWeights) + weightsView.byteStride);
+                }
+                else {
+                    bufferWeights += 4;
+                }
+            }
+            attributesData.push_back(data);
+        }
     }
 
     ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numVertices, std::move(attributes), std::move(attributesData));

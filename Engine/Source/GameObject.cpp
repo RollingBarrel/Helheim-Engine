@@ -880,3 +880,68 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 
 	return foundGameObjects;
 }
+
+GameObject* GameObject::FindGameObjectInTree(const int objectToFind)
+{
+	std::pair<GameObject*, int> pair(nullptr, -2 - mParent->GetChildren().size());
+
+	GameObject* target = RecursiveTreeSearch(FindFirstParent(this), pair, objectToFind).first;
+
+	return target;
+}
+
+std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind) {
+
+	if (currentGameObject.first == nullptr)
+	{
+		std::vector<GameObject*> children = owner->GetChildren();
+		currentGameObject.second++;
+
+		if (currentGameObject.second == objectToFind)
+		{
+			std::pair<GameObject*, int> pair(owner, currentGameObject.second);
+			return pair;
+		}
+
+		for (GameObject* child : children)
+		{
+			currentGameObject = RecursiveTreeSearch(child, currentGameObject, objectToFind);
+		}
+	}
+
+	return currentGameObject;
+}
+
+GameObject* GameObject::FindFirstParent(GameObject* target) {
+
+	GameObject* parent = target->GetParent();
+
+	if (parent->GetParent() == nullptr) {
+		return target;
+	}
+	else {
+		return FindFirstParent(parent);
+	}
+}
+
+float4x4 GameObject::TranformInFirstGameObjectSpace() {
+
+	GameObject* firstParent = FindFirstParent(this);
+	float4x4 transformInParentSpace = firstParent->GetWorldTransform().Inverted().Mul(this->GetWorldTransform());
+
+	return transformInParentSpace;
+}
+
+std::vector<Component*> GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
+{
+	std::vector<Component*> components = parent->GetComponents(type);
+
+	std::vector<GameObject*> children = parent->GetChildren();
+	for (GameObject* child : children)
+	{
+		std::vector<Component*> childComponents = FindComponentsInChildren(child, type);
+		components.insert(components.end(), childComponents.begin(), childComponents.end());
+	}
+
+	return components;
+}

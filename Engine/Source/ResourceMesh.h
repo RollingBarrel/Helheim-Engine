@@ -10,7 +10,9 @@ typedef struct Attribute {
 		UV = 1 << 1,
 		NORMAL = 1 << 2,
 		TANGENT = 1 << 3,
-		COLOR = 1 << 4,
+		COLOR = 1 << 4, 
+		JOINTS = 1 << 5,
+		WEIGHTS = 1 << 6
 	};
 	Attribute(Type iType, unsigned int iSize, unsigned int iOffset) : size(iSize), offset(iOffset), type(iType) {}
 	Attribute(const Attribute& other) : size(other.size), offset(other.offset), type(other.type) {}

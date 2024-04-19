@@ -1,4 +1,5 @@
 #include "MeshRendererComponent.h"
+#include "AnimationComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
@@ -29,6 +30,8 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
+	GameObject* root = mOwner->FindFirstParent(mOwner);
+	mAnimationComponent = reinterpret_cast<AnimationComponent*>(root->GetComponent(ComponentType::ANIMATION));
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -42,6 +45,22 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	App->GetOpenGL()->BatchAddMesh(this);
 	mAABBWorld = mOBB.MinimalEnclosingAABB();
 
+	mAnimationComponent = reinterpret_cast<AnimationComponent*>(mOwner->FindFirstParent(mOwner)->GetComponent(ComponentType::ANIMATION));
+}
+
+MeshRendererComponent::~MeshRendererComponent()
+{
+	if (mMesh)
+	{
+		App->GetOpenGL()->BatchRemoveMesh(this);
+		App->GetResource()->ReleaseResource(mMesh->GetUID());
+		mMesh = nullptr;
+	}
+	if (mMaterial)
+	{
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMaterial = nullptr;
+	}
 }
 
 void MeshRendererComponent::SetMesh(unsigned int uid)
@@ -91,30 +110,46 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	//}
 }
 
+void MeshRendererComponent::LoadAnimatedMesh(bool isAnimated) {
+
+	palette.clear();
+	palette.reserve(mAnimationComponent->mGameobjectsInverseMatrices.size());
+	std::vector<std::pair<GameObject*, float4x4>> lol = mAnimationComponent->mGameobjectsInverseMatrices;
+	for (unsigned i = 0; i < mAnimationComponent->mGameobjectsInverseMatrices.size(); ++i)
+	{
+		palette.push_back((mAnimationComponent->mGameobjectsInverseMatrices[i].first->TranformInFirstGameObjectSpace() * mAnimationComponent->mGameobjectsInverseMatrices[i].second));
+	}
+	int o = 1;
+	//LOG("Palette:\n %f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f", palette[o][0][0], palette[o][0][1], palette[o][0][2], palette[o][0][3], palette[o][1][0], palette[o][1][1], palette[o][1][2], palette[o][1][3], palette[o][2][0], palette[o][2][1], palette[o][2][2], palette[o][2][3], palette[o][3][0], palette[o][3][1], palette[o][3][2], palette[o][3][3]);
+
+	unsigned int programId = App->GetOpenGL()->GetPBRProgramId();
+	glUseProgram(programId);
+	glUniformMatrix4fv(glGetUniformLocation(programId, "palette"), palette.size(), GL_TRUE, palette[0].ptr());
+
+	glUniform1i(glGetUniformLocation(programId, "hasAnimation"), isAnimated);
+	glUseProgram(0);
+
+}
+
+void MeshRendererComponent::Update() {
+
+	if (mMesh)
+	{
+		if (mMesh->HasAttribute(Attribute::JOINTS))
+		{
+			LoadAnimatedMesh(mIsAnimated);
+		}
+	}
+}
+
 void MeshRendererComponent::Enable()
 {
 	App->GetOpenGL()->BatchAddMesh(this);
-
 }
 
 void MeshRendererComponent::Disable()
 {
 	App->GetOpenGL()->BatchRemoveMesh(this);
-}
-
-MeshRendererComponent::~MeshRendererComponent()
-{
-	if (mMesh)
-	{
-		App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetResource()->ReleaseResource(mMesh->GetUID());
-		mMesh = nullptr;
-	}
-	if (mMaterial)
-	{
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMaterial = nullptr;
-	}
 }
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const

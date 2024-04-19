@@ -160,6 +160,40 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     ResourceModel* rModel = new ResourceModel(uid++);
 
+    if (!model.skins.empty())
+    {
+        for (const auto& skins : model.skins)
+        {
+            const int inverseBindMatricesIndex = skins.inverseBindMatrices;
+            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[inverseBindMatricesIndex];
+
+            const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
+
+            const unsigned char* inverseBindMatricesBuffer = &model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset];
+
+            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(inverseBindMatricesBuffer);
+
+            size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
+
+            for (size_t i = 0; i < num_inverseBindMatrices; i++)
+            {
+                const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
+
+                float4x4 inverseBindMatrix;
+
+                for (size_t row = 0; row < 4; row++) {
+                    for (size_t col = 0; col < 4; col++) {
+                        inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
+                    }
+                }
+
+                rModel->mJoints.push_back({ skins.joints[i], inverseBindMatrix });
+
+            }
+        }
+    }
+
+
     unsigned int currentUid = uid;
 
     for (int i = 0; i < model.scenes.size(); ++i)

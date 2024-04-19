@@ -21,19 +21,31 @@ public:
 	const ResourceAnimation* GetAnimation() { return mAnimation; }
 	const AnimationController* GetAnimationController() { return mController; }
 
-	void CreateNodeTree(); 
-	void DeleteNodeTree();
+	bool GetLoop() { return mLoop; }
+	void SetLoop(bool loop);
+
+	bool GetIsPlaying() { return mIsPlaying; }
+	void SetIsPlaying(bool isPlaying) { mIsPlaying = isPlaying; }
 
 	void OnStart();
 	void OnStop();
-	void OnUpdate();
+	void OnRestart();
 
 	void SetAnimation(unsigned int uid);
+
+	void SetStartTime(float time);
+	void SetEndTime(float time);
+
+	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 private:
 
 	ResourceAnimation* mAnimation;
 	AnimationController* mController;
+
+	bool mLoop = true;
+	bool mIsPlaying = false;
+
 };
 
 #endif
