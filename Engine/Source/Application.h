@@ -17,7 +17,6 @@ class ModuleUI;
 class ModuleDetourNavigation;
 class ModuleAudio;
 class ModuleEvent;
-class ModulePrograms;
 
 class Timer;
 class PreciseTimer;
@@ -47,7 +46,6 @@ public:
     ModuleDetourNavigation* GetNavigation() { return navigation; }
     ModuleAudio* GetAudio() { return audio; }
     ModuleEvent* GetEvent() { return event; }
-    ModulePrograms* GetPrograms() { return programs; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
@@ -80,9 +78,8 @@ private:
     ModuleUI* ui = nullptr;
     ModuleDetourNavigation* navigation = nullptr;
     ModuleEvent* event = nullptr;
-    ModulePrograms* programs = nullptr;
 
-#define NUM_MODULES 15
+#define NUM_MODULES 14
     Module* modules[NUM_MODULES];
 
     //Timer

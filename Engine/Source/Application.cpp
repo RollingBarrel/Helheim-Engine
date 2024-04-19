@@ -13,7 +13,6 @@
 #include "ModuleUI.h"
 #include "ModuleAudio.h"
 #include "ModuleEvent.h"
-#include "ModulePrograms.h"
 
 #include "Timer.h"
 #include "PreciseTimer.h"
@@ -92,6 +91,7 @@ update_status Application::Update(float dt)
 
 bool Application::CleanUp()
 {
+	editor->SaveCameraPosition();
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)

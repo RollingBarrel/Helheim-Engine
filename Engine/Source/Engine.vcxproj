@@ -269,7 +269,6 @@
     <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
-    <ClCompile Include="ModulePrograms.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
@@ -308,7 +307,6 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Quadtree.cpp" />
-    <ClCompile Include="PausePanel.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
     <ClCompile Include="Script.cpp" />
@@ -465,7 +463,6 @@
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ModuleEvent.h" />
-    <ClInclude Include="ModulePrograms.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
@@ -510,6 +507,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\Fragment.fs" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBR_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
@@ -531,7 +530,6 @@
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Panel.h" />
-    <ClInclude Include="PausePanel.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="ProjectPanel.h" />
     <ClInclude Include="Quadtree.h" />

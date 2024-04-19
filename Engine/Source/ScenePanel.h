@@ -20,6 +20,9 @@ public:
 	bool IsGuizmoUsing() { return mIsGuizmoUsing; }
 
 private:
+
+	void DrawScene();
+
 	unsigned int prevSizeX = 0;
 	unsigned int prevSizeY = 0;
 	bool isWindowsHovered = false;

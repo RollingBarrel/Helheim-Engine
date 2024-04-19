@@ -8,156 +8,50 @@
 #include "ResourceTexture.h"
 
 
+static unsigned int ImportTexture(const char* filePath, const std::string& texPath, unsigned int& uid, bool modifyAssets)
+{
+    std::string pngName = filePath;
+    unsigned int filePos = pngName.find_last_of('/');
+    pngName = pngName.substr(0, filePos + 1);
+    pngName += texPath;
+    if (!modifyAssets)
+    {
+        size_t sizeUntilName = pngName.find_last_of('/') + 1;
+        std::string extension = pngName.substr(pngName.find_last_of('.'));
+        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
+        pngName = ASSETS_TEXTURE_PATH;
+        pngName += name;
+        pngName += extension;
+    }
+
+    return App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
+}
+
 ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
 {
-    float4 diffuseFactor = float4::zero; 
-    float3 specularFactor = float3::zero;
-    float GlossinessFactor = 1.0f;
-    unsigned int diffuseTexture = 0; 
-    unsigned int specularGlossinessTexture = 0;
-    unsigned int normalTexture = 0;
+    const tinygltf::PbrMetallicRoughness& material = tinyMaterial.pbrMetallicRoughness;
+    float baseColorFactor[4] = { static_cast<float>(material.baseColorFactor[0]), static_cast<float>(material.baseColorFactor[1]), static_cast<float>(material.baseColorFactor[2]), static_cast<float>(material.baseColorFactor[3]) };
+    float metalicFactor = static_cast<float>(material.metallicFactor);
+    float roughnessFactor = static_cast<float>(material.roughnessFactor);
+    unsigned int baseColorTex = 0;
+    unsigned int metallicRoughTex = 0;
+    unsigned int normalTex = 0;
+
+    int baseColorTexIdx = material.baseColorTexture.index;
+    if (baseColorTexIdx >= 0)
+    {
+        const std::string textPath = tinyModel.images[tinyModel.textures[baseColorTexIdx].source].uri;
+        baseColorTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+    }
+    int metalRoughTexIdx = material.metallicRoughnessTexture.index;
+    if (metalRoughTexIdx >= 0)
+    {
+        const std::string textPath = tinyModel.images[tinyModel.textures[metalRoughTexIdx].source].uri;
+        metallicRoughTex = ImportTexture(filePath, textPath, uid, modifyAssets);;
+    }
+
 
     const char* name = tinyMaterial.name.c_str();
-
-    auto it = tinyMaterial.extensions.find("KHR_materials_pbrSpecularGlossiness");
-    if (it != tinyMaterial.extensions.end()) {
-        const tinygltf::Value& extensionMap = it->second;
-
-        if (extensionMap.Has("diffuseFactor")) {
-            const tinygltf::Value& diffuseFactorValue = extensionMap.Get("diffuseFactor");
-            if (diffuseFactorValue.IsArray()) {
-                for (int i = 0; i < 4; ++i) {
-                    diffuseFactor[i] = static_cast<float>(diffuseFactorValue.Get(i).Get<double>());
-                }
-            }
-        }
-
-        if (extensionMap.Has("specularFactor")) {
-            const tinygltf::Value& specularFactorValue = extensionMap.Get("specularFactor");
-            if (specularFactorValue.IsArray()) {
-                for (int i = 0; i < 3; ++i) {
-                    specularFactor[i] = static_cast<float>(specularFactorValue.Get(i).Get<double>());
-                }
-            }
-        }
-
-        if (extensionMap.Has("glossinessFactor")) {
-            const tinygltf::Value& glossinessFactorValue = extensionMap.Get("glossinessFactor");
-            if (glossinessFactorValue.IsNumber()) {
-                GlossinessFactor = static_cast<float>(glossinessFactorValue.Get<double>());
-            }
-        }
-
-        if (extensionMap.Has("diffuseTexture")) {
-            const tinygltf::Value& diffuseTextureValue = extensionMap.Get("diffuseTexture");
-
-            if (diffuseTextureValue.IsObject()) {
-                const tinygltf::Value& indexValue = diffuseTextureValue.Get("index");
-
-                if (indexValue.IsInt()) {
-                    int diffuseTextureIndex = indexValue.Get<int>();
-                    const tinygltf::Texture& diffuseMap = tinyModel.textures[diffuseTextureIndex];
-                    const tinygltf::Image& image = tinyModel.images[diffuseMap.source];
-
-                    std::string pngName = filePath;
-                    unsigned filePos = pngName.find_last_of('/');
-                    pngName = pngName.substr(0, filePos + 1);
-                    pngName.append(tinyModel.images[diffuseMap.source].uri);
-                    if (!modifyAssets)
-                    {
-                        size_t sizeUntilName = pngName.find_last_of('/') + 1;
-                        std::string extension = pngName.substr(pngName.find_last_of('.'));
-                        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
-                        pngName = ASSETS_TEXTURE_PATH;
-                        pngName += name;
-                        pngName += extension;
-                    }
-
-                    diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
-                }
-            }
-        }
-
-        if (extensionMap.Has("specularGlossinessTexture")) {
-            const tinygltf::Value& specularGlossinessTextureValue = extensionMap.Get("specularGlossinessTexture");
-
-            if (specularGlossinessTextureValue.IsObject()) {
-                const tinygltf::Value& indexValue = specularGlossinessTextureValue.Get("index");
-
-                if (indexValue.IsInt()) {
-                    int specularGlossinessIndex = indexValue.Get<int>();
-                    const tinygltf::Texture& specularMap = tinyModel.textures[specularGlossinessIndex];
-                    const tinygltf::Image& image = tinyModel.images[specularMap.source];
-
-                    std::string pngName = filePath;
-                    unsigned filePos = pngName.find_last_of('/');
-                    pngName = pngName.substr(0, filePos + 1);
-                    pngName.append(tinyModel.images[specularMap.source].uri);
-                    if (!modifyAssets)
-                    {
-                        size_t sizeUntilName = pngName.find_last_of('/') + 1;
-                        std::string extension = pngName.substr(pngName.find_last_of('.'));
-                        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
-                        pngName = ASSETS_TEXTURE_PATH;
-                        pngName += name;
-                        pngName += extension;
-                    }
-
-                    specularGlossinessTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
-                }
-            }
-        }
-
-    }
-
-    if (tinyMaterial.pbrMetallicRoughness.baseColorTexture.index > -1)
-    {
-        //TODO Import PBR Texture
-        const tinygltf::Texture& texture = tinyModel.textures[tinyMaterial.pbrMetallicRoughness.baseColorTexture.index];
-        const tinygltf::Image& image = tinyModel.images[texture.source];
-
-        for (int i = 0; i < 4; ++i) {
-            diffuseFactor[i] = static_cast<float>(tinyMaterial.pbrMetallicRoughness.baseColorFactor[i]);
-        }
-       
-        std::string pngName = filePath;
-        unsigned filePos = pngName.find_last_of('/');
-        pngName = pngName.substr(0, filePos + 1);
-        pngName.append(tinyModel.images[texture.source].uri);
-        if (!modifyAssets)
-        {
-            size_t sizeUntilName = pngName.find_last_of('/') + 1;
-            std::string extension = pngName.substr(pngName.find_last_of('.'));
-            std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
-            pngName = ASSETS_TEXTURE_PATH;
-            pngName += name;
-            pngName += extension;
-        }
-
-        diffuseTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
-
-        if (tinyMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index > -1)
-        {
-            const tinygltf::Texture& texture = tinyModel.textures[tinyMaterial.pbrMetallicRoughness.metallicRoughnessTexture.index];
-            const tinygltf::Image& image = tinyModel.images[texture.source];
-
-            std::string pngName = filePath;
-            unsigned filePos = pngName.find_last_of('/');
-            pngName = pngName.substr(0, filePos + 1);
-            pngName.append(tinyModel.images[texture.source].uri);
-            if (!modifyAssets)
-            {
-                size_t sizeUntilName = pngName.find_last_of('/') + 1;
-                std::string extension = pngName.substr(pngName.find_last_of('.'));
-                std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
-                pngName = ASSETS_TEXTURE_PATH;
-                pngName += name;
-                pngName += extension;
-            }
-
-            //metallicRoughness = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
-        }
-    }
 
     if (tinyMaterial.additionalValues.size() > 0)
     {
@@ -169,50 +63,49 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
 
                 if (indexValue) {
                     int normalIndex = indexValue;
-                    const tinygltf::Texture& normalMap = tinyModel.textures[normalIndex];
-                    const tinygltf::Image& image = tinyModel.images[normalMap.source];
 
-                    std::string pngName = filePath;
-                    unsigned filePos = pngName.find_last_of('/');
-                    pngName = pngName.substr(0, filePos + 1);
-                    pngName.append(tinyModel.images[normalMap.source].uri);
-                    if (!modifyAssets)
-                    {
-                        size_t sizeUntilName = pngName.find_last_of('/') + 1;
-                        std::string extension = pngName.substr(pngName.find_last_of('.'));
-                        std::string name = pngName.substr(sizeUntilName, pngName.length() - sizeUntilName - (pngName.length() - pngName.find_last_of('.')));
-                        pngName = ASSETS_TEXTURE_PATH;
-                        pngName += name;
-                        pngName += extension;
-                    }
-
-                    normalTexture = App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
+                    std::string textPath = tinyModel.images[tinyModel.textures[normalIndex].source].uri;
+                    normalTex = ImportTexture(filePath, textPath, uid, modifyAssets);
                 }
             }
         }
     }
 
-    ResourceMaterial* rMaterial = new ResourceMaterial(uid++, diffuseFactor, specularFactor, GlossinessFactor, diffuseTexture, specularGlossinessTexture, normalTexture);
+    ResourceMaterial* rMaterial = new ResourceMaterial(uid++, baseColorFactor, metalicFactor, roughnessFactor, baseColorTex, metallicRoughTex, normalTex);
     Importer::Material::Save(rMaterial);
+    return rMaterial;
+}
+
+ResourceMaterial* Importer::Material::ImportDefault()
+{
+    float baseColorFactor[4] = { 1.f };
+    float metalicFactor = 0.5f;
+    float roughnessFactor = 0.5f;
+    unsigned int baseColorTex = 0;
+    unsigned int metallicRoughTex = 0;
+    unsigned int normalTex = 0;
+
+    ResourceMaterial* rMaterial = new ResourceMaterial(999999999, baseColorFactor, metalicFactor, roughnessFactor, baseColorTex, metallicRoughTex, normalTex);
+    if(!App->GetFileSystem()->Exists("Library/99/999999999"))
+        Importer::Material::Save(rMaterial);
     return rMaterial;
 }
 
 void Importer::Material::Save(const ResourceMaterial* rMaterial)
 {
-    unsigned int texturesUID[3] = { (rMaterial->GetDiffuseTexture() != nullptr) ? rMaterial->GetDiffuseTexture()->GetUID() : 0,
-                                    (rMaterial->GetSpecularGlossinessTexture() != nullptr) ? rMaterial->GetSpecularGlossinessTexture()->GetUID() : 0,
+    unsigned int texturesUID[3] = { (rMaterial->GetBaseColorTexture() != nullptr) ? rMaterial->GetBaseColorTexture()->GetUID() : 0,
+                                    (rMaterial->GetMetallicRoughnessTexture() != nullptr) ? rMaterial->GetMetallicRoughnessTexture()->GetUID() : 0,
                                     (rMaterial->GetNormalTexture() != nullptr) ? rMaterial->GetNormalTexture()->GetUID() : 0};
 
-    bool enables[4] = { 
-        rMaterial->IsDiffuseTextureEnabled(),
-        rMaterial->IsSpecularGlossinessTextureEnabled(),
-        rMaterial->IsNormalMapEnabled(),
-        rMaterial->IsShininessMapEnabled()};
+    bool enables[3] = { 
+        rMaterial->IsBaseColorEnabled(),
+        rMaterial->IsMetallicRoughnessEnabled(),
+        rMaterial->IsNormalMapEnabled()};
 
     unsigned int size = sizeof(texturesUID) +
                         sizeof(enables) +
                         sizeof(float) * 4 + 
-                        sizeof(float) * 3 + 
+                        sizeof(float) + 
                         sizeof(float);
 
     char* fileBuffer = new char[size];
@@ -226,19 +119,19 @@ void Importer::Material::Save(const ResourceMaterial* rMaterial)
     memcpy(cursor, enables, bytes);
     cursor += bytes;
 
-    float4 diffuseFactor = rMaterial->GetDiffuseFactor();
+    float4 baseColorFactor = rMaterial->GetBaseColorFactor();
     bytes = sizeof(float) * 4;
-    memcpy(cursor, &diffuseFactor, bytes);
+    memcpy(cursor, &baseColorFactor, bytes);
     cursor += bytes;
 
-    float3 specularFactor = rMaterial->GetSpecularFactor();
-    bytes = sizeof(float) * 3;
-    memcpy(cursor, &specularFactor, bytes);
-    cursor += bytes;
-
-    float glossinessFactor = rMaterial->GetGlossinessFactor();
+    float metallicFactorFactor = rMaterial->GetMetallicFactor();
     bytes = sizeof(float);
-    memcpy(cursor, &glossinessFactor, bytes);
+    memcpy(cursor, &metallicFactorFactor, bytes);
+    cursor += bytes;
+
+    float roughnessFactor = rMaterial->GetRoughnessFactor();
+    bytes = sizeof(float);
+    memcpy(cursor, &roughnessFactor, bytes);
     cursor += bytes;
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rMaterial->GetUID(), true);
@@ -262,31 +155,30 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
         memcpy(texturesUID, cursor, bytes);
         cursor += bytes;
 
-        bool enables[4];
+        bool enables[3];
         bytes = sizeof(enables);
         memcpy(enables, cursor, bytes);
         cursor += bytes;
 
-        bool enableDiffuseTexture = enables[0];
-        bool enableSpecularGlossinessTexture = enables[1];
+        bool enablebaseColorTexture = enables[0];
+        bool enableMetallicRoughnessTexture = enables[1];
         bool enableNormalTexture = enables[2];
-        bool enableShininessTexture = enables[3];
 
-        float4 diffuseFactor;
+        float4 baseColorFactor;
         bytes = sizeof(float) * 4;
-        memcpy(&diffuseFactor, cursor, bytes);
+        memcpy(&baseColorFactor, cursor, bytes);
         cursor += bytes;
 
-        float3 specularFactor;
-        bytes = sizeof(float) * 3;
-        memcpy(&specularFactor, cursor, bytes);
-        cursor += bytes;
-
-        float glossinessFator;
+        float metallicFactor;
         bytes = sizeof(float);
-        memcpy(&glossinessFator, cursor, bytes);
+        memcpy(&metallicFactor, cursor, bytes);
         cursor += bytes;
-        ret = new ResourceMaterial(uid, diffuseFactor, specularFactor, glossinessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
+
+        float roughnessFator;
+        bytes = sizeof(float);
+        memcpy(&roughnessFator, cursor, bytes);
+        cursor += bytes;
+        ret = new ResourceMaterial(uid, baseColorFactor.ptr(), metallicFactor, roughnessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
         Importer::Material::Save(ret);
 
         delete[] fileBuffer;

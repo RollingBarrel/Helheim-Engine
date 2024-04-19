@@ -49,7 +49,10 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 	ResourceMesh* tmpMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
 	if (tmpMesh && mMesh)
 	{
+		if (mMaterial)
+			App->GetOpenGL()->BatchRemoveMesh(this);
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
+		mMesh = nullptr;
 	}
 	if (tmpMesh)
 	{
@@ -59,12 +62,33 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		mAABBWorld = mOBB.MinimalEnclosingAABB();
+		if (mMaterial)
+			App->GetOpenGL()->BatchAddMesh(this);
 	}
-	if (mMaterial && mMesh)
+}
+
+
+void MeshRendererComponent::SetMaterial(unsigned int uid)
+{
+	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
+	if (tmpMaterial && mMaterial)
 	{
-		App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetOpenGL()->BatchAddMesh(this);
+		if (mMesh)
+			App->GetOpenGL()->BatchRemoveMesh(this);
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMaterial = nullptr;
 	}
+	if (tmpMaterial)
+	{
+		mMaterial = tmpMaterial;
+		if (mMesh)
+			App->GetOpenGL()->BatchAddMesh(this);
+	}
+	//TODO: Material Default
+	//else
+	//{
+	//	mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1);
+	//}
 }
 
 void MeshRendererComponent::Enable()
@@ -76,27 +100,6 @@ void MeshRendererComponent::Enable()
 void MeshRendererComponent::Disable()
 {
 	App->GetOpenGL()->BatchRemoveMesh(this);
-}
-
-void MeshRendererComponent::SetMaterial(unsigned int uid)
-{
-	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
-	if (tmpMaterial && mMaterial)
-	{
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-	}
-	if(tmpMaterial)
-		mMaterial = tmpMaterial;
-	else
-	{
-		mMaterial = new ResourceMaterial(0, float4(0.1f,0.1f,0.1f,0.1f), float3(1.0f), 1.0f ,-1,-1,-1); //Memory Leak
-	}
-
-	if (mMaterial && mMesh)
-	{
-		App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetOpenGL()->BatchAddMesh(this);
-	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()

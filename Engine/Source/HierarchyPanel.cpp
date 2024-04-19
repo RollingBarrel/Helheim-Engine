@@ -37,9 +37,15 @@ void HierarchyPanel::Draw(int windowFlags)
 
 void HierarchyPanel::SetFocus(GameObject* focusedObject) 
 { 
-	/*mUnmarkFlag = true;
-	mFocusedObject = focusedObject;
-	mLastClickedObject = focusedObject;*/ 
+	mUnmarkFlag = true;
+	mFocusId = focusedObject->GetID();
+	mLastClickedObject = focusedObject->GetID();
+	GameObject* parent = focusedObject->GetParent();
+	while (parent != nullptr)
+	{
+		mNodesToOpen.insert(parent->GetID());
+		parent = parent->GetParent();
+	}
 }
 
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
@@ -140,6 +146,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 {
 	ImGui::PushID(node->GetID());
 	bool nodeOpen = true;
+	
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 	if (!node->mIsRoot) 
 	{
@@ -154,16 +161,29 @@ void HierarchyPanel::DrawTree(GameObject* node)
 		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (selected) {
 			baseFlags |= ImGuiTreeNodeFlags_Selected;
+			ImVec4 pressedColor = ImVec4{ 0.37f, 0.29f, 0.49f, 1.0f };
+			ImGui::PushStyleColor(ImGuiCol_Header, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, pressedColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, pressedColor);
 		}			
 		if (node->mChildren.size() == 0) 
 		{
 			baseFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+		}
+		if (mNodesToOpen.find(node->GetID()) != mNodesToOpen.end())
+		{
+			mNodesToOpen.erase(node->GetID());
+			ImGui::SetNextItemOpen(true);
 		}
 		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->mID, baseFlags, node->mName.c_str()) && (node->mChildren.size() > 0);
 		ImGui::PopStyleVar();
 		if (!node->IsActive())
 		{
 			ImGui::PopStyleColor();
+		}
+		if (selected)
+		{
+			ImGui::PopStyleColor(3);
 		}
 		DragAndDropSource(node);
 		OnLeftCkickNode(node);
