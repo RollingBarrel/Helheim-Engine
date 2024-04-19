@@ -37,7 +37,8 @@ std::vector<const char*> FmodUtils::GetEventsNames()
 
 		CheckError(bank->getEventList(eventArray, EVENT_BANK_UPPERLIMIT, &eventDescriptionCount));
 
-		for (int j = 0; j < eventDescriptionCount; ++j) {
+		for (int j = 0; j < eventDescriptionCount; ++j) 
+		{
 
 			// Name to string
 			const int bufferSize = 256;

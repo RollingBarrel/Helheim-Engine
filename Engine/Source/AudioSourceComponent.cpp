@@ -25,7 +25,8 @@ AudioSourceComponent::~AudioSourceComponent()
 
 void AudioSourceComponent::GetParametersNameAndValue(std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values)
 {
-	for (const auto& pair : mParameters) {
+	for (const auto& pair : mParameters) 
+	{
 		FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
 		mEventDescription->getParameterDescriptionByIndex(pair.first, &parameter);
 
@@ -39,7 +40,8 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 {
 	mEventInstance = event;
 
-	if (mEventInstance != nullptr) {
+	if (mEventInstance != nullptr) 
+	{
 
 		// Update parameters
 		event->getDescription(&mEventDescription);
@@ -63,7 +65,8 @@ void AudioSourceComponent::UpdateParameterValueByIndex(int index, float value)
 	CheckError(mEventInstance->setParameterByID(parameter.id, value));
 
 	auto it = mParameters.find(index);
-	if (it != mParameters.end()) {
+	if (it != mParameters.end()) 
+	{
 		it->second = value;
 	}
 }
@@ -118,7 +121,8 @@ void AudioSourceComponent::Save(Archive& archive) const
 	std::vector<int> parameterKeys;
 	std::vector<float> parameterValues;
 
-	for (const auto& pair : mParameters) {
+	for (const auto& pair : mParameters) 
+	{
 		parameterKeys.push_back(pair.first);
 		parameterValues.push_back(pair.second);
 	}
@@ -138,11 +142,13 @@ void AudioSourceComponent::Save(Archive& archive) const
 
 void AudioSourceComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
-	if (data.HasMember("EventName") && data["EventName"].IsString()) {
+	if (data.HasMember("EventName") && data["EventName"].IsString()) 
+	{
 		SetEventByName(data["EventName"].GetString());
 	}
 
-	if (data.HasMember("ParametersVariables") && data["ParametersVariables"].IsArray()) {
+	if (data.HasMember("ParametersVariables") && data["ParametersVariables"].IsArray()) 
+	{
 		UpdateParameters();
 
 		const auto& array = data["ParametersVariables"].GetArray();

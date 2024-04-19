@@ -1030,7 +1030,8 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 	std::string name = component->GetName();
 	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
 	{
-		for (auto i = 0; i < events.size(); i++) {
+		for (auto i = 0; i < events.size(); i++) 
+		{
 			if (ImGui::Selectable(events[i]))
 			{
 				component->SetEventByName(events[i]);
@@ -1065,7 +1066,8 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 		std::string str(name);
 		std::string tagName = "##" + str;
 
-		if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f")) {
+		if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f")) 
+		{
 			component->UpdateParameterValueByIndex(parameterKeys[i], value);
 		}
 	}

@@ -46,7 +46,8 @@ void PlayerController::Start()
         mAnimationComponent->OnStart();
     }
 
-    if (mAudioSourceComponentHolder) {
+    if (mAudioSourceComponentHolder) 
+    {
         mAudioSourceComponent = (AudioSourceComponent*)mAudioSourceComponentHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
 }
@@ -62,7 +63,8 @@ void PlayerController::Update()
 
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation
-    if (mIsMoving) {
+    if (mIsMoving) 
+    {
         if (!mReadyToStep)
         {
             mStepTimePassed += App->GetGameDt();
