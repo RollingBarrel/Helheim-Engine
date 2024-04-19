@@ -1,22 +1,12 @@
 #include "pch.h" 
-#include <utility>
-#include <limits.h>
 #include "TestScript.h"
-#include <string>
-#include "Globals.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
-#include "MeshRendererComponent.h"
-#include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-#include "AIAGentComponent.h"
-
 #include "Keys.h"
-#include "Geometry/AABB.h"
-
 
 CREATE(TestScript)
 {

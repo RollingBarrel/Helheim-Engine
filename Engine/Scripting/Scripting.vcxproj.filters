@@ -42,6 +42,12 @@
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -72,6 +78,12 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>

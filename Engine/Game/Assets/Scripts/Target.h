@@ -1,8 +1,6 @@
 #pragma once
 #include <Script.h>
 #include "Macros.h"
-#include "Math/float3.h"
-
 
 GENERATE_BODY(Target);
 class Target : public Script

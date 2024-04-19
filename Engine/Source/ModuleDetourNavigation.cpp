@@ -56,6 +56,12 @@ update_status ModuleDetourNavigation::Update(float dt)
 
 std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 endPos) 
 {
+	if (!mNavQuery) {
+		
+		LOG("BUILD NAVMESH");
+		std::vector<float3> breakVector(0);
+		return breakVector;
+	}
 	float3 queryAreafSize = float3(5.0f);
 
 	dtPolyRef startPolygon;
@@ -174,9 +180,14 @@ void ModuleDetourNavigation::CreateDetourData()
 
 float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize) 
 {
+	float3 queryResult = float3(0.0f);
+	if (!mNavQuery->getNodePool()) {
+		LOG("BUILD NAVMESH");
+		return queryResult;
+	}
 	dtPolyRef result;
 	dtQueryFilter temp;
-	float3 queryResult = float3(0.0f);
+
 	mNavQuery->findNearestPoly(&center[0], &halfSize[0], &temp, &result, &queryResult[0]);
 	return queryResult;
 }
