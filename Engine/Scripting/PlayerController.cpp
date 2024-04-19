@@ -23,7 +23,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashSpeed);
     MEMBER(MemberType::FLOAT, mDashDistance);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
-    MEMBER(MemberType::INT, mDashCharges);
+    MEMBER(MemberType::INT, mMaxDashCharges);
 
     SEPARATOR("ANIMATION");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
@@ -36,6 +36,7 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 
 void PlayerController::Start()
 {
+    mDashCharges = mMaxDashCharges;
     mNavMeshControl = App->GetScene()->GetNavController();
 
     if (mAnimationComponentHolder) 
@@ -49,6 +50,9 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
+
+    RechargeDash();
+
     switch (mCurrentState)
     {
     case PlayerState::IDLE:
@@ -90,7 +94,7 @@ void PlayerController::Idle()
             LOG("Melee");
         }
     }
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && !mIsDashCoolDownActive)
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && mDashCharges > 0)
     {
         mCurrentState = PlayerState::DASH;
     }
@@ -132,24 +136,29 @@ void PlayerController::Moving()
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         Move(float3::unitZ);
+        mGameObject->SetRotation(float3(0.0f, DegToRad(0), 0.0f));
+        
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
         Move(-float3::unitZ);
+        mGameObject->SetRotation(float3(0.0f, DegToRad(180.0f), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitX);
+        Move(float3::unitX);
+        mGameObject->SetRotation(float3(0.0f, DegToRad(90.0f), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitX);
+        Move(-float3::unitX);
+        mGameObject->SetRotation(float3(0.0f, DegToRad(-90.0f), 0.0f));
         anyKeyPressed = true;
     }
 
@@ -182,33 +191,31 @@ void PlayerController::Move(float3 direction)
 
 void PlayerController::Dash()
 {   
-    if (mDashCharges >= 0) 
+    
+    if (mDashMovement >= mDashDistance)
     {
-        if (mDashMovement >= mDashDistance)
-        {
-            mIsDashCoolDownActive = false;
-            mDashMovement = 0;
-            mDashCharges -= 1;
-            LOG("Dash Charges:  %i", mDashCharges);
+        mIsDashCoolDownActive = false;
+        mDashMovement = 0;
+        mDashCharges -= 1;
+        LOG("Dash Charges:  %i", mDashCharges);
 
-            Idle();
-        }
-        if (mIsDashCoolDownActive)
+        Idle();
+    }
+    if (mIsDashCoolDownActive)
+    {
+        mDashTimePassed += App->GetGameDt();
+        if (mDashTimePassed >= mDashCoolDown)
         {
-            mDashTimePassed += App->GetGameDt();
-            if (mDashTimePassed >= mDashCoolDown)
-            {
-                mDashTimePassed = 0;
-                mIsDashCoolDownActive = true;
-            }
-        }
-        else
-        {
-            mDashMovement += mDashSpeed * App->GetGameDt();
-            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
-            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+            mDashTimePassed = 0;
+            mIsDashCoolDownActive = true;
         }
     }
+    else
+    {
+        mDashMovement += mDashSpeed * App->GetGameDt();
+        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
+        mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+    }   
     
 }   
 
@@ -381,6 +388,25 @@ bool PlayerController::ShieldDamage(int damage)
     LOG("Player Health: %u", mHealth);
     
     return mShield;
+}
+
+void PlayerController::RechargeDash()
+{
+
+    static float actualRegenerationTime = 0.0f;
+
+    if (mDashCharges < mMaxDashCharges)
+    {
+        actualRegenerationTime += App->GetGameDt();
+
+        if (actualRegenerationTime >= mDashChargeRegenerationTime)
+        {
+            mDashCharges++;
+            actualRegenerationTime = 0.0f;
+            LOG("%i", mDashCharges);
+        }
+
+    }
 }
 
 void PlayerController::Death() 

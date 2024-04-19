@@ -51,6 +51,7 @@ class PlayerController :public Script
         
         
         bool ShieldDamage(int damage);
+        void RechargeDash();
         void Death();
         void CheckRoute();
 
@@ -62,13 +63,13 @@ class PlayerController :public Script
         GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
 
-       
-
         //Dash variables
         bool mIsDashCoolDownActive = false;
         float mDashTimePassed = 0.0f;
         float mDashMovement = 0;
-        int mDashCharges = 50;//3
+        int mMaxDashCharges = 3;
+        int mDashCharges = 0;//3
+        float mDashChargeRegenerationTime = 3.0f;
         float mDashSpeed = 35.0f;//35
         float mDashDistance = 5.0f;
         float mDashCoolDown = 3.0f;
@@ -84,9 +85,6 @@ class PlayerController :public Script
         float mBulletCostPerSecond = 1.0f;
         bool mIsChargedShot = false;
 
-
-      
-        
         float mPlayerSpeed = 2.0f;
         int mHealth = 1;
         int mShield = 100;
