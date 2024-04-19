@@ -45,7 +45,6 @@ class PlayerController :public Script
         void Move(float3 position);
 
         
-        void Shoot(bool isChargedShot, float chargeTime);
         void ShootLogic(int damage);
         void Reload();
         
@@ -83,7 +82,7 @@ class PlayerController :public Script
         int mBullets = 50000;
         float mChargedShotTime = 10.0f;
         float mBulletCostPerSecond = 1.0f;
-        bool mIsChargedShot = false;
+        bool mIsChargedAttack = false;
 
         float mPlayerSpeed = 2.0f;
         int mHealth = 1;

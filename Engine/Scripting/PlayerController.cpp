@@ -113,9 +113,8 @@ void PlayerController::Idle()
             mCurrentState = PlayerState::IDLE;
         }
 
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
         {
-
             if (mCurrentState == PlayerState::MOVE)
             {
                 mCurrentState = PlayerState::MOVE_ATTACK;
@@ -137,7 +136,6 @@ void PlayerController::Moving()
     {
         Move(float3::unitZ);
         mGameObject->SetRotation(float3(0.0f, DegToRad(0), 0.0f));
-        
         anyKeyPressed = true;
     }
 
@@ -164,23 +162,6 @@ void PlayerController::Moving()
 
     Idle();
 }
-
-void PlayerController::Attack()
-{
-    switch (mWeapon)
-    {
-    case Weapon::RANGE:
-        RangedAttack();
-        break;
-    case Weapon::MELEE:
-        MeleeAttack();
-        break;
-    }
-
-    Idle();
-}
-
-
 
 void PlayerController::Move(float3 direction) 
 {
@@ -218,6 +199,32 @@ void PlayerController::Dash()
     }   
     
 }   
+
+void PlayerController::Attack()
+{
+
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+    {
+        mIsChargedAttack = true;
+    }
+    else 
+    {
+        mIsChargedAttack = false;
+    }
+
+    switch (mWeapon)
+    {
+    case Weapon::RANGE:
+        RangedAttack();
+        break;
+    case Weapon::MELEE:
+        MeleeAttack();
+        break;
+    }
+
+    Idle();
+}
+
 
 void PlayerController::MeleeAttack() 
 {
@@ -262,19 +269,15 @@ void PlayerController::MeleeAttack()
 
 void PlayerController::RangedAttack() 
 {
-    Shoot(mIsChargedShot, mChargedShotTime);
-}
-
-
-void PlayerController::Shoot(bool isChargedShot, float chargeTime)
-{
-    if (isChargedShot) 
+    if (mIsChargedAttack) 
     {
         //definir que el maximo del tiempo de carga es 20 segundos y el minimo 5 segundos
-        if (chargeTime > 20) chargeTime = 20;
-
-        int mDamage = chargeTime * 5;
-        int bulletCost = chargeTime * mBulletCostPerSecond;
+        if (mChargedShotTime > 20)
+        {
+            mChargedShotTime = 20;
+        }
+        int mDamage = mChargedShotTime * 5;
+        int bulletCost = mChargedShotTime * mBulletCostPerSecond;
         if (mBullets >= bulletCost) 
         {
             ShootLogic(mDamage);
@@ -318,6 +321,7 @@ void PlayerController::ShootLogic(int damage)
 
     Ray ray;
     ray.pos = mGameObject->GetPosition();
+    ray.pos.y++;
     ray.dir = mGameObject->GetFront();
 
     float distance = 100.0f;
