@@ -5,6 +5,7 @@ class AudioListenerComponent :
 {
 public:
     AudioListenerComponent(GameObject* ownerGameObject);
+    AudioListenerComponent(const AudioListenerComponent& original, GameObject* ownerGameObject);
     ~AudioListenerComponent();
     
     void Update();

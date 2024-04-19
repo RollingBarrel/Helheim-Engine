@@ -31,7 +31,7 @@ private:
 	FMOD::Studio::Bank* mMasterBank = nullptr;
 	FMOD::Studio::Bank* mSFXBank = nullptr;
 
-	FMOD::Studio::EventInstance* currentInstance = nullptr;
+	FMOD::Studio::EventInstance* mCurrentInstance = nullptr;
 
 
 };

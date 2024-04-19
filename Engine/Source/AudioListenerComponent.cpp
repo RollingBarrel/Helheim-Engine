@@ -10,6 +10,10 @@ AudioListenerComponent::AudioListenerComponent(GameObject* ownerGameObject) : Co
 	
 }
 
+AudioListenerComponent::AudioListenerComponent(const AudioListenerComponent& original, GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::AUDIOLISTENER)
+{
+}
+
 AudioListenerComponent::~AudioListenerComponent()
 {
 		
@@ -31,8 +35,7 @@ void AudioListenerComponent::Update()
 
 Component* AudioListenerComponent::Clone(GameObject* owner) const
 {
-	// Not needed be cloned
-	return nullptr;
+	return new AudioListenerComponent(*this, owner);
 }
 
 void AudioListenerComponent::Save(Archive& archive) const
