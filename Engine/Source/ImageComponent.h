@@ -42,7 +42,7 @@ public:
 
 private:
     ResourceTexture* mImage = nullptr;
-    unsigned int mResourceId = 1220566130;
+    unsigned int mResourceId = 148626881; // Default white texture
 
     //TODO: Handle filename when setting the image
     const char* mFileName = nullptr;
