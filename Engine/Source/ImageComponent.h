@@ -51,7 +51,6 @@ private:
     float mAlpha = 1.0f;
     bool mHasAlpha = false;
 
-
     float2 mTexOffset = float2::zero;
     bool mHasDiffuse = true;
     bool mMantainRatio = true;

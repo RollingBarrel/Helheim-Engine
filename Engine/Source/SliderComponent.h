@@ -1,9 +1,9 @@
 #pragma once
 #include "Component.h"
 #include "GameObject.h"
+#include "ImageComponent.h"
+#include "Transform2DComponent.h"
 
-class ImageComponent;
-class ButtonComponent;
 
 class SliderComponent :
     public Component
@@ -20,7 +20,13 @@ public:
     void SetFillPercent(float fillPercent);
 
 private:
-    void Init();
-    float fillPercent = 0.75f;
+    GameObject* mFill = nullptr;
+    GameObject* mBackground = nullptr;
+    Transform2DComponent* mSliderTransform2D = nullptr;
+    ImageComponent* mBgImage = nullptr;
+    ImageComponent* mFillImage = nullptr;
+    Transform2DComponent* mBgTransform2D = nullptr;
+    Transform2DComponent* mFillTransform2D = nullptr;
+    float mFillPercent = 0.75f;
 };
 
