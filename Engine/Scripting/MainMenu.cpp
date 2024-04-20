@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "Transform2DComponent.h"
 
 CREATE(MainMenu)
 {
@@ -25,7 +26,45 @@ void MainMenu::Update()
     Controls();
 }
 
-void MainMenu::Start() {}
+void MainMenu::Start() 
+{
+    /*
+    if (!mPauseMenu)
+    {
+        mOption = 2;
+        //Transform2DComponent position = ((Transform2DComponent*)(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D)));
+
+        float3 currentPosition = ((Transform2DComponent*)(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D)))->GetPosition();
+        float3 newPosition(currentPosition.x, 29.0f, currentPosition.z);
+
+        //((Transform2DComponent*)(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D)))->SetPosition(newPosition);
+    }
+    else
+    {
+        mOption = 1;
+    }
+    */
+
+    if (!mPauseMenu)
+    {
+        mOption = 2;
+
+        Transform2DComponent* transformComponent = static_cast<Transform2DComponent*>(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D));
+
+        if (transformComponent)
+        {
+            float3 currentPosition = transformComponent->GetPosition();
+            currentPosition.y = 29.0f;
+            float3 newPosition(currentPosition.x, currentPosition.y, currentPosition.z);
+
+            transformComponent->SetPosition(newPosition);
+        }
+    }
+    else
+    {
+        mOption = 1;
+    }
+}
 
 void MainMenu::SetMenu(bool active, bool pause)
 {
@@ -52,6 +91,22 @@ void MainMenu::Menu()
                     ChangeImage(mPreviousImageName, false);
                 }
 
+                mActualImageName = "Button_ContinueGame";
+                mPreviousImageName = mActualImageName;
+                ChangeImage(mActualImageName, true);
+
+                if (mNextScreen) {
+                    mNextScreen = false;
+                    ResetScreen("Pause_Game", false);
+                }
+
+                break;
+            case 2:
+                if (mPreviousImageName)
+                {
+                    ChangeImage(mPreviousImageName, false);
+                }
+
                 mActualImageName = "Button_NewGame";
                 mPreviousImageName = mActualImageName;
                 ChangeImage(mActualImageName, true);
@@ -63,7 +118,7 @@ void MainMenu::Menu()
                     Loading();
                 }
                 break;
-            case 2:
+            case 3:
                 ChangeImage(mPreviousImageName, false);
                 mActualImageName = "Button_Options";
                 mPreviousImageName = mActualImageName;
@@ -76,7 +131,7 @@ void MainMenu::Menu()
                     Options();
                 }
                 break;
-            case 3:
+            case 4:
                 ChangeImage(mPreviousImageName, false);
                 mActualImageName = "Button_Credits";
                 mPreviousImageName = mActualImageName;
@@ -89,7 +144,7 @@ void MainMenu::Menu()
                     Credits();
                 }
                 break;
-            case 4:
+            case 5:
                 ChangeImage(mPreviousImageName, false);
                 mActualImageName = "Button_Quit";
                 mPreviousImageName = mActualImageName;
@@ -170,25 +225,51 @@ void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
-        if (mOption > 1)
-        {
-            mOption--;
+        if (!mPauseMenu) {
+            if (mOption > 2)
+            {
+                mOption--;
+            }
+            else
+            {
+                mOption = 5;
+            }
         }
         else
         {
-            mOption = 4;
-        }        
+            if (mOption > 1)
+            {
+                mOption--;
+            }
+            else
+            {
+                mOption = 5;
+            }
+        }         
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
-        if (mOption < 4)
-        {
-            mOption++;
+        if (!mPauseMenu) {
+            if (mOption < 5)
+            {
+                mOption++;
+            }
+            else
+            {
+                mOption = 2;
+            }
         }
         else
         {
-            mOption = 1;
+            if (mOption < 5)
+            {
+                mOption++;
+            }
+            else
+            {
+                mOption = 1;
+            }
         }
     }
 

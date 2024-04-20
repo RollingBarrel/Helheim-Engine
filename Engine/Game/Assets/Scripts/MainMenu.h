@@ -28,12 +28,10 @@ private:
     bool mLoadingActive = false;
     bool mOptionsActive = false;
     bool mCreditsActive = false;
-
-    bool mPauseMenu = false;
-    
+    bool mPauseMenu = true;
     bool mNextScreen = false;
     bool mPrevScreen = false;
-    int mOption = 1;
+    int mOption = 2;
     float mTimePassed = 0.0f;
     const char* mActualImageName = nullptr;
     const char* mPreviousImageName = nullptr;
