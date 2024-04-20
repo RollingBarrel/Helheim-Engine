@@ -490,6 +490,7 @@
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SliderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1209,6 +1210,7 @@
     <ClInclude Include="ButtonComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
+    <ClInclude Include="SliderComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
