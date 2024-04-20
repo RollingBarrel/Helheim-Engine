@@ -15,12 +15,12 @@ public:
 
     void Reset() override {}
     void Update() override {}
-    void Init();
+
     Component* Clone(GameObject* owner) const override;
     void SetFillPercent(float fillPercent);
 
 private:
-    //TODO: Add fill %
+    void Init();
     float fillPercent = 0.75f;
 };
 

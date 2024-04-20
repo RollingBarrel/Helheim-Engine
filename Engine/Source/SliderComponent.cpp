@@ -39,7 +39,7 @@ void SliderComponent::Init()
 	// Set default values
 	bgImage->SetColor(float3(1.f, 0, 0));
 	fillImage->SetColor(float3(0, 1.f, 0));
-	sliderTransform2D->SetSize(float2(400, 50));
+	sliderTransform2D->SetSize(float2(500, 50));
 	bgTransform2D->SetSize(float2::one);
 
 	const float3 fillPosition = float3((1-fillPercent)/2, 0, 0);
