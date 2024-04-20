@@ -37,6 +37,8 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
 	mTags.push_back(new Tag(6, "Obstacle", TagType::SYSTEM));
 	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
+	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
+
 }
 
 ModuleScene::~ModuleScene()
