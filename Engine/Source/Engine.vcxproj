@@ -536,6 +536,7 @@
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBR_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\skinning.comp" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
     <None Include="..\Game\Assets\Shaders\ui.fs" />
