@@ -44,7 +44,7 @@ public:
     ModuleUI* GetUI() { return ui; }
     ModuleResource* GetResource() { return resource; }
     ModuleDetourNavigation* GetNavigation() { return navigation; }
-    ModuleAudio* GeAudio() { return audio; }
+    ModuleAudio* GetAudio() { return audio; }
     ModuleEvent* GetEvent() { return event; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }
