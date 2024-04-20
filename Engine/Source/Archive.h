@@ -54,7 +54,6 @@ public:
     void AddFloat(const char* key, float value);
     void AddBool(const char* key, bool value);
     void AddIntArray(const char* key, const std::vector<unsigned int>& array);
-    void AddFloatArray(const char* key, const std::vector<float>& array);
     void AddFloat2(const char* key, const float2& vector);
     void AddFloat3(const char* key, const float3& vector);
     void AddFloat4(const char* key, const float vector[4]);
