@@ -12,7 +12,6 @@
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
 #include "Geometry/Ray.h"
-#include "AIAGentComponent.h"
 
 CREATE(PlayerController)
 {
@@ -23,7 +22,6 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
     MEMBER(MemberType::GAMEOBJECT, mWinArea);
     MEMBER(MemberType::GAMEOBJECT, mLoseArea);
-    MEMBER(MemberType::GAMEOBJECT, mObjective);
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
     MEMBER(MemberType::FLOAT, testeando2);
     END_CREATE;
@@ -82,17 +80,12 @@ void PlayerController::Update()
 
 void PlayerController::CheckRoute() 
 {
-
-    AIAgentComponent* agent= (AIAgentComponent*)mGameObject->GetComponent(ComponentType::AIAGENT);
-    //if (agent) {
-    //    agent->MoveAgent(mObjective->GetPosition());
-    //}
-  
     if (App->GetInput()->GetKey(Keys::Keys_P) == KeyState::KEY_REPEAT) 
     {
         float3 winPosition = mWinArea->GetPosition();
         float3 playerPosition = mGameObject->GetPosition();
         std::vector<float3> pathPoints = App->GetNavigation()->FindNavPath(playerPosition, winPosition);
+
         for (size_t i = 0; i < pathPoints.size() - 1; i++)
         {
             if (i == 0) 
