@@ -22,6 +22,7 @@
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
+#include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
 
 #include "ImporterMaterial.h"
@@ -32,6 +33,7 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
+#include "FmodUtils.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -422,6 +424,11 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
+				
+				case ComponentType::AUDIOSOURCE: 
+					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
+					break;
+				
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
@@ -1014,6 +1021,63 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	ImGui::EndTable();
 }
 
+void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
+{
+	std::vector<const char*> events = FmodUtils::GetEventsNames();
+	ImGui::Text("Launch event");
+	ImGui::SameLine();
+
+	std::string name = component->GetName();
+	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
+	{
+		for (auto i = 0; i < events.size(); i++) 
+		{
+			if (ImGui::Selectable(events[i]))
+			{
+				component->SetEventByName(events[i]);
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+
+	ImGui::Separator();
+	ImGui::Text("Event parameters");
+
+	std::vector<int> parameterKeys;
+	std::vector<const char*> names;
+	std::vector<float> parameterValues;
+
+	component->GetParametersNameAndValue(parameterKeys, names, parameterValues);
+
+	for (auto i = 0; i < parameterKeys.size(); i++)
+	{
+		const char* name = names[i];
+		float value = parameterValues[i];
+
+		float max = 0;
+		float min = 0;
+
+		FmodUtils::GetParametersMaxMinByComponent(component, name, max, min);
+
+		ImGui::Text("%s: ", name);
+		ImGui::SameLine();
+
+		std::string str(name);
+		std::string tagName = "##" + str;
+
+		if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f")) 
+		{
+			component->UpdateParameterValueByIndex(parameterKeys[i], value);
+		}
+	}
+
+}
+void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
+{
+
+}
+;
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
 {
 }
