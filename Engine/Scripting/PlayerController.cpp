@@ -265,7 +265,7 @@ void PlayerController::MeleeAttack()
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
             Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            enemyScript->SetEnemyDamage(mMeleeBaseDamage);
+            enemyScript->Hit(mMeleeBaseDamage);
         }
     }
 }
@@ -356,7 +356,7 @@ void PlayerController::Shoot(float damage)
                 Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
-                    enemy->SetEnemyDamage(damage);
+                    enemy->Hit(damage);
                 }   
             }
         }
