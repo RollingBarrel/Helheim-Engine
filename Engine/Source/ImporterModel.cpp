@@ -173,7 +173,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     std::map<unsigned int, unsigned int>importedMeshes;
     std::map<unsigned int, unsigned int>importedMaterials;
-    std::map<unsigned int,unsigned int>importedTextures;
+    std::map<unsigned int, unsigned int>importedTextures;
     unsigned int bufferSize = 0;
 
     unsigned int animationId = 0;
