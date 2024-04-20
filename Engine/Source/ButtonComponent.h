@@ -29,5 +29,5 @@ public:
     void AddEventHandler(EventType eventType, std::function<void()> handler);
 
 private:
-    std::vector<std::function<void()>> eventHandlers[3];
+    std::vector<std::function<void()>> mEventHandlers[3];
 };
