@@ -6,6 +6,7 @@
 #include "ImporterMesh.h"
 #include "ImporterMaterial.h"
 #include "ImporterAnimation.h"
+#include "ImporterTexture.h"
 
 #include "Math/float4x4.h"
 
@@ -13,6 +14,7 @@
 #include "ResourceMesh.h"
 #include "ResourceModel.h"
 #include "ResourceMaterial.h"
+#include <map>
 
 #define TINYGLTF_IMPLEMENTATION
 
@@ -22,7 +24,7 @@
 #include "tiny_gltf.h"
 
 
-static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, int parentIndex = -1)
+static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, std::map<unsigned int, unsigned int>&importedMaterials, std::map<unsigned int,unsigned int>& importedTextures, std::map<unsigned int, unsigned int>& importedMeshes, int parentIndex = -1)
 {
     ModelNode node;
 
@@ -88,22 +90,38 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
     {
         for (const auto& primitive : model.meshes[node.mMeshId].primitives)
         {
-            ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, uid++);
-            meshId = rMesh->GetUID();
-            if (primitive.material != -1)
+            if (importedMeshes.find(node.mMeshId) == importedMeshes.end())
             {
-                ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], uid, modifyAssets);
-                materialId = rMaterial->GetUID();
-                delete rMaterial;
+                ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, uid++);
+                meshId = rMesh->GetUID();
+                importedMeshes[node.mMeshId] = meshId;
+                delete rMesh;
             }
             else
             {
+                meshId = importedMeshes[node.mMeshId];
+            }
+            if (primitive.material != -1)
+            {
+                if (importedMaterials.find(primitive.material) == importedMaterials.end())
+                {
+                    ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], uid, importedTextures, modifyAssets);
+                    materialId = rMaterial->GetUID();
+                    delete rMaterial;
+                    importedMaterials[primitive.material] = materialId;
+                }
+                else
+                {
+                    materialId = importedMaterials[primitive.material];
+                }
+            }
+            else
+            {
+                //Import default del material !!!
                 ResourceMaterial* rMaterial = Importer::Material::ImportDefault();
                 materialId = rMaterial->GetUID();
                 delete rMaterial;
             }
-
-            delete rMesh;
             node.mUids.push_back({meshId, materialId});
         }
     }
@@ -136,7 +154,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
     for (int i = 0; i < tinyNode.children.size(); ++i)
     {
         ModelNode childNode;
-        ImportNode(modelNodes, filePath, model, tinyNode.children[i], uid, size, modifyAssets, currentIdx);
+        ImportNode(modelNodes, filePath, model, tinyNode.children[i], uid, size, modifyAssets, importedMaterials, importedTextures, importedMeshes, currentIdx);
     }
 
 }
@@ -153,7 +171,9 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
 
-
+    std::map<unsigned int, unsigned int>importedMeshes;
+    std::map<unsigned int, unsigned int>importedMaterials;
+    std::map<unsigned int, unsigned int>importedTextures;
     unsigned int bufferSize = 0;
 
     unsigned int animationId = 0;
@@ -166,7 +186,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
         {
-            ImportNode(rModel->modelNodes, filePath, model, model.scenes[i].nodes[j], currentUid, bufferSize, modifyAssets);
+            ImportNode(rModel->modelNodes, filePath, model, model.scenes[i].nodes[j], currentUid, bufferSize, modifyAssets, importedMaterials, importedTextures, importedMeshes);
         }
     }
 
