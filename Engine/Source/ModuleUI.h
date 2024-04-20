@@ -28,6 +28,7 @@ public:
 
 private:
 	void DrawWidget(GameObject* gameObject);
+	void CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered);
 
 	GameObject* mCanvas = nullptr;
 

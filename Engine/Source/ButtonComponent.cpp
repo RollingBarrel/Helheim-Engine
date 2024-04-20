@@ -6,7 +6,6 @@
 #include "Component.h"
 #include "Script.h"
 
-
 ButtonComponent::ButtonComponent(GameObject* owner, bool active) : Component(owner, ComponentType::BUTTON) 
 {
 }
@@ -24,7 +23,7 @@ Component* ButtonComponent::Clone(GameObject* owner) const
     return nullptr;
 }
 
-void ButtonComponent::OnClicked() const
+/*void ButtonComponent::OnClicked() const
 {
     std::vector<Component*> componentList = GetOwner()->GetComponents(ComponentType::SCRIPT);
     for (Component* scriptComponent : componentList)
@@ -34,6 +33,16 @@ void ButtonComponent::OnClicked() const
         {
             script->OnButtonClick();
         }
+    }
+}*/
+
+void ButtonComponent::AddEventHandler(EventType eventType, std::function<void()> handler) {
+    eventHandlers[static_cast<int>(eventType)].push_back(handler);
+}
+
+void ButtonComponent::TriggerEvent(EventType eventType) {
+    for (auto& handler : eventHandlers[static_cast<int>(eventType)]) {
+        handler();
     }
 }
 

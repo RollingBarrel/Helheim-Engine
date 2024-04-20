@@ -18,6 +18,7 @@
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 #include "CameraComponent.h"
+#include "ButtonComponent.h"
 
 #include "Math/TransformOps.h"
 
@@ -28,6 +29,14 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
 {
     SetImage(mResourceId);
+
+	ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
+	if (component != nullptr) 
+	{
+		component->AddEventHandler(EventType::Press, std::bind(&ImageComponent::OnPress, this));
+		component->AddEventHandler(EventType::Hover, std::bind(&ImageComponent::OnHover, this));
+		component->AddEventHandler(EventType::Click, std::bind(&ImageComponent::OnClick, this));
+	}
 }
 
 ImageComponent:: ~ImageComponent() 
@@ -247,4 +256,29 @@ bool ImageComponent::CleanUp()
 	glDeleteBuffers(1, &mQuadVBO);
 	glDeleteVertexArrays(1, &mQuadVAO);
 	return true;
+}
+
+void ImageComponent::OnPress() {
+	if (mColor.x == 1.0f) {
+		SetColor(float3(0.5, 0.5, 0.5));
+	}
+	else {
+		SetColor(float3(1, 1, 1));
+	}
+	LOG("OnPress");
+}
+
+void ImageComponent::OnHover() {
+	SetColor(float3(0.8, 0.8, 0.8));
+	LOG("OnHover");
+}
+
+void ImageComponent::OnClick() {
+	if (mColor.x == 1.0f) {
+		SetColor(float3(0, 0, 0));
+	}
+	else {
+		SetColor(float3(1, 1, 1));
+	}
+	LOG("OnClick");
 }
