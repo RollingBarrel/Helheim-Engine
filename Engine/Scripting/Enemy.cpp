@@ -14,173 +14,55 @@ void Enemy::Start()
 {
     mNavMeshControl = App->GetScene()->GetNavController();
 
-    if (mAnimationComponentHolder) 
-    {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
-    }
+    ModuleScene* scene = App->GetScene();
+    mPlayer = scene->FindGameObjectWithTag(scene->GetRoot(), scene->GetTagByName("Player")->GetID());
+    mHealth = mMaxHealth;
 }
 
 void Enemy::Update()
 {
-    ActivateEnemy();
-
-    if (mAnimationComponent) 
-    {
-        mAnimationComponent->OnUpdate();
-    }
 }
 
 void Enemy::ActivateEnemy() 
 {
-    if (mIsActive == false) 
-    {
-        if (OpponentDistance(mActivationRange)) 
-        {
-            mIsActive = true;
-            LOG("PLAYER IN RANGE. Movement activated");
-        }
-    }
-    
-    if (mIsActive) 
-    {
-        SearchPlayer();
-    }
 }
 
-//This is the distance from the enemy (self) to an opponent (player or another enemy)
-bool Enemy::OpponentDistance(float triggerDistance) 
+bool Enemy::IsPlayerInRange(float range) 
 {
-    ModuleScene* scene = App->GetScene();
-    std::vector<GameObject*> Opponents;
+    float distance = 0.0f;
+    distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;
 
-    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Player")->GetID(), Opponents);
-    
-    float3 selfPosition = mGameObject->GetPosition();
-
-    for (auto opponent : Opponents)
-    {
-        float3 opponentPosition = opponent->GetPosition();
-
-        float distance = selfPosition.Distance(opponentPosition);
-
-        if (distance < triggerDistance) 
-        {
-            return true;
-        }
-        else 
-        {
-            return false;
-        }
-    }
-}
-
-void Enemy::SearchPlayer() 
-{
-    if (mInAttackDistance == false) 
-    {
-        Test_Controls(); //Enemy's test movement emulating AI
-    }
+    return (distance <= range);
 }
 
 void Enemy::Hit(float damage) 
 {
-    if (mHealth > 0) 
-    {
-        mHealth -= damage;
-    }
+    
+    mHealth -= damage;
+    
     LOG("Enemy Health: %u", mHealth);
+
+
+    if (mHealth <= 0)
+    {
+        Death();
+    }
+}
+
+void Enemy::Death()
+{
+    mGameObject->SetEnabled(false);
 }
 
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
 {
-    mTimePassed += App->GetGameDt();
+   static float timePassed = 0.0f;
+   timePassed += App->GetGameDt();
 
-    if (mTimePassed >= delay)
+    if (timePassed >= delay)
     {
-        mTimePassed = 0;
+        timePassed = 0;
         return true;
     }
     else return false;
 }
-
-//************************************************************************
-//FOR TEST UNTIL AI WILL BE AVAILABLE
-void Enemy::Test_Controls() 
-{
-    Test_Mouse_Rotation();
-
-    bool anyKeyPressed = false;
-
-    if (App->GetInput()->GetKey(Keys::Keys_I) == KeyState::KEY_REPEAT) 
-    {
-        Test_Forward();
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_K) == KeyState::KEY_REPEAT) 
-    {
-        Test_Backward();
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) 
-    {
-        Test_Left();
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_L) == KeyState::KEY_REPEAT) 
-    {
-        Test_Right();
-        anyKeyPressed = true;
-    }
-
-    //*******************************************************************************
-    // DAMAGE TEST
-    if (App->GetInput()->GetKey(Keys::Keys_M) == KeyState::KEY_DOWN) 
-    {
-        Hit(5.0f);
-    }
-    //*******************************************************************************
-
-    if (!anyKeyPressed) 
-    {
-        //ChangeState(EnemyState::Idle);
-    }
-}
-
-void Enemy::Test_Forward() 
-{
-    Move(mGameObject->GetFront());
-}
-
-void Enemy::Test_Backward() 
-{
-    Move(mGameObject->GetFront() * -1);
-}
-
-void Enemy::Test_Left() 
-{
-    Move(mGameObject->GetRight());
-}
-
-void Enemy::Test_Right() 
-{
-    Move(mGameObject->GetRight() * -1);
-}
-
-void Enemy::Move(float3 direction) 
-{
-    float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mSpeed);
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-}
-
-void Enemy::Test_Mouse_Rotation() 
-{
-    int mX, mY;
-    App->GetInput()->GetMouseMotion(mX, mY);
-    float3 rotation = { 0.0f, DegToRad(mX * mRotationSpeed), 0.0f };
-    mGameObject->SetRotation(rotation + mGameObject->GetRotation());
-}
-//************************************************************************

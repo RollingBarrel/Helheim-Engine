@@ -3,6 +3,19 @@
 #include "Geometry/Ray.h"
 #include <ScriptComponent.h>
 
+enum class EnemyState 
+{
+	IDLE,
+	CHASE,
+	ATTACK,
+};
+
+enum class RobotType
+{
+	RANGE,
+	MELEE
+};
+
 GENERATE_BODY(EnemyRobot);
 class EnemyRobot : public Enemy
 {
@@ -13,48 +26,25 @@ public:
 	~EnemyRobot() {}
 	void Start() override;
 	void Update() override;
-	void Hit(float damage) override;
-
 
 private:
-	enum class EnemyState {
-		Deploy,
-		Forward,
-		Backward,
-		Left,
-		Right,
-		RangeAttack,
-		MeleeAttack,
-		Death
-	};
 
-	void ChangeState(EnemyState newState);
-	void StateMachine();
-	void SearchPlayer() override;
+	void Idle();
+	void Chase();
+	void Attack();
+
 	void MeleeAttack() ;
 	void RangeAttack();
-	void Shoot();
-	void ShootLogic(int damage);
-	void Death();
 
-	//*****************************************************
-	//FOR TEST UNTIL AI WILL BE AVAILABLE
-	void Test_Forward() override;
-	void Test_Backward() override;
-	void Test_Left() override;
-	void Test_Right() override;
-	//*****************************************************
+	EnemyState mCurrentState = EnemyState::IDLE;
+	RobotType mType = RobotType::RANGE;
 
-	EnemyState mCurrentState;
-	EnemyState mPreviousState;
-	float mRangeDistance;
-	float mMeleeDistance;
-	int mChargeTime = 0.5f;
-	bool mMeleeActive;
-	bool mRangeActive;
-	int mMeeleDamage;
-	int mRangeDamage;
-	bool mIsMoving = false;
-	bool mIsReadyToShoot = false;
+	float mRangeDistance = 9.0f;
+	float mRangeDamage = 15.0f;
+
+	float mMeleeDistance = 2.0f;
+	float mMeeleDamage = 10.0f;
+	
+
 };
 

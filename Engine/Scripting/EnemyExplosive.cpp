@@ -37,6 +37,11 @@ void EnemyExplosive::Update()
     Enemy::Update();
 }
 
+void EnemyExplosive::Hit(float damage)
+{
+}
+
+/*
 //Change actual animation state of the enemy
 void EnemyExplosive::ChangeState(EnemyState newState) 
 {
@@ -149,3 +154,5 @@ void EnemyExplosive::Test_Right()
 }
 
 //************************************************************************
+
+*/

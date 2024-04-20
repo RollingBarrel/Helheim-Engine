@@ -13,11 +13,11 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mActivationRange);
 
-    MEMBER(MemberType::BOOL, mRangeActive);
+    SEPARATOR("RANGE");
     MEMBER(MemberType::FLOAT, mRangeDistance);
     MEMBER(MemberType::INT, mRangeDamage);
 
-    MEMBER(MemberType::BOOL, mMeleeActive);
+    SEPARATOR("MELEE");
     MEMBER(MemberType::FLOAT, mMeleeDistance);
     MEMBER(MemberType::INT, mMeeleDamage);
    
@@ -28,18 +28,6 @@ CREATE(EnemyRobot)
 
 EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
-    mCurrentState = EnemyState::Deploy;
-    mPreviousState = mCurrentState;
-    mHealth = 15;
-    mActivationRange = 12.0f;
-
-    mRangeActive = true;
-    mRangeDistance = 9.0f;
-    mRangeDamage = 15;
-
-    mMeleeActive = true;
-    mMeleeDistance = 2.0f;
-    mMeeleDamage = 10;
 }
 
 void EnemyRobot::Start()
@@ -50,187 +38,106 @@ void EnemyRobot::Start()
 void EnemyRobot::Update()
 {
     Enemy::Update();
+
+    switch (mCurrentState) 
+    {
+    case EnemyState::IDLE:
+        Idle();
+        break;
+    case EnemyState::CHASE:
+        Chase();
+        break;
+    case EnemyState::ATTACK:
+        Attack();
+        break;
+    }
 }
 
-//Change actual animation state of the enemy
-void EnemyRobot::ChangeState(EnemyState newState) {
-    mCurrentState = newState;
-    StateMachine();
+void EnemyRobot::Idle()
+{
+    if (IsPlayerInRange(mActivationRange))
+    {
+        mCurrentState = EnemyState::CHASE;
+    }
 }
 
-//Shows actual animation state of the enemy
-void EnemyRobot::StateMachine() {
-    switch (mCurrentState) {
-        //******************************************************
-        //FOR TEST UNTIL AI WILL BE AVAILABLE (will be changed the system to call the State Machine)
-    case EnemyState::Deploy:
-        LOG("Deploy animation");
-        break;
-    case EnemyState::Forward:
-        LOG("Forward animation");
-        break;
-    case EnemyState::Backward:
-        LOG("Backward animation");
-        break;
-    case EnemyState::Left:
-        LOG("Left animation");
-        break;
-    case EnemyState::Right:
-        LOG("Right animation");
-        break;
-        //******************************************************
-    case EnemyState::RangeAttack:
+void EnemyRobot::Chase()
+{
+
+    float range = 0.0f;
+
+    if (IsPlayerInRange(mActivationRange))
+    {
+        switch (mType)
+        {
+        case RobotType::RANGE:
+            range = mRangeDistance;
+            break;
+        case RobotType::MELEE:
+            range = mMeleeDistance;
+            break;
+        }
+
+        if (IsPlayerInRange(range))
+        {
+            mCurrentState = EnemyState::ATTACK;
+        }
+    }
+    else
+    {
+        mCurrentState = EnemyState::IDLE;
+    }
+}
+
+void EnemyRobot::Attack()
+{
+    float range = 0.0f;
+
+    switch (mType)
+    {
+    case RobotType::RANGE:
         RangeAttack();
+        range = mRangeDistance;
         break;
-    case EnemyState::MeleeAttack:
+    case RobotType::MELEE:
         MeleeAttack();
-		break;
-    case EnemyState::Death:
-        Death();
+        range = mMeleeDistance;
         break;
     }
-}
 
-void EnemyRobot::SearchPlayer() {
-    Enemy::SearchPlayer();
-
-    if (OpponentDistance(mRangeDistance)) {
-        mInAttackDistance = true;
-
-        if (OpponentDistance(mMeleeDistance) && mMeleeActive)
-        {   
-            ChangeState(EnemyState::MeleeAttack);
-        }
-        else
-        {
-            if (mRangeActive) {
-                ChangeState(EnemyState::RangeAttack);
-            }
-        }
-    }
-}
-
-void EnemyRobot::Hit(float damage) {
-    Enemy::Hit(damage);
-
-    if (mHealth == 0) {
-        ChangeState(EnemyState::Death);
-    }
-}
-
-//Melee attack function
-void EnemyRobot::MeleeAttack() {
-	//LOG("Starting MeleeAttack");
-
-    if (mIsMoving == false) {
-		//LOG("Melee attack animation by Robot");
-	}
-    else
+    if (!IsPlayerInRange(range))
     {
-        switch (mPreviousState) {
-		case EnemyState::Forward:
-			LOG("Robot is attacking while running forward");
-			break;
-		case EnemyState::Backward:
-			LOG("Robot is attacking while running backward");
-			break;
-		case EnemyState::Left:
-			LOG("Robot is attacking while running Left");
-			break;
-		case EnemyState::Right:
-			LOG("Robot is attacking while running right");
-			break;
-		}
-	}
-
-    ModuleScene* scene = App->GetScene();
-    std::vector<GameObject*> Players;
-
-    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Player")->GetID(), Players);
-    //player position
-    float3 enemyPosition = mGameObject->GetPosition();
-    // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
-    for (auto player : Players)
-    {
-        // Componente de malla del enemigo
-        MeshRendererComponent* enemyMesh = (MeshRendererComponent*)player->GetComponent(ComponentType::MESHRENDERER);
-
-        // Posición del enemigo
-        float3 playerPosition = player->GetPosition();
-        // Distancia entre el jugador y el enemigo
-        float distanceToEnemy = (playerPosition - enemyPosition).Length();
-        float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
-        float3 playerToEnemy = (enemyPosition - playerPosition).Normalized();
-
-        // Si el enemigo está frente al jugador y dentro del rango de ataque
-        float3 enemyFront = float3(mGameObject->GetFront().x, mGameObject->GetFront().y, mGameObject->GetFront().z);
-        float dotProduct = playerToEnemy.Dot(enemyFrontNormalized);
-
-        if (distanceToEnemy < 2.0f && dotProduct < 0)
-        {
-            PlayerController* playerScript = (PlayerController*)((ScriptComponent*)player->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (playerScript != nullptr)
-            {
-                playerScript->Hit(mMeeleDamage);
-            }
-
-        }
+        mCurrentState = EnemyState::CHASE;
     }
+
 }
 
-void EnemyRobot::RangeAttack() {
-    LOG("Starting RangeAttack");
-
-    if (mIsMoving == false) {
-        LOG("Range attack animation by Robot");
-    }
-    else
-    {
-        switch (mPreviousState) {
-        case EnemyState::Forward:
-            LOG("Robot is shooting while running forward");
-            break;
-        case EnemyState::Backward:
-            LOG("Robot is shooting while running backward");
-            break;
-        case EnemyState::Left:
-            LOG("Robot is shooting while running Left");
-            break;
-        case EnemyState::Right:
-            LOG("Robot is shooting while running right");
-            break;
-        }
-    }
-
-    Shoot();
-}
-
-void EnemyRobot::Shoot( )
+void EnemyRobot::MeleeAttack() 
 {
-    ShootLogic(mRangeDamage);
-    /*// TO DO: Disparar cada cierto tiempo
-    if (Delay(mChargeTime)) 
-    {
-        mIsReadyToShoot = true;
-    }
-    else 
-    {
-        mIsReadyToShoot = false;
-    }
-    if (mIsReadyToShoot) 
-    {
-        ShootLogic(mRangeDamage);
-    }*/
+    MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
+    float3 playerPosition = mPlayer->GetPosition();
+    float distanceToEnemy = (playerPosition - mGameObject->GetPosition()).Length();
+    float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
+    float3 playerToEnemy = (mGameObject->GetPosition() - playerPosition).Normalized();
+    float dotProduct = playerToEnemy.Dot(enemyFrontNormalized);
 
+    if (distanceToEnemy < 2.0f && dotProduct < 0)
+    {
+        PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+        if (playerScript != nullptr)
+        {
+            playerScript->Hit(mMeeleDamage);
+        }
+    }
+    
 }
 
-void EnemyRobot::ShootLogic(int damage)
+void EnemyRobot::RangeAttack() 
 {
-    LOG("Robot is shooting");
     std::map<float, GameObject*> hits;
-
     Ray ray;
     ray.pos = mGameObject->GetPosition();
+    ray.pos.y++;
     ray.dir = mGameObject->GetFront();
 
     float distance = 100.0f;
@@ -239,42 +146,15 @@ void EnemyRobot::ShootLogic(int damage)
     Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
  
         //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
-        for (auto hit : hits) {
-            if (hit.second->GetTag()->GetName() == "Player") {
-
+        for (auto hit : hits) 
+        {
+            if (hit.second->GetTag()->GetName() == "Player") 
+            {
                 PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)
                 {
-                    playerScript->Hit(damage);
+                    playerScript->Hit(mRangeDamage);
                 }
             }
         }
 }
-
-void EnemyRobot::Death() {
-    mInAttackDistance = false;
-    mGameObject->SetEnabled(false);
-}
-
-//************************************************************************
-//FOR TESTING UNTIL AI IS AVAILABLE
-void EnemyRobot::Test_Forward() {
-    Enemy::Test_Forward();
-    ChangeState(EnemyState::Forward);
-}
-
-void EnemyRobot::Test_Backward() {
-    Enemy::Test_Backward();
-    ChangeState(EnemyState::Backward);
-}
-
-void EnemyRobot::Test_Left() {
-    Enemy::Test_Left();
-    ChangeState(EnemyState::Left);
-}
-
-void EnemyRobot::Test_Right() {
-    Enemy::Test_Right();
-    ChangeState(EnemyState::Right);
-}
-//************************************************************************

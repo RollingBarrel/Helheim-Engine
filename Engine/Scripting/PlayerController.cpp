@@ -56,11 +56,6 @@ void PlayerController::Start()
     mHealth = mMaxHealth;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
-    if (mAnimationComponentHolder) 
-    {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
-    }
    
 }
 

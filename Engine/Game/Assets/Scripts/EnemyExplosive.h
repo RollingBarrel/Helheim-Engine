@@ -25,16 +25,16 @@ class EnemyExplosive : public Enemy
 
 		void ChangeState(EnemyState newState);
 		void StateMachine();
-		void SearchPlayer() override;
+		//void SearchPlayer() override;
 		void Armed();
 		void Explosion();
 
 		//*****************************************************
 		//FOR TEST UNTIL AI WILL BE AVAILABLE
-		void Test_Forward() override;
-		void Test_Backward() override;
-		void Test_Left() override;
-		void Test_Right() override;
+		//void Test_Forward() override;
+		//void Test_Backward() override;
+		//void Test_Left() override;
+		//void Test_Right() override;
 		//*****************************************************
 
 		EnemyState mCurrentState;	
