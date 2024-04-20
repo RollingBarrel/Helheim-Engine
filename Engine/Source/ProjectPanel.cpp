@@ -24,15 +24,12 @@ void ProjectPanel::Draw(int windowFlags)
 
 	PathNode* root = App->GetFileSystem()->GetRootNode();
 
-
-
-
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
 		ImGui::Columns(2);
 		ImGui::BeginChild("Folders");
-		//DrawAssetsFolder(*root);
-		DrawFolders(*root);
+		if(root != nullptr)
+			DrawFolders(*root);
 		ImGui::EndChild();
 		ImGui::NextColumn();
 		ImGui::BeginChild("Assets");
@@ -53,6 +50,7 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 	for (auto i = 0; i < current.mChildren.size(); ++i)
 	{	
 		bool selected = false;
+
 		if (mSelectedNode) 
 		{
 			selected = strcmp(mSelectedNode->mName, current.mChildren[i]->mName) == 0;

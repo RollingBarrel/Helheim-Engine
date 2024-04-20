@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;$(SolutionDir)Source\Dependencies\FMOD\api\core\inc;$(SolutionDir)Source\Dependencies\FMOD\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;33010</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -144,7 +144,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;$(SolutionDir)Source\Dependencies\FMOD\api\studio\inc;$(SolutionDir)Source\Dependencies\FMOD\api\core\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>

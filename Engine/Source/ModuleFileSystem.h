@@ -30,6 +30,12 @@ struct PathNode
 	PathNode* mParent;
 	std::vector<PathNode*> mChildren;
 	std::vector<AssetDisplay*> assets;
+
+	void CleanUp()
+	{
+		mChildren.clear();
+		assets.clear();
+	}
 };
 
 
@@ -76,12 +82,12 @@ public:
 	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
 
 	PathNode* GetRootNode() { return mRoot; }
+	void CleanNode(PathNode* node);
 
 private:
 
 	void UpdateScripts();
 
-	void CleanNode(PathNode* node);
 	PathNode* mRoot = nullptr;
 };
 

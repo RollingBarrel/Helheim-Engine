@@ -86,7 +86,8 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 
 	mNavQuery->findStraightPath(&startPos[0], &endPos[0], polygonPath, pathPoylgonCount, positionPath, straightPathFlags, nullptr, &numberOfPositions,MAX_AMOUNT,0);
 
-	std::vector<float3> positionsPathResult(numberOfPositions);
+	std::vector<float3> positionsPathResult;
+	positionsPathResult.reserve(numberOfPositions);
 
 	for (size_t i = 0; i < numberOfPositions; ++i)
 	{
