@@ -29,7 +29,7 @@ ResourceMesh::ResourceMesh(
     unsigned int inNumVertices,
     std::vector<Attribute>&& attributes,
     std::vector<float*>&& attributesData) : Resource(uid, Type::Mesh),
-    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(indices), mVertexSize(0), mAttributes(attributes), mAttributesData(attributesData)
+    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(indices), mVertexSize(0), mAttributes(std::move(attributes)), mAttributesData(std::move(attributesData))
 {
     indices = nullptr;
     for (Attribute attribute : mAttributes)
@@ -50,7 +50,7 @@ ResourceMesh::ResourceMesh(const ResourceMesh& other): Resource(other.GetUID(), 
 }
 
 ResourceMesh::ResourceMesh(ResourceMesh&& other) : Resource(other.GetUID(), Type::Mesh),
-    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(new unsigned int[other.mNumIndices]), mVertexSize(other.mVertexSize), mAttributes(other.mAttributes), mAttributesData(other.mAttributesData)
+    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(other.mIndices), mVertexSize(other.mVertexSize), mAttributes(std::move(other.mAttributes)), mAttributesData(std::move(other.mAttributesData))
 {
     other.mIndices = nullptr;
     //TODO: Needed ??
