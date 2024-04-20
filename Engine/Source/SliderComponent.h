@@ -15,14 +15,12 @@ public:
 
     void Reset() override {}
     void Update() override {}
-    void Draw();
     void Init();
     Component* Clone(GameObject* owner) const override;
+    void SetFillPercent(float fillPercent);
 
 private:
-    GameObject* mBackground = nullptr;
-    GameObject* mFill = nullptr;
-    //ButtonComponent* mSliderButton = nullptr;
-	//ImageComponent* mSliderFill = nullptr;
+    //TODO: Add fill %
+    float fillPercent = 0.75f;
 };
 
