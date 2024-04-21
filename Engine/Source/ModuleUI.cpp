@@ -142,14 +142,14 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y && mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y) 
 			{
 				// Click event (button released after press)
-				if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_UP) 
+				if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) 
 				{
 					button->TriggerEvent(EventType::Click);
 					eventTriggered = true;
 					return; // Terminate function
 				}
 				// Button pressed
-				else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) 
+				/*else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
 				{
 					button->TriggerEvent(EventType::Press);
 					eventTriggered = true;
@@ -161,7 +161,7 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 					button->TriggerEvent(EventType::Hover);
 					eventTriggered = true;
 					return; // Terminate function
-				}
+				}*/
 			}
 		}
 

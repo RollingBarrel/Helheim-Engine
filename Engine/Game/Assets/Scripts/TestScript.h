@@ -15,8 +15,10 @@ public:
     ~TestScript() {}
     void Start() override;
     void Update() override;
-   
+
 private:
+    void OnClick();
+
     float mPlayerSpeed = 1;
     float mSpeed = 1;
     float3 mTestFloat3 = float3(5, 15, -4);

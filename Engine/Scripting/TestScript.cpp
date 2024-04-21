@@ -13,6 +13,8 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "AIAGentComponent.h"
+#include "ButtonComponent.h"
+#include "ImageComponent.h"
 
 #include "Keys.h"
 #include "Geometry/AABB.h"
@@ -40,6 +42,18 @@ void TestScript::Start()
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
     GameObject* juan = App->GetScene()->Find("Juan");
+
+    ButtonComponent* component = static_cast<ButtonComponent*>(App->GetScene()->Find("Button")->GetComponent(ComponentType::BUTTON));
+    if (component != nullptr)
+    {
+        component->AddEventHandler(EventType::Click, std::bind(&TestScript::OnClick, this));
+    }
+}
+
+void TestScript::OnClick() 
+{
+    ImageComponent* component = static_cast<ImageComponent*>(App->GetScene()->Find("Button")->GetComponent(ComponentType::IMAGE));
+    component->SetColor(float3(0, 0, 0));
 }
 
 void TestScript::Update()
