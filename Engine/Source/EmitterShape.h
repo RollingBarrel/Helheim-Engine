@@ -4,9 +4,16 @@
 
 class EmitterShape
 {
+    friend class InspectorPanel;
 public:
+    enum Type
+    {
+        NONE,
+		CONE,
+        SQUARE,
+        CIRCLE
+	};
     EmitterShape();
-    EmitterShape(const EmitterShape& orig);
     ~EmitterShape();
 
     virtual float3 RandomInitPosition();
@@ -19,40 +26,32 @@ protected:
     float3 mDirection;
     float mShapeRadius;
     float mShapeAngle;
+    float2 mShapeSize;
 };
 
 class EmitterShapeCone : public EmitterShape
 {
 public:
+    EmitterShapeCone(float3 position, float3 direction);
+
 	float3 RandomInitPosition() override;
     float3 RandomInitDirection() override;
 };
 
-//class EmitterShapeBox : public EmitterShape
-//{
-//public:
-//    EmitterShapeBox();
-//	EmitterShapeBox(const EmitterShapeBox& orig);
-//	~EmitterShapeBox() override;
-//
-//	float3 RandomInitPosition() override;
-//    float3 RandomInitDirection() override;
-//
-//private:
-//    float2 mShapeBox;
-//};
-//
-//class EmitterShapeCone : public EmitterShape
-//{
-//public:
-//    EmitterShapeCone();
-//    EmitterShapeCone(const EmitterShapeCone& orig);
-//    ~EmitterShapeCone() override;
-//
-//    float3 RandomInitPosition() override;
-//    float3 RandomInitDirection() override;
-//
-//private:
-//    float mShapeAngle;
-//    float mShapeRadius;
-//};
+class EmitterShapeSquare : public EmitterShape
+{
+public:
+    EmitterShapeSquare(float3 position, float3 direction);
+
+    float3 RandomInitPosition() override;
+    float3 RandomInitDirection() override;
+};
+
+class EmitterShapeCircle : public EmitterShape
+{
+public:
+    EmitterShapeCircle(float3 position, float3 direction);
+
+    float3 RandomInitPosition() override;
+    float3 RandomInitDirection() override;
+};

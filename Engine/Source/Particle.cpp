@@ -9,7 +9,7 @@ Particle::Particle()
     mSpeedLinear = 0.01f;
     mIsSizeCurve = false;
     mSizeLinear = 1.0f;
-    mMaxLifeTime = 0.0f;
+    mMaxLifeTime = 1000.0f;
     mLifeTime = 1000.0f;
     mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }

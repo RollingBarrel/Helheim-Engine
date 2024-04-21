@@ -25,6 +25,7 @@
 #include "ButtonComponent.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
+#include "EmitterShape.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -1091,9 +1092,26 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		ImGui::Bezier("Size Presets", points);
 	}
 
-	//static float v[5] = { 0.950f, 0.050f, 0.795f, 0.035f };
-	//ImGui::Bezier("easeInExpo", v);
-	//float value = ImGui::BezierValue(1, v);
-	//ImGui::Text("Bezier = %f", value);
+	static const char* items[]{ "Cone","Square","Circle" };
+	static int Selecteditem = 0;
+	bool check = ImGui::Combo("MyCombo", &Selecteditem, items, IM_ARRAYSIZE(items));
+	if (check)
+	{
+		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
+	}	
+	switch(component->mShapeType)
+	{
+		case EmitterShape::Type::CONE:
+			ImGui::InputFloat("Angle", &component->mShape.mShapeAngle);
+			ImGui::InputFloat("Radius", &component->mShape.mShapeRadius);
+			break;
+		case EmitterShape::Type::SQUARE:
+			ImGui::InputFloat2("Width", &component->mShape.mShapeSize.x);
+			break;
+		case EmitterShape::Type::CIRCLE:
+			ImGui::InputFloat("Radius", &component->mShape.mShapeRadius);
+			break;
+
+	}
 }
 

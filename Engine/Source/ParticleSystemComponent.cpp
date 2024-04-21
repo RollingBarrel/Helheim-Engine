@@ -28,7 +28,7 @@ ParticleSystemComponent::~ParticleSystemComponent()
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
     delete mImage;
-    delete mShapeType;
+    //delete mShapeType;
     for (auto particle : mParticles)
     {
         delete particle;
@@ -43,7 +43,23 @@ Component* ParticleSystemComponent::Clone(GameObject* owner) const
 }
 
 void ParticleSystemComponent::Init()
-{   
+{
+    // set up shape properties
+    switch(mShapeType)
+	{
+        case EmitterShape::Type::CONE:
+			mShape = EmitterShapeCone(mOwner->GetPosition(), float3(0,0,1));
+			break;
+        case EmitterShape::Type::SQUARE:
+            //mShape = EmitterShapeBox();
+            break;
+        case EmitterShape::Type::CIRCLE:
+            //mShape = EmitterShapeBox();
+            break;
+        case EmitterShape::Type::NONE:
+			break;
+    }
+
     // set up mesh and attribute properties
     float particleQuad[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
@@ -113,7 +129,7 @@ void ParticleSystemComponent::Draw() const
                 Quat rotation = Quat::identity;
                 float3 scale = float3(mParticles[i]->GetSize());
                 float3 pos = mParticles[i]->GetPosition();
-                float4x4 transform = float4x4::FromTRS(pos, rotation, scale);
+                float4x4 transform = float4x4::FromTRS(pos, rotation, scale).Transposed();
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
                 memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
             }
@@ -157,9 +173,9 @@ void ParticleSystemComponent::Update()
 		{
             // Initializes a particle with a random position, direction and rotation 
             // considering the shape of emission
-			float3 position = mShapeType->RandomInitPosition();
+			float3 position = mShape.RandomInitPosition();
 
-            float3 direction = mShapeType->RandomInitDirection();
+            float3 direction = mShape.RandomInitDirection();
 
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);

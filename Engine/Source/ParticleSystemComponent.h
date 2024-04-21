@@ -2,11 +2,12 @@
 
 #include "Component.h"
 #include <map>
+#include "EmitterShape.h"
 
 class Material;
 class ResourceTexture;
 class Particle;
-class EmitterShape;
+//class EmitterShape;
 struct Mesh;
 
 class ENGINE_API ParticleSystemComponent : public Component
@@ -40,18 +41,20 @@ private:
 	float mLifeTime = 10.0f;
 
 	bool mIsSpeedCurve;
-	float mSpeedLineal = 1.0f;
+	float mSpeedLineal = 100.0f;
 	float4 mSpeedCurve;
 
 	bool mIsSizeCurve;
 	float mSizeLineal = 1.0f;
 	float4 mSizeCurve;
 
-	float mEmissionRate = 0.0f;
+	float mEmissionRate = 1.0f;
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 
-	EmitterShape* mShapeType;
+	EmitterShape mShape;
+	EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
+
 	std::map<float, float4> mColorGradient;
 	std::vector<Particle*> mParticles;
 	unsigned int mVAO;
