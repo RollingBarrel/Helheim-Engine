@@ -296,7 +296,11 @@ void ModuleScene::Load(const char* sceneName)
 		App->GetCamera()->SetCurrentCamera(cameraGameObject);
 	}
 
-	App->GetScriptManager()->Start();
+	if (App->IsPlayMode())
+	{
+		App->GetScriptManager()->Start();
+	}
+	
 
 }
 

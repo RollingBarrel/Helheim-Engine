@@ -53,6 +53,8 @@ CREATE(PlayerController)
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
+    SEPARATOR("WIN AREA");
+    MEMBER(MemberType::GAMEOBJECT, mWinArea);
 
     END_CREATE;
 }
@@ -105,6 +107,16 @@ void PlayerController::Update()
         Death();
         break;
     }
+
+
+    if (mWinArea)
+    {
+        if (mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
+        {
+            App->GetScene()->Load("MainMenu");
+        }
+    }
+
 
 }
 

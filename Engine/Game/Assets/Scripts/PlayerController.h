@@ -113,4 +113,7 @@ class PlayerController :public Script
         //DEBUG
         bool mGodMode = false;
 
+
+        GameObject* mWinArea = nullptr;
+
 };

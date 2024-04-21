@@ -175,6 +175,7 @@ void EditorControlPanel::Play()
 	App->GetScriptManager()->Start();
 	App->GetGameClock()->Start();
 	App->GetScene()->GetNavController()->HandleBuild();
+	App->PlayMode(true);
 
 	switch (mState)
 	{
@@ -223,6 +224,7 @@ void EditorControlPanel::Stop()
 	App->SetCurrentClock(App->GetEngineClock());	
 	App->GetEngineClock()->Resume();				
 	App->GetScriptManager()->Stop();
+	App->PlayMode(false);
 	App->GetScene()->Load("TemporalScene");
 	ImGui::SetWindowFocus("Scene##");
 
