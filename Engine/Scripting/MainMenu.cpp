@@ -48,6 +48,9 @@ void MainMenu::SetMenu(bool active, bool pause)
 {
     mMenuActive = active;
     mPauseMenu = pause;
+
+    Update();
+    LOG("MENU ACTIVE");
 }
 
 void MainMenu::ButtonsPosition(const char* imageName, float position) const
@@ -171,7 +174,7 @@ void MainMenu::Loading() {
         if (Delay(2.0f))
         {
             ChangeImage("Loading_Screen", false);
-            App->GetScene()->Load("scene.json");
+            App->GetScene()->Load("Level1.json");
         }
     }
 }

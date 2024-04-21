@@ -1,53 +1,6 @@
 {
-    "Scene": {
+    "Prefab": {
         "GameObjects": [
-            {
-                "UID": 93024951,
-                "ParentUID": 1,
-                "Name": "GameManager",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "ScriptName": "GameManager",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "STATS",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mSplashScreens",
-                                "MemberType": 2,
-                                "VariableData": true
-                            },
-                            {
-                                "VariableName": "mTimeScreen",
-                                "MemberType": 1,
-                                "VariableData": 5.0
-                            }
-                        ]
-                    }
-                ]
-            },
             {
                 "UID": 1415378057,
                 "ParentUID": 1,
@@ -70,7 +23,7 @@
                     1.0
                 ],
                 "Tag": 0,
-                "PrefabId": 307990193,
+                "PrefabId": 0,
                 "OverridePrefab": true,
                 "Components": [
                     {
@@ -176,7 +129,7 @@
                             1.0
                         ],
                         "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 0.5
                     }
                 ]
             },
@@ -238,7 +191,7 @@
                         ]
                     },
                     {
-                        "ImageID": 148626881,
+                        "ImageID": 1220566130,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -426,7 +379,7 @@
                             {
                                 "VariableName": "mMenuActive",
                                 "MemberType": 2,
-                                "VariableData": true
+                                "VariableData": false
                             },
                             {
                                 "VariableName": "mPauseMenu",
@@ -542,7 +495,7 @@
                 "UID": 740184236,
                 "ParentUID": 1200038439,
                 "Name": "Button_NewGame",
-                "isEnabled": true,
+                "isEnabled": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -842,7 +795,7 @@
                 "UID": 342804857,
                 "ParentUID": 618208034,
                 "Name": "Menu",
-                "isEnabled": true,
+                "isEnabled": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -1421,56 +1374,6 @@
                         ],
                         "HasAlpha": false,
                         "Alpha": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 1610123394,
-                "ParentUID": 1,
-                "Name": "MainCamera",
-                "isEnabled": true,
-                "Translation": [
-                    -1998397155538108500.0,
-                    -1998397155538108500.0,
-                    -1998397155538108500.0
-                ],
-                "Rotation": [
-                    0.24740396440029145,
-                    0.0,
-                    0.0,
-                    0.9689124226570129
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 4,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "ScriptName": "PlayerCamera",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mLookTarget",
-                                "MemberType": 3,
-                                "VariableData": -572662307
-                            },
-                            {
-                                "VariableName": "mFollowTarget",
-                                "MemberType": 3,
-                                "VariableData": -572662307
-                            }
-                        ]
-                    },
-                    {
-                        "ComponentType": 6,
-                        "AspectRatio": 1.8452554941177369,
-                        "NearPlane": 0.009999999776482582,
-                        "FarPlane": 1000.0,
-                        "IsOrtographic": false
                     }
                 ]
             }
