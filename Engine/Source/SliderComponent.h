@@ -20,6 +20,9 @@ public:
     Component* Clone(GameObject* owner) const override;
     void SetFillPercent(float fillPercent);
 
+    void Save(Archive& archive) const override;
+    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
 private:
     GameObject* mFill = nullptr;
     GameObject* mBackground = nullptr;

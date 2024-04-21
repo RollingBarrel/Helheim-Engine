@@ -480,6 +480,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::AUDIOLISTENER:
 		newComponent = new AudioListenerComponent(this);
+		break;
 	case ComponentType::SLIDER:
 		newComponent = new SliderComponent(this);
 		break;
