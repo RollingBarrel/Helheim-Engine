@@ -24,7 +24,6 @@ public:
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
-    void OnClicked() const;
     void TriggerEvent(EventType eventType);
     void AddEventHandler(EventType eventType, std::function<void()> handler);
 

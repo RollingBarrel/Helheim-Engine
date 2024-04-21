@@ -41,10 +41,6 @@ public:
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
 private:
-    void OnPress();
-    void OnHover();
-    void OnClick();
-
     ResourceTexture* mImage = nullptr;
     unsigned int mResourceId = 1220566130;
 
