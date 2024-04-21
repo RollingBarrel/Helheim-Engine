@@ -540,8 +540,14 @@ void GameObject::AddComponent(Component* component, Component* position)
 
 void GameObject::RecalculateLocalTransform() 
 {
-
-	mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	if (mParent->mWorldTransformMatrix.Determinant4() != 0)
+	{
+		mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	}
+	else 
+	{
+		mLocalTransformMatrix = float4x4::identity;
+	}
 
 	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
 	mEulerRotation = mRotation.ToEulerXYZ();
