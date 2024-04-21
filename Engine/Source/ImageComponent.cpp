@@ -39,6 +39,24 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	}*/
 }
 
+ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE)
+{
+	mImage = original.mImage;
+	mResourceId = original.mResourceId;
+	mFileName = original.mFileName;
+
+	mColor = original.mColor;
+	mAlpha = original.mAlpha;
+	mHasAlpha = original.mHasAlpha;
+
+	mTexOffset = original.mTexOffset;
+	mHasDiffuse = original.mHasDiffuse;
+	mMantainRatio = original.mMantainRatio;
+
+	mQuadVBO = original.mQuadVBO;
+	mQuadVAO = original.mQuadVAO;
+}
+
 ImageComponent:: ~ImageComponent() 
 {
 	CleanUp();
@@ -144,7 +162,7 @@ void ImageComponent::Draw()
 
 Component* ImageComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new ImageComponent(*this, owner);
 }
 
 void ImageComponent::Save(Archive& archive) const

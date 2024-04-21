@@ -455,7 +455,6 @@
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
-    <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
@@ -490,7 +489,12 @@
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SliderComponent.cpp" />
+    <ClCompile Include="SliderComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="HelheimEvent.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -1141,7 +1145,6 @@
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ModuleEvent.h" />
@@ -1210,7 +1213,12 @@
     <ClInclude Include="ButtonComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SliderComponent.h" />
+    <ClInclude Include="SliderComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HelheimEvent.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

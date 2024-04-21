@@ -8,6 +8,7 @@ class ImageComponent : public Component
 {
 public:
     ImageComponent(GameObject* owner);
+    ImageComponent(const ImageComponent& original, GameObject* owner);
     ImageComponent(GameObject* owner, bool active);
     ~ImageComponent();
 

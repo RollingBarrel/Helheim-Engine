@@ -13,21 +13,33 @@ ButtonComponent::ButtonComponent(GameObject* owner) : Component(owner, Component
 {
 }
 
+ButtonComponent::ButtonComponent(const ButtonComponent& component, GameObject* owner) : Component(owner, ComponentType::BUTTON)
+{
+    for (int i = 0; i < 3; ++i) {
+        for (const auto& handler : component.mEventHandlers[i]) {
+            mEventHandlers[i].push_back(handler);
+        }
+    }
+}
+
 ButtonComponent:: ~ButtonComponent() 
 {
 }
 
 Component* ButtonComponent::Clone(GameObject* owner) const
 {
-    return nullptr;
+    return new ButtonComponent(*this, owner);
 }
 
-void ButtonComponent::AddEventHandler(EventType eventType, std::function<void()> handler) {
+void ButtonComponent::AddEventHandler(EventType eventType, std::function<void()> handler) 
+{
     mEventHandlers[static_cast<int>(eventType)].push_back(handler);
 }
 
-void ButtonComponent::TriggerEvent(EventType eventType) {
-    for (auto& handler : mEventHandlers[static_cast<int>(eventType)]) {
+void ButtonComponent::TriggerEvent(EventType eventType) 
+{
+    for (auto& handler : mEventHandlers[static_cast<int>(eventType)]) 
+    {
         handler();
     }
 }

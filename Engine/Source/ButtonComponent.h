@@ -16,6 +16,7 @@ class ButtonComponent : public Component
 public:
     ButtonComponent(GameObject* owner);
     ButtonComponent(GameObject* owner, bool active);
+    ButtonComponent(const ButtonComponent& component, GameObject* owner);
     ~ButtonComponent();
 
     void Reset() override {}

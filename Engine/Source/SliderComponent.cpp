@@ -5,6 +5,11 @@ SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(own
 {
 }
 
+SliderComponent::SliderComponent(const SliderComponent& original, GameObject* owner) : Component(owner, ComponentType::SLIDER)
+{
+	mFillPercent = original.mFillPercent;
+}
+
 SliderComponent::SliderComponent(GameObject* owner) : Component(owner, ComponentType::SLIDER)
 {
 	GameObject* self = (GameObject*)this->GetOwner();
@@ -48,6 +53,6 @@ SliderComponent:: ~SliderComponent()
 
 Component* SliderComponent::Clone(GameObject* origin) const
 {
-	return nullptr;
+	return new SliderComponent(*this, origin);
 }
 

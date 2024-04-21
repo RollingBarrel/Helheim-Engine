@@ -170,7 +170,8 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 	}
 }
 
-void ModuleUI::CheckRaycast() {
+void ModuleUI::CheckRaycast() 
+{
 	bool eventTriggered = false;
 	CheckRaycastRecursive(mCanvas, eventTriggered);
 }

@@ -11,6 +11,7 @@ class SliderComponent :
 public:
     SliderComponent(GameObject* owner);
     SliderComponent(GameObject* owner, bool active);
+    SliderComponent(const SliderComponent& original, GameObject* owner);
     ~SliderComponent();
 
     void Reset() override {}
