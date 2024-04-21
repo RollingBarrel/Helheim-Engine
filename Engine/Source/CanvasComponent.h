@@ -9,6 +9,7 @@ class CanvasComponent : public Component
 public:
     CanvasComponent(bool active, GameObject* owner);
     CanvasComponent(GameObject* owner);
+    CanvasComponent(const CanvasComponent& original, GameObject* owner);
     ~CanvasComponent();
 
     void Update() override;
@@ -24,9 +25,5 @@ public:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
-
     float2 mSize;
-
-    //float mScreenFactor;
-    //float2 mScreenReferenceSize;
 };

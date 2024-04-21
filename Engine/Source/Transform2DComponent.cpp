@@ -12,6 +12,21 @@ Transform2DComponent::Transform2DComponent(GameObject* owner): Component(owner, 
 	CalculateMatrices();
 }
 
+Transform2DComponent::Transform2DComponent(const Transform2DComponent& original, GameObject* owner) : Component(owner, ComponentType::TRANSFORM2D)
+{
+	mPosition = original.mPosition;
+	mEulerRotation = original.mEulerRotation;
+	mRotation = original.mRotation;
+	mSize = original.mSize;
+
+	mAnchorMin = original.mAnchorMin;
+	mAnchorMax = original.mAnchorMax;
+	mPivot = original.mPivot;
+
+	mLocalMatrix = original.mLocalMatrix;
+	mGlobalMatrix = original.mGlobalMatrix;
+}
+
 Transform2DComponent::Transform2DComponent(const bool active, GameObject* owner) : Component(owner, ComponentType::TRANSFORM2D)
 {
 	CalculateMatrices();
@@ -27,7 +42,7 @@ void Transform2DComponent::Update()
 
 Component* Transform2DComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new Transform2DComponent(*this, owner);
 }
 
 void Transform2DComponent::Reset()
@@ -153,7 +168,10 @@ void Transform2DComponent::CalculateMatrices()
 	for (GameObject* child : GetOwner()->GetChildren())
 	{
 		Transform2DComponent* childTransform = (Transform2DComponent*) child->GetComponent(ComponentType::TRANSFORM2D);
-		childTransform->CalculateMatrices();
+		if (childTransform)
+		{
+			childTransform->CalculateMatrices();
+		}
 	}
 }
 

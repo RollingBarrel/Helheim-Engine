@@ -313,6 +313,7 @@
     <ClCompile Include="SettingsPanel.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
+    <ClCompile Include="SliderComponent.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="Tag.cpp" />
     <ClCompile Include="TagsManagerPanel.cpp" />
@@ -546,6 +547,7 @@
     <ClInclude Include="ModuleScriptManager.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="ScriptComponent.h" />
+    <ClInclude Include="SliderComponent.h" />
     <ClInclude Include="Tag.h" />
     <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="ModuleUI.h" />

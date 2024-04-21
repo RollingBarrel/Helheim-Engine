@@ -24,6 +24,7 @@
 #include "AudioSourceComponent.h"
 #include "AudioListenerComponent.h"
 #include "Transform2DComponent.h"
+#include "SliderComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -475,10 +476,12 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new Transform2DComponent(this);
 		break;
 	case ComponentType::AUDIOSOURCE:
-	newComponent = new AudioSourceComponent(this);
+		newComponent = new AudioSourceComponent(this);
 		break;
 	case ComponentType::AUDIOLISTENER:
-	newComponent = new AudioListenerComponent(this);
+		newComponent = new AudioListenerComponent(this);
+	case ComponentType::SLIDER:
+		newComponent = new SliderComponent(this);
 		break;
 	default:
 		break;
