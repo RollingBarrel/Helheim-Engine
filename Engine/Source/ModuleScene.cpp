@@ -11,6 +11,7 @@
 
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScriptManager.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
@@ -62,7 +63,10 @@ bool ModuleScene::Init()
 	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 
 	//Load("scene");
+	//Load("MainMenu");
 	Load("Level1");
+
+
 	return true;
 }
 
@@ -285,6 +289,15 @@ void ModuleScene::Load(const char* sceneName)
 
 		LoadGameObjectsIntoScripts();
 	}
+
+	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+	if (cameraGameObject)
+	{
+		App->GetCamera()->SetCurrentCamera(cameraGameObject);
+	}
+
+	App->GetScriptManager()->Start();
+
 }
 
 void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)

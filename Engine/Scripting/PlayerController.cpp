@@ -425,7 +425,7 @@ void PlayerController::RechargeDash()
     }
 
     // HUD
-    if (mDashGO_1 == nullptr || mDashGO_2 == nullptr || mDashGO_3 == nullptr) return;
+    if (mDashSlider_1 == nullptr || mDashSlider_2 == nullptr || mDashSlider_3 == nullptr) return;
     if (mDashCharges == 0) 
     {
         mDashSlider_1->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
@@ -456,7 +456,7 @@ void PlayerController::RechargeDash()
 void PlayerController::Death() 
 {
     mPlayerIsDead = true;
-    LOG("Death animation");
+    App->GetScene()->Load("MainMenu");
 }
 
 bool PlayerController::IsDead() 

@@ -27,7 +27,7 @@ void GameManager::Update()
 
     if (mSplashScreens)
     {
-        Splash_Screens();
+        //Splash_Screens();
         Controls();
     }
     else
