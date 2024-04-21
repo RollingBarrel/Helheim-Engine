@@ -43,7 +43,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
 
     // Determine the compression format based on the file name
     DXGI_FORMAT compressionFormat = DXGI_FORMAT_BC3_UNORM; // Default value
-    for (const auto& pair : ResourceTexture::compressionFormatNaming)
+    for (const auto& pair : Importer::Texture::compressionFormatNaming)
     {
         if (endsWith(filePath, pair.first))
         {
@@ -64,9 +64,19 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     image = std::move(compressedImage);
 
     // For get all information of the texture and see the parameters it have
-    unsigned int internalFormat;
-    unsigned int texFormat;
-    unsigned int dataType;
+    unsigned int internalFormat = 0;
+    unsigned int texFormat = 0;
+    unsigned int dataType = 0;
+    unsigned int width = image.GetMetadata().width;
+    unsigned int height = image.GetMetadata().height;
+    unsigned int mipLevels = image.GetMetadata().mipLevels;
+    unsigned int numPixels = image.GetPixelsSize();
+
+    bool hasAlpha = false;
+    if (DirectX::HasAlpha(image.GetMetadata().format))
+    {
+        hasAlpha = true;
+    }
 
     switch (image.GetMetadata().format) 
     {
@@ -106,17 +116,6 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         break;
     default:
         assert(false && "Unsupported format");
-    }
-
-    unsigned int width = image.GetMetadata().width;
-    unsigned int height = image.GetMetadata().height;
-    unsigned int mipLevels = image.GetMetadata().mipLevels;
-    unsigned int numPixels = image.GetPixelsSize();
-
-    bool hasAlpha = false;
-    if (DirectX::HasAlpha(image.GetMetadata().format))
-    {
-        hasAlpha = true;
     }
 
     ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha, 0, 0);
@@ -239,3 +238,10 @@ bool Importer::Texture::endsWith(const std::string& str, const std::string& suff
 {
     return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
+
+const std::unordered_map<std::string, DXGI_FORMAT> Importer::Texture::compressionFormatNaming = {
+    {"_BaseColor", DXGI_FORMAT_BC3_UNORM},
+    {"_Normal", DXGI_FORMAT_BC5_UNORM},
+    {"_OcclusionRoughnessMetallic", DXGI_FORMAT_BC5_UNORM},
+    {"_Emissive", DXGI_FORMAT_BC5_UNORM}
+};

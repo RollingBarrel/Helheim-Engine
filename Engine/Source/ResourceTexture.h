@@ -29,7 +29,6 @@ public:
 
 	~ResourceTexture();
 
-
 	// Getters for attributes
 	unsigned int GetWidth() const { return mWidth; }
 	unsigned int GetHeight() const { return mHeight; }
@@ -41,8 +40,6 @@ public:
 	bool HasAlpha() const { return mHasAlpha; }
 	unsigned int GetOpenGLId() const { return mOpenGLId; }
 	unsigned int GetTextureHandle() const { return static_cast<unsigned int>(mTexHandle); }
-
-	static const std::unordered_map<std::string, DXGI_FORMAT> compressionFormatNaming; // Map of texture filename ending to DXGI_FORMAT
 
 private:
 	unsigned int mWidth;
