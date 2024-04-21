@@ -9,7 +9,7 @@
 #include "Timer.h"
 #include "PreciseTimer.h"
 #include "ModuleScriptManager.h"
-
+#include "NavMeshController.h"
 #include "IconsFontAwesome6.h"
 
 
@@ -174,6 +174,7 @@ void EditorControlPanel::Play()
 	App->GetScene()->Save("TemporalScene");
 	App->GetScriptManager()->Start();
 	App->GetGameClock()->Start();
+	App->GetScene()->GetNavController()->HandleBuild();
 
 	switch (mState)
 	{
