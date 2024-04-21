@@ -51,6 +51,7 @@ class PlayerController :public Script
         void Death();
         void CheckRoute();
         void UpdateHealth();
+        void CheckDebugOptions();
 
         Weapon mWeapon = Weapon::MELEE;
         PlayerState mCurrentState = PlayerState::IDLE;
@@ -108,5 +109,8 @@ class PlayerController :public Script
         SliderComponent* mDashSlider_1 = nullptr;
         SliderComponent* mDashSlider_2 = nullptr;
         SliderComponent* mDashSlider_3 = nullptr;
+
+        //DEBUG
+        bool mGodMode = false;
 
 };

@@ -49,6 +49,11 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mDashGO_1);
     MEMBER(MemberType::GAMEOBJECT, mDashGO_2);
     MEMBER(MemberType::GAMEOBJECT, mDashGO_3);
+
+    SEPARATOR("DEBUG MODE");
+    MEMBER(MemberType::BOOL, mGodMode);
+
+
     END_CREATE;
 }
 
@@ -74,6 +79,7 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
+    CheckDebugOptions();
     UpdateHealth();
     RechargeDash();
 
@@ -389,7 +395,7 @@ void PlayerController::Hit(float damage)
         {
             mHealth -= remainingDamage;
 
-            if (mHealth <= 0.0f)
+            if (mHealth <= 0.0f && !mGodMode)
             {
                 mCurrentState = PlayerState::DEATH;
             }
@@ -486,4 +492,10 @@ void PlayerController::CheckRoute()
 
 void PlayerController::UpdateHealth() {
     if (mHealthSlider != nullptr) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
+}
+
+void PlayerController::CheckDebugOptions() {
+    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) {
+        mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
+    }
 }
