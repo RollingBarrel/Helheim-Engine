@@ -35,13 +35,14 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
     math::float4x4 matrix = float4x4::identity;
     if (tinyNode.matrix.size() == 16)
     {
-       matrix = float4x4(
+        matrix = float4x4(
             tinyNode.matrix[0], tinyNode.matrix[1], tinyNode.matrix[2], tinyNode.matrix[3],
             tinyNode.matrix[4], tinyNode.matrix[5], tinyNode.matrix[6], tinyNode.matrix[7],
             tinyNode.matrix[8], tinyNode.matrix[9], tinyNode.matrix[10], tinyNode.matrix[11],
             tinyNode.matrix[12], tinyNode.matrix[13], tinyNode.matrix[14], tinyNode.matrix[15]
         );
 
+        matrix = matrix.Transposed();
         matrix.Decompose(node.mTranslation, node.mRotation, node.mScale);
 
         node.mHasTransform = true;
