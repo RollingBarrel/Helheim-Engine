@@ -4,6 +4,7 @@
 
 class NavMeshController;
 class AnimationComponent;
+class SliderComponent;
 
 enum class PlayerState {
     IDLE,
@@ -49,6 +50,7 @@ class PlayerController :public Script
         void RechargeDash();
         void Death();
         void CheckRoute();
+        void UpdateHealth();
 
         Weapon mWeapon = Weapon::MELEE;
         PlayerState mCurrentState = PlayerState::IDLE;
@@ -97,6 +99,14 @@ class PlayerController :public Script
         float mChargedTime = 0.0f;
         bool mIsChargedAttack = false;
 
-        
+        //HUD
+        GameObject* mHealthGO = nullptr;
+        GameObject* mDashGO_1 = nullptr;
+        GameObject* mDashGO_2 = nullptr;
+        GameObject* mDashGO_3 = nullptr;
+        SliderComponent* mHealthSlider = nullptr;
+        SliderComponent* mDashSlider_1 = nullptr;
+        SliderComponent* mDashSlider_2 = nullptr;
+        SliderComponent* mDashSlider_3 = nullptr;
 
 };
