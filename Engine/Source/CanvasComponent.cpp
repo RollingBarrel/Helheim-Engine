@@ -17,6 +17,11 @@ CanvasComponent::CanvasComponent(GameObject* owner) : Component(owner, Component
 {
 }
 
+CanvasComponent::CanvasComponent(const CanvasComponent& original, GameObject* owner) :Component(owner, ComponentType::CANVAS)
+{
+	mSize = original.mSize;
+}
+
 CanvasComponent:: ~CanvasComponent() 
 {
 }
@@ -27,8 +32,7 @@ void CanvasComponent::Update()
 
 Component* CanvasComponent::Clone(GameObject* owner) const 
 {
-	CanvasComponent* newComponent = new CanvasComponent(true, owner);
-	return newComponent;
+	return new CanvasComponent(*this, owner);
 }
 
 void CanvasComponent::Reset() 

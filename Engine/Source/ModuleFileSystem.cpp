@@ -42,7 +42,6 @@ ModuleFileSystem::ModuleFileSystem()
 ModuleFileSystem::~ModuleFileSystem()
 {
     PHYSFS_deinit();
-
 }
 
 // Called before render is available
@@ -479,6 +478,7 @@ void ModuleFileSystem::CleanNode(PathNode* node)
 
     delete node->mName;
     delete node;
+    node = nullptr;
 }
 
 PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)

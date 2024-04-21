@@ -18,6 +18,7 @@
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 #include "CameraComponent.h"
+#include "ButtonComponent.h"
 
 #include "Math/TransformOps.h"
 
@@ -28,6 +29,32 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
 {
     SetImage(mResourceId);
+
+	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
+	if (component != nullptr) 
+	{
+		component->AddEventHandler(EventType::Press, std::bind(&ImageComponent::OnPress, this));
+		component->AddEventHandler(EventType::Hover, std::bind(&ImageComponent::OnHover, this));
+		component->AddEventHandler(EventType::Click, std::bind(&ImageComponent::OnClick, this));
+	}*/
+}
+
+ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE)
+{
+	mImage = original.mImage;
+	mResourceId = original.mResourceId;
+	mFileName = original.mFileName;
+
+	mColor = original.mColor;
+	mAlpha = original.mAlpha;
+	mHasAlpha = original.mHasAlpha;
+
+	mTexOffset = original.mTexOffset;
+	mHasDiffuse = original.mHasDiffuse;
+	mMantainRatio = original.mMantainRatio;
+
+	mQuadVBO = original.mQuadVBO;
+	mQuadVAO = original.mQuadVAO;
 }
 
 ImageComponent:: ~ImageComponent() 
@@ -135,7 +162,7 @@ void ImageComponent::Draw()
 
 Component* ImageComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new ImageComponent(*this, owner);
 }
 
 void ImageComponent::Save(Archive& archive) const

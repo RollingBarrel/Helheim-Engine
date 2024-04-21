@@ -89,11 +89,14 @@ public:
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 	const bool HasUpdatedTransform() const;
 
+	void AddComponent(Component* component, Component* position);
+	void SetName(const char* name) { mName = name; };
+
 private:
 	void AddSuffix();
 	void DeleteComponents();
 	Component* RemoveComponent(Component* component);
-	void AddComponent(Component* component, Component* position);
+
 	void RecalculateLocalTransform();
 	void RefreshBoundingBoxes();
 

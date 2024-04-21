@@ -455,10 +455,19 @@
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
-    <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
+    <ClCompile Include="ModuleEvent.cpp" />
+    <ClCompile Include="AudioSourceComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FmodUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioListenerComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleEvent.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -480,8 +489,11 @@
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
+    <ClCompile Include="SliderComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="HelheimEvent.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1123,126 +1135,6 @@
     <ClInclude Include="EditorControlPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerConfig.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerVolumes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkStreamMgrModule.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkVirtualAcoustics.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWavDefs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWwiseErrorHandler.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkXMLErrorMessageTranslator.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlatformContext.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlugin.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginHashTable.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginMemAlloc.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkProcessorFeatures.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkRTPCSubscriber.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkStreamMgr.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAtomic.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAudioMarker.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesCount.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesMem.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCallback.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCommonDefs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicDialogue.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicSequence.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkErrorMessageTranslator.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkFPUtilities.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableFuncs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgr.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgrFuncs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiWwiseCmds.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMixerTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkModule.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkNumeralTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkQueryParameters.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimd.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdMath.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngine.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngineExport.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleAudio.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -1253,9 +1145,52 @@
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="HelheimEvent.h" />
+    <ClInclude Include="ModuleEvent.h" />
+    <ClInclude Include="ImageComponent.h" />
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp_effects.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_errors.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_output.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.hpp">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_codec.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_common.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.hpp">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio_common.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSourceComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FmodUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioListenerComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
     <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="ModuleDetourNavigation.h">
       <Filter>Modules</Filter>
@@ -1278,149 +1213,11 @@
     <ClInclude Include="ButtonComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftadvanc.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbbox.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbdf.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbitmap.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbzip2.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcache.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftchapters.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcid.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcolor.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftdriver.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrdef.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrors.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftfntfmt.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgasp.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftglyph.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgxval.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgzip.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftimage.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftincrem.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlcdfil.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlist.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlogging.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlzw.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmac.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmm.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmodapi.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmoderr.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftotval.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftoutln.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftparams.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftpfr.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftrender.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsizes.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsnames.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftstroke.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsynth.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsystem.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fttrigon.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fttypes.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftwinfnt.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\otsvg.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\t1tables.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ttnameid.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\tttables.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\tttags.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\ft2build.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="TextComponent.h">
+    <ClInclude Include="SliderComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HelheimEvent.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1508,17 +1305,14 @@
     <Filter Include="Dependencies\Optick">
       <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dependencies\Wwise">
-      <UniqueIdentifier>{1d4dfa01-de34-4740-97cb-507eee2df210}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dependencies\ImGuiFileDialog">
       <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies\FMOD">
+      <UniqueIdentifier>{50e594d7-4ca7-4694-9414-b607c6890154}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\Freetype">
-      <UniqueIdentifier>{7458cbb4-c985-4a84-8e6e-6ecba0741426}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1566,6 +1360,18 @@
     </None>
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
+    <None Include="Dependencies\FMOD\api\core\inc\fmod.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
+    <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
+    <None Include="Dependencies\FMOD\api\studio\inc\fmod_studio.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
       <Filter>Shaders</Filter>
     </None>
