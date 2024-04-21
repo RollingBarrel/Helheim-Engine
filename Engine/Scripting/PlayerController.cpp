@@ -7,6 +7,7 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "AnimationComponent.h"
+#include "AudioSourceComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
 #include "SliderComponent.h"
@@ -55,6 +56,8 @@ CREATE(PlayerController)
 
     SEPARATOR("WIN AREA");
     MEMBER(MemberType::GAMEOBJECT, mWinArea);
+    SEPARATOR("AUDIO");
+    MEMBER(MemberType::GAMEOBJECT, mAudioSourceComponentHolder);
 
     END_CREATE;
 }
@@ -76,6 +79,18 @@ void PlayerController::Start()
     if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
     if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
     if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
+    
+    if (mAnimationComponentHolder) 
+    {
+        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
+        mAnimationComponent->OnStart();
+    }
+
+    if (mAudioSourceComponentHolder)
+    {
+        mAudioSourceComponent = (AudioSourceComponent*)mAudioSourceComponentHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+   
 }
 
 
@@ -200,6 +215,27 @@ void PlayerController::Moving()
         Move(-float3::unitX);
         mGameObject->SetRotation(float3(0.0f, DegToRad(-90.0f), 0.0f));
         anyKeyPressed = true;
+    }
+
+    // Hardcoded play-step-sound solution: reproduce every second 
+    // TODO play sound according the animation
+    if (anyKeyPressed)
+    {
+        if (!mReadyToStep)
+        {
+            mStepTimePassed += App->GetGameDt();
+            if (mStepTimePassed >= mStepCoolDown)
+            {
+                mStepTimePassed = 0;
+                mStepTimePassed = false;
+                mReadyToStep = true;
+            }
+        }
+        else
+        {
+            mAudioSourceComponent->PlayOneShot();
+            mReadyToStep = false;
+        }
     }
 
     Idle();

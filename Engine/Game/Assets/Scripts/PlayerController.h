@@ -5,6 +5,7 @@
 class NavMeshController;
 class AnimationComponent;
 class SliderComponent;
+class AudioSourceComponent;
 
 enum class PlayerState 
 {
@@ -16,11 +17,19 @@ enum class PlayerState
     DEATH
 };
 
-enum class Weapon 
-{
+enum class BattleSituation {
+    IDLE_HIGHT_HP,
+    IDLE_LOW_HP,
+    BATTLE_HIGHT_HP,
+    BATTLE_LOW_HP,
+    DEATH
+};
+
+enum class Weapon {
     RANGE,
     MELEE
 };
+
 
 
 GENERATE_BODY(PlayerController);
@@ -115,7 +124,14 @@ class PlayerController :public Script
         //DEBUG
         bool mGodMode = false;
 
-
         GameObject* mWinArea = nullptr;
 
+        // Audios section
+        // Footstep
+        GameObject* mAudioSourceComponentHolder = nullptr;
+        AudioSourceComponent* mAudioSourceComponent = nullptr;
+        bool mIsMoving = false;
+        bool mReadyToStep = false;
+        float mStepTimePassed = 0.0f;
+        float mStepCoolDown = 1.0f;
 };
