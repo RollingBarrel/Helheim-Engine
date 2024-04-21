@@ -27,10 +27,10 @@ private:
 
     GameObject* mLookTarget = nullptr;
     GameObject* mFollowTarget = nullptr;
-    GameObject* mauxLookTarget = nullptr;
+    GameObject* mAuxLookTarget = nullptr;
     CameraComponent* mCameraComponent = nullptr;
     CameraMode mCameraMode = CameraMode::CLOSE;
-    std::vector<GameObject*> combatAreas;
+    std::vector<GameObject*> mCombatAreas;
 
     void CameraManager();
     void SetView(float distance, float heightOffset, float rotation);
