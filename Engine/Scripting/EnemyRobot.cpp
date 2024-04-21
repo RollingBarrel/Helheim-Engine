@@ -3,7 +3,7 @@
 #include "ModuleScene.h"
 #include "Application.h"
 #include "PlayerController.h"
-
+#include "AIAGentComponent.h"   
 CREATE(EnemyRobot)
 {
     CLASS(owner);
@@ -65,9 +65,10 @@ void EnemyRobot::Chase()
 {
 
     float range = 0.0f;
-
     if (IsPlayerInRange(mActivationRange))
     {
+        AIAgentComponent* agentComponent = (AIAgentComponent*)mGameObject->GetComponent(ComponentType::AIAGENT);
+        agentComponent->MoveAgent(mPlayer->GetPosition(),mSpeed);
         switch (mType)
         {
         case RobotType::RANGE:
@@ -114,22 +115,24 @@ void EnemyRobot::Attack()
 
 void EnemyRobot::MeleeAttack() 
 {
-    MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
-    float3 playerPosition = mPlayer->GetPosition();
-    float distanceToEnemy = (playerPosition - mGameObject->GetPosition()).Length();
-    float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
-    float3 playerToEnemy = (mGameObject->GetPosition() - playerPosition).Normalized();
-    float dotProduct = playerToEnemy.Dot(enemyFrontNormalized);
+    if (Delay(mMeleeAttackCD)) {
+       
+        MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
+        float3 playerPosition = mPlayer->GetPosition();
+        float distanceToEnemy = (playerPosition - mGameObject->GetPosition()).Length();
+        float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
+        float3 playerToEnemy = (mGameObject->GetPosition() - playerPosition).Normalized();
+        float dotProduct = playerToEnemy.Dot(enemyFrontNormalized);
 
-    if (distanceToEnemy < 2.0f && dotProduct < 0)
-    {
-        PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-        if (playerScript != nullptr)
+        if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
-            playerScript->Hit(mMeeleDamage);
+            PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+            if (playerScript != nullptr)
+            {
+                playerScript->Hit(mMeeleDamage);
+            }
         }
     }
-    
 }
 
 void EnemyRobot::RangeAttack() 

@@ -37,14 +37,14 @@ private:
 	void RangeAttack();
 
 	EnemyState mCurrentState = EnemyState::IDLE;
-	RobotType mType = RobotType::RANGE;
+	RobotType mType = RobotType::MELEE;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
 
 	float mMeleeDistance = 2.0f;
 	float mMeeleDamage = 10.0f;
-	
+	float mMeleeAttackCD = 2.0f;
 
 };
 

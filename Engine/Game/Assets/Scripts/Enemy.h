@@ -2,7 +2,6 @@
 #include <Script.h>
 #include "Macros.h"
 #include "GameObject.h"
-
 class NavMeshController;
 class AnimationComponent;
 
