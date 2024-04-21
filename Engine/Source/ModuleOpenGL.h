@@ -82,7 +82,8 @@ public:
 	void Draw();
 	void SetWireframe(bool wireframe);
 
-	void AddParticleSystem(ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
 
 private:
@@ -125,7 +126,7 @@ private:
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
 
-	std::vector<ParticleSystemComponent*> mParticleSystems;
+	std::vector<const ParticleSystemComponent*> mParticleSystems;
 };
 
 #endif /* _MODULEOPENGL_H_ */

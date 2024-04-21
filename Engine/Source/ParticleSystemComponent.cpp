@@ -25,9 +25,9 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 
 ParticleSystemComponent::~ParticleSystemComponent() 
 {
+    App->GetOpenGL()->RemoveParticleSystem(this);
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
-    delete mImage;
     //delete mShapeType;
     for (auto particle : mParticles)
     {
