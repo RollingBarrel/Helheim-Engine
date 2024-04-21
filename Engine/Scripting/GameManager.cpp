@@ -51,8 +51,6 @@ void GameManager::Splash_Screens()
     Engine_Name();
     Studio_Name();
     Game_Name();
-
-    
 }
 
 void GameManager::Engine_Name() 
