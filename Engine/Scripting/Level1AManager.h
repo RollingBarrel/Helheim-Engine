@@ -23,6 +23,7 @@ public:
 	void GodMode();
 
 private:
+	void UpdateBackgroundMusic();
 	GameObject* mPlayerControllerHolder = nullptr;
 	PlayerController* mPlayerController = nullptr;
 

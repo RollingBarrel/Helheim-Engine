@@ -79,7 +79,7 @@ void PlayerController::Start()
     if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
     if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
     if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
-    
+
     if (mAnimationComponentHolder) 
     {
         mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
@@ -98,6 +98,7 @@ void PlayerController::Update()
 {
     CheckDebugOptions();
     UpdateHealth();
+    UpdateBattleSituation();
     RechargeDash();
 
     switch (mCurrentState)
@@ -547,5 +548,35 @@ void PlayerController::UpdateHealth() {
 void PlayerController::CheckDebugOptions() {
     if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) {
         mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
+    }
+}
+void PlayerController::UpdateBattleSituation()
+{
+    float hpRate = mHealth / mMaxHealth;
+
+    if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
+        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK)) {
+        mBattleStateTransitionTime += App->GetGameDt();
+        if (mBattleStateTransitionTime >= 8.0f) 
+        {
+            if (hpRate <= 0.3) {
+                mCurrentSituation = BattleSituation::IDLE_LOW_HP;
+            }
+            else {
+                mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+            }
+            
+        }
+    }
+    else 
+    {
+        mBattleStateTransitionTime = 0.0f;
+
+        if (hpRate <= 0.3) {
+            mCurrentSituation = BattleSituation::BATTLE_LOW_HP;
+        }
+        else {
+            mCurrentSituation = BattleSituation::BATTLE_HIGHT_HP;
+        }
     }
 }

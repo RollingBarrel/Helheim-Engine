@@ -45,6 +45,8 @@ class PlayerController :public Script
         void Hit(float damage);
         bool IsDead();
 
+        BattleSituation GetBattleSituation() {return mCurrentSituation;};
+
     private:
         void Idle();
         void Moving();
@@ -64,9 +66,13 @@ class PlayerController :public Script
         void UpdateHealth();
         void CheckDebugOptions();
 
+        void UpdateBattleSituation();
+
         Weapon mWeapon = Weapon::MELEE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
+        BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+        float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;
         GameObject* mAnimationComponentHolder = nullptr;

@@ -73,6 +73,25 @@ void AudioSourceComponent::UpdateParameterValueByIndex(int index, float value)
 	}
 }
 
+void AudioSourceComponent::UpdateParameterValueByName(const char* name, float value)
+{
+	mEventInstance->setParameterByName(name, value);
+}
+
+void AudioSourceComponent::SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime)
+{
+	auto it = mNameToParameters.find(name);
+	if (it != mNameToParameters.end())
+	{
+		int index = it->second;
+		float value = GetParameterValueByIndex(index);
+
+		float step = (targetValue - value) / transitionTime;
+		float newValue = value + step * App->GetGameDt();
+		UpdateParameterValueByIndex(index, newValue);
+	}
+}
+
 void AudioSourceComponent::Update()
 {
 	// UPDATE 3D parameters
@@ -180,6 +199,20 @@ void AudioSourceComponent::Reset()
 	mParameters.clear();
 }
 
+float AudioSourceComponent::GetParameterValueByIndex(int index)
+{
+	auto it = mParameters.find(index);
+	if (it != mParameters.end())
+	{
+		return it->second;
+	}
+
+	else
+	{
+		return -1;
+	}
+}
+
 void AudioSourceComponent::UpdateParameters()
 {
 	mParameters.clear();
@@ -192,6 +225,7 @@ void AudioSourceComponent::UpdateParameters()
 		mEventDescription->getParameterDescriptionByIndex(i, &parameter);
 
 		mParameters.insert(std::make_pair(i, parameter.defaultvalue));
+		mNameToParameters.insert(std::make_pair(parameter.name, i));
 	}
 
 }

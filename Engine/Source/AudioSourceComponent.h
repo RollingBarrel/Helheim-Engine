@@ -28,6 +28,8 @@ public:
     void SetEventByName(const char* eventName);
 
     void UpdateParameterValueByIndex(int index, float value);
+    void UpdateParameterValueByName(const char* name, float value);
+    void SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime);
     
     void Update() override;
     void Play();
@@ -43,11 +45,14 @@ public:
 protected:
     void Reset();
 private:
+    float GetParameterValueByIndex(int index);
+
     std::string mName = "";
 
     FMOD::Studio::EventInstance* mEventInstance = nullptr; 
     FMOD::Studio::EventDescription* mEventDescription = nullptr;
     std::map<int, float> mParameters;
+    std::map<std::string, int> mNameToParameters;
 
     void UpdateParameters();
     

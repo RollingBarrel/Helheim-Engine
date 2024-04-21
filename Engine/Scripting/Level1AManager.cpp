@@ -41,15 +41,38 @@ void Level1AManager::Start()
 void Level1AManager::Update()
 {
     GodMode();
+    UpdateBackgroundMusic();
 }
 
 void Level1AManager::GodMode()
 {
-    // Key 1 - +HP 
-    // Key 2 - -HP 
+    // Temporal solution, need to be implemented in the generic GameManagerController
+
+    // Key 1 [+HP]
+    // Key 2 [-HP] 
     if (App->GetInput()->GetKey(Keys::Keys_1) == KeyState::KEY_REPEAT)
     {
         
     }
-    // Temporal solution, need to be implemented in the generic GameManagerController
+}
+
+void Level1AManager::UpdateBackgroundMusic()
+{
+    BattleSituation currentSituation = mPlayerController->GetBattleSituation();
+
+    if (currentSituation == BattleSituation::IDLE_HIGHT_HP) {
+        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 0, 5);
+    }
+
+    if (currentSituation == BattleSituation::BATTLE_LOW_HP) {
+        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 30, 5);
+    }
+
+    if (currentSituation == BattleSituation::BATTLE_HIGHT_HP) {
+        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 60, 5);
+    }
+
+    if (currentSituation == BattleSituation::IDLE_LOW_HP) {
+        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 80, 5);
+    }
 }
