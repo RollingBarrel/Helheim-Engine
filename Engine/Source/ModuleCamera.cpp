@@ -63,12 +63,27 @@ void ModuleCamera::CheckRaycast()
 			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
 			if (intersectGameObjectPair.second != nullptr)
 			{
-				GameObject* gameObject = intersectGameObjectPair.second;
-				while (!gameObject->GetParent()->IsRoot())
+				GameObject* parentGameObject = intersectGameObjectPair.second;
+				while (!parentGameObject->GetParent()->IsRoot())
 				{
-					gameObject = gameObject->GetParent();
+					parentGameObject = parentGameObject->GetParent();
 				}
-				((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(gameObject);
+
+				GameObject* focusedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+
+				if (focusedGameObject->GetID() == parentGameObject->GetID())
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second);
+				}
+				else 
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
+				}
+
+				
+
+
+
 			}
 		}
 	}
@@ -124,6 +139,38 @@ const CameraComponent* ModuleCamera::GetCurrentCamera() const
 const CameraComponent* ModuleCamera::GetEditorCamera() const
 {
 	return (CameraComponent*)mEditorCamera->GetComponent(ComponentType::CAMERA);
+}
+
+const float3& ModuleCamera::GetPosition() const
+{
+	return mEditorCamera->GetPosition();
+}
+
+const float3& ModuleCamera::GetRotation() const
+{
+	return mEditorCamera->GetRotation();
+}
+
+void ModuleCamera::SetPosition(float3 newPostion)
+{
+	mEditorCamera->SetPosition(newPostion);
+	mCurrentCameraComponent->SetPos(newPostion);
+}
+
+void ModuleCamera::SetRotation(float3 newRotation)
+{
+	mCurrentCamera->SetRotation(newRotation);
+	mCurrentCameraComponent->UpdateRotation();
+}
+
+void ModuleCamera::SetFrontUp(float3 front, float3 up) 
+{ 
+	mCurrentCameraComponent->SetFrontUp(front, up); 
+	//float3x3 rotationMatrix = float3x3(Cross(front, up), up, front);
+	//Quat rotation = Quat(rotationMatrix);
+	//mEditorCamera->SetRotation(rotation);
+
+	//mEditorCamera->Update();
 }
 
 void ModuleCamera::ActivateEditorCamera()
@@ -252,6 +299,7 @@ update_status ModuleCamera::Update(float dt)
 
 			mCurrentCamera->SetPosition(position);
 			mCurrentCamera->SetRotation(rotation);
+
 		}
 	}
 	return UPDATE_CONTINUE;

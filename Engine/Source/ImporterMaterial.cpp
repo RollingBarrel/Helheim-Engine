@@ -27,7 +27,7 @@ static unsigned int ImportTexture(const char* filePath, const std::string& texPa
     return App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
 }
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, bool modifyAssets)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)
 {
     const tinygltf::PbrMetallicRoughness& material = tinyMaterial.pbrMetallicRoughness;
     float baseColorFactor[4] = { static_cast<float>(material.baseColorFactor[0]), static_cast<float>(material.baseColorFactor[1]), static_cast<float>(material.baseColorFactor[2]), static_cast<float>(material.baseColorFactor[3]) };
@@ -40,14 +40,30 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
     int baseColorTexIdx = material.baseColorTexture.index;
     if (baseColorTexIdx >= 0)
     {
-        const std::string textPath = tinyModel.images[tinyModel.textures[baseColorTexIdx].source].uri;
-        baseColorTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+        if (importedTextures.find(baseColorTexIdx) == importedTextures.end())
+        {
+            const std::string textPath = tinyModel.images[tinyModel.textures[baseColorTexIdx].source].uri;
+            baseColorTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+            importedTextures[baseColorTexIdx] = baseColorTex;
+        }
+        else
+        {
+            baseColorTex = importedTextures[baseColorTexIdx];
+        }
     }
     int metalRoughTexIdx = material.metallicRoughnessTexture.index;
     if (metalRoughTexIdx >= 0)
     {
-        const std::string textPath = tinyModel.images[tinyModel.textures[metalRoughTexIdx].source].uri;
-        metallicRoughTex = ImportTexture(filePath, textPath, uid, modifyAssets);;
+        if (importedTextures.find(metalRoughTexIdx) == importedTextures.end())
+        {
+            const std::string textPath = tinyModel.images[tinyModel.textures[metalRoughTexIdx].source].uri;
+            metallicRoughTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+            importedTextures[metalRoughTexIdx] = metallicRoughTex;
+        }
+        else
+        {
+            metallicRoughTex = importedTextures[metalRoughTexIdx];
+        }
     }
 
 
@@ -63,9 +79,16 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
 
                 if (indexValue) {
                     int normalIndex = indexValue;
-
-                    std::string textPath = tinyModel.images[tinyModel.textures[normalIndex].source].uri;
-                    normalTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+                    if (importedTextures.find(normalIndex) == importedTextures.end())
+                    {
+                        std::string textPath = tinyModel.images[tinyModel.textures[normalIndex].source].uri;
+                        normalTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+                        importedTextures[normalIndex] = normalTex;
+                    }
+                    else
+                    {
+                        normalTex = importedTextures[normalIndex];
+                    }
                 }
             }
         }
@@ -73,6 +96,21 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
 
     ResourceMaterial* rMaterial = new ResourceMaterial(uid++, baseColorFactor, metalicFactor, roughnessFactor, baseColorTex, metallicRoughTex, normalTex);
     Importer::Material::Save(rMaterial);
+    return rMaterial;
+}
+
+ResourceMaterial* Importer::Material::ImportDefault()
+{
+    float baseColorFactor[4] = { 1.f };
+    float metalicFactor = 0.5f;
+    float roughnessFactor = 0.5f;
+    unsigned int baseColorTex = 0;
+    unsigned int metallicRoughTex = 0;
+    unsigned int normalTex = 0;
+
+    ResourceMaterial* rMaterial = new ResourceMaterial(999999999, baseColorFactor, metalicFactor, roughnessFactor, baseColorTex, metallicRoughTex, normalTex);
+    if(!App->GetFileSystem()->Exists("Library/99/999999999"))
+        Importer::Material::Save(rMaterial);
     return rMaterial;
 }
 

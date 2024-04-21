@@ -21,6 +21,8 @@
 #include "SpotLightComponent.h"
 #include "ButtonComponent.h"
 #include "ScriptComponent.h"
+#include "AudioSourceComponent.h"
+#include "AudioListenerComponent.h"
 #include "Transform2DComponent.h"
 
 #include "Tag.h"
@@ -469,6 +471,12 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::TRANSFORM2D:
 		newComponent = new Transform2DComponent(this);
 		break;
+	case ComponentType::AUDIOSOURCE:
+	newComponent = new AudioSourceComponent(this);
+		break;
+	case ComponentType::AUDIOLISTENER:
+	newComponent = new AudioListenerComponent(this);
+		break;
 	default:
 		break;
 	}
@@ -546,6 +554,7 @@ void GameObject::RefreshBoundingBoxes()
 	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
 		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
+		App->GetScene()->GetQuadtreeRoot()->UpdateTree();
 	}
 	else
 	{
@@ -753,12 +762,12 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 
 	if (parentUID == 1) 
 	{
-		go = new GameObject(name, scene);
+		go = new GameObject(uuid,name, scene);
 	}
 	else 
 	{
 		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
-		go = new GameObject(name, gameObjectParent);
+		go = new GameObject(uuid, name, gameObjectParent);
 	}
 	go->SetPosition(position);
 	go->SetRotation(rotation);

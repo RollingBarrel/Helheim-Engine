@@ -172,9 +172,6 @@
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClCompile>
-    <ClCompile Include="PausePanel.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="ProjectPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -462,6 +459,16 @@
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
+    <ClCompile Include="ModuleEvent.cpp" />
+    <ClCompile Include="AudioSourceComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FmodUtils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioListenerComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleEvent.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -843,9 +850,6 @@
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h">
       <Filter>Dependencies\MikkTspace</Filter>
     </ClInclude>
-    <ClInclude Include="PausePanel.h">
-      <Filter>Panels</Filter>
-    </ClInclude>
     <ClInclude Include="ProjectPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -1126,126 +1130,6 @@
     <ClInclude Include="EditorControlPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerConfig.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSpeakerVolumes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkStreamMgrModule.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkVirtualAcoustics.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWavDefs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkWwiseErrorHandler.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkXMLErrorMessageTranslator.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlatformContext.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPlugin.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginHashTable.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkPluginMemAlloc.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkProcessorFeatures.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkRTPCSubscriber.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\IAkStreamMgr.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAtomic.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkAudioMarker.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesCount.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkBytesMem.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCallback.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkCommonDefs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicDialogue.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkDynamicSequence.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkErrorMessageTranslator.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkFPUtilities.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableFuncs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkHashTableTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgr.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMemoryMgrFuncs.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMidiWwiseCmds.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkMixerTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkModule.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkNumeralTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkQueryParameters.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimd.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdMath.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSimdTypes.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngine.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Wwise\include\AK\SoundEngine\Common\AkSoundEngineExport.h">
-      <Filter>Dependencies\Wwise</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleAudio.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -1259,6 +1143,50 @@
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="HelheimEvent.h" />
+    <ClInclude Include="ModuleEvent.h" />
+    <ClInclude Include="ImageComponent.h" />
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp_effects.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_errors.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_output.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.hpp">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_codec.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_common.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.hpp">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio_common.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSourceComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FmodUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioListenerComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
     <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="ModuleDetourNavigation.h">
       <Filter>Modules</Filter>
@@ -1367,11 +1295,11 @@
     <Filter Include="Dependencies\Optick">
       <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dependencies\Wwise">
-      <UniqueIdentifier>{1d4dfa01-de34-4740-97cb-507eee2df210}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dependencies\ImGuiFileDialog">
       <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\FMOD">
+      <UniqueIdentifier>{50e594d7-4ca7-4694-9414-b607c6890154}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
@@ -1422,6 +1350,18 @@
     </None>
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
+    <None Include="Dependencies\FMOD\api\core\inc\fmod.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
+    <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
+    <None Include="Dependencies\FMOD\api\studio\inc\fmod_studio.cs">
+      <Filter>Dependencies\FMOD</Filter>
+    </None>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
       <Filter>Shaders</Filter>
     </None>
