@@ -65,6 +65,9 @@ public:
 	const char* GetLibraryFile(unsigned int id, bool createDir = false) const;
 	int64_t GetLastModTime(const char* file) const;
 	int64_t GetCreationTime(const char* file) const;
+	bool IsClean()	{ return mIsClean; }
+	void SetIsClean(bool clean) { mIsClean = clean; }
+
 
 	bool AddToSearchPath(const char* path);
 
@@ -87,7 +90,7 @@ public:
 private:
 
 	void UpdateScripts();
-
+	bool mIsClean = false;
 	PathNode* mRoot = nullptr;
 };
 

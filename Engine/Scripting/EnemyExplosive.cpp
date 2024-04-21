@@ -7,9 +7,9 @@ CREATE(EnemyExplosive)
     SEPARATOR("STATS");
     MEMBER(MemberType::INT, mHealth);
 
-    MEMBER(MemberType::FLOAT, mEnemySpeed);
-    MEMBER(MemberType::FLOAT, mEnemyRotationSpeed);
-    MEMBER(MemberType::FLOAT, mActivationDistance);
+    MEMBER(MemberType::FLOAT, mSpeed);
+    MEMBER(MemberType::FLOAT, mRotationSpeed);
+    MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::FLOAT, mArmedDistance);
 
     SEPARATOR("GAME OBJECTS");
@@ -19,24 +19,29 @@ CREATE(EnemyExplosive)
 
 }
 
-EnemyExplosive::EnemyExplosive(GameObject* owner) : EnemyBase(owner)
+EnemyExplosive::EnemyExplosive(GameObject* owner) : Enemy(owner)
 {
     mCurrentState = EnemyState::Deploy;
     mHealth = 15;
-    mActivationDistance = 10.0f;
+    mActivationRange = 10.0f;
     mArmedDistance = 5.0f;
 }
 
 void EnemyExplosive::Start()
 {
-    EnemyBase::Start();
+    Enemy::Start();
 }
 
 void EnemyExplosive::Update()
 {
-    EnemyBase::Update();
+    Enemy::Update();
 }
 
+void EnemyExplosive::Hit(float damage)
+{
+}
+
+/*
 //Change actual animation state of the enemy
 void EnemyExplosive::ChangeState(EnemyState newState) 
 {
@@ -78,7 +83,7 @@ void EnemyExplosive::StateMachine()
 
 void EnemyExplosive::SearchPlayer() 
 {
-    EnemyBase::SearchPlayer();
+    Enemy::SearchPlayer();
 
     if (OpponentDistance(mArmedDistance)) {
         mInAttackDistance = true;
@@ -86,11 +91,11 @@ void EnemyExplosive::SearchPlayer()
     }
 }
 
-void EnemyExplosive::SetEnemyDamage(int damage) 
+void EnemyExplosive::Hit(float damage) 
 {
-    EnemyBase::SetEnemyDamage(damage);
+    Enemy::Hit(damage);
 
-    if (mHealth = 0) 
+    if (mHealth == 0.0f) 
     {
         ChangeState(EnemyState::Armed);
     }
@@ -126,26 +131,28 @@ void EnemyExplosive::Explosion()
 //FOR TEST UNTIL AI WILL BE AVAILABLE
 void EnemyExplosive::Test_Forward() 
 {
-    EnemyBase::Test_Forward();
+    Enemy::Test_Forward();
     ChangeState(EnemyState::Forward);
 }
 
 void EnemyExplosive::Test_Backward() 
 {
-    EnemyBase::Test_Backward();
+    Enemy::Test_Backward();
     ChangeState(EnemyState::Backward);
 }
 
 void EnemyExplosive::Test_Left() 
 {
-    EnemyBase::Test_Left();
+    Enemy::Test_Left();
     ChangeState(EnemyState::Left);
 }
 
 void EnemyExplosive::Test_Right() 
 {
-    EnemyBase::Test_Right();
+    Enemy::Test_Right();
     ChangeState(EnemyState::Right);
 }
 
 //************************************************************************
+
+*/

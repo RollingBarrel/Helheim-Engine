@@ -1,8 +1,8 @@
 #pragma once
-#include <EnemyBase.h>
+#include <Enemy.h>
 
 GENERATE_BODY(EnemyExplosive);
-class EnemyExplosive : public EnemyBase
+class EnemyExplosive : public Enemy
 {
 	FRIEND(EnemyExplosive)
 	public:
@@ -10,7 +10,7 @@ class EnemyExplosive : public EnemyBase
 		~EnemyExplosive() {}
 		void Start() override;
 		void Update() override;
-		void SetEnemyDamage(int damage) override;
+		void Hit(float damage) override;
 
 	private:
 		enum class EnemyState {
@@ -25,16 +25,16 @@ class EnemyExplosive : public EnemyBase
 
 		void ChangeState(EnemyState newState);
 		void StateMachine();
-		void SearchPlayer() override;
+		//void SearchPlayer() override;
 		void Armed();
 		void Explosion();
 
 		//*****************************************************
 		//FOR TEST UNTIL AI WILL BE AVAILABLE
-		void Test_Forward() override;
-		void Test_Backward() override;
-		void Test_Left() override;
-		void Test_Right() override;
+		//void Test_Forward() override;
+		//void Test_Backward() override;
+		//void Test_Left() override;
+		//void Test_Right() override;
 		//*****************************************************
 
 		EnemyState mCurrentState;	

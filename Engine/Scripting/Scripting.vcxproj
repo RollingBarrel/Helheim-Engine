@@ -163,14 +163,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyBase.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\Target.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Keys.h" />
@@ -178,7 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="EnemyBase.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -192,7 +191,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Target.cpp" />
     <ClCompile Include="TestScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
