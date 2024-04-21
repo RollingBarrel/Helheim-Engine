@@ -65,10 +65,10 @@ void PlayerController::Start()
     mShield = mMaxShield;
     mSanity = mMaxSanity;
 
-    mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
-    mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
-    mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
-    mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
+    if (mHealthGO != nullptr) mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+    if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
+    if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
+    if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
 }
 
 
@@ -417,6 +417,7 @@ void PlayerController::RechargeDash()
     }
 
     // HUD
+    if (mDashGO_1 == nullptr || mDashGO_2 == nullptr || mDashGO_3 == nullptr) return;
     if (mDashCharges == 0) 
     {
         mDashSlider_1->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
@@ -484,5 +485,5 @@ void PlayerController::CheckRoute()
 }
 
 void PlayerController::UpdateHealth() {
-    mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
+    if (mHealthSlider != nullptr) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
 }
