@@ -68,8 +68,10 @@ void MainMenu::ButtonsPosition(const char* imageName, float position) const
 
 void MainMenu::Menu()
 {
-    if (mMenuActive) {
-        if (!mPauseMenu) {
+    if (mMenuActive) 
+    {
+        if (!mPauseMenu) 
+        {
             mScreen = "Menu";
             ChangeImage(mScreen, true);
         }
@@ -82,7 +84,8 @@ void MainMenu::Menu()
         switch (mOption)
         {
             case 1:
-                if (mPauseMenu) {
+                if (mPauseMenu) 
+                {
                     if (mPreviousImageName)
                     {
                         ChangeImage(mPreviousImageName, false);
@@ -92,7 +95,8 @@ void MainMenu::Menu()
                     mPreviousImageName = mActualImageName;
                     ChangeImage(mActualImageName, true);
 
-                    if (mNextScreen) {
+                    if (mNextScreen) 
+                    {
                         mNextScreen = false;
                         ResetScreen(mScreen, false);
                     }
@@ -108,7 +112,8 @@ void MainMenu::Menu()
                 mPreviousImageName = mActualImageName;
                 ChangeImage(mActualImageName, true);
                 
-                if (mNextScreen) {
+                if (mNextScreen) 
+                {
                     mNextScreen = false;
                     ResetScreen(mScreen, false);
                     mLoadingActive = true;
@@ -121,7 +126,8 @@ void MainMenu::Menu()
                 mPreviousImageName = mActualImageName;
                 ChangeImage(mActualImageName, true);
                 
-                if (mNextScreen) {
+                if (mNextScreen) 
+                {
                     mNextScreen = false;
                     ResetScreen(mScreen, false);
                     mOptionsActive = true;
@@ -134,7 +140,8 @@ void MainMenu::Menu()
                 mPreviousImageName = mActualImageName;
                 ChangeImage(mActualImageName, true);
 
-                if (mNextScreen) {
+                if (mNextScreen) 
+                {
                     mNextScreen = false;
                     ResetScreen(mScreen, false);
                     mCreditsActive = true;
@@ -147,7 +154,8 @@ void MainMenu::Menu()
                 mPreviousImageName = mActualImageName;
                 ChangeImage(mActualImageName, true);
 
-                if (mNextScreen) {
+                if (mNextScreen) 
+                {
                     exit(0);
                 }
                 break;
@@ -157,18 +165,22 @@ void MainMenu::Menu()
     }
 }
 
-void MainMenu::ChangeImage(const char* imageName, bool enabled) const{
+void MainMenu::ChangeImage(const char* imageName, bool enabled) const
+{
     App->GetScene()->Find(imageName)->SetEnabled(enabled);
 }
 
-void MainMenu::ResetScreen(const char* screenName, bool activeMenu) {
+void MainMenu::ResetScreen(const char* screenName, bool activeMenu) 
+{
     mMenuActive = activeMenu;
     ChangeImage(mPreviousImageName, false);
     ChangeImage(screenName, false);
 }
 
-void MainMenu::Loading() {
-    if (mLoadingActive) {
+void MainMenu::Loading() 
+{
+    if (mLoadingActive) 
+    {
         ChangeImage("Loading_Screen", true);
 
         if (Delay(2.0f))
@@ -179,12 +191,14 @@ void MainMenu::Loading() {
     }
 }
 
-void MainMenu::Options() {
-    if (mOptionsActive)
+void MainMenu::Options() 
+{
+    if (mOptionsActive) 
     {
         ChangeImage("Options", true);
 
-        if (mPrevScreen) {
+        if (mPrevScreen) 
+        {
             mPrevScreen = false;
             mOptionsActive = false;
             ChangeImage(mScreen, true);
@@ -193,11 +207,14 @@ void MainMenu::Options() {
     }
 }
 
-void MainMenu::Credits() {
-    if (mCreditsActive) {
+void MainMenu::Credits() 
+{
+    if (mCreditsActive) 
+    {
         ChangeImage("Credits", true);
 
-        if (mPrevScreen) {
+        if (mPrevScreen) 
+        {
             mPrevScreen = false;
             mCreditsActive = false;
             ChangeImage(mScreen, true);
@@ -222,7 +239,8 @@ void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
-        if (!mPauseMenu) {
+        if (!mPauseMenu) 
+        {
             if (mOption > 2)
             {
                 mOption--;
@@ -247,7 +265,8 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
-        if (!mPauseMenu) {
+        if (!mPauseMenu) 
+        {
             if (mOption < 5)
             {
                 mOption++;
@@ -272,7 +291,8 @@ void MainMenu::Controls()
 
     if ((App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN) || (App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN))
     {
-        if (!mReturnPressed) {
+        if (!mReturnPressed) 
+        {
             mOptionTmp = mOption;
             mReturnPressed = true;
             mEscPressed = false;
@@ -282,7 +302,8 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        if (!mEscPressed) {
+        if (!mEscPressed) 
+        {
             mOption = mOptionTmp;
             mEscPressed = true;
             mReturnPressed = false;

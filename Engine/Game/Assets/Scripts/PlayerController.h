@@ -6,7 +6,8 @@ class NavMeshController;
 class AnimationComponent;
 class SliderComponent;
 
-enum class PlayerState {
+enum class PlayerState 
+{
     IDLE,
     DASH,
     MOVE,
@@ -15,7 +16,8 @@ enum class PlayerState {
     DEATH
 };
 
-enum class Weapon {
+enum class Weapon 
+{
     RANGE,
     MELEE
 };

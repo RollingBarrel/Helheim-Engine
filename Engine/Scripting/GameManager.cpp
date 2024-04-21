@@ -54,7 +54,8 @@ void GameManager::Splash_Screens()
 
 void GameManager::Engine_Name() 
 {
-    if (mEngine_Name) {
+    if (mEngine_Name) 
+    {
         App->GetScene()->Find("Engine_Name")->SetEnabled(true);
         
         if ((Delay(mTimeScreen)) || (mNextScreen))
@@ -68,7 +69,8 @@ void GameManager::Engine_Name()
 
 void GameManager::Studio_Name()
 {
-    if (mStudioName) {
+    if (mStudioName) 
+    {
         App->GetScene()->Find("Studio_Game")->SetEnabled(true);
         
         if ((Delay(mTimeScreen)) || (mNextScreen))
@@ -82,7 +84,8 @@ void GameManager::Studio_Name()
 
 void GameManager::Game_Name() 
 {
-    if (mGameName) {
+    if (mGameName) 
+    {
         App->GetScene()->Find("Game_Name")->SetEnabled(true);
         
         if (mNextScreen)
@@ -110,7 +113,8 @@ void GameManager::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_N) == KeyState::KEY_DOWN)
     {  
-        if (!mReturnPressed) {
+        if (!mReturnPressed) 
+        {
             mReturnPressed = true;
             mNextScreen = true;
         }

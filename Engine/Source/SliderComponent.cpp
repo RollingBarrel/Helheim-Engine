@@ -21,7 +21,8 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 {
 	GameObject* self = (GameObject*)this->GetOwner();
 
-	if (self->GetChildren().empty()) {
+	if (self->GetChildren().empty()) 
+	{
 		self->SetName("Slider");
 		mFill = new GameObject("Fill", self);
 		mBackground = new GameObject("Background", self);

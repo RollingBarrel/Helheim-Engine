@@ -115,7 +115,8 @@ void EnemyRobot::Attack()
 
 void EnemyRobot::MeleeAttack() 
 {
-    if (Delay(mMeleeAttackCD)) {
+    if (Delay(mMeleeAttackCD)) 
+    {
        
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
         float3 playerPosition = mPlayer->GetPosition();
