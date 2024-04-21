@@ -19,6 +19,7 @@ class ButtonComponent;
 class AudioSourceComponent;
 class AudioListenerComponent;
 class Transform2DComponent;
+class SliderComponent;
 
 class InspectorPanel : public Panel
 {
