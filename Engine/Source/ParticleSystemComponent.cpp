@@ -11,7 +11,8 @@
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
 
-#define MATRICES_LOCATION 1
+#define MATRICES_LOCATION 2
+#define COLOR_LOCATION 1
 
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
@@ -69,10 +70,15 @@ void ParticleSystemComponent::Init()
     for (unsigned int i = 0; i < 4; i++) {
         glEnableVertexAttribArray(MATRICES_LOCATION + i);
         glVertexAttribPointer(MATRICES_LOCATION + i, 4, GL_FLOAT, GL_FALSE,
-            16 * sizeof(float),
+            20 * sizeof(float),
             (const GLvoid*)(sizeof(GLfloat) * i * 4));
         glVertexAttribDivisor(MATRICES_LOCATION + i, 1);
     }
+    glEnableVertexAttribArray(COLOR_LOCATION);
+    glVertexAttribPointer(COLOR_LOCATION, 1, GL_FLOAT, GL_FALSE,
+        20 * sizeof(float),
+        (const GLvoid*)(sizeof(GLfloat) * 16));
+    glVertexAttribDivisor(COLOR_LOCATION, 1);
     glBindVertexArray(0);
     // create this->amount default particle instances
     for (unsigned int i = 0; i < 100; ++i)
@@ -86,33 +92,35 @@ void ParticleSystemComponent::Draw() const
 {
     if (IsEnabled()) 
     {
+        unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-        float4x4* modelMatrices = new float4x4[mParticles.size()];
-        float4* colors = new float4[mParticles.size()];
-        float4x4 viewproj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix() * ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
-        
+        CameraComponent* cam = (CameraComponent*)App->GetCamera()->GetCurrentCamera();
+        float4x4 viewproj = cam->GetViewProjectionMatrix();
+
+        glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
+        glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
+            nullptr, GL_DYNAMIC_DRAW);
+        float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+
+
         for (int i = 0; i < mParticles.size(); ++i)
         {
             if (mParticles[i]->GetLifetime() > 0.0f)
             {
                 Quat rotation = Quat::identity;
                 float3 scale = float3(mParticles[i]->GetSize());
-                modelMatrices[i] = float4x4::FromTRS(mParticles[i]->GetPosition(), rotation, scale);
-                //colors[i] = mParticles[i]->getColor();
+                float3 pos = mParticles[i]->GetPosition();
+                float4x4 transform = float4x4::FromTRS(pos, rotation, scale);
+                memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
+                memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
             }
         }
-
-        glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
-        glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 16 * sizeof(float),
-            modelMatrices, GL_DYNAMIC_DRAW);
-
+        glUnmapBuffer(GL_ARRAY_BUFFER);
         glBindVertexArray(mVAO);
         
-
-        unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        glUseProgram(programId);
         glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
         glUniform4f(glGetUniformLocation(programId, "color"), 1.0f, 1.0f, 1.0f, 1.0f);
         glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
@@ -124,8 +132,6 @@ void ParticleSystemComponent::Draw() const
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glUseProgram(0);
 
-        delete[] modelMatrices;
-        delete[] colors;
     }
 }
 
