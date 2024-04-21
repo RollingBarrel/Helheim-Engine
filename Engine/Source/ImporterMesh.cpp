@@ -207,11 +207,14 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
 
 ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, unsigned int uid)
 {
-
     unsigned int numVertices = 0;
     unsigned int numIndices = 0;
+    unsigned int numJoints = 0;
+    unsigned int numWeights = 0;
     unsigned int vertexSize = 0;
     unsigned int* indices = nullptr;
+    unsigned int* joints = nullptr;
+    float* weights = nullptr;
     std::vector<Attribute>attributes;
     std::vector<float*>attributesData;
 
@@ -407,21 +410,22 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const tinygltf::BufferView& jointsView = model.bufferViews[jointsAcc.bufferView];
             const tinygltf::Buffer& jointsBuffer = model.buffers[jointsView.buffer];
 
-            float* data = new float[jointsAcc.count * 4];
+            numJoints = jointsAcc.count * 4;
+            joints = new unsigned int[jointsAcc.count * 4];
             switch (jointsAcc.componentType) {
             case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
             {
                 const unsigned short* bufferJointsShort = reinterpret_cast<const unsigned short*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
 
-                attributes.emplace_back(Attribute::JOINTS, sizeof(float) * 4, vertexSize);
-                vertexSize += sizeof(float) * 4;
+                //attributes.emplace_back(Attribute::JOINTS, sizeof(float) * 4, vertexSize);
+                //vertexSize += sizeof(float) * 4;
 
                 for (unsigned int i = 0; i < jointsAcc.count; ++i)
                 {
-                    data[i * 4] = static_cast<float>(bufferJointsShort[0]);
-                    data[i * 4 + 1] = static_cast<float>(bufferJointsShort[1]);
-                    data[i * 4 + 2] = static_cast<float>(bufferJointsShort[2]);
-                    data[i * 4 + 3] = static_cast<float>(bufferJointsShort[3]);
+                    joints[i * 4] = bufferJointsShort[0];
+                    joints[i * 4 + 1] = bufferJointsShort[1];
+                    joints[i * 4 + 2] = bufferJointsShort[2];
+                    joints[i * 4 + 3] = bufferJointsShort[3];
 
                     if (jointsView.byteStride != 0) {
                         bufferJointsShort = reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(bufferJointsShort) + jointsView.byteStride);
@@ -436,15 +440,12 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             {
                 const unsigned int* bufferJointsInt = reinterpret_cast<const unsigned int*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
 
-                attributes.emplace_back(Attribute::JOINTS, sizeof(float) * 4, vertexSize);
-                vertexSize += sizeof(float) * 4;
-
                 for (unsigned int i = 0; i < jointsAcc.count; ++i)
                 {
-                    data[i * 4] = static_cast<float>(bufferJointsInt[0]);
-                    data[i * 4 + 1] = static_cast<float>(bufferJointsInt[1]);
-                    data[i * 4 + 2] = static_cast<float>(bufferJointsInt[2]);
-                    data[i * 4 + 3] = static_cast<float>(bufferJointsInt[3]);
+                    joints[i * 4] = bufferJointsInt[0];
+                    joints[i * 4 + 1] = bufferJointsInt[1];
+                    joints[i * 4 + 2] = bufferJointsInt[2];
+                    joints[i * 4 + 3] = bufferJointsInt[3];
 
                     if (jointsView.byteStride != 0) {
                         bufferJointsInt = reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(bufferJointsInt) + jointsView.byteStride);
@@ -460,7 +461,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                 //ERROR handling
                 break;
             }
-            attributesData.push_back(data);
         }
 
         if (itWeights != primitive.attributes.end())
@@ -472,16 +472,14 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const tinygltf::Buffer& weightsBuffer = model.buffers[weightsView.buffer];
 
             const float* bufferWeights = reinterpret_cast<const float*>(&weightsBuffer.data[weightsView.byteOffset + weightsAcc.byteOffset]);
-
-            attributes.emplace_back(Attribute::WEIGHTS, sizeof(float) * 4, vertexSize);
-            vertexSize += sizeof(float) * 4;
-            float* data = new float[weightsAcc.count * 4];
+            numWeights = weightsAcc.count * 4;
+            weights = new float[numWeights];
             for (unsigned int i = 0; i < weightsAcc.count; ++i)
             {
-                data[i * 4] = bufferWeights[0];
-                data[i * 4 + 1] = bufferWeights[1];
-                data[i * 4 + 2] = bufferWeights[2];
-                data[i * 4 + 3] = bufferWeights[3];
+                weights[i * 4] = bufferWeights[0];
+                weights[i * 4 + 1] = bufferWeights[1];
+                weights[i * 4 + 2] = bufferWeights[2];
+                weights[i * 4 + 3] = bufferWeights[3];
 
                 if (weightsView.byteStride != 0) {
                     bufferWeights = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferWeights) + weightsView.byteStride);
@@ -490,11 +488,10 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                     bufferWeights += 4;
                 }
             }
-            attributesData.push_back(data);
         }
     }
 
-    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
+    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numJoints, std::move(joints), numWeights, std::move(weights), numVertices, std::move(attributes), std::move(attributesData));
     Importer::Mesh::Save(rMesh);
     return rMesh;
 }
@@ -503,9 +500,9 @@ void Importer::Mesh::Save(const ResourceMesh* rMesh)
 {
     std::vector<Attribute> attributes;
     rMesh->GetAttributes(attributes);
-    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), attributes.size()};
+    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberJoints(), rMesh->GetNumberWeights(), rMesh->GetNumberVertices(), attributes.size()};
 
-    unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices();
+    unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices() + sizeof(unsigned int) * rMesh->GetNumberJoints() + rMesh->GetNumberWeights() * sizeof(float);
     for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
     {
         size += it->size * rMesh->GetNumberVertices() + sizeof(Attribute);
@@ -522,6 +519,16 @@ void Importer::Mesh::Save(const ResourceMesh* rMesh)
     //Save Indices
     bytes = sizeof(unsigned int) * rMesh->GetNumberIndices();
     memcpy(cursor, rMesh->GetIndices(), bytes);
+    cursor += bytes;
+
+    //Save Joints
+    bytes = sizeof(unsigned int) * rMesh->GetNumberJoints();
+    memcpy(cursor, rMesh->GetJoints(), bytes);
+    cursor += bytes;
+
+    //Save Weights
+    bytes = sizeof(float) * rMesh->GetNumberWeights();
+    memcpy(cursor, rMesh->GetWeights(), bytes);
     cursor += bytes;
 
     //Save attributes and data
@@ -555,19 +562,32 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
     {
         //Load Header
         char* cursor = fileBuffer;
-        unsigned int header[3];
+        unsigned int header[5];
         unsigned int bytes = sizeof(header);
         memcpy(header, cursor, bytes);
         cursor += bytes;
         unsigned int numIndices = header[0];
-        unsigned int numVertices = header[1];
-
-        unsigned int numAttributes = header[2];
+        unsigned int numJoints = header[1];
+        unsigned int numWeights = header[2];
+        unsigned int numVertices = header[3];
+        unsigned int numAttributes = header[4];
 
         //Load Indices
         bytes = sizeof(unsigned int) * numIndices;
         unsigned int* indices = new unsigned int[numIndices];
         memcpy(indices, cursor, bytes);
+        cursor += bytes;
+
+        //Load Joints
+        bytes = sizeof(unsigned int) * numJoints;
+        unsigned int* joints = new unsigned int[numJoints];
+        memcpy(joints, cursor, bytes);
+        cursor += bytes;
+
+        //Load Weights
+        bytes = sizeof(float) * numWeights;
+        float* weights = new float[numWeights];
+        memcpy(weights, cursor, bytes);
         cursor += bytes;
 
 
@@ -584,7 +604,7 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
             cursor += attr->size * numVertices;
         }
 
-        rMesh = new ResourceMesh(uid, numIndices,  std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
+        rMesh = new ResourceMesh(uid, numIndices,  std::move(indices), numJoints, std::move(joints), numWeights, std::move(weights), numVertices, std::move(attributes), std::move(attributesData));
         delete[] fileBuffer;
     }
 

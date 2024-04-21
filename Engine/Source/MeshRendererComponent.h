@@ -43,9 +43,10 @@ public:
 	bool IsInsideFrustum() const { return mInsideFrustum; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMaterial(unsigned int uid);
-	std::vector<float4x4> GetPalette() const { return palette; }
+	const std::vector<float4x4> GetPalette() const { return palette; }
 
-	bool GetIsAnimated() { return mIsAnimated; }
+	bool GetIsAnimated() const { return mIsAnimated; }
+	const AnimationComponent* GetAnimationComponent() const { return mAnimationComponent; }
 	void SetIsAnimated(bool isAnimated) { mIsAnimated = isAnimated; }
 private:
 	ResourceMesh* mMesh = nullptr;

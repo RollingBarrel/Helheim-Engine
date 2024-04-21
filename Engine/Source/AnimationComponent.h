@@ -18,13 +18,13 @@ public:
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
-	const ResourceAnimation* GetAnimation() { return mAnimation; }
-	const AnimationController* GetAnimationController() { return mController; }
+	const ResourceAnimation* GetAnimation() const { return mAnimation; }
+	const AnimationController* GetAnimationController() const { return mController; }
 
-	bool GetLoop() { return mLoop; }
+	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop);
 
-	bool GetIsPlaying() { return mIsPlaying; }
+	bool GetIsPlaying() const { return mIsPlaying; }
 	void SetIsPlaying(bool isPlaying) { mIsPlaying = isPlaying; }
 
 	void OnStart();

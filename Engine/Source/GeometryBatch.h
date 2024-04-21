@@ -116,6 +116,14 @@ private:
 	unsigned int mEboDataSize = 0;
 	unsigned int mEboNumElements = 0;
 
+	//Animation
+	unsigned int paletteSsbo = 0;
+	unsigned int boneIndicesSsbo = 0;
+	unsigned int weightsSsbo = 0;
+	unsigned int posSsbo = 0;
+	unsigned int normSsbo = 0;
+	unsigned int tangSsbo = 0;
+
 	int mSsboAligment = 0;
 };
 

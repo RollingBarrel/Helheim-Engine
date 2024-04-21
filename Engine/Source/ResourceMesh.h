@@ -11,8 +11,6 @@ typedef struct Attribute {
 		NORMAL = 1 << 2,
 		TANGENT = 1 << 3,
 		COLOR = 1 << 4, 
-		JOINTS = 1 << 5,
-		WEIGHTS = 1 << 6
 	};
 	Attribute(Type iType, unsigned int iSize, unsigned int iOffset) : size(iSize), offset(iOffset), type(iType) {}
 	Attribute(const Attribute& other) : size(other.size), offset(other.offset), type(other.type) {}
@@ -25,15 +23,19 @@ class ResourceMesh : public Resource
 {
 public:
 
-	ResourceMesh(unsigned int uid, unsigned int numIndices, const unsigned int* indices, unsigned int numVertices, const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData);
-	ResourceMesh(unsigned int uid, unsigned int numIndices, unsigned int*&& indices, unsigned int numVertices, std::vector<Attribute>&& attributes, std::vector<float*>&& attributesData);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, const unsigned int* indices, unsigned int numJoints, const unsigned int* joints, unsigned int numWeights, const float* weights, unsigned int numVertices, const std::vector<Attribute>& attributes, const std::vector<float*>& attributesData);
+	ResourceMesh(unsigned int uid, unsigned int numIndices, unsigned int*&& indices, unsigned int numJoints, unsigned int*&& joints, unsigned int numWeights, float*&&weights, unsigned int numVertices, std::vector<Attribute>&& attributes, std::vector<float*>&& attributesData);
 	ResourceMesh(const ResourceMesh& other);
 	ResourceMesh(ResourceMesh&& other);
 	~ResourceMesh();
 
 	unsigned int GetNumberVertices() const { return mNumVertices; }
 	unsigned int GetNumberIndices() const { return mNumIndices; }
+	unsigned int GetNumberJoints() const { return mNumJoints; }
+	unsigned int GetNumberWeights() const { return mNumWeights; }
 	const unsigned int* GetIndices() const { return mIndices; }
+	const unsigned int* GetJoints() const { return mJoints; }
+	const float* GetWeights() const { return mWeights; }
 	void GetAttributes(std::vector<Attribute>&) const;
 	unsigned int GetNumberAttributes() const { return static_cast<unsigned int>(mAttributes.size()); }
 	bool HasAttribute(Attribute::Type type) const;
@@ -47,6 +49,11 @@ private:
 	unsigned int* mIndices = nullptr;
 	unsigned int mNumVertices = 0;
 	unsigned int mNumIndices = 0;
+
+	unsigned int mNumJoints = 0;
+	unsigned int* mJoints = nullptr;
+	unsigned int mNumWeights = 0;
+	float* mWeights = nullptr;
 
 	std::vector<float*> mAttributesData;
 	std::vector<Attribute> mAttributes;
