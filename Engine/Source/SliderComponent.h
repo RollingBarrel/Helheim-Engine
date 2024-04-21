@@ -5,7 +5,7 @@
 #include "Transform2DComponent.h"
 
 
-class SliderComponent :
+class ENGINE_API SliderComponent :
     public Component
 {
 public:

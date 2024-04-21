@@ -9,6 +9,8 @@
 #include "AnimationComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
+#include "SliderComponent.h"
+
 
 CREATE(PlayerController)
 {
@@ -41,6 +43,12 @@ CREATE(PlayerController)
     
     SEPARATOR("ANIMATION");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+
+    SEPARATOR("HUD");
+    MEMBER(MemberType::GAMEOBJECT, mHealthGO);
+    MEMBER(MemberType::GAMEOBJECT, mDashGO_1);
+    MEMBER(MemberType::GAMEOBJECT, mDashGO_2);
+    MEMBER(MemberType::GAMEOBJECT, mDashGO_3);
     END_CREATE;
 }
 
@@ -56,13 +64,17 @@ void PlayerController::Start()
     mHealth = mMaxHealth;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
-   
+
+    mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+    mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
+    mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
+    mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
 }
 
 
 void PlayerController::Update()
 {
-
+    UpdateHealth();
     RechargeDash();
 
     switch (mCurrentState)
@@ -403,6 +415,33 @@ void PlayerController::RechargeDash()
             LOG("%i", mDashCharges);
         }
     }
+
+    // HUD
+    if (mDashCharges == 0) 
+    {
+        mDashSlider_1->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
+        mDashSlider_2->SetFillPercent(0);
+        mDashSlider_3->SetFillPercent(0);
+    }
+    else if (mDashCharges == 1) 
+    {
+        mDashSlider_1->SetFillPercent(1);
+        mDashSlider_2->SetFillPercent(actualRegenerationTime/mDashChargeRegenerationTime);
+        mDashSlider_3->SetFillPercent(0);
+    } 
+    else if (mDashCharges == 2) 
+    {
+        mDashSlider_1->SetFillPercent(1);
+        mDashSlider_2->SetFillPercent(1);
+        mDashSlider_3->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
+    }
+    else 
+    {
+        mDashSlider_1->SetFillPercent(1);
+        mDashSlider_2->SetFillPercent(1);
+        mDashSlider_3->SetFillPercent(1);
+    }
+    
 }
 
 void PlayerController::Death() 
@@ -442,4 +481,8 @@ void PlayerController::CheckRoute()
         }
     }
     */
+}
+
+void PlayerController::UpdateHealth() {
+    mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
 }
