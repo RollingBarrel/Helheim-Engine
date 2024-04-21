@@ -48,6 +48,9 @@ void MainMenu::SetMenu(bool active, bool pause)
 {
     mMenuActive = active;
     mPauseMenu = pause;
+
+    Update();
+    LOG("MENU ACTIVE");
 }
 
 void MainMenu::ButtonsPosition(const char* imageName, float position) const

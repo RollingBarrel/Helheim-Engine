@@ -1,13 +1,12 @@
 #include "pch.h"
 #include "GameManager.h"
-
-#include "MainMenu.h"
-
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+
+#include "MainMenu.h"
 
 CREATE(GameManager)
 {
@@ -24,27 +23,27 @@ void GameManager::Start() {}
 
 void GameManager::Update()
 {
+    App->GetScene()->Find("Game_Name")->SetEnabled(false);
+
     if (mSplashScreens)
     {
-        Splash_Screens();
+        //Splash_Screens();
+        //Controls();
     }
     else
     {
-        //SetMenu(bool active, bool pause);
-    }
+        /*
+        MainMenu* menuScript = (MainMenu*)(App->GetScene()->Find("Main_Menu")->GetComponent(ComponentType::SCRIPT));
 
-    Controls();
+        if (menuScript)
+        {
+            menuScript->SetMenu(true, true);
+            //menuScript->Start();
+        }
+        */
+    } 
 }
 
-void GameManager::ChangeImage(const char* imageName, bool enabled) const {
-    App->GetScene()->Find(imageName)->SetEnabled(enabled);
-}
-
-void GameManager::ResetScreen(const char* screenName, bool activeMenu) {
-    //mMenuActive = activeMenu;
-    //ChangeImage(mPreviousImageName, false);
-    //ChangeImage(screenName, false);
-}
 
 void GameManager::Splash_Screens() 
 {
@@ -55,53 +54,84 @@ void GameManager::Splash_Screens()
 
 void GameManager::Engine_Name() 
 {
-    /*
-    ChangeImage("Engine_Name", true);
-
-    if (Delay(mTimeScreen))
-    {
-        ChangeImage("Engine_Name", false);
-        mStudioName = true;
+    if (mEngine_Name) {
+        App->GetScene()->Find("Engine_Name")->SetEnabled(true);
+        
+        if ((Delay(mTimeScreen)) || (mNextScreen))
+        {
+            mEngine_Name = false;
+            App->GetScene()->Find("Engine_Name")->SetEnabled(false);
+            mStudioName = true;
+        }
     }
-    */
 }
 
 void GameManager::Studio_Name()
 {
-    /*
     if (mStudioName) {
-        ChangeImage("Studio_Name", true);
-        mStudioName = false;
-
-        if (Delay(mTimeScreen))
+        App->GetScene()->Find("Studio_Game")->SetEnabled(true);
+        
+        if ((Delay(mTimeScreen)) || (mNextScreen))
         {
-            ChangeImage("Studio_Name", false);
+            mStudioName = false;
+            App->GetScene()->Find("Studio_Game")->SetEnabled(false);
             mGameName = true;
         }
     }
-    */
 }
 
 void GameManager::Game_Name() 
 {
-    /*
-    if (Game_Name) {
-        ChangeImage("Game_Name", true);
-        mGameName = false;
-
-        if (Delay(mTimeScreen))
+    if (mGameName) {
+        App->GetScene()->Find("Game_Name")->SetEnabled(true);
+        
+        if (mNextScreen)
         {
-            ChangeImage("Game_Name", false);
+            mGameName = false;
+            App->GetScene()->Find("Game_Name")->SetEnabled(false);
+            mSplashScreens = false;
         }
     }
-    */
+}
+
+bool GameManager::Delay(float delay)
+{
+    mTimePassed += App->GetGameDt();
+
+    if (mTimePassed >= delay)
+    {
+        mTimePassed = 0;
+        return true;
+    }
+    else return false;
 }
 
 void GameManager::Controls()
 {
-    /*
-    if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
+    if (App->GetInput()->GetKey(Keys::Keys_N) == KeyState::KEY_DOWN)
     {  
+        if (!mReturnPressed) {
+            mReturnPressed = true;
+            mNextScreen = true;
+        }
+    }
+    
+    /*
+    if (App->GetInput()->GetKey(Keys::Keys_N) == KeyState::KEY_UP)
+    {
+        mReturnPressed = false;
     }
     */
 }
+
+/*
+
+void PlayerController::WinMessage() {
+    LOG("YOU WIN");
+}
+
+void PlayerController::LoseMessage() {
+    LOG("YOU LOSE");
+}
+
+*/
