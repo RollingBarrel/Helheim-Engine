@@ -211,22 +211,24 @@ void PlayerController::Dash()
         LOG("Dash Charges:  %i", mDashCharges);
         Idle();
     }
-    if (mIsDashCoolDownActive)
+    else 
     {
-        mDashTimePassed += App->GetGameDt();
-        if (mDashTimePassed >= mDashCoolDown)
+        if (mIsDashCoolDownActive)
         {
-            mDashTimePassed = 0;
-            mIsDashCoolDownActive = true;
+            mDashTimePassed += App->GetGameDt();
+            if (mDashTimePassed >= mDashCoolDown)
+            {
+                mDashTimePassed = 0;
+                mIsDashCoolDownActive = true;
+            }
         }
+        else
+        {
+            mDashMovement += mDashSpeed * App->GetGameDt();
+            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
+            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+        }  
     }
-    else
-    {
-        mDashMovement += mDashSpeed * App->GetGameDt();
-        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
-        mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-    }   
-    
 }   
 
 void PlayerController::Attack()
