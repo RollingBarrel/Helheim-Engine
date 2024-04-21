@@ -21,22 +21,25 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 {
 	GameObject* self = (GameObject*)this->GetOwner();
 
-	self->SetName("Slider");
-	mFill = new GameObject("Fill", self);
-	mBackground = new GameObject("Background", self);
+	if (self->GetChildren().empty()) 
+	{
+		self->SetName("Slider");
+		mFill = new GameObject("Fill", self);
+		mBackground = new GameObject("Background", self);
 
-	mSliderTransform2D = new Transform2DComponent(self);
-	mBgImage = new ImageComponent(mBackground);
-	mFillImage = new ImageComponent(mFill);
-	mBgTransform2D = new Transform2DComponent(mBackground);
-	mFillTransform2D = new Transform2DComponent(mFill);
+		mSliderTransform2D = new Transform2DComponent(self);
+		mBgImage = new ImageComponent(mBackground);
+		mFillImage = new ImageComponent(mFill);
+		mBgTransform2D = new Transform2DComponent(mBackground);
+		mFillTransform2D = new Transform2DComponent(mFill);
 
-	self->AddComponent(mSliderTransform2D, this);
-	mBackground->AddComponent(mBgTransform2D, this);
-	mBackground->AddComponent(mBgImage, this);
-	mFill->AddComponent(mFillTransform2D, this);
-	mFill->AddComponent(mFillImage, this);
-
+		self->AddComponent(mSliderTransform2D, this);
+		mBackground->AddComponent(mBgTransform2D, this);
+		mBackground->AddComponent(mBgImage, this);
+		mFill->AddComponent(mFillTransform2D, this);
+		mFill->AddComponent(mFillImage, this);
+	}
+	
 	// Set default values
 	mBgImage->SetColor(float3(1.f, 0, 0));
 	mFillImage->SetColor(float3(0, 1.f, 0));
@@ -52,6 +55,16 @@ void SliderComponent::SetFillPercent(float fillPercent)
 	this->mFillPercent = fillPercent;
 	mFillTransform2D->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
 	mFillTransform2D->SetSize(float2(fillPercent, 1));
+}
+
+void SliderComponent::Save(Archive& archive) const
+{
+	Component::Save(archive);
+}
+
+void SliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+{
+	Component::LoadFromJSON(data, owner);
 }
 
 SliderComponent:: ~SliderComponent()

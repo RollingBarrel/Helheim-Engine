@@ -27,6 +27,24 @@
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Enemy.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -42,6 +60,24 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="PlayerController.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyExplosive.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRobot.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCamera.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>

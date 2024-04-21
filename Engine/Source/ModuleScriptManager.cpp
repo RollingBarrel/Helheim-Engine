@@ -44,9 +44,9 @@ update_status ModuleScriptManager::Update(float dt)
 {
 	if (mIsPlaying) 
 	{
-		for (ScriptComponent* script : mScripts) 
+		for (unsigned int i = 0; i < mScripts.size(); ++i) 
 		{
-			script->mScript->Update();
+			mScripts[i]->mScript->Update();
 		}
 	}
 

@@ -489,6 +489,9 @@
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
     <ClCompile Include="SliderComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
@@ -1213,6 +1216,150 @@
     <ClInclude Include="ButtonComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftadvanc.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbbox.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbdf.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbitmap.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbzip2.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcache.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftchapters.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcid.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcolor.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftdriver.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrdef.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrors.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftfntfmt.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgasp.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftglyph.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgxval.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgzip.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftimage.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftincrem.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlcdfil.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlist.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlogging.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlzw.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmac.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmm.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmodapi.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmoderr.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftotval.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftoutln.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftparams.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftpfr.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftrender.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsizes.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsnames.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftstroke.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsynth.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsystem.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\fttrigon.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\fttypes.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ftwinfnt.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\otsvg.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\t1tables.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\ttnameid.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\tttables.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\freetype\tttags.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Freetype\include\ft2build.h">
+      <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
     <ClInclude Include="SliderComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
@@ -1313,6 +1460,9 @@
     </Filter>
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\Freetype">
+      <UniqueIdentifier>{7458cbb4-c985-4a84-8e6e-6ecba0741426}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 
 class ComponentCanvas;
 
-class Transform2DComponent :
+class ENGINE_API Transform2DComponent :
     public Component
 {
 public:

@@ -15,6 +15,8 @@ public:
     ~TestScript() {}
     void Start() override;
     void Update() override;
+
+    void OnButtonClick() override;
    
 private:
     float mPlayerSpeed = 1;
@@ -26,8 +28,6 @@ private:
     float mMovement = 0;
     bool mUp = false;
     bool mStartCounter = false;
-    float mTimePassed = 0;
-
-    
+    float mTimePassed = 0;    
 };
 
