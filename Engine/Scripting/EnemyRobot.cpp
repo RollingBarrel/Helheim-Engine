@@ -8,18 +8,18 @@ CREATE(EnemyRobot)
 {
     CLASS(owner);
     SEPARATOR("STATS");
-    MEMBER(MemberType::INT, mHealth);
+    MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mActivationRange);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::FLOAT, mRangeDistance);
-    MEMBER(MemberType::INT, mRangeDamage);
+    MEMBER(MemberType::FLOAT, mRangeDamage);
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::FLOAT, mMeleeDistance);
-    MEMBER(MemberType::INT, mMeeleDamage);
+    MEMBER(MemberType::FLOAT, mMeeleDamage);
    
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
