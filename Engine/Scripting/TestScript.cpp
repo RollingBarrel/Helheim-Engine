@@ -10,7 +10,6 @@
 
 CREATE(TestScript)
 {
-
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
@@ -19,7 +18,6 @@ CREATE(TestScript)
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mRobot);
     END_CREATE;
-
 }
 
 void TestScript::Start()
@@ -87,10 +85,13 @@ void TestScript::Update()
 
         LOG("YOU WIN");
     }
-	
 
     LOG("hola %s" , typeid(mTestFloat3).name());
+}
 
+void TestScript::OnButtonClick()
+{
+    LOG("Script Button Onclick");
 }
 
 

@@ -23,7 +23,7 @@ void PlayerCamera::Start()
     mCameraComponent = reinterpret_cast<CameraComponent*>(mGameObject->GetComponent(ComponentType::CAMERA));
 
    ModuleScene* scene = App->GetScene();
-   scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("CombatArea")->GetID(), combatAreas);
+   scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("CombatArea")->GetID(), mCombatAreas);
 
 
     //follow the target
@@ -38,7 +38,10 @@ void PlayerCamera::Start()
         mCameraComponent->LookAt(mGameObject->GetWorldPosition(), mLookTarget->GetWorldPosition(), mGameObject->GetUp());
     }
 
-    mauxLookTarget = mLookTarget;
+    mAuxLookTarget = mLookTarget;
+
+    SetView(12.0f, 16.0f, 45.0f);
+
 
 }
 
@@ -65,7 +68,7 @@ void PlayerCamera::CameraManager()
 {
     float3 playerPosition = mFollowTarget->GetWorldPosition();
 
-    for (auto area : combatAreas)
+    for (auto area : mCombatAreas)
     {
         float3 areaPosition = area->GetPosition();
         float3 areaSize = area->GetScale();
@@ -79,7 +82,7 @@ void PlayerCamera::CameraManager()
 		} 
         else 
         {
-            mLookTarget = mauxLookTarget;
+            mLookTarget = mAuxLookTarget;
             mCameraMode = CameraMode::CLOSE;
         }
 
