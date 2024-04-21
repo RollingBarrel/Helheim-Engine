@@ -110,47 +110,61 @@ GameObject* ModuleUI::FindCanvas(GameObject* gameObject)
 	return nullptr;
 }
 
-void ModuleUI::CheckRaycast()
-{
-	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
+void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) {
+	if (gameObject == nullptr || eventTriggered)
+		return;
 
-	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
-	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
+	for (auto child : gameObject->GetChildren()) {
+		ImageComponent* image = static_cast<ImageComponent*>(child->GetComponent(ComponentType::IMAGE));
+		Transform2DComponent* transform2D = static_cast<Transform2DComponent*>(child->GetComponent(ComponentType::TRANSFORM2D));
+		ButtonComponent* button = static_cast<ButtonComponent*>(child->GetComponent(ComponentType::BUTTON));
 
-	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
-	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
+		if (image != nullptr && transform2D != nullptr && button != nullptr && button->IsEnabled()) {
+			ScenePanel* scenePanel = static_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL));
 
-	float mouseX = normalizedX;
-	float mouseY = normalizedY;
-	
-	if (!mCanvas->GetChildren().empty())
-	{
-		for (GameObject* gameObject : mCanvas->GetChildren())
-		{
-			ImageComponent* image = (ImageComponent*)gameObject->GetComponent(ComponentType::IMAGE);
-			Transform2DComponent* transform2D = (Transform2DComponent*)gameObject->GetComponent(ComponentType::TRANSFORM2D);
-			if (image != nullptr && transform2D != nullptr)
-			{
-				float2 canvasSize = ((CanvasComponent*)(image->FindCanvasOnParents(image->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
-				float2 minImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f,2.0f)).Div(canvasSize)
-					- transform2D->GetSize().Div(canvasSize);
-				float2 maxImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize)
-					+ transform2D->GetSize().Div(canvasSize);
+			int mouseAbsoluteX = scenePanel->GetMousePosition().x;
+			int mouseAbsoluteY = scenePanel->GetMousePosition().y;
 
-				// Check if the mouse position is inside the bounds of the image
-				if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y &&
-					mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y)
-				{
-					//LOG("Button Clicked");
-					//image->SetColor((image->GetColor()->x == 1.0f) ? float3(0, 0, 0) : float3(1, 1, 1));
+			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / static_cast<float>(scenePanel->GetWindowsSize().x);
+			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / static_cast<float>(scenePanel->GetWindowsSize().y);
 
-					ButtonComponent* button = (ButtonComponent*)gameObject->GetComponent(ComponentType::BUTTON);
-					if (button != nullptr && button->IsEnabled())
-					{
-						button->OnClicked();
-					}
+			float mouseX = normalizedX;
+			float mouseY = normalizedY;
+
+			float2 canvasSize = static_cast<CanvasComponent*>(image->FindCanvasOnParents(image->GetOwner())->GetComponent(ComponentType::CANVAS))->GetSize();
+			float2 minImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize) - transform2D->GetSize().Div(canvasSize);
+			float2 maxImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize) + transform2D->GetSize().Div(canvasSize);
+
+			// Check if the mouse position is inside the bounds of the image
+			if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y && mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y) {
+				// Click event (button released after press)
+				if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_UP) {
+					button->TriggerEvent(EventType::Click);
+					eventTriggered = true;
+					return; // Terminate function
+				}
+				// Button pressed
+				else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) {
+					button->TriggerEvent(EventType::Press);
+					eventTriggered = true;
+					return; // Terminate function
+				}
+				// Mouse hover
+				else {
+					button->TriggerEvent(EventType::Hover);
+					eventTriggered = true;
+					return; // Terminate function
 				}
 			}
 		}
+
+		// Recursively check children
+		CheckRaycastRecursive(child, eventTriggered);
 	}
 }
+
+void ModuleUI::CheckRaycast() {
+	bool eventTriggered = false;
+	CheckRaycastRecursive(mCanvas, eventTriggered);
+}
+

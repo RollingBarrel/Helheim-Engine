@@ -18,6 +18,7 @@
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 #include "CameraComponent.h"
+#include "ButtonComponent.h"
 
 #include "Math/TransformOps.h"
 
@@ -28,6 +29,14 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
 {
     SetImage(mResourceId);
+
+	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
+	if (component != nullptr) 
+	{
+		component->AddEventHandler(EventType::Press, std::bind(&ImageComponent::OnPress, this));
+		component->AddEventHandler(EventType::Hover, std::bind(&ImageComponent::OnHover, this));
+		component->AddEventHandler(EventType::Click, std::bind(&ImageComponent::OnClick, this));
+	}*/
 }
 
 ImageComponent:: ~ImageComponent() 
