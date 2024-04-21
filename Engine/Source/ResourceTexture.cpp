@@ -41,3 +41,10 @@ ResourceTexture::~ResourceTexture()
     mOpenGLId = 0;
     mTexHandle = 0;
 }
+
+const std::unordered_map<std::string, DXGI_FORMAT> ResourceTexture::compressionFormatNaming = {
+    {"_BaseColor", DXGI_FORMAT_BC1_UNORM},
+    {"_Normal", DXGI_FORMAT_BC5_UNORM},
+    {"_OcclusionRoughnessMetallic", DXGI_FORMAT_BC5_UNORM},
+    {"_Emissive", DXGI_FORMAT_BC5_UNORM}
+};

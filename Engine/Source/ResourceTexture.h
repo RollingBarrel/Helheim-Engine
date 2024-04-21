@@ -42,6 +42,8 @@ public:
 	unsigned int GetOpenGLId() const { return mOpenGLId; }
 	unsigned int GetTextureHandle() const { return static_cast<unsigned int>(mTexHandle); }
 
+	static const std::unordered_map<std::string, DXGI_FORMAT> compressionFormatNaming; // Map of texture filename ending to DXGI_FORMAT
+
 private:
 	unsigned int mWidth;
 	unsigned int mHeight;
@@ -57,4 +59,3 @@ private:
 	unsigned int mOpenGLId;
 	uint64_t mTexHandle;
 };
-

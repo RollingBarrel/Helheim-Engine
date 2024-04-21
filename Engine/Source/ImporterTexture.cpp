@@ -42,27 +42,14 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     delete[] pathTex;
 
     // Determine the compression format based on the file name
-    DXGI_FORMAT compressionFormat;
-    if (endsWith(filePath, "_BaseColor"))
+    DXGI_FORMAT compressionFormat = DXGI_FORMAT_BC3_UNORM; // Default value
+    for (const auto& pair : ResourceTexture::compressionFormatNaming)
     {
-        compressionFormat = DXGI_FORMAT_BC1_UNORM;
-    }
-    else if (endsWith(filePath, "_Normal"))
-    {
-        compressionFormat = DXGI_FORMAT_BC5_UNORM;
-    }
-    else if (endsWith(filePath, "_OcclusionRoughnessMetallic"))
-    {
-        compressionFormat = DXGI_FORMAT_BC5_UNORM;
-    }
-    else if (endsWith(filePath, "_Emissive"))
-    {
-        compressionFormat = DXGI_FORMAT_BC5_UNORM;
-    }
-    else
-    {
-        LOG("Texture compression: Unknown texture type, defaulting to BC3");
-        compressionFormat = DXGI_FORMAT_BC3_UNORM;
+        if (endsWith(filePath, pair.first))
+        {
+            compressionFormat = pair.second;
+            break;
+        }
     }
 
     DirectX::ScratchImage compressedImage;
