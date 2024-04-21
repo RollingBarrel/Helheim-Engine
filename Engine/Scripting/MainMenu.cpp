@@ -174,7 +174,7 @@ void MainMenu::Loading() {
         if (Delay(2.0f))
         {
             ChangeImage("Loading_Screen", false);
-            App->GetScene()->Load("scene.json");
+            App->GetScene()->Load("Level1.json");
         }
     }
 }

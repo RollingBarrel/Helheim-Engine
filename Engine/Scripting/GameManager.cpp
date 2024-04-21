@@ -23,12 +23,12 @@ void GameManager::Start() {}
 
 void GameManager::Update()
 {
-    App->GetScene()->Find("Game_Name")->SetEnabled(false);
+    //App->GetScene()->Find("Game_Name")->SetEnabled(false);
 
     if (mSplashScreens)
     {
-        //Splash_Screens();
-        //Controls();
+        Splash_Screens();
+        Controls();
     }
     else
     {
