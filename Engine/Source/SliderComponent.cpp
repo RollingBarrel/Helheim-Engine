@@ -8,6 +8,13 @@ SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(own
 SliderComponent::SliderComponent(const SliderComponent& original, GameObject* owner) : Component(owner, ComponentType::SLIDER)
 {
 	mFillPercent = original.mFillPercent;
+	mFill = new GameObject(original.mFill);
+	mBackground = new GameObject(original.mBackground);
+	mSliderTransform2D = new Transform2DComponent(*original.mSliderTransform2D, GetOwner());
+	mBgImage = new ImageComponent(*original.mBgImage, GetOwner());
+	mFillImage = new ImageComponent(*original.mFillImage, GetOwner());;
+	mBgTransform2D = new Transform2DComponent(*original.mBgTransform2D, GetOwner());
+	mFillTransform2D = new Transform2DComponent(*original.mFillTransform2D, GetOwner());
 }
 
 SliderComponent::SliderComponent(GameObject* owner) : Component(owner, ComponentType::SLIDER)
