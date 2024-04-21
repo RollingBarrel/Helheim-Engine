@@ -4,7 +4,8 @@
 #include <functional>
 #include <vector>
 
-enum class EventType {
+enum class EventType 
+{
     Click,
     Hover,
     Press

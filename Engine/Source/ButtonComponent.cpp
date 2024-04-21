@@ -32,11 +32,13 @@ void ButtonComponent::TriggerEvent(EventType eventType) {
     }
 }
 
-void ButtonComponent::Save(Archive& archive) const {
+void ButtonComponent::Save(Archive& archive) const 
+{
     Component::Save(archive);
 }
 
-void ButtonComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) {
+void ButtonComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
+{
     Component::LoadFromJSON(data, owner);
 }
 

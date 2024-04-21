@@ -110,16 +110,19 @@ GameObject* ModuleUI::FindCanvas(GameObject* gameObject)
 	return nullptr;
 }
 
-void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) {
+void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) 
+{
 	if (gameObject == nullptr || eventTriggered)
 		return;
 
-	for (auto child : gameObject->GetChildren()) {
+	for (auto child : gameObject->GetChildren()) 
+	{
 		ImageComponent* image = static_cast<ImageComponent*>(child->GetComponent(ComponentType::IMAGE));
 		Transform2DComponent* transform2D = static_cast<Transform2DComponent*>(child->GetComponent(ComponentType::TRANSFORM2D));
 		ButtonComponent* button = static_cast<ButtonComponent*>(child->GetComponent(ComponentType::BUTTON));
 
-		if (image != nullptr && transform2D != nullptr && button != nullptr && button->IsEnabled()) {
+		if (image != nullptr && transform2D != nullptr && button != nullptr && button->IsEnabled()) 
+		{
 			ScenePanel* scenePanel = static_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL));
 
 			int mouseAbsoluteX = scenePanel->GetMousePosition().x;
@@ -136,21 +139,25 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			float2 maxImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize) + transform2D->GetSize().Div(canvasSize);
 
 			// Check if the mouse position is inside the bounds of the image
-			if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y && mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y) {
+			if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y && mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y) 
+			{
 				// Click event (button released after press)
-				if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_UP) {
+				if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_UP) 
+				{
 					button->TriggerEvent(EventType::Click);
 					eventTriggered = true;
 					return; // Terminate function
 				}
 				// Button pressed
-				else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) {
+				else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) 
+				{
 					button->TriggerEvent(EventType::Press);
 					eventTriggered = true;
 					return; // Terminate function
 				}
 				// Mouse hover
-				else {
+				else 
+				{
 					button->TriggerEvent(EventType::Hover);
 					eventTriggered = true;
 					return; // Terminate function

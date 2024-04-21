@@ -153,7 +153,8 @@ void Transform2DComponent::CalculateMatrices()
 	for (GameObject* child : GetOwner()->GetChildren())
 	{
 		Transform2DComponent* childTransform = (Transform2DComponent*) child->GetComponent(ComponentType::TRANSFORM2D);
-		if (childTransform){
+		if (childTransform)
+		{
 			childTransform->CalculateMatrices();
 		}
 	}
