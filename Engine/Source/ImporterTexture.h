@@ -12,5 +12,7 @@ namespace Importer
 		void Save(const ResourceTexture* ourTexture, const unsigned char* pixels);
 
 		ResourceTexture* Load(const char* filePath, unsigned int uid);
+
+		bool endsWith(const std::string& str, const std::string& suffix);
 	}
 };

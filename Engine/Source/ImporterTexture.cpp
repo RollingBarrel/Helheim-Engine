@@ -41,8 +41,32 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     
     delete[] pathTex;
 
+    // Determine the compression format based on the file name
+    DXGI_FORMAT compressionFormat;
+    if (endsWith(filePath, "_BaseColor"))
+    {
+        compressionFormat = DXGI_FORMAT_BC1_UNORM;
+    }
+    else if (endsWith(filePath, "_Normal"))
+    {
+        compressionFormat = DXGI_FORMAT_BC5_UNORM;
+    }
+    else if (endsWith(filePath, "_OcclusionRoughnessMetallic"))
+    {
+        compressionFormat = DXGI_FORMAT_BC5_UNORM;
+    }
+    else if (endsWith(filePath, "_Emissive"))
+    {
+        compressionFormat = DXGI_FORMAT_BC5_UNORM;
+    }
+    else
+    {
+        LOG("Texture compression: Unknown texture type, defaulting to BC3");
+        compressionFormat = DXGI_FORMAT_BC3_UNORM;
+    }
+
     DirectX::ScratchImage compressedImage;
-    hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_BC3_UNORM, DirectX::TEX_COMPRESS_DEFAULT, 0.5f, compressedImage);
+    hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), compressionFormat, DirectX::TEX_COMPRESS_DEFAULT, 0.5f, compressedImage);
     if (FAILED(hr))
     {
         LOG("Failed to compress texture");
@@ -82,14 +106,16 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         dataType = GL_UNSIGNED_SHORT;
         break;
     case DXGI_FORMAT_BC1_UNORM:
-        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-        texFormat = GL_COMPRESSED_TEXTURE_FORMATS; //TODO
-        dataType = 0; //TODO
+        internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT;
         break;
     case DXGI_FORMAT_BC3_UNORM:
-        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-        texFormat = GL_COMPRESSED_TEXTURE_FORMATS; //TODO
-        dataType = 0; //TODO
+        internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT;
+        break;
+    case DXGI_FORMAT_BC5_UNORM:
+		internalFormat = GL_COMPRESSED_RG_RGTC2;
+		break;
+    case DXGI_FORMAT_BC7_UNORM:
+        internalFormat = GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM;
         break;
     default:
         assert(false && "Unsupported format");
@@ -169,13 +195,6 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         unsigned int mipLevels = header[5];
         unsigned int numPixels = header[6];
 
-        /*LOG("Loaded texture %s with textFormat %u and internalFormat %u", filePath, texFormat, internalFormat);
-        LOG("Internal format GL_RGBA8 %u", GL_RGBA8);
-        LOG("Internal format GL_RGB8 %u", GL_RGB8);
-        LOG("Internal format GL_RGBA16 %u", GL_RGBA16);
-        LOG("Internal format GL_COMPRESSED_RGBA_S3TC_DXT1_EXT %u", GL_COMPRESSED_RGBA_S3TC_DXT1_EXT);
-        LOG("Internal format GL_COMPRESSED_RGBA_S3TC_DXT5_EXT %u", GL_COMPRESSED_RGBA_S3TC_DXT5_EXT);*/
-
         bool hasAlpha;
         bytes = sizeof(hasAlpha);
         memcpy(&hasAlpha, cursor, bytes);
@@ -193,14 +212,14 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         // Set texture data for each mip level
         for (size_t i = 0; i < mipLevels; ++i)
         {
-            if (internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT5_EXT)
+            if (internalFormat == GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT || internalFormat == GL_COMPRESSED_RG_RGTC2 || internalFormat == GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM)
             {
-                glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, numPixels, pixels);
-            }
+				glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, numPixels, pixels);
+			}
             else
             {
-                glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
-            }
+				glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+			}
         }
 
         // Generate mipmaps if only one mip level is present
@@ -227,4 +246,9 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
     }
     
     return texture;
+}
+
+bool Importer::Texture::endsWith(const std::string& str, const std::string& suffix)
+{
+    return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
