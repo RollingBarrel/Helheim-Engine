@@ -13,5 +13,18 @@ public:
     void Update() override;
 
 private:
-    //bool mSplashScreen = false;
+    void ChangeImage(const char* imageName, bool enabled) const;
+    void ResetScreen(const char* screenName, bool activeMenu);
+    void Splash_Screens();
+    void Engine_Name();
+    void Studio_Name();
+    void Game_Name();
+    void Controls();
+    bool Delay(float delay);
+
+    bool mSplashScreens = true;
+    bool mStudioName = false;
+    bool mGameName = false;
+    float mTimeScreen = 5.0f;
+    float mTimePassed = 0.0f;
 };

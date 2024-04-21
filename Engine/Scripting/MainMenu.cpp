@@ -11,11 +11,29 @@ CREATE(MainMenu)
 {
     CLASS(owner);
     SEPARATOR("STATS");
-    //MEMBER(MemberType::BOOL, mActiveMenu);
+    MEMBER(MemberType::BOOL, mMenuActive);
+    MEMBER(MemberType::BOOL, mPauseMenu);
     END_CREATE;
 }
 
 MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
+
+void MainMenu::Start() 
+{
+    if (!mPauseMenu)
+    {
+        mOption = 2;
+    }
+    else
+    {
+        mOption = 1;
+
+        ButtonsPosition("Button_NewGame", 197.0f);
+        ButtonsPosition("Button_Options", 113.0f);
+        ButtonsPosition("Button_Credits", 29.0f);
+        ButtonsPosition("Button_Quit", -55.0f);
+    }
+}
 
 void MainMenu::Update()
 {
@@ -26,94 +44,70 @@ void MainMenu::Update()
     Controls();
 }
 
-void MainMenu::Start() 
-{
-    /*
-    if (!mPauseMenu)
-    {
-        mOption = 2;
-        //Transform2DComponent position = ((Transform2DComponent*)(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D)));
-
-        float3 currentPosition = ((Transform2DComponent*)(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D)))->GetPosition();
-        float3 newPosition(currentPosition.x, 29.0f, currentPosition.z);
-
-        //((Transform2DComponent*)(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D)))->SetPosition(newPosition);
-    }
-    else
-    {
-        mOption = 1;
-    }
-    */
-
-    if (!mPauseMenu)
-    {
-        mOption = 2;
-
-        Transform2DComponent* transformComponent = static_cast<Transform2DComponent*>(App->GetScene()->Find("Button_Options")->GetComponent(ComponentType::TRANSFORM2D));
-
-        if (transformComponent)
-        {
-            float3 currentPosition = transformComponent->GetPosition();
-            currentPosition.y = 29.0f;
-            float3 newPosition(currentPosition.x, currentPosition.y, currentPosition.z);
-
-            transformComponent->SetPosition(newPosition);
-        }
-    }
-    else
-    {
-        mOption = 1;
-    }
-}
-
 void MainMenu::SetMenu(bool active, bool pause)
 {
     mMenuActive = active;
     mPauseMenu = pause;
 }
 
+void MainMenu::ButtonsPosition(const char* imageName, float position) const
+{
+    Transform2DComponent* transformComponent = static_cast<Transform2DComponent*>(App->GetScene()->Find(imageName)->GetComponent(ComponentType::TRANSFORM2D));
+
+    if (transformComponent)
+    {
+        float3 currentPosition = transformComponent->GetPosition();
+        float3 newPosition(currentPosition.x, position, currentPosition.z);
+
+        transformComponent->SetPosition(newPosition);
+    }
+}
+
 void MainMenu::Menu()
 {
     if (mMenuActive) {
         if (!mPauseMenu) {
-            ChangeImage("Menu", true);
+            mScreen = "Menu";
+            ChangeImage(mScreen, true);
         }
         else
         {
-            ChangeImage("Pause_Game", true);
+            mScreen = "Pause_Game";
+            ChangeImage(mScreen, true);
         }
         
         switch (mOption)
         {
             case 1:
-                if (mPreviousImageName)
-                {
-                    ChangeImage(mPreviousImageName, false);
-                }
+                if (mPauseMenu) {
+                    if (mPreviousImageName)
+                    {
+                        ChangeImage(mPreviousImageName, false);
+                    }
+                        
+                    mActualImageName = "Button_ContinueGame";
+                    mPreviousImageName = mActualImageName;
+                    ChangeImage(mActualImageName, true);
 
-                mActualImageName = "Button_ContinueGame";
-                mPreviousImageName = mActualImageName;
-                ChangeImage(mActualImageName, true);
-
-                if (mNextScreen) {
-                    mNextScreen = false;
-                    ResetScreen("Pause_Game", false);
-                }
-
+                    if (mNextScreen) {
+                        mNextScreen = false;
+                        ResetScreen(mScreen, false);
+                    }
+                } 
                 break;
             case 2:
                 if (mPreviousImageName)
                 {
                     ChangeImage(mPreviousImageName, false);
                 }
-
+         
                 mActualImageName = "Button_NewGame";
                 mPreviousImageName = mActualImageName;
                 ChangeImage(mActualImageName, true);
                 
                 if (mNextScreen) {
                     mNextScreen = false;
-                    ResetScreen("Menu", false);
+                    ResetScreen(mScreen, false);
                     mLoadingActive = true;
                     Loading();
                 }
@@ -126,7 +120,7 @@ void MainMenu::Menu()
                 
                 if (mNextScreen) {
                     mNextScreen = false;
-                    ResetScreen("Menu", false);
+                    ResetScreen(mScreen, false);
                     mOptionsActive = true;
                     Options();
                 }
@@ -139,7 +133,7 @@ void MainMenu::Menu()
 
                 if (mNextScreen) {
                     mNextScreen = false;
-                    ResetScreen("Menu", false);
+                    ResetScreen(mScreen, false);
                     mCreditsActive = true;
                     Credits();
                 }
@@ -190,7 +184,7 @@ void MainMenu::Options() {
         if (mPrevScreen) {
             mPrevScreen = false;
             mOptionsActive = false;
-            ChangeImage("Menu", true);
+            ChangeImage(mScreen, true);
             ResetScreen("Options", true);
         }
     }
@@ -203,7 +197,7 @@ void MainMenu::Credits() {
         if (mPrevScreen) {
             mPrevScreen = false;
             mCreditsActive = false;
-            ChangeImage("Menu", true);
+            ChangeImage(mScreen, true);
             ResetScreen("Credits", true);
         }
     }
@@ -275,11 +269,21 @@ void MainMenu::Controls()
 
     if ((App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN) || (App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN))
     {
-        mNextScreen = true;
+        if (!mReturnPressed) {
+            mOptionTmp = mOption;
+            mReturnPressed = true;
+            mEscPressed = false;
+            mNextScreen = true;
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        mPrevScreen = true;
+        if (!mEscPressed) {
+            mOption = mOptionTmp;
+            mEscPressed = true;
+            mReturnPressed = false;
+            mPrevScreen = true;
+        }       
     }
 }
