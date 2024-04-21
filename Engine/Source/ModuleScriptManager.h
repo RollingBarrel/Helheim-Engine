@@ -24,10 +24,10 @@ public:
 	
 	void Play();
 	void Stop();
+	void Start();
 
 private:
 	void HotReload();
-	void Start();
 	void ReloadScripts(const std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	void SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	std::vector<ScriptComponent*> mScripts;

@@ -44,7 +44,9 @@ public:
 	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
 	void ResetFrustumCulling(GameObject* obj);
 
-	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagid);
+	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagID);
+	GameObject* FindGameObjectWithTag(unsigned tagID);
+	GameObject* FindGameObjectWithTag(const char* tagName);
 	void FindGameObjectsWithTag(GameObject* root, unsigned tagid, std::vector<GameObject*>& foundGameObjects);
 
 	void AddTag(std::string tag);

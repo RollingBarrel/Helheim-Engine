@@ -57,6 +57,12 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Image";
 		case ComponentType::BUTTON:
 			return "Button";
+		case ComponentType::AUDIOLISTENER:
+			return "Audio Listener";
+		case ComponentType::AUDIOSOURCE:
+			return "Audio Source";
+		case ComponentType::SLIDER:
+			return "Slider";
 		case ComponentType::PARTICLESYSTEM:
 			return "Particle System";
 		default:
