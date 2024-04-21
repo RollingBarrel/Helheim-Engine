@@ -33,9 +33,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Target.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
@@ -69,9 +66,6 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="EnemyExplosive.cpp">
-      <Filter>SricptCode</Filter>
-    </ClCompile>
-    <ClCompile Include="Target.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="EnemyRobot.cpp">
