@@ -552,6 +552,11 @@
     <None Include="..\Game\shaders\default_fragment.glsl" />
     <None Include="..\Game\shaders\default_vertex.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="CoreLib.vcxproj">
+      <Project>{75d74dae-b631-4317-bf0a-958b8e57fb39}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
