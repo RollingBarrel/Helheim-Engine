@@ -31,7 +31,6 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 void AnimationController::Update(GameObject* model)
 {
 	mCurrentTime += App->GetRealDt();
-	LOG("Current Timer Time: %f", mCurrentTime);
 	GetTransform(model);
 }
 
