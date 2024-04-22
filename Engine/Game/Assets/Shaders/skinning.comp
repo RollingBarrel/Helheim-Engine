@@ -3,9 +3,9 @@
 layout(std430, binding = 15) readonly buffer Palette {mat4 palette[];};
 layout(std430, binding = 16) readonly buffer BoneIndices {uvec4 boneIndices[];};
 layout(std430, binding = 17) readonly buffer Weights {vec4 weights[];};
-layout(std430, binding = 18) readonly buffer Positions {vec3 inPos[];};
-layout(std430, binding = 19) readonly buffer Normals {vec3 inNorm[];};
-layout(std430, binding = 20) readonly buffer Tangents {vec4 inTang[];};
+layout(std430, binding = 18) readonly buffer Positions {float inPos[];};
+layout(std430, binding = 19) readonly buffer Normals {float inNorm[];};
+layout(std430, binding = 20) readonly buffer Tangents {float inTang[];};
 layout(location = 25) uniform int numVertices;
 struct Vertex
 {
@@ -22,11 +22,19 @@ void main()
 	uint index = gl_GlobalInvocationID.x;
     if(index < numVertices) 
     {
-       mat4 skinTransform = palette[boneIndices[index][0]]*weights[index][0]+ palette[boneIndices[index][1]]*weights[index][1]+
-       palette[boneIndices[index][2]]*weights[index][2]+palette[boneIndices[index][3]]*weights[index][3];
-       outVertices[index].pos.xyz = (skinTransform*vec4(inPos[index],1.0)).xyz;
-       outVertices[index].norm.yzw = (skinTransform*vec4(inNorm[index],0.0)).xyz;
-       outVertices[index].tang.w = inTang[index].w;
-       outVertices[index].tang.xyz = (skinTransform*vec4(inTang[index].xyz,0.0)).xyz;
+       //mat4 skinTransform = palette[boneIndices[index][0]]*weights[index][0]+ palette[boneIndices[index][1]]*weights[index][1]+
+       //palette[boneIndices[index][2]]*weights[index][2]+palette[boneIndices[index][3]]*weights[index][3];
+       //outVertices[index].pos.xyz = (skinTransform*vec4(inPos[index],1.0)).xyz;
+       //outVertices[index].norm.yzw = (skinTransform*vec4(inNorm[index],0.0)).xyz;
+       //outVertices[index].tang.w = inTang[index].w;
+       //outVertices[index].tang.xyz = (skinTransform*vec4(inTang[index].xyz,0.0)).xyz;
+
+       vec3 outPos = vec3(inPos[index * 3], inPos[index * 3 + 1], inPos[index * 3 +2]);
+       outVertices[index].pos.xyz = outPos;
+       vec3 outNorm = vec3(inNorm[index * 3], inNorm[index * 3 + 1], inNorm[index * 3 + 2]);
+       outVertices[index].norm.yzw = outNorm;
+       vec4 outTang = vec4(inTang[index * 3], inTang[index * 3 + 1], inTang[index * 3 + 2], inTang[index * 3 + 3]);
+       outVertices[index].tang.w = outTang.w;
+       outVertices[index].tang.xyz = outTang.xyz;
     }
 }
