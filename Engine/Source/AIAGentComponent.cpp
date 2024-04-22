@@ -15,7 +15,7 @@ AIAgentComponent::AIAgentComponent(const AIAgentComponent& original, GameObject*
 	// mHeight = original.mHeight;
 	// mStepHeight = original.mStepHeight;
 	// mMaxSlope = original.mMaxSlope;
-	 mSpeed = original.mSpeed;
+	 //mSpeed = original.mSpeed;
 	// mAngularSpeed = original.mAngularSpeed;
 	// mAcceleration = original.mAcceleration;
 	// mStoppingDistance = original.mStoppingDistance;
@@ -29,7 +29,7 @@ void AIAgentComponent::Reset()
 	// mStepHeight = 0.0f;
 	// mMaxSlope = 0;
 	////Steering Parameters:
-	 mSpeed = 0.0f;
+	 //mSpeed = 0.0f;
 	// mAngularSpeed = 0.0f; 
 	// mAcceleration = 0.0f;
 	// mStoppingDistance = 0.0f; 
@@ -48,27 +48,18 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 	return new AIAgentComponent(*this, owner);
 }
 
-void AIAgentComponent::MoveAgent(float3 destination )
+void AIAgentComponent::MoveAgent(float3 destination, float speed )
 {
 	std::vector<float3> positions= App->GetNavigation()->FindNavPath(this->GetOwner()->GetPosition(), destination);
 	if (positions.size() > 1 ) 
 	{
-		if (!IsClose(positions[positions.size() - 1]))
-		{
 			float3 direction = (positions[1] - positions[0]).Normalized();
-			direction = direction / 50 * mSpeed;
+			direction = direction / 50 * speed;
 			this->GetOwner()->SetPosition(this->GetOwner()->GetPosition() + direction);
-		}
 	}
 	
 }
 
-bool AIAgentComponent::IsClose(float3 destination) 
-{
-	float3 result = destination - this->GetOwner()->GetPosition();
-	return (result.x < 0.5 && result.x> -0.5) || (result.z < 0.5 && result.z> -0.5);
-	
-}
 
 void AIAgentComponent::Save(Archive& archive) const
 {
@@ -77,7 +68,7 @@ void AIAgentComponent::Save(Archive& archive) const
 	//archive.AddFloat("Height", mHeight);
 	//archive.AddFloat("StepHeight", mStepHeight);
 	//archive.AddInt("MaxSlope", mMaxSlope);
-	archive.AddFloat("Speed", mSpeed);
+	//archive.AddFloat("Speed", mSpeed);
 	//archive.AddFloat("AngularSpeed", mAngularSpeed);
 	//archive.AddFloat("Acceleration", mAcceleration);
 	//archive.AddFloat("StoppingDistance", mStoppingDistance);
@@ -101,10 +92,10 @@ void AIAgentComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* ow
 	//{
 	//	mMaxSlope = data["MaxSlope"].GetInt();
 	//}
-	if (data.HasMember("Speed")) 
-	{
-		mSpeed = data["Speed"].GetFloat();
-	}
+	//if (data.HasMember("Speed")) 
+	//{
+	//	mSpeed = data["Speed"].GetFloat();
+	//}
 	//if (data.HasMember("AngularSpeed")) 
 	//{
 	//	mRadius = data["AngularSpeed"].GetFloat();

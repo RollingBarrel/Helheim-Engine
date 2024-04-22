@@ -24,6 +24,7 @@
 #include "AudioSourceComponent.h"
 #include "AudioListenerComponent.h"
 #include "Transform2DComponent.h"
+#include "SliderComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -177,11 +178,14 @@ void GameObject::ResetTransform()
 
 void GameObject::SetEnabled(bool enabled)
 {
-	mIsEnabled = enabled;
-
-	if (!enabled || IsRoot() || mParent->IsActive())
+	if (mIsEnabled != enabled)
 	{
-		SetActiveInHierarchy(enabled);
+		mIsEnabled = enabled;
+
+		if (!enabled || IsRoot() || mParent->IsActive())
+		{
+			SetActiveInHierarchy(enabled);
+		}
 	}
 }
 
@@ -472,10 +476,13 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new Transform2DComponent(this);
 		break;
 	case ComponentType::AUDIOSOURCE:
-	newComponent = new AudioSourceComponent(this);
+		newComponent = new AudioSourceComponent(this);
 		break;
 	case ComponentType::AUDIOLISTENER:
-	newComponent = new AudioListenerComponent(this);
+		newComponent = new AudioListenerComponent(this);
+		break;
+	case ComponentType::SLIDER:
+		newComponent = new SliderComponent(this);
 		break;
 	default:
 		break;
@@ -537,8 +544,14 @@ void GameObject::AddComponent(Component* component, Component* position)
 
 void GameObject::RecalculateLocalTransform() 
 {
-
-	mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	if (mParent->mWorldTransformMatrix.Determinant4() != 0)
+	{
+		mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	}
+	else 
+	{
+		mLocalTransformMatrix = float4x4::identity;
+	}
 
 	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
 	mEulerRotation = mRotation.ToEulerXYZ();
@@ -606,7 +619,6 @@ void GameObject::Save(Archive& archive, int parentId) const
 	}
 	archive.AddString("Name", mName.c_str());
 	archive.AddBool("isEnabled", mIsEnabled);
-	archive.AddBool("isActive", mIsActive);
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);
@@ -682,6 +694,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	float3 position;
 	float3 scale;
 	Quat rotation;
+	bool isEnabled = true;
 	Tag* tag = App->GetScene()->GetTagByName("Untagged");
 
 	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) 
@@ -695,6 +708,10 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	if (gameObject.HasMember("Name") && gameObject["Name"].IsString()) 
 	{
 		name = gameObject["Name"].GetString();
+	}
+	if (gameObject.HasMember("isEnabled") && gameObject["isEnabled"].IsBool())
+	{
+		isEnabled = gameObject["isEnabled"].GetBool();
 	}
 	if (gameObject.HasMember("PrefabId") && gameObject["PrefabId"].IsInt()) 
 	{
@@ -781,6 +798,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
+	go->SetEnabled(isEnabled);
 }
 
 void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) 
