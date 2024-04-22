@@ -324,11 +324,11 @@ void GeometryBatch::Draw()
 		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
 		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
 		{
-			//if (meshRenderer->GetIsAnimated() != 0 && (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()))
-			//{
-				//const AnimationComponent* cAnim = meshRenderer->GetAnimationComponent();
-				//if (cAnim && cAnim->GetIsPlaying())
-				//{
+			if (meshRenderer->GetIsAnimated() != 0 && (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()))
+			{
+				const AnimationComponent* cAnim = meshRenderer->GetAnimationComponent();
+				if (cAnim && cAnim->GetIsPlaying())
+				{
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, paletteSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, meshRenderer->GetPalette().size() * sizeof(float) * 16, meshRenderer->GetPalette().data(), GL_DYNAMIC_DRAW);
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, boneIndicesSsbo);
@@ -345,11 +345,11 @@ void GeometryBatch::Draw()
 					glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * rMesh->GetVertexSize(), rMesh->GetVertexSize() * rMesh->GetNumberVertices());
 					glDispatchCompute((rMesh->GetNumberVertices() + (63)) / 64, 1, 1);
 					animationSkinning = true;
-				//}
-			//}
+				}
+			}
 		}
 	}
-	//if(animationSkinning)
+	if(animationSkinning)
 		glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());

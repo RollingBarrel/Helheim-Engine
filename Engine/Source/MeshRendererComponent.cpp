@@ -118,7 +118,6 @@ void MeshRendererComponent::LoadAnimatedMesh(bool isAnimated) {
 	for (unsigned i = 0; i < inverseBindMats.size(); ++i)
 	{
 		palette.push_back((inverseBindMats[i].first->TranformInFirstGameObjectSpace() * inverseBindMats[i].second).Transposed());
-		//palette.push_back(float4x4::identity);
 	}
 	//int o = 1;
 	//LOG("Palette:\n %f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f", palette[o][0][0], palette[o][0][1], palette[o][0][2], palette[o][0][3], palette[o][1][0], palette[o][1][1], palette[o][1][2], palette[o][1][3], palette[o][2][0], palette[o][2][1], palette[o][2][2], palette[o][2][3], palette[o][3][0], palette[o][3][1], palette[o][3][2], palette[o][3][3]);
@@ -133,7 +132,7 @@ void MeshRendererComponent::LoadAnimatedMesh(bool isAnimated) {
 }
 
 void MeshRendererComponent::Update() {
-	if (mMesh && mMesh->GetNumberJoints() && palette.size() == 0)
+	if (mAnimationComponent && mAnimationComponent->GetIsPlaying())
 	{
 		LoadAnimatedMesh(mIsAnimated);
 	}
