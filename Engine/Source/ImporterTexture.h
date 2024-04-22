@@ -18,7 +18,7 @@ namespace Importer
 
 		ResourceTexture* Load(const char* filePath, unsigned int uid);
 
-		bool endsWith(const std::string& str, const std::string& suffix);
+		bool ContainsText(const std::string& str, const std::string& suffix);
 		
 		extern const std::unordered_map<std::string, DXGI_FORMAT> compressionFormatNaming; // Map of texture filename ending to DXGI_FORMAT
 	}
