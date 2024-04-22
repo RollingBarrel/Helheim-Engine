@@ -4,12 +4,13 @@
 
 class ComponentCanvas;
 
-class Transform2DComponent :
+class ENGINE_API Transform2DComponent :
     public Component
 {
 public:
 	Transform2DComponent(const bool active, GameObject* owner);
 	Transform2DComponent(GameObject* owner);
+	Transform2DComponent(const Transform2DComponent& original, GameObject* owner);
 	~Transform2DComponent();
 
 	void Update() override;
@@ -47,7 +48,7 @@ private:
 
 	float2 mAnchorMin = float2(0.5, 0.5);
 	float2 mAnchorMax = float2(0.5, 0.5);
-	float2 mPivot;
+	float2 mPivot = float2(0,0);
 
 	float4x4 mLocalMatrix = float4x4::identity;
 	float4x4 mGlobalMatrix = float4x4::identity;

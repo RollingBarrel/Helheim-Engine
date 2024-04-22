@@ -553,7 +553,7 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 
 void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 {
-	ImGui::SeparatorText("Agent Parameters");
+	//ImGui::SeparatorText("Agent Parameters");
 
 	//float radius = component->GetRadius();
 	//if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
@@ -576,13 +576,13 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 	//	component->SetMaxSlope(maxSlope);
 	//}
 
-	ImGui::SeparatorText("Steering Parameters");
+	//ImGui::SeparatorText("Steering Parameters");
 
-	float speed = component->GetSpeed();
-	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f,0.0f))
-	{
-		component->SetSpeed(speed);
-	}
+	//float speed = component->GetSpeed();
+	//if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f,0.0f))
+	//{
+	//	component->SetSpeed(speed);
+	//}
 
 	/*float angularSpeed = component->GetAngularSpeed();
 	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))

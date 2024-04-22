@@ -24,6 +24,13 @@ void ProjectPanel::Draw(int windowFlags)
 
 	PathNode* root = App->GetFileSystem()->GetRootNode();
 
+	if (App->GetFileSystem()->IsClean())
+	{
+		mSelectedNode = nullptr;
+		App->GetFileSystem()->SetIsClean(false);
+	}
+
+
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
 		ImGui::Columns(2);
