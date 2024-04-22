@@ -93,13 +93,14 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 
 void MeshRendererComponent::Enable()
 {
-	App->GetOpenGL()->BatchAddMesh(this);
-
+	if(mMaterial && mMesh)
+		App->GetOpenGL()->BatchAddMesh(this);
 }
 
 void MeshRendererComponent::Disable()
 {
-	App->GetOpenGL()->BatchRemoveMesh(this);
+	if (mMaterial && mMesh)
+		App->GetOpenGL()->BatchRemoveMesh(this);
 }
 
 MeshRendererComponent::~MeshRendererComponent()

@@ -7,9 +7,11 @@
 #include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "Component.h"
+#include "ModuleUI.h"
 
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScriptManager.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
@@ -35,6 +37,9 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
 	mTags.push_back(new Tag(6, "Obstacle", TagType::SYSTEM));
+	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
+	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
+
 }
 
 ModuleScene::~ModuleScene()
@@ -55,9 +60,12 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("SampleScene", nullptr);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
+	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 
-	Load("scene");
+	//Load("scene");
+	//Load("MainMenu");
+	Load("Level1");
+
 
 	return true;
 }
@@ -264,6 +272,7 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->CleanUp();
+		App->GetUI()->CleanUp();
 		delete mRoot;
 		mRoot = new GameObject(sceneName, nullptr);
 
@@ -275,11 +284,24 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->UpdateTree();
-
+		App->GetUI()->FindCanvas(mRoot);
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
 	}
+
+	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+	if (cameraGameObject)
+	{
+		App->GetCamera()->SetCurrentCamera(cameraGameObject);
+	}
+
+	if (App->IsPlayMode())
+	{
+		App->GetScriptManager()->Start();
+	}
+	
+
 }
 
 void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)

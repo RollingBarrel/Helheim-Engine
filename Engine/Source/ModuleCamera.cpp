@@ -198,12 +198,13 @@ update_status ModuleCamera::Update(float dt)
 			float transformCameraVel = 0.03f;
 			const float rotateCameraVel = 0.01f;
 		
-			const float dtFastSpeed = dtTransformCameraVel * 3.0f;
+			const float dtFastSpeed = dtTransformCameraVel * mShiftSpeed;
 			const float fastSpeed = transformCameraVel * 3.0f;
 			bool shiftPressed = (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(SDL_SCANCODE_RSHIFT) == KeyState::KEY_REPEAT);
 			float dtSpeed = shiftPressed ? dtFastSpeed : dtTransformCameraVel;
 			float speed = shiftPressed ? fastSpeed : transformCameraVel;
-
+			
+			mShiftSpeed =  shiftPressed ? mShiftSpeed + 0.05 : 5.0f;
 	
 		
 			if (App->GetInput()->GetMouseWheelMotion() != 0)

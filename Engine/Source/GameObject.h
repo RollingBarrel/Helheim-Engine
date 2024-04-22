@@ -6,17 +6,17 @@
 #include "Math/Quat.h"
 #include "string"
 #include "Archive.h"
+#include "Tag.h"
+#include "MeshRendererComponent.h"
 
 #undef max
 #undef min
 #define NOMINMAX
 #include "rapidjson/document.h"
 
-class MeshRendererComponent;
 class AIAgentComponent;
 class CameraComponent;
 class Component;
-class Tag;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject
@@ -89,11 +89,14 @@ public:
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 	const bool HasUpdatedTransform() const;
 
+	void AddComponent(Component* component, Component* position);
+	void SetName(const char* name) { mName = name; };
+
 private:
 	void AddSuffix();
 	void DeleteComponents();
 	Component* RemoveComponent(Component* component);
-	void AddComponent(Component* component, Component* position);
+
 	void RecalculateLocalTransform();
 	void RefreshBoundingBoxes();
 

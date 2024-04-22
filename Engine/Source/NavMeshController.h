@@ -123,7 +123,7 @@ private:
 	AABB mAABB;
 	AABB mAABBWorld;
 	//DEBUG DRAW VARIABLES
-	bool mDraw = true;
+	bool mDraw = false;
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
