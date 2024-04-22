@@ -45,7 +45,7 @@ class PlayerController :public Script
         void MeleeAttack();
         void RangedAttack();
         void Move(float3 position);
-
+        void HandleRotation();
         void Shoot(float damage);
         void Reload();
         

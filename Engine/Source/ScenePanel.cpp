@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "ModuleInput.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "CameraComponent.h"
@@ -121,8 +122,11 @@ void ScenePanel::DrawScene()
 	ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
 
 	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+	App->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+	App->GetWindow()->GameWindowsResized(mWindowsSize);
 	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+	App->GetInput()->SetGameMousePosition(mMousePosition);
 
 	if (ImGui::BeginDragDropTarget())
 	{

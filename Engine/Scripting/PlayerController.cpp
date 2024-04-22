@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleWindow.h"
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
@@ -108,6 +109,7 @@ void PlayerController::Update()
         break;
     }
 
+    HandleRotation();
 
     if (mWinArea)
     {
@@ -177,28 +179,24 @@ void PlayerController::Moving()
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         Move(float3::unitZ);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(0), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
         Move(-float3::unitZ);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(180.0f), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
         Move(float3::unitX);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(90.0f), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
         Move(-float3::unitX);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(-90.0f), 0.0f));
         anyKeyPressed = true;
     }
 
@@ -209,6 +207,27 @@ void PlayerController::Move(float3 direction)
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mPlayerSpeed);
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+}
+
+void PlayerController::HandleRotation()
+{
+    std::map<float, GameObject*> hits;
+
+    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGameMousePosition());
+
+    //LOG("Windows Size: %f , %f", App->GetWindow()->GetGameWindowsSize().x, App->GetWindow()->GetGameWindowsSize().y);
+    //LOG("Windows Position: %f , %f", App->GetWindow()->GetGameWindowsPosition().x, App->GetWindow()->GetGameWindowsPosition().y);
+    //LOG("Mouse position: %f , %f", App->GetInput()->GetGameMousePosition().x, App->GetInput()->GetGameMousePosition().y);
+    //LOG("Ray position: %f , %f", ray.pos.x, ray.pos.y);
+    hits = Physics::Raycast(&ray);
+
+    if (!hits.empty())
+    {
+        float3 target = float3(hits.begin()->second->GetWorldPosition().x, mGameObject->GetWorldPosition().y, hits.begin()->second->GetWorldPosition().z);
+        mGameObject->LookAt(target);
+    }
+    
+
 }
 
 

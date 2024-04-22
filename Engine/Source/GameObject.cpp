@@ -169,6 +169,15 @@ void GameObject::Update()
 	}
 }
 
+void GameObject::LookAt(float3 target)
+{
+	float4x4 rotationMatrix;
+
+	rotationMatrix.RotateFromTo(GetFront(), target - mPosition);
+
+	SetRotation(rotationMatrix.ToEulerXYZ());
+}
+
 void GameObject::ResetTransform()
 {
 	SetPosition(float3::zero);

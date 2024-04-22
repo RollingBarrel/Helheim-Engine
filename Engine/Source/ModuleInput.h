@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "KeyboardKeys.h"
+#include "float2.h"
 
 #define NUM_CONTROLLER_BUTTONS 15
 #define NUM_CONTROLLER_AXIS 4
@@ -102,6 +103,8 @@ public:
 	KeyState GetMouseKey(MouseKey id) const { return mMouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
 	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
+	float2 GetGameMousePosition() const { return mGameMousePosition; }
+	void SetGameMousePosition(float2 gameMousePosition) { mGameMousePosition = gameMousePosition; }
 	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
 
@@ -124,6 +127,7 @@ private:
 	int mMouseMotionY = 0;
 	int mMousePositionX = 0;
 	int mMousePositionY = 0;
+	float2 mGameMousePosition;
 
 	int mWheelY = 0;
 
