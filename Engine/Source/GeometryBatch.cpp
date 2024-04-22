@@ -47,6 +47,13 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glGenBuffers(1, &normSsbo);
 	glGenBuffers(1, &tangSsbo);
 
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, paletteSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, boneIndicesSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 17, weightsSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 18, posSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, normSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, tangSsbo);
+
 	unsigned int idx = 0;
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
