@@ -8,7 +8,7 @@ class EmitterShape
 public:
     enum Type
     {
-        NONE,
+        NONE = 0,
 		CONE,
         SQUARE,
         CIRCLE
@@ -20,10 +20,6 @@ public:
     virtual float3 RandomInitDirection();
 
 protected:
-    float3 positionTransform(float3 position);
-
-    float3 mPosition;
-    float3 mDirection;
     float mShapeRadius;
     float mShapeAngle;
     float2 mShapeSize;
@@ -32,26 +28,26 @@ protected:
 class EmitterShapeCone : public EmitterShape
 {
 public:
-    EmitterShapeCone(float3 position, float3 direction);
+    EmitterShapeCone();
 
 	float3 RandomInitPosition() override;
     float3 RandomInitDirection() override;
 };
 
-class EmitterShapeSquare : public EmitterShape
-{
-public:
-    EmitterShapeSquare(float3 position, float3 direction);
-
-    float3 RandomInitPosition() override;
-    float3 RandomInitDirection() override;
-};
-
-class EmitterShapeCircle : public EmitterShape
-{
-public:
-    EmitterShapeCircle(float3 position, float3 direction);
-
-    float3 RandomInitPosition() override;
-    float3 RandomInitDirection() override;
-};
+//class EmitterShapeSquare : public EmitterShape
+//{
+//public:
+//    EmitterShapeSquare();
+//
+//    float3 RandomInitPosition() override;
+//    float3 RandomInitDirection() override;
+//};
+//
+//class EmitterShapeCircle : public EmitterShape
+//{
+//public:
+//    EmitterShapeCircle();
+//
+//    float3 RandomInitPosition() override;
+//    float3 RandomInitDirection() override;
+//};

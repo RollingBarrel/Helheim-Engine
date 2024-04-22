@@ -42,24 +42,11 @@ Component* ParticleSystemComponent::Clone(GameObject* owner) const
     return new ParticleSystemComponent(*this, owner);
 }
 
+
+
 void ParticleSystemComponent::Init()
 {
-    // set up shape properties
-    switch(mShapeType)
-	{
-        case EmitterShape::Type::CONE:
-			mShape = EmitterShapeCone(mOwner->GetPosition(), float3(0,0,1));
-			break;
-        case EmitterShape::Type::SQUARE:
-            //mShape = EmitterShapeBox();
-            break;
-        case EmitterShape::Type::CIRCLE:
-            //mShape = EmitterShapeBox();
-            break;
-        case EmitterShape::Type::NONE:
-			break;
-    }
-
+    InitEmitterShape();
     // set up mesh and attribute properties
     float particleQuad[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
@@ -171,18 +158,17 @@ void ParticleSystemComponent::Update()
 		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
 		if (mParticles.size() < mMaxParticles)
 		{
-            // Initializes a particle with a random position, direction and rotation 
-            // considering the shape of emission
-			float3 position = mShape.RandomInitPosition();
-
-            float3 direction = mShape.RandomInitDirection();
+            // Initializes a particle with a random position, direction  
+            // relative to the shape of emission
+			float3 emitionPosition = mShape.RandomInitPosition();
+            float3 emitionDirection = mShape.RandomInitDirection();
 
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(position, direction, rotation, mLifeTime, mIsSpeedCurve, mIsSizeCurve);
+            Particle* particle = new Particle(emitionPosition, emitionDirection, rotation, mLifeTime, mIsSpeedCurve, mIsSizeCurve);
             
             if (mIsSpeedCurve) particle->SetSpeedCurve(mSpeedCurve);
             else particle->SetSpeedLineal(mSpeedLineal);
@@ -284,5 +270,23 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
                 mColorGradient[time] = float4(colorVec);
             }
         }
+    }
+}
+
+void ParticleSystemComponent::InitEmitterShape()
+{
+    switch (mShapeType)
+    {
+    case EmitterShape::Type::CONE:
+        mShape = EmitterShapeCone();
+        break;
+    case EmitterShape::Type::SQUARE:
+        mShape = EmitterShapeSquare();
+        break;
+    case EmitterShape::Type::CIRCLE:
+        mShape = EmitterShapeCircle();
+        break;
+    case EmitterShape::Type::NONE:
+        break;
     }
 }

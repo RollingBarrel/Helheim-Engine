@@ -64,8 +64,8 @@ public:
     float BezierValue(float dt01, float4 P);
 
 private:
-    float3 mPosition;
-    float3 mDirection = float3::unitX;
+    float3 mPosition; // Relativa al emisor de particulas
+    float3 mDirection = float3::unitX; // Relativa al emisor de particulas
     float mRotation;
 
     bool mIsSpeedCurve;

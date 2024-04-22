@@ -1098,6 +1098,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	if (check)
 	{
 		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
+		component->InitEmitterShape();
 	}	
 	switch(component->mShapeType)
 	{
