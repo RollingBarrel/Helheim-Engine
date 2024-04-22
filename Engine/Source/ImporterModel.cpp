@@ -24,7 +24,7 @@
 #include "tiny_gltf.h"
 
 
-static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, std::map<unsigned int, unsigned int>&importedMaterials, std::map<unsigned int,unsigned int>& importedTextures, std::map<unsigned int, unsigned int>& importedMeshes, int parentIndex = -1)
+static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, std::map<unsigned int, unsigned int>&importedMaterials, std::map<unsigned int,unsigned int>& importedTextures, std::map<std::pair<unsigned int, unsigned int>, unsigned int>& importedMeshes, int parentIndex = -1)
 {
     ModelNode node;
 
@@ -88,18 +88,19 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 
     if (node.mMeshId != -1)
     {
+        int i = 0;
         for (const auto& primitive : model.meshes[node.mMeshId].primitives)
         {
-            if (importedMeshes.find(node.mMeshId) == importedMeshes.end())
+            if (importedMeshes.find({ node.mMeshId, i}) == importedMeshes.end())
             {
                 ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, uid++);
                 meshId = rMesh->GetUID();
-                importedMeshes[node.mMeshId] = meshId;
+                importedMeshes[{ node.mMeshId, i}] = meshId;
                 delete rMesh;
             }
             else
             {
-                meshId = importedMeshes[node.mMeshId];
+                meshId = importedMeshes[{ node.mMeshId, i}];
             }
             if (primitive.material != -1)
             {
@@ -123,6 +124,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
                 delete rMaterial;
             }
             node.mUids.push_back({meshId, materialId});
+            ++i;
         }
     }
 
@@ -171,7 +173,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
 
-    std::map<unsigned int, unsigned int>importedMeshes;
+    std::map<std::pair<unsigned int, unsigned int>, unsigned int>importedMeshes;
     std::map<unsigned int, unsigned int>importedMaterials;
     std::map<unsigned int, unsigned int>importedTextures;
     unsigned int bufferSize = 0;
