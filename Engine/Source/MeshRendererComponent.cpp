@@ -132,7 +132,7 @@ void MeshRendererComponent::LoadAnimatedMesh(bool isAnimated) {
 }
 
 void MeshRendererComponent::Update() {
-	if (mMesh && mMesh->GetNumberJoints())
+	if (mMesh && mMesh->GetNumberJoints() && palette.size() == 0)
 	{
 		LoadAnimatedMesh(mIsAnimated);
 	}
