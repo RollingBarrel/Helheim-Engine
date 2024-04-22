@@ -37,6 +37,7 @@
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "ResourceAnimation.h"
 
 #include "ModuleUI.h"
 
@@ -936,7 +937,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::Checkbox("Loop", &loop);
 	component->SetLoop(loop);
-	/*
+	
 	const char* items[] = { "Walk", "Idle", "Die" };
 	static float timeClips[] = {0.0, 2.2, 2.2, 12.0, 12.0, 15.0 };
 	static int currentItem = 0;
@@ -953,7 +954,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	if (ImGui::DragFloat("EndTime", &timeClips[currentItem * 2+1], 0.1, 0.0, maxTimeValue))
 	{
 		component->SetEndTime(timeClips[currentItem * 2+1]);
-	}*/
+	}
 
 
 
