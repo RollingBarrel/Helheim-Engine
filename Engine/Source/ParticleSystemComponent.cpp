@@ -153,12 +153,12 @@ void ParticleSystemComponent::Update()
 		}
 	}
 
-	if (mEmitterDeltaTime > 1 / mEmissionRate)// deltaTime in seconds Use Timer
+	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
 		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
 		if (mParticles.size() < mMaxParticles)
 		{
-            // Initializes a particle with a random position, direction  
+            // Initializes a particle with a random position, direction and rotation
             // relative to the shape of emission
 			float3 emitionPosition = mShape.RandomInitPosition();
             float3 emitionDirection = mShape.RandomInitDirection();
@@ -281,10 +281,10 @@ void ParticleSystemComponent::InitEmitterShape()
         mShape = EmitterShapeCone();
         break;
     case EmitterShape::Type::SQUARE:
-        mShape = EmitterShapeSquare();
+        //mShape = EmitterShapeSquare();
         break;
     case EmitterShape::Type::CIRCLE:
-        mShape = EmitterShapeCircle();
+        //mShape = EmitterShapeCircle();
         break;
     case EmitterShape::Type::NONE:
         break;

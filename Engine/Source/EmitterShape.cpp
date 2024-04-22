@@ -13,12 +13,12 @@ EmitterShape::~EmitterShape()
 
 float3 EmitterShape::RandomInitPosition()
 {
-	return position;
+	return float3(0,0,0);
 }
 
 float3 EmitterShape::RandomInitDirection()
 {
-	return direction;
+	return float3(0, 0, 1);
 }
 
 EmitterShapeCone::EmitterShapeCone()
