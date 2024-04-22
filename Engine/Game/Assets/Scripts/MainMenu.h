@@ -2,6 +2,15 @@
 #include <Script.h>
 #include "Macros.h"
 
+class ButtonComponent;
+
+enum MENU_TYPE {
+    MAIN,
+    OPTIONS,
+    CREDITS,
+    LOADING
+};
+
 GENERATE_BODY(MainMenu);
 class MainMenu : public Script
 {
@@ -24,6 +33,13 @@ private:
     bool Delay(float delay);
     void Controls();
 
+    void OpenMenu(MENU_TYPE type);
+    void OnMainButtonClick();
+    void OnQuitButtonClick();
+    void OnOptionsButtonClick();
+    void OnCreditsButtonClick();
+    void OnNewButtonClick();
+
     bool mMenuActive = true;
     bool mPauseMenu = false;
 
@@ -40,5 +56,22 @@ private:
     const char* mScreen = nullptr;
     const char* mActualImageName = nullptr;
     const char* mPreviousImageName = nullptr;
+
+    GameObject* mMainMenu = nullptr;
+    GameObject* mOptionsMenu = nullptr;
+    GameObject* mCreditsMenu = nullptr;
+    GameObject* mLoadingMenu = nullptr;
+
+    GameObject* mContinueGO = nullptr;
+    GameObject* mNewGO = nullptr;
+    GameObject* mOptionsGO = nullptr;
+    GameObject* mCreditsGO = nullptr;
+    GameObject* mQuitGO = nullptr;
+
+    ButtonComponent* mContinueButton = nullptr;
+    ButtonComponent* mNewButton = nullptr;
+    ButtonComponent* mOptionsButton = nullptr;
+    ButtonComponent* mCreditsButton = nullptr;
+    ButtonComponent* mQuitButton = nullptr;
 };
 

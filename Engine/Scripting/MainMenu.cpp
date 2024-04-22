@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "Transform2DComponent.h"
+#include "ButtonComponent.h"
 
 CREATE(MainMenu)
 {
@@ -13,6 +14,17 @@ CREATE(MainMenu)
     SEPARATOR("STATS");
     MEMBER(MemberType::BOOL, mMenuActive);
     MEMBER(MemberType::BOOL, mPauseMenu);
+    SEPARATOR("MENUS");
+    MEMBER(MemberType::GAMEOBJECT, mMainMenu);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsMenu);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingMenu);
+    SEPARATOR("BUTTONS");
+    MEMBER(MemberType::GAMEOBJECT, mContinueGO);
+    MEMBER(MemberType::GAMEOBJECT, mNewGO);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsGO);
+    MEMBER(MemberType::GAMEOBJECT, mQuitGO);
     END_CREATE;
 }
 
@@ -20,19 +32,18 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
-    if (!mPauseMenu)
-    {
-        mOption = 2;
-    }
-    else
-    {
-        mOption = 1;
+    mContinueButton = static_cast<ButtonComponent*>(mContinueGO->GetComponent(ComponentType::BUTTON));
+    mNewButton = static_cast<ButtonComponent*>(mNewGO->GetComponent(ComponentType::BUTTON));
+    mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
+    mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
+    mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
 
-        ButtonsPosition("Button_NewGame", 197.0f);
-        ButtonsPosition("Button_Options", 113.0f);
-        ButtonsPosition("Button_Credits", 29.0f);
-        ButtonsPosition("Button_Quit", -55.0f);
-    }
+    mNewButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnNewButtonClick, this));
+    mOptionsButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnOptionsButtonClick, this));
+    mCreditsButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnCreditsButtonClick, this));
+    mQuitButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnQuitButtonClick, this));
+
+    OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::Update()
@@ -165,19 +176,19 @@ void MainMenu::Menu()
     }
 }
 
-void MainMenu::ChangeImage(const char* imageName, bool enabled) const
+/*void MainMenu::ChangeImage(const char* imageName, bool enabled) const
 {
     App->GetScene()->Find(imageName)->SetEnabled(enabled);
-}
+}*/
 
-void MainMenu::ResetScreen(const char* screenName, bool activeMenu) 
+/*void MainMenu::ResetScreen(const char* screenName, bool activeMenu)
 {
     mMenuActive = activeMenu;
     ChangeImage(mPreviousImageName, false);
     ChangeImage(screenName, false);
-}
+}*/
 
-void MainMenu::Loading() 
+/*void MainMenu::Loading()
 {
     if (mLoadingActive) 
     {
@@ -189,9 +200,9 @@ void MainMenu::Loading()
             App->GetScene()->Load("Level1.json");
         }
     }
-}
+}*/
 
-void MainMenu::Options() 
+/*void MainMenu::Options()
 {
     if (mOptionsActive) 
     {
@@ -205,9 +216,9 @@ void MainMenu::Options()
             ResetScreen("Options", true);
         }
     }
-}
+}*/
 
-void MainMenu::Credits() 
+/*void MainMenu::Credits()
 {
     if (mCreditsActive) 
     {
@@ -221,9 +232,9 @@ void MainMenu::Credits()
             ResetScreen("Credits", true);
         }
     }
-}
+}*/
 
-bool MainMenu::Delay(float delay)
+/*bool MainMenu::Delay(float delay)
 {
     mTimePassed += App->GetGameDt();
 
@@ -233,7 +244,7 @@ bool MainMenu::Delay(float delay)
         return true;
     }
     else return false;
-}
+}*/
 
 void MainMenu::Controls()
 {
@@ -310,4 +321,56 @@ void MainMenu::Controls()
             mPrevScreen = true;
         }       
     }
+}
+
+// MENUS
+
+void MainMenu::OpenMenu(MENU_TYPE type) {
+    switch (type) {
+        case MENU_TYPE::MAIN:
+            mMainMenu->SetEnabled(true);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(false);
+            break;
+        case MENU_TYPE::OPTIONS:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(true);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(false);
+            break;
+        case MENU_TYPE::CREDITS:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(true);
+            mLoadingMenu->SetEnabled(false);
+            break;
+        case MENU_TYPE::LOADING:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(true);
+            break;
+    }
+}
+
+void MainMenu::OnMainButtonClick() {
+    OpenMenu(MENU_TYPE::MAIN);
+}
+
+void MainMenu::OnQuitButtonClick() {
+    
+}
+
+void MainMenu::OnOptionsButtonClick() {
+    OpenMenu(MENU_TYPE::OPTIONS);
+}
+
+void MainMenu::OnCreditsButtonClick() {
+    OpenMenu(MENU_TYPE::CREDITS);
+}
+
+void MainMenu::OnNewButtonClick() {
+    OpenMenu(MENU_TYPE::LOADING);
+    App->GetScene()->Load("Level1.json");
 }

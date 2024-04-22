@@ -11,7 +11,7 @@ enum class EventType
     Press
 };
 
-class ButtonComponent : public Component
+class ENGINE_API ButtonComponent : public Component
 {
 public:
     ButtonComponent(GameObject* owner);
