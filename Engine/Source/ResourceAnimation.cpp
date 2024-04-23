@@ -121,6 +121,7 @@ void ResourceAnimation::CleanUp()
         channel.second->rotations.reset();
         channel.second->posTimeStamps.reset();
         channel.second->rotTimeStamps.reset();
+        channel.second->invBindMatrix.zero;
 		delete channel.second;
 	}
 	mChannels.clear();

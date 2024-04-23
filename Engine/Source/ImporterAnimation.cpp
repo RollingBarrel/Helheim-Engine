@@ -40,16 +40,51 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                     rAnimation->AddChannels(model, animation, srcChannel2, *rAnimation, ourChannel);
                 }
             }
-            
-            rAnimation->mChannels[name] = ourChannel;
 
+            bool found = false;
+            if (!model.skins.empty())
+            {
+                for (const auto& skins : model.skins)
+                {
+                    const int inverseBindMatricesIndex = skins.inverseBindMatrices;
+                    const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[inverseBindMatricesIndex];
+
+                    const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
+
+                    const unsigned char* inverseBindMatricesBuffer = &model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset];
+
+                    const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(inverseBindMatricesBuffer);
+
+                    size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
+
+                    for (size_t i = 0; i < num_inverseBindMatrices; i++)
+                    {
+                        if (skins.joints[i] == srcChannel.target_node)
+                        {
+                            const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
+
+                            for (size_t row = 0; row < 4; row++)
+                            {
+                                for (size_t col = 0; col < 4; col++)
+                                {
+                                    ourChannel->invBindMatrix[col][row] = matrixPtr[row * 4 + col];
+                                }
+                            }
+                            found = true;
+                            break;
+                        }
+
+                        if (found)
+                        {
+                            break;
+                        }
+                    }
+
+                }
+            }
+            rAnimation->mChannels[name] = ourChannel;
         }
-        //animation -> mUID = math::LCG().Int();
-         //delete ourChannel;
-        
     }
-        
-    
 
     if (rAnimation) {
         Importer::Animation::Save(rAnimation);
@@ -66,8 +101,10 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
     unsigned int header[2] = {(ourAnimation->GetChannels().size()), ourAnimation->GetDuration()};
 
     unsigned int size = sizeof(header);
+    size += sizeof(float) * 16;
     for (const auto& channel : ourAnimation->GetChannels()) {
         size += sizeof(unsigned int) + channel.first.length() + 1;
+        size += sizeof(float) * 16;
 
         size += sizeof(bool);
         if (channel.second->hasTranslation) {
@@ -129,6 +166,11 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
             memcpy(cursor, channel.second->rotations.get(), bytes);
             cursor += bytes;
         }
+
+        bytes = sizeof(float) * 16;
+        memcpy(cursor, &channel.second->invBindMatrix, bytes);
+        cursor += bytes;
+
     }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
@@ -221,6 +263,10 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
                 channel->rotations.reset(rotations);
             }
             
+            bytes = sizeof(float4x4);
+            memcpy(&channel->invBindMatrix, cursor, bytes);
+            cursor += bytes;
+
             ourAnimation->mChannels[name] = channel;
             delete[] name;
         }

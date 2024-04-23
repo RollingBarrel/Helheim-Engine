@@ -7,6 +7,7 @@
 #include "float3.h"
 #include "Resource.h"
 #include <string>
+#include "float4x4.h"
 
 class ResourceAnimation : public Resource
 {
@@ -31,6 +32,8 @@ public:
         bool hasRotation = false;
         /*bool hasScale = false;*/
 
+        float4x4 invBindMatrix = float4x4::identity;
+
     };
 
     void AddChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation& ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
@@ -47,6 +50,8 @@ public:
 
     std::string mName;
     unsigned int mDuration = 0;
+
+    float4x4 rootInvBindMatrix = float4x4::identity;
 };
 
 
