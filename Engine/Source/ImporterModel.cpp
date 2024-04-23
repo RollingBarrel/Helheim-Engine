@@ -204,8 +204,10 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
                 float4x4 inverseBindMatrix;
 
-                for (size_t row = 0; row < 4; row++) {
-                    for (size_t col = 0; col < 4; col++) {
+                for (size_t row = 0; row < 4; row++) 
+                {
+                    for (size_t col = 0; col < 4; col++) 
+                    {
                         inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
