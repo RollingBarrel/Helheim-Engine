@@ -64,7 +64,6 @@ void PlayerCamera::Update()
     case CameraMode::CLOSE:
         if ((position - closePosition).Abs().Length() > 0.7)
         {
-            LOG("distance = %f", (position - closePosition).Abs().Length());
             float3 direction = closePosition - position;
             deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
             float rotation = closeRotation - mGameObject->GetRotation().x;
@@ -83,7 +82,6 @@ void PlayerCamera::Update()
     case CameraMode::TOP:
         if ((position - topPosition).Abs().Length() > 0.9)
         {
-            LOG("distance = %f", (position - topPosition).Abs().Length());
             float3 direction = topPosition - position;
             deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
             float rotation = topRotation - mGameObject->GetRotation().x;
