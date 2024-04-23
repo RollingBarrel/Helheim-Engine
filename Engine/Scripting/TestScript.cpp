@@ -1,26 +1,15 @@
 #include "pch.h" 
-#include <utility>
-#include <limits.h>
 #include "TestScript.h"
-#include <string>
-#include "Globals.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
-#include "MeshRendererComponent.h"
-#include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-#include "AIAGentComponent.h"
-
 #include "Keys.h"
-#include "Geometry/AABB.h"
-
 
 CREATE(TestScript)
 {
-
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
@@ -29,7 +18,6 @@ CREATE(TestScript)
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mRobot);
     END_CREATE;
-
 }
 
 void TestScript::Start()
@@ -97,10 +85,13 @@ void TestScript::Update()
 
         LOG("YOU WIN");
     }
-	
 
     LOG("hola %s" , typeid(mTestFloat3).name());
+}
 
+void TestScript::OnButtonClick()
+{
+    LOG("Script Button Onclick");
 }
 
 

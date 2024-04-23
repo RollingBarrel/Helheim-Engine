@@ -192,6 +192,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					LOG("No joysticks currently attached to the system. SDL_Error: %s\n", SDL_GetError());
 				}
 			}
+			break;
         case SDL_DROPFILE:
             LOG("File droped: %s\n", sdlEvent.drop.file);
             App->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
@@ -201,6 +202,7 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				App->GetFileSystem()->CleanNode(App->GetFileSystem()->GetRootNode()->mChildren[i]);
 			}
+			App->GetFileSystem()->SetIsClean(true);
 			App->GetFileSystem()->GetRootNode()->CleanUp();
             App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());
             SDL_free(sdlEvent.drop.file);

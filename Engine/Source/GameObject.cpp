@@ -178,11 +178,14 @@ void GameObject::ResetTransform()
 
 void GameObject::SetEnabled(bool enabled)
 {
-	mIsEnabled = enabled;
-
-	if (!enabled || IsRoot() || mParent->IsActive())
+	if (mIsEnabled != enabled)
 	{
-		SetActiveInHierarchy(enabled);
+		mIsEnabled = enabled;
+
+		if (!enabled || IsRoot() || mParent->IsActive())
+		{
+			SetActiveInHierarchy(enabled);
+		}
 	}
 }
 
@@ -477,6 +480,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::AUDIOLISTENER:
 		newComponent = new AudioListenerComponent(this);
+		break;
 	case ComponentType::SLIDER:
 		newComponent = new SliderComponent(this);
 		break;
@@ -540,8 +544,14 @@ void GameObject::AddComponent(Component* component, Component* position)
 
 void GameObject::RecalculateLocalTransform() 
 {
-
-	mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	if (mParent->mWorldTransformMatrix.Determinant4() != 0)
+	{
+		mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	}
+	else 
+	{
+		mLocalTransformMatrix = float4x4::identity;
+	}
 
 	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
 	mEulerRotation = mRotation.ToEulerXYZ();
@@ -609,7 +619,6 @@ void GameObject::Save(Archive& archive, int parentId) const
 	}
 	archive.AddString("Name", mName.c_str());
 	archive.AddBool("isEnabled", mIsEnabled);
-	archive.AddBool("isActive", mIsActive);
 	archive.AddFloat3("Translation", mPosition);
 	archive.AddQuat("Rotation", mRotation);
 	archive.AddFloat3("Scale", mScale);
@@ -685,6 +694,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	float3 position;
 	float3 scale;
 	Quat rotation;
+	bool isEnabled = true;
 	Tag* tag = App->GetScene()->GetTagByName("Untagged");
 
 	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt()) 
@@ -698,6 +708,10 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	if (gameObject.HasMember("Name") && gameObject["Name"].IsString()) 
 	{
 		name = gameObject["Name"].GetString();
+	}
+	if (gameObject.HasMember("isEnabled") && gameObject["isEnabled"].IsBool())
+	{
+		isEnabled = gameObject["isEnabled"].GetBool();
 	}
 	if (gameObject.HasMember("PrefabId") && gameObject["PrefabId"].IsInt()) 
 	{
@@ -784,6 +798,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
+	go->SetEnabled(isEnabled);
 }
 
 void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) 
@@ -890,4 +905,69 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 	App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetRoot(), tag->GetID(), foundGameObjects);
 
 	return foundGameObjects;
+}
+
+GameObject* GameObject::FindGameObjectInTree(const int objectToFind)
+{
+	std::pair<GameObject*, int> pair(nullptr, -2 - mParent->GetChildren().size());
+
+	GameObject* target = RecursiveTreeSearch(FindFirstParent(this), pair, objectToFind).first;
+
+	return target;
+}
+
+std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind) {
+
+	if (currentGameObject.first == nullptr)
+	{
+		std::vector<GameObject*> children = owner->GetChildren();
+		currentGameObject.second++;
+
+		if (currentGameObject.second == objectToFind)
+		{
+			std::pair<GameObject*, int> pair(owner, currentGameObject.second);
+			return pair;
+		}
+
+		for (GameObject* child : children)
+		{
+			currentGameObject = RecursiveTreeSearch(child, currentGameObject, objectToFind);
+		}
+	}
+
+	return currentGameObject;
+}
+
+GameObject* GameObject::FindFirstParent(GameObject* target) {
+
+	GameObject* parent = target->GetParent();
+
+	if (parent->GetParent() == nullptr) {
+		return target;
+	}
+	else {
+		return FindFirstParent(parent);
+	}
+}
+
+float4x4 GameObject::TranformInFirstGameObjectSpace() {
+
+	GameObject* firstParent = FindFirstParent(this);
+	float4x4 transformInParentSpace = firstParent->GetWorldTransform().Inverted().Mul(this->GetWorldTransform());
+
+	return transformInParentSpace;
+}
+
+std::vector<Component*> GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
+{
+	std::vector<Component*> components = parent->GetComponents(type);
+
+	std::vector<GameObject*> children = parent->GetChildren();
+	for (GameObject* child : children)
+	{
+		std::vector<Component*> childComponents = FindComponentsInChildren(child, type);
+		components.insert(components.end(), childComponents.begin(), childComponents.end());
+	}
+
+	return components;
 }

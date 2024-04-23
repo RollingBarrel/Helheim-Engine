@@ -16,11 +16,23 @@ ConsolePanel::~ConsolePanel()
 
 void ConsolePanel::Draw(int windowFlags)
 {
+    windowFlags |= ImGuiWindowFlags_HorizontalScrollbar;
+
+    static bool autoScroll = true;
+
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		for (const char* logs : log) {
+		for (const char* logs : log) 
+        {
 			ImGui::TextUnformatted(logs);
 		}
+
+        if (autoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+        {
+            ImGui::SetScrollHereY(1.0f);
+        }
+            
+
 	}	
 	ImGui::End();
 }

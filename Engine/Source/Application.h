@@ -47,6 +47,8 @@ public:
     ModuleAudio* GetAudio() { return audio; }
     ModuleEvent* GetEvent() { return event; }
 
+    bool IsPlayMode() { return mIsPlayMode; }
+    void PlayMode(bool play) { mIsPlayMode = play; }
     Timer* GetEngineClock() const { return mEngineTimer; }
     Timer* GetGameClock() const { return mGameTimer; }
     Timer* GetCurrentClock() const { return mCurrentTimer; }
@@ -93,6 +95,7 @@ private:
     //PreciseTimer* mGameTimer;
     //PreciseTimer* mCurrentTimer = nullptr;
 
+    bool mIsPlayMode = false;
     bool mEnableVsync = true;
 };
 

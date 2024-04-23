@@ -16,7 +16,7 @@ public:
 	//const float GetHeight() const { return mHeight; };
 	//const float GetStepHeight() const { return mStepHeight; };
 	//const unsigned int GetMaxSlope() const { return mMaxSlope; };
-	const float GetSpeed() const { return mSpeed; };
+	//const float GetSpeed() const { return mSpeed; };
 	//const float GetAngularSpeed() const { return mAngularSpeed; };
 	//const float GetAcceleration() const { return mAcceleration; };
 	//const float GetStoppingDistance() const { return mStoppingDistance; };
@@ -24,14 +24,13 @@ public:
 	//void SetHeight(float height) { mHeight = height; };
 	//void SetStepHeight(float stepHeight) { mStepHeight = stepHeight; };
 	//void SetMaxSlope(unsigned int maxSlope) { mMaxSlope = maxSlope; };
-	void SetSpeed(float speed) { mSpeed = speed; };
+	//void SetSpeed(float speed) { mSpeed = speed; };
 	//void SetAngularSpeed(float angularSpeed) { mAngularSpeed = angularSpeed; };
 	//void SetAcceleration(float acceleration) { mAcceleration = acceleration; };
 	//void SetStoppingDistance(float stoppingDistance) { mStoppingDistance = stoppingDistance; };
 
 
-	void MoveAgent(float3 destination);
-	bool IsClose(float3 destination);
+	void MoveAgent(float3 destination, float speed);
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 private:
@@ -41,7 +40,7 @@ private:
 	//float mStepHeight = 0.0f;
 	//unsigned int mMaxSlope = 0;
 	////Steering Parameters:
-	float mSpeed = 1.0f;
+	//float mSpeed = 1.0f;
 	//float mAngularSpeed = 0.0f; //Maximum speed of rotation
 	//float mAcceleration = 0.0f; 
 	//float mStoppingDistance = 0.0f; //The GO will stop when this close to the goal location.
