@@ -224,7 +224,9 @@ void PlayerController::HandleRotation()
     if (!hits.empty())
     {
         float3 target = float3(hits.begin()->second->GetWorldPosition().x, mGameObject->GetWorldPosition().y, hits.begin()->second->GetWorldPosition().z);
+        LOG("Object Hitted: %s", hits.begin()->second->GetName().c_str());
         mGameObject->LookAt(target);
+
     }
     
 
