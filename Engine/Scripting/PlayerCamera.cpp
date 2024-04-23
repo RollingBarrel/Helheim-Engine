@@ -67,7 +67,8 @@ void PlayerCamera::Update()
             float3 direction = closePosition - position;
             deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
             float rotation = closeRotation - mGameObject->GetRotation().x;
-            if (deltaTime > 0) {
+            if (deltaTime > 0) 
+            {
                 float factor = (transitionTime - deltaTime) / transitionTime;
                 SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
             }
@@ -85,7 +86,8 @@ void PlayerCamera::Update()
             float3 direction = topPosition - position;
             deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
             float rotation = topRotation - mGameObject->GetRotation().x;
-            if (deltaTime > 0) {
+            if (deltaTime > 0) 
+            {
                 float factor = (transitionTime - deltaTime) / transitionTime;
                 SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
             }
