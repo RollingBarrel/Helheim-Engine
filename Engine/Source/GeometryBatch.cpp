@@ -40,19 +40,19 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glGenBuffers(1, &mSsboIndices);
 	glGenBuffers(1, &mIbo);
 
-	glGenBuffers(1, &paletteSsbo);
-	glGenBuffers(1, &boneIndicesSsbo);
-	glGenBuffers(1, &weightsSsbo);
-	glGenBuffers(1, &posSsbo);
-	glGenBuffers(1, &normSsbo);
-	glGenBuffers(1, &tangSsbo);
+	glGenBuffers(1, &mPaletteSsbo);
+	glGenBuffers(1, &mBoneIndicesSsbo);
+	glGenBuffers(1, &mWeightsSsbo);
+	glGenBuffers(1, &mPosSsbo);
+	glGenBuffers(1, &mNormSsbo);
+	glGenBuffers(1, &mTangSsbo);
 
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, paletteSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, boneIndicesSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 17, weightsSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 18, posSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, normSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, tangSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, mPaletteSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, mBoneIndicesSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 17, mWeightsSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 18, mPosSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, mNormSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mTangSsbo);
 
 	unsigned int idx = 0;
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
@@ -78,12 +78,12 @@ GeometryBatch::~GeometryBatch()
 	glDeleteBuffers(1, &mSsboIndices);
 	glDeleteBuffers(1, &mIbo);
 
-	glDeleteBuffers(1, &paletteSsbo);
-	glDeleteBuffers(1, &boneIndicesSsbo);
-	glDeleteBuffers(1, &weightsSsbo);
-	glDeleteBuffers(1, &posSsbo);
-	glDeleteBuffers(1, &normSsbo);
-	glDeleteBuffers(1, &tangSsbo);
+	glDeleteBuffers(1, &mPaletteSsbo);
+	glDeleteBuffers(1, &mBoneIndicesSsbo);
+	glDeleteBuffers(1, &mWeightsSsbo);
+	glDeleteBuffers(1, &mPosSsbo);
+	glDeleteBuffers(1, &mNormSsbo);
+	glDeleteBuffers(1, &mTangSsbo);
 
 	mMeshComponents.clear();
 	mUniqueMeshes.clear();
@@ -329,17 +329,17 @@ void GeometryBatch::Draw()
 				const AnimationComponent* cAnim = meshRenderer->GetAnimationComponent();
 				if (cAnim && cAnim->GetIsPlaying())
 				{
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, paletteSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, meshRenderer->GetPalette().size() * sizeof(float) * 16, meshRenderer->GetPalette().data(), GL_DYNAMIC_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, boneIndicesSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, weightsSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberWeights() * sizeof(float), rMesh->GetWeights(), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, posSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPosSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::POS), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, normSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mNormSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::NORMAL), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, tangSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mTangSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::TANGENT), GL_STREAM_DRAW);
 					glUniform1i(25, rMesh->GetNumberVertices());
 					glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * rMesh->GetVertexSize(), rMesh->GetVertexSize() * rMesh->GetNumberVertices());

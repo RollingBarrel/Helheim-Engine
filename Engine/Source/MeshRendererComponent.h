@@ -43,7 +43,7 @@ public:
 	bool IsInsideFrustum() const { return mInsideFrustum; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMaterial(unsigned int uid);
-	const std::vector<float4x4> GetPalette() const { return palette; }
+	const std::vector<float4x4> GetPalette() const { return mPalette; }
 
 	bool GetIsAnimated() const { return mIsAnimated; }
 	const AnimationComponent* GetAnimationComponent() const { return mAnimationComponent; }
@@ -62,7 +62,7 @@ private:
 	bool mInsideFrustum = true;
 	int mTemporalID = -1;
 
-	std::vector<float4x4> palette;
+	std::vector<float4x4> mPalette;
 	bool mIsAnimated = false;
 	AnimationComponent* mAnimationComponent = nullptr;
 };

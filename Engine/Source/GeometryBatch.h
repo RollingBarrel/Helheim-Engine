@@ -117,12 +117,12 @@ private:
 	unsigned int mEboNumElements = 0;
 
 	//Animation
-	unsigned int paletteSsbo = 0;
-	unsigned int boneIndicesSsbo = 0;
-	unsigned int weightsSsbo = 0;
-	unsigned int posSsbo = 0;
-	unsigned int normSsbo = 0;
-	unsigned int tangSsbo = 0;
+	unsigned int mPaletteSsbo = 0;
+	unsigned int mBoneIndicesSsbo = 0;
+	unsigned int mWeightsSsbo = 0;
+	unsigned int mPosSsbo = 0;
+	unsigned int mNormSsbo = 0;
+	unsigned int mTangSsbo = 0;
 
 	int mSsboAligment = 0;
 };

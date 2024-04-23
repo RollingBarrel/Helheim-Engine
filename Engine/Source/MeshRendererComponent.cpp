@@ -112,12 +112,12 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 
 void MeshRendererComponent::LoadAnimatedMesh(bool isAnimated) {
 
-	palette.clear();
+	mPalette.clear();
 	std::vector<std::pair<GameObject*, float4x4>>& inverseBindMats = mAnimationComponent->mGameobjectsInverseMatrices;
-	palette.reserve(inverseBindMats.size());
+	mPalette.reserve(inverseBindMats.size());
 	for (unsigned i = 0; i < inverseBindMats.size(); ++i)
 	{
-		palette.push_back((inverseBindMats[i].first->TranformInFirstGameObjectSpace() * inverseBindMats[i].second).Transposed());
+		mPalette.push_back((inverseBindMats[i].first->TranformInFirstGameObjectSpace() * inverseBindMats[i].second).Transposed());
 	}
 	//int o = 1;
 	//LOG("Palette:\n %f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f", palette[o][0][0], palette[o][0][1], palette[o][0][2], palette[o][0][3], palette[o][1][0], palette[o][1][1], palette[o][1][2], palette[o][1][3], palette[o][2][0], palette[o][2][1], palette[o][2][2], palette[o][2][3], palette[o][3][0], palette[o][3][1], palette[o][3][2], palette[o][3][3]);

@@ -66,7 +66,8 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 	{
 		for (auto it = node.mUids.cbegin(); it != node.mUids.cend(); ++it)
 		{
-			if (name == "GameObject") {
+			if (name == "GameObject") 
+			{
 				name = "MeshRenderer";
 			}
 			GameObject* gO = new GameObject(name, gameObject);
@@ -76,7 +77,8 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 		}
 	}
 
-	if (cAnimation) {
+	if (cAnimation) 
+	{
 		if (rModel.mJoints[nodeIt].first == nodeNumber)
 		{
 			std::pair<GameObject*, float4x4> gameobjectPallete = { gameObject, rModel.mJoints[nodeIt].second };
