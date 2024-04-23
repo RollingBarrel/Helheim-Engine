@@ -177,4 +177,7 @@ void main()
 	
 	//Output
 	outColor = vec4(ldrCol, 1.0f);
+
+	//outColor = tang;
+	//outColor.w = 1;
 }

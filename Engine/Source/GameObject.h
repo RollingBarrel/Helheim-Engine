@@ -89,6 +89,10 @@ public:
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 	const bool HasUpdatedTransform() const;
 
+	GameObject* FindGameObjectInTree(const int objectToFind);
+	GameObject* FindFirstParent(GameObject* target);
+	float4x4 TranformInFirstGameObjectSpace();
+	std::vector<Component*> FindComponentsInChildren(GameObject* parent, const ComponentType type);
 	void AddComponent(Component* component, Component* position);
 	void SetName(const char* name) { mName = name; };
 
@@ -101,6 +105,8 @@ private:
 	void RefreshBoundingBoxes();
 
 	void SetActiveInHierarchy(bool active);
+
+	std::pair<GameObject*, int> RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind);
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;

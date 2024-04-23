@@ -18,22 +18,34 @@ public:
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
-	const ResourceAnimation* GetAnimation() { return mAnimation; }
-	const AnimationController* GetAnimationController() { return mController; }
+	const ResourceAnimation* GetAnimation() const { return mAnimation; }
+	const AnimationController* GetAnimationController() const { return mController; }
 
-	void CreateNodeTree(); 
-	void DeleteNodeTree();
+	bool GetLoop() const { return mLoop; }
+	void SetLoop(bool loop);
+
+	bool GetIsPlaying() const { return mIsPlaying; }
+	void SetIsPlaying(bool isPlaying) { mIsPlaying = isPlaying; }
 
 	void OnStart();
 	void OnStop();
-	void OnUpdate();
+	void OnRestart();
 
 	void SetAnimation(unsigned int uid);
+
+	void SetStartTime(float time);
+	void SetEndTime(float time);
+
+	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 private:
 
 	ResourceAnimation* mAnimation;
 	AnimationController* mController;
+
+	bool mLoop = true;
+	bool mIsPlaying = false;
+
 };
 
 #endif
