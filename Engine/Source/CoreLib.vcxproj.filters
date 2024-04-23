@@ -141,7 +141,13 @@
     <ClCompile Include="SaveLoadModel.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="SaveLoadAnimation.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
     <ClCompile Include="SaveLoadMaterial.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadTexture.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -254,7 +260,13 @@
     <ClInclude Include="SaveLoadModel.h">
       <Filter>Importers</Filter>
     </ClInclude>
+    <ClInclude Include="SaveLoadAnimation.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
     <ClInclude Include="SaveLoadMaterial.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadTexture.h">
       <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>

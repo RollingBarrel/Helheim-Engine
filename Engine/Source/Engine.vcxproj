@@ -250,7 +250,6 @@
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterNavMesh.cpp" />
     <ClCompile Include="ImporterScript.cpp" />
-    <ClCompile Include="ImporterShader.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
@@ -471,7 +470,6 @@
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="ImporterNavMesh.h" />
-    <ClInclude Include="ImporterShader.h" />
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />

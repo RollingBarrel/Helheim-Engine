@@ -142,9 +142,6 @@
     <ClCompile Include="InspectorPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ImporterShader.cpp">
-      <Filter>Importers</Filter>
-    </ClCompile>
     <ClCompile Include="ScenePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -711,9 +708,6 @@
     </ClInclude>
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h">
       <Filter>Dependencies\DebugDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="ImporterShader.h">
-      <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="ScenePanel.h">
       <Filter>Panels</Filter>

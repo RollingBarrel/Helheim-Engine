@@ -152,9 +152,11 @@
     <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="SaveLoadAnimation.cpp" />
     <ClCompile Include="SaveLoadMaterial.cpp" />
     <ClCompile Include="SaveLoadMesh.cpp" />
     <ClCompile Include="SaveLoadModel.cpp" />
+    <ClCompile Include="SaveLoadTexture.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SliderComponent.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
@@ -191,9 +193,11 @@
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="SaveLoadAnimation.h" />
     <ClInclude Include="SaveLoadMaterial.h" />
     <ClInclude Include="SaveLoadMesh.h" />
     <ClInclude Include="SaveLoadModel.h" />
+    <ClInclude Include="SaveLoadTexture.h" />
     <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SliderComponent.h" />
     <ClInclude Include="SpotLightComponent.h" />
