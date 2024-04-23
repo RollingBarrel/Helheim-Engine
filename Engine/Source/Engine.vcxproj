@@ -166,8 +166,6 @@
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AgentProfile.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Archive.cpp" />
-    <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
@@ -247,7 +245,6 @@
     <ClCompile Include="EditorControlPanel.cpp" />
     <ClCompile Include="FmodUtils.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
-    <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
@@ -273,7 +270,6 @@
     <ClCompile Include="ModuleOpenGL.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
     <ClCompile Include="ModuleScriptManager.cpp" />
     <ClCompile Include="ModuleResource.cpp" />
@@ -297,8 +293,6 @@
     <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AgentProfile.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Archive.h" />
-    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
@@ -469,11 +463,11 @@
     <ClInclude Include="EditorControlPanel.h" />
     <ClInclude Include="FmodUtils.h" />
     <ClInclude Include="HelheimEvent.h" />
+    <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ModuleEvent.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
-    <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="ImporterNavMesh.h" />
@@ -493,7 +487,6 @@
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
-    <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="ModuleScriptManager.h" />
     <ClInclude Include="Script.h" />

@@ -133,9 +133,6 @@
     <ClCompile Include="ImporterMesh.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="ImporterScene.cpp">
-      <Filter>Importers</Filter>
-    </ClCompile>
     <ClCompile Include="ImporterModel.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
@@ -201,9 +198,6 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Archive.cpp">
-      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
@@ -301,12 +295,6 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp">
       <Filter>Dependencies\NavigationAI\Recast</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="PreciseTimer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="Archive.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -368,9 +356,7 @@
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
-    <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
     <ClCompile Include="FmodUtils.cpp">
       <Filter>Utils</Filter>
@@ -716,9 +702,6 @@
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h">
       <Filter>Dependencies\TinyGLTF</Filter>
     </ClInclude>
-    <ClInclude Include="ImporterScene.h">
-      <Filter>Importers</Filter>
-    </ClInclude>
     <ClInclude Include="ImporterModel.h">
       <Filter>Importers</Filter>
     </ClInclude>
@@ -779,9 +762,6 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Archive.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Quadtree.h">
       <Filter>Utils</Filter>
@@ -873,12 +853,6 @@
     <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h">
       <Filter>Dependencies\NavigationAI\Recast</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Utils\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="PreciseTimer.h">
-      <Filter>Utils\Timer</Filter>
-    </ClInclude>
     <ClInclude Include="Archive.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -946,14 +920,11 @@
     <ClInclude Include="SettingsPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ModuleEvent.h" />
-    <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp.h">
       <Filter>Dependencies\FMOD</Filter>
     </ClInclude>
@@ -1155,6 +1126,12 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Freetype\include\ft2build.h">
       <Filter>Dependencies\Freetype</Filter>
+    </ClInclude>
+    <ClInclude Include="IconsFontAwesome6.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterAnimation.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,9 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{cb577aec-73de-401a-b5fa-5935b47e2644}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Importers">
+      <UniqueIdentifier>{a25bd8cd-5945-4f37-85ea-1ad7ebafa058}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -122,6 +125,24 @@
     </ClCompile>
     <ClCompile Include="ResourceTexture.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Archive.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadMesh.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadModel.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadMaterial.cpp">
+      <Filter>Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +238,24 @@
     </ClInclude>
     <ClInclude Include="ResourceTexture.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Archive.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadMesh.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadModel.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadMaterial.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

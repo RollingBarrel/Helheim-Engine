@@ -1,12 +1,16 @@
+#include "SaveLoadMaterial.h"
 #include "Application.h"
 #include "ModuleResource.h"
 #include "ModuleFileSystem.h"
 #include "ImporterMaterial.h"
-#include "ImporterTexture.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
+#define TINYGLTF_NO_STB_IMAGE_WRITE
+#define TINYGLTF_NO_STB_IMAGE
+#define TINYGLTF_NO_EXTERNAL_IMAGE
+#include "tiny_gltf.h"
 
 static unsigned int ImportTexture(const char* filePath, const std::string& texPath, unsigned int& uid, bool modifyAssets)
 {

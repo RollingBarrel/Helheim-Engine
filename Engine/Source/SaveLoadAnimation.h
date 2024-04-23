@@ -1,5 +1,7 @@
 #pragma once
-
+//#include "Math/float3.h"
+//#include "Math/Quat.h"
+//
 //struct Keyframe {
 //    float time;
 //    float3 position;
@@ -9,16 +11,12 @@
 //};
 
 class ResourceAnimation;
-namespace tinygltf 
-{
-    class Model;
-    struct Animation;
-}
 
 namespace Importer 
 {
     namespace Animation 
     {
-        ResourceAnimation* Import(const tinygltf::Model& model, const tinygltf::Animation& animation, unsigned int& uid);
+        void Save(ResourceAnimation* ourAnimation);
+        ResourceAnimation* Load(const char* fileName, unsigned int uid);
     }
 }

@@ -129,14 +129,17 @@
   <ItemGroup>
     <ClCompile Include="AIAgentComponent.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
+    <ClCompile Include="Archive.cpp" />
     <ClCompile Include="AudioListenerComponent.cpp" />
     <ClCompile Include="AudioSourceComponent.cpp" />
     <ClCompile Include="BatchManager.cpp" />
+    <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
+    <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
@@ -149,6 +152,9 @@
     <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="SaveLoadMaterial.cpp" />
+    <ClCompile Include="SaveLoadMesh.cpp" />
+    <ClCompile Include="SaveLoadModel.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SliderComponent.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
@@ -161,15 +167,18 @@
   <ItemGroup>
     <ClInclude Include="AIAgentComponent.h" />
     <ClInclude Include="AnimationComponent.h" />
+    <ClInclude Include="Archive.h" />
     <ClInclude Include="AudioListenerComponent.h" />
     <ClInclude Include="AudioSourceComponent.h" />
     <ClInclude Include="BatchManager.h" />
+    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
@@ -182,6 +191,9 @@
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="SaveLoadMaterial.h" />
+    <ClInclude Include="SaveLoadMesh.h" />
+    <ClInclude Include="SaveLoadModel.h" />
     <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SliderComponent.h" />
     <ClInclude Include="SpotLightComponent.h" />
