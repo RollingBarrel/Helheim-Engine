@@ -2,6 +2,7 @@
 #define _COMPONENT_ANIMATION_H_
 #include "Component.h"
 #include "float4x4.h"
+#include <vector>
 
 class AnimationController;
 class ResourceAnimation;
