@@ -123,9 +123,14 @@ void AudioSourceComponent::PlayOneShot()
 	eventInstance->release();
 }
 
-void AudioSourceComponent::Stop()
+void AudioSourceComponent::Stop(bool fadeout)
 {
-	mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	if (fadeout) {
+		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	}
+	else {
+		mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	}
 }
 
 Component* AudioSourceComponent::Clone(GameObject* owner) const
@@ -191,7 +196,7 @@ void AudioSourceComponent::Enable()
 
 void AudioSourceComponent::Disable()
 {
-	Stop();
+	Stop(false);
 }
 
 void AudioSourceComponent::Reset()

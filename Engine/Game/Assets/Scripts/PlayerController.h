@@ -134,10 +134,14 @@ class PlayerController :public Script
 
         // Audios section
         // Footstep
-        GameObject* mAudioSourceComponentHolder = nullptr;
-        AudioSourceComponent* mAudioSourceComponent = nullptr;
+        GameObject* mFootStepAudioHolder = nullptr;
+        AudioSourceComponent* mFootStepAudio = nullptr;
         bool mIsMoving = false;
         bool mReadyToStep = false;
         float mStepTimePassed = 0.0f;
         float mStepCoolDown = 1.0f;
+
+        // Footstep
+        GameObject* mGunfireAudioHolder = nullptr;
+        AudioSourceComponent* mGunfireAudio = nullptr;
 };

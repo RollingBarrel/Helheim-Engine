@@ -57,7 +57,8 @@ CREATE(PlayerController)
     SEPARATOR("WIN AREA");
     MEMBER(MemberType::GAMEOBJECT, mWinArea);
     SEPARATOR("AUDIO");
-    MEMBER(MemberType::GAMEOBJECT, mAudioSourceComponentHolder);
+    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
+    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
 
     END_CREATE;
 }
@@ -86,9 +87,14 @@ void PlayerController::Start()
         mAnimationComponent->OnStart();
     }
 
-    if (mAudioSourceComponentHolder)
+    if (mFootStepAudioHolder)
     {
-        mAudioSourceComponent = (AudioSourceComponent*)mAudioSourceComponentHolder->GetComponent(ComponentType::AUDIOSOURCE);
+        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+
+    if (mGunfireAudioHolder)
+    {
+        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
    
 }
@@ -234,7 +240,7 @@ void PlayerController::Moving()
         }
         else
         {
-            mAudioSourceComponent->PlayOneShot();
+            mFootStepAudio->PlayOneShot();
             mReadyToStep = false;
         }
     }
@@ -361,6 +367,7 @@ void PlayerController::RangedAttack()
                 totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
                 mBullets -= mBullets;
             }
+            mGunfireAudio->PlayOneShot();
             mChargedTime = 0.0f;
             LOG("Charged shot fired. Damage:  %f", totalDamage);
             LOG("Bullets:  %i", mBullets);
@@ -384,6 +391,7 @@ void PlayerController::RangedAttack()
             }
             else 
             {
+                mGunfireAudio->PlayOneShot();
                 LOG("Basic shoot fire. Remining Bullets %i", mBullets);
             }
         }
@@ -554,8 +562,13 @@ void PlayerController::UpdateBattleSituation()
 {
     float hpRate = mHealth / mMaxHealth;
 
-    if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
-        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK)) {
+    if (mCurrentState == PlayerState::DEATH) 
+    {
+        mCurrentSituation = BattleSituation::DEATH;
+    }
+    else if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
+        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK)) 
+    {
         mBattleStateTransitionTime += App->GetGameDt();
         if (mBattleStateTransitionTime >= 8.0f) 
         {

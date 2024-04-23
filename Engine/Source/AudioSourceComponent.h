@@ -34,7 +34,7 @@ public:
     void Update() override;
     void Play();
     void PlayOneShot();
-    void Stop();
+    void Stop(bool fadeout);
     Component* Clone(GameObject* owner) const;
     void Save(Archive& archive) const;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
