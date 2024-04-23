@@ -1,6 +1,7 @@
 #ifndef _COMPONENT_ANIMATION_H_
 #define _COMPONENT_ANIMATION_H_
 #include "Component.h"
+#include "float4x4.h"
 
 class AnimationController;
 class ResourceAnimation;
@@ -35,16 +36,19 @@ public:
 
 	void SetStartTime(float time);
 	void SetEndTime(float time);
+	const std::vector<float4x4> GetPalette() const { return mPalette; }
+
 
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 private:
-
+	void UpdatePalette();
 	ResourceAnimation* mAnimation;
 	AnimationController* mController;
 
 	bool mLoop = true;
 	bool mIsPlaying = false;
+	std::vector<float4x4> mPalette;
 
 };
 

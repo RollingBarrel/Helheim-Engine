@@ -45,7 +45,10 @@ void AnimationComponent::OnStart()
 void AnimationComponent::Update()
 {
 	if (mIsPlaying)
+	{
 		mController->Update(mOwner);
+		UpdatePalette();
+	}
 	//else {
 	//
 	//}
@@ -86,6 +89,17 @@ void AnimationComponent::SetStartTime(float time)
 void AnimationComponent::SetEndTime(float time)
 {
 	mController->SetEndTime(time);
+}
+
+void AnimationComponent::UpdatePalette()
+{
+	mPalette.clear();
+	mPalette.reserve(mGameobjectsInverseMatrices.size());
+	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
+	{
+		mPalette.push_back((mGameobjectsInverseMatrices[i].first->TranformInFirstGameObjectSpace() * mGameobjectsInverseMatrices[i].second).Transposed());
+	}
+
 }
 
 Component* AnimationComponent::Clone(GameObject* owner) const

@@ -911,7 +911,7 @@ GameObject* GameObject::FindGameObjectInTree(const int objectToFind)
 {
 	std::pair<GameObject*, int> pair(nullptr, -2 - mParent->GetChildren().size());
 
-	GameObject* target = RecursiveTreeSearch(FindFirstParent(this), pair, objectToFind).first;
+	GameObject* target = RecursiveTreeSearch(FindFirstParent(), pair, objectToFind).first;
 
 	return target;
 }
@@ -938,21 +938,21 @@ std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, s
 	return currentGameObject;
 }
 
-GameObject* GameObject::FindFirstParent(GameObject* target) {
+GameObject* GameObject::FindFirstParent() {
 
-	GameObject* parent = target->GetParent();
+	GameObject* parent = GetParent();
 
 	if (parent->GetParent() == nullptr) {
-		return target;
+		return this;
 	}
 	else {
-		return FindFirstParent(parent);
+		return parent->FindFirstParent();
 	}
 }
 
 float4x4 GameObject::TranformInFirstGameObjectSpace() {
 
-	GameObject* firstParent = FindFirstParent(this);
+	GameObject* firstParent = FindFirstParent();
 	float4x4 transformInParentSpace = firstParent->GetWorldTransform().Inverted().Mul(this->GetWorldTransform());
 
 	return transformInParentSpace;

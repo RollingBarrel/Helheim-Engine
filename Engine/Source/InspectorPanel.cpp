@@ -893,7 +893,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		bool play = component->GetIsPlaying();
 		(play) ? play = false : play = true;
 		component->SetIsPlaying(play);
-
+		/*
 		if (component->GetIsPlaying())
 		{
 			for (Component* comp : components)
@@ -902,6 +902,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 				meshRenderComponent->SetIsAnimated(true);
 			}
 		}
+		*/
 	}
 
 	ImGui::SameLine();
@@ -919,11 +920,13 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if (ImGui::Button("Stop"))
 	{
+		/*
 		for (Component* comp : components)
 		{
 			MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
 			meshRenderComponent->SetIsAnimated(false);
 		}
+		*/
 		component->SetIsPlaying(false);
 		component->OnRestart();
 	}
