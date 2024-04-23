@@ -127,9 +127,6 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
-    <ClCompile Include="Importer.cpp">
-      <Filter>Importers</Filter>
-    </ClCompile>
     <ClCompile Include="ImporterTexture.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
@@ -141,18 +138,6 @@
     </ClCompile>
     <ClCompile Include="ImporterModel.cpp">
       <Filter>Importers</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshRendererComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TestComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="HierarchyPanel.cpp">
       <Filter>Panels</Filter>
@@ -217,64 +202,22 @@
     <ClCompile Include="Main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="PreciseTimer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="Archive.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="BatchManager.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceMesh.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleResource.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceTexture.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceMaterial.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceModel.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PointLightComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SpotLightComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="TimerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="Archive.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="PreciseTimer.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryBatch.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="ImporterNavMesh.cpp">
@@ -385,32 +328,17 @@
     <ClCompile Include="TagsManagerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Tag.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="AIAGentComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="AgentProfile.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="ModuleUI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="CanvasComponent.cpp">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform2DComponent.cpp">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ScriptComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="EditorControlPanel.cpp">
       <Filter>Panels</Filter>
@@ -421,22 +349,10 @@
     <ClCompile Include="OptickAdapter.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceScript.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="ImporterScript.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceAnimation.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationController.cpp" />
-    <ClCompile Include="AnimationComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="NavMeshObstacleComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="NavMeshControllerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -449,9 +365,6 @@
     <ClCompile Include="SettingsPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceObject.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
@@ -459,14 +372,8 @@
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
-    <ClCompile Include="AudioSourceComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="FmodUtils.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioListenerComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEvent.cpp">
       <Filter>Modules</Filter>
@@ -487,12 +394,6 @@
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
     <ClCompile Include="ButtonComponent.cpp">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SliderComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
     <ClCompile Include="HelheimEvent.cpp">
@@ -797,9 +698,6 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClInclude>
-    <ClInclude Include="Importer.h">
-      <Filter>Importers</Filter>
-    </ClInclude>
     <ClInclude Include="ImporterTexture.h">
       <Filter>Importers</Filter>
     </ClInclude>
@@ -825,21 +723,6 @@
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="InspectorPanel.h" />
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshRendererComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TestComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TestComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp">
       <Filter>Dependencies\DebugDraw</Filter>
     </ClInclude>
@@ -894,23 +777,8 @@
     <ClInclude Include="ModuleWindow.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Dummy.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="PreciseTimer.h">
-      <Filter>Utils\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Utils\Timer</Filter>
     </ClInclude>
     <ClInclude Include="Archive.h">
       <Filter>Utils</Filter>
@@ -930,52 +798,16 @@
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="BatchManager.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceMesh.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleResource.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceTexture.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceMaterial.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceModel.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="ResourcePanel.h">
       <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLightComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SpotLightComponent.h">
-      <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="TimerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="Archive.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="PreciseTimer.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryBatch.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ImporterNavMesh.h">
@@ -1071,23 +903,11 @@
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Tag.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="AIAGentComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="AgentProfile.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ModuleUI.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="CanvasComponent.h">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform2DComponent.h">
-      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>
@@ -1095,14 +915,8 @@
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="ImporterAnimation.h">
-      <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
@@ -1113,22 +927,10 @@
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceScript.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="ImporterScript.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceAnimation.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationController.h" />
-    <ClInclude Include="AnimationComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="NavMeshObstacleComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="NavMeshControllerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -1185,14 +987,8 @@
     <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio_common.h">
       <Filter>Dependencies\FMOD</Filter>
     </ClInclude>
-    <ClInclude Include="AudioSourceComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
     <ClInclude Include="FmodUtils.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioListenerComponent.h">
-      <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="ModuleDetourNavigation.h">
@@ -1215,6 +1011,9 @@
     </ClInclude>
     <ClInclude Include="ButtonComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HelheimEvent.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h">
       <Filter>Dependencies\Freetype</Filter>
@@ -1357,15 +1156,6 @@
     <ClInclude Include="Dependencies\Freetype\include\ft2build.h">
       <Filter>Dependencies\Freetype</Filter>
     </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SliderComponent.h">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="HelheimEvent.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -1407,17 +1197,8 @@
     <Filter Include="Dependencies\DebugDraw">
       <UniqueIdentifier>{2c4a22f9-4369-4564-a01f-b373358df20e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObjects">
-      <UniqueIdentifier>{5e6e8bce-ab02-47f2-9e17-afaf09a12b4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObjects\Components">
-      <UniqueIdentifier>{81d59651-7fc9-4778-967f-0ecdcfa808ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dependencies\MikkTspace">
       <UniqueIdentifier>{58fe3eb7-9da9-4e89-b4ef-7117bf4acc3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{9fdd9d2e-dc31-4b45-9684-7e9ff9d48e2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Modules">
       <UniqueIdentifier>{98168401-14e8-41e0-8b15-2f32846b84cd}</UniqueIdentifier>
@@ -1427,12 +1208,6 @@
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{0c0b9c77-614f-4cc0-93e2-e64ce3d5fb1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Timer">
-      <UniqueIdentifier>{c2f3b8dd-32e7-451c-8641-fb9678a9c842}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{ea99d1f6-2c70-403e-b5b6-3a7fab634aa0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\NavigationAI">
       <UniqueIdentifier>{579d3554-19f7-47db-8abf-7b98913d0ca2}</UniqueIdentifier>
@@ -1445,9 +1220,6 @@
     </Filter>
     <Filter Include="Dependencies\ImGuizmo">
       <UniqueIdentifier>{507b6f07-d49a-45f6-88cc-c49673feecf8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObjects\Components\UI">
-      <UniqueIdentifier>{e20dbcd6-c127-457c-bb19-f579b8d3eee7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\Optick">
       <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
@@ -1462,7 +1234,7 @@
       <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\Freetype">
-      <UniqueIdentifier>{7458cbb4-c985-4a84-8e6e-6ecba0741426}</UniqueIdentifier>
+      <UniqueIdentifier>{359a85a3-024a-4aca-b6ad-d001997a1e5a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1484,32 +1256,6 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>Dependencies\MathGeoLib\Geometry</Filter>
     </None>
-    <None Include="..\Game\shaders\default_fragment.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\shaders\default_vertex.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\Fragment.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\PBR_PixelShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\PBR_VertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\Vertex.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\skybox.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\skybox.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\ui.fs" />
-    <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs">
       <Filter>Dependencies\FMOD</Filter>
     </None>
@@ -1521,15 +1267,6 @@
     </None>
     <None Include="Dependencies\FMOD\api\studio\inc\fmod_studio.cs">
       <Filter>Dependencies\FMOD</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\skinning.comp">
-      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

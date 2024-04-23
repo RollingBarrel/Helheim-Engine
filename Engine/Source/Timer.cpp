@@ -82,13 +82,13 @@ void Timer::Update()
 	if(App->GetCurrentClock() == this ) SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
 }
 
-long Timer::Read() 
+long Timer::Read()
 {
 	ReadDelta();
 	return mTotalTime;
 }
 
-long Timer::ReadDelta() 
+long Timer::ReadDelta()
 {
 	Uint32 newTime = SDL_GetTicks();
 	Uint32 elapsedTime = newTime - mLastReadTime;

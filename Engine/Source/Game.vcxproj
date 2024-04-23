@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{75d74dae-b631-4317-bf0a-958b8e57fb39}</ProjectGuid>
-    <RootNamespace>CoreLib</RootNamespace>
+    <ProjectGuid>{2f57cc1b-d22c-463f-98ee-0b11794ce53a}</ProjectGuid>
+    <RootNamespace>Game</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -127,78 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AIAgentComponent.cpp" />
-    <ClCompile Include="AnimationComponent.cpp" />
-    <ClCompile Include="AudioListenerComponent.cpp" />
-    <ClCompile Include="AudioSourceComponent.cpp" />
-    <ClCompile Include="BatchManager.cpp" />
-    <ClCompile Include="CameraComponent.cpp" />
-    <ClCompile Include="CanvasComponent.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GeometryBatch.cpp" />
-    <ClCompile Include="MeshRendererComponent.cpp" />
-    <ClCompile Include="NavMeshObstacleComponent.cpp" />
-    <ClCompile Include="PointLightComponent.cpp" />
-    <ClCompile Include="PreciseTimer.cpp" />
-    <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="ResourceAnimation.cpp" />
-    <ClCompile Include="ResourceMaterial.cpp" />
-    <ClCompile Include="ResourceMesh.cpp" />
-    <ClCompile Include="ResourceModel.cpp" />
-    <ClCompile Include="ResourceObject.cpp" />
-    <ClCompile Include="ResourceScript.cpp" />
-    <ClCompile Include="ResourceTexture.cpp" />
-    <ClCompile Include="ScriptComponent.cpp" />
-    <ClCompile Include="SliderComponent.cpp" />
-    <ClCompile Include="SpotLightComponent.cpp" />
-    <ClCompile Include="Tag.cpp" />
-    <ClCompile Include="TestComponent.cpp" />
-    <ClCompile Include="TextComponent.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Transform2DComponent.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AIAgentComponent.h" />
-    <ClInclude Include="AnimationComponent.h" />
-    <ClInclude Include="AudioListenerComponent.h" />
-    <ClInclude Include="AudioSourceComponent.h" />
-    <ClInclude Include="BatchManager.h" />
-    <ClInclude Include="CameraComponent.h" />
-    <ClInclude Include="CanvasComponent.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GeometryBatch.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="MeshRendererComponent.h" />
-    <ClInclude Include="Module.h" />
-    <ClInclude Include="NavMeshObstacleComponent.h" />
-    <ClInclude Include="PointLightComponent.h" />
-    <ClInclude Include="PreciseTimer.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="ResourceAnimation.h" />
-    <ClInclude Include="ResourceMaterial.h" />
-    <ClInclude Include="ResourceMesh.h" />
-    <ClInclude Include="ResourceModel.h" />
-    <ClInclude Include="ResourceScript.h" />
-    <ClInclude Include="ResourceTexture.h" />
-    <ClInclude Include="ScriptComponent.h" />
-    <ClInclude Include="SliderComponent.h" />
-    <ClInclude Include="SpotLightComponent.h" />
-    <ClInclude Include="Tag.h" />
-    <ClInclude Include="TestComponent.h" />
-    <ClInclude Include="TextComponent.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform2DComponent.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
-    <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
-    <None Include="..\Game\Assets\Shaders\skinning.comp" />
-    <None Include="..\Game\Assets\Shaders\skybox.fs" />
-    <None Include="..\Game\Assets\Shaders\skybox.vs" />
-    <None Include="..\Game\Assets\Shaders\ui.fs" />
-    <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <ProjectReference Include="CoreLib.vcxproj">
+      <Project>{75d74dae-b631-4317-bf0a-958b8e57fb39}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
