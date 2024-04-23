@@ -19,8 +19,10 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
     MEMBER(MemberType::GAMEOBJECT, mCreditsMenu);
     MEMBER(MemberType::GAMEOBJECT, mLoadingMenu);
+    MEMBER(MemberType::GAMEOBJECT, mSplashScreen);
     SEPARATOR("BUTTONS");
-    MEMBER(MemberType::GAMEOBJECT, mContinueGO);
+    MEMBER(MemberType::GAMEOBJECT, mContainerGO);
+    MEMBER(MemberType::GAMEOBJECT, mSplashGO);
     MEMBER(MemberType::GAMEOBJECT, mNewGO);
     MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
     MEMBER(MemberType::GAMEOBJECT, mCreditsGO);
@@ -32,39 +34,40 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
-    mContinueButton = static_cast<ButtonComponent*>(mContinueGO->GetComponent(ComponentType::BUTTON));
+    mSplashButton = static_cast<ButtonComponent*>(mSplashGO->GetComponent(ComponentType::BUTTON));
     mNewButton = static_cast<ButtonComponent*>(mNewGO->GetComponent(ComponentType::BUTTON));
     mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
     mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
     mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
 
+    mSplashButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnSplashButtonClick, this));
     mNewButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnNewButtonClick, this));
     mOptionsButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnOptionsButtonClick, this));
     mCreditsButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnCreditsButtonClick, this));
     mQuitButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnQuitButtonClick, this));
 
-    OpenMenu(MENU_TYPE::MAIN);
+    OpenMenu(MENU_TYPE::SPLASH);
 }
 
 void MainMenu::Update()
 {
-    Menu();
-    Loading();
-    Options();
-    Credits();
-    Controls();
+    //Menu();
+    //Loading();
+    //Options();
+    //Credits();
+    //Controls();
 }
 
-void MainMenu::SetMenu(bool active, bool pause)
+/*void MainMenu::SetMenu(bool active, bool pause)
 {
     mMenuActive = active;
     mPauseMenu = pause;
 
     Update();
     LOG("MENU ACTIVE");
-}
+}*/
 
-void MainMenu::ButtonsPosition(const char* imageName, float position) const
+/*void MainMenu::ButtonsPosition(const char* imageName, float position) const
 {
     Transform2DComponent* transformComponent = static_cast<Transform2DComponent*>(App->GetScene()->Find(imageName)->GetComponent(ComponentType::TRANSFORM2D));
 
@@ -75,9 +78,9 @@ void MainMenu::ButtonsPosition(const char* imageName, float position) const
 
         transformComponent->SetPosition(newPosition);
     }
-}
+}*/
 
-void MainMenu::Menu()
+/*void MainMenu::Menu()
 {
     if (mMenuActive) 
     {
@@ -174,7 +177,7 @@ void MainMenu::Menu()
                 break;
         }
     }
-}
+}*/
 
 /*void MainMenu::ChangeImage(const char* imageName, bool enabled) const
 {
@@ -246,7 +249,7 @@ void MainMenu::Menu()
     else return false;
 }*/
 
-void MainMenu::Controls()
+/*void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
@@ -321,7 +324,7 @@ void MainMenu::Controls()
             mPrevScreen = true;
         }       
     }
-}
+}*/
 
 // MENUS
 
@@ -332,24 +335,40 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
             mOptionsMenu->SetEnabled(false);
             mCreditsMenu->SetEnabled(false);
             mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(true);
             break;
         case MENU_TYPE::OPTIONS:
             mMainMenu->SetEnabled(false);
             mOptionsMenu->SetEnabled(true);
             mCreditsMenu->SetEnabled(false);
             mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(true);
             break;
         case MENU_TYPE::CREDITS:
             mMainMenu->SetEnabled(false);
             mOptionsMenu->SetEnabled(false);
             mCreditsMenu->SetEnabled(true);
             mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(true);
             break;
         case MENU_TYPE::LOADING:
             mMainMenu->SetEnabled(false);
             mOptionsMenu->SetEnabled(false);
             mCreditsMenu->SetEnabled(false);
             mLoadingMenu->SetEnabled(true);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(false);
+            break;
+        case MENU_TYPE::SPLASH:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(true);
+            mContainerGO->SetEnabled(false);
             break;
     }
 }
@@ -373,4 +392,8 @@ void MainMenu::OnCreditsButtonClick() {
 void MainMenu::OnNewButtonClick() {
     OpenMenu(MENU_TYPE::LOADING);
     App->GetScene()->Load("Level1.json");
+}
+
+void MainMenu::OnSplashButtonClick() {
+    OpenMenu(MENU_TYPE::MAIN);
 }

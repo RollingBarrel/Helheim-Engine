@@ -8,7 +8,8 @@ enum MENU_TYPE {
     MAIN,
     OPTIONS,
     CREDITS,
-    LOADING
+    LOADING,
+    SPLASH
 };
 
 GENERATE_BODY(MainMenu);
@@ -39,6 +40,7 @@ private:
     void OnOptionsButtonClick();
     void OnCreditsButtonClick();
     void OnNewButtonClick();
+    void OnSplashButtonClick();
 
     bool mMenuActive = true;
     bool mPauseMenu = false;
@@ -61,14 +63,16 @@ private:
     GameObject* mOptionsMenu = nullptr;
     GameObject* mCreditsMenu = nullptr;
     GameObject* mLoadingMenu = nullptr;
+    GameObject* mSplashScreen = nullptr;
 
-    GameObject* mContinueGO = nullptr;
+    GameObject* mContainerGO = nullptr;
+    GameObject* mSplashGO = nullptr;
     GameObject* mNewGO = nullptr;
     GameObject* mOptionsGO = nullptr;
     GameObject* mCreditsGO = nullptr;
     GameObject* mQuitGO = nullptr;
 
-    ButtonComponent* mContinueButton = nullptr;
+    ButtonComponent* mSplashButton = nullptr;
     ButtonComponent* mNewButton = nullptr;
     ButtonComponent* mOptionsButton = nullptr;
     ButtonComponent* mCreditsButton = nullptr;

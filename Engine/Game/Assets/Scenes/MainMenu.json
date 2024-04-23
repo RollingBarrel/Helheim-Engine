@@ -38,9 +38,9 @@
                 ]
             },
             {
-                "UID": 618208034,
+                "UID": 1578702196,
                 "ParentUID": 350657249,
-                "Name": "Main_Menu",
+                "Name": "Menu",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -63,6 +63,38 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
+                        "ID": 2117416502,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
                         "ComponentType": 3,
                         "ScriptName": "MainMenu",
                         "ScriptVariables": [
@@ -79,15 +111,78 @@
                                 "VariableName": "mPauseMenu",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "MENUS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mMainMenu",
+                                "MemberType": 3,
+                                "VariableData": 923969098
+                            },
+                            {
+                                "VariableName": "mOptionsMenu",
+                                "MemberType": 3,
+                                "VariableData": 344971752
+                            },
+                            {
+                                "VariableName": "mCreditsMenu",
+                                "MemberType": 3,
+                                "VariableData": 321670165
+                            },
+                            {
+                                "VariableName": "mLoadingMenu",
+                                "MemberType": 3,
+                                "VariableData": 684430398
+                            },
+                            {
+                                "VariableName": "mSplashScreen",
+                                "MemberType": 3,
+                                "VariableData": 1587975136
+                            },
+                            {
+                                "VariableName": "BUTTONS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mContainerGO",
+                                "MemberType": 3,
+                                "VariableData": 1092932759
+                            },
+                            {
+                                "VariableName": "mSplashGO",
+                                "MemberType": 3,
+                                "VariableData": 1587975136
+                            },
+                            {
+                                "VariableName": "mNewGO",
+                                "MemberType": 3,
+                                "VariableData": 364659411
+                            },
+                            {
+                                "VariableName": "mOptionsGO",
+                                "MemberType": 3,
+                                "VariableData": 1835664425
+                            },
+                            {
+                                "VariableName": "mCreditsGO",
+                                "MemberType": 3,
+                                "VariableData": 1739702468
+                            },
+                            {
+                                "VariableName": "mQuitGO",
+                                "MemberType": 3,
+                                "VariableData": 1509201288
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1200038439,
-                "ParentUID": 618208034,
-                "Name": "Buttons",
+                "UID": 319104652,
+                "ParentUID": 1578702196,
+                "Name": "MainMenu",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -111,84 +206,9 @@
                 "Components": []
             },
             {
-                "UID": 1014519929,
-                "ParentUID": 1200038439,
-                "Name": "Button_ContinueGame",
-                "isEnabled": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 1485729975,
-                        "ComponentType": 9,
-                        "isEnabled": true,
-                        "Translation": [
-                            -777.0,
-                            281.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            367.0,
-                            84.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ImageID": 1260781062,
-                        "ComponentType": 8,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
-                    },
-                    {
-                        "ID": 132214405,
-                        "ComponentType": 11,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 740184236,
-                "ParentUID": 1200038439,
-                "Name": "Button_NewGame",
+                "UID": 1092932759,
+                "ParentUID": 319104652,
+                "Name": "Buttons",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -211,12 +231,12 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 848248343,
+                        "ID": 1867986188,
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
-                            -800.0,
-                            281.0,
+                            0.0,
+                            0.0,
                             0.0
                         ],
                         "Rotation": [
@@ -226,8 +246,8 @@
                             1.0
                         ],
                         "Size": [
-                            319.0,
-                            84.0
+                            1.0,
+                            1.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -241,30 +261,14 @@
                             0.0,
                             0.0
                         ]
-                    },
-                    {
-                        "ImageID": 1136416083,
-                        "ComponentType": 8,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
-                    },
-                    {
-                        "ID": 1270558128,
-                        "ComponentType": 11,
-                        "isEnabled": true
                     }
                 ]
             },
             {
-                "UID": 677219965,
-                "ParentUID": 1200038439,
-                "Name": "Button_Options",
-                "isEnabled": false,
+                "UID": 1509201288,
+                "ParentUID": 1092932759,
+                "Name": "QuitBtn",
+                "isEnabled": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -286,12 +290,12 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1026396118,
+                        "ID": 1512194991,
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
-                            -800.0,
-                            197.0,
+                            -714.0,
+                            -200.0,
                             0.0
                         ],
                         "Rotation": [
@@ -301,158 +305,8 @@
                             1.0
                         ],
                         "Size": [
-                            319.0,
-                            84.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ImageID": 1236548728,
-                        "ComponentType": 8,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
-                    },
-                    {
-                        "ID": 437006054,
-                        "ComponentType": 11,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 198890007,
-                "ParentUID": 1200038439,
-                "Name": "Button_Credits",
-                "isEnabled": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 116295152,
-                        "ComponentType": 9,
-                        "isEnabled": true,
-                        "Translation": [
-                            -800.0,
-                            113.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            319.0,
-                            84.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ImageID": 1084184771,
-                        "ComponentType": 8,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
-                    },
-                    {
-                        "ID": 2102579487,
-                        "ComponentType": 11,
-                        "isEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1658331830,
-                "ParentUID": 1200038439,
-                "Name": "Button_Quit",
-                "isEnabled": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 1893887571,
-                        "ComponentType": 9,
-                        "isEnabled": true,
-                        "Translation": [
-                            -800.0,
-                            29.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            319.0,
-                            84.0
+                            230.0,
+                            75.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -479,16 +333,16 @@
                         "Alpha": 1.0
                     },
                     {
-                        "ID": 1871262659,
+                        "ID": 1514770968,
                         "ComponentType": 11,
                         "isEnabled": true
                     }
                 ]
             },
             {
-                "UID": 342804857,
-                "ParentUID": 618208034,
-                "Name": "Menu",
+                "UID": 364659411,
+                "ParentUID": 1092932759,
+                "Name": "NewGameBtn",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -511,7 +365,232 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 142363713,
+                        "ID": 366051831,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            -714.0,
+                            100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            230.0,
+                            75.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ImageID": 1136416083,
+                        "ComponentType": 8,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "HasAlpha": false,
+                        "Alpha": 1.0
+                    },
+                    {
+                        "ID": 368558187,
+                        "ComponentType": 11,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1835664425,
+                "ParentUID": 1092932759,
+                "Name": "OptionsBtn",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1837196087,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            -714.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            230.0,
+                            75.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ImageID": 1236548728,
+                        "ComponentType": 8,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "HasAlpha": false,
+                        "Alpha": 1.0
+                    },
+                    {
+                        "ID": 1839772064,
+                        "ComponentType": 11,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1739702468,
+                "ParentUID": 1092932759,
+                "Name": "CreditsBtn",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 461668055,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            -714.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            230.0,
+                            75.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ImageID": 1084184771,
+                        "ComponentType": 8,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "HasAlpha": false,
+                        "Alpha": 1.0
+                    },
+                    {
+                        "ID": 688266281,
+                        "ComponentType": 11,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 923969098,
+                "ParentUID": 319104652,
+                "Name": "MainScreen",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 715984069,
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
@@ -543,7 +622,7 @@
                         ]
                     },
                     {
-                        "ImageID": 1487544879,
+                        "ImageID": 13021810,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -556,9 +635,9 @@
                 ]
             },
             {
-                "UID": 206857772,
-                "ParentUID": 618208034,
-                "Name": "Pause_Game",
+                "UID": 344971752,
+                "ParentUID": 319104652,
+                "Name": "OptionsScreen",
                 "isEnabled": false,
                 "Translation": [
                     0.0,
@@ -581,77 +660,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2124889522,
-                        "ComponentType": 9,
-                        "isEnabled": true,
-                        "Translation": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1920.0,
-                            1080.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ImageID": 388400192,
-                        "ComponentType": 8,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 1021220230,
-                "ParentUID": 618208034,
-                "Name": "Options",
-                "isEnabled": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 726760391,
+                        "ID": 979603251,
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
@@ -696,9 +705,9 @@
                 ]
             },
             {
-                "UID": 873848440,
-                "ParentUID": 618208034,
-                "Name": "Credits",
+                "UID": 321670165,
+                "ParentUID": 319104652,
+                "Name": "CreditsScreen",
                 "isEnabled": false,
                 "Translation": [
                     0.0,
@@ -721,7 +730,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1909716341,
+                        "ID": 2122941879,
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
@@ -766,35 +775,9 @@
                 ]
             },
             {
-                "UID": 1344248206,
-                "ParentUID": 350657249,
-                "Name": "Screens",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": []
-            },
-            {
-                "UID": 1810372848,
-                "ParentUID": 1344248206,
-                "Name": "Engine_Name",
+                "UID": 1587975136,
+                "ParentUID": 1578702196,
+                "Name": "SplashScreen",
                 "isEnabled": false,
                 "Translation": [
                     0.0,
@@ -817,39 +800,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 2032413165,
-                        "ComponentType": 9,
-                        "isEnabled": true,
-                        "Translation": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1920.0,
-                            1080.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ImageID": 1220566130,
+                        "ImageID": 1331783300,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -858,36 +809,9 @@
                         ],
                         "HasAlpha": false,
                         "Alpha": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 77880717,
-                "ParentUID": 1344248206,
-                "Name": "Studio_Game",
-                "isEnabled": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
+                    },
                     {
-                        "ID": 811777440,
+                        "ID": 1925860871,
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
@@ -919,22 +843,16 @@
                         ]
                     },
                     {
-                        "ImageID": 148626881,
-                        "ComponentType": 8,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "ID": 1072045191,
+                        "ComponentType": 11,
+                        "isEnabled": true
                     }
                 ]
             },
             {
-                "UID": 534930357,
-                "ParentUID": 1344248206,
-                "Name": "Game_Name",
+                "UID": 684430398,
+                "ParentUID": 1578702196,
+                "Name": "LoadingScreen",
                 "isEnabled": false,
                 "Translation": [
                     0.0,
@@ -957,7 +875,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1419892805,
+                        "ID": 1677024220,
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
@@ -989,77 +907,7 @@
                         ]
                     },
                     {
-                        "ImageID": 1469911905,
-                        "ComponentType": 8,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 1224161014,
-                "ParentUID": 1344248206,
-                "Name": "Loading_Screen",
-                "isEnabled": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 1721782796,
-                        "ComponentType": 9,
-                        "isEnabled": true,
-                        "Translation": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1920.0,
-                            1080.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ImageID": 1716214173,
+                        "ImageID": 217162164,
                         "ComponentType": 8,
                         "Color": [
                             1.0,

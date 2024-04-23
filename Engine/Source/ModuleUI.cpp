@@ -121,11 +121,16 @@ void ModuleUI::FindCanvas(GameObject* gameObject)
 
 void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) 
 {
-	if (gameObject == nullptr || eventTriggered)
-		return;
-
+	if (gameObject == nullptr || eventTriggered) return;
+	if (gameObject->GetChildren().empty() || gameObject->GetChildren().size() == 0) return;
+	
+	
 	for (auto child : gameObject->GetChildren()) 
 	{
+		if (eventTriggered) return;
+		if (child == nullptr) continue;
+		if (!child->IsEnabled()) continue;
+
 		ImageComponent* image = static_cast<ImageComponent*>(child->GetComponent(ComponentType::IMAGE));
 		Transform2DComponent* transform2D = static_cast<Transform2DComponent*>(child->GetComponent(ComponentType::TRANSFORM2D));
 		ButtonComponent* button = static_cast<ButtonComponent*>(child->GetComponent(ComponentType::BUTTON));
