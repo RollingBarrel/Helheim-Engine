@@ -11,6 +11,7 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "AnimationComponent.h"
 
 GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 {
@@ -39,6 +40,20 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glGenBuffers(1, &mSsboIndices);
 	glGenBuffers(1, &mIbo);
 
+	glGenBuffers(1, &mPaletteSsbo);
+	glGenBuffers(1, &mBoneIndicesSsbo);
+	glGenBuffers(1, &mWeightsSsbo);
+	glGenBuffers(1, &mPosSsbo);
+	glGenBuffers(1, &mNormSsbo);
+	glGenBuffers(1, &mTangSsbo);
+
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, mPaletteSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, mBoneIndicesSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 17, mWeightsSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 18, mPosSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, mNormSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mTangSsbo);
+
 	unsigned int idx = 0;
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
@@ -62,6 +77,14 @@ GeometryBatch::~GeometryBatch()
 	glDeleteBuffers(1, &mSsboMaterials);
 	glDeleteBuffers(1, &mSsboIndices);
 	glDeleteBuffers(1, &mIbo);
+
+	glDeleteBuffers(1, &mPaletteSsbo);
+	glDeleteBuffers(1, &mBoneIndicesSsbo);
+	glDeleteBuffers(1, &mWeightsSsbo);
+	glDeleteBuffers(1, &mPosSsbo);
+	glDeleteBuffers(1, &mNormSsbo);
+	glDeleteBuffers(1, &mTangSsbo);
+
 	mMeshComponents.clear();
 	mUniqueMeshes.clear();
 	mAttributes.clear();
@@ -108,7 +131,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	material.metalness = rMaterial.resource->GetMetallicFactor();
 	material.roughness = rMaterial.resource->GetRoughnessFactor();
 
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	return true;
@@ -187,7 +210,7 @@ void GeometryBatch::RecreateMaterials()
 		material.metalness = rMaterial.resource->GetMetallicFactor();
 		material.roughness = rMaterial.resource->GetRoughnessFactor();
 
-		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, materialSize, &material);
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
 		offset += materialSize;
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -195,7 +218,6 @@ void GeometryBatch::RecreateMaterials()
 
 void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 {
-
 	bool foundMaterial = false;
 	uint32_t matIdx = 0;
 	const ResourceMaterial& resourceMaterial = *cMesh->GetResourceMaterial();
@@ -209,13 +231,12 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 	}
 	if (!foundMaterial)
 	{
-		mUniqueMaterials.emplace_back(&resourceMaterial);
+        mUniqueMaterials.emplace_back(&resourceMaterial);
 		matIdx = mUniqueMaterials.size() - 1;
-		RecreateMaterials();
+		RecreateMaterials();  
 	}
-
-	bool foundMesh = false;
-	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();
+       	bool foundMesh = false;  
+	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();                                                              
 	unsigned int meshIdx = 0;
 	for (; meshIdx < mUniqueMeshes.size(); ++meshIdx)
 	{
@@ -294,6 +315,43 @@ void GeometryBatch::Draw()
 {
 	if (mMeshComponents.size() == 0)
 		return;
+
+	bool animationSkinning = false;
+	glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
+	for (const BatchMeshRendererComponent batchMeshRenderer : mMeshComponents)
+	{
+		const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
+		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
+		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
+		{
+			if (meshRenderer->GetIsAnimated() != 0 && (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()))
+			{
+				const AnimationComponent* cAnim = meshRenderer->GetAnimationComponent();
+				if (cAnim && cAnim->GetIsPlaying())
+				{
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, meshRenderer->GetPalette().size() * sizeof(float) * 16, meshRenderer->GetPalette().data(), GL_DYNAMIC_DRAW);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberWeights() * sizeof(float), rMesh->GetWeights(), GL_STREAM_DRAW);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPosSsbo);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::POS), GL_STREAM_DRAW);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mNormSsbo);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::NORMAL), GL_STREAM_DRAW);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mTangSsbo);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::TANGENT), GL_STREAM_DRAW);
+					glUniform1i(25, rMesh->GetNumberVertices());
+					glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * rMesh->GetVertexSize(), rMesh->GetVertexSize() * rMesh->GetNumberVertices());
+					glDispatchCompute((rMesh->GetNumberVertices() + (63)) / 64, 1, 1);
+					animationSkinning = true;
+				}
+			}
+		}
+	}
+	if(animationSkinning)
+		glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 	glBindVertexArray(mVao);
 

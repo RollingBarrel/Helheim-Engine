@@ -38,7 +38,7 @@ public:
    
     const std::unordered_map<std::string, AnimationChannel*>& GetChannels() { return mChannels; }
     const std::string& GetName() const {return mName; }
-    const unsigned int& GetDuration() const { return mDuration; }
+    const float& GetDuration() const { return mDuration; }
 
     void CleanUp();
 
