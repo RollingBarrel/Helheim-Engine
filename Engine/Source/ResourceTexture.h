@@ -29,6 +29,7 @@ public:
 
 	~ResourceTexture();
 
+
 	// Getters for attributes
 	unsigned int GetWidth() const { return mWidth; }
 	unsigned int GetHeight() const { return mHeight; }

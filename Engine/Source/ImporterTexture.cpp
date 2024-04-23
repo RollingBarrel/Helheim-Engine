@@ -92,50 +92,42 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         internalFormat = GL_RGBA8;
         texFormat = GL_RGBA;
         dataType = GL_UNSIGNED_BYTE;
-        LOG("R8G8B8A8_UNORM");
         break;
     case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
     case DXGI_FORMAT_B8G8R8A8_UNORM:
         internalFormat = GL_RGBA8;
         texFormat = GL_BGRA;
         dataType = GL_UNSIGNED_BYTE;
-        LOG("B8G8R8A8_UNORM");
         break;
     case DXGI_FORMAT_B5G6R5_UNORM:
         internalFormat = GL_RGB8;
         texFormat = GL_BGR;
         dataType = GL_UNSIGNED_BYTE;
-        LOG("B5G6R5_UNORM");
         break;
     case DXGI_FORMAT_R16G16B16A16_UNORM:
         internalFormat = GL_RGBA16;
         texFormat = GL_RGBA;
         dataType = GL_UNSIGNED_SHORT;
-        LOG("R16G16B16A16_UNORM");
         break;
     case DXGI_FORMAT_BC1_UNORM:
         internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
         texFormat = 0;
         dataType = 0;
-        LOG("BC1");
         break;
     case DXGI_FORMAT_BC3_UNORM:
         internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
         texFormat = 0;
         dataType = 0;
-        LOG("BC3");
         break;
     case DXGI_FORMAT_BC5_UNORM:
 		internalFormat = GL_COMPRESSED_RG_RGTC2;
         texFormat = 0;
         dataType = 0;
-        LOG("BC5");
 		break;
     case DXGI_FORMAT_BC7_UNORM:
         internalFormat = GL_COMPRESSED_RGBA_BPTC_UNORM;
         texFormat = 0;
         dataType = 0;
-        LOG("BC7");
         break;
     default:
         assert(false && "Unsupported format");
@@ -160,7 +152,7 @@ void Importer::Texture::Save(const ResourceTexture* rTexture, const unsigned cha
 
     unsigned int numPixels = rTexture->GetNumPixels();
     bool hasAlpha = rTexture->HasAlpha();
-    unsigned int size = sizeof(header)  + sizeof(hasAlpha) + sizeof(unsigned char) * numPixels;
+    unsigned int size = sizeof(header) + sizeof(hasAlpha) + sizeof(unsigned char) * numPixels;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
