@@ -114,22 +114,27 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         LOG("R16G16B16A16_UNORM");
         break;
     case DXGI_FORMAT_BC1_UNORM:
-        //internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT;
         internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        texFormat = 0;
+        dataType = 0;
         LOG("BC1");
         break;
     case DXGI_FORMAT_BC3_UNORM:
-        //internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT
-        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        texFormat = 0;
+        dataType = 0;
         LOG("BC3");
         break;
     case DXGI_FORMAT_BC5_UNORM:
 		internalFormat = GL_COMPRESSED_RG_RGTC2;
-        //internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        texFormat = 0;
+        dataType = 0;
         LOG("BC5");
 		break;
     case DXGI_FORMAT_BC7_UNORM:
-        internalFormat = GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM;
+        internalFormat = GL_COMPRESSED_RGBA_BPTC_UNORM;
+        texFormat = 0;
+        dataType = 0;
         LOG("BC7");
         break;
     default:
@@ -216,7 +221,7 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         // Set texture data for each mip level
         for (size_t i = 0; i < mipLevels; ++i)
         {
-            if (internalFormat == GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT3_EXT || internalFormat == GL_COMPRESSED_RG_RGTC2 || internalFormat == GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM)
+            if (internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT5_EXT || internalFormat == GL_COMPRESSED_RG_RGTC2 || internalFormat == GL_COMPRESSED_RGBA_BPTC_UNORM)
             {
 				glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, numPixels, pixels);
 			}
@@ -261,8 +266,8 @@ bool Importer::Texture::ContainsText(const std::string& str, const std::string& 
 const std::unordered_map<std::string, DXGI_FORMAT> Importer::Texture::compressionFormatNaming = {
     {"_BaseColor", DXGI_FORMAT_BC1_UNORM},
     //{"_Normal", DXGI_FORMAT_BC5_UNORM},
-    {"_Occlusion", DXGI_FORMAT_BC5_UNORM},
-    {"_Roughness", DXGI_FORMAT_BC5_UNORM},
-    {"_Metallic", DXGI_FORMAT_BC5_UNORM},
-    {"_Emissive", DXGI_FORMAT_BC5_UNORM}
+    {"_Occlusion", DXGI_FORMAT_BC3_UNORM},
+    {"_Roughness", DXGI_FORMAT_BC3_UNORM},
+    {"_Metallic", DXGI_FORMAT_BC3_UNORM},
+    {"_Emissive", DXGI_FORMAT_BC3_UNORM}
 };
