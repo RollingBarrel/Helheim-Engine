@@ -24,9 +24,18 @@
 #include "Math/float2.h"
 #include "imgui.h"
 
-GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids, GameObject* parent)
+GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rModel, GameObject* parent, bool isRoot)
 {
 	const char* name = "";
+	static int nodeIt = 0;
+	static AnimationComponent* cAnimation = nullptr;
+
+	//Reset nodeIt and cAnimation for the new model dragged to the scene
+	if (nodeNumber == 0)
+	{
+		nodeIt = 0;
+		cAnimation = nullptr;
+	}
 
 	if (node.mName == name)
 		name = "GameObject";
@@ -40,10 +49,27 @@ GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animat
 	gameObject->SetScale(node.mScale);
 	gameObject->RecalculateMatrices();
 
+	if (isRoot && nodeNumber == 0)
+	{
+		if (!rModel.mAnimationUids.empty())
+		{
+			if (rModel.mAnimationUids[0] != 0)
+			{
+				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
+				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
+				cAnimation->SetAnimation(rModel.mAnimationUids[0]);
+			}
+		}
+	}
+
 	if (node.mMeshId > -1)
 	{
 		for (auto it = node.mUids.cbegin(); it != node.mUids.cend(); ++it)
 		{
+			if (name == "GameObject") 
+			{
+				name = "MeshRenderer";
+			}
 			GameObject* gO = new GameObject(name, gameObject);
 			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
@@ -51,12 +77,13 @@ GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animat
 		}
 	}
 
-	if (strcmp(name,"Root") == 0)
+	if (cAnimation) 
 	{
-		if (!animationUids.empty())
+		if (rModel.mJoints[nodeIt].first == nodeNumber)
 		{
-			AnimationComponent* cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->CreateComponent(ComponentType::ANIMATION));
-			cAnimation->SetAnimation(animationUids[0]);
+			std::pair<GameObject*, float4x4> gameobjectPallete = { gameObject, rModel.mJoints[nodeIt].second };
+			cAnimation->mGameobjectsInverseMatrices.push_back(gameobjectPallete);
+			nodeIt++;
 		}
 	}
 
@@ -162,9 +189,19 @@ void ScenePanel::DrawScene()
 					{
 						ModelNode node = reinterpret_cast<ResourceModel*>(resource)->GetNodes()[i];
 						if (node.mParentIndex == -1)
-							tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, gameObjectRoot));
+							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), gameObjectRoot, true));
 						else
-							tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, tempVec.at(node.mParentIndex)));
+							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), tempVec.at(node.mParentIndex), false));
+					
+						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
+						//{
+						//	if (reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first == i)
+						//	{
+						//		LOG("Current Node: %u, %s", i, node.mName.c_str());
+						//		LOG("Joint Index: %d", reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first);
+						//		break;
+						//	}
+						//}
 					}
 
 					tempVec.clear();
