@@ -41,27 +41,34 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     
     delete[] pathTex;
 
-    // Determine the compression format based on the file name
     DXGI_FORMAT compressionFormat = DXGI_FORMAT_BC3_UNORM; // Default value
+    DirectX::ScratchImage compressedImage;
+
+    // Determine the compression format (if needed) based on the file name
     for (const auto& pair : Importer::Texture::compressionFormatNaming)
     {
-        if (endsWith(filePath, pair.first))
+        if (ContainsText(filePath, pair.first))
         {
             compressionFormat = pair.second;
+
+            // If the texture is a BaseColor and has alpha, use BC3 instead of BC1 to avoid artifacts
+            if (compressionFormat == DXGI_FORMAT_BC1_UNORM && DirectX::HasAlpha(image.GetMetadata().format))
+            {
+				compressionFormat = DXGI_FORMAT_BC3_UNORM;
+			}
+
+            hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), compressionFormat, DirectX::TEX_COMPRESS_DEFAULT, 0.5f, compressedImage);
+            if (FAILED(hr))
+            {
+                LOG("Failed to compress texture");
+                return nullptr;
+            }
+
+            // Replaces the original image with the compressed one
+            image = std::move(compressedImage);
             break;
         }
     }
-
-    DirectX::ScratchImage compressedImage;
-    hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), compressionFormat, DirectX::TEX_COMPRESS_DEFAULT, 0.5f, compressedImage);
-    if (FAILED(hr))
-    {
-        LOG("Failed to compress texture");
-        return nullptr;
-    }
-
-    // Replaces the original image with the compressed one
-    image = std::move(compressedImage);
 
     // For get all information of the texture and see the parameters it have
     unsigned int internalFormat = 0;
@@ -71,8 +78,8 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     unsigned int height = image.GetMetadata().height;
     unsigned int mipLevels = image.GetMetadata().mipLevels;
     unsigned int numPixels = image.GetPixelsSize();
-
     bool hasAlpha = false;
+
     if (DirectX::HasAlpha(image.GetMetadata().format))
     {
         hasAlpha = true;
@@ -85,34 +92,45 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         internalFormat = GL_RGBA8;
         texFormat = GL_RGBA;
         dataType = GL_UNSIGNED_BYTE;
+        LOG("R8G8B8A8_UNORM");
         break;
     case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
     case DXGI_FORMAT_B8G8R8A8_UNORM:
         internalFormat = GL_RGBA8;
         texFormat = GL_BGRA;
         dataType = GL_UNSIGNED_BYTE;
+        LOG("B8G8R8A8_UNORM");
         break;
     case DXGI_FORMAT_B5G6R5_UNORM:
         internalFormat = GL_RGB8;
         texFormat = GL_BGR;
         dataType = GL_UNSIGNED_BYTE;
+        LOG("B5G6R5_UNORM");
         break;
     case DXGI_FORMAT_R16G16B16A16_UNORM:
         internalFormat = GL_RGBA16;
         texFormat = GL_RGBA;
         dataType = GL_UNSIGNED_SHORT;
+        LOG("R16G16B16A16_UNORM");
         break;
     case DXGI_FORMAT_BC1_UNORM:
-        internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT;
+        //internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT;
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        LOG("BC1");
         break;
     case DXGI_FORMAT_BC3_UNORM:
-        internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT;
+        //internalFormat = GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        LOG("BC3");
         break;
     case DXGI_FORMAT_BC5_UNORM:
 		internalFormat = GL_COMPRESSED_RG_RGTC2;
+        //internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        LOG("BC5");
 		break;
     case DXGI_FORMAT_BC7_UNORM:
         internalFormat = GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM;
+        LOG("BC7");
         break;
     default:
         assert(false && "Unsupported format");
@@ -198,7 +216,7 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         // Set texture data for each mip level
         for (size_t i = 0; i < mipLevels; ++i)
         {
-            if (internalFormat == GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT || internalFormat == GL_COMPRESSED_RG_RGTC2 || internalFormat == GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM)
+            if (internalFormat == GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT3_EXT || internalFormat == GL_COMPRESSED_RG_RGTC2 || internalFormat == GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM)
             {
 				glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, numPixels, pixels);
 			}
@@ -234,14 +252,17 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
     return texture;
 }
 
-bool Importer::Texture::endsWith(const std::string& str, const std::string& suffix)
+// Check if a string contains the text
+bool Importer::Texture::ContainsText(const std::string& str, const std::string& text)
 {
-    return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+    return str.find(text) != std::string::npos;
 }
 
 const std::unordered_map<std::string, DXGI_FORMAT> Importer::Texture::compressionFormatNaming = {
-    {"_BaseColor", DXGI_FORMAT_BC3_UNORM},
-    {"_Normal", DXGI_FORMAT_BC5_UNORM},
-    {"_OcclusionRoughnessMetallic", DXGI_FORMAT_BC5_UNORM},
+    {"_BaseColor", DXGI_FORMAT_BC1_UNORM},
+    //{"_Normal", DXGI_FORMAT_BC5_UNORM},
+    {"_Occlusion", DXGI_FORMAT_BC5_UNORM},
+    {"_Roughness", DXGI_FORMAT_BC5_UNORM},
+    {"_Metallic", DXGI_FORMAT_BC5_UNORM},
     {"_Emissive", DXGI_FORMAT_BC5_UNORM}
 };
