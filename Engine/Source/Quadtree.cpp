@@ -41,7 +41,7 @@ bool Quadtree::AddObject(GameObject* object)
 {
 	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
 	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
-	AABB object_BB = meshRenderer->GetAABB();
+	AABB objectAABB = meshRenderer->GetAABB();
 	
 	if (object->GetName() == std::string("Plane.020")) // XDDDDDDDDDDDDDDDDDDDDDD I keep this here so it is not forgotten
 	{
@@ -51,7 +51,7 @@ bool Quadtree::AddObject(GameObject* object)
 		LOG("%i", count);
 	}
 
-	if (!mBoundingBox.Intersects(object_BB))
+	if (!mBoundingBox.Intersects(objectAABB))
 	{
 		return false;
 	}
