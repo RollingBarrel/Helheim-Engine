@@ -42,6 +42,51 @@ public:
 
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
+
+	// Getter for mClipNames
+	const std::vector<const char*>& getClipNames() const {
+		return mClipNames;
+	}
+
+	// Setter for mClipNames
+	void setClipNames(const std::vector<const char*>& clipNames) {
+		mClipNames = clipNames;
+	}
+
+	// Getter for mClipTimes
+	const std::vector<float>& getClipTimes() const {
+		return mClipTimes;
+	}
+
+	// Setter for mClipTimes
+	void setClipTimes(const std::vector<float>& clipTimes) {
+		mClipTimes = clipTimes;
+	}
+
+	// Getter for mCurrentClip
+	int getCurrentClip() const {
+		return mCurrentClip;
+	}
+
+	// Setter for mCurrentClip
+	void setCurrentClip(int currentClip) {
+		if (currentClip > mClipNames.size())
+		{
+			currentClip = 0;
+		}
+		mCurrentClip = currentClip;
+		SetStartTime(mClipTimes[mCurrentClip * 2]);
+		SetEndTime(mClipTimes[mCurrentClip * 2+1]);
+
+	}
+	float getCurrentStartTime() const
+	{
+		return mClipTimes[mCurrentClip*2];
+	}
+	float getCurrentEndTime() const
+	{
+		return mClipTimes[mCurrentClip*2+1];
+	}
 private:
 	void UpdatePalette();
 	ResourceAnimation* mAnimation;
@@ -50,6 +95,10 @@ private:
 	bool mLoop = true;
 	bool mIsPlaying = false;
 	std::vector<float4x4> mPalette;
+	std::vector<const char*> mClipNames;
+	std::vector<float> mClipTimes;
+	int mCurrentClip; 
+
 
 };
 

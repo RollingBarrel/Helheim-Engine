@@ -10,6 +10,25 @@
 
 AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimation(nullptr), mController(nullptr)
 {
+	mClipNames.clear();
+	mClipTimes.clear();
+
+	mClipNames.reserve(3);
+	mClipTimes.reserve(6);
+
+	mClipNames.push_back("Walk");
+	mClipTimes.push_back(0.0);
+	mClipTimes.push_back(1.25);
+
+	mClipNames.push_back("Idle");
+	mClipTimes.push_back(1.25);
+	mClipTimes.push_back(12.0);
+
+	mClipNames.push_back("Die");
+	mClipTimes.push_back(12.0);
+	mClipTimes.push_back(15.0);
+
+	mCurrentClip = 0;
 }
 
 AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION)
@@ -17,6 +36,26 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.mAnimation->GetUID(), Resource::Type::Mesh));
 
 	mController = other.mController;
+
+	mClipNames.clear();
+	mClipTimes.clear();
+
+	mClipNames.reserve(3);
+	mClipTimes.reserve(6);
+
+	mClipNames.push_back("Walk");
+	mClipTimes.push_back(0.0);
+	mClipTimes.push_back(1.25);
+
+	mClipNames.push_back("Idle");
+	mClipTimes.push_back(1.25);
+	mClipTimes.push_back(12.0);
+
+	mClipNames.push_back("Die");
+	mClipTimes.push_back(12.0);
+	mClipTimes.push_back(15.0);
+
+	mCurrentClip = 0;
 }
 
 AnimationComponent::~AnimationComponent()
@@ -83,11 +122,13 @@ void AnimationComponent::SetAnimation(unsigned int uid)
 
 void AnimationComponent::SetStartTime(float time)
 {
+	mClipTimes[mCurrentClip * 2] = time;
 	mController->SetStartTime(time);
 }
 
 void AnimationComponent::SetEndTime(float time)
 {
+	mClipTimes[mCurrentClip * 2+1] = time;
 	mController->SetEndTime(time);
 }
 
