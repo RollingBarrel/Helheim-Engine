@@ -250,9 +250,9 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	return resourceId;
 }
 
+
 void ModuleScene::Load(const char* sceneName) 
 {
-
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) 
 	{
@@ -405,9 +405,12 @@ update_status ModuleScene::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+
 update_status ModuleScene::Update(float dt)
 {
+	mShouldUpdateQuadtree = false;
 	mRoot->Update();
+	
 	if (mDrawQuadtree)
 	{
 		App->GetOpenGL()->BindSceneFramebuffer();
@@ -419,6 +422,11 @@ update_status ModuleScene::Update(float dt)
 		mNavMeshController->Update();
 	}
 	App->GetOpenGL()->Draw();
+
+	if (mShouldUpdateQuadtree)
+	{
+		mQuadtreeRoot->UpdateTree();
+	}
 
 	return UPDATE_CONTINUE;
 }

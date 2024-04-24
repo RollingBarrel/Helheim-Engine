@@ -594,7 +594,8 @@ void GameObject::RefreshBoundingBoxes()
 	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
 		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
-		App->GetScene()->GetQuadtreeRoot()->UpdateTree();
+		App->GetScene()->SetShouldUpdateQuadtree(true);
+		
 	}
 	else
 	{
