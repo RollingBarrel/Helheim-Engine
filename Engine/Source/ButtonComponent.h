@@ -8,7 +8,9 @@ enum class EventType
 {
     Click,
     Hover,
-    Press
+    HoverOff,
+    Press,
+    Count
 };
 
 class ENGINE_API ButtonComponent : public Component
@@ -23,6 +25,9 @@ public:
     void Update() override {}
     Component* Clone(GameObject* owner) const override;
 
+    bool GetHovered() { return mHovered; }
+    void SetHovered(bool hovered) { mHovered = hovered; }
+
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
@@ -30,5 +35,6 @@ public:
     void AddEventHandler(EventType eventType, std::function<void()> handler);
 
 private:
-    std::vector<std::function<void()>> mEventHandlers[3];
+    std::vector<std::function<void()>> mEventHandlers[(int)EventType::Count];
+    bool mHovered = false;
 };
