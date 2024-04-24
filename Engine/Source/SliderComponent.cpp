@@ -23,6 +23,7 @@ SliderComponent::SliderComponent(const SliderComponent& original, GameObject* ow
 
 SliderComponent::SliderComponent(GameObject* owner) : Component(owner, ComponentType::SLIDER)
 {
+	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 	GameObject* self = (GameObject*)this->GetOwner();
 
 	if (self->GetChildren().empty()) 
