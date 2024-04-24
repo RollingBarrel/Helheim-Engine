@@ -30,7 +30,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::INT, mMaxDashCharges);
 
     SEPARATOR("MELEE ATTACK");
-    MEMBER(MemberType::FLOAT, mRangeBaseDamage);
+    MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
     MEMBER(MemberType::FLOAT, mFireRate);
     MEMBER(MemberType::FLOAT, mMinMeleeChargeTime);
     MEMBER(MemberType::FLOAT, mMaxMeleeChargeTime);
