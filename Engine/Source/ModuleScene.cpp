@@ -63,7 +63,7 @@ bool ModuleScene::Init()
 	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 
 	//Load("scene");
-	Load("AudioTest");
+	Load("MainMenu");
 	return true;
 }
 

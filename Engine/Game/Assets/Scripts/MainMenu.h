@@ -2,7 +2,10 @@
 #include <Script.h>
 #include "Macros.h"
 
+class MainMenuManager;
+
 GENERATE_BODY(MainMenu);
+
 class MainMenu : public Script
 {
     FRIEND(MainMenu)
@@ -40,5 +43,8 @@ private:
     const char* mScreen = nullptr;
     const char* mActualImageName = nullptr;
     const char* mPreviousImageName = nullptr;
+
+    GameObject* mMainMenuManagerHolder = nullptr;
+    MainMenuManager* mMainMenuManager = nullptr;
 };
 

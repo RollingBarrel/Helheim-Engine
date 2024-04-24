@@ -79,6 +79,11 @@
                                 "VariableName": "mPauseMenu",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mMainMenuManagerHolder",
+                                "MemberType": 3,
+                                "VariableData": 32340545
                             }
                         ]
                     }
@@ -1102,6 +1107,159 @@
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 32340545,
+                "ParentUID": 1,
+                "Name": "MainMenuManager",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "MainMenuManager",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mMainMenuThemeHolder",
+                                "MemberType": 3,
+                                "VariableData": 895053295
+                            },
+                            {
+                                "VariableName": "mOKSFXHolder",
+                                "MemberType": 3,
+                                "VariableData": 889009353
+                            },
+                            {
+                                "VariableName": "mSelectSFXHolder",
+                                "MemberType": 3,
+                                "VariableData": 518909942
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 895053295,
+                "ParentUID": 32340545,
+                "Name": "MainMenuTheme",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/Music/Level 01",
+                        "ParametersVariables": [
+                            {
+                                "ParametersKey": 0,
+                                "ParametersValue": 0.0
+                            },
+                            {
+                                "ParametersKey": 1,
+                                "ParametersValue": 0.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 889009353,
+                "ParentUID": 32340545,
+                "Name": "OkSFX",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/UI/Okay",
+                        "ParametersVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 518909942,
+                "ParentUID": 32340545,
+                "Name": "GameObject",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/UI/Cancel",
+                        "ParametersVariables": []
                     }
                 ]
             }

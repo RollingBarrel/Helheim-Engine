@@ -8,6 +8,7 @@
 #include <Windows.h>
 #include <string>
 #include "ModuleInput.h"
+#include "ModuleAudio.h"
 #include <any>
 
 static bool PDBReplace(const std::string& filename, const std::string& namePDB);
@@ -213,6 +214,7 @@ void ModuleScriptManager::Play()
 void ModuleScriptManager::Stop()
 {
 	mIsPlaying = false;
+	App->GetAudio()->PauseAllChannels();
 }
 
 void ModuleScriptManager::Start()

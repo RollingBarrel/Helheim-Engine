@@ -48,6 +48,9 @@
     <ClInclude Include="Level1AManager.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="MainMenuManager.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -84,6 +87,9 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="Level1AManager.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuManager.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>

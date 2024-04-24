@@ -28,6 +28,7 @@ public:
 	update_status PostUpdate(float dt) override;
 
 	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
+	void PauseAllChannels();
 
 	bool CleanUp();
 
@@ -39,9 +40,6 @@ private:
 	FMOD::Studio::Bank* mMasterBank = nullptr;
 	FMOD::Studio::Bank* mSFXBank = nullptr;
 	FMOD::Studio::Bank* mMusicBank = nullptr;
-
-	FMOD::Studio::EventInstance* mCurrentInstance = nullptr;
-
 
 };
 

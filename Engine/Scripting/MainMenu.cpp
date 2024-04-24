@@ -5,6 +5,9 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "ModuleAudio.h"
+#include "ScriptComponent.h"
+#include "MainMenuManager.h"
 #include "Transform2DComponent.h"
 
 CREATE(MainMenu)
@@ -13,6 +16,7 @@ CREATE(MainMenu)
     SEPARATOR("STATS");
     MEMBER(MemberType::BOOL, mMenuActive);
     MEMBER(MemberType::BOOL, mPauseMenu);
+    MEMBER(MemberType::GAMEOBJECT, mMainMenuManagerHolder);
     END_CREATE;
 }
 
@@ -20,6 +24,11 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
+    if (mMainMenuManagerHolder != nullptr) {
+        ScriptComponent* script = (ScriptComponent*)mMainMenuManagerHolder->GetComponent(ComponentType::SCRIPT);
+        mMainMenuManager = (MainMenuManager*)script->GetScriptInstance();
+    }
+
     if (!mPauseMenu)
     {
         mOption = 2;
@@ -185,6 +194,8 @@ void MainMenu::Loading()
 
         if (Delay(2.0f))
         {
+            delete mMainMenuManager;
+            mMainMenuManager = nullptr;
             ChangeImage("Loading_Screen", false);
             App->GetScene()->Load("Level1.json");
         }
@@ -239,6 +250,7 @@ void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
+        mMainMenuManager->PlaySelectSFX();
         if (!mPauseMenu) 
         {
             if (mOption > 2)
@@ -265,6 +277,7 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
+        mMainMenuManager->PlaySelectSFX();
         if (!mPauseMenu) 
         {
             if (mOption < 5)
@@ -293,10 +306,12 @@ void MainMenu::Controls()
     {
         if (!mReturnPressed) 
         {
+            mMainMenuManager->PlayOKSFX();
             mOptionTmp = mOption;
             mReturnPressed = true;
             mEscPressed = false;
             mNextScreen = true;
+            
         }
     }
 

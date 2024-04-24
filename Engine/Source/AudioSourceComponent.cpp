@@ -22,6 +22,8 @@ AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original,
 AudioSourceComponent::~AudioSourceComponent()
 {
 	Reset();
+	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	mEventInstance->release();
 }
 
 

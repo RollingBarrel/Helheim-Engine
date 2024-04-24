@@ -4,6 +4,7 @@
 
 class NavMeshController;
 class AnimationComponent;
+class AudioSourceComponent;
 class SliderComponent;
 class AudioSourceComponent;
 
@@ -64,9 +65,8 @@ class PlayerController :public Script
         void Death();
         void CheckRoute();
         void UpdateHealth();
-        void CheckDebugOptions();
-
         void UpdateBattleSituation();
+        void CheckDebugOptions();
 
         Weapon mWeapon = Weapon::MELEE;
         PlayerState mCurrentState = PlayerState::IDLE;
@@ -141,7 +141,7 @@ class PlayerController :public Script
         float mStepTimePassed = 0.0f;
         float mStepCoolDown = 1.0f;
 
-        // Footstep
+        // Gunfire
         GameObject* mGunfireAudioHolder = nullptr;
         AudioSourceComponent* mGunfireAudio = nullptr;
 };
