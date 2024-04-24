@@ -79,6 +79,7 @@ public:
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type) const;
 	std::vector<Component*> GetComponents(ComponentType type) const;
+	Component* GetComponentInParent(ComponentType type) const;
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);

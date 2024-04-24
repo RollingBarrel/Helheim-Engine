@@ -127,6 +127,25 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 	return matchingComponents;
 }
 
+Component* GameObject::GetComponentInParent(ComponentType type) const
+{
+	Component* component = nullptr;
+	const GameObject* parent = this;
+	while (parent)
+	{
+		component = parent->GetComponent(type);
+
+		if (component)
+		{
+			return component;
+		}
+		else 
+		{
+			parent = parent->mParent;
+		}
+	}
+}
+
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);

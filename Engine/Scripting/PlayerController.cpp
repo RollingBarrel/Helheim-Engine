@@ -399,22 +399,21 @@ void PlayerController::RangedAttack()
     {
         if (mBullets > 0) 
         {
-            Shoot(mRangeBaseDamage * App->GetGameDt());
-            mBullets-= static_cast<int>(mFireRate * App->GetGameDt());
-            if (mBullets == 0) 
-            {
-                LOG("Out of bullets! Cannot shoot.");
-                Reload();
-            }
-            else 
+            static float startingTime = mFireRate;
+            startingTime -= App->GetGameDt();
+
+            if (startingTime <= 0.0f)
             {
                 mGunfireAudio->PlayOneShot();
-                LOG("Basic shoot fire. Remining Bullets %i", mBullets);
+                startingTime = mFireRate;
+                Shoot(mRangeBaseDamage);
+                mBullets -= static_cast<int>(mFireRate);
+                LOG("Basic shoot fire. Remining Bullets %i", mBullets);             
             }
         }
         else
         {
-            LOG("Out of bullets! Cannot shoot2.");
+            LOG("Out of bullets! Reload.");
             Reload();
         }
     }
@@ -442,7 +441,7 @@ void PlayerController::Shoot(float damage)
             {
                 LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
 
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
                     enemy->TakeDamage(damage);
