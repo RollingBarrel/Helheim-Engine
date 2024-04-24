@@ -6,11 +6,11 @@
 
 enum class EventType 
 {
-    Click,
-    Hover,
-    HoverOff,
-    Press,
-    Count
+    CLICK,
+    HOVER,
+    HOVEROFF,
+    PRESS,
+    COUNT
 };
 
 class ENGINE_API ButtonComponent : public Component
@@ -35,6 +35,6 @@ public:
     void AddEventHandler(EventType eventType, std::function<void()> handler);
 
 private:
-    std::vector<std::function<void()>> mEventHandlers[(int)EventType::Count];
+    std::vector<std::function<void()>> mEventHandlers[(int)EventType::COUNT];
     bool mHovered = false;
 };

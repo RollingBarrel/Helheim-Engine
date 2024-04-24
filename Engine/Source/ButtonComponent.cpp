@@ -16,7 +16,7 @@ ButtonComponent::ButtonComponent(GameObject* owner) : Component(owner, Component
 
 ButtonComponent::ButtonComponent(const ButtonComponent& component, GameObject* owner) : Component(owner, ComponentType::BUTTON)
 {
-    for (int i = 0; i < (int)EventType::Count; ++i)
+    for (int i = 0; i < (int)EventType::COUNT; ++i)
     {
         for (const auto& handler : component.mEventHandlers[i]) 
         {

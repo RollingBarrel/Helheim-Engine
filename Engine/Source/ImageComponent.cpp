@@ -35,9 +35,9 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
 	if (component != nullptr) 
 	{
-		component->AddEventHandler(EventType::Press, std::bind(&ImageComponent::OnPress, this));
-		component->AddEventHandler(EventType::Hover, std::bind(&ImageComponent::OnHover, this));
-		component->AddEventHandler(EventType::Click, std::bind(&ImageComponent::OnClick, this));
+		component->AddEventHandler(EventType::PRESS, std::bind(&ImageComponent::OnPress, this));
+		component->AddEventHandler(EventType::HOVER, std::bind(&ImageComponent::OnHover, this));
+		component->AddEventHandler(EventType::CLICK, std::bind(&ImageComponent::OnClick, this));
 	}*/
 }
 
@@ -86,7 +86,7 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 	}
 
 	return nullptr; // No canvas found on parents
-}
+} 
 
 void ImageComponent::Draw()
 { 
