@@ -138,7 +138,7 @@ class PlayerController :public Script
         bool mIsMoving = false;
         bool mReadyToStep = false;
         float mStepTimePassed = 0.0f;
-        float mStepCoolDown = 1.0f;
+        float mStepCoolDown = 0.5f;
 
         // Gunfire
         GameObject* mGunfireAudioHolder = nullptr;
