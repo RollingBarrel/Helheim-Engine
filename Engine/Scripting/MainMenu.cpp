@@ -20,8 +20,8 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mCreditsMenu);
     MEMBER(MemberType::GAMEOBJECT, mLoadingMenu);
     MEMBER(MemberType::GAMEOBJECT, mSplashScreen);
-    SEPARATOR("BUTTONS");
     MEMBER(MemberType::GAMEOBJECT, mContainerGO);
+    SEPARATOR("BUTTONS");
     MEMBER(MemberType::GAMEOBJECT, mSplashGO);
     MEMBER(MemberType::GAMEOBJECT, mNewGO);
     MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
@@ -51,11 +51,11 @@ void MainMenu::Start()
 
 void MainMenu::Update()
 {
-    //Menu();
-    //Loading();
-    //Options();
-    //Credits();
-    //Controls();
+    if (mLoadlevel == true && Delay(0.1f)) {
+        App->GetScene()->Load("Level1.json");
+    }
+    
+    Controls();
 }
 
 /*void MainMenu::SetMenu(bool active, bool pause)
@@ -237,7 +237,7 @@ void MainMenu::Update()
     }
 }*/
 
-/*bool MainMenu::Delay(float delay)
+bool MainMenu::Delay(float delay)
 {
     mTimePassed += App->GetGameDt();
 
@@ -247,84 +247,59 @@ void MainMenu::Update()
         return true;
     }
     else return false;
-}*/
+}
 
-/*void MainMenu::Controls()
+void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
-        if (!mPauseMenu) 
+        if (mOption > 0)
         {
-            if (mOption > 2)
-            {
-                mOption--;
-            }
-            else
-            {
-                mOption = 5;
-            }
+            mOption--;
         }
         else
         {
-            if (mOption > 1)
-            {
-                mOption--;
-            }
-            else
-            {
-                mOption = 5;
-            }
-        }         
+            mOption = 3;
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
-        if (!mPauseMenu) 
+        if (mOption < 3)
         {
-            if (mOption < 5)
-            {
-                mOption++;
-            }
-            else
-            {
-                mOption = 2;
-            }
+            mOption++;
         }
         else
         {
-            if (mOption < 5)
-            {
-                mOption++;
-            }
-            else
-            {
-                mOption = 1;
-            }
+            mOption = 0;
         }
     }
 
     if ((App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN) || (App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN))
     {
-        if (!mReturnPressed) 
+        
+
+
+        /*if (!mReturnPressed)
         {
             mOptionTmp = mOption;
             mReturnPressed = true;
             mEscPressed = false;
             mNextScreen = true;
-        }
+        }*/
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        if (!mEscPressed) 
+        /*if (!mEscPressed)
         {
             mOption = mOptionTmp;
             mEscPressed = true;
             mReturnPressed = false;
             mPrevScreen = true;
-        }       
+        } */     
     }
-}*/
+}
 
 // MENUS
 
@@ -391,7 +366,7 @@ void MainMenu::OnCreditsButtonClick() {
 
 void MainMenu::OnNewButtonClick() {
     OpenMenu(MENU_TYPE::LOADING);
-    App->GetScene()->Load("Level1.json");
+    mLoadlevel = true;
 }
 
 void MainMenu::OnSplashButtonClick() {

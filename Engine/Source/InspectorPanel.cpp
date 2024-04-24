@@ -1045,11 +1045,11 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 
 	if (selectedRenderMode == 0) 
 	{
-		App->GetUI()->SetScreenSpace(false);
+		canvasComponent->SetScreenSpace(false);
 	}
 	else 
 	{
-		App->GetUI()->SetScreenSpace(true);
+		canvasComponent->SetScreenSpace(true);
 	}
 
 	if (ImGui::BeginTable("transformTable", 4)) 

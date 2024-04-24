@@ -284,7 +284,6 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->UpdateTree();
-		App->GetUI()->FindCanvas(mRoot);
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();

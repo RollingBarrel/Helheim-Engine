@@ -3,6 +3,7 @@
 
 class ResourceTexture;
 class ModuleResource;
+class CanvasComponent;
 
 class ImageComponent : public Component
 {
@@ -58,4 +59,6 @@ private:
 
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;
+
+    CanvasComponent* mCanvas = nullptr;
 };

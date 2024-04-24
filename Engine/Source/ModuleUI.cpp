@@ -30,13 +30,6 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Init() 
 {
-	FindCanvas(App->GetScene()->GetRoot());
-	if (mCanvas == nullptr) 
-	{
-		mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
-		mCanvas->CreateComponent(ComponentType::CANVAS);
-	}
-
 	return true;
 }
 
@@ -44,10 +37,7 @@ update_status ModuleUI::PreUpdate(float dt)
 {
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
-	if (mCanvas) 
-	{
-		DrawWidget(mCanvas);
-	}
+	DrawWidget(App->GetScene()->GetRoot());
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	return UPDATE_CONTINUE;
@@ -70,7 +60,6 @@ update_status ModuleUI::PostUpdate(float dt)
 
 bool ModuleUI::CleanUp() 
 {
-	mCanvas = nullptr;
 	return true;
 }
 
@@ -94,29 +83,6 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			DrawWidget(child);
 		}
 	}
-}
-
-void ModuleUI::FindCanvas(GameObject* gameObject)
-{
-	mCanvas = nullptr;
-	if (gameObject->GetComponent(ComponentType::CANVAS) != nullptr) 
-	{
-		mCanvas = gameObject;
-		return;
-	}
-	else 
-	{
-		for (GameObject* go : gameObject->GetChildren()) 
-		{
-			FindCanvas(go);
-			if (mCanvas != nullptr) 
-			{
-				return;
-			}
-		}
-	}
-
-	mCanvas = nullptr;
 }
 
 void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) 
@@ -187,6 +153,6 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 void ModuleUI::CheckRaycast() 
 {
 	bool eventTriggered = false;
-	CheckRaycastRecursive(mCanvas, eventTriggered);
+	CheckRaycastRecursive(App->GetScene()->GetRoot(), eventTriggered);
 }
 

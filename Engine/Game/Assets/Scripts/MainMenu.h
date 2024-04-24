@@ -52,12 +52,15 @@ private:
     bool mPrevScreen = false;
     bool mReturnPressed = false;
     bool mEscPressed = false;
-    int mOption = 2;  
+    
     int mOptionTmp = mOption;
     float mTimePassed = 0.0f;
     const char* mScreen = nullptr;
     const char* mActualImageName = nullptr;
     const char* mPreviousImageName = nullptr;
+    
+    int mOption = 0;  
+    bool mLoadlevel = false;
 
     GameObject* mMainMenu = nullptr;
     GameObject* mOptionsMenu = nullptr;
