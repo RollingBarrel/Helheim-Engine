@@ -78,6 +78,10 @@ void AnimationComponent::SetLoop(bool loop)
 
 void AnimationComponent::OnStart()
 {
+	if (mGameobjectsInverseMatrices.size() == 0)
+	{
+		LoadAllChildJoints(mOwner);
+	}
 	//mController->Play(mAnimation->GetUID(), true);
 }
 
@@ -132,6 +136,25 @@ void AnimationComponent::SetEndTime(float time)
 	mController->SetEndTime(time);
 }
 
+void AnimationComponent::AddJointNode(GameObject* node)
+{
+	ResourceAnimation::AnimationChannel* animChannel = mAnimation->GetChannel(node->GetName());
+	if (animChannel && !animChannel->invBindMatrix.Equals(float4x4::identity))
+	{
+		mGameobjectsInverseMatrices.push_back(std::pair(node, animChannel->invBindMatrix));
+	}
+}
+
+void AnimationComponent::LoadAllChildJoints(GameObject* currentObject)
+{
+	AddJointNode(currentObject);
+	for (const auto& object : currentObject->GetChildren())
+	{
+		LoadAllChildJoints(object);
+	}
+
+}
+
 void AnimationComponent::UpdatePalette()
 {
 	mPalette.clear();
@@ -165,4 +188,5 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 		animationID = data["AnimationID"].GetInt();
 	}
 	SetAnimation(animationID);
+
 }

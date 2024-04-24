@@ -40,6 +40,9 @@ public:
 	const std::vector<float4x4> GetPalette() const { return mPalette; }
 
 
+	void LoadAllChildJoints(GameObject* currentObject);
+
+
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 
@@ -88,6 +91,7 @@ public:
 		return mClipTimes[mCurrentClip*2+1];
 	}
 private:
+	void AddJointNode(GameObject* node);
 	void UpdatePalette();
 	ResourceAnimation* mAnimation;
 	AnimationController* mController;

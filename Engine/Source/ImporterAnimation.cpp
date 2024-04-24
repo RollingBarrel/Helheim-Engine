@@ -74,10 +74,10 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                             break;
                         }
 
-                        if (found)
-                        {
-                            break;
-                        }
+                    }
+                    if (found)
+                    {
+                        break;
                     }
 
                 }

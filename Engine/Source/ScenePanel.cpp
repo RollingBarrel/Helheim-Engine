@@ -76,7 +76,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			cMesh->SetMaterial(it->second);
 		}
 	}
-
+	/*
 	if (cAnimation) 
 	{
 		if (rModel.mJoints[nodeIt].first == nodeNumber)
@@ -86,6 +86,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			nodeIt++;
 		}
 	}
+	*/
 
 	return gameObject;
 }
