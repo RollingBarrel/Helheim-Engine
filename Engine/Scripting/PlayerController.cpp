@@ -32,13 +32,13 @@ CREATE(PlayerController)
 
     SEPARATOR("MELEE ATTACK");
     MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
-    MEMBER(MemberType::FLOAT, mFireRate);
     MEMBER(MemberType::FLOAT, mMinMeleeChargeTime);
     MEMBER(MemberType::FLOAT, mMaxMeleeChargeTime);
     MEMBER(MemberType::FLOAT, mMeleeChargeAttackMultiplier);
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
+    MEMBER(MemberType::FLOAT, mFireRate);
     MEMBER(MemberType::INT, mAmmoCapacity);
     MEMBER(MemberType::FLOAT, mMinRangeChargeTime);
     MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);

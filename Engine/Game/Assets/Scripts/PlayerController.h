@@ -67,7 +67,7 @@ class PlayerController :public Script
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
-        Weapon mWeapon = Weapon::MELEE;
+        Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
