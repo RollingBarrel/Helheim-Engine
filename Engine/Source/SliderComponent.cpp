@@ -58,6 +58,7 @@ void SliderComponent::SetFillPercent(float fillPercent)
 {
 	this->mFillPercent = fillPercent;
 
+	if (!mCanvas) return;
 	if (mCanvas->GetScreenSpace()) 
 	{
 		mFillTransform2D->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
