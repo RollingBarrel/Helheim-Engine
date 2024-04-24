@@ -13,6 +13,7 @@ namespace tinygltf
 {
     class Model;
     struct Animation;
+    struct AnimationChannel;
 }
 
 namespace Importer 

@@ -31,102 +31,6 @@
     <ClCompile Include="ConsolePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp">
-      <Filter>Dependencies\MathGeoLib\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathOps.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.cpp">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
-      <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
-    </ClCompile>
     <ClCompile Include="ImporterTexture.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
@@ -208,57 +112,6 @@
     <ClCompile Include="TimerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Archive.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="ImporterNavMesh.cpp">
-      <Filter>Importers</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\Detour\Include\DetourAlloc.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\Detour\Include\DetourAssert.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\Detour\Include\DetourCommon.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\Detour\Include\DetourNavMesh.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshBuilder.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshQuery.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\Detour\Include\DetourNode.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathQueue.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCache.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.cpp">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClCompile>
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp">
       <Filter>Dependencies\NavigationAI\Recast</Filter>
     </ClCompile>
@@ -313,9 +166,6 @@
     <ClCompile Include="TagsManagerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="AgentProfile.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleUI.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -337,12 +187,8 @@
     <ClCompile Include="ImporterScript.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp">
       <Filter>Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="NavMeshController.cpp">
-      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Modules</Filter>
@@ -355,17 +201,11 @@
     </ClCompile>
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
-    <ClCompile Include="FmodUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEvent.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleDetourNavigation.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Script.cpp">
-      <Filter>Utils\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
       <Filter>Utils\Scripting</Filter>
@@ -373,13 +213,10 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Utils\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="ImageComponent.cpp">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonComponent.cpp">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClCompile>
     <ClCompile Include="HelheimEvent.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMeshController.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
@@ -428,186 +265,6 @@
     </ClInclude>
     <ClInclude Include="HierarchyPanel.h">
       <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h">
-      <Filter>Dependencies\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathGeoLib.h">
-      <Filter>Dependencies\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathGeoLibFwd.h">
-      <Filter>Dependencies\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h">
-      <Filter>Dependencies\MathGeoLib\Time</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h">
-      <Filter>Dependencies\MathGeoLib\Algorithm</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB2D.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeometryAll.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeomType.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\HitInfo.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\PBVolume.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.h">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\assume.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Complex.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\CoordinateAxisConvention.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\FixedPoint.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4_neon.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4_sse.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4_neon.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4_sse.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\FloatCmp.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathAll.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathConstants.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathNamespace.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathTypes.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MatrixProxy.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\myassert.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\quat_simd.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Rect.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Reinterpret.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\sse_mathfun.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h">
       <Filter>Dependencies\MathGeoLib\Geometry</Filter>
@@ -781,63 +438,6 @@
     <ClInclude Include="TimerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="Archive.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="ImporterNavMesh.h">
-      <Filter>Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourAlloc.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourAssert.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourCommon.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourMath.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourNavMesh.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshBuilder.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshQuery.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourNode.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathQueue.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Detour\Include\DetourStatus.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCache.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.h">
-      <Filter>Dependencies\NavigationAI\Detour</Filter>
-    </ClInclude>
     <ClInclude Include="Dependencies\Recast\Include\Recast.h">
       <Filter>Dependencies\NavigationAI\Recast</Filter>
     </ClInclude>
@@ -871,9 +471,6 @@
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="AgentProfile.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleUI.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -898,12 +495,8 @@
     <ClInclude Include="ImporterScript.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationController.h" />
     <ClInclude Include="NavMeshControllerPanel.h">
       <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="NavMeshController.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="EditorControlPanel.h">
       <Filter>Panels</Filter>
@@ -919,43 +512,6 @@
     </ClInclude>
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ModuleEvent.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp_effects.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_errors.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_output.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.hpp">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_codec.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_common.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.hpp">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio_common.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="FmodUtils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageComponent.h" />
     <ClInclude Include="ModuleDetourNavigation.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -974,158 +530,17 @@
     <ClInclude Include="ImageComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ButtonComponent.h">
-      <Filter>GameObjects\Components\UI</Filter>
-    </ClInclude>
     <ClInclude Include="HelheimEvent.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftadvanc.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbbox.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbdf.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbitmap.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbzip2.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcache.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftchapters.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcid.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcolor.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftdriver.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrdef.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrors.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftfntfmt.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgasp.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftglyph.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgxval.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgzip.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftimage.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftincrem.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlcdfil.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlist.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlogging.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlzw.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmac.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmm.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmodapi.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmoderr.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftotval.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftoutln.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftparams.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftpfr.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftrender.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsizes.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsnames.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftstroke.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsynth.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsystem.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fttrigon.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fttypes.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftwinfnt.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\otsvg.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\t1tables.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ttnameid.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\tttables.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\freetype\tttags.h">
-      <Filter>Dependencies\Freetype</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Freetype\include\ft2build.h">
-      <Filter>Dependencies\Freetype</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ImporterAnimation.h">
       <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMeshController.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1140,24 +555,6 @@
     </Filter>
     <Filter Include="Panels">
       <UniqueIdentifier>{484d2c23-7ed4-47b5-8208-e922e3a7d9c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib">
-      <UniqueIdentifier>{9aff8f19-ea43-4183-9d45-44520e2c2829}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Algorithm">
-      <UniqueIdentifier>{f52b5cf8-aed7-4250-89b6-8dadbc377122}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Geometry">
-      <UniqueIdentifier>{3cdca794-57ee-42b6-8553-0547fb08db4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Math">
-      <UniqueIdentifier>{c2a95d56-2579-4d2d-a3c3-97dd3a9e391b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Time">
-      <UniqueIdentifier>{ab0740ec-ecc2-4cbc-a287-a3b1ba9b4f79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\MathGeoLib\Algorithm\Random">
-      <UniqueIdentifier>{dfad91e7-ed65-4749-add2-d1bfd98a511e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Importers">
       <UniqueIdentifier>{59a2e3e5-812b-45f5-9a1a-5096740588ea}</UniqueIdentifier>
@@ -1183,9 +580,6 @@
     <Filter Include="Dependencies\NavigationAI">
       <UniqueIdentifier>{579d3554-19f7-47db-8abf-7b98913d0ca2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dependencies\NavigationAI\Detour">
-      <UniqueIdentifier>{ae264cdc-3277-4937-a9a5-3ef4ddf01867}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dependencies\NavigationAI\Recast">
       <UniqueIdentifier>{18339c62-ad80-452d-af04-8a8366cd7c9c}</UniqueIdentifier>
     </Filter>
@@ -1198,46 +592,8 @@
     <Filter Include="Dependencies\ImGuiFileDialog">
       <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dependencies\FMOD">
-      <UniqueIdentifier>{50e594d7-4ca7-4694-9414-b607c6890154}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{26a5a266-2da4-4d41-9fe5-71ecad35b808}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dependencies\Freetype">
-      <UniqueIdentifier>{359a85a3-024a-4aca-b6ad-d001997a1e5a}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
-      <Filter>Dependencies\MathGeoLib\Math</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_AVX.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
-      <Filter>Dependencies\MathGeoLib\Geometry</Filter>
-    </None>
-    <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs">
-      <Filter>Dependencies\FMOD</Filter>
-    </None>
-    <None Include="Dependencies\FMOD\api\core\inc\fmod.cs">
-      <Filter>Dependencies\FMOD</Filter>
-    </None>
-    <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs">
-      <Filter>Dependencies\FMOD</Filter>
-    </None>
-    <None Include="Dependencies\FMOD\api\studio\inc\fmod_studio.cs">
-      <Filter>Dependencies\FMOD</Filter>
-    </None>
   </ItemGroup>
 </Project>

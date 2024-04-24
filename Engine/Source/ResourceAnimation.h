@@ -2,11 +2,17 @@
 
 #include <memory> // Include the <memory> header for std::unique_ptr
 #include <unordered_map>
-#include "tiny_gltf.h"
 #include "Quat.h" // Include the headers for Quat and float3 if they are custom types
 #include "float3.h"
 #include "Resource.h"
 #include <string>
+
+namespace tinygltf
+{
+    class Model;
+    struct Animation;
+    struct AnimationChannel;
+}
 
 class ResourceAnimation : public Resource
 {
@@ -33,7 +39,7 @@ public:
 
     };
 
-    void AddChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation& ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
+    
     AnimationChannel* GetChannel(const std::string& name) const;
    
     const std::unordered_map<std::string, AnimationChannel*>& GetChannels() { return mChannels; }

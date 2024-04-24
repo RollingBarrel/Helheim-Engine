@@ -1,261 +1,174 @@
-#include "SaveLoadModel.h"
-#include "ResourceModel.h"
+#include "SaveLoadAnimation.h"
+#include "ResourceAnimation.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
 
-#include "Math/float3.h"
-#include "Math/float4x4.h"
-#include "Math/Quat.h"
-
-void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
+void Importer::Animation::Save(ResourceAnimation* ourAnimation)
 {
+    unsigned int header[2] = { (ourAnimation->GetChannels().size()), ourAnimation->GetDuration() };
+
+    unsigned int size = sizeof(header);
+    for (const auto& channel : ourAnimation->GetChannels()) {
+        size += sizeof(unsigned int) + channel.first.length() + 1;
+
+        size += sizeof(bool);
+        if (channel.second->hasTranslation) {
+            size += sizeof(unsigned int);
+            size += sizeof(float) * 3 * channel.second->numPositions;
+            size += sizeof(float) * channel.second->numPositions;
+        }
+        size += sizeof(bool);
+        if (channel.second->hasRotation) {
+
+            size += sizeof(unsigned int);
+            size += sizeof(float) * 4 * channel.second->numRotations;
+            size += sizeof(float) * channel.second->numRotations;
+        }
+    }
+
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
 
-    unsigned int nodesSize = rModel->modelNodes.size();
-    unsigned int bytes = sizeof(int);
-    memcpy(cursor, &nodesSize, bytes);
+    unsigned int bytes = sizeof(header);
+    memcpy(cursor, header, bytes);
     cursor += bytes;
 
-    for (int i = 0; i < rModel->modelNodes.size(); ++i)
-    {
-        ModelNode currentNode = rModel->modelNodes[i];
-        //Name
-        bytes = currentNode.mName.length() + 1;
-        memcpy(cursor, currentNode.mName.c_str(), bytes);
-        cursor += bytes;
+    for (const auto& channel : ourAnimation->GetChannels()) {
+
+        unsigned int nodeNameSize = channel.first.length() + 1;
+        memcpy(cursor, &nodeNameSize, sizeof(unsigned int));
+        cursor += sizeof(unsigned int);
+        memcpy(cursor, channel.first.data(), nodeNameSize);
+        cursor += nodeNameSize;
 
         bytes = sizeof(bool);
-        memcpy(cursor, &currentNode.mHasTransform, bytes);
+        memcpy(cursor, &channel.second->hasTranslation, bytes);
         cursor += bytes;
 
-        if (currentNode.mHasTransform)
-        {
-            //Translation
-            bytes = sizeof(float) * 3;
-            memcpy(cursor, currentNode.mTranslation.ptr(), bytes);
-            cursor += bytes;
-            //Rotation
-            bytes = sizeof(float) * 4;
-            memcpy(cursor, currentNode.mRotation.ptr(), bytes);
-            cursor += bytes;
-            //Scale
-            bytes = sizeof(float) * 3;
-            memcpy(cursor, currentNode.mScale.ptr(), bytes);
-            cursor += bytes;
-        }
-
-        //Parent Index
-        bytes = sizeof(int);
-        memcpy(cursor, &currentNode.mParentIndex, bytes);
-        cursor += bytes;
-        //MeshId
-        bytes = sizeof(int);
-        memcpy(cursor, &currentNode.mMeshId, bytes);
-        cursor += bytes;
-        //CameraId
-        bytes = sizeof(int);
-        memcpy(cursor, &currentNode.mCameraId, bytes);
-        cursor += bytes;
-        //SkinId
-        bytes = sizeof(int);
-        memcpy(cursor, &currentNode.mSkinId, bytes);
-        cursor += bytes;
-
-        if (currentNode.mMeshId > -1)
-        {
-            //Library Uids
-            unsigned int uidsSize = currentNode.mUids.size();
+        if (channel.second->hasTranslation) {
             bytes = sizeof(unsigned int);
-            memcpy(cursor, &uidsSize, bytes);
+            memcpy(cursor, &channel.second->numPositions, bytes);
             cursor += bytes;
-            for (unsigned int i = 0; i < uidsSize; ++i)
-            {
-                bytes = sizeof(unsigned int);
-                memcpy(cursor, &currentNode.mUids[i].first, bytes);
-                cursor += bytes;
-                bytes = sizeof(unsigned int);
-                memcpy(cursor, &currentNode.mUids[i].second, bytes);
-                cursor += bytes;
-            }
+            bytes = sizeof(float) * channel.second->numPositions;
+            memcpy(cursor, channel.second->posTimeStamps.get(), bytes);
+            cursor += bytes;
+            bytes = sizeof(float) * 3 * channel.second->numPositions;
+            memcpy(cursor, channel.second->positions.get(), bytes);
+            cursor += bytes;
+        }
+
+        bytes = sizeof(bool);
+        memcpy(cursor, &channel.second->hasRotation, bytes);
+        cursor += bytes;
+        if (channel.second->hasRotation) {
+            bytes = sizeof(unsigned int);
+            memcpy(cursor, &channel.second->numRotations, bytes);
+            cursor += bytes;
+            bytes = sizeof(float) * channel.second->numRotations;
+            memcpy(cursor, channel.second->rotTimeStamps.get(), bytes);
+            cursor += bytes;
+            bytes = sizeof(float) * 4 * channel.second->numRotations;
+            memcpy(cursor, channel.second->rotations.get(), bytes);
+            cursor += bytes;
         }
     }
-    //Animation Uids
-    unsigned int uidsSize = rModel->mAnimationUids.size();
-    bytes = sizeof(unsigned int);
-    memcpy(cursor, &uidsSize, bytes);
-    cursor += bytes;
-    for (unsigned int i = 0; i < uidsSize; ++i)
-    {
-        bytes = sizeof(unsigned int);
-        memcpy(cursor, &rModel->mAnimationUids[i], bytes);
-        cursor += bytes;
-    }
 
-    //Joints
-    unsigned int jointsSize = rModel->mJoints.size();
-    bytes = sizeof(unsigned int);
-    memcpy(cursor, &jointsSize, bytes);
-    cursor += bytes;
-
-    for (int i = 0; i < jointsSize; ++i)
-    {
-        bytes = sizeof(unsigned int);
-        memcpy(cursor, &rModel->mJoints[i].first, bytes);
-        cursor += bytes;
-
-        bytes = sizeof(float) * 16;
-        //unsigned int inverse = rModel->mJoints[i]->mJoints.size();
-        memcpy(cursor, &rModel->mJoints[i].second, bytes);
-        cursor += bytes;
-    }
-
-    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
+    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
+    LOG("Animation:");
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
     delete[] libraryPath;
     delete[] fileBuffer;
 }
 
-ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
+ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int uid)
 {
     char* fileBuffer = nullptr;
-    ResourceModel* rModel = new ResourceModel(uid);
+    ResourceAnimation* ourAnimation = nullptr;
 
-    if (App->GetFileSystem()->Load(fileName, &fileBuffer))
+    if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
+        ourAnimation = new ResourceAnimation(uid, "");
+
+        // Load Header
         char* cursor = fileBuffer;
-
-        //Size of Nodes Vector
-        unsigned int nodesSize = 0;
-        unsigned int bytes = sizeof(int);
-        memcpy(&nodesSize, cursor, bytes);
+        unsigned int header[2];
+        unsigned int bytes = sizeof(header);
+        memcpy(header, cursor, bytes);
         cursor += bytes;
+        unsigned int numChannels = header[0];
+        ourAnimation->mDuration = header[1];
 
-        rModel->modelNodes.reserve(nodesSize);
-
-        //Nodes Data
-        for (unsigned int i = 0; i < nodesSize; ++i)
+        // Load Channels
+        for (unsigned int i = 0; i < numChannels; ++i)
         {
-            ModelNode node;
+            unsigned int nodeNameSize = 0;
+            memcpy(&nodeNameSize, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
 
-            unsigned int count = 0;
-            while (*(cursor)++ != '\0')
-            {
-                count++;
-            }
-            count++;
-            cursor -= count;
-            char* name = new char[count];
-            char* ptr = name;
-            while (count--)
-            {
-                *ptr++ = *cursor++;
-            }
+            char* name = new char[nodeNameSize];
+            memcpy(name, cursor, nodeNameSize);
+            cursor += nodeNameSize;
 
-            node.mName = name;
+            ResourceAnimation::AnimationChannel* channel = new ResourceAnimation::AnimationChannel;
+
+            float* posTimeStamps = nullptr;
+            float3* positions = nullptr;
+            float* rotTimeStamps = nullptr;
+            Quat* rotations = nullptr;
 
             bytes = sizeof(bool);
-            memcpy(&node.mHasTransform, cursor, bytes);
+            memcpy(&channel->hasTranslation, cursor, bytes);
             cursor += bytes;
 
-            if (node.mHasTransform)
+            if (channel->hasTranslation)
             {
-                bytes = sizeof(float) * 3;
-                memcpy(node.mTranslation.ptr(), cursor, bytes);
-                cursor += bytes;
-
-                bytes = sizeof(float) * 4;
-                memcpy(node.mRotation.ptr(), cursor, bytes);
-                cursor += bytes;
-
-                bytes = sizeof(float) * 3;
-                memcpy(node.mScale.ptr(), cursor, bytes);
-                cursor += bytes;
-            }
-            else
-            {
-                node.mTranslation = float3::zero;
-                node.mRotation = Quat::identity;
-                node.mScale = float3::one;
-            }
-
-            bytes = sizeof(int);
-            memcpy(&node.mParentIndex, cursor, bytes);
-            cursor += bytes;
-
-            bytes = sizeof(int);
-            memcpy(&node.mMeshId, cursor, bytes);
-            cursor += bytes;
-
-            bytes = sizeof(int);
-            memcpy(&node.mCameraId, cursor, bytes);
-            cursor += bytes;
-
-            bytes = sizeof(int);
-            memcpy(&node.mSkinId, cursor, bytes);
-            cursor += bytes;
-
-            if (node.mMeshId > -1)
-            {
-                unsigned int meshId = 0;
-                unsigned int materialId = 0;
-                //Library Uids
-                unsigned int uidsSize = 0;
                 bytes = sizeof(unsigned int);
-                memcpy(&uidsSize, cursor, bytes);
+                memcpy(&channel->numPositions, cursor, bytes);
                 cursor += bytes;
-                for (unsigned int i = 0; i < uidsSize; ++i)
-                {
-                    bytes = sizeof(unsigned int);
-                    memcpy(&meshId, cursor, bytes);
-                    cursor += bytes;
-                    bytes = sizeof(unsigned int);
-                    memcpy(&materialId, cursor, bytes);
-                    cursor += bytes;
 
-                    node.mUids.push_back({ meshId, materialId });
-                }
+                bytes = sizeof(float) * channel->numPositions;
+                posTimeStamps = new float[channel->numPositions];
+                memcpy(posTimeStamps, cursor, bytes);
+                cursor += bytes;
+                channel->posTimeStamps.reset(posTimeStamps);
+
+                bytes = sizeof(float) * 3 * channel->numPositions;
+                positions = new float3[channel->numPositions];
+                memcpy(positions, cursor, bytes);
+                cursor += bytes;
+                channel->positions.reset(positions);
             }
 
-            rModel->modelNodes.push_back(node);
-        }
-
-        unsigned int uidsSize = 0;
-        bytes = sizeof(unsigned int);
-        memcpy(&uidsSize, cursor, bytes);
-        cursor += bytes;
-        for (unsigned int i = 0; i < uidsSize; ++i)
-        {
-            unsigned int animationUID = 0;
-            bytes = sizeof(unsigned int);
-            memcpy(&animationUID, cursor, bytes);
+            bytes = sizeof(bool);
+            memcpy(&channel->hasRotation, cursor, bytes);
             cursor += bytes;
 
-            rModel->mAnimationUids.push_back({ animationUID });
-        }
+            if (channel->hasRotation)
+            {
+                bytes = sizeof(unsigned int);
+                memcpy(&channel->numRotations, cursor, bytes);
+                cursor += bytes;
 
-        unsigned int jointsSize = 0;
-        bytes = sizeof(unsigned int);
-        memcpy(&jointsSize, cursor, bytes);
-        cursor += bytes;
+                bytes = sizeof(float) * channel->numRotations;
+                rotTimeStamps = new float[channel->numRotations];
+                memcpy(rotTimeStamps, cursor, bytes);
+                cursor += bytes;
+                channel->rotTimeStamps.reset(rotTimeStamps);
 
-        rModel->mJoints.resize(jointsSize);
+                bytes = sizeof(float) * 4 * channel->numRotations;
+                rotations = new Quat[channel->numRotations];
+                memcpy(rotations, cursor, bytes);
+                cursor += bytes;
+                channel->rotations.reset(rotations);
+            }
 
-        for (int i = 0; i < jointsSize; ++i)
-        {
-            int indexJoint = 0;
-            bytes = sizeof(unsigned int);
-            memcpy(&rModel->mJoints[i].first, cursor, bytes);
-            cursor += bytes;
-
-            bytes = sizeof(float4x4);
-            memcpy(&rModel->mJoints[i].second, cursor, bytes);
-            cursor += bytes;
+            ourAnimation->mChannels[name] = channel;
+            delete[] name;
         }
 
         delete[] fileBuffer;
     }
 
-    return rModel;
+    return ourAnimation;
 }

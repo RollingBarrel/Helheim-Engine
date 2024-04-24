@@ -1,16 +1,13 @@
-#include "ImporterNavMesh.h"
-#include <vector>
+#include "SaveLoadNavMesh.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
-void Importer::NavMesh::Import()
-{
-	//NOT NEEDED 
-}
+#include "ResourceNavMesh.h"
+
 
 void Importer::NavMesh::Save(const ResourceNavMesh& navMesh)
 {
 
-	int header[3]={ navMesh.numberOfVertices, navMesh.maxPolygons, navMesh.verticesPerPolygon };
+	int header[3] = { navMesh.numberOfVertices, navMesh.maxPolygons, navMesh.verticesPerPolygon };
 	float cellData[2] = { navMesh.cellSize,navMesh.cellHeight };
 	unsigned int totalVerticesSize = sizeof(unsigned short) * navMesh.numberOfVertices;
 	unsigned int totalPoligonsSize = sizeof(unsigned short) * navMesh.maxPolygons * 2 * navMesh.verticesPerPolygon;
@@ -18,9 +15,9 @@ void Importer::NavMesh::Save(const ResourceNavMesh& navMesh)
 	unsigned int polygonFlagsSize = sizeof(unsigned short) * navMesh.maxPolygons;
 	unsigned int polygonAreaIdSize = sizeof(unsigned short) * navMesh.maxPolygons;
 
-	unsigned int size = sizeof(header) + sizeof(cellData) + totalVerticesSize + 
-		totalPoligonsSize + polygonRegionIdSize + polygonFlagsSize + polygonAreaIdSize + 
-		sizeof(navMesh.boundMin)+ sizeof(navMesh.boundMax) + sizeof(navMesh.borderSize) + sizeof(navMesh.maxEdgeError);
+	unsigned int size = sizeof(header) + sizeof(cellData) + totalVerticesSize +
+		totalPoligonsSize + polygonRegionIdSize + polygonFlagsSize + polygonAreaIdSize +
+		sizeof(navMesh.boundMin) + sizeof(navMesh.boundMax) + sizeof(navMesh.borderSize) + sizeof(navMesh.maxEdgeError);
 
 	char* fileBuffer = new char[size];
 	char* cursor = fileBuffer;
@@ -31,13 +28,13 @@ void Importer::NavMesh::Save(const ResourceNavMesh& navMesh)
 	cursor += bytes;
 
 	//Save Celldata
-	bytes= sizeof(cellData);
+	bytes = sizeof(cellData);
 	memcpy(cursor, cellData, bytes);
 	cursor += bytes;
 
 	//Save Vertices
 	bytes = totalVerticesSize;
-	memcpy(cursor,&navMesh.meshVertices, bytes);
+	memcpy(cursor, &navMesh.meshVertices, bytes);
 	cursor += bytes;
 
 	//Save Polygons

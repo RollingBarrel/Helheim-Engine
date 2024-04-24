@@ -3,7 +3,6 @@
 #include "Panel.h"
 #define SCENEPANEL "Scene##"
 
-#include "imgui.h"
 #include "Math/float2.h"
 
 class ScenePanel : public Panel

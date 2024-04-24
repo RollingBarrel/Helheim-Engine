@@ -102,7 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\Freetype\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -143,7 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\Freetype\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -163,27 +163,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
-    <ClCompile Include="AnimationController.cpp" />
-    <ClCompile Include="AgentProfile.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp" />
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.cpp" />
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourPathQueue.cpp" />
-    <ClCompile Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.cpp" />
-    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCache.cpp" />
-    <ClCompile Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.cpp" />
-    <ClCompile Include="Dependencies\Detour\Include\DetourAlloc.cpp" />
-    <ClCompile Include="Dependencies\Detour\Include\DetourAssert.cpp" />
-    <ClCompile Include="Dependencies\Detour\Include\DetourCommon.cpp" />
-    <ClCompile Include="Dependencies\Detour\Include\DetourNavMesh.cpp" />
-    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshBuilder.cpp" />
-    <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshQuery.cpp" />
-    <ClCompile Include="Dependencies\Detour\Include\DetourNode.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui.cpp" />
@@ -197,38 +180,6 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\MathOps.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
-    <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
     <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c" />
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c" />
     <ClCompile Include="Dependencies\Recast\Include\Recast.cpp" />
@@ -243,12 +194,9 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
     <ClCompile Include="EditorControlPanel.cpp" />
-    <ClCompile Include="FmodUtils.cpp" />
-    <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
-    <ClCompile Include="ImporterNavMesh.cpp" />
     <ClCompile Include="ImporterScript.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
@@ -256,8 +204,8 @@
     <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
-    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
@@ -283,95 +231,17 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
-    <ClCompile Include="Script.cpp" />
     <ClCompile Include="TagsManagerPanel.cpp" />
     <ClCompile Include="TimerPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
-    <ClInclude Include="AnimationController.h" />
-    <ClInclude Include="AgentProfile.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
     <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
     <ClInclude Include="DebugPanel.h" />
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h" />
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.h" />
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.h" />
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathCorridor.h" />
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourPathQueue.h" />
-    <ClInclude Include="Dependencies\DetourCrowd\Include\DetourProximityGrid.h" />
-    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCache.h" />
-    <ClInclude Include="Dependencies\DetourTileCache\Include\DetourTileCacheBuilder.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourAlloc.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourAssert.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourCommon.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourMath.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourNavMesh.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshBuilder.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourNavMeshQuery.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourNode.h" />
-    <ClInclude Include="Dependencies\Detour\Include\DetourStatus.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod.hpp" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_codec.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_common.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_dsp_effects.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_errors.h" />
-    <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_output.h" />
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.h" />
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.hpp" />
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio_common.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftadvanc.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbbox.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbdf.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbitmap.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftbzip2.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcache.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftchapters.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcid.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftcolor.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftdriver.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrdef.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fterrors.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftfntfmt.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgasp.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftglyph.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgxval.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftgzip.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftimage.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftincrem.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlcdfil.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlist.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlogging.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftlzw.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmac.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmm.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmodapi.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftmoderr.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftotval.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftoutln.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftparams.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftpfr.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftrender.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsizes.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsnames.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftstroke.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsynth.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftsystem.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fttrigon.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\fttypes.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ftwinfnt.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\otsvg.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\t1tables.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\ttnameid.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\tttables.h" />
-    <ClInclude Include="Dependencies\Freetype\include\freetype\tttags.h" />
-    <ClInclude Include="Dependencies\Freetype\include\ft2build.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_sdl2.h" />
@@ -388,66 +258,6 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB2D.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Circle.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cone.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Cylinder.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Frustum.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeometryAll.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\GeomType.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\HitInfo.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Line.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\LineSegment.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\OBB.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\PBVolume.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Plane.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polygon.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Polyhedron.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Ray.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Sphere.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Triangle.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathBuildConfig.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathGeoLib.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\MathGeoLibFwd.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\assume.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\BitOps.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Complex.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\CoordinateAxisConvention.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\FixedPoint.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float2.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x3.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float3x4.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4_neon.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4x4_sse.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4_neon.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\float4_sse.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\FloatCmp.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathAll.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathConstants.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathFunc.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathLog.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathNamespace.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MathTypes.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\MatrixProxy.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\myassert.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Polynomial.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Quat.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\quat_simd.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Rect.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\Reinterpret.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\sse_mathfun.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h" />
-    <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
     <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h" />
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h" />
     <ClInclude Include="Dependencies\Optick\include\optick.config.h" />
@@ -460,22 +270,19 @@
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\tiny_gltf.h" />
     <ClInclude Include="EditorControlPanel.h" />
-    <ClInclude Include="FmodUtils.h" />
-    <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="ModuleEvent.h" />
+    <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
-    <ClInclude Include="ImporterNavMesh.h" />
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="ModuleDetourNavigation.h" />
     <ClInclude Include="ModuleAudio.h" />
-    <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshControllerPanel.h" />
     <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
@@ -487,7 +294,6 @@
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="ModuleScriptManager.h" />
-    <ClInclude Include="Script.h" />
     <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="OptickAdapter.h" />
@@ -495,16 +301,6 @@
     <ClInclude Include="TimerPanel.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\FMOD\api\core\inc\fmod.cs" />
-    <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs" />
-    <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs" />
-    <None Include="Dependencies\FMOD\api\studio\inc\fmod_studio.cs" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\KDTree.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\QuadTree.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
-    <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl" />
     <ClInclude Include="ModuleResource.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleWindow.h" />

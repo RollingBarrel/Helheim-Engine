@@ -22,6 +22,8 @@
 #include "SaveLoadMesh.h"
 #include "SaveLoadMaterial.h"
 #include "SaveLoadAnimation.h"
+#include "SaveLoadScript.h"
+#include "SaveLoadTexture.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
