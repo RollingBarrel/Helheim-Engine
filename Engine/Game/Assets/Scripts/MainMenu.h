@@ -42,6 +42,15 @@ private:
     void OnNewButtonClick();
     void OnSplashButtonClick();
 
+    void OnQuitButtonHover();
+    void OnOptionsButtonHover();
+    void OnCreditsButtonHover();
+    void OnNewButtonHover();
+    void OnQuitButtonHoverOff();
+    void OnOptionsButtonHoverOff();
+    void OnCreditsButtonHoverOff();
+    void OnNewButtonHoverOff();
+
     bool mMenuActive = true;
     bool mPauseMenu = false;
 

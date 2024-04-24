@@ -5,7 +5,7 @@ class ResourceTexture;
 class ModuleResource;
 class CanvasComponent;
 
-class ImageComponent : public Component
+class ENGINE_API ImageComponent : public Component
 {
 public:
     ImageComponent(GameObject* owner);

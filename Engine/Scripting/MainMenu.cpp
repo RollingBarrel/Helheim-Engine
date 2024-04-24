@@ -7,6 +7,9 @@
 #include "Keys.h"
 #include "Transform2DComponent.h"
 #include "ButtonComponent.h"
+#include "ImageComponent.h"
+#include "Resource.h"
+#include "ModuleResource.h"
 
 CREATE(MainMenu)
 {
@@ -45,6 +48,16 @@ void MainMenu::Start()
     mOptionsButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnOptionsButtonClick, this));
     mCreditsButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnCreditsButtonClick, this));
     mQuitButton->AddEventHandler(EventType::Click, std::bind(&MainMenu::OnQuitButtonClick, this));
+
+    mNewButton->AddEventHandler(EventType::Hover, std::bind(&MainMenu::OnNewButtonHover, this));
+    mOptionsButton->AddEventHandler(EventType::Hover, std::bind(&MainMenu::OnOptionsButtonHover, this));
+    mCreditsButton->AddEventHandler(EventType::Hover, std::bind(&MainMenu::OnCreditsButtonHover, this));
+    mQuitButton->AddEventHandler(EventType::Hover, std::bind(&MainMenu::OnQuitButtonHover, this));
+
+    mNewButton->AddEventHandler(EventType::HoverOff, std::bind(&MainMenu::OnNewButtonHoverOff, this));
+    mOptionsButton->AddEventHandler(EventType::HoverOff, std::bind(&MainMenu::OnOptionsButtonHoverOff, this));
+    mCreditsButton->AddEventHandler(EventType::HoverOff, std::bind(&MainMenu::OnCreditsButtonHoverOff, this));
+    mQuitButton->AddEventHandler(EventType::HoverOff, std::bind(&MainMenu::OnQuitButtonHoverOff, this));
 
     OpenMenu(MENU_TYPE::SPLASH);
 }
@@ -261,6 +274,7 @@ void MainMenu::Controls()
         {
             mOption = 3;
         }
+        
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
@@ -348,6 +362,8 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
     }
 }
 
+// CLICKS
+
 void MainMenu::OnMainButtonClick() {
     OpenMenu(MENU_TYPE::MAIN);
 }
@@ -371,4 +387,54 @@ void MainMenu::OnNewButtonClick() {
 
 void MainMenu::OnSplashButtonClick() {
     OpenMenu(MENU_TYPE::MAIN);
+}
+
+// SELECTED
+
+void MainMenu::OnQuitButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 3;
+}
+
+void MainMenu::OnQuitButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
+}
+
+void MainMenu::OnOptionsButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 1;
+}
+
+void MainMenu::OnOptionsButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
+}
+
+void MainMenu::OnCreditsButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 2;
+}
+
+void MainMenu::OnCreditsButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
+}
+
+void MainMenu::OnNewButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 0;
+}
+
+void MainMenu::OnNewButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
 }
