@@ -1508,8 +1508,6 @@
     <None Include="..\Game\Assets\Shaders\skybox.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\ui.fs" />
-    <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs">
       <Filter>Dependencies\FMOD</Filter>
     </None>
@@ -1526,6 +1524,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\ui.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\ui.fs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\skinning.comp">
