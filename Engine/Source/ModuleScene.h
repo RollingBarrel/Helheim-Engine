@@ -38,10 +38,12 @@ public:
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 	bool GetShouldRenderQuadtree() const { return mDrawQuadtree; }
-	void SetShouldRenderQuadtree(bool a) { mDrawQuadtree = a; }
+	void SetShouldRenderQuadtree(bool drawQuadtree) { mDrawQuadtree = drawQuadtree; }
+	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
+	void SetShouldUpdateQuadtree(bool updateQuadtree) { mShouldUpdateQuadtree = updateQuadtree; }
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
-	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
+	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
 	void ResetFrustumCulling(GameObject* obj);
 
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagID);
@@ -79,6 +81,7 @@ private:
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
 
 	Quadtree* mQuadtreeRoot = nullptr;;
+	bool mShouldUpdateQuadtree = false;
 	bool mDrawQuadtree = false;
 	bool mApplyculling = false;
 
