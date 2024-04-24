@@ -10,7 +10,7 @@ class EnemyExplosive : public Enemy
 		~EnemyExplosive() {}
 		void Start() override;
 		void Update() override;
-		void Hit(float damage) override;
+		void TakeDamage(float damage) override;
 
 	private:
 		enum class EnemyState {

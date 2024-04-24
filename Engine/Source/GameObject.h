@@ -120,7 +120,7 @@ private:
 
 	bool mIsEnabled = true;
 	bool mIsActive = true;
-	bool isTransformModified = false;
+	bool mIsTransformModified = false;
 	int mPrefabResourceId = 0;
 	bool mPrefabOverride = true;
 };

@@ -33,7 +33,7 @@ class PlayerController :public Script
         void Start() override;
         void Update() override;
 
-        void Hit(float damage);
+        void TakeDamage(float damage);
         bool IsDead();
 
     private:
@@ -51,7 +51,6 @@ class PlayerController :public Script
         
         void RechargeDash();
         void Death();
-        void CheckRoute();
         void UpdateHealth();
         void CheckDebugOptions();
 

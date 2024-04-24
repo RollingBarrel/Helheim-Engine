@@ -9,7 +9,7 @@
 #include "float2.h"
 #include "Geometry/LineSegment.h"
 
-std::map<float, GameObject*> Physics::Raycast(Ray* ray)
+std::map<float, Hit> Physics::Raycast(Ray* ray)
 {
     return App->GetScene()->GetQuadtreeRoot()->RayCast(ray);
 }
@@ -24,7 +24,15 @@ Ray Physics::ScreenPointToRay(float2 mousePosition)
 	LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
 
 	ray.pos = raySegment.a;
-	ray.dir = (raySegment.b - raySegment.a);
+	ray.dir = (raySegment.b - raySegment.a).Normalized();
 
-    return ray;
+	if (ray.dir.IsNormalized())
+	{
+		return ray;
+	}
+	else 
+	{
+		return Ray();
+	}
+    
 }

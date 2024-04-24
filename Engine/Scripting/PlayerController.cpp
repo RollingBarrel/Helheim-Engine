@@ -7,6 +7,7 @@
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
+#include "Geometry/Plane.h"
 #include "AnimationComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
@@ -211,24 +212,19 @@ void PlayerController::Move(float3 direction)
 
 void PlayerController::HandleRotation()
 {
-    std::map<float, GameObject*> hits;
+    std::map<float, Hit> hits;
 
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGameMousePosition());
+    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
 
-    //LOG("Windows Size: %f , %f", App->GetWindow()->GetGameWindowsSize().x, App->GetWindow()->GetGameWindowsSize().y);
-    //LOG("Windows Position: %f , %f", App->GetWindow()->GetGameWindowsPosition().x, App->GetWindow()->GetGameWindowsPosition().y);
-    //LOG("Mouse position: %f , %f", App->GetInput()->GetGameMousePosition().x, App->GetInput()->GetGameMousePosition().y);
-    //LOG("Ray position: %f , %f", ray.pos.x, ray.pos.y);
-    hits = Physics::Raycast(&ray);
-
-    if (!hits.empty())
+    float distance;
+    bool intersects = plane.Intersects(ray, &distance);
+    float3 hitPoint = ray.GetPoint(distance);
+    if (intersects)
     {
-        float3 target = float3(hits.begin()->second->GetWorldPosition().x, mGameObject->GetWorldPosition().y, hits.begin()->second->GetWorldPosition().z);
-        LOG("Object Hitted: %s", hits.begin()->second->GetName().c_str());
+        float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
         mGameObject->LookAt(target);
-
     }
-    
 
 }
 
@@ -313,7 +309,7 @@ void PlayerController::MeleeAttack()
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
             Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            enemyScript->Hit(mMeleeBaseDamage);
+            enemyScript->TakeDamage(mMeleeBaseDamage);
         }
     }
 }
@@ -332,7 +328,7 @@ void PlayerController::RangedAttack()
             mChargedTime = Min(mMaxRangeChargeTime, mChargedTime);
             float totalDamage;
 
-            int bulletCost = mChargedTime * mFireRate;
+            int bulletCost = static_cast<int>(mChargedTime * mFireRate);
             if (mBullets >= bulletCost)
             {
                 totalDamage = mChargedTime * mRangeBaseDamage * mRangeChargeAttackMultiplier;
@@ -360,7 +356,7 @@ void PlayerController::RangedAttack()
         if (mBullets > 0) 
         {
             Shoot(mRangeBaseDamage * App->GetGameDt());
-            mBullets-=mFireRate * App->GetGameDt();
+            mBullets-= static_cast<int>(mFireRate * App->GetGameDt());
             if (mBullets == 0) 
             {
                 LOG("Out of bullets! Cannot shoot.");
@@ -382,7 +378,7 @@ void PlayerController::RangedAttack()
 
 void PlayerController::Shoot(float damage)
 {
-    std::map<float, GameObject*> hits;
+    std::map<float, Hit> hits;
 
     Ray ray;
     ray.pos = mGameObject->GetPosition();
@@ -395,16 +391,16 @@ void PlayerController::Shoot(float damage)
 
     if (!hits.empty()) 
     {
-        for (auto hit : hits) 
+        for (const std::pair<float, Hit>& hit : hits)
         {
-            if (hit.second->GetTag()->GetName() == "Enemy") 
+            if (hit.second.mGameObject->GetTag()->GetName() == "Enemy") 
             {
-                LOG("Enemy %s has been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
+                LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
 
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
-                    enemy->Hit(damage);
+                    enemy->TakeDamage(damage);
                 }   
             }
         }
@@ -418,7 +414,7 @@ void PlayerController::Reload()
 }
 
 
-void PlayerController::Hit(float damage) 
+void PlayerController::TakeDamage(float damage) 
 {
     if (mDashMovement == 0) 
     {    
@@ -497,40 +493,15 @@ bool PlayerController::IsDead()
     return mPlayerIsDead;
 }
 
-void PlayerController::CheckRoute()
+void PlayerController::UpdateHealth() 
 {
-    /*
-    if (App->GetInput()->GetKey(Keys::Keys_P) == KeyState::KEY_REPEAT)
+    if (mHealthSlider) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
+}
+
+void PlayerController::CheckDebugOptions() 
+{
+    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) 
     {
-        float3 winPosition = mWinArea->GetPosition();
-        float3 playerPosition = mGameObject->GetPosition();
-        std::vector<float3> pathPoints = App->GetNavigation()->FindNavPath(playerPosition, winPosition);
-
-        for (size_t i = 0; i < pathPoints.size() - 1; i++)
-        {
-            if (i == 0)
-            {
-                Debug::DrawLine(playerPosition, pathPoints[i], float3(1.0f, 0.0f, 0.0f));
-            }
-            else if (i < pathPoints.size() - 1)
-            {
-                Debug::DrawLine(pathPoints[i], pathPoints[i + 1], float3(1.0f, 0.0f, 0.0f));
-            }
-            else
-            {
-                Debug::DrawLine(pathPoints[i], winPosition, float3(1.0f, 0.0f, 0.0f));
-            }
-        }
-    }
-    */
-}
-
-void PlayerController::UpdateHealth() {
-    if (mHealthSlider != nullptr) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
-}
-
-void PlayerController::CheckDebugOptions() {
-    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) {
         mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
     }
 }

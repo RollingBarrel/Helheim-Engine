@@ -12,6 +12,7 @@
 #include "ResourceMesh.h"
 #include "Geometry/Triangle.h"
 #include "imgui.h"
+#include "Physics.h"
 #include <utility>
 
 
@@ -43,6 +44,7 @@ bool Quadtree::AddObject(GameObject* object)
 	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
 	AABB objectAABB = meshRenderer->GetAABB();
 	
+	/*
 	if (object->GetName() == std::string("Plane.020")) // XDDDDDDDDDDDDDDDDDDDDDD I keep this here so it is not forgotten
 	{
 		static int count = 0;
@@ -50,6 +52,7 @@ bool Quadtree::AddObject(GameObject* object)
 		count++;
 		LOG("%i", count);
 	}
+	*/
 
 	if (!mBoundingBox.Intersects(objectAABB))
 	{
@@ -228,18 +231,18 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 	}
 }
 
-const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
+const std::map<float, Hit> Quadtree::RayCast(Ray* ray) const
 {
 	if (mFilled) 
 	{
 
-		std::map<float, GameObject*> map;
+		std::map<float, Hit> map;
 
 
-		const std::map<float, GameObject*> p1 = mChildren[0]->RayCast(ray);
-		const std::map<float, GameObject*> p2 = mChildren[1]->RayCast(ray);
-		const std::map<float, GameObject*> p3 = mChildren[2]->RayCast(ray);
-		const std::map<float, GameObject*> p4 = mChildren[3]->RayCast(ray);
+		const std::map<float, Hit> p1 = mChildren[0]->RayCast(ray);
+		const std::map<float, Hit> p2 = mChildren[1]->RayCast(ray);
+		const std::map<float, Hit> p3 = mChildren[2]->RayCast(ray);
+		const std::map<float, Hit> p4 = mChildren[3]->RayCast(ray);
 
 		if (!p1.empty()) {
 			map.insert(p1.begin(), p1.end());
@@ -261,7 +264,7 @@ const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 	}
 	else
 	{
-		std::map<float, GameObject*> map;
+		std::map<float, Hit> map;
 		bool intersects = false;
 		bool intersectsTriangle = false;
 
@@ -291,7 +294,11 @@ const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
 
 						if (intersectsTriangle) {
-							map.insert( std::pair<float, GameObject*>(distance, child));							
+							Hit hit;
+							hit.mDistance = distance;
+							hit.mGameObject = child;
+							hit.mHitPoint = hitPoint;
+							map.insert( std::pair<float, Hit>(distance, hit));							
 						}
 					}
 				}
@@ -302,7 +309,7 @@ const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 		}
 	}
 
-	return std::map<float, GameObject*>();
+	return std::map<float, Hit>();
 }
 
 void Quadtree::UpdateTree()
