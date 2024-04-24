@@ -916,6 +916,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson)
 			}
 		}
 	}
+	RecalculateMatrices();
 }
 
 GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
