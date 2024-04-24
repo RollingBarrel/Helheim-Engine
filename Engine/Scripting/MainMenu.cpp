@@ -75,7 +75,7 @@ void MainMenu::Start()
 void MainMenu::Update()
 {
     if (mLoadlevel == true && Delay(0.1f)) {
-        App->GetScene()->Load("Level1.json");
+        App->GetScene()->Load("Level1");
     }
     
     Controls();
