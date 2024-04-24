@@ -9,6 +9,7 @@
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
 #include "AnimationComponent.h"
+#include "AudioSourceComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
 #include "SliderComponent.h"
@@ -57,6 +58,9 @@ CREATE(PlayerController)
 
     SEPARATOR("WIN AREA");
     MEMBER(MemberType::GAMEOBJECT, mWinArea);
+    SEPARATOR("AUDIO");
+    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
+    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
 
     END_CREATE;
 }
@@ -78,6 +82,23 @@ void PlayerController::Start()
     if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
     if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
     if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
+
+    if (mAnimationComponentHolder) 
+    {
+        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
+        mAnimationComponent->OnStart();
+    }
+
+    if (mFootStepAudioHolder)
+    {
+        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+
+    if (mGunfireAudioHolder)
+    {
+        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+   
 }
 
 
@@ -85,6 +106,7 @@ void PlayerController::Update()
 {
     CheckDebugOptions();
     UpdateHealth();
+    UpdateBattleSituation();
     RechargeDash();
 
     switch (mCurrentState)
@@ -199,6 +221,27 @@ void PlayerController::Moving()
     {
         Move(-float3::unitX);
         anyKeyPressed = true;
+    }
+
+    // Hardcoded play-step-sound solution: reproduce every second 
+    // TODO play sound according the animation
+    if (anyKeyPressed)
+    {
+        if (!mReadyToStep)
+        {
+            mStepTimePassed += App->GetGameDt();
+            if (mStepTimePassed >= mStepCoolDown)
+            {
+                mStepTimePassed = 0;
+                mStepTimePassed = false;
+                mReadyToStep = true;
+            }
+        }
+        else
+        {
+            mFootStepAudio->PlayOneShot();
+            mReadyToStep = false;
+        }
     }
 
     Idle();
@@ -341,6 +384,7 @@ void PlayerController::RangedAttack()
                 totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
                 mBullets -= mBullets;
             }
+            mGunfireAudio->PlayOneShot();
             mChargedTime = 0.0f;
             LOG("Charged shot fired. Damage:  %f", totalDamage);
             LOG("Bullets:  %i", mBullets);
@@ -360,6 +404,7 @@ void PlayerController::RangedAttack()
 
             if (startingTime <= 0.0f)
             {
+                mGunfireAudio->PlayOneShot();
                 startingTime = mFireRate;
                 Shoot(mRangeBaseDamage);
                 mBullets -= static_cast<int>(mFireRate);
@@ -502,5 +547,40 @@ void PlayerController::CheckDebugOptions()
     if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) 
     {
         mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
+    }
+}
+void PlayerController::UpdateBattleSituation()
+{
+    float hpRate = mHealth / mMaxHealth;
+
+    if (mCurrentState == PlayerState::DEATH) 
+    {
+        mCurrentSituation = BattleSituation::DEATH;
+    }
+    else if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
+        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK)) 
+    {
+        mBattleStateTransitionTime += App->GetGameDt();
+        if (mBattleStateTransitionTime >= 8.0f) 
+        {
+            if (hpRate <= 0.3) {
+                mCurrentSituation = BattleSituation::IDLE_LOW_HP;
+            }
+            else {
+                mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+            }
+            
+        }
+    }
+    else 
+    {
+        mBattleStateTransitionTime = 0.0f;
+
+        if (hpRate <= 0.3) {
+            mCurrentSituation = BattleSituation::BATTLE_LOW_HP;
+        }
+        else {
+            mCurrentSituation = BattleSituation::BATTLE_HIGHT_HP;
+        }
     }
 }

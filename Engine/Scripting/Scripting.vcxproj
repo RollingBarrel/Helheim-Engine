@@ -173,6 +173,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Keys.h" />
+    <ClInclude Include="Level1AManager.h" />
+    <ClInclude Include="MainMenuManager.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -181,8 +183,10 @@
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Level1AManager.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MainMenuManager.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="pch.cpp">
