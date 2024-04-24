@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "PlayerController.h"
 #include "AIAGentComponent.h"   
+#include "Physics.h"
 CREATE(EnemyRobot)
 {
     CLASS(owner);
@@ -135,7 +136,7 @@ void EnemyRobot::MeleeAttack()
             PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (playerScript != nullptr)
             {
-                playerScript->Hit(mMeeleDamage);
+                playerScript->TakeDamage(mMeeleDamage);
             }
         }
     }
@@ -143,7 +144,7 @@ void EnemyRobot::MeleeAttack()
 
 void EnemyRobot::RangeAttack() 
 {
-    std::map<float, GameObject*> hits;
+    std::map<float , Hit> hits;
     Ray ray;
     ray.pos = mGameObject->GetPosition();
     ray.pos.y++;
@@ -155,14 +156,14 @@ void EnemyRobot::RangeAttack()
     Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
  
         //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
-        for (auto hit : hits) 
+        for (const std::pair<float, Hit>& hit : hits) 
         {
-            if (hit.second->GetTag()->GetName() == "Player") 
+            if (hit.second.mGameObject->GetTag()->GetName() == "Player") 
             {
-                PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+                PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)
                 {
-                    playerScript->Hit(mRangeDamage);
+                    playerScript->TakeDamage(mRangeDamage);
                 }
             }
         }

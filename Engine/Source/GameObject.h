@@ -50,6 +50,7 @@ public:
 	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
+	void LookAt(float3 target);
 
 	void ResetTransform();
 
@@ -125,7 +126,7 @@ private:
 
 	bool mIsEnabled = true;
 	bool mIsActive = true;
-	bool isTransformModified = false;
+	bool mIsTransformModified = false;
 	int mPrefabResourceId = 0;
 	bool mPrefabOverride = true;
 };

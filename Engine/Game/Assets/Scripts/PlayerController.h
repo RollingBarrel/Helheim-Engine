@@ -33,7 +33,7 @@ class PlayerController :public Script
         void Start() override;
         void Update() override;
 
-        void Hit(float damage);
+        void TakeDamage(float damage);
         bool IsDead();
 
     private:
@@ -45,13 +45,12 @@ class PlayerController :public Script
         void MeleeAttack();
         void RangedAttack();
         void Move(float3 position);
-
+        void HandleRotation();
         void Shoot(float damage);
         void Reload();
         
         void RechargeDash();
         void Death();
-        void CheckRoute();
         void UpdateHealth();
         void CheckDebugOptions();
 
