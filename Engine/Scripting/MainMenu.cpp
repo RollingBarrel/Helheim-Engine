@@ -28,12 +28,14 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mLoadingMenu);
     MEMBER(MemberType::GAMEOBJECT, mSplashScreen);
     MEMBER(MemberType::GAMEOBJECT, mContainerGO);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsContainerGO);
     SEPARATOR("BUTTONS");
     MEMBER(MemberType::GAMEOBJECT, mSplashGO);
     MEMBER(MemberType::GAMEOBJECT, mNewGO);
     MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
     MEMBER(MemberType::GAMEOBJECT, mCreditsGO);
     MEMBER(MemberType::GAMEOBJECT, mQuitGO);
+    MEMBER(MemberType::GAMEOBJECT, mBackCreditGO);
     END_CREATE;
 }
 
@@ -52,12 +54,14 @@ void MainMenu::Start()
     mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
     mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
     mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
+    mBackCreditButton = static_cast<ButtonComponent*>(mBackCreditGO->GetComponent(ComponentType::BUTTON));
 
     mSplashButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnSplashButtonClick, this));
     mNewButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnNewButtonClick, this));
     mOptionsButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnOptionsButtonClick, this));
     mCreditsButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnCreditsButtonClick, this));
     mQuitButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnQuitButtonClick, this));
+    mBackCreditButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnMainButtonClick, this));
 
     mNewButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnNewButtonHover, this));
     mOptionsButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnOptionsButtonHover, this));
@@ -342,6 +346,8 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
             mLoadingMenu->SetEnabled(false);
             mSplashScreen->SetEnabled(false);
             mContainerGO->SetEnabled(true);
+            mBackCreditGO->SetEnabled(false);
+            mOptionsContainerGO->SetEnabled(false);
             break;
         case MENU_TYPE::OPTIONS:
             mMainMenu->SetEnabled(false);
@@ -350,6 +356,8 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
             mLoadingMenu->SetEnabled(false);
             mSplashScreen->SetEnabled(false);
             mContainerGO->SetEnabled(true);
+            mBackCreditGO->SetEnabled(false);
+            mOptionsContainerGO->SetEnabled(true);
             break;
         case MENU_TYPE::CREDITS:
             mMainMenu->SetEnabled(false);
@@ -357,7 +365,9 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
             mCreditsMenu->SetEnabled(true);
             mLoadingMenu->SetEnabled(false);
             mSplashScreen->SetEnabled(false);
-            mContainerGO->SetEnabled(true);
+            mContainerGO->SetEnabled(false);
+            mBackCreditGO->SetEnabled(true);
+            mOptionsContainerGO->SetEnabled(false);
             break;
         case MENU_TYPE::LOADING:
             mMainMenu->SetEnabled(false);
@@ -366,6 +376,8 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
             mLoadingMenu->SetEnabled(true);
             mSplashScreen->SetEnabled(false);
             mContainerGO->SetEnabled(false);
+            mBackCreditGO->SetEnabled(false);
+            mOptionsContainerGO->SetEnabled(false);
             break;
         case MENU_TYPE::SPLASH:
             mMainMenu->SetEnabled(false);
@@ -374,6 +386,8 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
             mLoadingMenu->SetEnabled(false);
             mSplashScreen->SetEnabled(true);
             mContainerGO->SetEnabled(false);
+            mBackCreditGO->SetEnabled(false);
+            mOptionsContainerGO->SetEnabled(false);
             break;
     }
 }
@@ -386,6 +400,7 @@ void MainMenu::OnMainButtonClick() {
 }
 
 void MainMenu::OnQuitButtonClick() {
+    exit(0);
     mMainMenuManager->PlayOKSFX();
 }
 
@@ -472,6 +487,18 @@ void MainMenu::OnNewButtonHover() {
 
 void MainMenu::OnNewButtonHoverOff() {
     ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
+}
+
+void MainMenu::OnBackCreditsButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 0;
+}
+
+void MainMenu::OnBackCreditsButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(1, 1, 1));
     mOption = -1;
 }

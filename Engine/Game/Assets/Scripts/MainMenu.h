@@ -48,10 +48,12 @@ private:
     void OnOptionsButtonHover();
     void OnCreditsButtonHover();
     void OnNewButtonHover();
+    void OnBackCreditsButtonHover();
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
     void OnCreditsButtonHoverOff();
     void OnNewButtonHoverOff();
+    void OnBackCreditsButtonHoverOff();
 
     bool mMenuActive = true;
     bool mPauseMenu = false;
@@ -88,11 +90,14 @@ private:
     GameObject* mOptionsGO = nullptr;
     GameObject* mCreditsGO = nullptr;
     GameObject* mQuitGO = nullptr;
+    GameObject* mBackCreditGO = nullptr;
+    GameObject* mOptionsContainerGO = nullptr;
 
     ButtonComponent* mSplashButton = nullptr;
     ButtonComponent* mNewButton = nullptr;
     ButtonComponent* mOptionsButton = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
     ButtonComponent* mQuitButton = nullptr;
+    ButtonComponent* mBackCreditButton = nullptr;
 };
 

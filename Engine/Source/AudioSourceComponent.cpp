@@ -117,7 +117,8 @@ void AudioSourceComponent::Play()
 	{
 		mEventInstance->start();
 	}
-	else {
+	else 
+	{
 		LOG("Cannot found audio source");
 	}
 }
@@ -132,7 +133,8 @@ void AudioSourceComponent::PlayOneShot()
 		eventInstance->start();
 		eventInstance->release();
 	}
-	else {
+	else 
+	{
 		LOG("Cannot found audio source");
 	}
 
