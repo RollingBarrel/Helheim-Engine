@@ -12,7 +12,6 @@
 #include "ModuleDebugDraw.h"
 #include "MeshRendererComponent.h"
 #include "ImporterMesh.h"
-#include "imgui.h"
 #include "Geometry/Triangle.h"
 #include "Quadtree.h"
 #include "SDL_scancode.h"
@@ -50,11 +49,7 @@ void ModuleCamera::CheckRaycast()
 
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) 
-	{
-
-	}
-	else 
+	if (!reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) 
 	{
 
 		std::map<float, GameObject*> hits = root->RayCast(&mRay);
@@ -79,11 +74,6 @@ void ModuleCamera::CheckRaycast()
 				{
 					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
 				}
-
-				
-
-
-
 			}
 		}
 	}
@@ -187,7 +177,6 @@ update_status ModuleCamera::Update(float dt)
 		App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
 	}
 	
-	const auto& io = ImGui::GetIO();
 	bool hasBeenUpdated = false;
 
 	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())

@@ -29,10 +29,9 @@ public:
 	const Quadtree* GetChildren() const { return *mChildren; }
 	const std::map<float, GameObject*> RayCast(Ray* ray) const;
 	void UpdateTree();
-	void Draw() const;
-	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
 	const std::set<GameObject*> GetObjectsInFrustum(Frustum* cam) const;
+	const AABB& GetBoundingBox() const { return mBoundingBox; }
 
 	void UpdateDrawableGameObjects(const Frustum* myCamera);
 	void CleanUp();

@@ -11,7 +11,6 @@
 #include "ModuleScene.h"
 #include "ResourceMesh.h"
 #include "Geometry/Triangle.h"
-#include "imgui.h"
 #include <utility>
 
 
@@ -119,53 +118,6 @@ void Quadtree::CleanUp()
 		mGameObjects.clear();
 		return;
 	}
-}
-
-void Quadtree::Draw() const
-{
-	App->GetDebugDraw()->DrawCube(mBoundingBox, float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
-
-	if (mFilled)
-	{
-		mChildren[0]->Draw();
-		mChildren[1]->Draw();
-		mChildren[2]->Draw();
-		mChildren[3]->Draw();
-	}
-
-}
-
-const void Quadtree::RenderTreeImGui() const
-{
-	
-	if (mName == "")
-		return;
-	bool treeNodeOpened = ImGui::TreeNode(mName.c_str());
-	
-	if (mFilled && treeNodeOpened) 
-	{
-		mChildren[0]->RenderTreeImGui();
-		mChildren[1]->RenderTreeImGui();
-		mChildren[2]->RenderTreeImGui();
-		mChildren[3]->RenderTreeImGui();
-
-	}
-	else 
-	{
-		if (treeNodeOpened)
-		{
-			for (const auto& object : mGameObjects)
-			{
-				ImGui::Text(object->GetName().c_str());
-			}
-
-		}
-	}
-	
-	
-	if(treeNodeOpened)
-		ImGui::TreePop();
-	
 }
 
 const std::set<GameObject*> Quadtree::GetObjectsInFrustum(Frustum* cam) const

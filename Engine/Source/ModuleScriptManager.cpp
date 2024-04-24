@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "ModuleScriptManager.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
@@ -22,21 +24,24 @@ ModuleScriptManager::~ModuleScriptManager()
 
 bool ModuleScriptManager::Init()
 {
+#ifdef ENGINE
 	CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false);
 	mHandle = LoadLibrary("Scripting.dll");
 	mLastModificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
 	return true;
+#endif // ENGINE
 }
 
 update_status ModuleScriptManager::PreUpdate(float dt)
 {
+#ifdef ENGINE
 	int64_t modificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
 	if (mLastModificationTime != modificationTime && !mIsPlaying)
 	{
 		mLastModificationTime = modificationTime;
 		HotReload();
 	}
-
+#endif // ENGINE
 	return update_status::UPDATE_CONTINUE;
 }
 

@@ -409,12 +409,6 @@ update_status ModuleScene::PreUpdate(float dt)
 update_status ModuleScene::Update(float dt)
 {
 	mRoot->Update();
-	if (mDrawQuadtree)
-	{
-		App->GetOpenGL()->BindSceneFramebuffer();
-		mQuadtreeRoot->Draw();
-		App->GetOpenGL()->UnbindSceneFramebuffer();
-	}
 	if (mNavMeshController)
 	{
 		mNavMeshController->Update();

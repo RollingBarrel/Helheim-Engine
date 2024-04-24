@@ -9,6 +9,7 @@
 #include "DetourNavMeshQuery.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
+//TODO: Remove recast from the coreLib
 #include "Recast.h"
 #include "Application.h"
 #include "ModuleDebugDraw.h"

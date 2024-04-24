@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"

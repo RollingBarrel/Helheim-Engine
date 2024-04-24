@@ -7,7 +7,11 @@
 #define ENGINE_API __declspec(dllimport)
 #endif
 
+#ifdef ENGINE
 #define LOG(format, ...) EngineLog(__FILE__, __LINE__, format, __VA_ARGS__);
+#else
+#define LOG(format, ...)
+#endif // ENGINE
 
 
 void ENGINE_API EngineLog(const char file[], int line, const char* format, ...);

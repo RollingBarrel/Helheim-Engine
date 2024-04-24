@@ -4,7 +4,9 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "SDL.h"
+#ifdef ENGINE
 #include "imgui_impl_sdl2.h"
+#endif //ENGINE
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
 //#include "SDL_scancode.h"
@@ -155,7 +157,10 @@ update_status ModuleInput::PreUpdate(float dt)
 
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
-        ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+#ifdef ENGINE
+		ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+#endif //ENGINE
+
         switch (sdlEvent.type)
         {
         case SDL_QUIT:

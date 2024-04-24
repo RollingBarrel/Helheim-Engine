@@ -38,8 +38,8 @@ public:
 	void LoadAnimatedMesh(bool isAnimated);
 	//void MultiplyBindMatrices();
 	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
-	bool ShouldDraw() const { return mDrawBox; }
-	void SetShouldDraw(bool draw) { mDrawBox = draw; }
+	//bool ShouldDraw() const { return mDrawBox; }
+	//void SetShouldDraw(bool draw) { mDrawBox = draw; }
 	bool IsInsideFrustum() const { return mInsideFrustum; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMaterial(unsigned int uid);
@@ -58,7 +58,7 @@ private:
 	OBB mOBB;
 	AABB mAABB;
 	AABB mAABBWorld;
-	bool mDrawBox = false;
+	//bool mDrawBox = false;
 	bool mInsideFrustum = true;
 	int mTemporalID = -1;
 

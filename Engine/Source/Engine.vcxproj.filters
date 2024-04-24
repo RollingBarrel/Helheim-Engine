@@ -67,28 +67,10 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleCamera.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleFileSystem.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleInput.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleOpenGL.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleScene.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -96,15 +78,6 @@
     </ClCompile>
     <ClCompile Include="log.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Quadtree.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleResource.cpp">
-      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
@@ -163,12 +136,6 @@
     <ClCompile Include="TagsManagerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleUI.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleScriptManager.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -187,9 +154,6 @@
     <ClCompile Include="NavMeshControllerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleAudio.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="SettingsPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -200,20 +164,17 @@
     <ClCompile Include="ModuleEvent.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDetourNavigation.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Utils\Scripting</Filter>
+    <ClCompile Include="NavMeshController.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Utils\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="HelheimEvent.cpp">
-      <Filter>Utils</Filter>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="NavMeshController.cpp">
-      <Filter>Utils</Filter>
+    <ClCompile Include="ModuleScriptManager.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,36 +272,12 @@
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleCamera.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFileSystem.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleInput.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleOpenGL.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleScene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleWindow.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Quadtree.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -351,9 +288,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleResource.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ResourcePanel.h">
@@ -392,14 +326,8 @@
     <ClInclude Include="TagsManagerPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleUI.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleScriptManager.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
@@ -419,9 +347,6 @@
     <ClInclude Include="EditorControlPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleAudio.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="SettingsPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -429,23 +354,8 @@
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEvent.h" />
-    <ClInclude Include="ModuleDetourNavigation.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleEvent.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Script.h">
-      <Filter>Utils\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Utils\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>Utils\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="HelheimEvent.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="IconsFontAwesome6.h">
       <Filter>Utils</Filter>
@@ -453,8 +363,8 @@
     <ClInclude Include="ImporterAnimation.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="NavMeshController.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="Debug.h">
+      <Filter>Utils\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

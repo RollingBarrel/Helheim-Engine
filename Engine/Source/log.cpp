@@ -1,13 +1,15 @@
-#pragma once
+#ifdef ENGINE
 #include <windows.h>
 #include <stdio.h>
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ConsolePanel.h"
+#endif
 
 void EngineLog(const char file[], int line, const char* format, ...)
 {
+#ifdef ENGINE
 	static char tmp_string[4096];
 	static char tmp_string2[4096];
 	static va_list  ap;
@@ -22,4 +24,5 @@ void EngineLog(const char file[], int line, const char* format, ...)
 	if (App != nullptr) {
 		((ConsolePanel*)App->GetEditor()->GetPanel(CONSOLEPANEL))->SetLog(tmp_string2);
 	}
+#endif // ENGINE
 }

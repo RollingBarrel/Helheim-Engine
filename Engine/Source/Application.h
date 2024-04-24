@@ -5,18 +5,20 @@
 class ModuleOpenGL;
 class ModuleWindow;
 class ModuleInput;
-class ModuleEditor;
 class ModuleRenderExercise;
 class ModuleScene;
 class ModuleFileSystem;
 class ModuleCamera;
-class ModuleDebugDraw;
 class ModuleScriptManager;
 class ModuleResource;
 class ModuleUI;
 class ModuleDetourNavigation;
 class ModuleAudio;
 class ModuleEvent;
+#ifdef ENGINE
+class ModuleEditor;
+class ModuleDebugDraw;
+#endif // ENGINE
 
 class Timer;
 class PreciseTimer;
@@ -35,9 +37,7 @@ public:
     ModuleOpenGL* GetOpenGL() { return render; }
     ModuleWindow* GetWindow() { return window; }
     ModuleInput*  GetInput() { return input; }
-    ModuleEditor*  GetEditor() { return editor; }
     ModuleCamera* GetCamera() { return camera;  }
-    ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
     ModuleFileSystem* GetFileSystem() { return fileSystem; }
     ModuleScene* GetScene() { return scene; }
     ModuleScriptManager* GetScriptManager() { return scriptManager; }
@@ -46,6 +46,10 @@ public:
     ModuleDetourNavigation* GetNavigation() { return navigation; }
     ModuleAudio* GetAudio() { return audio; }
     ModuleEvent* GetEvent() { return event; }
+#ifdef ENGINE
+    ModuleEditor* GetEditor() { return editor; }
+    ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
+#endif // ENGINE
 
     bool IsPlayMode() { return mIsPlayMode; }
     void PlayMode(bool play) { mIsPlayMode = play; }
@@ -69,9 +73,7 @@ private:
     ModuleOpenGL* render = nullptr;
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
-    ModuleEditor* editor = nullptr;
     ModuleCamera* camera = nullptr;
-    ModuleDebugDraw* debugDraw = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
     ModuleScene* scene = nullptr;
     ModuleScriptManager* scriptManager = nullptr;
@@ -80,8 +82,16 @@ private:
     ModuleUI* ui = nullptr;
     ModuleDetourNavigation* navigation = nullptr;
     ModuleEvent* event = nullptr;
+#ifdef ENGINE
+    ModuleEditor* editor = nullptr;
+    ModuleDebugDraw* debugDraw = nullptr;
+#endif // ENGINE
 
+#ifdef ENGINE
 #define NUM_MODULES 14
+#else
+#define NUM_MODULES 12
+#endif // ENGINE
     Module* modules[NUM_MODULES];
 
     //Timer

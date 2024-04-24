@@ -2,10 +2,8 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleInput.h"
-#include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
 #include "ModuleResource.h"
@@ -16,6 +14,15 @@
 
 #include "Timer.h"
 #include "PreciseTimer.h"
+
+#ifdef ENGINE
+#include "ModuleDebugDraw.h"
+#include "ModuleEditor.h"
+#include "optick.h"
+#endif // ENGINE
+
+
+#include "Main.h"
 
 
 Application::Application()
@@ -29,6 +36,7 @@ Application::Application()
 	//mGameTimer = new PreciseTimer();
 
 	// Order matters: they will Init/start/update in this order
+#ifdef ENGINE
 	modules[0] = input = new ModuleInput();
 	modules[1] = window = new ModuleWindow();
 	modules[2] = camera = new ModuleCamera();
@@ -43,6 +51,21 @@ Application::Application()
 	modules[11] = editor = new ModuleEditor();
 	modules[12] = ui = new ModuleUI();
 	modules[13] = event = new ModuleEvent();
+#else
+	modules[0] = input = new ModuleInput();
+	modules[1] = window = new ModuleWindow();
+	modules[2] = camera = new ModuleCamera();
+	modules[3] = fileSystem = new ModuleFileSystem();
+	modules[4] = audio = new ModuleAudio();
+	modules[5] = render = new ModuleOpenGL();
+	modules[6] = resource = new ModuleResource();
+	modules[7] = scriptManager = new ModuleScriptManager();
+	modules[8] = scene = new ModuleScene();
+	modules[9] = navigation = new ModuleDetourNavigation();
+	modules[10] = ui = new ModuleUI();
+	modules[11] = event = new ModuleEvent();
+#endif // ENGINE
+
 }
 
 Application::~Application()
@@ -72,6 +95,10 @@ bool Application::Init()
 
 update_status Application::Update(float dt)
 {
+#ifdef ENGINE
+	OPTICK_FRAME("MainThread");
+#endif // ENGINE
+	
 	mCurrentTimer->Update();		//Updates the current timer variables (Engine or Game depending on the game state)
 
 	update_status ret = UPDATE_CONTINUE;
@@ -90,7 +117,9 @@ update_status Application::Update(float dt)
 
 bool Application::CleanUp()
 {
+#ifdef ENGINE
 	editor->SaveCameraPosition();
+#endif // ENGINE
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)

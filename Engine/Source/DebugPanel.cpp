@@ -23,6 +23,48 @@ DebugPanel::~DebugPanel()
 {
 }
 
+static void RenderTreeImGui(const Quadtree* qTree)
+{
+    if (strcmp(qTree->GetName(), "") == 0)
+        return;
+    bool treeNodeOpened = ImGui::TreeNode(qTree->GetName());
+
+    if (qTree->IsFilled() && treeNodeOpened)
+    {
+        const Quadtree* children = qTree->GetChildren();
+        for (int i = 0; i < 4; ++i)
+        {
+            RenderTreeImGui(children + i);
+        }
+    }
+    else
+    {
+        if (treeNodeOpened)
+        {
+            for (const GameObject* object : qTree->GetGameObjects())
+            {
+                ImGui::Text(object->GetName().c_str());
+            }
+        }
+    }
+
+    if (treeNodeOpened)
+        ImGui::TreePop();
+}
+
+static void DrawQuadTree(const Quadtree* qTree)
+{
+    App->GetDebugDraw()->DrawCube(qTree->GetBoundingBox(), float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
+    if (qTree->IsFilled())
+    {
+        const Quadtree* children = qTree->GetChildren();
+        for (int i = 0; i < 4; ++i)
+        {
+            DrawQuadTree(children + i);
+        }
+    }
+}
+
 void DebugPanel::Draw(int windowFlags) {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
@@ -68,9 +110,15 @@ void DebugPanel::Draw(int windowFlags) {
 
         if (ImGui::TreeNode("Quadtree##2"))
         {
-            bool draw = App->GetScene()->GetShouldRenderQuadtree();
-            if (ImGui::Checkbox("Draw quadtree", &draw))
-                App->GetScene()->SetShouldRenderQuadtree(draw);
+            static bool draw = false;
+            ImGui::Checkbox("Draw quadtree", &draw);
+
+            if (draw)
+            {
+                App->GetOpenGL()->BindSceneFramebuffer();
+                DrawQuadTree(App->GetScene()->GetQuadtreeRoot());
+                App->GetOpenGL()->UnbindSceneFramebuffer();
+            }
 
             ImGui::Separator();
             ImGui::SameLine();
@@ -80,7 +128,7 @@ void DebugPanel::Draw(int windowFlags) {
             }
             ImGui::Separator();
             ImGui::Text("Quadtree nodes:");
-            App->GetScene()->GetQuadtreeRoot()->RenderTreeImGui();
+            RenderTreeImGui(App->GetScene()->GetQuadtreeRoot());
             ImGui::TreePop();
 		}
 
