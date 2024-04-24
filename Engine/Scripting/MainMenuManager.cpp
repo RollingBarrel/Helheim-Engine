@@ -22,16 +22,19 @@ MainMenuManager::~MainMenuManager()
 
 void MainMenuManager::Start()
 {
-    if (mMainMenuThemeHolder != nullptr) {
+    if (mMainMenuThemeHolder != nullptr) 
+    {
         mMainMenuTheme = (AudioSourceComponent*)mMainMenuThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
         mMainMenuTheme->Play();
     }
 
-    if (mOKSFXHolder != nullptr) {
+    if (mOKSFXHolder != nullptr) 
+    {
         mOKSFX = (AudioSourceComponent*)mOKSFXHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
 
-    if (mSelectSFXHolder != nullptr) {
+    if (mSelectSFXHolder != nullptr) 
+    {
         mSelectSFX = (AudioSourceComponent*)mSelectSFXHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
 }

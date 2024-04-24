@@ -24,7 +24,8 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
-    if (mMainMenuManagerHolder != nullptr) {
+    if (mMainMenuManagerHolder != nullptr) 
+    {
         ScriptComponent* script = (ScriptComponent*)mMainMenuManagerHolder->GetComponent(ComponentType::SCRIPT);
         mMainMenuManager = (MainMenuManager*)script->GetScriptInstance();
     }

@@ -127,10 +127,12 @@ void AudioSourceComponent::PlayOneShot()
 
 void AudioSourceComponent::Stop(bool fadeout)
 {
-	if (fadeout) {
+	if (fadeout) 
+	{
 		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
 	}
-	else {
+	else 
+	{
 		mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
 	}
 }
