@@ -31,14 +31,34 @@ AnimationComponent::~AnimationComponent()
 	}
 }
 
-void AnimationComponent::OnStart()
+void AnimationComponent::SetLoop(bool loop)
 {
-	mController->Play(mAnimation->GetUID(), true);
+	mLoop = loop;
+	mController->SetLoop(loop);
 }
 
-void AnimationComponent::OnUpdate()
+void AnimationComponent::OnStart()
 {
-	mController->Update(mOwner->GetChildren()[0]);
+	//mController->Play(mAnimation->GetUID(), true);
+}
+
+void AnimationComponent::Update()
+{
+	if (mIsPlaying)
+		mController->Update(mOwner);
+	//else {
+	//
+	//}
+}
+
+void AnimationComponent::OnStop()
+{
+
+}
+
+void AnimationComponent::OnRestart()
+{
+	mController->Restart();
 }
 
 void AnimationComponent::SetAnimation(unsigned int uid)
@@ -52,18 +72,20 @@ void AnimationComponent::SetAnimation(unsigned int uid)
 	{
 		mAnimation = tmpAnimation;
 
+		if (mController)
+			delete mController;
 		mController = new AnimationController(mAnimation, uid, true);
 	}
 }
 
-void AnimationComponent::OnStop()
+void AnimationComponent::SetStartTime(float time)
 {
-	//mController->Stop();
+	mController->SetStartTime(time);
 }
 
-void AnimationComponent::Update()
+void AnimationComponent::SetEndTime(float time)
 {
-
+	mController->SetEndTime(time);
 }
 
 Component* AnimationComponent::Clone(GameObject* owner) const

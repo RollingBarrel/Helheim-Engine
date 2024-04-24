@@ -1528,5 +1528,8 @@
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\skinning.comp">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

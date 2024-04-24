@@ -37,6 +37,7 @@
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "ResourceAnimation.h"
 
 #include "ModuleUI.h"
 
@@ -877,22 +878,86 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::SeparatorText("Animation");
-	ImGui::Text("HELLO");
 
-	static bool play = false;
+	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
+	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
 
-	if (ImGui::Button("Play"))
+	bool loop = true;
+	//bool play = false;
+
+	if (ImGui::Button("Play/Pause"))
 	{
 		if (component->GetAnimation() == nullptr)
 			return;
 		component->OnStart();
-
-
+		bool play = component->GetIsPlaying();
 		(play) ? play = false : play = true;
+		component->SetIsPlaying(play);
+
+		if (component->GetIsPlaying())
+		{
+			for (Component* comp : components)
+			{
+				MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
+				meshRenderComponent->SetIsAnimated(true);
+			}
+		}
 	}
 
-	if (play)
-		component->OnUpdate();
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(40.0f, 0.0f));
+	ImGui::SameLine();
+
+	if (component->GetIsPlaying())
+	{
+		ImGui::Text("PLAYING");
+	}
+	else
+	{
+		ImGui::Text("PAUSED");
+	}
+
+	if (ImGui::Button("Stop"))
+	{
+		for (Component* comp : components)
+		{
+			MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
+			meshRenderComponent->SetIsAnimated(false);
+		}
+		component->SetIsPlaying(false);
+		component->OnRestart();
+	}
+
+	//component->SetIsPlaying(play);
+
+	if (ImGui::Button("Restart"))
+	{
+		component->OnRestart();
+	}
+
+	ImGui::Checkbox("Loop", &loop);
+	component->SetLoop(loop);
+	
+	const char* items[] = { "Walk", "Idle", "Die" };
+	static float timeClips[] = {0.0, 2.2, 2.2, 12.0, 12.0, 15.0 };
+	static int currentItem = 0;
+	if (ImGui::Combo("Select Animation State", &currentItem, items, IM_ARRAYSIZE(items)))
+	{
+		component->SetStartTime(timeClips[currentItem * 2]);
+		component->SetEndTime(timeClips[currentItem * 2 + 1]);
+	}
+	float maxTimeValue = component->GetAnimation()->GetDuration();
+	if (ImGui::DragFloat("StartTime", &timeClips[currentItem * 2], 0.1, 0.0, maxTimeValue))
+	{
+		component->SetStartTime(timeClips[currentItem * 2]);
+	}
+	if (ImGui::DragFloat("EndTime", &timeClips[currentItem * 2+1], 0.1, 0.0, maxTimeValue))
+	{
+		component->SetEndTime(timeClips[currentItem * 2+1]);
+	}
+
+
+
 
 }
 
