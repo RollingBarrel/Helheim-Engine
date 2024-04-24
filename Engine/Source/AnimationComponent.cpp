@@ -139,7 +139,7 @@ void AnimationComponent::SetEndTime(float time)
 void AnimationComponent::AddJointNode(GameObject* node)
 {
 	ResourceAnimation::AnimationChannel* animChannel = mAnimation->GetChannel(node->GetName());
-	if (animChannel && !animChannel->invBindMatrix.Equals(float4x4::identity))
+	if (animChannel /*&& !animChannel->invBindMatrix.Equals(float4x4::identity)*/)
 	{
 		mGameobjectsInverseMatrices.push_back(std::pair(node, animChannel->invBindMatrix));
 	}

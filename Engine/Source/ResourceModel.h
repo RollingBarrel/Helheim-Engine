@@ -40,6 +40,4 @@ public:
 	std::vector<unsigned int> mAnimationUids;
 
 	std::vector<ModelNode> modelNodes;
-
-	std::vector<std::pair<int, float4x4>> mJoints;
 };

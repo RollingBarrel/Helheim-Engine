@@ -250,13 +250,13 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Tamaño vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
-    bufferSize += sizeof(int) * rModel->mJoints.size();
+    //bufferSize += sizeof(int) * rModel->mJoints.size();
 
-    for (size_t i = 0; i < rModel->mJoints.size(); i++)
+    /*for (size_t i = 0; i < rModel->mJoints.size(); i++)
     {
         bufferSize += sizeof(unsigned int);
         bufferSize += sizeof(float) * 16;
-    }
+    }*/
 
     if (rModel)
         Importer::Model::Save(rModel, bufferSize);

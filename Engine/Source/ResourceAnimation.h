@@ -51,7 +51,7 @@ public:
     std::string mName;
     unsigned int mDuration = 0;
 
-    float4x4 rootInvBindMatrix = float4x4::identity;
+    std::vector<std::pair<int, float4x4>> mJoints;
 };
 
 

@@ -23,6 +23,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
 
     for (const auto& srcChannel : animation.channels)
     {
+        //LOG("Target Node: %i", srcChannel.target_node);
         std::string name = model.nodes[srcChannel.target_node].name;
 
         //check if the channel already exists
@@ -37,11 +38,12 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
             {        
                 if (srcChannel2.target_node == srcChannel.target_node && (ourChannel->hasTranslation == false || ourChannel->hasRotation == false))
                 {
+                    //LOG("Target Node 2: %i", srcChannel2.target_node);
                     rAnimation->AddChannels(model, animation, srcChannel2, *rAnimation, ourChannel);
                 }
             }
 
-            bool found = false;
+            /*bool found = false;
             if (!model.skins.empty())
             {
                 for (const auto& skins : model.skins)
@@ -61,6 +63,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                     {
                         if (skins.joints[i] == srcChannel.target_node)
                         {
+                            LOG("Node used for matrix: %i", skins.joints[i]);
                             const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
 
                             for (size_t row = 0; row < 4; row++)
@@ -81,8 +84,44 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                     }
 
                 }
-            }
+            }*/
+
             rAnimation->mChannels[name] = ourChannel;
+        }
+    }
+
+    if (!model.skins.empty())
+    {
+        for (const auto& skins : model.skins)
+        {
+            const int inverseBindMatricesIndex = skins.inverseBindMatrices;
+            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[inverseBindMatricesIndex];
+
+            const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
+
+            const unsigned char* inverseBindMatricesBuffer = &model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset];
+
+            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(inverseBindMatricesBuffer);
+
+            size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
+
+            for (size_t i = 0; i < num_inverseBindMatrices; i++)
+            {
+                const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
+
+                float4x4 inverseBindMatrix;
+
+                for (size_t row = 0; row < 4; row++)
+                {
+                    for (size_t col = 0; col < 4; col++)
+                    {
+                        inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
+                    }
+                }
+
+                rAnimation->mJoints.push_back({ skins.joints[i], inverseBindMatrix });
+
+            }
         }
     }
 
@@ -170,7 +209,24 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
         bytes = sizeof(float) * 16;
         memcpy(cursor, &channel.second->invBindMatrix, bytes);
         cursor += bytes;
+    }
 
+    //Joints
+    unsigned int jointsSize = ourAnimation->mJoints.size();
+    bytes = sizeof(unsigned int);
+    memcpy(cursor, &jointsSize, bytes);
+    cursor += bytes;
+
+    for (int i = 0; i < jointsSize; ++i)
+    {
+        bytes = sizeof(unsigned int);
+        memcpy(cursor, &ourAnimation->mJoints[i].first, bytes);
+        cursor += bytes;
+
+        bytes = sizeof(float) * 16;
+
+        memcpy(cursor, &ourAnimation->mJoints[i].second, bytes);
+        cursor += bytes;
     }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
@@ -269,6 +325,26 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
 
             ourAnimation->mChannels[name] = channel;
             delete[] name;
+        }
+
+        //Joints
+        unsigned int jointsSize = 0;
+        bytes = sizeof(unsigned int);
+        memcpy(&jointsSize, cursor, bytes);
+        cursor += bytes;
+
+        ourAnimation->mJoints.resize(jointsSize);
+
+        for (int i = 0; i < jointsSize; ++i)
+        {
+            int indexJoint = 0;
+            bytes = sizeof(unsigned int);
+            memcpy(&ourAnimation->mJoints[i].first, cursor, bytes);
+            cursor += bytes;
+
+            bytes = sizeof(float4x4);
+            memcpy(&ourAnimation->mJoints[i].second, cursor, bytes);
+            cursor += bytes;
         }
 
         delete[] fileBuffer;
