@@ -10,6 +10,7 @@
 
 class GameObject;
 class MeshRendererComponent;
+struct Hit;
 #define MAX_DEPTH 6
 #define CAPACITY 8
 
@@ -27,7 +28,7 @@ public:
 	const unsigned int GetNumGameObjs() const { return static_cast<unsigned int>(mGameObjects.size()); }
 	const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
 	const Quadtree* GetChildren() const { return *mChildren; }
-	const std::map<float, GameObject*> RayCast(Ray* ray) const;
+	const std::map<float, Hit> RayCast(Ray* ray) const;
 	void UpdateTree();
 	void Draw() const;
 	const void RenderTreeImGui() const;

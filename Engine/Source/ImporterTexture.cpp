@@ -33,7 +33,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
 
             if (FAILED(hr))
             {
-                LOG("texture failed to load");
+                LOG("Texture failed to load");
                 return nullptr;
             }
         }
@@ -41,10 +41,48 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     
     delete[] pathTex;
 
-    // for get all information of the texture and see the parameters it have
-    unsigned int internalFormat;
-    unsigned int texFormat;
-    unsigned int dataType;
+    DXGI_FORMAT compressionFormat = DXGI_FORMAT_BC3_UNORM; // Default value
+    DirectX::ScratchImage compressedImage;
+
+    // Determine the compression format (if needed) based on the file name
+    for (const auto& pair : Importer::Texture::compressionFormatNaming)
+    {
+        if (ContainsText(filePath, pair.first))
+        {
+            compressionFormat = pair.second;
+
+            // If the texture is a BaseColor and has alpha, use BC3 instead of BC1 to avoid artifacts
+            if (compressionFormat == DXGI_FORMAT_BC1_UNORM && DirectX::HasAlpha(image.GetMetadata().format))
+            {
+                compressionFormat = DXGI_FORMAT_BC3_UNORM;
+            }
+            hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), compressionFormat, DirectX::TEX_COMPRESS_DEFAULT, 0.5f, compressedImage);
+            if (FAILED(hr))
+            {
+                LOG("Failed to compress texture");
+                return nullptr;
+            }
+
+            // Replaces the original image with the compressed one
+            image = std::move(compressedImage);
+            break;
+        }
+    }
+
+    // For get all information of the texture and see the parameters it have
+    unsigned int internalFormat = 0;
+    unsigned int texFormat = 0;
+    unsigned int dataType = 0;
+    unsigned int width = image.GetMetadata().width;
+    unsigned int height = image.GetMetadata().height;
+    unsigned int mipLevels = image.GetMetadata().mipLevels;
+    unsigned int numPixels = image.GetPixelsSize();
+    bool hasAlpha = false;
+
+    if (DirectX::HasAlpha(image.GetMetadata().format))
+    {
+        hasAlpha = true;
+    }
 
     switch (image.GetMetadata().format) 
     {
@@ -70,19 +108,28 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         texFormat = GL_RGBA;
         dataType = GL_UNSIGNED_SHORT;
         break;
+    case DXGI_FORMAT_BC1_UNORM:
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        texFormat = 0;
+        dataType = 0;
+        break;
+    case DXGI_FORMAT_BC3_UNORM:
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        texFormat = 0;
+        dataType = 0;
+        break;
+    case DXGI_FORMAT_BC5_UNORM:
+		internalFormat = GL_COMPRESSED_RG_RGTC2;
+        texFormat = 0;
+        dataType = 0;
+		break;
+    case DXGI_FORMAT_BC7_UNORM:
+        internalFormat = GL_COMPRESSED_RGBA_BPTC_UNORM;
+        texFormat = 0;
+        dataType = 0;
+        break;
     default:
         assert(false && "Unsupported format");
-    }
-
-    unsigned int width = image.GetMetadata().width;
-    unsigned int height = image.GetMetadata().height;
-    unsigned int mipLevels = image.GetMetadata().mipLevels;
-    unsigned int numPixels = image.GetPixelsSize();
-
-    bool hasAlpha = false;
-    if (DirectX::HasAlpha(image.GetMetadata().format))
-    {
-        hasAlpha = true;
     }
 
     ResourceTexture* rTex = new ResourceTexture(uid, width, height, internalFormat, texFormat, dataType, mipLevels, numPixels, hasAlpha, 0, 0);
@@ -104,7 +151,7 @@ void Importer::Texture::Save(const ResourceTexture* rTexture, const unsigned cha
 
     unsigned int numPixels = rTexture->GetNumPixels();
     bool hasAlpha = rTexture->HasAlpha();
-    unsigned int size = sizeof(header)  + sizeof(hasAlpha) + sizeof(unsigned char) * numPixels;
+    unsigned int size = sizeof(header) + sizeof(hasAlpha) + sizeof(unsigned char) * numPixels;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -148,7 +195,6 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         unsigned int mipLevels = header[5];
         unsigned int numPixels = header[6];
 
-
         bool hasAlpha;
         bytes = sizeof(hasAlpha);
         memcpy(&hasAlpha, cursor, bytes);
@@ -166,7 +212,14 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         // Set texture data for each mip level
         for (size_t i = 0; i < mipLevels; ++i)
         {
-            glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+            if (internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT5_EXT || internalFormat == GL_COMPRESSED_RG_RGTC2 || internalFormat == GL_COMPRESSED_RGBA_BPTC_UNORM)
+            {
+                glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, numPixels, pixels);
+            }
+            else
+            {
+                glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+            }
         }
 
         // Generate mipmaps if only one mip level is present
@@ -194,3 +247,18 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
     
     return texture;
 }
+
+// Check if a string contains the text
+bool Importer::Texture::ContainsText(const std::string& str, const std::string& text)
+{
+    return str.find(text) != std::string::npos;
+}
+
+const std::unordered_map<std::string, DXGI_FORMAT> Importer::Texture::compressionFormatNaming = {
+    {"_BaseColor", DXGI_FORMAT_BC1_UNORM},
+    //{"_Normal", DXGI_FORMAT_BC5_UNORM},
+    {"_Occlusion", DXGI_FORMAT_BC3_UNORM},
+    {"_Roughness", DXGI_FORMAT_BC3_UNORM},
+    {"_Metallic", DXGI_FORMAT_BC3_UNORM},
+    {"_Emissive", DXGI_FORMAT_BC3_UNORM}
+};

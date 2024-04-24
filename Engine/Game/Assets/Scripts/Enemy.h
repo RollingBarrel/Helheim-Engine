@@ -13,7 +13,7 @@ class Enemy : public Script
 		void Start() override;
 		void Update() override;
 
-		virtual void Hit(float damage);
+		virtual void TakeDamage(float damage);
 		virtual void Death();
 		
 	protected:

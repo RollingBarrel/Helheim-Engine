@@ -22,8 +22,8 @@ void PlayerCamera::Start()
 {
     mCameraComponent = reinterpret_cast<CameraComponent*>(mGameObject->GetComponent(ComponentType::CAMERA));
 
-   ModuleScene* scene = App->GetScene();
-   scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("CombatArea")->GetID(), mCombatAreas);
+    ModuleScene* scene = App->GetScene();
+    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("CombatArea")->GetID(), mCombatAreas);
 
 
     //follow the target
@@ -40,7 +40,7 @@ void PlayerCamera::Start()
 
     mAuxLookTarget = mLookTarget;
 
-    SetView(12.0f, 16.0f, 45.0f);
+    SetView(float3(0, -10.0f, 7.0f), 0.5f);
 
 
 }
@@ -49,18 +49,58 @@ void PlayerCamera::Update()
 {
     CameraManager();
 
-    switch (mCameraMode) 
+    float3 closePosition = float3(0, -5.0f, 7.0f);
+    float closeRotation = 0.5f;
+    float3 topPosition = float3(0, -8.0f, 16.0f);
+    float topRotation = 0.3f;
+
+    float transitionTime = 1.0f;
+    static float deltaTime = transitionTime;
+
+    float3 position = mFollowTarget->GetWorldPosition() - mGameObject->GetPosition();
+
+    switch (mCameraMode)
     {
     case CameraMode::CLOSE:
-        SetView(10.0f, 7.0f, 0.5f);
+        if ((position - closePosition).Abs().Length() > 0.7)
+        {
+            float3 direction = closePosition - position;
+            deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
+            float rotation = closeRotation - mGameObject->GetRotation().x;
+            if (deltaTime > 0) 
+            {
+                float factor = (transitionTime - deltaTime) / transitionTime;
+                SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
+            }
+        }
+        else
+        {
+            deltaTime = transitionTime;
+            SetView(closePosition, closeRotation);
+        }
         break;
 
     case CameraMode::TOP:
-        SetView(12.0f, 16.0f, 45.0f);
+        if ((position - topPosition).Abs().Length() > 0.9)
+        {
+            float3 direction = topPosition - position;
+            deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
+            float rotation = topRotation - mGameObject->GetRotation().x;
+            if (deltaTime > 0) 
+            {
+                float factor = (transitionTime - deltaTime) / transitionTime;
+                SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
+            }
+        }
+        else
+        {
+            deltaTime = transitionTime;
+            SetView(topPosition, topRotation);
+        }
         break;
     }
 
-	
+
 }
 
 //if the target is inside a cube with tag "CombatArea" the camera will move to the top of the cube
@@ -72,15 +112,15 @@ void PlayerCamera::CameraManager()
     {
         float3 areaPosition = area->GetPosition();
         float3 areaSize = area->GetScale();
-		if (playerPosition.x > areaPosition.x - areaSize.x / 2 && playerPosition.x < areaPosition.x + areaSize.x / 2 &&
-			playerPosition.z > areaPosition.z - areaSize.z / 2 && playerPosition.z < areaPosition.z + areaSize.z / 2)
-		{
-			mCameraMode = CameraMode::TOP;
-            mLookTarget = area; 
+        if (playerPosition.x > areaPosition.x - areaSize.x / 2 && playerPosition.x < areaPosition.x + areaSize.x / 2 &&
+            playerPosition.z > areaPosition.z - areaSize.z / 2 && playerPosition.z < areaPosition.z + areaSize.z / 2)
+        {
+            mCameraMode = CameraMode::TOP;
+            mLookTarget = area;
 
-			return;
-		} 
-        else 
+            return;
+        }
+        else
         {
             mLookTarget = mAuxLookTarget;
             mCameraMode = CameraMode::CLOSE;
@@ -89,9 +129,9 @@ void PlayerCamera::CameraManager()
     }
 }
 
-void PlayerCamera::SetView(float distance, float heightOffset, float rotation) 
+void PlayerCamera::SetView(float3 position, float rotation)
 {
-    float3 newPosition = mFollowTarget->GetWorldPosition() - float3(0.0f, -heightOffset, distance);
+    float3 newPosition = mFollowTarget->GetWorldPosition() - position;
 
     mGameObject->SetPosition(newPosition);
     mGameObject->SetRotation(float3(rotation, 0.0f, 0.0f));

@@ -33,7 +33,7 @@ private:
     std::vector<GameObject*> mCombatAreas;
 
     void CameraManager();
-    void SetView(float distance, float heightOffset, float rotation);
+    void SetView(float3 position, float rotation);
 
 
 };
