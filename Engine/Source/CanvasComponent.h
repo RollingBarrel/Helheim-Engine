@@ -18,12 +18,16 @@ public:
     void Reset() override;
 
     inline float2 GetSize() { return mSize; }
+    inline bool GetScreenSpace() { return mScreenSpace; }
 
     inline void SetSize(float2 size) { mSize = size; }
+    void SetScreenSpace(bool screen) { mScreenSpace = screen; }
 
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 private:
     float2 mSize;
+
+    bool mScreenSpace = true;
 };

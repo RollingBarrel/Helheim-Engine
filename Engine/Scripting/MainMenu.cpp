@@ -6,6 +6,10 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "Transform2DComponent.h"
+#include "ButtonComponent.h"
+#include "ImageComponent.h"
+#include "Resource.h"
+#include "ModuleResource.h"
 
 CREATE(MainMenu)
 {
@@ -13,6 +17,19 @@ CREATE(MainMenu)
     SEPARATOR("STATS");
     MEMBER(MemberType::BOOL, mMenuActive);
     MEMBER(MemberType::BOOL, mPauseMenu);
+    SEPARATOR("MENUS");
+    MEMBER(MemberType::GAMEOBJECT, mMainMenu);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsMenu);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingMenu);
+    MEMBER(MemberType::GAMEOBJECT, mSplashScreen);
+    MEMBER(MemberType::GAMEOBJECT, mContainerGO);
+    SEPARATOR("BUTTONS");
+    MEMBER(MemberType::GAMEOBJECT, mSplashGO);
+    MEMBER(MemberType::GAMEOBJECT, mNewGO);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsGO);
+    MEMBER(MemberType::GAMEOBJECT, mQuitGO);
     END_CREATE;
 }
 
@@ -20,40 +37,50 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
-    if (!mPauseMenu)
-    {
-        mOption = 2;
-    }
-    else
-    {
-        mOption = 1;
+    mSplashButton = static_cast<ButtonComponent*>(mSplashGO->GetComponent(ComponentType::BUTTON));
+    mNewButton = static_cast<ButtonComponent*>(mNewGO->GetComponent(ComponentType::BUTTON));
+    mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
+    mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
+    mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
 
-        ButtonsPosition("Button_NewGame", 197.0f);
-        ButtonsPosition("Button_Options", 113.0f);
-        ButtonsPosition("Button_Credits", 29.0f);
-        ButtonsPosition("Button_Quit", -55.0f);
-    }
+    mSplashButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnSplashButtonClick, this));
+    mNewButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnNewButtonClick, this));
+    mOptionsButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnOptionsButtonClick, this));
+    mCreditsButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnCreditsButtonClick, this));
+    mQuitButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnQuitButtonClick, this));
+
+    mNewButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnNewButtonHover, this));
+    mOptionsButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnOptionsButtonHover, this));
+    mCreditsButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnCreditsButtonHover, this));
+    mQuitButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnQuitButtonHover, this));
+
+    mNewButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnNewButtonHoverOff, this));
+    mOptionsButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnOptionsButtonHoverOff, this));
+    mCreditsButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnCreditsButtonHoverOff, this));
+    mQuitButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnQuitButtonHoverOff, this));
+
+    OpenMenu(MENU_TYPE::SPLASH);
 }
 
 void MainMenu::Update()
 {
-    Menu();
-    Loading();
-    Options();
-    Credits();
+    if (mLoadlevel == true && Delay(0.1f)) {
+        App->GetScene()->Load("Level1.json");
+    }
+    
     Controls();
 }
 
-void MainMenu::SetMenu(bool active, bool pause)
+/*void MainMenu::SetMenu(bool active, bool pause)
 {
     mMenuActive = active;
     mPauseMenu = pause;
 
     Update();
     LOG("MENU ACTIVE");
-}
+}*/
 
-void MainMenu::ButtonsPosition(const char* imageName, float position) const
+/*void MainMenu::ButtonsPosition(const char* imageName, float position) const
 {
     Transform2DComponent* transformComponent = static_cast<Transform2DComponent*>(App->GetScene()->Find(imageName)->GetComponent(ComponentType::TRANSFORM2D));
 
@@ -64,9 +91,9 @@ void MainMenu::ButtonsPosition(const char* imageName, float position) const
 
         transformComponent->SetPosition(newPosition);
     }
-}
+}*/
 
-void MainMenu::Menu()
+/*void MainMenu::Menu()
 {
     if (mMenuActive) 
     {
@@ -163,21 +190,21 @@ void MainMenu::Menu()
                 break;
         }
     }
-}
+}*/
 
-void MainMenu::ChangeImage(const char* imageName, bool enabled) const
+/*void MainMenu::ChangeImage(const char* imageName, bool enabled) const
 {
     App->GetScene()->Find(imageName)->SetEnabled(enabled);
-}
+}*/
 
-void MainMenu::ResetScreen(const char* screenName, bool activeMenu) 
+/*void MainMenu::ResetScreen(const char* screenName, bool activeMenu)
 {
     mMenuActive = activeMenu;
     ChangeImage(mPreviousImageName, false);
     ChangeImage(screenName, false);
-}
+}*/
 
-void MainMenu::Loading() 
+/*void MainMenu::Loading()
 {
     if (mLoadingActive) 
     {
@@ -189,9 +216,9 @@ void MainMenu::Loading()
             App->GetScene()->Load("Level1.json");
         }
     }
-}
+}*/
 
-void MainMenu::Options() 
+/*void MainMenu::Options()
 {
     if (mOptionsActive) 
     {
@@ -205,9 +232,9 @@ void MainMenu::Options()
             ResetScreen("Options", true);
         }
     }
-}
+}*/
 
-void MainMenu::Credits() 
+/*void MainMenu::Credits()
 {
     if (mCreditsActive) 
     {
@@ -221,7 +248,7 @@ void MainMenu::Credits()
             ResetScreen("Credits", true);
         }
     }
-}
+}*/
 
 bool MainMenu::Delay(float delay)
 {
@@ -239,75 +266,175 @@ void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
-        if (!mPauseMenu) 
+        if (mOption > 0)
         {
-            if (mOption > 2)
-            {
-                mOption--;
-            }
-            else
-            {
-                mOption = 5;
-            }
+            mOption--;
         }
         else
         {
-            if (mOption > 1)
-            {
-                mOption--;
-            }
-            else
-            {
-                mOption = 5;
-            }
-        }         
+            mOption = 3;
+        }
+        
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
-        if (!mPauseMenu) 
+        if (mOption < 3)
         {
-            if (mOption < 5)
-            {
-                mOption++;
-            }
-            else
-            {
-                mOption = 2;
-            }
+            mOption++;
         }
         else
         {
-            if (mOption < 5)
-            {
-                mOption++;
-            }
-            else
-            {
-                mOption = 1;
-            }
+            mOption = 0;
         }
     }
 
     if ((App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN) || (App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN))
     {
-        if (!mReturnPressed) 
+        
+
+
+        /*if (!mReturnPressed)
         {
             mOptionTmp = mOption;
             mReturnPressed = true;
             mEscPressed = false;
             mNextScreen = true;
-        }
+        }*/
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        if (!mEscPressed) 
+        /*if (!mEscPressed)
         {
             mOption = mOptionTmp;
             mEscPressed = true;
             mReturnPressed = false;
             mPrevScreen = true;
-        }       
+        } */     
     }
+}
+
+// MENUS
+
+void MainMenu::OpenMenu(MENU_TYPE type) {
+    switch (type) {
+        case MENU_TYPE::MAIN:
+            mMainMenu->SetEnabled(true);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(true);
+            break;
+        case MENU_TYPE::OPTIONS:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(true);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(true);
+            break;
+        case MENU_TYPE::CREDITS:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(true);
+            mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(true);
+            break;
+        case MENU_TYPE::LOADING:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(true);
+            mSplashScreen->SetEnabled(false);
+            mContainerGO->SetEnabled(false);
+            break;
+        case MENU_TYPE::SPLASH:
+            mMainMenu->SetEnabled(false);
+            mOptionsMenu->SetEnabled(false);
+            mCreditsMenu->SetEnabled(false);
+            mLoadingMenu->SetEnabled(false);
+            mSplashScreen->SetEnabled(true);
+            mContainerGO->SetEnabled(false);
+            break;
+    }
+}
+
+// CLICKS
+
+void MainMenu::OnMainButtonClick() {
+    OpenMenu(MENU_TYPE::MAIN);
+}
+
+void MainMenu::OnQuitButtonClick() {
+    
+}
+
+void MainMenu::OnOptionsButtonClick() {
+    OpenMenu(MENU_TYPE::OPTIONS);
+}
+
+void MainMenu::OnCreditsButtonClick() {
+    OpenMenu(MENU_TYPE::CREDITS);
+}
+
+void MainMenu::OnNewButtonClick() {
+    OpenMenu(MENU_TYPE::LOADING);
+    mLoadlevel = true;
+}
+
+void MainMenu::OnSplashButtonClick() {
+    OpenMenu(MENU_TYPE::MAIN);
+}
+
+// SELECTED
+
+void MainMenu::OnQuitButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 3;
+}
+
+void MainMenu::OnQuitButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
+}
+
+void MainMenu::OnOptionsButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 1;
+}
+
+void MainMenu::OnOptionsButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
+}
+
+void MainMenu::OnCreditsButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 2;
+}
+
+void MainMenu::OnCreditsButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
+}
+
+void MainMenu::OnNewButtonHover() {
+    ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    mOption = 0;
+}
+
+void MainMenu::OnNewButtonHoverOff() {
+    ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
+    image->SetColor(float3(1, 1, 1));
+    mOption = -1;
 }
