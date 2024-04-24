@@ -1,6 +1,8 @@
 #include "ModuleScriptManager.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScene.h"
+#include "NavMeshController.h"
 #include "ModuleResource.h"
 #include "Script.h"
 #include "ScriptComponent.h"
@@ -217,6 +219,12 @@ void ModuleScriptManager::Stop()
 
 void ModuleScriptManager::Start()
 {
+
+	if (App->GetScene()->GetRoot()->GetName() == "Level1")
+	{
+		App->GetScene()->GetNavController()->HandleBuild();
+	}
+
 	mIsPlaying = true;
 	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
 	{
