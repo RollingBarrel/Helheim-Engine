@@ -52,10 +52,8 @@ update_status ModuleUI::PreUpdate(float dt)
 
 update_status ModuleUI::Update(float dt) 
 {
-	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-	{
-		CheckRaycast();
-	}
+	// TODO: Check if app is on Menu or Pause
+	CheckRaycast();
 
 	return UPDATE_CONTINUE;
 }
@@ -141,15 +139,16 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			// Check if the mouse position is inside the bounds of the image
 			if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y && mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y) 
 			{
+				KeyState mouseButtonLeftState = App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT);
 				// Click event (button released after press)
-				if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) 
+				if (mouseButtonLeftState == KeyState::KEY_UP)
 				{
 					button->TriggerEvent(EventType::Click);
 					eventTriggered = true;
 					return; // Terminate function
 				}
 				// Button pressed
-				/*else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+				else if (mouseButtonLeftState == KeyState::KEY_DOWN || mouseButtonLeftState == KeyState::KEY_REPEAT)
 				{
 					button->TriggerEvent(EventType::Press);
 					eventTriggered = true;
@@ -159,9 +158,16 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 				else 
 				{
 					button->TriggerEvent(EventType::Hover);
+					button->SetHovered(true);
 					eventTriggered = true;
 					return; // Terminate function
-				}*/
+				}
+			}
+
+			if (button->GetHovered())
+			{
+				button->TriggerEvent(EventType::HoverOff);
+				button->SetHovered(false);
 			}
 		}
 
