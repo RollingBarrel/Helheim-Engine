@@ -38,12 +38,12 @@ public:
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 	bool GetShouldRenderQuadtree() const { return mDrawQuadtree; }
-	void SetShouldRenderQuadtree(bool a) { mDrawQuadtree = a; }
+	void SetShouldRenderQuadtree(bool drawQuadtree) { mDrawQuadtree = drawQuadtree; }
 	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
-	void SetShouldUpdateQuadtree(bool a) { mShouldUpdateQuadtree = a; }
+	void SetShouldUpdateQuadtree(bool updateQuadtree) { mShouldUpdateQuadtree = updateQuadtree; }
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
-	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
+	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
 	void ResetFrustumCulling(GameObject* obj);
 
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagID);
