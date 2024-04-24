@@ -148,11 +148,12 @@ void DebugPanel::SetShouldDrawForAll(GameObject* root, bool shouldDraw)
 {
     if (root != nullptr) 
     {
-        MeshRendererComponent* renderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
-        if (renderer != nullptr) 
-        {
-            renderer->SetShouldDraw(shouldDraw);
-        }
+        //TODO: SEPARATE GAME ENGINE
+        //MeshRendererComponent* renderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
+        //if (renderer != nullptr) 
+        //{
+        //    renderer->SetShouldDraw(shouldDraw);
+        //}
 
         for (int i = 0; i < root->GetChildren().size(); i++) 
         {

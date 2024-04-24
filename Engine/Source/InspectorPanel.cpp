@@ -545,10 +545,11 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	MaterialVariables(component);
 
 	ImGui::Text(" ");
-	bool shouldDraw = component->ShouldDraw();
-	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
-		component->SetShouldDraw(shouldDraw);
-	}
+	//TODO: SEPARATE GAME ENGINE
+	//bool shouldDraw = component->ShouldDraw();
+	//if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
+	//	component->SetShouldDraw(shouldDraw);
+	//}
 }
 
 void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)

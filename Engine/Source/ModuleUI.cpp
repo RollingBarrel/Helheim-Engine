@@ -132,13 +132,11 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 
 		if (image != nullptr && transform2D != nullptr && button != nullptr && button->IsEnabled()) 
 		{
-			ScenePanel* scenePanel = static_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL));
+			int mouseAbsoluteX = App->GetInput()->GetGameMousePosition().x;
+			int mouseAbsoluteY = App->GetInput()->GetGameMousePosition().y;
 
-			int mouseAbsoluteX = scenePanel->GetMousePosition().x;
-			int mouseAbsoluteY = scenePanel->GetMousePosition().y;
-
-			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / static_cast<float>(scenePanel->GetWindowsSize().x);
-			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / static_cast<float>(scenePanel->GetWindowsSize().y);
+			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsoluteX - App->GetWindow()->GetGameWindowsPosition().x) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().x);
+			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsoluteY - App->GetWindow()->GetGameWindowsPosition().y) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().y);
 
 			float mouseX = normalizedX;
 			float mouseY = normalizedY;

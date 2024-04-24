@@ -212,7 +212,6 @@
     <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
-    <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleDetourNavigation.cpp" />
     <ClCompile Include="ModuleEvent.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />

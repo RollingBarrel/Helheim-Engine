@@ -87,10 +87,11 @@ void SpotLightComponent::Update()
 			SetPosition(pos);
 		}
 	}
-	if (debugDraw)
-	{
-		App->GetDebugDraw()->DrawCone(mData.pos, mData.aimD, mData.col, mData.radius);
-	}
+	//TODO: SEPARATE ENGINE
+	//if (debugDraw)
+	//{
+	//	App->GetDebugDraw()->DrawCone(mData.pos, mData.aimD, mData.col, mData.radius);
+	//}
 }
 
 inline Component* SpotLightComponent::Clone(GameObject* owner) const 

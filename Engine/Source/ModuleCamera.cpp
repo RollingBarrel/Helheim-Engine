@@ -28,57 +28,6 @@ bool ModuleCamera::Init()
 	return true;
 }
 
-void ModuleCamera::CheckRaycast()
-{
-
-	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
-
-	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
-	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
-
-	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
-	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
-
-	LineSegment raySegment = mCurrentCameraComponent->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
-
-	mRay.pos = raySegment.a;
-	mRay.dir = (raySegment.b - raySegment.a);
-
-	bool intersects = false;
-	bool intersectsTriangle = false;
-
-	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
-
-	if (!reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) 
-	{
-
-		std::map<float, GameObject*> hits = root->RayCast(&mRay);
-		if (!hits.empty()) 
-		{
-			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
-			if (intersectGameObjectPair.second != nullptr)
-			{
-				GameObject* parentGameObject = intersectGameObjectPair.second;
-				while (!parentGameObject->GetParent()->IsRoot())
-				{
-					parentGameObject = parentGameObject->GetParent();
-				}
-
-				GameObject* focusedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-
-				if (focusedGameObject->GetID() == parentGameObject->GetID())
-				{
-					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second);
-				}
-				else 
-				{
-					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
-				}
-			}
-		}
-	}
-}
-
 
 
 bool ModuleCamera::CleanUp()
@@ -171,14 +120,15 @@ void ModuleCamera::ActivateEditorCamera()
 update_status ModuleCamera::Update(float dt)
 {
 
+	//TODO: SEPARATE GAME ENGINE
+	//if (mDrawRayCast) 
+	//{
+	//	App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
+	//}
 
-	if (mDrawRayCast) 
-	{
-		App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
-	}
-	
 	bool hasBeenUpdated = false;
 
+#ifdef ENGINE
 	if (((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
 	{
 		if (mCurrentCamera == mEditorCamera)
@@ -186,16 +136,16 @@ update_status ModuleCamera::Update(float dt)
 			const float dtTransformCameraVel = dt * 3.f;
 			float transformCameraVel = 0.03f;
 			const float rotateCameraVel = 0.01f;
-		
+
 			const float dtFastSpeed = dtTransformCameraVel * mShiftSpeed;
 			const float fastSpeed = transformCameraVel * 3.0f;
 			bool shiftPressed = (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(SDL_SCANCODE_RSHIFT) == KeyState::KEY_REPEAT);
 			float dtSpeed = shiftPressed ? dtFastSpeed : dtTransformCameraVel;
 			float speed = shiftPressed ? fastSpeed : transformCameraVel;
-			
-			mShiftSpeed =  shiftPressed ? mShiftSpeed + 0.05 : 5.0f;
-	
-		
+
+			mShiftSpeed = shiftPressed ? mShiftSpeed + 0.05 : 5.0f;
+
+
 			if (App->GetInput()->GetMouseWheelMotion() != 0)
 			{
 				mCurrentCameraComponent->Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
@@ -207,15 +157,15 @@ update_status ModuleCamera::Update(float dt)
 				App->GetInput()->GetMouseMotion(mX, mY);
 				mCurrentCameraComponent->Rotate(float3::unitY, -mX * rotateCameraVel);
 				mCurrentCameraComponent->Rotate(mCurrentCameraComponent->GetFrustum().WorldRight(), -mY * rotateCameraVel);
-			if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
-			{
-				mCurrentCameraComponent->Transform(float3(0, -dtSpeed, 0));
-			}
-			if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
-			{
-				mCurrentCameraComponent->Transform(float3(0, dtSpeed, 0));
-			}
-		
+				if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
+				{
+					mCurrentCameraComponent->Transform(float3(0, -dtSpeed, 0));
+				}
+				if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
+				{
+					mCurrentCameraComponent->Transform(float3(0, dtSpeed, 0));
+				}
+
 				if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
 				{
 					mCurrentCameraComponent->Transform(float3(0, 0, dtSpeed));
@@ -232,10 +182,6 @@ update_status ModuleCamera::Update(float dt)
 				{
 					mCurrentCameraComponent->Transform(float3(dtSpeed, 0, 0));
 				}
-			}
-			if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-			{
-				CheckRaycast();
 			}
 			//paning camera
 			if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_MIDDLE) == KeyState::KEY_REPEAT)
@@ -254,7 +200,7 @@ update_status ModuleCamera::Update(float dt)
 
 				if (mX != 0)
 				{
-					float3x3 rotationMatrixX = float3x3::RotateAxisAngle(mCurrentCameraComponent->GetFrustum().up,-mX * rotateCameraVel);
+					float3x3 rotationMatrixX = float3x3::RotateAxisAngle(mCurrentCameraComponent->GetFrustum().up, -mX * rotateCameraVel);
 					focus = rotationMatrixX.Mul(focus);
 				}
 				if (mY != 0)
@@ -264,25 +210,26 @@ update_status ModuleCamera::Update(float dt)
 				}
 
 				GameObject* focusedObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-				if(focusedObject)
+				if (focusedObject)
 					mCurrentCameraComponent->LookAt(focus, focusedObject->GetPosition(), float3::unitY);
 			}
 			if (App->GetInput()->GetKey(SDL_SCANCODE_F) == KeyState::KEY_DOWN)
 			{
 				float3 selectedObjectPosition = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetPosition();
 				float3 initialCameraPosition = mCurrentCameraComponent->GetFrustum().pos;
-		
+
 				float desiredDistance = 5.0f;
-		
+
 				float3 finalCameraPosition = selectedObjectPosition - (desiredDistance * (selectedObjectPosition - initialCameraPosition).Normalized());
-		
+
 				mCurrentCameraComponent->SetPos(finalCameraPosition);
-		
+
 				mCurrentCameraComponent->LookAt(mCurrentCameraComponent->GetFrustum().pos, selectedObjectPosition, float3::unitY);
 			}
 		}
 
-		if(mCurrentCamera && mCurrentCameraComponent && hasBeenUpdated){ //TODO: add a bool if the camera had an input
+		if (mCurrentCamera && mCurrentCameraComponent && hasBeenUpdated) 
+		{ //TODO: add a bool if the camera had an input
 			float3 position = mCurrentCameraComponent->GetFrustum().pos;
 			float3x3 rotationMatrix = float3x3(mCurrentCameraComponent->GetFrustum().WorldRight(), mCurrentCameraComponent->GetFrustum().up, mCurrentCameraComponent->GetFrustum().front);
 			Quat rotation = Quat(rotationMatrix);
@@ -292,5 +239,17 @@ update_status ModuleCamera::Update(float dt)
 
 		}
 	}
-	return UPDATE_CONTINUE;
+#else
+	if (mCurrentCamera && mCurrentCameraComponent && hasBeenUpdated) 
+	{ //TODO: add a bool if the camera had an input
+		float3 position = mCurrentCameraComponent->GetFrustum().pos;
+		float3x3 rotationMatrix = float3x3(mCurrentCameraComponent->GetFrustum().WorldRight(), mCurrentCameraComponent->GetFrustum().up, mCurrentCameraComponent->GetFrustum().front);
+		Quat rotation = Quat(rotationMatrix);
+
+		mCurrentCamera->SetPosition(position);
+		mCurrentCamera->SetRotation(rotation);
+	}
+#endif // ENGINE
+
+		return UPDATE_CONTINUE;
 }

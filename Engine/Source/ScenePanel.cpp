@@ -17,6 +17,10 @@
 #include "ImporterModel.h"
 #include "ResourceModel.h"
 #include "debugdraw.h"
+#include "ModuleInput.h"
+#include "ModuleCamera.h"
+#include "Geometry/LineSegment.h"
+#include "Quadtree.h"
 
 #include "AnimationComponent.h"
 
@@ -98,8 +102,66 @@ ScenePanel::~ScenePanel()
 {
 }
 
+static void CheckRaycast()
+{
+	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
+
+	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
+	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
+
+	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
+
+	LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
+
+	Ray ray;
+	ray.pos = raySegment.a;
+	ray.dir = (raySegment.b - raySegment.a);
+
+	bool intersects = false;
+	bool intersectsTriangle = false;
+
+	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
+
+	if (!reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
+	{
+
+		std::map<float, GameObject*> hits = root->RayCast(&ray);
+		if (!hits.empty())
+		{
+			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
+			if (intersectGameObjectPair.second != nullptr)
+			{
+				GameObject* parentGameObject = intersectGameObjectPair.second;
+				while (!parentGameObject->GetParent()->IsRoot())
+				{
+					parentGameObject = parentGameObject->GetParent();
+				}
+
+				GameObject* focusedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+
+				if (focusedGameObject->GetID() == parentGameObject->GetID())
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second);
+				}
+				else
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
+				}
+			}
+		}
+	}
+}
+
 void ScenePanel::Draw(int windowFlags)
 {
+	//TODO: SEPARATE GAME ENGINE
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+	{
+		CheckRaycast();
+	}
+	
+	
 	windowFlags |= ImGuiWindowFlags_NoMove;
 
 	if (ImGui::Begin("Game", &mOpen, windowFlags))
@@ -130,8 +192,6 @@ void ScenePanel::Draw(int windowFlags)
 		
 	}
 	ImGui::End();
-
-
 	
 }
 
@@ -148,8 +208,14 @@ void ScenePanel::DrawScene()
 	ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
 
 	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+	App->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+	App->GetWindow()->GameWindowsResized(mWindowsSize);
 	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+	if (!mMousePosition.Equals(float2(-FLT_MAX, -FLT_MAX)))
+	{
+		App->GetInput()->SetGameMousePosition(mMousePosition);
+	}
 
 	if (ImGui::BeginDragDropTarget())
 	{

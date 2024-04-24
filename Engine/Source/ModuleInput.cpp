@@ -80,6 +80,7 @@ update_status ModuleInput::PreUpdate(float dt)
     mMouseReceivedInput = false;
     unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mMouseMotionX, &mMouseMotionY);
     SDL_GetMouseState(&mMousePositionX, &mMousePositionY);
+	mGameMousePosition = float2(mMousePositionX, mMousePositionY);
     for (int i = 0; i < MouseKey::NUM_MOUSE_BUTTONS; ++i)
     {
         unsigned int pressed = mouseBitmask & SDL_BUTTON(i + 1);

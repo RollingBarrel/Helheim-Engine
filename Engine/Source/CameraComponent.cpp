@@ -71,9 +71,10 @@ void CameraComponent::Update()
         }
     }
 
-    App->GetOpenGL()->BindSceneFramebuffer();
-    App->GetDebugDraw()->DrawFrustum(mFrustum);
-    App->GetOpenGL()->UnbindSceneFramebuffer();
+    //TODO:SEPARATE GAME ENGINE
+    //App->GetOpenGL()->BindSceneFramebuffer();
+    //App->GetDebugDraw()->DrawFrustum(mFrustum);
+    //App->GetOpenGL()->UnbindSceneFramebuffer();
 
 }
 

@@ -21,7 +21,8 @@ public:
 	void CreateDetourData();
 
 	float3 FindNearestPoint(float3 center, float3 halfSize);
-	void DrawDebug();
+	//TODO: SEPARATE ENGINE
+	//void DrawDebug();
 	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 
 

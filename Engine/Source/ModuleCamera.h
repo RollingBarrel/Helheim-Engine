@@ -18,7 +18,6 @@ public:
 
 
 	//void WindowResized(int w, int h);
-	void CheckRaycast();
 	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
 	bool CleanUp() override;
 
@@ -45,7 +44,6 @@ private:
 
 	CameraComponent* mCurrentCameraComponent = nullptr;
 
-	Ray mRay;
 	bool mDrawRayCast = false; 
 	std::map<float, GameObject*> mIntersectMap;
 

@@ -45,9 +45,10 @@ update_status ModuleDetourNavigation::Update(float dt)
 		dtPolyRef result;
 		dtQueryFilter temp;
 		mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
-		App->GetOpenGL()->BindSceneFramebuffer();
-		DrawDebug();
-		App->GetOpenGL()->UnbindSceneFramebuffer();
+		//TODO: SEPARATE ENGINE
+		//App->GetOpenGL()->BindSceneFramebuffer();
+		//DrawDebug();
+		//App->GetOpenGL()->UnbindSceneFramebuffer();
 		
 
 	}
@@ -195,18 +196,18 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 }
 
 
-
-void ModuleDetourNavigation::DrawDebug() 
-{
-	float3 color = float3(1.0f, 0.0f, 0.0f);
-	App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
-
-	float3 color2 = float3(1.0f, 1.0f, 0.0f);
-	App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
-
-	float3 color3 = float3(0.0f, 0.0f, 1.0f);
-	float3 minAABB = mQueryCenter - mQueryHalfSize;
-	float3 maxAABB = mQueryCenter + mQueryHalfSize;
-	OBB cube = OBB(AABB(minAABB, maxAABB));
-	App->GetDebugDraw()->DrawCube(cube, color3);
-}
+//TODO: SEPARATE ENGINE
+//void ModuleDetourNavigation::DrawDebug() 
+//{
+//	float3 color = float3(1.0f, 0.0f, 0.0f);
+//	App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
+//
+//	float3 color2 = float3(1.0f, 1.0f, 0.0f);
+//	App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
+//
+//	float3 color3 = float3(0.0f, 0.0f, 1.0f);
+//	float3 minAABB = mQueryCenter - mQueryHalfSize;
+//	float3 maxAABB = mQueryCenter + mQueryHalfSize;
+//	OBB cube = OBB(AABB(minAABB, maxAABB));
+//	App->GetDebugDraw()->DrawCube(cube, color3);
+//}

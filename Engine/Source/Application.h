@@ -73,8 +73,8 @@ private:
     ModuleOpenGL* render = nullptr;
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
-    ModuleCamera* camera = nullptr;
     ModuleFileSystem* fileSystem = nullptr;
+    ModuleCamera* camera = nullptr;
     ModuleScene* scene = nullptr;
     ModuleScriptManager* scriptManager = nullptr;
     ModuleResource* resource = nullptr;
