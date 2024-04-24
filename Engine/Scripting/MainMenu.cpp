@@ -5,6 +5,9 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "ModuleAudio.h"
+#include "ScriptComponent.h"
+#include "MainMenuManager.h"
 #include "Transform2DComponent.h"
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
@@ -17,6 +20,7 @@ CREATE(MainMenu)
     SEPARATOR("STATS");
     MEMBER(MemberType::BOOL, mMenuActive);
     MEMBER(MemberType::BOOL, mPauseMenu);
+    MEMBER(MemberType::GAMEOBJECT, mMainMenuManagerHolder);
     SEPARATOR("MENUS");
     MEMBER(MemberType::GAMEOBJECT, mMainMenu);
     MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
@@ -39,6 +43,12 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
+    if (mMainMenuManagerHolder != nullptr) 
+    {
+        ScriptComponent* script = (ScriptComponent*)mMainMenuManagerHolder->GetComponent(ComponentType::SCRIPT);
+        mMainMenuManager = (MainMenuManager*)script->GetScriptInstance();
+    }
+
     mSplashButton = static_cast<ButtonComponent*>(mSplashGO->GetComponent(ComponentType::BUTTON));
     mNewButton = static_cast<ButtonComponent*>(mNewGO->GetComponent(ComponentType::BUTTON));
     mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
@@ -216,6 +226,8 @@ void MainMenu::Update()
 
         if (Delay(2.0f))
         {
+            delete mMainMenuManager;
+            mMainMenuManager = nullptr;
             ChangeImage("Loading_Screen", false);
             App->GetScene()->Load("Level1.json");
         }
@@ -270,6 +282,7 @@ void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
+        mMainMenuManager->PlaySelectSFX();
         if (mOption > 0)
         {
             mOption--;
@@ -283,6 +296,7 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
+        mMainMenuManager->PlaySelectSFX();
         if (mOption < 3)
         {
             mOption++;
@@ -300,10 +314,12 @@ void MainMenu::Controls()
 
         /*if (!mReturnPressed)
         {
+            mMainMenuManager->PlayOKSFX();
             mOptionTmp = mOption;
             mReturnPressed = true;
             mEscPressed = false;
             mNextScreen = true;
+            
         }*/
     }
 
@@ -379,33 +395,43 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
 // CLICKS
 
 void MainMenu::OnMainButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnQuitButtonClick() {
     exit(0);
+    mMainMenuManager->PlayOKSFX();
 }
 
 void MainMenu::OnOptionsButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::OPTIONS);
 }
 
 void MainMenu::OnCreditsButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::CREDITS);
 }
 
 void MainMenu::OnNewButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::LOADING);
     mLoadlevel = true;
 }
 
 void MainMenu::OnSplashButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 // SELECTED
 
 void MainMenu::OnQuitButtonHover() {
+    if (mOption != 3) 
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 3;
@@ -418,6 +444,10 @@ void MainMenu::OnQuitButtonHoverOff() {
 }
 
 void MainMenu::OnOptionsButtonHover() {
+    if (mOption != 1)
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 1;
@@ -430,6 +460,10 @@ void MainMenu::OnOptionsButtonHoverOff() {
 }
 
 void MainMenu::OnCreditsButtonHover() {
+    if (mOption != 2)
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 2;
@@ -442,6 +476,10 @@ void MainMenu::OnCreditsButtonHoverOff() {
 }
 
 void MainMenu::OnNewButtonHover() {
+    if (mOption != 0)
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 0;

@@ -40,7 +40,7 @@ void PlayerCamera::Start()
 
     mAuxLookTarget = mLookTarget;
 
-    SetView(float3(0, -10.0f, 7.0f), 0.5f);
+    SetView(float3(0, -8.0f, 16.0f), 0.3f);
 
 
 }
@@ -81,22 +81,22 @@ void PlayerCamera::Update()
         break;
 
     case CameraMode::TOP:
-        //if ((position - topPosition).Abs().Length() > 0.9)
-        //{
-        //    float3 direction = topPosition - position;
-        //    deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
-        //    float rotation = topRotation - mGameObject->GetRotation().x;
-        //    if (deltaTime > 0) 
-        //    {
-        //        float factor = (transitionTime - deltaTime) / transitionTime;
-        //        SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
-        //    }
-        //}
-        //else
-        //{
+        if ((position - topPosition).Abs().Length() > 0.9)
+        {
+            float3 direction = topPosition - position;
+            deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
+            float rotation = topRotation - mGameObject->GetRotation().x;
+            if (deltaTime > 0) 
+            {
+                float factor = (transitionTime - deltaTime) / transitionTime;
+                SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
+            }
+        }
+        else
+        {
             deltaTime = transitionTime;
             SetView(topPosition, topRotation);
-        //}
+        }
         break;
     }
 

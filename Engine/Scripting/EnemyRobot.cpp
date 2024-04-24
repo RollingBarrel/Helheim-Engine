@@ -19,6 +19,7 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mRangeDamage);
 
     SEPARATOR("MELEE");
+    MEMBER(MemberType::FLOAT, mMeleeAttackCoolDown);
     MEMBER(MemberType::FLOAT, mMeleeDistance);
     MEMBER(MemberType::FLOAT, mMeeleDamage);
    
@@ -124,7 +125,7 @@ void EnemyRobot::Attack()
 
 void EnemyRobot::MeleeAttack() 
 {
-    if (Delay(mMeleeAttackCD)) 
+    if (Delay(mMeleeAttackCoolDown))
     {
        
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
