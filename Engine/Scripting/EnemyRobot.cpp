@@ -74,7 +74,6 @@ void EnemyRobot::Chase()
         direction.Normalize();
         float angle = std::atan2(direction.x, direction.z);
         mGameObject->SetRotation(float3(0, angle, 0));
-
         switch (mType)
         {
         case RobotType::RANGE:
