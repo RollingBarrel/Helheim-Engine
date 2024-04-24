@@ -69,12 +69,15 @@ void EnemyRobot::Chase()
     if (IsPlayerInRange(mActivationRange))
     {
         AIAgentComponent* agentComponent = (AIAgentComponent*)mGameObject->GetComponent(ComponentType::AIAGENT);
-        agentComponent->MoveAgent(mPlayer->GetPosition(),mSpeed);
-        float3 direction = mPlayer->GetPosition() - agentComponent->GetOwner()->GetPosition();
-        direction.y = 0;
-        direction.Normalize();
-        float angle = std::atan2(direction.x, direction.z);
-        mGameObject->SetRotation(float3(0, angle, 0));
+        if (agentComponent)
+        {
+            agentComponent->MoveAgent(mPlayer->GetPosition(), mSpeed);
+            float3 direction = mPlayer->GetPosition() - agentComponent->GetOwner()->GetPosition();
+            direction.y = 0;
+            direction.Normalize();
+            float angle = std::atan2(direction.x, direction.z);
+            mGameObject->SetRotation(float3(0, angle, 0));
+        }
         switch (mType)
         {
         case RobotType::RANGE:
