@@ -35,7 +35,7 @@ bool Enemy::IsPlayerInRange(float range)
     return (distance <= range);
 }
 
-void Enemy::Hit(float damage) 
+void Enemy::TakeDamage(float damage) 
 {
     
     mHealth -= damage;

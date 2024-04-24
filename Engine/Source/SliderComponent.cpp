@@ -1,8 +1,11 @@
 #pragma once
 #include "SliderComponent.h"
+#include "ImageComponent.h"
+#include "CanvasComponent.h"
 
 SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(owner, ComponentType::SLIDER)
 {
+	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 }
 
 SliderComponent::SliderComponent(const SliderComponent& original, GameObject* owner) : Component(owner, ComponentType::SLIDER)
@@ -15,6 +18,7 @@ SliderComponent::SliderComponent(const SliderComponent& original, GameObject* ow
 	mFillImage = new ImageComponent(*original.mFillImage, GetOwner());;
 	mBgTransform2D = new Transform2DComponent(*original.mBgTransform2D, GetOwner());
 	mFillTransform2D = new Transform2DComponent(*original.mFillTransform2D, GetOwner());
+	mCanvas = original.mCanvas;
 }
 
 SliderComponent::SliderComponent(GameObject* owner) : Component(owner, ComponentType::SLIDER)
@@ -53,8 +57,18 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 void SliderComponent::SetFillPercent(float fillPercent)
 {
 	this->mFillPercent = fillPercent;
-	mFillTransform2D->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
-	mFillTransform2D->SetSize(float2(fillPercent, 1));
+
+	if (mCanvas->GetScreenSpace()) 
+	{
+		mFillTransform2D->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
+		mFillTransform2D->SetSize(float2(fillPercent, 1));
+	}
+	else 
+	{
+		mFill->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
+		mFill->SetScale(float3(fillPercent, 1, 0));
+	}
+	
 }
 
 void SliderComponent::Save(Archive& archive) const
@@ -74,5 +88,26 @@ SliderComponent:: ~SliderComponent()
 Component* SliderComponent::Clone(GameObject* origin) const
 {
 	return new SliderComponent(*this, origin);
+}
+
+GameObject* SliderComponent::FindCanvasOnParents(GameObject* gameObject)
+{
+	if (gameObject == nullptr)
+	{
+		return nullptr;
+	}
+
+	GameObject* currentObject = gameObject;
+
+	while (currentObject != nullptr)
+	{
+		if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr)
+		{
+			return currentObject;
+		}
+		currentObject = currentObject->GetParent();
+	}
+
+	return nullptr; // No canvas found on parents
 }
 

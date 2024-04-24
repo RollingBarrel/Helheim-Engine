@@ -57,4 +57,3 @@ private:
 	unsigned int mOpenGLId;
 	uint64_t mTexHandle;
 };
-

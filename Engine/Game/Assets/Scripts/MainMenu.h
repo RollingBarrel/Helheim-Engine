@@ -3,6 +3,15 @@
 #include "Macros.h"
 
 class MainMenuManager;
+class ButtonComponent;
+
+enum MENU_TYPE {
+    MAIN,
+    OPTIONS,
+    CREDITS,
+    LOADING,
+    SPLASH
+};
 
 GENERATE_BODY(MainMenu);
 
@@ -27,6 +36,23 @@ private:
     bool Delay(float delay);
     void Controls();
 
+    void OpenMenu(MENU_TYPE type);
+    void OnMainButtonClick();
+    void OnQuitButtonClick();
+    void OnOptionsButtonClick();
+    void OnCreditsButtonClick();
+    void OnNewButtonClick();
+    void OnSplashButtonClick();
+
+    void OnQuitButtonHover();
+    void OnOptionsButtonHover();
+    void OnCreditsButtonHover();
+    void OnNewButtonHover();
+    void OnQuitButtonHoverOff();
+    void OnOptionsButtonHoverOff();
+    void OnCreditsButtonHoverOff();
+    void OnNewButtonHoverOff();
+
     bool mMenuActive = true;
     bool mPauseMenu = false;
 
@@ -37,7 +63,7 @@ private:
     bool mPrevScreen = false;
     bool mReturnPressed = false;
     bool mEscPressed = false;
-    int mOption = 2;  
+    
     int mOptionTmp = mOption;
     float mTimePassed = 0.0f;
     const char* mScreen = nullptr;
@@ -46,5 +72,27 @@ private:
 
     GameObject* mMainMenuManagerHolder = nullptr;
     MainMenuManager* mMainMenuManager = nullptr;
+    
+    int mOption = 0;  
+    bool mLoadlevel = false;
+
+    GameObject* mMainMenu = nullptr;
+    GameObject* mOptionsMenu = nullptr;
+    GameObject* mCreditsMenu = nullptr;
+    GameObject* mLoadingMenu = nullptr;
+    GameObject* mSplashScreen = nullptr;
+
+    GameObject* mContainerGO = nullptr;
+    GameObject* mSplashGO = nullptr;
+    GameObject* mNewGO = nullptr;
+    GameObject* mOptionsGO = nullptr;
+    GameObject* mCreditsGO = nullptr;
+    GameObject* mQuitGO = nullptr;
+
+    ButtonComponent* mSplashButton = nullptr;
+    ButtonComponent* mNewButton = nullptr;
+    ButtonComponent* mOptionsButton = nullptr;
+    ButtonComponent* mCreditsButton = nullptr;
+    ButtonComponent* mQuitButton = nullptr;
 };
 

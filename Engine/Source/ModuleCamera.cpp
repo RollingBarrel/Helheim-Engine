@@ -18,6 +18,7 @@
 #include "SDL_scancode.h"
 #include "GameObject.h"
 #include "Quat.h"
+#include "Physics.h"
 #include "CameraComponent.h"
 #include <map>
 
@@ -57,13 +58,13 @@ void ModuleCamera::CheckRaycast()
 	else 
 	{
 
-		std::map<float, GameObject*> hits = root->RayCast(&mRay);
+		std::map<float, Hit> hits = root->RayCast(&mRay);
 		if (!hits.empty()) 
 		{
-			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
-			if (intersectGameObjectPair.second != nullptr)
+			std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();
+			if (intersectGameObjectPair.second.mGameObject != nullptr)
 			{
-				GameObject* parentGameObject = intersectGameObjectPair.second;
+				GameObject* parentGameObject = intersectGameObjectPair.second.mGameObject;
 				while (!parentGameObject->GetParent()->IsRoot())
 				{
 					parentGameObject = parentGameObject->GetParent();
@@ -73,7 +74,7 @@ void ModuleCamera::CheckRaycast()
 
 				if (focusedGameObject->GetID() == parentGameObject->GetID())
 				{
-					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second);
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second.mGameObject);
 				}
 				else 
 				{
