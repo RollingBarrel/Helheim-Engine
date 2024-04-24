@@ -3,7 +3,6 @@
 #include "Globals.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
-#include "Importer.h"
 #include "ImporterTexture.h"
 
 #include "ProjectPanel.h"

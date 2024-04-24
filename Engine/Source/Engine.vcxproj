@@ -110,7 +110,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\Optick\lib\x64\debug;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;OptickCore.lib;ws2_32.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;fmod_vc.lib;fmodL_vc.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -153,7 +153,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\Optick\lib\x64\release;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;OptickCore.lib;ws2_32.lib;fmodstudio_vc.lib;fmodstudioL_vc.lib;fmod_vc.lib;fmodL_vc.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OptickCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
