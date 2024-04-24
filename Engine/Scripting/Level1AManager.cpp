@@ -41,26 +41,9 @@ void Level1AManager::Start()
 
 void Level1AManager::Update()
 {
-    GodMode();
     UpdateBackgroundMusic();
 }
 
-void Level1AManager::GodMode()
-{
-    // Temporal solution, need to be implemented in the generic GameManagerController
-
-    // Key 1 [-HP]
-    // Key 2 [+HP] 
-    if (App->GetInput()->GetKey(Keys::Keys_1) == KeyState::KEY_REPEAT)
-    {
-        mPlayerController->Hit(30.0f);
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_2) == KeyState::KEY_REPEAT)
-    {
-        mPlayerController->Hit(-30.0f);
-    }
-}
 
 void Level1AManager::UpdateBackgroundMusic()
 {

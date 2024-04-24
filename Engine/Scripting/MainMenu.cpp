@@ -381,33 +381,42 @@ void MainMenu::OpenMenu(MENU_TYPE type) {
 // CLICKS
 
 void MainMenu::OnMainButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnQuitButtonClick() {
-    
+    mMainMenuManager->PlayOKSFX();
 }
 
 void MainMenu::OnOptionsButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::OPTIONS);
 }
 
 void MainMenu::OnCreditsButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::CREDITS);
 }
 
 void MainMenu::OnNewButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::LOADING);
     mLoadlevel = true;
 }
 
 void MainMenu::OnSplashButtonClick() {
+    mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 // SELECTED
 
 void MainMenu::OnQuitButtonHover() {
+    if (mOption != 3) 
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 3;
@@ -420,6 +429,10 @@ void MainMenu::OnQuitButtonHoverOff() {
 }
 
 void MainMenu::OnOptionsButtonHover() {
+    if (mOption != 1)
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 1;
@@ -432,6 +445,10 @@ void MainMenu::OnOptionsButtonHoverOff() {
 }
 
 void MainMenu::OnCreditsButtonHover() {
+    if (mOption != 2)
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 2;
@@ -444,6 +461,10 @@ void MainMenu::OnCreditsButtonHoverOff() {
 }
 
 void MainMenu::OnNewButtonHover() {
+    if (mOption != 0)
+    {
+        mMainMenuManager->PlaySelectSFX();
+    }
     ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 0;

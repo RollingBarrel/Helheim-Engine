@@ -20,7 +20,6 @@ public:
 	~Level1AManager();
 	void Start() override;
 	void Update() override;
-	void GodMode();
 
 private:
 	void UpdateBackgroundMusic();

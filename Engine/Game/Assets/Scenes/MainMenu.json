@@ -113,6 +113,11 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mMainMenuManagerHolder",
+                                "MemberType": 3,
+                                "VariableData": 413802338
+                            },
+                            {
                                 "VariableName": "MENUS",
                                 "MemberType": 5
                             },
@@ -142,13 +147,13 @@
                                 "VariableData": 1587975136
                             },
                             {
-                                "VariableName": "BUTTONS",
-                                "MemberType": 5
-                            },
-                            {
                                 "VariableName": "mContainerGO",
                                 "MemberType": 3,
                                 "VariableData": 1092932759
+                            },
+                            {
+                                "VariableName": "BUTTONS",
+                                "MemberType": 5
                             },
                             {
                                 "VariableName": "mSplashGO",
@@ -950,6 +955,159 @@
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 413802338,
+                "ParentUID": 1,
+                "Name": "MainMenu Manager",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "MainMenuManager",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mMainMenuThemeHolder",
+                                "MemberType": 3,
+                                "VariableData": 1534320698
+                            },
+                            {
+                                "VariableName": "mOKSFXHolder",
+                                "MemberType": 3,
+                                "VariableData": 1411548265
+                            },
+                            {
+                                "VariableName": "mSelectSFXHolder",
+                                "MemberType": 3,
+                                "VariableData": 916504633
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1534320698,
+                "ParentUID": 413802338,
+                "Name": "MainMenu Theme",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/Music/Level 01",
+                        "ParametersVariables": [
+                            {
+                                "ParametersKey": 0,
+                                "ParametersValue": 0.0
+                            },
+                            {
+                                "ParametersKey": 1,
+                                "ParametersValue": 0.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1411548265,
+                "ParentUID": 413802338,
+                "Name": "OK SFX",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/UI/Okay",
+                        "ParametersVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 916504633,
+                "ParentUID": 413802338,
+                "Name": "Select SFX",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/UI/Cancel",
+                        "ParametersVariables": []
                     }
                 ]
             }
