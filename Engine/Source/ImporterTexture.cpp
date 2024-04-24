@@ -54,9 +54,8 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
             // If the texture is a BaseColor and has alpha, use BC3 instead of BC1 to avoid artifacts
             if (compressionFormat == DXGI_FORMAT_BC1_UNORM && DirectX::HasAlpha(image.GetMetadata().format))
             {
-				compressionFormat = DXGI_FORMAT_BC3_UNORM;
-			}
-
+                compressionFormat = DXGI_FORMAT_BC3_UNORM;
+            }
             hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), compressionFormat, DirectX::TEX_COMPRESS_DEFAULT, 0.5f, compressedImage);
             if (FAILED(hr))
             {
@@ -220,7 +219,7 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
             else
             {
 				glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
-			}
+            }
         }
 
         // Generate mipmaps if only one mip level is present
