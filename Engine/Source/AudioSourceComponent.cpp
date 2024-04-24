@@ -113,16 +113,29 @@ void AudioSourceComponent::Update()
 
 void AudioSourceComponent::Play()
 {
-	mEventInstance->start();
+	if (this != nullptr)
+	{
+		mEventInstance->start();
+	}
+	else {
+		LOG("Cannot found audio source");
+	}
 }
 
 void AudioSourceComponent::PlayOneShot()
 {
-	FMOD::Studio::EventInstance* eventInstance = NULL;
-	mEventDescription->createInstance(&eventInstance);
+	if (this != nullptr)
+	{
+		FMOD::Studio::EventInstance* eventInstance = nullptr;
+		mEventDescription->createInstance(&eventInstance);
 
-	eventInstance->start();
-	eventInstance->release();
+		eventInstance->start();
+		eventInstance->release();
+	}
+	else {
+		LOG("Cannot found audio source");
+	}
+
 }
 
 void AudioSourceComponent::Stop(bool fadeout)
