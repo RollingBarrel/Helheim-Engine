@@ -51,8 +51,6 @@ void ProjectPanel::Draw(int windowFlags)
 
 const void ProjectPanel::DrawFolders(const PathNode& current)
 {
-	std::string bar = "/";
-	
 	//Discard Meta file but, read .emeta data
 	for (auto i = 0; i < current.mChildren.size(); ++i)
 	{	

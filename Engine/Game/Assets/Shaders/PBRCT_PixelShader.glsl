@@ -83,7 +83,7 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	vec3 L =  -normalize(lDir); 	//Light direction
 	vec3 H = normalize(L+V);
 	vec3 Li = lInt * lAtt * lCol.rgb;  //Incoming radiance
-	float dotNL = max(dot(N,L),0);
+	float dotNL = max(dot(N,L),0.001);
 	float dotLH = max(dot(L,H),0);
 	float dotNH = max(dot(N,H),0);
 	float dotNV = max(dot(N,V),0);
