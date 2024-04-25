@@ -127,7 +127,6 @@
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleEvent.cpp" />
     <ClCompile Include="ModuleEvent.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -145,6 +144,12 @@
     </ClCompile>
     <ClCompile Include="ModuleResource.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>Utils\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,9 +253,6 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleCamera.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -314,7 +316,6 @@
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEvent.h" />
     <ClInclude Include="ModuleEvent.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -325,6 +326,12 @@
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
       <Filter>Utils\Scripting</Filter>
     </ClInclude>
   </ItemGroup>

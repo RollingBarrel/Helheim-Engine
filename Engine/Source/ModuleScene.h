@@ -37,6 +37,8 @@ public:
 	}
 
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
+	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
+	void SetShouldUpdateQuadtree(bool updateQuadtree) { mShouldUpdateQuadtree = updateQuadtree; }
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
@@ -76,7 +78,8 @@ private:
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
 
-	Quadtree* mQuadtreeRoot = nullptr;;
+	Quadtree* mQuadtreeRoot = nullptr;
+	bool mShouldUpdateQuadtree = false;
 	bool mApplyculling = false;
 
 	GameObject* mRoot = nullptr;

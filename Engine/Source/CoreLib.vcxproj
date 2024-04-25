@@ -232,7 +232,6 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
-    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="Quadtree.cpp" />
@@ -251,7 +250,6 @@
     <ClCompile Include="SaveLoadNavMesh.cpp" />
     <ClCompile Include="SaveLoadScript.cpp" />
     <ClCompile Include="SaveLoadTexture.cpp" />
-    <ClCompile Include="Script.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SliderComponent.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
@@ -435,7 +433,6 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
-    <ClInclude Include="Physics.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Quadtree.h" />
@@ -454,7 +451,6 @@
     <ClInclude Include="SaveLoadNavMesh.h" />
     <ClInclude Include="SaveLoadScript.h" />
     <ClInclude Include="SaveLoadTexture.h" />
-    <ClInclude Include="Script.h" />
     <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SliderComponent.h" />
     <ClInclude Include="SpotLightComponent.h" />

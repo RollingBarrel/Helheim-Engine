@@ -195,9 +195,6 @@
     <ClCompile Include="SaveLoadNavMesh.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="Script.cpp">
-      <Filter>Utils\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationController.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -375,9 +372,6 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Utils\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="Main.h">
       <Filter>Core</Filter>
     </ClCompile>
@@ -544,9 +538,6 @@
     </ClInclude>
     <ClInclude Include="SaveLoadNavMesh.h">
       <Filter>Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="Script.h">
-      <Filter>Utils\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="AnimationController.h">
       <Filter>Utils</Filter>
@@ -994,9 +985,6 @@
     </ClInclude>
     <ClInclude Include="Quadtree.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Utils\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>

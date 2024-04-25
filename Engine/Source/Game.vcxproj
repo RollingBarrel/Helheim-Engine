@@ -139,6 +139,12 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ModuleScriptManager.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Script.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="Script.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

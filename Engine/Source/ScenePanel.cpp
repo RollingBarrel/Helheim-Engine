@@ -18,10 +18,6 @@
 #include "ImporterModel.h"
 #include "ResourceModel.h"
 #include "debugdraw.h"
-#include "ModuleInput.h"
-#include "ModuleCamera.h"
-#include "Geometry/LineSegment.h"
-#include "Quadtree.h"
 
 #include "AnimationComponent.h"
 
@@ -71,7 +67,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 	{
 		for (auto it = node.mUids.cbegin(); it != node.mUids.cend(); ++it)
 		{
-			if (name == "GameObject") 
+			if (name == "GameObject")
 			{
 				name = "MeshRenderer";
 			}
@@ -82,7 +78,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 		}
 	}
 
-	if (cAnimation) 
+	if (cAnimation)
 	{
 		if (rModel.mJoints[nodeIt].first == nodeNumber)
 		{
@@ -103,66 +99,8 @@ ScenePanel::~ScenePanel()
 {
 }
 
-static void CheckRaycast()
-{
-	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
-
-	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
-	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
-
-	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
-	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
-
-	LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
-
-	Ray ray;
-	ray.pos = raySegment.a;
-	ray.dir = (raySegment.b - raySegment.a);
-
-	bool intersects = false;
-	bool intersectsTriangle = false;
-
-	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
-
-	if (!reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
-	{
-
-		std::map<float, GameObject*> hits = root->RayCast(&ray);
-		if (!hits.empty())
-		{
-			const std::pair<float, GameObject*> intersectGameObjectPair = std::pair<float, GameObject*>(hits.begin()->first, hits.begin()->second);
-			if (intersectGameObjectPair.second != nullptr)
-			{
-				GameObject* parentGameObject = intersectGameObjectPair.second;
-				while (!parentGameObject->GetParent()->IsRoot())
-				{
-					parentGameObject = parentGameObject->GetParent();
-				}
-
-				GameObject* focusedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-
-				if (focusedGameObject->GetID() == parentGameObject->GetID())
-				{
-					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second);
-				}
-				else
-				{
-					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
-				}
-			}
-		}
-	}
-}
-
 void ScenePanel::Draw(int windowFlags)
 {
-	//TODO: SEPARATE GAME ENGINE
-	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-	{
-		CheckRaycast();
-	}
-	
-	
 	windowFlags |= ImGuiWindowFlags_NoMove;
 
 	if (ImGui::Begin("Game", &mOpen, windowFlags))
@@ -186,14 +124,16 @@ void ScenePanel::Draw(int windowFlags)
 		if (ImGui::IsWindowAppearing())
 		{
 			App->GetCamera()->ActivateEditorCamera();
-			
+
 		}
 
 		DrawScene();
-		
+
 	}
 	ImGui::End();
-	
+
+
+
 }
 
 void ScenePanel::DrawScene()
@@ -217,7 +157,7 @@ void ScenePanel::DrawScene()
 	{
 		App->GetInput()->SetGameMousePosition(mMousePosition);
 	}
-	
+
 
 	if (ImGui::BeginDragDropTarget())
 	{
@@ -260,7 +200,7 @@ void ScenePanel::DrawScene()
 							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), gameObjectRoot, true));
 						else
 							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), tempVec.at(node.mParentIndex), false));
-					
+
 						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
 						//{
 						//	if (reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first == i)
@@ -309,7 +249,7 @@ void ScenePanel::DrawScene()
 	GameObject* selectedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 
 	//If there's a selected object in the hierarchy and it's not the root
-	if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot())) 
+	if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot()))
 	{
 		const float4x4* transform = &selectedGameObject->GetWorldTransform();
 		float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
@@ -317,7 +257,7 @@ void ScenePanel::DrawScene()
 		//Draws the Guizmo axis
 		ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), currentGuizmoOperation, currentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
 
-		if (ImGuizmo::IsUsing()) 
+		if (ImGuizmo::IsUsing())
 		{
 			mIsGuizmoUsing = true;
 			GameObject* parent = selectedGameObject->GetParent();
@@ -326,7 +266,7 @@ void ScenePanel::DrawScene()
 			Quat rotation;
 			float3 scale;
 
-			if (parent != nullptr) 
+			if (parent != nullptr)
 			{
 				const float4x4* parentTransform = &parent->GetWorldTransform();
 				inverseParentMatrix = parent->GetWorldTransform().Inverted();
@@ -335,7 +275,7 @@ void ScenePanel::DrawScene()
 			float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
 			localMatrix.Decompose(translation, rotation, scale);
 
-			switch (currentGuizmoOperation) 
+			switch (currentGuizmoOperation)
 			{
 			case ImGuizmo::TRANSLATE:
 				selectedGameObject->SetPosition(translation);
@@ -348,7 +288,7 @@ void ScenePanel::DrawScene()
 				break;
 			}
 		}
-		else 
+		else
 		{
 			mIsGuizmoUsing = false;
 		}

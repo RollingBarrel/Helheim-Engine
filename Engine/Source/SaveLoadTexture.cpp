@@ -62,7 +62,6 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         unsigned int mipLevels = header[5];
         unsigned int numPixels = header[6];
 
-
         bool hasAlpha;
         bytes = sizeof(hasAlpha);
         memcpy(&hasAlpha, cursor, bytes);
@@ -80,7 +79,14 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         // Set texture data for each mip level
         for (size_t i = 0; i < mipLevels; ++i)
         {
-            glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+            if (internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT5_EXT || internalFormat == GL_COMPRESSED_RG_RGTC2 || internalFormat == GL_COMPRESSED_RGBA_BPTC_UNORM)
+            {
+                glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, numPixels, pixels);
+            }
+            else
+            {
+                glTexImage2D(GL_TEXTURE_2D, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+            }
         }
 
         // Generate mipmaps if only one mip level is present

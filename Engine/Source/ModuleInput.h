@@ -107,8 +107,6 @@ public:
 	void SetGameMousePosition(float2 gameMousePosition) { mGameMousePosition = gameMousePosition; }
 	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
-	float2 GetGameMousePosition() const { return mGameMousePosition; }
-	void SetGameMousePosition(float2 gameMousePosition) { mGameMousePosition = gameMousePosition; }
 
 	ButtonState	GetGameControllerButton(int id) const { return mGameController.mButtons[id]; }
 	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }

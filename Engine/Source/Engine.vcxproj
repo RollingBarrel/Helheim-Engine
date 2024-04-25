@@ -197,6 +197,7 @@
     <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ModuleScriptManager.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
     <ClCompile Include="log.cpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="Script.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
     <ClCompile Include="TagsManagerPanel.cpp" />
     <ClCompile Include="TimerPanel.cpp" />
@@ -252,11 +254,13 @@
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="NavMeshControllerPanel.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ImporterTexture.h" />
+    <ClInclude Include="Script.h" />
     <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="OptickAdapter.h" />
     <ClInclude Include="SettingsPanel.h" />
