@@ -40,7 +40,7 @@ void PlayerCamera::Start()
 
     mAuxLookTarget = mLookTarget;
 
-    SetView(float3(0, -10.0f, 7.0f), 0.5f);
+    SetView(float3(0, -8.0f, 16.0f), 0.3f);
 
 
 }

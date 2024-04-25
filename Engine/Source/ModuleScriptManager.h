@@ -18,6 +18,7 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	void* GetDLLHandle() { return mHandle; }
+	bool IsPlaying() { return mIsPlaying; }
 	
 	void AddScript(ScriptComponent* script);
 	void RemoveScript(ScriptComponent* script);

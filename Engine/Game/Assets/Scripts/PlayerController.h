@@ -4,7 +4,9 @@
 
 class NavMeshController;
 class AnimationComponent;
+class AudioSourceComponent;
 class SliderComponent;
+class AudioSourceComponent;
 
 enum class PlayerState 
 {
@@ -16,11 +18,19 @@ enum class PlayerState
     DEATH
 };
 
-enum class Weapon 
-{
+enum class BattleSituation {
+    IDLE_HIGHT_HP,
+    IDLE_LOW_HP,
+    BATTLE_HIGHT_HP,
+    BATTLE_LOW_HP,
+    DEATH
+};
+
+enum class Weapon {
     RANGE,
     MELEE
 };
+
 
 
 GENERATE_BODY(PlayerController);
@@ -35,6 +45,8 @@ class PlayerController :public Script
 
         void TakeDamage(float damage);
         bool IsDead();
+
+        BattleSituation GetBattleSituation() {return mCurrentSituation;};
 
     private:
         void Idle();
@@ -52,11 +64,14 @@ class PlayerController :public Script
         void RechargeDash();
         void Death();
         void UpdateHealth();
+        void UpdateBattleSituation();
         void CheckDebugOptions();
 
-        Weapon mWeapon = Weapon::MELEE;
+        Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
+        BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+        float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;
         GameObject* mAnimationComponentHolder = nullptr;
@@ -114,7 +129,18 @@ class PlayerController :public Script
         //DEBUG
         bool mGodMode = false;
 
-
         GameObject* mWinArea = nullptr;
 
+        // Audios section
+        // Footstep
+        GameObject* mFootStepAudioHolder = nullptr;
+        AudioSourceComponent* mFootStepAudio = nullptr;
+        bool mIsMoving = false;
+        bool mReadyToStep = false;
+        float mStepTimePassed = 0.0f;
+        float mStepCoolDown = 0.5f;
+
+        // Gunfire
+        GameObject* mGunfireAudioHolder = nullptr;
+        AudioSourceComponent* mGunfireAudio = nullptr;
 };

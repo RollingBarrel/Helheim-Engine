@@ -22,13 +22,9 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 AnimationComponent::~AnimationComponent()
 {
 	delete mController;
-	mController = nullptr;
 
-	if (mAnimation)
-	{
-		App->GetResource()->ReleaseResource(mAnimation->GetUID());
-		mAnimation = nullptr;
-	}
+	delete mAnimation;
+	mGameobjectsInverseMatrices.clear();
 }
 
 void AnimationComponent::SetLoop(bool loop)

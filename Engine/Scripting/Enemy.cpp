@@ -40,7 +40,7 @@ void Enemy::TakeDamage(float damage)
     
     mHealth -= damage;
     
-    LOG("Enemy Health: %u", mHealth);
+    LOG("Enemy Health: %f", mHealth);
 
 
     if (mHealth <= 0)

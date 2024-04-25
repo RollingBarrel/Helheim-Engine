@@ -2,6 +2,7 @@
 #include <Script.h>
 #include "Macros.h"
 
+class MainMenuManager;
 class ButtonComponent;
 
 enum MENU_TYPE {
@@ -13,6 +14,7 @@ enum MENU_TYPE {
 };
 
 GENERATE_BODY(MainMenu);
+
 class MainMenu : public Script
 {
     FRIEND(MainMenu)
@@ -46,10 +48,12 @@ private:
     void OnOptionsButtonHover();
     void OnCreditsButtonHover();
     void OnNewButtonHover();
+    void OnBackCreditsButtonHover();
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
     void OnCreditsButtonHoverOff();
     void OnNewButtonHoverOff();
+    void OnBackCreditsButtonHoverOff();
 
     bool mMenuActive = true;
     bool mPauseMenu = false;
@@ -67,6 +71,9 @@ private:
     const char* mScreen = nullptr;
     const char* mActualImageName = nullptr;
     const char* mPreviousImageName = nullptr;
+
+    GameObject* mMainMenuManagerHolder = nullptr;
+    MainMenuManager* mMainMenuManager = nullptr;
     
     int mOption = 0;  
     bool mLoadlevel = false;
@@ -83,11 +90,14 @@ private:
     GameObject* mOptionsGO = nullptr;
     GameObject* mCreditsGO = nullptr;
     GameObject* mQuitGO = nullptr;
+    GameObject* mBackCreditGO = nullptr;
+    GameObject* mOptionsContainerGO = nullptr;
 
     ButtonComponent* mSplashButton = nullptr;
     ButtonComponent* mNewButton = nullptr;
     ButtonComponent* mOptionsButton = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
     ButtonComponent* mQuitButton = nullptr;
+    ButtonComponent* mBackCreditButton = nullptr;
 };
 

@@ -113,6 +113,11 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mMainMenuManagerHolder",
+                                "MemberType": 3,
+                                "VariableData": 413802338
+                            },
+                            {
                                 "VariableName": "MENUS",
                                 "MemberType": 5
                             },
@@ -142,13 +147,18 @@
                                 "VariableData": 1587975136
                             },
                             {
-                                "VariableName": "BUTTONS",
-                                "MemberType": 5
-                            },
-                            {
                                 "VariableName": "mContainerGO",
                                 "MemberType": 3,
                                 "VariableData": 1092932759
+                            },
+                            {
+                                "VariableName": "mOptionsContainerGO",
+                                "MemberType": 3,
+                                "VariableData": 710458926
+                            },
+                            {
+                                "VariableName": "BUTTONS",
+                                "MemberType": 5
                             },
                             {
                                 "VariableName": "mSplashGO",
@@ -174,6 +184,11 @@
                                 "VariableName": "mQuitGO",
                                 "MemberType": 3,
                                 "VariableData": 1509201288
+                            },
+                            {
+                                "VariableName": "mBackCreditGO",
+                                "MemberType": 3,
+                                "VariableData": 2146932173
                             }
                         ]
                     }
@@ -204,6 +219,81 @@
                 "PrefabId": 0,
                 "OverridePrefab": true,
                 "Components": []
+            },
+            {
+                "UID": 2146932173,
+                "ParentUID": 319104652,
+                "Name": "BackBtn",
+                "isEnabled": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1675635989,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            800.0,
+                            -478.1499938964844,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            230.0,
+                            50.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ImageID": 412586098,
+                        "ComponentType": 8,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "HasAlpha": false,
+                        "Alpha": 1.0
+                    },
+                    {
+                        "ID": 408373276,
+                        "ComponentType": 11,
+                        "isEnabled": true
+                    }
+                ]
             },
             {
                 "UID": 1092932759,
@@ -322,7 +412,7 @@
                         ]
                     },
                     {
-                        "ImageID": 645112078,
+                        "ImageID": 484600364,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -397,7 +487,7 @@
                         ]
                     },
                     {
-                        "ImageID": 1136416083,
+                        "ImageID": 1967299490,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -472,7 +562,7 @@
                         ]
                     },
                     {
-                        "ImageID": 1236548728,
+                        "ImageID": 104850992,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -547,7 +637,7 @@
                         ]
                     },
                     {
-                        "ImageID": 1084184771,
+                        "ImageID": 1452619573,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -561,6 +651,177 @@
                         "ID": 688266281,
                         "ComponentType": 11,
                         "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 710458926,
+                "ParentUID": 1092932759,
+                "Name": "Container",
+                "isEnabled": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": []
+            },
+            {
+                "UID": 1260243799,
+                "ParentUID": 710458926,
+                "Name": "ControlsBtn",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1265047648,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            -474.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            230.0,
+                            75.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ImageID": 1874810075,
+                        "ComponentType": 8,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "HasAlpha": false,
+                        "Alpha": 1.0
+                    },
+                    {
+                        "ID": 1276743976,
+                        "ComponentType": 11,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1250112281,
+                "ParentUID": 710458926,
+                "Name": "AudioBtn",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1254985751,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            -475.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            230.0,
+                            75.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ImageID": 100055956,
+                        "ComponentType": 8,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "HasAlpha": false,
+                        "Alpha": 1.0
                     }
                 ]
             },
@@ -622,7 +883,7 @@
                         ]
                     },
                     {
-                        "ImageID": 13021810,
+                        "ImageID": 741577686,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -692,7 +953,7 @@
                         ]
                     },
                     {
-                        "ImageID": 459852709,
+                        "ImageID": 1923159663,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -762,7 +1023,7 @@
                         ]
                     },
                     {
-                        "ImageID": 1849781035,
+                        "ImageID": 1918319773,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -800,7 +1061,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ImageID": 1331783300,
+                        "ImageID": 1017268219,
                         "ComponentType": 8,
                         "Color": [
                             1.0,
@@ -950,6 +1211,159 @@
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 413802338,
+                "ParentUID": 1,
+                "Name": "MainMenu Manager",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "MainMenuManager",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mMainMenuThemeHolder",
+                                "MemberType": 3,
+                                "VariableData": 1534320698
+                            },
+                            {
+                                "VariableName": "mOKSFXHolder",
+                                "MemberType": 3,
+                                "VariableData": 1411548265
+                            },
+                            {
+                                "VariableName": "mSelectSFXHolder",
+                                "MemberType": 3,
+                                "VariableData": 916504633
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1534320698,
+                "ParentUID": 413802338,
+                "Name": "MainMenu Theme",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/Music/Level 01",
+                        "ParametersVariables": [
+                            {
+                                "ParametersKey": 0,
+                                "ParametersValue": 0.0
+                            },
+                            {
+                                "ParametersKey": 1,
+                                "ParametersValue": 0.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1411548265,
+                "ParentUID": 413802338,
+                "Name": "OK SFX",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/UI/Okay",
+                        "ParametersVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 916504633,
+                "ParentUID": 413802338,
+                "Name": "Select SFX",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ComponentType": 13,
+                        "EventName": "event:/UI/Cancel",
+                        "ParametersVariables": []
                     }
                 ]
             }

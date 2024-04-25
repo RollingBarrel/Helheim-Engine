@@ -15,11 +15,6 @@ void FmodUtils::CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int
 	}
 }
 
-//char* FmodUtils::GetEventName(FMOD::Studio::EventInstance eventInstance)
-//{
-//
-//}
-
 std::vector<const char*> FmodUtils::GetEventsNames()
 {
 	std::vector<const char*> result;
