@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleDebugDraw.h"
+//#include "ModuleDebugDraw.h"
 #include "MathFunc.h"
 
 #include "SpotLightComponent.h"

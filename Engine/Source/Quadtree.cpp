@@ -7,7 +7,6 @@
 #include "Geometry/Frustum.h"
 
 #include "Application.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
 #include "ResourceMesh.h"
 #include "Geometry/Triangle.h"

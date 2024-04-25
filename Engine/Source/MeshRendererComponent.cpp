@@ -7,7 +7,6 @@
 #include "Quadtree.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
-#include "ModuleDebugDraw.h"
 #include "DebugPanel.h"
 #include "GeometryBatch.h"
 

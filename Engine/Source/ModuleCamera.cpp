@@ -9,7 +9,6 @@
 #include "ModuleEditor.h"
 #include "ModuleOpenGL.h"
 #include "HierarchyPanel.h"
-#include "ModuleDebugDraw.h"
 #include "MeshRendererComponent.h"
 #include "ImporterMesh.h"
 #include "Geometry/Triangle.h"

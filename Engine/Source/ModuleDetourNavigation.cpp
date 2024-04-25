@@ -12,7 +12,6 @@
 //TODO: Remove recast from the coreLib
 #include "Recast.h"
 #include "Application.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleOpenGL.h"
 #define MAX_AMOUNT 999
 ModuleDetourNavigation::ModuleDetourNavigation()

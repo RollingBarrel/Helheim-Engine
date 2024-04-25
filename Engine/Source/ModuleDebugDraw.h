@@ -17,9 +17,9 @@ public:
     ModuleDebugDraw();
     ~ModuleDebugDraw();
 
-	bool            Init();
-	update_status   Update(float dt);
-	bool            CleanUp();
+	bool            Init() override;
+	update_status   Update(float dt) override;
+	bool            CleanUp() override;
 
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
     void DrawAxis();
