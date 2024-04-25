@@ -159,6 +159,8 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
         }
     }
 
+    size += (sizeof(float) * 16 + sizeof(int)) * ourAnimation->mInvBindMatrices.size();
+
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
 
@@ -209,7 +211,7 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
         memcpy(cursor, &channel.second->invBindMatrix, bytes);
         cursor += bytes;
     }
-    /*
+    
     //Joints
     unsigned int jointsSize = ourAnimation->mInvBindMatrices.size();
     bytes = sizeof(unsigned int);
@@ -225,7 +227,7 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
         bytes = sizeof(float4x4);
         memcpy(cursor, &ourAnimation->mInvBindMatrices[i].second, bytes);
         cursor += bytes;
-    }*/
+    }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
     LOG("Animation:");
@@ -324,7 +326,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
             ourAnimation->mChannels[name] = channel;
             delete[] name;
         }
-        /*
+        
         //Joints
         unsigned int jointsSize = 0;
         bytes = sizeof(unsigned int);
@@ -343,7 +345,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
             bytes = sizeof(float4x4);
             memcpy(&ourAnimation->mInvBindMatrices[i].second, cursor, bytes);
             cursor += bytes;
-        }*/
+        }
 
         delete[] fileBuffer;
     }
