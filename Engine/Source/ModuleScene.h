@@ -39,7 +39,7 @@ public:
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
-	void SetApplyFrustumCulling(bool a) { mApplyculling = a; }
+	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
 	void ResetFrustumCulling(GameObject* obj);
 
 	GameObject* FindGameObjectWithTag(GameObject* root, unsigned tagID);

@@ -63,8 +63,8 @@ bool ModuleScene::Init()
 	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 
 	//Load("scene");
-	//Load("MainMenu");
-	Load("Level1");
+	Load("MainMenu");
+	//Load("Level1");
 
 
 	return true;
@@ -252,9 +252,9 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	return 0;
 }
 
+
 void ModuleScene::Load(const char* sceneName) 
 {
-
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) 
 	{
@@ -286,7 +286,6 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->UpdateTree();
-		App->GetUI()->FindCanvas(mRoot);
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
@@ -408,14 +407,21 @@ update_status ModuleScene::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+
 update_status ModuleScene::Update(float dt)
 {
+	mShouldUpdateQuadtree = false;
 	mRoot->Update();
 	if (mNavMeshController)
 	{
 		mNavMeshController->Update();
 	}
 	App->GetOpenGL()->Draw();
+
+	if (mShouldUpdateQuadtree)
+	{
+		mQuadtreeRoot->UpdateTree();
+	}
 
 	return UPDATE_CONTINUE;
 }

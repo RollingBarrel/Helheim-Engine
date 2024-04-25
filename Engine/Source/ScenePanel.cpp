@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "ModuleInput.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "CameraComponent.h"
@@ -216,6 +217,7 @@ void ScenePanel::DrawScene()
 	{
 		App->GetInput()->SetGameMousePosition(mMousePosition);
 	}
+	
 
 	if (ImGui::BeginDragDropTarget())
 	{

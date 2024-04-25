@@ -3,10 +3,13 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleWindow.h"
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
+#include "Geometry/Plane.h"
 #include "AnimationComponent.h"
+#include "AudioSourceComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
 #include "SliderComponent.h"
@@ -28,14 +31,14 @@ CREATE(PlayerController)
     MEMBER(MemberType::INT, mMaxDashCharges);
 
     SEPARATOR("MELEE ATTACK");
-    MEMBER(MemberType::FLOAT, mRangeBaseDamage);
-    MEMBER(MemberType::FLOAT, mFireRate);
+    MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
     MEMBER(MemberType::FLOAT, mMinMeleeChargeTime);
     MEMBER(MemberType::FLOAT, mMaxMeleeChargeTime);
     MEMBER(MemberType::FLOAT, mMeleeChargeAttackMultiplier);
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
+    MEMBER(MemberType::FLOAT, mFireRate);
     MEMBER(MemberType::INT, mAmmoCapacity);
     MEMBER(MemberType::FLOAT, mMinRangeChargeTime);
     MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);
@@ -55,6 +58,9 @@ CREATE(PlayerController)
 
     SEPARATOR("WIN AREA");
     MEMBER(MemberType::GAMEOBJECT, mWinArea);
+    SEPARATOR("AUDIO");
+    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
+    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
 
     END_CREATE;
 }
@@ -76,6 +82,23 @@ void PlayerController::Start()
     if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
     if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
     if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
+
+    if (mAnimationComponentHolder) 
+    {
+        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
+        mAnimationComponent->OnStart();
+    }
+
+    if (mFootStepAudioHolder)
+    {
+        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+
+    if (mGunfireAudioHolder)
+    {
+        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+   
 }
 
 
@@ -83,6 +106,7 @@ void PlayerController::Update()
 {
     CheckDebugOptions();
     UpdateHealth();
+    UpdateBattleSituation();
     RechargeDash();
 
     switch (mCurrentState)
@@ -108,6 +132,7 @@ void PlayerController::Update()
         break;
     }
 
+    HandleRotation();
 
     if (mWinArea)
     {
@@ -177,29 +202,46 @@ void PlayerController::Moving()
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         Move(float3::unitZ);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(0), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
         Move(-float3::unitZ);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(180.0f), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
         Move(float3::unitX);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(90.0f), 0.0f));
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
         Move(-float3::unitX);
-        mGameObject->SetRotation(float3(0.0f, DegToRad(-90.0f), 0.0f));
         anyKeyPressed = true;
+    }
+
+    // Hardcoded play-step-sound solution: reproduce every second 
+    // TODO play sound according the animation
+    if (anyKeyPressed)
+    {
+        if (!mReadyToStep)
+        {
+            mStepTimePassed += App->GetGameDt();
+            if (mStepTimePassed >= mStepCoolDown)
+            {
+                mStepTimePassed = 0;
+                mStepTimePassed = false;
+                mReadyToStep = true;
+            }
+        }
+        else
+        {
+            mFootStepAudio->PlayOneShot();
+            mReadyToStep = false;
+        }
     }
 
     Idle();
@@ -209,6 +251,24 @@ void PlayerController::Move(float3 direction)
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mPlayerSpeed);
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+}
+
+void PlayerController::HandleRotation()
+{
+    std::map<float, Hit> hits;
+
+    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGameMousePosition());
+    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
+
+    float distance;
+    bool intersects = plane.Intersects(ray, &distance);
+    float3 hitPoint = ray.GetPoint(distance);
+    if (intersects)
+    {
+        float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
+        mGameObject->LookAt(target);
+    }
+
 }
 
 
@@ -292,7 +352,7 @@ void PlayerController::MeleeAttack()
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
             Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            enemyScript->Hit(mMeleeBaseDamage);
+            enemyScript->TakeDamage(mMeleeBaseDamage);
         }
     }
 }
@@ -311,7 +371,7 @@ void PlayerController::RangedAttack()
             mChargedTime = Min(mMaxRangeChargeTime, mChargedTime);
             float totalDamage;
 
-            int bulletCost = mChargedTime * mFireRate;
+            int bulletCost = static_cast<int>(mChargedTime * mFireRate);
             if (mBullets >= bulletCost)
             {
                 totalDamage = mChargedTime * mRangeBaseDamage * mRangeChargeAttackMultiplier;
@@ -324,6 +384,7 @@ void PlayerController::RangedAttack()
                 totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
                 mBullets -= mBullets;
             }
+            mGunfireAudio->PlayOneShot();
             mChargedTime = 0.0f;
             LOG("Charged shot fired. Damage:  %f", totalDamage);
             LOG("Bullets:  %i", mBullets);
@@ -338,21 +399,21 @@ void PlayerController::RangedAttack()
     {
         if (mBullets > 0) 
         {
-            Shoot(mRangeBaseDamage * App->GetGameDt());
-            mBullets-=mFireRate * App->GetGameDt();
-            if (mBullets == 0) 
+            static float startingTime = mFireRate;
+            startingTime -= App->GetGameDt();
+
+            if (startingTime <= 0.0f)
             {
-                LOG("Out of bullets! Cannot shoot.");
-                Reload();
-            }
-            else 
-            {
-                LOG("Basic shoot fire. Remining Bullets %i", mBullets);
+                mGunfireAudio->PlayOneShot();
+                startingTime = mFireRate;
+                Shoot(mRangeBaseDamage);
+                mBullets -= static_cast<int>(mFireRate);
+                LOG("Basic shoot fire. Remining Bullets %i", mBullets);             
             }
         }
         else
         {
-            LOG("Out of bullets! Cannot shoot2.");
+            LOG("Out of bullets! Reload.");
             Reload();
         }
     }
@@ -361,7 +422,7 @@ void PlayerController::RangedAttack()
 
 void PlayerController::Shoot(float damage)
 {
-    std::map<float, GameObject*> hits;
+    std::map<float, Hit> hits;
 
     Ray ray;
     ray.pos = mGameObject->GetPosition();
@@ -374,16 +435,16 @@ void PlayerController::Shoot(float damage)
 
     if (!hits.empty()) 
     {
-        for (auto hit : hits) 
+        for (const std::pair<float, Hit>& hit : hits)
         {
-            if (hit.second->GetTag()->GetName() == "Enemy") 
+            if (hit.second.mGameObject->GetTag()->GetName() == "Enemy") 
             {
-                LOG("Enemy %s has been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
+                LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
 
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
-                    enemy->Hit(damage);
+                    enemy->TakeDamage(damage);
                 }   
             }
         }
@@ -397,7 +458,7 @@ void PlayerController::Reload()
 }
 
 
-void PlayerController::Hit(float damage) 
+void PlayerController::TakeDamage(float damage) 
 {
     if (mDashMovement == 0) 
     {    
@@ -476,40 +537,50 @@ bool PlayerController::IsDead()
     return mPlayerIsDead;
 }
 
-void PlayerController::CheckRoute()
+void PlayerController::UpdateHealth() 
 {
-    /*
-    if (App->GetInput()->GetKey(Keys::Keys_P) == KeyState::KEY_REPEAT)
-    {
-        float3 winPosition = mWinArea->GetPosition();
-        float3 playerPosition = mGameObject->GetPosition();
-        std::vector<float3> pathPoints = App->GetNavigation()->FindNavPath(playerPosition, winPosition);
+    if (mHealthSlider) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
+}
 
-        for (size_t i = 0; i < pathPoints.size() - 1; i++)
+void PlayerController::CheckDebugOptions() 
+{
+    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) 
+    {
+        mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
+    }
+}
+void PlayerController::UpdateBattleSituation()
+{
+    float hpRate = mHealth / mMaxHealth;
+
+    if (mCurrentState == PlayerState::DEATH) 
+    {
+        mCurrentSituation = BattleSituation::DEATH;
+    }
+    else if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
+        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK)) 
+    {
+        mBattleStateTransitionTime += App->GetGameDt();
+        if (mBattleStateTransitionTime >= 8.0f) 
         {
-            if (i == 0)
-            {
-                Debug::DrawLine(playerPosition, pathPoints[i], float3(1.0f, 0.0f, 0.0f));
+            if (hpRate <= 0.3) {
+                mCurrentSituation = BattleSituation::IDLE_LOW_HP;
             }
-            else if (i < pathPoints.size() - 1)
-            {
-                Debug::DrawLine(pathPoints[i], pathPoints[i + 1], float3(1.0f, 0.0f, 0.0f));
+            else {
+                mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
             }
-            else
-            {
-                Debug::DrawLine(pathPoints[i], winPosition, float3(1.0f, 0.0f, 0.0f));
-            }
+            
         }
     }
-    */
-}
+    else 
+    {
+        mBattleStateTransitionTime = 0.0f;
 
-void PlayerController::UpdateHealth() {
-    if (mHealthSlider != nullptr) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
-}
-
-void PlayerController::CheckDebugOptions() {
-    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) {
-        mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
+        if (hpRate <= 0.3) {
+            mCurrentSituation = BattleSituation::BATTLE_LOW_HP;
+        }
+        else {
+            mCurrentSituation = BattleSituation::BATTLE_HIGHT_HP;
+        }
     }
 }

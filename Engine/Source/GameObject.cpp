@@ -127,6 +127,25 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 	return matchingComponents;
 }
 
+Component* GameObject::GetComponentInParent(ComponentType type) const
+{
+	Component* component = nullptr;
+	const GameObject* parent = this;
+	while (parent)
+	{
+		component = parent->GetComponent(type);
+
+		if (component)
+		{
+			return component;
+		}
+		else 
+		{
+			parent = parent->mParent;
+		}
+	}
+}
+
 void GameObject::RecalculateMatrices()
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
@@ -149,7 +168,7 @@ void GameObject::Update()
 {
 	if (IsActive())
 	{
-		if (isTransformModified)
+		if (mIsTransformModified)
 		{
 			RecalculateMatrices();
 			RefreshBoundingBoxes();
@@ -165,8 +184,35 @@ void GameObject::Update()
 		}
 
 		DeleteComponents();
-		isTransformModified = false;
+		mIsTransformModified = false;
 	}
+}
+
+void GameObject::LookAt(float3 target)
+{
+	float4x4 rotationMatrix = float4x4::identity;
+
+	//rotationMatrix = rotationMatrix.RotateFromTo(GetFront().Normalized() , (target - mPosition).Normalized());
+	
+	float3 forward = -(target - mPosition).Normalized();
+	float3 right = Cross(forward, GetUp()).Normalized();
+	float3 up = Cross(right, forward).Normalized();
+	
+	rotationMatrix[0][0] = right.x;
+	rotationMatrix[1][0] = right.y;
+	rotationMatrix[2][0] = right.z;
+	rotationMatrix[0][1] = up.x;
+	rotationMatrix[1][1] = up.y;
+	rotationMatrix[2][1] = up.z;
+	rotationMatrix[0][2] = -forward.x;
+	rotationMatrix[1][2] = -forward.y;
+	rotationMatrix[2][2] = -forward.z;
+
+	
+	mRotation = Quat(rotationMatrix);
+	mEulerRotation = mRotation.ToEulerXYZ();
+
+	mIsTransformModified = true;
 }
 
 void GameObject::ResetTransform()
@@ -206,27 +252,27 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 {
 	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
 	mEulerRotation = rotationInRadians;
-	isTransformModified = true;
+	mIsTransformModified = true;
 }
 
 void GameObject::SetRotation(const Quat& rotation)
 {
 	mRotation = rotation;
 	mEulerRotation = rotation.ToEulerXYZ();
-	isTransformModified = true;
+	mIsTransformModified = true;
 }
 
 void GameObject::SetPosition(const float3& position)
 {
 	mPosition = position;
-	isTransformModified = true;
+	mIsTransformModified = true;
 }
 
 void GameObject::SetScale(const float3& scale)
 {
 	mScale = scale;
 
-	isTransformModified = true;
+	mIsTransformModified = true;
 }
 
 GameObject* GameObject::Find(const char* name) const
@@ -567,7 +613,8 @@ void GameObject::RefreshBoundingBoxes()
 	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
 		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
-		App->GetScene()->GetQuadtreeRoot()->UpdateTree();
+		App->GetScene()->SetShouldUpdateQuadtree(true);
+		
 	}
 	else
 	{
@@ -869,6 +916,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson)
 			}
 		}
 	}
+	RecalculateMatrices();
 }
 
 GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
@@ -888,14 +936,14 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 
 const bool GameObject::HasUpdatedTransform() const
 {
-	if (!isTransformModified && mParent != nullptr)
+	if (!mIsTransformModified && mParent != nullptr)
 	{
 		if (mParent->HasUpdatedTransform())
 		{
 			return true;
 		}
 	}
-	return isTransformModified;
+	return mIsTransformModified;
 }
 
 std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)

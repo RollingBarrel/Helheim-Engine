@@ -16,6 +16,7 @@
 #include "SDL_scancode.h"
 #include "GameObject.h"
 #include "Quat.h"
+#include "Physics.h"
 #include "CameraComponent.h"
 #include <map>
 

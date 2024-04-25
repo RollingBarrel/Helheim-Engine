@@ -37,7 +37,7 @@ void EnemyExplosive::Update()
     Enemy::Update();
 }
 
-void EnemyExplosive::Hit(float damage)
+void EnemyExplosive::TakeDamage(float damage)
 {
 }
 

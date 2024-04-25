@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "ButtonComponent.h"
+#include "ImageComponent.h"
 #include "ScriptComponent.h"
 #include "Component.h"
 
@@ -15,7 +16,7 @@ ButtonComponent::ButtonComponent(GameObject* owner) : Component(owner, Component
 
 ButtonComponent::ButtonComponent(const ButtonComponent& component, GameObject* owner) : Component(owner, ComponentType::BUTTON)
 {
-    for (int i = 0; i < 3; ++i) 
+    for (int i = 0; i < (int)EventType::COUNT; ++i)
     {
         for (const auto& handler : component.mEventHandlers[i]) 
         {
