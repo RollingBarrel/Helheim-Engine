@@ -30,8 +30,8 @@ bool ModuleScriptManager::Init()
 	mLastModificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
 
 	UpdateScripts();
-	return true;
 #endif // ENGINE
+	return true;
 }
 
 update_status ModuleScriptManager::PreUpdate(float dt)

@@ -9,7 +9,7 @@
 #include "glew.h"
 #include "float4x4.h"
 #include "ImporterMesh.h"
-#include "ModuleDebugDraw.h"
+//#include "ModuleDebugDraw.h"
 #include "AIAgentComponent.h"
 #include "DetourNavMeshBuilder.h"
 #include "Geometry/Triangle.h"

@@ -1,5 +1,5 @@
 #pragma once
-#include "vector"
+#include <vector>
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
 
@@ -23,8 +23,8 @@ class ENGINE_API NavMeshController
 {
 public:
 	NavMeshController();
-	void Reset();
 	~NavMeshController();
+	void Reset();
 	void HandleBuild();
 	void Update();
 

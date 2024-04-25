@@ -456,3 +456,21 @@ PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
     mName = new char[size];
     strcpy_s(const_cast<char*>(mName), size, name);
 }
+
+
+AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent) : mParent(parent)
+{
+    unsigned int sizeName = strlen(name) + 1;
+    mName = new char[sizeName];
+    strcpy_s(const_cast<char*>(mName), sizeName, name);
+
+    unsigned int sizePath = strlen(path) + 1;
+    mPath = new char[sizePath];
+    strcpy_s(const_cast<char*>(mPath), sizePath, path);
+}
+
+AssetDisplay::~AssetDisplay()
+{
+    delete mName;
+    delete mPath;
+}
