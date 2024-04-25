@@ -42,8 +42,8 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                     rAnimation->AddChannels(model, animation, srcChannel2, *rAnimation, ourChannel);
                 }
             }
-
-            /*bool found = false;
+            
+            bool found = false;
             if (!model.skins.empty())
             {
                 for (const auto& skins : model.skins)
@@ -84,7 +84,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                     }
 
                 }
-            }*/
+            }
 
             rAnimation->mChannels[name] = ourChannel;
         }
@@ -119,7 +119,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                     }
                 }
 
-                rAnimation->mJoints.push_back({ skins.joints[i], inverseBindMatrix });
+                rAnimation->mInvBindMatrices.push_back({ skins.joints[i], inverseBindMatrix });
 
             }
         }
@@ -127,7 +127,6 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
 
     if (rAnimation) {
         Importer::Animation::Save(rAnimation);
-       
     }
 
     return rAnimation;
@@ -205,14 +204,14 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
             memcpy(cursor, channel.second->rotations.get(), bytes);
             cursor += bytes;
         }
-
+        
         bytes = sizeof(float) * 16;
         memcpy(cursor, &channel.second->invBindMatrix, bytes);
         cursor += bytes;
     }
-
+    /*
     //Joints
-    unsigned int jointsSize = ourAnimation->mJoints.size();
+    unsigned int jointsSize = ourAnimation->mInvBindMatrices.size();
     bytes = sizeof(unsigned int);
     memcpy(cursor, &jointsSize, bytes);
     cursor += bytes;
@@ -220,14 +219,13 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
     for (int i = 0; i < jointsSize; ++i)
     {
         bytes = sizeof(unsigned int);
-        memcpy(cursor, &ourAnimation->mJoints[i].first, bytes);
+        memcpy(cursor, &ourAnimation->mInvBindMatrices[i].first, bytes);
         cursor += bytes;
 
-        bytes = sizeof(float) * 16;
-
-        memcpy(cursor, &ourAnimation->mJoints[i].second, bytes);
+        bytes = sizeof(float4x4);
+        memcpy(cursor, &ourAnimation->mInvBindMatrices[i].second, bytes);
         cursor += bytes;
-    }
+    }*/
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
     LOG("Animation:");
@@ -326,26 +324,26 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
             ourAnimation->mChannels[name] = channel;
             delete[] name;
         }
-
+        /*
         //Joints
         unsigned int jointsSize = 0;
         bytes = sizeof(unsigned int);
         memcpy(&jointsSize, cursor, bytes);
         cursor += bytes;
 
-        ourAnimation->mJoints.resize(jointsSize);
+        ourAnimation->mInvBindMatrices.resize(jointsSize);
 
         for (int i = 0; i < jointsSize; ++i)
         {
             int indexJoint = 0;
             bytes = sizeof(unsigned int);
-            memcpy(&ourAnimation->mJoints[i].first, cursor, bytes);
+            memcpy(&ourAnimation->mInvBindMatrices[i].first, cursor, bytes);
             cursor += bytes;
 
             bytes = sizeof(float4x4);
-            memcpy(&ourAnimation->mJoints[i].second, cursor, bytes);
+            memcpy(&ourAnimation->mInvBindMatrices[i].second, cursor, bytes);
             cursor += bytes;
-        }
+        }*/
 
         delete[] fileBuffer;
     }

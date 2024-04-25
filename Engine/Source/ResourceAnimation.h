@@ -51,7 +51,7 @@ public:
     std::string mName;
     unsigned int mDuration = 0;
 
-    std::vector<std::pair<int, float4x4>> mJoints;
+    std::vector<std::pair<int, float4x4>>  mInvBindMatrices;
 };
 
 
