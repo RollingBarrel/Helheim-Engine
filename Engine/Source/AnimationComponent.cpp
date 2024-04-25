@@ -137,24 +137,25 @@ void AnimationComponent::SetEndTime(float time)
 	mController->SetEndTime(time);
 }
 
-void AnimationComponent::AddJointNode(GameObject* node)
-{
-	ResourceAnimation::AnimationChannel* animChannel = mAnimation->GetChannel(node->GetName());
-	if (animChannel /*&& !animChannel->invBindMatrix.Equals(float4x4::identity)*/)
-	{
-		mGameobjectsInverseMatrices.push_back(std::pair(node, animChannel->invBindMatrix));
-	}
-}
 
-void AnimationComponent::LoadAllChildJoints(GameObject* currentObject)
-{
-	AddJointNode(currentObject);
-	for (const auto& object : currentObject->GetChildren())
-	{
-		LoadAllChildJoints(object);
-	}
+//void AnimationComponent::AddJointNode(GameObject* node)
+//{
+//	ResourceAnimation::AnimationChannel* animChannel = mAnimation->GetChannel(node->GetName());
+//	if (animChannel /*&& !animChannel->invBindMatrix.Equals(float4x4::identity)*/)
+//	{
+//		mGameobjectsInverseMatrices.push_back(std::pair(node, animChannel->invBindMatrix));
+//	}
+//}
 
-}
+//void AnimationComponent::LoadAllChildJoints(GameObject* currentObject)
+//{
+//	AddJointNode(currentObject);
+//	for (const auto& object : currentObject->GetChildren())
+//	{
+//		LoadAllChildJoints(object);
+//	}
+//
+//}
 
 void AnimationComponent::UpdatePalette()
 {

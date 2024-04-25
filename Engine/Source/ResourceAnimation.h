@@ -31,9 +31,6 @@ public:
         bool hasTranslation = false;
         bool hasRotation = false;
         /*bool hasScale = false;*/
-
-        float4x4 invBindMatrix = float4x4::identity;
-
     };
 
     void AddChannels(const tinygltf::Model& model, const tinygltf::Animation& animation, const tinygltf::AnimationChannel& channel, ResourceAnimation& ourAnimation, ResourceAnimation::AnimationChannel* ourChannel);
