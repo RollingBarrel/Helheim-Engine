@@ -83,13 +83,13 @@ public:
 	const char* GetExtensionFromPath(const char* path) const;
 	const char* GetFileExtensionFromPath(const char* path) const;
 	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
+	void GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const;
 
 	PathNode* GetRootNode() { return mRoot; }
 	void CleanNode(PathNode* node);
 
 private:
 
-	void UpdateScripts();
 	bool mIsClean = false;
 	PathNode* mRoot = nullptr;
 };

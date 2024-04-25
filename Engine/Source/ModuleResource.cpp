@@ -31,6 +31,7 @@
 
 bool ModuleResource::Init()
 {
+#ifdef ENGINE
 	std::vector<std::string> metas;
 	App->GetFileSystem()->DiscoverFiles("Assets", ".emeta", metas);
 	std::string assetsPath;
@@ -93,6 +94,7 @@ bool ModuleResource::Init()
 			delete[] fileBuffer;
 		}
 	}
+#endif //ENGINE
 	return true;
 }
 
@@ -112,11 +114,13 @@ unsigned int ModuleResource::Find(const char* assetsFile) const
 	return 0;
 }
 
+#ifdef ENGINE
+
 unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned int forcedUid, bool modifyAssets)
 {
 	// Extract the import file type of asset
 	Resource::Type type = DeduceResourceType(importedFilePath);
-	if (type == Resource::Type::Unknown) 
+	if (type == Resource::Type::Unknown)
 	{
 		LOG("Unable to import this unsoported file: %s", importedFilePath);
 		return 0;
@@ -138,7 +142,7 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned i
 		assetsCopiedFile = importedFilePath;
 	//// Create the new resource
 	Resource* resource = CreateNewResource(assetsCopiedFile.c_str(), importedFilePath, type, forcedUid, modifyAssets); //Save ID, assetsFile path, libraryFile path, and create spesific resource
-	if (resource == nullptr) 
+	if (resource == nullptr)
 	{
 		LOG("Unable to create a new resource with this file: %s", importedFilePath);
 		return 0;
@@ -159,6 +163,162 @@ unsigned int ModuleResource::ImportFile(const char* importedFilePath, unsigned i
 	ReleaseResource(ret);
 	return ret;
 }
+
+Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid, bool modifyAssets)
+{
+	Resource* ret = nullptr;
+
+	unsigned int uid;
+	(forcedUid == 0) ? uid = LCG().Int() : uid = forcedUid;
+
+	switch (type)
+	{
+	case Resource::Type::Texture:
+		ret = Importer::Texture::Import(assetsFile, uid);
+		break;
+	case Resource::Type::Mesh:
+		break;
+	case Resource::Type::Bone:
+		break;
+	case Resource::Type::Animation:
+		break;
+	case Resource::Type::Material:
+		break;
+	case Resource::Type::Model:
+		ret = Importer::Model::Import(importedFile, uid, modifyAssets);
+		break;
+	case Resource::Type::Scene:
+		break;
+	case Resource::Type::NavMesh:
+		break;
+	case Resource::Type::Script:
+		ret = Importer::Script::Import(importedFile, uid);
+		break;
+	case Resource::Type::Object:
+		ret = new Resource(uid, type);
+		break;
+	default:
+		LOG("Unable to Import, this file %s", assetsFile);
+		break;
+	}
+	//if ret is not nullptr
+	if (ret) {
+		mResources[uid] = ret;
+		mResources[uid]->AddReferenceCount();
+	}
+
+	return ret;
+}
+
+
+
+std::string ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
+{
+	std::string assetName;
+	std::string extensionName;
+	App->GetFileSystem()->SplitPath(importedFilePath, &assetName, &extensionName);
+	std::string assetsFilePath;
+
+	switch (type) {
+	case Resource::Type::Texture:
+	{
+		assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::Model:
+	{
+		assetsFilePath = ASSETS_MODEL_PATH + assetName + extensionName;
+
+		//Duplicate .bin file
+		std::string importedBinFilePath = importedFilePath;
+		unsigned int dotPos = importedBinFilePath.find_last_of('.');
+		importedBinFilePath = importedBinFilePath.substr(0, dotPos);
+		importedBinFilePath += ".bin";
+		App->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
+		break;
+	}
+	case Resource::Type::Object:
+		assetsFilePath = importedFilePath;
+		break;
+	case Resource::Type::Script:
+	{
+		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
+		break;
+	}
+	default:
+		LOG("Unable to Copy, this file %s", importedFilePath);
+		break;
+	}
+
+	App->GetFileSystem()->CopyAbsolutePath(importedFilePath, assetsFilePath.c_str());
+
+	return assetsFilePath;
+}
+
+
+Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
+{
+	// Extract file extension
+	if (const char* fileExtension = strrchr(assetsFile, '.'))
+	{
+		// Convert to lowercase
+		std::string extension = fileExtension;
+		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+		// Returns the Type of Resource (see map above)
+		auto it = mExtensionToResourceType.find(extension);
+		if (it != mExtensionToResourceType.end())
+			return it->second;
+	}
+	// If the file extension is not recognized
+	return Resource::Type::Unknown;
+}
+
+bool ModuleResource::CreateAssetsMeta(const Resource& resource, const char* assetsFile) const
+{
+	bool ret = true;
+
+	// Get the path of the .meta file
+
+	std::string metaName;
+	metaName += assetsFile;
+	metaName += ".emeta";
+
+	// Create a JSON document
+	rapidjson::Document document;
+	document.SetObject();
+
+	// Add uid to the JSON document
+	rapidjson::Value uidValue;
+	uidValue.SetInt(resource.GetUID());
+	document.AddMember("uid", uidValue, document.GetAllocator());
+
+	// Add resource type to the JSON document
+	rapidjson::Value typeValue;
+	typeValue.SetInt(static_cast<int>(resource.GetType()));
+	document.AddMember("type", typeValue, document.GetAllocator());
+
+	// Add modification time of asset to the JSON document
+	rapidjson::Value timeValue;
+	int64_t currentTime = App->GetFileSystem()->GetLastModTime(assetsFile);
+	timeValue.SetInt64(currentTime);
+	document.AddMember("modTime", timeValue, document.GetAllocator());
+
+	// Convert the JSON document to a string
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	document.Accept(writer);
+	const char* jsonStr = buffer.GetString();
+
+	App->GetFileSystem()->RemoveFile(metaName.c_str());
+	// Save the JSON string to the .meta file
+	ret = App->GetFileSystem()->Save(metaName.c_str(), buffer.GetString(), strlen(buffer.GetString()));
+
+	buffer.Clear();
+
+	return ret;
+}
+
+#endif // ENGINE
 
 Resource* ModuleResource::RequestResource(const char* assetsPath)
 {
@@ -191,7 +351,7 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 	{
 		type = static_cast<Resource::Type>(document["type"].GetInt());
 	}
-	
+
 	RELEASE_ARRAY(fileBuffer);
 	return RequestResource(uid, type);
 }
@@ -268,158 +428,4 @@ void ModuleResource::ReleaseResource(unsigned int uid)
 			mResources.erase(uid);
 		}
 	}
-}
-
-Resource* ModuleResource::CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid, bool modifyAssets)
-{
-	Resource* ret = nullptr;
-
-	unsigned int uid;
-	(forcedUid == 0) ? uid = LCG().Int() : uid = forcedUid;
-
-	switch (type)
-	{
-	case Resource::Type::Texture:
-		ret = Importer::Texture::Import(assetsFile, uid);
-		break;
-	case Resource::Type::Mesh:
-		break;
-	case Resource::Type::Bone:
-		break;
-	case Resource::Type::Animation:
-		break;
-	case Resource::Type::Material:
-		break;
-	case Resource::Type::Model:
-		ret = Importer::Model::Import(importedFile, uid, modifyAssets);
-		break;
-	case Resource::Type::Scene:
-		break;
-	case Resource::Type::NavMesh:
-		break;
-	case Resource::Type::Script:
-		ret = Importer::Script::Import(importedFile, uid);
-		break;
-	case Resource::Type::Object:
-		ret = new Resource(uid, type);
-		break;
-	default:
-		LOG("Unable to Import, this file %s", assetsFile);
-		break;
-	}
-	//if ret is not nullptr
-	if (ret) {
-		mResources[uid] = ret;
-		mResources[uid]->AddReferenceCount();
-	}
-
-	return ret;
-}
-
-
-
-std::string ModuleResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
-{
-	std::string assetName;
-	std::string extensionName;
-	App->GetFileSystem()->SplitPath(importedFilePath, &assetName, &extensionName);
-	std::string assetsFilePath;
-
-	switch (type) {
-	case Resource::Type::Texture:
-	{
-		assetsFilePath = ASSETS_TEXTURE_PATH + assetName + extensionName;
-		break;
-	}
-	case Resource::Type::Model:
-	{
-		assetsFilePath = ASSETS_MODEL_PATH + assetName + extensionName;
-
-		//Duplicate .bin file
-		std::string importedBinFilePath = importedFilePath;
-		unsigned int dotPos = importedBinFilePath.find_last_of('.');
-		importedBinFilePath = importedBinFilePath.substr(0,dotPos);
-		importedBinFilePath += ".bin";
-		App->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
-		break;
-	}
-	case Resource::Type::Object:
-		assetsFilePath = importedFilePath;
-		break;
-	case Resource::Type::Script:
-	{
-		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
-		break;
-	}
-	default:
-		LOG("Unable to Copy, this file %s", importedFilePath);
-		break;
-	}
-
-	App->GetFileSystem()->CopyAbsolutePath(importedFilePath, assetsFilePath.c_str());
-
-	return assetsFilePath;
-}
-
-
-Resource::Type ModuleResource::DeduceResourceType(const char* assetsFile)
-{
-	// Extract file extension
-	if (const char* fileExtension = strrchr(assetsFile, '.')) 
-	{
-		// Convert to lowercase
-		std::string extension = fileExtension;
-		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-		// Returns the Type of Resource (see map above)
-		auto it = mExtensionToResourceType.find(extension);
-		if (it != mExtensionToResourceType.end())
-			return it->second;
-	}
-	// If the file extension is not recognized
-	return Resource::Type::Unknown; 
-}
-
-bool ModuleResource::CreateAssetsMeta(const Resource& resource, const char* assetsFile) const
-{
-	bool ret = true;
-
-	// Get the path of the .meta file
-
-	std::string metaName;
-	metaName += assetsFile;
-	metaName += ".emeta";
-
-	// Create a JSON document
-	rapidjson::Document document;
-	document.SetObject();
-
-	// Add uid to the JSON document
-	rapidjson::Value uidValue;
-	uidValue.SetInt(resource.GetUID());
-	document.AddMember("uid", uidValue, document.GetAllocator());
-
-	// Add resource type to the JSON document
-	rapidjson::Value typeValue;
-	typeValue.SetInt(static_cast<int>(resource.GetType()));
-	document.AddMember("type", typeValue, document.GetAllocator());
-
-	// Add modification time of asset to the JSON document
-	rapidjson::Value timeValue;
-	int64_t currentTime = App->GetFileSystem()->GetLastModTime(assetsFile);
-	timeValue.SetInt64(currentTime);
-	document.AddMember("modTime", timeValue, document.GetAllocator());
-
-	// Convert the JSON document to a string
-	rapidjson::StringBuffer buffer;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-	document.Accept(writer);
-	const char* jsonStr = buffer.GetString();
-
-	App->GetFileSystem()->RemoveFile(metaName.c_str());
-	// Save the JSON string to the .meta file
-	ret = App->GetFileSystem()->Save(metaName.c_str(), buffer.GetString(), strlen(buffer.GetString()));
-
-	buffer.Clear();
-
-	return ret;
 }

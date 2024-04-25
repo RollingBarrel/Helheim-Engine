@@ -13,13 +13,17 @@ public:
 	bool Init() override;
 
 	unsigned int Find(const char* assetsFile) const;
+#ifdef ENGINE
 	unsigned int ImportFile(const char* assetsFile, unsigned int forcedUid = 0, bool modifyAssets = true);
+#endif // !ENGINE
+
 
 	Resource* RequestResource(const char* assetsPath);
 	Resource* RequestResource(unsigned int uid, Resource::Type type);
 	void ReleaseResource(unsigned int uid);
 
 private:
+#ifdef ENGINE
 	Resource* CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid = 0, bool modifyAssets = true);
 	Resource::Type DeduceResourceType(const char* assetsFile);
 
@@ -27,7 +31,6 @@ private:
 
 	std::string DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const;
 
-	std::map<unsigned int, Resource*> mResources;
 
 	std::unordered_map<std::string, Resource::Type> mExtensionToResourceType = {
 		{".png", Resource::Type::Texture},
@@ -41,6 +44,8 @@ private:
 	};
 
 	friend class ResourcePanel;
+#endif // !ENGINE
+	std::map<unsigned int, Resource*> mResources;
 };
 
 #endif //_MODULE_RESOURCE_H_

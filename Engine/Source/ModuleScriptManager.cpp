@@ -28,6 +28,8 @@ bool ModuleScriptManager::Init()
 	CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false);
 	mHandle = LoadLibrary("Scripting.dll");
 	mLastModificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
+
+	UpdateScripts();
 	return true;
 #endif // ENGINE
 }
@@ -35,12 +37,15 @@ bool ModuleScriptManager::Init()
 update_status ModuleScriptManager::PreUpdate(float dt)
 {
 #ifdef ENGINE
+	UpdateScripts();
+
 	int64_t modificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
 	if (mLastModificationTime != modificationTime && !mIsPlaying)
 	{
 		mLastModificationTime = modificationTime;
 		HotReload();
 	}
+
 #endif // ENGINE
 	return update_status::UPDATE_CONTINUE;
 }
@@ -528,4 +533,41 @@ static bool PDBReplace(const std::string& filename, const std::string& namePDB) 
 	}
 
 	return result;
+}
+
+void ModuleScriptManager::UpdateScripts()
+{
+#ifdef ENGINE
+	std::vector<std::string> files;
+	App->GetFileSystem()->GetDirectoryFiles("Assets/Scripts", files);
+
+	for (std::string file : files)
+	{
+		std::string filePath = "Assets/Scripts/";
+		filePath += file;
+
+		if (!App->GetFileSystem()->IsDirectory(filePath.c_str()))
+		{
+			if (filePath.back() == 'h')
+			{
+				std::string filePathWithMeta;
+				filePathWithMeta = filePath + ".emeta";
+				if (!App->GetFileSystem()->Exists(filePathWithMeta.c_str()))
+				{
+					filePath = "./" + filePath;
+					App->GetResource()->ImportFile(filePath.c_str());
+				}
+			}
+			else if (filePath.find(".emeta") != std::string::npos)
+			{
+				int pos = filePath.find(".emeta");
+				filePath.erase(pos);
+				if (!App->GetFileSystem()->Exists(filePath.c_str()))
+				{
+					App->GetFileSystem()->RemoveFile(filePath.c_str());
+				}
+			}
+		}
+	}
+#endif
 }

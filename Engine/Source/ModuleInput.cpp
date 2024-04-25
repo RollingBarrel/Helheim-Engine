@@ -199,8 +199,9 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 			}
 			break;
+#ifdef ENGINE
         case SDL_DROPFILE:
-            LOG("File droped: %s\n", sdlEvent.drop.file);
+			LOG("File droped: %s\n", sdlEvent.drop.file);
             App->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
             App->GetResource()->ImportFile(sdlEvent.drop.file);
 
@@ -212,7 +213,8 @@ update_status ModuleInput::PreUpdate(float dt)
 			App->GetFileSystem()->GetRootNode()->CleanUp();
             App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());
             SDL_free(sdlEvent.drop.file);
-            break;
+			break;
+#endif
         }
     }
 

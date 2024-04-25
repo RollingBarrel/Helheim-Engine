@@ -27,6 +27,7 @@ public:
 	void Start();
 
 private:
+	void UpdateScripts();
 	void HotReload();
 	void ReloadScripts(const std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	void SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
