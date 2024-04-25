@@ -80,7 +80,11 @@ void AnimationComponent::OnStart()
 {
 	if (mGameobjectsInverseMatrices.size() == 0)
 	{
-		LoadAllChildJoints(mOwner);
+		//LoadAllChildJoints(mOwner);
+		for (int i = 0; i < mAnimation->mInvBindMatrices.size(); i++) 
+		{
+			mGameobjectsInverseMatrices.push_back(std::pair(mOwner->FindGameObjectInTree(mAnimation->mInvBindMatrices[i].first), mAnimation->mInvBindMatrices[i].second));
+		}
 	}
 	//mController->Play(mAnimation->GetUID(), true);
 }
@@ -92,9 +96,6 @@ void AnimationComponent::Update()
 		mController->Update(mOwner);
 		UpdatePalette();
 	}
-	//else {
-	//
-	//}
 }
 
 void AnimationComponent::OnStop()

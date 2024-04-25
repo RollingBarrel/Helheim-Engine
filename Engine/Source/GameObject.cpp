@@ -909,7 +909,7 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 
 GameObject* GameObject::FindGameObjectInTree(const int objectToFind)
 {
-	std::pair<GameObject*, int> pair(nullptr, -2 - mParent->GetChildren().size());
+	std::pair<GameObject*, int> pair(nullptr, -2);
 
 	GameObject* target = RecursiveTreeSearch(FindFirstParent(), pair, objectToFind).first;
 
@@ -921,7 +921,11 @@ std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, s
 	if (currentGameObject.first == nullptr)
 	{
 		std::vector<GameObject*> children = owner->GetChildren();
-		currentGameObject.second++;
+
+		//The gameObject with MeshRendererComponent don't count
+		if (!owner->GetComponent(ComponentType::MESHRENDERER)) {
+			currentGameObject.second++;
+		}
 
 		if (currentGameObject.second == objectToFind)
 		{
