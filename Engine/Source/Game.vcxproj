@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleGame.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ModuleScriptManager.cpp" />
@@ -143,8 +144,13 @@
     <ClCompile Include="Script.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ModuleGame.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Script.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
