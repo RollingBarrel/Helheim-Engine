@@ -18,6 +18,8 @@ class ModuleEvent;
 #ifdef ENGINE
 class ModuleEditor;
 class ModuleDebugDraw;
+#else
+class ModuleGame;
 #endif // ENGINE
 
 class Timer;
@@ -49,6 +51,8 @@ public:
 #ifdef ENGINE
     ModuleEditor* GetEditor() { return editor; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
+#else
+    ModuleGame* GetGame() { return game; }
 #endif // ENGINE
 
     bool IsPlayMode() { return mIsPlayMode; }
@@ -85,18 +89,20 @@ private:
 #ifdef ENGINE
     ModuleEditor* editor = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
+#else
+    ModuleGame* game = nullptr;
 #endif // ENGINE
 
 #ifdef ENGINE
 #define NUM_MODULES 14
 #else
-#define NUM_MODULES 12
+#define NUM_MODULES 13
 #endif // ENGINE
     Module* modules[NUM_MODULES];
 
     //Timer
-    Timer* mEngineTimer;
-    Timer* mGameTimer;
+    Timer* mEngineTimer = nullptr;
+    Timer* mGameTimer = nullptr;
     Timer* mCurrentTimer = nullptr;
 
     //In case we want to use precise timer

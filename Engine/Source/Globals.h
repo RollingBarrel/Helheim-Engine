@@ -10,7 +10,11 @@
 #ifdef ENGINE
 #define LOG(format, ...) EngineLog(__FILE__, __LINE__, format, __VA_ARGS__);
 #else
-#define LOG(format, ...)
+	#ifdef _DEBUG
+	#define LOG(format, ...) EngineLog(__FILE__, __LINE__, format, __VA_ARGS__);
+	#else
+	#define LOG(format, ...)
+	#endif // _DEBUG
 #endif // ENGINE
 
 

@@ -30,9 +30,14 @@ bool ModuleScriptManager::Init()
 #ifdef ENGINE
 	CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false);
 	mHandle = LoadLibrary("Scripting.dll");
+	int b = GetLastError();
 	mLastModificationTime = App->GetFileSystem()->GetLastModTime("Scripting.dll");
 
 	UpdateScripts();
+#else
+	CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false);
+	mHandle = LoadLibrary("Scripting.dll");
+	int b = GetLastError();
 #endif // ENGINE
 	return true;
 }
@@ -238,7 +243,7 @@ void ModuleScriptManager::Start()
 	}
 
 	mIsPlaying = true;
-	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
+	for (ScriptComponent* script : mScripts) 
 	{
 		script->mScript->Start();
 	}

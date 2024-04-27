@@ -19,6 +19,8 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "optick.h"
+#else
+#include "ModuleGame.h"
 #endif // ENGINE
 
 
@@ -27,8 +29,6 @@
 
 Application::Application()
 {
-	mEngineTimer = new Timer();
-	mGameTimer = new Timer();
 
 	//In case we want to use precise timer
 	
@@ -64,6 +64,7 @@ Application::Application()
 	modules[9] = navigation = new ModuleDetourNavigation();
 	modules[10] = ui = new ModuleUI();
 	modules[11] = event = new ModuleEvent();
+	modules[12] = game = new ModuleGame();
 #endif // ENGINE
 
 }
@@ -73,15 +74,25 @@ Application::~Application()
 	for (int i = NUM_MODULES-1; i >= 0; --i) {
 		delete modules[i];
 	}
-
-	delete mEngineTimer;
+	if (mEngineTimer)
+		delete mEngineTimer;
 	delete mGameTimer;
 }
 
 bool Application::Init()
 {
-	mEngineTimer->Start();			//Initializes the Engine timer
-	mCurrentTimer = mEngineTimer;	//The application starts in the editor
+#ifdef ENGINE
+	mEngineTimer = new Timer();
+	mGameTimer = new Timer();
+	mCurrentTimer = mEngineTimer;
+	mEngineTimer->Start();
+#else
+	mGameTimer = new Timer();
+	mCurrentTimer = mGameTimer;
+	mGameTimer->Start();
+	mIsPlayMode = true;
+#endif // ENGINE
+
 
 	bool ret = true;
 

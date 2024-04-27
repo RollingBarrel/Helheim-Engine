@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "GameObject.h"
 #include "PlayerCamera.h"
 #include "CameraComponent.h"

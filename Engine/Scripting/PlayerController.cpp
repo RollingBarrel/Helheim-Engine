@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "PlayerController.h"
 #include "Application.h"
 #include "ModuleInput.h"
@@ -13,6 +12,7 @@
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
 #include "SliderComponent.h"
+#include "Physics.h"
 
 
 CREATE(PlayerController)
@@ -431,7 +431,7 @@ void PlayerController::Shoot(float damage)
 
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
-    Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
+    //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
 
     if (!hits.empty()) 
     {

@@ -158,6 +158,7 @@
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="SaveLoadNavMesh.cpp" />
     <ClCompile Include="SaveLoadScript.cpp" />
     <ClCompile Include="SaveLoadTexture.cpp" />
+    <ClCompile Include="Script.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SliderComponent.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
@@ -272,6 +274,7 @@
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CanvasComponent.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h" />
     <ClInclude Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.h" />
     <ClInclude Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.h" />
@@ -451,6 +454,7 @@
     <ClInclude Include="SaveLoadNavMesh.h" />
     <ClInclude Include="SaveLoadScript.h" />
     <ClInclude Include="SaveLoadTexture.h" />
+    <ClInclude Include="Script.h" />
     <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SliderComponent.h" />
     <ClInclude Include="SpotLightComponent.h" />

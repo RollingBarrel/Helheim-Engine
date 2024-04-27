@@ -34,9 +34,6 @@
     <Filter Include="Importers">
       <UniqueIdentifier>{a25bd8cd-5945-4f37-85ea-1ad7ebafa058}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Scripting">
-      <UniqueIdentifier>{a319321c-f597-4fdd-837e-0117d90e9e2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dependencies\Freetype">
       <UniqueIdentifier>{327607b2-d8a3-4a9c-ae73-4f0f861ba3ed}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,9 @@
     </Filter>
     <Filter Include="Dependencies\Recast">
       <UniqueIdentifier>{a2628aa5-3f02-424d-a398-8f0d8b104f8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Scripting">
+      <UniqueIdentifier>{53632d8a-a4e4-4185-bb50-a99200b955b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -410,6 +410,12 @@
     </ClCompile>
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp">
       <Filter>Dependencies\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>Utils\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Utils\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1006,6 +1012,12 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h">
       <Filter>Dependencies\Recast</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>Utils\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Utils\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

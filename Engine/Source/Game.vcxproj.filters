@@ -7,11 +7,8 @@
     <Filter Include="Modules">
       <UniqueIdentifier>{475318fa-3408-4d57-9b6f-d10d44d0cea3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{1f9c3e8a-172d-4349-90f7-271d52276416}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Scripting">
-      <UniqueIdentifier>{1c81d75a-250a-4302-ae6d-a9785ac5066d}</UniqueIdentifier>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{ad15405b-9eb4-4f7c-b6e7-ce60d2d7f276}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,19 +27,20 @@
     <ClCompile Include="ModuleResource.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Script.cpp">
-      <Filter>Utils\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Utils\Scripting</Filter>
+    <ClCompile Include="ModuleGame.cpp" />
+    <ClCompile Include="log.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Script.h">
-      <Filter>Utils\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Utils\Scripting</Filter>
-    </ClInclude>
+    <ClInclude Include="ModuleGame.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\GameFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\GameVertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

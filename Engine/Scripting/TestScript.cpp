@@ -1,4 +1,3 @@
-#include "pch.h" 
 #include "TestScript.h"
 #include "GameObject.h"
 #include "Application.h"

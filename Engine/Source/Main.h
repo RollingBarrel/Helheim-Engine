@@ -54,7 +54,11 @@ int main(int argc, char ** argv)
 
 		case MAIN_UPDATE:
 		{
+#ifdef ENGINE
 			int update_return = App->Update(App->GetRealDt());
+#else
+			int update_return = App->Update(App->GetGameDt());
+#endif
 
 			if (update_return == UPDATE_ERROR)
 			{

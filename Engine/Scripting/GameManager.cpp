@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "GameManager.h"
 #include "GameObject.h"
 #include "Application.h"

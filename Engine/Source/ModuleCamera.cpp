@@ -28,16 +28,16 @@ bool ModuleCamera::Init()
 	return true;
 }
 
-
-
 bool ModuleCamera::CleanUp()
 {
-	delete mEditorCamera;
+	if(mEditorCamera)
+		delete mEditorCamera;
 	return true;
 }
 
 const void ModuleCamera::CreateEditorCamera()
 {
+//#ifdef ENGINE
 	mEditorCamera = new GameObject("EditorCamera", nullptr);
 
 	mEditorCamera->CreateComponent(ComponentType::CAMERA);
@@ -55,6 +55,7 @@ const void ModuleCamera::CreateEditorCamera()
 	mCurrentCameraComponent = camera;
 
 	mCurrentCamera = mEditorCamera;
+//#endif
 }
 
 void ModuleCamera::SetCurrentCamera(GameObject* camera)
@@ -240,6 +241,86 @@ update_status ModuleCamera::Update(float dt)
 		}
 	}
 #else
+//TODO: remove the editor camera in game
+if (mCurrentCamera == mEditorCamera)
+{
+	const float dtTransformCameraVel = dt * 3.f;
+	float transformCameraVel = 0.03f;
+	const float rotateCameraVel = 0.01f;
+
+	const float dtFastSpeed = dtTransformCameraVel * mShiftSpeed;
+	const float fastSpeed = transformCameraVel * 3.0f;
+	bool shiftPressed = (App->GetInput()->GetKey(SDL_SCANCODE_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(SDL_SCANCODE_RSHIFT) == KeyState::KEY_REPEAT);
+	float dtSpeed = shiftPressed ? dtFastSpeed : dtTransformCameraVel;
+	float speed = shiftPressed ? fastSpeed : transformCameraVel;
+
+	mShiftSpeed = shiftPressed ? mShiftSpeed + 0.05 : 5.0f;
+
+
+	if (App->GetInput()->GetMouseWheelMotion() != 0)
+	{
+		mCurrentCameraComponent->Transform(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
+	}
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+	{
+		int mX, mY;
+		hasBeenUpdated = true;
+		App->GetInput()->GetMouseMotion(mX, mY);
+		mCurrentCameraComponent->Rotate(float3::unitY, -mX * rotateCameraVel);
+		mCurrentCameraComponent->Rotate(mCurrentCameraComponent->GetFrustum().WorldRight(), -mY * rotateCameraVel);
+		if (App->GetInput()->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(0, -dtSpeed, 0));
+		}
+		if (App->GetInput()->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(0, dtSpeed, 0));
+		}
+
+		if (App->GetInput()->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(0, 0, dtSpeed));
+		}
+		if (App->GetInput()->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(0, 0, -dtSpeed));
+		}
+		if (App->GetInput()->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(-dtSpeed, 0, 0));
+		}
+		if (App->GetInput()->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
+		{
+			mCurrentCameraComponent->Transform(float3(dtSpeed, 0, 0));
+		}
+	}
+	//paning camera
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_MIDDLE) == KeyState::KEY_REPEAT)
+	{
+		int mX, mY;
+		App->GetInput()->GetMouseMotion(mX, mY);
+		mCurrentCameraComponent->Transform(float3(-mX * speed, 0, 0));
+		mCurrentCameraComponent->Transform(float3(0, mY * speed, 0));
+	}
+	//orbiting camera
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
+	{
+		float3 focus = mCurrentCameraComponent->GetFrustum().pos;
+		int mX, mY;
+		App->GetInput()->GetMouseMotion(mX, mY);
+
+		if (mX != 0)
+		{
+			float3x3 rotationMatrixX = float3x3::RotateAxisAngle(mCurrentCameraComponent->GetFrustum().up, -mX * rotateCameraVel);
+			focus = rotationMatrixX.Mul(focus);
+		}
+		if (mY != 0)
+		{
+			float3x3 rotationMatrixY = float3x3::RotateAxisAngle(mCurrentCameraComponent->GetFrustum().WorldRight(), mY * rotateCameraVel);
+			focus = rotationMatrixY.Mul(focus);
+		}
+	}
+}
 	if (mCurrentCamera && mCurrentCameraComponent && hasBeenUpdated) 
 	{ //TODO: add a bool if the camera had an input
 		float3 position = mCurrentCameraComponent->GetFrustum().pos;
@@ -250,6 +331,5 @@ update_status ModuleCamera::Update(float dt)
 		mCurrentCamera->SetRotation(rotation);
 	}
 #endif // ENGINE
-
 		return UPDATE_CONTINUE;
 }

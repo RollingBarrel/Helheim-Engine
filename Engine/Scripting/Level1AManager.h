@@ -1,5 +1,5 @@
 #pragma once
-#include <Script.h>
+#include "Script.h"
 #include "Macros.h"
 
 class AudioSourceComponent;
