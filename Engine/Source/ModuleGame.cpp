@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ModuleScriptManager.h"
 #include "ModuleWindow.h"
+#include "NavMeshController.h"
 #include "glew.h"
 
 bool ModuleGame::Init()
@@ -15,7 +16,12 @@ bool ModuleGame::Init()
 	glGenVertexArrays(1, &mVAO);
 
 	//TODO: read the name of the fitrst scene to load from somewhere
+	//App->GetScene()->Load("MainMenu");
 	App->GetScene()->Load("Level1");
+	//TODO:: This is bad for decoupling
+	App->GetScriptManager()->StartScripts();
+	//TODO: Do better!!!!
+	App->GetScene()->GetNavController()->HandleBuild();
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	

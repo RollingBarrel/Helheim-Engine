@@ -29,11 +29,6 @@ bool ModuleScriptManager::Init()
 	CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false);
 	mHandle = LoadLibrary("Scripting.dll");
 
-	for (unsigned int i = 0; i < mScripts.size(); ++i)
-	{
-		mScripts[i]->mScript->Start();
-	}
-
 	return true;
 }
 
@@ -82,6 +77,14 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 		mScripts.erase(deletePos);
 	}
 		
+}
+
+void ModuleScriptManager::StartScripts()
+{
+	for (unsigned int i = 0; i < mScripts.size(); ++i)
+	{
+		mScripts[i]->mScript->Start();
+	}
 }
 
 
