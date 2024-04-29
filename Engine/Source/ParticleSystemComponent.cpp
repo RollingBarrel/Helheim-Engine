@@ -16,7 +16,7 @@
 
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
-    SetImage(mResourceId);
+    //SetImage(mResourceId);
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) : ParticleSystemComponent(owner)
@@ -114,8 +114,8 @@ void ParticleSystemComponent::Draw() const
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
         CameraComponent* cam = (CameraComponent*)App->GetCamera()->GetCurrentCamera();
-        float4x4 viewproj = cam->GetViewProjectionMatrix();
-
+        float4x4 projection = cam->GetViewProjectionMatrix();
+        float4x4 view = cam->GetViewMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
         glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
             nullptr, GL_DYNAMIC_DRAW);
@@ -126,10 +126,13 @@ void ParticleSystemComponent::Draw() const
         {
             if (mParticles[i]->GetLifetime() > 0.0f)
             {
-                Quat rotation = Quat::identity;
+                float3 norm = (cam->GetFrustum().pos - mParticles[i]->GetPosition()).Normalized();
+                float3 up = cam->GetFrustum().up;
+                float3 right = up.Cross(norm).Normalized();
+                up = norm.Cross(right).Normalized();
                 float3 scale = float3(mParticles[i]->GetSize());
-                float3 pos = mParticles[i]->GetPosition();
-                float4x4 transform = float4x4::FromTRS(pos, rotation, scale).Transposed();
+                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(mParticles[i]->GetPosition(), 1) };
+                transform.Transpose();
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
                 memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
             }
@@ -137,13 +140,13 @@ void ParticleSystemComponent::Draw() const
         glUnmapBuffer(GL_ARRAY_BUFFER);
         glBindVertexArray(mVAO);
         
-        glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
+        glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &projection[0][0]);
         glUniform4f(glGetUniformLocation(programId, "color"), 1.0f, 1.0f, 1.0f, 1.0f);
-        glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+        //glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
         
         glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
 
-        glBindTexture(GL_TEXTURE_2D, 0);
+        //glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glUseProgram(0);
