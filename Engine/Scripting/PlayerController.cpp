@@ -6,7 +6,6 @@
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
-#include "AnimationComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
 #include "SliderComponent.h"

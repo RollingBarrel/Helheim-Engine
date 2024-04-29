@@ -405,7 +405,7 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         {
             const tinygltf::Accessor& jointsAcc = model.accessors[itJoints->second];
             assert(jointsAcc.type == TINYGLTF_TYPE_VEC4);
-            assert(jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT || jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT);
+            assert(jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT || jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT || jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE);
 
             const tinygltf::BufferView& jointsView = model.bufferViews[jointsAcc.bufferView];
             const tinygltf::Buffer& jointsBuffer = model.buffers[jointsView.buffer];
@@ -452,6 +452,27 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                     }
                     else {
                         bufferJointsInt += 4;
+                    }
+                }
+                // These are valid component types
+                break;
+            }
+            case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
+            {
+                const unsigned char* bufferJointsChar = reinterpret_cast<const unsigned char*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
+
+                for (unsigned int i = 0; i < jointsAcc.count; ++i)
+                {
+                    joints[i * 4] = bufferJointsChar[0];
+                    joints[i * 4 + 1] = bufferJointsChar[1];
+                    joints[i * 4 + 2] = bufferJointsChar[2];
+                    joints[i * 4 + 3] = bufferJointsChar[3];
+
+                    if (jointsView.byteStride != 0) {
+                        bufferJointsChar = reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(bufferJointsChar) + jointsView.byteStride);
+                    }
+                    else {
+                        bufferJointsChar += 4;
                     }
                 }
                 // These are valid component types
