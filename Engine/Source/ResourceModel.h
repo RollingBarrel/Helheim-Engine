@@ -40,4 +40,7 @@ public:
 	std::vector<unsigned int> mAnimationUids;
 
 	std::vector<ModelNode> modelNodes;
+
+	std::vector<std::pair<std::string, float4x4>>  mInvBindMatrices;
+
 };

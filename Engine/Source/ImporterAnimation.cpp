@@ -44,39 +44,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
         }
     }
 
-    if (!model.skins.empty())
-    {
-        for (const auto& skins : model.skins)
-        {
-            const int inverseBindMatricesIndex = skins.inverseBindMatrices;
-            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[inverseBindMatricesIndex];
-
-            const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
-
-            const unsigned char* inverseBindMatricesBuffer = &model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset];
-
-            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(inverseBindMatricesBuffer);
-
-            size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
-
-            for (size_t i = 0; i < num_inverseBindMatrices; i++)
-            {
-                const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
-
-                float4x4 inverseBindMatrix;
-
-                for (size_t row = 0; row < 4; row++)
-                {
-                    for (size_t col = 0; col < 4; col++)
-                    {
-                        inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
-                    }
-                }
-                rAnimation->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
-
-            }
-        }
-    }
+    
 
     if (rAnimation) {
         Importer::Animation::Save(rAnimation);
@@ -112,7 +80,6 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
         }
     }
 
-    size += (sizeof(float) * 16 + sizeof(std::string)) * ourAnimation->mInvBindMatrices.size();
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -161,22 +128,7 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
         }
     }
     
-    //Joints
-    unsigned int jointsSize = ourAnimation->mInvBindMatrices.size();
-    bytes = sizeof(unsigned int);
-    memcpy(cursor, &jointsSize, bytes);
-    cursor += bytes;
-
-    for (int i = 0; i < jointsSize; ++i)
-    {
-        bytes = sizeof(std::string);
-        memcpy(cursor, &ourAnimation->mInvBindMatrices[i].first, bytes);
-        cursor += bytes;
-
-        bytes = sizeof(float4x4);
-        memcpy(cursor, &ourAnimation->mInvBindMatrices[i].second, bytes);
-        cursor += bytes;
-    }
+   
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourAnimation->GetUID(), true);
     LOG("Animation:");
@@ -272,25 +224,6 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
             delete[] name;
         }
         
-        //Joints
-        unsigned int jointsSize = 0;
-        bytes = sizeof(unsigned int);
-        memcpy(&jointsSize, cursor, bytes);
-        cursor += bytes;
-
-        ourAnimation->mInvBindMatrices.resize(jointsSize);
-
-        for (int i = 0; i < jointsSize; ++i)
-        {
-            int indexJoint = 0;
-            bytes = sizeof(std::string);
-            memcpy(&ourAnimation->mInvBindMatrices[i].first, cursor, bytes);
-            cursor += bytes;
-
-            bytes = sizeof(float4x4);
-            memcpy(&ourAnimation->mInvBindMatrices[i].second, cursor, bytes);
-            cursor += bytes;
-        }
 
         delete[] fileBuffer;
     }

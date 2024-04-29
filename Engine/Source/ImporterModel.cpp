@@ -183,7 +183,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     ResourceModel* rModel = new ResourceModel(uid++);
 
-    /*if (!model.skins.empty())
+    if (!model.skins.empty())
     {
         for (const auto& skins : model.skins)
         {
@@ -204,19 +204,18 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
                 float4x4 inverseBindMatrix;
 
-                for (size_t row = 0; row < 4; row++) 
+                for (size_t row = 0; row < 4; row++)
                 {
-                    for (size_t col = 0; col < 4; col++) 
+                    for (size_t col = 0; col < 4; col++)
                     {
                         inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
-
-                rModel->mJoints.push_back({ skins.joints[i], inverseBindMatrix });
+                rModel->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
 
             }
         }
-    }*/
+    }
 
 
     unsigned int currentUid = uid;
@@ -250,6 +249,8 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Tamaño vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
+    bufferSize += (sizeof(float) * 16 + sizeof(std::string)) * rModel->mInvBindMatrices.size();
+
     //bufferSize += sizeof(int) * rModel->mJoints.size();
 
     /*for (size_t i = 0; i < rModel->mJoints.size(); i++)
@@ -350,22 +351,21 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     }
 
     //Joints
-   /* unsigned int jointsSize = rModel->mJoints.size();
+    unsigned int jointsSize = rModel->mInvBindMatrices.size();
     bytes = sizeof(unsigned int);
     memcpy(cursor, &jointsSize, bytes);
     cursor += bytes;
 
     for (int i = 0; i < jointsSize; ++i)
     {
-        bytes = sizeof(unsigned int);
-        memcpy(cursor, &rModel->mJoints[i].first, bytes);
+        bytes = sizeof(std::string);
+        memcpy(cursor, &rModel->mInvBindMatrices[i].first, bytes);
         cursor += bytes;
 
-        bytes = sizeof(float) * 16;
-        
-        memcpy(cursor, &rModel->mJoints[i].second, bytes);
+        bytes = sizeof(float4x4);
+        memcpy(cursor, &rModel->mInvBindMatrices[i].second, bytes);
         cursor += bytes;
-    }*/
+    }
     
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
@@ -492,25 +492,25 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             rModel->mAnimationUids.push_back({ animationUID });
         }
 
-       /* unsigned int jointsSize = 0;
+        //Joints
+        unsigned int jointsSize = 0;
         bytes = sizeof(unsigned int);
         memcpy(&jointsSize, cursor, bytes);
         cursor += bytes;
 
-        rModel->mJoints.resize(jointsSize);
+        rModel->mInvBindMatrices.resize(jointsSize);
 
         for (int i = 0; i < jointsSize; ++i)
         {
             int indexJoint = 0;
-            bytes = sizeof(unsigned int);
-            memcpy(&rModel->mJoints[i].first, cursor, bytes);
+            bytes = sizeof(std::string);
+            memcpy(&rModel->mInvBindMatrices[i].first, cursor, bytes);
             cursor += bytes;
 
             bytes = sizeof(float4x4);
-            memcpy(&rModel->mJoints[i].second, cursor, bytes);
+            memcpy(&rModel->mInvBindMatrices[i].second, cursor, bytes);
             cursor += bytes;
-        }*/
-
+        }
         delete[] fileBuffer;
     }
 

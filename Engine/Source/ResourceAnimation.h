@@ -48,7 +48,6 @@ public:
     std::string mName;
     unsigned int mDuration = 0;
 
-    std::vector<std::pair<std::string, float4x4>>  mInvBindMatrices;
 };
 
 
