@@ -15,10 +15,19 @@
     <ClCompile Include="ModuleGame.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMain.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleGame.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="GameApp.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

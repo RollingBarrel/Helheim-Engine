@@ -6,7 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
-#include "ModuleScriptManager.h"
+#include "ModuleEngineScriptManager.h"
 #include "Quadtree.h"
 
 #include "Panel.h"

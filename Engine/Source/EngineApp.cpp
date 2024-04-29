@@ -14,7 +14,6 @@
 #include "ModuleEvent.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
-#include "ModuleScriptManager.h"
 #include "Timer.h"
 
 EngineApplication* EngineApp = NULL;

@@ -142,9 +142,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="ModuleGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameApp.h" />
     <ClInclude Include="ModuleGame.h" />
   </ItemGroup>
   <ItemGroup>

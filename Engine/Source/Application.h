@@ -35,7 +35,7 @@ public:
     ModuleDetourNavigation* GetNavigation() { return navigation; }
     ModuleAudio* GetAudio() { return audio; }
     ModuleEvent* GetEvent() { return event; }
-    ModuleScriptManager* GetEngineScriptManager() { return scriptManager; }
+    ModuleScriptManager* GetScriptManager() { return scriptManager; }
 
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     float GetDt() const;
