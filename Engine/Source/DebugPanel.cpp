@@ -1,6 +1,6 @@
 #include "DebugPanel.h"
 #include "imgui.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -54,7 +54,7 @@ static void RenderTreeImGui(const Quadtree* qTree)
 
 static void DrawQuadTree(const Quadtree* qTree)
 {
-    App->GetDebugDraw()->DrawCube(qTree->GetBoundingBox(), float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
+    EngineApp->GetDebugDraw()->DrawCube(qTree->GetBoundingBox(), float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
     if (qTree->IsFilled())
     {
         const Quadtree* children = qTree->GetChildren();
@@ -77,10 +77,10 @@ void DebugPanel::Draw(int windowFlags) {
                 switch (mRenderMode)
                 {
                 case RenderMode::Shaded:
-                    App->GetOpenGL()->SetWireframe(false);
+                    EngineApp->GetOpenGL()->SetWireframe(false);
                     break;
                 case RenderMode::Wireframe:
-                    App->GetOpenGL()->SetWireframe(true);
+                    EngineApp->GetOpenGL()->SetWireframe(true);
                     break;
                 case RenderMode::ShadedWireframe:
                     //TODO Shaded + Wireframe rendering
@@ -91,10 +91,10 @@ void DebugPanel::Draw(int windowFlags) {
             }
             if (ImGui::Checkbox("Draw Colliders", &mDrawColliders))
             {
-                GameObject* root = App->GetScene()->GetRoot();
+                GameObject* root = EngineApp->GetScene()->GetRoot();
                 SetShouldDrawForAll(root, mDrawColliders);
             }
-            ImGui::Text("Total number of triangles on scene: %i", GetTotalTriangleCount(App->GetScene()->GetRoot()));
+            ImGui::Text("Total number of triangles on scene: %i", GetTotalTriangleCount(EngineApp->GetScene()->GetRoot()));
             ImGui::TreePop();
 		}
 
@@ -115,20 +115,20 @@ void DebugPanel::Draw(int windowFlags) {
 
             if (draw)
             {
-                App->GetOpenGL()->BindSceneFramebuffer();
-                DrawQuadTree(App->GetScene()->GetQuadtreeRoot());
-                App->GetOpenGL()->UnbindSceneFramebuffer();
+                EngineApp->GetOpenGL()->BindSceneFramebuffer();
+                DrawQuadTree(EngineApp->GetScene()->GetQuadtreeRoot());
+                EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
             }
 
             ImGui::Separator();
             ImGui::SameLine();
             if (ImGui::Button("Reload quadtree"))
             {
-                App->GetScene()->GetQuadtreeRoot()->UpdateTree();
+                EngineApp->GetScene()->GetQuadtreeRoot()->UpdateTree();
             }
             ImGui::Separator();
             ImGui::Text("Quadtree nodes:");
-            RenderTreeImGui(App->GetScene()->GetQuadtreeRoot());
+            RenderTreeImGui(EngineApp->GetScene()->GetQuadtreeRoot());
             ImGui::TreePop();
 		}
 
@@ -136,7 +136,7 @@ void DebugPanel::Draw(int windowFlags) {
         {
             if (ImGui::Checkbox("Draw Mouse Picking RayCast", &mDrawRaycast)) 
             {
-                App->GetCamera()->DrawRayCast(mDrawRaycast);
+                EngineApp->GetCamera()->DrawRayCast(mDrawRaycast);
             }
             ImGui::TreePop();
         }

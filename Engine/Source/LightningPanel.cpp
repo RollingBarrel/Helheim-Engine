@@ -1,5 +1,5 @@
 #include "LightningPanel.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleOpenGL.h"
 #include "imgui.h"
 #include "glew.h"
@@ -9,9 +9,9 @@ LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, false) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
-	ModuleOpenGL* openGl = App->GetOpenGL();
+	ModuleOpenGL* openGl = EngineApp->GetOpenGL();
 
-	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+	glUseProgram(EngineApp->GetOpenGL()->GetPBRProgramId());
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 	
 	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirAmb.mDirCol[3], 0.05f, 0.0f, 5.0f))

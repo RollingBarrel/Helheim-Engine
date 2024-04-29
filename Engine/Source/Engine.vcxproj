@@ -165,7 +165,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
-    <ClCompile Include="Application.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\backends\imgui_impl_opengl3.cpp" />
@@ -184,6 +183,8 @@
     <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c" />
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c" />
     <ClCompile Include="EditorControlPanel.cpp" />
+    <ClCompile Include="EngineApp.cpp" />
+    <ClCompile Include="EngineLog.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
@@ -191,15 +192,12 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
-    <ClCompile Include="ModuleCamera.cpp" />
-    <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModuleResource.cpp" />
-    <ClCompile Include="ModuleScriptManager.cpp" />
+    <ClCompile Include="ModuleEngineInput.cpp" />
+    <ClCompile Include="ModuleEngineResource.cpp" />
+    <ClCompile Include="ModuleEngineScriptManager.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
-    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
-    <ClCompile Include="log.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ImporterTexture.cpp" />
     <ClCompile Include="OptickAdapter.cpp" />
@@ -242,6 +240,7 @@
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\tiny_gltf.h" />
     <ClInclude Include="EditorControlPanel.h" />
+    <ClInclude Include="EngineApp.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
@@ -250,8 +249,11 @@
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
+    <ClCompile Include="EngineMain.cpp" />
+    <ClInclude Include="ModuleEngineInput.h" />
+    <ClInclude Include="ModuleEngineResource.h" />
+    <ClInclude Include="ModuleEngineScriptManager.h" />
     <ClInclude Include="NavMeshControllerPanel.h" />
-    <ClInclude Include="Physics.h" />
     <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="ModuleDebugDraw.h" />

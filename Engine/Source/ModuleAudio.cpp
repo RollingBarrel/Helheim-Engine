@@ -39,7 +39,7 @@ update_status ModuleAudio::PreUpdate(float dt)
 
 update_status ModuleAudio::Update(float dt)
 {
-	if (App->GetScriptManager()->IsPlaying()) 
+	if (App->GetEngineScriptManager()->IsPlaying()) 
 	{
 		mSystem->update();
 	}

@@ -1,6 +1,6 @@
 #include "SaveLoadMaterial.h"
-#include "Application.h"
-#include "ModuleResource.h"
+#include "EngineApp.h"
+#include "ModuleEngineResource.h"
 #include "ModuleFileSystem.h"
 #include "ImporterMaterial.h"
 
@@ -28,7 +28,7 @@ static unsigned int ImportTexture(const char* filePath, const std::string& texPa
         pngName += extension;
     }
 
-    return App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
+    return EngineApp->GetEngineResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
 }
 
 ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)

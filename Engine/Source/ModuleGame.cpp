@@ -16,7 +16,7 @@ bool ModuleGame::Init()
 
 	//TODO: read the name of the fitrst scene to load from somewhere
 	App->GetScene()->Load("Level1");
-	App->GetScriptManager()->Start();
+	App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	
 	//Camera

@@ -296,13 +296,6 @@ void ModuleScene::Load(const char* sceneName)
 	{
 		App->GetCamera()->SetCurrentCamera(cameraGameObject);
 	}
-
-	if (App->IsPlayMode())
-	{
-		App->GetScriptManager()->Start();
-	}
-	
-
 }
 
 void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)

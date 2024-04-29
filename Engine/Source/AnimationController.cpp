@@ -30,7 +30,7 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 
 void AnimationController::Update(GameObject* model)
 {
-	mCurrentTime += App->GetRealDt();
+	mCurrentTime += App->GetDt();
 	GetTransform(model);
 }
 

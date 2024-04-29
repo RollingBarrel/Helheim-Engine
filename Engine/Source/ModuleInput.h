@@ -34,7 +34,7 @@ enum class KeyState : unsigned char
 	KEY_UP
 };
 
-enum MouseKey 
+enum MouseKey
 {
 	BUTTON_LEFT,
 	BUTTON_MIDDLE,
@@ -91,10 +91,10 @@ class ENGINE_API ModuleInput : public Module
 public:
 
 	ModuleInput();
-	~ModuleInput();
+	virtual ~ModuleInput();
 
 	bool Init() override;
-	update_status PreUpdate(float dt) override;
+	virtual update_status PreUpdate(float dt) override;
 	bool CleanUp() override;
 
 	KeyState GetKey(int id) const { return mKeyboard[id]; }
@@ -111,15 +111,15 @@ public:
 	ButtonState	GetGameControllerButton(int id) const { return mGameController.mButtons[id]; }
 	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }
 	AxisState GetGameControllerAxis(int id) const { return mGameController.mAxis[id]; }
-	int	GetGameControllerAxisValue(int id) const;											
-	int	GetGameControllerAxisRaw(int id) const;												
-	int	GetGameControllerAxisInput(int id) const;											
+	int	GetGameControllerAxisValue(int id) const;
+	int	GetGameControllerAxisRaw(int id) const;
+	int	GetGameControllerAxisInput(int id) const;
 	bool GetGameControllerReceivedInputs() const { return mGameControllerReceivedInput; }
 
 
 	void HandleGameControllerInput();
 
-private:
+protected:
 
 	KeyState mMouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
 	KeyState* mKeyboard = 0;

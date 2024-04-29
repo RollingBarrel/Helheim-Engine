@@ -9,16 +9,15 @@
 
 #ifdef ENGINE
 #define LOG(format, ...) EngineLog(__FILE__, __LINE__, format, __VA_ARGS__);
+void EngineLog(const char file[], int line, const char* format, ...);
 #else
 	#ifdef _DEBUG
-	#define LOG(format, ...) EngineLog(__FILE__, __LINE__, format, __VA_ARGS__);
+	#define LOG(format, ...) CoreLog(__FILE__, __LINE__, format, __VA_ARGS__);
 	#else
 	#define LOG(format, ...)
 	#endif // _DEBUG
+void ENGINE_API CoreLog(const char file[], int line, const char* format, ...);
 #endif // ENGINE
-
-
-void ENGINE_API EngineLog(const char file[], int line, const char* format, ...);
 
 
 

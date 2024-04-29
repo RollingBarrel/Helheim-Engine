@@ -4,9 +4,6 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "SDL.h"
-#ifdef ENGINE
-#include "imgui_impl_sdl2.h"
-#endif //ENGINE
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
 //#include "SDL_scancode.h"
@@ -158,9 +155,6 @@ update_status ModuleInput::PreUpdate(float dt)
 
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
-#ifdef ENGINE
-		ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
-#endif //ENGINE
 
         switch (sdlEvent.type)
         {
@@ -199,22 +193,6 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 			}
 			break;
-#ifdef ENGINE
-        case SDL_DROPFILE:
-			LOG("File droped: %s\n", sdlEvent.drop.file);
-            App->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
-            App->GetResource()->ImportFile(sdlEvent.drop.file);
-
-			for (int i = 0; i < App->GetFileSystem()->GetRootNode()->mChildren.size(); ++i)
-			{
-				App->GetFileSystem()->CleanNode(App->GetFileSystem()->GetRootNode()->mChildren[i]);
-			}
-			App->GetFileSystem()->SetIsClean(true);
-			App->GetFileSystem()->GetRootNode()->CleanUp();
-            App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());
-            SDL_free(sdlEvent.drop.file);
-			break;
-#endif
         }
     }
 

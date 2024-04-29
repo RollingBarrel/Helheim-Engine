@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleFileSystem.h"
 #include "ProjectPanel.h"
 #include "HierarchyPanel.h"
@@ -22,12 +22,12 @@ ProjectPanel::~ProjectPanel()
 void ProjectPanel::Draw(int windowFlags)
 {
 
-	PathNode* root = App->GetFileSystem()->GetRootNode();
+	PathNode* root = EngineApp->GetFileSystem()->GetRootNode();
 
-	if (App->GetFileSystem()->IsClean())
+	if (EngineApp->GetFileSystem()->IsClean())
 	{
 		mSelectedNode = nullptr;
-		App->GetFileSystem()->SetIsClean(false);
+		EngineApp->GetFileSystem()->SetIsClean(false);
 	}
 
 
@@ -139,7 +139,7 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
 				AssetDisplay* asset = current.assets[i];
-				App->GetScene()->OpenPrefabScreen(asset->mPath);
+				EngineApp->GetScene()->OpenPrefabScreen(asset->mPath);
 			}
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 			{
@@ -159,12 +159,12 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
-			HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+			HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
 			for (auto object : hierarchyPanel->FilterMarked()) 
 			{
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
-				object->SetPrefabId(App->GetScene()->SavePrefab(object, file.c_str()));
+				object->SetPrefabId(EngineApp->GetScene()->SavePrefab(object, file.c_str()));
 			}
 		}
 		ImGui::EndDragDropTarget();

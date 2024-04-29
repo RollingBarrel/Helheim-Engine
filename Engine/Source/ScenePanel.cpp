@@ -1,6 +1,6 @@
 #include "ScenePanel.h"
 #include "HierarchyPanel.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
@@ -107,10 +107,10 @@ void ScenePanel::Draw(int windowFlags)
 	{
 		if (ImGui::IsWindowAppearing())
 		{
-			GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+			GameObject* cameraGameObject = EngineApp->GetScene()->FindGameObjectWithTag("MainCamera");
 			if (cameraGameObject)
 			{
-				App->GetCamera()->SetCurrentCamera(cameraGameObject);
+				EngineApp->GetCamera()->SetCurrentCamera(cameraGameObject);
 			}
 		}
 
@@ -123,7 +123,7 @@ void ScenePanel::Draw(int windowFlags)
 	{
 		if (ImGui::IsWindowAppearing())
 		{
-			App->GetCamera()->ActivateEditorCamera();
+			EngineApp->GetCamera()->ActivateEditorCamera();
 
 		}
 
@@ -142,20 +142,20 @@ void ScenePanel::DrawScene()
 	ImVec2 size = ImGui::GetContentRegionAvail();
 	if (size.x != prevSizeX || size.y != prevSizeY)
 	{
-		App->GetOpenGL()->SceneFramebufferResized(size.x, size.y);
+		EngineApp->GetOpenGL()->SceneFramebufferResized(size.x, size.y);
 		prevSizeX = size.x;
 		prevSizeY = size.y;
 	}
-	ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((void*)(intptr_t)EngineApp->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
 
 	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-	App->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
+	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
-	App->GetWindow()->GameWindowsResized(mWindowsSize);
+	EngineApp->GetWindow()->GameWindowsResized(mWindowsSize);
 	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
 	if (!mMousePosition.Equals(float2(-FLT_MAX, -FLT_MAX)))
 	{
-		App->GetInput()->SetGameMousePosition(mMousePosition);
+		EngineApp->GetInput()->SetGameMousePosition(mMousePosition);
 	}
 
 
@@ -166,7 +166,7 @@ void ScenePanel::DrawScene()
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
 
-			Resource* resource = App->GetResource()->RequestResource(asset->mPath);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
 			if (resource)
 			{
 				switch (resource->GetType())
@@ -185,9 +185,9 @@ void ScenePanel::DrawScene()
 				{
 					std::string name;
 
-					App->GetFileSystem()->SplitPath(asset->mPath, &name);
+					EngineApp->GetFileSystem()->SplitPath(asset->mPath, &name);
 
-					GameObject* gameObjectRoot = new GameObject(name.c_str(), App->GetScene()->GetRoot());
+					GameObject* gameObjectRoot = new GameObject(name.c_str(), EngineApp->GetScene()->GetRoot());
 
 					std::vector<GameObject*> tempVec;
 
@@ -214,14 +214,14 @@ void ScenePanel::DrawScene()
 
 					tempVec.clear();
 
-					App->GetResource()->ReleaseResource(resource->GetUID());
+					EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}
 				case Resource::Type::Scene:
 					break;
 				case Resource::Type::Object:
 				{
-					App->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
+					EngineApp->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
 					break;
 				}
 				case Resource::Type::NavMesh:
@@ -233,23 +233,23 @@ void ScenePanel::DrawScene()
 		ImGui::EndDragDropTarget();
 	}
 
-	ImGuizmo::OPERATION currentGuizmoOperation = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoOperation();
-	ImGuizmo::MODE currentGuizmoMode = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoMode();
-	bool useSnap = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetUseSnap();
-	float3 snap = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetSnap();
+	ImGuizmo::OPERATION currentGuizmoOperation = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoOperation();
+	ImGuizmo::MODE currentGuizmoMode = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoMode();
+	bool useSnap = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetUseSnap();
+	float3 snap = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetSnap();
 
 	ImVec2 windowPos = ImGui::GetWindowPos();
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::SetRect(windowPos.x, windowPos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-	const CameraComponent* camera = App->GetCamera()->GetEditorCamera();
+	const CameraComponent* camera = EngineApp->GetCamera()->GetEditorCamera();
 	float4x4 cameraView = camera->GetViewMatrix().Transposed();
 	float4x4 cameraProjection = camera->GetProjectionMatrix().Transposed();
 
-	GameObject* selectedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+	GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 
 	//If there's a selected object in the hierarchy and it's not the root
-	if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot()))
+	if (selectedGameObject && (selectedGameObject != EngineApp->GetScene()->GetRoot()))
 	{
 		const float4x4* transform = &selectedGameObject->GetWorldTransform();
 		float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
@@ -294,7 +294,7 @@ void ScenePanel::DrawScene()
 		}
 	}
 
-	//TODO: Find the way to only apply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
+	//TODO: Find the way to only EngineApply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
 	/*
 	float viewManipulateRight = windowPos.x + size.x;
 	float viewManipulateTop = windowPos.y;
@@ -303,7 +303,7 @@ void ScenePanel::DrawScene()
 	ImGuizmo::ViewManipulate(cameraView.ptr(), 4, ImVec2(viewManipulateRight - viewManipulateSize, viewManipulateTop), ImVec2(viewManipulateSize, viewManipulateSize), 0x10101010);
 	if (ImGui::IsWindowFocused()) {
 		float4x4 newCameraView = cameraView.InverseTransposed();
-		App->GetCamera()->LookAt(float3(newCameraView.Col(3).xyz()), float3(- newCameraView.Col(2).xyz()), float3(newCameraView.Col(1).xyz()));
+		EngineApp->GetCamera()->LookAt(float3(newCameraView.Col(3).xyz()), float3(- newCameraView.Col(2).xyz()), float3(newCameraView.Col(1).xyz()));
 	}
 	*/
 

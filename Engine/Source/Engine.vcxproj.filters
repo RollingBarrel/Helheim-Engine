@@ -73,12 +73,6 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="ResourcePanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -103,9 +97,6 @@
     <ClCompile Include="TagsManagerPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleScriptManager.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="EditorControlPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -127,20 +118,26 @@
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleInput.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleCamera.cpp">
+    <ClCompile Include="EngineMain.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineLog.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineApp.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEngineResource.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleResource.cpp">
+    <ClCompile Include="ModuleEngineInput.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Utils</Filter>
+    <ClCompile Include="ModuleEngineScriptManager.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -310,8 +307,17 @@
     <ClInclude Include="ImporterAnimation.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="EngineApp.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEngineResource.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEngineInput.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEngineScriptManager.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

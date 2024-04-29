@@ -1,81 +1,243 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "ModuleScriptManager.h"
-#include "Application.h"
+#include "EngineApp.h"
+#include "ModuleEngineScriptManager.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 #include "NavMeshController.h"
-#include "ModuleResource.h"
+#include "ModuleEngineResource.h"
 #include "Script.h"
 #include "ScriptComponent.h"
 #include "GameObject.h"
 #include <Windows.h>
 #include <string>
-#include "ModuleInput.h"
+#include "ModuleEngineInput.h"
 #include <any>
 
-static bool PDBReplace(const std::string& filename, const std::string& namePDB);
+//static bool PDBReplace(const std::string& filename, const std::string& namePDB);
 
-ModuleScriptManager::ModuleScriptManager()
+ModuleEngineScriptManager::ModuleEngineScriptManager()
 {
 }
 
-ModuleScriptManager::~ModuleScriptManager()
+ModuleEngineScriptManager::~ModuleEngineScriptManager()
 {
 }
 
-bool ModuleScriptManager::Init()
+bool ModuleEngineScriptManager::Init()
 {
+
 	CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false);
 	mHandle = LoadLibrary("Scripting.dll");
+	int b = GetLastError();
+	mLastModificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
+
+	UpdateScripts();
+
 	return true;
 }
 
-update_status ModuleScriptManager::Update(float dt)
+update_status ModuleEngineScriptManager::PreUpdate(float dt)
 {
+	UpdateScripts();
 
+	int64_t modificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
+	if (mLastModificationTime != modificationTime && !mIsPlaying)
+	{
+		mLastModificationTime = modificationTime;
+		HotReload();
+	}
+
+	return update_status::UPDATE_CONTINUE;
+}
+
+update_status ModuleEngineScriptManager::Update(float dt)
+{
+	if (mIsPlaying) 
+	{
+		for (unsigned int i = 0; i < mScripts.size(); ++i) 
+		{
+			mScripts[i]->mScript->Update();
+		}
+	}
+
+	return update_status::UPDATE_CONTINUE;
+}
+
+void ModuleEngineScriptManager::HotReload()
+{
+	std::vector<std::vector<std::pair<Member, void*>>> oldScripts;
+	SaveOldScript(oldScripts);
+
+	FreeLibrary(static_cast<HMODULE>(mHandle));
+	while (CopyFile("../Scripting/Output/Scripting.dll", "Scripting.dll", false) == FALSE) {}
+	//while (CopyFile("../Scripting/Output/Scripting.pdb", "./Scripting.pdb", false) == FALSE) {}
+	//bool replaced = PDBReplace("./Scripting.dll", "./Scripting.pdb");
+	mHandle = LoadLibrary("Scripting.dll");
+	ReloadScripts(oldScripts);
+	LOG("HOTRELOADING COMPLETE");
+}
+
+void ModuleEngineScriptManager::ReloadScripts(const std::vector<std::vector<std::pair<Member, void*>>>& oldScripts)
+{
 	for (unsigned int i = 0; i < mScripts.size(); ++i) 
 	{
-		mScripts[i]->mScript->Update();
-	}
 
-	return update_status::UPDATE_CONTINUE;
-}
+		std::vector<std::pair<Member, void*>> oldScript = oldScripts[i];
 
-update_status ModuleScriptManager::PostUpdate(float dt)
-{
-	return update_status::UPDATE_CONTINUE;
-}
 
-bool ModuleScriptManager::CleanUp()
-{
-	FreeLibrary(static_cast<HMODULE>(mHandle));
-	return true;
-}
+		
+		mScripts[i]->LoadScript(mScripts[i]->GetScriptName());
 
-void ModuleScriptManager::AddScript(ScriptComponent* script) 
-{ 
-	mScripts.push_back(script); 
-}
+		Script* newScript = mScripts[i]->mScript;
 
-void ModuleScriptManager::RemoveScript(ScriptComponent* script)
-{
-	std::vector<ScriptComponent*>::iterator deletePos = mScripts.end();
-	for (std::vector<ScriptComponent*>::iterator it = mScripts.begin(); it != mScripts.end(); ++it) 
-	{
-
-		if (*it == script) 
+		const std::vector<Member*> newMembers = newScript->GetMembers();
+		
+		
+		for (unsigned int j = 0; j < oldScript.size(); ++j) 
 		{
-			deletePos = it;
-			break;
+
+			for (unsigned int k = 0; k < newMembers.size(); ++k) 
+			{
+				
+				if (strcmp(oldScript[j].first.mName, newMembers[k]->mName) == 0) {
+					char* newScriptPos = ((char*)newScript) + newMembers[k]->mOffset;
+					switch (newMembers[k]->mType)
+					{
+					case(MemberType::INT):
+						*reinterpret_cast<int*>(newScriptPos) = *reinterpret_cast<int*>(oldScript[j].second);
+						delete reinterpret_cast<int*>(oldScript[j].second);
+						break;
+					case(MemberType::FLOAT):
+						*reinterpret_cast<float*>(newScriptPos) = *reinterpret_cast<float*>(oldScript[j].second);
+						delete reinterpret_cast<float*>(oldScript[j].second);
+						break;
+					case(MemberType::BOOL):
+						*reinterpret_cast<bool*>(newScriptPos) = *reinterpret_cast<bool*>(oldScript[j].second);
+						delete reinterpret_cast<bool*>(oldScript[j].second);
+						break;
+					case(MemberType::GAMEOBJECT):
+						*reinterpret_cast<GameObject**>(newScriptPos) = reinterpret_cast<GameObject*>(oldScript[j].second);
+						break;
+					case(MemberType::FLOAT3):
+						*reinterpret_cast<float3*>(newScriptPos) = *reinterpret_cast<float3*>(oldScript[j].second);
+						delete reinterpret_cast<float3*>(oldScript[j].second);
+						break;
+					}
+				}
+
+			}
+
 		}
-		
+
 	}
-	if (deletePos != mScripts.end()) 
+
+}
+
+void ModuleEngineScriptManager::SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts)
+{
+	for (ScriptComponent* scriptComponent : mScripts)
 	{
-		mScripts.erase(deletePos);
+
+		Script* oldScript = scriptComponent->mScript;
+
+		const std::vector<Member*> oldMembersPointer = oldScript->GetMembers();
+		std::vector<std::pair<Member, void*>> oldMembers;
+
+		for (Member* member : oldMembersPointer)
+		{
+			oldMembers.push_back(std::pair<Member, void*>(*member, nullptr));
+			oldMembers.back().first.mName = new char[strlen(member->mName)];
+			strcpy(const_cast<char*>(oldMembers.back().first.mName), member->mName);
+
+			char* oldScriptPos = ((char*)oldScript) + oldMembers.back().first.mOffset;
+
+			switch (member->mType)
+			{
+			case(MemberType::INT):
+				oldMembers.back().second = new int(*reinterpret_cast<int*>(oldScriptPos));
+				break;
+			case(MemberType::FLOAT):
+				oldMembers.back().second = new float(*reinterpret_cast<float*>(oldScriptPos));
+				break;
+			case(MemberType::BOOL):
+				oldMembers.back().second = new bool(*reinterpret_cast<bool*>(oldScriptPos));
+				break;
+			case(MemberType::GAMEOBJECT):
+				oldMembers.back().second = *reinterpret_cast<GameObject**>(oldScriptPos);
+				break;
+			case(MemberType::FLOAT3):
+				oldMembers.back().second = new float3(*reinterpret_cast<float3*>(oldScriptPos));
+				break;
+			default:
+				break;
+			}
+
+		}
+
+
+		oldScripts.push_back(oldMembers);
 	}
-		
+}
+
+void ModuleEngineScriptManager::Play()
+{
+	mIsPlaying = true;
+}
+
+void ModuleEngineScriptManager::Stop()
+{
+	mIsPlaying = false;
+}
+
+void ModuleEngineScriptManager::Start()
+{
+
+	if (EngineApp->GetScene()->GetRoot()->GetName() == "Level1")
+	{
+		EngineApp->GetScene()->GetNavController()->HandleBuild();
+	}
+
+	mIsPlaying = true;
+	for (ScriptComponent* script : mScripts) 
+	{
+		script->mScript->Start();
+	}
+}
+
+void ModuleEngineScriptManager::UpdateScripts()
+{
+	std::vector<std::string> files;
+	EngineApp->GetFileSystem()->GetDirectoryFiles("Assets/Scripts", files);
+
+	for (std::string file : files)
+	{
+		std::string filePath = "Assets/Scripts/";
+		filePath += file;
+
+		if (!EngineApp->GetFileSystem()->IsDirectory(filePath.c_str()))
+		{
+			if (filePath.back() == 'h')
+			{
+				std::string filePathWithMeta;
+				filePathWithMeta = filePath + ".emeta";
+				if (!EngineApp->GetFileSystem()->Exists(filePathWithMeta.c_str()))
+				{
+					filePath = "./" + filePath;
+					EngineApp->GetEngineResource()->ImportFile(filePath.c_str());
+				}
+			}
+			else if (filePath.find(".emeta") != std::string::npos)
+			{
+				int pos = filePath.find(".emeta");
+				filePath.erase(pos);
+				if (!EngineApp->GetFileSystem()->Exists(filePath.c_str()))
+				{
+					EngineApp->GetFileSystem()->RemoveFile(filePath.c_str());
+				}
+			}
+		}
+	}
 }
 
 
@@ -245,14 +407,14 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 //		return false;
 //	}
 //
-//	// Creates or opens a named or unnamed file mapping object for a specified file.
-//	filemap = CreateFileMapping(fp, nullptr, PAGE_READWRITE, 0, 0, nullptr);
+//	// Creates or opens a named or unnamed file mEngineApping object for a specified file.
+//	filemap = CreateFileMEngineApping(fp, nullptr, PAGE_READWRITE, 0, 0, nullptr);
 //	if (filemap == nullptr) 
 //	{
 //		return false;
 //	}
 //
-//	// Maps a view of a file mapping into the address space of a calling process.
+//	// Maps a view of a file mEngineApping into the address space of a calling process.
 //	mem = MapViewOfFile(filemap, FILE_MAP_ALL_ACCESS, 0, 0, 0);
 //	if (mem == nullptr) 
 //	{
@@ -376,41 +538,4 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 //	}
 //
 //	return result;
-//}
-//
-//void ModuleScriptManager::UpdateScripts()
-//{
-//#ifdef ENGINE
-//	std::vector<std::string> files;
-//	App->GetFileSystem()->GetDirectoryFiles("Assets/Scripts", files);
-//
-//	for (std::string file : files)
-//	{
-//		std::string filePath = "Assets/Scripts/";
-//		filePath += file;
-//
-//		if (!App->GetFileSystem()->IsDirectory(filePath.c_str()))
-//		{
-//			if (filePath.back() == 'h')
-//			{
-//				std::string filePathWithMeta;
-//				filePathWithMeta = filePath + ".emeta";
-//				if (!App->GetFileSystem()->Exists(filePathWithMeta.c_str()))
-//				{
-//					filePath = "./" + filePath;
-//					App->GetResource()->ImportFile(filePath.c_str());
-//				}
-//			}
-//			else if (filePath.find(".emeta") != std::string::npos)
-//			{
-//				int pos = filePath.find(".emeta");
-//				filePath.erase(pos);
-//				if (!App->GetFileSystem()->Exists(filePath.c_str()))
-//				{
-//					App->GetFileSystem()->RemoveFile(filePath.c_str());
-//				}
-//			}
-//		}
-//	}
-//#endif
 //}

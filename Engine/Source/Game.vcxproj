@@ -142,13 +142,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="log.cpp" />
-    <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleGame.cpp" />
-    <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModuleResource.cpp" />
-    <ClCompile Include="ModuleScriptManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleGame.h" />

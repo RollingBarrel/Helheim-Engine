@@ -53,7 +53,7 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 
 ScriptComponent::~ScriptComponent()
 {
-	App->GetScriptManager()->RemoveScript(this);
+	App->GetEngineScriptManager()->RemoveScript(this);
 	if (mResourceScript)
 	{
 		App->GetResource()->ReleaseResource(mResourceScript->GetUID());
@@ -186,7 +186,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 			}
 		}
 	}
-	App->GetScriptManager()->AddScript(this);
+	App->GetEngineScriptManager()->AddScript(this);
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
@@ -212,7 +212,7 @@ void ScriptComponent::LoadScript(const char* scriptName)
 	
 
 	mName = scriptName;
-	Script* (*script)(GameObject*) = (Script * (*)(GameObject*))GetProcAddress(static_cast<HMODULE>(App->GetScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
+	Script* (*script)(GameObject*) = (Script * (*)(GameObject*))GetProcAddress(static_cast<HMODULE>(App->GetEngineScriptManager()->GetDLLHandle()), (std::string("Create") + std::string(mName)).c_str());
 	if (script != nullptr) 
 	{	
 		mScript = script(mOwner);
@@ -222,7 +222,7 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		{
 			LOG("SCRIPT RESOURCE NOT FOUND");
 		}
-		//App->GetScriptManager()->AddScript(mScript);
+		//App->GetEngineScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
 	else 
@@ -233,11 +233,11 @@ void ScriptComponent::LoadScript(const char* scriptName)
 
 void ScriptComponent::Enable()
 {
-	App->GetScriptManager()->AddScript(this);
+	App->GetEngineScriptManager()->AddScript(this);
 		
 }
 
 void ScriptComponent::Disable()
 {
-		App->GetScriptManager()->RemoveScript(this);
+		App->GetEngineScriptManager()->RemoveScript(this);
 }

@@ -1,6 +1,6 @@
 #include "InspectorPanel.h"
 #include "imgui.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
@@ -47,7 +47,7 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) 
@@ -106,7 +106,7 @@ void InspectorPanel::Draw(int windowFlags)
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
-		std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+		std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
 		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
 		{
@@ -125,7 +125,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 		if (ImGui::Button("Add Tag")) 
 		{
-			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
+			EngineApp->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
 		}
 
 		if (focusedObject->mPrefabResourceId != 0) {
@@ -447,7 +447,7 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::SeparatorText("TAGS SYSYEM TEST");
 	ImGui::Text("The first name of game object found with");
 	ImGui::SameLine();
-	std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+	std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
 	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
 	{
@@ -615,29 +615,29 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	{
 		if (ImGui::Checkbox("Enable BaseColor map", &material->mEnableBaseColorTexture))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 		if (ImGui::Checkbox("Enable MetallicRoughness map", &material->mEnableMetallicRoughnessTexture))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 		if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 
 		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 
 		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 	}
 }
@@ -702,12 +702,12 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 	if(ImGui::Button("Make Current Camera"))
 	{
-		App->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
+		EngineApp->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
 	}
 
 	if (ImGui::Button("Return To Editor Camera"))
 	{
-		App->GetCamera()->ActivateEditorCamera();
+		EngineApp->GetCamera()->ActivateEditorCamera();
 	}
 }
 
@@ -733,7 +733,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	if (ImGui::BeginCombo("##combo", currentItem)) 
 	{
 		std::vector<std::string> scriptNames;
-		App->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
+		EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
 		for (int i = 0; i < scriptNames.size(); ++i)
 		{
 			
@@ -994,7 +994,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-			Resource* resource = App->GetResource()->RequestResource(asset->mPath);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
 			if (resource && (resource->GetType() == Resource::Type::Texture)) 
 			{
 				imageComponent->SetImage(resource->GetUID());
