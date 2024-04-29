@@ -57,7 +57,7 @@ private:
 
 	std::map<float, float4> mColorGradient;
 	std::vector<Particle*> mParticles;
-	unsigned int mVAO;
-	unsigned int mInstanceBuffer;
-	unsigned int mVBO;
+	unsigned int mVAO = 0;
+	unsigned int mInstanceBuffer = 0;
+	unsigned int mVBO = 0;
 };
