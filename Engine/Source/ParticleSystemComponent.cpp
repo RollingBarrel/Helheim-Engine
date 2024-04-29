@@ -63,13 +63,13 @@ void ParticleSystemComponent::Init()
 
     // set up mesh and attribute properties
     float particleQuad[] = {
-        -0.5f, 0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f,
+        -0.1f, 0.1f, 0.0f, 1.0f,
+        0.1f, -0.1f, 1.0f, 0.0f,
+        -0.1f, -0.1f, 0.0f, 0.0f,
 
-        -0.5f, 0.5f, 0.0f, 1.0f,
-        0.5f, 0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, 1.0f, 0.0f
+        -0.1f, 0.1f, 0.0f, 1.0f,
+        0.1f, 0.1f, 1.0f, 1.0f,
+        0.1f, -0.1f, 1.0f, 0.0f
     };
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
@@ -136,11 +136,12 @@ void ParticleSystemComponent::Draw() const
             if (mParticles[i]->GetLifetime() > 0.0f)
             {
                 
-                float scale = 10;//mParticles[i]->GetSize();
+                float scale = mParticles[i]->GetSize();
                 float3x3 scaleMatrix = float3x3::identity * scale;
-                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(mParticles[i]->GetPosition(), 1) };
-                transform.Transpose();
-                transform = transform * scale;
+                float3 pos = mParticles[i]->GetPosition();
+                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+                transform = transform * scaleMatrix;
+                transform.Transpose();                
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
                 memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
             }
