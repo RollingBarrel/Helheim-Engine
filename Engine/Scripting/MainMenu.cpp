@@ -268,7 +268,7 @@ void MainMenu::Update()
 
 bool MainMenu::Delay(float delay)
 {
-    mTimePassed += App->GetGameDt();
+    mTimePassed += App->GetDt();
 
     if (mTimePassed >= delay)
     {

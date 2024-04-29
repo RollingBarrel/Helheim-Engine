@@ -49,7 +49,7 @@ struct PathNode
 	}
 };
 
-class ModuleFileSystem : public Module
+class ENGINE_API ModuleFileSystem : public Module
 {
 public:
 	ModuleFileSystem();

@@ -6,7 +6,7 @@
 #include <map>
 #include <unordered_map>
 
-class ModuleResource : public Module
+class ENGINE_API ModuleResource : public Module
 {
 public:
 	ModuleResource() {}

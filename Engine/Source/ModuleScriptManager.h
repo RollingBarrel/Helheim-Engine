@@ -5,7 +5,7 @@
 class ScriptComponent;
 struct Member;
 
-class ModuleScriptManager :	public Module
+class ENGINE_API ModuleScriptManager :	public Module
 {
 public:
 

@@ -14,7 +14,7 @@ namespace tinygltf
     struct AnimationChannel;
 }
 
-class ResourceAnimation : public Resource
+class ENGINE_API ResourceAnimation : public Resource
 {
 public:
     ResourceAnimation(unsigned int uid, const std::string name); 

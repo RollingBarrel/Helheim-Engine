@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -110,19 +110,24 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;ws2_32.lib;fmodstudioL_vc.lib;fmodL_vc.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>Xcopy "$(SolutionDir)Source\Output\CoreLib\$(Platform)\$(Configuration)\CoreLib.dll" "$(SolutionDir)Game\" /s /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -130,7 +135,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -139,12 +144,17 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;physfs.lib;DirectXTex.lib;ws2_32.lib;fmodstudio_vc.lib;fmod_vc.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>Xcopy "$(SolutionDir)Source\Output\CoreLib\$(Platform)\$(Configuration)\CoreLib.dll" "$(SolutionDir)Game\" /s /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIAgentComponent.cpp" />

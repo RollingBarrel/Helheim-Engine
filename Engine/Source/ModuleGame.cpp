@@ -15,8 +15,8 @@ bool ModuleGame::Init()
 	glGenVertexArrays(1, &mVAO);
 
 	//TODO: read the name of the fitrst scene to load from somewhere
-	//App->GetScene()->Load("Level1");
-	App->GetEngineScriptManager()->Start();
+	App->GetScene()->Load("Level1");
+	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	
 	//Camera

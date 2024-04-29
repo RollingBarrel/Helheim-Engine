@@ -29,7 +29,7 @@ struct ModelNode
 	int mSkinId = -1;
 };
 
-class ResourceModel : public Resource
+class ENGINE_API ResourceModel : public Resource
 {
 public:
 

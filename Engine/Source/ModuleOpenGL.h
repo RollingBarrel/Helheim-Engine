@@ -22,7 +22,7 @@ struct SDL_Renderer;
 struct SDL_Rect;
 typedef unsigned int GLenum;
 
-class OpenGLBuffer {
+class ENGINE_API OpenGLBuffer {
 public:
 	OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding = -1, unsigned int size = 0, const void* data = nullptr);
 	~OpenGLBuffer();
@@ -42,7 +42,7 @@ private:
 	unsigned int mDataCapacity;
 };
 
-class ModuleOpenGL : public Module
+class ENGINE_API ModuleOpenGL : public Module
 {
 public:
 	ModuleOpenGL();

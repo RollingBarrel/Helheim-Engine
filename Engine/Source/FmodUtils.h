@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 #include "fmod_studio.hpp"
 #include <vector>
 
@@ -7,7 +8,7 @@
 
 class AudioSourceComponent;
 
-class FmodUtils
+class ENGINE_API FmodUtils
 {
 public:
 	static void CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line);

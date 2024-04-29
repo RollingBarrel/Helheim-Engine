@@ -14,7 +14,7 @@ struct Hit;
 #define MAX_DEPTH 6
 #define CAPACITY 8
 
-class Quadtree
+class ENGINE_API Quadtree
 {
 public:
 	Quadtree(const AABB& boundingBox);

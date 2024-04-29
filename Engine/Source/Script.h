@@ -42,7 +42,7 @@ enum class  MemberType : int
 	
 };
 
-struct Member 
+struct ENGINE_API Member
 {
 	const char* mName = nullptr;
 	MemberType mType = MemberType::NONE;

@@ -9,7 +9,7 @@ class DDRenderInterfaceCoreGL;
 class Camera;
 class GameObject;
 
-class ENGINE_API ModuleDebugDraw : public Module
+class ModuleDebugDraw : public Module
 {
 
 public:

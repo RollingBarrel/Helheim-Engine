@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 //#include "Math/float3.h"
 //#include "Math/Quat.h"
 //
@@ -16,7 +17,7 @@ namespace Importer
 {
     namespace Animation 
     {
-        void Save(ResourceAnimation* ourAnimation);
-        ResourceAnimation* Load(const char* fileName, unsigned int uid);
+        ENGINE_API void Save(ResourceAnimation* ourAnimation);
+        ENGINE_API ResourceAnimation* Load(const char* fileName, unsigned int uid);
     }
 }

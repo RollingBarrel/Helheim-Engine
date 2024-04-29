@@ -7,7 +7,7 @@
 struct SDL_Window;
 struct SDL_Surface;
 
-class ModuleWindow : public Module
+class ENGINE_API ModuleWindow : public Module
 {
 public:
 

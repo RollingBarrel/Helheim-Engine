@@ -10,7 +10,7 @@
 class CameraComponent;
 class GameObject;
 
-class ModuleCamera : public Module
+class ENGINE_API ModuleCamera : public Module
 {
 public:
 	bool Init() override;

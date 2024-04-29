@@ -229,7 +229,7 @@ void PlayerController::Moving()
     {
         if (!mReadyToStep)
         {
-            mStepTimePassed += App->GetGameDt();
+            mStepTimePassed += App->GetDt();
             if (mStepTimePassed >= mStepCoolDown)
             {
                 mStepTimePassed = 0;
@@ -249,17 +249,17 @@ void PlayerController::Moving()
 
 void PlayerController::Move(float3 direction) 
 {
-    float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mPlayerSpeed);
+    float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
 }
 
 void PlayerController::HandleRotation()
 {
     std::map<float, Hit> hits;
-
+    
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGameMousePosition());
     Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
-
+    
     float distance;
     bool intersects = plane.Intersects(ray, &distance);
     float3 hitPoint = ray.GetPoint(distance);
@@ -287,7 +287,7 @@ void PlayerController::Dash()
     {
         if (mIsDashCoolDownActive)
         {
-            mDashTimePassed += App->GetGameDt();
+            mDashTimePassed += App->GetDt();
             if (mDashTimePassed >= mDashCoolDown)
             {
                 mDashTimePassed = 0;
@@ -296,8 +296,8 @@ void PlayerController::Dash()
         }
         else
         {
-            mDashMovement += mDashSpeed * App->GetGameDt();
-            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
+            mDashMovement += mDashSpeed * App->GetDt();
+            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetDt() * mDashSpeed);
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
         }  
     }
@@ -363,7 +363,7 @@ void PlayerController::RangedAttack()
     {
         if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
         {
-            mChargedTime += App->GetGameDt();
+            mChargedTime += App->GetDt();
             LOG("Charged Time: %f ", mChargedTime);
         }
         else if (mChargedTime >= mMinRangeChargeTime)
@@ -400,7 +400,7 @@ void PlayerController::RangedAttack()
         if (mBullets > 0) 
         {
             static float startingTime = mFireRate;
-            startingTime -= App->GetGameDt();
+            startingTime -= App->GetDt();
 
             if (startingTime <= 0.0f)
             {
@@ -423,16 +423,16 @@ void PlayerController::RangedAttack()
 void PlayerController::Shoot(float damage)
 {
     std::map<float, Hit> hits;
-
+    
     Ray ray;
     ray.pos = mGameObject->GetPosition();
     ray.pos.y++;
     ray.dir = mGameObject->GetFront();
-
+    
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
-
+    
     if (!hits.empty()) 
     {
         for (const std::pair<float, Hit>& hit : hits)
@@ -440,7 +440,7 @@ void PlayerController::Shoot(float damage)
             if (hit.second.mGameObject->GetTag()->GetName() == "Enemy") 
             {
                 LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
-
+    
                 Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
@@ -487,7 +487,7 @@ void PlayerController::RechargeDash()
 
     if (mDashCharges < mMaxDashCharges)
     {
-        actualRegenerationTime += App->GetGameDt();
+        actualRegenerationTime += App->GetDt();
 
         if (actualRegenerationTime >= mDashChargeRegenerationTime)
         {
@@ -560,7 +560,7 @@ void PlayerController::UpdateBattleSituation()
     else if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
         (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK)) 
     {
-        mBattleStateTransitionTime += App->GetGameDt();
+        mBattleStateTransitionTime += App->GetDt();
         if (mBattleStateTransitionTime >= 8.0f) 
         {
             if (hpRate <= 0.3) {

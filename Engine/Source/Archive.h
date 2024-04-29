@@ -15,7 +15,7 @@
 #include "Math/float3.h"
 #include "Math/float4.h"
 
-class Archive
+class ENGINE_API Archive
 {
 public:
     Archive();

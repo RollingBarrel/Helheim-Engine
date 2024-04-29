@@ -145,12 +145,12 @@ void EnemyRobot::RangeAttack()
     ray.pos = mGameObject->GetPosition();
     ray.pos.y++;
     ray.dir = mGameObject->GetFront();
-
+    
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
-
+    
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
- 
+    
         //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
         for (const std::pair<float, Hit>& hit : hits) 
         {

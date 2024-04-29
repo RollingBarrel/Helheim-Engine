@@ -55,7 +55,7 @@ bool GameApplication::Init()
 	for (int i = 0; i < NUM_MODULES && ret == true; ++i)
 		ret = modules[i]->Init();
 
-	return false;
+	return ret;
 }
 
 update_status GameApplication::Update(float dt)

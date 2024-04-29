@@ -118,9 +118,6 @@
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp">
       <Filter>Dependencies\ImGuiFileDialog</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleScriptManager.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="EngineMain.cpp">
       <Filter>Core</Filter>
     </ClCompile>

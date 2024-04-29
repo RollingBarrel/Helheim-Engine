@@ -7,7 +7,7 @@
 #include "KeyboardKeys.h"
 #include "float2.h"
 
-class ENGINE_API ModuleEngineInput : public ModuleInput
+class ModuleEngineInput : public ModuleInput
 {
 public:
 
