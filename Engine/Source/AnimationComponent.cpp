@@ -80,11 +80,13 @@ void AnimationComponent::OnStart()
 {
 	if (mGameobjectsInverseMatrices.size() == 0)
 	{
-		//LoadAllChildJoints(mOwner);
-		for (int i = 0; i < mAnimation->mInvBindMatrices.size(); i++) 
+		LoadAllChildJoints(mOwner);
+		/*
+		for (int i = 0; i < mAnimation->mInvBindMatrices.size(); i++)
 		{
 			mGameobjectsInverseMatrices.push_back(std::pair(mOwner->FindGameObjectInTree(mAnimation->mInvBindMatrices[i].first), mAnimation->mInvBindMatrices[i].second));
 		}
+		*/
 	}
 	//mController->Play(mAnimation->GetUID(), true);
 }
@@ -138,24 +140,27 @@ void AnimationComponent::SetEndTime(float time)
 }
 
 
-//void AnimationComponent::AddJointNode(GameObject* node)
-//{
-//	ResourceAnimation::AnimationChannel* animChannel = mAnimation->GetChannel(node->GetName());
-//	if (animChannel /*&& !animChannel->invBindMatrix.Equals(float4x4::identity)*/)
-//	{
-//		mGameobjectsInverseMatrices.push_back(std::pair(node, animChannel->invBindMatrix));
-//	}
-//}
+void AnimationComponent::AddJointNode(GameObject* node)
+{
+	for (const auto& pair : mAnimation->mInvBindMatrices)
+	{
+		if (pair.first == node->GetName())
+		{
+			mGameobjectsInverseMatrices.push_back(std::pair(node, pair.second));
+			break;
+		}
+	}
+}
 
-//void AnimationComponent::LoadAllChildJoints(GameObject* currentObject)
-//{
-//	AddJointNode(currentObject);
-//	for (const auto& object : currentObject->GetChildren())
-//	{
-//		LoadAllChildJoints(object);
-//	}
-//
-//}
+void AnimationComponent::LoadAllChildJoints(GameObject* currentObject)
+{
+	AddJointNode(currentObject);
+	for (const auto& object : currentObject->GetChildren())
+	{
+		LoadAllChildJoints(object);
+	}
+
+}
 
 void AnimationComponent::UpdatePalette()
 {

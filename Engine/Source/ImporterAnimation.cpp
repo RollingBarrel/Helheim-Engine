@@ -72,8 +72,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
                         inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
-
-                rAnimation->mInvBindMatrices.push_back({ skins.joints[i], inverseBindMatrix });
+                rAnimation->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
 
             }
         }
@@ -113,7 +112,7 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
         }
     }
 
-    size += (sizeof(float) * 16 + sizeof(int)) * ourAnimation->mInvBindMatrices.size();
+    size += (sizeof(float) * 16 + sizeof(std::string)) * ourAnimation->mInvBindMatrices.size();
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -170,7 +169,7 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
 
     for (int i = 0; i < jointsSize; ++i)
     {
-        bytes = sizeof(unsigned int);
+        bytes = sizeof(std::string);
         memcpy(cursor, &ourAnimation->mInvBindMatrices[i].first, bytes);
         cursor += bytes;
 
@@ -284,7 +283,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
         for (int i = 0; i < jointsSize; ++i)
         {
             int indexJoint = 0;
-            bytes = sizeof(unsigned int);
+            bytes = sizeof(std::string);
             memcpy(&ourAnimation->mInvBindMatrices[i].first, cursor, bytes);
             cursor += bytes;
 
