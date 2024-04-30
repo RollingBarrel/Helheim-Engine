@@ -113,11 +113,17 @@ private:
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
-
+	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
+	
+	
 
 	//IBL
+	unsigned int mHDRTextureId = 0;
+	unsigned int mEnvironmentTextureId = 0;
 	unsigned int mIrradianceTextureId = 0;
+	
+	
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;

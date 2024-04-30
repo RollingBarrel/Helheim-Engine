@@ -1096,7 +1096,10 @@
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\HDRToCubeMap_FragmentShader.glsl">
+    <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

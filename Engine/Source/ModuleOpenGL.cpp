@@ -138,7 +138,11 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "skybox.fs";
 	mSkyBoxProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	sourcesPaths[0] = "skybox.vs";
+	sourcesPaths[0] = "CubeMap_VertexShader.glsl";
+	sourcesPaths[1] = "Environment_FragmentShader.glsl";
+	mEnvironmentProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "CubeMap_VertexShader.glsl";
 	sourcesPaths[1] = "Irradiance_FragmentShader.glsl";
 	mIrradianceProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
@@ -285,7 +289,7 @@ static unsigned int LoadCubeMap()
 	DirectX::ScratchImage image;
 
 	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap2.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
-
+	
 	if (res == S_OK)
 	{
 		const DirectX::TexMetadata& metadata = image.GetMetadata();
@@ -476,12 +480,12 @@ void ModuleOpenGL::BakeIBL()
 	frustum.verticalFov = pi / 2.0f;
 	frustum.horizontalFov = pi / 2.0f;
 
-	glGenTextures(1, &mIrradianceTextureId);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+	glGenTextures(1, &mEnvironmentTextureId);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 
 	for (unsigned int i = 0; i < 6; ++i)
 	{
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0,
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 512, 512, 0,
 			GL_RGB, GL_FLOAT, nullptr);
 	}
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -492,29 +496,49 @@ void ModuleOpenGL::BakeIBL()
 
 
 
+	DirectX::ScratchImage image;
 
-	glUseProgram(mIrradianceProgramId);
-	glUniform1i(glGetUniformLocation(mIrradianceProgramId, "environment"), 0);
+	HRESULT res = DirectX::LoadFromHDRFile(L"Assets/Textures/skybox.hdr", nullptr, image);
+
+	if (res == S_OK)
+	{
+		const DirectX::TexMetadata& metadata = image.GetMetadata();
+
+		glGenTextures(1, &mHDRTextureId);
+		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, metadata.width, metadata.height, 0, GL_RGBA, GL_FLOAT, image.GetPixels());
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	else 
+	{
+		LOG("FAILED TO READ HDR IMAGE");
+	}
+
+
+	glUseProgram(mEnvironmentProgramId);
+	glUniform1i(glGetUniformLocation(mEnvironmentProgramId, "HDRImage"), 0);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTexture);
-
-	
-	
-	
+	glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	int viewPortSize[4];
 	glGetIntegerv(GL_VIEWPORT, viewPortSize);
-	glViewport(0, 0, 32, 32);
+	glViewport(0, 0, 512, 512);
 	glDepthMask(GL_FALSE);
 	glBindVertexArray(mSkyVao);
 	for (unsigned int i = 0; i < 6; ++i)
 	{
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mIrradianceTextureId, 0);
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mEnvironmentTextureId, 0);
 
 		frustum.front = front[i];
 		frustum.up = up[i];
+		
+		glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
+		glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
 
@@ -525,7 +549,7 @@ void ModuleOpenGL::BakeIBL()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
 	glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	glDeleteTextures(1, &mHDRTextureId);
 }
 
 
