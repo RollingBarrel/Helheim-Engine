@@ -10,7 +10,7 @@ Particle::Particle()
     mIsSizeCurve = false;
     mSizeLinear = 1.0f;
     mMaxLifeTime = 1000.0f;
-    mLifeTime = 1000.0f;
+    mLifeTime = 0.0f;
     mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
@@ -43,7 +43,7 @@ bool Particle::Update(float DeltaTime)
     }
     float size = mIsSizeCurve ? BezierValue(dt01, mSizeCurve) : mSizeLinear;
     float speed = mIsSpeedCurve ? BezierValue(dt01, mSpeedCurve) : mSpeedLinear;
-    mPosition = mPosition + mDirection * mSpeedLinear * speed;
+    mPosition = mPosition + mDirection * speed * DeltaTime;
     return true;
 }
 

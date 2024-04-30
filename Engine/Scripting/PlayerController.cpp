@@ -77,7 +77,7 @@ void PlayerController::Update()
         }
         else
         {
-            mAudioSourceComponent->PlayOneShot();
+            //mAudioSourceComponent->PlayOneShot();
             mReadyToStep = false;
         }
     }

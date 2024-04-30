@@ -85,8 +85,8 @@ void ParticleSystemComponent::Init()
     glVertexAttribDivisor(COLOR_LOCATION, 1);
     glBindVertexArray(0);
     // create this->amount default particle instances
-    for (unsigned int i = 0; i < 100; ++i)
-        this->mParticles.push_back(new Particle());
+    //for (unsigned int i = 0; i < 100; ++i)
+    //    this->mParticles.push_back(new Particle());
 
     App->GetOpenGL()->AddParticleSystem(this);
 }

@@ -98,6 +98,11 @@
                                 "VariableData": -1
                             },
                             {
+                                "VariableName": "mAudioSourceComponentHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "testeando2",
                                 "MemberType": 1,
                                 "VariableData": 543.0
@@ -109,19 +114,19 @@
             {
                 "UID": 1128849801,
                 "ParentUID": 1,
-                "Name": "GameObject (1)",
+                "Name": "GameObject (2)",
                 "isEnabled": true,
                 "isActive": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -6.099999904632568,
+                    2.8499999046325685,
+                    -1.899999976158142
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.10943183302879334,
+                    0.45593345165252688,
+                    -0.04340127855539322,
+                    0.8821936845779419
                 ],
                 "Scale": [
                     1.0,
@@ -134,7 +139,7 @@
                 "Components": [
                     {
                         "ComponentType": 6,
-                        "AspectRatio": 1.7777777910232545,
+                        "AspectRatio": 2.322188377380371,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
