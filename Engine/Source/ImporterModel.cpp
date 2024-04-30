@@ -249,7 +249,14 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Tamaño vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
-    bufferSize += (sizeof(float) * 16 + sizeof(std::string)) * rModel->mInvBindMatrices.size();
+    for (const auto& invBindMatrix : rModel->mInvBindMatrices) {
+        bufferSize += sizeof(float) * 16;                                   // Size of the float array
+        bufferSize += sizeof(unsigned int);                                 // Size of the string length
+        //bufferSize += sizeof(char) * invBindMatrix.first.size();                // Size of the string characters
+        bufferSize += sizeof(invBindMatrix.first);
+    }
+
+    //bufferSize += (sizeof(float) * 16 + sizeof(std::string)) * rModel->mInvBindMatrices.size();
 
     //bufferSize += sizeof(int) * rModel->mJoints.size();
 
@@ -358,7 +365,12 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
 
     for (int i = 0; i < jointsSize; ++i)
     {
-        bytes = sizeof(std::string);
+        bytes = sizeof(int);
+        int lenString = sizeof(rModel->mInvBindMatrices[i].first);
+        memcpy(cursor, &lenString, bytes);
+        cursor += bytes;
+
+        bytes = sizeof(char) * lenString;
         memcpy(cursor, &rModel->mInvBindMatrices[i].first, bytes);
         cursor += bytes;
 
@@ -502,8 +514,12 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
 
         for (int i = 0; i < jointsSize; ++i)
         {
-            int indexJoint = 0;
-            bytes = sizeof(std::string);
+            bytes = sizeof(int);
+            int lenString;
+            memcpy(&lenString, cursor, bytes);
+            cursor += bytes;
+
+            bytes = sizeof(char)* lenString;
             memcpy(&rModel->mInvBindMatrices[i].first, cursor, bytes);
             cursor += bytes;
 
