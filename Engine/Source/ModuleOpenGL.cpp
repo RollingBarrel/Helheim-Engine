@@ -466,42 +466,43 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 
 void ModuleOpenGL::BakeIBL()
 {
-	const float3 front[6] = { float3::unitX, -float3::unitX, float3::unitY,
-							 -float3::unitY, float3::unitZ, -float3::unitZ };
-
-	float3 up[6] = { -float3::unitY, -float3::unitY, float3::unitZ,
-					 -float3::unitZ, -float3::unitY, -float3::unitY };
-
-	Frustum frustum;
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.nearPlaneDistance = 0.1;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = pi / 2.0f;
-	frustum.horizontalFov = pi / 2.0f;
-
-	glGenTextures(1, &mEnvironmentTextureId);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
-
-	for (unsigned int i = 0; i < 6; ++i)
-	{
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 512, 512, 0,
-			GL_RGB, GL_FLOAT, nullptr);
-	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-
 	DirectX::ScratchImage image;
 
 	HRESULT res = DirectX::LoadFromHDRFile(L"Assets/Textures/skybox.hdr", nullptr, image);
 
 	if (res == S_OK)
 	{
+
+		const float3 front[6] = { float3::unitX, -float3::unitX, float3::unitY,
+							 -float3::unitY, float3::unitZ, -float3::unitZ };
+
+		float3 up[6] = { -float3::unitY, -float3::unitY, float3::unitZ,
+						 -float3::unitZ, -float3::unitY, -float3::unitY };
+
+		Frustum frustum;
+		frustum.type = FrustumType::PerspectiveFrustum;
+		frustum.pos = float3::zero;
+		frustum.nearPlaneDistance = 0.1;
+		frustum.farPlaneDistance = 100.0f;
+		frustum.verticalFov = pi / 2.0f;
+		frustum.horizontalFov = pi / 2.0f;
+
+		glGenTextures(1, &mEnvironmentTextureId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 512, 512, 0,
+				GL_RGB, GL_FLOAT, nullptr);
+		}
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
 		const DirectX::TexMetadata& metadata = image.GetMetadata();
 
 		glGenTextures(1, &mHDRTextureId);
@@ -511,45 +512,46 @@ void ModuleOpenGL::BakeIBL()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+		glUseProgram(mEnvironmentProgramId);
+		glUniform1i(glGetUniformLocation(mEnvironmentProgramId, "HDRImage"), 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
+
+		unsigned int frameBuffer;
+		//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+		glGenFramebuffers(1, &frameBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+		int viewPortSize[4];
+		glGetIntegerv(GL_VIEWPORT, viewPortSize);
+		glViewport(0, 0, 512, 512);
+		glDepthMask(GL_FALSE);
+		glBindVertexArray(mSkyVao);
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mEnvironmentTextureId, 0);
+
+			frustum.front = front[i];
+			frustum.up = up[i];
+
+			glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
+			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		}
+		glBindVertexArray(0);
+		glUseProgram(0);
+		glDepthMask(GL_TRUE);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
+		glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
+		glDeleteFramebuffers(1, &frameBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDeleteTextures(1, &mHDRTextureId);
 	}
-	else 
-	{
-		LOG("FAILED TO READ HDR IMAGE");
-	}
-
-
-	glUseProgram(mEnvironmentProgramId);
-	glUniform1i(glGetUniformLocation(mEnvironmentProgramId, "HDRImage"), 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
-	
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	int viewPortSize[4];
-	glGetIntegerv(GL_VIEWPORT, viewPortSize);
-	glViewport(0, 0, 512, 512);
-	glDepthMask(GL_FALSE);
-	glBindVertexArray(mSkyVao);
-	for (unsigned int i = 0; i < 6; ++i)
-	{
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mEnvironmentTextureId, 0);
-
-		frustum.front = front[i];
-		frustum.up = up[i];
-		
-		glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
-		glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
-
-	}
-	glBindVertexArray(0);
-	glUseProgram(0);
-	glDepthMask(GL_TRUE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
-	glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glDeleteTextures(1, &mHDRTextureId);
 }
 
 
