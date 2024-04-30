@@ -183,7 +183,7 @@ void EditorControlPanel::Play()
 	case GameState::PAUSE:
 		mState = GameState::PLAY_PAUSE;
 		EngineApp->GetEngineScriptManager()->Stop();
-		EngineApp->GetAudio()->PauseAllChannels();
+		//EngineApp->GetAudio()->ResumeAllChannels();
 		break;
 	default:
 		mState = GameState::PLAY;

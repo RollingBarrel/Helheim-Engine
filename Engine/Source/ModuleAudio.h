@@ -41,5 +41,7 @@ private:
 	FMOD::Studio::Bank* mSFXBank = nullptr;
 	FMOD::Studio::Bank* mMusicBank = nullptr;
 
+	bool mPaused = false;
+
 };
 

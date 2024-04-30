@@ -50,6 +50,9 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 		// Update parameters
 		event->getDescription(&mEventDescription);
 		UpdateParameters();
+
+		// DELETTEEEEEEEEEEEEE MEE
+		mEventInstance->start();
 	}
 }
 

@@ -3,7 +3,6 @@
 
 #include "fmod.hpp"
 #include "FmodUtils.h"
-#include "ModuleScriptManager.h"
 #include "Application.h"
 
 ModuleAudio::ModuleAudio()
@@ -16,8 +15,6 @@ ModuleAudio::~ModuleAudio()
 
 bool ModuleAudio::Init()
 {
-	FMOD_RESULT result = FMOD_OK;
-
 	// Instantiate Fmod studio
 	CheckError( FMOD::Studio::System::create(&mSystem) ); // Create the Studio System object.
 	CheckError( mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
@@ -39,7 +36,7 @@ update_status ModuleAudio::PreUpdate(float dt)
 
 update_status ModuleAudio::Update(float dt)
 {
-	if (App->GetScriptManager()->IsPlaying()) 
+	if (!mPaused) 
 	{
 		mSystem->update();
 	}
@@ -53,6 +50,7 @@ update_status ModuleAudio::PostUpdate(float dt)
 
 void ModuleAudio::PauseAllChannels()
 {
+	mPaused = true;
 	//FMOD::System* coreSystem = nullptr;
 	//mSystem->getCoreSystem(&coreSystem);
 
@@ -62,7 +60,12 @@ void ModuleAudio::PauseAllChannels()
 	//	FMOD::Channel* channel = nullptr;
 	//	coreSystem->getChannel(i, &channel);
 
-	//	channel->setMute(true);
+	//	channel->setPaused(true);
+
+	//	bool playstete;
+	//	channel->getPaused(&playstete);
+
+	//	LOG("%d\n", playstete);
 	//}
 	//FMOD::Studio::Bank* masterBank;
 	//mSystem->getBank("Master Bank", &masterBank);
