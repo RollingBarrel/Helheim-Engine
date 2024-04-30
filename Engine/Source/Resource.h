@@ -1,8 +1,8 @@
 #pragma once
-
+#include "Globals.h"
 #include <string>
 
-class Resource
+class ENGINE_API Resource
 {
 public:
 	enum class Type

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "MainMenu.h"
 #include "GameObject.h"
 #include "Application.h"
@@ -78,7 +77,8 @@ void MainMenu::Start()
 
 void MainMenu::Update()
 {
-    if (mLoadlevel == true && Delay(0.1f)) {
+    if (mLoadlevel == true && Delay(0.1f)) 
+    {
         App->GetScene()->Load("Level1");
     }
     
@@ -268,7 +268,7 @@ void MainMenu::Update()
 
 bool MainMenu::Delay(float delay)
 {
-    mTimePassed += App->GetGameDt();
+    mTimePassed += App->GetDt();
 
     if (mTimePassed >= delay)
     {

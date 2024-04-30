@@ -1,6 +1,7 @@
 #pragma once
-#include <Script.h>
+#include "Script.h"
 #include "Macros.h"
+#include "float3.h"
 
 class NavMeshController;
 class AnimationComponent;

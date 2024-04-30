@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "EngineApp.h"
 #include "SDL.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
+#include "ModuleEngineScriptManager.h"
 #include "Quadtree.h"
 
 #include "Panel.h"
@@ -80,7 +81,7 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io->ConfigDragClickToInputText = true;
 	io->IniFilename = NULL;
-	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
+	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->window, EngineApp->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	io->Fonts->AddFontDefault();
@@ -387,7 +388,11 @@ void ModuleEditor::OpenLoadScene() {
 	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
-			App->GetScene()->Load(filePathName.c_str());
+			EngineApp->GetScene()->Load(filePathName.c_str());
+			if (EngineApp->IsPlayMode())
+			{
+				EngineApp->GetEngineScriptManager()->Start();
+			}
 		}
 
 		ImGuiFileDialog::Instance()->Close();
@@ -400,7 +405,7 @@ void ModuleEditor::OpenSaveScene() {
 	if (ImGuiFileDialog::Instance()->Display("SaveScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
-			App->GetScene()->Save(filePathName.c_str());
+			EngineApp->GetScene()->Save(filePathName.c_str());
 		}
 
 		ImGuiFileDialog::Instance()->Close();

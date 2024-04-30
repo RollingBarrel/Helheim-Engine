@@ -1,6 +1,5 @@
 #include "ConsolePanel.h"
 #include "imgui.h"
-#include "Application.h"
 #include "Globals.h"
 
 ConsolePanel::ConsolePanel() : Panel(CONSOLEPANEL, true)

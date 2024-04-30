@@ -2,6 +2,7 @@
 
 #include <map>
 #include "float3.h"
+#include "float2.h"
 #include "MathGeoLibFwd.h"
 class GameObject;
 
@@ -12,11 +13,8 @@ struct Hit
 	float mDistance;
 };
 
-class ENGINE_API Physics
+namespace Physics
 {
-public:
-	//Returns a map with the distance to the object and a pointer to the object
-	static std::map<float, Hit> Raycast(Ray* ray);
-	static Ray ScreenPointToRay(float2 mousePosition);
+	ENGINE_API std::map<float, Hit> Raycast(Ray* ray);
+	ENGINE_API Ray ScreenPointToRay(float2 mousePosition);
 };
-

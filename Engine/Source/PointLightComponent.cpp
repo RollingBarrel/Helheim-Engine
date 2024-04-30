@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleDebugDraw.h"
+//#include "ModuleDebugDraw.h"
 
 #include "PointLightComponent.h"
 
@@ -58,10 +58,11 @@ void PointLightComponent::Update()
 			SetPosition(pos);
 		}
 	}
-	if (debugDraw)
-	{
-		App->GetDebugDraw()->DrawSphere(mData.pos, mData.col, mData.pos[3]);
-	}
+	//TODO: SEPARATE ENGINE
+	//if (debugDraw)
+	//{
+	//	App->GetDebugDraw()->DrawSphere(mData.pos, mData.col, mData.pos[3]);
+	//}
 }
 
 inline Component* PointLightComponent::Clone(GameObject* owner) const 

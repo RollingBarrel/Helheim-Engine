@@ -67,6 +67,7 @@ bool ModuleWindow::Init()
 	}
 
 	mGameWindowsSize = float2(width, height);
+
 	return ret;
 }
 

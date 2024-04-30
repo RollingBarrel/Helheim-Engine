@@ -19,7 +19,7 @@ typedef struct Attribute {
 	Type type;
 }Attribute;
 
-class ResourceMesh : public Resource
+class ENGINE_API ResourceMesh : public Resource
 {
 public:
 

@@ -15,7 +15,7 @@ namespace FMOD {
 	class System; 
 }
 
-class ModuleAudio :
+class ENGINE_API ModuleAudio :
     public Module
 {
 public:

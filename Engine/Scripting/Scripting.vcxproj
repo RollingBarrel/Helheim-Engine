@@ -116,8 +116,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SCRIPTING_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)\Source\Dependencies\MathGeoLib-v1.5\include\Math;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;$(SolutionDir)Source\Dependencies\FMOD\api\core\inc;$(SolutionDir)Source\Dependencies\FMOD\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;33010</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -126,7 +127,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Source\Output\Engine\$(IntDir);$(SolutionDir)Source\Output\Game\$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -142,8 +143,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;SCRIPTING_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)\Source\Dependencies\MathGeoLib-v1.5\include\Math;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;$(SolutionDir)Source\Dependencies\FMOD\api\studio\inc;$(SolutionDir)Source\Dependencies\FMOD\api\core\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -154,7 +156,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Source\Output\Engine\$(IntDir);$(SolutionDir)Source\Output\Game\$(IntDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -171,14 +173,11 @@
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
     <ClInclude Include="MainMenuManager.h" />
-    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
@@ -189,13 +188,12 @@
     <ClCompile Include="MainMenuManager.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="TestScript.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Source\CoreLib.vcxproj">
+      <Project>{75d74dae-b631-4317-bf0a-958b8e57fb39}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

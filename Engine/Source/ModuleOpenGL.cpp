@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
@@ -13,6 +15,7 @@
 #include "BatchManager.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ModuleFileSystem.h"
 
 #include "CameraComponent.h"
 
@@ -232,7 +235,7 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
-	SetOpenGlCameraUniforms();
+	//SetOpenGlCameraUniforms();
 }
 
 void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
@@ -439,6 +442,7 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 		strcat(fullShaderPath, shaderNames[i]);
 		char* shaderSource = LoadShaderSource(fullShaderPath);
 		free(fullShaderPath);
+		//assert(App->GetFileSystem()->Exists(fullShaderPath));
 		shaderIds[i] = CompileShader(type[i], shaderSource);
 		free(shaderSource);
 	}

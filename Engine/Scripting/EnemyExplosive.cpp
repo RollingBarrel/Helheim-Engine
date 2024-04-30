@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "EnemyExplosive.h"
 
 CREATE(EnemyExplosive)

@@ -5,7 +5,7 @@
 class GameObject;
 class CanvasComponent;
 
-class ModuleUI : public Module
+class ENGINE_API ModuleUI : public Module
 {
 public:
 	ModuleUI();

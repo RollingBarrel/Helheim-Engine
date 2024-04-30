@@ -22,7 +22,7 @@ struct SDL_Renderer;
 struct SDL_Rect;
 typedef unsigned int GLenum;
 
-class OpenGLBuffer {
+class ENGINE_API OpenGLBuffer {
 public:
 	OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding = -1, unsigned int size = 0, const void* data = nullptr);
 	~OpenGLBuffer();
@@ -42,7 +42,7 @@ private:
 	unsigned int mDataCapacity;
 };
 
-class ModuleOpenGL : public Module
+class ENGINE_API ModuleOpenGL : public Module
 {
 public:
 	ModuleOpenGL();
@@ -81,6 +81,7 @@ public:
 	void Draw();
 	void SetWireframe(bool wireframe);
 
+	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
 private:
 	void* context = nullptr;
@@ -105,7 +106,6 @@ private:
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned int CompileShader(unsigned type, const char* source) const;
 	unsigned int CreateShaderProgramFromIDs(unsigned int* shaderIds, unsigned int numShaders) const;
-	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 	unsigned int mPbrProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;

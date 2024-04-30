@@ -89,7 +89,7 @@ void AudioSourceComponent::SmoothUpdateParameterValueByName(const char* name, fl
 		float value = GetParameterValueByIndex(index);
 
 		float step = (targetValue - value) / transitionTime;
-		float newValue = value + step * App->GetGameDt();
+		float newValue = value + step * App->GetDt();
 		UpdateParameterValueByIndex(index, newValue);
 	}
 }

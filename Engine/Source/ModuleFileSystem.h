@@ -21,7 +21,18 @@
 #include <vector>
 #include <string>
 
-struct AssetDisplay;
+struct PathNode;
+
+struct AssetDisplay
+{
+	AssetDisplay(const char* name, const char* mPath, PathNode* parent);
+	~AssetDisplay();
+	const char* mName;
+	const char* mPath;
+	std::vector<unsigned int> mUid;
+	PathNode* mParent;
+	//Resource* mResource;
+};
 
 struct PathNode
 {
@@ -38,8 +49,7 @@ struct PathNode
 	}
 };
 
-
-class ModuleFileSystem : public Module
+class ENGINE_API ModuleFileSystem : public Module
 {
 public:
 	ModuleFileSystem();
@@ -83,13 +93,13 @@ public:
 	const char* GetExtensionFromPath(const char* path) const;
 	const char* GetFileExtensionFromPath(const char* path) const;
 	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
+	void GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const;
 
 	PathNode* GetRootNode() { return mRoot; }
 	void CleanNode(PathNode* node);
 
 private:
 
-	void UpdateScripts();
 	bool mIsClean = false;
 	PathNode* mRoot = nullptr;
 };

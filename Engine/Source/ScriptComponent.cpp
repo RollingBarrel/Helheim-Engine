@@ -222,7 +222,7 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		{
 			LOG("SCRIPT RESOURCE NOT FOUND");
 		}
-		//App->GetScriptManager()->AddScript(mScript);
+		//App->GetEngineScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
 	else 

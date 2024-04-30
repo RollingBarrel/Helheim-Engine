@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleInput.h"
@@ -57,7 +56,7 @@ void Enemy::Death()
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
 {
    static float timePassed = 0.0f;
-   timePassed += App->GetGameDt();
+   timePassed += App->GetDt();
 
     if (timePassed >= delay)
     {

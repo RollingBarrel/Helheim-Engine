@@ -1,4 +1,3 @@
-#include "pch.h" 
 #include "TestScript.h"
 #include "GameObject.h"
 #include "Application.h"
@@ -33,16 +32,16 @@ void TestScript::Start()
 void TestScript::Update()
 {
 	if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, 1) * App->GetGameDt() * mPlayerSpeed);
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, 1) * App->GetDt() * mPlayerSpeed);
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, -1) * App->GetGameDt() * mPlayerSpeed);
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, -1) * App->GetDt() * mPlayerSpeed);
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(-1, 0, 0) * App->GetGameDt() * mPlayerSpeed);
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(-1, 0, 0) * App->GetDt() * mPlayerSpeed);
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetGameDt() * mPlayerSpeed);
+		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetDt() * mPlayerSpeed);
 	}
 	
 
@@ -58,7 +57,7 @@ void TestScript::Update()
 
         if (mStartCounter)
         {
-            mTimePassed += App->GetGameDt();
+            mTimePassed += App->GetDt();
 
             if (mTimePassed >= mCoolDown)
             {
@@ -68,14 +67,14 @@ void TestScript::Update()
         }
         else
         {
-            mMovement += mSpeed * App->GetGameDt();
+            mMovement += mSpeed * App->GetDt();
             if (mUp)
             {
-                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y + mSpeed * App->GetGameDt(), mRobot->GetPosition().z));
+                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y + mSpeed * App->GetDt(), mRobot->GetPosition().z));
             }
             else
             {
-                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - mSpeed * App->GetGameDt(), mRobot->GetPosition().z));
+                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - mSpeed * App->GetDt(), mRobot->GetPosition().z));
             }
         }
 

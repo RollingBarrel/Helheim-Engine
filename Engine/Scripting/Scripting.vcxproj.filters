@@ -12,13 +12,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Keys.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="framework.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h">
@@ -53,13 +47,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Macros.h">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="dllmain.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="TestScript.cpp">

@@ -8,7 +8,7 @@
 class ResourceAnimation;
 class GameObject;
 
-class AnimationController
+class ENGINE_API AnimationController
 {
 public:
 

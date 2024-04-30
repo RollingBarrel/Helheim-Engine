@@ -14,7 +14,7 @@ struct Hit;
 #define MAX_DEPTH 6
 #define CAPACITY 8
 
-class Quadtree
+class ENGINE_API Quadtree
 {
 public:
 	Quadtree(const AABB& boundingBox);
@@ -30,10 +30,9 @@ public:
 	const Quadtree* GetChildren() const { return *mChildren; }
 	const std::map<float, Hit> RayCast(Ray* ray) const;
 	void UpdateTree();
-	void Draw() const;
-	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
 	const std::set<GameObject*> GetObjectsInFrustum(Frustum* cam) const;
+	const AABB& GetBoundingBox() const { return mBoundingBox; }
 
 	void UpdateDrawableGameObjects(const Frustum* myCamera);
 	void CleanUp();

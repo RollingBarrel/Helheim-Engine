@@ -1,9 +1,8 @@
-#include "pch.h"
 #include "EnemyRobot.h"
 #include "ModuleScene.h"
 #include "Application.h"
 #include "PlayerController.h"
-#include "AIAGentComponent.h"   
+#include "AIAGentComponent.h"
 #include "Physics.h"
 CREATE(EnemyRobot)
 {
@@ -32,15 +31,8 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
 }
 
-void EnemyRobot::Start()
-{
-    Enemy::Start();
-}
-
 void EnemyRobot::Update()
 {
-    Enemy::Update();
-
     switch (mCurrentState) 
     {
     case EnemyState::IDLE:
@@ -153,12 +145,12 @@ void EnemyRobot::RangeAttack()
     ray.pos = mGameObject->GetPosition();
     ray.pos.y++;
     ray.dir = mGameObject->GetFront();
-
+    
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
-
-    Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
- 
+    
+    //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
+    
         //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
         for (const std::pair<float, Hit>& hit : hits) 
         {

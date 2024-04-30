@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
+#include "Globals.h"
 
 #define MICRO_IN_SECONDS 1000000
 
-class PreciseTimer {
+class ENGINE_API PreciseTimer {
 public:
     PreciseTimer() = default;
 

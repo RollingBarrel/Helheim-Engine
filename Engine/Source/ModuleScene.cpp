@@ -63,7 +63,7 @@ bool ModuleScene::Init()
 	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 
 	//Load("scene");
-	Load("MainMenu");
+	//Load("MainMenu");
 	//Load("Level1");
 
 
@@ -228,26 +228,28 @@ void ModuleScene::Save(const char* sceneName) const
 
 int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const 
 {
-	unsigned int resourceId = LCG().Int();
-	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-	if (resource != nullptr) { resourceId = resource->GetUID(); }
-	Archive* prefabArchive = new Archive();
-	Archive* archive = new Archive();
-	std::vector<Archive> gameObjectsArchiveVector;
-	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
-	//SaveGame(gameObject->GetChildren(), *archive);
-	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
-	prefabArchive->AddObject("Prefab", *archive);
-
-	std::string out = prefabArchive->Serialize();
-	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	App->GetResource()->ImportFile(saveFilePath, resourceId);
-	PathNode* root = App->GetFileSystem()->GetRootNode();
-	root->mChildren.clear();
-	App->GetFileSystem()->DiscoverFiles("Assets", root);
-	delete prefabArchive;
-	delete archive;
-	return resourceId;
+	//TODO: separate game engine
+	//unsigned int resourceId = LCG().Int();
+	//Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+	//if (resource != nullptr) { resourceId = resource->GetUID(); }
+	//Archive* prefabArchive = new Archive();
+	//Archive* archive = new Archive();
+	//std::vector<Archive> gameObjectsArchiveVector;
+	//SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
+	////SaveGame(gameObject->GetChildren(), *archive);
+	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	//prefabArchive->AddObject("Prefab", *archive);
+	//
+	//std::string out = prefabArchive->Serialize();
+	//App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
+	////App->GetResource()->ImportFile(saveFilePath, resourceId);
+	//PathNode* root = App->GetFileSystem()->GetRootNode();
+	//root->mChildren.clear();
+	//App->GetFileSystem()->DiscoverFiles("Assets", root);
+	//delete prefabArchive;
+	//delete archive;
+	//return resourceId;
+	return 0;
 }
 
 
@@ -294,13 +296,6 @@ void ModuleScene::Load(const char* sceneName)
 	{
 		App->GetCamera()->SetCurrentCamera(cameraGameObject);
 	}
-
-	if (App->IsPlayMode())
-	{
-		App->GetScriptManager()->Start();
-	}
-	
-
 }
 
 void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)
@@ -410,13 +405,6 @@ update_status ModuleScene::Update(float dt)
 {
 	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-	
-	if (mDrawQuadtree)
-	{
-		App->GetOpenGL()->BindSceneFramebuffer();
-		mQuadtreeRoot->Draw();
-		App->GetOpenGL()->UnbindSceneFramebuffer();
-	}
 	if (mNavMeshController)
 	{
 		mNavMeshController->Update();

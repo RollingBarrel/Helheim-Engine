@@ -1,12 +1,16 @@
-#include "Application.h"
-#include "ModuleResource.h"
+#include "SaveLoadMaterial.h"
+#include "EngineApp.h"
+#include "ModuleEngineResource.h"
 #include "ModuleFileSystem.h"
 #include "ImporterMaterial.h"
-#include "ImporterTexture.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
+#define TINYGLTF_NO_STB_IMAGE_WRITE
+#define TINYGLTF_NO_STB_IMAGE
+#define TINYGLTF_NO_EXTERNAL_IMAGE
+#include "tiny_gltf.h"
 
 static unsigned int ImportTexture(const char* filePath, const std::string& texPath, unsigned int& uid, bool modifyAssets)
 {
@@ -24,7 +28,7 @@ static unsigned int ImportTexture(const char* filePath, const std::string& texPa
         pngName += extension;
     }
 
-    return App->GetResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
+    return EngineApp->GetEngineResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
 }
 
 ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)

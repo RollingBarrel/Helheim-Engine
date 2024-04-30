@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "GameObject.h"
 #include "PlayerCamera.h"
 #include "CameraComponent.h"
@@ -65,7 +64,7 @@ void PlayerCamera::Update()
         if ((position - closePosition).Abs().Length() > 0.7)
         {
             float3 direction = closePosition - position;
-            deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
+            deltaTime = deltaTime - App->GetDt(); // Quizas seria mejor usar el GameManager en vez de App
             float rotation = closeRotation - mGameObject->GetRotation().x;
             if (deltaTime > 0) 
             {
@@ -84,7 +83,7 @@ void PlayerCamera::Update()
         if ((position - topPosition).Abs().Length() > 0.9)
         {
             float3 direction = topPosition - position;
-            deltaTime = deltaTime - App->GetGameDt(); // Quizas seria mejor usar el GameManager en vez de App
+            deltaTime = deltaTime - App->GetDt(); // Quizas seria mejor usar el GameManager en vez de App
             float rotation = topRotation - mGameObject->GetRotation().x;
             if (deltaTime > 0) 
             {

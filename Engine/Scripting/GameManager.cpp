@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "GameManager.h"
 #include "GameObject.h"
 #include "Application.h"
@@ -99,7 +98,7 @@ void GameManager::Game_Name()
 
 bool GameManager::Delay(float delay)
 {
-    mTimePassed += App->GetGameDt();
+    mTimePassed += App->GetDt();
 
     if (mTimePassed >= delay)
     {

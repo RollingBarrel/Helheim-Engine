@@ -1,7 +1,7 @@
 #pragma once
-#include <Enemy.h>
+#include "Enemy.h"
 #include "Geometry/Ray.h"
-#include <ScriptComponent.h>
+#include "ScriptComponent.h"
 
 enum class EnemyState 
 {
@@ -24,7 +24,6 @@ class EnemyRobot : public Enemy
 public:
 	EnemyRobot(GameObject* owner);
 	~EnemyRobot() {}
-	void Start() override;
 	void Update() override;
 
 private:
