@@ -348,7 +348,6 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	}
 
 	child->RecalculateLocalTransform();
-	// Recompute active for hierarchy
 	child->SetActiveInHierarchy(mIsActive && child->mIsEnabled);
 
 	if (!inserted) 
