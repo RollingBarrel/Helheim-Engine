@@ -52,7 +52,7 @@ private:
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 
-	EmitterShape mShape;
+	EmitterShape* mShape;
 	EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
 
 	std::map<float, float4> mColorGradient;

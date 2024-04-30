@@ -1257,14 +1257,14 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	switch(component->mShapeType)
 	{
 		case EmitterShape::Type::CONE:
-			ImGui::InputFloat("Angle", &component->mShape.mShapeAngle);
-			ImGui::InputFloat("Radius", &component->mShape.mShapeRadius);
+			ImGui::InputFloat("Angle", &component->mShape->mShapeAngle);
+			ImGui::InputFloat("Radius", &component->mShape->mShapeRadius);
 			break;
 		case EmitterShape::Type::SQUARE:
-			ImGui::InputFloat2("Width", &component->mShape.mShapeSize.x);
+			ImGui::InputFloat2("Width", &component->mShape->mShapeSize.x);
 			break;
 		case EmitterShape::Type::CIRCLE:
-			ImGui::InputFloat("Radius", &component->mShape.mShapeRadius);
+			ImGui::InputFloat("Radius", &component->mShape->mShapeRadius);
 			break;
 
 	}

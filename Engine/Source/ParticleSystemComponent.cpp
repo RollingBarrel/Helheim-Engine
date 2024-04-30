@@ -173,8 +173,9 @@ void ParticleSystemComponent::Update()
 		{
             // Initializes a particle with a random position, direction and rotation
             // relative to the shape of emission
-			float3 emitionPosition = mShape.RandomInitPosition();
-            float3 emitionDirection = mShape.RandomInitDirection();
+
+			float3 emitionPosition = mShape->RandomInitPosition();
+            float3 emitionDirection = mShape->RandomInitDirection();
 
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
@@ -291,7 +292,7 @@ void ParticleSystemComponent::InitEmitterShape()
     switch (mShapeType)
     {
     case EmitterShape::Type::CONE:
-        mShape = EmitterShapeCone();
+        mShape = new EmitterShapeCone();
         break;
     case EmitterShape::Type::SQUARE:
         //mShape = EmitterShapeSquare();
