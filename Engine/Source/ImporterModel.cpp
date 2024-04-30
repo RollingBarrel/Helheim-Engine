@@ -363,7 +363,7 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     memcpy(cursor, &jointsSize, bytes);
     cursor += bytes;
 
-    for (int i = 0; i < jointsSize; ++i)
+    for (unsigned int i = 0; i < jointsSize; ++i)
     {
         bytes = sizeof(int);
         int lenString = sizeof(rModel->mInvBindMatrices[i].first);
@@ -512,7 +512,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
 
         rModel->mInvBindMatrices.resize(jointsSize);
 
-        for (int i = 0; i < jointsSize; ++i)
+        for (unsigned int i = 0; i < jointsSize; ++i)
         {
             bytes = sizeof(int);
             int lenString;
