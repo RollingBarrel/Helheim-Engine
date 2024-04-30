@@ -1176,12 +1176,6 @@
     <ClInclude Include="Dependencies\FMOD\api\core\inc\fmod_common.h">
       <Filter>Dependencies\FMOD</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.h">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.hpp">
-      <Filter>Dependencies\FMOD</Filter>
-    </ClInclude>
     <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio_common.h">
       <Filter>Dependencies\FMOD</Filter>
     </ClInclude>
@@ -1366,6 +1360,12 @@
     <ClInclude Include="HelheimEvent.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.h">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\FMOD\api\studio\inc\fmod_studio.hpp">
+      <Filter>Dependencies\FMOD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -1508,8 +1508,6 @@
     <None Include="..\Game\Assets\Shaders\skybox.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\ui.fs" />
-    <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs">
       <Filter>Dependencies\FMOD</Filter>
     </None>
@@ -1519,13 +1517,16 @@
     <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs">
       <Filter>Dependencies\FMOD</Filter>
     </None>
-    <None Include="Dependencies\FMOD\api\studio\inc\fmod_studio.cs">
-      <Filter>Dependencies\FMOD</Filter>
-    </None>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\ui.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\ui.fs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\skinning.comp">

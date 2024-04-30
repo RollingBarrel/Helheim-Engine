@@ -1,6 +1,8 @@
 #include "ModuleScriptManager.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScene.h"
+#include "NavMeshController.h"
 #include "ModuleResource.h"
 #include "Script.h"
 #include "ScriptComponent.h"
@@ -8,6 +10,7 @@
 #include <Windows.h>
 #include <string>
 #include "ModuleInput.h"
+#include "ModuleAudio.h"
 #include <any>
 
 static bool PDBReplace(const std::string& filename, const std::string& namePDB);
@@ -213,10 +216,17 @@ void ModuleScriptManager::Play()
 void ModuleScriptManager::Stop()
 {
 	mIsPlaying = false;
+	App->GetAudio()->PauseAllChannels();
 }
 
 void ModuleScriptManager::Start()
 {
+
+	if (App->GetScene()->GetRoot()->GetName() == "Level1")
+	{
+		App->GetScene()->GetNavController()->HandleBuild();
+	}
+
 	mIsPlaying = true;
 	for (std::vector<ScriptComponent*>::iterator::value_type script : mScripts) 
 	{

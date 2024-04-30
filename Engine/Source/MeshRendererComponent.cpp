@@ -44,6 +44,22 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	App->GetOpenGL()->BatchAddMesh(this);
 	mAABBWorld = mOBB.MinimalEnclosingAABB();
 
+	mAnimationComponent = reinterpret_cast<AnimationComponent*>(mOwner->FindFirstParent(mOwner)->GetComponent(ComponentType::ANIMATION));
+}
+
+MeshRendererComponent::~MeshRendererComponent()
+{
+	if (mMesh)
+	{
+		App->GetOpenGL()->BatchRemoveMesh(this);
+		App->GetResource()->ReleaseResource(mMesh->GetUID());
+		mMesh = nullptr;
+	}
+	if (mMaterial)
+	{
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMaterial = nullptr;
+	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()

@@ -885,7 +885,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	bool loop = true;
 	//bool play = false;
 
-
 	if (ImGui::Button("Play/Pause"))
 	{
 		if (component->GetAnimation() == nullptr)
@@ -1034,11 +1033,11 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 
 	if (selectedRenderMode == 0) 
 	{
-		App->GetUI()->SetScreenSpace(false);
+		canvasComponent->SetScreenSpace(false);
 	}
 	else 
 	{
-		App->GetUI()->SetScreenSpace(true);
+		canvasComponent->SetScreenSpace(true);
 	}
 
 	if (ImGui::BeginTable("transformTable", 4)) 

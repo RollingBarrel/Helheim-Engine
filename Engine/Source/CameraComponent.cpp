@@ -234,5 +234,5 @@ void CameraComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* own
     SetNearPlane(nearPlane);
     SetFarPlane(farPlane);
     
-
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
 }

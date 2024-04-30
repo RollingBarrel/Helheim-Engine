@@ -40,19 +40,19 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glGenBuffers(1, &mSsboIndices);
 	glGenBuffers(1, &mIbo);
 
-	glGenBuffers(1, &paletteSsbo);
-	glGenBuffers(1, &boneIndicesSsbo);
-	glGenBuffers(1, &weightsSsbo);
-	glGenBuffers(1, &posSsbo);
-	glGenBuffers(1, &normSsbo);
-	glGenBuffers(1, &tangSsbo);
+	glGenBuffers(1, &mPaletteSsbo);
+	glGenBuffers(1, &mBoneIndicesSsbo);
+	glGenBuffers(1, &mWeightsSsbo);
+	glGenBuffers(1, &mPosSsbo);
+	glGenBuffers(1, &mNormSsbo);
+	glGenBuffers(1, &mTangSsbo);
 
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, paletteSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, boneIndicesSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 17, weightsSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 18, posSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, normSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, tangSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, mPaletteSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, mBoneIndicesSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 17, mWeightsSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 18, mPosSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, mNormSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mTangSsbo);
 
 	unsigned int idx = 0;
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
@@ -78,12 +78,12 @@ GeometryBatch::~GeometryBatch()
 	glDeleteBuffers(1, &mSsboIndices);
 	glDeleteBuffers(1, &mIbo);
 
-	glDeleteBuffers(1, &paletteSsbo);
-	glDeleteBuffers(1, &boneIndicesSsbo);
-	glDeleteBuffers(1, &weightsSsbo);
-	glDeleteBuffers(1, &posSsbo);
-	glDeleteBuffers(1, &normSsbo);
-	glDeleteBuffers(1, &tangSsbo);
+	glDeleteBuffers(1, &mPaletteSsbo);
+	glDeleteBuffers(1, &mBoneIndicesSsbo);
+	glDeleteBuffers(1, &mWeightsSsbo);
+	glDeleteBuffers(1, &mPosSsbo);
+	glDeleteBuffers(1, &mNormSsbo);
+	glDeleteBuffers(1, &mTangSsbo);
 
 	mMeshComponents.clear();
 	mUniqueMeshes.clear();
