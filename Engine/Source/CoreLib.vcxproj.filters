@@ -1093,5 +1093,11 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
       <Filter>Dependencies\MathGeoLib\Math</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\HDRToCubeMap_FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

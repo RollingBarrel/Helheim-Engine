@@ -133,15 +133,23 @@ bool ModuleOpenGL::Init()
 	const char* sourcesPaths[2] = { "PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl" };
 	int sourcesTypes[2] = { GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
 	mPbrProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "skybox.vs";
 	sourcesPaths[1] = "skybox.fs";
 	mSkyBoxProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "skybox.vs";
+	sourcesPaths[1] = "Irradiance_FragmentShader.glsl";
+	mIrradianceProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "basicDebugShader.vs";
 	sourcesPaths[1] = "basicDebugShader.fs";
 	mDebugDrawProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "ui.vs";
 	sourcesPaths[1] = "ui.fs";
 	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "skinning.comp";
 	int computeType = GL_COMPUTE_SHADER;
 	mSkinningProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
@@ -171,12 +179,15 @@ bool ModuleOpenGL::Init()
 
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
+	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	//Draw the skybox
 	if (mSkyBoxTexture != 0)
 	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTexture);
 		glUseProgram(mSkyBoxProgramId);
 		glBindVertexArray(mSkyVao);
 		glDepthMask(GL_FALSE);
@@ -184,6 +195,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 		glUseProgram(0);
+		BakeIBL();
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -266,6 +278,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 
 //TODO: This should not be here, we need like a resource or importer
 #include "DirectXTex.h"
+#include <MathConstants.h>
 static unsigned int LoadCubeMap()
 {
 	unsigned int ret = 0;
@@ -351,10 +364,6 @@ void ModuleOpenGL::InitSkybox()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTexture);
-
 	glBindVertexArray(0);
 }
 
@@ -449,6 +458,74 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 	unsigned int ret = CreateShaderProgramFromIDs(shaderIds, numShaderSources);
 	free(shaderIds);
 	return ret;
+}
+
+void ModuleOpenGL::BakeIBL()
+{
+	const float3 front[6] = { float3::unitX, -float3::unitX, float3::unitY,
+							 -float3::unitY, float3::unitZ, -float3::unitZ };
+
+	float3 up[6] = { -float3::unitY, -float3::unitY, float3::unitZ,
+					 -float3::unitZ, -float3::unitY, -float3::unitY };
+
+	Frustum frustum;
+	frustum.type = FrustumType::PerspectiveFrustum;
+	frustum.pos = float3::zero;
+	frustum.nearPlaneDistance = 0.1;
+	frustum.farPlaneDistance = 100.0f;
+	frustum.verticalFov = pi / 2.0f;
+	frustum.horizontalFov = pi / 2.0f;
+
+	glGenTextures(1, &mIrradianceTextureId);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 32, 32, 0,
+			GL_RGB, GL_FLOAT, nullptr);
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+
+	glUseProgram(mIrradianceProgramId);
+	glUniform1i(glGetUniformLocation(mIrradianceProgramId, "environment"), 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTexture);
+
+	
+	
+	
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+	int viewPortSize[4];
+	glGetIntegerv(GL_VIEWPORT, viewPortSize);
+	glViewport(0, 0, 32, 32);
+	glDepthMask(GL_FALSE);
+	glBindVertexArray(mSkyVao);
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mIrradianceTextureId, 0);
+
+		frustum.front = front[i];
+		frustum.up = up[i];
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
+
+	}
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glDepthMask(GL_TRUE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
+	glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 

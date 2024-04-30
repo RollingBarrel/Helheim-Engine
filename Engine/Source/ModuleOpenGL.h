@@ -83,6 +83,8 @@ public:
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
+	void BakeIBL();
+
 private:
 	void* context = nullptr;
 
@@ -112,6 +114,10 @@ private:
 	unsigned int mUIImageProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
 
+	unsigned int mIrradianceProgramId = 0;
+
+	//IBL
+	unsigned int mIrradianceTextureId = 0;
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
