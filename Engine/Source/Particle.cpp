@@ -6,10 +6,10 @@ Particle::Particle()
     mDirection = float3::unitX;
     mRotation = 0.0f;
     mIsSpeedCurve = false;
-    mSpeedLinear = 0.01f;
+    mSpeedLinear = 1.0f;
     mIsSizeCurve = false;
     mSizeLinear = 1.0f;
-    mMaxLifeTime = 1000.0f;
+    mMaxLifeTime = 1.0f;
     mLifeTime = 0.0f;
     mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }

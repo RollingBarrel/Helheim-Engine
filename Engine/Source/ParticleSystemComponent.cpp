@@ -154,10 +154,11 @@ void ParticleSystemComponent::Update()
 {
     mEmitterTime += App->GetGameDt();
     mEmitterDeltaTime += App->GetGameDt();
+    LOG("Time = %f", mEmitterTime)
 
 	for (int i = 0; i < mParticles.size(); i++)
 	{
-		bool isAlive = mParticles[i]->Update(mEmitterDeltaTime);
+		bool isAlive = mParticles[i]->Update(App->GetGameDt());
         if (!isAlive)
         {
 			mParticles.erase(mParticles.begin() + i);
@@ -180,7 +181,7 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, rotation, mLifeTime, mIsSpeedCurve, mIsSizeCurve);
+            Particle* particle = new Particle(emitionPosition, emitionDirection, rotation, mMaxLifeTime, mIsSpeedCurve, mIsSizeCurve);
             
             if (mIsSpeedCurve) particle->SetSpeedCurve(mSpeedCurve);
             else particle->SetSpeedLineal(mSpeedLineal);
@@ -207,7 +208,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
 {
     Component::Save(archive);
     archive.AddFloat("Duration", mDuration);
-    archive.AddFloat("Life Time", mLifeTime);
+    archive.AddFloat("Life Time", mMaxLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
     archive.AddFloat("Speed", mSpeedLineal);
     archive.AddInt("Max Particles", mMaxParticles);
@@ -235,7 +236,7 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
 
     if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
     {
-        mLifeTime = data["Life Time"].GetFloat();
+        mMaxLifeTime = data["Life Time"].GetFloat();
     }
     if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
     {

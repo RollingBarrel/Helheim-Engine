@@ -38,17 +38,17 @@ private:
 	float mEmitterDeltaTime = 0.0f;
 
 	float mDuration = 5.0f;
-	float mLifeTime = 10.0f;
+	float mMaxLifeTime = 3.0f;
 
 	bool mIsSpeedCurve;
-	float mSpeedLineal = 0.1f;
+	float mSpeedLineal = 1.0f;
 	float4 mSpeedCurve;
 
 	bool mIsSizeCurve;
 	float mSizeLineal = 1.0f;
 	float4 mSizeCurve;
 
-	float mEmissionRate = 10.0f;
+	float mEmissionRate = 1.0f;
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 

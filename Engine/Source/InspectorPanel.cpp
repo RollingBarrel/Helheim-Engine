@@ -1195,7 +1195,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::InputFloat("Duration", &(component->mDuration));
 	ImGui::Checkbox("Looping", &(component->mLooping));
 	ImGui::InputFloat("Start speed", &(component->mSpeedLineal));
-	ImGui::InputFloat("Start lifetime", &(component->mLifeTime));
+	ImGui::InputFloat("Start lifetime", &(component->mMaxLifeTime));
 	//ImGui::InputFloat("Start size", &(component->mSize));
 	ImGui::Checkbox("Speed as a Curve", &(component->mIsSpeedCurve));
 	if (!component->mIsSpeedCurve)
