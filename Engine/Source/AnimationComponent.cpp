@@ -65,13 +65,6 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 AnimationComponent::~AnimationComponent()
 {
 	delete mController;
-	mController = nullptr;
-
-	if (mAnimation)
-	{
-		App->GetResource()->ReleaseResource(mAnimation->GetUID());
-		mAnimation = nullptr;
-	}
 }
 
 void AnimationComponent::SetLoop(bool loop)
