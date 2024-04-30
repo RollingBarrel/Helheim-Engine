@@ -4,6 +4,7 @@
 #include "Math/float3.h"
 class NavMeshController;
 class AnimationComponent;
+class AudioSourceComponent;
 
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
@@ -37,6 +38,14 @@ private:
     float mDashSpeed = 5.0f;
     float mDashLenght = 5.0f;
     float mDashCoolDown = 1.0f;
+
+    // Audio Source - footstep
+    GameObject* mAudioSourceComponentHolder = nullptr;
+    AudioSourceComponent* mAudioSourceComponent = nullptr;
+    bool mIsMoving = false;
+    bool mReadyToStep = false;
+    float mStepTimePassed = 0.0f;
+    float mStepCoolDown = 1.0f;
 
     float testeando2 = 543.0f;
 

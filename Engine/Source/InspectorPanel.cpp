@@ -23,6 +23,7 @@
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
+#include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
 #include "EmitterShape.h"
@@ -35,11 +36,14 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
+#include "FmodUtils.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
 #include "ModuleUI.h"
+
+#include "IconsFontAwesome6.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -78,6 +82,29 @@ void InspectorPanel::Draw(int windowFlags)
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
 
+		// Lock
+		ImVec2 buttonSize = ImVec2(30, 20);
+		//float inspectorWidth = ImGui::GetWindowWidth();
+		//float spacing = (inspectorWidth / 2) - buttonSize.x;
+		//ImGui::SameLine();
+		//ImGui::Dummy(ImVec2(spacing, 0.0f));
+		ImGui::SameLine();
+		//ImGui::PushItemWidth(inspectorWidth - buttonSize.x - spacing);
+		const char* buttonLabel = (mLocked) ? ICON_FA_LOCK : ICON_FA_LOCK_OPEN;
+		ImGui::SameLine();
+		if (ImGui::Button(buttonLabel, buttonSize))
+		{
+			mLocked = !mLocked;
+			if (mLocked) {
+				mLockedGameObject = focusedObject;
+			}
+			else
+			{
+				mLockedGameObject = nullptr;
+			}
+		}
+		//ImGui::PopItemWidth();
+
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
@@ -98,22 +125,9 @@ void InspectorPanel::Draw(int windowFlags)
 
 		ImGui::SameLine();
 
-		if (ImGui::Button("Edit")) 
+		if (ImGui::Button("Add Tag")) 
 		{
 			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
-		}
-
-		// Lock
-		ImGui::SameLine();
-		if (ImGui::Checkbox("Lock", &mLocked)) 
-		{
-			if (mLocked) {
-				mLockedGameObject = focusedObject;
-			}
-			else 
-			{
-				mLockedGameObject = nullptr;
-			}
 		}
 
 		if (focusedObject->mPrefabResourceId != 0) {
@@ -210,8 +224,8 @@ void InspectorPanel::AddComponentButton(GameObject* object) {
 	float buttonWidth = 150.0f; // Desired width for the button
 	float posX = (windowWidth - buttonWidth) * 0.5f;
 
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
 	ImGui::SetCursorPosX(posX);
-
 	if (ImGui::Button("Add Component", ImVec2(buttonWidth, 0))) 
 	{
 		ImGui::OpenPopup("AddComponentPopup");
@@ -413,6 +427,11 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
+				
+				case ComponentType::AUDIOSOURCE: 
+					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
+					break;
+				
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
@@ -540,36 +559,36 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 {
 	ImGui::SeparatorText("Agent Parameters");
 
-	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
-	{
-		component->SetRadius(radius);
-	}
-	float height = component->GetHeight();
-	if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
-	{
-		component->SetHeight(height);
-	}
-	float stepHeight = component->GetStepHeight();
-	if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
-	{
-		component->SetStepHeight(stepHeight);
-	}
+	//float radius = component->GetRadius();
+	//if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	//{
+	//	component->SetRadius(radius);
+	//}
+	//float height = component->GetHeight();
+	//if (ImGui::DragFloat("Height", &height, 1.0f, 0.0f))
+	//{
+	//	component->SetHeight(height);
+	//}
+	//float stepHeight = component->GetStepHeight();
+	//if (ImGui::DragFloat("StepHeight", &stepHeight, 1.0f, 0.0f))
+	//{
+	//	component->SetStepHeight(stepHeight);
+	//}
 
-	int maxSlope = component->GetMaxSlope();
-	if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
-		component->SetMaxSlope(maxSlope);
-	}
+	//int maxSlope = component->GetMaxSlope();
+	//if (ImGui::SliderInt("Max Slope", &maxSlope, 0, 60)) {
+	//	component->SetMaxSlope(maxSlope);
+	//}
 
 	ImGui::SeparatorText("Steering Parameters");
 
 	float speed = component->GetSpeed();
-	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f,0.0f))
 	{
 		component->SetSpeed(speed);
 	}
 
-	float angularSpeed = component->GetAngularSpeed();
+	/*float angularSpeed = component->GetAngularSpeed();
 	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))
 	{
 		component->SetAngularSpeed(angularSpeed);
@@ -585,7 +604,7 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 	if (ImGui::DragFloat("Stopping Distance", &stoppingDistance, 1.0f, 0.0f))
 	{
 		component->SetStoppingDistance(stoppingDistance);
-	}
+	}*/
 
 
 
@@ -595,31 +614,34 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
 
-	if (ImGui::Checkbox("Enable BaseColor map", &material->mEnableBaseColorTexture))
+	if (material)
 	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
-	if (ImGui::Checkbox("Enable MetallicRoughness map", &material->mEnableMetallicRoughnessTexture))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
-	if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
+		if (ImGui::Checkbox("Enable BaseColor map", &material->mEnableBaseColorTexture))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (ImGui::Checkbox("Enable MetallicRoughness map", &material->mEnableMetallicRoughnessTexture))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
-	if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
+		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
-	if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
-	}
-	if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
-	{
-		App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
+		{
+			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 	}
 }
 
@@ -696,7 +718,21 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 {
 
 	const char* currentItem = component->GetScriptName();
+	if (strcmp(currentItem, "") == 0)
+	{
+		currentItem = "None (Script)";
+	}
+	
+	ImVec2 scriptTextSize = ImGui::CalcTextSize("Script");
+	float inspectorWidth = ImGui::GetWindowWidth();
+	float scriptSpacing = (inspectorWidth / 2) - scriptTextSize.x;
 
+
+	ImGui::Text("Script");
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(scriptSpacing, 0.0f));
+	ImGui::SameLine();
+	ImGui::PushItemWidth(inspectorWidth - scriptTextSize.x - scriptSpacing);
 	if (ImGui::BeginCombo("##combo", currentItem)) 
 	{
 		std::vector<std::string> scriptNames;
@@ -737,11 +773,12 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::PopItemWidth();
+	ImGui::Dummy(ImVec2(0,5.0f));
 
 	component->mScript;
 	std::vector<std::pair<std::string, std::pair<MemberType, void*>>> variables;
 
-	ImGui::SeparatorText("Attributes");
 
 	std::vector<Member*> members;
 
@@ -752,37 +789,72 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 
 	for (Member* member : members) 
 	{
+		std::string label = member->mName;
+		label = "##" + label;
+		ImVec2 textSize = ImGui::CalcTextSize(member->mName);
+		float inspectorWidth = ImGui::GetWindowWidth();
+		float spacing = (inspectorWidth / 2) - textSize.x;
+
 		switch (member->mType)
 		{
 		case MemberType::SEPARATOR:
 			ImGui::SeparatorText(member->mName);
 			break;
 		case MemberType::INT:
-			ImGui::DragInt(member->mName, reinterpret_cast<int*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::DragInt(label.c_str(), reinterpret_cast<int*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::FLOAT:
-			ImGui::DragFloat(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::DragFloat(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::BOOL:
-			ImGui::Checkbox(member->mName, reinterpret_cast<bool*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::Checkbox(label.c_str(), reinterpret_cast<bool*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::FLOAT3:
-			ImGui::DragFloat3(member->mName, reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
+			ImGui::DragFloat3(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::PopItemWidth();
 			break;
 		case MemberType::GAMEOBJECT:
 		{
+			
 			GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)component->mScript) + member->mOffset));
-			ImGui::Text(member->mName);
-			ImGui::SameLine();
 			const char* str = "";
 			if (!gameObject || !*gameObject)
 			{
-				str = "Drop a GameObject Here";
+				str = "None (Game Object)";
 			}
 			else 
 			{
 				str = (*gameObject)->GetName().c_str();
 			}
+
+			ImGui::Text(member->mName);
+			ImGui::SameLine();
+			ImGui::Dummy(ImVec2(spacing, 0.0f));
+			ImGui::SameLine();
+			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
 			ImGui::BulletText(str);
 			if (ImGui::BeginDragDropTarget()) 
 			{
@@ -797,6 +869,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 				}
 				ImGui::EndDragDropTarget();
 			}
+			ImGui::PopItemWidth();
 			break;
 		}
 		default:
@@ -842,8 +915,21 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	// Drag and drop	
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 70.0);
-	ImGui::Image((void*)(intptr_t)imageComponent->GetImage()->GetOpenGLId(), ImVec2(50, 50));
-	if (ImGui::BeginDragDropTarget()) {
+	
+	ResourceTexture* image = imageComponent->GetImage();
+	
+	if (image)
+	{
+		ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+		ImGui::Image(imageID, ImVec2(50, 50));
+	}
+	else 
+	{
+		ImGui::Text("Drop Image");
+	}
+	
+	if (ImGui::BeginDragDropTarget()) 
+	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
@@ -861,8 +947,13 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	{
 		ImGui::Text(imageComponent->GetFileName());
 	}
-	ImGui::Text("Width:%dpx", imageComponent->GetImage()->GetWidth());
-	ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
+
+	if (image)
+	{
+		ImGui::Text("Width:%dpx", image->GetWidth());
+		ImGui::Text("Height:%dpx", image->GetHeight());
+		
+	}
 	ImGui::Columns(1);
 
 	// Color and alpha
@@ -874,7 +965,13 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	// Image Info.
 	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
 
-
+	if (ImGui::Checkbox("Mantain Ratio", imageComponent->GetMantainRatio()))
+	{
+		if (imageComponent->GetMantainRatio())
+		{
+			imageComponent->ResizeByRatio();
+		}
+	}
 }
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
@@ -929,6 +1026,63 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	ImGui::EndTable();
 }
 
+void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
+{
+	std::vector<const char*> events = FmodUtils::GetEventsNames();
+	ImGui::Text("Launch event");
+	ImGui::SameLine();
+
+	std::string name = component->GetName();
+	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
+	{
+		for (auto i = 0; i < events.size(); i++) 
+		{
+			if (ImGui::Selectable(events[i]))
+			{
+				component->SetEventByName(events[i]);
+			}
+		}
+
+		ImGui::EndCombo();
+	}
+
+	ImGui::Separator();
+	ImGui::Text("Event parameters");
+
+	std::vector<int> parameterKeys;
+	std::vector<const char*> names;
+	std::vector<float> parameterValues;
+
+	component->GetParametersNameAndValue(parameterKeys, names, parameterValues);
+
+	for (auto i = 0; i < parameterKeys.size(); i++)
+	{
+		const char* name = names[i];
+		float value = parameterValues[i];
+
+		float max = 0;
+		float min = 0;
+
+		FmodUtils::GetParametersMaxMinByComponent(component, name, max, min);
+
+		ImGui::Text("%s: ", name);
+		ImGui::SameLine();
+
+		std::string str(name);
+		std::string tagName = "##" + str;
+
+		if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f")) 
+		{
+			component->UpdateParameterValueByIndex(parameterKeys[i], value);
+		}
+	}
+
+}
+void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
+{
+
+}
+;
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
 {
 }

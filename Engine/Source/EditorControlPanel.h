@@ -7,6 +7,14 @@
 #include "ImGuizmo.h"
 #include "Math/float3.h"
 
+
+enum class GameState {
+	PLAY,
+	PAUSE,
+	PLAY_PAUSE,
+	STOP
+};
+
 class EditorControlPanel : public Panel
 {
 public:
@@ -20,10 +28,18 @@ public:
 	const bool GetUseSnap() { return mUseSnap; }
 	const float3 GetSnap() { return mSnap; }
 
+
 private:
 	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
 	ImGuizmo::MODE mCurrentGuizmoMode = ImGuizmo::LOCAL;
 	bool mUseSnap = false;
 	float3 mSnap = { 1.f, 1.f, 1.f };
+	GameState mState = GameState::STOP;
+
+	void Play();
+	void Pause();
+	void Stop();
+	void Step();
+	
 };
 #endif /* _EDITOR_CONTROL_PANEL_H_ */

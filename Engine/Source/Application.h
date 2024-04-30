@@ -17,7 +17,6 @@ class ModuleUI;
 class ModuleDetourNavigation;
 class ModuleAudio;
 class ModuleEvent;
-class ModulePrograms;
 
 class Timer;
 class PreciseTimer;
@@ -45,7 +44,7 @@ public:
     ModuleUI* GetUI() { return ui; }
     ModuleResource* GetResource() { return resource; }
     ModuleDetourNavigation* GetNavigation() { return navigation; }
-    ModuleAudio* GeAudio() { return audio; }
+    ModuleAudio* GetAudio() { return audio; }
     ModuleEvent* GetEvent() { return event; }
 
     Timer* GetEngineClock() const { return mEngineTimer; }

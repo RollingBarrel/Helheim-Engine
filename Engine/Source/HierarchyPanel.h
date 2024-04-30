@@ -26,6 +26,7 @@ private:
 	void ShiftClick(GameObject* node, bool selected, bool click = false);
 
 	std::unordered_set<GameObject*> mMarked;
+	std::unordered_set<unsigned int> mNodesToOpen;
 	int mFocusId = 0;
 	int mLastClickedObject = 0;
 	int mShiftMarking[2] = { 0 };

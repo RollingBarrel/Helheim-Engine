@@ -657,3 +657,14 @@ void OpenGLBuffer::RemoveData(unsigned int dataSize, unsigned int offset)
 	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, mDataSize);
 	glDeleteBuffers(1, &tmp);
 }
+
+void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component)
+{
+	for (int i = 0; i < mParticleSystems.size(); ++i)
+	{
+		if (mParticleSystems[i] == component)
+		{
+			mParticleSystems.erase(mParticleSystems.begin() + i);
+		}
+	}
+}

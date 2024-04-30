@@ -1,5 +1,7 @@
 #include "Transform2DComponent.h"
 #include "CanvasComponent.h"
+#include "ImageComponent.h"
+#include "ResourceTexture.h"
 #include "Component.h"
 #include "GameObject.h"
 
@@ -8,6 +10,21 @@
 Transform2DComponent::Transform2DComponent(GameObject* owner): Component(owner, ComponentType::TRANSFORM2D)
 {
 	CalculateMatrices();
+}
+
+Transform2DComponent::Transform2DComponent(const Transform2DComponent& original, GameObject* owner) : Component(owner, ComponentType::TRANSFORM2D)
+{
+	mPosition = original.mPosition;
+	mEulerRotation = original.mEulerRotation;
+	mRotation = original.mRotation;
+	mSize = original.mSize;
+
+	mAnchorMin = original.mAnchorMin;
+	mAnchorMax = original.mAnchorMax;
+	mPivot = original.mPivot;
+
+	mLocalMatrix = original.mLocalMatrix;
+	mGlobalMatrix = original.mGlobalMatrix;
 }
 
 Transform2DComponent::Transform2DComponent(const bool active, GameObject* owner) : Component(owner, ComponentType::TRANSFORM2D)
@@ -25,7 +42,7 @@ void Transform2DComponent::Update()
 
 Component* Transform2DComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new Transform2DComponent(*this, owner);
 }
 
 void Transform2DComponent::Reset()
@@ -151,7 +168,10 @@ void Transform2DComponent::CalculateMatrices()
 	for (GameObject* child : GetOwner()->GetChildren())
 	{
 		Transform2DComponent* childTransform = (Transform2DComponent*) child->GetComponent(ComponentType::TRANSFORM2D);
-		childTransform->CalculateMatrices();
+		if (childTransform)
+		{
+			childTransform->CalculateMatrices();
+		}
 	}
 }
 
@@ -234,7 +254,31 @@ void Transform2DComponent::SetRotation(const float3& rotation)
 
 void Transform2DComponent::SetSize(const float2 size)
 { 
-	mSize = size; 
+	/*ImageComponent* component = ((ImageComponent*)GetOwner()->GetComponent(ComponentType::IMAGE));
+	if ( component->GetMantainRatio() )
+	{
+		if (size.x != mSize.x)
+		{
+			float originalRatio = component->GetImage()->GetWidth() / component->GetImage()->GetHeight();
+			float currentRatio = size.x / size.y;
+			float ratio = currentRatio / originalRatio;
+			float2 newSize = float2(mSize.x * ratio, mSize.y);
+			mSize = newSize;
+		}
+		else 
+		{
+			float originalRatio = component->GetImage()->GetWidth() / component->GetImage()->GetHeight();
+			float currentRatio = size.x / size.y;
+			float ratio = currentRatio / originalRatio;
+			float2 newSize = float2(mSize.x, mSize.y * ratio);
+			mSize = newSize;
+		}
+	}
+	else 
+	{*/
+		mSize = size; 
+	//}
+
 	CalculateMatrices(); 
 }
 

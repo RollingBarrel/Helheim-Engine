@@ -20,8 +20,6 @@ public:
 	void LoadVBO();
 	void CreateVAO();
 
-	inline Frustum* GetFrustum() const { return mCurrentFrustum; }
-
 	void SetScreenSpace(bool screen) { mScreenSpace = screen; }
 	inline bool GetScreenSpace() { return mScreenSpace; }
 	
@@ -30,8 +28,7 @@ public:
 
 private:
 	void DrawWidget(GameObject* gameObject);
-
-	Frustum* mCurrentFrustum = nullptr; 
+	void CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered);
 
 	GameObject* mCanvas = nullptr;
 

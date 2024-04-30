@@ -14,6 +14,7 @@
 #define MATRICES_LOCATION 2
 #define COLOR_LOCATION 1
 
+
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
@@ -25,9 +26,9 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 
 ParticleSystemComponent::~ParticleSystemComponent() 
 {
+    App->GetOpenGL()->RemoveParticleSystem(this);
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
-    delete mImage;
     //delete mShapeType;
     for (auto particle : mParticles)
     {
@@ -49,13 +50,13 @@ void ParticleSystemComponent::Init()
     InitEmitterShape();
     // set up mesh and attribute properties
     float particleQuad[] = {
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
+        -0.1f, 0.1f, 0.0f, 1.0f,
+        0.1f, -0.1f, 1.0f, 0.0f,
+        -0.1f, -0.1f, 0.0f, 0.0f,
 
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f
+        -0.1f, 0.1f, 0.0f, 1.0f,
+        0.1f, 0.1f, 1.0f, 1.0f,
+        0.1f, -0.1f, 1.0f, 0.0f
     };
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
@@ -90,6 +91,11 @@ void ParticleSystemComponent::Init()
     App->GetOpenGL()->AddParticleSystem(this);
 }
 
+//float4x4 CreateBillboardTransform(Frustum camera, float3 worldPosition)
+//{
+//
+//}
+
 
 void ParticleSystemComponent::Draw() const
 {
@@ -101,8 +107,11 @@ void ParticleSystemComponent::Draw() const
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
         CameraComponent* cam = (CameraComponent*)App->GetCamera()->GetCurrentCamera();
-        float4x4 viewproj = cam->GetViewProjectionMatrix();
-
+        float4x4 projection = cam->GetViewProjectionMatrix();
+        float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
+        float3 up = cam->GetFrustum().up;
+        float3 right = up.Cross(norm).Normalized();
+        //up = norm.Cross(right).Normalized();
         glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
         glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
             nullptr, GL_DYNAMIC_DRAW);
@@ -113,10 +122,13 @@ void ParticleSystemComponent::Draw() const
         {
             if (mParticles[i]->GetLifetime() > 0.0f)
             {
-                Quat rotation = Quat::identity;
-                float3 scale = float3(mParticles[i]->GetSize());
+                
+                float scale = mParticles[i]->GetSize();
+                float3x3 scaleMatrix = float3x3::identity * scale;
                 float3 pos = mParticles[i]->GetPosition();
-                float4x4 transform = float4x4::FromTRS(pos, rotation, scale).Transposed();
+                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+                transform = transform * scaleMatrix;
+                transform.Transpose();                
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
                 memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
             }
@@ -124,7 +136,7 @@ void ParticleSystemComponent::Draw() const
         glUnmapBuffer(GL_ARRAY_BUFFER);
         glBindVertexArray(mVAO);
         
-        glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &viewproj[0][0]);
+        glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &projection[0][0]);
         glUniform4f(glGetUniformLocation(programId, "color"), 1.0f, 1.0f, 1.0f, 1.0f);
         glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
         
