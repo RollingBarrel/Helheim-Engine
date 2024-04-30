@@ -43,8 +43,7 @@ ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, con
             rAnimation->mChannels[name] = ourChannel;
         }
     }
-
-    
+        
 
     if (rAnimation) {
         Importer::Animation::Save(rAnimation);

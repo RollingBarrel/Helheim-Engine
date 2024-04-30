@@ -8,7 +8,9 @@
 
 #include "GameObject.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimation(nullptr), mController(nullptr)
+#include "ResourceModel.h"
+
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimation(nullptr), mController(nullptr), mModelUid(0)
 {
 	mClipNames.clear();
 	mClipTimes.clear();
@@ -56,6 +58,8 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mClipTimes.push_back(15.0);
 
 	mCurrentClip = 0;
+
+	mModelUid = other.mModelUid;
 }
 
 AnimationComponent::~AnimationComponent()
@@ -78,17 +82,12 @@ void AnimationComponent::SetLoop(bool loop)
 
 void AnimationComponent::OnStart()
 {
-	if (mGameobjectsInverseMatrices.size() == 0)
+	if (mGameobjectsInverseMatrices.size() == 0 && mModelUid != 0)
 	{
-		LoadAllChildJoints(mOwner);
-		/*
-		for (int i = 0; i < mAnimation->mInvBindMatrices.size(); i++)
-		{
-			mGameobjectsInverseMatrices.push_back(std::pair(mOwner->FindGameObjectInTree(mAnimation->mInvBindMatrices[i].first), mAnimation->mInvBindMatrices[i].second));
-		}
-		*/
+		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
+		LoadAllChildJoints(mOwner, model);
+		
 	}
-	//mController->Play(mAnimation->GetUID(), true);
 }
 
 void AnimationComponent::Update()
@@ -113,10 +112,6 @@ void AnimationComponent::OnRestart()
 void AnimationComponent::SetAnimation(unsigned int uid)
 {
 	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(uid, Resource::Type::Animation));
-	if (tmpAnimation && mAnimation)
-	{
-		App->GetResource()->ReleaseResource(mAnimation->GetUID());
-	}
 	if (tmpAnimation)
 	{
 		mAnimation = tmpAnimation;
@@ -140,9 +135,9 @@ void AnimationComponent::SetEndTime(float time)
 }
 
 
-void AnimationComponent::AddJointNode(GameObject* node)
+void AnimationComponent::AddJointNode(GameObject* node, ResourceModel* model)
 {
-	for (const auto& pair : mAnimation->mInvBindMatrices)
+	for (const auto& pair : model->mInvBindMatrices)
 	{
 		if (pair.first == node->GetName())
 		{
@@ -152,12 +147,12 @@ void AnimationComponent::AddJointNode(GameObject* node)
 	}
 }
 
-void AnimationComponent::LoadAllChildJoints(GameObject* currentObject)
+void AnimationComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
 {
-	AddJointNode(currentObject);
+	AddJointNode(currentObject, model);
 	for (const auto& object : currentObject->GetChildren())
 	{
-		LoadAllChildJoints(object);
+		LoadAllChildJoints(object, model);
 	}
 
 }
@@ -182,6 +177,8 @@ void AnimationComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ID", GetID());
 	archive.AddInt("AnimationID", mAnimation->GetUID());
+	archive.AddInt("ModelUID", mModelUid);
+
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
 
@@ -196,4 +193,7 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 	}
 	SetAnimation(animationID);
 
+	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) {
+		mModelUid = data["ModelUID"].GetInt();
+	}
 }

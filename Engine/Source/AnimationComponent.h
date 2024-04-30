@@ -6,6 +6,7 @@
 
 class AnimationController;
 class ResourceAnimation;
+class ResourceModel;
 
 class ENGINE_API AnimationComponent : public Component {
 public:
@@ -40,7 +41,7 @@ public:
 	const std::vector<float4x4> GetPalette() const { return mPalette; }
 
 
-	void LoadAllChildJoints(GameObject* currentObject);
+	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
 
 
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
@@ -90,8 +91,12 @@ public:
 	{
 		return mClipTimes[mCurrentClip*2+1];
 	}
+
+	unsigned int getModelUUID() const { return mModelUid; }
+	void setModelUUID(unsigned int modelUid) { mModelUid = modelUid; }
+
 private:
-	void AddJointNode(GameObject* node);
+	void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
 	ResourceAnimation* mAnimation;
 	AnimationController* mController;
@@ -102,6 +107,7 @@ private:
 	std::vector<const char*> mClipNames;
 	std::vector<float> mClipTimes;
 	int mCurrentClip; 
+	unsigned int mModelUid;
 
 
 };
