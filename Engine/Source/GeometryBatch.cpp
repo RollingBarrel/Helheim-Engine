@@ -329,17 +329,17 @@ void GeometryBatch::Draw()
 				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));
 				if (cAnim && cAnim->GetIsPlaying())
 				{
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, paletteSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, cAnim->GetPalette().size() * sizeof(float) * 16, cAnim->GetPalette().data(), GL_DYNAMIC_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, boneIndicesSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, weightsSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberWeights() * sizeof(float), rMesh->GetWeights(), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, posSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPosSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::POS), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, normSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mNormSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::NORMAL), GL_STREAM_DRAW);
-					glBindBuffer(GL_SHADER_STORAGE_BUFFER, tangSsbo);
+					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mTangSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::TANGENT), GL_STREAM_DRAW);
 					glUniform1i(25, rMesh->GetNumberVertices());
 					glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * rMesh->GetVertexSize(), rMesh->GetVertexSize() * rMesh->GetNumberVertices());

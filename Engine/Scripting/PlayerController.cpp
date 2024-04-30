@@ -82,11 +82,6 @@ void PlayerController::Start()
     if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
     if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
 
-    if (mAnimationComponentHolder) 
-    {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
-    }
 
     if (mFootStepAudioHolder)
     {
