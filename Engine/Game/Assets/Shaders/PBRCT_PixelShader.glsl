@@ -96,6 +96,15 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	return pbrColor;
 }
 
+uniform samplerCube diffuseIBL;
+vec3 GetAmbientLight()
+{
+	vec3 cDif = baseColor * (1 - metal);
+	vec3 cSpec = mix(vec3(0.04), baseColor, metal);
+	vec3 irradiance = texture(diffuseIBL, N).rgb;
+	// note: PI from irradiance is compensated with albedo pi division
+	return irradiance * (cDif * (1 - cSpec));
+}
 
 void main() 
 {
@@ -147,7 +156,7 @@ void main()
 		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / (dist*dist + 1);
 		pbrCol += GetPBRLightColor(pDir, pLights[i].col.rgb,  pLights[i].col.w, att);
 	}
-
+	
 	//Spot lights
 	for(int i = 0; i<numSLights; ++i)
 	{
@@ -168,6 +177,8 @@ void main()
 		att *= cAtt;
 		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att);
 	}
+
+	pbrCol += GetAmbientLight();
 
 	//TODO: ambient color on pbr
 	//HDR color  

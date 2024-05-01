@@ -178,6 +178,8 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
+	BakeIBL(L"Assets/Textures/skybox.hdr");
+
 	return true;
 }
 
@@ -191,7 +193,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	if (mSkyBoxTexture != 0)
 	{
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTexture);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 		glUseProgram(mSkyBoxProgramId);
 		glBindVertexArray(mSkyVao);
 		glDepthMask(GL_FALSE);
@@ -199,7 +201,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 		glUseProgram(0);
-		BakeIBL(L"Assets/Textures/skybox.hdr");
+		//BakeIBL(L"Assets/Textures/skybox.hdr");
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -588,7 +590,7 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDeleteFramebuffers(1, &frameBuffer);
 		glDeleteTextures(1, &mHDRTextureId);
-		glDeleteTextures(1, &mEnvironmentTextureId);
+		//glDeleteTextures(1, &mEnvironmentTextureId);
 	}
 }
 
@@ -650,6 +652,7 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
 
 void ModuleOpenGL::Draw()
 {
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
 	BindSceneFramebuffer();
 	mBatchManager.Draw();
 	UnbindSceneFramebuffer();
