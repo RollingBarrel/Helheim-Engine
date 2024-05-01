@@ -290,7 +290,7 @@ static unsigned int LoadCubeMap()
 	unsigned int ret = 0;
 	DirectX::ScratchImage image;
 
-	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap2.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
+	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
 	
 	if (res == S_OK)
 	{
@@ -537,7 +537,7 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 
 		//int viewPortSize[4];
 		//glGetIntegerv(GL_VIEWPORT, viewPortSize);
-		glViewport(0, 0, irradianceWidth, irradianceWidth);
+		glViewport(0, 0, irradianceWidth, irradianceHeight);
 		glDepthMask(GL_FALSE);
 		glBindVertexArray(mSkyVao);
 		for (unsigned int i = 0; i < 6; ++i)

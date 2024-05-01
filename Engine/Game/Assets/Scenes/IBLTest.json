@@ -79,7 +79,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 425968229,
+                        "ID": 1828517400,
                         "MeshID": 425247731,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -93,7 +93,7 @@
                 "Name": "DamagedHelmet",
                 "isEnabled": true,
                 "Translation": [
-                    3.3983726501464845,
+                    6.36481237411499,
                     0.0,
                     0.0
                 ],
@@ -165,7 +165,7 @@
                 "OverridePrefab": true,
                 "Components": [
                     {
-                        "ID": 1151770026,
+                        "ID": 591513289,
                         "MeshID": 1088336016,
                         "MaterialID": 1088336020,
                         "ComponentType": 0,
