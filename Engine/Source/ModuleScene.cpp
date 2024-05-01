@@ -65,7 +65,7 @@ bool ModuleScene::Init()
 	//Load("scene");
 	//Load("MainMenu");
 	//Load("Level1");
-
+	Load("IBLTest");
 
 	return true;
 }
