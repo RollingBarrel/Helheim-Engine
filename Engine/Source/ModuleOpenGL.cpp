@@ -199,7 +199,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 		glUseProgram(0);
-		BakeIBL();
+		BakeIBL(L"Assets/Textures/skybox.hdr");
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -464,14 +464,20 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 	return ret;
 }
 
-void ModuleOpenGL::BakeIBL()
+void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 {
 	DirectX::ScratchImage image;
 
-	HRESULT res = DirectX::LoadFromHDRFile(L"Assets/Textures/skybox.hdr", nullptr, image);
+	HRESULT res = DirectX::LoadFromHDRFile(hdrTexPath, nullptr, image);
 
 	if (res == S_OK)
 	{
+		if (mIrradianceTextureId != 0)
+		{
+			glDeleteTextures(1, &mIrradianceTextureId);
+			mIrradianceTextureId = 0;
+		}
+
 
 		const float3 front[6] = { float3::unitX, -float3::unitX, float3::unitY,
 							 -float3::unitY, float3::unitZ, -float3::unitZ };
@@ -487,12 +493,14 @@ void ModuleOpenGL::BakeIBL()
 		frustum.verticalFov = pi / 2.0f;
 		frustum.horizontalFov = pi / 2.0f;
 
+		const unsigned int irradianceWidth = 512;
+		const unsigned int irradianceHeight = 512;
 		glGenTextures(1, &mEnvironmentTextureId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 
 		for (unsigned int i = 0; i < 6; ++i)
 		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 512, 512, 0,
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
 				GL_RGB, GL_FLOAT, nullptr);
 		}
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -524,9 +532,9 @@ void ModuleOpenGL::BakeIBL()
 		glGenFramebuffers(1, &frameBuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
-		int viewPortSize[4];
-		glGetIntegerv(GL_VIEWPORT, viewPortSize);
-		glViewport(0, 0, 512, 512);
+		//int viewPortSize[4];
+		//glGetIntegerv(GL_VIEWPORT, viewPortSize);
+		glViewport(0, 0, irradianceWidth, irradianceWidth);
 		glDepthMask(GL_FALSE);
 		glBindVertexArray(mSkyVao);
 		for (unsigned int i = 0; i < 6; ++i)
@@ -540,17 +548,47 @@ void ModuleOpenGL::BakeIBL()
 			glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
 			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
 		}
+
+
+		glUseProgram(mIrradianceProgramId);
+		glGenTextures(1, &mIrradianceTextureId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
+				GL_RGB, GL_FLOAT, nullptr);
+		}
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mIrradianceTextureId, 0);
+
+			frustum.front = front[i];
+			frustum.up = up[i];
+
+			glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
+			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
 		glBindVertexArray(0);
 		glUseProgram(0);
 		glDepthMask(GL_TRUE);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
-		glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
-		glDeleteFramebuffers(1, &frameBuffer);
+
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
+		//glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDeleteFramebuffers(1, &frameBuffer);
 		glDeleteTextures(1, &mHDRTextureId);
+		glDeleteTextures(1, &mEnvironmentTextureId);
 	}
 }
 

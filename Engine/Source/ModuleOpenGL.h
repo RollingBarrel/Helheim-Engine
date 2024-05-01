@@ -83,7 +83,7 @@ public:
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
-	void BakeIBL();
+	void BakeIBL(const wchar_t* hdrTexPath);
 
 private:
 	void* context = nullptr;
