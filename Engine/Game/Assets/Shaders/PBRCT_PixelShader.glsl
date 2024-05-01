@@ -102,6 +102,7 @@ vec3 GetAmbientLight()
 	vec3 cDif = baseColor * (1 - metal);
 	vec3 cSpec = mix(vec3(0.04), baseColor, metal);
 	vec3 irradiance = texture(diffuseIBL, N).rgb;
+	irradiance = pow(irradiance, vec3(2.2));
 	// note: PI from irradiance is compensated with albedo pi division
 	return irradiance * (cDif * (1 - cSpec));
 }
