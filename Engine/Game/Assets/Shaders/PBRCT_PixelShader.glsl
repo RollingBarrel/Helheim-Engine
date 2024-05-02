@@ -101,9 +101,10 @@ uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 vec3 GetAmbientLight()
 {
-	float dotNV = min(max(dot(N, V), 0),1.0);
+	float dotNV = clamp(dot(N, V), 0.001, 1.0);
 	vec3 irradiance = texture(diffuseIBL, N).rgb;
-	vec3 radiance = textureLod(prefilteredIBL, reflect(-V, N), rough * numLevels).rgb;
+	vec3 R = reflect(-V, N);
+	vec3 radiance = textureLod(prefilteredIBL, R, rough * numLevels).rgb;
 	vec2 fab = texture(environmentBRDF, vec2(dotNV, rough)).rg;
 	vec3 diffuse = (cDif * (1 - cSpec));
 	return diffuse * irradiance + radiance * (cSpec * fab.x + fab.y);
