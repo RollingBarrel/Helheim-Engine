@@ -290,12 +290,6 @@ void ModuleScene::Load(const char* sceneName)
 
 		LoadGameObjectsIntoScripts();
 	}
-
-	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
-	if (cameraGameObject)
-	{
-		App->GetCamera()->SetCurrentCamera(cameraGameObject);
-	}
 }
 
 void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)
