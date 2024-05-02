@@ -73,6 +73,9 @@
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{53632d8a-a4e4-4185-bb50-a99200b955b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\Components\Physics">
+      <UniqueIdentifier>{1e951744-d35d-405c-9253-da9479846bfe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -434,6 +437,9 @@
     </ClCompile>
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxColliderComponent.cpp">
+      <Filter>GameObjects\Components\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1039,6 +1045,9 @@
     </ClInclude>
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxColliderComponent.h">
+      <Filter>GameObjects\Components\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
