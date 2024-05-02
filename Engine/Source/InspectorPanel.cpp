@@ -24,6 +24,7 @@
 #include "ButtonComponent.h"
 #include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
+#include "BoxColliderComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -432,6 +433,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
+					break;
+
+				case ComponentType::BOXCOLLIDER:
+					DrawBoxColliderComponent(reinterpret_cast<BoxColliderComponent*>(component));
 					break;
 			}
 		}
@@ -1248,4 +1253,48 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	}
 	ImGui::EndTable();
 	
+}
+
+void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
+{
+	if (ImGui::BeginTable("transformTable", 4))
+	{
+		bool isModified = false;
+		float3 newCenter = component->GetCenter();
+		float3 newSize = component->GetSize();
+
+		const char* labels[2] = { "Center", "Size" };
+		const char* axisLabels[3] = { "X", "Y", "Z" };
+		float3* vectors[2] = { &newCenter, &newSize };
+
+		for (int i = 0; i < 2; ++i)
+		{
+			ImGui::PushID(i);
+			ImGui::TableNextRow();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text(labels[i]);
+			ImGui::PopItemWidth();
+
+			for (int j = 0; j < 3; ++j) {
+				ImGui::TableNextColumn();
+				ImGui::PushItemWidth(-FLT_MIN);
+				ImGui::AlignTextToFramePadding();
+				ImGui::Text(axisLabels[j]);
+				ImGui::SameLine();
+				isModified = ImGui::DragFloat(axisLabels[j], &(*vectors[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || isModified;
+				ImGui::PopItemWidth();
+			}
+			ImGui::PopID();
+
+			if (isModified)
+			{
+				component->SetCenter(newCenter);
+				component->SetSize(newSize);
+			}
+		}
+		ImGui::EndTable();
+	}
+
 }

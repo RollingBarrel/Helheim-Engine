@@ -25,6 +25,7 @@
 #include "AudioListenerComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
+#include "BoxColliderComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -530,6 +531,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::SLIDER:
 		newComponent = new SliderComponent(this);
+		break;
+	case ComponentType::BOXCOLLIDER:
+		newComponent = new BoxColliderComponent(this);
 		break;
 	default:
 		break;

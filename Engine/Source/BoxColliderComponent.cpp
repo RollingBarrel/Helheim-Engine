@@ -5,6 +5,12 @@ BoxColliderComponent::BoxColliderComponent(GameObject* owner) : Component(owner,
 {
 }
 
+BoxColliderComponent::BoxColliderComponent(const BoxColliderComponent& original, GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER),
+	mCenter(original.mCenter), mSize(original.mSize)
+{
+	ComputeBoundingBox();
+}
+
 BoxColliderComponent::~BoxColliderComponent()
 {
 }
@@ -13,6 +19,11 @@ void BoxColliderComponent::Reset()
 {
 	mCenter = float3::zero;
 	mSize = float3::one;
+}
+
+Component* BoxColliderComponent::Clone(GameObject* owner) const
+{
+	return new BoxColliderComponent(*this, owner);
 }
 
 void BoxColliderComponent::Draw()
@@ -30,6 +41,18 @@ void BoxColliderComponent::ComputeBoundingBox()
 	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
 	mWorldOBB = OBB(mLocalAABB);
 	mWorldOBB.Transform(mOwner->GetWorldTransform()); // TODO: Check if correct
+}
+
+void BoxColliderComponent::SetCenter(const float3& center)
+{
+	mCenter = center;
+	ComputeBoundingBox();
+}
+
+void BoxColliderComponent::SetSize(const float3& size)
+{
+	mSize = size;
+	ComputeBoundingBox();
 }
 
 void BoxColliderComponent::Save(Archive& archive) const

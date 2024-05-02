@@ -20,6 +20,7 @@ class AudioSourceComponent;
 class AudioListenerComponent;
 class Transform2DComponent;
 class SliderComponent;
+class BoxColliderComponent;
 
 class InspectorPanel : public Panel
 {
@@ -55,6 +56,7 @@ private:
 	void DrawAudioSourceComponent(AudioSourceComponent* component);
 	void DrawListenerComponent(AudioListenerComponent* component);
 	void DrawTransform2DComponent(Transform2DComponent* component);
+	void DrawBoxColliderComponent(BoxColliderComponent* component);
 
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
