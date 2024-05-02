@@ -176,6 +176,10 @@ void ParticleSystemComponent::Update()
 
 			float3 emitionPosition = mShape->RandomInitPosition();
             float3 emitionDirection = mShape->RandomInitDirection();
+            float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
+            emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
+            float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
+            emitionDirection = auxDirection.Normalized();
 
             float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
             float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
@@ -238,7 +242,6 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mDuration = data["Duration"].GetFloat();
     }
-
     if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
     {
         mMaxLifeTime = data["Life Time"].GetFloat();
@@ -263,7 +266,6 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mLooping = data["Looping"].GetBool();
     }
-
     if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
     {
         const auto& colorArray = data["Color Gradient"].GetArray();

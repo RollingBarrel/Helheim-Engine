@@ -1,5 +1,7 @@
 #include "EmitterShape.h"
 
+# define M_PI   3.14159265358979323846f
+
 EmitterShape::EmitterShape()
 {
 	mShapeRadius = 1.0f;
@@ -30,7 +32,7 @@ EmitterShapeCone::EmitterShapeCone()
 float3 EmitterShapeCone::RandomInitPosition()
 {
     float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    float angle = r * 2 * 3.1415f;
+    float angle = r * 2 * M_PI;
     r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float distance = r * mShapeRadius;
     float x = distance * cos(angle);
@@ -41,13 +43,18 @@ float3 EmitterShapeCone::RandomInitPosition()
 
 float3 EmitterShapeCone::RandomInitDirection()
 {
-    float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    float angleA = r * 2 * 3.1415f;
-    r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    float angleB = r * mShapeAngle;
-    float3 dirA = float3(cos(angleA), sin(angleA), cos(angleB)).Normalized();
+    float r1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    float theta = r1 * 2 * M_PI; // Angle in XY plane
 
-    return dirA;
+    // Instead of a linear distribution for angleB, we use an angular distribution.
+    float r2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    float phi = std::acos(1 - r2 * (1 - std::cos(mShapeAngle))); // Angle from Z axis
+
+    float x = std::sin(phi) * std::cos(theta);
+    float y = std::sin(phi) * std::sin(theta);
+    float z = std::cos(phi);
+
+    return float3(x, y, z).Normalized(); // Normalize to ensure unit length
 }
 
 //EmitterShapeSquare::EmitterShapeSquare()
