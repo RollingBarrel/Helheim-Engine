@@ -82,10 +82,10 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	vec3 L =  -normalize(lDir); 	//Light direction
 	vec3 H = normalize(L+V);
 	vec3 Li = lInt * lAtt * lCol.rgb;  //Incoming radiance
-	float dotNL = max(dot(N,L),0);
-	float dotLH = max(dot(L,H),0);
-	float dotNH = max(dot(N,H),0);
-	float dotNV = max(dot(N,V),0);
+	float dotNL = max(dot(N,L),0.001f);
+	float dotLH = max(dot(L,H),0.001f);
+	float dotNH = max(dot(N,H),0.001f);
+	float dotNV = max(dot(N,V),0.001f);
 
 	vec3 fresnel = cSpec + (1-cSpec) * pow(1-dotLH,5);
 	float smithVisibility = 0.5 / (dotNL*(dotNV*(1-rough)+rough)+dotNV*(dotNL*(1-rough)+rough));
@@ -101,7 +101,7 @@ uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 vec3 GetAmbientLight()
 {
-	float dotNV = max(dot(N, V), 0);
+	float dotNV = min(max(dot(N, V), 0),1.0);
 	vec3 irradiance = texture(diffuseIBL, N).rgb;
 	vec3 radiance = textureLod(prefilteredIBL, reflect(-V, N), rough * numLevels).rgb;
 	vec2 fab = texture(environmentBRDF, vec2(dotNV, rough)).rg;
@@ -132,6 +132,7 @@ void main()
 		rough *= metRough.g;
 	}
 	rough *= rough;
+	min(rough, 0.001f);
 	if (material.hasNormalMap)
 	{
 		N = normalize(norm);

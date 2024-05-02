@@ -36,7 +36,9 @@ vec3 HemisphereSampleGGX(float u1, float u2, float rough)
 void main()
 {
 	float NdotV = uv.x;
+	clamp(NdotV,0.0,1.0);
 	float roughness = uv.y;
+	clamp(roughness, 0.001f, 1.0f);
 	vec3 V = vec3(sqrt(1.0 - NdotV * NdotV), 0.0, NdotV);
 	vec3 N = vec3(0.0, 0.0, 1.0);
 	float fa = 0.0;
@@ -46,9 +48,9 @@ void main()
 		vec2 hammersley = Hammersley2D(i, NUM_SAMPLES);
 		vec3 H = HemisphereSampleGGX(hammersley.x, hammersley.y, roughness);
 		vec3 L = reflect(-V, H);
-		float NdotL = max(dot(N, L), 0.0);
-		float NdotH = max(dot(N, H), 0.0);
-		float VdotH = max(dot(V, H), 0.0);
+		float NdotL = max(dot(N, L), 0.001f);
+		float NdotH = max(dot(N, H), 0.001f);
+		float VdotH = max(dot(V, H), 0.001f);
 		if (NdotL > 0.0)
 		{
 			float smithVisibility = 0.5 / (NdotL * (NdotV * (1 - roughness) + roughness) + NdotV * (NdotL * (1 - roughness) + roughness));
