@@ -31,16 +31,16 @@ EngineApplication::EngineApplication()
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
 	modules[4] = audio = new ModuleAudio();
-	modules[5] = render = new ModuleOpenGL();
-	modules[6] = engineResources = new ModuleEngineResource();
+	modules[5] = ui = new ModuleUI();
+	modules[6] = render = new ModuleOpenGL();
+	modules[7] = engineResources = new ModuleEngineResource();
 	resource = engineResources;
-	modules[7] = engineScriptManager = new ModuleEngineScriptManager();
+	modules[8] = engineScriptManager = new ModuleEngineScriptManager();
 	scriptManager = engineScriptManager;
-	modules[8] = debugDraw = new ModuleDebugDraw();
-	modules[9] = scene = new ModuleScene();
-	modules[10] = navigation = new ModuleDetourNavigation();
-	modules[11] = editor = new ModuleEditor();
-	modules[12] = ui = new ModuleUI();
+	modules[9] = debugDraw = new ModuleDebugDraw();
+	modules[10] = scene = new ModuleScene();
+	modules[11] = navigation = new ModuleDetourNavigation();
+	modules[12] = editor = new ModuleEditor();
 	modules[13] = event = new ModuleEvent();
 }
 

@@ -27,12 +27,12 @@ GameApplication::GameApplication()
 	modules[2] = camera = new ModuleCamera();
 	modules[3] = fileSystem = new ModuleFileSystem();
 	modules[4] = audio = new ModuleAudio();
-	modules[5] = render = new ModuleOpenGL();
-	modules[6] = resource = new ModuleResource();
-	modules[7] = scriptManager = new ModuleScriptManager();
-	modules[8] = scene = new ModuleScene();
-	modules[9] = navigation = new ModuleDetourNavigation();
-	modules[10] = ui = new ModuleUI();
+	modules[5] = ui = new ModuleUI();
+	modules[6] = render = new ModuleOpenGL();
+	modules[7] = resource = new ModuleResource();
+	modules[8] = scriptManager = new ModuleScriptManager();
+	modules[9] = scene = new ModuleScene();
+	modules[10] = navigation = new ModuleDetourNavigation();
 	modules[11] = event = new ModuleEvent();
 	modules[12] = game = new ModuleGame();
 }
