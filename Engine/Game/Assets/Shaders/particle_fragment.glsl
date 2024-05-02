@@ -8,5 +8,4 @@ uniform sampler2D sprite;
 void main()
 {
     color = (texture(sprite, TexCoords) * ParticleColor);
-    if(color.a < 0.1) discard;
 }

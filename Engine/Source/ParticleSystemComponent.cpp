@@ -22,8 +22,13 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
     mColorGradient[0.0f] = float4::one;
 }
 
-ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) : ParticleSystemComponent(owner)
+ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
+mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mIsSpeedCurve(original.mIsSpeedCurve),
+mSpeedLineal(original.mSpeedLineal), mSpeedCurve(original.mSpeedCurve), mIsSizeCurve(original.mIsSizeCurve), mSizeCurve(original.mSizeCurve),
+mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping), mShape(original.mShape),
+mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), Component(owner, ComponentType::PARTICLESYSTEM)
 {
+    SetImage(original.mResourceId);
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 
@@ -104,8 +109,10 @@ void ParticleSystemComponent::Draw() const
     if (IsEnabled()) 
     {
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ONE);
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);									// Enable Blending
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
+        glEnable(GL_TEXTURE_2D);
         //glBlendEquation(GL_FUNC_ADD);
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
