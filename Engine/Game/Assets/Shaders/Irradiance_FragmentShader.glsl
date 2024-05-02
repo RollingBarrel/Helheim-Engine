@@ -1,6 +1,6 @@
 #version 460 core
 
-#define NUM_SAMPLES 2048
+#define NUM_SAMPLES 16384
 #define PI 3.1415926535897932384626433832795
 
 in vec3 texcoords;

@@ -496,8 +496,8 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 		frustum.verticalFov = pi / 2.0f;
 		frustum.horizontalFov = pi / 2.0f;
 
-		const unsigned int irradianceWidth = 512;
-		const unsigned int irradianceHeight = 512;
+		const unsigned int irradianceWidth = 256;
+		const unsigned int irradianceHeight = 256;
 		glGenTextures(1, &mEnvironmentTextureId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 
