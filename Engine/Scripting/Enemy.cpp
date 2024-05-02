@@ -41,6 +41,12 @@ void Enemy::TakeDamage(float damage)
     
     LOG("Enemy Health: %f", mHealth);
 
+    //every time the enemy takes damage, it will be pushed back
+    if (mHealth > 0)
+    {
+		mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * -2.0f);
+	}
+   
 
     if (mHealth <= 0)
     {
