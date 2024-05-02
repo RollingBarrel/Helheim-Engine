@@ -41,5 +41,5 @@ public:
 
 	std::vector<ModelNode> modelNodes;
 
-	std::vector<std::pair<int, float4x4>> mJoints;
+	std::vector<std::pair<std::string, float4x4>> mInvBindMatrices;
 };

@@ -29,8 +29,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
-	GameObject* root = mOwner->FindFirstParent(mOwner);
-	mAnimationComponent = reinterpret_cast<AnimationComponent*>(root->GetComponent(ComponentType::ANIMATION));
+	GameObject* root = mOwner->FindFirstParent();
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -44,7 +43,6 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	App->GetOpenGL()->BatchAddMesh(this);
 	mAABBWorld = mOBB.MinimalEnclosingAABB();
 
-	mAnimationComponent = reinterpret_cast<AnimationComponent*>(mOwner->FindFirstParent(mOwner)->GetComponent(ComponentType::ANIMATION));
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -109,32 +107,9 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	//}
 }
 
-void MeshRendererComponent::LoadAnimatedMesh(bool isAnimated) {
-
-	mPalette.clear();
-	std::vector<std::pair<GameObject*, float4x4>>& inverseBindMats = mAnimationComponent->mGameobjectsInverseMatrices;
-	mPalette.reserve(inverseBindMats.size());
-	for (unsigned i = 0; i < inverseBindMats.size(); ++i)
-	{
-		mPalette.push_back((inverseBindMats[i].first->TranformInFirstGameObjectSpace() * inverseBindMats[i].second).Transposed());
-	}
-	//int o = 1;
-	//LOG("Palette:\n %f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f\n%f\t%f\t%f\t%f", palette[o][0][0], palette[o][0][1], palette[o][0][2], palette[o][0][3], palette[o][1][0], palette[o][1][1], palette[o][1][2], palette[o][1][3], palette[o][2][0], palette[o][2][1], palette[o][2][2], palette[o][2][3], palette[o][3][0], palette[o][3][1], palette[o][3][2], palette[o][3][3]);
-
-	//unsigned int programId = App->GetOpenGL()->GetPBRProgramId();
-	//glUseProgram(programId);
-	//glUniformMatrix4fv(glGetUniformLocation(programId, "palette"), palette.size(), GL_TRUE, palette[0].ptr());
-	//
-	//glUniform1i(glGetUniformLocation(programId, "hasAnimation"), isAnimated);
-	//glUseProgram(0);
-
-}
 
 void MeshRendererComponent::Update() {
-	if (mAnimationComponent && mAnimationComponent->GetIsPlaying())
-	{
-		LoadAnimatedMesh(mIsAnimated);
-	}
+
 }
 
 void MeshRendererComponent::Enable()

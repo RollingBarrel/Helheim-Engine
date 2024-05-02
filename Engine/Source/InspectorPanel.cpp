@@ -895,14 +895,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		(play) ? play = false : play = true;
 		component->SetIsPlaying(play);
 
-		if (component->GetIsPlaying())
-		{
-			for (Component* comp : components)
-			{
-				MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
-				meshRenderComponent->SetIsAnimated(true);
-			}
-		}
 	}
 
 	ImGui::SameLine();
@@ -920,11 +912,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if (ImGui::Button("Stop"))
 	{
-		for (Component* comp : components)
-		{
-			MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
-			meshRenderComponent->SetIsAnimated(false);
-		}
 		component->SetIsPlaying(false);
 		component->OnRestart();
 	}
@@ -938,28 +925,32 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::Checkbox("Loop", &loop);
 	component->SetLoop(loop);
-	
-	const char* items[] = { "Walk", "Idle", "Die" };
-	static float timeClips[] = {0.0, 2.2, 2.2, 12.0, 12.0, 15.0 };
-	static int currentItem = 0;
-	if (ImGui::Combo("Select Animation State", &currentItem, items, IM_ARRAYSIZE(items)))
+
+	float animSpeed = component->GetAnimSpeed();
+
+	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02, 0.0, 2.0))
 	{
-		component->SetStartTime(timeClips[currentItem * 2]);
-		component->SetEndTime(timeClips[currentItem * 2 + 1]);
+		component->SetAnimSpeed(animSpeed);
+	}
+
+	int currentItem = component->getCurrentClip();
+
+	if (ImGui::Combo("Select Animation State", &currentItem, component->getClipNames().data(), component->getClipNames().size()))
+	{
+		component->setCurrentClip(currentItem);
 	}
 	float maxTimeValue = component->GetAnimation()->GetDuration();
-	if (ImGui::DragFloat("StartTime", &timeClips[currentItem * 2], 0.1, 0.0, maxTimeValue))
+	float currentStartTime = component->getCurrentStartTime();
+	float currentEndTime = component->getCurrentEndTime();
+
+	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1, 0.0, maxTimeValue))
 	{
-		component->SetStartTime(timeClips[currentItem * 2]);
+		component->SetStartTime(currentStartTime);
 	}
-	if (ImGui::DragFloat("EndTime", &timeClips[currentItem * 2+1], 0.1, 0.0, maxTimeValue))
+	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1, 0.0, maxTimeValue))
 	{
-		component->SetEndTime(timeClips[currentItem * 2+1]);
+		component->SetEndTime(currentEndTime);
 	}
-
-
-
-
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) 
