@@ -95,12 +95,18 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	return pbrColor;
 }
 
+uniform samplerCube prefilteredIBL;
 uniform samplerCube diffuseIBL;
+uniform sampler2D environmentBRDF;
+uniform uint numLevels;
 vec3 GetAmbientLight()
 {
+	float dotNV = max(dot(N, V), 0);
 	vec3 irradiance = texture(diffuseIBL, N).rgb;
-	// note: PI from irradiance is compensated with albedo pi division
-	return irradiance * (cDif * (1 - cSpec));
+	vec3 radiance = textureLod(prefilteredIBL, reflect(-V, N), rough * numLevels).rgb;
+	vec2 fab = texture(environmentBRDF, vec2(dotNV, rough)).rg;
+	vec3 diffuse = (cDif * (1 - cSpec));
+	return diffuse * irradiance + radiance * (cSpec * fab.x + fab.y);
 }
 
 void main() 

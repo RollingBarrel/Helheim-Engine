@@ -490,6 +490,8 @@
     <None Include="..\Game\Assets\Shaders\skinning.comp" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
+    <None Include="..\Game\Assets\Shaders\SpecEnvBRDFFragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod.cs" />

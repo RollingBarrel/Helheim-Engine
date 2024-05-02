@@ -115,6 +115,8 @@ private:
 	unsigned int mSkinningProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
+	unsigned int mSpecPrefilteredProgramId = 0;
+	unsigned int mSpecEnvBRDFProgramId = 0;
 	
 	
 
@@ -122,6 +124,8 @@ private:
 	unsigned int mHDRTextureId = 0;
 	unsigned int mEnvironmentTextureId = 0;
 	unsigned int mIrradianceTextureId = 0;
+	unsigned int mSpecPrefilteredTexId = 0;
+	unsigned int mEnvBRDFTexId = 0;
 	
 	
 

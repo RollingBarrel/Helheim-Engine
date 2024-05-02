@@ -1102,5 +1102,11 @@
     <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\SpecEnvBRDFFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

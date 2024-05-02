@@ -146,6 +146,14 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "Irradiance_FragmentShader.glsl";
 	mIrradianceProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "CubeMap_VertexShader.glsl";
+	sourcesPaths[1] = "SpecPreFilteredEnvFragment.glsl";
+	mSpecPrefilteredProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "SpecEnvBRDFFragment.glsl";
+	mSpecEnvBRDFProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "basicDebugShader.vs";
 	sourcesPaths[1] = "basicDebugShader.fs";
 	mDebugDrawProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -201,11 +209,11 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 		glUseProgram(0);
-		//BakeIBL(L"Assets/Textures/skybox.hdr");
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//BakeIBL(L"Assets/Textures/skybox.hdr");
 
 	return UPDATE_CONTINUE;
 }
@@ -476,8 +484,11 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 	{
 		if (mIrradianceTextureId != 0)
 		{
+			//TODO: Not all must be deleted if separated from here
 			glDeleteTextures(1, &mIrradianceTextureId);
 			glDeleteTextures(1, &mEnvironmentTextureId);
+			glDeleteTextures(1, &mSpecPrefilteredTexId);
+			glDeleteTextures(1, &mEnvBRDFTexId);
 			mIrradianceTextureId = 0;
 		}
 
@@ -530,8 +541,8 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
 
-		unsigned int frameBuffer;
 		//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+		unsigned int frameBuffer;
 		glGenFramebuffers(1, &frameBuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
@@ -582,8 +593,59 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
-		glBindVertexArray(0);
+		//Specular IBL
+		const unsigned int specWidth = 256;
+		const unsigned int specHeight = 256;
+		glGenTextures(1, &mSpecPrefilteredTexId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
+
+		for (int i = 0; i < 6; ++i)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, specWidth, specHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+		}
+		int numMipMaps = int(log(float(specWidth)) / log(2));
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMipMaps);
+		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+		glUseProgram(mSpecPrefilteredProgramId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+		for (int currMipMap = 0; currMipMap < numMipMaps; ++currMipMap)
+		{
+			glUniform1f(3, (static_cast<float>(currMipMap) / static_cast<float>(numMipMaps - 1)));
+			float coolMath = specWidth * pow(0.5f, currMipMap);
+			glViewport(0, 0, coolMath, coolMath);
+			// Render each cube plane
+			for (unsigned int i = 0; i < 6; ++i)
+			{
+				// TODO: Draw UnitCube using prefiltered environment map shader and roughness
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mSpecPrefilteredTexId, currMipMap);
+
+				frustum.front = front[i];
+				frustum.up = up[i];
+
+				glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
+				glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
+		}
+
+		//TODO: sacar todo esto en una funcion pk no es independiente de cada IBL
+		glGenTextures(1, &mEnvBRDFTexId);
+		glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, 512, 512, 0, GL_RG, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glUseProgram(mSpecEnvBRDFProgramId);
+		glViewport(0, 0, 512, 512);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mEnvBRDFTexId, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		
 		glUseProgram(0);
+		glBindVertexArray(0);
 		glDepthMask(GL_TRUE);
 
 		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
@@ -591,8 +653,15 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDeleteFramebuffers(1, &frameBuffer);
 		glDeleteTextures(1, &mHDRTextureId);
-		//glDeleteTextures(1, &mEnvironmentTextureId);
+
+		glUseProgram(mPbrProgramId);
+		glUniform1ui(glGetUniformLocation(mPbrProgramId, "numLevels"), numMipMaps);
+		glUniform1i(glGetUniformLocation(mPbrProgramId, "prefilteredIBL"), 5);
+		glUniform1i(glGetUniformLocation(mPbrProgramId, "diffuseIBL"), 6);
+		glUniform1i(glGetUniformLocation(mPbrProgramId, "environmentBRDF"), 7);
+		glUseProgram(0);
 	}
+
 }
 
 
@@ -653,8 +722,13 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
 
 void ModuleOpenGL::Draw()
 {
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
 	BindSceneFramebuffer();
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
 	mBatchManager.Draw();
 	UnbindSceneFramebuffer();
 }
