@@ -62,7 +62,7 @@ GameObject::GameObject(const GameObject& original) : GameObject(original, origin
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive && original.mIsEnabled),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mTag(original.GetTag()), mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
 {
@@ -348,6 +348,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	}
 
 	child->RecalculateLocalTransform();
+	child->SetActiveInHierarchy(mIsActive && child->mIsEnabled);
 
 	if (!inserted) 
 	{
