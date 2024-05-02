@@ -7,9 +7,11 @@
 #include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "Component.h"
+#include "ModuleUI.h"
 
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScriptManager.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
@@ -35,6 +37,9 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
 	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
 	mTags.push_back(new Tag(6, "Obstacle", TagType::SYSTEM));
+	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
+	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
+
 }
 
 ModuleScene::~ModuleScene()
@@ -55,9 +60,12 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("SampleScene", nullptr);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-50), float3(50)));
+	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 
-	Load("scene");
+	//Load("scene");
+	//Load("MainMenu");
+	//Load("Level1");
+
 
 	return true;
 }
@@ -220,31 +228,33 @@ void ModuleScene::Save(const char* sceneName) const
 
 int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const 
 {
-	unsigned int resourceId = LCG().Int();
-	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-	if (resource != nullptr) { resourceId = resource->GetUID(); }
-	Archive* prefabArchive = new Archive();
-	Archive* archive = new Archive();
-	std::vector<Archive> gameObjectsArchiveVector;
-	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
-	//SaveGame(gameObject->GetChildren(), *archive);
-	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
-	prefabArchive->AddObject("Prefab", *archive);
-
-	std::string out = prefabArchive->Serialize();
-	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	App->GetResource()->ImportFile(saveFilePath, resourceId);
-	PathNode* root = App->GetFileSystem()->GetRootNode();
-	root->mChildren.clear();
-	App->GetFileSystem()->DiscoverFiles("Assets", root);
-	delete prefabArchive;
-	delete archive;
-	return resourceId;
+	//TODO: separate game engine
+	//unsigned int resourceId = LCG().Int();
+	//Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+	//if (resource != nullptr) { resourceId = resource->GetUID(); }
+	//Archive* prefabArchive = new Archive();
+	//Archive* archive = new Archive();
+	//std::vector<Archive> gameObjectsArchiveVector;
+	//SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
+	////SaveGame(gameObject->GetChildren(), *archive);
+	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	//prefabArchive->AddObject("Prefab", *archive);
+	//
+	//std::string out = prefabArchive->Serialize();
+	//App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
+	////App->GetResource()->ImportFile(saveFilePath, resourceId);
+	//PathNode* root = App->GetFileSystem()->GetRootNode();
+	//root->mChildren.clear();
+	//App->GetFileSystem()->DiscoverFiles("Assets", root);
+	//delete prefabArchive;
+	//delete archive;
+	//return resourceId;
+	return 0;
 }
+
 
 void ModuleScene::Load(const char* sceneName) 
 {
-
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos) 
 	{
@@ -264,6 +274,7 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->CleanUp();
+		App->GetUI()->CleanUp();
 		delete mRoot;
 		mRoot = new GameObject(sceneName, nullptr);
 
@@ -275,10 +286,15 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mQuadtreeRoot->UpdateTree();
-
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
+	}
+
+	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+	if (cameraGameObject)
+	{
+		App->GetCamera()->SetCurrentCamera(cameraGameObject);
 	}
 }
 
@@ -384,20 +400,21 @@ update_status ModuleScene::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+
 update_status ModuleScene::Update(float dt)
 {
+	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-	if (mDrawQuadtree)
-	{
-		App->GetOpenGL()->BindSceneFramebuffer();
-		mQuadtreeRoot->Draw();
-		App->GetOpenGL()->UnbindSceneFramebuffer();
-	}
 	if (mNavMeshController)
 	{
 		mNavMeshController->Update();
 	}
 	App->GetOpenGL()->Draw();
+
+	if (mShouldUpdateQuadtree)
+	{
+		mQuadtreeRoot->UpdateTree();
+	}
 
 	return UPDATE_CONTINUE;
 }

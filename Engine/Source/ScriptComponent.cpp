@@ -11,7 +11,6 @@
 
 ScriptComponent::ScriptComponent(GameObject* owner) : Component(owner, ComponentType::SCRIPT)
 {
-	Enable();
 }
 
 ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner) : Component(owner, ComponentType::SCRIPT)
@@ -100,7 +99,7 @@ void::ScriptComponent::Save(Archive& archive) const
 			dataArchive.AddFloat("VariableData", *reinterpret_cast<float*>((((char*)mScript) + member->mOffset)));
 			break;
 		case MemberType::BOOL:
-			dataArchive.AddInt("VariableData", *reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)));
+			dataArchive.AddBool("VariableData", *reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)));
 			break;
 		case MemberType::FLOAT3:
 			dataArchive.AddFloat3("VariableData", *reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)));
@@ -134,7 +133,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 		
 	}
 	
-	if (data.HasMember("ScriptVariables") && data["ScriptVariables"].IsArray())
+	if (mScript && data.HasMember("ScriptVariables") && data["ScriptVariables"].IsArray())
 	{
 		const auto& array = data["ScriptVariables"].GetArray();
 		
@@ -187,6 +186,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 			}
 		}
 	}
+	App->GetScriptManager()->AddScript(this);
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
@@ -222,7 +222,7 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		{
 			LOG("SCRIPT RESOURCE NOT FOUND");
 		}
-		//App->GetScriptManager()->AddScript(mScript);
+		//App->GetEngineScriptManager()->AddScript(mScript);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
 	else 

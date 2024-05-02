@@ -10,10 +10,11 @@
 
 class GameObject;
 class MeshRendererComponent;
+struct Hit;
 #define MAX_DEPTH 6
 #define CAPACITY 8
 
-class Quadtree
+class ENGINE_API Quadtree
 {
 public:
 	Quadtree(const AABB& boundingBox);
@@ -27,12 +28,11 @@ public:
 	const unsigned int GetNumGameObjs() const { return static_cast<unsigned int>(mGameObjects.size()); }
 	const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
 	const Quadtree* GetChildren() const { return *mChildren; }
-	const std::map<float, GameObject*> RayCast(Ray* ray) const;
+	const std::map<float, Hit> RayCast(Ray* ray) const;
 	void UpdateTree();
-	void Draw() const;
-	const void RenderTreeImGui() const;
 	const char* GetName() const { return mName.c_str(); }
 	const std::set<GameObject*> GetObjectsInFrustum(Frustum* cam) const;
+	const AABB& GetBoundingBox() const { return mBoundingBox; }
 
 	void UpdateDrawableGameObjects(const Frustum* myCamera);
 	void CleanUp();

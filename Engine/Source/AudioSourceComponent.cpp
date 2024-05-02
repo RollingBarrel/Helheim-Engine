@@ -22,6 +22,8 @@ AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original,
 AudioSourceComponent::~AudioSourceComponent()
 {
 	Reset();
+	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	mEventInstance->release();
 }
 
 
@@ -73,6 +75,25 @@ void AudioSourceComponent::UpdateParameterValueByIndex(int index, float value)
 	}
 }
 
+void AudioSourceComponent::UpdateParameterValueByName(const char* name, float value)
+{
+	mEventInstance->setParameterByName(name, value);
+}
+
+void AudioSourceComponent::SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime)
+{
+	auto it = mNameToParameters.find(name);
+	if (it != mNameToParameters.end())
+	{
+		int index = it->second;
+		float value = GetParameterValueByIndex(index);
+
+		float step = (targetValue - value) / transitionTime;
+		float newValue = value + step * App->GetDt();
+		UpdateParameterValueByIndex(index, newValue);
+	}
+}
+
 void AudioSourceComponent::Update()
 {
 	// UPDATE 3D parameters
@@ -92,21 +113,43 @@ void AudioSourceComponent::Update()
 
 void AudioSourceComponent::Play()
 {
-	mEventInstance->start();
+	if (this != nullptr)
+	{
+		mEventInstance->start();
+	}
+	else 
+	{
+		LOG("Cannot found audio source");
+	}
 }
 
 void AudioSourceComponent::PlayOneShot()
 {
-	FMOD::Studio::EventInstance* eventInstance = NULL;
-	mEventDescription->createInstance(&eventInstance);
+	if (this != nullptr)
+	{
+		FMOD::Studio::EventInstance* eventInstance = nullptr;
+		mEventDescription->createInstance(&eventInstance);
 
-	eventInstance->start();
-	eventInstance->release();
+		eventInstance->start();
+		eventInstance->release();
+	}
+	else 
+	{
+		LOG("Cannot found audio source");
+	}
+
 }
 
-void AudioSourceComponent::Stop()
+void AudioSourceComponent::Stop(bool fadeout)
 {
-	mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	if (fadeout) 
+	{
+		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	}
+	else 
+	{
+		mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	}
 }
 
 Component* AudioSourceComponent::Clone(GameObject* owner) const
@@ -172,12 +215,26 @@ void AudioSourceComponent::Enable()
 
 void AudioSourceComponent::Disable()
 {
-	Stop();
+	Stop(false);
 }
 
 void AudioSourceComponent::Reset()
 {
 	mParameters.clear();
+}
+
+float AudioSourceComponent::GetParameterValueByIndex(int index)
+{
+	auto it = mParameters.find(index);
+	if (it != mParameters.end())
+	{
+		return it->second;
+	}
+
+	else
+	{
+		return -1;
+	}
 }
 
 void AudioSourceComponent::UpdateParameters()
@@ -192,6 +249,7 @@ void AudioSourceComponent::UpdateParameters()
 		mEventDescription->getParameterDescriptionByIndex(i, &parameter);
 
 		mParameters.insert(std::make_pair(i, parameter.defaultvalue));
+		mNameToParameters.insert(std::make_pair(parameter.name, i));
 	}
 
 }

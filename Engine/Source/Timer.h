@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
+#include "Globals.h"
 
 #define MILLI_IN_SECONDS 1000
 
-class Timer {
+class ENGINE_API Timer {
 public:
     Timer() = default;
 

@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
+#include "Globals.h"
 
 class GeometryBatch;
 class MeshRendererComponent;
 
-class BatchManager
+class ENGINE_API BatchManager
 {
 public:
 	BatchManager();

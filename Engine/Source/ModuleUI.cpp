@@ -22,29 +22,22 @@
 
 ModuleUI::ModuleUI() 
 {
-};
+}
 
 ModuleUI::~ModuleUI() 
 {
-};
+}
 
 bool ModuleUI::Init() 
 {
-	mCanvas = FindCanvas(App->GetScene()->GetRoot());
-	if (mCanvas == nullptr) 
-	{
-		mCanvas = new GameObject("Canvas", App->GetScene()->GetRoot());
-		mCanvas->CreateComponent(ComponentType::CANVAS);
-	}
-
 	return true;
-};
+}
 
 update_status ModuleUI::PreUpdate(float dt) 
 {
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
-	DrawWidget(mCanvas);
+	DrawWidget(App->GetScene()->GetRoot());
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	return UPDATE_CONTINUE;
@@ -52,10 +45,8 @@ update_status ModuleUI::PreUpdate(float dt)
 
 update_status ModuleUI::Update(float dt) 
 {
-	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-	{
-		CheckRaycast();
-	}
+	// TODO: Check if app is on Menu or Pause
+	CheckRaycast();
 
 	return UPDATE_CONTINUE;
 }
@@ -72,7 +63,7 @@ bool ModuleUI::CleanUp()
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
 {
-	if (gameObject == nullptr) return;
+	if (!gameObject) return;
 
 	if (gameObject->IsEnabled())
 	{
@@ -92,44 +83,29 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 	}
 }
 
-GameObject* ModuleUI::FindCanvas(GameObject* gameObject)
-{
-	if (gameObject->GetComponent(ComponentType::CANVAS) != nullptr) 
-	{
-		return gameObject;
-	}
-
-	for (GameObject* go : gameObject->GetChildren()) 
-	{
-		if (FindCanvas(go) != nullptr) 
-		{
-			return go;
-		}
-	}
-	
-	return nullptr;
-}
-
 void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) 
 {
-	if (gameObject == nullptr || eventTriggered)
-		return;
-
+	if (gameObject == nullptr || eventTriggered) return;
+	if (gameObject->GetChildren().empty() || gameObject->GetChildren().size() == 0) return;
+	
+	
 	for (auto child : gameObject->GetChildren()) 
 	{
+		if (eventTriggered) return;
+		if (child == nullptr) continue;
+		if (!child->IsEnabled()) continue;
+
 		ImageComponent* image = static_cast<ImageComponent*>(child->GetComponent(ComponentType::IMAGE));
 		Transform2DComponent* transform2D = static_cast<Transform2DComponent*>(child->GetComponent(ComponentType::TRANSFORM2D));
 		ButtonComponent* button = static_cast<ButtonComponent*>(child->GetComponent(ComponentType::BUTTON));
 
 		if (image != nullptr && transform2D != nullptr && button != nullptr && button->IsEnabled()) 
 		{
-			ScenePanel* scenePanel = static_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL));
+			int mouseAbsoluteX = App->GetInput()->GetGameMousePosition().x;
+			int mouseAbsoluteY = App->GetInput()->GetGameMousePosition().y;
 
-			int mouseAbsoluteX = scenePanel->GetMousePosition().x;
-			int mouseAbsoluteY = scenePanel->GetMousePosition().y;
-
-			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / static_cast<float>(scenePanel->GetWindowsSize().x);
-			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / static_cast<float>(scenePanel->GetWindowsSize().y);
+			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsoluteX - App->GetWindow()->GetGameWindowsPosition().x) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().x);
+			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsoluteY - App->GetWindow()->GetGameWindowsPosition().y) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().y);
 
 			float mouseX = normalizedX;
 			float mouseY = normalizedY;
@@ -141,27 +117,35 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			// Check if the mouse position is inside the bounds of the image
 			if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y && mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y) 
 			{
+				KeyState mouseButtonLeftState = App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT);
 				// Click event (button released after press)
-				if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_UP) 
+				if (mouseButtonLeftState == KeyState::KEY_UP)
 				{
-					button->TriggerEvent(EventType::Click);
+					button->TriggerEvent(EventType::CLICK);
 					eventTriggered = true;
 					return; // Terminate function
 				}
 				// Button pressed
-				else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN) 
+				else if (mouseButtonLeftState == KeyState::KEY_DOWN || mouseButtonLeftState == KeyState::KEY_REPEAT)
 				{
-					button->TriggerEvent(EventType::Press);
+					button->TriggerEvent(EventType::PRESS);
 					eventTriggered = true;
 					return; // Terminate function
 				}
 				// Mouse hover
 				else 
 				{
-					button->TriggerEvent(EventType::Hover);
+					button->TriggerEvent(EventType::HOVER);
+					button->SetHovered(true);
 					eventTriggered = true;
 					return; // Terminate function
 				}
+			}
+
+			if (button->GetHovered())
+			{
+				button->TriggerEvent(EventType::HOVEROFF);
+				button->SetHovered(false);
 			}
 		}
 
@@ -173,6 +157,6 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 void ModuleUI::CheckRaycast() 
 {
 	bool eventTriggered = false;
-	CheckRaycastRecursive(mCanvas, eventTriggered);
+	CheckRaycastRecursive(App->GetScene()->GetRoot(), eventTriggered);
 }
 

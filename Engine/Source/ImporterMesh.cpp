@@ -1,12 +1,9 @@
 #include "Globals.h"
-#include "Application.h"
-#include "ModuleFileSystem.h"
 
+#include "SaveLoadMesh.h"
 #include "ImporterMesh.h"
 #include "ResourceMesh.h"
-
 #include "glew.h"
-
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
@@ -207,11 +204,14 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
 
 ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinygltf::Primitive& primitive, unsigned int uid)
 {
-
     unsigned int numVertices = 0;
     unsigned int numIndices = 0;
+    unsigned int numJoints = 0;
+    unsigned int numWeights = 0;
     unsigned int vertexSize = 0;
     unsigned int* indices = nullptr;
+    unsigned int* joints = nullptr;
+    float* weights = nullptr;
     std::vector<Attribute>attributes;
     std::vector<float*>attributesData;
 
@@ -219,6 +219,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
     const auto& itNorm = primitive.attributes.find("NORMAL");
     const auto& itTang = primitive.attributes.find("TANGENT");
+    const auto& itJoints = primitive.attributes.find("JOINTS_0");
+    const auto& itWeights = primitive.attributes.find("WEIGHTS_0");
 
     if (itPos != primitive.attributes.end())
     {
@@ -394,99 +396,99 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         GenerateTangents(attributes, attributesData, numIndices, indices, vertexSize, numVertices, interleavedVertices);
     }
 
-    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
-    Importer::Mesh::Save(rMesh);
-    return rMesh;
-}
-
-void Importer::Mesh::Save(const ResourceMesh* rMesh)
-{
-    std::vector<Attribute> attributes;
-    rMesh->GetAttributes(attributes);
-    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), attributes.size()};
-
-    unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices();
-    for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
+    if (!model.skins.empty())
     {
-        size += it->size * rMesh->GetNumberVertices() + sizeof(Attribute);
-    }
-
-    char* fileBuffer = new char[size];
-    char* cursor = fileBuffer;
-
-    //Save Header
-    unsigned int bytes = sizeof(header);
-    memcpy(cursor, header, bytes);
-    cursor += bytes;
-
-    //Save Indices
-    bytes = sizeof(unsigned int) * rMesh->GetNumberIndices();
-    memcpy(cursor, rMesh->GetIndices(), bytes);
-    cursor += bytes;
-
-    //Save attributes and data
-    unsigned int idx = 0;
-    for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
-    {
-        //save attribute metadata
-        memcpy(cursor, &(*it), sizeof(Attribute));
-        cursor += sizeof(Attribute);
-        //save attribute data
-        bytes = it->size * rMesh->GetNumberVertices();
-        assert(rMesh->GetAttributeData(it->type) && "Mesh does not have this attribute");
-        memcpy(cursor, rMesh->GetAttributeData(it->type), bytes);
-        cursor += bytes;
-        ++idx;
-    }
-
-    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rMesh->GetUID(), true);
-    App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
-
-    delete[] libraryPath;
-    delete[] fileBuffer;
-}
-
-ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
-{
-    char* fileBuffer = nullptr;
-    ResourceMesh* rMesh = nullptr;
-
-    if (App->GetFileSystem()->Load(filePath, &fileBuffer))
-    {
-        //Load Header
-        char* cursor = fileBuffer;
-        unsigned int header[3];
-        unsigned int bytes = sizeof(header);
-        memcpy(header, cursor, bytes);
-        cursor += bytes;
-        unsigned int numIndices = header[0];
-        unsigned int numVertices = header[1];
-
-        unsigned int numAttributes = header[2];
-
-        //Load Indices
-        bytes = sizeof(unsigned int) * numIndices;
-        unsigned int* indices = new unsigned int[numIndices];
-        memcpy(indices, cursor, bytes);
-        cursor += bytes;
-
-
-        std::vector<Attribute> attributes;
-        std::vector<float*> attributesData;
-        for (unsigned int i = 0; i < numAttributes; ++i)
+        if (itJoints != primitive.attributes.end())
         {
-            Attribute* attr = reinterpret_cast<Attribute*>(cursor);
-            attributes.push_back(*attr);
-            cursor += sizeof(Attribute);
-            float* newAttributeData = new float[numVertices * attr->size / sizeof(float)];
-            memcpy(newAttributeData, cursor, numVertices * attr->size);
-            attributesData.push_back(newAttributeData);
-            cursor += attr->size * numVertices;
+            const tinygltf::Accessor& jointsAcc = model.accessors[itJoints->second];
+            assert(jointsAcc.type == TINYGLTF_TYPE_VEC4);
+            assert(jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT || jointsAcc.componentType == TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT);
+
+            const tinygltf::BufferView& jointsView = model.bufferViews[jointsAcc.bufferView];
+            const tinygltf::Buffer& jointsBuffer = model.buffers[jointsView.buffer];
+
+            numJoints = jointsAcc.count * 4;
+            joints = new unsigned int[jointsAcc.count * 4];
+            switch (jointsAcc.componentType) {
+            case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
+            {
+                const unsigned short* bufferJointsShort = reinterpret_cast<const unsigned short*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
+
+                //attributes.emplace_back(Attribute::JOINTS, sizeof(float) * 4, vertexSize);
+                //vertexSize += sizeof(float) * 4;
+
+                for (unsigned int i = 0; i < jointsAcc.count; ++i)
+                {
+                    joints[i * 4] = bufferJointsShort[0];
+                    joints[i * 4 + 1] = bufferJointsShort[1];
+                    joints[i * 4 + 2] = bufferJointsShort[2];
+                    joints[i * 4 + 3] = bufferJointsShort[3];
+
+                    if (jointsView.byteStride != 0) {
+                        bufferJointsShort = reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(bufferJointsShort) + jointsView.byteStride);
+                    }
+                    else {
+                        bufferJointsShort += 4;
+                    }
+                }
+                break;
+            }
+            case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
+            {
+                const unsigned int* bufferJointsInt = reinterpret_cast<const unsigned int*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
+
+                for (unsigned int i = 0; i < jointsAcc.count; ++i)
+                {
+                    joints[i * 4] = bufferJointsInt[0];
+                    joints[i * 4 + 1] = bufferJointsInt[1];
+                    joints[i * 4 + 2] = bufferJointsInt[2];
+                    joints[i * 4 + 3] = bufferJointsInt[3];
+
+                    if (jointsView.byteStride != 0) {
+                        bufferJointsInt = reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(bufferJointsInt) + jointsView.byteStride);
+                    }
+                    else {
+                        bufferJointsInt += 4;
+                    }
+                }
+                // These are valid component types
+                break;
+            }
+            default:
+                //ERROR handling
+                break;
+            }
         }
 
-        rMesh = new ResourceMesh(uid, numIndices,  std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
-        delete[] fileBuffer;
+        if (itWeights != primitive.attributes.end())
+        {
+            const tinygltf::Accessor& weightsAcc = model.accessors[itWeights->second];
+            assert(weightsAcc.type == TINYGLTF_TYPE_VEC4);
+            assert(weightsAcc.componentType == GL_FLOAT);
+            const tinygltf::BufferView& weightsView = model.bufferViews[weightsAcc.bufferView];
+            const tinygltf::Buffer& weightsBuffer = model.buffers[weightsView.buffer];
+
+            const float* bufferWeights = reinterpret_cast<const float*>(&weightsBuffer.data[weightsView.byteOffset + weightsAcc.byteOffset]);
+            numWeights = weightsAcc.count * 4;
+            weights = new float[numWeights];
+            for (unsigned int i = 0; i < weightsAcc.count; ++i)
+            {
+                weights[i * 4] = bufferWeights[0];
+                weights[i * 4 + 1] = bufferWeights[1];
+                weights[i * 4 + 2] = bufferWeights[2];
+                weights[i * 4 + 3] = bufferWeights[3];
+
+                if (weightsView.byteStride != 0) {
+                    bufferWeights = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferWeights) + weightsView.byteStride);
+                }
+                else {
+                    bufferWeights += 4;
+                }
+            }
+        }
     }
 
-   return rMesh;
+    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numJoints, std::move(joints), numWeights, std::move(weights), numVertices, std::move(attributes), std::move(attributesData));
+    Importer::Mesh::Save(rMesh);
+    return rMesh;
 }

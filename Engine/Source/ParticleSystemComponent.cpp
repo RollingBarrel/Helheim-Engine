@@ -152,13 +152,13 @@ void ParticleSystemComponent::Draw() const
 
 void ParticleSystemComponent::Update()
 {
-    mEmitterTime += App->GetGameDt();
-    mEmitterDeltaTime += App->GetGameDt();
+    mEmitterTime += App->GetDt();
+    mEmitterDeltaTime += App->GetDt();
     LOG("Time = %f", mEmitterTime)
 
 	for (int i = 0; i < mParticles.size(); i++)
 	{
-		bool isAlive = mParticles[i]->Update(App->GetGameDt());
+		bool isAlive = mParticles[i]->Update(App->GetDt());
         if (!isAlive)
         {
 			mParticles.erase(mParticles.begin() + i);
@@ -216,8 +216,12 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddBool("Looping", mLooping);
     
     std::vector<Archive> objectArray;
-    for (auto const& [time, color] : mColorGradient)
+    std::map<float, float4>::const_iterator it;
+
+    for (it = mColorGradient.begin(); it != mColorGradient.end(); it++)
     {
+        float time = it->first;
+        float4 color = it->second;
         Archive colorArchive;
         colorArchive.AddFloat("Time", time);
         const float c[4] = { color.x, color.y, color.z, color.w };

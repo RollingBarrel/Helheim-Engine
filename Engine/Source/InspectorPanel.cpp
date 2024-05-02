@@ -1,7 +1,7 @@
 #include "InspectorPanel.h"
 #include "ImBezier.h"
 #include "imgui.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
@@ -40,6 +40,7 @@
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "ResourceAnimation.h"
 
 #include "ModuleUI.h"
 
@@ -49,7 +50,7 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
-	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL);
+	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) 
@@ -108,7 +109,7 @@ void InspectorPanel::Draw(int windowFlags)
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
-		std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+		std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
 		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
 		{
@@ -127,7 +128,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 		if (ImGui::Button("Add Tag")) 
 		{
-			App->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
+			EngineApp->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
 		}
 
 		if (focusedObject->mPrefabResourceId != 0) {
@@ -451,7 +452,7 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::SeparatorText("TAGS SYSYEM TEST");
 	ImGui::Text("The first name of game object found with");
 	ImGui::SameLine();
-	std::vector<Tag*> tags = App->GetScene()->GetAllTags();
+	std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
 	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
 	{
@@ -549,15 +550,16 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 	MaterialVariables(component);
 
 	ImGui::Text(" ");
-	bool shouldDraw = component->ShouldDraw();
-	if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
-		component->SetShouldDraw(shouldDraw);
-	}
+	//TODO: SEPARATE GAME ENGINE
+	//bool shouldDraw = component->ShouldDraw();
+	//if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
+	//	component->SetShouldDraw(shouldDraw);
+	//}
 }
 
 void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 {
-	ImGui::SeparatorText("Agent Parameters");
+	//ImGui::SeparatorText("Agent Parameters");
 
 	//float radius = component->GetRadius();
 	//if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
@@ -580,13 +582,13 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 	//	component->SetMaxSlope(maxSlope);
 	//}
 
-	ImGui::SeparatorText("Steering Parameters");
+	//ImGui::SeparatorText("Steering Parameters");
 
-	float speed = component->GetSpeed();
-	if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f,0.0f))
-	{
-		component->SetSpeed(speed);
-	}
+	//float speed = component->GetSpeed();
+	//if (ImGui::DragFloat("Speed", &speed, 1.0f, 0.0f,0.0f))
+	//{
+	//	component->SetSpeed(speed);
+	//}
 
 	/*float angularSpeed = component->GetAngularSpeed();
 	if (ImGui::DragFloat("Angular Speed", &angularSpeed, 1.0f, 0.0f))
@@ -618,29 +620,29 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 	{
 		if (ImGui::Checkbox("Enable BaseColor map", &material->mEnableBaseColorTexture))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 		if (ImGui::Checkbox("Enable MetallicRoughness map", &material->mEnableMetallicRoughnessTexture))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 		if (ImGui::Checkbox("Enable Normal map", &material->mEnableNormalMap))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 
 		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 
 		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
-			App->GetOpenGL()->BatchEditMaterial(renderComponent);
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 	}
 }
@@ -705,12 +707,12 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 
 	if(ImGui::Button("Make Current Camera"))
 	{
-		App->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
+		EngineApp->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
 	}
 
 	if (ImGui::Button("Return To Editor Camera"))
 	{
-		App->GetCamera()->ActivateEditorCamera();
+		EngineApp->GetCamera()->ActivateEditorCamera();
 	}
 }
 
@@ -736,7 +738,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	if (ImGui::BeginCombo("##combo", currentItem)) 
 	{
 		std::vector<std::string> scriptNames;
-		App->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
+		EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
 		for (int i = 0; i < scriptNames.size(); ++i)
 		{
 			
@@ -882,22 +884,86 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::SeparatorText("Animation");
-	ImGui::Text("HELLO");
 
-	static bool play = false;
+	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
+	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
 
-	if (ImGui::Button("Play"))
+	bool loop = true;
+	//bool play = false;
+
+	if (ImGui::Button("Play/Pause"))
 	{
 		if (component->GetAnimation() == nullptr)
 			return;
 		component->OnStart();
-
-
+		bool play = component->GetIsPlaying();
 		(play) ? play = false : play = true;
+		component->SetIsPlaying(play);
+
+		if (component->GetIsPlaying())
+		{
+			for (Component* comp : components)
+			{
+				MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
+				meshRenderComponent->SetIsAnimated(true);
+			}
+		}
 	}
 
-	if (play)
-		component->OnUpdate();
+	ImGui::SameLine();
+	ImGui::Dummy(ImVec2(40.0f, 0.0f));
+	ImGui::SameLine();
+
+	if (component->GetIsPlaying())
+	{
+		ImGui::Text("PLAYING");
+	}
+	else
+	{
+		ImGui::Text("PAUSED");
+	}
+
+	if (ImGui::Button("Stop"))
+	{
+		for (Component* comp : components)
+		{
+			MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
+			meshRenderComponent->SetIsAnimated(false);
+		}
+		component->SetIsPlaying(false);
+		component->OnRestart();
+	}
+
+	//component->SetIsPlaying(play);
+
+	if (ImGui::Button("Restart"))
+	{
+		component->OnRestart();
+	}
+
+	ImGui::Checkbox("Loop", &loop);
+	component->SetLoop(loop);
+	
+	const char* items[] = { "Walk", "Idle", "Die" };
+	static float timeClips[] = {0.0, 2.2, 2.2, 12.0, 12.0, 15.0 };
+	static int currentItem = 0;
+	if (ImGui::Combo("Select Animation State", &currentItem, items, IM_ARRAYSIZE(items)))
+	{
+		component->SetStartTime(timeClips[currentItem * 2]);
+		component->SetEndTime(timeClips[currentItem * 2 + 1]);
+	}
+	float maxTimeValue = component->GetAnimation()->GetDuration();
+	if (ImGui::DragFloat("StartTime", &timeClips[currentItem * 2], 0.1, 0.0, maxTimeValue))
+	{
+		component->SetStartTime(timeClips[currentItem * 2]);
+	}
+	if (ImGui::DragFloat("EndTime", &timeClips[currentItem * 2+1], 0.1, 0.0, maxTimeValue))
+	{
+		component->SetEndTime(timeClips[currentItem * 2+1]);
+	}
+
+
+
 
 }
 
@@ -933,7 +999,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-			Resource* resource = App->GetResource()->RequestResource(asset->mPath);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
 			if (resource && (resource->GetType() == Resource::Type::Texture)) 
 			{
 				imageComponent->SetImage(resource->GetUID());
@@ -985,11 +1051,11 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 
 	if (selectedRenderMode == 0) 
 	{
-		App->GetUI()->SetScreenSpace(false);
+		canvasComponent->SetScreenSpace(false);
 	}
 	else 
 	{
-		App->GetUI()->SetScreenSpace(true);
+		canvasComponent->SetScreenSpace(true);
 	}
 
 	if (ImGui::BeginTable("transformTable", 4)) 

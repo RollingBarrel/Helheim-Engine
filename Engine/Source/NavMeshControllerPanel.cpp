@@ -1,7 +1,7 @@
 #include "NavMeshControllerPanel.h"
 #include "imgui.h"
 #include "Quadtree.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleScene.h"
 #include "NavMeshController.h"
 #include "ModuleDetourNavigation.h"
@@ -19,7 +19,7 @@ void NavMeshControllerPanel::Draw(int windowFlags)
 {
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-        NavMeshController* navController = App->GetScene()->GetNavController();
+        NavMeshController* navController = EngineApp->GetScene()->GetNavController();
 
         //IMGUI VALUES
         bool draw = navController->GetShouldDraw();
@@ -102,16 +102,16 @@ void NavMeshControllerPanel::Draw(int windowFlags)
 
         ImGui::Text("Player simulation");
 
-        float3 playerPos = App->GetNavigation()->GetQueryCenter();
+        float3 playerPos = EngineApp->GetNavigation()->GetQueryCenter();
         if (ImGui::DragFloat3("Character position: ", &playerPos[0], 0.5f, -1000.0f, 1000.0f))
         {
-            App->GetNavigation()->SetQueryCenter(playerPos);
+            EngineApp->GetNavigation()->SetQueryCenter(playerPos);
         }
 
-        float3 navQuerySize = App->GetNavigation()->GetQueryHalfSize();
+        float3 navQuerySize = EngineApp->GetNavigation()->GetQueryHalfSize();
         if (ImGui::DragFloat3("Query size: ", &navQuerySize[0], 0.5f, 0.0f, 500.0f))
         {
-            App->GetNavigation()->SetQueryHalfSize(navQuerySize);
+            EngineApp->GetNavigation()->SetQueryHalfSize(navQuerySize);
         }
 
 

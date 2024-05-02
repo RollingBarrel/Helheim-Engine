@@ -5,7 +5,7 @@
 #include <concurrent_queue.h>
 #include <vector>
 
-class ModuleEvent : public Module
+class ENGINE_API ModuleEvent : public Module
 {
 public:
 	ModuleEvent();

@@ -1,7 +1,7 @@
 #pragma once
 #include "Resource.h"
 
-class ResourceTexture : public Resource
+class ENGINE_API ResourceTexture : public Resource
 {
 public:
 	enum class Format
@@ -57,4 +57,3 @@ private:
 	unsigned int mOpenGLId;
 	uint64_t mTexHandle;
 };
-

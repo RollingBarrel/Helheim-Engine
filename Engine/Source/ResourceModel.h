@@ -5,6 +5,7 @@
 #include <string>
 
 #include "float3.h"
+#include "float4x4.h"
 #include "Quat.h"
 
 
@@ -28,7 +29,7 @@ struct ModelNode
 	int mSkinId = -1;
 };
 
-class ResourceModel : public Resource
+class ENGINE_API ResourceModel : public Resource
 {
 public:
 
@@ -40,4 +41,5 @@ public:
 
 	std::vector<ModelNode> modelNodes;
 
+	std::vector<std::pair<int, float4x4>> mJoints;
 };

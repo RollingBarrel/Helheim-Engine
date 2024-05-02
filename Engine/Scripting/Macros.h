@@ -1,4 +1,3 @@
-#include "pch.h"
 #ifdef SCRIPTING_EXPORTS
 #define SCRIPTING_API __declspec(dllexport)
 #else

@@ -1,5 +1,5 @@
 #pragma once
-#include "vector"
+#include <vector>
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
 
@@ -23,8 +23,8 @@ class ENGINE_API NavMeshController
 {
 public:
 	NavMeshController();
-	void Reset();
 	~NavMeshController();
+	void Reset();
 	void HandleBuild();
 	void Update();
 
@@ -123,7 +123,7 @@ private:
 	AABB mAABB;
 	AABB mAABBWorld;
 	//DEBUG DRAW VARIABLES
-	bool mDraw = true;
+	bool mDraw = false;
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;

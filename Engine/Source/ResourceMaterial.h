@@ -5,7 +5,7 @@
 
 class ResourceTexture;
 
-class ResourceMaterial : public Resource
+class ENGINE_API ResourceMaterial : public Resource
 {
 public:
     ResourceMaterial(

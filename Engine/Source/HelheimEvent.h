@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 
 class GameObject;
 
@@ -21,7 +22,7 @@ struct EventData
 	GameObject* mGameObject = nullptr;
 };
 
-struct HelheimEvent
+struct ENGINE_API HelheimEvent
 {
 	HelheimEvent(HelheimEventType type);
 	HelheimEvent(HelheimEventType type, EventData* data);

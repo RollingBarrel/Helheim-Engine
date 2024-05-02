@@ -6,17 +6,17 @@
 #include "Math/Quat.h"
 #include "string"
 #include "Archive.h"
+#include "Tag.h"
+#include "MeshRendererComponent.h"
 
 #undef max
 #undef min
 #define NOMINMAX
 #include "rapidjson/document.h"
 
-class MeshRendererComponent;
 class AIAgentComponent;
 class CameraComponent;
 class Component;
-class Tag;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject
@@ -51,6 +51,7 @@ public:
 	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
+	void LookAt(float3 target);
 
 	void ResetTransform();
 
@@ -79,6 +80,7 @@ public:
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type) const;
 	std::vector<Component*> GetComponents(ComponentType type) const;
+	Component* GetComponentInParent(ComponentType type) const;
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
@@ -90,6 +92,10 @@ public:
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 	const bool HasUpdatedTransform() const;
 
+	GameObject* FindGameObjectInTree(const int objectToFind);
+	GameObject* FindFirstParent(GameObject* target);
+	float4x4 TranformInFirstGameObjectSpace();
+	std::vector<Component*> FindComponentsInChildren(GameObject* parent, const ComponentType type);
 	void AddComponent(Component* component, Component* position);
 	void SetName(const char* name) { mName = name; };
 
@@ -102,6 +108,8 @@ private:
 	void RefreshBoundingBoxes();
 
 	void SetActiveInHierarchy(bool active);
+
+	std::pair<GameObject*, int> RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind);
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
@@ -120,7 +128,7 @@ private:
 
 	bool mIsEnabled = true;
 	bool mIsActive = true;
-	bool isTransformModified = false;
+	bool mIsTransformModified = false;
 	int mPrefabResourceId = 0;
 	bool mPrefabOverride = true;
 };

@@ -1,5 +1,5 @@
 #include "TimerPanel.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
 #include "SettingsPanel.h"
@@ -28,7 +28,7 @@ void TimerPanel::Draw(int windowFlags)
 	ImGui::PushItemWidth(300.0f);
 
 	//Timer precision (turns microseconds into milliseconds if the timer is in micros)
-	static float precision = 1000.0f / App->GetCurrentClock()->GetTimerPrecision();
+	static float precision = 1000.0f / EngineApp->GetCurrentClock()->GetTimerPrecision();
 
 	const char* timeUnit = "micro secs";
 	if (precision == 1) {
@@ -38,7 +38,7 @@ void TimerPanel::Draw(int windowFlags)
 	ImGui::SeparatorText("Current Timer");
 
 	static const char* timerName;
-	if (App->GetCurrentClock() == App->GetEngineClock()) {
+	if (EngineApp->GetCurrentClock() == EngineApp->GetEngineClock()) {
 		timerName = "Engine";
 	}
 	else {
@@ -55,69 +55,69 @@ void TimerPanel::Draw(int windowFlags)
 
 	static bool fpsLimitEnabled = true;
 	
-	unitSecs = App->GetCurrentClock()->GetDelta() / (float)App->GetCurrentClock()->GetSpeed();
+	unitSecs = EngineApp->GetCurrentClock()->GetDelta() / (float)EngineApp->GetCurrentClock()->GetSpeed();
 
 	//Executes evey 500 ms (no change if executed every time)
-	if(App->GetCurrentClock()->UpdateFpsLog())
+	if(EngineApp->GetCurrentClock()->UpdateFpsLog())
 	{
-		fpsLog = App->GetCurrentClock()->GetFpsLog();
-		App->GetCurrentClock()->FpsLogUpdated();
+		fpsLog = EngineApp->GetCurrentClock()->GetFpsLog();
+		EngineApp->GetCurrentClock()->FpsLogUpdated();
 
 		averageUnitSecs = unitSecs;
-		fps = App->GetCurrentClock()->GetFPS();
+		fps = EngineApp->GetCurrentClock()->GetFPS();
 	}
 
 	
 
 	ImGui::SeparatorText("FPS");
 
-	ImGui::Text("Lowest FPS: %.2f on second %.2f", App->GetCurrentClock()->GetLowestFPS(), App->GetCurrentClock()->GetLowestFpsTime() / App->GetCurrentClock()->GetTimerPrecision());
+	ImGui::Text("Lowest FPS: %.2f on second %.2f", EngineApp->GetCurrentClock()->GetLowestFPS(), EngineApp->GetCurrentClock()->GetLowestFpsTime() / EngineApp->GetCurrentClock()->GetTimerPrecision());
 
 	ImGui::SeparatorText("Frames");
 
-	if (!App->GetCurrentClock()->GetVsyncStatus()) //Only works without vsync
+	if (!EngineApp->GetCurrentClock()->GetVsyncStatus()) //Only works without vsync
 	{
-		ImGui::Text("Last frame delayed for %d %s", App->GetCurrentClock()->GetFrameDelay(), timeUnit);
-		ImGui::Text("Actual execution time of the last frame: %d %s", unitSecs - App->GetCurrentClock()->GetFrameDelay(), timeUnit);
+		ImGui::Text("Last frame delayed for %d %s", EngineApp->GetCurrentClock()->GetFrameDelay(), timeUnit);
+		ImGui::Text("Actual execution time of the last frame: %d %s", unitSecs - EngineApp->GetCurrentClock()->GetFrameDelay(), timeUnit);
 	}
 
 
-	ImGui::Text("Slowest frame: %lld %s on frame %i", App->GetCurrentClock()->GetSlowestFrameTime(), timeUnit, App->GetCurrentClock()->GetSlowestFrame());
+	ImGui::Text("Slowest frame: %lld %s on frame %i", EngineApp->GetCurrentClock()->GetSlowestFrameTime(), timeUnit, EngineApp->GetCurrentClock()->GetSlowestFrame());
 
-	if (App->GetCurrentClock() == App->GetGameClock())
+	if (EngineApp->GetCurrentClock() == EngineApp->GetGameClock())
 	{
-		ImGui::Text("Game delta time: %d %s", App->GetCurrentClock()->GetDelta(), timeUnit);
+		ImGui::Text("Game delta time: %d %s", EngineApp->GetCurrentClock()->GetDelta(), timeUnit);
 	}
 
 	ImGui::Text("Real delta time: %d %s", unitSecs, timeUnit);
 
-	ImGui::Text("Frame Count: %u", App->GetCurrentClock()->GetTotalFrames());
+	ImGui::Text("Frame Count: %u", EngineApp->GetCurrentClock()->GetTotalFrames());
 
 	ImGui::SeparatorText("Time");
 
-	if (App->GetCurrentClock() == App->GetGameClock())
+	if (EngineApp->GetCurrentClock() == EngineApp->GetGameClock())
 	{
-		if (App->GetCurrentClock()->GetNewSpeed() != 0) {
+		if (EngineApp->GetCurrentClock()->GetNewSpeed() != 0) {
 			static float gameScale;
-			gameScale = App->GetCurrentClock()->GetNewSpeed();
+			gameScale = EngineApp->GetCurrentClock()->GetNewSpeed();
 			ImGui::SliderFloat("Game Clock Scale", &gameScale, 0.1f, 10, "%.1f");
-			App->GetCurrentClock()->SetTimeScale(gameScale);
+			EngineApp->GetCurrentClock()->SetTimeScale(gameScale);
 			if (ImGui::Button("-") && gameScale != 0.1f) {
-				App->GetCurrentClock()->SetTimeScale(gameScale-0.1f);
+				EngineApp->GetCurrentClock()->SetTimeScale(gameScale-0.1f);
 			}ImGui::SameLine();
 			if (ImGui::Button("Reset")) {
-				App->GetCurrentClock()->SetTimeScale(1.f);
+				EngineApp->GetCurrentClock()->SetTimeScale(1.f);
 			}ImGui::SameLine();
 			if (ImGui::Button("+")) {
-				App->GetCurrentClock()->SetTimeScale(gameScale + 0.1f);
+				EngineApp->GetCurrentClock()->SetTimeScale(gameScale + 0.1f);
 			}
 			ImGui::Text(" ");
 		}
 
-		ImGui::Text("Real time since start: %.2f seconds", App->GetCurrentClock()->GetRealTime() * precision / 1000.0f);
+		ImGui::Text("Real time since start: %.2f seconds", EngineApp->GetCurrentClock()->GetRealTime() * precision / 1000.0f);
 	}
 
-	ImGui::Text("Total Time: %.2f seconds", App->GetCurrentClock()->GetTotalTime() * precision / 1000.0f);
+	ImGui::Text("Total Time: %.2f seconds", EngineApp->GetCurrentClock()->GetTotalTime() * precision / 1000.0f);
 
 	ImGui::PopItemWidth();
 
@@ -126,12 +126,12 @@ void TimerPanel::Draw(int windowFlags)
 
 	ImGui::PlotHistogram("FPS", fpsLog.data(), fpsLog.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
 
-	msLog = App->GetCurrentClock()->GetMsLog();
+	msLog = EngineApp->GetCurrentClock()->GetMsLog();
 	std::vector<float> msLogFloat(msLog.begin(), msLog.end());
 
 	ImGui::PlotLines(timeUnit, msLogFloat.data(), msLogFloat.size(), 0, NULL, FLT_MAX, FLT_MAX, ImVec2(400, 50));
 
-	ImGui::Text("Application average %lld %s/frame (%.1f FPS)", averageUnitSecs, timeUnit, fps);
+	ImGui::Text("EngineApplication average %lld %s/frame (%.1f FPS)", averageUnitSecs, timeUnit, fps);
 
 	ImGui::End();
 }

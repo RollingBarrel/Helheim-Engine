@@ -22,23 +22,39 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 AnimationComponent::~AnimationComponent()
 {
 	delete mController;
-	mController = nullptr;
 
-	if (mAnimation)
-	{
-		App->GetResource()->ReleaseResource(mAnimation->GetUID());
-		mAnimation = nullptr;
-	}
+	delete mAnimation;
+	mGameobjectsInverseMatrices.clear();
+}
+
+void AnimationComponent::SetLoop(bool loop)
+{
+	mLoop = loop;
+	mController->SetLoop(loop);
 }
 
 void AnimationComponent::OnStart()
 {
-	mController->Play(mAnimation->GetUID(), true);
+	//mController->Play(mAnimation->GetUID(), true);
 }
 
-void AnimationComponent::OnUpdate()
+void AnimationComponent::Update()
 {
-	mController->Update(mOwner->GetChildren()[0]);
+	if (mIsPlaying)
+		mController->Update(mOwner);
+	//else {
+	//
+	//}
+}
+
+void AnimationComponent::OnStop()
+{
+
+}
+
+void AnimationComponent::OnRestart()
+{
+	mController->Restart();
 }
 
 void AnimationComponent::SetAnimation(unsigned int uid)
@@ -52,18 +68,20 @@ void AnimationComponent::SetAnimation(unsigned int uid)
 	{
 		mAnimation = tmpAnimation;
 
+		if (mController)
+			delete mController;
 		mController = new AnimationController(mAnimation, uid, true);
 	}
 }
 
-void AnimationComponent::OnStop()
+void AnimationComponent::SetStartTime(float time)
 {
-	//mController->Stop();
+	mController->SetStartTime(time);
 }
 
-void AnimationComponent::Update()
+void AnimationComponent::SetEndTime(float time)
 {
-
+	mController->SetEndTime(time);
 }
 
 Component* AnimationComponent::Clone(GameObject* owner) const

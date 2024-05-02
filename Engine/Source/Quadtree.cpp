@@ -7,11 +7,10 @@
 #include "Geometry/Frustum.h"
 
 #include "Application.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleScene.h"
 #include "ResourceMesh.h"
 #include "Geometry/Triangle.h"
-#include "imgui.h"
+#include "Physics.h"
 #include <utility>
 
 
@@ -41,9 +40,10 @@ bool Quadtree::AddObject(GameObject* object)
 {
 	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
 	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
-	OBB object_BB = meshRenderer->getOBB();
+	AABB objectAABB = meshRenderer->GetAABB();
+		
 
-	if (!mBoundingBox.Intersects(object_BB))
+	if (!mBoundingBox.Intersects(objectAABB))
 	{
 		return false;
 	}
@@ -121,53 +121,6 @@ void Quadtree::CleanUp()
 	}
 }
 
-void Quadtree::Draw() const
-{
-	App->GetDebugDraw()->DrawCube(mBoundingBox, float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
-
-	if (mFilled)
-	{
-		mChildren[0]->Draw();
-		mChildren[1]->Draw();
-		mChildren[2]->Draw();
-		mChildren[3]->Draw();
-	}
-
-}
-
-const void Quadtree::RenderTreeImGui() const
-{
-	
-	if (mName == "")
-		return;
-	bool treeNodeOpened = ImGui::TreeNode(mName.c_str());
-	
-	if (mFilled && treeNodeOpened) 
-	{
-		mChildren[0]->RenderTreeImGui();
-		mChildren[1]->RenderTreeImGui();
-		mChildren[2]->RenderTreeImGui();
-		mChildren[3]->RenderTreeImGui();
-
-	}
-	else 
-	{
-		if (treeNodeOpened)
-		{
-			for (const auto& object : mGameObjects)
-			{
-				ImGui::Text(object->GetName().c_str());
-			}
-
-		}
-	}
-	
-	
-	if(treeNodeOpened)
-		ImGui::TreePop();
-	
-}
-
 const std::set<GameObject*> Quadtree::GetObjectsInFrustum(Frustum* cam) const
 {
 	std::set<GameObject*> out;
@@ -220,18 +173,18 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 	}
 }
 
-const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
+const std::map<float, Hit> Quadtree::RayCast(Ray* ray) const
 {
 	if (mFilled) 
 	{
 
-		std::map<float, GameObject*> map;
+		std::map<float, Hit> map;
 
 
-		const std::map<float, GameObject*> p1 = mChildren[0]->RayCast(ray);
-		const std::map<float, GameObject*> p2 = mChildren[1]->RayCast(ray);
-		const std::map<float, GameObject*> p3 = mChildren[2]->RayCast(ray);
-		const std::map<float, GameObject*> p4 = mChildren[3]->RayCast(ray);
+		const std::map<float, Hit> p1 = mChildren[0]->RayCast(ray);
+		const std::map<float, Hit> p2 = mChildren[1]->RayCast(ray);
+		const std::map<float, Hit> p3 = mChildren[2]->RayCast(ray);
+		const std::map<float, Hit> p4 = mChildren[3]->RayCast(ray);
 
 		if (!p1.empty()) {
 			map.insert(p1.begin(), p1.end());
@@ -253,7 +206,7 @@ const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 	}
 	else
 	{
-		std::map<float, GameObject*> map;
+		std::map<float, Hit> map;
 		bool intersects = false;
 		bool intersectsTriangle = false;
 
@@ -283,7 +236,11 @@ const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 						intersectsTriangle = localRay.Intersects(Triangle(verticeA, verticeB, verticeC), &distance, &hitPoint);
 
 						if (intersectsTriangle) {
-							map.insert( std::pair<float, GameObject*>(distance, child));							
+							Hit hit;
+							hit.mDistance = distance;
+							hit.mGameObject = child;
+							hit.mHitPoint = hitPoint;
+							map.insert( std::pair<float, Hit>(distance, hit));							
 						}
 					}
 				}
@@ -294,7 +251,7 @@ const std::map<float, GameObject*> Quadtree::RayCast(Ray* ray) const
 		}
 	}
 
-	return std::map<float, GameObject*>();
+	return std::map<float, Hit>();
 }
 
 void Quadtree::UpdateTree()

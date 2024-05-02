@@ -84,9 +84,13 @@ public:
 
 private:
 	void RecreatePersistentSsbosAndIbo();
-	void RecreateVboAndEbo(unsigned int newVboDataSize, unsigned int newEboDataSize);
+	void RecreateVboAndEbo();
 	void RecreateMaterials();
 
+	bool mMaterialFlag = false;
+	bool mPersistentsFlag = false;
+	bool mVBOFlag = false;
+	
 	std::vector<BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
@@ -115,6 +119,14 @@ private:
 	unsigned int* mEboData = nullptr;
 	unsigned int mEboDataSize = 0;
 	unsigned int mEboNumElements = 0;
+
+	//Animation
+	unsigned int mPaletteSsbo = 0;
+	unsigned int mBoneIndicesSsbo = 0;
+	unsigned int mWeightsSsbo = 0;
+	unsigned int mPosSsbo = 0;
+	unsigned int mNormSsbo = 0;
+	unsigned int mTangSsbo = 0;
 
 	int mSsboAligment = 0;
 };

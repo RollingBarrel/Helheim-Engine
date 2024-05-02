@@ -4,8 +4,9 @@
 #include "ImageComponent.h"
 #include "Transform2DComponent.h"
 
+class CanvasComponent;
 
-class SliderComponent :
+class ENGINE_API SliderComponent :
     public Component
 {
 public:
@@ -20,7 +21,12 @@ public:
     Component* Clone(GameObject* owner) const override;
     void SetFillPercent(float fillPercent);
 
+    void Save(Archive& archive) const override;
+    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
 private:
+    GameObject* FindCanvasOnParents(GameObject* gameObject);
+
     GameObject* mFill = nullptr;
     GameObject* mBackground = nullptr;
     Transform2DComponent* mSliderTransform2D = nullptr;
@@ -29,5 +35,7 @@ private:
     Transform2DComponent* mBgTransform2D = nullptr;
     Transform2DComponent* mFillTransform2D = nullptr;
     float mFillPercent = 0.75f;
+
+    CanvasComponent* mCanvas = nullptr;
 };
 

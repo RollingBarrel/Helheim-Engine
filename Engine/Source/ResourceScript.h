@@ -4,7 +4,7 @@
 #include <vector>
 
 
-class ResourceScript : public Resource
+class ENGINE_API ResourceScript : public Resource
 {
 public:
 	ResourceScript(unsigned int uid);

@@ -23,7 +23,7 @@ struct SDL_Renderer;
 struct SDL_Rect;
 typedef unsigned int GLenum;
 
-class OpenGLBuffer {
+class ENGINE_API OpenGLBuffer {
 public:
 	OpenGLBuffer(GLenum type, GLenum usage, unsigned int binding = -1, unsigned int size = 0, const void* data = nullptr);
 	~OpenGLBuffer();
@@ -43,7 +43,7 @@ private:
 	unsigned int mDataCapacity;
 };
 
-class ModuleOpenGL : public Module
+class ENGINE_API ModuleOpenGL : public Module
 {
 public:
 	ModuleOpenGL();
@@ -66,6 +66,7 @@ public:
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
+	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 
 
 	//TODO: put all this calls into one without separating for light type??
@@ -85,6 +86,7 @@ public:
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
+	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
 private:
 	void* context = nullptr;
@@ -108,12 +110,12 @@ private:
 	//Programs
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned int CompileShader(unsigned type, const char* source) const;
-	unsigned int CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const;
-	unsigned int CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const;
+	unsigned int CreateShaderProgramFromIDs(unsigned int* shaderIds, unsigned int numShaders) const;
 	unsigned int mPbrProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
+	unsigned int mSkinningProgramId = 0;
 	unsigned int mParticleProgramId = 0;
 
 

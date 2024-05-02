@@ -416,3 +416,4 @@ FodyWeavers.xsd
 /Engine/Game/Scripting.dll
 /Engine/Game/userSettings.txt
 /Engine/Scripting/Output/*
+/Engine/Game/CoreLib.dll

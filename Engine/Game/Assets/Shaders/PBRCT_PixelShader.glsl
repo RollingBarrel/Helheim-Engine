@@ -87,7 +87,12 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 	float dotLH = max(dot(L,H),0);
 	float dotNH = max(dot(N,H),0);
 	float dotNV = max(dot(N,V),0);
-	vec3 pbrColor = ( cDif*(1-cSpec) + 0.25 * (cSpec+(1-cSpec)*pow(1-dotLH,5)) * (0.5/(dotNL*(dotNV*(1-rough)+rough)+dotNV*(dotNL*(1-rough)+rough))) * (rough*rough/(PI*((dotNH*dotNH*(rough*rough-1) + 1)*(dotNH*dotNH*(rough*rough-1) + 1)))) )*Li*dotNL;
+
+	vec3 fresnel = cSpec + (1-cSpec) * pow(1-dotLH,5);
+	float smithVisibility = 0.5 / (dotNL*(dotNV*(1-rough)+rough)+dotNV*(dotNL*(1-rough)+rough));
+	float ggxDenominator = dotNH*dotNH*(rough*rough-1) + 1;
+	float ggx = (rough*rough) / (PI*ggxDenominator*ggxDenominator);
+	vec3 pbrColor = ( cDif*(1-cSpec) + 0.25 * fresnel * smithVisibility * ggx ) * Li * dotNL;
 	return pbrColor;
 }
 
@@ -177,4 +182,7 @@ void main()
 	
 	//Output
 	outColor = vec4(ldrCol, 1.0f);
+
+	//outColor = tang;
+	//outColor.w = 1;
 }

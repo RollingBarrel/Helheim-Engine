@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
@@ -13,6 +15,7 @@
 #include "BatchManager.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ModuleFileSystem.h"
 
 #include "CameraComponent.h"
 
@@ -127,11 +130,24 @@ bool ModuleOpenGL::Init()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
-	mPbrProgramId = CreateShaderProgramFromPaths("PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl");
-	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
-	mDebugDrawProgramId = CreateShaderProgramFromPaths("basicDebugShader.vs", "basicDebugShader.fs");
-	mUIImageProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
-	mParticleProgramId = CreateShaderProgramFromPaths("particle_vertex.glsl", "particle_fragment.glsl");
+	const char* sourcesPaths[2] = { "PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl" };
+	int sourcesTypes[2] = { GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
+	mPbrProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "skybox.vs";
+	sourcesPaths[1] = "skybox.fs";
+	mSkyBoxProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "basicDebugShader.vs";
+	sourcesPaths[1] = "basicDebugShader.fs";
+	mDebugDrawProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "ui.vs";
+	sourcesPaths[1] = "ui.fs";
+	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "particle_vertex.glsl";
+	sourcesPaths[1] = "particle_fragment.glsl";
+	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "skinning.comp";
+	int computeType = GL_COMPUTE_SHADER;
+	mSkinningProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -222,7 +238,7 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
-	SetOpenGlCameraUniforms();
+	//SetOpenGlCameraUniforms();
 }
 
 void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
@@ -388,11 +404,13 @@ unsigned int ModuleOpenGL::CompileShader(unsigned type, const char* source) cons
 	return shaderID;
 }
 
-unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
+unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned int* shaderIds, unsigned int numShaders) const
 {
 	unsigned int programID = glCreateProgram();
-	glAttachShader(programID, vertexShaderID);
-	glAttachShader(programID, fragmentShaderID);
+	for (unsigned int i = 0; i < numShaders; ++i)
+	{
+		glAttachShader(programID, shaderIds[i]);
+	}
 	glLinkProgram(programID);
 	int resolution;
 	glGetProgramiv(programID, GL_LINK_STATUS, &resolution);
@@ -409,22 +427,33 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, u
 			free(info);
 		}
 	}
-	glDeleteShader(vertexShaderID);
-	glDeleteShader(fragmentShaderID);
+	for (unsigned int i = 0; i < numShaders; ++i)
+	{
+		glDeleteShader(shaderIds[i]);
+	}
 	return programID;
 }
-unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
+
+unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const
 {
-	std::string fullVertexShaderPath = "Assets/Shaders/" + std::string(vertexShaderPath);
-	std::string fullFragmentShaderPath = "Assets/Shaders/" + std::string(fragmentShaderPath);
-	char* vertexSource = LoadShaderSource(fullVertexShaderPath.c_str());
-	char* fragmentSource = LoadShaderSource(fullFragmentShaderPath.c_str());
-	unsigned vertexShaderID = CompileShader(GL_VERTEX_SHADER, vertexSource);
-	unsigned fragmentShaderID = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
-	free(vertexSource);
-	free(fragmentSource);
-	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
+	unsigned int* shaderIds = (unsigned int*)malloc(sizeof(unsigned int) * numShaderSources);
+	for (unsigned int i = 0; i < numShaderSources; ++i)
+	{
+		char* fullShaderPath = (char*)malloc(strlen(shaderNames[i]) + 16);
+		fullShaderPath[0] = '\0';
+		strcat(fullShaderPath, "Assets/Shaders/");
+		strcat(fullShaderPath, shaderNames[i]);
+		char* shaderSource = LoadShaderSource(fullShaderPath);
+		free(fullShaderPath);
+		//assert(App->GetFileSystem()->Exists(fullShaderPath));
+		shaderIds[i] = CompileShader(type[i], shaderSource);
+		free(shaderSource);
+	}
+	unsigned int ret = CreateShaderProgramFromIDs(shaderIds, numShaderSources);
+	free(shaderIds);
+	return ret;
 }
+
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
 PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)

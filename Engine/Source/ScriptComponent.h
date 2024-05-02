@@ -10,6 +10,7 @@ class ENGINE_API ScriptComponent : public Component
 {
 	friend class InspectorPanel;
 	friend class ModuleScriptManager;
+	friend class ModuleEngineScriptManager;
 public:
 
 	ScriptComponent(GameObject* owner);

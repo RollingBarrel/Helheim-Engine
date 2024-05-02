@@ -4,7 +4,6 @@
 #include "Math/MathFunc.h"
 #include "Application.h"
 
-#include "ModuleDebugDraw.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGl.h"
 #include "ModuleCamera.h"
@@ -71,9 +70,10 @@ void CameraComponent::Update()
         }
     }
 
-    App->GetOpenGL()->BindSceneFramebuffer();
-    App->GetDebugDraw()->DrawFrustum(mFrustum);
-    App->GetOpenGL()->UnbindSceneFramebuffer();
+    //TODO:SEPARATE GAME ENGINE
+    //App->GetOpenGL()->BindSceneFramebuffer();
+    //App->GetDebugDraw()->DrawFrustum(mFrustum);
+    //App->GetOpenGL()->UnbindSceneFramebuffer();
 
 }
 
@@ -234,5 +234,5 @@ void CameraComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* own
     SetNearPlane(nearPlane);
     SetFarPlane(farPlane);
     
-
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
