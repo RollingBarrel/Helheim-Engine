@@ -73,6 +73,9 @@
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{53632d8a-a4e4-4185-bb50-a99200b955b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Particles">
+      <UniqueIdentifier>{50fe897a-e47d-4091-9d21-2bf00e84878c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -435,9 +438,15 @@
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="EmitterShape.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleSystemComponent.cpp" />
+    <ClCompile Include="EmitterShape.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1043,10 +1052,18 @@
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ColorGradient.h" />
-    <ClInclude Include="EmitterShape.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticleSystemComponent.h" />
+    <ClInclude Include="ColorGradient.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="EmitterShape.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
