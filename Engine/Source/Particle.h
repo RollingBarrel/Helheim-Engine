@@ -36,10 +36,6 @@ public:
     void SetMaxLifetime(float maxLifetime) { mMaxLifeTime = maxLifetime; }
     void SetColor(const float4& color) { mColor = color; }
 
-    bool operator< (const Particle& other) const {
-        return mDepth > other.mDepth;
-    }
-
     template <int steps>
     void bezier_table(float2 P[], float2 results[])
     {
@@ -83,5 +79,4 @@ private:
     float mLifeTime;
     float mMaxLifeTime;
     float4 mColor;
-    float mDepth = 0;
 };

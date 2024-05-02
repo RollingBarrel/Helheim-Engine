@@ -170,7 +170,6 @@ void ParticleSystemComponent::Update()
 			i--;
 		}
 	}
-    std::sort(mParticles.begin(), mParticles.end());
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{

@@ -35,7 +35,6 @@ Particle::~Particle()
 bool Particle::Update(float DeltaTime, float3 cameraPosition)
 {
     mLifeTime += DeltaTime;
-    mDepth = (mPosition - cameraPosition).Abs().Length();
     float dt01 = mLifeTime / mMaxLifeTime;
     // If the particle is dead exits and will be removed
     if (dt01 > 1.0f)
