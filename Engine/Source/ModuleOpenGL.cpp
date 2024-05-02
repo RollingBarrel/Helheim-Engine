@@ -610,6 +610,7 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMipMaps);
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glUseProgram(mSpecPrefilteredProgramId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 		for (int currMipMap = 0; currMipMap < numMipMaps; ++currMipMap)
