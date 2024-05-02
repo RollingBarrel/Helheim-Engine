@@ -206,7 +206,7 @@ void ScenePanel::DrawScene()
 
 					tempVec.clear();
 
-					EngineApp->GetResource()->ReleaseResource(resource->GetUID());
+					//EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}
 				case Resource::Type::Scene:

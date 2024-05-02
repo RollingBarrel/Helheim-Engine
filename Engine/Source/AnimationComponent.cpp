@@ -173,7 +173,7 @@ void AnimationComponent::UpdatePalette()
 
 Component* AnimationComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new AnimationComponent(*this, owner);
 }
 
 void AnimationComponent::Save(Archive& archive) const
