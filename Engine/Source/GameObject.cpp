@@ -78,11 +78,6 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	{
 		mComponents.push_back(component->Clone(this));
 	}
-
-	if (original.mName == "idle")
-	{
-		LOG("HERE");
-	}
 }
 
 
