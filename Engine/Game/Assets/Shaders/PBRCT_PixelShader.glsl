@@ -179,9 +179,7 @@ void main()
 
 	pbrCol += GetAmbientLight();
 
-	//TODO: ambient color on pbr
 	//HDR color  
-	//vec3 hdrCol = ambientCol * baseColor + pbrCol;
 	vec3 hdrCol = pbrCol;
 	
 	//LDR color with reinhard tone Mapping
@@ -192,7 +190,4 @@ void main()
 	
 	//Output
 	outColor = vec4(ldrCol, 1.0f);
-
-	//outColor = tang;
-	//outColor.w = 1;
 }
