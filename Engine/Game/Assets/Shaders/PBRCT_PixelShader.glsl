@@ -99,7 +99,6 @@ uniform samplerCube diffuseIBL;
 vec3 GetAmbientLight()
 {
 	vec3 irradiance = texture(diffuseIBL, N).rgb;
-	irradiance = pow(irradiance, vec3(2.2));
 	// note: PI from irradiance is compensated with albedo pi division
 	return irradiance * (cDif * (1 - cSpec));
 }
@@ -186,7 +185,7 @@ void main()
 	vec3 hdrCol = pbrCol;
 	
 	//LDR color with reinhard tone Mapping
-	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));;
+	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
 
 	//Gamma correction
 	ldrCol = pow(ldrCol, vec3(1/2.2));
