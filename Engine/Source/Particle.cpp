@@ -11,17 +11,17 @@ Particle::Particle()
     mSizeLinear = 1.0f;
     mMaxLifeTime = 1.0f;
     mLifeTime = 0.0f;
-    mColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+    mColor = float4::one;
 }
 
-Particle::Particle(float3 position, float3 direction, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve)
+Particle::Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve)
     : mPosition(position), 
     mDirection(direction),
     mRotation(rotation),
     mIsSpeedCurve(isSpeedCurve),
     mIsSizeCurve(isSizeCurve),
     mMaxLifeTime(lifeTime),
-    mColor(float4::zero),
+    mColor(color),
     mLifeTime(0.0f),
     mSizeLinear(0.0f),
     mSpeedLinear(0.0f)

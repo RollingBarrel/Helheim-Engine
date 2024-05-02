@@ -17,6 +17,8 @@ public:
 	ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
 	~ParticleSystemComponent();
+	ResourceTexture* GetImage() const { return mImage; }
+	const char* GetFileName() const { return mFileName; }
 	void Reset();
 
 	void Init();
@@ -30,9 +32,11 @@ public:
 
 private:
 	void SetImage(unsigned int resourceId);
+	void SetFileName(const char* fileName) { mFileName = fileName; }
 
 	ResourceTexture* mImage = nullptr;
-	unsigned int mResourceId = 818189439; // Temporary default image 
+	unsigned int mResourceId = 148626881; // Default white texture
+	const char* mFileName = nullptr;
 
 	float mEmitterTime = 0.0f;
 	float mEmitterDeltaTime = 0.0f;

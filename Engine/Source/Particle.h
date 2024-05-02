@@ -5,7 +5,7 @@ class Particle
 {
 public:
     Particle();
-    Particle(float3 position, float3 direction, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve);
+    Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve);
     ~Particle();
 
     bool Update(float deltaTime);

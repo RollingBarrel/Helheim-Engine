@@ -1334,5 +1334,56 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			break;
 
 	}
+	if (ImGui::CollapsingHeader("Texture & Tint")) 
+	{
+		// Drag and drop	
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+
+		ResourceTexture* image = component->GetImage();
+
+		if (image)
+		{
+			ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+			ImGui::Image(imageID, ImVec2(50, 50));
+		}
+		else
+		{
+			ImGui::Text("Drop Image");
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			{
+				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+				if (resource && (resource->GetType() == Resource::Type::Texture))
+				{
+					component->SetImage(resource->GetUID());
+					component->SetFileName(asset->mName);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::NextColumn();
+		if (component->GetFileName() != nullptr)
+		{
+			ImGui::Text(component->GetFileName());
+		}
+
+		if (image)
+		{
+			ImGui::Text("Width:%dpx", image->GetWidth());
+			ImGui::Text("Height:%dpx", image->GetHeight());
+
+		}
+		ImGui::Columns(1);
+
+		// Color and alpha
+		float4* color = &component->mColorGradient[0.0f];
+		ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
+		ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
+	}
 }
 

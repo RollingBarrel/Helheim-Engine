@@ -489,6 +489,8 @@
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skinning.comp" />

@@ -1117,5 +1117,11 @@
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
       <Filter>Dependencies\MathGeoLib\Math</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
