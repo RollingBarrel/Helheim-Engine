@@ -393,7 +393,9 @@ void GeometryBatch::Draw()
 			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
 			{
 				// HERE IF ANIMATED THEN PUT IDENTITY
-				if (animationSkinning)
+				
+				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));				
+				if (cAnim && cAnim->GetIsPlaying())
 				{
 					float4x4 identity = float4x4::identity;
 					memcpy(mSsboModelMatricesData[idx] + 16 * i, identity.ptr(), sizeof(float) * 16);
@@ -404,6 +406,8 @@ void GeometryBatch::Draw()
 					memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 
 				}
+
+
 				memcpy(mSsboIndicesData[idx] + i, &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
 				mCommands.emplace_back(rMesh->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
 			}
