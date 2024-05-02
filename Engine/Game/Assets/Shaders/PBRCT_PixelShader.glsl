@@ -74,12 +74,11 @@ float rough;
 float metal;
 vec3 V;
 vec3 N;
+vec3 cDif;
+vec3 cSpec;
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
-	//Metalness, r, baseColor
-	vec3 cDif = baseColor*(1-metal);
-	vec3 cSpec = mix(vec3(0.04), baseColor, metal);
 	vec3 L =  -normalize(lDir); 	//Light direction
 	vec3 H = normalize(L+V);
 	vec3 Li = lInt * lAtt * lCol.rgb;  //Incoming radiance
@@ -99,8 +98,6 @@ vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 uniform samplerCube diffuseIBL;
 vec3 GetAmbientLight()
 {
-	vec3 cDif = baseColor * (1 - metal);
-	vec3 cSpec = mix(vec3(0.04), baseColor, metal);
 	vec3 irradiance = texture(diffuseIBL, N).rgb;
 	irradiance = pow(irradiance, vec3(2.2));
 	// note: PI from irradiance is compensated with albedo pi division
@@ -145,6 +142,8 @@ void main()
 	}
 	V = normalize(cPos - sPos); //View direction
 	
+	cDif = baseColor * (1 - metal);
+	cSpec = mix(vec3(0.04), baseColor, metal);
 	vec3 pbrCol = vec3(0);
 	pbrCol += GetPBRLightColor(dirDir.xyz, dirCol.xyz, dirCol.w, 1);
 	
@@ -190,7 +189,7 @@ void main()
 	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));;
 
 	//Gamma correction
-	ldrCol = pow(ldrCol, vec3(1/2.2));
+	//ldrCol = pow(ldrCol, vec3(1/2.2));
 	
 	//Output
 	outColor = vec4(ldrCol, 1.0f);

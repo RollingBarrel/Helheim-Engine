@@ -526,7 +526,7 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 
 
 		glUseProgram(mEnvironmentProgramId);
-		glUniform1i(glGetUniformLocation(mEnvironmentProgramId, "HDRImage"), 0);
+		//glUniform1i(glGetUniformLocation(mEnvironmentProgramId, "HDRImage"), 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
 
