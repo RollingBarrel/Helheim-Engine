@@ -39,7 +39,7 @@ void PlayerCamera::Start()
 
     mAuxLookTarget = mLookTarget;
 
-    SetView(float3(0, -8.0f, 16.0f), 0.3f);
+    SetView(float3(0, -10.0f, 16.0f), 0.4f);
 
 
 }
@@ -48,8 +48,8 @@ void PlayerCamera::Update()
 {
     //CameraManager();
 
-    float3 topPosition = float3(0, -8.0f, 16.0f);
-    float topRotation = 0.3f;
+    float3 topPosition = float3(0, -10.0f, 16.0f);
+    float topRotation = 0.4f;
 
     float transitionTime = 1.0f;
     static float deltaTime = transitionTime;
