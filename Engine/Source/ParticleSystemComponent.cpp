@@ -10,6 +10,7 @@
 #include "Resource.h"
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
+#include<algorithm>
 
 #define MATRICES_LOCATION 2
 #define COLOR_LOCATION 1
@@ -103,7 +104,9 @@ void ParticleSystemComponent::Draw() const
     if (IsEnabled()) 
     {
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE);
+        //glBlendEquation(GL_FUNC_ADD);
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
@@ -119,8 +122,9 @@ void ParticleSystemComponent::Draw() const
         float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 
-        for (int i = 0; i < mParticles.size(); ++i)
+        for (int j = 0; j < mParticles.size(); ++j)
         {
+            int i = mParticles.size() - 1 - j;
             if (mParticles[i]->GetLifetime() > 0.0f)
             {
                 
@@ -130,8 +134,8 @@ void ParticleSystemComponent::Draw() const
                 float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
                 transform = transform * scaleMatrix;
                 transform.Transpose();                
-                memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
-                memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
+                memcpy(ptr + 20 * j, transform.ptr(), sizeof(float) * 16);
+                memcpy(ptr + 20 * j + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
             }
         }
         glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -144,8 +148,8 @@ void ParticleSystemComponent::Draw() const
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glUseProgram(0);
+        glDisable(GL_BLEND);
 
     }
 }
@@ -154,17 +158,19 @@ void ParticleSystemComponent::Update()
 {
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
-    LOG("Time = %f", mEmitterTime)
+    float3 camPosition = App->GetCamera()->GetCurrentCamera()->GetFrustum().pos;
+    //LOG("Time = %f", mEmitterTime)
 
 	for (int i = 0; i < mParticles.size(); i++)
 	{
-		bool isAlive = mParticles[i]->Update(App->GetDt());
+		bool isAlive = mParticles[i]->Update(App->GetDt(), camPosition);
         if (!isAlive)
         {
 			mParticles.erase(mParticles.begin() + i);
 			i--;
 		}
 	}
+    std::sort(mParticles.begin(), mParticles.end());
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
@@ -201,6 +207,7 @@ void ParticleSystemComponent::Update()
 
 void ParticleSystemComponent::SetImage(unsigned int resourceId)
 {
+    mResourceId = resourceId;
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
@@ -212,12 +219,14 @@ void ParticleSystemComponent::Reset()
 void ParticleSystemComponent::Save(Archive& archive) const
 {
     Component::Save(archive);
+    archive.AddInt("Image", mResourceId);
     archive.AddFloat("Duration", mDuration);
     archive.AddFloat("Life Time", mMaxLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
     archive.AddFloat("Speed", mSpeedLineal);
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
+    archive.AddFloat("Size", mSizeLineal);
     
     std::vector<Archive> objectArray;
     std::map<float, float4>::const_iterator it;
@@ -242,6 +251,13 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mDuration = data["Duration"].GetFloat();
     }
+    
+    if (data.HasMember("Image") && data["Image"].IsInt())
+    {
+        mResourceId = data["Image"].GetInt();
+        SetImage(mResourceId);
+    }
+
     if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
     {
         mMaxLifeTime = data["Life Time"].GetFloat();
@@ -253,6 +269,10 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     if (data.HasMember("Speed") && data["Speed"].IsFloat())
     {
         mSpeedLineal = data["Speed"].GetFloat();
+    } 
+    if (data.HasMember("Size") && data["Size"].IsFloat())
+    {
+        mSizeLineal = data["Size"].GetFloat();
     }
     if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
     {

@@ -1,0 +1,57 @@
+{
+    "Scene": {
+        "GameObjects": [
+            {
+                "UID": 1787636697,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1198682260,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 452546727,
+                        "Duration": 5.0,
+                        "Life Time": 3.0,
+                        "Emission Rate": 5.0,
+                        "Speed": 1.0,
+                        "Max Particles": 1000,
+                        "Looping": true,
+                        "Size": 10.0,
+                        "Color Gradient": [
+                            {
+                                "Time": 0.0,
+                                "Color": [
+                                    0.7303921580314636,
+                                    0.25062477588653567,
+                                    0.25062477588653567,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

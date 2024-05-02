@@ -8,7 +8,7 @@ public:
     Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve);
     ~Particle();
 
-    bool Update(float deltaTime);
+    bool Update(float deltaTime, float3 cameraPosition);
 
     float3 GetPosition() const { return mPosition; }
     float3 GetDirection() const { return mDirection; }
@@ -35,6 +35,10 @@ public:
     void SetLifetime(float lifetime) { mLifeTime = lifetime; }
     void SetMaxLifetime(float maxLifetime) { mMaxLifeTime = maxLifetime; }
     void SetColor(const float4& color) { mColor = color; }
+
+    bool operator< (const Particle& other) const {
+        return mDepth > other.mDepth;
+    }
 
     template <int steps>
     void bezier_table(float2 P[], float2 results[])
@@ -79,4 +83,5 @@ private:
     float mLifeTime;
     float mMaxLifeTime;
     float4 mColor;
+    float mDepth = 0;
 };
