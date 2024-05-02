@@ -2,6 +2,7 @@
 #include "Module.h"
 
 #include <map>
+#include <vector>
 
 #define CheckError(result) FmodUtils::CheckFmodError(result)
 #define EVENT_BANK_UPPERLIMIT 64
@@ -30,6 +31,8 @@ public:
 	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
 	void PauseAllChannels();
 
+	void AddToActiveAudiosList(FMOD::Studio::EventInstance* eventInstance);
+
 	bool CleanUp();
 
 private:
@@ -43,5 +46,6 @@ private:
 
 	bool mPaused = false;
 
+	std::vector<FMOD::Studio::EventInstance*> mActiveAudiosList;
 };
 

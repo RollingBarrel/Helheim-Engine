@@ -39,6 +39,16 @@ update_status ModuleAudio::Update(float dt)
 	if (!mPaused) 
 	{
 		mSystem->update();
+		if (!mActiveAudiosList.empty())
+		{
+			FMOD_STUDIO_PLAYBACK_STATE state;
+			mActiveAudiosList[0]->getPlaybackState(&state);
+			if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+			{
+				mActiveAudiosList[0]->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+			}
+			LOG("a");
+		}
 	}
 	return UPDATE_CONTINUE;
 }
@@ -70,6 +80,11 @@ void ModuleAudio::PauseAllChannels()
 	//FMOD::Studio::Bank* masterBank;
 	//mSystem->getBank("Master Bank", &masterBank);
 	//masterBank->unload(); // Unload the master bank
+}
+
+void ModuleAudio::AddToActiveAudiosList(FMOD::Studio::EventInstance* eventInstance)
+{
+	mActiveAudiosList.push_back(eventInstance);
 }
 
 bool ModuleAudio::CleanUp()

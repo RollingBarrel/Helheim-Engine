@@ -1,4 +1,5 @@
 #include "AudioSourceComponent.h"
+#include "ModuleAudio.h"
 #include "FmodUtils.h"
 
 #include "GameObject.h"
@@ -52,7 +53,8 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 		UpdateParameters();
 
 		// DELETTEEEEEEEEEEEEE MEE
-		mEventInstance->start();
+		/*mEventInstance->start();*/
+		PlayOneShot();
 	}
 }
 
@@ -134,6 +136,7 @@ void AudioSourceComponent::PlayOneShot()
 		mEventDescription->createInstance(&eventInstance);
 
 		eventInstance->start();
+		App->GetAudio()->AddToActiveAudiosList(eventInstance);
 		eventInstance->release();
 	}
 	else 
