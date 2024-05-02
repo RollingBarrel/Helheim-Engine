@@ -189,7 +189,7 @@ void main()
 	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));;
 
 	//Gamma correction
-	//ldrCol = pow(ldrCol, vec3(1/2.2));
+	ldrCol = pow(ldrCol, vec3(1/2.2));
 	
 	//Output
 	outColor = vec4(ldrCol, 1.0f);
