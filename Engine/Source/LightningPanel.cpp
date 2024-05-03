@@ -17,7 +17,7 @@ void LightningPanel::Draw(int windowFlags)
 
 	if (ImGui::Button("Bake Ambient Light"))
 	{
-		App->GetOpenGL()->BakeIBL();
+		App->GetOpenGL()->BakeIBL(mSkyboxFileName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
 	}
 
 	ImGui::Text(mSkyboxFileName.c_str());
@@ -34,14 +34,17 @@ void LightningPanel::Draw(int windowFlags)
 	{
 		if (ImGuiFileDialog::Instance()->IsOk())
 		{
-			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			App->GetOpenGL()->SetSkybox(filePathName);
+			const std::string& filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			App->GetOpenGL()->BakeIBL(filePathName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
 			mSkyboxFileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+			mSkyboxFilePath = filePathName;
 		}
 
 		ImGuiFileDialog::Instance()->Close();
 	}
-
+	ImGui::InputInt("IrradianceSize", &mIrradianceSize);
+	ImGui::InputInt("SpecularPrefilteredSize", &mSpecPrefilteredSize);
+	ImGui::InputInt("BRDFEnvSize", &mSpecEnvBRDFSize);
 
 	
 

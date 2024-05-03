@@ -9,7 +9,7 @@
 
 typedef struct DirectionalAmbient {
 	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
-	float mDirCol[4] = { 1.f, 1.f, 1.f, 0.0f }; //w is the intensity  1.2f
+	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
 	float mAmbientCol[4] = { 1.0f, 1.0f, 1.0f, 0.0f }; //w is padding
 }DirectionalAmbient;
 
@@ -83,9 +83,7 @@ public:
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
-	void BakeIBL();
-	std::string GetSkyboxPath() { return mSkyboxPath; }
-	void SetSkybox(std::string path) { mSkyboxPath = path; BakeIBL(); }
+	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
 
 private:
 	void* context = nullptr;
@@ -128,7 +126,6 @@ private:
 	unsigned int mIrradianceTextureId = 0;
 	unsigned int mSpecPrefilteredTexId = 0;
 	unsigned int mEnvBRDFTexId = 0;
-	std::string mSkyboxPath = "Assets/Textures/skybox.hdr";
 	
 
 	//Lighting uniforms
@@ -139,6 +136,8 @@ private:
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
+
+	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 };
 
 #endif /* _MODULEOPENGL_H_ */

@@ -186,8 +186,8 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
-	BakeIBL();
-	//BakeIBL(L"Assets/Textures/rural_asphalt_road_4k.hdr");
+	BakeIBL("Assets/Textures/skybox.hdr");
+	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 	return true;
 }
 
@@ -264,8 +264,18 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 	//SetOpenGlCameraUniforms();
 }
 
-void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
+void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height = 0)
 {
+	static unsigned sWidth = 0;
+	static unsigned sHeight = 0;
+	if (width == 0 && height == 0)
+	{
+		width = sWidth;
+		height = sHeight;
+	}
+	sWidth = width;
+	sHeight = height;
+
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	((CameraComponent*)App->GetCamera()->GetCurrentCamera())->SetAspectRatio((float)width / (float)height);
@@ -474,16 +484,35 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 	return ret;
 }
 
-void ModuleOpenGL::BakeIBL()
+void ModuleOpenGL::BakeEnvironmentBRDF(unsigned int width, unsigned int height)
+{
+	if (mEnvBRDFTexId != 0)
+		glDeleteTextures(1, &mEnvBRDFTexId);
+	glGenTextures(1, &mEnvBRDFTexId);
+	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, width, height, 0, GL_RG, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glUseProgram(mSpecEnvBRDFProgramId);
+	glViewport(0, 0, width, height);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mEnvBRDFTexId, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, unsigned int specEnvBRDFSize, unsigned int specPrefilteredSize)
 {
 	DirectX::ScratchImage image;
 
-	size_t size = strlen(mSkyboxPath.c_str()) + 1;
+	size_t size = strlen(hdrTexPath) + 1;
 	wchar_t* pathTex = new wchar_t[size];
 	size_t outSize;
-	mbstowcs_s(&outSize, pathTex, size, mSkyboxPath.c_str(), size - 1);
+	mbstowcs_s(&outSize, pathTex, size, hdrTexPath, size - 1);
 
 	HRESULT res = DirectX::LoadFromHDRFile(pathTex, nullptr, image);
+	delete[] pathTex;
 
 	if (res == S_OK)
 	{
@@ -497,11 +526,10 @@ void ModuleOpenGL::BakeIBL()
 			mIrradianceTextureId = 0;
 		}
 
-
 		const float3 front[6] = { float3::unitX, -float3::unitX, float3::unitY,
 							 -float3::unitY, float3::unitZ, -float3::unitZ };
 
-		float3 up[6] = { -float3::unitY, -float3::unitY, float3::unitZ,
+		const float3 up[6] = { -float3::unitY, -float3::unitY, float3::unitZ,
 						 -float3::unitZ, -float3::unitY, -float3::unitY };
 
 		Frustum frustum;
@@ -512,8 +540,8 @@ void ModuleOpenGL::BakeIBL()
 		frustum.verticalFov = pi / 2.0f;
 		frustum.horizontalFov = pi / 2.0f;
 
-		const unsigned int irradianceWidth = 256;
-		const unsigned int irradianceHeight = 256;
+		const unsigned int irradianceWidth = irradianceSize;
+		const unsigned int irradianceHeight = irradianceSize;
 		glGenTextures(1, &mEnvironmentTextureId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 
@@ -599,8 +627,8 @@ void ModuleOpenGL::BakeIBL()
 		}
 
 		//Specular IBL
-		const unsigned int specWidth = 256;
-		const unsigned int specHeight = 256;
+		const unsigned int specWidth = specPrefilteredSize;
+		const unsigned int specHeight = specPrefilteredSize;
 		glGenTextures(1, &mSpecPrefilteredTexId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
 
@@ -637,21 +665,16 @@ void ModuleOpenGL::BakeIBL()
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
 		}
-
-		//TODO: sacar todo esto en una funcion pk no es independiente de cada IBL
-		glGenTextures(1, &mEnvBRDFTexId);
-		glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, 512, 512, 0, GL_RG, GL_FLOAT, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glUseProgram(mSpecEnvBRDFProgramId);
-		glViewport(0, 0, 512, 512);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mEnvBRDFTexId, 0);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
+		static unsigned int sizeX = 0;
+		static unsigned int sizeY = 0;
+		if (mEnvBRDFTexId == 0 || sizeX != specEnvBRDFSize || sizeY != specEnvBRDFSize)
+		{
+			sizeX = specEnvBRDFSize;
+			sizeY = specEnvBRDFSize;
+			BakeEnvironmentBRDF(specEnvBRDFSize, specEnvBRDFSize);
+		}
+
 		glUseProgram(0);
 		glBindVertexArray(0);
 		glDepthMask(GL_TRUE);
@@ -668,6 +691,7 @@ void ModuleOpenGL::BakeIBL()
 		glUniform1i(glGetUniformLocation(mPbrProgramId, "diffuseIBL"), 6);
 		glUniform1i(glGetUniformLocation(mPbrProgramId, "environmentBRDF"), 7);
 		glUseProgram(0);
+		SceneFramebufferResized();
 	}
 
 }
