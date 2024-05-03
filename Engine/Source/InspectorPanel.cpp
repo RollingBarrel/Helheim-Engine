@@ -933,15 +933,15 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		component->SetAnimSpeed(animSpeed);
 	}
 
-	int currentItem = component->getCurrentClip();
+	int currentItem = component->GetCurrentClip();
 
-	if (ImGui::Combo("Select Animation State", &currentItem, component->getClipNames().data(), component->getClipNames().size()))
+	if (ImGui::Combo("Select Animation State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
-		component->setCurrentClip(currentItem);
+		component->SetCurrentClip(currentItem);
 	}
 	float maxTimeValue = component->GetAnimation()->GetDuration();
-	float currentStartTime = component->getCurrentStartTime();
-	float currentEndTime = component->getCurrentEndTime();
+	float currentStartTime = component->GetCurrentStartTime();
+	float currentEndTime = component->GetCurrentEndTime();
 
 	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1, 0.0, maxTimeValue))
 	{

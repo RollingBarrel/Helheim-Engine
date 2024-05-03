@@ -246,7 +246,8 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Tama�o vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
-    for (const auto& invBindMatrix : rModel->mInvBindMatrices) {
+    for (const auto& invBindMatrix : rModel->mInvBindMatrices) 
+    {
         bufferSize += sizeof(float) * 16;                                   // Size of the float array
         bufferSize += sizeof(unsigned int);                                 // Size of the string length
         //bufferSize += sizeof(char) * invBindMatrix.first.size();                // Size of the string characters

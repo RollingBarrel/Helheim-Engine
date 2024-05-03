@@ -47,7 +47,6 @@ static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* inter
         for (unsigned int j = 0; j < attributeNumFloats; ++j)
         {
             ret[i * attributeNumFloats + j] = vert[j];
-            //LOG("%f", ret[i * attributeNumFloats + j]);
         }
 
     }
@@ -451,7 +450,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                         bufferJointsInt += 4;
                     }
                 }
-                // These are valid component types
                 break;
             }
             case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
@@ -472,7 +470,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                         bufferJointsChar += 4;
                     }
                 }
-                // These are valid component types
                 break;
             }
             default:

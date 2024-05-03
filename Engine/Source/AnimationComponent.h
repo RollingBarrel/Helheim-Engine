@@ -47,53 +47,22 @@ public:
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 
-	// Getter for mClipNames
-	const std::vector<const char*>& getClipNames() const {
-		return mClipNames;
-	}
+	const std::vector<const char*>& GetClipNames() const { return mClipNames; }
 
-	// Setter for mClipNames
-	void setClipNames(const std::vector<const char*>& clipNames) {
-		mClipNames = clipNames;
-	}
+	void SetClipNames(const std::vector<const char*>& clipNames) { mClipNames = clipNames; }
 
-	// Getter for mClipTimes
-	const std::vector<float>& getClipTimes() const {
-		return mClipTimes;
-	}
+	const std::vector<float>& GetClipTimes() const { return mClipTimes; }
 
-	// Setter for mClipTimes
-	void setClipTimes(const std::vector<float>& clipTimes) {
-		mClipTimes = clipTimes;
-	}
+	void SetClipTimes(const std::vector<float>& clipTimes) { mClipTimes = clipTimes; }
 
-	// Getter for mCurrentClip
-	int getCurrentClip() const {
-		return mCurrentClip;
-	}
+	int GetCurrentClip() const { return mCurrentClip; }
 
-	// Setter for mCurrentClip
-	void setCurrentClip(int currentClip) {
-		if (currentClip > mClipNames.size())
-		{
-			currentClip = 0;
-		}
-		mCurrentClip = currentClip;
-		SetStartTime(mClipTimes[mCurrentClip * 2]);
-		SetEndTime(mClipTimes[mCurrentClip * 2 + 1]);
+	void SetCurrentClip(int currentClip);
+	float GetCurrentStartTime() const { return mClipTimes[mCurrentClip * 2]; }
+	float GetCurrentEndTime() const { return mClipTimes[mCurrentClip * 2 + 1]; }
 
-	}
-	float getCurrentStartTime() const
-	{
-		return mClipTimes[mCurrentClip * 2];
-	}
-	float getCurrentEndTime() const
-	{
-		return mClipTimes[mCurrentClip * 2 + 1];
-	}
-
-	unsigned int getModelUUID() const { return mModelUid; }
-	void setModelUUID(unsigned int modelUid) { mModelUid = modelUid; }
+	unsigned int GetModelUUID() const { return mModelUid; }
+	void SetModelUUID(unsigned int modelUid) { mModelUid = modelUid; }
 
 	float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed);

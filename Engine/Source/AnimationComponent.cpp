@@ -131,6 +131,18 @@ void AnimationComponent::SetEndTime(float time)
 }
 
 
+void AnimationComponent::SetCurrentClip(int currentClip)
+{
+	if (currentClip > mClipNames.size())
+	{
+		currentClip = 0;
+	}
+	mCurrentClip = currentClip;
+	SetStartTime(mClipTimes[mCurrentClip * 2]);
+	SetEndTime(mClipTimes[mCurrentClip * 2 + 1]);
+
+}
+
 void AnimationComponent::SetAnimSpeed(float speed)
 {
 	mSpeed = speed;
@@ -191,12 +203,14 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 {
 
 	int animationID = { 0 };
-	if (data.HasMember("AnimationID") && data["AnimationID"].IsInt()) {
+	if (data.HasMember("AnimationID") && data["AnimationID"].IsInt()) 
+	{
 		animationID = data["AnimationID"].GetInt();
 	}
 	SetAnimation(animationID);
 
-	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) {
+	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
+	{
 		mModelUid = data["ModelUID"].GetInt();
 	}
 }
