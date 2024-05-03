@@ -152,8 +152,8 @@ void ParticleSystemComponent::Draw() const
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
         glUseProgram(0);
+        glEnable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
-
     }
 }
 

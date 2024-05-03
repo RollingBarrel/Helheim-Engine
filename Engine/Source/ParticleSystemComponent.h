@@ -35,7 +35,7 @@ private:
 	void SetFileName(const char* fileName) { mFileName = fileName; }
 
 	ResourceTexture* mImage = nullptr;
-	unsigned int mResourceId = 148626881; // Default white texture
+	unsigned int mResourceId = 452546727; // Default particle texture
 	const char* mFileName = nullptr;
 
 	float mEmitterTime = 0.0f;
