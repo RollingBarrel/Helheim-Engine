@@ -423,7 +423,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                     joints[i * 4 + 2] = bufferJointsShort[2];
                     joints[i * 4 + 3] = bufferJointsShort[3];
 
-                    if (jointsView.byteStride != 0) {
+                    if (jointsView.byteStride != 0) 
+                    {
                         bufferJointsShort = reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(bufferJointsShort) + jointsView.byteStride);
                     }
                     else {
@@ -443,7 +444,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                     joints[i * 4 + 2] = bufferJointsInt[2];
                     joints[i * 4 + 3] = bufferJointsInt[3];
 
-                    if (jointsView.byteStride != 0) {
+                    if (jointsView.byteStride != 0) 
+                    {
                         bufferJointsInt = reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(bufferJointsInt) + jointsView.byteStride);
                     }
                     else {
@@ -463,7 +465,8 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
                     joints[i * 4 + 2] = bufferJointsChar[2];
                     joints[i * 4 + 3] = bufferJointsChar[3];
 
-                    if (jointsView.byteStride != 0) {
+                    if (jointsView.byteStride != 0) 
+                    {
                         bufferJointsChar = reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(bufferJointsChar) + jointsView.byteStride);
                     }
                     else {
