@@ -35,6 +35,8 @@ private:
     void Credits();
     bool Delay(float delay);
     void Controls();
+    void HoverMenu(MENU_TYPE type);
+    void ClickMenu(MENU_TYPE type);
 
     void OpenMenu(MENU_TYPE type);
     void OnMainButtonClick();
