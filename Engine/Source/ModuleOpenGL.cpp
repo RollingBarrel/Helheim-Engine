@@ -603,7 +603,7 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, specWidth, specHeight, 0, GL_RGB, GL_FLOAT, nullptr);
 		}
-		int numMipMaps = int(log(float(specWidth)) / log(2));
+		int numMipMaps = int(log(float(specWidth)) / log(2.0f));
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
@@ -612,9 +612,10 @@ void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
 		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 		glUseProgram(mSpecPrefilteredProgramId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
-		for (int currMipMap = 0; currMipMap < numMipMaps; ++currMipMap)
+		for (int currMipMap = 0; currMipMap <= numMipMaps; ++currMipMap)
 		{
-			glUniform1f(3, (static_cast<float>(currMipMap) / static_cast<float>(numMipMaps - 1)));
+			float roughness = (static_cast<float>(currMipMap) / static_cast<float>(numMipMaps - 1));
+			glUniform1f(3, roughness);
 			float coolMath = specWidth * pow(0.5f, currMipMap);
 			glViewport(0, 0, coolMath, coolMath);
 			// Render each cube plane
