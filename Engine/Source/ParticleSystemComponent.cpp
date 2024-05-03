@@ -196,11 +196,26 @@ void ParticleSystemComponent::Update()
             // considering if they are linear or curve
             Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient[0.0f], rotation, mMaxLifeTime, mIsSpeedCurve, mIsSizeCurve);
             
-            if (mIsSpeedCurve) particle->SetSpeedCurve(mSpeedCurve);
-            else particle->SetSpeedLineal(mSpeedLineal);
+            if (mIsSpeedCurve) 
+            {
+                particle->SetSpeedCurve(mSpeedCurve);
+                particle->SetSpeedFactor(mSpeedCurveFactor);
+            }
+            else
+            {
+                particle->SetSpeedLineal(mSpeedLineal);
+            }
             
-            if (mIsSizeCurve) particle->SetSizeCurve(mSizeCurve);
-            else particle->SetSize(mSizeLineal);
+            if (mIsSizeCurve)
+            {
+                particle->SetSizeCurve(mSizeCurve);
+                particle->SetSizeFactor(mSizeCurveFactor);
+
+            }
+            else
+            {
+                particle->SetSize(mSizeLineal);
+            }
 
 			mParticles.push_back(particle);
 		}
@@ -234,6 +249,8 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddBool("isSizeCurve", mIsSizeCurve);
     archive.AddFloat4("SizeCurve", mSizeCurve.ptr());
     archive.AddFloat4("SpeedCurve", mSpeedCurve.ptr());
+    archive.AddFloat("SizeFactor", mSizeCurveFactor);
+    archive.AddFloat("SpeedFactor", mSpeedCurveFactor);
     mShape->Save(archive);
     
     std::vector<Archive> objectArray;
@@ -259,13 +276,11 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mDuration = data["Duration"].GetFloat();
     }
-    
     if (data.HasMember("Image") && data["Image"].IsInt())
     {
         mResourceId = data["Image"].GetInt();
         SetImage(mResourceId);
     }
-
     if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
     {
         mMaxLifeTime = data["Life Time"].GetFloat();
@@ -281,6 +296,14 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     if (data.HasMember("Size") && data["Size"].IsFloat())
     {
         mSizeLineal = data["Size"].GetFloat();
+    }
+    if (data.HasMember("SpeedFactor") && data["SpeedFactor"].IsFloat())
+    {
+        mSpeedCurveFactor = data["SpeedFactor"].GetFloat();
+    }
+    if (data.HasMember("SizeFactor") && data["SizeFactor"].IsFloat())
+    {
+        mSizeCurveFactor = data["SizeFactor"].GetFloat();
     }
     if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
     {

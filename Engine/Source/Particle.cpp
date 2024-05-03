@@ -28,8 +28,8 @@ bool Particle::Update(float DeltaTime, float3 cameraPosition)
     {
 		return false;
     }
-    mSize = mIsSizeCurve ? BezierValue(dt01, mSizeCurve) : mSizeLinear;
-    mSpeed = mIsSpeedCurve ? BezierValue(dt01, mSpeedCurve) : mSpeedLinear;
+    mSize = mIsSizeCurve ? mSizeLinear + (BezierValue(dt01, mSizeCurve) * mSizeCurveFactor) : mSizeLinear;
+    mSpeed = mIsSpeedCurve ? mSpeedLinear + (BezierValue(dt01, mSpeedCurve) * mSpeedCurveFactor) : mSpeedLinear;
     mPosition = mPosition + mDirection * mSpeed * DeltaTime;
     return true;
 }

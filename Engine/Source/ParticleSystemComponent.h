@@ -47,10 +47,12 @@ private:
 	bool mIsSpeedCurve;
 	float mSpeedLineal = 1.0f;
 	float4 mSpeedCurve;
+	float mSpeedCurveFactor = 1.0f;
 
 	bool mIsSizeCurve;
 	float mSizeLineal = 1.0f;
 	float4 mSizeCurve;
+	float mSizeCurveFactor = 1.0f;
 
 	float mEmissionRate = 1.0f;
 	int mMaxParticles = 1000.0f;

@@ -13,27 +13,36 @@ public:
     float3 GetPosition() const { return mPosition; }
     float3 GetDirection() const { return mDirection; }
     float GetRotation() const { return mRotation; }
+
     bool IsSpeedCurve() const { return mIsSpeedCurve; }
     float GetSpeed() const { return mSpeed; }
     float GetSpeedLineal() const { return mSpeedLinear; }
     float4 GetSpeedCurve() const { return mSpeedCurve; }
+
     bool IsSizeCurve() const { return mIsSizeCurve; }
     float GetSize() const { return mSize; }
     float GetSizeLinear() const { return mSizeLinear; }
     float4 GetSizeCurve() const { return mSizeCurve; }
+
     float GetLifetime() const { return mLifeTime; }
     float GetMaxLifetime() const { return mMaxLifeTime; }
     float4 GetColor() const { return mColor; }
 
+
     void SetPosition(const float3& position) { mPosition = position; }
     void SetDirection(const float3& direction) { mDirection = direction; }
     void SetRotation(float rotation) { mRotation = rotation; }
+
     void SetIsSpeedCurve(bool isSpeedCurve) { mIsSpeedCurve = isSpeedCurve; }
     void SetSpeedLineal(float speedLineal) { mSpeedLinear = speedLineal; }
     void SetSpeedCurve(const float4& speedCurve) { mSpeedCurve = speedCurve; }
+    void SetSpeedFactor(const float speedFactor) { mSpeedCurveFactor = speedFactor; }
+
     void SetIsSizeCurve(bool isSizeCurve) { mIsSizeCurve = isSizeCurve; }
     void SetSize(float size) { mSizeLinear = size; }
     void SetSizeCurve(const float4& sizeCurve) { mSizeCurve = sizeCurve; }
+    void SetSizeFactor(const float sizeFactor) { mSizeCurveFactor = sizeFactor; }
+
     void SetLifetime(float lifetime) { mLifeTime = lifetime; }
     void SetMaxLifetime(float maxLifetime) { mMaxLifeTime = maxLifetime; }
     void SetColor(const float4& color) { mColor = color; }
@@ -74,11 +83,14 @@ private:
     bool mIsSpeedCurve = false;
     float mSpeedLinear = 1.0f;
     float4 mSpeedCurve;
+    float mSpeedCurveFactor = 1.0f;
 
     float mSize = 1.0f;
     bool mIsSizeCurve = false;
     float mSizeLinear = 1.0f;
     float4 mSizeCurve;
+    float mSizeCurveFactor = 1.0f;
+
 
     float mLifeTime = 0.0f;
     float mMaxLifeTime = 3.0f;

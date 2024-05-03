@@ -1257,27 +1257,46 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
 {
-	ImGui::InputFloat("Emision Rate", &(component->mEmissionRate));
-	ImGui::InputFloat("Duration", &(component->mDuration));
-	ImGui::Checkbox("Looping", &(component->mLooping));
-	ImGui::InputFloat("Start speed", &(component->mSpeedLineal));
-	ImGui::InputFloat("Start lifetime", &(component->mMaxLifeTime));
-	//ImGui::InputFloat("Start size", &(component->mSize));
-	ImGui::Checkbox("Speed as a Curve", &(component->mIsSpeedCurve));
-	if (!component->mIsSpeedCurve)
+	ImGui::Text("Looping");
+	ImGui::SameLine(); 
+	ImGui::Checkbox("##Looping", &(component->mLooping));
+	if (!component->mLooping) 
 	{
-		ImGui::InputFloat("Speed", &component->mSpeedLineal);
+		ImGui::Text("Duration");
+		ImGui::SameLine(); 
+		ImGui::DragFloat("##Duration", &(component->mDuration), 1.0f, 0.0f);
 	}
-	else
+	ImGui::Text("Emision Rate");
+	ImGui::SameLine(); 
+	ImGui::DragFloat("##Emision Rate", &(component->mEmissionRate), 1.0f, 0.0f);
+	ImGui::Text("Lifetime");
+	ImGui::SameLine(); 
+	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
+	//ImGui::DragFloat("Start size", &(component->mSize));
+
+	ImGui::Separator();
+	ImGui::Text("Speed");
+	ImGui::Text("Initial Speed");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Initial Speed", &component->mSpeedLineal, 1.0f, 0.0f);
+	ImGui::Text("Speed as a Curve");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Speed as a Curve", &(component->mIsSpeedCurve));
+	if (component->mIsSpeedCurve)
 	{
-		ImGui::Text("Speed Curve");
 		static float points[5] = { component->mSpeedCurve[0], 
 			component->mSpeedCurve[1], 
 			component->mSpeedCurve[2], 
 			component->mSpeedCurve[3] };
-
-		ImGui::SliderFloat2("Point 1", points, 0, 1, "%.3f", 1.0f);
-		ImGui::SliderFloat2("Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+		ImGui::Text("Speed Growing Factor");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Speed Growing Factor", &component->mSpeedCurveFactor, 1.0f, 0.0f);
+		ImGui::Text("Point 1");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
+		ImGui::Text("Point 2");
+		ImGui::SameLine(); 
+		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
 
 		if (points[0] != component->mSpeedCurve[0]) component->mSpeedCurve[0] = points[0];
 		if (points[1] != component->mSpeedCurve[1]) component->mSpeedCurve[1] = points[1];
@@ -1287,21 +1306,30 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 		ImGui::Bezier("Speed Presets", points);
 	}
-	ImGui::Checkbox("Size as a Curve", &(component->mIsSizeCurve));
-	if (!component->mIsSizeCurve)
+	ImGui::Separator();
+	ImGui::Text("Size");
+	ImGui::Text("Initial Size");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Initial Size", &component->mSizeLineal, 1.0f, 0.0f);
+
+	ImGui::Text("Size as a Curve");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Size as a Curve", &(component->mIsSizeCurve));
+	if (component->mIsSizeCurve)
 	{
-		ImGui::InputFloat("Size", &component->mSizeLineal);
-	}
-	else
-	{
-		ImGui::Text("Size Curve");
 		static float points[5] = { component->mSizeCurve[0],
 			component->mSizeCurve[1],
 			component->mSizeCurve[2],
 			component->mSizeCurve[3] };
-
-		ImGui::SliderFloat2("Point 1", points, 0, 1, "%.3f", 1.0f);
-		ImGui::SliderFloat2("Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+		ImGui::Text("Size Growing Factor");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Size Growing Factor", &component->mSizeCurveFactor, 1.0f, 0.0f);
+		ImGui::Text("Point 1");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
+		ImGui::Text("Point 2");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
 
 		if (points[0] != component->mSizeCurve[0]) component->mSizeCurve[0] = points[0];
 		if (points[1] != component->mSizeCurve[1]) component->mSizeCurve[1] = points[1];
@@ -1311,10 +1339,12 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 		ImGui::Bezier("Size Presets", points);
 	}
-
+	ImGui::Separator();
 	static const char* items[]{ "Cone","Square","Circle" };
 	static int Selecteditem = 0;
-	bool check = ImGui::Combo("MyCombo", &Selecteditem, items, IM_ARRAYSIZE(items));
+	ImGui::Text("Shape");
+	ImGui::SameLine();
+	bool check = ImGui::Combo("##", &Selecteditem, items, IM_ARRAYSIZE(items));
 	if (check)
 	{
 		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
@@ -1323,17 +1353,26 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	switch(component->mShapeType)
 	{
 		case EmitterShape::Type::CONE:
-			ImGui::InputFloat("Angle", &component->mShape->mShapeAngle);
-			ImGui::InputFloat("Radius", &component->mShape->mShapeRadius);
+			ImGui::Text("Angle");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Angle", &component->mShape->mShapeAngle, 1.0f, 0.0f);
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 1.0f, 0.0f);
 			break;
 		case EmitterShape::Type::SQUARE:
-			ImGui::InputFloat2("Width", &component->mShape->mShapeSize.x);
+			ImGui::Text("Width");
+			ImGui::SameLine();
+			ImGui::DragFloat2("##Width", &component->mShape->mShapeSize.x, 1.0f, 0.0f);
 			break;
 		case EmitterShape::Type::CIRCLE:
-			ImGui::InputFloat("Radius", &component->mShape->mShapeRadius);
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 1.0f, 0.0f);
 			break;
 
 	}
+	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint")) 
 	{
 		// Drag and drop	
