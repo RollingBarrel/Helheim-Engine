@@ -20,6 +20,8 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
 {
     SetImage(mResourceId);
     mColorGradient[0.0f] = float4::one;
+    InitEmitterShape();
+    Init();
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
@@ -29,6 +31,7 @@ mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxPa
 mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), Component(owner, ComponentType::PARTICLESYSTEM)
 {
     SetImage(original.mResourceId);
+    Init();
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 
@@ -36,7 +39,7 @@ ParticleSystemComponent::~ParticleSystemComponent()
     App->GetOpenGL()->RemoveParticleSystem(this);
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
-    //delete mShapeType;
+    delete mShape;
     for (auto particle : mParticles)
     {
         delete particle;
@@ -54,7 +57,6 @@ Component* ParticleSystemComponent::Clone(GameObject* owner) const
 
 void ParticleSystemComponent::Init()
 {
-    InitEmitterShape();
     // set up mesh and attribute properties
     float particleQuad[] = {
         -0.1f, 0.1f, 0.0f, 1.0f,
@@ -97,12 +99,6 @@ void ParticleSystemComponent::Init()
 
     App->GetOpenGL()->AddParticleSystem(this);
 }
-
-//float4x4 CreateBillboardTransform(Frustum camera, float3 worldPosition)
-//{
-//
-//}
-
 
 void ParticleSystemComponent::Draw() const
 {
@@ -233,6 +229,12 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
     archive.AddFloat("Size", mSizeLineal);
+    archive.AddFloat("Speed", mSpeedLineal);
+    archive.AddBool("isSpeedCurve", mIsSpeedCurve);
+    archive.AddBool("isSizeCurve", mIsSizeCurve);
+    archive.AddFloat4("SizeCurve", mSizeCurve.ptr());
+    archive.AddFloat4("SpeedCurve", mSpeedCurve.ptr());
+    mShape->Save(archive);
     
     std::vector<Archive> objectArray;
     std::map<float, float4>::const_iterator it;
@@ -292,6 +294,14 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mLooping = data["Looping"].GetBool();
     }
+    if (data.HasMember("isSpeedCurve") && data["isSpeedCurve"].IsBool())
+    {
+        mIsSpeedCurve = data["isSpeedCurve"].GetBool();
+    }
+    if (data.HasMember("isSizeCurve") && data["isSizeCurve"].IsBool())
+    {
+        mIsSizeCurve = data["isSizeCurve"].GetBool();
+    }
     if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
     {
         const auto& colorArray = data["Color Gradient"].GetArray();
@@ -316,6 +326,41 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
                 mColorGradient[time] = float4(colorVec);
             }
         }
+    }
+    if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
+    {
+        mShapeType = (EmitterShape::Type)data["ShapeType"].GetInt();
+        InitEmitterShape();
+        mShape->LoadFromJSON(data);
+    }
+
+    if (data.HasMember("SizeCurve") && data["SizeCurve"].IsArray())
+    {
+        const rapidjson::Value& values = data["SizeCurve"];
+        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
+        if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
+        {
+            x = values[0].GetFloat();
+            y = values[1].GetFloat();
+            z = values[2].GetFloat();
+            w = values[3].GetFloat();
+        }
+
+        mSizeCurve = float4(x, y, z, w);
+    }
+    if (data.HasMember("SpeedCurve") && data["SpeedCurve"].IsArray())
+    {
+        const rapidjson::Value& values = data["SpeedCurve"];
+        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
+        if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
+        {
+            x = values[0].GetFloat();
+            y = values[1].GetFloat();
+            z = values[2].GetFloat();
+            w = values[3].GetFloat();
+        }
+
+        mSpeedCurve = float4(x, y, z, w);
     }
 }
 

@@ -534,7 +534,6 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::PARTICLESYSTEM:
 	{
 		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
-		pc->Init();
 		newComponent = pc;
 		break;
 	}
