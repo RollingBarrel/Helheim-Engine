@@ -14,10 +14,12 @@ public:
     float3 GetDirection() const { return mDirection; }
     float GetRotation() const { return mRotation; }
     bool IsSpeedCurve() const { return mIsSpeedCurve; }
+    float GetSpeed() const { return mSpeed; }
     float GetSpeedLineal() const { return mSpeedLinear; }
     float4 GetSpeedCurve() const { return mSpeedCurve; }
     bool IsSizeCurve() const { return mIsSizeCurve; }
-    float GetSize() const { return mSizeLinear; }
+    float GetSize() const { return mSize; }
+    float GetSizeLinear() const { return mSizeLinear; }
     float4 GetSizeCurve() const { return mSizeCurve; }
     float GetLifetime() const { return mLifeTime; }
     float GetMaxLifetime() const { return mMaxLifeTime; }
@@ -66,17 +68,19 @@ public:
 private:
     float3 mPosition; // Relativa al emisor de particulas
     float3 mDirection = float3::unitX; // Relativa al emisor de particulas
-    float mRotation;
+    float mRotation = 0.0f;
 
-    bool mIsSpeedCurve;
-    float mSpeedLinear;
+    float mSpeed = 1.0f;
+    bool mIsSpeedCurve = false;
+    float mSpeedLinear = 1.0f;
     float4 mSpeedCurve;
 
-    bool mIsSizeCurve;
-    float mSizeLinear;
+    float mSize = 1.0f;
+    bool mIsSizeCurve = false;
+    float mSizeLinear = 1.0f;
     float4 mSizeCurve;
 
-    float mLifeTime;
-    float mMaxLifeTime;
+    float mLifeTime = 0.0f;
+    float mMaxLifeTime = 3.0f;
     float4 mColor;
 };

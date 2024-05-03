@@ -2,16 +2,6 @@
 
 Particle::Particle()
 {
-    mPosition = float3::zero;
-    mDirection = float3::unitX;
-    mRotation = 0.0f;
-    mIsSpeedCurve = false;
-    mSpeedLinear = 1.0f;
-    mIsSizeCurve = false;
-    mSizeLinear = 1.0f;
-    mMaxLifeTime = 1.0f;
-    mLifeTime = 0.0f;
-    mColor = float4::one;
 }
 
 Particle::Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve)
@@ -21,10 +11,7 @@ Particle::Particle(float3 position, float3 direction, float4 color, float rotati
     mIsSpeedCurve(isSpeedCurve),
     mIsSizeCurve(isSizeCurve),
     mMaxLifeTime(lifeTime),
-    mColor(color),
-    mLifeTime(0.0f),
-    mSizeLinear(0.0f),
-    mSpeedLinear(0.0f)
+    mColor(color)
 {
 }
 
@@ -41,9 +28,9 @@ bool Particle::Update(float DeltaTime, float3 cameraPosition)
     {
 		return false;
     }
-    float size = mIsSizeCurve ? BezierValue(dt01, mSizeCurve) : mSizeLinear;
-    float speed = mIsSpeedCurve ? BezierValue(dt01, mSpeedCurve) : mSpeedLinear;
-    mPosition = mPosition + mDirection * speed * DeltaTime;
+    mSize = mIsSizeCurve ? BezierValue(dt01, mSizeCurve) : mSizeLinear;
+    mSpeed = mIsSpeedCurve ? BezierValue(dt01, mSpeedCurve) : mSpeedLinear;
+    mPosition = mPosition + mDirection * mSpeed * DeltaTime;
     return true;
 }
 
