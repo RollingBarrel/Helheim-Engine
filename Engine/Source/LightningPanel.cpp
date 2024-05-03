@@ -3,6 +3,7 @@
 #include "ModuleOpenGL.h"
 #include "imgui.h"
 #include "glew.h"
+#include <ImGuiFileDialog.h>
 
 
 LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, false) {}
@@ -13,6 +14,37 @@ void LightningPanel::Draw(int windowFlags)
 
 	glUseProgram(EngineApp->GetOpenGL()->GetPBRProgramId());
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
+
+	if (ImGui::Button("Bake Ambient Light"))
+	{
+		App->GetOpenGL()->BakeIBL();
+	}
+
+	ImGui::Text(mSkyboxFileName.c_str());
+	ImGui::SameLine();
+	if (ImGui::Button("Select Skybox"))
+	{
+		IGFD::FileDialogConfig config;
+		config.path = "./Assets/Textures";
+		ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".hdr", config);
+	}
+
+	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
+	if (ImGuiFileDialog::Instance()->Display("SaveScene"))
+	{
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			App->GetOpenGL()->SetSkybox(filePathName);
+			mSkyboxFileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+		}
+
+		ImGuiFileDialog::Instance()->Close();
+	}
+
+
+	
+
 	
 	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirAmb.mDirCol[3], 0.05f, 0.0f, 5.0f))
 	{

@@ -186,7 +186,7 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
-	BakeIBL(L"Assets/Textures/skybox.hdr");
+	BakeIBL();
 	//BakeIBL(L"Assets/Textures/rural_asphalt_road_4k.hdr");
 	return true;
 }
@@ -474,11 +474,16 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 	return ret;
 }
 
-void ModuleOpenGL::BakeIBL(const wchar_t* hdrTexPath)
+void ModuleOpenGL::BakeIBL()
 {
 	DirectX::ScratchImage image;
 
-	HRESULT res = DirectX::LoadFromHDRFile(hdrTexPath, nullptr, image);
+	size_t size = strlen(mSkyboxPath.c_str()) + 1;
+	wchar_t* pathTex = new wchar_t[size];
+	size_t outSize;
+	mbstowcs_s(&outSize, pathTex, size, mSkyboxPath.c_str(), size - 1);
+
+	HRESULT res = DirectX::LoadFromHDRFile(pathTex, nullptr, image);
 
 	if (res == S_OK)
 	{

@@ -83,7 +83,9 @@ public:
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
-	void BakeIBL(const wchar_t* hdrTexPath);
+	void BakeIBL();
+	std::string GetSkyboxPath() { return mSkyboxPath; }
+	void SetSkybox(std::string path) { mSkyboxPath = path; BakeIBL(); }
 
 private:
 	void* context = nullptr;
@@ -126,7 +128,7 @@ private:
 	unsigned int mIrradianceTextureId = 0;
 	unsigned int mSpecPrefilteredTexId = 0;
 	unsigned int mEnvBRDFTexId = 0;
-	
+	std::string mSkyboxPath = "Assets/Textures/skybox.hdr";
 	
 
 	//Lighting uniforms
