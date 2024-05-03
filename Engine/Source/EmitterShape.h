@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MathGeoLib.h"
+#include "Archive.h"
 
 class EmitterShape
 {
@@ -18,8 +19,11 @@ public:
 
     virtual float3 RandomInitPosition();
     virtual float3 RandomInitDirection();
+    void Save(Archive& archive) const;
+    void LoadFromJSON(const rapidjson::Value& data);
 
 protected:
+    Type mType;
     float mShapeRadius;
     float mShapeAngle;
     float2 mShapeSize;

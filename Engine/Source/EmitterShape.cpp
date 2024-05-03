@@ -4,6 +4,7 @@
 
 EmitterShape::EmitterShape()
 {
+    mType = Type::NONE;
 	mShapeRadius = 1.0f;
 	mShapeAngle = 3.1415f / 4.0f;
 	mShapeSize = float2(1.0f, 1.0f);
@@ -11,6 +12,39 @@ EmitterShape::EmitterShape()
 
 EmitterShape::~EmitterShape()
 {
+}
+
+void EmitterShape::Save(Archive& archive) const
+{
+    archive.AddInt("ShapeType", mType);
+    archive.AddFloat("ShapeRadius", mShapeRadius);
+    archive.AddFloat("ShapeAngle", mShapeAngle);
+    archive.AddFloat2("ShapeSize", mShapeSize);
+}
+
+void EmitterShape::LoadFromJSON(const rapidjson::Value& data)
+{
+    if (data.HasMember("ShapeRadius") && data["ShapeRadius"].IsFloat())
+    {
+        mShapeRadius = data["ShapeRadius"].GetFloat();
+    }
+    if (data.HasMember("ShapeAngle") && data["ShapeAngle"].IsFloat())
+    {
+        mShapeAngle = data["ShapeAngle"].GetFloat();
+    }
+    if (data.HasMember("ShapeSize") && data["ShapeSize"].IsArray())
+    {
+        const rapidjson::Value& values = data["ShapeSize"];
+        float x{ 0.0f }, y{ 0.0f };
+        if (values.Size() == 2 && values[0].IsFloat() && values[1].IsFloat())
+        {
+            x = values[0].GetFloat();
+            y = values[1].GetFloat();
+        }
+
+        mShapeSize = float2(x, y);
+    }
+
 }
 
 float3 EmitterShape::RandomInitPosition()
@@ -25,6 +59,7 @@ float3 EmitterShape::RandomInitDirection()
 
 EmitterShapeCone::EmitterShapeCone()
 {
+    mType = Type::CONE;
 	mShapeRadius = 1.0f;
 	mShapeAngle = 3.1415f / 4.0f;
 }
