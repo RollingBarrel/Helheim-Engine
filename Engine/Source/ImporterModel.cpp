@@ -1,4 +1,4 @@
-#include "Globals.h"
+ï»¿#include "Globals.h"
 #include "SaveLoadModel.h"
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
@@ -201,15 +201,14 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
                 float4x4 inverseBindMatrix;
 
-                for (size_t row = 0; row < 4; row++) 
+                for (size_t row = 0; row < 4; row++)
                 {
-                    for (size_t col = 0; col < 4; col++) 
+                    for (size_t col = 0; col < 4; col++)
                     {
                         inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
-
-                rModel->mJoints.push_back({ skins.joints[i], inverseBindMatrix });
+                rModel->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
 
             }
         }
@@ -241,18 +240,17 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         animationId = 0;
     }
 
-    rModel->mAnimationUids.push_back(animationId); 
+    rModel->mAnimationUids.push_back(animationId);
 
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
-    bufferSize += sizeof(unsigned int);                                     //Tamaño vector
+    bufferSize += sizeof(unsigned int);                                     //Size vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
-    bufferSize += sizeof(int) * rModel->mJoints.size();
-
-    for (size_t i = 0; i < rModel->mJoints.size(); i++)
+    for (int i = 0; i < rModel->mInvBindMatrices.size(); ++i) 
     {
-        bufferSize += sizeof(unsigned int);
-        bufferSize += sizeof(float) * 16;
+        bufferSize += sizeof(float) * 16;                                   // Size of the float array
+        bufferSize += sizeof(unsigned int);                                 // Size of the string length
+        bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;                     // Size of the string characters
     }
 
     if (rModel)
