@@ -54,12 +54,31 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, mNormSsbo);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mTangSsbo);
 
-	unsigned int idx = 0;
+	
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
+		unsigned int idx = 0;
+		switch (it->type)
+		{
+		case Attribute::POS:
+			idx = 0;
+			break;
+		case Attribute::UV:
+			idx = 1;
+			break;
+		case Attribute::NORMAL:
+			idx = 2;
+			break;
+		case Attribute::TANGENT:
+			idx = 3;
+			break;
+		default:
+			assert("Unsuported Vertex Attribute");
+			break;
+		}
+
 		glEnableVertexAttribArray(idx);
 		glVertexAttribPointer(idx, (*it).size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it).offset);
-		++idx;
 	}
 
 	glBindVertexArray(0);
