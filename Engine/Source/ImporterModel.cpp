@@ -243,15 +243,14 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     rModel->mAnimationUids.push_back(animationId);
 
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
-    bufferSize += sizeof(unsigned int);                                     //Tama�o vector
+    bufferSize += sizeof(unsigned int);                                     //Size vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
-    for (const auto& invBindMatrix : rModel->mInvBindMatrices) 
+    for (int i = 0; i < rModel->mInvBindMatrices.size(); ++i) 
     {
         bufferSize += sizeof(float) * 16;                                   // Size of the float array
         bufferSize += sizeof(unsigned int);                                 // Size of the string length
-        //bufferSize += sizeof(char) * invBindMatrix.first.size();                // Size of the string characters
-        bufferSize += sizeof(invBindMatrix.first);
+        bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;                     // Size of the string characters
     }
 
     if (rModel)

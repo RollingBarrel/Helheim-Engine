@@ -100,17 +100,17 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
 
     for (unsigned int i = 0; i < jointsSize; ++i)
     {
-        bytes = sizeof(int);
-        int lenString = sizeof(rModel->mInvBindMatrices[i].first);
+        bytes = sizeof(unsigned int);
+        unsigned int lenString = rModel->mInvBindMatrices[i].first.length() + 1;
         memcpy(cursor, &lenString, bytes);
         cursor += bytes;
 
-        bytes = sizeof(char) * lenString;
-        memcpy(cursor, &rModel->mInvBindMatrices[i].first, bytes);
+        bytes = lenString;
+        memcpy(cursor, rModel->mInvBindMatrices[i].first.data(), bytes);
         cursor += bytes;
 
         bytes = sizeof(float4x4);
-        memcpy(cursor, &rModel->mInvBindMatrices[i].second, bytes);
+        memcpy(cursor, rModel->mInvBindMatrices[i].second.ptr(), bytes);
         cursor += bytes;
     }
 
@@ -249,14 +249,17 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
 
         for (unsigned int i = 0; i < jointsSize; ++i)
         {
-            bytes = sizeof(int);
-            int lenString;
+            bytes = sizeof(unsigned int);
+            unsigned int lenString = 0;
             memcpy(&lenString, cursor, bytes);
             cursor += bytes;
 
-            bytes = sizeof(char) * lenString;
-            memcpy(&rModel->mInvBindMatrices[i].first, cursor, bytes);
+            bytes = lenString;
+            char* jointName = new char[lenString];
+            memcpy(jointName, cursor, bytes);
             cursor += bytes;
+
+            rModel->mInvBindMatrices[i].first = jointName;
 
             bytes = sizeof(float4x4);
             memcpy(&rModel->mInvBindMatrices[i].second, cursor, bytes);
