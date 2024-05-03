@@ -43,6 +43,9 @@ struct Material
 	bool hasNormalMap;
 	float metal;
 	float rough;
+	bool hasEmissiveTex;
+	vec3 emissiveFactor;
+	sampler2D emissiveTex;
 };
 
 readonly layout(std430, binding = 11) buffer Materials 
@@ -186,6 +189,15 @@ void main()
 	}
 
 	pbrCol += GetAmbientLight();
+
+	if (material.hasEmissiveTex)
+	{
+		vec3 emissiveColor = vec3(texture(material.emissiveTex, uv));
+		//Using  gamma correction forces to transform sRGB textures to linear space
+		emissiveColor = pow(emissiveColor, vec3(2.2));
+		emissiveColor *= material.emissiveFactor;
+		pbrCol += emissiveColor;
+	}
 
 	//HDR color  
 	vec3 hdrCol = pbrCol;

@@ -625,12 +625,15 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
+		if (ImGui::Checkbox("Enable Emissive map", &material->mEnableEmissiveTexture))
+		{
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
 		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
-
 		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
@@ -638,6 +641,13 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (material->IsEmissiveEnabled())
+		{
+			if (ImGui::ColorPicker3("Emissive", material->mEmissiveFactor.ptr()))
+			{
+				EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+			}
 		}
 	}
 }

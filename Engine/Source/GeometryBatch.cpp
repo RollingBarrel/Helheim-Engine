@@ -118,21 +118,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	if (mUniqueMaterials.size() == 0 || idx == mUniqueMaterials.size())
 		return false;
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-	const BatchMaterialResource& rMaterial = mUniqueMaterials[idx];
-	Material material;
-	memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
-	material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
-	material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
-	material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
-	material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
-	material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
-	material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
-	material.metalness = rMaterial.resource->GetMetallicFactor();
-	material.roughness = rMaterial.resource->GetRoughnessFactor();
-
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	mMaterialFlag = true;
 
 	return true;
 }
@@ -203,12 +189,15 @@ void GeometryBatch::RecreateMaterials()
 	for (const BatchMaterialResource rMaterial : mUniqueMaterials) {
 		Material material;
 		memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
+		memcpy(material.emissiveFactor, rMaterial.resource->GetEmissiveFactor().ptr(), sizeof(float) * 3);
 		material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
 		material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
 		material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
+		material.emissiveTex = (rMaterial.resource->GetEmissiveTexture()) ? rMaterial.resource->GetEmissiveTexture()->GetTextureHandle() : 0;
 		material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
 		material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
 		material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
+		material.hasEmissiveTex = rMaterial.resource->IsEmissiveEnabled();
 		material.metalness = rMaterial.resource->GetMetallicFactor();
 		material.roughness = rMaterial.resource->GetRoughnessFactor();
 
