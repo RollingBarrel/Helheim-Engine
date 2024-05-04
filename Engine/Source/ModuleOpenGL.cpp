@@ -553,9 +553,9 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		
+
 
 
 		const DirectX::TexMetadata& metadata = image.GetMetadata();
@@ -596,10 +596,9 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+
 
 		glUseProgram(mIrradianceProgramId);
-		glUniform1ui(0, irradianceSize);
 		glGenTextures(1, &mIrradianceTextureId);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
 		for (unsigned int i = 0; i < 6; ++i)
