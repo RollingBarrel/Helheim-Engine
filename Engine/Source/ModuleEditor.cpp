@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
+#include "ModuleFileSystem.h"
 #include "ModuleEngineScriptManager.h"
 #include "Quadtree.h"
 
@@ -210,7 +211,18 @@ void ModuleEditor::ShowMainMenuBar()
 			{
 				if (!EngineApp->IsPlayMode())
 				{
-					App->GetScene()->Save(App->GetScene()->GetName().c_str());
+					std::string str = "Assets/Scenes/";
+					str += App->GetScene()->GetName();
+					str += ".json";
+					if (App->GetFileSystem()->Exists(str.c_str()))
+					{
+						App->GetScene()->Save(App->GetScene()->GetName().c_str());
+					}
+					else
+					{
+						ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+						mSaveSceneOpen = true;
+					}
 				}
 				else
 				{
@@ -235,9 +247,11 @@ void ModuleEditor::ShowMainMenuBar()
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Edit")) {
+		if (ImGui::BeginMenu("Edit")) 
+		{
 			Panel* settingsPanel = mPanels[SETTINGSPANEL];
-			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) {
+			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) 
+			{
 				if (settingsPanel)
 				{
 					settingsPanel->IsOpen() ? settingsPanel->Close() : settingsPanel->Open();
@@ -407,8 +421,10 @@ void ModuleEditor::ShowMainMenuBar()
 
 void ModuleEditor::OpenLoadScene() {
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
-	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
-		if (ImGuiFileDialog::Instance()->IsOk()) {
+	if (ImGuiFileDialog::Instance()->Display("LoadScene")) 
+	{
+		if (ImGuiFileDialog::Instance()->IsOk()) 
+		{
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 			if (EngineApp->IsPlayMode())
 			{
@@ -424,14 +440,15 @@ void ModuleEditor::OpenLoadScene() {
 
 void ModuleEditor::OpenSaveScene() {
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
-	if (ImGuiFileDialog::Instance()->Display("SaveScene")) {
-		if (ImGuiFileDialog::Instance()->IsOk()) {
+	if (ImGuiFileDialog::Instance()->Display("SaveScene")) 
+	{
+		if (ImGuiFileDialog::Instance()->IsOk()) 
+		{
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 			filePathName = filePathName.substr(0, filePathName.find(".json"));
 			EngineApp->GetScene()->GetRoot()->SetName(filePathName.c_str());
 			EngineApp->GetScene()->Save(filePathName.c_str());
 		}
-
 		ImGuiFileDialog::Instance()->Close();
 		mSaveSceneOpen = false;
 	}
