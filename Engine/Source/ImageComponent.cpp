@@ -177,6 +177,7 @@ void ImageComponent::Draw()
 
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
+		//glUniformMatrix4fv(0, 1, GL_TRUE, float4x4::identity.ptr());
 		glUniformMatrix4fv(1, 1, GL_TRUE, view.ptr());
 		glUniformMatrix4fv(2, 1, GL_TRUE, proj.ptr());
 
