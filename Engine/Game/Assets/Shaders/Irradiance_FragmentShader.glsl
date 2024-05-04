@@ -1,11 +1,19 @@
 #version 460 core
 
-#define NUM_SAMPLES 16384
+#define NUM_SAMPLES 2048
 #define PI 3.1415926535897932384626433832795
 
 in vec3 texcoords;
 out vec4 fragColor;
 uniform samplerCube environment;
+layout(location = 0) uniform uint environmentFaceWidth;
+
+float computeLod(float pdf, int numSamples, uint width)
+{
+	// note that 0.5 * log2 is equivalent to log4
+	return max(0.5 * log2( 6.0 * float(width) * float(width) / (float(numSamples) * pdf)), 0.0);
+}
+
 
 vec3 GetHemisphereSample(float u1, float u2)
 {
@@ -45,10 +53,19 @@ void main()
 	for (int i = 0; i < NUM_SAMPLES; ++i)
 	{
 		vec2 randValue = Hammersley2D(i, NUM_SAMPLES);
-		vec3 L = tangentSpace * GetHemisphereSample(randValue[0], randValue[1]);
-		vec3 Li = texture(environment, L).rgb;
+		//vec3 L = tangentSpace * GetHemisphereSample(randValue[0], randValue[1]);
+		vec3 L = GetHemisphereSample(randValue[0], randValue[1]);
+		float cosTheta = L.z;
+		float pdf = cosTheta/PI;
+		float lod = computeLod(pdf, NUM_SAMPLES, environmentFaceWidth);
+		L = tangentSpace * L;
+		vec3 Li = textureLod(environment, L, lod).rgb;
+		//vec3 Li = texture(environment, L).rgb;
 		irradiance += Li;
 	}
+
+
+
 
 	fragColor = vec4(irradiance*(1.0/float(NUM_SAMPLES)), 1.0f);
 }
