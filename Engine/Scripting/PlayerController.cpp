@@ -13,6 +13,7 @@
 #include "EnemyRobot.h"
 #include "SliderComponent.h"
 #include "Physics.h"
+#include "ObjectPool.h"
 
 
 CREATE(PlayerController)
@@ -62,6 +63,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
     MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
 
+    SEPARATOR("BULLET POOL");
+    MEMBER(MemberType::GAMEOBJECT, mBulletPoolHolder);
+
     END_CREATE;
 }
 
@@ -98,7 +102,11 @@ void PlayerController::Start()
     {
         mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
-   
+    if (mBulletPoolHolder)
+    {
+        mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    }
+
 }
 
 
@@ -378,6 +386,7 @@ void PlayerController::MeleeAttack()
         {
             Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             enemyScript->TakeDamage(mMeleeBaseDamage);
+            enemyScript->PushBack();
         }
     }
 }
@@ -447,6 +456,18 @@ void PlayerController::RangedAttack()
 
 void PlayerController::Shoot(float damage)
 {
+
+    //request a bullet from the object pool
+    bullet = mBulletPool->GetPooledObject();
+
+    if (bullet != nullptr)
+    {
+        //  bullet->Update();
+        bullet->SetEnabled(true);
+        bullet->SetPosition(mGameObject->GetPosition() + float3(0.f, 1.0f, 0.f));
+        bullet->SetRotation(mGameObject->GetRotation());
+    }
+
     std::map<float, Hit> hits;
     
     Ray ray;

@@ -71,3 +71,10 @@ bool Enemy::Delay(float delay) //Lapse of time for doing some action
     }
     else return false;
 }
+
+
+void Enemy::PushBack() {
+    float3 direction = mGameObject->GetPosition() - mPlayer->GetPosition();
+    direction.Normalize();
+    mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
+}

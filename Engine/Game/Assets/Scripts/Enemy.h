@@ -15,6 +15,7 @@ class Enemy : public Script
 
 		virtual void TakeDamage(float damage);
 		virtual void Death();
+		virtual void PushBack();
 		
 	protected:
 		bool Delay(float delay);

@@ -45,6 +45,12 @@
     <ClInclude Include="MainMenuManager.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -78,6 +84,12 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuManager.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,6 +8,7 @@ class AnimationComponent;
 class AudioSourceComponent;
 class SliderComponent;
 class AudioSourceComponent;
+class ObjectPool;
 
 enum class PlayerState 
 {
@@ -77,6 +78,8 @@ class PlayerController :public Script
         NavMeshController* mNavMeshControl = nullptr;
         GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
+        GameObject* mBulletPoolHolder = nullptr;
+        ObjectPool* mBulletPool = nullptr;
 
         //Stats
         float mPlayerSpeed = 2.0f;
@@ -107,7 +110,8 @@ class PlayerController :public Script
         float mRangeChargeAttackMultiplier = 5.0f;
         float mMinRangeChargeTime = 5.0f;
         float mMaxRangeChargeTime = 10.0f;
-         
+        GameObject* bullet = nullptr;
+
         //Melee
         float mMeleeBaseDamage = 1.0f;
         float mMeleeChargeAttackMultiplier = 5.0f;
