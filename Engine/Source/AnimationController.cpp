@@ -30,7 +30,7 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 
 void AnimationController::Update(GameObject* model)
 {
-	mCurrentTime += App->GetDt();
+	mCurrentTime += App->GetDt() * mSpeed;
 	GetTransform(model);
 }
 
@@ -123,13 +123,13 @@ void AnimationController::GetTransform(GameObject* model)
 			std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
 			auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mCurrentTime);
 
-			if (upperBoundIterator != posTimeStampsVector.end()) 
+			if (upperBoundIterator != posTimeStampsVector.end())
 			{
 				keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
 
 				lambda = (mCurrentTime - channel->posTimeStamps[keyIndex - 1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex - 1]);
 			}
-			else 
+			else
 			{
 				keyIndex = channel->numPositions - 1;
 				lambda = 1;
@@ -145,7 +145,7 @@ void AnimationController::GetTransform(GameObject* model)
 			auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mCurrentTime);
 
 			//If an upper bound has been found
-			if (upperBoundIterator != rotTimeStampsVector.end()) 
+			if (upperBoundIterator != rotTimeStampsVector.end())
 			{
 				//Distance between the first element of the vector and the first higher element, aka the position of the first higher element
 				keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
@@ -154,7 +154,7 @@ void AnimationController::GetTransform(GameObject* model)
 				lambda = (mCurrentTime - channel->rotTimeStamps[keyIndex - 1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex - 1]);
 			}
 			//In case there is no upper bound
-			else 
+			else
 			{
 				//The index is the last element
 				keyIndex = channel->numRotations - 1;

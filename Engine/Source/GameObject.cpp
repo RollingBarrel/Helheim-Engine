@@ -63,7 +63,7 @@ GameObject::GameObject(const GameObject& original) : GameObject(original, origin
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive && original.mIsEnabled),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mTag(original.GetTag()), mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
 {
@@ -349,6 +349,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	}
 
 	child->RecalculateLocalTransform();
+	child->SetActiveInHierarchy(mIsActive && child->mIsEnabled);
 
 	if (!inserted) 
 	{
@@ -964,9 +965,9 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 
 GameObject* GameObject::FindGameObjectInTree(const int objectToFind)
 {
-	std::pair<GameObject*, int> pair(nullptr, -2 - mParent->GetChildren().size());
+	std::pair<GameObject*, int> pair(nullptr, -2);
 
-	GameObject* target = RecursiveTreeSearch(FindFirstParent(this), pair, objectToFind).first;
+	GameObject* target = RecursiveTreeSearch(FindFirstParent(), pair, objectToFind).first;
 
 	return target;
 }
@@ -993,21 +994,21 @@ std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, s
 	return currentGameObject;
 }
 
-GameObject* GameObject::FindFirstParent(GameObject* target) {
+GameObject* GameObject::FindFirstParent() {
 
-	GameObject* parent = target->GetParent();
+	GameObject* parent = GetParent();
 
 	if (parent->GetParent() == nullptr) {
-		return target;
+		return this;
 	}
 	else {
-		return FindFirstParent(parent);
+		return parent->FindFirstParent();
 	}
 }
 
 float4x4 GameObject::TranformInFirstGameObjectSpace() {
 
-	GameObject* firstParent = FindFirstParent(this);
+	GameObject* firstParent = FindFirstParent();
 	float4x4 transformInParentSpace = firstParent->GetWorldTransform().Inverted().Mul(this->GetWorldTransform());
 
 	return transformInParentSpace;
