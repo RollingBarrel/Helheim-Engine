@@ -78,6 +78,7 @@ bool EngineApplication::Init()
 update_status EngineApplication::Update(float dt)
 {
 	//OPTICK_FRAME("MainThread");
+	if (mExit) return UPDATE_STOP;
 
 	mCurrentTimer->Update();
 

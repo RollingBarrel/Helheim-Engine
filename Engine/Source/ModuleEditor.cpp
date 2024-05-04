@@ -202,14 +202,18 @@ void ModuleEditor::ShowMainMenuBar()
 				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".json", config);
 				mLoadSceneOpen = true;
 			}
-			if (ImGui::MenuItem("Save Scene"))
+			if (ImGui::MenuItem("Save"))
+			{
+				App->GetScene()->Save(App->GetScene()->GetName().c_str());
+			}
+			if (ImGui::MenuItem("Save As"))
 			{
 				ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
 				mSaveSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Quit"))
 			{
-				exit(0);
+				App->Exit();
 			}
 			ImGui::EndMenu();
 		}
