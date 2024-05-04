@@ -295,7 +295,8 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetRotation(Interpolate(model->GetRotationQuat(), channel->rotations[newClipIndex], weight));
+				//model->SetRotation(Interpolate(model->GetRotationQuat(), channel->rotations[newClipIndex], weight));
+				model->SetRotation(Interpolate(Quat::FromEulerXYZ(model->GetRotation().x, model->GetRotation().y, model->GetRotation().z), channel->rotations[newClipIndex], weight));
 			}
 			//else if (name == "scale") {
 			//}
