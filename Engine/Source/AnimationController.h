@@ -19,6 +19,7 @@ public:
 	void Restart();
 
 	void GetTransform(GameObject* model);
+	void GetTransformBlending(GameObject* model, float newClipStartTime);
 
 	float3 Interpolate(const float3& first, const float3& second, float lambda);
 	Quat Interpolate(const Quat& first, const Quat& second, float lambda);
@@ -42,6 +43,12 @@ private:
 	float mCurrentTime = 0;
 	float mStartTime = 0;
 	float mEndTime = 0;
+
+	//Provisional to make blending work
+	float mStartTransitionTime = 0;
+	float mTrasitionDuration = 1;
+	bool mTransition = false;
+	float newClipStartTime = 0;
 
 	float mSpeed = 1.0;
 

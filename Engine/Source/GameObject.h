@@ -40,6 +40,7 @@ public:
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mEulerRotation; }
+	const Quat& GetRotationQuat() const { return mRotation;  }
 	float3 GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
