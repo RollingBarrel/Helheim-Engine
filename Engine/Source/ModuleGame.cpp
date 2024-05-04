@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ModuleScriptManager.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "NavMeshController.h"
 #include "glew.h"
 
@@ -17,11 +18,18 @@ bool ModuleGame::Init()
 
 	//TODO: read the name of the fitrst scene to load from somewhere
 	//App->GetScene()->Load("MainMenu");
-	App->GetScene()->Load("Level1");
+	App->GetScene()->Load("gos");
 	//TODO:: This is bad for decoupling
 	App->GetScriptManager()->StartScripts();
 	//TODO: Do better!!!!
 	App->GetScene()->GetNavController()->HandleBuild();
+
+	//TODO: Add this code to is game playing in editor and game
+	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+	if (cameraGameObject)
+	{
+		App->GetCamera()->SetCurrentCamera(cameraGameObject);
+	}
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	

@@ -92,7 +92,7 @@ public:
 	const bool HasUpdatedTransform() const;
 
 	GameObject* FindGameObjectInTree(const int objectToFind);
-	GameObject* FindFirstParent(GameObject* target);
+	GameObject* FindFirstParent();
 	float4x4 TranformInFirstGameObjectSpace();
 	std::vector<Component*> FindComponentsInChildren(GameObject* parent, const ComponentType type);
 	void AddComponent(Component* component, Component* position);

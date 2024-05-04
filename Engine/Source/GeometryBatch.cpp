@@ -166,14 +166,16 @@ void GeometryBatch::RecreatePersistentSsbosAndIbo()
 	{
 		mSsboIndicesData[i] = mSsboIndicesData[0] + ((size * i) / sizeof(uint32_t));
 	}
+
+	mPersistentsFlag = false;
 }
 
-void GeometryBatch::RecreateVboAndEbo(unsigned int newVboDataSize, unsigned int newEboDataSize)
+void GeometryBatch::RecreateVboAndEbo()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-	glBufferData(GL_ARRAY_BUFFER, newVboDataSize, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, mVboDataSize, nullptr, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, newEboDataSize, nullptr, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboDataSize, nullptr, GL_STATIC_DRAW);
 	unsigned int vboOffset = 0;
 	unsigned int eboOffset = 0;
 	for (const BatchMeshResource& res : mUniqueMeshes)
@@ -188,8 +190,8 @@ void GeometryBatch::RecreateVboAndEbo(unsigned int newVboDataSize, unsigned int 
 		eboOffset += size;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	mVboDataSize = newVboDataSize;
-	mEboDataSize = newEboDataSize;
+
+	mVBOFlag = false;
 }
 
 void GeometryBatch::RecreateMaterials()
@@ -214,6 +216,8 @@ void GeometryBatch::RecreateMaterials()
 		offset += materialSize;
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+	mMaterialFlag = false;
 }
 
 void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
@@ -233,9 +237,10 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 	{
         mUniqueMaterials.emplace_back(&resourceMaterial);
 		matIdx = mUniqueMaterials.size() - 1;
-		RecreateMaterials();  
+		mMaterialFlag = true;  
 	}
-       	bool foundMesh = false;  
+
+    bool foundMesh = false;  
 	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();                                                              
 	unsigned int meshIdx = 0;
 	for (; meshIdx < mUniqueMeshes.size(); ++meshIdx)
@@ -251,12 +256,13 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 	{
 		mUniqueMeshes.emplace_back(&rMesh, mEboDataSize / sizeof(unsigned int), mVboDataSize / rMesh.GetVertexSize());
 		meshIdx = mUniqueMeshes.size() - 1;
-		RecreateVboAndEbo(mVboDataSize + rMesh.GetNumberVertices() * rMesh.GetVertexSize(), mEboDataSize + rMesh.GetNumberIndices() * sizeof(unsigned int));
+		mVBOFlag = true;
+		mVboDataSize += rMesh.GetNumberVertices() * rMesh.GetVertexSize();
+		mEboDataSize += rMesh.GetNumberIndices() * sizeof(unsigned int);
 	}
 
 	mMeshComponents.emplace_back(cMesh, meshIdx, matIdx);
-
-	RecreatePersistentSsbosAndIbo();
+	mPersistentsFlag = true;
 }
 
 bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
@@ -292,12 +298,14 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 			if (it->bMeshIdx > bMeshIdx)
 				--(it->bMeshIdx);
 		}
-		RecreateVboAndEbo(mVboDataSize - rMesh.GetNumberVertices() * rMesh.GetVertexSize(), mEboDataSize - rMesh.GetNumberIndices() * sizeof(unsigned int));
+		mVboDataSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize();
+		mEboDataSize -= rMesh.GetNumberIndices() * sizeof(unsigned int);
+		mVBOFlag = true;
 	}
 	if (!--mUniqueMaterials[bMaterialIdx].referenceCount)
 	{
 		mUniqueMaterials.erase(mUniqueMaterials.begin() + bMaterialIdx);
-		RecreateMaterials();
+		mMaterialFlag = true;
 		for (std::vector<BatchMeshRendererComponent>::iterator it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 		{
 			if (it->bMaterialIdx > bMaterialIdx)
@@ -306,8 +314,8 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 			}
 		}
 	}
-	RecreatePersistentSsbosAndIbo();
-
+	
+	mPersistentsFlag = true;
 	return true;
 }
 
@@ -315,6 +323,13 @@ void GeometryBatch::Draw()
 {
 	if (mMeshComponents.size() == 0)
 		return;
+
+	if (mVBOFlag)
+		RecreateVboAndEbo();
+	if (mMaterialFlag)
+		RecreateMaterials();
+	if (mPersistentsFlag)
+		RecreatePersistentSsbosAndIbo();
 
 	bool animationSkinning = false;
 	glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
@@ -324,13 +339,13 @@ void GeometryBatch::Draw()
 		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
 		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
 		{
-			if (meshRenderer->GetIsAnimated() != 0 && (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()))
+			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
 			{
-				const AnimationComponent* cAnim = meshRenderer->GetAnimationComponent();
+				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));
 				if (cAnim && cAnim->GetIsPlaying())
 				{
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
-					glBufferData(GL_SHADER_STORAGE_BUFFER, meshRenderer->GetPalette().size() * sizeof(float) * 16, meshRenderer->GetPalette().data(), GL_DYNAMIC_DRAW);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, cAnim->GetPalette().size() * sizeof(float) * 16, cAnim->GetPalette().data(), GL_DYNAMIC_DRAW);
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
@@ -377,7 +392,22 @@ void GeometryBatch::Draw()
 		{
 			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
 			{
-				memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+				// HERE IF ANIMATED THEN PUT IDENTITY
+				
+				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));				
+				if (cAnim && cAnim->GetIsPlaying())
+				{
+					float4x4 identity = float4x4::identity;
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, identity.ptr(), sizeof(float) * 16);
+
+				}
+				else
+				{
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+
+				}
+
+
 				memcpy(mSsboIndicesData[idx] + i, &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
 				mCommands.emplace_back(rMesh->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
 			}

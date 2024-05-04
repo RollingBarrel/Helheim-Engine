@@ -291,12 +291,6 @@ void ModuleScene::Load(const char* sceneName)
 
 		LoadGameObjectsIntoScripts();
 	}
-
-	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
-	if (cameraGameObject)
-	{
-		App->GetCamera()->SetCurrentCamera(cameraGameObject);
-	}
 }
 
 void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)
@@ -438,7 +432,6 @@ update_status ModuleScene::PostUpdate(float dt)
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
 		LoadPrefab(mPrefabPath, resourceId, true);
-		mQuadtreeRoot->UpdateTree();
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
@@ -451,7 +444,6 @@ update_status ModuleScene::PostUpdate(float dt)
 			mBackgroundScene->SetEnabled(false);
 			mRoot = new GameObject(mPrefabPath, nullptr);
 			LoadPrefab(mPrefabPath, resource->GetUID());
-			mQuadtreeRoot->UpdateTree();
 		}
 	}
 
@@ -469,7 +461,6 @@ void ModuleScene::DeleteGameObjects()
 	}
 
 	mGameObjectsToDelete.clear();
-	mQuadtreeRoot->UpdateTree();
 }
 
 void ModuleScene::DuplicateGameObjects() 
@@ -481,7 +472,6 @@ void ModuleScene::DuplicateGameObjects()
 	}
 
 	mGameObjectsToDuplicate.clear();
-	mQuadtreeRoot->UpdateTree();
 
 }
 
