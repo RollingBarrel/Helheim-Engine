@@ -273,8 +273,7 @@ void PlayerController::HandleRotation()
 
 
 void PlayerController::Dash()
-{   
-    
+{
     if (mDashMovement >= mDashDistance)
     {
         mIsDashCoolDownActive = false;
@@ -283,7 +282,7 @@ void PlayerController::Dash()
         LOG("Dash Charges:  %i", mDashCharges);
         Idle();
     }
-    else 
+    else
     {
         if (mIsDashCoolDownActive)
         {
@@ -296,12 +295,38 @@ void PlayerController::Dash()
         }
         else
         {
-            mDashMovement += mDashSpeed * App->GetDt();
-            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetDt() * mDashSpeed);
-            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-        }  
+            float3 dashDirection = float3::zero;
+            if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+            {
+                dashDirection += float3::unitZ;
+            }
+            if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+            {
+                dashDirection -= float3::unitZ;
+            }
+            if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+            {
+                dashDirection += float3::unitX;
+            }
+            if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+            {
+                dashDirection -= float3::unitX;
+            }
+
+            if (dashDirection.Dot(dashDirection) > 0.0f) 
+            {
+                dashDirection.Normalize();  
+
+                float3 newPos = (mGameObject->GetPosition() + dashDirection * App->GetDt() * mDashSpeed);
+                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+
+                mDashMovement += mDashSpeed * App->GetDt();
+            }
+        }
     }
-}   
+}
+
+   
 
 void PlayerController::Attack()
 {
