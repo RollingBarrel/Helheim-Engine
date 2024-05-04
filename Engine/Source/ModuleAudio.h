@@ -16,6 +16,8 @@ namespace FMOD {
 	class System; 
 }
 
+class AudioSourceComponent;
+
 class ENGINE_API ModuleAudio :
     public Module
 {
@@ -28,10 +30,21 @@ public:
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 
-	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
-	void PauseAllChannels();
+	bool EnginePaused() {return mPaused;};
+	bool EngineStoped() { return mStopped; };
 
-	void AddToActiveAudiosList(FMOD::Studio::EventInstance* eventInstance);
+	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
+
+	void AudioPause();
+	void AudioResume();
+
+	void EngineStop();
+	void EnginePlay();
+
+	void AddToAudiosList(AudioSourceComponent* audioSource);
+	void RemoveFromAudioList(AudioSourceComponent* audioSource);
+
+	int GetMemoryUsage();
 
 	bool CleanUp();
 
@@ -45,7 +58,8 @@ private:
 	FMOD::Studio::Bank* mMusicBank = nullptr;
 
 	bool mPaused = false;
+	bool mStopped = false;
 
-	std::vector<FMOD::Studio::EventInstance*> mActiveAudiosList;
+	std::vector<AudioSourceComponent*> mAudiosSourceList;
 };
 

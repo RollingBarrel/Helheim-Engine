@@ -183,7 +183,6 @@ void EditorControlPanel::Play()
 	case GameState::PAUSE:
 		mState = GameState::PLAY_PAUSE;
 		EngineApp->GetEngineScriptManager()->Stop();
-		//EngineApp->GetAudio()->ResumeAllChannels();
 		break;
 	default:
 		mState = GameState::PLAY;
@@ -202,7 +201,7 @@ void EditorControlPanel::Pause()
 	case GameState::PLAY:
 		mState = GameState::PLAY_PAUSE;
 		EngineApp->GetEngineScriptManager()->Stop();
-		EngineApp->GetAudio()->PauseAllChannels();
+		EngineApp->GetAudio()->AudioPause();
 		break;
 	case GameState::PAUSE:
 		mState = GameState::STOP;
@@ -210,6 +209,7 @@ void EditorControlPanel::Pause()
 	case GameState::PLAY_PAUSE:
 		mState = GameState::PLAY;
 		EngineApp->GetEngineScriptManager()->Play();
+		EngineApp->GetAudio()->AudioResume();
 		break;
 	default:
 		mState = GameState::PAUSE;
@@ -227,7 +227,7 @@ void EditorControlPanel::Stop()
 	EngineApp->SetCurrentClock(EngineApp->GetEngineClock());	
 	EngineApp->GetEngineClock()->Resume();				
 	EngineApp->GetEngineScriptManager()->Stop();
-	EngineApp->GetAudio()->PauseAllChannels();
+	EngineApp->GetAudio()->EngineStop();
 	EngineApp->PlayMode(false);
 	EngineApp->GetScene()->Load("TemporalScene");
 	ImGui::SetWindowFocus("Scene##");
@@ -247,7 +247,7 @@ void EditorControlPanel::Step()
 		EngineApp->GetEngineScriptManager()->Play();
 		EngineApp->GetEngineScriptManager()->Update(EngineApp->GetRealDt());
 		EngineApp->GetEngineScriptManager()->Stop();
-		EngineApp->GetAudio()->PauseAllChannels();
+		EngineApp->GetAudio()->AudioPause();
 		break;
 	default:
 		break;

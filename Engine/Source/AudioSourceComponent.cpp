@@ -10,6 +10,7 @@
 
 AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Component(ownerGameObject,ComponentType::AUDIOSOURCE)
 {
+	App->GetAudio()->AddToAudiosList(this);
 }
 
 AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original, GameObject* owner)
@@ -18,13 +19,13 @@ AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original,
 	mName = original.GetName();
 	SetEventByName(mName.c_str());
 	mParameters = original.GetParameters();
+
+	App->GetAudio()->AddToAudiosList(this);
 }
 
 AudioSourceComponent::~AudioSourceComponent()
 {
-	Reset();
-	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-	mEventInstance->release();
+	CleanCurrentInstance();
 }
 
 
@@ -51,10 +52,6 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 		// Update parameters
 		event->getDescription(&mEventDescription);
 		UpdateParameters();
-
-		// DELETTEEEEEEEEEEEEE MEE
-		/*mEventInstance->start();*/
-		PlayOneShot();
 	}
 }
 
@@ -112,7 +109,6 @@ void AudioSourceComponent::Update()
 	attributes.forward.z = 1.0f;
 	attributes.up.y = 1.0f;
 
-	// Play Audio
 	mEventInstance->set3DAttributes(&attributes);
 }
 
@@ -136,7 +132,6 @@ void AudioSourceComponent::PlayOneShot()
 		mEventDescription->createInstance(&eventInstance);
 
 		eventInstance->start();
-		App->GetAudio()->AddToActiveAudiosList(eventInstance);
 		eventInstance->release();
 	}
 	else 
@@ -241,6 +236,35 @@ float AudioSourceComponent::GetParameterValueByIndex(int index)
 	{
 		return -1;
 	}
+}
+
+void AudioSourceComponent::PauseCurrentInstance()
+{
+	bool isPause;
+	mEventInstance->getPaused(&isPause);
+
+	if (isPause != true)
+	{
+		mEventInstance->setPaused(true);
+	}
+}
+
+void AudioSourceComponent::ResumeCurrentInstance()
+{
+	bool isPause;
+	mEventInstance->getPaused(&isPause);
+
+	if (isPause == true)
+	{
+		mEventInstance->setPaused(false);
+	}
+}
+
+void AudioSourceComponent::CleanCurrentInstance()
+{
+	Reset();
+	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	mEventInstance->release();
 }
 
 void AudioSourceComponent::UpdateParameters()

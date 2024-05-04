@@ -30,6 +30,12 @@ public:
     void UpdateParameterValueByIndex(int index, float value);
     void UpdateParameterValueByName(const char* name, float value);
     void SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime);
+
+    // Engine state control
+    void PauseCurrentInstance();
+    void ResumeCurrentInstance();
+    void CleanCurrentInstance();
+
     
     void Update() override;
     void Play();
@@ -46,6 +52,7 @@ protected:
     void Reset();
 private:
     float GetParameterValueByIndex(int index);
+    void UpdateParameters();
 
     std::string mName = "";
 
@@ -53,9 +60,5 @@ private:
     FMOD::Studio::EventDescription* mEventDescription = nullptr;
     std::map<int, float> mParameters;
     std::map<std::string, int> mNameToParameters;
-
-    void UpdateParameters();
-    
-
 };
 

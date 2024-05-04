@@ -1,7 +1,8 @@
 #include "ModuleAudio.h"
 #include "Globals.h"
+#include "AudioSourceComponent.h"
 
-#include "fmod.hpp"
+#include "fmod_studio.hpp"
 #include "FmodUtils.h"
 #include "Application.h"
 
@@ -17,7 +18,12 @@ bool ModuleAudio::Init()
 {
 	// Instantiate Fmod studio
 	CheckError( FMOD::Studio::System::create(&mSystem) ); // Create the Studio System object.
-	CheckError( mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+
+//#if DEBUG
+	CheckError( mSystem->initialize(1024, FMOD_STUDIO_INIT_MEMORY_TRACKING, FMOD_INIT_MEMORY_TRACKING, 0));
+	//#elif RELEASE
+		//CheckError(mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+//#endif
 	CheckError( mSystem->getCoreSystem(&mCoreSystem));
 
 	// Load bank
@@ -36,20 +42,8 @@ update_status ModuleAudio::PreUpdate(float dt)
 
 update_status ModuleAudio::Update(float dt)
 {
-	if (!mPaused) 
-	{
-		mSystem->update();
-		if (!mActiveAudiosList.empty())
-		{
-			FMOD_STUDIO_PLAYBACK_STATE state;
-			mActiveAudiosList[0]->getPlaybackState(&state);
-			if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
-			{
-				mActiveAudiosList[0]->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-			}
-			LOG("a");
-		}
-	}
+	mSystem->update();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -58,38 +52,50 @@ update_status ModuleAudio::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleAudio::PauseAllChannels()
+void ModuleAudio::AudioPause()
 {
-	mPaused = true;
-	//FMOD::System* coreSystem = nullptr;
-	//mSystem->getCoreSystem(&coreSystem);
-
-	//int numChannels = 0;
-	//coreSystem->getChannelsPlaying(&numChannels);
-	//for (int i = 0; i < numChannels; ++i) {
-	//	FMOD::Channel* channel = nullptr;
-	//	coreSystem->getChannel(i, &channel);
-
-	//	channel->setPaused(true);
-
-	//	bool playstete;
-	//	channel->getPaused(&playstete);
-
-	//	LOG("%d\n", playstete);
-	//}
-	//FMOD::Studio::Bank* masterBank;
-	//mSystem->getBank("Master Bank", &masterBank);
-	//masterBank->unload(); // Unload the master bank
+	for (auto audioSource : mAudiosSourceList) 
+	{
+		audioSource->PauseCurrentInstance();
+	}
 }
 
-void ModuleAudio::AddToActiveAudiosList(FMOD::Studio::EventInstance* eventInstance)
+void ModuleAudio::AudioResume()
 {
-	mActiveAudiosList.push_back(eventInstance);
+	for (auto audioSource : mAudiosSourceList) 
+	{
+		audioSource->ResumeCurrentInstance();
+	}
+}
+
+void ModuleAudio::EngineStop()
+{
+	for (auto audioSource : mAudiosSourceList) 
+	{
+		audioSource->CleanCurrentInstance();
+	}
+
+	mAudiosSourceList = std::vector<AudioSourceComponent*>();
+}
+
+void ModuleAudio::AddToAudiosList(AudioSourceComponent* audioSource)
+{
+	mAudiosSourceList.push_back(audioSource);
+}
+
+int ModuleAudio::GetMemoryUsage()
+{
+	int currentAllocated, maxAllocated;
+	FMOD_RESULT result = FMOD_Memory_GetStats(&currentAllocated, &maxAllocated, 1);
+	// Just get fmod memory
+	return currentAllocated;
 }
 
 bool ModuleAudio::CleanUp()
 {
 	mSystem->unloadAll();
 	mSystem->release();
+
+	mAudiosSourceList.clear();
     return true;
 }
