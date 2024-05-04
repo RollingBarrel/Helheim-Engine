@@ -84,9 +84,13 @@ public:
 
 private:
 	void RecreatePersistentSsbosAndIbo();
-	void RecreateVboAndEbo(unsigned int newVboDataSize, unsigned int newEboDataSize);
+	void RecreateVboAndEbo();
 	void RecreateMaterials();
 
+	bool mMaterialFlag = false;
+	bool mPersistentsFlag = false;
+	bool mVBOFlag = false;
+	
 	std::vector<BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;

@@ -8,7 +8,7 @@
 class ResourceAnimation;
 class GameObject;
 
-class ENGINE_API AnimationController
+class AnimationController
 {
 public:
 
@@ -32,12 +32,18 @@ public:
 	const float GetEndTime() const { return mEndTime; }
 	void SetEndTime(float time);
 
+	const float GetAnimSpeed() const { return mSpeed; }
+	void SetAnimSpeed(float speed) { mSpeed = speed; }
+
+
 private:
 
 	//Time in milliseconds
 	float mCurrentTime = 0;
 	float mStartTime = 0;
 	float mEndTime = 0;
+
+	float mSpeed = 1.0;
 
 	bool mLoop = true;
 
