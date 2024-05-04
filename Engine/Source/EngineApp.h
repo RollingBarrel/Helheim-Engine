@@ -28,6 +28,9 @@ public:
 	ModuleEngineScriptManager* GetEngineScriptManager() { return engineScriptManager; }
 	ModuleEditor* GetEditor() { return editor; }
 
+	void Start();
+	void Stop();
+
 	float GetRealDt() const;
 	float GetGameDt() const;
 

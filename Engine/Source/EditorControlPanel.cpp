@@ -171,13 +171,8 @@ void EditorControlPanel::Play()
 {
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.05f, 0.05f, 0.07f, 1.0f };
-	EngineApp->SetCurrentClock(EngineApp->GetGameClock());
-	EngineApp->GetScene()->Save("TemporalScene");
-	EngineApp->GetEngineScriptManager()->Start();
-	EngineApp->GetGameClock()->Start();
-	EngineApp->GetScene()->GetNavController()->HandleBuild();
-	EngineApp->PlayMode(true);
-
+	
+	EngineApp->Start();
 	switch (mState)
 	{
 	case GameState::PAUSE:
@@ -222,16 +217,7 @@ void EditorControlPanel::Stop()
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
 
-	EngineApp->GetEngineClock()->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
-	EngineApp->GetGameClock()->Stop();		
-	EngineApp->SetCurrentClock(EngineApp->GetEngineClock());	
-	EngineApp->GetEngineClock()->Resume();				
-	EngineApp->GetEngineScriptManager()->Stop();
-	EngineApp->GetAudio()->PauseAllChannels();
-	EngineApp->PlayMode(false);
-	EngineApp->GetScene()->Load("TemporalScene");
-	ImGui::SetWindowFocus("Scene##");
-
+	EngineApp->Stop();
 	mState = GameState::STOP;
 
 }

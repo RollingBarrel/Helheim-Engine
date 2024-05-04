@@ -107,6 +107,30 @@ bool EngineApplication::CleanUp()
 	return ret;
 }
 
+void EngineApplication::Start()
+{
+	mIsPlayMode = true;
+
+	SetCurrentClock(EngineApp->GetGameClock());
+	scene->Save("TemporalScene");
+	engineScriptManager->Start();
+	mGameTimer->Start();
+}
+
+void EngineApplication::Stop()
+{
+	mIsPlayMode = false;
+
+	mEngineTimer->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
+	mGameTimer->Stop();
+	SetCurrentClock(EngineApp->GetEngineClock());
+	mEngineTimer->Resume();
+	engineScriptManager->Stop();
+	audio->PauseAllChannels();
+	scene->Load("TemporalScene");
+
+}
+
 float EngineApplication::GetRealDt() const
 {
 	return mEngineTimer->GetDelta() / (float)1000;
