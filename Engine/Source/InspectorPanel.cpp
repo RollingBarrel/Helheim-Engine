@@ -951,6 +951,17 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	{
 		component->SetEndTime(currentEndTime);
 	}
+
+	ImGui::Text("Transition to:");
+	static int itemToTransition = component->GetCurrentClip();
+	if (ImGui::Combo("Clip", &itemToTransition, component->GetClipNames().data(), component->GetClipNames().size()))
+	{
+	}
+	if (ImGui::Button("Transition")) 
+	{
+		component->SetCurrentClip(itemToTransition);
+		component->StartTransition(1.0f);
+	}
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) 

@@ -67,6 +67,7 @@ public:
 	float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed);
 
+	void StartTransition(float transitionDuration);
 
 private:
 	void AddJointNode(GameObject* node, ResourceModel* model);

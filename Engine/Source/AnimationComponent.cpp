@@ -183,6 +183,14 @@ void AnimationComponent::UpdatePalette()
 
 }
 
+void AnimationComponent::StartTransition(float transitionDuration)
+{
+	mController->SetStartTranstionTime();
+	mController->SetTransitionDuration(transitionDuration);
+	mController->ActivateTransition();
+	mController->SetClipStartTime(GetCurrentStartTime());
+}
+
 Component* AnimationComponent::Clone(GameObject* owner) const
 {
 	return new AnimationComponent(*this, owner);

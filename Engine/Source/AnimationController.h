@@ -36,6 +36,13 @@ public:
 	const float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed) { mSpeed = speed; }
 
+	//Provisional to make blending work
+	void SetStartTranstionTime() { mStartTransitionTime = mCurrentTime; }
+	void SetTransitionDuration(float time) { mTrasitionDuration = time; }
+	void ActivateTransition() { mTransition = true; }
+	void SetClipStartTime(float time) { mClipStartTime = time; }
+	
+
 
 private:
 
@@ -48,7 +55,7 @@ private:
 	float mStartTransitionTime = 0;
 	float mTrasitionDuration = 1;
 	bool mTransition = false;
-	float newClipStartTime = 0;
+	float mClipStartTime = 0;
 
 	float mSpeed = 1.0;
 

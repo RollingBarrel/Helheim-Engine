@@ -36,7 +36,7 @@ void AnimationController::Update(GameObject* model)
 	}
 	else 
 	{
-		GetTransformBlending(model, newClipStartTime);
+		GetTransformBlending(model, mClipStartTime);
 	}
 	
 }
@@ -245,8 +245,7 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 
 				model->SetPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
 
-				std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
-				auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), newClipStartTime);
+				upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), newClipStartTime);
 
 				if (upperBoundIterator != posTimeStampsVector.end())
 				{
@@ -285,8 +284,7 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 
 				model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 
-				std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
-				auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), newClipStartTime);
+				upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), newClipStartTime);
 
 				if (upperBoundIterator != rotTimeStampsVector.end())
 				{
