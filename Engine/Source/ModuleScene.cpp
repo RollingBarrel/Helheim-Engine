@@ -214,7 +214,7 @@ inline std::string ModuleScene::GetName()
 void ModuleScene::Save(const char* sceneName) const
 {
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
-	if (saveFilePath.find(".json") == std::string::npos) 
+	if (saveFilePath.find(".json") == std::string::npos)
 	{
 		saveFilePath += ".json";
 	}
@@ -222,9 +222,10 @@ void ModuleScene::Save(const char* sceneName) const
 	Archive* sceneArchive = new Archive();
 	Archive* archive = new Archive();
 
+	archive->AddString("Name", mRoot->GetName().c_str());
 	SaveGame(mRoot->GetChildren(), *archive);
+	
 	sceneArchive->AddObject("Scene", *archive);
-
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 	delete sceneArchive;
@@ -261,17 +262,11 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 void ModuleScene::Load(const char* sceneName) 
 {
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
-	std::string rootName = sceneName;
-	int jsonPos = rootName.find(".json");
-	if (jsonPos == std::string::npos) 
+	if (loadFilePath.find(".json") == std::string::npos)
 	{
 		loadFilePath += ".json";
 	}
-	else
-	{
-		rootName = rootName.substr(0,jsonPos);
-	}
-
+	
 	char* loadedBuffer = nullptr;
 
 	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer) > 0)
@@ -287,12 +282,13 @@ void ModuleScene::Load(const char* sceneName)
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
 		delete mRoot;
-		mRoot = new GameObject(rootName.c_str(), nullptr);
+		mRoot = new GameObject("SampleScene", nullptr);
 
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) 
 		{
 			const rapidjson::Value& sceneValue = document["Scene"];
+			mRoot->SetName(sceneValue["Name"].GetString());
 			mRoot->Load(sceneValue);
 		}
 

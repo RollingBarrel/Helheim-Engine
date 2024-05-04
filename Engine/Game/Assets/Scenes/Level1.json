@@ -1,5 +1,6 @@
 {
     "Scene": {
+        "Name": "Level1",
         "GameObjects": [
             {
                 "UID": 281718737,
