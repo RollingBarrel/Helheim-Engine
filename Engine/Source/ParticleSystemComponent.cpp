@@ -20,18 +20,18 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
 {
     SetImage(mResourceId);
     mColorGradient[0.0f] = float4::one;
-    InitEmitterShape();
     Init();
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
 mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mIsSpeedCurve(original.mIsSpeedCurve),
 mSpeedLineal(original.mSpeedLineal), mSpeedCurve(original.mSpeedCurve), mIsSizeCurve(original.mIsSizeCurve), mSizeCurve(original.mSizeCurve),
-mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping), mShape(original.mShape),
+mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping),
 mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), Component(owner, ComponentType::PARTICLESYSTEM)
 {
     SetImage(original.mResourceId);
     Init();
+    mShape->CopyShape(*original.mShape);
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 
@@ -98,6 +98,7 @@ void ParticleSystemComponent::Init()
     //    this->mParticles.push_back(new Particle());
 
     App->GetOpenGL()->AddParticleSystem(this);
+    InitEmitterShape();
 }
 
 void ParticleSystemComponent::Draw() const
@@ -105,7 +106,7 @@ void ParticleSystemComponent::Draw() const
     if (IsEnabled()) 
     {
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
-        glDisable(GL_DEPTH_TEST);
+        glDepthMask(GL_FALSE);
         glEnable(GL_BLEND);									// Enable Blending
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
         glEnable(GL_TEXTURE_2D);
@@ -153,7 +154,7 @@ void ParticleSystemComponent::Draw() const
         glBindVertexArray(0);
         glUseProgram(0);
         glEnable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
+        glDepthMask(GL_TRUE);
     }
 }
 

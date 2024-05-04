@@ -22,6 +22,8 @@ public:
     void Save(Archive& archive) const;
     void LoadFromJSON(const rapidjson::Value& data);
 
+    void CopyShape(const EmitterShape &original);
+
 protected:
     Type mType;
     float mShapeRadius;

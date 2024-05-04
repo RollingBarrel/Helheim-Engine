@@ -47,6 +47,13 @@ void EmitterShape::LoadFromJSON(const rapidjson::Value& data)
 
 }
 
+void EmitterShape::CopyShape(const EmitterShape& original)
+{
+    mShapeAngle = original.mShapeAngle;
+    mShapeRadius = original.mShapeRadius;
+    mShapeSize = original.mShapeSize;
+}
+
 float3 EmitterShape::RandomInitPosition()
 {
 	return float3(0,0,0);
