@@ -197,6 +197,10 @@ void ModuleEditor::ShowMainMenuBar()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("New Scene"))
+			{
+				EngineApp->GetScene()->NewScene();
+			}
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".json", config);
@@ -204,12 +208,26 @@ void ModuleEditor::ShowMainMenuBar()
 			}
 			if (ImGui::MenuItem("Save"))
 			{
-				App->GetScene()->Save(App->GetScene()->GetName().c_str());
+				if (!EngineApp->IsPlayMode())
+				{
+					App->GetScene()->Save(App->GetScene()->GetName().c_str());
+				}
+				else
+				{
+					LOG("YOU MUST EXIT PLAY MODE BEFORE SAVING");
+				}
 			}
 			if (ImGui::MenuItem("Save As"))
 			{
-				ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
-				mSaveSceneOpen = true;
+				if (!EngineApp->IsPlayMode())
+				{
+					ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+					mSaveSceneOpen = true;
+				}
+				else
+				{
+					LOG("YOU MUST EXIT PLAY MODE BEFORE SAVING");
+				}
 			}
 			if (ImGui::MenuItem("Quit"))
 			{
@@ -391,7 +409,7 @@ void ModuleEditor::OpenLoadScene() {
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
 	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
-			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();;
+			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 			if (EngineApp->IsPlayMode())
 			{
 				reinterpret_cast<EditorControlPanel*>(mPanels[EDITORCONTROLPANEL])->Stop();
@@ -409,6 +427,8 @@ void ModuleEditor::OpenSaveScene() {
 	if (ImGuiFileDialog::Instance()->Display("SaveScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+			filePathName = filePathName.substr(0, filePathName.find(".json"));
+			EngineApp->GetScene()->GetRoot()->SetName(filePathName.c_str());
 			EngineApp->GetScene()->Save(filePathName.c_str());
 		}
 
