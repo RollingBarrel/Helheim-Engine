@@ -416,7 +416,7 @@ void PlayerController::RangedAttack()
             else
             {
                 totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
-                mBullets -= mBullets;
+                mBullets = 0;
             }
             mGunfireAudio->PlayOneShot();
             mChargedTime = 0.0f;
@@ -432,18 +432,16 @@ void PlayerController::RangedAttack()
     else 
     {
         if (mBullets > 0) 
-        {
-            static float startingTime = mFireRate;
-            startingTime -= App->GetDt();
-
-            if (startingTime <= 0.0f)
+        {  
+            if (startingTime > mFireRate)
             {
                 mGunfireAudio->PlayOneShot();
-                startingTime = mFireRate;
+                startingTime = 0.0f;         
                 Shoot(mRangeBaseDamage);
-                mBullets -= static_cast<int>(mFireRate);
+                mBullets -= static_cast<int>(mFireRate) + 1;
                 LOG("Basic shoot fire. Remining Bullets %i", mBullets);             
             }
+            startingTime += App->GetDt();
         }
         else
         {
@@ -477,7 +475,6 @@ void PlayerController::Shoot(float damage)
     
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
-    //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
     
     if (!hits.empty()) 
     {
@@ -595,6 +592,7 @@ void PlayerController::CheckDebugOptions()
         mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
     }
 }
+
 void PlayerController::UpdateBattleSituation()
 {
     float hpRate = mHealth / mMaxHealth;
@@ -609,10 +607,12 @@ void PlayerController::UpdateBattleSituation()
         mBattleStateTransitionTime += App->GetDt();
         if (mBattleStateTransitionTime >= 8.0f) 
         {
-            if (hpRate <= 0.3) {
+            if (hpRate <= 0.3) 
+            {
                 mCurrentSituation = BattleSituation::IDLE_LOW_HP;
             }
-            else {
+            else 
+            {
                 mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
             }
             

@@ -112,6 +112,8 @@ class PlayerController :public Script
         float mMaxRangeChargeTime = 10.0f;
         GameObject* bullet = nullptr;
 
+        float startingTime = 0.0F;
+
         //Melee
         float mMeleeBaseDamage = 1.0f;
         float mMeleeChargeAttackMultiplier = 5.0f;
