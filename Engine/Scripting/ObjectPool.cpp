@@ -4,6 +4,15 @@
 #include "GameObject.h"
 #include "Bullet.h"
 
+
+
+CREATE(ObjectPool)
+{
+    CLASS(owner);
+
+    END_CREATE;
+}
+
 ObjectPool::ObjectPool(GameObject* owner) : Script(owner) {}
 
 void ObjectPool::Start()
