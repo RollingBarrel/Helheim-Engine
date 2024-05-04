@@ -97,7 +97,7 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	editor->SaveCameraPosition();
+	editor->SaveUserSettings();
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)

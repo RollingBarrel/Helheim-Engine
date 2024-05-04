@@ -206,7 +206,12 @@ void ModuleScene::DeleteTag(Tag* tag)
 	}
 }
 
-void ModuleScene::Save(const char* sceneName) const 
+inline std::string ModuleScene::GetName() 
+{
+	return mRoot->GetName(); 
+}
+
+void ModuleScene::Save(const char* sceneName) const
 {
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos) 
@@ -256,9 +261,15 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 void ModuleScene::Load(const char* sceneName) 
 {
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
-	if (loadFilePath.find(".json") == std::string::npos) 
+	std::string rootName = sceneName;
+	int jsonPos = rootName.find(".json");
+	if (jsonPos == std::string::npos) 
 	{
 		loadFilePath += ".json";
+	}
+	else
+	{
+		rootName = rootName.substr(0,jsonPos);
 	}
 
 	char* loadedBuffer = nullptr;
@@ -276,7 +287,7 @@ void ModuleScene::Load(const char* sceneName)
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
 		delete mRoot;
-		mRoot = new GameObject(sceneName, nullptr);
+		mRoot = new GameObject(rootName.c_str(), nullptr);
 
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) 

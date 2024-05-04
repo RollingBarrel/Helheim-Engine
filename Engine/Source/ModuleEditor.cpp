@@ -102,7 +102,7 @@ bool ModuleEditor::Init()
 
 	// Load the saved layout when opening the engine
 	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadCameraPosition();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadUserSettings();
 	mPanels[SETTINGSPANEL]->Close();
 
 	Style();
@@ -184,9 +184,9 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 	panel->Open();
 }
 
-void ModuleEditor::SaveCameraPosition()
+void ModuleEditor::SaveUserSettings()
 {
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveCameraPosition();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveUserSettings();
 }
 
 void ModuleEditor::ShowMainMenuBar() 
