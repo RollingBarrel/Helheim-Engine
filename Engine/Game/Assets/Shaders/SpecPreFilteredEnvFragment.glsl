@@ -6,8 +6,16 @@ uniform samplerCube environment;
 
 layout(location = 3) uniform float roughness;
 
-#define NUM_SAMPLES 4096
+#define NUM_SAMPLES 2048
 #define PI 3.1415926535897932384626433832795
+layout(location = 5) uniform uint envMapWidth;
+
+
+float computeLod(float pdf, int numSamples, uint width)
+{
+	// // note that 0.5 * log2 is equivalent to log4
+	return max(0.5 * log2(6.0 * float(width) * float(width) / (float(numSamples) * pdf)), 0.0);
+}
 
 vec3 GetHemisphereSample(float u1, float u2)
 {
@@ -62,12 +70,20 @@ void main()
 	for (int i = 0; i < NUM_SAMPLES; ++i)
 	{
 		vec2 rand_value = Hammersley2D(i, NUM_SAMPLES);
-		vec3 H = tangentSpace * HemisphereSampleGGX(rand_value[0], rand_value[1], roughness);
+		vec3 H = HemisphereSampleGGX(rand_value[0], rand_value[1], roughness);
+		float cosTheta = H.z; // Z is actually the cosinus of the angle between the direction and the Normal (0, 0, 1) 
+		float ggxDenominator = cosTheta * cosTheta * (roughness * roughness - 1) + 1;
+		float ggx = (roughness * roughness) / (PI * ggxDenominator * ggxDenominator);
+		float pdf = ggx / 4.0; // The pdf for GGX matches its NDF
+		float lod = computeLod(pdf, NUM_SAMPLES, envMapWidth);
+		H = tangentSpace * H;
 		vec3 L = reflect(-V, H);
 		float NdotL = max(dot(N, L), 0.0);
 		if (NdotL > 0)
 		{
-			color += texture(environment, L).rgb * NdotL;
+			
+			//color += texture(environment, L).rgb * NdotL;
+			color += textureLod(environment, L, lod).rgb * NdotL;
 			weight += NdotL;
 		}
 	}

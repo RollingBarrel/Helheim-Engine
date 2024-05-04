@@ -214,7 +214,6 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//BakeIBL(L"Assets/Textures/skybox.hdr");
-	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 
 	return UPDATE_CONTINUE;
 }
@@ -267,8 +266,8 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 
 void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height = 0)
 {
-	static unsigned sWidth = 0;
-	static unsigned sHeight = 0;
+	static unsigned sWidth = 1;
+	static unsigned sHeight = 1;
 	if (width == 0 && height == 0)
 	{
 		width = sWidth;
@@ -647,6 +646,7 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 		glUseProgram(mSpecPrefilteredProgramId);
+		glUniform1ui(5, specWidth);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 		for (int currMipMap = 0; currMipMap <= numMipMaps; ++currMipMap)
 		{
