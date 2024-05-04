@@ -39,10 +39,8 @@ public:
 	void AudioResume();
 
 	void EngineStop();
-	void EnginePlay();
 
 	void AddToAudiosList(AudioSourceComponent* audioSource);
-	void RemoveFromAudioList(AudioSourceComponent* audioSource);
 
 	int GetMemoryUsage();
 

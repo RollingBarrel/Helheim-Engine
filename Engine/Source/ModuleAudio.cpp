@@ -18,12 +18,8 @@ bool ModuleAudio::Init()
 {
 	// Instantiate Fmod studio
 	CheckError( FMOD::Studio::System::create(&mSystem) ); // Create the Studio System object.
+	CheckError(mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
 
-//#if DEBUG
-	CheckError( mSystem->initialize(1024, FMOD_STUDIO_INIT_MEMORY_TRACKING, FMOD_INIT_MEMORY_TRACKING, 0));
-	//#elif RELEASE
-		//CheckError(mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
-//#endif
 	CheckError( mSystem->getCoreSystem(&mCoreSystem));
 
 	// Load bank
@@ -70,11 +66,6 @@ void ModuleAudio::AudioResume()
 
 void ModuleAudio::EngineStop()
 {
-	for (auto audioSource : mAudiosSourceList) 
-	{
-		audioSource->CleanCurrentInstance();
-	}
-
 	mAudiosSourceList = std::vector<AudioSourceComponent*>();
 }
 
