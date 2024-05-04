@@ -1,12 +1,12 @@
 #include "AudioSourceComponent.h"
 #include "ModuleAudio.h"
-#include "FmodUtils.h"
 
 #include "GameObject.h"
 #include "Application.h"
 
 #include "fmod_studio.hpp"
-#define CheckError(result) FmodUtils::CheckFmodError(result)
+
+#define CheckError(result) ModuleAudio::CheckFmodError(result)
 
 AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Component(ownerGameObject,ComponentType::AUDIOSOURCE)
 {
@@ -57,10 +57,26 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 
 void AudioSourceComponent::SetEventByName(const char* eventName)
 {
-	SetEventInstance(FmodUtils::GetEventByName(eventName));
+	FMOD::Studio::System* system = App->GetAudio()->GetFMODSystem();
+	FMOD::Studio::EventDescription* eventDescription = nullptr;
+	system->getEvent(eventName, &eventDescription);
+
+	FMOD::Studio::EventInstance* event = nullptr;
+	eventDescription->createInstance(&event);
+
+	SetEventInstance(event);
 	size_t eventNameLength = strlen(eventName);
 
 	mName = eventName;
+}
+
+void AudioSourceComponent::GetParametersMaxMin(const char* eventName, float& max, float& min)
+{
+	FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
+	CheckError(mEventDescription->getParameterDescriptionByName(eventName, &paramDesc));
+
+	max = paramDesc.maximum;
+	min = paramDesc.minimum;
 }
 
 void AudioSourceComponent::UpdateParameterValueByIndex(int index, float value)

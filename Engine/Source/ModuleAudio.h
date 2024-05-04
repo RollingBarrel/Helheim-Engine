@@ -1,11 +1,11 @@
 #pragma once
 #include "Module.h"
 
-#include <map>
 #include <vector>
 
-#define CheckError(result) FmodUtils::CheckFmodError(result)
 #define EVENT_BANK_UPPERLIMIT 64
+#define CheckError(result) ModuleAudio::CheckFmodError(result)
+#define CheckFmodError(_result) ModuleAudio::CheckFmodErrorFunction(_result, __FILE__, __LINE__)
 
 namespace FMOD {
 	namespace Studio {
@@ -13,8 +13,9 @@ namespace FMOD {
 		class Bank;
 		class EventInstance;
 	}
-	class System; 
+	class System;
 }
+enum FMOD_RESULT : int;
 
 class AudioSourceComponent;
 
@@ -29,11 +30,10 @@ public:
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
-
-	bool EnginePaused() {return mPaused;};
-	bool EngineStoped() { return mStopped; };
+	bool CleanUp();
 
 	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
+	std::vector<const char*> GetEventsNames();
 
 	void AudioPause();
 	void AudioResume();
@@ -44,7 +44,7 @@ public:
 
 	int GetMemoryUsage();
 
-	bool CleanUp();
+	static void CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line);
 
 private:
 	FMOD::Studio::System* mSystem = nullptr;

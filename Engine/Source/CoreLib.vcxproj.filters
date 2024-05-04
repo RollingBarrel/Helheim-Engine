@@ -201,9 +201,6 @@
     <ClCompile Include="HelheimEvent.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="FmodUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
@@ -567,9 +564,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="HelheimEvent.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="FmodUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h">

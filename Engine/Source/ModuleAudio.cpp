@@ -1,9 +1,8 @@
 #include "ModuleAudio.h"
 #include "Globals.h"
 #include "AudioSourceComponent.h"
-
+#include "fmod_errors.h"
 #include "fmod_studio.hpp"
-#include "FmodUtils.h"
 #include "Application.h"
 
 ModuleAudio::ModuleAudio()
@@ -48,6 +47,42 @@ update_status ModuleAudio::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+std::vector<const char*> ModuleAudio::GetEventsNames()
+{
+	std::vector<const char*> result;
+	FMOD::Studio::Bank* bankArray[EVENT_BANK_UPPERLIMIT];
+	int bankCount = 0;
+
+	mSystem->getBankList(bankArray, EVENT_BANK_UPPERLIMIT, &bankCount);
+	result.reserve(bankCount);
+	for (auto i = 0; i < bankCount; i++)
+	{
+		FMOD::Studio::Bank* bank = bankArray[i];
+		FMOD::Studio::EventDescription* eventArray[EVENT_BANK_UPPERLIMIT];
+		int eventDescriptionCount = 0;
+
+		CheckError(bank->getEventList(eventArray, EVENT_BANK_UPPERLIMIT, &eventDescriptionCount));
+
+		for (int j = 0; j < eventDescriptionCount; ++j)
+		{
+
+			// Name to string
+			const int bufferSize = 256;
+
+			char pathBuffer[bufferSize];
+			int retrievedSize = 0;
+			CheckError(eventArray[j]->getPath(pathBuffer, bufferSize, &retrievedSize));
+
+			char* copyBuffer = new char[bufferSize];
+			strcpy_s(copyBuffer, bufferSize, pathBuffer);
+
+			result.push_back(copyBuffer);
+		}
+	}
+
+	return result;
+}
+
 void ModuleAudio::AudioPause()
 {
 	for (auto audioSource : mAudiosSourceList) 
@@ -80,6 +115,14 @@ int ModuleAudio::GetMemoryUsage()
 	FMOD_RESULT result = FMOD_Memory_GetStats(&currentAllocated, &maxAllocated, 1);
 	// Just get fmod memory
 	return currentAllocated;
+}
+
+void ModuleAudio::CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line)
+{
+	if (result != FMOD_OK)
+	{
+		LOG("%s(%d): FMOD error %d - %s", file, line, result, FMOD_ErrorString(result));
+	}
 }
 
 bool ModuleAudio::CleanUp()

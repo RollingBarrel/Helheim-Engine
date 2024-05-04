@@ -10,6 +10,7 @@
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
+#include "ModuleAudio.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -33,7 +34,6 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
-#include "FmodUtils.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -1080,7 +1080,7 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
-	std::vector<const char*> events = FmodUtils::GetEventsNames();
+	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
@@ -1115,7 +1115,7 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 		float max = 0;
 		float min = 0;
 
-		FmodUtils::GetParametersMaxMinByComponent(component, name, max, min);
+		component->GetParametersMaxMin(name, max, min);
 
 		ImGui::Text("%s: ", name);
 		ImGui::SameLine();

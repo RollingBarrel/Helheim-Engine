@@ -22,11 +22,13 @@ public:
     std::string GetName() const{ return mName; };
     std::map<int, float> GetParameters() const { return mParameters; };
     void GetParametersNameAndValue(std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& value);
-    FMOD::Studio::EventDescription* GetEventDescription() {return mEventDescription;};
 
+    // Set event
     void SetEventInstance(FMOD::Studio::EventInstance* event);
     void SetEventByName(const char* eventName);
+    void GetParametersMaxMin(const char* eventName, float& max, float& min);
 
+    // Update parameters
     void UpdateParameterValueByIndex(int index, float value);
     void UpdateParameterValueByName(const char* name, float value);
     void SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime);
@@ -35,7 +37,6 @@ public:
     void PauseCurrentInstance();
     void ResumeCurrentInstance();
     void CleanCurrentInstance();
-
     
     void Update() override;
     void Play();
