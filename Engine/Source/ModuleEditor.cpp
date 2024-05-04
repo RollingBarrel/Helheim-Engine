@@ -391,12 +391,12 @@ void ModuleEditor::OpenLoadScene() {
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
 	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
-			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
-			EngineApp->GetScene()->Load(filePathName.c_str());
+			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();;
 			if (EngineApp->IsPlayMode())
 			{
-				EngineApp->GetEngineScriptManager()->Start();
+				reinterpret_cast<EditorControlPanel*>(mPanels[EDITORCONTROLPANEL])->Stop();
 			}
+			EngineApp->GetScene()->Load(filePathName.c_str());
 		}
 
 		ImGuiFileDialog::Instance()->Close();
