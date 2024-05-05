@@ -13,11 +13,14 @@
 #include "EnemyRobot.h"
 #include "SliderComponent.h"
 #include "Physics.h"
+#include "GameManager.h"
 
 
 CREATE(PlayerController)
 {
     CLASS(owner);
+    MEMBER(MemberType::GAMEOBJECT, mGameManagerGO);
+
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mMaxShield);
@@ -71,6 +74,9 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 
 void PlayerController::Start()
 {
+    ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
+    mGameManager = (GameManager*)script->GetScriptInstance();
+
     mDashCharges = mMaxDashCharges;
     mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
@@ -138,7 +144,7 @@ void PlayerController::Update()
     {
         if (mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
         {
-            App->GetScene()->Load("MainMenu");
+            mGameManager->WinScreen();
         }
     }
 
@@ -529,7 +535,7 @@ void PlayerController::RechargeDash()
 void PlayerController::Death() 
 {
     mPlayerIsDead = true;
-    App->GetScene()->Load("MainMenu");
+    mGameManager->LoseScreen();
 }
 
 bool PlayerController::IsDead() 
