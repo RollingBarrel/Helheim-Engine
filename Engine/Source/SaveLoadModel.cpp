@@ -93,20 +93,24 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     }
 
     //Joints
-    unsigned int jointsSize = rModel->mJoints.size();
+    unsigned int jointsSize = rModel->mInvBindMatrices.size();
     bytes = sizeof(unsigned int);
     memcpy(cursor, &jointsSize, bytes);
     cursor += bytes;
 
-    for (int i = 0; i < jointsSize; ++i)
+    for (unsigned int i = 0; i < jointsSize; ++i)
     {
         bytes = sizeof(unsigned int);
-        memcpy(cursor, &rModel->mJoints[i].first, bytes);
+        unsigned int lenString = rModel->mInvBindMatrices[i].first.length() + 1;
+        memcpy(cursor, &lenString, bytes);
         cursor += bytes;
 
-        bytes = sizeof(float) * 16;
-        //unsigned int inverse = rModel->mJoints[i]->mJoints.size();
-        memcpy(cursor, &rModel->mJoints[i].second, bytes);
+        bytes = lenString;
+        memcpy(cursor, rModel->mInvBindMatrices[i].first.data(), bytes);
+        cursor += bytes;
+
+        bytes = sizeof(float4x4);
+        memcpy(cursor, rModel->mInvBindMatrices[i].second.ptr(), bytes);
         cursor += bytes;
     }
 
@@ -235,22 +239,30 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             rModel->mAnimationUids.push_back({ animationUID });
         }
 
+        //Joints
         unsigned int jointsSize = 0;
         bytes = sizeof(unsigned int);
         memcpy(&jointsSize, cursor, bytes);
         cursor += bytes;
 
-        rModel->mJoints.resize(jointsSize);
+        rModel->mInvBindMatrices.resize(jointsSize);
 
-        for (int i = 0; i < jointsSize; ++i)
+        for (unsigned int i = 0; i < jointsSize; ++i)
         {
-            int indexJoint = 0;
             bytes = sizeof(unsigned int);
-            memcpy(&rModel->mJoints[i].first, cursor, bytes);
+            unsigned int lenString = 0;
+            memcpy(&lenString, cursor, bytes);
             cursor += bytes;
 
+            bytes = lenString;
+            char* jointName = new char[lenString];
+            memcpy(jointName, cursor, bytes);
+            cursor += bytes;
+
+            rModel->mInvBindMatrices[i].first = jointName;
+
             bytes = sizeof(float4x4);
-            memcpy(&rModel->mJoints[i].second, cursor, bytes);
+            memcpy(&rModel->mInvBindMatrices[i].second, cursor, bytes);
             cursor += bytes;
         }
 

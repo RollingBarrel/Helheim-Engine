@@ -431,7 +431,6 @@ update_status ModuleScene::PostUpdate(float dt)
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
 		LoadPrefab(mPrefabPath, resourceId, true);
-		mQuadtreeRoot->UpdateTree();
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
@@ -444,7 +443,6 @@ update_status ModuleScene::PostUpdate(float dt)
 			mBackgroundScene->SetEnabled(false);
 			mRoot = new GameObject(mPrefabPath, nullptr);
 			LoadPrefab(mPrefabPath, resource->GetUID());
-			mQuadtreeRoot->UpdateTree();
 		}
 	}
 
@@ -462,7 +460,6 @@ void ModuleScene::DeleteGameObjects()
 	}
 
 	mGameObjectsToDelete.clear();
-	mQuadtreeRoot->UpdateTree();
 }
 
 void ModuleScene::DuplicateGameObjects() 
@@ -474,7 +471,6 @@ void ModuleScene::DuplicateGameObjects()
 	}
 
 	mGameObjectsToDuplicate.clear();
-	mQuadtreeRoot->UpdateTree();
 
 }
 
