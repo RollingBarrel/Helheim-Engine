@@ -295,7 +295,6 @@
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CanvasComponent.h" />
-    <ClInclude Include="ColorGradient.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h" />

@@ -1052,9 +1052,6 @@
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ColorGradient.h">
-      <Filter>Utils\Particles</Filter>
-    </ClInclude>
     <ClInclude Include="EmitterShape.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>

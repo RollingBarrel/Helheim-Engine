@@ -4,7 +4,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "glew.h"
-#include "ColorGradient.h"
 #include "ModuleCamera.h"
 #include "CameraComponent.h"
 #include "Resource.h"
