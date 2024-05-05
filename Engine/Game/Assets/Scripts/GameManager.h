@@ -17,6 +17,7 @@ public:
     void WinScreen();
     void LoseScreen();
 private:
+    void Loading();
     void Controls();
     bool Delay(float delay);
 
@@ -33,6 +34,7 @@ private:
     GameObject* mPauseScreen = nullptr;
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;
+    GameObject* mLoadingScreen = nullptr;
 
     GameObject* mYesGO = nullptr;
     GameObject* mNoGO = nullptr;
@@ -42,7 +44,7 @@ private:
     ButtonComponent* mYesBtn = nullptr;
     ButtonComponent* mNoBtn = nullptr;
 
-
+    bool mLoading = false;
     bool mPaused = false;
     float mTimeScreen = 5.0f;
     float mTimePassed = 0.0f;

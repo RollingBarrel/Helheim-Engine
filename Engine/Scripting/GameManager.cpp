@@ -15,6 +15,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
     SEPARATOR("Buttons");
     MEMBER(MemberType::GAMEOBJECT, mYesGO);
     MEMBER(MemberType::GAMEOBJECT, mNoGO);
@@ -28,6 +29,7 @@ void GameManager::Start()
     mPauseScreen->SetEnabled(false);
     mWinScreen->SetEnabled(false);
     mLoseScreen->SetEnabled(false);
+    mLoadingScreen->SetEnabled(false);
 
     mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
     mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
@@ -48,6 +50,7 @@ void GameManager::Start()
 void GameManager::Update()
 {
     Controls();
+    Loading();
 }
 
 bool GameManager::Delay(float delay)
@@ -71,6 +74,20 @@ void GameManager::Controls()
     }
 }
 
+void GameManager::Loading()
+{
+    if (mLoading)
+    {
+        mLoadingScreen->SetEnabled(true);
+
+        if (Delay(0.1f))
+        {
+            mLoading = false;
+            App->GetScene()->Load("MainMenu.json");
+        }
+    }
+}
+
 void GameManager::WinScreen() 
 {
     mWinScreen->SetEnabled(true);
@@ -83,17 +100,17 @@ void GameManager::LoseScreen()
 
 void GameManager::OnWinButtonClick() 
 {
-    App->GetScene()->Load("MainMenu");
+    mLoading = true;
 }
 
 void GameManager::OnLoseButtonClick() 
 {
-    App->GetScene()->Load("MainMenu");
+    mLoading = true;
 }
 
 void GameManager::OnYesButtonClick() 
 {
-    App->GetScene()->Load("MainMenu");
+    mLoading = true;
 }
 
 void GameManager::OnNoButtonClick() 
