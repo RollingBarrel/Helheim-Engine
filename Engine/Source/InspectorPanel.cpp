@@ -1,4 +1,5 @@
 #include "InspectorPanel.h"
+#include "ImBezier.h"
 #include "imgui.h"
 #include "EngineApp.h"
 #include "ModuleScene.h"
@@ -10,6 +11,7 @@
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
+#include "ModuleAudio.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -24,6 +26,8 @@
 #include "ButtonComponent.h"
 #include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
+#include "ParticleSystemComponent.h"
+#include "EmitterShape.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -33,7 +37,6 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
-#include "FmodUtils.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -433,6 +436,8 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
+				case ComponentType::PARTICLESYSTEM:
+					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
 			}
 		}
 		ImGui::PopID();
@@ -625,12 +630,15 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
+		if (ImGui::Checkbox("Enable Emissive map", &material->mEnableEmissiveTexture))
+		{
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
 		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
-
 		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
@@ -638,6 +646,13 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (material->IsEmissiveEnabled())
+		{
+			if (ImGui::ColorPicker3("Emissive", material->mEmissiveFactor.ptr()))
+			{
+				EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+			}
 		}
 	}
 }
@@ -1080,7 +1095,7 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
-	std::vector<const char*> events = FmodUtils::GetEventsNames();
+	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
@@ -1115,7 +1130,7 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 		float max = 0;
 		float min = 0;
 
-		FmodUtils::GetParametersMaxMinByComponent(component, name, max, min);
+		component->GetParametersMaxMin(name, max, min);
 
 		ImGui::Text("%s: ", name);
 		ImGui::SameLine();
@@ -1240,3 +1255,175 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	ImGui::EndTable();
 	
 }
+
+void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
+{
+	ImGui::Text("Looping");
+	ImGui::SameLine(); 
+	ImGui::Checkbox("##Looping", &(component->mLooping));
+	if (!component->mLooping) 
+	{
+		ImGui::Text("Duration");
+		ImGui::SameLine(); 
+		ImGui::DragFloat("##Duration", &(component->mDuration), 1.0f, 0.0f);
+	}
+	ImGui::Text("Emision Rate");
+	ImGui::SameLine(); 
+	ImGui::DragFloat("##Emision Rate", &(component->mEmissionRate), 1.0f, 0.0f);
+	ImGui::Text("Lifetime");
+	ImGui::SameLine(); 
+	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
+	//ImGui::DragFloat("Start size", &(component->mSize));
+
+	ImGui::Separator();
+	ImGui::Text("Speed");
+	ImGui::Text("Initial Speed");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Initial Speed", &component->mSpeedLineal, 1.0f, 0.0f);
+	ImGui::Text("Speed as a Curve");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Speed as a Curve", &(component->mIsSpeedCurve));
+	if (component->mIsSpeedCurve)
+	{
+		static float points[5] = { component->mSpeedCurve[0], 
+			component->mSpeedCurve[1], 
+			component->mSpeedCurve[2], 
+			component->mSpeedCurve[3] };
+		ImGui::Text("Speed Growing Factor");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Speed Growing Factor", &component->mSpeedCurveFactor, 1.0f, 0.0f);
+		ImGui::Text("Point 1");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
+		ImGui::Text("Point 2");
+		ImGui::SameLine(); 
+		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+
+		if (points[0] != component->mSpeedCurve[0]) component->mSpeedCurve[0] = points[0];
+		if (points[1] != component->mSpeedCurve[1]) component->mSpeedCurve[1] = points[1];
+		if (points[2] != component->mSpeedCurve[2]) component->mSpeedCurve[2] = points[2];
+		if (points[3] != component->mSpeedCurve[3]) component->mSpeedCurve[3] = points[3];
+
+
+		ImGui::Bezier("Speed Presets", points);
+	}
+	ImGui::Separator();
+	ImGui::Text("Size");
+	ImGui::Text("Initial Size");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Initial Size", &component->mSizeLineal, 1.0f, 0.0f);
+
+	ImGui::Text("Size as a Curve");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Size as a Curve", &(component->mIsSizeCurve));
+	if (component->mIsSizeCurve)
+	{
+		static float points[5] = { component->mSizeCurve[0],
+			component->mSizeCurve[1],
+			component->mSizeCurve[2],
+			component->mSizeCurve[3] };
+		ImGui::Text("Size Growing Factor");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Size Growing Factor", &component->mSizeCurveFactor, 1.0f, 0.0f);
+		ImGui::Text("Point 1");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
+		ImGui::Text("Point 2");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+
+		if (points[0] != component->mSizeCurve[0]) component->mSizeCurve[0] = points[0];
+		if (points[1] != component->mSizeCurve[1]) component->mSizeCurve[1] = points[1];
+		if (points[2] != component->mSizeCurve[2]) component->mSizeCurve[2] = points[2];
+		if (points[3] != component->mSizeCurve[3]) component->mSizeCurve[3] = points[3];
+
+
+		ImGui::Bezier("Size Presets", points);
+	}
+	ImGui::Separator();
+	static const char* items[]{ "Cone","Square","Circle" };
+	static int Selecteditem = 0;
+	ImGui::Text("Shape");
+	ImGui::SameLine();
+	bool check = ImGui::Combo("##", &Selecteditem, items, IM_ARRAYSIZE(items));
+	if (check)
+	{
+		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
+		component->InitEmitterShape();
+	}	
+	switch(component->mShapeType)
+	{
+		case EmitterShape::Type::CONE:
+			ImGui::Text("Angle");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Angle", &component->mShape->mShapeAngle, 1.0f, 0.0f);
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 1.0f, 0.0f);
+			break;
+		case EmitterShape::Type::SQUARE:
+			ImGui::Text("Width");
+			ImGui::SameLine();
+			ImGui::DragFloat2("##Width", &component->mShape->mShapeSize.x, 1.0f, 0.0f);
+			break;
+		case EmitterShape::Type::CIRCLE:
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 1.0f, 0.0f);
+			break;
+
+	}
+	ImGui::Separator();
+	if (ImGui::CollapsingHeader("Texture & Tint")) 
+	{
+		// Drag and drop	
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+
+		ResourceTexture* image = component->GetImage();
+
+		if (image)
+		{
+			ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+			ImGui::Image(imageID, ImVec2(50, 50));
+		}
+		else
+		{
+			ImGui::Text("Drop Image");
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			{
+				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+				if (resource && (resource->GetType() == Resource::Type::Texture))
+				{
+					component->SetImage(resource->GetUID());
+					component->SetFileName(asset->mName);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::NextColumn();
+		if (component->GetFileName() != nullptr)
+		{
+			ImGui::Text(component->GetFileName());
+		}
+
+		if (image)
+		{
+			ImGui::Text("Width:%dpx", image->GetWidth());
+			ImGui::Text("Height:%dpx", image->GetHeight());
+
+		}
+		ImGui::Columns(1);
+
+		// Color and alpha
+		float4* color = &component->mColorGradient[0.0f];
+		ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
+		ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
+	}
+}
+

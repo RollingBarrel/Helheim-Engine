@@ -210,8 +210,8 @@ void MainMenu::OnMainButtonClick()
     OpenMenu(MENU_TYPE::MAIN);
 }
 
-void MainMenu::OnQuitButtonClick() 
-{
+void MainMenu::OnQuitButtonClick() {
+    App->Exit();
     mMainMenuManager->PlayOKSFX();
     exit(0);
 }

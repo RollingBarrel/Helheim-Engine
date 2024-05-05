@@ -61,6 +61,9 @@ typedef struct Material {
 	uint32_t hasNormalMap;
 	float metalness;
 	float roughness;
+	uint32_t hasEmissiveTex;
+	float emissiveFactor[4] = {0.f}; //Ultim es de padding
+	uint64_t emissiveTex;
 }Material;
 
 typedef struct BufferIndices {

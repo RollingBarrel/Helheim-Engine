@@ -136,6 +136,10 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 			{
 				mSelectedAsset = current.assets[i];
 			}
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+			{
+				//App->GetScene()->Load(current.assets[i]->mName);
+			}
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
 				AssetDisplay* asset = current.assets[i];

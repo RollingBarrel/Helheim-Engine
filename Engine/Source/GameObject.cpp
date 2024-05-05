@@ -25,6 +25,7 @@
 #include "AudioListenerComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
+#include "ParticleSystemComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -531,6 +532,12 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::SLIDER:
 		newComponent = new SliderComponent(this);
 		break;
+	case ComponentType::PARTICLESYSTEM:
+	{
+		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
+		newComponent = pc;
+		break;
+	}
 	default:
 		break;
 	}

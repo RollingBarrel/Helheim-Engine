@@ -117,12 +117,6 @@ void SettingsPanel::Draw(int windowFlags)
 		{
 			LoadProjectSettings();
 		}
-
-		if (ImGui::Button("camara"))
-		{
-			SaveCameraPosition();
-			LoadCameraPosition();
-		}
 	}
 	ImGui::End();
 }
@@ -175,7 +169,7 @@ void SettingsPanel::SaveProjectSettings()
 	}
 }
 
-void SettingsPanel::SaveCameraPosition()
+void SettingsPanel::SaveUserSettings()
 {
 	std::ofstream userSettings("userSettings.txt");
 	float3 cameraPosition = EngineApp->GetCamera()->GetEditorCamera()->GetFrustum().pos;
@@ -187,10 +181,12 @@ void SettingsPanel::SaveCameraPosition()
 		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
 		userSettings << "Camera Front:\n" << cameraFront.x << '\n' << cameraFront.y << '\n' << cameraFront.z << "\n";
 		userSettings << "Camera Up:\n" << cameraUp.x << '\n' << cameraUp.y << '\n' << cameraUp.z << "\n";
+
+		userSettings << "Scene: \n" << App->GetScene()->GetName();
 	}
 }
 
-void SettingsPanel::LoadCameraPosition()
+void SettingsPanel::LoadUserSettings()
 {
 	std::ifstream userSettings("userSettings.txt");
 
@@ -222,17 +218,17 @@ void SettingsPanel::LoadCameraPosition()
 			if (std::getline(userSettings, line))
 			cameraUp[i] = std::stof(line);
 		}
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-				rotation[i] = std::stof(line);
-		}
 
 		EngineApp->GetCamera()->SetPosition(cameraPosition);
 		EngineApp->GetCamera()->SetFrontUp(cameraFront, cameraUp);
 		
+		std::getline(userSettings, line);
+		std::getline(userSettings, line);
+		App->GetScene()->Load(line.c_str());
+
 	}
+
+	
 
 
 }
