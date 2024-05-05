@@ -43,7 +43,7 @@ private:
 
 	float mMeleeDistance = 2.0f;
 	float mMeeleDamage = 10.0f;
-	float mMeleeAttackCoolDown = 2.0f;
+	float mMeleeAttackCoolDown = 1.0f;
 
 };
 
