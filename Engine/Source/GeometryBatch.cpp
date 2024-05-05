@@ -347,13 +347,13 @@ void GeometryBatch::Draw()
 		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
 		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
 		{
-			if (meshRenderer->GetIsAnimated() != 0 && (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()))
+			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
 			{
-				const AnimationComponent* cAnim = meshRenderer->GetAnimationComponent();
+				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));
 				if (cAnim && cAnim->GetIsPlaying())
 				{
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
-					glBufferData(GL_SHADER_STORAGE_BUFFER, meshRenderer->GetPalette().size() * sizeof(float) * 16, meshRenderer->GetPalette().data(), GL_DYNAMIC_DRAW);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, cAnim->GetPalette().size() * sizeof(float) * 16, cAnim->GetPalette().data(), GL_DYNAMIC_DRAW);
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
@@ -400,7 +400,22 @@ void GeometryBatch::Draw()
 		{
 			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
 			{
-				memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+				// HERE IF ANIMATED THEN PUT IDENTITY
+				
+				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));				
+				if (cAnim && cAnim->GetIsPlaying())
+				{
+					float4x4 identity = float4x4::identity;
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, identity.ptr(), sizeof(float) * 16);
+
+				}
+				else
+				{
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+
+				}
+
+
 				memcpy(mSsboIndicesData[idx] + i, &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
 				mCommands.emplace_back(rMesh->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
 			}

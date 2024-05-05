@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ModuleScriptManager.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "NavMeshController.h"
 #include "glew.h"
 
@@ -22,6 +23,13 @@ bool ModuleGame::Init()
 	App->GetScriptManager()->StartScripts();
 	//TODO: Do better!!!!
 	App->GetScene()->GetNavController()->HandleBuild();
+
+	//TODO: Add this code to is game playing in editor and game
+	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+	if (cameraGameObject)
+	{
+		App->GetCamera()->SetCurrentCamera(cameraGameObject);
+	}
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	
