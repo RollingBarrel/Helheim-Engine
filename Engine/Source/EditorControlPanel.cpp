@@ -177,7 +177,7 @@ void EditorControlPanel::Play()
 	{
 	case GameState::PAUSE:
 		mState = GameState::PLAY_PAUSE;
-		EngineApp->GetEngineScriptManager()->Stop();
+		EngineApp->GetEngineScriptManager()->Pause(true);
 		EngineApp->GetAudio()->PauseAllChannels();
 		break;
 	default:
@@ -196,7 +196,7 @@ void EditorControlPanel::Pause()
 	{
 	case GameState::PLAY:
 		mState = GameState::PLAY_PAUSE;
-		EngineApp->GetEngineScriptManager()->Stop();
+		EngineApp->GetEngineScriptManager()->Pause(true);
 		EngineApp->GetAudio()->PauseAllChannels();
 		break;
 	case GameState::PAUSE:
@@ -204,7 +204,7 @@ void EditorControlPanel::Pause()
 		break;
 	case GameState::PLAY_PAUSE:
 		mState = GameState::PLAY;
-		EngineApp->GetEngineScriptManager()->Play();
+		EngineApp->GetEngineScriptManager()->Pause(false);
 		break;
 	default:
 		mState = GameState::PAUSE;
@@ -230,9 +230,9 @@ void EditorControlPanel::Step()
 		mState = GameState::PLAY_PAUSE;
 		[[fallthrough]];
 	case GameState::PLAY_PAUSE:
-		EngineApp->GetEngineScriptManager()->Play();
+		EngineApp->GetEngineScriptManager()->Pause(false);
 		EngineApp->GetEngineScriptManager()->Update(EngineApp->GetRealDt());
-		EngineApp->GetEngineScriptManager()->Stop();
+		EngineApp->GetEngineScriptManager()->Pause(true);
 		EngineApp->GetAudio()->PauseAllChannels();
 		break;
 	default:

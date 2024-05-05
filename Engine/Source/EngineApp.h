@@ -17,7 +17,6 @@ public:
 	bool CleanUp();
 
 	bool IsPlayMode() { return mIsPlayMode; }
-	void PlayMode(bool play) { mIsPlayMode = play; }
 	Timer* GetEngineClock() const { return mEngineTimer; }
 	Timer* GetGameClock() const { return mGameTimer; }
 	void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }

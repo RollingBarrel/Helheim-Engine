@@ -113,7 +113,7 @@ void EngineApplication::Start()
 
 	SetCurrentClock(EngineApp->GetGameClock());
 	scene->Save("TemporalScene");
-	engineScriptManager->Start();
+	engineScriptManager->StartScripts();
 	mGameTimer->Start();
 }
 
@@ -125,7 +125,7 @@ void EngineApplication::Stop()
 	mGameTimer->Stop();
 	SetCurrentClock(EngineApp->GetEngineClock());
 	mEngineTimer->Resume();
-	engineScriptManager->Stop();
+	engineScriptManager->Pause(true);
 	audio->PauseAllChannels();
 	scene->Load("TemporalScene");
 

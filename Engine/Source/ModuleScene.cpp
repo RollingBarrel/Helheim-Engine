@@ -298,6 +298,8 @@ void ModuleScene::Load(const char* sceneName)
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
+
+		App->GetScriptManager()->StartScripts();
 	}
 }
 
