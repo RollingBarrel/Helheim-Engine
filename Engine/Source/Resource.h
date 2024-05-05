@@ -1,6 +1,5 @@
 #pragma once
 #include "Globals.h"
-#include <string>
 
 class ENGINE_API Resource
 {
@@ -8,15 +7,16 @@ public:
 	enum class Type
 	{
 		Texture = 1,
-		Mesh = 2,
-		Bone = 3,
-		Animation = 4,
-		Material = 5,
-		Model = 6,
-		Scene = 7,
-		NavMesh = 8,
-		Script = 9,
-		Object = 10,
+		Mesh,
+		Bone,
+		Animation,
+		Material,
+		Model,
+		Scene,
+		NavMesh,
+		Script,
+		Object,
+		IBL,
 		Unknown = 0
 	};
 
@@ -36,4 +36,3 @@ private:
 	Type mType;
 	unsigned int mReferenceCount;
 };
-

@@ -5,11 +5,12 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
+#include "ParticleSystemComponent.h"
 #include <vector>
 
 typedef struct DirectionalAmbient {
 	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
-	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity
+	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
 	float mAmbientCol[4] = { 1.0f, 1.0f, 1.0f, 0.0f }; //w is padding
 }DirectionalAmbient;
 
@@ -63,6 +64,7 @@ public:
 
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
+	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 
@@ -81,7 +83,12 @@ public:
 	void Draw();
 	void SetWireframe(bool wireframe);
 
+	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+	void RemoveParticleSystem(const ParticleSystemComponent* component);
+
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
+
+	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
 
 private:
 	void* context = nullptr;
@@ -111,7 +118,22 @@ private:
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
+	unsigned int mEnvironmentProgramId = 0;
+	unsigned int mIrradianceProgramId = 0;
+	unsigned int mSpecPrefilteredProgramId = 0;
+	unsigned int mSpecEnvBRDFProgramId = 0;
+	
+	
+	unsigned int mParticleProgramId = 0;
 
+
+	//IBL
+	unsigned int mHDRTextureId = 0;
+	unsigned int mEnvironmentTextureId = 0;
+	unsigned int mIrradianceTextureId = 0;
+	unsigned int mSpecPrefilteredTexId = 0;
+	unsigned int mEnvBRDFTexId = 0;
+	
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
@@ -121,6 +143,10 @@ private:
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
+
+	std::vector<const ParticleSystemComponent*> mParticleSystems;
+
+	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 };
 
 #endif /* _MODULEOPENGL_H_ */

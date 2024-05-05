@@ -62,6 +62,8 @@ update_status GameApplication::Update(float dt)
 {
 	mCurrentTimer->Update();
 
+	if (mExit) return UPDATE_STOP;
+
 	update_status ret = UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UPDATE_CONTINUE; ++i)

@@ -62,12 +62,6 @@ bool ModuleScene::Init()
 {
 	mRoot = new GameObject("SampleScene", nullptr);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
-
-	//Load("scene");
-	//Load("MainMenu");
-	//Load("Level1");
-
-
 	return true;
 }
 
@@ -207,10 +201,23 @@ void ModuleScene::DeleteTag(Tag* tag)
 	}
 }
 
-void ModuleScene::Save(const char* sceneName) const 
+inline std::string ModuleScene::GetName() 
+{
+	return mRoot->GetName(); 
+}
+
+void ModuleScene::NewScene()
+{
+	mQuadtreeRoot->CleanUp();
+	App->GetUI()->CleanUp();
+	delete mRoot;
+	mRoot = new GameObject("Untlitled", nullptr);	
+}
+
+void ModuleScene::Save(const char* sceneName) const
 {
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
-	if (saveFilePath.find(".json") == std::string::npos) 
+	if (saveFilePath.find(".json") == std::string::npos)
 	{
 		saveFilePath += ".json";
 	}
@@ -218,9 +225,10 @@ void ModuleScene::Save(const char* sceneName) const
 	Archive* sceneArchive = new Archive();
 	Archive* archive = new Archive();
 
+	archive->AddString("Name", mRoot->GetName().c_str());
 	SaveGame(mRoot->GetChildren(), *archive);
+	
 	sceneArchive->AddObject("Scene", *archive);
-
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 	delete sceneArchive;
@@ -257,11 +265,11 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 void ModuleScene::Load(const char* sceneName) 
 {
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
-	if (loadFilePath.find(".json") == std::string::npos) 
+	if (loadFilePath.find(".json") == std::string::npos)
 	{
 		loadFilePath += ".json";
 	}
-
+	
 	char* loadedBuffer = nullptr;
 
 	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer) > 0)
@@ -277,12 +285,16 @@ void ModuleScene::Load(const char* sceneName)
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
 		delete mRoot;
-		mRoot = new GameObject(sceneName, nullptr);
+		mRoot = new GameObject("SampleScene", nullptr);
 
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) 
 		{
 			const rapidjson::Value& sceneValue = document["Scene"];
+			if (sceneValue.HasMember("Name"))
+			{
+				mRoot->SetName(sceneValue["Name"].GetString());
+			}
 			mRoot->Load(sceneValue);
 		}
 
@@ -290,6 +302,8 @@ void ModuleScene::Load(const char* sceneName)
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
+
+		App->GetScriptManager()->StartScripts();
 	}
 }
 

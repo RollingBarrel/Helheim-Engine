@@ -274,7 +274,6 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
             if (texCoordView.byteStride != 0)
             {
-                bufferTexCoord += texCoordView.byteStride;
                 bufferTexCoord = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferTexCoord) + texCoordView.byteStride);
             }
             else

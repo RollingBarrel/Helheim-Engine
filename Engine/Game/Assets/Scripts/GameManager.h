@@ -2,6 +2,8 @@
 #include <Script.h>
 #include "Macros.h"
 
+class ButtonComponent;
+
 GENERATE_BODY(GameManager);
 class GameManager : public Script
 {
@@ -12,23 +14,39 @@ public:
     void Start() override;
     void Update() override;
 
+    void WinScreen();
+    void LoseScreen();
 private:
-    void Splash_Screens();
-    void Engine_Name();
-    void Studio_Name();
-    void Game_Name();
+    void Loading();
+    void Controls();
     bool Delay(float delay);
     void Controls();
 
-    bool mSplashScreens = false;
-    bool mMenuActive = false;
-    bool mEngine_Name = true;
-    bool mStudioName = false;
-    bool mGameName = false;
-    bool mNextScreen = false;
-    bool mKeyPressed = false;
-    bool mLoadingActive = false;
+    void OnWinButtonClick();
+    void OnLoseButtonClick();
+    void OnYesButtonClick();
+    void OnNoButtonClick();
 
+    void OnYesButtonHoverOn();
+    void OnNoButtonHoverOn();
+    void OnYesButtonHoverOff();
+    void OnNoButtonHoverOff();
+
+    GameObject* mPauseScreen = nullptr;
+    GameObject* mWinScreen = nullptr;
+    GameObject* mLoseScreen = nullptr;
+    GameObject* mLoadingScreen = nullptr;
+
+    GameObject* mYesGO = nullptr;
+    GameObject* mNoGO = nullptr;
+
+    ButtonComponent* mLoseBtn = nullptr;
+    ButtonComponent* mWinBtn = nullptr;
+    ButtonComponent* mYesBtn = nullptr;
+    ButtonComponent* mNoBtn = nullptr;
+
+    bool mLoading = false;
+    bool mPaused = false;
     float mTimeScreen = 5.0f;
     float mTimePassed = 0.0f;
 

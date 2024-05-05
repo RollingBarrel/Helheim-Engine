@@ -17,9 +17,8 @@ public:
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
 	
-	void Play();
-	void Stop();
-	void Start();
+	void Pause(bool pause);
+	void StartScripts() override;
 
 private:
 	void UpdateScripts();
@@ -27,5 +26,6 @@ private:
 	void ReloadScripts(const std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	void SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	int64_t mLastModificationTime = 0;
+	bool mPause = false;
 };
 

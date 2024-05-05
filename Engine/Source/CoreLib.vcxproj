@@ -113,6 +113,8 @@
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -228,7 +230,7 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
-    <ClCompile Include="FmodUtils.cpp" />
+    <ClCompile Include="EmitterShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
@@ -249,6 +251,8 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystemComponent.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
@@ -430,7 +434,7 @@
     <ClInclude Include="Dependencies\Recast\Include\Recast.h" />
     <ClInclude Include="Dependencies\Recast\Include\RecastAlloc.h" />
     <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h" />
-    <ClInclude Include="FmodUtils.h" />
+    <ClInclude Include="EmitterShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
@@ -452,6 +456,8 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSystemComponent.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
@@ -482,11 +488,18 @@
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skinning.comp" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
+    <None Include="..\Game\Assets\Shaders\SpecEnvBRDFFragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod.cs" />

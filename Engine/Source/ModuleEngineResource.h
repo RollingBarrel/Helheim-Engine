@@ -2,6 +2,7 @@
 #define _MODULE_ENGINE_RESOURCE_H_
 
 #include "ModuleResource.h"
+#include <string>
 
 class ModuleEngineResource : public ModuleResource
 {

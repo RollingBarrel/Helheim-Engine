@@ -1,4 +1,4 @@
-Apply frustum culling: 0
+EngineApply frustum culling: 0
 Engine Vsync enabled: 1
 Engine FPS Limit: 60
 Game Vsync enabled: 1
@@ -47,8 +47,8 @@ Resource##
 351 170
 LightningPanel##
 0
-700 420
-32 35
+1272 459
+453 842
 Project##
 1
 1215 716
@@ -123,8 +123,9 @@ Size=32,35
 Collapsed=0
 
 [Window][LightningPanel##]
-Pos=60,60
-Size=32,35
+ViewportPos=1272,459
+ViewportId=0x3D5C04A8
+Size=453,842
 Collapsed=0
 
 [Window][Quadtree Info]
