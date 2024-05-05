@@ -205,7 +205,6 @@ void ModuleEditor::ShowMainMenuBar()
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".json", config);
-				mLoadSceneOpen = true;
 			}
 			if (ImGui::MenuItem("Save"))
 			{
@@ -221,7 +220,6 @@ void ModuleEditor::ShowMainMenuBar()
 					else
 					{
 						ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
-						mSaveSceneOpen = true;
 					}
 				}
 				else
@@ -234,7 +232,6 @@ void ModuleEditor::ShowMainMenuBar()
 				if (!EngineApp->IsPlayMode())
 				{
 					ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
-					mSaveSceneOpen = true;
 				}
 				else
 				{
@@ -392,16 +389,11 @@ void ModuleEditor::ShowMainMenuBar()
 		}
 		ImGui::EndMainMenuBar();
 	}
-
-	if (mLoadSceneOpen) 
-	{
-		OpenLoadScene();
-	}
-
-	if (mSaveSceneOpen)
-	{
-		OpenSaveScene();
-	}
+		
+	OpenSaveScene();
+	OpenLoadScene();
+		
+	
 
 	ImGuiViewportP* viewport = (ImGuiViewportP*)(void*)ImGui::GetMainViewport();
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
@@ -433,7 +425,6 @@ void ModuleEditor::OpenLoadScene() {
 			EngineApp->GetScene()->Load(filePathName.c_str());
 		}
 		ImGuiFileDialog::Instance()->Close();
-		mLoadSceneOpen = false;
 	}
 }
 
@@ -449,7 +440,6 @@ void ModuleEditor::OpenSaveScene() {
 			EngineApp->GetScene()->Save(filePathName.c_str());
 		}
 		ImGuiFileDialog::Instance()->Close();
-		mSaveSceneOpen = false;
 	}
 }
 

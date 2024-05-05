@@ -2,6 +2,7 @@
 
 #include "EngineApp.h"
 #include "ModuleFileSystem.h"
+#include "ModuleEngineResource.h"
 #include "ProjectPanel.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
@@ -169,6 +170,9 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
 				object->SetPrefabId(EngineApp->GetScene()->SavePrefab(object, file.c_str()));
+				unsigned int resourceId = EngineApp->GetScene()->SavePrefab(object, file.c_str());
+				EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
+
 			}
 		}
 		ImGui::EndDragDropTarget();
