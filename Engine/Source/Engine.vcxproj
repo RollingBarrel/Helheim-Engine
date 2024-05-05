@@ -185,6 +185,7 @@
     <ClCompile Include="EditorControlPanel.cpp" />
     <ClCompile Include="EngineApp.cpp" />
     <ClCompile Include="EngineLog.cpp" />
+    <ClCompile Include="ImBezier.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\tiny_gltf.h" />
     <ClInclude Include="EditorControlPanel.h" />
     <ClInclude Include="EngineApp.h" />
+    <ClInclude Include="ImBezier.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />

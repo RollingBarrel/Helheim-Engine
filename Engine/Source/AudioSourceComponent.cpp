@@ -1,14 +1,16 @@
 #include "AudioSourceComponent.h"
-#include "FmodUtils.h"
+#include "ModuleAudio.h"
 
 #include "GameObject.h"
 #include "Application.h"
 
 #include "fmod_studio.hpp"
-#define CheckError(result) FmodUtils::CheckFmodError(result)
+
+#define CheckError(result) ModuleAudio::CheckFmodError(result)
 
 AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Component(ownerGameObject,ComponentType::AUDIOSOURCE)
 {
+	App->GetAudio()->AddToAudiosList(this);
 }
 
 AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original, GameObject* owner)
@@ -17,13 +19,13 @@ AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original,
 	mName = original.GetName();
 	SetEventByName(mName.c_str());
 	mParameters = original.GetParameters();
+
+	App->GetAudio()->AddToAudiosList(this);
 }
 
 AudioSourceComponent::~AudioSourceComponent()
 {
-	Reset();
-	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-	mEventInstance->release();
+	CleanCurrentInstance();
 }
 
 
@@ -55,10 +57,26 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 
 void AudioSourceComponent::SetEventByName(const char* eventName)
 {
-	SetEventInstance(FmodUtils::GetEventByName(eventName));
+	FMOD::Studio::System* system = App->GetAudio()->GetFMODSystem();
+	FMOD::Studio::EventDescription* eventDescription = nullptr;
+	system->getEvent(eventName, &eventDescription);
+
+	FMOD::Studio::EventInstance* event = nullptr;
+	eventDescription->createInstance(&event);
+
+	SetEventInstance(event);
 	size_t eventNameLength = strlen(eventName);
 
 	mName = eventName;
+}
+
+void AudioSourceComponent::GetParametersMaxMin(const char* eventName, float& max, float& min)
+{
+	FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
+	CheckError(mEventDescription->getParameterDescriptionByName(eventName, &paramDesc));
+
+	max = paramDesc.maximum;
+	min = paramDesc.minimum;
 }
 
 void AudioSourceComponent::UpdateParameterValueByIndex(int index, float value)
@@ -107,7 +125,6 @@ void AudioSourceComponent::Update()
 	attributes.forward.z = 1.0f;
 	attributes.up.y = 1.0f;
 
-	// Play Audio
 	mEventInstance->set3DAttributes(&attributes);
 }
 
@@ -235,6 +252,35 @@ float AudioSourceComponent::GetParameterValueByIndex(int index)
 	{
 		return -1;
 	}
+}
+
+void AudioSourceComponent::PauseCurrentInstance()
+{
+	bool isPause;
+	mEventInstance->getPaused(&isPause);
+
+	if (isPause != true)
+	{
+		mEventInstance->setPaused(true);
+	}
+}
+
+void AudioSourceComponent::ResumeCurrentInstance()
+{
+	bool isPause;
+	mEventInstance->getPaused(&isPause);
+
+	if (isPause == true)
+	{
+		mEventInstance->setPaused(false);
+	}
+}
+
+void AudioSourceComponent::CleanCurrentInstance()
+{
+	Reset();
+	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	mEventInstance->release();
 }
 
 void AudioSourceComponent::UpdateParameters()

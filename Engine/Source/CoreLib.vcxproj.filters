@@ -73,6 +73,9 @@
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{53632d8a-a4e4-4185-bb50-a99200b955b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Particles">
+      <UniqueIdentifier>{50fe897a-e47d-4091-9d21-2bf00e84878c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -199,9 +202,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="HelheimEvent.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="FmodUtils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
@@ -435,6 +435,15 @@
     <ClCompile Include="ModuleScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="EmitterShape.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -567,9 +576,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="HelheimEvent.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="FmodUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h">
@@ -1040,6 +1046,15 @@
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="EmitterShape.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
@@ -1092,6 +1107,27 @@
     </None>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
       <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SpecEnvBRDFFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
