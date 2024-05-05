@@ -29,12 +29,12 @@ public:
 	void Draw(int windowFlags) override;
 
 private:
-	bool mSameComponentPopup = false;
-
+	
+	GameObject* mLockedGameObject = nullptr;
 	Component* mComponent = nullptr;
 
 	bool mLocked = false;
-	GameObject* mLockedGameObject = nullptr;
+	bool mSameComponentPopup = false;
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);

@@ -1,5 +1,6 @@
 #pragma once
 #include "Resource.h"
+#include <stdint.h>
 
 class ENGINE_API ResourceTexture : public Resource
 {
