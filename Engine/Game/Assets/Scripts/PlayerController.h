@@ -8,6 +8,7 @@ class AnimationComponent;
 class AudioSourceComponent;
 class SliderComponent;
 class AudioSourceComponent;
+class GameManager;
 
 enum class PlayerState 
 {
@@ -77,6 +78,9 @@ class PlayerController :public Script
         NavMeshController* mNavMeshControl = nullptr;
         GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
+
+        GameManager* mGameManager = nullptr;
+        GameObject* mGameManagerGO = nullptr;
 
         //Stats
         float mPlayerSpeed = 2.0f;
