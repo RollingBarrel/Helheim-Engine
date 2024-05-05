@@ -157,8 +157,7 @@ void Transform2DComponent::CalculateMatrices()
 		Transform2DComponent* parentTransform = (Transform2DComponent*)parent->GetComponent(ComponentType::TRANSFORM2D);
 		if (parentTransform)
 		{
-			float3 parentTranslation = parentTransform->GetLocalMatrix().TranslatePart();
-			mGlobalMatrix = mLocalMatrix.Translate(parentTranslation);
+			mGlobalMatrix = parentTransform->GetGlobalMatrix().Mul(mLocalMatrix);
 		}
 		else
 		{
@@ -188,7 +187,7 @@ float3 Transform2DComponent::GetPositionRelativeToParent()
 
 		if (parentCanvas != nullptr)
 		{
-			parentSize = parentCanvas->GetSize();
+			parentSize = parentCanvas->GetSize(); // / parentCanvas->GetScreenFactor();
 		}
 		else
 		{

@@ -998,16 +998,16 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 			if (resource && (resource->GetType() == Resource::Type::Texture)) 
 			{
 				imageComponent->SetImage(resource->GetUID());
-				//imageComponent->SetFileName(asset->mName);
+				imageComponent->SetFileName(asset->mName);
 			}
 		}
 		ImGui::EndDragDropTarget();
 	}
-	//ImGui::NextColumn();
-	//if (imageComponent->GetFileName() != nullptr) 
-	//{
-	//	//ImGui::Text(imageComponent->GetFileName());
-	//}
+	ImGui::NextColumn();
+	if (imageComponent->GetFileName() != nullptr) 
+	{
+		ImGui::Text(imageComponent->GetFileName());
+	}
 
 	if (image)
 	{
