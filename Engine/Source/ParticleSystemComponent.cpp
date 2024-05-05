@@ -108,7 +108,7 @@ void ParticleSystemComponent::Draw() const
         glDepthMask(GL_FALSE);
         glEnable(GL_BLEND);									// Enable Blending
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
-        glEnable(GL_TEXTURE_2D);
+        //glEnable(GL_TEXTURE_2D);
         //glBlendEquation(GL_FUNC_ADD);
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
