@@ -6,7 +6,7 @@
 #include <ImGuiFileDialog.h>
 
 
-LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, false) {}
+LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
