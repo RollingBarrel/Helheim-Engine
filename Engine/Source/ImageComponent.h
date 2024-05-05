@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "ResourceTexture.h"
 
 class ResourceTexture;
 class ModuleResource;
@@ -21,18 +22,15 @@ public:
     void Draw();
 
     void SetImage(ResourceTexture* image) { mImage = image; }
-    void FillVBO();
-    void CreateVAO();
+    void GenVBOVAO();
     void ResizeByRatio();
 
-    unsigned int GetResourceId() const { return mResourceId; }
+    unsigned int GetResourceId() const { return (mImage != nullptr) ? mImage->GetUID() : 0; }
     ResourceTexture* GetImage() const { return mImage; }
     float3* GetColor() { return &mColor; }
     float* GetAlpha() { return &mAlpha; }
-    const char* GetFileName() const { return mFileName; }
     bool* GetMantainRatio() { return &mMantainRatio; }
     
-    inline void SetFileName(const char* fileName) { mFileName = fileName; }
     inline void SetImage(unsigned int resourceId);
     inline void SetColor(float3 color) { mColor = color; }
     inline void SetAlpha(float alpha) { mAlpha = alpha; }
@@ -44,10 +42,7 @@ public:
 
 private:
     ResourceTexture* mImage = nullptr;
-    unsigned int mResourceId = 148626881; // Default white texture
-
-    //TODO: Handle filename when setting the image
-    const char* mFileName = nullptr;
+    //unsigned int mResourceId = 148626881; // Default white texture
 
     float3 mColor = float3(1.0f, 1.0f, 1.0f);
     float mAlpha = 1.0f;

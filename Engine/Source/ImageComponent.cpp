@@ -28,6 +28,8 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 	CreateVAO();
 
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+
+	GenVBOVAO();
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
@@ -35,7 +37,6 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	FillVBO();
 	CreateVAO();
 
-    SetImage(mResourceId);
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 
 	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
@@ -45,6 +46,7 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 		component->AddEventHandler(EventType::HOVER, std::bind(&ImageComponent::OnHover, this));
 		component->AddEventHandler(EventType::CLICK, std::bind(&ImageComponent::OnClick, this));
 	}*/
+	GenVBOVAO();
 }
 
 ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE)
@@ -53,8 +55,6 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	CreateVAO();
 
 	mImage = original.mImage;
-	mResourceId = original.mResourceId;
-	mFileName = original.mFileName;
 
 	mColor = original.mColor;
 	mAlpha = original.mAlpha;
@@ -68,12 +68,44 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	mQuadVAO = original.mQuadVAO;
 
 	mCanvas = original.mCanvas;
+
+	GenVBOVAO();
 }
 
 ImageComponent:: ~ImageComponent() 
 {
 	CleanUp();
 	mCanvas = nullptr;
+	if(mImage)
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	glDeleteVertexArrays(1, &mQuadVAO);
+	glDeleteBuffers(1, &mQuadVBO);
+}
+
+void ImageComponent::GenVBOVAO()
+{
+	glGenVertexArrays(1, &mQuadVAO);
+	glBindVertexArray(mQuadVAO);
+
+	float vertices[] = {
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
+		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
+	};
+	glGenBuffers(1, &mQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glBindVertexArray(0);
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
@@ -142,36 +174,29 @@ void ImageComponent::Draw()
 			glDisable(GL_CULL_FACE);
 		}
 
+	
 		glBindVertexArray(mQuadVAO);
 
 		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
 		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 
-		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
-		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
-		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
-		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
-
-		if (mAlpha < 1.0) 
-		{
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		}
+		glUniformMatrix4fv(0, 1, GL_TRUE, model.ptr());
+		//glUniformMatrix4fv(0, 1, GL_TRUE, float4x4::identity.ptr());
+		glUniformMatrix4fv(1, 1, GL_TRUE, view.ptr());
+		glUniformMatrix4fv(2, 1, GL_TRUE, proj.ptr());
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 		glUseProgram(0);
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
+		//glFrontFace(GL_CCW);
 	}
 }
 
@@ -196,8 +221,7 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 	{
 		const rapidjson::Value& imageIdValue = data["ImageID"];
 		
-		mResourceId = imageIdValue.GetInt();
-		SetImage(mResourceId);
+		SetImage(imageIdValue.GetInt());
     }
 
 	if (data.HasMember("Color") && data["Color"].IsArray()) 
@@ -231,37 +255,9 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 
 void ImageComponent::SetImage(unsigned int resourceId) 
 {
-    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
-}
-
-void ImageComponent::FillVBO()
-{
-	float vertices[] = {
-		// texture coordinates
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
-		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
-	};
-	glGenBuffers(1, &mQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-}
-
-void ImageComponent::CreateVAO()
-{
-	glGenVertexArrays(1, &mQuadVAO);
-	glBindVertexArray(mQuadVAO);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-	glBindVertexArray(0);
+	if (mImage != nullptr)
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
 void ImageComponent::ResizeByRatio()
