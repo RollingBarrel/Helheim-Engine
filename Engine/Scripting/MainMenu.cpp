@@ -400,7 +400,7 @@ void MainMenu::OnMainButtonClick() {
 }
 
 void MainMenu::OnQuitButtonClick() {
-    exit(0);
+    App->Exit();
     mMainMenuManager->PlayOKSFX();
 }
 

@@ -1,5 +1,6 @@
 {
     "Scene": {
+        "Name": "navmeshtest",
         "GameObjects": [
             {
                 "UID": 397830448,

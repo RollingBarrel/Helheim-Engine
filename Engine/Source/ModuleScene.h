@@ -59,6 +59,8 @@ public:
 	Tag* GetTagByID(unsigned id);
 	void DeleteTag(Tag* tag);
 
+	std::string GetName();
+	void NewScene();
 	void Save(const char* saveFilePath) const;
 	void Load(const char* saveFilePath);
 	int SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
