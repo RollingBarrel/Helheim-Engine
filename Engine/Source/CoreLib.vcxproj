@@ -228,7 +228,6 @@
     <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
     <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
-    <ClCompile Include="FmodUtils.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
@@ -430,7 +429,6 @@
     <ClInclude Include="Dependencies\Recast\Include\Recast.h" />
     <ClInclude Include="Dependencies\Recast\Include\RecastAlloc.h" />
     <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h" />
-    <ClInclude Include="FmodUtils.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
