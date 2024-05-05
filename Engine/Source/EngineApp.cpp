@@ -125,7 +125,7 @@ void EngineApplication::Stop()
 	mGameTimer->Stop();
 	SetCurrentClock(EngineApp->GetEngineClock());
 	mEngineTimer->Resume();
-	audio->PauseAllChannels();
+	EngineApp->GetAudio()->EngineStop();
 	scene->Load("TemporalScene");
 
 }
