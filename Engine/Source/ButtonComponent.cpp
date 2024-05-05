@@ -29,7 +29,8 @@ ButtonComponent:: ~ButtonComponent()
 {
     for (int i = 0; i < (int)EventType::COUNT; i++)
     {
-        for (int j = 0; j < mEventHandlers->size(); j++) {
+        for (int j = 0; j < mEventHandlers->size(); j++) 
+        {
             mEventHandlers[i][j] = std::function<void()>();
         }
         mEventHandlers[i].clear();
