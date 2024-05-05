@@ -432,7 +432,6 @@ void ModuleEditor::OpenLoadScene() {
 			}
 			EngineApp->GetScene()->Load(filePathName.c_str());
 		}
-
 		ImGuiFileDialog::Instance()->Close();
 		mLoadSceneOpen = false;
 	}

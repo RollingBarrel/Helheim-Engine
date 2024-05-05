@@ -290,7 +290,10 @@ void ModuleScene::Load(const char* sceneName)
 		if (document.HasMember("Scene") && document["Scene"].IsObject()) 
 		{
 			const rapidjson::Value& sceneValue = document["Scene"];
-			mRoot->SetName(sceneValue["Name"].GetString());
+			if (sceneValue.HasMember("Name"))
+			{
+				mRoot->SetName(sceneValue["Name"].GetString());
+			}
 			mRoot->Load(sceneValue);
 		}
 
