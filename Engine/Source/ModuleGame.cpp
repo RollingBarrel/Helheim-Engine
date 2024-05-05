@@ -17,7 +17,7 @@ bool ModuleGame::Init()
 
 	//TODO: read the name of the fitrst scene to load from somewhere
 	//App->GetScene()->Load("MainMenu");
-	App->GetScene()->Load("Level1");
+	App->GetScene()->Load("IBLTest.json");
 	//TODO:: This is bad for decoupling
 	App->GetScriptManager()->StartScripts();
 	//TODO: Do better!!!!
