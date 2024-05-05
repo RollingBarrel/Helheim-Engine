@@ -69,6 +69,11 @@ class PlayerController :public Script
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
+        void Victory();
+        void GameoOver();
+        bool Delay(float delay);
+        void Loading();
+
         Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
@@ -150,4 +155,11 @@ class PlayerController :public Script
         // Gunfire
         GameObject* mGunfireAudioHolder = nullptr;
         AudioSourceComponent* mGunfireAudio = nullptr;
+
+        //SCREENS
+        bool mVictory = false;
+        bool mGameOver = false;
+        bool mLoadingActive = false;
+        float mTimeScreen = 3.0f;
+        float mTimePassed = 0.0f;
 };

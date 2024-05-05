@@ -106,7 +106,6 @@ void PlayerController::Start()
     {
         mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
     }
-
 }
 
 
@@ -120,7 +119,10 @@ void PlayerController::Update()
     switch (mCurrentState)
     {
     case PlayerState::IDLE:
-        Idle();
+        if ((!mVictory) || (!mGameOver))
+        {
+            Idle();
+        }
         break;
     case PlayerState::DASH:
         Dash();
@@ -146,11 +148,11 @@ void PlayerController::Update()
     {
         if (mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
         {
-            App->GetScene()->Load("MainMenu");
+            Victory();
         }
     }
 
-
+    Loading();
 }
 
 void PlayerController::Idle()
@@ -571,8 +573,7 @@ void PlayerController::RechargeDash()
 
 void PlayerController::Death() 
 {
-    mPlayerIsDead = true;
-    App->GetScene()->Load("MainMenu");
+    GameoOver();
 }
 
 bool PlayerController::IsDead() 
@@ -627,6 +628,57 @@ void PlayerController::UpdateBattleSituation()
         }
         else {
             mCurrentSituation = BattleSituation::BATTLE_HIGHT_HP;
+        }
+    }
+}
+
+void PlayerController::Victory()
+{
+    mVictory = true;
+    App->GetScene()->Find("Victory")->SetEnabled(true);
+
+    if (Delay(mTimeScreen))
+    {
+        App->GetScene()->Find("Victory")->SetEnabled(false);
+        mLoadingActive = true;
+    }
+}
+
+void PlayerController::GameoOver()
+{
+    mGameOver = true;
+    App->GetScene()->Find("Game_Over")->SetEnabled(true);
+
+    if (Delay(mTimeScreen))
+    {
+        App->GetScene()->Find("Game_Over")->SetEnabled(false);
+        mLoadingActive = true;
+    }
+}
+
+bool PlayerController::Delay(float delay)
+{
+    mTimePassed += App->GetDt();
+
+    if (mTimePassed >= delay)
+    {
+        mTimePassed = 0;
+        return true;
+    }
+    else return false;
+}
+
+void PlayerController::Loading()
+{
+    if (mLoadingActive)
+    {
+        App->GetScene()->Find("Loading_Screen")->SetEnabled(true);
+
+        if (Delay(3.0f))
+        {
+            mLoadingActive = false;
+            App->GetScene()->Find("Loading_Screen")->SetEnabled(false);
+            App->GetScene()->Load("MainMenu.json");
         }
     }
 }
