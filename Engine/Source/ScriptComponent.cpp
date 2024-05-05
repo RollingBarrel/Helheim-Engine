@@ -186,7 +186,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 			}
 		}
 	}
-	App->GetScriptManager()->AddScript(this);
+	//App->GetScriptManager()->AddScript(this);
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
