@@ -78,9 +78,11 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 
 void PlayerController::Start()
 {
-    ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
-    mGameManager = (GameManager*)script->GetScriptInstance();
-
+    if (mGameManagerGO)
+    {
+        ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
+        mGameManager = (GameManager*)script->GetScriptInstance();
+    }
     mDashCharges = mMaxDashCharges;
     mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
