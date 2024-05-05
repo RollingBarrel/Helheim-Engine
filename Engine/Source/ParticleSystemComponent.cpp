@@ -404,3 +404,13 @@ void ParticleSystemComponent::InitEmitterShape()
         break;
     }
 }
+
+void ParticleSystemComponent::Enable()
+{
+    App->GetOpenGL()->AddParticleSystem(this);
+}
+
+void ParticleSystemComponent::Disable()
+{
+    App->GetOpenGL()->RemoveParticleSystem(this);
+}

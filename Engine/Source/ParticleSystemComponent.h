@@ -24,6 +24,8 @@ public:
 	void Init();
 	void Update() override;
 	void Draw() const;
+	void Enable() override;
+	void Disable() override;
 
 	Component* Clone(GameObject* owner) const override;
 	void Save(Archive& archive) const override;
