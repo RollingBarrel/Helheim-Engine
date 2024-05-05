@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
+#include "ParticleSystemComponent.h"
 #include <vector>
 
 typedef struct DirectionalAmbient {
@@ -63,6 +64,7 @@ public:
 
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
+	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 
@@ -80,6 +82,9 @@ public:
 	void BatchEditMaterial(const MeshRendererComponent* mesh);
 	void Draw();
 	void SetWireframe(bool wireframe);
+
+	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
@@ -119,6 +124,8 @@ private:
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	
 	
+	unsigned int mParticleProgramId = 0;
+
 
 	//IBL
 	unsigned int mHDRTextureId = 0;
@@ -136,6 +143,8 @@ private:
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
+
+	std::vector<const ParticleSystemComponent*> mParticleSystems;
 
 	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 };

@@ -162,6 +162,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "ui.fs";
 	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "particle_vertex.glsl";
+	sourcesPaths[1] = "particle_fragment.glsl";
+	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "skinning.comp";
 	int computeType = GL_COMPUTE_SHADER;
 	mSkinningProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
@@ -765,6 +769,11 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
 	mBatchManager.Draw();
+	glActiveTexture(GL_TEXTURE0);
+	for (auto partSys : mParticleSystems)
+	{
+		partSys->Draw();
+	}
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
@@ -932,4 +941,15 @@ void OpenGLBuffer::RemoveData(unsigned int dataSize, unsigned int offset)
 	glBindBuffer(GL_COPY_WRITE_BUFFER, mIdx);
 	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, mDataSize);
 	glDeleteBuffers(1, &tmp);
+}
+
+void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component)
+{
+	for (int i = 0; i < mParticleSystems.size(); ++i)
+	{
+		if (mParticleSystems[i] == component)
+		{
+			mParticleSystems.erase(mParticleSystems.begin() + i);
+		}
+	}
 }
