@@ -20,7 +20,6 @@ private:
     void Loading();
     void Controls();
     bool Delay(float delay);
-    void Controls();
 
     void OnWinButtonClick();
     void OnLoseButtonClick();
