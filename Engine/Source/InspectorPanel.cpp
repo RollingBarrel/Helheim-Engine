@@ -11,6 +11,7 @@
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
+#include "ModuleAudio.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -36,7 +37,6 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
-#include "FmodUtils.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -630,12 +630,15 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
+		if (ImGui::Checkbox("Enable Emissive map", &material->mEnableEmissiveTexture))
+		{
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
 		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
-
 		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
@@ -643,6 +646,13 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (material->IsEmissiveEnabled())
+		{
+			if (ImGui::ColorPicker3("Emissive", material->mEmissiveFactor.ptr()))
+			{
+				EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+			}
 		}
 	}
 }
@@ -1085,7 +1095,7 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
-	std::vector<const char*> events = FmodUtils::GetEventsNames();
+	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
@@ -1120,7 +1130,7 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 		float max = 0;
 		float min = 0;
 
-		FmodUtils::GetParametersMaxMinByComponent(component, name, max, min);
+		component->GetParametersMaxMin(name, max, min);
 
 		ImGui::Text("%s: ", name);
 		ImGui::SameLine();
