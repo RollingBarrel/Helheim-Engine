@@ -632,7 +632,8 @@ void PlayerController::UpdateBattleSituation()
     {
         mBattleStateTransitionTime = 0.0f;
 
-        if (hpRate <= 0.3) {
+        if (hpRate <= 0.3) 
+        {
             mCurrentSituation = BattleSituation::BATTLE_LOW_HP;
         }
         else {
