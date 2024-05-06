@@ -186,7 +186,7 @@ void AnimationController::GetTransform(GameObject* model)
 
 void AnimationController::GetTransformBlending(GameObject* model, float newClipStartTime)
 {
-	float weight = (mCurrentTime - mStartTransitionTime) / mTransitionDuration;
+	float weight = (mCurrentTime - newClipStartTime) / mTransitionDuration;
 	LOG("%f", weight);
 	if (weight < 1)
 	{
@@ -246,6 +246,8 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 					newClipIndex = channel->numPositions - 1;
 				}
 
+				//model->SetPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
+				//model->SetPosition(Interpolate(channel->positions[newClipIndex], channel->positions[newClipIndex], weight));
 				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
 			}
 			if (channel->hasRotation)
@@ -283,7 +285,8 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				//model->SetRotation(Interpolate(model->GetRotationQuat(), channel->rotations[newClipIndex], weight));
+				//model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+				//model->SetRotation(Interpolate(channel->rotations[newClipIndex], channel->rotations[newClipIndex], weight));
 				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
 			//else if (name == "scale") {
