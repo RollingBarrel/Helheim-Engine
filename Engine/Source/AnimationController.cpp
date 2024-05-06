@@ -188,6 +188,9 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 {
 	float weight = (mCurrentTime - newClipStartTime) / mTransitionDuration;
 	LOG("%f", weight);
+	if (weight < 0) {
+		LOG("%f", weight);
+	}
 	if (weight < 1)
 	{
 		//Checks and gets the channel we want
@@ -303,6 +306,7 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 	else 
 	{
 		mTransition = false;
+		mCurrentTime = newClipStartTime;
 	}
 
 	
