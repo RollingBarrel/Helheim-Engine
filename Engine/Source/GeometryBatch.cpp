@@ -259,7 +259,7 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 	}
 
 	unsigned int meshIdx = 0;
-	const AnimationComponent* cAnim = reinterpret_cast<AnimationComponent*> (cMesh->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));
+	const AnimationComponent* cAnim = cMesh->GetOwner()->FindAnimationComponent();
 	if (cAnim)
 	{
 		AddUniqueMesh(cMesh, meshIdx);
