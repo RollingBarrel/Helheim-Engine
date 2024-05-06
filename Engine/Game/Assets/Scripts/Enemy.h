@@ -15,6 +15,7 @@ class Enemy : public Script
 
 		virtual void TakeDamage(float damage);
 		virtual void Death();
+		virtual void PushBack();
 		
 	protected:
 		bool Delay(float delay);
@@ -26,12 +27,11 @@ class Enemy : public Script
 		float mRotationSpeed = 1.0f;
 		float mActivationRange = 15.0f;
 		GameObject* mPlayer = nullptr;
-		GameObject* mAnimationComponentHolder = nullptr;
+		AnimationComponent* mAnimationComponent = nullptr;
 
 	private:
 		void ActivateEnemy();
-		
 		NavMeshController* mNavMeshControl = nullptr;
-		AnimationComponent* mAnimationComponent = nullptr;
+		
 			
 };

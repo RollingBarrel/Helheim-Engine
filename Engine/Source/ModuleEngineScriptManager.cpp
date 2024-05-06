@@ -185,11 +185,6 @@ void ModuleEngineScriptManager::StartScripts()
 {
 	if (EngineApp->IsPlayMode())
 	{
-		GameObject* cameraGameObject = EngineApp->GetScene()->FindGameObjectWithTag("MainCamera");
-		if (cameraGameObject)
-		{
-			EngineApp->GetCamera()->SetCurrentCamera(cameraGameObject);
-		}
 		ModuleScriptManager::StartScripts();
 	}
 }

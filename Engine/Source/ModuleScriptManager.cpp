@@ -12,6 +12,7 @@
 #include <Windows.h>
 #include <string>
 #include "ModuleInput.h"
+#include "ModuleCamera.h"
 #include <any>
 
 static bool PDBReplace(const std::string& filename, const std::string& namePDB);
@@ -90,6 +91,13 @@ void ModuleScriptManager::StartScripts()
 	{
 		mScripts[i]->mScript->Start();
 	}
+
+	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+	if (cameraGameObject)
+	{
+		App->GetCamera()->SetCurrentCamera(cameraGameObject);
+	}
+
 }
 
 

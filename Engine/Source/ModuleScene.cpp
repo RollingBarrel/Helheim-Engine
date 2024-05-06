@@ -39,6 +39,7 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(6, "Obstacle", TagType::SYSTEM));
 	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
 	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
+	mTags.push_back(new Tag(9, "Bullet", TagType::SYSTEM));
 
 }
 
@@ -237,27 +238,25 @@ void ModuleScene::Save(const char* sceneName) const
 int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const 
 {
 	//TODO: separate game engine
-	//unsigned int resourceId = LCG().Int();
-	//Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-	//if (resource != nullptr) { resourceId = resource->GetUID(); }
-	//Archive* prefabArchive = new Archive();
-	//Archive* archive = new Archive();
-	//std::vector<Archive> gameObjectsArchiveVector;
-	//SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
-	////SaveGame(gameObject->GetChildren(), *archive);
-	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
-	//prefabArchive->AddObject("Prefab", *archive);
-	//
-	//std::string out = prefabArchive->Serialize();
-	//App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	////App->GetResource()->ImportFile(saveFilePath, resourceId);
-	//PathNode* root = App->GetFileSystem()->GetRootNode();
-	//root->mChildren.clear();
-	//App->GetFileSystem()->DiscoverFiles("Assets", root);
-	//delete prefabArchive;
-	//delete archive;
-	//return resourceId;
-	return 0;
+	unsigned int resourceId = LCG().Int();
+	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+	if (resource != nullptr) { resourceId = resource->GetUID(); }
+	Archive* prefabArchive = new Archive();
+	Archive* archive = new Archive();
+	std::vector<Archive> gameObjectsArchiveVector;
+	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
+	//SaveGame(gameObject->GetChildren(), *archive);
+	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	prefabArchive->AddObject("Prefab", *archive);
+	
+	std::string out = prefabArchive->Serialize();
+	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
+	PathNode* root = App->GetFileSystem()->GetRootNode();
+	root->mChildren.clear();
+	App->GetFileSystem()->DiscoverFiles("Assets", root);
+	delete prefabArchive;
+	delete archive;
+	return resourceId;
 }
 
 

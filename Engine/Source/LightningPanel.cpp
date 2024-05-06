@@ -6,7 +6,7 @@
 #include <ImGuiFileDialog.h>
 
 
-LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, false) {}
+LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
@@ -26,11 +26,11 @@ void LightningPanel::Draw(int windowFlags)
 	{
 		IGFD::FileDialogConfig config;
 		config.path = "./Assets/Textures";
-		ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".hdr", config);
+		ImGuiFileDialog::Instance()->OpenDialog("Skybox", "Choose Skybox File", ".hdr", config);
 	}
 
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
-	if (ImGuiFileDialog::Instance()->Display("SaveScene"))
+	if (ImGuiFileDialog::Instance()->Display("Skybox"))
 	{
 		if (ImGuiFileDialog::Instance()->IsOk())
 		{

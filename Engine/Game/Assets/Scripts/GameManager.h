@@ -1,5 +1,5 @@
 #pragma once
-#include "Script.h"
+#include <Script.h>
 #include "Macros.h"
 
 class ButtonComponent;
@@ -48,4 +48,7 @@ private:
     bool mPaused = false;
     float mTimeScreen = 5.0f;
     float mTimePassed = 0.0f;
+
+    GameObject* mPlayer = nullptr;
+    GameObject* mMenuScript = nullptr;
 };

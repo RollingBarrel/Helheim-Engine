@@ -152,7 +152,7 @@ void ParticleSystemComponent::Draw() const
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
         glUseProgram(0);
-        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
         glDepthMask(GL_TRUE);
     }
 }
@@ -403,4 +403,14 @@ void ParticleSystemComponent::InitEmitterShape()
     case EmitterShape::Type::NONE:
         break;
     }
+}
+
+void ParticleSystemComponent::Enable()
+{
+    App->GetOpenGL()->AddParticleSystem(this);
+}
+
+void ParticleSystemComponent::Disable()
+{
+    App->GetOpenGL()->RemoveParticleSystem(this);
 }
