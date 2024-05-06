@@ -47,15 +47,16 @@ public:
 private:
 
 	//Time in milliseconds
-	float mCurrentTime = 0;
-	float mStartTime = 0;
-	float mEndTime = 0;
+	float mCurrentTime = 0.0f;
+	float mStartTime = 0.0f;
+	float mEndTime = 0.0f;
 
 	//Provisional to make blending work
-	float mStartTransitionTime = 0;
-	float mTransitionDuration = 1;
+	float mStartTransitionTime = 0.0f;
+	float mTransitionDuration = 1.0f;
 	bool mTransition = false;
-	float mClipStartTime = 0;
+	float mClipStartTime = 0.0f;
+	float mCurrentTransitionTime = 0.0f;
 
 	float mSpeed = 1.0;
 

@@ -37,6 +37,7 @@ void AnimationController::Update(GameObject* model)
 	}
 	else 
 	{
+		mCurrentTransitionTime += App->GetDt();
 		GetTransformBlending(model, mClipStartTime);
 	}
 	
@@ -186,7 +187,7 @@ void AnimationController::GetTransform(GameObject* model)
 
 void AnimationController::GetTransformBlending(GameObject* model, float newClipStartTime)
 {
-	float weight = (mCurrentTime - newClipStartTime) / mTransitionDuration;
+	float weight = mCurrentTransitionTime / mTransitionDuration;
 	LOG("%f", weight);
 	if (weight < 0) {
 		LOG("%f", weight);
@@ -205,15 +206,6 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 			if (channel == nullptr)
 			{
 				return;
-			}
-
-			if (mCurrentTime < mStartTime)
-			{
-				mCurrentTime = mStartTime;
-			}
-			if (mCurrentTime >= mEndTime)
-			{
-				weight = 1;
 			}
 
 			static float lambda;
@@ -307,6 +299,7 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 	{
 		mTransition = false;
 		mCurrentTime = newClipStartTime;
+		mCurrentTransitionTime = 0.0f;
 	}
 
 	
