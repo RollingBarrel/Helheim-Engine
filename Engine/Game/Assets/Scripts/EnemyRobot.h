@@ -25,7 +25,7 @@ public:
 	EnemyRobot(GameObject* owner);
 	~EnemyRobot() {}
 	void Update() override;
-
+	
 private:
 
 	void Idle();
@@ -37,6 +37,7 @@ private:
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	RobotType mType = RobotType::MELEE;
+
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;

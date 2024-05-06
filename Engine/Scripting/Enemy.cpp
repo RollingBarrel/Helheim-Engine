@@ -16,6 +16,16 @@ void Enemy::Start()
     ModuleScene* scene = App->GetScene();
     mPlayer = scene->FindGameObjectWithTag(scene->GetRoot(), scene->GetTagByName("Player")->GetID());
     mHealth = mMaxHealth;
+    if (mAnimationComponentHolder)
+    {
+        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
+        mAnimationComponent->OnStart();
+        mAnimationComponent->SetIsPlaying(true);
+        mAnimationComponent->SetCurrentClip(0);
+    }
+    
+    
+    
 }
 
 void Enemy::Update()

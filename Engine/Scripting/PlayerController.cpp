@@ -97,8 +97,8 @@ void PlayerController::Start()
 
     if (mAnimationComponentHolder) 
     {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
+        /*mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
+        mAnimationComponent->OnStart();*/
     }
 
     if (mFootStepAudioHolder)

@@ -27,12 +27,12 @@ class Enemy : public Script
 		float mRotationSpeed = 1.0f;
 		float mActivationRange = 15.0f;
 		GameObject* mPlayer = nullptr;
+		AnimationComponent* mAnimationComponent = nullptr;
 		GameObject* mAnimationComponentHolder = nullptr;
 
 	private:
 		void ActivateEnemy();
-		
 		NavMeshController* mNavMeshControl = nullptr;
-		AnimationComponent* mAnimationComponent = nullptr;
+		
 			
 };

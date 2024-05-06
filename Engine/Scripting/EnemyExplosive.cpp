@@ -11,9 +11,6 @@ CREATE(EnemyExplosive)
     MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::FLOAT, mArmedDistance);
 
-    SEPARATOR("GAME OBJECTS");
-    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
-    //MEMBER(MemberType::GAMEOBJECT, mOpponent);
     END_CREATE;
 
 }
