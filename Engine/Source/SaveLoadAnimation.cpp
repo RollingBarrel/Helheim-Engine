@@ -5,7 +5,7 @@
 
 void Importer::Animation::Save(ResourceAnimation* ourAnimation)
 {
-    unsigned int header[2] = { (ourAnimation->GetChannels().size()), ourAnimation->GetDuration() };
+    float header[2] = { (ourAnimation->GetChannels().size()), ourAnimation->GetDuration() };
 
     unsigned int size = sizeof(header);
     for (const auto& channel : ourAnimation->GetChannels()) {
@@ -92,7 +92,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
 
         // Load Header
         char* cursor = fileBuffer;
-        unsigned int header[2];
+        float header[2];
         unsigned int bytes = sizeof(header);
         memcpy(header, cursor, bytes);
         cursor += bytes;
