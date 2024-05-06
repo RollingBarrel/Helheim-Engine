@@ -37,7 +37,7 @@ public:
 	void SetAnimSpeed(float speed) { mSpeed = speed; }
 
 	//Provisional to make blending work
-	void SetStartTranstionTime() { mStartTransitionTime = mCurrentTime; }
+	void SetStartTransitionTime() { mStartTransitionTime = mCurrentTime; }
 	void SetTransitionDuration(float time) { mTransitionDuration = time; }
 	void ActivateTransition() { mTransition = true; }
 	void SetClipStartTime(float time) { mClipStartTime = time; }

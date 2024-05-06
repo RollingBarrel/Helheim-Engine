@@ -185,7 +185,7 @@ void AnimationComponent::UpdatePalette()
 
 void AnimationComponent::StartTransition(float transitionDuration)
 {
-	mController->SetStartTranstionTime();
+	//mController->SetStartTransitionTime();
 	mController->SetTransitionDuration(transitionDuration);
 	mController->ActivateTransition();
 	mController->SetClipStartTime(GetCurrentStartTime());

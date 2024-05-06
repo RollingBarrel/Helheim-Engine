@@ -963,6 +963,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	}
 	if (ImGui::Button("Transition")) 
 	{
+		component->GetAnimationController()->SetStartTransitionTime();
 		component->SetCurrentClip(itemToTransition);
 		component->StartTransition(transitionTime);
 	}
