@@ -2,6 +2,7 @@
 #include "Module.h"
 
 #include <vector>
+#include <string>
 
 #define EVENT_BANK_UPPERLIMIT 64
 #define CheckError(result) ModuleAudio::CheckFmodError(result)
@@ -42,7 +43,9 @@ public:
 
 	void AddToAudiosList(AudioSourceComponent* audioSource);
 
-	int GetMemoryUsage();
+	int GetMemoryUsage() const;
+	float GetVolume(std::string busname) const;
+	void SetVolume(std::string busname, float value) const;
 
 	static void CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line);
 
