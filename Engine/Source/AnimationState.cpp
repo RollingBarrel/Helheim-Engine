@@ -1,11 +1,12 @@
 #include "AnimationState.h"
+#include "AnimationClip.h"
 #include "AnimationTransition.h"
 #include "ResourceAnimation.h"
 
 
-AnimationState::AnimationState(ResourceAnimation* animation)
+AnimationState::AnimationState(AnimationClip* clip, std::string name)
 {
-    mAnimation = animation;
+    mName = name;
+    mClip = clip->mName;
     mStartTime = 0.0;
-    mEndTime = animation->GetDuration();
 }

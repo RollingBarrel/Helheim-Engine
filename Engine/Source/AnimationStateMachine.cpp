@@ -16,6 +16,8 @@ AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animation
 		mClips.push_back(newClip);
 	}
 
+	//AnimationState defaultState =  new AnimationState(mClips[0],"default")
+
 }
 
 void AnimationStateMachine::Update()

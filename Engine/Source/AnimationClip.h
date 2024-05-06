@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include "ResourceAnimation.h"
 class AnimationClip
@@ -10,6 +9,6 @@ public:
 
 	std::string mName;
 	unsigned int mAnimationUID;
-	bool loop;
+	bool loop = true;
 
 };

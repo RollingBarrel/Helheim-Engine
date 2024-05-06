@@ -5,16 +5,17 @@
 
 class ResourceAnimation;
 class AnimationTransition;
+class AnimationClip;
 
 class AnimationState
 
 {
 public:
-	AnimationState(ResourceAnimation* mAnimation);
+	AnimationState(AnimationClip* clip, std::string name);
 	AnimationState* GetNextAnimation()  const;
 
 	std::string mName;
-	std::string clipName;
+	std::string mClip;
 	ResourceAnimation* mAnimation;
 	float mStartTime, mEndTime;
 	bool mLoop;

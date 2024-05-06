@@ -2,14 +2,12 @@
 
 #include <string>
 #include "ResourceAnimation.h"
-class AnimationClip
+#include "AnimationClip.h"
+
+AnimationClip::AnimationClip(unsigned int animationUID)
 {
-public:
-	AnimationClip(unsigned int animationUID);
 
+	//mName = name;
+	mAnimationUID = animationUID;
 
-	std::string mName;
-	unsigned int mAnimationUID;
-	bool loop;
-
-};
+}

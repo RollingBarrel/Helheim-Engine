@@ -160,9 +160,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIAgentComponent.cpp" />
+    <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AnimationState.cpp" />
     <ClCompile Include="AnimationStateMachine.cpp" />
+    <ClCompile Include="AnimationTransition.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="AudioListenerComponent.cpp" />
@@ -285,9 +288,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIAgentComponent.h" />
+    <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationState.h" />
     <ClInclude Include="AnimationStateMachine.h" />
+    <ClInclude Include="AnimationTransition.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
     <ClInclude Include="AudioListenerComponent.h" />
