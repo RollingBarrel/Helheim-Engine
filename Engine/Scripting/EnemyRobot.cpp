@@ -22,16 +22,26 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mMeleeAttackCoolDown);
     MEMBER(MemberType::FLOAT, mMeleeDistance);
     MEMBER(MemberType::FLOAT, mMeeleDamage);
-  
-    SEPARATOR("GAME OBJECTS");
-    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
-    END_CREATE;
 
     END_CREATE;
 }
 
 EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
+}
+
+
+void EnemyRobot::Start()
+{
+    Enemy::Start();
+    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->OnStart();
+        mAnimationComponent->SetIsPlaying(true);
+        mAnimationComponent->SetCurrentClip(0);
+    }
+
 }
 
 
@@ -43,21 +53,20 @@ void EnemyRobot::Update()
     {
     case EnemyState::IDLE:
 
-        /*if (mAnimationComponent && mAnimationComponent->GetCurrentClip()!=1)
+        Idle();
+        if (mAnimationComponent)
         {
             mAnimationComponent->SetCurrentClip(0);
-        }*/
+        }
 
-        Idle();
         break;
     case EnemyState::CHASE:
 
-        /*if (mAnimationComponent && mAnimationComponent->GetCurrentClip() != 0)
-        {
-            mAnimationComponent->SetCurrentClip(0);
-        }*/
-
         Chase();
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SetCurrentClip(1);
+        }
         break;
     case EnemyState::ATTACK:
         Attack();

@@ -25,6 +25,8 @@ public:
 	EnemyRobot(GameObject* owner);
 	~EnemyRobot() {}
 	void Update() override;
+	void Start() override;
+
 	
 private:
 

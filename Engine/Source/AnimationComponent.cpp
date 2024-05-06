@@ -31,13 +31,6 @@ AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, Com
 	mClipTimes.push_back(12.0);
 	mClipTimes.push_back(15.0);
 
-	mClipNames.push_back("PlayerIdle");
-	mClipTimes.push_back(0.0);
-	mClipTimes.push_back(1.9);
-
-	mClipNames.push_back("PlayerWalk");
-	mClipTimes.push_back(1.9);
-	mClipTimes.push_back(2.9);
 
 	mCurrentClip = 0;
 	mSpeed = 1.0;
@@ -144,6 +137,10 @@ void AnimationComponent::SetCurrentClip(int currentClip)
 	if (currentClip > mClipNames.size())
 	{
 		currentClip = 0;
+	}
+	if (mCurrentClip == currentClip)
+	{
+		return;
 	}
 	mCurrentClip = currentClip;
 	SetStartTime(mClipTimes[mCurrentClip * 2]);
