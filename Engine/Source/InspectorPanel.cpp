@@ -934,10 +934,13 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	}
 
 	int currentItem = component->GetCurrentClip();
+	float transitionTime = component->GetAnimationController()->GetTransitionDuration();
 
 	if (ImGui::Combo("Select Animation State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
+		component->GetAnimationController()->SetStartTransitionTime();
 		component->SetCurrentClip(currentItem);
+		component->StartTransition(transitionTime);
 	}
 	float maxTimeValue = component->GetAnimation()->GetDuration();
 	float currentStartTime = component->GetCurrentStartTime();
@@ -951,21 +954,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	{
 		component->SetEndTime(currentEndTime);
 	}
-
-	ImGui::Text("Transition to:");
-	static int itemToTransition = component->GetCurrentClip();
-	if (ImGui::Combo("Clip", &itemToTransition, component->GetClipNames().data(), component->GetClipNames().size()))
-	{
-	}
-	float transitionTime = component->GetAnimationController()->GetTransitionDuration();
 	if (ImGui::DragFloat("Transition time", &transitionTime, 0.02, 0.1, 10.0)) {
 		component->GetAnimationController()->SetTransitionDuration(transitionTime);
-	}
-	if (ImGui::Button("Transition")) 
-	{
-		component->GetAnimationController()->SetStartTransitionTime();
-		component->SetCurrentClip(itemToTransition);
-		component->StartTransition(transitionTime);
 	}
 }
 
