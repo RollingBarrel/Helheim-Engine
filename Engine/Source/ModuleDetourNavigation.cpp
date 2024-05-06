@@ -9,15 +9,17 @@
 #include "DetourNavMeshQuery.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
-//TODO: Remove recast from the coreLib
 #include "Recast.h"
 #include "Application.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleOpenGL.h"
+#include "ModuleResource.h"
+#include "ModuleFileSystem.h"
+#include "ResourceNavmesh.h"
 #define MAX_AMOUNT 999
 ModuleDetourNavigation::ModuleDetourNavigation()
 {
-	mNavMeshParams = new dtNavMeshCreateParams();
-	mNavQuery = new dtNavMeshQuery();
+
 }
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
@@ -28,6 +30,13 @@ ModuleDetourNavigation::~ModuleDetourNavigation()
 
 bool ModuleDetourNavigation::Init()
 {
+	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
+	ResourceNavMesh* resource = (ResourceNavMesh*)App->GetResource()->RequestResource((pathStr + App->GetScene()->GetRoot()->GetName() + ".navmesshi").c_str());
+	if (resource) 
+	{
+		mDetourNavMesh = resource->GetDtNavMesh();
+		CreateQuery();
+	}
 
 	return true;
 }
@@ -44,7 +53,6 @@ update_status ModuleDetourNavigation::Update(float dt)
 		dtPolyRef result;
 		dtQueryFilter temp;
 		mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
-		//TODO: SEPARATE ENGINE
 		//App->GetOpenGL()->BindSceneFramebuffer();
 		//DrawDebug();
 		//App->GetOpenGL()->UnbindSceneFramebuffer();
@@ -115,14 +123,15 @@ bool ModuleDetourNavigation::CleanUp()
 void ModuleDetourNavigation::CreateDetourData() 
 {
 	//const AIAgentComponent* agentComponent = mAIAgentComponents[0];
+	mNavMeshParams = new dtNavMeshCreateParams();
+		NavMeshController* navController = App->GetScene()->GetNavController();
+		rcPolyMesh* polyMesh = navController->getPolyMesh();
+		rcPolyMeshDetail* polyMeshDetail = navController->getPolyMeshDetail();
+		if (!polyMesh) return;
+		unsigned char* navData = 0;
+		int navDataSize = 0;
+		/*if (agentComponent) {*/
 
-	NavMeshController* navController = App->GetScene()->GetNavController();
-	rcPolyMesh* polyMesh = navController->getPolyMesh();
-	rcPolyMeshDetail* polyMeshDetail = navController->getPolyMeshDetail();
-
-	unsigned char* navData = 0;
-	int navDataSize = 0;
-	/*if (agentComponent) {*/
 		mNavMeshParams->verts = polyMesh->verts;
 		mNavMeshParams->vertCount = polyMesh->nverts;
 		mNavMeshParams->polys = polyMesh->polys;
@@ -142,36 +151,43 @@ void ModuleDetourNavigation::CreateDetourData()
 		mNavMeshParams->offMeshConFlags = nullptr;
 		mNavMeshParams->offMeshConUserID = nullptr;
 		mNavMeshParams->offMeshConCount = 0;
-		mNavMeshParams->walkableHeight =  1.0f;
-		mNavMeshParams->walkableRadius =0.5f;
+		mNavMeshParams->walkableHeight = 1.0f;
+		mNavMeshParams->walkableRadius = 0.5f;
 		mNavMeshParams->walkableClimb = 0.0f;
 		rcVcopy(mNavMeshParams->bmin, polyMesh->bmin);
 		rcVcopy(mNavMeshParams->bmax, polyMesh->bmax);
 		mNavMeshParams->cs = navController->GetCellSize();
 		mNavMeshParams->ch = navController->GetCellHeight();
 		mNavMeshParams->buildBvTree = true;
-	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
-	{
-		LOG("Could not build Detour navmesh.");
-		return;
-	}
-	mDetourNavMesh = dtAllocNavMesh();
-	if (!mDetourNavMesh)
-	{
-		dtFree(navData);
-		LOG("Could not create Detour navmesh");
-		return;
-	}
 
+		if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
+		{
+			LOG("Could not build Detour navmesh.");
+			return;
+		}
+		mDetourNavMesh = dtAllocNavMesh();
+		if (!mDetourNavMesh)
+		{
+			dtFree(navData);
+			LOG("Could not create Detour navmesh");
+			return;
+		}
+
+		dtStatus status;
+		status = mDetourNavMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
+		if (dtStatusFailed(status))
+		{
+			dtFree(navData);
+			LOG("Could not init Detour navmesh");
+			return;
+		}
+	CreateQuery();
+
+}
+void ModuleDetourNavigation::CreateQuery() {
+
+	mNavQuery = new dtNavMeshQuery();
 	dtStatus status;
-	status = mDetourNavMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
-	if (dtStatusFailed(status))
-	{
-		dtFree(navData);
-		LOG("Could not init Detour navmesh");
-		return;
-	}
-
 	status = mNavQuery->init(mDetourNavMesh, 2048);
 	if (dtStatusFailed(status))
 	{
@@ -195,18 +211,18 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 }
 
 
-//TODO: SEPARATE ENGINE
-//void ModuleDetourNavigation::DrawDebug() 
-//{
-//	float3 color = float3(1.0f, 0.0f, 0.0f);
-//	App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
-//
-//	float3 color2 = float3(1.0f, 1.0f, 0.0f);
-//	App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
-//
-//	float3 color3 = float3(0.0f, 0.0f, 1.0f);
-//	float3 minAABB = mQueryCenter - mQueryHalfSize;
-//	float3 maxAABB = mQueryCenter + mQueryHalfSize;
-//	OBB cube = OBB(AABB(minAABB, maxAABB));
-//	App->GetDebugDraw()->DrawCube(cube, color3);
-//}
+
+void ModuleDetourNavigation::DrawDebug() 
+{
+	//float3 color = float3(1.0f, 0.0f, 0.0f);
+	//App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
+
+	//float3 color2 = float3(1.0f, 1.0f, 0.0f);
+	//App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
+
+	//float3 color3 = float3(0.0f, 0.0f, 1.0f);
+	//float3 minAABB = mQueryCenter - mQueryHalfSize;
+	//float3 maxAABB = mQueryCenter + mQueryHalfSize;
+	//OBB cube = OBB(AABB(minAABB, maxAABB));
+	//App->GetDebugDraw()->DrawCube(cube, color3);
+}

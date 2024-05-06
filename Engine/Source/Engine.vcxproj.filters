@@ -136,6 +136,9 @@
     <ClCompile Include="ModuleEngineScriptManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ImporterNavMesh.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -315,6 +318,9 @@
     </ClInclude>
     <ClInclude Include="ModuleEngineScriptManager.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterNavMesh.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

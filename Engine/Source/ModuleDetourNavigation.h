@@ -20,14 +20,16 @@ public:
 	bool CleanUp() override;
 	void CreateDetourData();
 
+	void CreateQuery();
+
 	float3 FindNearestPoint(float3 center, float3 halfSize);
-	//TODO: SEPARATE ENGINE
-	//void DrawDebug();
+	void DrawDebug();
 	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 
 
 	float3 GetQueryCenter() const { return mQueryCenter; }
 	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
+	dtNavMesh* GetDetourNavMesh()const { return mDetourNavMesh; }
 
 	void SetQueryCenter(float3 center) { mQueryCenter = center; }
 	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }

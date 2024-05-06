@@ -1,9 +1,8 @@
 #pragma once
-#include <vector>
+#include "vector"
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
 
-class ResourceMesh;
 class MeshRendererComponent;
 class AIAgentComponent;
 class GameObject;
@@ -14,7 +13,6 @@ struct rcContourSet;
 struct rcPolyMesh;
 struct rcPolyMeshDetail;
 class rcContext;
-
 struct ObstacleTriangle {
 	int startIndicePos=0;
 	int numberOfIndices=0;
@@ -23,14 +21,17 @@ class ENGINE_API NavMeshController
 {
 public:
 	NavMeshController();
-	~NavMeshController();
 	void Reset();
+	~NavMeshController();
 	void HandleBuild();
 	void Update();
 
 
 	rcPolyMesh* getPolyMesh()const { return mPolyMesh; }
+	void setPolyMesh(rcPolyMesh* polyMesh) { mPolyMesh = polyMesh; }
+
 	rcPolyMeshDetail* getPolyMeshDetail()const { return mPolyMeshDetail; }
+	void setPolyMeshDetail(rcPolyMeshDetail* polyMeshDetail) { mPolyMeshDetail = polyMeshDetail; }
 
 	//IMGUI VALUES
 	float GetCellSize() const { return mCellSize; }
@@ -75,37 +76,33 @@ public:
 	bool GetShouldDraw() const { return mDraw; }
 	void SetShouldDraw(bool draw) { mDraw = draw; }
 
-
+	std::vector<float3>& GetVertices() { return mVertices; }
+	void SetIndices(std::vector<int> indices) { mIndices = indices; };
+	std::vector<int>& GetIndices() { return mIndices; }
+	void SetVertices(std::vector<float3> vertices) { mVertices = vertices; };
 
 private:
+
 	void GetGOMeshes(const GameObject* gameObj);
-	std::vector<GameObject*>mGameObjects;
-	std::vector<const AIAgentComponent*>mAIAgentComponents;
+	std::vector<GameObject*> mGameObjects;
 	std::vector<ObstacleTriangle> mObstaclesTriangles;
 	void TranslateIndices();
 	void DebugDrawPolyMesh();
 	void LoadDrawMesh();
 	int FindVertexIndex(float3 vert);
 
-	dtNavMeshCreateParams* mNavMeshParams;
-	rcHeightfield* mHeightField = nullptr;
-	rcCompactHeightfield* mCompactHeightField = nullptr;
-	rcContourSet* mContourSet = nullptr;
 	rcPolyMesh* mPolyMesh = nullptr;
 	rcPolyMeshDetail* mPolyMeshDetail = nullptr;
-	unsigned char* mTriangleAreas = nullptr;
-	rcContext* mRecastContext;
-	bool mKeepInterResults = false;
-	bool mFilterLowHangingObstacles=true;
-	bool mFilterLedgeSpans=true;
-	bool mFilterWalkableLowHeightSpans=true;
-
-
 
 	int mWalkableClimb = 1;   // no imgui
 	int mWalkableHeight = 0; // no imgui
 
+	OBB mOBB;
+	AABB mAABB;
+	AABB mAABBWorld;
 
+	std::vector<float3> mVertices;
+	std::vector<int> mIndices;
 	//IMGUI VALUES
 	float mCellSize = 0.30f;  // 0.1 - 1.0
 	float mCellHeight = 0.20f; // 0.1 - 1.0
@@ -119,20 +116,17 @@ private:
 	int mMaxVertsPerPoly = 6; // 3 - 12
 	float mDetailSampleDist = 6; // 0 - 16
 	float mDetailSampleMaxError = 1; // 0 - 16
-	OBB mOBB;
-	AABB mAABB;
-	AABB mAABBWorld;
+
 	//DEBUG DRAW VARIABLES
 	bool mDraw = false;
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
-	std::vector<float3> mVertices;
-	std::vector<int> mIndices;
-
 
 	float3 mQueryCenter = float3(10.0f, 0.0f, -3.0f);
 	float3 mQueryHalfSize = float3(5.0f);
 	float3 mQueryNearestPoint = float3(0.0f);
+
 };
+
 
