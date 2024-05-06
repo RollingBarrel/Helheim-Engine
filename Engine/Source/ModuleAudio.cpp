@@ -24,9 +24,14 @@ bool ModuleAudio::Init()
 	// Load bank
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.strings.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mStringBank) );
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
-	CheckError(mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Music.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMusicBank) );
 
+	// Set volume lower by default
+	FMOD::Studio::Bus* masterBus = nullptr;
+	CheckError(mSystem->getBus("bus:/", &masterBus));
+
+	CheckError(masterBus->setVolume(0.1f));
 	return true;
 }
 
@@ -109,12 +114,31 @@ void ModuleAudio::AddToAudiosList(AudioSourceComponent* audioSource)
 	mAudiosSourceList.push_back(audioSource);
 }
 
-int ModuleAudio::GetMemoryUsage()
+int ModuleAudio::GetMemoryUsage() const
 {
 	int currentAllocated, maxAllocated;
-	FMOD_RESULT result = FMOD_Memory_GetStats(&currentAllocated, &maxAllocated, 1);
-	// Just get fmod memory
+	CheckError( FMOD_Memory_GetStats(&currentAllocated, &maxAllocated, 1));
+	// Just get memory consumed by fmod
 	return currentAllocated;
+}
+
+float ModuleAudio::GetVolume(std::string busname) const
+{
+	FMOD::Studio::Bus* bus = nullptr;
+	CheckError(mSystem->getBus(busname.c_str(), &bus));
+
+	float volume = 0.0f;
+	CheckError(bus->getVolume(&volume));
+
+	return volume;
+}
+
+void ModuleAudio::SetVolume(std::string busname, float value) const
+{
+	FMOD::Studio::Bus* bus = nullptr;
+	CheckError(mSystem->getBus(busname.c_str(), &bus));
+
+	CheckError(bus->setVolume(value));
 }
 
 void ModuleAudio::CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line)
