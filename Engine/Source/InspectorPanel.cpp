@@ -883,7 +883,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
 	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
 
-	bool loop = true;
+	bool loop = component->GetLoop();
 	//bool play = false;
 
 	if (ImGui::Button("Play/Pause"))
@@ -957,10 +957,14 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	if (ImGui::Combo("Clip", &itemToTransition, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
 	}
+	float transitionTime = component->GetAnimationController()->GetTransitionDuration();
+	if (ImGui::DragFloat("Transition time", &transitionTime, 0.02, 0.1, 10.0)) {
+		component->GetAnimationController()->SetTransitionDuration(transitionTime);
+	}
 	if (ImGui::Button("Transition")) 
 	{
 		component->SetCurrentClip(itemToTransition);
-		component->StartTransition(1.0f);
+		component->StartTransition(transitionTime);
 	}
 }
 

@@ -38,11 +38,11 @@ public:
 
 	//Provisional to make blending work
 	void SetStartTranstionTime() { mStartTransitionTime = mCurrentTime; }
-	void SetTransitionDuration(float time) { mTrasitionDuration = time; }
+	void SetTransitionDuration(float time) { mTransitionDuration = time; }
 	void ActivateTransition() { mTransition = true; }
 	void SetClipStartTime(float time) { mClipStartTime = time; }
-	
 
+	float GetTransitionDuration() { return mTransitionDuration; }
 
 private:
 
@@ -53,7 +53,7 @@ private:
 
 	//Provisional to make blending work
 	float mStartTransitionTime = 0;
-	float mTrasitionDuration = 1;
+	float mTransitionDuration = 1;
 	bool mTransition = false;
 	float mClipStartTime = 0;
 

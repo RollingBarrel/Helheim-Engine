@@ -31,6 +31,7 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 void AnimationController::Update(GameObject* model)
 {
 	mCurrentTime += App->GetDt() * mSpeed;
+	//LOG("%f", mCurrentTime);
 	if (!mTransition) {
 		GetTransform(model);
 	}
@@ -185,8 +186,8 @@ void AnimationController::GetTransform(GameObject* model)
 
 void AnimationController::GetTransformBlending(GameObject* model, float newClipStartTime)
 {
-	float weight = (mCurrentTime - mStartTransitionTime) / mTrasitionDuration;
-
+	float weight = (mCurrentTime - mStartTransitionTime) / mTransitionDuration;
+	LOG("%f", weight);
 	if (weight < 1)
 	{
 		//Checks and gets the channel we want
@@ -207,18 +208,9 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 			{
 				mCurrentTime = mStartTime;
 			}
-
-			//In case the current time is greater than the animation durationt, if he animation loops we change the time so it's in range
 			if (mCurrentTime >= mEndTime)
 			{
-				if (mLoop)
-				{
-					mCurrentTime = std::fmod(mCurrentTime, mEndTime - mStartTime) + mStartTime;
-				}
-				else
-				{
-					mCurrentTime = mEndTime;
-				}
+				weight = 1;
 			}
 
 			static float lambda;
@@ -243,8 +235,6 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 					lambda = 1;
 				}
 
-				model->SetPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
-
 				upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), newClipStartTime);
 
 				if (upperBoundIterator != posTimeStampsVector.end())
@@ -256,7 +246,7 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetPosition(Interpolate(model->GetPosition(), channel->positions[newClipIndex], weight));
+				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
 			}
 			if (channel->hasRotation)
 			{
@@ -282,8 +272,6 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 					lambda = 1;
 				}
 
-				model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
-
 				upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), newClipStartTime);
 
 				if (upperBoundIterator != rotTimeStampsVector.end())
@@ -296,7 +284,7 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 				}
 
 				//model->SetRotation(Interpolate(model->GetRotationQuat(), channel->rotations[newClipIndex], weight));
-				model->SetRotation(Interpolate(Quat::FromEulerXYZ(model->GetRotation().x, model->GetRotation().y, model->GetRotation().z), channel->rotations[newClipIndex], weight));
+				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
 			//else if (name == "scale") {
 			//}
@@ -306,7 +294,7 @@ void AnimationController::GetTransformBlending(GameObject* model, float newClipS
 		}
 		for (const auto& child : model->GetChildren())
 		{
-			GetTransform(child);
+			GetTransformBlending(child,newClipStartTime);
 		}
 	}
 	else 

@@ -22,7 +22,7 @@ public:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 	const ResourceAnimation* GetAnimation() const { return mAnimation; }
-	const AnimationController* GetAnimationController() const { return mController; }
+	AnimationController* GetAnimationController() const { return mController; }
 
 	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop);
