@@ -739,7 +739,7 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 	}
 }
 
-void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene, std::unordered_map<int, int>* convertUuid) 
+void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) 
 {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
@@ -838,7 +838,7 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	}
 	else 
 	{
-		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
+		GameObject* gameObjectParent = FindGameObjectParent(scene, parentUID);
 		go = new GameObject(uuid, name, gameObjectParent);
 	}
 	go->SetPosition(position);
@@ -851,7 +851,6 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 	{
 		LoadComponentsFromJSON(gameObject["Components"], go);
 	}
-	(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
 	go->SetEnabled(isEnabled);
 }
@@ -892,7 +891,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					}
 					else 
 					{
-						LoadGameObjectFromJSON(gameObjects[i], mParent, &uuids);
+						LoadGameObjectFromJSON(gameObjects[i], mParent);
 					}
 				}
 			}
@@ -911,7 +910,6 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) 
 {
 	GameObject* scene = App->GetScene()->GetRoot();
-	std::unordered_map<int, int> uuids;
 	// Manage GameObjects inside the Scene
 	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray()) 
 	{
@@ -920,7 +918,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson)
 		{
 			if (gameObjects[i].IsObject()) 
 			{
-				LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+				LoadGameObjectFromJSON(gameObjects[i], this);
 			}
 		}
 	}

@@ -330,8 +330,7 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 			{
 				child->ResetTransform();
 				child->SetPrefabId(resourceId);
-				mRoot->AddChild(child);
-				temp->RemoveChild(child->GetID());
+				mRoot->AddChild(new GameObject(*child));
 			}
 			mRoot->DeleteChild(temp);
 		}
