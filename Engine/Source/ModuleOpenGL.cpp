@@ -705,16 +705,12 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
-PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
+void ModuleOpenGL::AddPointLight(const PointLightComponent& component)
 {
-	PointLightComponent* newComponent = new PointLightComponent(owner, pLight);
-	mPointLights.push_back(newComponent);
-	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
+	mPointLights.push_back(&component);
+	mPointsBuffer->PushBackData(&component.GetData(), sizeof(PointLight));
 	uint32_t size = mPointLights.size();
-	newComponent->SetIntensity(pLight.col[3]);
-	newComponent->SetRadius(pLight.pos[3]);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
-	return newComponent;
 }
 
 void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
@@ -723,7 +719,7 @@ void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
 	{
 		if (mPointLights[i] == &cPointLight)
 		{
-			mPointsBuffer->UpdateData(&mPointLights[i]->mData, sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			mPointsBuffer->UpdateData(&mPointLights[i]->GetData(), sizeof(mPointLights[i]->GetData()), 16 + sizeof(mPointLights[i]->GetData()) * i);
 			return;
 		}
 	}
@@ -736,7 +732,7 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 		if (mPointLights[i]->GetID() == cPointLight.GetID())
 		{
 			mPointLights.erase(mPointLights.begin() + i);
-			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->GetData()), 16 + sizeof(mPointLights[i]->GetData()) * i);
 			uint32_t size = mPointLights.size();
 			mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;

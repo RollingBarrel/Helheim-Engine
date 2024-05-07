@@ -504,7 +504,7 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	{
 		component->SetRadius(radius);
 	}
-	ImGui::Checkbox("Debug draw", &component->debugDraw);
+	//ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
 void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {

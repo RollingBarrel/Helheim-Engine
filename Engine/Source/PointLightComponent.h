@@ -10,6 +10,7 @@ typedef struct PointLight {
 
 class ENGINE_API PointLightComponent : public Component {
 public:
+	PointLightComponent(GameObject* owner, const PointLight& light);
 	~PointLightComponent();
 
 	void Enable() override;
@@ -21,6 +22,7 @@ public:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 	void Reset() override {}
 
+	const PointLight& GetData() const { return mData; };
 	const float* GetPosition() const;
 	void SetPosition(const float pos[3]);
 	const float* GetColor() const { return mData.col; }
@@ -30,12 +32,10 @@ public:
 	float GetRadius() const { return mData.pos[3]; }
 	void SetRadius(float radius);
 	//Todo: Variable not necesary for the game mode
-	bool debugDraw = false;
+	//bool debugDraw = false;
 
 private:
 	PointLight mData;
-	PointLightComponent(GameObject* owner, const PointLight& light);
-	friend class ModuleOpenGL;
 };
 
 #endif //_COMPONENT_POINTLIGHT_H_

@@ -98,8 +98,7 @@ void SpotLightComponent::Update()
 
 inline Component* SpotLightComponent::Clone(GameObject* owner) const 
 { 
-	SpotLightComponent* ret = new SpotLightComponent(owner, mData);
-	return ret;
+	return new SpotLightComponent(owner, mData);
 }
 
 void SpotLightComponent::Save(Archive& archive) const {
