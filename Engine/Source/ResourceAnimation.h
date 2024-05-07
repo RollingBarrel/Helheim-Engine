@@ -52,7 +52,7 @@ public:
     std::unordered_map<std::string, AnimationChannel*> mChannels;
 
     std::string mName;
-    unsigned int mDuration = 0;
+    float mDuration = 0;
 };
 
 
