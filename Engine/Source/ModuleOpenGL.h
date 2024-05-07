@@ -73,7 +73,7 @@ public:
 	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
 	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
-	SpotLightComponent* AddSpotLight(const SpotLight& pLight, GameObject* owner);
+	void AddSpotLight(const SpotLightComponent& component);
 	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
 	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 

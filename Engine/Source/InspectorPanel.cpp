@@ -540,7 +540,7 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetOuterAngle(DegToRad(outerAngle));
 	}
-	ImGui::Checkbox("Debug draw", &component->debugDraw);
+	//ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {

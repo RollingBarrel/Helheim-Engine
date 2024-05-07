@@ -733,7 +733,7 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (mPointLights[i] == &cPointLight)
+		if (mPointLights[i]->GetID() == cPointLight.GetID())
 		{
 			mPointLights.erase(mPointLights.begin() + i);
 			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
@@ -777,25 +777,21 @@ void ModuleOpenGL::Draw()
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
-SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
+void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 {
-	SpotLightComponent* newComponent = new SpotLightComponent(owner, sLight);
-	mSpotLights.push_back(newComponent);
-	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
+	mSpotLights.push_back(&component);
+	mSpotsBuffer->PushBackData(&component.GetData(), sizeof(SpotLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-	newComponent->SetIntensity(sLight.pos[3]);
-	newComponent->SetRadius(sLight.radius);
-	return newComponent;
 }
 
 void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 {
 	for (int i = 0; i < mSpotLights.size(); ++i)
 	{
-		if (mSpotLights[i] == &cSpotLight)
+		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
-			mSpotsBuffer->UpdateData(&mSpotLights[i]->mData, sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			mSpotsBuffer->UpdateData(&mSpotLights[i]->GetData(), sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
 			return;
 		}
 	}
@@ -805,10 +801,10 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 {
 	for (int i = 0; i < mSpotLights.size(); ++i)
 	{
-		if (mSpotLights[i] == &cSpotLight)
+		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
 			mSpotLights.erase(mSpotLights.begin() + i);
-			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
