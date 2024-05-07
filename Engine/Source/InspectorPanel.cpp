@@ -936,12 +936,19 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	int currentItem = component->GetCurrentClip();
 	float transitionTime = component->GetAnimationController()->GetTransitionDuration();
 
-	if (ImGui::Combo("Select Animation State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
+	if (ImGui::Combo("Select State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
 		component->GetAnimationController()->SetStartTransitionTime();
 		component->SetCurrentClip(currentItem);
 		component->StartTransition(transitionTime);
 	}
+	if (ImGui::Button("Restart Clip")) 
+	{
+		component->GetAnimationController()->SetStartTransitionTime();
+		component->SetCurrentClip(currentItem);
+		component->StartTransition(transitionTime);
+	}
+
 	float maxTimeValue = component->GetAnimation()->GetDuration();
 	float currentStartTime = component->GetCurrentStartTime();
 	float currentEndTime = component->GetCurrentEndTime();

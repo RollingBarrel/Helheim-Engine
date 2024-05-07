@@ -187,7 +187,7 @@ void AnimationController::GetTransform(GameObject* model)
 
 void AnimationController::GetTransformBlending(GameObject* model, float newClipStartTime)
 {
-	float weight = mCurrentTransitionTime / mTransitionDuration;
+	float weight = mSpeed * mCurrentTransitionTime / mTransitionDuration;
 	LOG("%f", weight);
 	if (weight < 0) {
 		LOG("%f", weight);

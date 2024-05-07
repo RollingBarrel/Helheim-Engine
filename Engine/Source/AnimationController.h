@@ -53,7 +53,7 @@ private:
 
 	//Provisional to make blending work
 	float mStartTransitionTime = 0.0f;
-	float mTransitionDuration = 1.0f;
+	float mTransitionDuration = 0.2f;
 	bool mTransition = false;
 	float mClipStartTime = 0.0f;
 	float mCurrentTransitionTime = 0.0f;
