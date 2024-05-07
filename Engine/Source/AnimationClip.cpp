@@ -7,7 +7,7 @@
 AnimationClip::AnimationClip(unsigned int animationUID)
 {
 
-	//mName = name;
+	mName = std::to_string(animationUID);
 	mAnimationUID = animationUID;
 
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
+#include <string>
 
-class AnimationController;
 class AnimationState;
 class ResourceAnimation;
 class GameObject;
@@ -13,22 +13,41 @@ class AnimationStateMachine
 
 public:
 	AnimationStateMachine(std::vector<unsigned int> animationUids);
+	~AnimationStateMachine();
 	void Update();
 	void SetLoop(bool loop);
 
+	
+	//Clips
+	void AddClip(unsigned int animationUID);
+	void RemoveClip();
+
+	int  GetClipIndex(std::string clipName);
 	unsigned int GetClipResource(int index);
 
+	//States
+	void AddState(std::string clipName, std::string name);
+	void RemoveState();
 
-	std::vector<AnimationState*> mStates;
-	std::vector<AnimationTransition*> mTransistions;
-	std::vector<AnimationClip*> mClips;
-	AnimationState* mCurrentState;
+	int GetStateIndex(std::string stateName);
+	std::string GetStateClip(int index);
 
-	AnimationController* mController;
-	//GameObject* mOwner;
+	//Transitions
+	void AddTransition(std::string sourceName, std::string targetName, std::string trigger);
+	void RemoveTransition();
+
+	int GetTransitionIndex(std::string sourceName, std::string targetName, std::string trigger);
+	std::string GetTransitionTrigger(int index);
+	std::string GetTransitionSource(int index); 
+	std::string GeTransitionTarget(int index);
 
 private:
 
 	bool mLoop = true;
+	
+	std::vector<AnimationClip*> mClips;
+	std::vector<AnimationState*> mStates;
+	std::vector<AnimationTransition*> mTransistions;
+	AnimationState* mCurrentState;
 
 };

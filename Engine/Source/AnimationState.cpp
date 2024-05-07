@@ -4,9 +4,9 @@
 #include "ResourceAnimation.h"
 
 
-AnimationState::AnimationState(AnimationClip* clip, std::string name)
+AnimationState::AnimationState(std::string clipName, std::string name)
 {
     mName = name;
-    mClip = clip->mName;
+    mClip = clipName;
     mStartTime = 0.0;
 }

@@ -6,9 +6,9 @@ class AnimationState;
 class AnimationTransition
 {
 public:
-	AnimationTransition(AnimationState* source, AnimationState* target);
+	AnimationTransition(std::string sourceName, std::string targetName, std::string trigger);
 	std::string mTrigger;
-	AnimationState* mSource;
-	AnimationState* mTarget;
+	std::string mSource;
+	std::string mTarget;
 
 };

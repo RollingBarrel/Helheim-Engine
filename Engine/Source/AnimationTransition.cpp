@@ -1,9 +1,9 @@
 #include "AnimationTransition.h"
 #include "AnimationState.h"
 
-AnimationTransition::AnimationTransition(AnimationState* source, AnimationState* target)
+AnimationTransition::AnimationTransition(std::string sourceName, std::string targetName, std::string trigger)
 {
-	mSource = source;
-	mTarget = target;
-	//mTrigger = false;
+	mSource = sourceName;
+	mTarget = targetName;
+	mTrigger = trigger;
 }

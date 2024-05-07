@@ -11,12 +11,11 @@ class AnimationState
 
 {
 public:
-	AnimationState(AnimationClip* clip, std::string name);
+	AnimationState(std::string clipName, std::string name);
 	AnimationState* GetNextAnimation()  const;
 
 	std::string mName;
 	std::string mClip;
-	ResourceAnimation* mAnimation;
 	float mStartTime, mEndTime;
 	bool mLoop;
 
