@@ -32,9 +32,9 @@ public:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
     void TriggerEvent(EventType eventType);
-    void AddEventHandler(EventType eventType, std::function<void()> handler);
+    void AddEventHandler(EventType eventType, std::function<void()>* handler);
 
 private:
-    std::vector<std::function<void()>> mEventHandlers[(int)EventType::COUNT];
+    std::vector<std::function<void()>*> mEventHandlers[(int)EventType::COUNT];
     bool mHovered = false;
 };
