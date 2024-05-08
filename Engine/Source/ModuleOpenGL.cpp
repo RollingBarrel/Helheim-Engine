@@ -525,7 +525,6 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 			glDeleteTextures(1, &mIrradianceTextureId);
 			glDeleteTextures(1, &mEnvironmentTextureId);
 			glDeleteTextures(1, &mSpecPrefilteredTexId);
-			glDeleteTextures(1, &mEnvBRDFTexId);
 			mIrradianceTextureId = 0;
 		}
 
