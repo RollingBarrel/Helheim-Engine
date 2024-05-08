@@ -8,11 +8,10 @@
 #include "ParticleSystemComponent.h"
 #include <vector>
 
-typedef struct DirectionalAmbient {
-	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
-	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
-	float mAmbientCol[4] = { 1.0f, 1.0f, 1.0f, 0.0f }; //w is padding
-}DirectionalAmbient;
+typedef struct DirectionalLight {
+	float mDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
+	float mCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
+}DirectionalLight;
 
 class PointLightComponent;
 class SpotLightComponent;
@@ -137,7 +136,7 @@ private:
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
-	DirectionalAmbient mDirAmb;
+	DirectionalLight mDirLight;
 	std::vector<const PointLightComponent*>mPointLights;
 	OpenGLBuffer* mPointsBuffer = nullptr;
 	std::vector<const SpotLightComponent*>mSpotLights;

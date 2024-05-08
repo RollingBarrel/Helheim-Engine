@@ -3,8 +3,10 @@
 #include "Component.h"
 
 typedef struct PointLight {
-	float pos[4]; //w is radius
-	float col[4]; //w is Intensity
+	float pos[3];
+	float radius;
+	float col[3];
+	float intensity;
 	//PointLight(const PointLight& other)  = delete;
 }PointLight;
 
@@ -27,9 +29,9 @@ public:
 	void SetPosition(const float pos[3]);
 	const float* GetColor() const { return mData.col; }
 	void SetColor(float col[3]);
-	float GetIntensity() const { return mData.col[3]; }
+	float GetIntensity() const { return mData.intensity; }
 	void SetIntensity(float intensity);
-	float GetRadius() const { return mData.pos[3]; }
+	float GetRadius() const { return mData.radius; }
 	void SetRadius(float radius);
 	//Todo: Variable not necesary for the game mode
 	//bool debugDraw = false;

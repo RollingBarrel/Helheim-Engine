@@ -38,13 +38,13 @@ void PointLightComponent::SetColor(float col[3])
 
 void PointLightComponent::SetIntensity(float intensity)
 {
-	mData.col[3] = intensity;
+	mData.intensity = intensity;
 	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::SetRadius(float radius)
 {
-	mData.pos[3] = radius;
+	mData.radius = radius;
 	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 

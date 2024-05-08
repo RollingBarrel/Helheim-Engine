@@ -177,12 +177,11 @@ bool ModuleOpenGL::Init()
 	InitSkybox();
 
 	//Lighting uniforms
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
-	glUseProgram(program);
+	glUseProgram(mPbrProgramId);
 	glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 	glUseProgram(0);
 
-	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirAmb), &mDirAmb);
+	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirLight), &mDirLight);
 
 	const uint32_t numPointLights[4] = { mPointLights.size(), 0, 0, 0 };
 	mPointsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 0, 16, &numPointLights);

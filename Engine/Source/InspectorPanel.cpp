@@ -495,12 +495,12 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 		component->SetColor(col);
 	}
 	float intensity = component->GetIntensity();
-	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Intensity", &intensity, 0.5f, 0.0f, 300.f))
 	{
 		component->SetIntensity(intensity);
 	}
 	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Radius", &radius, 0.5f, 0.0f, 1000.f))
 	{
 		component->SetRadius(radius);
 	}
@@ -521,12 +521,12 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 		component->SetDirection(dir);
 	}
 	float intensity = component->GetIntensity();
-	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Intensity", &intensity, 0.5f, 0.0f, 300.f))
 	{
 		component->SetIntensity(intensity);
 	}
 	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Radius", &radius, 0.5f, 0.0f, 1000.f))
 	{
 		component->SetRadius(radius);
 	}
