@@ -246,7 +246,6 @@
     <ClCompile Include="ModuleScriptManager.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
-    <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
@@ -448,7 +447,6 @@
     <ClInclude Include="ModuleScriptManager.h" />
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
-    <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PointLightComponent.h" />

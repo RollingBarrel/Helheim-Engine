@@ -369,9 +369,6 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="NavMeshController.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Dependencies\Recast\Include\Recast.cpp">
       <Filter>Dependencies\Recast</Filter>
     </ClCompile>
@@ -1009,9 +1006,6 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="NavMeshController.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Recast\Include\Recast.h">
       <Filter>Dependencies\Recast</Filter>

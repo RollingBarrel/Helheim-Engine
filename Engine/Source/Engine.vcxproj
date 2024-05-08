@@ -196,6 +196,7 @@
     <ClCompile Include="ModuleEngineInput.cpp" />
     <ClCompile Include="ModuleEngineResource.cpp" />
     <ClCompile Include="ModuleEngineScriptManager.cpp" />
+    <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshControllerPanel.cpp" />
     <ClCompile Include="ResourcePanel.cpp" />
     <ClCompile Include="LightningPanel.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="ModuleEngineInput.h" />
     <ClInclude Include="ModuleEngineResource.h" />
     <ClInclude Include="ModuleEngineScriptManager.h" />
+    <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshControllerPanel.h" />
     <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
