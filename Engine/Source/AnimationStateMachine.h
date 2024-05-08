@@ -20,34 +20,37 @@ public:
 	
 	//Clips
 	void AddClip(unsigned int animationUID);
-	void RemoveClip();
+	void RemoveClip(int index);
 
-	int  GetClipIndex(std::string clipName);
+	int  GetClipIndex(std::string& clipName);
 	unsigned int GetClipResource(int index);
 
 	//States
-	void AddState(std::string clipName, std::string name);
-	void RemoveState();
+	void AddState(std::string& clipName, std::string& name);
+	void RemoveState(int index);
 
-	int GetStateIndex(std::string stateName);
-	std::string GetStateClip(int index);
+	int GetStateIndex(std::string& stateName);
+	std::string& GetStateClip(int index);
+	std::string& GetStateName(int index);
+	void SetStateClip(int index, std::string& clipName);
+	void SetStateName(int index, std::string& name);
 
 	//Transitions
-	void AddTransition(std::string sourceName, std::string targetName, std::string trigger);
-	void RemoveTransition();
+	void AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger);
+	void RemoveTransition(int index);
 
-	int GetTransitionIndex(std::string sourceName, std::string targetName, std::string trigger);
-	std::string GetTransitionTrigger(int index);
-	std::string GetTransitionSource(int index); 
-	std::string GeTransitionTarget(int index);
+	int GetTransitionIndex(std::string& sourceName, std::string& targetName, std::string& trigger);
+	std::string& GetTransitionTrigger(int index);
+	std::string& GetTransitionSource(int index); 
+	std::string& GeTransitionTarget(int index);
 
 private:
 
 	bool mLoop = true;
 	
-	std::vector<AnimationClip*> mClips;
-	std::vector<AnimationState*> mStates;
-	std::vector<AnimationTransition*> mTransistions;
+	std::vector<AnimationClip> mClips;
+	std::vector<AnimationState> mStates;
+	std::vector<AnimationTransition> mTransistions;
 	AnimationState* mCurrentState;
 
 };
