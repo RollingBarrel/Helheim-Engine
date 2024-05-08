@@ -19,7 +19,8 @@ public:
 	void Restart();
 
 	void GetTransform(GameObject* model);
-	void GetTransformBlending(GameObject* model, float newClipStartTime);
+	void GetTransform_BlendingClips(GameObject* model);
+	void GetTransform_BlendingAnimations(GameObject* model);
 
 	float3 Interpolate(const float3& first, const float3& second, float lambda);
 	Quat Interpolate(const Quat& first, const Quat& second, float lambda);
@@ -65,4 +66,5 @@ private:
 	unsigned int mResource;
 
 	ResourceAnimation* mAnimation = nullptr;
+	ResourceAnimation* mNextAnimation = nullptr;
 };

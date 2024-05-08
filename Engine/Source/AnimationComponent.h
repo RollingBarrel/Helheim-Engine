@@ -72,7 +72,10 @@ public:
 private:
 	void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
+	//This will be a vector containing all the ResourceAnimations of the model
 	ResourceAnimation* mAnimation;
+	ResourceAnimation* mNextAnimation;
+
 	AnimationController* mController;
 
 	bool mLoop = true;
