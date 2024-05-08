@@ -18,6 +18,7 @@ public:
 	void Update(GameObject* model);
 	void Restart();
 
+	//GetTransforms
 	void GetTransform(GameObject* model);
 	void GetTransform_BlendingClips(GameObject* model);
 	void GetTransform_BlendingAnimations(GameObject* model);
@@ -28,6 +29,7 @@ public:
 	bool GetLoop() { return mLoop; }
 	void SetLoop(bool loop) { mLoop = loop; }
 
+	//Clips
 	const float GetStartTime() const { return mStartTime; }
 	void SetStartTime(float time);
 
@@ -37,7 +39,11 @@ public:
 	const float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed) { mSpeed = speed; }
 
-	//Provisional to make blending work
+	//Animation Resource
+	void SetCurrentAnimation(ResourceAnimation* animation) { mCurrentAnimation = animation; }
+	void SetNextAnimation(ResourceAnimation* animation) { mNextAnimation = animation; }
+
+	//Blending
 	void SetStartTransitionTime() { mStartTransitionTime = mCurrentTime; }
 	void SetTransitionDuration(float time) { mTransitionDuration = time; }
 	void ActivateTransition() { mTransition = true; }
@@ -65,6 +71,6 @@ private:
 
 	unsigned int mResource;
 
-	ResourceAnimation* mAnimation = nullptr;
+	ResourceAnimation* mCurrentAnimation = nullptr;
 	ResourceAnimation* mNextAnimation = nullptr;
 };

@@ -13,7 +13,7 @@
 #include "Globals.h"
 
 AnimationController::AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop) {
-	mAnimation = animation;
+	mCurrentAnimation = animation;
 	mResource = resource;
 	mLoop = loop;
 
@@ -38,7 +38,13 @@ void AnimationController::Update(GameObject* model)
 	else 
 	{
 		mCurrentTransitionTime += App->GetDt();
-		GetTransform_BlendingClips(model);
+
+		if (mNextAnimation == nullptr) {
+			GetTransform_BlendingClips(model);
+		}
+		else {
+			GetTransform_BlendingAnimations(model);
+		}
 	}
 	
 }
@@ -85,7 +91,7 @@ void AnimationController::SetStartTime(float time)
 
 void AnimationController::SetEndTime(float time)
 {
-	float end = std::min(time, mAnimation->GetDuration());
+	float end = std::min(time, mCurrentAnimation->GetDuration());
 	mEndTime = std::max(end, mStartTime);
 
 }
@@ -95,12 +101,12 @@ void AnimationController::GetTransform(GameObject* model)
 	//Checks and gets the channel we want
 	std::string name = model->GetName();
 	//LOG("%s", name.c_str());
-	ResourceAnimation::AnimationChannel* newChannel = mAnimation->GetChannel(name);
+	ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
 
 	if (newChannel != nullptr)
 	{
 
-		ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(model->GetName())->second;
+		ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
 		if (channel == nullptr)
 		{
 			return;
@@ -191,12 +197,12 @@ void AnimationController::GetTransform_BlendingClips(GameObject* model)
 	if (weight < 1)
 	{
 		std::string name = model->GetName();
-		ResourceAnimation::AnimationChannel* newChannel = mAnimation->GetChannel(name);
+		ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
 
 		if (newChannel != nullptr)
 		{
 
-			ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(model->GetName())->second;
+			ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
 			if (channel == nullptr)
 			{
 				return;
@@ -294,13 +300,13 @@ void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
 		//Checks and gets the channel we want
 		std::string name = model->GetName();
 		//LOG("%s", name.c_str());
-		ResourceAnimation::AnimationChannel* newChannel = mAnimation->GetChannel(name);
+		ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
 		ResourceAnimation::AnimationChannel* newNextChannel = mNextAnimation->GetChannel(name);
 
 		if (newChannel != nullptr && newNextChannel != nullptr)
 		{
 
-			ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(model->GetName())->second;
+			ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
 			ResourceAnimation::AnimationChannel* nextChannel = mNextAnimation->GetChannels().find(model->GetName())->second;
 			if (channel == nullptr || nextChannel == nullptr)
 			{
@@ -364,8 +370,12 @@ void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
 	else
 	{
 		mTransition = false;
-		mCurrentTime = mClipStartTime;
+		mCurrentTime = 0.0f;
 		mCurrentTransitionTime = 0.0f;
+
+		//Change the animations once the transition is done
+		mCurrentAnimation = mNextAnimation;
+		mNextAnimation = nullptr;
 	}
 
 
