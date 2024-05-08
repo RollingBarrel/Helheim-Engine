@@ -22,7 +22,7 @@ public:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 	//Animation Resources
-	std::vector<ResourceAnimation*> GetAnimations() { return mAnimations; }
+	//std::vector<ResourceAnimation*> GetAnimations() { return mAnimations; }
 	ResourceAnimation* GetAnimation() { return mAnimation; }
 
 	void ChangeAnimation(ResourceAnimation* animation);
@@ -82,7 +82,7 @@ private:
 	void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
 
-	std::vector<ResourceAnimation*> mAnimations;
+	//std::vector<ResourceAnimation*> mAnimations;
 	ResourceAnimation* mAnimation;
 
 	AnimationController* mController;
