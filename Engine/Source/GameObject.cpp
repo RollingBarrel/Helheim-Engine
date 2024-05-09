@@ -100,7 +100,7 @@ GameObject::~GameObject()
 
 Component* GameObject::GetComponent(ComponentType type) const
 {
-	for (auto component : mComponents) 
+	for (Component* component : mComponents) 
 	{
 		if (component->GetType() == type) 
 		{
@@ -734,7 +734,7 @@ void GameObject::LoadComponentsFromJSON(const rapidjson::Value& components)
 	}
 }
 
-void GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent)
+GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent)
 {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
@@ -842,14 +842,10 @@ void GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, Game
 	go->SetScale(scale);
 	go->SetPrefabId(prefabId);
 	go->SetPrefabOverride(overridePrefab);
-	// Manage Components
-	//if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) 
-	//{
-	//	LoadComponentsFromJSON(gameObject["Components"], go);
-	//}
-	//(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
 	go->SetEnabled(isEnabled);
+
+	return go;
 }
 
 void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id) 

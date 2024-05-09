@@ -36,7 +36,9 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	CreateVAO();
 
     SetImage(mResourceId);
-	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
+	if (canvas!= nullptr)
+	mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
 
 	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
 	if (component != nullptr) 

@@ -44,6 +44,9 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 		mFill->AddComponent(mFillTransform2D, this);
 		mFill->AddComponent(mFillImage, this);
 	//}
+	//else {
+
+	//}
 	
 	// Set default values
 	mBgImage->SetColor(float3(1.f, 0, 0));

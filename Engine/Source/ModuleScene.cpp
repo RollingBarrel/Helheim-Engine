@@ -294,6 +294,8 @@ void ModuleScene::Load(const char* sceneName)
 				mRoot->SetName(sceneValue["Name"].GetString());
 			}
 
+			std::vector<GameObject*> sceneGO;
+
 			// Manage GameObjects inside the Scene
 			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
 			{
@@ -302,7 +304,7 @@ void ModuleScene::Load(const char* sceneName)
 				{
 					if (gameObjects[i].IsObject())
 					{
-						mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot);
+						 sceneGO.push_back(mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot));
 					}
 				}
 
@@ -313,8 +315,8 @@ void ModuleScene::Load(const char* sceneName)
 					// Manage Components
 					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
 					{
-						GameObject* go = Find(gameObjects[i]["UID"].GetInt());
-						go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+						//GameObject go = sceneGO[i];
+						sceneGO[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
 			}
