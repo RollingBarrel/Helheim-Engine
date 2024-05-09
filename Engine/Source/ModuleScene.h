@@ -80,6 +80,8 @@ private:
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
 
+	std::vector<GameObject*> mSceneGO;
+
 	Quadtree* mQuadtreeRoot = nullptr;
 	bool mShouldUpdateQuadtree = false;
 	bool mApplyculling = false;

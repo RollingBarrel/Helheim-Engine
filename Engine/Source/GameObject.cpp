@@ -833,7 +833,7 @@ GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObjec
 	}
 	else 
 	{
-		GameObject* gameObjectParent = Find(parentUID);
+		GameObject* gameObjectParent = App->GetScene()->Find(parentUID);
 		go = new GameObject(uuid, name, gameObjectParent);
 	}
 

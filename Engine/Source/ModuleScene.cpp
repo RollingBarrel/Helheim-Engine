@@ -294,8 +294,6 @@ void ModuleScene::Load(const char* sceneName)
 				mRoot->SetName(sceneValue["Name"].GetString());
 			}
 
-			std::vector<GameObject*> sceneGO;
-
 			// Manage GameObjects inside the Scene
 			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
 			{
@@ -304,7 +302,7 @@ void ModuleScene::Load(const char* sceneName)
 				{
 					if (gameObjects[i].IsObject())
 					{
-						 sceneGO.push_back(mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot));
+						mSceneGO.push_back(mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot));
 					}
 				}
 
@@ -316,12 +314,10 @@ void ModuleScene::Load(const char* sceneName)
 					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
 					{
 						//GameObject go = sceneGO[i];
-						sceneGO[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+						mSceneGO[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
 			}
-
-			//mRoot->Load(sceneValue);
 		}
 
 		mQuadtreeRoot->UpdateTree();
@@ -384,19 +380,30 @@ void ModuleScene::ClosePrefabScreen()
 
 GameObject* ModuleScene::Find(const char* name) const
 {
-	return mRoot->Find(name);
+	for (GameObject* go : mSceneGO) {
+		if (go->GetName() == name) return go;
+	}
+	
+	return nullptr;
+	//return mRoot->Find(name);
 }
 
 GameObject* ModuleScene::Find(unsigned int UID) const
 {
-	if (UID != mRoot->GetID()) 
+	for (GameObject* go : mSceneGO) {
+		if (go->GetID() == UID) return go;
+	}
+
+	return nullptr;
+
+	/*if (UID != mRoot->GetID())
 	{
 		return mRoot->Find(UID);
 	}
 	else 
 	{
 		return mRoot;
-	}
+	}*/
 
 }
 
