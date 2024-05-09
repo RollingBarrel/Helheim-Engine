@@ -67,6 +67,7 @@ public:
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
+	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 
 
 	//TODO: put all this calls into one without separating for light type??
@@ -82,6 +83,8 @@ public:
 	void BatchEditMaterial(const MeshRendererComponent* mesh);
 	void Draw();
 	void SetWireframe(bool wireframe);
+	void AddHighLight(GameObject* gameObject);
+	void RemoveHighLight(GameObject* gameObject);
 
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
@@ -121,6 +124,7 @@ private:
 	unsigned int mIrradianceProgramId = 0;
 	unsigned int mSpecPrefilteredProgramId = 0;
 	unsigned int mSpecEnvBRDFProgramId = 0;
+	unsigned int mHighLightProgramId = 0;
 	
 	
 	unsigned int mParticleProgramId = 0;

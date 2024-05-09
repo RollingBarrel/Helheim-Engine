@@ -158,6 +158,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "ui.fs";
 	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "HighLight_Vertex.glsl";
+	sourcesPaths[1] = "HighLight_Fragment.glsl";
+	mHighLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "particle_vertex.glsl";
 	sourcesPaths[1] = "particle_fragment.glsl";
 	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -194,7 +198,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 {
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
 	//Draw the skybox
 	if (mEnvironmentTextureId != 0)
@@ -211,7 +215,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	//BakeIBL(L"Assets/Textures/skybox.hdr");
 
 	return UPDATE_CONTINUE;
@@ -255,6 +259,32 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+
+
+void ModuleOpenGL::AddHighLight(GameObject* gameObject)
+{
+	if (!gameObject->IsRoot())
+	{
+		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		if (!meshComponents.empty())
+		{
+			mBatchManager.AddHighLight(meshComponents);
+		}
+	}
+}
+
+void ModuleOpenGL::RemoveHighLight(GameObject* gameObject)
+{
+	if (!gameObject->IsRoot())
+	{
+		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		if (!meshComponents.empty())
+		{
+			mBatchManager.RemoveHighLight(meshComponents);
+		}
+	}
 }
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)

@@ -128,6 +128,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 		}
 	}
 
+
 	static bool show = true;
 	//ImGui::ShowDemoWindow(&show);
 

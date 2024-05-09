@@ -1129,5 +1129,11 @@
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
