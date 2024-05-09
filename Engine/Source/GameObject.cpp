@@ -142,6 +142,7 @@ Component* GameObject::GetComponentInParent(ComponentType type) const
 			parent = parent->mParent;
 		}
 	}
+	return nullptr;
 }
 
 void GameObject::RecalculateMatrices()
@@ -925,7 +926,7 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 
 	if (tag != nullptr) 
 	{
-		return App->GetScene()->FindGameObjectWithTag(App->GetScene()->GetRoot(), tag->GetID());
+		return App->GetScene()->FindGameObjectWithTag(tag->GetID());
 	}
 	else 
 	{
@@ -950,7 +951,7 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 {
 	std::vector<GameObject*> foundGameObjects;
 	Tag* tag = App->GetScene()->GetTagByName(tagname);
-	App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetRoot(), tag->GetID(), foundGameObjects);
+	App->GetScene()->FindGameObjectsWithTag(tag->GetID(), foundGameObjects);
 
 	return foundGameObjects;
 }

@@ -402,7 +402,7 @@ void PlayerController::MeleeAttack()
     ModuleScene* scene = App->GetScene();
     std::vector<GameObject*> Enemies;
 
-    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Enemy")->GetID(), Enemies);
+    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
     float3 playerPosition = mGameObject->GetPosition();
 
     // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
