@@ -281,6 +281,7 @@
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Trail.cpp" />
     <ClCompile Include="Transform2DComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +296,7 @@
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CanvasComponent.h" />
+    <ClInclude Include="ColorGradient.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h" />
@@ -486,6 +488,7 @@
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Trail.h" />
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
