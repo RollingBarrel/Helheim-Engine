@@ -14,6 +14,7 @@
 #include "ModuleEvent.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
+#include "ModulePhysics.h"
 #include "Timer.h"
 
 EngineApplication* EngineApp = NULL;
@@ -42,6 +43,7 @@ EngineApplication::EngineApplication()
 	modules[11] = editor = new ModuleEditor();
 	modules[12] = ui = new ModuleUI();
 	modules[13] = event = new ModuleEvent();
+	modules[14] = physics = new ModulePhysics();
 }
 
 EngineApplication::~EngineApplication()

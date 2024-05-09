@@ -112,13 +112,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Bullet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Bullet\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;BulletCollision_debug.lib;BulletDynamics_debug.lib;BulletInverseDynamics_debug.lib;BulletSoftBody_debug.lib;LinearMath_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -137,15 +137,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\Bullet\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Bullet\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;BulletCollision.lib;BulletDynamics.lib;BulletInverseDynamics.lib;BulletSoftBody.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -243,6 +243,7 @@
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
+    <ClCompile Include="ModulePhysics.cpp" />
     <ClCompile Include="ModuleResource.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleScriptManager.cpp" />
@@ -730,6 +731,7 @@
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
+    <ClInclude Include="ModulePhysics.h" />
     <ClInclude Include="ModuleResource.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleScriptManager.h" />

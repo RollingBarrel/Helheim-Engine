@@ -5,6 +5,8 @@
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
 
+class GameObject;
+
 class ENGINE_API BoxColliderComponent : public Component
 {
 public:
@@ -17,7 +19,7 @@ public:
 	Component* Clone(GameObject* owner) const override;
 	void Draw();
 
-	void OnCollision();
+	void OnCollision(GameObject* gameObject, const float3& collisionNormal, const float3& penetrationDistance);
 	void ComputeBoundingBox();
 
 	inline const float3& GetCenter() const { return mCenter; }

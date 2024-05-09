@@ -31,7 +31,7 @@ void BoxColliderComponent::Draw()
 	// TODO: Draw Gizmo
 }
 
-void BoxColliderComponent::OnCollision()
+void BoxColliderComponent::OnCollision(GameObject* gameObject, const float3& collisionNormal, const float3& penetrationDistance)
 {
 }
 

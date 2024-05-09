@@ -444,6 +444,9 @@
     <ClCompile Include="BoxColliderComponent.cpp">
       <Filter>GameObjects\Components\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="ModulePhysics.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1900,6 +1903,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Bullet\include\BulletCollision\CollisionDispatch\SphereTriangleDetector.h">
       <Filter>Dependencies\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePhysics.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

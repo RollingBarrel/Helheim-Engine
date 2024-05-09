@@ -316,6 +316,9 @@
     <ClInclude Include="ModuleEngineScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
