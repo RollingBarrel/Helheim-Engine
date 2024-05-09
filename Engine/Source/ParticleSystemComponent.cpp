@@ -10,6 +10,7 @@
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
 #include<algorithm>
+#include <optick.h>
 
 #define MATRICES_LOCATION 2
 #define COLOR_LOCATION 1
@@ -136,7 +137,7 @@ void ParticleSystemComponent::Draw() const
             transform = transform * scaleMatrix;
             transform.Transpose();                
             memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
-            memcpy(ptr + 20 * i + 16, mParticles[i]->CalculateColor().ptr(), sizeof(float) * 4);
+            memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
         }
         glUnmapBuffer(GL_ARRAY_BUFFER);
         glBindVertexArray(mVAO);
@@ -156,6 +157,7 @@ void ParticleSystemComponent::Draw() const
 
 void ParticleSystemComponent::Update()
 {
+    OPTICK_EVENT();
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
     float3 camPosition = App->GetCamera()->GetCurrentCamera()->GetFrustum().pos;
@@ -163,12 +165,18 @@ void ParticleSystemComponent::Update()
 
 	for (int i = 0; i < mParticles.size(); i++)
 	{
-		bool isAlive = mParticles[i]->Update(App->GetDt(), camPosition);
-        if (!isAlive)
+		float dt = mParticles[i]->Update(App->GetDt());
+        if (dt <= 0)
         {
 			mParticles.erase(mParticles.begin() + i);
 			i--;
 		}
+        else
+        {
+            mParticles[i]->SetSpeed(mIsSpeedCurve ? mSpeedLineal + (BezierValue(dt, mSpeedCurve) * mSpeedCurveFactor) : mSpeedLineal);
+            mParticles[i]->SetSize(mIsSizeCurve ? mSizeLineal + (BezierValue(dt, mSizeCurve) * mSizeCurveFactor) : mSizeLineal);
+            mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
+        }
 	}
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
@@ -191,29 +199,10 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient, rotation, mMaxLifeTime, mIsSpeedCurve, mIsSizeCurve);
+            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, mMaxLifeTime);
+            particle->SetSpeed(mSpeedLineal);
+            particle->SetSize(mSizeLineal);
             
-            if (mIsSpeedCurve) 
-            {
-                particle->SetSpeedCurve(mSpeedCurve);
-                particle->SetSpeedFactor(mSpeedCurveFactor);
-            }
-            else
-            {
-                particle->SetSpeedLineal(mSpeedLineal);
-            }
-            
-            if (mIsSizeCurve)
-            {
-                particle->SetSizeCurve(mSizeCurve);
-                particle->SetSizeFactor(mSizeCurveFactor);
-
-            }
-            else
-            {
-                particle->SetSize(mSizeLineal);
-            }
-
 			mParticles.push_back(particle);
 		}
 	}
@@ -381,4 +370,38 @@ void ParticleSystemComponent::Disable()
         delete particle;
     }
     mParticles.clear();
+}
+
+float ParticleSystemComponent::BezierValue(float dt01, float4 P)
+{
+    enum { STEPS = 256 };
+    float2 Q[4] = { {0, 0}, {P[0], P[1]}, {P[2], P[3]}, {1, 1} };
+    float2 results[STEPS + 1];
+    ParticleSystemComponent::BezierTable<STEPS>(Q, results);
+    return results[(int)((dt01 < 0 ? 0 : dt01 > 1 ? 1 : dt01) * STEPS)].y;
+}
+
+template <int steps>
+void ParticleSystemComponent::BezierTable(float2 P[], float2 results[])
+{
+    static float C[(steps + 1) * 4], * K = 0;
+    if (!K)
+    {
+        K = C;
+        for (unsigned step = 0; step <= steps; ++step)
+        {
+            float t = (float)step / (float)steps;
+            C[step * 4 + 0] = (1 - t) * (1 - t) * (1 - t); // * P0
+            C[step * 4 + 1] = 3 * (1 - t) * (1 - t) * t;   // * P1
+            C[step * 4 + 2] = 3 * (1 - t) * t * t;         // * P2
+            C[step * 4 + 3] = t * t * t;                   // * P3
+        }
+    }
+    for (unsigned step = 0; step <= steps; ++step)
+    {
+        float2 point = {
+            K[step * 4 + 0] * P[0].x + K[step * 4 + 1] * P[1].x + K[step * 4 + 2] * P[2].x + K[step * 4 + 3] * P[3].x,
+            K[step * 4 + 0] * P[0].y + K[step * 4 + 1] * P[1].y + K[step * 4 + 2] * P[2].y + K[step * 4 + 3] * P[3].y };
+        results[step] = point;
+    }
 }

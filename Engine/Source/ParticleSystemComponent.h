@@ -36,6 +36,9 @@ public:
 private:
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
+	template <int steps>
+	static void BezierTable(float2 P[], float2 results[]);
+	static float BezierValue(float dt01, float4 P);
 
 	ResourceTexture* mImage = nullptr;
 	unsigned int mResourceId = 452546727; // Default particle texture
