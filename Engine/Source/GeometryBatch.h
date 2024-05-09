@@ -89,7 +89,8 @@ public:
 	bool EditMaterial(const MeshRendererComponent* component);
 	bool RemoveMeshComponent(const MeshRendererComponent* component);
 	void Draw();
-	void HighLight(std::vector<Component*> meshRendererComponents);
+	void AddHighLight(std::vector<Component*> meshRendererComponents);
+	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
 
 private:
 	void RecreatePersistentSsbosAndIbo();

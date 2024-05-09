@@ -128,7 +128,6 @@ update_status ModuleEditor::PreUpdate(float dt)
 		}
 	}
 
-	App->GetOpenGL()->AddHighLight(reinterpret_cast<HierarchyPanel*>(mPanels[HIERARCHYPANEL])->GetFocusedObject());
 
 	static bool show = true;
 	//ImGui::ShowDemoWindow(&show);

@@ -228,7 +228,7 @@ void GeometryBatch::RecreateMaterials()
 	mMaterialFlag = false;
 }
 
-void GeometryBatch::HighLight(std::vector<Component*> meshRendererComponents)
+void GeometryBatch::AddHighLight(std::vector<Component*> meshRendererComponents)
 {
 	for (unsigned int i = 0; i < meshRendererComponents.size(); ++i)
 	{
@@ -239,6 +239,14 @@ void GeometryBatch::HighLight(std::vector<Component*> meshRendererComponents)
 				mHighLightMeshComponents.push_back(mMeshComponents[j]);
 			}
 		}
+	}
+}
+
+void GeometryBatch::RemoveHighLight(std::vector<Component*> meshRendererComponents)
+{
+	for (std::vector<BatchMeshRendererComponent>::iterator it = mHighLightMeshComponents.begin(); it != mHighLightMeshComponents.end() ; ++it)
+	{
+		
 	}
 }
 
@@ -313,6 +321,15 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 			bMeshIdx = it->bMeshIdx;
 			bMaterialIdx = it->bMaterialIdx;
 			mMeshComponents.erase(it);
+
+			for (std::vector<BatchMeshRendererComponent>::iterator highLightMesh = mHighLightMeshComponents.begin(); highLightMesh != mHighLightMeshComponents.end(); ++highLightMesh)
+			{
+				if (highLightMesh->component->GetID() == it->component->GetID())
+				{
+					mHighLightMeshComponents.erase(highLightMesh);
+				}
+			}
+
 			found = true;
 			break;
 		}
@@ -351,6 +368,7 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 	}
 	
 	mPersistentsFlag = true;
+
 	return true;
 }
 
@@ -476,7 +494,6 @@ void GeometryBatch::Draw()
 	glUseProgram(App->GetOpenGL()->GetHighLightProgramId());
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, highLightCommands.size(), 0);
 
-	mHighLightMeshComponents.clear();
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 0, 0xFF);

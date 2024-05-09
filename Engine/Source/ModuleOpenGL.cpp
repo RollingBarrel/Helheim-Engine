@@ -275,13 +275,21 @@ void ModuleOpenGL::AddHighLight(GameObject* gameObject)
 		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
 		if (!meshComponents.empty())
 		{
-			mBatchManager.HighLight(meshComponents);
+			mBatchManager.AddHighLight(meshComponents);
 		}
 	}
 }
 
 void ModuleOpenGL::RemoveHighLight(GameObject* gameObject)
 {
+	if (!gameObject->IsRoot())
+	{
+		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		if (!meshComponents.empty())
+		{
+			mBatchManager.RemoveHighLight(meshComponents);
+		}
+	}
 }
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
