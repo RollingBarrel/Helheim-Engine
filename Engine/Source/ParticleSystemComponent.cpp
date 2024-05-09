@@ -4,7 +4,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "glew.h"
-#include "ColorGradient.h"
 #include "ModuleCamera.h"
 #include "CameraComponent.h"
 #include "Resource.h"
@@ -19,7 +18,7 @@
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
-    InitEmitterShape();
+    // InitEmitterShape();
     mColorGradient = new ColorGradient();
     mColorGradient->AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();
@@ -28,11 +27,12 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
 mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mIsSpeedCurve(original.mIsSpeedCurve),
 mSpeedLineal(original.mSpeedLineal), mSpeedCurve(original.mSpeedCurve), mIsSizeCurve(original.mIsSizeCurve), mSizeCurve(original.mSizeCurve),
-mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping), mShape(original.mShape),
+mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping),
 mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), Component(owner, ComponentType::PARTICLESYSTEM)
 {
     SetImage(original.mResourceId);
     Init();
+    mShape->CopyShape(*original.mShape);
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 
@@ -99,6 +99,7 @@ void ParticleSystemComponent::Init()
     //    this->mParticles.push_back(new Particle());
 
     App->GetOpenGL()->AddParticleSystem(this);
+    InitEmitterShape();
 }
 
 void ParticleSystemComponent::Draw() const
@@ -106,10 +107,10 @@ void ParticleSystemComponent::Draw() const
     if (IsEnabled()) 
     {
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
-        glDisable(GL_DEPTH_TEST);
+        glDepthMask(GL_FALSE);
         glEnable(GL_BLEND);									// Enable Blending
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
-        glEnable(GL_TEXTURE_2D);
+        //glEnable(GL_TEXTURE_2D);
         //glBlendEquation(GL_FUNC_ADD);
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
@@ -154,7 +155,7 @@ void ParticleSystemComponent::Draw() const
         glBindVertexArray(0);
         glUseProgram(0);
         glEnable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
+        glDepthMask(GL_TRUE);
     }
 }
 

@@ -59,6 +59,8 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
 				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
 				cAnimation->SetAnimation(rModel.mAnimationUids[0]);
+				cAnimation->SetModelUUID(rModel.GetUID());
+
 			}
 		}
 	}
@@ -75,16 +77,6 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
 			cMesh->SetMaterial(it->second);
-		}
-	}
-
-	if (cAnimation)
-	{
-		if (rModel.mJoints[nodeIt].first == nodeNumber)
-		{
-			std::pair<GameObject*, float4x4> gameobjectPallete = { gameObject, rModel.mJoints[nodeIt].second };
-			cAnimation->mGameobjectsInverseMatrices.push_back(gameobjectPallete);
-			nodeIt++;
 		}
 	}
 
@@ -214,7 +206,7 @@ void ScenePanel::DrawScene()
 
 					tempVec.clear();
 
-					EngineApp->GetResource()->ReleaseResource(resource->GetUID());
+					//EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}
 				case Resource::Type::Scene:

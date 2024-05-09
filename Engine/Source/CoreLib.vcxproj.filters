@@ -204,9 +204,6 @@
     <ClCompile Include="HelheimEvent.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="FmodUtils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp">
       <Filter>Dependencies\MathGeoLib\Algorithm\Random</Filter>
     </ClCompile>
@@ -582,9 +579,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="HelheimEvent.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="FmodUtils.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\Freetype\include\freetype\freetype.h">
@@ -1055,9 +1049,6 @@
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ColorGradient.h">
-      <Filter>Utils\Particles</Filter>
-    </ClInclude>
     <ClInclude Include="EmitterShape.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>
@@ -1119,6 +1110,21 @@
     </None>
     <None Include="Dependencies\MathGeoLib-v1.5\include\Math\Matrix.inl">
       <Filter>Dependencies\MathGeoLib\Math</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SpecEnvBRDFFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl">
+      <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\particle_fragment.glsl">
       <Filter>Shaders</Filter>

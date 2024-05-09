@@ -6,6 +6,7 @@
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleOpenGL.h"
+#include "ModuleAudio.h"
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
 #include "Panel.h"
@@ -138,6 +139,9 @@ void DebugPanel::Draw(int windowFlags) {
             {
                 EngineApp->GetCamera()->DrawRayCast(mDrawRaycast);
             }
+            ImGui::Separator();
+
+            ImGui::Text("FMOD Memory usage: %.6f MB", (float)App->GetAudio()->GetMemoryUsage() / (1000000));
             ImGui::TreePop();
         }
 	}

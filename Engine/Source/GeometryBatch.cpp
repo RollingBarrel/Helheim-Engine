@@ -54,12 +54,31 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, mNormSsbo);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mTangSsbo);
 
-	unsigned int idx = 0;
+	
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
+		unsigned int idx = 0;
+		switch (it->type)
+		{
+		case Attribute::POS:
+			idx = 0;
+			break;
+		case Attribute::UV:
+			idx = 1;
+			break;
+		case Attribute::NORMAL:
+			idx = 2;
+			break;
+		case Attribute::TANGENT:
+			idx = 3;
+			break;
+		default:
+			assert("Unsuported Vertex Attribute");
+			break;
+		}
+
 		glEnableVertexAttribArray(idx);
 		glVertexAttribPointer(idx, (*it).size / sizeof(float), GL_FLOAT, GL_FALSE, mVertexSize, (void*)(*it).offset);
-		++idx;
 	}
 
 	glBindVertexArray(0);
@@ -118,21 +137,7 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	if (mUniqueMaterials.size() == 0 || idx == mUniqueMaterials.size())
 		return false;
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
-	const BatchMaterialResource& rMaterial = mUniqueMaterials[idx];
-	Material material;
-	memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
-	material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
-	material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
-	material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
-	material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
-	material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
-	material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
-	material.metalness = rMaterial.resource->GetMetallicFactor();
-	material.roughness = rMaterial.resource->GetRoughnessFactor();
-
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, sizeof(Material), &material);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	mMaterialFlag = true;
 
 	return true;
 }
@@ -203,12 +208,15 @@ void GeometryBatch::RecreateMaterials()
 	for (const BatchMaterialResource rMaterial : mUniqueMaterials) {
 		Material material;
 		memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
+		memcpy(material.emissiveFactor, rMaterial.resource->GetEmissiveFactor().ptr(), sizeof(float) * 3);
 		material.baseColorTex = (rMaterial.resource->GetBaseColorTexture()) ? rMaterial.resource->GetBaseColorTexture()->GetTextureHandle() : 0;
 		material.metalRoughTex = (rMaterial.resource->GetMetallicRoughnessTexture()) ? rMaterial.resource->GetMetallicRoughnessTexture()->GetTextureHandle() : 0;
 		material.normalTex = (rMaterial.resource->GetNormalTexture()) ? rMaterial.resource->GetNormalTexture()->GetTextureHandle() : 0;
+		material.emissiveTex = (rMaterial.resource->GetEmissiveTexture()) ? rMaterial.resource->GetEmissiveTexture()->GetTextureHandle() : 0;
 		material.hasMetalRoughTex = rMaterial.resource->IsMetallicRoughnessEnabled();
 		material.hasBaseColorTex = rMaterial.resource->IsBaseColorEnabled();
 		material.hasNormalMap = rMaterial.resource->IsNormalMapEnabled();
+		material.hasEmissiveTex = rMaterial.resource->IsEmissiveEnabled();
 		material.metalness = rMaterial.resource->GetMetallicFactor();
 		material.roughness = rMaterial.resource->GetRoughnessFactor();
 
@@ -339,13 +347,13 @@ void GeometryBatch::Draw()
 		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
 		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
 		{
-			if (meshRenderer->GetIsAnimated() != 0 && (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()))
+			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
 			{
-				const AnimationComponent* cAnim = meshRenderer->GetAnimationComponent();
+				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));
 				if (cAnim && cAnim->GetIsPlaying())
 				{
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
-					glBufferData(GL_SHADER_STORAGE_BUFFER, meshRenderer->GetPalette().size() * sizeof(float) * 16, meshRenderer->GetPalette().data(), GL_DYNAMIC_DRAW);
+					glBufferData(GL_SHADER_STORAGE_BUFFER, cAnim->GetPalette().size() * sizeof(float) * 16, cAnim->GetPalette().data(), GL_DYNAMIC_DRAW);
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
 					glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
 					glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
@@ -392,7 +400,22 @@ void GeometryBatch::Draw()
 		{
 			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
 			{
-				memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+				// HERE IF ANIMATED THEN PUT IDENTITY
+				
+				const AnimationComponent* cAnim = static_cast<AnimationComponent*> (meshRenderer->GetOwner()->FindFirstParent()->GetComponent(ComponentType::ANIMATION));				
+				if (cAnim && cAnim->GetIsPlaying())
+				{
+					float4x4 identity = float4x4::identity;
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, identity.ptr(), sizeof(float) * 16);
+
+				}
+				else
+				{
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+
+				}
+
+
 				memcpy(mSsboIndicesData[idx] + i, &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
 				mCommands.emplace_back(rMesh->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
 			}

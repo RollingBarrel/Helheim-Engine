@@ -12,6 +12,7 @@
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
+#include "ModuleAudio.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -36,8 +37,8 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
-#include "FmodUtils.h"
-#include "EmitterShape.h"
+// #include "FmodUtils.h"
+// #include "EmitterShape.h"
 #include "ColorGradient.h"
 
 #include "ResourceMaterial.h"
@@ -632,12 +633,15 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
+		if (ImGui::Checkbox("Enable Emissive map", &material->mEnableEmissiveTexture))
+		{
+			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
 
 		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
-
 		if (ImGui::DragFloat("Metalnes", &material->mMetallicFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
@@ -645,6 +649,13 @@ void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
 		if (ImGui::DragFloat("Roughness", &material->mRoughnessFactor, 0.01f, 0.0f, 1.0f, "%.2f"))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+		}
+		if (material->IsEmissiveEnabled())
+		{
+			if (ImGui::ColorPicker3("Emissive", material->mEmissiveFactor.ptr()))
+			{
+				EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
+			}
 		}
 	}
 }
@@ -902,14 +913,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		(play) ? play = false : play = true;
 		component->SetIsPlaying(play);
 
-		if (component->GetIsPlaying())
-		{
-			for (Component* comp : components)
-			{
-				MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
-				meshRenderComponent->SetIsAnimated(true);
-			}
-		}
 	}
 
 	ImGui::SameLine();
@@ -927,11 +930,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if (ImGui::Button("Stop"))
 	{
-		for (Component* comp : components)
-		{
-			MeshRendererComponent* meshRenderComponent = reinterpret_cast<MeshRendererComponent*>(comp);
-			meshRenderComponent->SetIsAnimated(false);
-		}
 		component->SetIsPlaying(false);
 		component->OnRestart();
 	}
@@ -945,28 +943,32 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	ImGui::Checkbox("Loop", &loop);
 	component->SetLoop(loop);
-	
-	const char* items[] = { "Walk", "Idle", "Die" };
-	static float timeClips[] = {0.0, 2.2, 2.2, 12.0, 12.0, 15.0 };
-	static int currentItem = 0;
-	if (ImGui::Combo("Select Animation State", &currentItem, items, IM_ARRAYSIZE(items)))
+
+	float animSpeed = component->GetAnimSpeed();
+
+	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02, 0.0, 2.0))
 	{
-		component->SetStartTime(timeClips[currentItem * 2]);
-		component->SetEndTime(timeClips[currentItem * 2 + 1]);
+		component->SetAnimSpeed(animSpeed);
+	}
+
+	int currentItem = component->GetCurrentClip();
+
+	if (ImGui::Combo("Select Animation State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
+	{
+		component->SetCurrentClip(currentItem);
 	}
 	float maxTimeValue = component->GetAnimation()->GetDuration();
-	if (ImGui::DragFloat("StartTime", &timeClips[currentItem * 2], 0.1, 0.0, maxTimeValue))
+	float currentStartTime = component->GetCurrentStartTime();
+	float currentEndTime = component->GetCurrentEndTime();
+
+	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1, 0.0, maxTimeValue))
 	{
-		component->SetStartTime(timeClips[currentItem * 2]);
+		component->SetStartTime(currentStartTime);
 	}
-	if (ImGui::DragFloat("EndTime", &timeClips[currentItem * 2+1], 0.1, 0.0, maxTimeValue))
+	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1, 0.0, maxTimeValue))
 	{
-		component->SetEndTime(timeClips[currentItem * 2+1]);
+		component->SetEndTime(currentEndTime);
 	}
-
-
-
-
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) 
@@ -1096,7 +1098,7 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
-	std::vector<const char*> events = FmodUtils::GetEventsNames();
+	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
@@ -1131,7 +1133,7 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 		float max = 0;
 		float min = 0;
 
-		FmodUtils::GetParametersMaxMinByComponent(component, name, max, min);
+		component->GetParametersMaxMin(name, max, min);
 
 		ImGui::Text("%s: ", name);
 		ImGui::SameLine();
