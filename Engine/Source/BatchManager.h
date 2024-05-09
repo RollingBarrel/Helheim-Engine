@@ -3,6 +3,7 @@
 #include "Globals.h"
 
 class GeometryBatch;
+class Component;
 class MeshRendererComponent;
 
 class ENGINE_API BatchManager
@@ -13,6 +14,7 @@ public:
 	void AddMeshComponent(const MeshRendererComponent* meshComponent);
 	void RemoveMeshComponent(const MeshRendererComponent* meshComponent);
 	void EditMaterial(const MeshRendererComponent* meshComponent);
+	void HighLight(std::vector<Component*> meshComponents);
 
 	void Draw();
 
