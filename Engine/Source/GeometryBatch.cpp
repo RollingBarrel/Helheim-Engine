@@ -246,7 +246,13 @@ void GeometryBatch::RemoveHighLight(std::vector<Component*> meshRendererComponen
 {
 	for (std::vector<BatchMeshRendererComponent>::iterator it = mHighLightMeshComponents.begin(); it != mHighLightMeshComponents.end() ; ++it)
 	{
-		
+		for (Component* meshComponent : meshRendererComponents)
+		{
+			if (it->component->GetID() == meshComponent->GetID())
+			{
+				mHighLightMeshComponents.erase(it);
+			}
+		}
 	}
 }
 
