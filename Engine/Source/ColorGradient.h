@@ -1,21 +1,30 @@
 #pragma once
+#include "Globals.h"
+#include "MathGeoLib.h"
+#include "Archive.h"
+#include <list>
 
-class ColorGradient
+struct  ColorGradientMark
+{
+	float4 color;
+	float position; // from 0 to 1
+};
+
+class ENGINE_API ColorGradient
 {
 public:
 	ColorGradient();
-	ColorGradient(const ColorGradient& orig);
 	~ColorGradient();
 
-	void addColor(float time, const float4& color);
-	float4 getColor(float time) const;
+	void AddColorGradientMark(float position, const float4& color);
+	void RemoveColorGradientMark(ColorGradientMark* mark);
 
+	std::list<ColorGradientMark*> GetColorMarks() { return mColorMarks; }
+
+	float4 CalculateColor(float position) const;
+
+	void Save(Archive& archive) const;
+	void LoadFromJSON(const rapidjson::Value& data);
 private:
-	struct ColorKey
-	{
-		float time;
-		float4 color;
-	};
-
-	std::vector<ColorKey> mColors;
+	std::list<ColorGradientMark*> mColorMarks;
 };

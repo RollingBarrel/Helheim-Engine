@@ -3,6 +3,7 @@
 #include "Component.h"
 #include <map>
 #include "EmitterShape.h"
+#include "ColorGradient.h"
 
 class Material;
 class ResourceTexture;
@@ -50,7 +51,7 @@ private:
 	float mSpeedCurveFactor = 1.0f;
 
 	bool mIsSizeCurve;
-	float mSizeLineal = 1.0f;
+	float mSizeLineal = 3.0f;
 	float4 mSizeCurve;
 	float mSizeCurveFactor = 1.0f;
 
@@ -61,7 +62,7 @@ private:
 	EmitterShape* mShape;
 	EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
 
-	std::map<float, float4> mColorGradient;
+	ColorGradient* mColorGradient;
 	std::vector<Particle*> mParticles;
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;

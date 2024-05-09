@@ -1,11 +1,12 @@
 #pragma once
 #include "MathGeoLib.h"
+#include "ColorGradient.h"
 
 class Particle
 {
 public:
     Particle();
-    Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve);
+    Particle(float3 position, float3 direction, ColorGradient* color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve);
     ~Particle();
 
     bool Update(float deltaTime, float3 cameraPosition);
@@ -26,7 +27,9 @@ public:
 
     float GetLifetime() const { return mLifeTime; }
     float GetMaxLifetime() const { return mMaxLifeTime; }
-    float4 GetColor() const { return mColor; }
+    ColorGradient* GetColor() const { return mColorGradient; }
+
+    float4 CalculateColor() const;
 
 
     void SetPosition(const float3& position) { mPosition = position; }
@@ -45,7 +48,7 @@ public:
 
     void SetLifetime(float lifetime) { mLifeTime = lifetime; }
     void SetMaxLifetime(float maxLifetime) { mMaxLifeTime = maxLifetime; }
-    void SetColor(const float4& color) { mColor = color; }
+    void SetColor(ColorGradient* color) { mColorGradient = color; }
 
     template <int steps>
     void bezier_table(float2 P[], float2 results[])
@@ -94,5 +97,5 @@ private:
 
     float mLifeTime = 0.0f;
     float mMaxLifeTime = 3.0f;
-    float4 mColor;
+    ColorGradient* mColorGradient;
 };

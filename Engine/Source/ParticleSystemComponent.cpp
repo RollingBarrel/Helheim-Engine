@@ -19,8 +19,9 @@
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
-    mColorGradient[0.0f] = float4::one;
     InitEmitterShape();
+    mColorGradient = new ColorGradient();
+    mColorGradient->AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();
 }
 
@@ -40,12 +41,12 @@ ParticleSystemComponent::~ParticleSystemComponent()
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
     delete mShape;
+    delete mColorGradient;
     for (auto particle : mParticles)
     {
         delete particle;
     }
     mParticles.clear();
-    mColorGradient.clear();
 }
 
 Component* ParticleSystemComponent::Clone(GameObject* owner) const
@@ -138,7 +139,7 @@ void ParticleSystemComponent::Draw() const
                 transform = transform * scaleMatrix;
                 transform.Transpose();                
                 memcpy(ptr + 20 * j, transform.ptr(), sizeof(float) * 16);
-                memcpy(ptr + 20 * j + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
+                memcpy(ptr + 20 * j + 16, mParticles[i]->CalculateColor().ptr(), sizeof(float) * 4);
             }
         }
         glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -194,7 +195,7 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient[0.0f], rotation, mMaxLifeTime, mIsSpeedCurve, mIsSizeCurve);
+            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient, rotation, mMaxLifeTime, mIsSpeedCurve, mIsSizeCurve);
             
             if (mIsSpeedCurve) 
             {
@@ -253,20 +254,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddFloat("SpeedFactor", mSpeedCurveFactor);
     mShape->Save(archive);
     
-    std::vector<Archive> objectArray;
-    std::map<float, float4>::const_iterator it;
-
-    for (it = mColorGradient.begin(); it != mColorGradient.end(); it++)
-    {
-        float time = it->first;
-        float4 color = it->second;
-        Archive colorArchive;
-        colorArchive.AddFloat("Time", time);
-        const float c[4] = { color.x, color.y, color.z, color.w };
-        colorArchive.AddFloat4("Color", c);
-        objectArray.push_back(colorArchive);
-    }
-    archive.AddObjectArray("Color Gradient", objectArray);
+    mColorGradient->Save(archive);
 }
 
 void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -327,28 +315,7 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     }
     if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
     {
-        const auto& colorArray = data["Color Gradient"].GetArray();
-        for (unsigned int i = 0; i < colorArray.Size(); ++i)
-        {
-            float time = 0.0f;
-            if (colorArray[i].HasMember("Time") && colorArray[i]["Time"].IsFloat())
-            {
-                time = colorArray[i]["Time"].GetFloat();
-            }
-            if (colorArray[i].HasMember("Color") && colorArray[i]["Color"].IsArray())
-            {
-                float colorVec[4] { 0 };
-                const auto& colArray = colorArray[i]["Color"].GetArray();
-                if (colArray.Size() == 4)
-                for (unsigned int j = 0; j < colArray.Size(); ++j)
-                {
-                    if (colArray[j].IsFloat() && j < 4) {
-                        colorVec[j] = colArray[j].GetFloat();
-                    }
-                }
-                mColorGradient[time] = float4(colorVec);
-            }
-        }
+        mColorGradient->LoadFromJSON(data);
     }
     if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
     {

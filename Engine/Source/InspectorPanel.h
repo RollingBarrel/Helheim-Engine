@@ -58,7 +58,6 @@ private:
 	void DrawTransform2DComponent(Transform2DComponent* component);
 	void DrawParticleSystemComponent(ParticleSystemComponent* component);
 
-
 	void DragAndDropSource(Component* component);
 	void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);

@@ -170,6 +170,7 @@
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CanvasComponent.cpp" />
+    <ClCompile Include="ColorGradient.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />

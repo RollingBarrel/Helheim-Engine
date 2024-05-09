@@ -447,6 +447,9 @@
     <ClCompile Include="ParticleSystemComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ColorGradient.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">

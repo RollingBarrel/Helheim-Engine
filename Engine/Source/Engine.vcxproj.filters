@@ -139,6 +139,9 @@
     <ClCompile Include="ImBezier.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -321,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="ImBezier.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

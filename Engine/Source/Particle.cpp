@@ -2,21 +2,23 @@
 
 Particle::Particle()
 {
+    mColorGradient = nullptr;
 }
 
-Particle::Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve)
+Particle::Particle(float3 position, float3 direction, ColorGradient* color, float rotation, float lifeTime, bool isSpeedCurve, bool isSizeCurve)
     : mPosition(position), 
     mDirection(direction),
     mRotation(rotation),
     mIsSpeedCurve(isSpeedCurve),
     mIsSizeCurve(isSizeCurve),
     mMaxLifeTime(lifeTime),
-    mColor(color)
+    mColorGradient(color)
 {
 }
 
 Particle::~Particle()
 {
+    //delete mColorGradient;
 }
 
 bool Particle::Update(float DeltaTime, float3 cameraPosition)
@@ -32,6 +34,11 @@ bool Particle::Update(float DeltaTime, float3 cameraPosition)
     mSpeed = mIsSpeedCurve ? mSpeedLinear + (BezierValue(dt01, mSpeedCurve) * mSpeedCurveFactor) : mSpeedLinear;
     mPosition = mPosition + mDirection * mSpeed * DeltaTime;
     return true;
+}
+
+float4 Particle::CalculateColor() const
+{
+    return mColorGradient->CalculateColor(mLifeTime / mMaxLifeTime);
 }
 
 float Particle::BezierValue(float dt01, float4 P) {

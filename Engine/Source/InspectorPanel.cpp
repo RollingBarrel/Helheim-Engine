@@ -1,6 +1,7 @@
 #include "InspectorPanel.h"
 #include "ImBezier.h"
 #include "imgui.h"
+#include "imgui_color_gradient.h"
 #include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -26,7 +27,6 @@
 #include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
-#include "EmitterShape.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -37,6 +37,8 @@
 #include "Script.h"
 #include "AnimationController.h"
 #include "FmodUtils.h"
+#include "EmitterShape.h"
+#include "ColorGradient.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -1255,6 +1257,98 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	
 }
 
+ImColor Float4ToImColor(const float4& color)
+{
+	return ImColor(color.x, color.y, color.z, color.w);
+}
+
+float4 ImColorToFloat4(const float* color)
+{
+	return float4(color[0], color[1], color[2], color[3]);
+}
+
+
+ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
+	ImGradient result;
+
+	const std::list<ColorGradientMark*>& marks = gradient->GetColorMarks();
+
+	for (const auto& mark : marks) {
+		result.addMark(mark->position, Float4ToImColor(mark->color));
+	}
+
+	return result;
+}
+
+
+constexpr float FLOAT_TOLERANCE = 1e-6;
+
+inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) {
+	return std::fabs(a - b) < tolerance;
+}
+
+bool areMarksEquivalent(const ImGradientMark* a, const ColorGradientMark* b) {
+	if (approximatelyEqual(a->position, b->position)) {
+		for (int i = 0; i < 4; ++i) {
+			if (!approximatelyEqual(a->color[i], b->color[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+std::list<ColorGradientMark> findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+{
+	std::list<ColorGradientMark> removedMarks;
+
+	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+	auto marks = gradient->GetColorMarks();
+
+	// find if marksEdited has not a mark from the gradient to delete it
+	for (const auto& mark : marks) {
+		auto it = std::find_if(
+			marksEdited.begin(), marksEdited.end(),
+			[&](const ImGradientMark* mark1) {
+				return areMarksEquivalent(mark1, mark);
+			}
+		);
+
+		if (it == marksEdited.end()) 
+		{
+			gradient->RemoveColorGradientMark(mark);
+		}
+	}
+
+	return removedMarks;
+}
+
+std::list<ColorGradientMark> findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+{
+	std::list<ColorGradientMark> addedMarks;
+
+	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+	auto marks = gradient->GetColorMarks();
+
+	// find if markEdit is not in marks to add it
+	for (const auto& markEdit : marksEdited) {
+		auto it = std::find_if(
+			marks.begin(), marks.end(),
+			[&](const ColorGradientMark* mark) {
+				return areMarksEquivalent(markEdit, mark);
+			}
+		);
+
+		if (it == marks.end()) 
+		{
+			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
+		}
+	}
+
+	return addedMarks;
+}
+
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
 {
 	ImGui::Text("Looping");
@@ -1420,9 +1514,21 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		ImGui::Columns(1);
 
 		// Color and alpha
-		float4* color = &component->mColorGradient[0.0f];
-		ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
-		ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
+		//float4* color = &component->mColorGradient[0.0f];
+		//ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
+		//ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
+
+		//::GRADIENT DATA::
+		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
+		static ImGradientMark* draggingMark = nullptr;
+		static ImGradientMark* selectedMark = nullptr;
+
+		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
+
+		if (updated) {
+			findAddedMarks(gradient, component->mColorGradient);
+			findRemovedMarks(gradient, component->mColorGradient);
+		}
 	}
 }
 
