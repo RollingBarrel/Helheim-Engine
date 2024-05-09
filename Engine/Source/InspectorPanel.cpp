@@ -37,9 +37,6 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
-// #include "FmodUtils.h"
-// #include "EmitterShape.h"
-#include "ColorGradient.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"

@@ -18,7 +18,6 @@
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
-    // InitEmitterShape();
     mColorGradient = new ColorGradient();
     mColorGradient->AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();

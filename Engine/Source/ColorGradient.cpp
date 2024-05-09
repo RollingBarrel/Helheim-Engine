@@ -1,6 +1,4 @@
 #include "ColorGradient.h"
-#include "ColorGradient.h"
-#include "ColorGradient.h"
 
 ColorGradient::ColorGradient()
 {
