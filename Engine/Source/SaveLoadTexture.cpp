@@ -93,9 +93,19 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
 
         for (size_t i = 0; i < mipLevels; ++i)
         {
-            if(glTarget == GL_TEXTURE_2D)
+            if (glTarget == GL_TEXTURE_2D)
+            {
                 glTexImage2D(glTarget, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
-            pixels += texelSize * width * height;
+                pixels += texelSize * width * height;
+            }
+            if (glTarget == GL_TEXTURE_CUBE_MAP)
+            {
+                for (unsigned int j = 0; j < 6; ++j)
+                {
+                    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+                    pixels += texelSize * width * height;
+                }
+            }
             if(width > 1)
                 width /= 2;
             if(height > 1)
@@ -107,6 +117,9 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         if (mipLevels > 1)
         {
             glTexParameteri(glTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         }
         else
         {

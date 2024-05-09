@@ -69,6 +69,9 @@ void ResourceTexture::GenerateMipmaps()
         glTexParameteri(mGLTarget, GL_TEXTURE_MAX_LOD, mMipLevels - 1);
         glTexParameteri(mGLTarget, GL_TEXTURE_MAX_LEVEL, mMipLevels - 1);
         glTexParameteri(mGLTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glGenerateMipmap(mGLTarget);
 
         unsigned int w = mWidth/2;

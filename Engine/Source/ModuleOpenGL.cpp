@@ -197,7 +197,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	//Draw the skybox
-	if (mSkyBoxTexture != 0)
+	if (mEnvironmentTextureId != 0)
 	{
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
@@ -334,7 +334,6 @@ static unsigned int LoadCubeMap()
 
 void ModuleOpenGL::InitSkybox()
 {
-	mSkyBoxTexture = LoadCubeMap();
 
 	float skyboxVertices[] = {
 	   -1.0f,  1.0f, -1.0f,

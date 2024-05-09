@@ -104,7 +104,6 @@ private:
 
 	//Skybox
 	void InitSkybox();
-	unsigned int mSkyBoxTexture = 0;
 	unsigned int mSkyVao = 0;
 	unsigned int mSkyVbo = 0;
 
