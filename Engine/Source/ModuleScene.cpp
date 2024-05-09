@@ -293,7 +293,33 @@ void ModuleScene::Load(const char* sceneName)
 			{
 				mRoot->SetName(sceneValue["Name"].GetString());
 			}
-			mRoot->Load(sceneValue);
+
+			// Manage GameObjects inside the Scene
+			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
+			{
+				const rapidjson::Value& gameObjects = sceneValue["GameObjects"];
+				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+				{
+					if (gameObjects[i].IsObject())
+					{
+						mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot);
+					}
+				}
+
+				mRoot->RecalculateMatrices();
+
+				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+				{
+					// Manage Components
+					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
+					{
+						GameObject* go = Find(gameObjects[i]["UID"].GetInt());
+						go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+					}
+				}
+			}
+
+			//mRoot->Load(sceneValue);
 		}
 
 		mQuadtreeRoot->UpdateTree();

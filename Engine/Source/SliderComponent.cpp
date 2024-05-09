@@ -26,8 +26,8 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 	GameObject* self = (GameObject*)this->GetOwner();
 
-	if (self->GetChildren().empty()) 
-	{
+	//if (self->GetChildren().empty()) 
+	//{
 		self->SetName("Slider");
 		mFill = new GameObject("Fill", self);
 		mBackground = new GameObject("Background", self);
@@ -43,7 +43,7 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 		mBackground->AddComponent(mBgImage, this);
 		mFill->AddComponent(mFillTransform2D, this);
 		mFill->AddComponent(mFillImage, this);
-	}
+	//}
 	
 	// Set default values
 	mBgImage->SetColor(float3(1.f, 0, 0));

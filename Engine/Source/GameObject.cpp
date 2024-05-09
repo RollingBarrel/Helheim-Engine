@@ -81,8 +81,6 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	}
 }
 
-
-
 GameObject::~GameObject()
 {
 	for (GameObject* gameObject : mChildren) 
@@ -99,7 +97,6 @@ GameObject::~GameObject()
 	mComponents.clear();
 
 }
-
 
 Component* GameObject::GetComponent(ComponentType type) const
 {
@@ -247,7 +244,6 @@ void GameObject::AddComponentToDelete(Component* component)
 {
 	mComponentsToDelete.push_back(component);
 }
-
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
@@ -595,7 +591,6 @@ void GameObject::AddComponent(Component* component, Component* position)
 	}
 }
 
-
 void GameObject::RecalculateLocalTransform() 
 {
 	if (mParent->mWorldTransformMatrix.Determinant4() != 0)
@@ -722,7 +717,7 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID)
 	return gameObjectParent;
 }
 
-static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObject* go) 
+void GameObject::LoadComponentsFromJSON(const rapidjson::Value& components)
 {
 	for (rapidjson::SizeType i = 0; i < components.Size(); i++) 
 	{
@@ -732,14 +727,14 @@ static void LoadComponentsFromJSON(const rapidjson::Value& components, GameObjec
 			if (componentValue.HasMember("ComponentType") && componentValue["ComponentType"].IsInt()) 
 			{
 				ComponentType cType = ComponentType(componentValue["ComponentType"].GetInt());
-				Component* component = go->CreateComponent(cType);
-				component->LoadFromJSON(componentValue, go);
+				Component* component = this->CreateComponent(cType);
+				component->LoadFromJSON(componentValue, this);
 			}
 		}
 	}
 }
 
-void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene, std::unordered_map<int, int>* convertUuid) 
+void GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent)
 {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
@@ -834,24 +829,25 @@ void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scen
 
 	if (parentUID == 1) 
 	{
-		go = new GameObject(uuid,name, scene);
+		go = new GameObject(uuid,name, parent);
 	}
 	else 
 	{
-		GameObject* gameObjectParent = FindGameObjectParent(scene, (*convertUuid)[parentUID]);
+		GameObject* gameObjectParent = Find(parentUID);
 		go = new GameObject(uuid, name, gameObjectParent);
 	}
+
 	go->SetPosition(position);
 	go->SetRotation(rotation);
 	go->SetScale(scale);
 	go->SetPrefabId(prefabId);
 	go->SetPrefabOverride(overridePrefab);
 	// Manage Components
-	if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) 
-	{
-		LoadComponentsFromJSON(gameObject["Components"], go);
-	}
-	(*convertUuid)[uuid] = go->GetID();
+	//if (gameObject.HasMember("Components") && gameObject["Components"].IsArray()) 
+	//{
+	//	LoadComponentsFromJSON(gameObject["Components"], go);
+	//}
+	//(*convertUuid)[uuid] = go->GetID();
 	go->SetTag(tag);
 	go->SetEnabled(isEnabled);
 }
@@ -887,12 +883,12 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 						uuids[uuid] = mID;
 						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray()) 
 						{
-							LoadComponentsFromJSON(gameObjects[i]["Components"], this);
+							//LoadComponentsFromJSON(gameObjects[i]["Components"], this);
 						}
 					}
 					else 
 					{
-						LoadGameObjectFromJSON(gameObjects[i], mParent, &uuids);
+						//LoadGameObjectFromJSON(gameObjects[i], mParent, &uuids);
 					}
 				}
 			}
@@ -910,8 +906,9 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson) 
 {
-	GameObject* scene = App->GetScene()->GetRoot();
-	std::unordered_map<int, int> uuids;
+	//GameObject* scene = App->GetScene()->GetRoot();
+	//std::unordered_map<int, int> uuids;
+
 	// Manage GameObjects inside the Scene
 	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray()) 
 	{
@@ -920,7 +917,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson)
 		{
 			if (gameObjects[i].IsObject()) 
 			{
-				LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+				//LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
 			}
 		}
 	}
