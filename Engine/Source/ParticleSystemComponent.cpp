@@ -413,4 +413,9 @@ void ParticleSystemComponent::Enable()
 void ParticleSystemComponent::Disable()
 {
     App->GetOpenGL()->RemoveParticleSystem(this);
+    for (Particle* particle : mParticles)
+    {
+        delete particle;
+    }
+    mParticles.clear();
 }
