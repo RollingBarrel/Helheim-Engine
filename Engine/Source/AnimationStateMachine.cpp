@@ -119,22 +119,22 @@ void AnimationStateMachine::SetStateName(int index, std::string& stateName)
 
 void AnimationStateMachine::AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger)
 {
-	mTransistions.push_back(AnimationTransition(sourceName, targetName, trigger));
+	mTransitions.push_back(AnimationTransition(sourceName, targetName, trigger));
 }
 
 void AnimationStateMachine::RemoveTransition(int index)
 {
 
-	mTransistions.erase(mTransistions.begin() + index);
+	mTransitions.erase(mTransitions.begin() + index);
 }
 
-int AnimationStateMachine::GetTransitionIndex(std::string& sourceName, std::string& targetName, std::string& trigger)
+int AnimationStateMachine::GetTransitionIndex(std::string& sourceName, std::string& trigger)
 {
 	int index = 0;
 
-	for (size_t i = 0; i < mTransistions.size(); i++)
+	for (size_t i = 0; i < mTransitions.size(); i++)
 	{
-		if (sourceName == mTransistions[i].mSource && targetName == mTransistions[i].mTarget && sourceName == mTransistions[i].mTrigger) 
+		if (sourceName == mTransitions[i].mSource  && sourceName == mTransitions[i].mTrigger) 
 		{
 			index = i;
 			break;
@@ -146,15 +146,15 @@ int AnimationStateMachine::GetTransitionIndex(std::string& sourceName, std::stri
 
 std::string& AnimationStateMachine::GetTransitionTrigger(int index)
 {
-	return mTransistions[index].mTrigger;
+	return mTransitions[index].mTrigger;
 }
 
 std::string& AnimationStateMachine::GetTransitionSource(int index)
 {
-	return mTransistions[index].mSource;
+	return mTransitions[index].mSource;
 }
 
 std::string& AnimationStateMachine::GeTransitionTarget(int index)
 {
-	return mTransistions[index].mTarget;
+	return mTransitions[index].mTarget;
 }

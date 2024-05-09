@@ -3,7 +3,7 @@
 #include "ResourceAnimation.h"
 
 #include "AnimationController.h"
-
+#include "AnimationStateMachine.h"
 #include "AnimationComponent.h"
 
 #include "GameObject.h"
@@ -152,6 +152,53 @@ void AnimationComponent::SetAnimSpeed(float speed)
 {
 	mSpeed = speed;
 	mController->SetAnimSpeed(speed);
+
+}
+
+std::string AnimationComponent::GetCurrentStateName()
+{
+	std::string currentStateName;
+
+	if (mStateMachine != nullptr && currentState < mStateMachine->GetNumStates())
+	{
+		currentStateName = mStateMachine->GetStateName(currentState);
+	}
+
+	return currentStateName;
+}
+
+void AnimationComponent::SendTrigger(std::string trigger)
+{
+
+	std::string currentStateName = GetCurrentStateName();
+
+	for (size_t i = 0; i < mStateMachine->GetnNumTransitions(); i++)
+	{
+		if (currentStateName == mStateMachine->GetTransitionSource(i) && trigger == mStateMachine->GetTransitionTrigger(i))
+		{
+			ChangeState(mStateMachine->GeTransitionTarget(i));
+		}
+	}
+
+}
+
+void AnimationComponent::ChangeState(std::string stateName)
+{
+
+	int stateIndex = mStateMachine->GetStateIndex(stateName);
+
+	if (stateIndex < mStateMachine->GetNumStates())
+	{
+		currentState = stateIndex;
+		int clipIndex = mStateMachine->GetClipIndex(mStateMachine->GetStateClip(stateIndex));
+
+		unsigned int resourceAnimation = mStateMachine->GetClipResource(clipIndex);
+
+		if (resourceAnimation !=0)
+		{
+			SetAnimation(resourceAnimation);
+		}
+	}
 
 }
 

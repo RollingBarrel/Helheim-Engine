@@ -3,10 +3,13 @@
 #include "Component.h"
 #include "float4x4.h"
 #include <vector>
+#include <string>
 
 class AnimationController;
+class AnimationStateMachine;
 class ResourceAnimation;
 class ResourceModel;
+
 
 class ENGINE_API AnimationComponent : public Component {
 public:
@@ -35,6 +38,7 @@ public:
 	void OnRestart();
 
 	void SetAnimation(unsigned int uid);
+	
 
 	void SetStartTime(float time);
 	void SetEndTime(float time);
@@ -67,12 +71,17 @@ public:
 	float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed);
 
+	std::string GetCurrentStateName();
+	void SendTrigger(std::string trigger);
+	void ChangeState(std::string stateName);
 
 private:
 	void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
 	ResourceAnimation* mAnimation;
 	AnimationController* mController;
+	AnimationStateMachine* mStateMachine;
+	int currentState = 0;
 
 	bool mLoop = true;
 	bool mIsPlaying = false;

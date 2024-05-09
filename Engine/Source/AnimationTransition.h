@@ -10,5 +10,4 @@ public:
 	std::string mTrigger;
 	std::string mSource;
 	std::string mTarget;
-
 };

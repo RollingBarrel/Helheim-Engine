@@ -34,15 +34,17 @@ public:
 	std::string& GetStateName(int index);
 	void SetStateClip(int index, std::string& clipName);
 	void SetStateName(int index, std::string& name);
+	int GetNumStates() { return mStates.size();}
 
 	//Transitions
 	void AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger);
 	void RemoveTransition(int index);
 
-	int GetTransitionIndex(std::string& sourceName, std::string& targetName, std::string& trigger);
+	int GetTransitionIndex(std::string& sourceName, std::string& trigger);
 	std::string& GetTransitionTrigger(int index);
 	std::string& GetTransitionSource(int index); 
 	std::string& GeTransitionTarget(int index);
+	int GetnNumTransitions() const{ return mTransitions.size(); };
 
 private:
 
@@ -50,7 +52,8 @@ private:
 	
 	std::vector<AnimationClip> mClips;
 	std::vector<AnimationState> mStates;
-	std::vector<AnimationTransition> mTransistions;
-	AnimationState* mCurrentState;
+	std::vector<AnimationTransition> mTransitions;
+	
+	
 
 };
