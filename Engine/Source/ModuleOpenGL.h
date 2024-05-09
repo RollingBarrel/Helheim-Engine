@@ -83,7 +83,8 @@ public:
 	void BatchEditMaterial(const MeshRendererComponent* mesh);
 	void Draw();
 	void SetWireframe(bool wireframe);
-	void HighLight(GameObject* gameObject);
+	void AddHighLight(GameObject* gameObject);
+	void RemoveHighLight(GameObject* gameObject);
 
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);

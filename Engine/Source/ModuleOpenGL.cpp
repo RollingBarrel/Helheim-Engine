@@ -266,7 +266,9 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void ModuleOpenGL::HighLight(GameObject* gameObject)
+
+
+void ModuleOpenGL::AddHighLight(GameObject* gameObject)
 {
 	if (!gameObject->IsRoot())
 	{
@@ -276,7 +278,10 @@ void ModuleOpenGL::HighLight(GameObject* gameObject)
 			mBatchManager.HighLight(meshComponents);
 		}
 	}
-	
+}
+
+void ModuleOpenGL::RemoveHighLight(GameObject* gameObject)
+{
 }
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
