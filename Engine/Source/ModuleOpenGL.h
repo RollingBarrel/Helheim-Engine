@@ -8,11 +8,11 @@
 #include "ParticleSystemComponent.h"
 #include <vector>
 
-typedef struct DirectionalAmbient {
-	float mDirDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
-	float mDirCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
-	float mAmbientCol[4] = { 1.0f, 1.0f, 1.0f, 0.0f }; //w is padding
-}DirectionalAmbient;
+typedef struct DirectionalLight 
+{
+	float mDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
+	float mCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
+}DirectionalLight;
 
 class PointLightComponent;
 class SpotLightComponent;
@@ -71,10 +71,10 @@ public:
 
 
 	//TODO: put all this calls into one without separating for light type??
-	PointLightComponent* AddPointLight(const PointLight& pLight, GameObject* owner);
+	void AddPointLight(const PointLightComponent& component);
 	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
-	SpotLightComponent* AddSpotLight(const SpotLight& pLight, GameObject* owner);
+	void AddSpotLight(const SpotLightComponent& component);
 	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
 	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
@@ -108,7 +108,6 @@ private:
 
 	//Skybox
 	void InitSkybox();
-	unsigned int mSkyBoxTexture = 0;
 	unsigned int mSkyVao = 0;
 	unsigned int mSkyVbo = 0;
 
@@ -141,7 +140,7 @@ private:
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
-	DirectionalAmbient mDirAmb;
+	DirectionalLight mDirLight;
 	std::vector<const PointLightComponent*>mPointLights;
 	OpenGLBuffer* mPointsBuffer = nullptr;
 	std::vector<const SpotLightComponent*>mSpotLights;

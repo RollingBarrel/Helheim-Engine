@@ -99,6 +99,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Initialize scene framebuffer
@@ -121,12 +122,7 @@ bool ModuleOpenGL::Init()
 		return false;
 	}
 	unsigned int att = GL_COLOR_ATTACHMENT0;
-	glDrawBuffers(1, &att);
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glDrawBuffers(1, &att);;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
@@ -181,12 +177,11 @@ bool ModuleOpenGL::Init()
 	InitSkybox();
 
 	//Lighting uniforms
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
-	glUseProgram(program);
+	glUseProgram(mPbrProgramId);
 	glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 	glUseProgram(0);
 
-	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirAmb), &mDirAmb);
+	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirLight), &mDirLight);
 
 	const uint32_t numPointLights[4] = { mPointLights.size(), 0, 0, 0 };
 	mPointsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 0, 16, &numPointLights);
@@ -206,7 +201,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
 	//Draw the skybox
-	if (mSkyBoxTexture != 0)
+	if (mEnvironmentTextureId != 0)
 	{
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
@@ -369,7 +364,6 @@ static unsigned int LoadCubeMap()
 
 void ModuleOpenGL::InitSkybox()
 {
-	mSkyBoxTexture = LoadCubeMap();
 
 	float skyboxVertices[] = {
 	   -1.0f,  1.0f, -1.0f,
@@ -556,7 +550,6 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 			glDeleteTextures(1, &mIrradianceTextureId);
 			glDeleteTextures(1, &mEnvironmentTextureId);
 			glDeleteTextures(1, &mSpecPrefilteredTexId);
-			glDeleteTextures(1, &mEnvBRDFTexId);
 			mIrradianceTextureId = 0;
 		}
 
@@ -677,7 +670,6 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMipMaps);
-		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 		glUseProgram(mSpecPrefilteredProgramId);
 		glUniform1ui(5, specWidth);
@@ -735,16 +727,12 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
-PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
+void ModuleOpenGL::AddPointLight(const PointLightComponent& component)
 {
-	PointLightComponent* newComponent = new PointLightComponent(owner, pLight);
-	mPointLights.push_back(newComponent);
-	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
+	mPointLights.push_back(&component);
+	mPointsBuffer->PushBackData(&component.GetData(), sizeof(PointLight));
 	uint32_t size = mPointLights.size();
-	newComponent->SetIntensity(pLight.col[3]);
-	newComponent->SetRadius(pLight.pos[3]);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
-	return newComponent;
 }
 
 void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
@@ -753,7 +741,7 @@ void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
 	{
 		if (mPointLights[i] == &cPointLight)
 		{
-			mPointsBuffer->UpdateData(&mPointLights[i]->mData, sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			mPointsBuffer->UpdateData(&mPointLights[i]->GetData(), sizeof(mPointLights[i]->GetData()), 16 + sizeof(mPointLights[i]->GetData()) * i);
 			return;
 		}
 	}
@@ -763,10 +751,10 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (mPointLights[i] == &cPointLight)
+		if (mPointLights[i]->GetID() == cPointLight.GetID())
 		{
 			mPointLights.erase(mPointLights.begin() + i);
-			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->GetData()), 16 + sizeof(mPointLights[i]->GetData()) * i);
 			uint32_t size = mPointLights.size();
 			mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
@@ -807,25 +795,21 @@ void ModuleOpenGL::Draw()
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
-SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
+void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 {
-	SpotLightComponent* newComponent = new SpotLightComponent(owner, sLight);
-	mSpotLights.push_back(newComponent);
-	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
+	mSpotLights.push_back(&component);
+	mSpotsBuffer->PushBackData(&component.GetData(), sizeof(SpotLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-	newComponent->SetIntensity(sLight.pos[3]);
-	newComponent->SetRadius(sLight.radius);
-	return newComponent;
 }
 
 void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 {
 	for (int i = 0; i < mSpotLights.size(); ++i)
 	{
-		if (mSpotLights[i] == &cSpotLight)
+		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
-			mSpotsBuffer->UpdateData(&mSpotLights[i]->mData, sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			mSpotsBuffer->UpdateData(&mSpotLights[i]->GetData(), sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
 			return;
 		}
 	}
@@ -835,10 +819,10 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 {
 	for (int i = 0; i < mSpotLights.size(); ++i)
 	{
-		if (mSpotLights[i] == &cSpotLight)
+		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
 			mSpotLights.erase(mSpotLights.begin() + i);
-			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
