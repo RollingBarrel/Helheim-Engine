@@ -92,9 +92,7 @@ public:
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 	const bool HasUpdatedTransform() const;
 
-	GameObject* FindGameObjectInTree(const int objectToFind);
-	GameObject* FindFirstParent();
-	float4x4 TranformInFirstGameObjectSpace();
+	const AnimationComponent* FindAnimationComponent();
 	std::vector<Component*> FindComponentsInChildren(GameObject* parent, const ComponentType type);
 	void AddComponent(Component* component, Component* position);
 	void SetName(const char* name) { mName = name; };

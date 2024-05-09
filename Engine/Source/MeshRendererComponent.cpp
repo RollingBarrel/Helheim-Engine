@@ -29,7 +29,6 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
-	GameObject* root = mOwner->FindFirstParent();
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
