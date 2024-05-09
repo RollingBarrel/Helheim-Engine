@@ -125,21 +125,16 @@ void ParticleSystemComponent::Draw() const
         float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 
-        for (int j = 0; j < mParticles.size(); ++j)
-        {
-            int i = mParticles.size() - 1 - j;
-            if (mParticles[i]->GetLifetime() > 0.0f)
-            {
-                
-                float scale = mParticles[i]->GetSize();
-                float3x3 scaleMatrix = float3x3::identity * scale;
-                float3 pos = mParticles[i]->GetPosition();
-                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
-                transform = transform * scaleMatrix;
-                transform.Transpose();                
-                memcpy(ptr + 20 * j, transform.ptr(), sizeof(float) * 16);
-                memcpy(ptr + 20 * j + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
-            }
+        for (int i = 0; i < mParticles.size(); ++i)
+        {                
+            float scale = mParticles[i]->GetSize();
+            float3x3 scaleMatrix = float3x3::identity * scale;
+            float3 pos = mParticles[i]->GetPosition();
+            float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+            transform = transform * scaleMatrix;
+            transform.Transpose();                
+            memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
+            memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
         }
         glUnmapBuffer(GL_ARRAY_BUFFER);
         glBindVertexArray(mVAO);
