@@ -117,6 +117,16 @@ void AnimationStateMachine::SetStateName(int index, std::string& stateName)
 	mStates[index].mName = stateName;
 }
 
+void AnimationStateMachine::SetStateStartTime(int index, float time)
+{
+	mStates[index].mStartTime = time;
+}
+
+void AnimationStateMachine::SetStateEndTime(int index, float time)
+{
+	mStates[index].mEndTime = time;
+}
+
 void AnimationStateMachine::AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger)
 {
 	mTransitions.push_back(AnimationTransition(sourceName, targetName, trigger));

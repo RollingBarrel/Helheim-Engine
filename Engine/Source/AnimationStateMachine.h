@@ -34,6 +34,8 @@ public:
 	std::string& GetStateName(int index);
 	void SetStateClip(int index, std::string& clipName);
 	void SetStateName(int index, std::string& name);
+	void SetStateStartTime(int index, float time);
+	void SetStateEndTime(int index, float time);
 	int GetNumStates() { return mStates.size();}
 
 	//Transitions
