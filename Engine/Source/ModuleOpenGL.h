@@ -8,7 +8,8 @@
 #include "ParticleSystemComponent.h"
 #include <vector>
 
-typedef struct DirectionalLight {
+typedef struct DirectionalLight 
+{
 	float mDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
 	float mCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
 }DirectionalLight;
