@@ -2,11 +2,10 @@
 #extension GL_ARB_bindless_texture : require
 
 //Light properties
-layout(std140, binding = 1) uniform DirAmbientLights 
+layout(std140, binding = 1) uniform DirLight
 {
 	vec3 dirDir;
 	vec4 dirCol; //w is the intensity (0-5)
-	vec3 ambientCol;
 };
 layout (location = 1)uniform vec3 cPos;
 struct PointLight
@@ -47,11 +46,11 @@ struct Material
 	vec3 emissiveFactor;
 	sampler2D emissiveTex;
 };
-
 readonly layout(std430, binding = 11) buffer Materials 
 {
 	Material materials[];
 };
+
 struct Index
 {
 	uint matIdx;
@@ -111,8 +110,6 @@ vec3 GetAmbientLight()
 	vec2 fab = texture(environmentBRDF, vec2(dotNV, rough)).rg;
 	vec3 diffuse = (cDif * (1 - cSpec));
 	return diffuse * irradiance + radiance * (cSpec * fab.x + fab.y);
-	//return irradiance*(cDif*(1-cSpec));
-	//return vec3(0.0) * irradiance + radiance * (cSpec * fab.x + fab.y);
 }
 
 void main() 
@@ -138,12 +135,12 @@ void main()
 		rough *= metRough.g;
 	}
 	rough *= rough;
-	min(rough, 0.001f);
+	max(rough, 0.001f);
 	if (material.hasNormalMap)
 	{
 		N = normalize(norm);
 		vec3 T = normalize(tang.xyz); 
-		vec3 B = tang.w * cross(N, T);
+		vec3 B = normalize(tang.w * cross(N, T));
 		mat3 TBN = mat3(T,B,N);
 		N = normalize(texture(material.normalTex, uv).rgb * 2.0 - 1.0);
 		N = normalize(TBN * N);
@@ -165,7 +162,7 @@ void main()
 		vec3 mVector = sPos - pLights[i].pos.xyz;
 		float dist = length(mVector);
 		vec3 pDir = normalize(mVector);
-		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0),2) / (dist*dist + 1);
+		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0.0),2) / (dist*dist + 1);
 		pbrCol += GetPBRLightColor(pDir, pLights[i].col.rgb,  pLights[i].col.w, att);
 	}
 	

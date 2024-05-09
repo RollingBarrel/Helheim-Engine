@@ -8,6 +8,8 @@ class AnimationComponent;
 class AudioSourceComponent;
 class SliderComponent;
 class AudioSourceComponent;
+class ObjectPool;
+class GameManager;
 
 enum class PlayerState 
 {
@@ -68,6 +70,11 @@ class PlayerController :public Script
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
+        void Victory();
+        void GameoOver();
+        bool Delay(float delay);
+        void Loading();
+
         Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
@@ -77,6 +84,11 @@ class PlayerController :public Script
         NavMeshController* mNavMeshControl = nullptr;
         GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
+        GameObject* mBulletPoolHolder = nullptr;
+        ObjectPool* mBulletPool = nullptr;
+
+        GameManager* mGameManager = nullptr;
+        GameObject* mGameManagerGO = nullptr;
 
         //Stats
         float mPlayerSpeed = 2.0f;
@@ -107,7 +119,10 @@ class PlayerController :public Script
         float mRangeChargeAttackMultiplier = 5.0f;
         float mMinRangeChargeTime = 5.0f;
         float mMaxRangeChargeTime = 10.0f;
-         
+        GameObject* bullet = nullptr;
+
+        float startingTime = 0.0F;
+
         //Melee
         float mMeleeBaseDamage = 1.0f;
         float mMeleeChargeAttackMultiplier = 5.0f;
@@ -144,4 +159,11 @@ class PlayerController :public Script
         // Gunfire
         GameObject* mGunfireAudioHolder = nullptr;
         AudioSourceComponent* mGunfireAudio = nullptr;
+
+        //SCREENS
+        bool mVictory = false;
+        bool mGameOver = false;
+        bool mLoadingActive = false;
+        float mTimeScreen = 3.0f;
+        float mTimePassed = 0.0f;
 };

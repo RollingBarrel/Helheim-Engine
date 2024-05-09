@@ -250,7 +250,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     {
         bufferSize += sizeof(float) * 16;                                   // Size of the float array
         bufferSize += sizeof(unsigned int);                                 // Size of the string length
-        bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;                     // Size of the string characters
+        bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;       // Size of the string characters
     }
 
     if (rModel)

@@ -486,14 +486,16 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::POINTLIGHT:
 	{
-		const float3& pos = GetWorldPosition();
-		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
+		const float3 pos = GetWorldPosition();
+		const PointLight def = { pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f };
+		newComponent = new PointLightComponent(this, def);
 		break;
 	}
 	case ComponentType::SPOTLIGHT:
 	{
-		const float3& pos = GetWorldPosition();
-		newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
+		const float3 pos = GetWorldPosition();
+		const SpotLight def = { 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) };
+		newComponent = new SpotLightComponent(this, def);
 		break;
 	}
 	case ComponentType::SCRIPT:
@@ -644,14 +646,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 
 	for (Component* component : mComponents)
 	{
-		if (active)
-		{
-			component->Enable();
-		}
-		else
-		{
-			component->Disable();
-		}
+		component->SetEnable(active);
 	}
 
 
@@ -963,15 +958,6 @@ std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
 	return foundGameObjects;
 }
 
-GameObject* GameObject::FindGameObjectInTree(const int objectToFind)
-{
-	std::pair<GameObject*, int> pair(nullptr, -2);
-
-	GameObject* target = RecursiveTreeSearch(FindFirstParent(), pair, objectToFind).first;
-
-	return target;
-}
-
 std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind) {
 
 	if (currentGameObject.first == nullptr)
@@ -994,24 +980,17 @@ std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, s
 	return currentGameObject;
 }
 
-GameObject* GameObject::FindFirstParent() {
+const AnimationComponent* GameObject::FindAnimationComponent() {
 
-	GameObject* parent = GetParent();
-
-	if (parent->GetParent() == nullptr) {
-		return this;
+	const AnimationComponent* cAnim = reinterpret_cast<AnimationComponent*>(this->GetComponent(ComponentType::ANIMATION));
+	if (cAnim == nullptr && mParent != nullptr)
+	{
+		return mParent->FindAnimationComponent();
 	}
-	else {
-		return parent->FindFirstParent();
-	}
-}
+	else
+		return cAnim;
 
-float4x4 GameObject::TranformInFirstGameObjectSpace() {
-
-	GameObject* firstParent = FindFirstParent();
-	float4x4 transformInParentSpace = firstParent->GetWorldTransform().Inverted().Mul(this->GetWorldTransform());
-
-	return transformInParentSpace;
+	return nullptr;
 }
 
 std::vector<Component*> GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)

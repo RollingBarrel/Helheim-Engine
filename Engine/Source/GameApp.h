@@ -11,7 +11,6 @@ public:
 	bool Init();
 	update_status Update(float dt);
 	bool CleanUp();
-
 	ModuleGame* GetGame() { return game; }
 
 private:

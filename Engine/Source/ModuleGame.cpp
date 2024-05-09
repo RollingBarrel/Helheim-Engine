@@ -17,8 +17,8 @@ bool ModuleGame::Init()
 	glGenVertexArrays(1, &mVAO);
 
 	//TODO: read the name of the fitrst scene to load from somewhere
-	//App->GetScene()->Load("MainMenu");
-	App->GetScene()->Load("IBLTest.json");
+	App->GetScene()->Load("MainMenu");
+	//App->GetScene()->Load("Level1");
 	//TODO:: This is bad for decoupling
 	App->GetScriptManager()->StartScripts();
 	//TODO: Do better!!!!
@@ -33,6 +33,8 @@ bool ModuleGame::Init()
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	
+	App->GetWindow()->SetGameWindowsPosition({0,0});
+
 	//Camera
 	//Find camera on the scene and set !!!);
 	return true;
@@ -42,6 +44,9 @@ update_status ModuleGame::PreUpdate(float dt)
 {
 	int width = App->GetWindow()->GetWidth();
 	int height = App->GetWindow()->GetHeight();
+
+	App->GetWindow()->GameWindowsResized({ (float)width, (float)height });
+
 	if (width != mScreenPrevSizeX || height != mScreenPrevSizeY)
 	{
 		App->GetOpenGL()->SceneFramebufferResized(width, height);
@@ -53,6 +58,8 @@ update_status ModuleGame::PreUpdate(float dt)
 
 update_status ModuleGame::Update(float dt)
 {
+
+
 	glUseProgram(mGameProgramId);
 	glBindVertexArray(mVAO);
 	glActiveTexture(GL_TEXTURE0);

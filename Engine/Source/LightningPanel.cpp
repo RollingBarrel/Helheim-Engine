@@ -6,18 +6,17 @@
 #include <ImGuiFileDialog.h>
 
 
-LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, false) {}
+LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
 
 void LightningPanel::Draw(int windowFlags)
 {
 	ModuleOpenGL* openGl = EngineApp->GetOpenGL();
 
-	glUseProgram(EngineApp->GetOpenGL()->GetPBRProgramId());
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
 	if (ImGui::Button("Bake Ambient Light"))
 	{
-		App->GetOpenGL()->BakeIBL(mSkyboxFileName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
+		openGl->BakeIBL(mSkyboxFileName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
 	}
 
 	ImGui::Text(mSkyboxFileName.c_str());
@@ -26,16 +25,16 @@ void LightningPanel::Draw(int windowFlags)
 	{
 		IGFD::FileDialogConfig config;
 		config.path = "./Assets/Textures";
-		ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".hdr", config);
+		ImGuiFileDialog::Instance()->OpenDialog("Skybox", "Choose Skybox File", ".hdr", config);
 	}
 
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
-	if (ImGuiFileDialog::Instance()->Display("SaveScene"))
+	if (ImGuiFileDialog::Instance()->Display("Skybox"))
 	{
 		if (ImGuiFileDialog::Instance()->IsOk())
 		{
 			const std::string& filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			App->GetOpenGL()->BakeIBL(filePathName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
+			openGl->BakeIBL(filePathName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
 			mSkyboxFileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 			mSkyboxFilePath = filePathName;
 		}
@@ -49,22 +48,17 @@ void LightningPanel::Draw(int windowFlags)
 	
 
 	
-	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirAmb.mDirCol[3], 0.05f, 0.0f, 5.0f))
+	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirLight.mCol[3], 0.05f, 0.0f, 100.0f))
 	{
-		openGl->mDLightUniBuffer->UpdateData(&openGl->mDirAmb.mDirCol[3], sizeof(DirectionalAmbient::mDirCol[3]), offsetof(DirectionalAmbient, mDirCol[3]));
+		openGl->mDLightUniBuffer->UpdateData(&openGl->mDirLight.mCol[3], sizeof(DirectionalLight::mCol[3]), offsetof(DirectionalLight, mCol[3]));
 	}
-	if (ImGui::DragFloat3("DirLDir", openGl->mDirAmb.mDirDir, 0.05f, -1.0f, 1.0f))
+	if (ImGui::DragFloat3("DirLDir", openGl->mDirLight.mDir, 0.05f, -1.0f, 1.0f))
 	{ 
-		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mDirDir, sizeof(DirectionalAmbient::mDirDir), offsetof(DirectionalAmbient, mDirDir));
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirLight.mDir, sizeof(DirectionalLight::mDir), offsetof(DirectionalLight, mDir));
 	}
-	if (ImGui::ColorPicker3("DirLCol", openGl->mDirAmb.mDirCol))
+	if (ImGui::ColorPicker3("DirLCol", openGl->mDirLight.mCol))
 	{ 
-		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mDirCol, sizeof(DirectionalAmbient::mDirCol), offsetof(DirectionalAmbient, mDirCol));
-	}
-	if (ImGui::ColorPicker3("AmbientLCol", openGl->mDirAmb.mAmbientCol))
-	{ 
-		openGl->mDLightUniBuffer->UpdateData(openGl->mDirAmb.mAmbientCol, sizeof(DirectionalAmbient::mAmbientCol), offsetof(DirectionalAmbient, mAmbientCol));
+		openGl->mDLightUniBuffer->UpdateData(openGl->mDirLight.mCol, sizeof(DirectionalLight::mCol), offsetof(DirectionalLight, mCol));
 	}
 	ImGui::End();
-	glUseProgram(0);
 }

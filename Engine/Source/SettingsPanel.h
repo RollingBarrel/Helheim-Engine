@@ -23,8 +23,8 @@ public:
 	SettingsPanel();
 	~SettingsPanel();
 
-	void SaveCameraPosition();
-	void LoadCameraPosition();
+	void SaveUserSettings();
+	void LoadUserSettings();
 	void LoadProjectSettings();
 	void Draw(int windowFlags) override;
 private:
