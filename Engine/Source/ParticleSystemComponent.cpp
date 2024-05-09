@@ -46,7 +46,7 @@ ParticleSystemComponent::~ParticleSystemComponent()
         delete particle;
     }
     mParticles.clear();
-    mColorGradient.clear();
+    delete mColorGradient;
 }
 
 Component* ParticleSystemComponent::Clone(GameObject* owner) const
