@@ -99,6 +99,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Initialize scene framebuffer
@@ -121,12 +122,7 @@ bool ModuleOpenGL::Init()
 		return false;
 	}
 	unsigned int att = GL_COLOR_ATTACHMENT0;
-	glDrawBuffers(1, &att);
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glDrawBuffers(1, &att);;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
@@ -645,7 +641,6 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMipMaps);
-		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 		glUseProgram(mSpecPrefilteredProgramId);
 		glUniform1ui(5, specWidth);
