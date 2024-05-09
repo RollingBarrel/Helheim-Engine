@@ -255,6 +255,26 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 	{
         mUniqueMaterials.emplace_back(&resourceMaterial);
 		matIdx = mUniqueMaterials.size() - 1;
+		if (resourceMaterial.GetBaseColorTexture())
+		{
+			const_cast<ResourceTexture*>(resourceMaterial.GetBaseColorTexture())->GenerateMipmaps();
+			const_cast<ResourceTexture*>(resourceMaterial.GetBaseColorTexture())->MakeTextutureBindless();
+		}
+		if (resourceMaterial.GetEmissiveTexture())
+		{
+			const_cast<ResourceTexture*>(resourceMaterial.GetEmissiveTexture())->GenerateMipmaps();
+			const_cast<ResourceTexture*>(resourceMaterial.GetEmissiveTexture())->MakeTextutureBindless();
+		}
+		if (resourceMaterial.GetMetallicRoughnessTexture())
+		{
+			const_cast<ResourceTexture*>(resourceMaterial.GetMetallicRoughnessTexture())->GenerateMipmaps();
+			const_cast<ResourceTexture*>(resourceMaterial.GetMetallicRoughnessTexture())->MakeTextutureBindless();
+		}
+		if (resourceMaterial.GetNormalTexture())
+		{
+			const_cast<ResourceTexture*>(resourceMaterial.GetNormalTexture())->GenerateMipmaps();
+			const_cast<ResourceTexture*>(resourceMaterial.GetNormalTexture())->MakeTextutureBindless();
+		}
 		mMaterialFlag = true;  
 	}
 
