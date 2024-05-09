@@ -380,7 +380,8 @@ void ModuleScene::ClosePrefabScreen()
 
 GameObject* ModuleScene::Find(const char* name) const
 {
-	for (GameObject* go : mSceneGO) {
+	for (GameObject* go : mSceneGO) 
+	{
 		if (go->GetName() == name) return go;
 	}
 	
@@ -390,7 +391,8 @@ GameObject* ModuleScene::Find(const char* name) const
 
 GameObject* ModuleScene::Find(unsigned int UID) const
 {
-	for (GameObject* go : mSceneGO) {
+	for (GameObject* go : mSceneGO) 
+	{
 		if (go->GetID() == UID) return go;
 	}
 

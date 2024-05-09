@@ -37,14 +37,17 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 		mFill->AddComponent(mFillTransform2D, this);
 		mFill->AddComponent(mFillImage, this);
 	}
-	else {
+	else 
+	{
 		std::vector childrens = GetOwner()->GetChildren();
 		for (GameObject* child : childrens)
 		{
-			if (child->GetName() == "Fill") {
+			if (child->GetName() == "Fill") 
+			{
 				mFill = child;
 			}
-			else if (child->GetName() == "Background"){
+			else if (child->GetName() == "Background")
+			{
 				mBackground = child;
 			}
 		}
