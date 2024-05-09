@@ -244,17 +244,23 @@ void GeometryBatch::AddHighLight(std::vector<Component*> meshRendererComponents)
 
 void GeometryBatch::RemoveHighLight(std::vector<Component*> meshRendererComponents)
 {
-	for (std::vector<BatchMeshRendererComponent>::iterator it = mHighLightMeshComponents.begin(); it != mHighLightMeshComponents.end() ; ++it)
+	for (Component* meshComponent : meshRendererComponents)
 	{
-		for (Component* meshComponent : meshRendererComponents)
+		for (std::vector<BatchMeshRendererComponent>::iterator it = mHighLightMeshComponents.begin(); it != mHighLightMeshComponents.end(); ++it)
 		{
 			if (it->component->GetID() == meshComponent->GetID())
 			{
 				mHighLightMeshComponents.erase(it);
+				break;
 			}
+			
 		}
 	}
+	
 }
+
+
+
 
 void GeometryBatch::AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx)
 {
@@ -326,16 +332,17 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 		{
 			bMeshIdx = it->bMeshIdx;
 			bMaterialIdx = it->bMaterialIdx;
-			mMeshComponents.erase(it);
+			
 
 			for (std::vector<BatchMeshRendererComponent>::iterator highLightMesh = mHighLightMeshComponents.begin(); highLightMesh != mHighLightMeshComponents.end(); ++highLightMesh)
 			{
 				if (highLightMesh->component->GetID() == it->component->GetID())
 				{
 					mHighLightMeshComponents.erase(highLightMesh);
+					break;
 				}
 			}
-
+			mMeshComponents.erase(it);
 			found = true;
 			break;
 		}
