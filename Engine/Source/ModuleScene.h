@@ -74,7 +74,7 @@ public:
 	void DeleteTag(Tag* tag);
 
 	// Prefabs
-	int SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
+	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
 	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, float3 position = float3::zero);
 	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, float3 position) { LoadPrefab(saveFilePath, resourceId, false, position); }
 	void OpenPrefabScreen(const char* saveFilePath);

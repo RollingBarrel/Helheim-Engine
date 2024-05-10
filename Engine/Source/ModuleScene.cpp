@@ -376,9 +376,9 @@ void ModuleScene::Load(const char* sceneName)
 
 #pragma region Prefabs
 
-int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const
+int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
-	//TODO: separate game engine
+	GameObject* gameObject = new GameObject(objectToSave); //Make a copy to change IDs
 	unsigned int resourceId = LCG().Int();
 	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
 	if (resource != nullptr) { resourceId = resource->GetUID(); }
@@ -386,9 +386,7 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
 	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
-	//SaveGame(gameObject->GetChildren(), *archive);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
-	archive->AddInt("Parent", gameObject->GetID());
 	prefabArchive->AddObject("Prefab", *archive);
 
 	std::string out = prefabArchive->Serialize();
@@ -398,6 +396,7 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	App->GetFileSystem()->DiscoverFiles("Assets", root);
 	delete prefabArchive;
 	delete archive;
+	gameObject->GetParent()->DeleteChild(gameObject);
 	return resourceId;
 }
 
@@ -420,11 +419,6 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 		if (update) { mRoot->LoadChangesPrefab(sceneValue, resourceId); }
 		else
 		{
-			int parentId{ 0 };
-			if (sceneValue.HasMember("Parent") && sceneValue["Parent"].IsInt())
-			{
-				parentId = sceneValue["Parent"].GetInt();
-			}
 			// Manage GameObjects inside the Scene
 			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
 			{
@@ -435,17 +429,10 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 					if (gameObjects[i].IsObject())
 					{
 						mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], temp));
+						mSceneGO.back()->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
 
-				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-				{
-					// Manage Components
-					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
-					{
-						mSceneGO[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-					}
-				}
 				for (GameObject* child : temp->GetChildren())
 				{
 					GameObject* newObject = new GameObject(*child, mRoot);
