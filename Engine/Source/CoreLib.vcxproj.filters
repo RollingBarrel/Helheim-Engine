@@ -445,9 +445,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="AnimationStateMachine.cpp" />
-    <ClCompile Include="AnimationClip.cpp" />
-    <ClCompile Include="AnimationState.cpp" />
-    <ClCompile Include="AnimationTransition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1060,9 +1057,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="AnimationStateMachine.h" />
-    <ClInclude Include="AnimationClip.h" />
-    <ClInclude Include="AnimationState.h" />
-    <ClInclude Include="AnimationTransition.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">

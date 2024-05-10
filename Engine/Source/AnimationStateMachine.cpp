@@ -1,12 +1,11 @@
 #include "AnimationStateMachine.h"
-#include "AnimationState.h"
-#include "AnimationClip.h"
+
 #include "ResourceAnimation.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleResource.h"
 #include "AnimationController.h"
-#include "AnimationTransition.h"
+
 
 
 

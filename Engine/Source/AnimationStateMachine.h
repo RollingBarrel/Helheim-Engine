@@ -2,11 +2,50 @@
 #include <vector>
 #include <string>
 
-class AnimationState;
-class ResourceAnimation;
-class GameObject;
-class AnimationTransition;
-class AnimationClip;
+struct AnimationClip
+{
+public:
+	AnimationClip(unsigned int animationUID) {
+
+		mName = std::to_string(animationUID);
+		mAnimationUID = animationUID;
+
+	};
+
+	std::string mName;
+	unsigned int mAnimationUID;
+	bool loop = true;
+
+};
+
+struct AnimationState
+{
+public:
+	AnimationState(std::string clipName, std::string name) {
+		mName = name;
+		mClip = clipName;
+		mStartTime = 0.0;
+	};
+
+	std::string mName;
+	std::string mClip;
+	float mStartTime, mEndTime;
+	bool mLoop;
+
+};
+
+struct AnimationTransition
+{
+public:
+	AnimationTransition(std::string sourceName, std::string targetName, std::string trigger) {
+		mSource = sourceName;
+		mTarget = targetName;
+		mTrigger = trigger;
+	};
+	std::string mTrigger;
+	std::string mSource;
+	std::string mTarget;
+};
 
 class AnimationStateMachine
 {
@@ -46,7 +85,7 @@ public:
 	std::string& GetTransitionTrigger(int index);
 	std::string& GetTransitionSource(int index); 
 	std::string& GeTransitionTarget(int index);
-	int GetnNumTransitions() const{ return mTransitions.size(); };
+	unsigned int GetnNumTransitions() { return mTransitions.size();};
 
 private:
 
