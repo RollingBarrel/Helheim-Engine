@@ -13,7 +13,7 @@
 #include "Globals.h"
 
 AnimationController::AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop) {
-	mAnimation = animation;
+	mCurrentAnimation = animation;
 	mResource = resource;
 	mLoop = loop;
 
@@ -31,7 +31,22 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 void AnimationController::Update(GameObject* model)
 {
 	mCurrentTime += App->GetDt() * mSpeed;
-	GetTransform(model);
+	//LOG("%f", mCurrentTime);
+	if (!mTransition) {
+		GetTransform(model);
+	}
+	else 
+	{
+		mCurrentTransitionTime += App->GetDt();
+
+		if (mNextAnimation == nullptr) {
+			GetTransform_BlendingClips(model);
+		}
+		else {
+			GetTransform_BlendingAnimations(model);
+		}
+	}
+	
 }
 
 void AnimationController::Restart()
@@ -76,7 +91,7 @@ void AnimationController::SetStartTime(float time)
 
 void AnimationController::SetEndTime(float time)
 {
-	float end = std::min(time, mAnimation->GetDuration());
+	float end = std::min(time, mCurrentAnimation->GetDuration());
 	mEndTime = std::max(end, mStartTime);
 
 }
@@ -86,12 +101,12 @@ void AnimationController::GetTransform(GameObject* model)
 	//Checks and gets the channel we want
 	std::string name = model->GetName();
 	//LOG("%s", name.c_str());
-	ResourceAnimation::AnimationChannel* newChannel = mAnimation->GetChannel(name);
+	ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
 
 	if (newChannel != nullptr)
 	{
 
-		ResourceAnimation::AnimationChannel* channel = mAnimation->GetChannels().find(model->GetName())->second;
+		ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
 		if (channel == nullptr)
 		{
 			return;
@@ -174,4 +189,194 @@ void AnimationController::GetTransform(GameObject* model)
 	{
 		GetTransform(child);
 	}
+}
+
+void AnimationController::GetTransform_BlendingClips(GameObject* model)
+{
+	float weight = mSpeed * mCurrentTransitionTime / mTransitionDuration;
+	if (weight < 1)
+	{
+		std::string name = model->GetName();
+		ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
+
+		if (newChannel != nullptr)
+		{
+
+			ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
+			if (channel == nullptr)
+			{
+				return;
+			}
+
+			static float lambda;
+			static int keyIndex;
+
+			static float newClipIndex;
+
+			if (channel->hasTranslation)
+			{
+				std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
+				auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mStartTransitionTime);
+
+				if (upperBoundIterator != posTimeStampsVector.end())
+				{
+					keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
+
+					lambda = (mStartTransitionTime - channel->posTimeStamps[keyIndex - 1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex - 1]);
+				}
+				else
+				{
+					keyIndex = channel->numPositions - 1;
+					lambda = 1;
+				}
+
+				upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mClipStartTime);
+
+				if (upperBoundIterator != posTimeStampsVector.end())
+				{
+					newClipIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
+				}
+				else
+				{
+					newClipIndex = channel->numPositions - 1;
+				}
+
+				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
+			}
+			if (channel->hasRotation)
+			{
+				std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+				auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mStartTransitionTime);
+
+				if (upperBoundIterator != rotTimeStampsVector.end())
+				{
+					keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+
+					lambda = (mStartTransitionTime - channel->rotTimeStamps[keyIndex - 1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex - 1]);
+				}
+				else
+				{
+					keyIndex = channel->numRotations - 1;
+					lambda = 1;
+				}
+
+				upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mClipStartTime);
+
+				if (upperBoundIterator != rotTimeStampsVector.end())
+				{
+					newClipIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+				}
+				else
+				{
+					newClipIndex = channel->numPositions - 1;
+				}
+
+				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
+			}
+			//else if (name == "scale") {
+			//}
+			else { return; }
+
+			model->RecalculateMatrices();
+		}
+		for (const auto& child : model->GetChildren())
+		{
+			GetTransform_BlendingClips(child);
+		}
+	}
+	else 
+	{
+		mTransition = false;
+		mCurrentTime = mClipStartTime;
+		mCurrentTransitionTime = 0.0f;
+	}
+}
+
+void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
+{
+	float weight = mSpeed * mCurrentTransitionTime / mTransitionDuration;
+	if (weight < 1)
+	{
+		//Checks and gets the channel we want
+		std::string name = model->GetName();
+		//LOG("%s", name.c_str());
+		ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
+		ResourceAnimation::AnimationChannel* newNextChannel = mNextAnimation->GetChannel(name);
+
+		if (newChannel != nullptr && newNextChannel != nullptr)
+		{
+
+			ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
+			ResourceAnimation::AnimationChannel* nextChannel = mNextAnimation->GetChannels().find(model->GetName())->second;
+			if (channel == nullptr || nextChannel == nullptr)
+			{
+				return;
+			}
+
+			static float lambda;
+			static int keyIndex;
+
+			static float newClipIndex;
+
+			if (channel->hasTranslation)
+			{
+				std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
+				auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mStartTransitionTime);
+
+				if (upperBoundIterator != posTimeStampsVector.end())
+				{
+					keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
+
+					lambda = (mStartTransitionTime - channel->posTimeStamps[keyIndex - 1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex - 1]);
+				}
+				else
+				{
+					keyIndex = channel->numPositions - 1;
+					lambda = 1;
+				}
+
+				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), nextChannel->positions[0], weight));
+			}
+			if (channel->hasRotation)
+			{
+				std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+				auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mStartTransitionTime);
+
+				if (upperBoundIterator != rotTimeStampsVector.end())
+				{
+					keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+
+					lambda = (mStartTransitionTime - channel->rotTimeStamps[keyIndex - 1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex - 1]);
+				}
+				else
+				{
+					keyIndex = channel->numRotations - 1;
+					lambda = 1;
+				}
+
+				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), nextChannel->rotations[0], weight));
+			}
+			//else if (name == "scale") {
+			//}
+			else { return; }
+
+			model->RecalculateMatrices();
+		}
+		for (const auto& child : model->GetChildren())
+		{
+			GetTransform_BlendingClips(child);
+		}
+	}
+	else
+	{
+		mTransition = false;
+		mCurrentTime = 0.0f;
+		mCurrentTransitionTime = 0.0f;
+
+		//Change the animations once the transition is done
+		mCurrentAnimation = mNextAnimation;
+		mNextAnimation = nullptr;
+	}
+
+
 }

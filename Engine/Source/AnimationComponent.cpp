@@ -235,6 +235,27 @@ void AnimationComponent::UpdatePalette()
 
 }
 
+//The animation Resource is changed immediatlly in the component but
+//is passed in the controller as mNextAnimation until the transition is done
+void AnimationComponent::ChangeAnimation(ResourceAnimation* animation)
+{
+	mAnimation = animation;
+	mController->SetNextAnimation(animation);
+	//Current clip doesn't make sense in this context so its value is not important
+	//But it has to be 0 so ImGui::Combo() doesn't crash
+	mCurrentClip = 0;
+	SetStartTime(0);
+	SetEndTime(mAnimation->GetDuration());
+}
+
+void AnimationComponent::StartTransition(float transitionDuration)
+{
+	//mController->SetStartTransitionTime();
+	mController->SetTransitionDuration(transitionDuration);
+	mController->ActivateTransition();
+	mController->SetClipStartTime(GetCurrentStartTime());
+}
+
 Component* AnimationComponent::Clone(GameObject* owner) const
 {
 	return new AnimationComponent(*this, owner);

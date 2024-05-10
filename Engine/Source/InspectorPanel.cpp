@@ -898,7 +898,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
 	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
 
-	bool loop = true;
+	bool loop = component->GetLoop();
 	//bool play = false;
 
 	if (ImGui::Button("Play/Pause"))
@@ -931,8 +931,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		component->OnRestart();
 	}
 
-	//component->SetIsPlaying(play);
-
 	if (ImGui::Button("Restart"))
 	{
 		component->OnRestart();
@@ -949,11 +947,21 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	}
 
 	int currentItem = component->GetCurrentClip();
+	float transitionDuration = component->GetAnimationController()->GetTransitionDuration();
 
-	if (ImGui::Combo("Select Animation State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
+	if (ImGui::Combo("Select State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
+		component->GetAnimationController()->SetStartTransitionTime();
 		component->SetCurrentClip(currentItem);
+		component->StartTransition(transitionDuration);
 	}
+	if (ImGui::Button("Restart Clip")) 
+	{
+		component->GetAnimationController()->SetStartTransitionTime();
+		component->SetCurrentClip(currentItem);
+		component->StartTransition(transitionDuration);
+	}
+
 	float maxTimeValue = component->GetAnimation()->GetDuration();
 	float currentStartTime = component->GetCurrentStartTime();
 	float currentEndTime = component->GetCurrentEndTime();
@@ -965,6 +973,19 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1, 0.0, maxTimeValue))
 	{
 		component->SetEndTime(currentEndTime);
+	}
+	if (ImGui::DragFloat("Transition duration", &transitionDuration, 0.02, 0.1, 10.0)) {
+		component->GetAnimationController()->SetTransitionDuration(transitionDuration);
+	}
+
+	ImGui::Text("TEMPORARY: Change animation resource");
+	ImGui::Text("(it changes into the same resource for now)");
+
+	if (ImGui::Button("Change/ Play whole animation")) {
+		component->GetAnimationController()->SetStartTransitionTime();
+		component->ChangeAnimation(component->GetAnimation());
+		component->StartTransition(transitionDuration);
+
 	}
 }
 
