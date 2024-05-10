@@ -80,10 +80,13 @@ public:
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type) const;
 	std::vector<Component*> GetComponents(ComponentType type) const;
+	std::vector<Component*> GetComponentsInChildren(ComponentType type) const;
 	Component* GetComponentInParent(ComponentType type) const;
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
+	GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
+	void LoadComponentsFromJSON(const rapidjson::Value& components);
 	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
 	void SetPrefabId(unsigned int id) { mPrefabResourceId = id; }
 	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }
@@ -92,9 +95,7 @@ public:
 	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 	const bool HasUpdatedTransform() const;
 
-	GameObject* FindGameObjectInTree(const int objectToFind);
-	GameObject* FindFirstParent();
-	float4x4 TranformInFirstGameObjectSpace();
+	const AnimationComponent* FindAnimationComponent();
 	std::vector<Component*> FindComponentsInChildren(GameObject* parent, const ComponentType type);
 	void AddComponent(Component* component, Component* position);
 	void SetName(const char* name) { mName = name; };

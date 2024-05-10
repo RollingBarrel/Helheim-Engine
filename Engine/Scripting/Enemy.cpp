@@ -13,7 +13,7 @@ void Enemy::Start()
     mNavMeshControl = App->GetScene()->GetNavController();
 
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag(scene->GetRoot(), scene->GetTagByName("Player")->GetID());
+    mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
     mHealth = mMaxHealth;
     
     
