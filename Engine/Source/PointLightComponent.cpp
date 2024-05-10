@@ -10,6 +10,7 @@ PointLightComponent::PointLightComponent(GameObject* owner, const PointLight& li
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
+	App->GetOpenGL()->AddPointLight(*this);
 }
 
 PointLightComponent::~PointLightComponent() { App->GetOpenGL()->RemovePointLight(*this); }
@@ -37,13 +38,13 @@ void PointLightComponent::SetColor(float col[3])
 
 void PointLightComponent::SetIntensity(float intensity)
 {
-	mData.col[3] = intensity;
+	mData.intensity = intensity;
 	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::SetRadius(float radius)
 {
-	mData.pos[3] = radius;
+	mData.radius = radius;
 	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
@@ -67,7 +68,7 @@ void PointLightComponent::Update()
 
 inline Component* PointLightComponent::Clone(GameObject* owner) const 
 {
-	return App->GetOpenGL()->AddPointLight(mData, owner);
+	return new PointLightComponent(owner, mData);
 }
 
 void PointLightComponent::Save(Archive& archive) const {
@@ -102,17 +103,14 @@ void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Ga
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
-	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::Enable()
 {
-	//App->GetOpenGL()->AddPointLight(mData, mOwner);
-	//mIsEnabled = true;
+	App->GetOpenGL()->AddPointLight(*this);
 }
 
 void PointLightComponent::Disable()
 {
-	//App->GetOpenGL()->RemovePointLight(*this);
-	//mIsEnabled = false;
+	App->GetOpenGL()->RemovePointLight(*this);
 }

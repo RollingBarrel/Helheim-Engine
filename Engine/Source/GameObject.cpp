@@ -125,6 +125,30 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 	return matchingComponents;
 }
 
+std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) const
+{
+	std::vector<Component*> componentVector;
+
+	Component* gameObjectComponent = GetComponent(type);
+
+	if (gameObjectComponent)
+	{
+		componentVector.push_back(gameObjectComponent);
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		std::vector<Component*> childComponents = child->GetComponentsInChildren(type);
+		if (!childComponents.empty())
+		{
+			componentVector.insert(componentVector.end(), childComponents.begin(), childComponents.end());
+		}
+		
+	}
+
+	return componentVector;
+}
+
 Component* GameObject::GetComponentInParent(ComponentType type) const
 {
 	Component* component = nullptr;
@@ -483,14 +507,16 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::POINTLIGHT:
 	{
-		const float3& pos = GetWorldPosition();
-		newComponent = App->GetOpenGL()->AddPointLight({ pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f }, this);
+		const float3 pos = GetWorldPosition();
+		const PointLight def = { pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f };
+		newComponent = new PointLightComponent(this, def);
 		break;
 	}
 	case ComponentType::SPOTLIGHT:
 	{
-		const float3& pos = GetWorldPosition();
-		newComponent = App->GetOpenGL()->AddSpotLight({ 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) }, this);
+		const float3 pos = GetWorldPosition();
+		const SpotLight def = { 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) };
+		newComponent = new SpotLightComponent(this, def);
 		break;
 	}
 	case ComponentType::SCRIPT:
@@ -640,14 +666,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 
 	for (Component* component : mComponents)
 	{
-		if (active)
-		{
-			component->Enable();
-		}
-		else
-		{
-			component->Disable();
-		}
+		component->SetEnable(active);
 	}
 
 

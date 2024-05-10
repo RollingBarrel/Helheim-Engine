@@ -40,6 +40,8 @@ bool Quadtree::AddObject(GameObject* object)
 {
 	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
 	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
+	if (meshRenderer == nullptr)
+		return false;
 	AABB objectAABB = meshRenderer->GetAABB();
 		
 
