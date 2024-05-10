@@ -336,6 +336,8 @@ void ModuleScene::Load(const char* sceneName)
 				mRoot->SetName(sceneValue["Name"].GetString());
 			}
 
+			mSceneGO.clear();
+
 			// Manage GameObjects inside the Scene
 			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
 			{
