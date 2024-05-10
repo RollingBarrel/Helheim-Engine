@@ -2,6 +2,7 @@
 #define _MODULE_SCENE_H_
 
 #include "Module.h"
+#include "Math/float3.h"
 #include <vector>
 #include <string>
 
@@ -74,7 +75,8 @@ public:
 
 	// Prefabs
 	int SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
-	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false);
+	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, float3 position = float3::zero);
+	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, float3 position) { LoadPrefab(saveFilePath, resourceId, false, position); }
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }

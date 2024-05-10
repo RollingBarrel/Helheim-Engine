@@ -346,7 +346,7 @@ void ModuleScene::Load(const char* sceneName)
 				{
 					if (gameObjects[i].IsObject())
 					{
-						mSceneGO.push_back(mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot));
+						mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], mRoot));
 					}
 				}
 
@@ -388,6 +388,7 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
 	//SaveGame(gameObject->GetChildren(), *archive);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	archive->AddInt("Parent", gameObject->GetID());
 	prefabArchive->AddObject("Prefab", *archive);
 
 	std::string out = prefabArchive->Serialize();
@@ -400,7 +401,7 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	return resourceId;
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)
+void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, float3 position)
 {
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
@@ -415,20 +416,48 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
 	{
-		const rapidjson::Value& s = d["Prefab"];
-		if (update) { mRoot->LoadChangesPrefab(s, resourceId); }
+		const rapidjson::Value& sceneValue = d["Prefab"];
+		if (update) { mRoot->LoadChangesPrefab(sceneValue, resourceId); }
 		else
 		{
-			GameObject* temp = new GameObject("Temp", mRoot);
-			temp->Load(s);
-			for (GameObject* child : temp->GetChildren()) 
-			{				
-				GameObject* newObject = new GameObject(*child, mRoot);
-				mRoot->AddChild(newObject);
-				newObject->ResetTransform();
-				newObject->SetPrefabId(resourceId);
+			int parentId{ 0 };
+			if (sceneValue.HasMember("Parent") && sceneValue["Parent"].IsInt())
+			{
+				parentId = sceneValue["Parent"].GetInt();
 			}
-			mRoot->DeleteChild(temp);
+			// Manage GameObjects inside the Scene
+			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
+			{
+				const rapidjson::Value& gameObjects = sceneValue["GameObjects"];
+				GameObject* temp = new GameObject("Temp", mRoot);
+				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+				{
+					if (gameObjects[i].IsObject())
+					{
+						mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], temp));
+					}
+				}
+
+				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+				{
+					// Manage Components
+					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
+					{
+						mSceneGO[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+					}
+				}
+				for (GameObject* child : temp->GetChildren())
+				{
+					GameObject* newObject = new GameObject(*child, mRoot);
+					mRoot->AddChild(newObject);
+					newObject->ResetTransform();
+					newObject->SetPosition(position);
+					newObject->SetPrefabId(resourceId);
+				}
+				mRoot->DeleteChild(temp);
+				
+			}
+
 		}
 	}
 

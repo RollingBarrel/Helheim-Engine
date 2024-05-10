@@ -755,7 +755,6 @@ void GameObject::LoadComponentsFromJSON(const rapidjson::Value& components)
 }
 
 GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent)
-void LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* scene) 
 {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
