@@ -15,7 +15,6 @@ Particle::Particle(float3 position, float3 direction, float4 color, float rotati
 
 Particle::~Particle()
 {
-    //delete mColorGradient;
 }
 
 float Particle::Update(float DeltaTime)
@@ -23,5 +22,5 @@ float Particle::Update(float DeltaTime)
     mLifeTime += DeltaTime;
     float dt01 = mLifeTime / mMaxLifeTime;
     mPosition = mPosition + mDirection * mSpeed * DeltaTime;
-    return true;
+    return dt01;
 }

@@ -29,7 +29,6 @@ public:
     void SetColor(float4 color) { mColor = color; }
 
     void SetLifetime(float lifetime) { mLifeTime = lifetime; }
-    void SetMaxLifetime(float maxLifetime) { mMaxLifeTime = maxLifetime; }
 
 private:
     float3 mPosition; // Relativa al emisor de particulas
@@ -43,5 +42,5 @@ private:
 
 
     float mLifeTime = 0.0f;
-    float mMaxLifeTime = 3.0f;
+    const float mMaxLifeTime = 3.0f;
 };
