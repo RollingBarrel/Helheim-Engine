@@ -9,8 +9,6 @@
 #include "Resource.h"
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
-#include<algorithm>
-#include <optick.h>
 
 #define MATRICES_LOCATION 2
 #define COLOR_LOCATION 1
