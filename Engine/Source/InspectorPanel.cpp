@@ -1271,10 +1271,10 @@ float4 ImColorToFloat4(const float* color)
 ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
 	ImGradient result;
 
-	const std::list<ColorGradientMark*>& marks = gradient->GetColorMarks();
+	const std::unordered_map<float, float4>& marks = gradient->GetColorMarks();
 
 	for (const auto& mark : marks) {
-		result.addMark(mark->position, Float4ToImColor(mark->color));
+		result.addMark(mark.first, Float4ToImColor(mark.second));
 	}
 
 	return result;
@@ -1287,10 +1287,10 @@ inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERAN
 	return std::fabs(a - b) < tolerance;
 }
 
-bool areMarksEquivalent(const ImGradientMark* a, const ColorGradientMark* b) {
-	if (approximatelyEqual(a->position, b->position)) {
+bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
+	if (approximatelyEqual(a->position, b.first)) {
 		for (int i = 0; i < 4; ++i) {
-			if (!approximatelyEqual(a->color[i], b->color[i])) {
+			if (!approximatelyEqual(a->color[i], b.second[i])) {
 				return false;
 			}
 		}
@@ -1299,10 +1299,8 @@ bool areMarksEquivalent(const ImGradientMark* a, const ColorGradientMark* b) {
 	return false;
 }
 
-std::list<ColorGradientMark> findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+static void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
 {
-	std::list<ColorGradientMark> removedMarks;
-
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
 	auto marks = gradient->GetColorMarks();
 
@@ -1317,17 +1315,13 @@ std::list<ColorGradientMark> findRemovedMarks(const ImGradient& editedGradient, 
 
 		if (it == marksEdited.end()) 
 		{
-			gradient->RemoveColorGradientMark(mark);
+			gradient->RemoveColorGradientMark(mark.first);
 		}
 	}
-
-	return removedMarks;
 }
 
-std::list<ColorGradientMark> findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
 {
-	std::list<ColorGradientMark> addedMarks;
-
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
 	auto marks = gradient->GetColorMarks();
 
@@ -1335,7 +1329,7 @@ std::list<ColorGradientMark> findAddedMarks(const ImGradient& editedGradient, Co
 	for (const auto& markEdit : marksEdited) {
 		auto it = std::find_if(
 			marks.begin(), marks.end(),
-			[&](const ColorGradientMark* mark) {
+			[&](const auto* mark) {
 				return areMarksEquivalent(markEdit, mark);
 			}
 		);
@@ -1345,8 +1339,6 @@ std::list<ColorGradientMark> findAddedMarks(const ImGradient& editedGradient, Co
 			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
 		}
 	}
-
-	return addedMarks;
 }
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 

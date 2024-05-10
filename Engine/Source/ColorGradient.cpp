@@ -6,24 +6,17 @@ ColorGradient::ColorGradient()
 
 ColorGradient::~ColorGradient()
 {
-	for (auto mark : mColorMarks) {
-		delete mark;
-	}
-
 	mColorMarks.clear();
 }
 
 void ColorGradient::AddColorGradientMark(float position, const float4& color)
 {
-	ColorGradientMark* mark = new ColorGradientMark();
-	mark->position = position;
-	mark->color = color;
-	mColorMarks.push_back(mark);
+    mColorMarks[position] = color;
 }
 
-void ColorGradient::RemoveColorGradientMark(ColorGradientMark* mark)
+void ColorGradient::RemoveColorGradientMark(float position)
 {
-    mColorMarks.remove(mark);
+    mColorMarks.erase(position);
 }
 
 template<typename T> static inline T MyClamp(T v, T mn, T mx) { return (v < mn) ? mn : (v > mx) ? mx : v; }
@@ -34,55 +27,29 @@ float4 ColorGradient::CalculateColor(float position) const
 
     position = (position < 0) ? 0 : (position > 1) ? 1 : position;
 
-    ColorGradientMark* lower = nullptr;
-    ColorGradientMark* upper = nullptr;
+    auto lower = mColorMarks.lower_bound(position);
+    auto upper = mColorMarks.upper_bound(position);
 
-    for (ColorGradientMark* mark : mColorMarks)
+    if (upper == mColorMarks.end() && lower == mColorMarks.end())
     {
-        if (mark->position < position)
-        {
-            if (!lower || lower->position < mark->position)
-            {
-                lower = mark;
-            }
-        }
-
-        if (mark->position >= position)
-        {
-            if (!upper || upper->position > mark->position)
-            {
-                upper = mark;
-            }
-        }
+        return color;
     }
-
-    if (upper && !lower)
+    else if (upper == mColorMarks.end())
     {
-        lower = upper;
+        return lower->second;
     }
-    else if (!upper && lower)
+    else if (lower == mColorMarks.end())
     {
-        upper = lower;
-    }
-    else if (!lower && !upper)
-    {
-        return float4(0.0f, 0.0f, 0.0f, 1.0f);
-    }
-
-    if (upper == lower)
-    {
-        color.x = upper->color.x;
-        color.y = upper->color.y;
-        color.z = upper->color.z;
+        return upper->second;
     }
     else
     {
-        float distance = upper->position - lower->position;
-        float delta = (position - lower->position) / distance;
+        float distance = upper->first - lower->first;
+        float delta = (position - lower->first) / distance;
 
-        color.x = ((1.0f - delta) * lower->color.x) + ((delta)*upper->color.x);
-        color.y = ((1.0f - delta) * lower->color.y) + ((delta)*upper->color.y);
-        color.z = ((1.0f - delta) * lower->color.z) + ((delta)*upper->color.z);
+        color.x = ((1.0f - delta) * lower->second.x) + ((delta)*upper->second.x);
+        color.y = ((1.0f - delta) * lower->second.y) + ((delta)*upper->second.y);
+        color.z = ((1.0f - delta) * lower->second.z) + ((delta)*upper->second.z);
     }
     return color;
 }
@@ -91,8 +58,8 @@ void ColorGradient::Save(Archive& archive) const {
     std::vector<Archive> objectArray;
 
     for (const auto& mark : mColorMarks) {
-        float time = mark->position;
-        float4 color = mark->color;
+        float time = mark.first;
+        float4 color = mark.second;
         Archive colorArchive;
         colorArchive.AddFloat("Time", time);
 
@@ -110,9 +77,6 @@ void ColorGradient::LoadFromJSON(const rapidjson::Value& data) {
     const auto& colorArray = data["Color Gradient"].GetArray();
 
     // Clear existing marks before loading new ones
-    for (auto mark : mColorMarks) {
-        delete mark;
-    }
     mColorMarks.clear();
 
     // Iterate over the JSON array
@@ -135,9 +99,6 @@ void ColorGradient::LoadFromJSON(const rapidjson::Value& data) {
         }
 
         // Create a new ColorGradientMark and add it to the list
-        ColorGradientMark* newMark = new ColorGradientMark();
-        newMark->position = time;
-        newMark->color = float4(colorVec);
-        mColorMarks.push_back(newMark);
+        mColorMarks[time] = float4(colorVec);
     }
 }
