@@ -325,6 +325,7 @@ void ModuleScene::Load(const char* sceneName)
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
 		delete mRoot;
+		mSceneGO.clear();
 		mRoot = new GameObject("SampleScene", nullptr);
 
 
@@ -336,7 +337,6 @@ void ModuleScene::Load(const char* sceneName)
 				mRoot->SetName(sceneValue["Name"].GetString());
 			}
 
-			mSceneGO.clear();
 
 			// Manage GameObjects inside the Scene
 			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
@@ -346,7 +346,7 @@ void ModuleScene::Load(const char* sceneName)
 				{
 					if (gameObjects[i].IsObject())
 					{
-						mSceneGO.push_back(mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot));
+						mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot);
 					}
 				}
 
@@ -472,6 +472,31 @@ GameObject* ModuleScene::Find(unsigned int UID) const
 
 	return nullptr;
 }
+
+void ModuleScene::AddGameObjectToScene(GameObject* gameObject) 
+{
+	mSceneGO.push_back(gameObject);
+}
+
+void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObjet) 
+{
+	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
+		[gameObjet](const auto& obj) { return obj->GetID() == gameObjet->GetID(); }),
+		mSceneGO.end());
+}
+
+void ModuleScene::RemoveGameObjectFromScene(int id) {
+	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
+		[id](const auto& obj) { return obj->GetID() == id; }),
+		mSceneGO.end());
+}
+
+void ModuleScene::RemoveGameObjectFromScene(const std::string& name) {
+	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
+		[&name](const auto& obj) { return obj->GetName() == name; }),
+		mSceneGO.end());
+}
+
 
 void ModuleScene::DeleteGameObjects()
 {

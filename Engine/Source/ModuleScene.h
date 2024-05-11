@@ -31,6 +31,10 @@ public:
 	// GameObjects
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
+	void AddGameObjectToScene(GameObject* gameObject);
+	void RemoveGameObjectFromScene(GameObject* gameObjet);
+	void RemoveGameObjectFromScene(int id); 
+	void RemoveGameObjectFromScene(const std::string& name);
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
 	}
