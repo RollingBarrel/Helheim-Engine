@@ -2,6 +2,8 @@
 #define _MODULE_SCENE_H_
 
 #include "Module.h"
+#include "Math/float3.h"
+#include "Archive.h"
 #include <vector>
 #include <string>
 
@@ -77,8 +79,9 @@ public:
 	void DeleteTag(Tag* tag);
 
 	// Prefabs
-	int SavePrefab(const GameObject* gameObject, const char* saveFilePath) const;
-	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false);
+	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
+	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, GameObject* parent = nullptr);
+	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, GameObject* parent) { LoadPrefab(saveFilePath, resourceId, false, parent); }
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }
@@ -87,9 +90,10 @@ private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
 	void LoadGameObjectsIntoScripts();
-
+	
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
+	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent);
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;

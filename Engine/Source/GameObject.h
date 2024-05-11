@@ -96,7 +96,7 @@ public:
 	// Save / Load
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
-	GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
+	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
 	void LoadComponentsFromJSON(const rapidjson::Value& components);
 
 	// Prefabs

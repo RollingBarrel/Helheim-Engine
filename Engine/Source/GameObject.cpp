@@ -759,7 +759,6 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson)
 {
 	//GameObject* scene = App->GetScene()->GetRoot();
-	//std::unordered_map<int, int> uuids;
 
 	// Manage GameObjects inside the Scene
 	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
@@ -769,7 +768,7 @@ void GameObject::Load(const rapidjson::Value& gameObjectsJson)
 		{
 			if (gameObjects[i].IsObject())
 			{
-				//LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+				//LoadGameObjectFromJSON(gameObjects[i], this);
 			}
 		}
 	}
