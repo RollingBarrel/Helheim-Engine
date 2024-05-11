@@ -16,6 +16,7 @@ typedef struct DirectionalAmbient {
 
 class PointLightComponent;
 class SpotLightComponent;
+class Trail;
 struct PointLight;
 struct SpotLight;
 struct SDL_Texture;
@@ -85,6 +86,9 @@ public:
 
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
+
+	void AddTrail(const Trail* trail);
+	void RemoveTrail(const Trail* trail);
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
