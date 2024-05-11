@@ -987,7 +987,6 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	}
 	if (imageComponent->IsSpritesheet())
 	{
-		// If it's a spritesheet, add options to set the number of columns and rows
 		int columns = imageComponent->GetColumns();
 		int rows = imageComponent->GetRows();
 		ImGui::InputInt("Columns", &columns);
@@ -998,7 +997,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		ResourceTexture* texture = imageComponent->GetImage();
 		if (texture != nullptr)
 		{
-			ImVec2 imageSize(175, 175); // Adjust this to the desired size
+			ImVec2 imageSize(175, 175);
 			ImGui::Image((void*)(intptr_t)texture->GetOpenGLId(), imageSize);
 
 			// Draw lines to divide the image into columns and rows
@@ -1016,6 +1015,34 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 				ImVec2 start(imagePos.x, imagePos.y + i * rowHeight);
 				ImVec2 end(imagePos.x + imageSize.x, imagePos.y + i * rowHeight);
 				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+
+			// Display a list of the slices
+			ImGui::Text("Slices:");
+			float sliceWidth = 1.0f / columns;
+			float sliceHeight = 1.0f / rows;
+			ImVec2 sliceSize(50, 50);
+			for (int row = 0; row < rows; ++row)
+			{
+				for (int col = 0; col < columns; ++col)
+				{
+					// Calculate the texture coordinates for the slice
+					ImVec2 uv0(col * sliceWidth, row * sliceHeight);
+					ImVec2 uv1((col + 1) * sliceWidth, (row + 1) * sliceHeight);
+
+					ImGui::Image((void*)(intptr_t)texture->GetOpenGLId(), sliceSize, uv0, uv1);
+
+					if (col < columns - 1)
+					{
+						ImGui::SameLine();
+						ImGui::Text(" ");
+						ImGui::SameLine();
+					}
+				}
+				if (row < rows - 1)
+				{
+					ImGui::NewLine();
+				}
 			}
 		}
 	}
