@@ -23,36 +23,48 @@ CREATE(GameManager)
     END_CREATE;
 }
 
+
+GameManager* GameManager::mInstance = nullptr;
+
+GameManager* GameManager::GetInstance()
+{
+    if (mInstance == nullptr) {
+        LOG("GameManager instance has not been initialized.");
+        throw std::runtime_error("GameManager instance has not been initialized.");
+    }
+    return mInstance;
+}
+
 GameManager::GameManager(GameObject* owner) : Script(owner) {}
 
-void GameManager::Start() 
+void GameManager::Start()
 {
-    mPauseScreen->SetEnabled(false);
-    mWinScreen->SetEnabled(false);
-    mLoseScreen->SetEnabled(false);
-    mLoadingScreen->SetEnabled(false);
+    mInstance->mPauseScreen->SetEnabled(false);
+    mInstance->mWinScreen->SetEnabled(false);
+    mInstance->mLoseScreen->SetEnabled(false);
+    mInstance->mLoadingScreen->SetEnabled(false);
 
-    mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
-    mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
-    mYesBtn = static_cast<ButtonComponent*>(mYesGO->GetComponent(ComponentType::BUTTON));
-    mNoBtn = static_cast<ButtonComponent*>(mNoGO->GetComponent(ComponentType::BUTTON));
+    mInstance->mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
+    mInstance->mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
+    mInstance->mYesBtn = static_cast<ButtonComponent*>(mYesGO->GetComponent(ComponentType::BUTTON));
+    mInstance->mNoBtn = static_cast<ButtonComponent*>(mNoGO->GetComponent(ComponentType::BUTTON));
 
     
-    mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnWinButtonClick, this)));
-    mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnLoseButtonClick, this)));
-    mYesBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnYesButtonClick, this)));
-    mNoBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnNoButtonClick, this)));
+    mInstance->mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnWinButtonClick, this)));
+    mInstance->mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnLoseButtonClick, this)));
+    mInstance->mYesBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnYesButtonClick, this)));
+    mInstance->mNoBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnNoButtonClick, this)));
 
-    mYesBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOn, this)));
-    mNoBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOn, this)));
-    mYesBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOff, this)));
-    mNoBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOff, this)));
+    mInstance->mYesBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOn, this)));
+    mInstance->mNoBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOn, this)));
+    mInstance->mYesBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOff, this)));
+    mInstance->mNoBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOff, this)));
 }
 
 void GameManager::Update()
 {
-    Controls();
-    Loading();
+    mInstance->Controls();
+    mInstance->Loading();
 }
 
 bool GameManager::Delay(float delay)
@@ -71,20 +83,20 @@ void GameManager::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {  
-        mPaused = !mPaused;
-        mPauseScreen->SetEnabled(mPaused);
+        mInstance->mPaused = !mPaused;
+        mInstance->mPauseScreen->SetEnabled(mPaused);
     }
 }
 
 void GameManager::Loading()
 {
-    if (mLoading)
+    if (mInstance->mLoading)
     {
-        mLoadingScreen->SetEnabled(true);
+        mInstance->mLoadingScreen->SetEnabled(true);
 
         if (Delay(0.1f))
         {
-            mLoading = false;
+            mInstance->mLoading = false;
             App->GetScene()->Load("MainMenu.json");
         }
     }
@@ -92,33 +104,33 @@ void GameManager::Loading()
 
 void GameManager::WinScreen() 
 {
-    mWinScreen->SetEnabled(true);
+    mInstance->mWinScreen->SetEnabled(true);
 }
 
 void GameManager::LoseScreen() 
 {
-    mLoseScreen->SetEnabled(true);
+    mInstance->mLoseScreen->SetEnabled(true);
 }
 
 void GameManager::OnWinButtonClick() 
 {
-    mLoading = true;
+    mInstance->mLoading = true;
 }
 
 void GameManager::OnLoseButtonClick() 
 {
-    mLoading = true;
+    mInstance->mLoading = true;
 }
 
 void GameManager::OnYesButtonClick() 
 {
-    mLoading = true;
+    mInstance->mLoading = true;
 }
 
 void GameManager::OnNoButtonClick() 
 {
-    mPaused = false;
-    mPauseScreen->SetEnabled(false);
+    mInstance->mPaused = false;
+    mInstance->mPauseScreen->SetEnabled(false);
 }
 
 void GameManager::OnYesButtonHoverOn()

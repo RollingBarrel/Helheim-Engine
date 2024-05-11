@@ -20,7 +20,6 @@
 CREATE(PlayerController)
 {
     CLASS(owner);
-    MEMBER(MemberType::GAMEOBJECT, mGameManagerGO);
 
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
@@ -78,11 +77,6 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 
 void PlayerController::Start()
 {
-    if (mGameManagerGO)
-    {
-        ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
-        mGameManager = (GameManager*)script->GetScriptInstance();
-    }
     mDashCharges = mMaxDashCharges;
     mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
@@ -180,7 +174,7 @@ void PlayerController::Update()
     {
         if (mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
         {
-            mGameManager->WinScreen();
+            GameManager::GetInstance()->WinScreen();
         }
     }
 
@@ -607,7 +601,7 @@ void PlayerController::RechargeDash()
 void PlayerController::Death() 
 {
     mPlayerIsDead = true;
-    mGameManager->LoseScreen();
+    GameManager::GetInstance()->LoseScreen();
 }
 
 bool PlayerController::IsDead() 
