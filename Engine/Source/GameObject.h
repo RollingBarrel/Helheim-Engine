@@ -85,7 +85,7 @@ public:
 
 	void Save(Archive& archive, int parentId) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
-	GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
+	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
 	void LoadComponentsFromJSON(const rapidjson::Value& components);
 	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
 	void SetPrefabId(unsigned int id) { mPrefabResourceId = id; }
