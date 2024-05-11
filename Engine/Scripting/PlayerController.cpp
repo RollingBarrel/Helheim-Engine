@@ -72,7 +72,6 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 void PlayerController::Start()
 {
     mDashCharges = mMaxDashCharges;
-    mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
     mHealth = mMaxHealth;
     mShield = mMaxShield;

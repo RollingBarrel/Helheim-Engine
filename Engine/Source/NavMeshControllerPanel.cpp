@@ -96,6 +96,7 @@ void NavMeshControllerPanel::Draw(int windowFlags)
         }
         if (ImGui::Button("Build Navigation"))
         {
+            mVao = 0;
             mNavController->HandleBuild();
         }
 
@@ -165,15 +166,15 @@ void NavMeshControllerPanel::DrawDebugPolyMesh()
 
     glBindVertexArray(mVao);
     glDrawElements(GL_TRIANGLES, mNavController->GetIndices().size(), GL_UNSIGNED_INT, 0);
-    //	float3 color = float3(1.0f, 0.0f, 0.0f);
-    //App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
-    //float3 color2 = float3(1.0f, 1.0f, 0.0f);
-    //App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
-    //float3 color3 = float3(0.0f, 0.0f, 1.0f);
-    //float3 minAABB = mQueryCenter - mQueryHalfSize;
-    //float3 maxAABB = mQueryCenter + mQueryHalfSize;
-    //OBB cube = OBB(AABB(minAABB, maxAABB));
-    //App->GetDebugDraw()->DrawCube(cube, color3);
+    float3 color = float3(1.0f, 0.0f, 0.0f);
+    EngineApp->GetDebugDraw()->DrawSphere(&EngineApp->GetNavigation()->GetQueryResult()[0], &color[0], 1.0f);
+    float3 color2 = float3(1.0f, 1.0f, 0.0f);
+    EngineApp->GetDebugDraw()->DrawSphere(&EngineApp->GetNavigation()->GetQueryCenter()[0], &color2[0], 1.0f);
+    float3 color3 = float3(0.0f, 0.0f, 1.0f);
+    float3 minAABB = EngineApp->GetNavigation()->GetQueryCenter() - EngineApp->GetNavigation()->GetQueryHalfSize();
+    float3 maxAABB = EngineApp->GetNavigation()->GetQueryCenter() + EngineApp->GetNavigation()->GetQueryHalfSize();
+    OBB cube = OBB(AABB(minAABB, maxAABB));
+    EngineApp->GetDebugDraw()->DrawCube(cube, color3);
 
 
 }
