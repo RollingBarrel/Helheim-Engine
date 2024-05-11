@@ -148,7 +148,6 @@ Component* GameObject::GetComponent(ComponentType type) const
 
 std::vector<Component*> GameObject::GetComponents(ComponentType type) const
 {
-	// DOUBT: There is a limitation of 1 component of each type for go. Kind of useless
 	std::vector<Component*> matchingComponents;
 
 	for (auto component : mComponents)
@@ -248,7 +247,6 @@ void GameObject::SetScale(const float3& scale)
 
 void GameObject::SetActiveInHierarchy(bool active)
 {
-	// DOUBT: Is this needed, set active should be only go, components and childs wont update.
 	if (active && !mIsEnabled)
 	{
 		return;
@@ -540,10 +538,10 @@ void GameObject::RefreshBoundingBoxes()
 
 #pragma region Save / Load
 
-void GameObject::Save(Archive& archive, int parentId) const
+void GameObject::Save(Archive& archive) const
 {
 	archive.AddInt("UID", mID);
-	if (mParent->GetID() == parentId)
+	if (mParent == App->GetScene()->GetRoot())
 	{
 		archive.AddInt("ParentUID", 1);
 	}

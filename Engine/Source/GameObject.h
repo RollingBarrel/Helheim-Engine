@@ -94,7 +94,7 @@ public:
 	void AddComponentToDelete(Component* component);
 
 	// Save / Load
-	void Save(Archive& archive, int parentId) const;
+	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
 	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
 	void LoadComponentsFromJSON(const rapidjson::Value& components);

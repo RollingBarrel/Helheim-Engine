@@ -251,11 +251,11 @@ void ModuleScene::DeleteTag(Tag* tag)
 
 #pragma region Save / Load Scene
 
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const
+void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const
 {
 	// Save the current GameObject to its archive
 	Archive gameObjectArchive;
-	gameObject->Save(gameObjectArchive, parentUuid);
+	gameObject->Save(gameObjectArchive);
 	gameObjectsArchive.push_back(gameObjectArchive);
 
 	const std::vector<GameObject*>& children = gameObject->GetChildren();
@@ -263,7 +263,7 @@ void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vec
 	{
 		for (GameObject* child : children)
 		{
-			SaveGameObjectRecursive(child, gameObjectsArchive, parentUuid);
+			SaveGameObjectRecursive(child, gameObjectsArchive);
 		}
 	}
 }
@@ -275,7 +275,7 @@ void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive&
 
 	for (GameObject* gameObject : gameObjects)
 	{
-		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, mRoot->GetID());
+		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
 	}
 
 	rootArchive.AddObjectArray("GameObjects", gameObjectsArchiveVector);
@@ -289,15 +289,25 @@ void ModuleScene::Save(const char* sceneName) const
 		saveFilePath += ".json";
 	}
 
-	Archive* sceneArchive = new Archive();
 	Archive* archive = new Archive();
-
 	archive->AddString("Name", mRoot->GetName().c_str());
-	SaveGame(mRoot->GetChildren(), *archive);
+	
+	// Not using recursive to save, using the sceneGO vector
+	//SaveGame(mRoot->GetChildren(), *archive);
+	std::vector<Archive> gameObjectsArchiveVector;
+	for (GameObject* go : mSceneGO) 
+	{
+		Archive gameObjectArchive;
+		go->Save(gameObjectArchive);
+		gameObjectsArchiveVector.push_back(gameObjectArchive);
+	}
+	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 
+	Archive* sceneArchive = new Archive();
 	sceneArchive->AddObject("Scene", *archive);
 	std::string out = sceneArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
+	
 	delete sceneArchive;
 	delete archive;
 }
@@ -393,7 +403,7 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
-	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
+	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 	prefabArchive->AddObject("Prefab", *archive);
 
