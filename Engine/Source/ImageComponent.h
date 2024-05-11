@@ -38,9 +38,16 @@ public:
     inline void SetAlpha(float alpha) { mAlpha = alpha; }
     inline void SetMantainRatio(bool ratio) { mMantainRatio = ratio; }
 
+    bool IsSpritesheet() const { return mIsSpritesheet; }
+    void SetIsSpritesheet(bool isSpritesheet) { mIsSpritesheet = isSpritesheet; }
+    int GetColumns() const { return mColumns; }
+    int GetRows() const { return mRows; }
+    void SetSpritesheetLayout(int columns, int rows);
+
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
     GameObject* FindCanvasOnParents(GameObject* gameObject);
+
 
 private:
     ResourceTexture* mImage = nullptr;
@@ -59,6 +66,11 @@ private:
 
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;
+
+    //Spritesheet
+    bool mIsSpritesheet;
+    int mColumns;
+    int mRows;
 
     CanvasComponent* mCanvas = nullptr;
 };

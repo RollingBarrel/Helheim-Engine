@@ -1,3 +1,4 @@
+#include "ImageComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleScene.h"
@@ -180,6 +181,13 @@ void ImageComponent::Draw()
 Component* ImageComponent::Clone(GameObject* owner) const
 {
 	return new ImageComponent(*this, owner);
+}
+
+void ImageComponent::SetSpritesheetLayout(int columns, int rows)
+{
+	mColumns = columns;
+	mRows = rows;
+	mIsSpritesheet = true;
 }
 
 void ImageComponent::Save(Archive& archive) const

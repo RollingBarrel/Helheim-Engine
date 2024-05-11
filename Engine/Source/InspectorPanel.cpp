@@ -979,10 +979,51 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	//	imageComponent->SetImage(resourceId);
 	//}
 
+	const char* items[] = { "Single Image", "Spritesheet" };
+	int currentItem = imageComponent->IsSpritesheet() ? 1 : 0;
+	if (ImGui::Combo("Image Type", &currentItem, items, IM_ARRAYSIZE(items)))
+	{
+		imageComponent->SetIsSpritesheet(currentItem == 1);
+	}
+	if (imageComponent->IsSpritesheet())
+	{
+		// If it's a spritesheet, add options to set the number of columns and rows
+		int columns = imageComponent->GetColumns();
+		int rows = imageComponent->GetRows();
+		ImGui::InputInt("Columns", &columns);
+		ImGui::InputInt("Rows", &rows);
+		imageComponent->SetSpritesheetLayout(columns, rows);
+
+		// Display the spritesheet image
+		ResourceTexture* texture = imageComponent->GetImage();
+		if (texture != nullptr)
+		{
+			ImVec2 imageSize(175, 175); // Adjust this to the desired size
+			ImGui::Image((void*)(intptr_t)texture->GetOpenGLId(), imageSize);
+
+			// Draw lines to divide the image into columns and rows
+			ImVec2 imagePos = ImGui::GetItemRectMin();
+			float columnWidth = imageSize.x / columns;
+			float rowHeight = imageSize.y / rows;
+			for (int i = 1; i < columns; ++i)
+			{
+				ImVec2 start(imagePos.x + i * columnWidth, imagePos.y);
+				ImVec2 end(imagePos.x + i * columnWidth, imagePos.y + imageSize.y);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+			for (int i = 1; i < rows; ++i)
+			{
+				ImVec2 start(imagePos.x, imagePos.y + i * rowHeight);
+				ImVec2 end(imagePos.x + imageSize.x, imagePos.y + i * rowHeight);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+		}
+	}
+
 	// Drag and drop	
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 70.0);
-	
+
 	ResourceTexture* image = imageComponent->GetImage();
 	
 	if (image)
