@@ -1,20 +1,21 @@
 #pragma once
 
 #include "Component.h"
+#include "Trail.h"
 #include "ColorGradient.h"
 
-class Material;
+//class Material;
 class ResourceTexture;
-class Particle;
-struct Mesh;
+//class Particle;
+//struct Mesh;
 
-class ENGINE_API ParticleSystemComponent : public Component
+class ENGINE_API TrailComponent : public Component
 {
 	friend class InspectorPanel;
 public:
-	ParticleSystemComponent(GameObject* ownerGameObject);
-	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
-	~ParticleSystemComponent();
+	TrailComponent(GameObject* ownerGameObject);
+	TrailComponent(const TrailComponent& original, GameObject* owner);
+	~TrailComponent();
 	ResourceTexture* GetImage() const { return mImage; }
 	const char* GetFileName() const { return mFileName; }
 	void Reset();
@@ -26,7 +27,6 @@ public:
 	Component* Clone(GameObject* owner) const override;
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
-	void InitEmitterShape();
 
 private:
 	void SetImage(unsigned int resourceId);
@@ -43,10 +43,10 @@ private:
 	float4 mSizeCurve;
 	float mSizeCurveFactor = 1.0f;
 
-	int mMaxParticles = 1000.0f;
+	int mMaxPoints = 1000.0f;
 
 	ColorGradient* mColorGradient;
-	std::vector<Particle*> mParticles;
+	Trail mTrail;
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;
 	unsigned int mVBO = 0;
