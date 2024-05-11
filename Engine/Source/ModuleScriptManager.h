@@ -18,16 +18,14 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	
-	bool IsPlaying() const { return mIsPlaying; }
 	void AddScript(ScriptComponent* script);
 	void RemoveScript(ScriptComponent* script);
 	void* GetDLLHandle() { return mHandle; }
-	void StartScripts();
+	virtual void StartScripts();
 
 
 protected:
 	std::vector<ScriptComponent*> mScripts;
 	void* mHandle = nullptr;
-	bool mIsPlaying = false;
 };
 

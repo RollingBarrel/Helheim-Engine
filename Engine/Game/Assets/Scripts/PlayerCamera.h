@@ -4,12 +4,6 @@
 
 class CameraComponent;
 
-enum class CameraMode
-{
-	CLOSE,
-	TOP
-};
-
 GENERATE_BODY(PlayerCamera);
 class PlayerCamera :public Script
 {
@@ -29,8 +23,6 @@ private:
     GameObject* mFollowTarget = nullptr;
     GameObject* mAuxLookTarget = nullptr;
     CameraComponent* mCameraComponent = nullptr;
-    CameraMode mCameraMode = CameraMode::CLOSE;
-    std::vector<GameObject*> mCombatAreas;
 
     void CameraManager();
     void SetView(float3 position, float rotation);

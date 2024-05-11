@@ -186,7 +186,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 			}
 		}
 	}
-	App->GetScriptManager()->AddScript(this);
+	//App->GetScriptManager()->AddScript(this);
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
@@ -222,7 +222,7 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		{
 			LOG("SCRIPT RESOURCE NOT FOUND");
 		}
-		//App->GetEngineScriptManager()->AddScript(mScript);
+		App->GetScriptManager()->AddScript(this);
 		LOG("LOADING SCRIPT SUCCESS");
 	}
 	else 

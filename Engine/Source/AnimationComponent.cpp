@@ -31,6 +31,7 @@ AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, Com
 	mClipTimes.push_back(12.0);
 	mClipTimes.push_back(15.0);
 
+
 	mCurrentClip = 0;
 	mSpeed = 1.0;
 }
@@ -136,6 +137,10 @@ void AnimationComponent::SetCurrentClip(int currentClip)
 	if (currentClip > mClipNames.size())
 	{
 		currentClip = 0;
+	}
+	if (mCurrentClip == currentClip)
+	{
+		return;
 	}
 	mCurrentClip = currentClip;
 	SetStartTime(mClipTimes[mCurrentClip * 2]);

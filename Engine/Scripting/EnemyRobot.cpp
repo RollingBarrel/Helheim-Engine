@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "PlayerController.h"
 #include "AIAGentComponent.h"
+#include "AnimationComponent.h"
 #include "Physics.h"
 CREATE(EnemyRobot)
 {
@@ -21,9 +22,7 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mMeleeAttackCoolDown);
     MEMBER(MemberType::FLOAT, mMeleeDistance);
     MEMBER(MemberType::FLOAT, mMeeleDamage);
-   
-    SEPARATOR("GAME OBJECTS");
-    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+
     END_CREATE;
 }
 
@@ -31,15 +30,43 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
 }
 
+
+void EnemyRobot::Start()
+{
+    Enemy::Start();
+    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->OnStart();
+        mAnimationComponent->SetIsPlaying(true);
+        mAnimationComponent->SetCurrentClip(0);
+    }
+
+}
+
+
+
 void EnemyRobot::Update()
 {
+
     switch (mCurrentState) 
     {
     case EnemyState::IDLE:
+
         Idle();
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SetCurrentClip(0);
+        }
+
         break;
     case EnemyState::CHASE:
+
         Chase();
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SetCurrentClip(1);
+        }
         break;
     case EnemyState::ATTACK:
         Attack();

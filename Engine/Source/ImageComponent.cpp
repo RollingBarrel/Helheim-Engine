@@ -24,11 +24,17 @@
 
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) 
 {
+	FillVBO();
+	CreateVAO();
+
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
 {
+	FillVBO();
+	CreateVAO();
+
     SetImage(mResourceId);
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 
@@ -43,6 +49,9 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 
 ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE)
 {
+	FillVBO();
+	CreateVAO();
+
 	mImage = original.mImage;
 	mResourceId = original.mResourceId;
 	mFileName = original.mFileName;
@@ -132,9 +141,6 @@ void ImageComponent::Draw()
 			view = camera->GetViewMatrix();
 			glDisable(GL_CULL_FACE);
 		}
-
-		FillVBO();
-		CreateVAO();
 
 		glBindVertexArray(mQuadVAO);
 

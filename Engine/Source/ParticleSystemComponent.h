@@ -8,6 +8,7 @@
 class Material;
 class ResourceTexture;
 class Particle;
+//class EmitterShape;
 struct Mesh;
 
 class ENGINE_API ParticleSystemComponent : public Component
@@ -24,6 +25,8 @@ public:
 	void Init();
 	void Update() override;
 	void Draw() const;
+	void Enable() override;
+	void Disable() override;
 
 	Component* Clone(GameObject* owner) const override;
 	void Save(Archive& archive) const override;
@@ -50,7 +53,7 @@ private:
 	float mSpeedCurveFactor = 1.0f;
 
 	bool mIsSizeCurve;
-	float mSizeLineal = 3.0f;
+	float mSizeLineal = 1.0f;
 	float4 mSizeCurve;
 	float mSizeCurveFactor = 1.0f;
 
