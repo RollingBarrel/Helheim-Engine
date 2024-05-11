@@ -402,8 +402,9 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	return resourceId;
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, float3 position)
+void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, GameObject* parent)
 {
+	if (parent == nullptr) parent = mRoot;
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
 
@@ -425,7 +426,7 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
 			{
 				const rapidjson::Value& gameObjects = sceneValue["GameObjects"];
-				GameObject* temp = new GameObject("Temp", mRoot);
+				GameObject* temp = new GameObject("Temp", parent);
 				int offset = mSceneGO.size();
 				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
 				{
@@ -447,11 +448,11 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 
 				for (GameObject* child : temp->GetChildren())
 				{
-					GameObject* newObject = new GameObject(*child, mRoot);
-					mRoot->AddChild(newObject);
+					GameObject* newObject = new GameObject(*child, parent);
+					parent->AddChild(newObject);
 					newObject->SetPrefabId(resourceId);
 				}
-				mRoot->DeleteChild(temp);
+				parent->DeleteChild(temp);
 				
 			}
 
