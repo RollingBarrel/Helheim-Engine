@@ -3,7 +3,7 @@
 
 class dtNavMesh;
 
-class ResourceNavMesh : public Resource
+class ENGINE_API ResourceNavMesh : public Resource
 {
 public:
     ResourceNavMesh(unsigned int uid, dtNavMesh* navMesh);

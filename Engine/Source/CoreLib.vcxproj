@@ -217,17 +217,6 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\Recast.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastAlloc.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastArea.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastAssert.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastContour.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastFilter.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastLayers.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastMesh.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastMeshDetail.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastRasterization.cpp" />
-    <ClCompile Include="Dependencies\Recast\Include\RecastRegion.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
@@ -256,6 +245,7 @@
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
+    <ClCompile Include="ResourceNavmesh.cpp" />
     <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
@@ -425,9 +415,6 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\sse_mathfun.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
-    <ClInclude Include="Dependencies\Recast\Include\Recast.h" />
-    <ClInclude Include="Dependencies\Recast\Include\RecastAlloc.h" />
-    <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />

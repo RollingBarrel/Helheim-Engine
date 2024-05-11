@@ -1,6 +1,5 @@
 #include "ImporterNavMesh.h"
 #include <vector>
-#include "Application.h"
 #include "ResourceNavMesh.h"
 #include "EngineApp.h"
 #include "ModuleEngineResource.h"

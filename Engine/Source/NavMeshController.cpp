@@ -6,15 +6,14 @@
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
 #include "Application.h"
-#include "glew.h"
 #include "float4x4.h"
 #include "ImporterMesh.h"
 #include "ModuleDebugDraw.h"
 #include "DetourNavMeshBuilder.h"
+#include "DetourNavMesh.h"
+#include "DetourNavMeshQuery.h"
 #include "Geometry/Triangle.h"
 #include "Recast.h"
-#include "ModuleCamera.h"
-#include "CameraComponent.h"
 #include "Tag.h"
 #include "ModuleFileSystem.h"
 #include "Algorithm/Random/LCG.h"
@@ -22,6 +21,7 @@
 #include "ModuleResource.h"
 #include "EngineApp.h"
 #include "ModuleEngineResource.h"
+#include "ResourceNavmesh.h"
 NavMeshController::NavMeshController()
 {
 }
@@ -70,59 +70,6 @@ void NavMeshController::TranslateIndices()
 
 		}
 	}
-}
-
-void NavMeshController::DebugDrawPolyMesh()
-{
-	if (!mDraw)
-		return;
-
-	if (mPolyMeshDetail == nullptr)
-		return;
-	if (mPolyMeshDetail->nmeshes < 1)
-		return;
-	
-	
-	unsigned int program = App->GetOpenGL()->GetDebugDrawProgramId();
-	float4x4 identity = float4x4::identity;
-	float4x4 view = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
-	float4x4 proj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix();
-
-	GLint viewLoc = glGetUniformLocation(program, "view");
-	GLint projLoc = glGetUniformLocation(program, "proj");
-	GLint modelLoc = glGetUniformLocation(program, "model");
-	glBindVertexArray(0);
-	glUseProgram(0);
-	glUseProgram(program);
-
-	glUniformMatrix4fv(viewLoc, 1, GL_TRUE, &view[0][0]);
-	glUniformMatrix4fv(projLoc, 1, GL_TRUE, &proj[0][0]);
-	glUniformMatrix4fv(modelLoc, 1, GL_TRUE, &identity[0][0]);
-
-	glBindVertexArray(mVao);
-	glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-//	float3 color = float3(1.0f, 0.0f, 0.0f);
-//App->GetDebugDraw()->DrawSphere(&mQueryResult[0], &color[0], 1.0f);
-//float3 color2 = float3(1.0f, 1.0f, 0.0f);
-//App->GetDebugDraw()->DrawSphere(&mQueryCenter[0], &color2[0], 1.0f);
-//float3 color3 = float3(0.0f, 0.0f, 1.0f);
-//float3 minAABB = mQueryCenter - mQueryHalfSize;
-//float3 maxAABB = mQueryCenter + mQueryHalfSize;
-//OBB cube = OBB(AABB(minAABB, maxAABB));
-//App->GetDebugDraw()->DrawCube(cube, color3);
-
-
-}
-
-void NavMeshController::Update()
-{
-	if (mPolyMesh == nullptr)
-		return;
-
-	App->GetOpenGL()->BindSceneFramebuffer();
-	DebugDrawPolyMesh();
-	App->GetOpenGL()->UnbindSceneFramebuffer();
-
 }
 
 void NavMeshController::HandleBuild() 
@@ -425,20 +372,81 @@ void NavMeshController::HandleBuild()
 			return;
 		}
 		TranslateIndices();
-		LoadDrawMesh();
-		
+		CreateDetourData();
 
-
-		App->GetNavigation()->CreateDetourData();
-		Resource* resource = EngineApp->GetEngineResource()->CreateNewResource(nullptr, nullptr, Resource::Type::NavMesh);
-		delete resource;
 
 	}
 
 	delete recastContext;
 }
 
+void NavMeshController::CreateDetourData()
+{
+	//const AIAgentComponent* agentComponent = mAIAgentComponents[0];
+	dtNavMeshCreateParams* mNavMeshParams = new dtNavMeshCreateParams();
 
+	if (!mPolyMesh) return;
+	unsigned char* navData = 0;
+	int navDataSize = 0;
+	/*if (agentComponent) {*/
+
+	mNavMeshParams->verts = mPolyMesh->verts;
+	mNavMeshParams->vertCount = mPolyMesh->nverts;
+	mNavMeshParams->polys = mPolyMesh->polys;
+	mNavMeshParams->polyAreas = mPolyMesh->areas;
+	mNavMeshParams->polyFlags = mPolyMesh->flags;
+	mNavMeshParams->polyCount = mPolyMesh->npolys;
+	mNavMeshParams->nvp = mPolyMesh->nvp;
+	mNavMeshParams->detailMeshes = mPolyMeshDetail->meshes;
+	mNavMeshParams->detailVerts = mPolyMeshDetail->verts;
+	mNavMeshParams->detailVertsCount = mPolyMeshDetail->nverts;
+	mNavMeshParams->detailTris = mPolyMeshDetail->tris;
+	mNavMeshParams->detailTriCount = mPolyMeshDetail->ntris;
+	mNavMeshParams->offMeshConVerts = nullptr;
+	mNavMeshParams->offMeshConRad = nullptr;
+	mNavMeshParams->offMeshConDir = nullptr;
+	mNavMeshParams->offMeshConAreas = nullptr;
+	mNavMeshParams->offMeshConFlags = nullptr;
+	mNavMeshParams->offMeshConUserID = nullptr;
+	mNavMeshParams->offMeshConCount = 0;
+	mNavMeshParams->walkableHeight = 1.0f;
+	mNavMeshParams->walkableRadius = 0.5f;
+	mNavMeshParams->walkableClimb = 0.0f;
+	rcVcopy(mNavMeshParams->bmin, mPolyMesh->bmin);
+	rcVcopy(mNavMeshParams->bmax, mPolyMesh->bmax);
+	mNavMeshParams->cs = mCellSize;
+	mNavMeshParams->ch = mCellHeight;
+	mNavMeshParams->buildBvTree = true;
+	
+	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
+	{
+		LOG("Could not build Detour navmesh.");
+		return;
+	}
+	 mDetourNavMesh = dtAllocNavMesh();
+	if (!mDetourNavMesh)
+	{
+		dtFree(navData);
+		LOG("Could not create Detour navmesh");
+		return;
+	}
+	
+	dtStatus status;
+	status = mDetourNavMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
+	if (dtStatusFailed(status))
+	{
+		dtFree(navData);
+		LOG("Could not init Detour navmesh");
+		return;
+	}
+
+	App->GetNavigation()->SetDetourNavMesh(mDetourNavMesh);
+	
+	Resource* resource = EngineApp->GetEngineResource()->CreateNewResource(nullptr, nullptr, Resource::Type::NavMesh);
+	delete resource;
+	
+	App->GetNavigation()->CreateQuery();
+}
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 	if (!(gameObj->GetChildren().empty())) 
@@ -458,36 +466,7 @@ void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 
 
 
-void NavMeshController::LoadDrawMesh()
-{
-	if (mPolyMeshDetail != nullptr)
-	{
-		if (mPolyMeshDetail->nmeshes < 1)
-			return; // Maybe remove the vao from memory until new call? Warn user?
 
-		// Now you can create the VAO and fill it with the mesh data
-		glGenVertexArrays(1, &mVao);
-		glBindVertexArray(mVao);
-
-
-		glGenBuffers(1, &mVbo);
-		glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-		glBufferData(GL_ARRAY_BUFFER, 3 * mVertices.size() * sizeof(float), &mVertices[0], GL_STATIC_DRAW);
-
-
-		glGenBuffers(1, &mEbo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-		glEnableVertexAttribArray(0);
-
-
-		glBindVertexArray(0);
-
-	}
-	return;
-}
 
 int NavMeshController::FindVertexIndex(float3 vert)
 {

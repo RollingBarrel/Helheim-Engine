@@ -18,21 +18,20 @@ public:
 	std::vector<float3> FindNavPath(float3 startPos, float3 endPos);
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
-	void CreateDetourData();
-
 	void CreateQuery();
 
 	float3 FindNearestPoint(float3 center, float3 halfSize);
-	void DrawDebug();
 	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 
 
 	float3 GetQueryCenter() const { return mQueryCenter; }
 	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
+	float3 GetQueryResult() const { return mQueryResult; }
 	dtNavMesh* GetDetourNavMesh()const { return mDetourNavMesh; }
 
 	void SetQueryCenter(float3 center) { mQueryCenter = center; }
 	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
+	void SetDetourNavMesh(dtNavMesh* detourNavMesh) { mDetourNavMesh = detourNavMesh; }
 
 
 

@@ -193,11 +193,6 @@ void ModuleEngineScriptManager::Stop()
 void ModuleEngineScriptManager::Start()
 {
 
-	if (EngineApp->GetScene()->GetRoot()->GetName() == "Level1")
-	{
-		EngineApp->GetScene()->GetNavController()->HandleBuild();
-	}
-
 	mIsPlaying = true;
 	for (ScriptComponent* script : mScripts) 
 	{

@@ -175,7 +175,6 @@ void EditorControlPanel::Play()
 	EngineApp->GetScene()->Save("TemporalScene");
 	EngineApp->GetEngineScriptManager()->Start();
 	EngineApp->GetGameClock()->Start();
-	EngineApp->GetScene()->GetNavController()->HandleBuild();
 	EngineApp->PlayMode(true);
 
 	switch (mState)

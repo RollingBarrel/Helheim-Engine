@@ -13,6 +13,7 @@ struct rcContourSet;
 struct rcPolyMesh;
 struct rcPolyMeshDetail;
 class rcContext;
+class dtNavMesh;
 struct ObstacleTriangle {
 	int startIndicePos=0;
 	int numberOfIndices=0;
@@ -24,7 +25,7 @@ public:
 	void Reset();
 	~NavMeshController();
 	void HandleBuild();
-	void Update();
+	void CreateDetourData();
 
 
 	rcPolyMesh* getPolyMesh()const { return mPolyMesh; }
@@ -67,14 +68,7 @@ public:
 	float GetDetailSampleMaxError() const { return mDetailSampleMaxError; }
 	void SetDetailSampleMaxError(float value) { mDetailSampleMaxError = value; }
 
-	float3 GetQueryCenter() const { return mQueryCenter; }
-	float3 GetQueryHalfSize() const { return mQueryHalfSize; }
-
-	void SetQueryCenter(float3 center) { mQueryCenter = center; }
-	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
-
-	bool GetShouldDraw() const { return mDraw; }
-	void SetShouldDraw(bool draw) { mDraw = draw; }
+	dtNavMesh* GetDetourNavMesh()const { return mDetourNavMesh; }
 
 	std::vector<float3>& GetVertices() { return mVertices; }
 	void SetIndices(std::vector<int> indices) { mIndices = indices; };
@@ -87,8 +81,6 @@ private:
 	std::vector<GameObject*> mGameObjects;
 	std::vector<ObstacleTriangle> mObstaclesTriangles;
 	void TranslateIndices();
-	void DebugDrawPolyMesh();
-	void LoadDrawMesh();
 	int FindVertexIndex(float3 vert);
 
 	rcPolyMesh* mPolyMesh = nullptr;
@@ -117,16 +109,7 @@ private:
 	float mDetailSampleDist = 6; // 0 - 16
 	float mDetailSampleMaxError = 1; // 0 - 16
 
-	//DEBUG DRAW VARIABLES
-	bool mDraw = false;
-	unsigned int mVao = 0;
-	unsigned int mVbo = 0;
-	unsigned int mEbo = 0;
-
-	float3 mQueryCenter = float3(10.0f, 0.0f, -3.0f);
-	float3 mQueryHalfSize = float3(5.0f);
-	float3 mQueryNearestPoint = float3(0.0f);
-
+	dtNavMesh* mDetourNavMesh = nullptr;
 };
 
 

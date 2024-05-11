@@ -9,7 +9,6 @@ class GameObject;
 class MeshRendererComponent;
 class Archive;
 class Tag;
-class NavMeshController;
 
 class ENGINE_API ModuleScene : public Module
 {
@@ -22,7 +21,6 @@ public:
 	update_status PostUpdate(float dt) override;
 
 	GameObject* GetRoot() const { return mRoot; }
-	NavMeshController* GetNavController() const { return mNavMeshController; }
 
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
@@ -86,7 +84,6 @@ private:
 	GameObject* mBackgroundScene = nullptr;
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
-	NavMeshController* mNavMeshController;
 
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
