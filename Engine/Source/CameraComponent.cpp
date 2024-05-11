@@ -12,8 +12,7 @@
 #include "Quadtree.h"
 #include "MeshRendererComponent.h"
 
-CameraComponent::CameraComponent(GameObject* owner)
-	:Component(owner, ComponentType::CAMERA)
+CameraComponent::CameraComponent(GameObject* owner) :Component(owner, ComponentType::CAMERA)
 {
 
     mFrustum.pos = owner->GetPosition();
@@ -28,6 +27,14 @@ CameraComponent::CameraComponent(GameObject* owner)
     mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * mAspectRatio);
 
     LookAt(mFrustum.pos, mFrustum.pos + owner->GetFront(), float3::unitY);
+
+    //App->GetCamera()->AddEnabledCamera(this);
+
+    if (owner->GetTag()->GetName().compare("MainCamera"))
+    {
+        App->GetCamera()->SetCurrentCamera(this);
+    }
+    
 }
 
 CameraComponent::CameraComponent(const CameraComponent& original, GameObject* owner)
@@ -39,10 +46,16 @@ CameraComponent::CameraComponent(const CameraComponent& original, GameObject* ow
 
 CameraComponent::~CameraComponent()
 {
-    if (this == App->GetCamera()->GetCurrentCamera() && App->GetCamera()->GetEditorCamera() != nullptr)
+   // App->GetCamera()->RemoveEnabledCamera(this);
+    if (GetID() == App->GetCamera()->GetCurrentCamera()->GetID())
     {
-        App->GetCamera()->SetCurrentCamera(App->GetCamera()->GetEditorCamera()->mOwner); //Change to create a function that looks for other camera components before setting the editor camera for ingame.
-    }
+        App->GetCamera()->SetCurrentCamera((CameraComponent*)nullptr);
+    }  
+}
+
+void CameraComponent::Enable()
+{
+    LOG("hola");
 }
 
 void CameraComponent::Update()

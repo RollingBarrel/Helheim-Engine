@@ -714,16 +714,6 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 		component->SetFOV(FOV);
 	}
 	ImGui::PopID();
-
-	if(ImGui::Button("Make Current Camera"))
-	{
-		EngineApp->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
-	}
-
-	if (ImGui::Button("Return To Editor Camera"))
-	{
-		EngineApp->GetCamera()->ActivateEditorCamera();
-	}
 }
 
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)

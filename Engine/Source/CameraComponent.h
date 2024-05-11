@@ -12,6 +12,8 @@ public:
     CameraComponent(const CameraComponent& original, GameObject* owner);
     ~CameraComponent();
 
+    void Enable() override;
+
     void Update() override;
     void UpdateRotation();
     Component* Clone(GameObject* owner) const override;

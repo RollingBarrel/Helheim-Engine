@@ -8,7 +8,7 @@
 #include "ProjectPanel.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleInput.h"
 #include "GameObject.h"
 #include "Component.h"
@@ -99,11 +99,7 @@ void ScenePanel::Draw(int windowFlags)
 	{
 		if (ImGui::IsWindowAppearing())
 		{
-			GameObject* cameraGameObject = EngineApp->GetScene()->FindGameObjectWithTag("MainCamera");
-			if (cameraGameObject)
-			{
-				EngineApp->GetCamera()->SetCurrentCamera(cameraGameObject);
-			}
+			EngineApp->GetEngineCamera()->ActivateGameCamera();
 		}
 
 		DrawScene();
@@ -115,17 +111,13 @@ void ScenePanel::Draw(int windowFlags)
 	{
 		if (ImGui::IsWindowAppearing())
 		{
-			EngineApp->GetCamera()->ActivateEditorCamera();
-
+			EngineApp->GetEngineCamera()->ActivateEditorCamera();
 		}
 
 		DrawScene();
 
 	}
 	ImGui::End();
-
-
-
 }
 
 void ScenePanel::DrawScene()
@@ -234,57 +226,61 @@ void ScenePanel::DrawScene()
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::SetRect(windowPos.x, windowPos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-	const CameraComponent* camera = EngineApp->GetCamera()->GetEditorCamera();
-	float4x4 cameraView = camera->GetViewMatrix().Transposed();
-	float4x4 cameraProjection = camera->GetProjectionMatrix().Transposed();
-
-	GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-
-	//If there's a selected object in the hierarchy and it's not the root
-	if (selectedGameObject && (selectedGameObject != EngineApp->GetScene()->GetRoot()))
+	if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
 	{
-		const float4x4* transform = &selectedGameObject->GetWorldTransform();
-		float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
+		const CameraComponent* camera = EngineApp->GetEngineCamera()->GetCurrentCamera();
+		float4x4 cameraView = camera->GetViewMatrix().Transposed();
+		float4x4 cameraProjection = camera->GetProjectionMatrix().Transposed();
 
-		//Draws the Guizmo axis
-		ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), currentGuizmoOperation, currentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
+		GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 
-		if (ImGuizmo::IsUsing())
+		//If there's a selected object in the hierarchy and it's not the root
+		if (selectedGameObject && (selectedGameObject != EngineApp->GetScene()->GetRoot()))
 		{
-			mIsGuizmoUsing = true;
-			GameObject* parent = selectedGameObject->GetParent();
-			float4x4 inverseParentMatrix = float4x4::identity;
-			float3 translation;
-			Quat rotation;
-			float3 scale;
+			const float4x4* transform = &selectedGameObject->GetWorldTransform();
+			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
-			if (parent != nullptr)
+			//Draws the Guizmo axis
+			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), currentGuizmoOperation, currentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
+
+			if (ImGuizmo::IsUsing())
 			{
-				const float4x4* parentTransform = &parent->GetWorldTransform();
-				inverseParentMatrix = parent->GetWorldTransform().Inverted();
+				mIsGuizmoUsing = true;
+				GameObject* parent = selectedGameObject->GetParent();
+				float4x4 inverseParentMatrix = float4x4::identity;
+				float3 translation;
+				Quat rotation;
+				float3 scale;
+
+				if (parent != nullptr)
+				{
+					const float4x4* parentTransform = &parent->GetWorldTransform();
+					inverseParentMatrix = parent->GetWorldTransform().Inverted();
+				}
+
+				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
+				localMatrix.Decompose(translation, rotation, scale);
+
+				switch (currentGuizmoOperation)
+				{
+				case ImGuizmo::TRANSLATE:
+					selectedGameObject->SetPosition(translation);
+					break;
+				case ImGuizmo::ROTATE:
+					selectedGameObject->SetRotation(rotation);
+					break;
+				case ImGuizmo::SCALE:
+					selectedGameObject->SetScale(scale);
+					break;
+				}
 			}
-
-			float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
-			localMatrix.Decompose(translation, rotation, scale);
-
-			switch (currentGuizmoOperation)
+			else
 			{
-			case ImGuizmo::TRANSLATE:
-				selectedGameObject->SetPosition(translation);
-				break;
-			case ImGuizmo::ROTATE:
-				selectedGameObject->SetRotation(rotation);
-				break;
-			case ImGuizmo::SCALE:
-				selectedGameObject->SetScale(scale);
-				break;
+				mIsGuizmoUsing = false;
 			}
-		}
-		else
-		{
-			mIsGuizmoUsing = false;
 		}
 	}
+	
 
 	//TODO: Find the way to only EngineApply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
 	/*

@@ -178,7 +178,7 @@ bool ModuleOpenGL::Init()
 
 	//Lighting uniforms
 	glUseProgram(mPbrProgramId);
-	glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
+	glUniform3fv(1, 1, (App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 	glUseProgram(0);
 
 	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirLight), &mDirLight);
@@ -307,7 +307,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height =
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
-	((CameraComponent*)App->GetCamera()->GetCurrentCamera())->SetAspectRatio((float)width / (float)height);
+	App->GetCamera()->SetAspectRatio((float)width / (float)height);
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);

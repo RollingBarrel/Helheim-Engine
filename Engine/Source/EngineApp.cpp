@@ -3,7 +3,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleEngineInput.h"
 #include "ModuleScene.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEngineScriptManager.h"
 #include "ModuleResource.h"
@@ -28,7 +28,8 @@ EngineApplication::EngineApplication()
 	modules[0] = engineInput = new ModuleEngineInput();
 	input = engineInput;
 	modules[1] = window = new ModuleWindow();
-	modules[2] = camera = new ModuleCamera();
+	modules[2] = engineCamera = new ModuleEngineCamera();
+	camera = engineCamera;
 	modules[3] = fileSystem = new ModuleFileSystem();
 	modules[4] = audio = new ModuleAudio();
 	modules[5] = render = new ModuleOpenGL();

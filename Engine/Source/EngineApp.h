@@ -1,6 +1,7 @@
 #include "Application.h"
 
 class ModuleDebugDraw;
+class ModuleEngineCamera;
 class ModuleEditor;
 class ModuleEngineResource;
 class ModuleEngineInput;
@@ -23,6 +24,7 @@ public:
 
 	ModuleEngineResource* GetEngineResource() { return engineResources; }
 	ModuleEngineInput* GetEngineInput() { return engineInput; }
+	ModuleEngineCamera* GetEngineCamera() { return engineCamera; }
 	ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
 	ModuleEngineScriptManager* GetEngineScriptManager() { return engineScriptManager; }
 	ModuleEditor* GetEditor() { return editor; }
@@ -35,6 +37,7 @@ public:
 
 private:
 	ModuleDebugDraw* debugDraw = nullptr;
+	ModuleEngineCamera* engineCamera = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleEngineResource* engineResources = nullptr;
 	ModuleEngineInput* engineInput = nullptr;

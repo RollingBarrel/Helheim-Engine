@@ -3,7 +3,7 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "CameraComponent.h"
 #include "Quadtree.h"
 #include "Timer.h"
@@ -172,9 +172,9 @@ void SettingsPanel::SaveProjectSettings()
 void SettingsPanel::SaveUserSettings()
 {
 	std::ofstream userSettings("userSettings.txt");
-	float3 cameraPosition = EngineApp->GetCamera()->GetEditorCamera()->GetFrustum().pos;
-	float3 cameraFront = EngineApp->GetCamera()->GetEditorCamera()->GetFrustum().front;
-	float3 cameraUp = EngineApp->GetCamera()->GetEditorCamera()->GetFrustum().up;
+	float3 cameraPosition = EngineApp->GetEngineCamera()->GetEditorCamera()->GetFrustum().pos;
+	float3 cameraFront = EngineApp->GetEngineCamera()->GetEditorCamera()->GetFrustum().front;
+	float3 cameraUp = EngineApp->GetEngineCamera()->GetEditorCamera()->GetFrustum().up;
 
 	if (userSettings.is_open())
 	{
@@ -195,8 +195,6 @@ void SettingsPanel::LoadUserSettings()
 	float3 cameraPosition;
 	float3 cameraFront;
 	float3 cameraUp;
-
-	float3 rotation;
 
 	if (userSettings.is_open())
 	{
@@ -219,8 +217,8 @@ void SettingsPanel::LoadUserSettings()
 			cameraUp[i] = std::stof(line);
 		}
 
-		EngineApp->GetCamera()->SetPosition(cameraPosition);
-		EngineApp->GetCamera()->SetFrontUp(cameraFront, cameraUp);
+		EngineApp->GetEngineCamera()->SetEditorCameraPosition(cameraPosition);
+		EngineApp->GetEngineCamera()->SetEditorCameraFrontUp(cameraFront, cameraUp);
 		
 		std::getline(userSettings, line);
 		std::getline(userSettings, line);
