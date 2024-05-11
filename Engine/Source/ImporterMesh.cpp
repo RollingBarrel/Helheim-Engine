@@ -111,7 +111,7 @@ static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTan
 
 static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int*& indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData)
 {
-#ifdef _DEBUG
+//#ifdef _DEBUG
     bool foundPos = false;
     bool foundUv = false;
     bool foundNormal = false;
@@ -134,7 +134,7 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
     }
     if (!foundPos || !foundUv || !foundNormal)
         return;
-#endif // _DEBUG
+//#endif // _DEBUG
 
     const char* vertices = reinterpret_cast<const char*>(vertexData);
     char* unweldedVertices = new char[numIndices * vertexSize];
