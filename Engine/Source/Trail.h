@@ -28,7 +28,7 @@ public:
 
 private:
 	std::deque<TrailPoint> mPoints;
-	float mMaxLifeTime;
+	float mMaxLifeTime; // If maxLiftime is 0, it means infinite lifetime
 	float mWidth;
 	ColorGradient mGradient;
 	float3 mDirection; // Fixed direction for the normal of the trailPoints

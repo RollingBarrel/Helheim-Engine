@@ -282,6 +282,7 @@
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Trail.cpp" />
+    <ClCompile Include="TrailComponent.cpp" />
     <ClCompile Include="Transform2DComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -489,6 +490,7 @@
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Trail.h" />
+    <ClInclude Include="TrailComponent.h" />
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
