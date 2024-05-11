@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Math/float3.h"
+#include "Archive.h"
 #include <vector>
 #include <string>
 
@@ -85,9 +86,10 @@ private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
 	void LoadGameObjectsIntoScripts();
-
+	
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
+	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent);
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;

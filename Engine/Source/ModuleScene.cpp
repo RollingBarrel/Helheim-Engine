@@ -1,3 +1,4 @@
+#pragma once
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
@@ -15,7 +16,6 @@
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
-#include "Archive.h"
 #include "Tag.h"
 #include "Globals.h"
 #include "NavMeshController.h"
@@ -338,29 +338,7 @@ void ModuleScene::Load(const char* sceneName)
 
 			mSceneGO.clear();
 
-			// Manage GameObjects inside the Scene
-			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
-			{
-				const rapidjson::Value& gameObjects = sceneValue["GameObjects"];
-				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-				{
-					if (gameObjects[i].IsObject())
-					{
-						mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], mRoot));
-					}
-				}
-
-				mRoot->RecalculateMatrices();
-
-				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-				{
-					// Manage Components
-					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
-					{
-						mSceneGO[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-					}
-				}
-			}
+			LoadGameObject(sceneValue, mRoot);
 		}
 
 		mQuadtreeRoot->UpdateTree();
@@ -422,40 +400,15 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 		if (update) { mRoot->LoadChangesPrefab(sceneValue, resourceId); }
 		else
 		{
-			// Manage GameObjects inside the Scene
-			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
+			GameObject* temp = new GameObject("Temp", parent);
+			LoadGameObject(sceneValue, temp);
+			for (GameObject* child : temp->GetChildren())
 			{
-				const rapidjson::Value& gameObjects = sceneValue["GameObjects"];
-				GameObject* temp = new GameObject("Temp", parent);
-				int offset = mSceneGO.size();
-				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-				{
-					if (gameObjects[i].IsObject())
-					{
-						mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], temp));
-					}
-				}
-
-
-				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-				{
-					// Manage Components
-					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
-					{
-						mSceneGO[offset + i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-					}
-				}
-
-				for (GameObject* child : temp->GetChildren())
-				{
-					GameObject* newObject = new GameObject(*child, parent);
-					parent->AddChild(newObject);
-					newObject->SetPrefabId(resourceId);
-				}
-				parent->DeleteChild(temp);
-				
+				GameObject* newObject = new GameObject(*child, parent);
+				parent->AddChild(newObject);
+				newObject->SetPrefabId(resourceId);
 			}
-
+			parent->DeleteChild(temp);
 		}
 	}
 
@@ -479,6 +432,35 @@ void ModuleScene::ClosePrefabScreen()
 #pragma endregion
 
 #pragma region GameObject Functions
+
+void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent)
+{
+	// Manage GameObjects inside the Scene
+	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
+	{
+		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
+		int offset = mSceneGO.size();
+		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+		{
+			if (gameObjects[i].IsObject())
+			{
+				mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], parent));
+			}
+		}
+
+		parent->RecalculateMatrices();
+
+		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+		{
+			// Manage Components
+			if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
+			{
+				mSceneGO[offset + i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+			}
+		}
+
+	}
+}
 
 GameObject* ModuleScene::Find(const char* name) const
 {
