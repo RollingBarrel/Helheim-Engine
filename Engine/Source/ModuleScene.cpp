@@ -379,6 +379,8 @@ void ModuleScene::Load(const char* sceneName)
 int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
 	GameObject* gameObject = new GameObject(objectToSave); //Make a copy to change IDs
+	gameObject->ResetTransform();
+	gameObject->RecalculateMatrices();
 	unsigned int resourceId = LCG().Int();
 	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
 	if (resource != nullptr) { resourceId = resource->GetUID(); }
@@ -424,12 +426,22 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 			{
 				const rapidjson::Value& gameObjects = sceneValue["GameObjects"];
 				GameObject* temp = new GameObject("Temp", mRoot);
+				int offset = mSceneGO.size();
 				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
 				{
 					if (gameObjects[i].IsObject())
 					{
 						mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], temp));
-						mSceneGO.back()->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+					}
+				}
+
+
+				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+				{
+					// Manage Components
+					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
+					{
+						mSceneGO[offset + i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
 
@@ -437,8 +449,6 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 				{
 					GameObject* newObject = new GameObject(*child, mRoot);
 					mRoot->AddChild(newObject);
-					newObject->ResetTransform();
-					newObject->SetPosition(position);
 					newObject->SetPrefabId(resourceId);
 				}
 				mRoot->DeleteChild(temp);
