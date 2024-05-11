@@ -22,6 +22,8 @@ public:
 	Trail();
 	~Trail();
 
+	void Update();
+	
 	void AddTrailPositions(float3 position, float3 rotation);
 
 private:
