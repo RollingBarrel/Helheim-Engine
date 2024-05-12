@@ -22,7 +22,7 @@ public:
 
 	void Init();
 	void Update() override;
-	void Draw() const;
+	void Draw();
 
 	Component* Clone(GameObject* owner) const override;
 	void Save(Archive& archive) const override;

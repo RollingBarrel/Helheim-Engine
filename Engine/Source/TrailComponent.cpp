@@ -35,19 +35,20 @@ Component* TrailComponent::Clone(GameObject* owner) const
 
 void TrailComponent::Init()
 {
-
+    mTrail.Init();
 }
 
-void TrailComponent::Draw() const
+void TrailComponent::Draw() 
 {
-
+    if (IsEnabled()) 
+    {
+        mTrail.Draw();
+    }
 }
 
 void TrailComponent::Update()
 {
     mTrail.Update();
-    float3 camPosition = App->GetCamera()->GetCurrentCamera()->GetFrustum().pos;
-
 }
 
 void TrailComponent::SetImage(unsigned int resourceId)

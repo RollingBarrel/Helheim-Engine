@@ -66,6 +66,7 @@ public:
 	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
+	unsigned int GetTrailProgramId() const { return mParticleProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 
@@ -128,6 +129,7 @@ private:
 	
 	
 	unsigned int mParticleProgramId = 0;
+	unsigned int mTrailProgramId = 0;
 
 
 	//IBL
