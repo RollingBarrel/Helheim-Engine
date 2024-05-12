@@ -4,15 +4,15 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "ModuleEngineCamera.h"
-#include "CameraComponent.h"
-#include "Quadtree.h"
+#include "GameObject.h"
 #include "Timer.h"
+
+#include "imgui.h"
 
 #include <fstream>
 #include <string>
 #include <sstream>
 
-#include "imgui.h"
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
 {
@@ -172,16 +172,14 @@ void SettingsPanel::SaveProjectSettings()
 void SettingsPanel::SaveUserSettings()
 {
 	std::ofstream userSettings("userSettings.txt");
-	float3 cameraPosition = EngineApp->GetEngineCamera()->GetEditorCamera()->GetFrustum().pos;
-	float3 cameraFront = EngineApp->GetEngineCamera()->GetEditorCamera()->GetFrustum().front;
-	float3 cameraUp = EngineApp->GetEngineCamera()->GetEditorCamera()->GetFrustum().up;
+	float3 cameraPosition = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition();
+	float3 cameraRotation = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation();
 
 	if (userSettings.is_open())
 	{
 		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
-		userSettings << "Camera Front:\n" << cameraFront.x << '\n' << cameraFront.y << '\n' << cameraFront.z << "\n";
-		userSettings << "Camera Up:\n" << cameraUp.x << '\n' << cameraUp.y << '\n' << cameraUp.z << "\n";
-
+		userSettings << "Camera Rotation:\n" << cameraRotation.x << '\n' << cameraRotation.y << '\n' << cameraRotation.z << "\n";
+		
 		userSettings << "Scene: \n" << App->GetScene()->GetName();
 	}
 }
@@ -193,8 +191,7 @@ void SettingsPanel::LoadUserSettings()
 	std::string line;
 
 	float3 cameraPosition;
-	float3 cameraFront;
-	float3 cameraUp;
+	float3 cameraRotation;
 
 	if (userSettings.is_open())
 	{
@@ -208,17 +205,11 @@ void SettingsPanel::LoadUserSettings()
 		for (int i = 0; i < 3; ++i)
 		{
 			if (std::getline(userSettings, line))
-			cameraFront[i] = std::stof(line);
-		}
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-			cameraUp[i] = std::stof(line);
+			cameraRotation[i] = std::stof(line);
 		}
 
-		EngineApp->GetEngineCamera()->SetEditorCameraPosition(cameraPosition);
-		EngineApp->GetEngineCamera()->SetEditorCameraFrontUp(cameraFront, cameraUp);
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(cameraPosition);
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(cameraRotation);
 		
 		std::getline(userSettings, line);
 		std::getline(userSettings, line);

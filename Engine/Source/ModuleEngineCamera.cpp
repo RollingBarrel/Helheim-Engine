@@ -39,7 +39,7 @@ update_status ModuleEngineCamera::Update(float dt)
 	CameraControls(dt);
 	mEditorCameraGameObject->Update();
 	App->GetOpenGL()->SetOpenGlCameraUniforms();
-	LOG("X: %f, Y: %f, Z: %f", RadToDeg(mEditorCameraGameObject->GetRotation().x), RadToDeg(mEditorCameraGameObject->GetRotation().y), RadToDeg(mEditorCameraGameObject->GetRotation().z));
+	//LOG("X: %f, Y: %f, Z: %f", RadToDeg(mEditorCameraGameObject->GetRotation().x), RadToDeg(mEditorCameraGameObject->GetRotation().y), RadToDeg(mEditorCameraGameObject->GetRotation().z));
 	return UPDATE_CONTINUE;
 }
 
@@ -109,16 +109,6 @@ bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
 	}
 
 	return removed;
-}
-
-void ModuleEngineCamera::SetEditorCameraPosition(float3 position)
-{
-	mEditorCameraGameObject->SetPosition(position);
-}
-
-void ModuleEngineCamera::SetEditorCameraFrontUp(float3 front, float3 up)
-{
-	//mEditorCamera->SetFrontUp(front, up);
 }
 
 void ModuleEngineCamera::MousePicking(Ray& ray)

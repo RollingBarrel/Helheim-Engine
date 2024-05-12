@@ -630,7 +630,7 @@ update_status  ModuleDebugDraw::Update(float dt)
 {
     if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
     {
-        CameraComponent* camera = EngineApp->GetEngineCamera()->GetEditorCamera();
+        const CameraComponent* camera = EngineApp->GetEngineCamera()->GetEditorCamera();
         if (camera)
         {
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();

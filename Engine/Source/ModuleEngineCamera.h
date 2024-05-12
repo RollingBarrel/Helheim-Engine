@@ -4,7 +4,7 @@
 
 class ModuleEngineCamera : public ModuleCamera
 {
-
+	friend class SettingsPanel;
 public:
 	bool Init() override;
 	update_status Update(float dt) override;
@@ -17,18 +17,15 @@ public:
 	bool AddEnabledCamera(CameraComponent* camera) override;
 	bool RemoveEnabledCamera(CameraComponent* camera) override;
 
-	CameraComponent* GetEditorCamera() { return mEditorCamera; }
+	const CameraComponent* GetEditorCamera() const { return mEditorCamera; }
 	bool IsEditorCameraActive() { return mIsEditorCameraActive; }
 	void DrawRaycast(bool draw) { mDrawRayCast = draw; }
-
-	void SetEditorCameraPosition(float3 position);
-	void SetEditorCameraFrontUp(float3 front, float3 up);
 
 private:
 	void MousePicking(Ray& ray);
 	void CameraControls(float dt);
 
-	GameObject* mEditorCameraGameObject;
+	GameObject* mEditorCameraGameObject = nullptr;
 	CameraComponent* mEditorCamera = nullptr;
 
 	bool mIsEditorCameraActive = true;
