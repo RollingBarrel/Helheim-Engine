@@ -68,9 +68,9 @@ private:
     unsigned int mQuadVAO = 0;
 
     //Spritesheet
-    bool mIsSpritesheet;
-    int mColumns;
-    int mRows;
+    bool mIsSpritesheet = false;
+    int mColumns = 0;
+    int mRows = 0;
 
     CanvasComponent* mCanvas = nullptr;
 };
