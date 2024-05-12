@@ -75,6 +75,32 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
     }
 
+    node.mLightId = tinyNode.light;
+
+    if (node.mLightId > -1)
+    {
+        node.mLight.mType = model.lights[tinyNode.light].type;
+
+        if (!model.lights[tinyNode.light].color.empty())
+        {
+            node.mLight.mColor = math::float3(model.lights[tinyNode.light].color[0], model.lights[tinyNode.light].color[1], model.lights[tinyNode.light].color[2]);
+        }
+        else
+        {
+            node.mLight.mColor = math::float3(1.0f);
+        }
+
+        node.mLight.mIntensity = model.lights[tinyNode.light].intensity;
+        //TODO Lights: Range is infinite if is 0;
+        node.mLight.mRange = (model.lights[tinyNode.light].range == 0.0f) ? 100.0f : model.lights[tinyNode.light].range;
+
+        if (node.mLight.mType.compare("spot") == 0)
+        {
+            node.mLight.mInnerConeAngle = model.lights[tinyNode.light].spot.innerConeAngle;
+            node.mLight.mOuterConeAngle = model.lights[tinyNode.light].spot.outerConeAngle;
+        }
+    }
+
     node.mMeshId = tinyNode.mesh;
 
     node.mCameraId = tinyNode.camera;
@@ -131,7 +157,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 
     size += node.mName.length() + 1         //Name
             + sizeof(int)                   //Parent Index in the vector
-            + sizeof(int) * 3;              //Mesh/Camera/Skin 
+            + sizeof(int) * 4;              //Mesh/Camera/Skin/Light
 
     size += sizeof(bool);                   //Tranforms
 
@@ -140,6 +166,18 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         size += sizeof(float) * 3           //Pos
             + sizeof(float) * 4             //Rot
             + sizeof(float) * 3;            //Scale
+    }
+
+    if (node.mLightId > -1)
+    {
+        size += sizeof(unsigned int)
+                + node.mLight.mType.length() + 1
+                + sizeof(float) * 5;
+
+        if (node.mLight.mType.compare("spot"))
+        {
+            size += sizeof(float) * 2;
+        }
     }
 
     if (node.mMeshId > -1)
