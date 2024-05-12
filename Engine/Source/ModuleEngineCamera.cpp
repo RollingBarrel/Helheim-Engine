@@ -15,8 +15,6 @@
 #include "HierarchyPanel.h"
 
 #include "Geometry/Ray.h"
-#include "Geometry/Sphere.h"
-#include "Geometry/AABB.h"
 #include "float3x3.h"
 
 bool ModuleEngineCamera::Init()
