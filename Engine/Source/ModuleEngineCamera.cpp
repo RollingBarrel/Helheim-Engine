@@ -3,12 +3,15 @@
 #include "GameObject.h"
 #include "CameraComponent.h"
 #include "Physics.h"
+#include "Quadtree.h"
+#include "Geometry/Ray.h"
 
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
+#include "ModuleDebugDraw.h"
 #include "ScenePanel.h"
 #include "HierarchyPanel.h"
 
@@ -25,8 +28,6 @@ bool ModuleEngineCamera::Init()
 		mEditorCamera->SetAspectRatio(w / h);
 	}
 	mCurrentCamera = mEditorCamera;
-
-
 
 	return true;
 }
@@ -101,7 +102,7 @@ bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
 		mCurrentCamera = mEditorCamera;
 		App->GetOpenGL()->SetOpenGlCameraUniforms();
 	}
-	
+
 	return removed;
 }
 
@@ -115,36 +116,18 @@ void ModuleEngineCamera::SetEditorCameraFrontUp(float3 front, float3 up)
 	mEditorCamera->SetFrontUp(front, up);
 }
 
-void ModuleEngineCamera::MousePicking()
+void ModuleEngineCamera::MousePicking(Ray& ray)
 {
-	/*
-	//mRay = Physics::ScreenPointToRay()
-	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
-
-	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
-	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
-
-	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
-	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
-
-	LineSegment raySegment = mCurrentCamera->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
-
-	mRay.pos = raySegment.a;
-	mRay.dir = (raySegment.b - raySegment.a);
+	ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
 
 	bool intersects = false;
 	bool intersectsTriangle = false;
 
 	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
+	if (!reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
 	{
-
-	}
-	else
-	{
-
-		std::map<float, Hit> hits = root->RayCast(&mRay);
+		std::map<float, Hit> hits = root->RayCast(&ray);
 		if (!hits.empty())
 		{
 			std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();
@@ -156,36 +139,30 @@ void ModuleEngineCamera::MousePicking()
 					parentGameObject = parentGameObject->GetParent();
 				}
 
-				GameObject* focusedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-
+				GameObject* focusedGameObject = reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 				if (focusedGameObject->GetID() == parentGameObject->GetID())
 				{
-					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second.mGameObject);
+					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second.mGameObject);
 				}
 				else
 				{
-					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
+					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
 				}
-
-
-
-
-
 			}
 		}
 	}
-	*/
+
 }
 
 void ModuleEngineCamera::CameraControls(float dt)
 {
-
-	//TODO: SEPARATE GAME ENGINE
-	//if (mDrawRayCast) 
-	//{
-	//	App->GetDebugDraw()->DrawLine(mRay.pos, mRay.dir, float3(1.0f, 0.0f, 0.0f));
-	//}
 	bool hasBeenUpdated = false;
+	static float shiftSpeed = 3.0f;
+	static Ray mousePickingRay;
+	if (mDrawRayCast)
+	{   //TODO: FIX DEBUG DRAW NOT BEING CORRECT
+		EngineApp->GetDebugDraw()->DrawLine(mousePickingRay.pos, mousePickingRay.dir, float3(1.0f, 0.0f, 0.0f));
+	}
 
 	if (mIsEditorCameraActive && ((ScenePanel*)EngineApp->GetEditor()->GetPanel(SCENEPANEL))->isHovered())
 	{
@@ -196,13 +173,13 @@ void ModuleEngineCamera::CameraControls(float dt)
 		float transformCameraVel = 0.03f;
 		const float rotateCameraVel = 0.01f;
 
-		const float dtFastSpeed = dtTransformCameraVel * mShiftSpeed;
+		const float dtFastSpeed = dtTransformCameraVel * shiftSpeed;
 		const float fastSpeed = transformCameraVel * 3.0f;
 		bool shiftPressed = (EngineApp->GetInput()->GetKey(KeyboardKeys_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(KeyboardKeys_RSHIFT) == KeyState::KEY_REPEAT);
 		float dtSpeed = shiftPressed ? dtFastSpeed : dtTransformCameraVel;
 		float speed = shiftPressed ? fastSpeed : transformCameraVel;
 
-		mShiftSpeed = shiftPressed ? mShiftSpeed + 0.05 : 5.0f;
+		shiftSpeed = shiftPressed ? shiftSpeed + 0.05 : 5.0f;
 
 
 		if (App->GetInput()->GetMouseWheelMotion() != 0)
@@ -242,6 +219,11 @@ void ModuleEngineCamera::CameraControls(float dt)
 				mCurrentCamera->Transform(float3(dtSpeed, 0, 0));
 			}
 		}
+		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN )
+		{
+			MousePicking(mousePickingRay);
+		}
+
 		//paning camera
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_MIDDLE) == KeyState::KEY_REPEAT)
 		{
@@ -307,13 +289,13 @@ void ModuleEngineCamera::CameraControls(float dt)
 			float transformCameraVel = 0.03f;
 			const float rotateCameraVel = 0.01f;
 
-			const float dtFastSpeed = dtTransformCameraVel * mShiftSpeed;
+			const float dtFastSpeed = dtTransformCameraVel * shiftSpeed;
 			const float fastSpeed = transformCameraVel * 3.0f;
 			bool shiftPressed = (App->GetInput()->GetKey(KeyboardKeys_LSHIFT) == KeyState::KEY_REPEAT) || (App->GetInput()->GetKey(KeyboardKeys_RSHIFT) == KeyState::KEY_REPEAT);
 			float dtSpeed = shiftPressed ? dtFastSpeed : dtTransformCameraVel;
 			float speed = shiftPressed ? fastSpeed : transformCameraVel;
 
-			mShiftSpeed = shiftPressed ? mShiftSpeed + 0.05 : 5.0f;
+			shiftSpeed = shiftPressed ? shiftSpeed + 0.05 : 5.0f;
 
 
 			if (App->GetInput()->GetMouseWheelMotion() != 0)

@@ -14,12 +14,12 @@ std::map<float, Hit> Physics::Raycast(Ray* ray)
     return App->GetScene()->GetQuadtreeRoot()->RayCast(ray);
 }
 
-Ray Physics::ScreenPointToRay(float2 mousePosition)
+Ray Physics::ScreenPointToRay(float2 mouseGlobalPosition)
 {
 	Ray ray;
 
-	float normalizedX = -1.0 + 2.0 * (float)(mousePosition.x - App->GetWindow()->GetGameWindowsPosition().x) / (float)App->GetWindow()->GetGameWindowsSize().x;
-	float normalizedY = 1.0 - 2.0 * (float)(mousePosition.y - App->GetWindow()->GetGameWindowsPosition().y) / (float)App->GetWindow()->GetGameWindowsSize().y;
+	float normalizedX = -1.0 + 2.0 * (float)(mouseGlobalPosition.x - App->GetWindow()->GetGameWindowsPosition().x) / (float)App->GetWindow()->GetGameWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseGlobalPosition.y - App->GetWindow()->GetGameWindowsPosition().y) / (float)App->GetWindow()->GetGameWindowsSize().y;
 
 	const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 	if (camera)

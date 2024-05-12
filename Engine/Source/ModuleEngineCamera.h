@@ -1,7 +1,6 @@
 #pragma once
 #include "ModuleCamera.h"
 #include "float3.h"
-#include <map>
 
 class ModuleEngineCamera : public ModuleCamera
 {
@@ -26,17 +25,13 @@ public:
 	void SetEditorCameraFrontUp(float3 front, float3 up);
 
 private:
+	void MousePicking(Ray& ray);
+	void CameraControls(float dt);
+
 	GameObject* mEditorCameraGameObject;
 	CameraComponent* mEditorCamera = nullptr;
 
-	void MousePicking();
-	void CameraControls(float dt);
-
-	std::map<float, GameObject*> mIntersectMap;
-	float mShiftSpeed = 3.0f;
-
 	bool mIsEditorCameraActive = true;
 	bool mDrawRayCast = false;
-
 };
 

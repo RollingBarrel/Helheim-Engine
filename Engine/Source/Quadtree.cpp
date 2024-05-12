@@ -175,7 +175,7 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 	}
 }
 
-const std::map<float, Hit> Quadtree::RayCast(Ray* ray) const
+const std::map<float, Hit> Quadtree::RayCast(const Ray* ray) const
 {
 	if (mFilled) 
 	{
