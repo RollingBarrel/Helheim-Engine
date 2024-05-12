@@ -1,3 +1,4 @@
+#pragma once
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
@@ -15,7 +16,6 @@
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
-#include "Archive.h"
 #include "Tag.h"
 #include "Globals.h"
 #include "NavMeshController.h"
@@ -335,29 +335,7 @@ void ModuleScene::Load(const char* sceneName)
 
 			mSceneGO.clear();
 
-			// Manage GameObjects inside the Scene
-			if (sceneValue.HasMember("GameObjects") && sceneValue["GameObjects"].IsArray())
-			{
-				const rapidjson::Value& gameObjects = sceneValue["GameObjects"];
-				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-				{
-					if (gameObjects[i].IsObject())
-					{
-						mSceneGO.push_back(mRoot->LoadGameObjectFromJSON(gameObjects[i], mRoot));
-					}
-				}
-
-				mRoot->RecalculateMatrices();
-
-				for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-				{
-					// Manage Components
-					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
-					{
-						mSceneGO[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-					}
-				}
-			}
+			LoadGameObject(sceneValue, mRoot);
 		}
 
 		mQuadtreeRoot->UpdateTree();
@@ -373,9 +351,11 @@ void ModuleScene::Load(const char* sceneName)
 
 #pragma region Prefabs
 
-int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePath) const
+int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
-	//TODO: separate game engine
+	GameObject* gameObject = new GameObject(objectToSave); //Make a copy to change IDs
+	gameObject->ResetTransform();
+	gameObject->RecalculateMatrices();
 	unsigned int resourceId = LCG().Int();
 	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
 	if (resource != nullptr) { resourceId = resource->GetUID(); }
@@ -383,7 +363,6 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
 	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector, gameObject->GetParent()->GetID());
-	//SaveGame(gameObject->GetChildren(), *archive);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 	prefabArchive->AddObject("Prefab", *archive);
 
@@ -394,11 +373,13 @@ int ModuleScene::SavePrefab(const GameObject* gameObject, const char* saveFilePa
 	App->GetFileSystem()->DiscoverFiles("Assets", root);
 	delete prefabArchive;
 	delete archive;
+	gameObject->GetParent()->DeleteChild(gameObject);
 	return resourceId;
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update)
+void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, GameObject* parent)
 {
+	if (parent == nullptr) parent = mRoot;
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
 
@@ -412,20 +393,19 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
 	{
-		const rapidjson::Value& s = d["Prefab"];
-		if (update) { mRoot->LoadChangesPrefab(s, resourceId); }
+		const rapidjson::Value& sceneValue = d["Prefab"];
+		if (update) { mRoot->LoadChangesPrefab(sceneValue, resourceId); }
 		else
 		{
-			GameObject* temp = new GameObject("Temp", mRoot);
-			temp->Load(s);
+			GameObject* temp = new GameObject("Temp", parent);
+			LoadGameObject(sceneValue, temp);
 			for (GameObject* child : temp->GetChildren())
 			{
-				child->ResetTransform();
-				child->SetPrefabId(resourceId);
-				mRoot->AddChild(child);
-				temp->RemoveChild(child->GetID());
+				GameObject* newObject = new GameObject(*child, parent);
+				parent->AddChild(newObject);
+				newObject->SetPrefabId(resourceId);
 			}
-			mRoot->DeleteChild(temp);
+			parent->DeleteChild(temp);
 		}
 	}
 
@@ -449,6 +429,35 @@ void ModuleScene::ClosePrefabScreen()
 #pragma endregion
 
 #pragma region GameObject Functions
+
+void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent)
+{
+	// Manage GameObjects inside the Scene
+	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
+	{
+		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
+		int offset = mSceneGO.size();
+		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+		{
+			if (gameObjects[i].IsObject())
+			{
+				mSceneGO.push_back(GameObject::LoadGameObjectFromJSON(gameObjects[i], parent));
+			}
+		}
+
+		parent->RecalculateMatrices();
+
+		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+		{
+			// Manage Components
+			if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
+			{
+				mSceneGO[offset + i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+			}
+		}
+
+	}
+}
 
 GameObject* ModuleScene::Find(const char* name) const
 {

@@ -39,7 +39,7 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	}
 	else 
 	{
-		std::vector childrens = GetOwner()->GetChildren();
+		const std::vector<GameObject*>& childrens = GetOwner()->GetChildren();
 		for (GameObject* child : childrens)
 		{
 			if (child->GetName() == "Fill") 
