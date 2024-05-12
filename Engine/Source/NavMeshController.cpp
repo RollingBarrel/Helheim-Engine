@@ -12,7 +12,6 @@
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMesh.h"
 #include "DetourNavMeshQuery.h"
-#include "Geometry/Triangle.h"
 #include "Recast.h"
 #include "Tag.h"
 #include "ModuleFileSystem.h"

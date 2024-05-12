@@ -7,11 +7,7 @@
 #include "DetourNavMesh.h"
 #include "ModuleScene.h"
 #include "DetourNavMeshQuery.h"
-#include "Geometry/AABB.h"
-#include "Geometry/OBB.h"
 #include "Application.h"
-#include "ModuleDebugDraw.h"
-#include "ModuleOpenGL.h"
 #include "ModuleResource.h"
 #include "ModuleFileSystem.h"
 #include "ResourceNavmesh.h"
@@ -141,7 +137,7 @@ void ModuleDetourNavigation:: FindDebugPoint() {
 float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize) 
 {
 	float3 queryResult = float3(0.0f);
-	if (!mNavQuery->getNodePool()) {
+	if (!mNavQuery) {
 		LOG("BUILD NAVMESH");
 		return queryResult;
 	}
