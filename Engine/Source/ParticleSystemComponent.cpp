@@ -26,8 +26,9 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mIsSpeedCurve(original.mIsSpeedCurve),
 mSpeedLineal(original.mSpeedLineal), mSpeedCurve(original.mSpeedCurve), mIsSizeCurve(original.mIsSizeCurve), mSizeCurve(original.mSizeCurve),
 mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping),
-mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), Component(owner, ComponentType::PARTICLESYSTEM)
+mShapeType(original.mShapeType), Component(owner, ComponentType::PARTICLESYSTEM)
 {
+    mColorGradient = new ColorGradient(*original.mColorGradient);
     SetImage(original.mResourceId);
     Init();
     mShape->CopyShape(*original.mShape);
@@ -45,7 +46,6 @@ ParticleSystemComponent::~ParticleSystemComponent()
         delete particle;
     }
     mParticles.clear();
-    delete mColorGradient;
 }
 
 Component* ParticleSystemComponent::Clone(GameObject* owner) const

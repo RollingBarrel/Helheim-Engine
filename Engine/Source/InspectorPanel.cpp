@@ -1271,7 +1271,7 @@ float4 ImColorToFloat4(const float* color)
 ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
 	ImGradient result;
 
-	const std::unordered_map<float, float4>& marks = gradient->GetColorMarks();
+	const std::map<float, float4>& marks = gradient->GetColorMarks();
 
 	for (const auto& mark : marks) {
 		result.addMark(mark.first, Float4ToImColor(mark.second));
@@ -1323,7 +1323,7 @@ static void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gr
 static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
 {
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	std::unordered_map<float, float4> marks = gradient->GetColorMarks();
+	std::map<float, float4> marks = gradient->GetColorMarks();
 
 	// find if markEdit is not in marks to add it
 	for (const ImGradientMark* markEdit : marksEdited) {

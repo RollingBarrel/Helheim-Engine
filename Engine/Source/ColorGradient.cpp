@@ -4,6 +4,11 @@ ColorGradient::ColorGradient()
 {
 }
 
+ColorGradient::ColorGradient(ColorGradient& original)
+{
+    mColorMarks = original.mColorMarks;
+}
+
 ColorGradient::~ColorGradient()
 {
 	mColorMarks.clear();
@@ -19,28 +24,25 @@ void ColorGradient::RemoveColorGradientMark(float position)
     mColorMarks.erase(position);
 }
 
-template<typename T> static inline T MyClamp(T v, T mn, T mx) { return (v < mn) ? mn : (v > mx) ? mx : v; }
+//template<typename T> static inline T MyClamp(T v, T mn, T mx) { return (v < mn) ? mn : (v > mx) ? mx : v; }
 
 float4 ColorGradient::CalculateColor(float position) const
 {
     float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    if (mColorMarks.empty()) return color;
 
     position = (position < 0) ? 0 : (position > 1) ? 1 : position;
 
-    auto lower = mColorMarks.lower_bound(position);
     auto upper = mColorMarks.upper_bound(position);
-
-    if (upper == mColorMarks.end() && lower == mColorMarks.end())
-    {
-        return color;
-    }
-    else if (upper == mColorMarks.end())
-    {
-        return lower->second;
-    }
-    else if (lower == mColorMarks.end())
+    auto lower = upper;
+    --lower;
+    if (upper == mColorMarks.begin())
     {
         return upper->second;
+    }
+    if (upper == mColorMarks.end())
+    {
+        return lower->second;
     }
     else
     {
