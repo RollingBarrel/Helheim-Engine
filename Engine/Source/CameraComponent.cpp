@@ -90,13 +90,16 @@ void CameraComponent::Update()
 
 void CameraComponent::UpdateRotation()
 {
-    float3 rotation = mOwner->GetWorldTransform().ToEulerXYZ();
-    float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3(1, 0, 0), rotation.x);
-    rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 1, 0), rotation.y);
-    rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 0, 1), rotation.z);
+    //float3 rotation = mOwner->GetWorldTransform().ToEulerXYZ();
+    //float3x3 rotationMatrix = float3x3::RotateAxisAngle(float3(1, 0, 0), rotation.x);
+    //rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 1, 0), rotation.y);
+    //rotationMatrix = rotationMatrix * float3x3::RotateAxisAngle(float3(0, 0, 1), rotation.z);
 
-    LookAt(mFrustum.pos, mFrustum.pos + rotationMatrix.Mul(float3::unitZ), rotationMatrix.Mul(float3::unitY));
+    //LookAt(mFrustum.pos, mFrustum.pos + rotationMatrix.Mul(float3::unitZ), rotationMatrix.Mul(float3::unitY));
 
+    mFrustum.pos = mOwner->GetPosition();
+    mFrustum.front = mOwner->GetFront();
+    mFrustum.up = mOwner->GetUp();
     App->GetOpenGL()->SetOpenGlCameraUniforms();
 }
 
