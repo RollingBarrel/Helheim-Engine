@@ -28,12 +28,8 @@ CameraComponent::CameraComponent(GameObject* owner) :Component(owner, ComponentT
 
     LookAt(mFrustum.pos, mFrustum.pos + owner->GetFront(), float3::unitY);
 
-    //App->GetCamera()->AddEnabledCamera(this);
+    App->GetCamera()->AddEnabledCamera(this);
 
-    if (owner->GetTag()->GetName().compare("MainCamera"))
-    {
-        App->GetCamera()->SetCurrentCamera(this);
-    }
     
 }
 
@@ -42,20 +38,22 @@ CameraComponent::CameraComponent(const CameraComponent& original, GameObject* ow
 {
 	mFrustum = original.mFrustum;
     mAspectRatio = original.mFrustum.AspectRatio();
+    App->GetCamera()->AddEnabledCamera(this);
 }
 
 CameraComponent::~CameraComponent()
 {
-   // App->GetCamera()->RemoveEnabledCamera(this);
-    if (GetID() == App->GetCamera()->GetCurrentCamera()->GetID())
-    {
-        App->GetCamera()->SetCurrentCamera((CameraComponent*)nullptr);
-    }  
+   App->GetCamera()->RemoveEnabledCamera(this); 
 }
 
 void CameraComponent::Enable()
 {
-    LOG("hola");
+    App->GetCamera()->AddEnabledCamera(this);
+}
+
+void CameraComponent::Disable()
+{
+    App->GetCamera()->RemoveEnabledCamera(this);
 }
 
 void CameraComponent::Update()

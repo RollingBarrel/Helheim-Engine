@@ -25,11 +25,6 @@ bool ModuleGame::Init()
 	App->GetScene()->GetNavController()->HandleBuild();
 
 	//TODO: Add this code to is game playing in editor and game
-	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
-	if (cameraGameObject)
-	{
-		App->GetCamera()->SetCurrentCamera(cameraGameObject);
-	}
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	

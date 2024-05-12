@@ -13,6 +13,7 @@ public:
     ~CameraComponent();
 
     void Enable() override;
+    void Disable() override;
 
     void Update() override;
     void UpdateRotation();

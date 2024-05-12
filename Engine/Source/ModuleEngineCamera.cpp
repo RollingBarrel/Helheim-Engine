@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "CameraComponent.h"
 
+#include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
@@ -14,7 +15,7 @@ bool ModuleEngineCamera::Init()
 {
 	mEditorCameraGameObject = new GameObject(nullptr);
 	mEditorCamera = reinterpret_cast<CameraComponent*>(mEditorCameraGameObject->CreateComponent(ComponentType::CAMERA));
-
+	mActiveCameras.clear();
 	if (App != nullptr)
 	{
 		float w = EngineApp->GetWindow()->GetWidth();
@@ -27,38 +28,6 @@ bool ModuleEngineCamera::Init()
 
 
 	return true;
-}
-
-void ModuleEngineCamera::SetCurrentCamera(GameObject* camera)
-{
-	if (camera)
-	{
-		mCurrentCamera = reinterpret_cast<CameraComponent*>(camera->GetComponent(ComponentType::CAMERA));
-		mGameCamera = mCurrentCamera;
-		mIsEditorCameraActive = false;
-	}
-	else 
-	{
-		mCurrentCamera = mEditorCamera;
-		mGameCamera = nullptr;
-		mIsEditorCameraActive = true;
-	}
-}
-
-void ModuleEngineCamera::SetCurrentCamera(CameraComponent* camera)
-{
-	if (camera)
-	{
-		mCurrentCamera = camera;
-		mGameCamera = mCurrentCamera;
-		mIsEditorCameraActive = false;
-	}
-	else
-	{
-		mCurrentCamera = mEditorCamera;
-		mGameCamera = nullptr;
-		mIsEditorCameraActive = true;
-	}
 }
 
 update_status ModuleEngineCamera::Update(float dt)
@@ -292,25 +261,59 @@ bool ModuleEngineCamera::CleanUp()
 
 void ModuleEngineCamera::ActivateEditorCamera()
 {
-	if (mCurrentCamera->GetID() != mEditorCamera->GetID())
+
+	if (!mCurrentCamera || mCurrentCamera->GetID() != mEditorCamera->GetID())
 	{
-		mGameCamera = mCurrentCamera;
 		mCurrentCamera = mEditorCamera;
 		mIsEditorCameraActive = true;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
 	}
 }
 
 void ModuleEngineCamera::ActivateGameCamera()
 {
 
-	if (mCurrentCamera->GetID() == mEditorCamera->GetID())
+	if (!mCurrentCamera || mCurrentCamera->GetID() == mEditorCamera->GetID())
 	{
-		if (mGameCamera)
+		if (mMainCamera)
 		{
-			mCurrentCamera = mGameCamera;
-			mIsEditorCameraActive = false;
+			mCurrentCamera = mMainCamera;
 		}
+		else if (!mActiveCameras.empty())
+		{
+			mCurrentCamera = mActiveCameras.front();
+		}
+		else
+		{
+			mCurrentCamera = nullptr;
+		}
+
+		mIsEditorCameraActive = false;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
 	}
+}
+
+bool ModuleEngineCamera::AddEnabledCamera(CameraComponent* camera)
+{
+	bool added = ModuleCamera::AddEnabledCamera(camera);
+
+	if (mIsEditorCameraActive)
+	{
+		mCurrentCamera = mEditorCamera;
+	}
+
+	return added;
+}
+
+bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
+{
+	bool removed = ModuleCamera::RemoveEnabledCamera(camera);
+	if (mIsEditorCameraActive)
+	{
+		mCurrentCamera = mEditorCamera;
+	}
+	
+	return removed;
 }
 
 void ModuleEngineCamera::SetEditorCameraPosition(float3 position)

@@ -320,12 +320,27 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
 	if (mCameraUniBuffer != nullptr)
 	{
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+		const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-		glUseProgram(mPbrProgramId);
-		glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
-		glUseProgram(0);
+		if (camera)
+		{
+			mCameraUniBuffer->UpdateData(camera->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(camera->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			glUseProgram(mPbrProgramId);
+			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
+			glUseProgram(0);
+		}
+		else
+		{
+			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			glUseProgram(mPbrProgramId);
+			glUniform3fv(1, 1, float3::zero.ptr());
+			glUseProgram(0);
+		}
+		
 	}
 }
 

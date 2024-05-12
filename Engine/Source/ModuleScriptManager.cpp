@@ -92,12 +92,6 @@ void ModuleScriptManager::StartScripts()
 		mScripts[i]->mScript->Start();
 	}
 
-	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
-	if (cameraGameObject)
-	{
-		App->GetCamera()->SetCurrentCamera(cameraGameObject);
-	}
-
 }
 
 

@@ -6,7 +6,7 @@
 #include "Geometry/AABB.h"
 #include "EngineApp.h"
 #include "ModuleOpenGL.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "DebugPanel.h"
@@ -628,12 +628,19 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update(float dt)
 {
-    EngineApp->GetOpenGL()->BindSceneFramebuffer();
-
-    float4x4 viewproj = ((CameraComponent*)EngineApp->GetCamera()->GetCurrentCamera())->GetProjectionMatrix() * ((CameraComponent*)EngineApp->GetCamera()->GetCurrentCamera())->GetViewMatrix();
-    Draw(viewproj, EngineApp->GetWindow()->GetWidth(), EngineApp->GetWindow()->GetHeight());
-    EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
-	return UPDATE_CONTINUE;
+    if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
+    {
+        CameraComponent* camera = EngineApp->GetEngineCamera()->GetEditorCamera();
+        if (camera)
+        {
+            float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
+            
+            EngineApp->GetOpenGL()->BindSceneFramebuffer();
+            Draw(viewproj, EngineApp->GetWindow()->GetWidth(), EngineApp->GetWindow()->GetHeight());
+            EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
+        }
+    }
+    return UPDATE_CONTINUE;
 }
 
 void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned height)

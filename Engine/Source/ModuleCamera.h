@@ -2,8 +2,7 @@
 #define _MODULE_CAMERA_H_
 
 #include "Module.h"
-#include "Math/float3.h"
-
+#include <vector>
 
 class CameraComponent;
 class GameObject;
@@ -15,13 +14,19 @@ public:
 	update_status Update(float dt) override;
 	bool CleanUp() override;
 
+	virtual bool AddEnabledCamera(CameraComponent* camera);
+	virtual bool RemoveEnabledCamera(CameraComponent* camera);
+
 	const virtual CameraComponent* GetCurrentCamera() const;
 	void SetAspectRatio(float aspectRatio);
-	virtual void SetCurrentCamera(GameObject* camera);
-	virtual void SetCurrentCamera(CameraComponent* camera);
 
 protected:
 	
+	bool AddMainCamera(CameraComponent* camera);
+	bool RemoveMainCamera(CameraComponent* camera);
+
+	std::vector<CameraComponent*> mActiveCameras;
+	CameraComponent* mMainCamera = nullptr;
 	CameraComponent* mCurrentCamera = nullptr;
 };
 

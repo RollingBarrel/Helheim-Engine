@@ -21,18 +21,16 @@ Ray Physics::ScreenPointToRay(float2 mousePosition)
 	float normalizedX = -1.0 + 2.0 * (float)(mousePosition.x - App->GetWindow()->GetGameWindowsPosition().x) / (float)App->GetWindow()->GetGameWindowsSize().x;
 	float normalizedY = 1.0 - 2.0 * (float)(mousePosition.y - App->GetWindow()->GetGameWindowsPosition().y) / (float)App->GetWindow()->GetGameWindowsSize().y;
 
-	LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
-
-	ray.pos = raySegment.a;
-	ray.dir = (raySegment.b - raySegment.a).Normalized();
-
-	if (ray.dir.IsNormalized())
+	const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+	if (camera)
 	{
-		return ray;
+		LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
+		ray.pos = raySegment.a;
+		ray.dir = (raySegment.b - raySegment.a).Normalized();
+
+		return (ray.dir.IsNormalized()) ? ray : Ray();
 	}
-	else 
-	{
-		return Ray();
-	}
+	
+	
     
 }
