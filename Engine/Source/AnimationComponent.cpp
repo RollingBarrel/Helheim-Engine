@@ -159,9 +159,9 @@ std::string AnimationComponent::GetCurrentStateName()
 {
 	std::string currentStateName;
 
-	if (mStateMachine != nullptr && currentState < mStateMachine->GetNumStates())
+	if (mStateMachine != nullptr && mCurrentState < mStateMachine->GetNumStates())
 	{
-		currentStateName = mStateMachine->GetStateName(currentState);
+		currentStateName = mStateMachine->GetStateName(mCurrentState);
 	}
 
 	return currentStateName;
@@ -189,14 +189,18 @@ void AnimationComponent::ChangeState(std::string stateName)
 
 	if (stateIndex < mStateMachine->GetNumStates())
 	{
-		currentState = stateIndex;
+		mCurrentState = stateIndex;
 		int clipIndex = mStateMachine->GetClipIndex(mStateMachine->GetStateClip(stateIndex));
 
 		unsigned int resourceAnimation = mStateMachine->GetClipResource(clipIndex);
 
 		if (resourceAnimation !=0)
 		{
-			SetAnimation(resourceAnimation);
+			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
+			mController->SetNextAnimation(tmpAnimation);
+			mController->SetStartTransitionTime(mStateMachine->GetStateStartTime(stateIndex));
+			mController->ActivateTransition();
+			//SetAnimation(resourceAnimation);
 		}
 	}
 

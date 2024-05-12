@@ -71,6 +71,8 @@ public:
 	int GetStateIndex(std::string& stateName);
 	std::string& GetStateClip(int index);
 	std::string& GetStateName(int index);
+	float GetStateStartTime(int index);
+	float GetStateEndTime(int index);
 	void SetStateClip(int index, std::string& clipName);
 	void SetStateName(int index, std::string& name);
 	void SetStateStartTime(int index, float time);

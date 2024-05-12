@@ -106,6 +106,16 @@ std::string& AnimationStateMachine::GetStateName(int index)
 	return mStates[index].mName;
 }
 
+float AnimationStateMachine::GetStateStartTime(int index)
+{
+	return mStates[index].mStartTime;
+}
+
+float AnimationStateMachine::GetStateEndTime(int index)
+{
+	return mStates[index].mEndTime;
+}
+
 void AnimationStateMachine::SetStateClip(int index, std::string& clipName)
 {
 	mStates[index].mClip = clipName;

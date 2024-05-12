@@ -951,7 +951,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if (ImGui::Combo("Select State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
-		component->GetAnimationController()->SetStartTransitionTime();
+		component->GetAnimationController()->SetStartTransitionTime(component->GetAnimationController());
 		component->SetCurrentClip(currentItem);
 		component->StartTransition(transitionDuration);
 	}

@@ -94,7 +94,7 @@ private:
 
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
-	int currentState = 0;
+	int mCurrentState = 0;
 
 	bool mLoop = true;
 	bool mIsPlaying = false;
