@@ -7,6 +7,7 @@
 #include "ModuleWindow.h"
 #include "ModuleUI.h"
 #include "ModuleEditor.h"
+#include "Timer.h"
 
 #include "ScenePanel.h"
 
@@ -102,6 +103,10 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 { 
+	if (mIsSpritesheet)
+	{
+		FillSpriteSheetVBO();
+	}
 	if (mImage && mCanvas)
 	{
 
@@ -260,6 +265,29 @@ void ImageComponent::FillVBO()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 }
 
+void ImageComponent::FillSpriteSheetVBO()
+{
+	int row = mCurrentFrame / mColumns;
+	int column = mCurrentFrame % mColumns;
+
+	float uStart = (float)column / mColumns;
+	float vStart = (float)row / mRows;
+	float uEnd = uStart + 1.0f / mColumns;
+	float vEnd = vStart + 1.0f / mRows;
+
+	float vertices[] = {
+		-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
+		-0.5f, -0.5f,  uStart, vEnd,     // bottom-left vertex
+		 0.5f, -0.5f,  uEnd,   vEnd,     // bottom-right vertex
+		 0.5f,  0.5f,  uEnd,   vStart,   // top-right vertex
+		-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
+		 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
+	};
+	glGenBuffers(1, &mQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+}
+
 void ImageComponent::CreateVAO()
 {
 	glGenVertexArrays(1, &mQuadVAO);
@@ -291,6 +319,25 @@ void ImageComponent::ResizeByRatio()
 		float ratio = currentRatio / originalRatio;
 		float3 newScale = float3(GetOwner()->GetScale().x, GetOwner()->GetScale().y * ratio, GetOwner()->GetScale().z);
 		GetOwner()->SetScale(newScale);
+	}
+}
+
+void ImageComponent::Update()
+{
+	if (mIsSpritesheet)
+	{
+		mElapsedTime += App->GetCurrentClock()->GetDelta();
+		if (mElapsedTime > mFrameDuration)
+		{
+			mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
+			if (mColumns != 0 && mRows != 0) {
+				mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
+			}
+			else {
+				mCurrentFrame = 0;
+			}
+			mElapsedTime -= mFrameDuration;
+		}
 	}
 }
 

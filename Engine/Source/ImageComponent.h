@@ -14,7 +14,7 @@ public:
     ~ImageComponent();
 
     void Reset() override {}
-    void Update() override {}
+    void Update();
     bool CleanUp();
     Component* Clone(GameObject* owner) const override;
 
@@ -22,6 +22,7 @@ public:
 
     void SetImage(ResourceTexture* image) { mImage = image; }
     void FillVBO();
+    void FillSpriteSheetVBO();
     void CreateVAO();
     void ResizeByRatio();
 
@@ -69,8 +70,11 @@ private:
 
     //Spritesheet
     bool mIsSpritesheet = false;
-    int mColumns = 0;
-    int mRows = 0;
+    int mColumns = 1;
+    int mRows = 1;
+    int mCurrentFrame = 0;
+    float mElapsedTime = 0.0f;
+    float mFrameDuration = 1.0f / 2.0f; // 30 FPS
 
     CanvasComponent* mCanvas = nullptr;
 };
