@@ -12,6 +12,7 @@
 #include <Windows.h>
 #include <string>
 #include "ModuleInput.h"
+#include "ModuleCamera.h"
 #include <any>
 
 static bool PDBReplace(const std::string& filename, const std::string& namePDB);
@@ -81,10 +82,22 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 
 void ModuleScriptManager::StartScripts()
 {
+	if (App->GetScene()->GetRoot()->GetName() == "Level1")
+	{
+		App->GetScene()->GetNavController()->HandleBuild();
+	}
+
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
 	{
 		mScripts[i]->mScript->Start();
 	}
+
+	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
+	if (cameraGameObject)
+	{
+		App->GetCamera()->SetCurrentCamera(cameraGameObject);
+	}
+
 }
 
 

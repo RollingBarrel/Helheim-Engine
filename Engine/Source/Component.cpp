@@ -63,6 +63,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Audio Source";
 		case ComponentType::SLIDER:
 			return "Slider";
+		case ComponentType::PARTICLESYSTEM:
+			return "Particle System";
 		default:
 			return "None";
 		}

@@ -81,6 +81,7 @@ bool EngineApplication::Init()
 update_status EngineApplication::Update(float dt)
 {
 	//OPTICK_FRAME("MainThread");
+	if (mExit) return UPDATE_STOP;
 
 	mCurrentTimer->Update();
 
@@ -100,13 +101,36 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	editor->SaveCameraPosition();
+	editor->SaveUserSettings();
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)
 		ret = modules[i]->CleanUp();
 
 	return ret;
+}
+
+void EngineApplication::Start()
+{
+	mIsPlayMode = true;
+
+	SetCurrentClock(EngineApp->GetGameClock());
+	scene->Save("TemporalScene");
+	engineScriptManager->StartScripts();
+	mGameTimer->Start();
+}
+
+void EngineApplication::Stop()
+{
+	mIsPlayMode = false;
+
+	mEngineTimer->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
+	mGameTimer->Stop();
+	SetCurrentClock(EngineApp->GetEngineClock());
+	mEngineTimer->Resume();
+	EngineApp->GetAudio()->EngineStop();
+	scene->Load("TemporalScene");
+
 }
 
 float EngineApplication::GetRealDt() const

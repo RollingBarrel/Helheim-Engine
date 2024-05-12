@@ -2,6 +2,7 @@
 
 #include "EngineApp.h"
 #include "ModuleFileSystem.h"
+#include "ModuleEngineResource.h"
 #include "ProjectPanel.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
@@ -136,6 +137,10 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 			{
 				mSelectedAsset = current.assets[i];
 			}
+			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+			{
+				//App->GetScene()->Load(current.assets[i]->mName);
+			}
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
 				AssetDisplay* asset = current.assets[i];
@@ -164,7 +169,10 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 			{
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
-				object->SetPrefabId(EngineApp->GetScene()->SavePrefab(object, file.c_str()));
+				unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
+				object->SetPrefabId(resourceId);
+				EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
+
 			}
 		}
 		ImGui::EndDragDropTarget();

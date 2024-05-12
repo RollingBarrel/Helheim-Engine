@@ -12,6 +12,7 @@
 #include <Windows.h>
 #include <string>
 #include "ModuleEngineInput.h"
+#include "ModuleCamera.h"
 #include <any>
 
 //static bool PDBReplace(const std::string& filename, const std::string& namePDB);
@@ -42,7 +43,7 @@ update_status ModuleEngineScriptManager::PreUpdate(float dt)
 	UpdateScripts();
 
 	int64_t modificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
-	if (mLastModificationTime != modificationTime && !mIsPlaying)
+	if (mLastModificationTime != modificationTime && !EngineApp->IsPlayMode())
 	{
 		mLastModificationTime = modificationTime;
 		HotReload();
@@ -53,7 +54,7 @@ update_status ModuleEngineScriptManager::PreUpdate(float dt)
 
 update_status ModuleEngineScriptManager::Update(float dt)
 {
-	if (mIsPlaying) 
+	if (EngineApp->IsPlayMode() && !mPause)
 	{
 		for (unsigned int i = 0; i < mScripts.size(); ++i) 
 		{
@@ -84,15 +85,9 @@ void ModuleEngineScriptManager::ReloadScripts(const std::vector<std::vector<std:
 	{
 
 		std::vector<std::pair<Member, void*>> oldScript = oldScripts[i];
-
-
-		
 		mScripts[i]->LoadScript(mScripts[i]->GetScriptName());
-
 		Script* newScript = mScripts[i]->mScript;
-
 		const std::vector<Member*> newMembers = newScript->GetMembers();
-		
 		
 		for (unsigned int j = 0; j < oldScript.size(); ++j) 
 		{
@@ -100,7 +95,8 @@ void ModuleEngineScriptManager::ReloadScripts(const std::vector<std::vector<std:
 			for (unsigned int k = 0; k < newMembers.size(); ++k) 
 			{
 				
-				if (strcmp(oldScript[j].first.mName, newMembers[k]->mName) == 0) {
+				if (strcmp(oldScript[j].first.mName, newMembers[k]->mName) == 0) 
+				{
 					char* newScriptPos = ((char*)newScript) + newMembers[k]->mOffset;
 					switch (newMembers[k]->mType)
 					{
@@ -180,25 +176,19 @@ void ModuleEngineScriptManager::SaveOldScript(std::vector<std::vector<std::pair<
 	}
 }
 
-void ModuleEngineScriptManager::Play()
+void ModuleEngineScriptManager::Pause(bool pause)
 {
-	mIsPlaying = true;
+	mPause = pause;
 }
 
-void ModuleEngineScriptManager::Stop()
+void ModuleEngineScriptManager::StartScripts()
 {
-	mIsPlaying = false;
-}
-
-void ModuleEngineScriptManager::Start()
-{
-
-	mIsPlaying = true;
-	for (ScriptComponent* script : mScripts) 
+	if (EngineApp->IsPlayMode())
 	{
-		script->mScript->Start();
+		ModuleScriptManager::StartScripts();
 	}
 }
+
 
 void ModuleEngineScriptManager::UpdateScripts()
 {

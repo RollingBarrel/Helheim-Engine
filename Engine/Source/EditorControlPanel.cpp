@@ -171,17 +171,13 @@ void EditorControlPanel::Play()
 {
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.05f, 0.05f, 0.07f, 1.0f };
-	EngineApp->SetCurrentClock(EngineApp->GetGameClock());
-	EngineApp->GetScene()->Save("TemporalScene");
-	EngineApp->GetEngineScriptManager()->Start();
-	EngineApp->GetGameClock()->Start();
-	EngineApp->PlayMode(true);
-
+	
+	EngineApp->Start();
 	switch (mState)
 	{
 	case GameState::PAUSE:
 		mState = GameState::PLAY_PAUSE;
-		EngineApp->GetEngineScriptManager()->Stop();
+		EngineApp->GetEngineScriptManager()->Pause(true);
 		break;
 	default:
 		mState = GameState::PLAY;
@@ -199,7 +195,7 @@ void EditorControlPanel::Pause()
 	{
 	case GameState::PLAY:
 		mState = GameState::PLAY_PAUSE;
-		EngineApp->GetEngineScriptManager()->Stop();
+		EngineApp->GetEngineScriptManager()->Pause(true);
 		EngineApp->GetAudio()->AudioPause();
 		break;
 	case GameState::PAUSE:
@@ -207,7 +203,7 @@ void EditorControlPanel::Pause()
 		break;
 	case GameState::PLAY_PAUSE:
 		mState = GameState::PLAY;
-		EngineApp->GetEngineScriptManager()->Play();
+		EngineApp->GetEngineScriptManager()->Pause(false);
 		EngineApp->GetAudio()->AudioResume();
 		break;
 	default:
@@ -221,16 +217,7 @@ void EditorControlPanel::Stop()
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
 
-	EngineApp->GetEngineClock()->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
-	EngineApp->GetGameClock()->Stop();		
-	EngineApp->SetCurrentClock(EngineApp->GetEngineClock());	
-	EngineApp->GetEngineClock()->Resume();				
-	EngineApp->GetEngineScriptManager()->Stop();
-	EngineApp->GetAudio()->EngineStop();
-	EngineApp->PlayMode(false);
-	EngineApp->GetScene()->Load("TemporalScene");
-	ImGui::SetWindowFocus("Scene##");
-
+	EngineApp->Stop();
 	mState = GameState::STOP;
 
 }
@@ -243,9 +230,9 @@ void EditorControlPanel::Step()
 		mState = GameState::PLAY_PAUSE;
 		[[fallthrough]];
 	case GameState::PLAY_PAUSE:
-		EngineApp->GetEngineScriptManager()->Play();
+		EngineApp->GetEngineScriptManager()->Pause(false);
 		EngineApp->GetEngineScriptManager()->Update(EngineApp->GetRealDt());
-		EngineApp->GetEngineScriptManager()->Stop();
+		EngineApp->GetEngineScriptManager()->Pause(true);
 		EngineApp->GetAudio()->AudioPause();
 		break;
 	default:

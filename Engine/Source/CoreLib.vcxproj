@@ -113,6 +113,8 @@
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\Recast\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -217,6 +219,7 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
+    <ClCompile Include="EmitterShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
@@ -236,6 +239,8 @@
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystemComponent.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
@@ -415,6 +420,7 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\sse_mathfun.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
+    <ClInclude Include="EmitterShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
@@ -435,6 +441,8 @@
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSystemComponent.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
@@ -467,7 +475,11 @@
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skinning.comp" />

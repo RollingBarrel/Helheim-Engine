@@ -70,6 +70,9 @@
     <Filter Include="Utils\Scripting">
       <UniqueIdentifier>{53632d8a-a4e4-4185-bb50-a99200b955b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Particles">
+      <UniqueIdentifier>{50fe897a-e47d-4091-9d21-2bf00e84878c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -395,6 +398,15 @@
     </ClCompile>
     <ClCompile Include="ResourceNavmesh.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="EmitterShape.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -986,6 +998,15 @@
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="EmitterShape.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
@@ -1052,6 +1073,18 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\particle_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\particle_vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

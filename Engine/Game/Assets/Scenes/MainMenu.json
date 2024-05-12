@@ -1,5 +1,6 @@
 {
     "Scene": {
+        "Name": "MainMenu",
         "GameObjects": [
             {
                 "UID": 350657249,

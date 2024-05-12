@@ -3,6 +3,7 @@
 #include "float4.h"
 #include "ResourceMesh.h"
 
+class AnimationComponent;
 class MeshRendererComponent;
 class ResourceMaterial;
 typedef struct __GLsync* GLsync;
@@ -30,11 +31,15 @@ public:
 class BatchMeshRendererComponent
 {
 public:
-	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx)
-		: component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx) {}
+	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx, const AnimationComponent* cAnim = nullptr) : 
+		component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx), bCAnim(cAnim) {}
+	
 	const MeshRendererComponent* component;
 	uint32_t bMeshIdx;
 	uint32_t bMaterialIdx;
+	const AnimationComponent* bCAnim;
+
+	bool IsAnimated() const { return bCAnim != nullptr; }
 };
 
 
@@ -84,17 +89,21 @@ public:
 	bool EditMaterial(const MeshRendererComponent* component);
 	bool RemoveMeshComponent(const MeshRendererComponent* component);
 	void Draw();
+	void AddHighLight(std::vector<Component*> meshRendererComponents);
+	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
 
 private:
 	void RecreatePersistentSsbosAndIbo();
 	void RecreateVboAndEbo();
 	void RecreateMaterials();
+	void AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx);
 
 	bool mMaterialFlag = false;
 	bool mPersistentsFlag = false;
 	bool mVBOFlag = false;
 	
 	std::vector<BatchMeshRendererComponent> mMeshComponents;
+	std::vector<BatchMeshRendererComponent> mHighLightMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;

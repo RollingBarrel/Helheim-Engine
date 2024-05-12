@@ -220,6 +220,9 @@
     <ClCompile Include="Dependencies\Detour\Include\DetourNode.cpp">
       <Filter>Dependencies\Detour</Filter>
     </ClCompile>
+    <ClCompile Include="ImBezier.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -465,6 +468,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Detour\Include\DetourStatus.h">
       <Filter>Dependencies\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="ImBezier.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

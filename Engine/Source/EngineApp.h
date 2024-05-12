@@ -18,7 +18,6 @@ public:
 	bool CleanUp();
 
 	bool IsPlayMode() { return mIsPlayMode; }
-	void PlayMode(bool play) { mIsPlayMode = play; }
 	Timer* GetEngineClock() const { return mEngineTimer; }
 	Timer* GetGameClock() const { return mGameTimer; }
 	void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
@@ -29,6 +28,9 @@ public:
 	ModuleEngineScriptManager* GetEngineScriptManager() { return engineScriptManager; }
 	ModuleEditor* GetEditor() { return editor; }
 	NavMeshController* GetNavController() { return mNavMeshController; }
+
+	void Start();
+	void Stop();
 
 	float GetRealDt() const;
 	float GetGameDt() const;

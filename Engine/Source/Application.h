@@ -40,6 +40,8 @@ public:
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     float GetDt() const;
 
+    void Exit() { mExit = true; }
+
 protected:
     ModuleOpenGL* render = nullptr;
     ModuleWindow* window = nullptr;
@@ -56,6 +58,8 @@ protected:
 
     Timer* mCurrentTimer = nullptr;
     bool mEnableVsync = true;
+    
+    bool mExit = false;
 };
 
 extern ENGINE_API Application* App;

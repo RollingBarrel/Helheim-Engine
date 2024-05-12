@@ -31,16 +31,13 @@ AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, Com
 	mClipTimes.push_back(12.0);
 	mClipTimes.push_back(15.0);
 
+
 	mCurrentClip = 0;
 	mSpeed = 1.0;
 }
 
 AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION)
 {
-	mAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.mAnimation->GetUID(), Resource::Type::Mesh));
-
-	mController = other.mController;
-
 	mClipNames.clear();
 	mClipTimes.clear();
 
@@ -63,6 +60,8 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mSpeed = 1.0;
 
 	mModelUid = other.mModelUid;
+
+	SetAnimation(other.mAnimation->GetUID());
 }
 
 AnimationComponent::~AnimationComponent()
@@ -136,6 +135,10 @@ void AnimationComponent::SetCurrentClip(int currentClip)
 	if (currentClip > mClipNames.size())
 	{
 		currentClip = 0;
+	}
+	if (mCurrentClip == currentClip)
+	{
+		return;
 	}
 	mCurrentClip = currentClip;
 	SetStartTime(mClipTimes[mCurrentClip * 2]);
