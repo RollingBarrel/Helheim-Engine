@@ -76,6 +76,9 @@
     <Filter Include="Utils\Particles">
       <UniqueIdentifier>{50fe897a-e47d-4091-9d21-2bf00e84878c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies\Optick">
+      <UniqueIdentifier>{f158abaa-05ca-4692-b043-3ae443e8355f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -1072,6 +1075,12 @@
     </ClInclude>
     <ClInclude Include="TrailComponent.h">
       <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.config.h">
+      <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.h">
+      <Filter>Dependencies\Optick</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
