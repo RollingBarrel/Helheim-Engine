@@ -23,6 +23,8 @@ public:
 	~Trail();
 
 	void Update();
+	void Init();
+	void Draw();
 	
 	void AddTrailPositions(float3 position, float3 rotation);
 
@@ -32,4 +34,9 @@ private:
 	float mWidth;
 	ColorGradient mGradient;
 	float3 mDirection; // Fixed direction for the normal of the trailPoints
+
+	unsigned int mVAO = 0;
+	unsigned int mVBO = 0;
+	unsigned int mUBO = 0;
+
 };
