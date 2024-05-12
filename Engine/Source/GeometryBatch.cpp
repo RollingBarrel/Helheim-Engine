@@ -450,7 +450,8 @@ void GeometryBatch::Draw()
 	if(animationSkinning)
 		glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
-	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
+	glDisable(GL_BLEND);
+	glUseProgram(App->GetOpenGL()->GetPbrGeoPassProgramId());
 	glBindVertexArray(mVao);
 
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
@@ -464,7 +465,7 @@ void GeometryBatch::Draw()
 	}
 
 	mCommands.clear();
-	std::vector<Command> highLightCommands;
+	mHighLightCommands.clear();
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
 	unsigned int i = 0;
 	for (const BatchMeshRendererComponent& batchMeshRenderer : mMeshComponents)
@@ -492,7 +493,7 @@ void GeometryBatch::Draw()
 				{
 					if (highLightMesh.component->GetID() == batchMeshRenderer.component->GetID())
 					{
-						highLightCommands.push_back(mCommands.back());
+						mHighLightCommands.push_back(mCommands.back());
 					}
 				}
 			}
@@ -508,7 +509,9 @@ void GeometryBatch::Draw()
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
+	App->GetOpenGL()->BindGBufferColorAttachments();
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
+	App->GetOpenGL()->BindSceneColorAttachment();
 
 	//glClear(GL_STENCIL_BUFFER_BIT);
 	//DRAW HIGHLIGHT
@@ -516,8 +519,8 @@ void GeometryBatch::Draw()
 	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilMask(0xFF);
-	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, highLightCommands.size() * sizeof(Command), highLightCommands.data());
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, highLightCommands.size(), 0);
+	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mHighLightCommands.size() * sizeof(Command), mHighLightCommands.data());
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mHighLightCommands.size(), 0);
 	
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	//glStencilFunc(GL_EQUAL, 1, 0xFF);
@@ -525,7 +528,7 @@ void GeometryBatch::Draw()
 	glDisable(GL_DEPTH_TEST);
 
 	glUseProgram(App->GetOpenGL()->GetHighLightProgramId());
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, highLightCommands.size(), 0);
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mHighLightCommands.size(), 0);
 
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	glStencilMask(0xFF);

@@ -138,19 +138,12 @@ void ScenePanel::DrawScene()
 		prevSizeX = size.x;
 		prevSizeY = size.y;
 	}
-	ImGui::Image((void*)(intptr_t)EngineApp->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
-
-	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
-	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
-	EngineApp->GetWindow()->GameWindowsResized(mWindowsSize);
-	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
-	if (!mMousePosition.Equals(float2(-FLT_MAX, -FLT_MAX)))
+	if (currentScene == 0)
 	{
-		EngineApp->GetInput()->SetGameMousePosition(mMousePosition);
+		currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
+		currentSceneName = "SCENE";
 	}
-
-
+	ImGui::Image((void*)(intptr_t)currentScene, size, ImVec2(0, 1), ImVec2(1, 0));
 	if (ImGui::BeginDragDropTarget())
 	{
 		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE");
@@ -224,6 +217,49 @@ void ScenePanel::DrawScene()
 
 		ImGui::EndDragDropTarget();
 	}
+	if (ImGui::BeginCombo("##Screen Output", currentSceneName.c_str(), ImGuiComboFlags_PopupAlignLeft))
+	{
+		if (ImGui::Selectable("SCENE")) {
+			currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
+			currentSceneName = "SCENE";
+		}
+		//if (ImGui::Selectable("DEPTH")) {
+		//	currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
+		//	currentSceneName = "DEPTH";
+		//}
+		if (ImGui::Selectable("DIFFUSE")) {
+			currentScene = EngineApp->GetOpenGL()->GetGBufferDiffuse();
+			currentSceneName = "DIFFUSE";
+		}
+		if (ImGui::Selectable("SPECULAR")) {
+			currentScene = EngineApp->GetOpenGL()->GetGBufferSpecularRough();
+			currentSceneName = "SPECULAR";
+		}
+		if (ImGui::Selectable("EMISSIVE")) {
+			currentScene = EngineApp->GetOpenGL()->GetGBufferEmissive();
+			currentSceneName = "EMISSIVE";
+		}
+		if (ImGui::Selectable("NORMALS")) {
+			currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();
+			currentSceneName = "NORMALS";
+		}
+		if (ImGui::Selectable("POSITIONS")) {
+			currentScene = EngineApp->GetOpenGL()->GetGBufferPositions();
+			currentSceneName = "POSITIONS";
+		}
+		ImGui::EndCombo();
+	}
+
+	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
+	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+	EngineApp->GetWindow()->GameWindowsResized(mWindowsSize);
+	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+	if (!mMousePosition.Equals(float2(-FLT_MAX, -FLT_MAX)))
+	{
+		EngineApp->GetInput()->SetGameMousePosition(mMousePosition);
+	}
+
 
 	ImGuizmo::OPERATION currentGuizmoOperation = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoOperation();
 	ImGuizmo::MODE currentGuizmoMode = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoMode();

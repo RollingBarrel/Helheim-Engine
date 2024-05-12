@@ -108,6 +108,7 @@ private:
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
+	std::vector<Command> mHighLightCommands;
 	unsigned int mVertexSize = 0;
 
 

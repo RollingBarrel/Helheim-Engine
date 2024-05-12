@@ -31,5 +31,7 @@ private:
 	float2 mMousePosition;
   
 	bool mIsGuizmoUsing = false;
+	unsigned int currentScene = 0;
+	std::string currentSceneName;
 };
 #endif /* _SCENE_PANEL_H_ */

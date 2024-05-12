@@ -56,9 +56,17 @@ public:
 
 	void WindowResized(unsigned width, unsigned height);
 	void SceneFramebufferResized(unsigned width, unsigned height);
-	unsigned int GetFramebufferTexture() const { return colorAttachment; }
+	unsigned int GetFramebufferTexture() const { return sceneTexture; }
+	//unsigned int GetGBufferDepth() const { return depthStencil; }
+	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
+	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
+	unsigned int GetGBufferEmissive() const { return mGEmissive; }
+	unsigned int GetGBufferNormals() const { return mGNormals; }
+	unsigned int GetGBufferPositions() const { return mGPositions; }
 	void BindSceneFramebuffer();
 	void UnbindSceneFramebuffer();
+	void BindGBufferColorAttachments();
+	void BindSceneColorAttachment();
 	void SetOpenGlCameraUniforms() const;
 	void* GetOpenGlContext() { return context; }
 
@@ -68,6 +76,7 @@ public:
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
+	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 
 
 	//TODO: put all this calls into one without separating for light type??
@@ -100,8 +109,15 @@ private:
 
 	//Framebuffer
 	unsigned int sFbo;
-	unsigned int colorAttachment;
+	unsigned int sceneTexture;
+	//GbufferTextures
 	unsigned int depthStencil;
+	unsigned int mGDiffuse;
+	unsigned int mGSpecularRough;
+	unsigned int mGEmissive;
+	unsigned int mGNormals;
+	unsigned int mGPositions;
+	void ResizeGBuffer(unsigned int width, unsigned int height);
 
 	//Camera
 	OpenGLBuffer* mCameraUniBuffer = nullptr;
@@ -116,6 +132,7 @@ private:
 	unsigned int CompileShader(unsigned type, const char* source) const;
 	unsigned int CreateShaderProgramFromIDs(unsigned int* shaderIds, unsigned int numShaders) const;
 	unsigned int mPbrProgramId = 0;
+	unsigned int mPbrGeoPassProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
