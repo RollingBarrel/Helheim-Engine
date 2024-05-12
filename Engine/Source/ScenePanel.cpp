@@ -136,10 +136,8 @@ void ScenePanel::DrawScene()
 	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 	EngineApp->GetWindow()->GameWindowsResized(mWindowsSize);
-	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
 	//LOG("mWindowsPosition: %f, %f", mWindowsPosition.x, mWindowsPosition.y);
 	//LOG("mWindowsSize: %f, %f", mWindowsSize.x, mWindowsSize.y);
-	LOG("mMousePosition: %f, %f", mMousePosition.x, mMousePosition.y);
 
 
 	if (ImGui::BeginDragDropTarget())
