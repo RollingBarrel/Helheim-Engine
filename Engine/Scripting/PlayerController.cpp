@@ -300,7 +300,10 @@ void PlayerController::HandleRotation()
 {
     std::map<float, Hit> hits;
     
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGameMousePosition());
+    int mouseX, mouseY;
+    App->GetInput()->GetGlobalMousePosition(mouseX, mouseY);
+    float2 mousePosition(mouseX, mouseY);
+    Ray ray = Physics::ScreenPointToRay(mousePosition);
     Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
     
     float distance;

@@ -29,6 +29,8 @@ private:
 	GameObject* mEditorCameraGameObject;
 	CameraComponent* mEditorCamera = nullptr;
 
+	void MousePicking();
+	void CameraControls(float dt);
 
 	std::map<float, GameObject*> mIntersectMap;
 	float mShiftSpeed = 3.0f;

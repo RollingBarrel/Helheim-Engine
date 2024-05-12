@@ -2,6 +2,7 @@
 #include "EngineApp.h"
 #include "GameObject.h"
 #include "CameraComponent.h"
+#include "Physics.h"
 
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
@@ -31,6 +32,152 @@ bool ModuleEngineCamera::Init()
 }
 
 update_status ModuleEngineCamera::Update(float dt)
+{
+	CameraControls(dt);
+	return UPDATE_CONTINUE;
+}
+
+
+bool ModuleEngineCamera::CleanUp()
+{
+	if (mEditorCamera)
+	{
+		delete mEditorCamera;
+	}
+
+	return true;
+}
+
+void ModuleEngineCamera::ActivateEditorCamera()
+{
+	if (!mCurrentCamera || mCurrentCamera->GetID() != mEditorCamera->GetID())
+	{
+		mCurrentCamera = mEditorCamera;
+		mIsEditorCameraActive = true;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
+	}
+}
+
+void ModuleEngineCamera::ActivateGameCamera()
+{
+	if (!mCurrentCamera || mCurrentCamera->GetID() == mEditorCamera->GetID())
+	{
+		if (mMainCamera)
+		{
+			mCurrentCamera = mMainCamera;
+		}
+		else if (!mActiveCameras.empty())
+		{
+			mCurrentCamera = mActiveCameras.front();
+		}
+		else
+		{
+			mCurrentCamera = nullptr;
+		}
+
+		mIsEditorCameraActive = false;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
+	}
+}
+
+bool ModuleEngineCamera::AddEnabledCamera(CameraComponent* camera)
+{
+	bool added = ModuleCamera::AddEnabledCamera(camera);
+
+	if (mIsEditorCameraActive)
+	{
+		mCurrentCamera = mEditorCamera;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
+	}
+
+	return added;
+}
+
+bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
+{
+	bool removed = ModuleCamera::RemoveEnabledCamera(camera);
+	if (mIsEditorCameraActive)
+	{
+		mCurrentCamera = mEditorCamera;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
+	}
+	
+	return removed;
+}
+
+void ModuleEngineCamera::SetEditorCameraPosition(float3 position)
+{
+	mEditorCamera->SetPos(position);
+}
+
+void ModuleEngineCamera::SetEditorCameraFrontUp(float3 front, float3 up)
+{
+	mEditorCamera->SetFrontUp(front, up);
+}
+
+void ModuleEngineCamera::MousePicking()
+{
+	/*
+	//mRay = Physics::ScreenPointToRay()
+	ScenePanel* scenePanel = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL));
+
+	int mouseAbsoluteX = scenePanel->GetMousePosition().x;
+	int mouseAbsoluteY = scenePanel->GetMousePosition().y;
+
+	float normalizedX = -1.0 + 2.0 * (float)(mouseAbsoluteX - scenePanel->GetWindowsPos().x) / (float)scenePanel->GetWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseAbsoluteY - scenePanel->GetWindowsPos().y) / (float)scenePanel->GetWindowsSize().y;
+
+	LineSegment raySegment = mCurrentCamera->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
+
+	mRay.pos = raySegment.a;
+	mRay.dir = (raySegment.b - raySegment.a);
+
+	bool intersects = false;
+	bool intersectsTriangle = false;
+
+	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
+
+	if (reinterpret_cast<ScenePanel*>(App->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
+	{
+
+	}
+	else
+	{
+
+		std::map<float, Hit> hits = root->RayCast(&mRay);
+		if (!hits.empty())
+		{
+			std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();
+			if (intersectGameObjectPair.second.mGameObject != nullptr)
+			{
+				GameObject* parentGameObject = intersectGameObjectPair.second.mGameObject;
+				while (!parentGameObject->GetParent()->IsRoot())
+				{
+					parentGameObject = parentGameObject->GetParent();
+				}
+
+				GameObject* focusedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+
+				if (focusedGameObject->GetID() == parentGameObject->GetID())
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second.mGameObject);
+				}
+				else
+				{
+					((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
+				}
+
+
+
+
+
+			}
+		}
+	}
+	*/
+}
+
+void ModuleEngineCamera::CameraControls(float dt)
 {
 
 	//TODO: SEPARATE GAME ENGINE
@@ -244,85 +391,7 @@ update_status ModuleEngineCamera::Update(float dt)
 		}
 	}
 
-	//#endif // ENGINE
-	return UPDATE_CONTINUE;
 }
 
 
-bool ModuleEngineCamera::CleanUp()
-{
-	if (mEditorCamera)
-	{
-		delete mEditorCamera;
-	}
-
-	return true;
-}
-
-void ModuleEngineCamera::ActivateEditorCamera()
-{
-
-	if (!mCurrentCamera || mCurrentCamera->GetID() != mEditorCamera->GetID())
-	{
-		mCurrentCamera = mEditorCamera;
-		mIsEditorCameraActive = true;
-		App->GetOpenGL()->SetOpenGlCameraUniforms();
-	}
-}
-
-void ModuleEngineCamera::ActivateGameCamera()
-{
-
-	if (!mCurrentCamera || mCurrentCamera->GetID() == mEditorCamera->GetID())
-	{
-		if (mMainCamera)
-		{
-			mCurrentCamera = mMainCamera;
-		}
-		else if (!mActiveCameras.empty())
-		{
-			mCurrentCamera = mActiveCameras.front();
-		}
-		else
-		{
-			mCurrentCamera = nullptr;
-		}
-
-		mIsEditorCameraActive = false;
-		App->GetOpenGL()->SetOpenGlCameraUniforms();
-	}
-}
-
-bool ModuleEngineCamera::AddEnabledCamera(CameraComponent* camera)
-{
-	bool added = ModuleCamera::AddEnabledCamera(camera);
-
-	if (mIsEditorCameraActive)
-	{
-		mCurrentCamera = mEditorCamera;
-	}
-
-	return added;
-}
-
-bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
-{
-	bool removed = ModuleCamera::RemoveEnabledCamera(camera);
-	if (mIsEditorCameraActive)
-	{
-		mCurrentCamera = mEditorCamera;
-	}
-	
-	return removed;
-}
-
-void ModuleEngineCamera::SetEditorCameraPosition(float3 position)
-{
-	mEditorCamera->SetPos(position);
-}
-
-void ModuleEngineCamera::SetEditorCameraFrontUp(float3 front, float3 up)
-{
-	mEditorCamera->SetFrontUp(front, up);
-}
 

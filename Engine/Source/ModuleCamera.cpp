@@ -1,5 +1,6 @@
 #include "ModuleCamera.h"
-#include "GameObject.h"
+#include "Application.h"
+#include "ModuleOpenGL.h"
 #include "CameraComponent.h"
 
 bool ModuleCamera::Init()
@@ -52,6 +53,7 @@ bool ModuleCamera::AddEnabledCamera(CameraComponent* camera)
 	{
 		mActiveCameras.push_back(camera);
 		AddMainCamera(camera);
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
 		return true;
 	}
 	return false;
@@ -79,7 +81,7 @@ bool ModuleCamera::RemoveEnabledCamera(CameraComponent* camera)
 					mCurrentCamera = mActiveCameras.front();
 				}
 			}
-
+			App->GetOpenGL()->SetOpenGlCameraUniforms();
 			return true;
 		}
 	}
