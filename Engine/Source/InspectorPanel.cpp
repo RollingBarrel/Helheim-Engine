@@ -1323,13 +1323,13 @@ static void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gr
 static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
 {
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
+	std::unordered_map<float, float4> marks = gradient->GetColorMarks();
 
 	// find if markEdit is not in marks to add it
-	for (const auto& markEdit : marksEdited) {
+	for (const ImGradientMark* markEdit : marksEdited) {
 		auto it = std::find_if(
 			marks.begin(), marks.end(),
-			[&](const auto* mark) {
+			[&](const std::pair<float, float4> mark) {
 				return areMarksEquivalent(markEdit, mark);
 			}
 		);

@@ -164,7 +164,7 @@ void ParticleSystemComponent::Update()
 	for (int i = 0; i < mParticles.size(); i++)
 	{
 		float dt = mParticles[i]->Update(App->GetDt());
-        if (dt <= 0)
+        if (dt >= 1)
         {
 			mParticles.erase(mParticles.begin() + i);
 			i--;
