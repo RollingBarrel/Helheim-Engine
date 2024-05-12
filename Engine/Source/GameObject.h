@@ -37,6 +37,8 @@ public:
 	void RecalculateMatrices();
 	void Update();
 
+	void Translate(float3 translation);
+
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 	const float3& GetRotation() const { return mEulerRotation; }

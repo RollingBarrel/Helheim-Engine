@@ -211,6 +211,11 @@ void GameObject::Update()
 	}
 }
 
+void GameObject::Translate(float3 translation)
+{
+	SetPosition(mPosition + translation);
+}
+
 void GameObject::LookAt(float3 target)
 {
 	float4x4 rotationMatrix = float4x4::identity;

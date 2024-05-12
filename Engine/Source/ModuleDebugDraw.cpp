@@ -636,7 +636,7 @@ update_status  ModuleDebugDraw::Update(float dt)
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
             
             EngineApp->GetOpenGL()->BindSceneFramebuffer();
-            Draw(viewproj, EngineApp->GetWindow()->GetWidth(), EngineApp->GetWindow()->GetHeight());
+            Draw(viewproj, EngineApp->GetWindow()->GetGameWindowsSize().x, EngineApp->GetWindow()->GetGameWindowsSize().y);
             EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
         }
     }
