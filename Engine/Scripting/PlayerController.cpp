@@ -29,9 +29,7 @@ CREATE(PlayerController)
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashSpeed);
-    MEMBER(MemberType::FLOAT, mDashDistance);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
-    MEMBER(MemberType::INT, mMaxDashCharges);
 
     SEPARATOR("MELEE ATTACK");
     MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
@@ -52,9 +50,7 @@ CREATE(PlayerController)
 
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
-    MEMBER(MemberType::GAMEOBJECT, mDashGO_1);
-    MEMBER(MemberType::GAMEOBJECT, mDashGO_2);
-    MEMBER(MemberType::GAMEOBJECT, mDashGO_3);
+;
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -77,7 +73,6 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 
 void PlayerController::Start()
 {
-    mDashCharges = mMaxDashCharges;
     mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
     mHealth = mMaxHealth;
@@ -85,9 +80,6 @@ void PlayerController::Start()
     mSanity = mMaxSanity;
 
     if (mHealthGO != nullptr) mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
-    if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
-    if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
-    if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
 
     if (mAnimationComponentHolder) 
     {
@@ -105,9 +97,6 @@ void PlayerController::Start()
            
         //Set to idle
         mAnimationComponent->SetCurrentClip(0);
-
-
-
     }
 
     if (mFootStepAudioHolder)
@@ -131,7 +120,6 @@ void PlayerController::Update()
     CheckDebugOptions();
     UpdateHealth();
     UpdateBattleSituation();
-    RechargeDash();
 
     switch (mCurrentState)
     {
@@ -198,7 +186,7 @@ void PlayerController::Idle()
             LOG("Melee");
         }
     }
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && mDashCharges > 0)
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && IsMoving())
     {
         mCurrentState = PlayerState::DASH;
     }
@@ -230,6 +218,23 @@ void PlayerController::Idle()
         }
     }  
 }
+
+//is Moving function 
+bool PlayerController::IsMoving()
+{
+    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
+        App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
+        App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
+        App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+    {
+		return true;
+	}
+    else
+    {
+		return false;
+	}
+}
+
 
 void PlayerController::Moving()
 {
@@ -307,57 +312,64 @@ void PlayerController::HandleRotation()
     }
 
 }
-
-
 void PlayerController::Dash()
 {
-    if (mDashMovement >= mDashDistance)
+    if (mIsDashing)
     {
-        mIsDashCoolDownActive = false;
-        mDashMovement = 0;
-        mDashCharges -= 1;
-        LOG("Dash Charges:  %i", mDashCharges);
-        Idle();
+        mDashTimer += App->GetDt();
+
+        if (mDashTimer >= mDashDuration)
+        {
+            mIsDashing = false;
+            Idle(); // Return to idle state after dash
+            mDashTimer = 0.0f;
+        }
+        else
+        {
+            // Continue dashing in the current direction
+            float3 dashDirection = mDashDirection;
+            float3 newPos = (mGameObject->GetPosition() + dashDirection * App->GetDt() * mDashSpeed);
+            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+        }
     }
     else
     {
         if (mIsDashCoolDownActive)
         {
-            mDashTimePassed += App->GetDt();
-            if (mDashTimePassed >= mDashCoolDown)
+            mDashCoolDownTimer += App->GetDt();
+            if (mDashCoolDownTimer >= mDashCoolDown)
             {
-                mDashTimePassed = 0;
-                mIsDashCoolDownActive = true;
+                mDashCoolDownTimer = 0.0f;
+                mIsDashCoolDownActive = false;
             }
         }
         else
         {
-            float3 dashDirection = float3::zero;
-            if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+            if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && IsMoving())
             {
-                dashDirection += float3::unitZ;
-            }
-            if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-            {
-                dashDirection -= float3::unitZ;
-            }
-            if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
-            {
-                dashDirection += float3::unitX;
-            }
-            if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-            {
-                dashDirection -= float3::unitX;
-            }
+                mIsDashing = true;
+                mDashTimer = 0.0f;
 
-            if (dashDirection.Dot(dashDirection) > 0.0f) 
-            {
-                dashDirection.Normalize();  
+                // Calculate dash direction based on current movement direction (WASD)
+                mDashDirection = float3::zero;
+                if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+                    mDashDirection += float3::unitZ;
+                if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+                    mDashDirection -= float3::unitZ;
+                if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+                    mDashDirection += float3::unitX;
+                if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+                    mDashDirection -= float3::unitX;
 
-                float3 newPos = (mGameObject->GetPosition() + dashDirection * App->GetDt() * mDashSpeed);
-                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-
-                mDashMovement += mDashSpeed * App->GetDt();
+                if (mDashDirection.Dot(mDashDirection) > 0.0f)
+                {
+                    mDashDirection.Normalize();
+                }
+                else
+                {
+                    // If no movement keys are pressed, dash in the direction the player is currently facing
+                    mDashDirection = mGameObject->GetFront();
+                }
             }
         }
     }
@@ -532,7 +544,7 @@ void PlayerController::Reload()
 
 void PlayerController::TakeDamage(float damage) 
 {
-    if (mDashMovement == 0) 
+    if (!mIsDashing)
     {    
         mShield -= damage;
         float remainingDamage = -mShield;
@@ -550,53 +562,6 @@ void PlayerController::TakeDamage(float damage)
     } 
 }
 
-
-
-void PlayerController::RechargeDash()
-{
-
-    static float actualRegenerationTime = 0.0f;
-
-    if (mDashCharges < mMaxDashCharges)
-    {
-        actualRegenerationTime += App->GetDt();
-
-        if (actualRegenerationTime >= mDashChargeRegenerationTime)
-        {
-            mDashCharges++;
-            actualRegenerationTime = 0.0f;
-            LOG("%i", mDashCharges);
-        }
-    }
-
-    // HUD
-    if (mDashSlider_1 == nullptr || mDashSlider_2 == nullptr || mDashSlider_3 == nullptr) return;
-    if (mDashCharges == 0) 
-    {
-        mDashSlider_1->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
-        mDashSlider_2->SetFillPercent(0);
-        mDashSlider_3->SetFillPercent(0);
-    }
-    else if (mDashCharges == 1) 
-    {
-        mDashSlider_1->SetFillPercent(1);
-        mDashSlider_2->SetFillPercent(actualRegenerationTime/mDashChargeRegenerationTime);
-        mDashSlider_3->SetFillPercent(0);
-    } 
-    else if (mDashCharges == 2) 
-    {
-        mDashSlider_1->SetFillPercent(1);
-        mDashSlider_2->SetFillPercent(1);
-        mDashSlider_3->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
-    }
-    else 
-    {
-        mDashSlider_1->SetFillPercent(1);
-        mDashSlider_2->SetFillPercent(1);
-        mDashSlider_3->SetFillPercent(1);
-    }
-    
-}
 
 void PlayerController::Death() 
 {

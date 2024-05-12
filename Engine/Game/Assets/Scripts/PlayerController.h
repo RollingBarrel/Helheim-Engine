@@ -53,6 +53,7 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
+        bool IsMoving();
         void Dash();
         void Attack();
 
@@ -97,15 +98,14 @@ class PlayerController :public Script
         bool mPlayerIsDead = false;
 
         //Dash
+        bool mIsDashing = false;
         bool mIsDashCoolDownActive = false;
-        float mDashTimePassed = 0.0f;
-        float mDashMovement = 0;
-        int mMaxDashCharges = 3;
-        int mDashCharges = 0;//3
-        float mDashChargeRegenerationTime = 3.0f;
-        float mDashSpeed = 35.0f;//35
-        float mDashDistance = 5.0f;
-        float mDashCoolDown = 3.0f;
+        float mDashCoolDown = 0.7f; // CoolDown: 0.7 seconds
+        float mDashCoolDownTimer = 0.0f;
+        float mDashDuration = 0.5f; // Dash duration: 0.5 seconds
+        float mDashTimer = 0.0f;
+        float mDashSpeed = 4.0f; // Adjust as needed
+        float3 mDashDirection = float3::zero;
 
         //Range
         int mAmmoCapacity = 500000;
