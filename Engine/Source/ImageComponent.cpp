@@ -283,6 +283,10 @@ void ImageComponent::FillSpriteSheetVBO()
 		-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
 		 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
 	};
+
+	LOG("uStart: %f, vStart: %f, uEnd: %f, vEnd: %f", uStart, vStart, uEnd, vEnd);
+	LOG(" ");
+
 	glGenBuffers(1, &mQuadVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
@@ -330,10 +334,12 @@ void ImageComponent::Update()
 		if (mElapsedTime > mFrameDuration)
 		{
 			mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
-			if (mColumns != 0 && mRows != 0) {
+			if (mColumns != 0 && mRows != 0) 
+			{
 				mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
 			}
-			else {
+			else 
+			{
 				mCurrentFrame = 0;
 			}
 			mElapsedTime -= mFrameDuration;
