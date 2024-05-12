@@ -31,6 +31,6 @@ Ray Physics::ScreenPointToRay(float2 mouseGlobalPosition)
 		return (ray.dir.IsNormalized()) ? ray : Ray();
 	}
 	
-	
+	return ray;
     
 }

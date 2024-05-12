@@ -5,8 +5,6 @@
 #include <vector>
 #include "Math/float4x4.h"
 
-class Mesh;
-struct Material;
 class ResourceMesh;
 class ResourceMaterial;
 class GeometryBatch;

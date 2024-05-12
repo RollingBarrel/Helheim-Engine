@@ -573,7 +573,7 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		Frustum frustum;
 		frustum.type = FrustumType::PerspectiveFrustum;
 		frustum.pos = float3::zero;
-		frustum.nearPlaneDistance = 0.1;
+		frustum.nearPlaneDistance = 0.1f;
 		frustum.farPlaneDistance = 100.0f;
 		frustum.verticalFov = pi / 2.0f;
 		frustum.horizontalFov = pi / 2.0f;
