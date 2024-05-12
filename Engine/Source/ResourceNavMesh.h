@@ -1,7 +1,5 @@
 #pragma once
 #include "Resource.h"
-#include "float3.h"
-#include "vector"
 class dtNavMesh;
 
 class ENGINE_API ResourceNavMesh : public Resource

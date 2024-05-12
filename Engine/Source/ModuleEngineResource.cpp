@@ -9,6 +9,7 @@
 #include "ResourceModel.h"
 #include "ResourceScript.h"
 #include "ResourceAnimation.h"
+#include "ResourceNavMesh.h"
 
 #include <algorithm>
 
@@ -17,6 +18,7 @@
 #include "ImporterTexture.h"
 #include "ImporterModel.h"
 #include "ImporterScript.h"
+#include "ImporterNavMesh.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -163,6 +165,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Scene:
 		break;
 	case Resource::Type::NavMesh:
+		ret = Importer::NavMesh::Import(uid);
 		break;
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);

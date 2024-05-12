@@ -154,7 +154,7 @@ ResourceNavMesh* Importer::NavMesh::Load(const char* fileName, unsigned int uid)
 		}
 		ret = new ResourceNavMesh(uid, mesh);
 		delete[] fileBuffer;
-		return ret;
+		
 	}
-
+	return ret;
 }
