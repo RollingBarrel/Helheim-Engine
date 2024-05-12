@@ -5,6 +5,7 @@ class ModuleEditor;
 class ModuleEngineResource;
 class ModuleEngineInput;
 class ModuleEngineScriptManager;
+class NavMeshController;
 
 class EngineApplication : public Application
 {
@@ -26,6 +27,7 @@ public:
 	ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
 	ModuleEngineScriptManager* GetEngineScriptManager() { return engineScriptManager; }
 	ModuleEditor* GetEditor() { return editor; }
+	NavMeshController* GetNavController() { return mNavMeshController; }
 
 	void Start();
 	void Stop();
@@ -39,6 +41,8 @@ private:
 	ModuleEngineResource* engineResources = nullptr;
 	ModuleEngineInput* engineInput = nullptr;
 	ModuleEngineScriptManager* engineScriptManager = nullptr;
+	NavMeshController* mNavMeshController;
+
 
 #define NUM_MODULES 14
 	Module* modules[NUM_MODULES];

@@ -12,7 +12,6 @@ class GameObject;
 class MeshRendererComponent;
 class Archive;
 class Tag;
-class NavMeshController;
 
 class ENGINE_API ModuleScene : public Module
 {
@@ -27,7 +26,6 @@ public:
 
 	// Getters
 	GameObject* GetRoot() const { return mRoot; }
-	NavMeshController* GetNavController() const { return mNavMeshController; }
 	std::string const GetName();
 
 	// GameObjects
@@ -113,8 +111,6 @@ private:
 	std::vector<Tag*> mTags;
 	unsigned mLastTagIndex = 10;
 
-	// Others
-	NavMeshController* mNavMeshController;
 };
 
 #endif //_MODULE_SCENE_H_
