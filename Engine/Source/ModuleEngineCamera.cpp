@@ -14,9 +14,6 @@
 #include "ScenePanel.h"
 #include "HierarchyPanel.h"
 
-#include "Geometry/Ray.h"
-#include "float3x3.h"
-
 bool ModuleEngineCamera::Init()
 {
 	mEditorCameraGameObject = new GameObject(nullptr);

@@ -14,10 +14,10 @@ public:
 
     void Enable() override;
     void Disable() override;
-
     void Update() override;
-    Component* Clone(GameObject* owner) const override;
     void Reset() override;
+    Component* Clone(GameObject* owner) const override;
+
 
     const Frustum& GetFrustum() const { return mFrustum; }
 
