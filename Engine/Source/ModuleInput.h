@@ -102,8 +102,8 @@ public:
 
 	KeyState GetMouseKey(MouseKey id) const { return mMouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
-	void GetLocalMousePosition(int& x, int& y) const { x = mMouseLocalPositionX; y = mMouseLocalPositionY; }
-	void GetGlobalMousePosition(int& x, int& y) const { x = mMouseGlobalPositionX; y = mMouseGlobalPositionY; }
+	float2 GetLocalMousePosition() const { return float2(mMouseLocalPositionX, mMouseLocalPositionY); }
+	float2 GetGlobalMousePosition() const { return float2(mMouseGlobalPositionX, mMouseGlobalPositionY); }
 	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
 

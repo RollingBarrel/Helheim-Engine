@@ -26,7 +26,7 @@ bool ModuleCamera::AddMainCamera(CameraComponent* camera)
 
 bool ModuleCamera::RemoveMainCamera(CameraComponent* camera)
 {
-	if (mMainCamera->GetID() == camera->GetID())
+	if (mMainCamera && mMainCamera->GetID() == camera->GetID())
 	{
 		mMainCamera = nullptr;
 		mCurrentCamera = nullptr;

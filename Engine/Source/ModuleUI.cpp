@@ -101,12 +101,12 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 
 		if (image != nullptr && transform2D != nullptr && button != nullptr && button->IsEnabled()) 
 		{
-			int mouseAbsoluteX; 
-			int mouseAbsoluteY;  
-			App->GetInput()->GetGlobalMousePosition(mouseAbsoluteX, mouseAbsoluteY);
+
+			float2 mouseAbsolute(App->GetInput()->GetGlobalMousePosition());
+
 			
-			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsoluteX - App->GetWindow()->GetGameWindowsPosition().x) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().x);
-			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsoluteY - App->GetWindow()->GetGameWindowsPosition().y) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().y);
+			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsolute.x - App->GetWindow()->GetGameWindowsPosition().x) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().x);
+			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsolute.y - App->GetWindow()->GetGameWindowsPosition().y) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().y);
 
 			float mouseX = normalizedX;
 			float mouseY = normalizedY;
