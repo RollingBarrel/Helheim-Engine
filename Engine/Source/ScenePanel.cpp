@@ -133,12 +133,11 @@ void ScenePanel::DrawScene()
 	ImGui::Image((void*)(intptr_t)EngineApp->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
 
 	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
+	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
 	EngineApp->GetWindow()->GameWindowsResized(mWindowsSize);
-	//LOG("mWindowsPosition: %f, %f", mWindowsPosition.x, mWindowsPosition.y);
+	LOG("mWindowsPosition: %f, %f", mWindowsPosition.x, mWindowsPosition.y);
 	//LOG("mWindowsSize: %f, %f", mWindowsSize.x, mWindowsSize.y);
-
 
 	if (ImGui::BeginDragDropTarget())
 	{

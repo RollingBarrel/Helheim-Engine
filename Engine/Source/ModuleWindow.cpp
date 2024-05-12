@@ -66,8 +66,10 @@ bool ModuleWindow::Init()
 		}
 	}
 
+	int windowPositionX, windowPositionY;
+	SDL_GetWindowPosition(window, &windowPositionX, &windowPositionY);
 	mGameWindowsSize = float2(width, height);
-
+	mGameWindowsPosition = float2(windowPositionX, windowPositionY);
 	return ret;
 }
 

@@ -28,7 +28,7 @@ bool ModuleGame::Init()
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	
-	App->GetWindow()->SetGameWindowsPosition({0,0});
+	//App->GetWindow()->SetGameWindowsPosition({0,0});
 
 	//Camera
 	//Find camera on the scene and set !!!);
