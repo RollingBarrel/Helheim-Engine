@@ -27,17 +27,12 @@ ModuleDetourNavigation::~ModuleDetourNavigation()
 	delete mNavQuery;
 }
 
+
+
+
+
 bool ModuleDetourNavigation::Init()
 {
-	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
-	ResourceNavMesh* resource = (ResourceNavMesh*)App->GetResource()->RequestResource((pathStr + App->GetScene()->GetRoot()->GetName() + ".navmesshi").c_str());
-	if (resource) 
-	{
-		mDetourNavMesh = resource->GetDtNavMesh();
-		CreateQuery();
-		App->GetResource()->ReleaseResource(resource->GetUID());
-	}
-
 	return true;
 }
 
@@ -47,26 +42,50 @@ update_status ModuleDetourNavigation::PreUpdate(float dt)
 }
 
 update_status ModuleDetourNavigation::Update(float dt)
-{
-	if (mNavQuery)
-	{
-		dtPolyRef result;
-		dtQueryFilter temp;
-		mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
-		//App->GetOpenGL()->BindSceneFramebuffer();
-		//DrawDebug();
-		//App->GetOpenGL()->UnbindSceneFramebuffer();
-		
-
-	}
-	
+{	
 	return UPDATE_CONTINUE;
 }
 
-std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 endPos) 
+
+
+update_status ModuleDetourNavigation::PostUpdate(float dt)
+{
+	return UPDATE_CONTINUE;
+}
+
+bool ModuleDetourNavigation::CleanUp()
+{
+	return true;
+}
+
+void ModuleDetourNavigation::LoadResourceData()
+{
+	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
+	ResourceNavMesh* resource = (ResourceNavMesh*)App->GetResource()->RequestResource((pathStr + App->GetScene()->GetName() + ".navmesshi").c_str());
+	if (resource)
+	{
+		mDetourNavMesh = resource->GetDtNavMesh();
+		CreateQuery();
+		App->GetResource()->ReleaseResource(resource->GetUID());
+	}
+}
+
+void ModuleDetourNavigation::CreateQuery() {
+
+	mNavQuery = new dtNavMeshQuery();
+	dtStatus status;
+	status = mNavQuery->init(mDetourNavMesh, 2048);
+	if (dtStatusFailed(status))
+	{
+		LOG("Could not init Detour navmesh query");
+		return;
+	}
+}
+
+std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 endPos)
 {
 	if (!mNavQuery) {
-		
+
 		LOG("BUILD NAVMESH");
 		std::vector<float3> breakVector(0);
 		return breakVector;
@@ -83,17 +102,17 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 	mNavQuery->findNearestPoly(&endPos[0], &queryAreafSize[0], &endTemp, &endPolygon, &queryEndPos[0]);
 
 	dtQueryFilter pathFilter;
-	dtPolyRef* polygonPath= new dtPolyRef[MAX_AMOUNT];
-	int pathPoylgonCount=0;
+	dtPolyRef* polygonPath = new dtPolyRef[MAX_AMOUNT];
+	int pathPoylgonCount = 0;
 
 	mNavQuery->findPath(startPolygon, endPolygon, &startPos[0], &endPos[0], &pathFilter, polygonPath, &pathPoylgonCount, MAX_AMOUNT);
 
-	float*  positionPath = new float[MAX_AMOUNT];
+	float* positionPath = new float[MAX_AMOUNT];
 	int numberOfPositions = 0;
-	unsigned char* straightPathFlags = new unsigned char[MAX_AMOUNT] ;
+	unsigned char* straightPathFlags = new unsigned char[MAX_AMOUNT];
 	/*dtPolyRef* currentPoly = new dtPolyRef(MAX_AMOUNT);*/
 
-	mNavQuery->findStraightPath(&startPos[0], &endPos[0], polygonPath, pathPoylgonCount, positionPath, straightPathFlags, nullptr, &numberOfPositions,MAX_AMOUNT,0);
+	mNavQuery->findStraightPath(&startPos[0], &endPos[0], polygonPath, pathPoylgonCount, positionPath, straightPathFlags, nullptr, &numberOfPositions, MAX_AMOUNT, 0);
 
 	std::vector<float3> positionsPathResult;
 	positionsPathResult.reserve(numberOfPositions);
@@ -109,27 +128,13 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 
 }
 
-update_status ModuleDetourNavigation::PostUpdate(float dt)
-{
-	return UPDATE_CONTINUE;
-}
 
-bool ModuleDetourNavigation::CleanUp()
-{
-	return true;
-}
-
-
-
-void ModuleDetourNavigation::CreateQuery() {
-
-	mNavQuery = new dtNavMeshQuery();
-	dtStatus status;
-	status = mNavQuery->init(mDetourNavMesh, 2048);
-	if (dtStatusFailed(status))
+void ModuleDetourNavigation:: FindDebugPoint() {
+	if (mNavQuery)
 	{
-		LOG("Could not init Detour navmesh query");
-		return;
+		dtPolyRef result;
+		dtQueryFilter temp;
+		mNavQuery->findNearestPoly(&mQueryCenter[0], &mQueryHalfSize[0], &temp, &result, &mQueryResult[0]);
 	}
 }
 

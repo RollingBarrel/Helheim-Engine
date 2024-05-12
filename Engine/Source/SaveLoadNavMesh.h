@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include <string>
-struct ResourceNavMesh;
+class ResourceNavMesh;
 
 namespace Importer
 {

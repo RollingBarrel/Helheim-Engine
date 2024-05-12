@@ -13,6 +13,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
+#include "ModuleDetourNavigation.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
@@ -327,6 +328,7 @@ void ModuleScene::Load(const char* sceneName)
 			if (sceneValue.HasMember("Name"))
 			{
 				mRoot->SetName(sceneValue["Name"].GetString());
+				App->GetNavigation()->LoadResourceData();
 			}
 
 			mSceneGO.clear();

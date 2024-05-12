@@ -19,7 +19,8 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 	void CreateQuery();
-
+	void LoadResourceData();
+	void FindDebugPoint();
 	float3 FindNearestPoint(float3 center, float3 halfSize);
 	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 

@@ -128,6 +128,7 @@ void NavMeshControllerPanel::Draw(int windowFlags)
         App->GetOpenGL()->BindSceneFramebuffer();
         DrawDebugPolyMesh();
         App->GetOpenGL()->UnbindSceneFramebuffer();
+        App->GetNavigation()->FindDebugPoint();
     }
 }
 
