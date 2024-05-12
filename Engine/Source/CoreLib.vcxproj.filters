@@ -1907,6 +1907,9 @@
     <ClInclude Include="ModulePhysics.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">

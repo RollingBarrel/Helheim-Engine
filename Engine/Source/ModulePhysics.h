@@ -17,6 +17,7 @@ public:
 	~ModulePhysics();
 
 	bool Init() override;
+	bool CleanUp() override;
 	update_status PreUpdate(float dt) override;
 
 	float GetGravity() { return mGravity; }

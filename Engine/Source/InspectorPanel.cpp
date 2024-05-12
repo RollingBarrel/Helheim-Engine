@@ -10,6 +10,7 @@
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
+#include "ModuleDebugDraw.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -1296,5 +1297,4 @@ void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
 		}
 		ImGui::EndTable();
 	}
-
 }

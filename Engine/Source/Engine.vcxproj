@@ -211,7 +211,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
-    <ClInclude Include="Collider.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
     <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />

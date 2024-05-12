@@ -26,11 +26,6 @@ Component* BoxColliderComponent::Clone(GameObject* owner) const
 	return new BoxColliderComponent(*this, owner);
 }
 
-void BoxColliderComponent::Draw()
-{
-	// TODO: Draw Gizmo
-}
-
 void BoxColliderComponent::OnCollision(GameObject* gameObject, const float3& collisionNormal, const float3& penetrationDistance)
 {
 }
@@ -57,12 +52,14 @@ void BoxColliderComponent::SetSize(const float3& size)
 
 void BoxColliderComponent::Save(Archive& archive) const
 {
+	Component::Save(archive);
 	archive.AddFloat3("Center", mCenter);
 	archive.AddFloat3("Size", mSize);
 }
 
 void BoxColliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+	Component::LoadFromJSON(data, owner);
 	if (data.HasMember("Center") && data["Center"].IsArray())
 	{
 		const rapidjson::Value& centerValues = data["Center"];

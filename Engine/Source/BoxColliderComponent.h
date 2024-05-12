@@ -17,11 +17,12 @@ public:
 	void Reset() override;
 	void Update() override {}
 	Component* Clone(GameObject* owner) const override;
-	void Draw();
 
 	void OnCollision(GameObject* gameObject, const float3& collisionNormal, const float3& penetrationDistance);
 	void ComputeBoundingBox();
 
+	inline const AABB& GetAABB() const { return mLocalAABB; }
+	inline const OBB& GetOBB() const { return mWorldOBB; }
 	inline const float3& GetCenter() const { return mCenter; }
 	inline const float3& GetSize() const { return mSize; }
 

@@ -1,22 +1,16 @@
 #include "ModulePhysics.h"
-#include "Collider.h"
 #include "GameObject.h"
+#include "Collider.h"
 #include "BoxColliderComponent.h"
 
 #include "btBulletDynamicsCommon.h"
 
 ModulePhysics::ModulePhysics()
 {
-	Init();
 }
 
 ModulePhysics::~ModulePhysics()
 {
-	delete(world);
-	delete(constraintSolver);
-	delete(broadPhase);
-	delete(dispatcher);
-	delete(collisionConfiguration);
 }
 
 bool ModulePhysics::Init()
@@ -31,32 +25,46 @@ bool ModulePhysics::Init()
 	return true;
 }
 
+bool ModulePhysics::CleanUp()
+{
+	delete(world);
+	delete(constraintSolver);
+	delete(broadPhase);
+	delete(dispatcher);
+	delete(collisionConfiguration);
+
+	return true;
+}
+
 update_status ModulePhysics::PreUpdate(float dt)
 {
 	// TODO: if game is running
-	int numManifolds = world->getDispatcher()->getNumManifolds();
-	for (int i = 0; i < numManifolds; i++)
+	if (true)
 	{
-		btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
-
-		int numContacts = contactManifold->getNumContacts();
-		if (numContacts > 0)
+		int numManifolds = world->getDispatcher()->getNumManifolds();
+		for (int i = 0; i < numManifolds; i++)
 		{
-			Collider* bodyA = (Collider*)obA->getUserPointer();
-			Collider* bodyB = (Collider*)obB->getUserPointer();
+			btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
+			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+			btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
 
-			if (bodyA && bodyB)
+			int numContacts = contactManifold->getNumContacts();
+			if (numContacts > 0)
 			{
-				float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
-				float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
-				
-				float3 diff = contactOnB - contactOnA;
-				float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
+				Collider* bodyA = (Collider*)obA->getUserPointer();
+				Collider* bodyB = (Collider*)obB->getUserPointer();
 
-				ProcessCollision(bodyA, bodyB, collisionNormal, diff);
-				ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
+				if (bodyA && bodyB)
+				{
+					float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
+					float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
+
+					float3 diff = contactOnB - contactOnA;
+					float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
+
+					ProcessCollision(bodyA, bodyB, collisionNormal, diff);
+					ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
+				}
 			}
 		}
 	}
@@ -78,11 +86,6 @@ void ModulePhysics::ProcessCollision(Collider* bodyA, Collider* bodyB, const flo
 			{
 				Component* pbodyB = (Component*)bodyB->collider;
 				boxCollider->OnCollision(pbodyB->GetOwner(), collisionNormal, diff);
-			}
-			else
-			{
-				//ComponentParticleSystem::Particle* pbodyB = (ComponentParticleSystem::Particle*)bodyB->collider;
-				//boxCollider->OnCollision(pbodyB->emitter->GetOwner(), collisionNormal, diff, pbodyB);
 			}
 			break;
 		}
