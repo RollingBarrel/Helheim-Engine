@@ -308,7 +308,9 @@ void ModuleEngineCamera::CameraControls(float dt)
 				float distance = 5.0f;
 				//float3 finalCameraPosition = selectedObjectPosition - (selectedObjectPosition - initialCameraPosition).Normalized() * distance;
 				//mEditorCameraGameObject->SetPosition(finalCameraPosition);
+				mEditorCameraGameObject->SetPosition(selectedGameObject->GetPosition() - dir);
 				mEditorCameraGameObject->LookAt(selectedObjectPosition);
+				mEditorCameraGameObject->SetPosition(selectedGameObject->GetPosition() - dir * distance);
 			}
 			
 		}

@@ -4,6 +4,8 @@
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
+#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
 #include "string"
 #include "Archive.h"
 #include "Tag.h"
@@ -53,6 +55,7 @@ public:
 	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
+	AABB GetAABB();
 	void LookAt(float3 target);
 
 	void ResetTransform();

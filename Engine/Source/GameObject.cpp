@@ -216,13 +216,28 @@ void GameObject::Translate(float3 translation)
 	SetPosition(mPosition + translation);
 }
 
+AABB GameObject::GetAABB()
+{
+	std::vector<Component*> components = GetComponentsInChildren(ComponentType::MESHRENDERER);
+
+	AABB mixedAABB;
+	mixedAABB.SetNegativeInfinity();
+
+	for (Component* component : components)
+	{
+		mixedAABB.Enclose(reinterpret_cast<MeshRendererComponent*>(component)->GetAABB());
+	}
+
+	return mixedAABB;
+}
+
 void GameObject::LookAt(float3 target)
 {
 	float4x4 rotationMatrix = float4x4::identity;
 
 	//rotationMatrix = rotationMatrix.RotateFromTo(GetFront().Normalized() , (target - mPosition).Normalized());
 	
-	float3 forward = -(target - mPosition).Normalized();
+	float3 forward = -(target - GetWorldPosition()).Normalized();
 	float3 right = Cross(forward, GetUp()).Normalized();
 	float3 up = Cross(right, forward).Normalized();
 	
