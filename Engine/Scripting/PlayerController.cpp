@@ -156,6 +156,8 @@ void PlayerController::Update()
         break;
     }
 
+    //log out the current state
+    LOG("Current State: %i", mCurrentState);
     HandleRotation();
 
     if (mWinArea)
@@ -165,7 +167,6 @@ void PlayerController::Update()
             GameManager::GetInstance()->WinScreen();
         }
     }
-
 
     Loading();
 }
@@ -186,9 +187,9 @@ void PlayerController::Idle()
             LOG("Melee");
         }
     }
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && IsMoving())
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
     {
-        mCurrentState = PlayerState::DASH;
+         mCurrentState = PlayerState::DASH;
     }
     else 
     {
@@ -238,7 +239,6 @@ bool PlayerController::IsMoving()
 
 void PlayerController::Moving()
 {
-
     bool anyKeyPressed = false;
     
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
@@ -314,6 +314,25 @@ void PlayerController::HandleRotation()
 }
 void PlayerController::Dash()
 {
+
+    if (!mIsDashing && !mIsDashCoolDownActive)
+    {
+        // Start dashing
+        mIsDashing = true;
+        mDashTimer = 0.0f;
+        mIsDashCoolDownActive = true;
+        // Calculate dash direction based on current movement direction (WASD)
+        mDashDirection = float3::zero;
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+            mDashDirection += float3::unitZ;
+        if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+            mDashDirection -= float3::unitZ;
+        if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+            mDashDirection += float3::unitX;
+        if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+            mDashDirection -= float3::unitX;
+    }
+
     if (mIsDashing)
     {
         mDashTimer += App->GetDt();
@@ -321,61 +340,29 @@ void PlayerController::Dash()
         if (mDashTimer >= mDashDuration)
         {
             mIsDashing = false;
-            Idle(); // Return to idle state after dash
+            mCurrentState = PlayerState::IDLE; // Set state back to IDLE after dash
             mDashTimer = 0.0f;
         }
         else
         {
             // Continue dashing in the current direction
             float3 dashDirection = mDashDirection;
-            float3 newPos = (mGameObject->GetPosition() + dashDirection * App->GetDt() * mDashSpeed);
+            float3 newPos = (mGameObject->GetPosition() + dashDirection * mDashSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
         }
     }
-    else
+
+    if (mIsDashCoolDownActive)
     {
-        if (mIsDashCoolDownActive)
+        mDashCoolDownTimer += App->GetDt();
+        if (mDashCoolDownTimer >= mDashCoolDown)
         {
-            mDashCoolDownTimer += App->GetDt();
-            if (mDashCoolDownTimer >= mDashCoolDown)
-            {
-                mDashCoolDownTimer = 0.0f;
-                mIsDashCoolDownActive = false;
-            }
-        }
-        else
-        {
-            if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && IsMoving())
-            {
-                mIsDashing = true;
-                mDashTimer = 0.0f;
-
-                // Calculate dash direction based on current movement direction (WASD)
-                mDashDirection = float3::zero;
-                if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
-                    mDashDirection += float3::unitZ;
-                if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-                    mDashDirection -= float3::unitZ;
-                if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
-                    mDashDirection += float3::unitX;
-                if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-                    mDashDirection -= float3::unitX;
-
-                if (mDashDirection.Dot(mDashDirection) > 0.0f)
-                {
-                    mDashDirection.Normalize();
-                }
-                else
-                {
-                    // If no movement keys are pressed, dash in the direction the player is currently facing
-                    mDashDirection = mGameObject->GetFront();
-                }
-            }
+            mDashCoolDownTimer = 0.0f;
+            mIsDashCoolDownActive = false;
         }
     }
 }
 
-   
 
 void PlayerController::Attack()
 {

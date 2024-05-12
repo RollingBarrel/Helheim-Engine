@@ -64,7 +64,6 @@ class PlayerController :public Script
         void Shoot(float damage);
         void Reload();
         
-        void RechargeDash();
         void Death();
         void UpdateHealth();
         void UpdateBattleSituation();
@@ -100,11 +99,11 @@ class PlayerController :public Script
         //Dash
         bool mIsDashing = false;
         bool mIsDashCoolDownActive = false;
-        float mDashCoolDown = 0.7f; // CoolDown: 0.7 seconds
+        float mDashCoolDown = 5.0f; // CoolDown: 0.7 seconds
         float mDashCoolDownTimer = 0.0f;
         float mDashDuration = 0.5f; // Dash duration: 0.5 seconds
         float mDashTimer = 0.0f;
-        float mDashSpeed = 4.0f; // Adjust as needed
+        float mDashSpeed = 10.0f; // Adjust as needed
         float3 mDashDirection = float3::zero;
 
         //Range
@@ -130,13 +129,8 @@ class PlayerController :public Script
 
         //HUD
         GameObject* mHealthGO = nullptr;
-        GameObject* mDashGO_1 = nullptr;
-        GameObject* mDashGO_2 = nullptr;
-        GameObject* mDashGO_3 = nullptr;
         SliderComponent* mHealthSlider = nullptr;
-        SliderComponent* mDashSlider_1 = nullptr;
-        SliderComponent* mDashSlider_2 = nullptr;
-        SliderComponent* mDashSlider_3 = nullptr;
+
 
         //DEBUG
         bool mGodMode = false;
