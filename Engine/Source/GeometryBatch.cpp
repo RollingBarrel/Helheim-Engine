@@ -450,10 +450,8 @@ void GeometryBatch::Draw()
 	if(animationSkinning)
 		glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
-	glDisable(GL_BLEND);
-	glUseProgram(App->GetOpenGL()->GetPbrGeoPassProgramId());
-	glBindVertexArray(mVao);
-
+	
+	//Wait for GPU
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 	if (mSync[idx])
 	{
@@ -464,8 +462,9 @@ void GeometryBatch::Draw()
 		}
 	}
 
-	mCommands.clear();
-	mHighLightCommands.clear();
+	glDisable(GL_BLEND);
+	glUseProgram(App->GetOpenGL()->GetPbrGeoPassProgramId());
+	glBindVertexArray(mVao);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
 	unsigned int i = 0;
 	for (const BatchMeshRendererComponent& batchMeshRenderer : mMeshComponents)
@@ -509,10 +508,12 @@ void GeometryBatch::Draw()
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
-	App->GetOpenGL()->BindGBufferColorAttachments();
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
-	App->GetOpenGL()->BindSceneColorAttachment();
 
+	//Lighting pass !!!
+	glUseProgram(App->GetOpenGL()->GetPbrLightingPassProgramId());
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
+	
 	//glClear(GL_STENCIL_BUFFER_BIT);
 	//DRAW HIGHLIGHT
 	glEnable(GL_STENCIL_TEST);
@@ -540,12 +541,175 @@ void GeometryBatch::Draw()
 	glDeleteSync(mSync[idx]);
 	mSync[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 
+	//CleanUp
 	glBindVertexArray(0);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
 	glUseProgram(0);
 	mCommands.clear();
-
+	mHighLightCommands.clear();
 	++mDrawCount;
 }
 
+void GeometryBatch::CheckDirtyFlags()
+{
+	if (mVBOFlag)
+		RecreateVboAndEbo();
+	if (mMaterialFlag)
+		RecreateMaterials();
+	if (mPersistentsFlag)
+		RecreatePersistentSsbosAndIbo();
+}
+
+void GeometryBatch::ComputeAnimations()
+{
+	bool animationSkinning = false;
+	glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
+	for (const BatchMeshRendererComponent& batchMeshRenderer : mMeshComponents)
+	{
+		const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
+		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
+		if (batchMeshRenderer.IsAnimated() && meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
+		{
+			if ((!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum()))
+			{
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
+				glBufferData(GL_SHADER_STORAGE_BUFFER, batchMeshRenderer.bCAnim->GetPalette().size() * sizeof(float) * 16, batchMeshRenderer.bCAnim->GetPalette().data(), GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
+				glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
+				glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberWeights() * sizeof(float), rMesh->GetWeights(), GL_STREAM_DRAW);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPosSsbo);
+				glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::POS), GL_STREAM_DRAW);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, mNormSsbo);
+				glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::NORMAL), GL_STREAM_DRAW);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, mTangSsbo);
+				glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::TANGENT), GL_STREAM_DRAW);
+				glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * rMesh->GetVertexSize(), rMesh->GetVertexSize() * rMesh->GetNumberVertices());
+				glUniform1i(25, rMesh->GetNumberVertices());
+				glUniform1i(26, batchMeshRenderer.bCAnim->GetIsPlaying());
+				glDispatchCompute((rMesh->GetNumberVertices() + (63)) / 64, 1, 1);
+				animationSkinning = true;
+			}
+		}
+	}
+	if (animationSkinning)
+		glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+}
+
+void GeometryBatch::WaitGPU()
+{
+	unsigned int idx = mDrawCount % NUM_BUFFERS;
+	if (mSync[idx])
+	{
+		GLenum waitReturn = GL_UNSIGNALED;
+		while (waitReturn != GL_ALREADY_SIGNALED && waitReturn != GL_CONDITION_SATISFIED)
+		{
+			waitReturn = glClientWaitSync(mSync[idx], GL_SYNC_FLUSH_COMMANDS_BIT, 1000000000);
+		}
+	}
+}
+
+void GeometryBatch::DrawGeometryPass()
+{
+	unsigned int idx = mDrawCount % NUM_BUFFERS;
+	glDisable(GL_BLEND);
+	glUseProgram(App->GetOpenGL()->GetPbrGeoPassProgramId());
+	glBindVertexArray(mVao);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
+	unsigned int i = 0;
+	for (const BatchMeshRendererComponent& batchMeshRenderer : mMeshComponents)
+	{
+		const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
+		const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
+		// Enable/disable mesh renderer component
+		if (meshRenderer->IsEnabled() && meshRenderer->GetOwner()->IsActive())
+		{
+			if (!App->GetScene()->GetApplyFrustumCulling() || meshRenderer->IsInsideFrustum())
+			{
+				if (batchMeshRenderer.IsAnimated() && batchMeshRenderer.bCAnim->GetIsPlaying())
+				{
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, float4x4::identity.ptr(), sizeof(float) * 16);
+				}
+				else
+				{
+					memcpy(mSsboModelMatricesData[idx] + 16 * i, meshRenderer->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+				}
+
+				memcpy(mSsboIndicesData[idx] + i, &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
+				mCommands.emplace_back(rMesh->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
+
+				for (const BatchMeshRendererComponent& highLightMesh : mHighLightMeshComponents)
+				{
+					if (highLightMesh.component->GetID() == batchMeshRenderer.component->GetID())
+					{
+						mHighLightCommands.push_back(mCommands.back());
+					}
+				}
+			}
+		}
+		++i;
+	}
+
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
+	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
+
+	unsigned int structSize = ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
+	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
+}
+
+void GeometryBatch::DrawLightingPass()
+{
+	//glBindVertexArray(mVao);
+	glUseProgram(App->GetOpenGL()->GetPbrLightingPassProgramId());
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, App->GetOpenGL()->GetFramebufferTexture());
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void GeometryBatch::DrawHighlight()
+{
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilMask(0xFF);
+	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mHighLightCommands.size() * sizeof(Command), mHighLightCommands.data());
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mHighLightCommands.size(), 0);
+
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	//glStencilFunc(GL_EQUAL, 1, 0xFF);
+	glStencilMask(0x00);
+	glDisable(GL_DEPTH_TEST);
+
+	glUseProgram(App->GetOpenGL()->GetHighLightProgramId());
+	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mHighLightCommands.size(), 0);
+
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+	glStencilMask(0xFF);
+	glStencilFunc(GL_ALWAYS, 0, 0xFF);
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+	//END HIGHLIGHT
+}
+
+void GeometryBatch::SynchFence()
+{
+	unsigned int idx = mDrawCount % NUM_BUFFERS;
+	glDeleteSync(mSync[idx]);
+	mSync[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+}
+
+void GeometryBatch::CleanUpDraw()
+{
+	glBindVertexArray(0);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+	glUseProgram(0);
+	mCommands.clear();
+	mHighLightCommands.clear();
+	++mDrawCount;
+}

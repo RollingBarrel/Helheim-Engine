@@ -92,6 +92,16 @@ public:
 	void AddHighLight(std::vector<Component*> meshRendererComponents);
 	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
 
+	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
+	void CheckDirtyFlags();
+	void ComputeAnimations();
+	void WaitGPU();
+	void DrawGeometryPass();
+	void DrawLightingPass();
+	void DrawHighlight();
+	void SynchFence();
+	void CleanUpDraw();
+
 private:
 	void RecreatePersistentSsbosAndIbo();
 	void RecreateVboAndEbo();

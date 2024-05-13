@@ -39,11 +39,11 @@ in VertToFrag {
 	flat uint instace_index;
 };
 
-layout(location = 1) out vec3 outDiffuse;
-layout(location = 2) out vec4 outSpecularRough;
-layout(location = 3) out vec3 outNormal;
-layout(location = 4) out vec4 outPosition;
-layout(location = 5) out vec3 outEmissive;
+layout(location = 0) out vec3 outDiffuse;
+layout(location = 1) out vec4 outSpecularRough;
+layout(location = 2) out vec3 outNormal;
+layout(location = 3) out vec4 outPosition;
+layout(location = 4) out vec3 outEmissive;
 
 void main() 
 {

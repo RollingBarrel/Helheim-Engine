@@ -1138,5 +1138,8 @@
     <None Include="..\Game\Assets\Shaders\PBRCT_GeometryPass.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\PBRCT_LightingPass.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 #version 460 core
 
-out vec4 FragColor;
+layout(location = 5) out vec4 FragColor;
 
 in VertToFrag {
 	vec2 uv;
@@ -9,7 +9,6 @@ in VertToFrag {
 	vec4 tang;
 	flat uint instace_index;
 };
-
 
 void main()
 {

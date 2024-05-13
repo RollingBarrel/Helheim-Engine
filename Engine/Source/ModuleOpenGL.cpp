@@ -71,21 +71,7 @@ void ModuleOpenGL::BindSceneFramebuffer()
 
 void ModuleOpenGL::UnbindSceneFramebuffer()
 {
-	unsigned int att[5] = { GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(5, att);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void ModuleOpenGL::BindGBufferColorAttachments()
-{
-	unsigned int att[5] = { GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(5, att);
-}
-
-void ModuleOpenGL::BindSceneColorAttachment()
-{
-	unsigned int att = GL_COLOR_ATTACHMENT0;
-	glDrawBuffers(1, &att);
 }
 
 // Called before render is available
@@ -125,8 +111,6 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &depthStencil);
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthStencil, 0);
 	glGenTextures(1, &sceneTexture);
 	glBindTexture(GL_TEXTURE_2D, sceneTexture);
@@ -167,14 +151,13 @@ bool ModuleOpenGL::Init()
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
-	unsigned int att[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
+	unsigned int att[6] = { GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT0 };
 	glDrawBuffers(6, att);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
-	const char* sourcesPaths[2] = { "PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl" };
+	const char* sourcesPaths[2];
 	int sourcesTypes[2] = { GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
-	mPbrProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "skybox.vs";
 	sourcesPaths[1] = "skybox.fs";
@@ -220,6 +203,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
 	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
+	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -228,7 +215,7 @@ bool ModuleOpenGL::Init()
 	InitSkybox();
 
 	//Lighting uniforms
-	glUseProgram(mPbrProgramId);
+	glUseProgram(mPbrLightingPassProgramId);
 	glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 	glUseProgram(0);
 
@@ -249,7 +236,6 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 {
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	BindSceneColorAttachment();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
 	//Draw the skybox
@@ -290,7 +276,6 @@ bool ModuleOpenGL::CleanUp()
 	delete mSpotsBuffer;
 	delete mDLightUniBuffer;
 
-	glDeleteProgram(mPbrProgramId);
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteProgram(mUIImageProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
@@ -376,7 +361,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
 		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
-		glUseProgram(mPbrProgramId);
+		glUseProgram(mPbrLightingPassProgramId);
 		glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 		glUseProgram(0);
 	}
@@ -782,11 +767,12 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		glDeleteFramebuffers(1, &frameBuffer);
 		glDeleteTextures(1, &mHDRTextureId);
 
-		glUseProgram(mPbrProgramId);
-		glUniform1ui(glGetUniformLocation(mPbrProgramId, "numLevels"), numMipMaps);
-		glUniform1i(glGetUniformLocation(mPbrProgramId, "prefilteredIBL"), 5);
-		glUniform1i(glGetUniformLocation(mPbrProgramId, "diffuseIBL"), 6);
-		glUniform1i(glGetUniformLocation(mPbrProgramId, "environmentBRDF"), 7);
+		//TODO: put in the init of openGL
+		glUseProgram(mPbrLightingPassProgramId);
+		glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), numMipMaps);
+		glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "prefilteredIBL"), 5);
+		glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "diffuseIBL"), 6);
+		glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "environmentBRDF"), 7);
 		glUseProgram(0);
 		SceneFramebufferResized();
 	}
