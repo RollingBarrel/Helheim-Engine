@@ -104,7 +104,7 @@ void GameManager::Loading()
         if (Delay(0.1f))
         {
             mInstance->mLoading = false;
-            App->GetScene()->Load("MainMenu.json");
+            mInstance->LoadLevel("MainMenu.json");
         }
     }
 }
@@ -117,6 +117,11 @@ void GameManager::WinScreen()
 void GameManager::LoseScreen() 
 {
     mInstance->mLoseScreen->SetEnabled(true);
+}
+
+void GameManager::LoadLevel(const char* LevelName)
+{
+    App->GetScene()->Load(LevelName);
 }
 
 void GameManager::OnWinButtonClick() 

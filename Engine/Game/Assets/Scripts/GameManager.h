@@ -16,6 +16,8 @@ public:
 
     void WinScreen();
     void LoseScreen();
+
+    void LoadLevel(const char* LevelName);
 private:
     GameManager(GameObject* owner); 
     ~GameManager();
