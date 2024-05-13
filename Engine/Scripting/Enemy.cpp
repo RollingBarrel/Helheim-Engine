@@ -10,7 +10,6 @@ Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
 void Enemy::Start()
 {
-    mNavMeshControl = App->GetScene()->GetNavController();
 
     ModuleScene* scene = App->GetScene();
     mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());

@@ -82,20 +82,9 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 
 void ModuleScriptManager::StartScripts()
 {
-	if (App->GetScene()->GetRoot()->GetName() == "Level1")
-	{
-		App->GetScene()->GetNavController()->HandleBuild();
-	}
-
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
 	{
 		mScripts[i]->mScript->Start();
-	}
-
-	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
-	if (cameraGameObject)
-	{
-		App->GetCamera()->SetCurrentCamera(cameraGameObject);
 	}
 
 }

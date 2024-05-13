@@ -1,10 +1,12 @@
 #include "Application.h"
 
 class ModuleDebugDraw;
+class ModuleEngineCamera;
 class ModuleEditor;
 class ModuleEngineResource;
 class ModuleEngineInput;
 class ModuleEngineScriptManager;
+class NavMeshController;
 
 class EngineApplication : public Application
 {
@@ -23,9 +25,11 @@ public:
 
 	ModuleEngineResource* GetEngineResource() { return engineResources; }
 	ModuleEngineInput* GetEngineInput() { return engineInput; }
+	ModuleEngineCamera* GetEngineCamera() { return engineCamera; }
 	ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
 	ModuleEngineScriptManager* GetEngineScriptManager() { return engineScriptManager; }
 	ModuleEditor* GetEditor() { return editor; }
+	NavMeshController* GetNavController() { return mNavMeshController; }
 
 	void Start();
 	void Stop();
@@ -35,10 +39,13 @@ public:
 
 private:
 	ModuleDebugDraw* debugDraw = nullptr;
+	ModuleEngineCamera* engineCamera = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleEngineResource* engineResources = nullptr;
 	ModuleEngineInput* engineInput = nullptr;
 	ModuleEngineScriptManager* engineScriptManager = nullptr;
+	NavMeshController* mNavMeshController;
+
 
 #define NUM_MODULES 14
 	Module* modules[NUM_MODULES];
