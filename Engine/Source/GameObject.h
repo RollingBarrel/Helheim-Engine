@@ -61,7 +61,8 @@ public:
 	bool IsEnabled() const { return mIsEnabled; }
 	// Status for this GameObject and all its ancestors
 	bool IsActive() const { return mIsEnabled && mIsActive; }
-	
+	bool IsDynamic() const { return mIsDynamic; }
+	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
 	// Children
 	void AddChild(GameObject* child, const int aboveThisId = 0);
 	GameObject* RemoveChild(const int id);
@@ -146,6 +147,7 @@ private:
 
 	bool mIsEnabled = true;
 	bool mIsActive = true;
+	bool mIsDynamic = false;
 	bool mIsTransformModified = false;
 	const bool mIsRoot = false;
 };
