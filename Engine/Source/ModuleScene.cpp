@@ -435,7 +435,10 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
 	{
 		const rapidjson::Value& sceneValue = d["Prefab"];
-		if (update) { mRoot->LoadChangesPrefab(sceneValue, resourceId); }
+		if (update) 
+		{ 
+			mRoot->LoadChangesPrefab(sceneValue, resourceId); 
+		}
 		else
 		{
 			GameObject* temp = new GameObject("Temp", parent);
@@ -455,7 +458,10 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 
 void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
 {
-	if (mBackgroundScene != nullptr) { mClosePrefab = true; }
+	if (mBackgroundScene != nullptr) 
+	{ 
+		mClosePrefab = true; 
+	}
 	mPrefabPath = saveFilePath;
 }
 
@@ -515,7 +521,6 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name) {
 		mSceneGO.end());
 }
 
-
 void ModuleScene::DeleteGameObjects()
 {
 
@@ -573,7 +578,8 @@ void ModuleScene::NewScene()
 	mRoot = new GameObject("Untlitled", nullptr);
 }
 
-std::string const ModuleScene::GetName() {
+std::string const ModuleScene::GetName() 
+{
 	return mRoot->GetName();
 }
 
