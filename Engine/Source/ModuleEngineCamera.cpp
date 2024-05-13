@@ -289,42 +289,6 @@ void ModuleEngineCamera::CameraControls(float dt)
 			{
 				active = true;
 
-				//METHOD 1
-				/*float distance = mEditorCameraGameObject->GetPosition().Distance(focusedObject->GetPosition());
-				float3 dir = (focusedObject->GetPosition() - mEditorCameraGameObject->GetPosition()).Normalized();
-
-				int mX, mY;
-				App->GetInput()->GetMouseMotion(mX, mY);
-
-				//float2 mousePosition = App->GetInput()->GetMousePosition();
-				//float2 lastMousePosition = App->GetInput()->GetLastMousePosition();
-				//float2 offset(lastMousePosition - mousePosition);
-				//
-				//offset.x *= mouseSensitivity.x;
-				//offset.y *= mouseSensitivity.y;
-				//yaw = offset.x;
-				//pitch = offset.y;
-
-				mEditorCameraGameObject->SetPosition(focusedObject->GetPosition());
-
-				float3x3 rotationX = float3x3::RotateAxisAngle(mEditorCameraGameObject->GetRight(), DegToRad(mY));
-				float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(-mX));
-				float3x3 rotation = rotationY.Mul(rotationX);
-
-				Quat quatOriginal = mEditorCameraGameObject->GetRotationQuat();
-				Quat newQuat = Quat(rotation);
-				newQuat = newQuat * quatOriginal;
-				float3 eulerRotation = newQuat.ToEulerXYZ();
-				mEditorCameraGameObject->SetRotation(eulerRotation);
-
-				
-				mEditorCameraGameObject->Translate(-mEditorCameraGameObject->GetFront() * distance);
-				//mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
-				*/
-
-
-				//METHOD 2
-				
 				float3 focus = mEditorCameraGameObject->GetPosition();
 				int mX, mY;
 				EngineApp->GetInput()->GetMouseMotion(mX, mY);
@@ -340,8 +304,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 					focus = rotationMatrixY.Mul(focus);
 				}
 				mEditorCameraGameObject->SetPosition(focus);
-				mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
-				
+				mEditorCameraGameObject->LookAt(focusedObject->GetWorldPosition());
 				
 				MouseFix();
 			}	
@@ -359,7 +322,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 				Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
 				float distance = objectSphere.r * 2.5f;
 
-				float3 selectedObjectPosition = selectedGameObject->GetPosition();
+				float3 selectedObjectPosition = selectedGameObject->GetWorldPosition();
 				float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
 				mEditorCameraGameObject->SetPosition(finalCameraPosition);
 			}
