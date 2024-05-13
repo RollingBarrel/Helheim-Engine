@@ -205,7 +205,7 @@ bool ModuleOpenGL::Init()
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
-	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	mPbrLightingPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 
 	//Initialize camera uniforms

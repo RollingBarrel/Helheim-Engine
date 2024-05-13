@@ -45,11 +45,12 @@ uniform samplerCube diffuseIBL;
 uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 
-vec3 diffuseCol;
-vec3 specCol;
+vec3 cDiff;
+vec3 cSpec;
 float rough;
 vec3 N;
 vec3 pos;
+vec3 V;
 float depth;
 vec3 emissiveCol;
 
@@ -86,9 +87,9 @@ vec3 GetAmbientLight()
 
 void main() 
 {
-	diffuseCol = texture(diffuseTex, uv).rgb;
+	cDiff = texture(diffuseTex, uv).rgb;
 	vec4 specColorTex = texture(specularRoughTex, uv);
-	specCol = specColorTex.rgb;
+	cSpec = specColorTex.rgb;
 	rough = specColorTex.rgb.a;
 	N = normalize(texture(normalTex, uv).rgb * 2.0 - 1.0);
 	vec4 posDepth = texture(diffuseTex, uv);
@@ -103,7 +104,7 @@ void main()
 	//Point lights
 	for(int i = 0; i<numPLights; ++i)
 	{
-		vec3 mVector = sPos - pLights[i].pos.xyz;
+		vec3 mVector = pos - pLights[i].pos.xyz;
 		float dist = length(mVector);
 		vec3 pDir = normalize(mVector);
 		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0.0),2) / (dist*dist + 1);
@@ -113,7 +114,7 @@ void main()
 	//Spot lights
 	for(int i = 0; i<numSLights; ++i)
 	{
-		vec3 mVector = sPos - sLights[i].pos.xyz;
+		vec3 mVector = pos - sLights[i].pos.xyz;
 		vec3 sDir = normalize(mVector);
 		vec3 aimDir = normalize(sLights[i].aimD.xyz);
 		float dist = dot(mVector, aimDir);

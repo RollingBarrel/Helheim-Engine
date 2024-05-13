@@ -74,7 +74,7 @@ public:
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
-	unsigned int GetPbrDeferredPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
 
 
 	//TODO: put all this calls into one without separating for light type??

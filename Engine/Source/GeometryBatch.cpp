@@ -462,6 +462,7 @@ void GeometryBatch::Draw()
 		}
 	}
 
+	//Geometry pass
 	glDisable(GL_BLEND);
 	glUseProgram(App->GetOpenGL()->GetPbrGeoPassProgramId());
 	glBindVertexArray(mVao);
@@ -511,8 +512,8 @@ void GeometryBatch::Draw()
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
 
 	//Lighting pass !!!
-	glUseProgram(App->GetOpenGL()->GetPbrLightingPassProgramId());
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
+	//glUseProgram(App->GetOpenGL()->GetPbrLightingPassProgramId());
+	//glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
 	
 	//glClear(GL_STENCIL_BUFFER_BIT);
 	//DRAW HIGHLIGHT
