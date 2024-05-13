@@ -37,8 +37,15 @@ GameManager* GameManager::GetInstance()
 
 GameManager::GameManager(GameObject* owner) : Script(owner) {}
 
+GameManager::~GameManager()
+{
+    delete mInstance;
+}
+
 void GameManager::Start()
 {
+    mInstance = this;
+    
     mInstance->mPauseScreen->SetEnabled(false);
     mInstance->mWinScreen->SetEnabled(false);
     mInstance->mLoseScreen->SetEnabled(false);

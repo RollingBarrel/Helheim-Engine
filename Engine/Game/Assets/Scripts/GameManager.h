@@ -18,7 +18,7 @@ public:
     void LoseScreen();
 private:
     GameManager(GameObject* owner); 
-    ~GameManager() {}
+    ~GameManager();
 
     void Loading();
     void Controls();
@@ -35,6 +35,7 @@ private:
     void OnNoButtonHoverOff();
 
     static GameManager* mInstance;
+    GameObject* mOwner = nullptr;
 
     GameObject* mPauseScreen = nullptr;
     GameObject* mWinScreen = nullptr;
