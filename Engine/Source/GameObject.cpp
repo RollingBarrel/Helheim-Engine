@@ -238,7 +238,7 @@ void GameObject::LookAt(float3 target)
 	//rotationMatrix = rotationMatrix.RotateFromTo(GetFront().Normalized() , (target - mPosition).Normalized());
 	
 	float3 forward = -(target - GetWorldPosition()).Normalized();
-	float3 right = Cross(forward, GetUp()).Normalized();
+	float3 right = Cross(forward, float3::unitY).Normalized();
 	float3 up = Cross(right, forward).Normalized();
 	
 	rotationMatrix[0][0] = right.x;

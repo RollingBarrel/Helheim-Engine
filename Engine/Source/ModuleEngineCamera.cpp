@@ -5,6 +5,9 @@
 #include "Physics.h"
 #include "Quadtree.h"
 
+#include "Geometry/AABB.h"
+#include "Geometry/Sphere.h"
+
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -36,7 +39,6 @@ update_status ModuleEngineCamera::Update(float dt)
 {
 	CameraControls(dt);
 	mEditorCameraGameObject->Update();
-	//App->GetOpenGL()->SetOpenGlCameraUniforms();
 	//LOG("X: %f, Y: %f, Z: %f", RadToDeg(mEditorCameraGameObject->GetRotation().x), RadToDeg(mEditorCameraGameObject->GetRotation().y), RadToDeg(mEditorCameraGameObject->GetRotation().z));
 	return UPDATE_CONTINUE;
 }
@@ -191,8 +193,6 @@ void ModuleEngineCamera::CameraControls(float dt)
 	}
 	bool isSceneHovered = ((ScenePanel*)EngineApp->GetEditor()->GetPanel(SCENEPANEL))->isHovered();
 	bool isGuizmoUsing = reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing();
-	//if ((mIsEditorCameraActive && ((ScenePanel*)EngineApp->GetEditor()->GetPanel(SCENEPANEL))->isHovered() && !reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) || active)
-	//if (mIsEditorCameraActive || active)
 	if ((mIsEditorCameraActive && isSceneHovered && !isGuizmoUsing) || active)
 	{
 		active = false;
@@ -324,7 +324,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 
 
 				//METHOD 2
-				/*
+				
 				float3 focus = mEditorCameraGameObject->GetPosition();
 				int mX, mY;
 				EngineApp->GetInput()->GetMouseMotion(mX, mY);
@@ -341,7 +341,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 				}
 				mEditorCameraGameObject->SetPosition(focus);
 				mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
-				*/
+				
 				
 				MouseFix();
 			}	
@@ -349,20 +349,16 @@ void ModuleEngineCamera::CameraControls(float dt)
 		
 		if (App->GetInput()->GetKey(KeyboardKeys_F) == KeyState::KEY_DOWN)
 		{
-
 			GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-			float3 selectedObjectPosition;
 			if (selectedGameObject)
 			{
-				selectedObjectPosition = selectedGameObject->GetPosition();
+				AABB objectAABB = selectedGameObject->GetAABB();
+				Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
+				float distance = objectSphere.r * 2.5f;
 
-				float3 dir = (selectedGameObject->GetPosition() - mEditorCameraGameObject->GetPosition()).Normalized();
-				float3 initialCameraPosition = mEditorCameraGameObject->GetPosition();
-
-				float distance = 5.0f;
-				//float3 finalCameraPosition = selectedObjectPosition - (selectedObjectPosition - initialCameraPosition).Normalized() * distance;
-				//mEditorCameraGameObject->SetPosition(finalCameraPosition);
-				mEditorCameraGameObject->LookAt(selectedObjectPosition);
+				float3 selectedObjectPosition = selectedGameObject->GetPosition();
+				float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
+				mEditorCameraGameObject->SetPosition(finalCameraPosition);
 			}
 			
 		}
