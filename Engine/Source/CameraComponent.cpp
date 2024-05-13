@@ -1,14 +1,11 @@
 #include "CameraComponent.h"
-
-#include "Math/MathConstants.h"
-#include "Math/MathFunc.h"
 #include "Application.h"
 
 #include "ModuleWindow.h"
 #include "ModuleOpenGl.h"
 #include "ModuleCamera.h"
-
 #include "ModuleScene.h"
+
 #include "Quadtree.h"
 #include "MeshRendererComponent.h"
 

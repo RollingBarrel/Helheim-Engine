@@ -9,8 +9,9 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+
+#include "ModuleEditor.h"
 #include "ScenePanel.h"
 #include "HierarchyPanel.h"
 

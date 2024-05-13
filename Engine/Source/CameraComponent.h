@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Math/float4x4.h"
-#include "Math/float3.h"
 #include "Geometry/Frustum.h"
 
 class ENGINE_API CameraComponent :
