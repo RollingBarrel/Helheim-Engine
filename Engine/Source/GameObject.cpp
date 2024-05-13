@@ -206,6 +206,71 @@ Component* GameObject::GetComponentInParent(ComponentType type) const
 	return nullptr;
 }
 
+void GameObject::RecalculateMatrices()
+{
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	
+	mWorldTransformMatrix =  mLocalTransformMatrix;
+	if (mParent != nullptr)
+	{
+		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+	}
+	
+
+	for (size_t i = 0; i < mChildren.size(); i++) 
+	{
+		mChildren[i]->RecalculateMatrices();
+	}
+
+}
+
+void GameObject::Translate(float3 translation)
+{
+	SetPosition(mPosition + translation);
+}
+
+AABB GameObject::GetAABB()
+{
+	std::vector<Component*> components = GetComponentsInChildren(ComponentType::MESHRENDERER);
+
+	AABB mixedAABB;
+	mixedAABB.SetNegativeInfinity();
+
+	for (Component* component : components)
+	{
+		mixedAABB.Enclose(reinterpret_cast<MeshRendererComponent*>(component)->GetAABB());
+	}
+
+	return mixedAABB;
+}
+
+void GameObject::LookAt(float3 target)
+{
+	float4x4 rotationMatrix = float4x4::identity;
+
+	//rotationMatrix = rotationMatrix.RotateFromTo(GetFront().Normalized() , (target - mPosition).Normalized());
+	
+	float3 forward = -(target - GetWorldPosition()).Normalized();
+	float3 right = Cross(forward, float3::unitY).Normalized();
+	float3 up = Cross(right, forward).Normalized();
+	
+	rotationMatrix[0][0] = right.x;
+	rotationMatrix[1][0] = right.y;
+	rotationMatrix[2][0] = right.z;
+	rotationMatrix[0][1] = up.x;
+	rotationMatrix[1][1] = up.y;
+	rotationMatrix[2][1] = up.z;
+	rotationMatrix[0][2] = -forward.x;
+	rotationMatrix[1][2] = -forward.y;
+	rotationMatrix[2][2] = -forward.z;
+
+	
+	mRotation = Quat(rotationMatrix);
+	mEulerRotation = mRotation.ToEulerXYZ();
+
+	mIsTransformModified = true;
+}
+
 void GameObject::SetEnabled(bool enabled)
 {
 	// TODO, kind of redundant, no?
@@ -433,51 +498,6 @@ const AnimationComponent* GameObject::FindAnimationComponent() {
 #pragma endregion
 
 #pragma region Transform
-
-void GameObject::RecalculateMatrices()
-{
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-
-	mWorldTransformMatrix = mLocalTransformMatrix;
-	if (mParent != nullptr)
-	{
-		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
-	}
-
-
-	for (size_t i = 0; i < mChildren.size(); i++)
-	{
-		mChildren[i]->RecalculateMatrices();
-	}
-
-}
-
-void GameObject::LookAt(float3 target)
-{
-	float4x4 rotationMatrix = float4x4::identity;
-
-	//rotationMatrix = rotationMatrix.RotateFromTo(GetFront().Normalized() , (target - mPosition).Normalized());
-
-	float3 forward = -(target - mPosition).Normalized();
-	float3 right = Cross(forward, GetUp()).Normalized();
-	float3 up = Cross(right, forward).Normalized();
-
-	rotationMatrix[0][0] = right.x;
-	rotationMatrix[1][0] = right.y;
-	rotationMatrix[2][0] = right.z;
-	rotationMatrix[0][1] = up.x;
-	rotationMatrix[1][1] = up.y;
-	rotationMatrix[2][1] = up.z;
-	rotationMatrix[0][2] = -forward.x;
-	rotationMatrix[1][2] = -forward.y;
-	rotationMatrix[2][2] = -forward.z;
-
-
-	mRotation = Quat(rotationMatrix);
-	mEulerRotation = mRotation.ToEulerXYZ();
-
-	mIsTransformModified = true;
-}
 
 void GameObject::ResetTransform()
 {

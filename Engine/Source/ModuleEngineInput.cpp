@@ -7,8 +7,6 @@
 #include "imgui_impl_sdl2.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEngineResource.h"
-#include "imgui_impl_sdl2.h"
-//#include "SDL_scancode.h"
 
 ModuleEngineInput::ModuleEngineInput() : ModuleInput()
 {
@@ -33,8 +31,8 @@ update_status ModuleEngineInput::PreUpdate(float dt)
 
 	mMouseReceivedInput = false;
 	unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mMouseMotionX, &mMouseMotionY);
-	SDL_GetMouseState(&mMousePositionX, &mMousePositionY);
-	mGameMousePosition = float2(mMousePositionX, mMousePositionY);
+	SDL_GetMouseState(&mMouseLocalPositionX, &mMouseLocalPositionY);
+	SDL_GetGlobalMouseState(&mMouseGlobalPositionX, &mMouseGlobalPositionY);
 	for (int i = 0; i < MouseKey::NUM_MOUSE_BUTTONS; ++i)
 	{
 		unsigned int pressed = mouseBitmask & SDL_BUTTON(i + 1);

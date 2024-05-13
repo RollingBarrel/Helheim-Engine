@@ -23,15 +23,10 @@ bool ModuleGame::Init()
 	App->GetScriptManager()->StartScripts();
 
 	//TODO: Add this code to is game playing in editor and game
-	GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
-	if (cameraGameObject)
-	{
-		App->GetCamera()->SetCurrentCamera(cameraGameObject);
-	}
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	
-	App->GetWindow()->SetGameWindowsPosition({0,0});
+	//App->GetWindow()->SetGameWindowsPosition({0,0});
 
 	//Camera
 	//Find camera on the scene and set !!!);

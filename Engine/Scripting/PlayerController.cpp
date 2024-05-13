@@ -298,8 +298,8 @@ void PlayerController::Move(float3 direction)
 void PlayerController::HandleRotation()
 {
     std::map<float, Hit> hits;
-    
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGameMousePosition());
+    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+    Ray ray = Physics::ScreenPointToRay(mousePosition);
     Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
     
     float distance;

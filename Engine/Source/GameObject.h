@@ -4,6 +4,8 @@
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
+#include "Geometry/AABB.h"
+#include "Geometry/OBB.h"
 #include "string"
 #include "Archive.h"
 #include "Tag.h"
@@ -34,6 +36,8 @@ public:
 
 	void Update();
 
+	void Translate(float3 translation);
+
 	// Getters
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
@@ -49,6 +53,8 @@ public:
 	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
+	AABB GetAABB();
+
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
 	// Status for this GameObject

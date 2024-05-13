@@ -116,9 +116,6 @@ update_status ModuleScene::PostUpdate(float dt)
 			LoadPrefab(mPrefabPath, resource->GetUID());
 		}
 	}
-
-	const Frustum frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
-
 	return UPDATE_CONTINUE;
 }
 
