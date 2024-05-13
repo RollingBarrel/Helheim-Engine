@@ -32,12 +32,11 @@ private:
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
 
-	ResourceTexture* mImage = nullptr;
 	unsigned int mResourceId = 452546727; // Default particle texture
 	const char* mFileName = nullptr;
 
 	float mMaxLifeTime = 3.0f;
-
+	float mMinDistance = 1.0f;
 	bool mIsSizeCurve;
 	float mSizeLineal = 3.0f;
 	float4 mSizeCurve;

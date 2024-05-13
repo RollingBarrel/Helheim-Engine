@@ -236,8 +236,6 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h" />
     <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h" />
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h" />
-    <ClInclude Include="Dependencies\Optick\include\optick.config.h" />
-    <ClInclude Include="Dependencies\Optick\include\optick.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\json.hpp" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image.h" />
     <ClInclude Include="Dependencies\Tinygltf-2.8.19\stb_image_write.h" />

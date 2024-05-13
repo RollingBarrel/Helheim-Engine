@@ -38,6 +38,7 @@
 #include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
+#include "BezierCurve.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -1272,10 +1273,10 @@ float4 ImColorToFloat4(const float* color)
 ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
 	ImGradient result;
 
-	const std::list<ColorGradientMark*>& marks = gradient->GetColorMarks();
+	const std::map<float, float4>& marks = gradient->GetColorMarks();
 
 	for (const auto& mark : marks) {
-		result.addMark(mark->position, Float4ToImColor(mark->color));
+		result.addMark(mark.first, Float4ToImColor(mark.second));
 	}
 
 	return result;
@@ -1288,10 +1289,10 @@ inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERAN
 	return std::fabs(a - b) < tolerance;
 }
 
-bool areMarksEquivalent(const ImGradientMark* a, const ColorGradientMark* b) {
-	if (approximatelyEqual(a->position, b->position)) {
+bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
+	if (approximatelyEqual(a->position, b.first)) {
 		for (int i = 0; i < 4; ++i) {
-			if (!approximatelyEqual(a->color[i], b->color[i])) {
+			if (!approximatelyEqual(a->color[i], b.second[i])) {
 				return false;
 			}
 		}
@@ -1302,7 +1303,6 @@ bool areMarksEquivalent(const ImGradientMark* a, const ColorGradientMark* b) {
 
 bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
 {
-
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
 	auto marks = gradient->GetColorMarks();
 
@@ -1339,25 +1339,21 @@ std::list<ColorGradientMark> findRemovedMarks(const ImGradient& editedGradient, 
 		);
 		if (it == marksEdited.end()) 
 		{
-			gradient->RemoveColorGradientMark(mark);
+			gradient->RemoveColorGradientMark(mark.first);
 		}
 	}
-
-	return removedMarks;
 }
 
-std::list<ColorGradientMark> findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
 {
-	std::list<ColorGradientMark> addedMarks;
-
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
+	std::map<float, float4> marks = gradient->GetColorMarks();
 
 	// find if markEdit is not in marks to add it
-	for (const auto& markEdit : marksEdited) {
+	for (const ImGradientMark* markEdit : marksEdited) {
 		auto it = std::find_if(
 			marks.begin(), marks.end(),
-			[&](const ColorGradientMark* mark) {
+			[&](const std::pair<float, float4> mark) {
 				return areMarksEquivalent(markEdit, mark);
 			}
 		);
@@ -1389,70 +1385,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	//ImGui::DragFloat("Start size", &(component->mSize));
 
 	ImGui::Separator();
-	ImGui::Text("Speed");
-	ImGui::Text("Initial Speed");
-	ImGui::SameLine();
-	ImGui::DragFloat("##Initial Speed", &component->mSpeedLineal, 1.0f, 0.0f);
-	ImGui::Text("Speed as a Curve");
-	ImGui::SameLine();
-	ImGui::Checkbox("##Speed as a Curve", &(component->mIsSpeedCurve));
-	if (component->mIsSpeedCurve)
-	{
-		static float points[5] = { component->mSpeedCurve[0], 
-			component->mSpeedCurve[1], 
-			component->mSpeedCurve[2], 
-			component->mSpeedCurve[3] };
-		ImGui::Text("Speed Growing Factor");
-		ImGui::SameLine();
-		ImGui::DragFloat("##Speed Growing Factor", &component->mSpeedCurveFactor, 1.0f, 0.0f);
-		ImGui::Text("Point 1");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
-		ImGui::Text("Point 2");
-		ImGui::SameLine(); 
-		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
-
-		if (points[0] != component->mSpeedCurve[0]) component->mSpeedCurve[0] = points[0];
-		if (points[1] != component->mSpeedCurve[1]) component->mSpeedCurve[1] = points[1];
-		if (points[2] != component->mSpeedCurve[2]) component->mSpeedCurve[2] = points[2];
-		if (points[3] != component->mSpeedCurve[3]) component->mSpeedCurve[3] = points[3];
-
-
-		ImGui::Bezier("Speed Presets", points);
-	}
+	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
 	ImGui::Separator();
-	ImGui::Text("Size");
-	ImGui::Text("Initial Size");
-	ImGui::SameLine();
-	ImGui::DragFloat("##Initial Size", &component->mSizeLineal, 1.0f, 0.0f);
-
-	ImGui::Text("Size as a Curve");
-	ImGui::SameLine();
-	ImGui::Checkbox("##Size as a Curve", &(component->mIsSizeCurve));
-	if (component->mIsSizeCurve)
-	{
-		static float points[5] = { component->mSizeCurve[0],
-			component->mSizeCurve[1],
-			component->mSizeCurve[2],
-			component->mSizeCurve[3] };
-		ImGui::Text("Size Growing Factor");
-		ImGui::SameLine();
-		ImGui::DragFloat("##Size Growing Factor", &component->mSizeCurveFactor, 1.0f, 0.0f);
-		ImGui::Text("Point 1");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
-		ImGui::Text("Point 2");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
-
-		if (points[0] != component->mSizeCurve[0]) component->mSizeCurve[0] = points[0];
-		if (points[1] != component->mSizeCurve[1]) component->mSizeCurve[1] = points[1];
-		if (points[2] != component->mSizeCurve[2]) component->mSizeCurve[2] = points[2];
-		if (points[3] != component->mSizeCurve[3]) component->mSizeCurve[3] = points[3];
-
-
-		ImGui::Bezier("Size Presets", points);
-	}
+	DrawBezierCurve(&(component->mSizeCurve), "Size");
 	ImGui::Separator();
 	static const char* items[]{ "Cone","Square","Circle" };
 	static int Selecteditem = 0;
@@ -1539,6 +1474,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		//ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
 
 		//::GRADIENT DATA::
+		static unsigned int id = 0;
 		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
 		static ImGradientMark* draggingMark = nullptr;
 		static ImGradientMark* selectedMark = nullptr;
@@ -1549,9 +1485,49 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
 
 		if (updated) {
-			findAddedMarks(gradient, component->mColorGradient);
 			findRemovedMarks(gradient, component->mColorGradient);
+			findAddedMarks(gradient, component->mColorGradient);			
 		}
 	}
 }
 
+
+void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const
+{
+	std::string label = cLabel;
+	ImGui::Text(cLabel);
+	ImGui::Text("Initial %s", cLabel);
+	ImGui::SameLine();
+	std::string initial = "##Initial " + label;
+	ImGui::DragFloat(initial.c_str(), &curve->mLineal, 1.0f, 0.0f);
+
+	ImGui::Text("%s as a Curve", cLabel);
+	ImGui::SameLine();
+	std::string asCurve = "##" + label + " as a Curve";
+	ImGui::Checkbox(asCurve.c_str(), &(curve->mIsCurve));
+	if (curve->mIsCurve)
+	{
+		static float points[5] = { curve->mCurve[0],
+			curve->mCurve[1],
+			curve->mCurve[2],
+			curve->mCurve[3] };
+		ImGui::Text("%s Growing Factor", cLabel);
+		ImGui::SameLine();
+		std::string growing = "##" + label + " Growing Factor";
+		ImGui::DragFloat(growing.c_str(), &curve->mCurveFactor, 1.0f, 0.0f);
+		ImGui::Text("Point 1");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
+		ImGui::Text("Point 2");
+		ImGui::SameLine();
+		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+
+		if (points[0] != curve->mCurve[0]) curve->mCurve[0] = points[0];
+		if (points[1] != curve->mCurve[1]) curve->mCurve[1] = points[1];
+		if (points[2] != curve->mCurve[2]) curve->mCurve[2] = points[2];
+		if (points[3] != curve->mCurve[3]) curve->mCurve[3] = points[3];
+
+		std::string presets = label + " Presets";
+		ImGui::Bezier(presets.c_str(), points);
+	}
+}
