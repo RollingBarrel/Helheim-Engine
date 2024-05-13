@@ -281,7 +281,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 		}
 		
 		
-		//Camera Orbit
+		//Camera Orbit //TODO: FIX MOVEMENT
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT && App->GetInput()->GetKey(KeyboardKeys_LALT) == KeyState::KEY_REPEAT)
 		{
 			GameObject* focusedObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
@@ -303,6 +303,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 					float3x3 rotationMatrixY = float3x3::RotateAxisAngle(mEditorCameraGameObject->GetRight(), mY * rotateCameraVel);
 					focus = rotationMatrixY.Mul(focus);
 				}
+
 				mEditorCameraGameObject->SetPosition(focus);
 				mEditorCameraGameObject->LookAt(focusedObject->GetWorldPosition());
 				
