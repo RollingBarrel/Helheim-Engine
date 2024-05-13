@@ -13,6 +13,17 @@ ColorGradient::~ColorGradient()
 	mColorMarks.clear();
 }
 
+ColorGradient::ColorGradient(const ColorGradient& original)
+{
+    for (ColorGradientMark* mark : original.mColorMarks)
+    {
+        ColorGradientMark* newMark = new ColorGradientMark();
+        newMark->position = mark->position;
+        newMark->color = mark->color;
+        mColorMarks.push_back(newMark);
+    }
+}
+
 void ColorGradient::AddColorGradientMark(float position, const float4& color)
 {
 	ColorGradientMark* mark = new ColorGradientMark();

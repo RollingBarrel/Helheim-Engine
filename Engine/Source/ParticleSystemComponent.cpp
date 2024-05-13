@@ -32,6 +32,7 @@ mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), Compon
     SetImage(original.mResourceId);
     Init();
     mShape->CopyShape(*original.mShape);
+    mColorGradient = new ColorGradient(*(original.mColorGradient));
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 
@@ -46,7 +47,6 @@ ParticleSystemComponent::~ParticleSystemComponent()
         delete particle;
     }
     mParticles.clear();
-    delete mColorGradient;
 }
 
 Component* ParticleSystemComponent::Clone(GameObject* owner) const

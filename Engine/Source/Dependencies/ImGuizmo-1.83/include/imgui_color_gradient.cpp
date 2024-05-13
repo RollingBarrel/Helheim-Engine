@@ -34,9 +34,9 @@ void ImGradient::addMark(float position, ImColor const color)
     newMark->color[0] = color.Value.x;
     newMark->color[1] = color.Value.y;
     newMark->color[2] = color.Value.z;
+    newMark->color[3] = color.Value.w;
     
     m_marks.push_back(newMark);
-    
     refreshCache();
 }
 
@@ -54,6 +54,26 @@ void ImGradient::getColorAt(float position, float* color) const
     color[0] = m_cachedValues[cachePos+0];
     color[1] = m_cachedValues[cachePos+1];
     color[2] = m_cachedValues[cachePos+2];
+}
+
+ImGradient& ImGradient::operator=(const ImGradient& original)
+{
+   // TODO: insert return statement here
+   if (this != &original) // Check for self-assignment
+   {
+      // Clear existing marks
+      for (auto mark : m_marks)
+         delete mark;
+      m_marks.clear();
+
+      // Copy marks from original
+      for (auto mark : original.m_marks)
+         m_marks.push_back(new ImGradientMark(*mark));
+
+      // Copy cached values
+      std::copy(original.m_cachedValues, original.m_cachedValues + (256 * 3), m_cachedValues);
+   }
+   return *this;
 }
 
 void ImGradient::computeColorAt(float position, float* color) const
