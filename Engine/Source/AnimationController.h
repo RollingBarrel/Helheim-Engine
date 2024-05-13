@@ -44,9 +44,8 @@ public:
 	void SetNextAnimation(ResourceAnimation* animation) { mNextAnimation = animation; }
 
 	//Blending
-	void SetStartTransitionTime(float time) { mStartTransitionTime = time; }
 	void SetTransitionDuration(float time) { mTransitionDuration = time; }
-	void ActivateTransition() { mTransition = true; }
+	void ActivateTransition() { mTransition = true; mStartTransitionTime = mCurrentTime; }
 	void SetClipStartTime(float time) { mClipStartTime = time; }
 
 	float GetTransitionDuration() { return mTransitionDuration; }
