@@ -26,6 +26,7 @@ public:
 	float2 GetGameWindowsSize() const { return mGameWindowsSize; }
 	float2 GetGameWindowsPosition() const { return mGameWindowsPosition; }
 	void SetGameWindowsPosition(float2 gameWindowsPosition) { mGameWindowsPosition = gameWindowsPosition; }
+	void SetMousePositionInWindow(float2 position);
 
 	void GameWindowsResized(float2 gameWindowsSize) { mGameWindowsSize = gameWindowsSize; }
 	void WindowResized(unsigned width, unsigned height);

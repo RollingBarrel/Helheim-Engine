@@ -43,9 +43,9 @@ update_status ModuleEngineCamera::Update(float dt)
 
 bool ModuleEngineCamera::CleanUp()
 {
-	if (mEditorCamera)
+	if (mEditorCameraGameObject)
 	{
-		delete mEditorCamera;
+		delete mEditorCameraGameObject;
 	}
 
 	return true;
@@ -146,17 +146,55 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 
 }
 
+void ModuleEngineCamera::MouseFix()
+{
+	float2 mouse = EngineApp->GetInput()->GetLocalMousePosition();
+	float2 windowSize = float2(EngineApp->GetWindow()->GetWidth(), EngineApp->GetWindow()->GetHeight());
+
+	float offset = 5.0f;
+	if (mouse.x <= 0.0f) 
+	{
+		EngineApp->GetWindow()->SetMousePositionInWindow(float2(windowSize.x - 5.0f, mouse.y));
+		mouse.x = windowSize.x - 5.0f;
+	}
+
+	if (mouse.x >= windowSize.x - 1) 
+	{
+		EngineApp->GetWindow()->SetMousePositionInWindow(float2(5.0f, mouse.y));
+		mouse.x = 5.0f;
+	}
+
+	if (mouse.y <= 0.0f) 
+	{
+		EngineApp->GetWindow()->SetMousePositionInWindow(float2(mouse.x, windowSize.y - 5.0f));
+		mouse.y = windowSize.y - 5.0f;
+	}
+
+	if (mouse.y >= windowSize.y - 1) 
+	{
+		EngineApp->GetWindow()->SetMousePositionInWindow(float2(mouse.x, 5.0f));
+		mouse.y = 5.0f;
+	}
+
+
+}
+
 void ModuleEngineCamera::CameraControls(float dt)
 {
-	bool hasBeenUpdated = false;
+	static bool active = false;
 	static float shiftSpeed = 3.0f;
 	static Ray mousePickingRay;
 	if (mDrawRayCast)
 	{   //TODO: FIX DEBUG DRAW NOT BEING CORRECT
 		EngineApp->GetDebugDraw()->DrawLine(mousePickingRay.pos, mousePickingRay.dir, float3(1.0f, 0.0f, 0.0f));
 	}
-	if (mIsEditorCameraActive && ((ScenePanel*)EngineApp->GetEditor()->GetPanel(SCENEPANEL))->isHovered() && !reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
+	bool isSceneHovered = ((ScenePanel*)EngineApp->GetEditor()->GetPanel(SCENEPANEL))->isHovered();
+	bool isGuizmoUsing = reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing();
+	//if ((mIsEditorCameraActive && ((ScenePanel*)EngineApp->GetEditor()->GetPanel(SCENEPANEL))->isHovered() && !reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing()) || active)
+	//if (mIsEditorCameraActive || active)
+	if ((mIsEditorCameraActive && isSceneHovered && !isGuizmoUsing) || active)
 	{
+		active = false;
 		const float dtTransformCameraVel = dt * 3.f;
 		float transformCameraVel = 0.03f;
 		const float rotateCameraVel = 0.01f;
@@ -176,6 +214,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
+			active = true;
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
 
@@ -189,6 +228,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			float3 eulerRotation = newQuat.ToEulerXYZ();
 			mEditorCameraGameObject->SetRotation(eulerRotation);
 
+			MouseFix();
 
 			if (App->GetInput()->GetKey(KeyboardKeys_Q) == KeyState::KEY_REPEAT)
 			{
@@ -219,6 +259,8 @@ void ModuleEngineCamera::CameraControls(float dt)
 			{
 				mEditorCameraGameObject->Translate(mEditorCameraGameObject->GetRight() * -dtSpeed);
 			}
+
+
 		}
 		
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
@@ -229,10 +271,12 @@ void ModuleEngineCamera::CameraControls(float dt)
 		//Camera Paning
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_MIDDLE) == KeyState::KEY_REPEAT)
 		{
+			active = true;
 			int mX, mY;
 			App->GetInput()->GetMouseMotion(mX, mY);
 			mEditorCameraGameObject->Translate(float3(mX * speed, 0, 0));
 			mEditorCameraGameObject->Translate(float3(0, mY * speed, 0));
+			MouseFix()
 		}
 		
 		
@@ -242,7 +286,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			GameObject* focusedObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 			if (focusedObject)
 			{
-				
+				active = true;
 				float distance = mEditorCameraGameObject->GetPosition().Distance(focusedObject->GetPosition());
 				float3 dir = (focusedObject->GetPosition() - mEditorCameraGameObject->GetPosition()).Normalized();
 
@@ -273,6 +317,8 @@ void ModuleEngineCamera::CameraControls(float dt)
 				
 				mEditorCameraGameObject->Translate(-mEditorCameraGameObject->GetFront() * distance);
 				//mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
+
+				MouseFix();
 			}
 				
 			

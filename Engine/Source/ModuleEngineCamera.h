@@ -23,6 +23,7 @@ public:
 
 private:
 	void MousePicking(Ray& ray);
+	void MouseFix();
 	void CameraControls(float dt);
 
 	GameObject* mEditorCameraGameObject = nullptr;

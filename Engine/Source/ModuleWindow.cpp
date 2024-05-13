@@ -89,7 +89,12 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::WindowResized(unsigned width, unsigned height) 
+void ModuleWindow::SetMousePositionInWindow(float2 position)
+{
+	SDL_WarpMouseInWindow(window, position.x, position.y);
+}
+
+void ModuleWindow::WindowResized(unsigned width, unsigned height)
 {
 	this->width = width;
 	this->height = height;
