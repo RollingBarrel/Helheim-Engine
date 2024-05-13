@@ -106,6 +106,7 @@ void ImageComponent::Draw()
 	if (mIsSpritesheet)
 	{
 		FillSpriteSheetVBO();
+		CreateVAO();
 	}
 	if (mImage && mCanvas)
 	{
