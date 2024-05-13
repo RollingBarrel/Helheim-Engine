@@ -718,16 +718,6 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 		component->SetFOV(FOV);
 	}
 	ImGui::PopID();
-
-	if(ImGui::Button("Make Current Camera"))
-	{
-		EngineApp->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
-	}
-
-	if (ImGui::Button("Return To Editor Camera"))
-	{
-		EngineApp->GetCamera()->ActivateEditorCamera();
-	}
 }
 
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
@@ -947,7 +937,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	float animSpeed = component->GetAnimSpeed();
 
-	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02, 0.0, 2.0))
+	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
 	{
 		component->SetAnimSpeed(animSpeed);
 	}
@@ -962,11 +952,11 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	float currentStartTime = component->GetCurrentStartTime();
 	float currentEndTime = component->GetCurrentEndTime();
 
-	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1, 0.0, maxTimeValue))
+	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1f, 0.0f, maxTimeValue))
 	{
 		component->SetStartTime(currentStartTime);
 	}
-	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1, 0.0, maxTimeValue))
+	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1f, 0.0f, maxTimeValue))
 	{
 		component->SetEndTime(currentEndTime);
 	}

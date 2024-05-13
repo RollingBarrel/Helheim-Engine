@@ -223,6 +223,9 @@
     <ClCompile Include="ImBezier.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleEngineCamera.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -471,6 +474,9 @@
     </ClInclude>
     <ClInclude Include="ImBezier.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEngineCamera.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -150,9 +150,9 @@ void NavMeshController::HandleBuild()
 
 	mAABB.SetFrom(&vertices[0], verticesSize);
 	mOBB.SetFrom(mAABB, float4x4::identity);
-	mAABBWorld = mOBB.MinimalEnclosingAABB();
-	float3 meshMax = mAABBWorld.maxPoint;
-	float3 meshMin = mAABBWorld.minPoint;
+	AABB AABBWorld = mOBB.MinimalEnclosingAABB();
+	float3 meshMax = AABBWorld.maxPoint;
+	float3 meshMin = AABBWorld.minPoint;
 	const float maxPoint[3] = { meshMax.x, meshMax.y, meshMax.z };
 	const float minPoint[3] = { meshMin.x, meshMin.y, meshMin.z };
 	int gridWidth = 0;

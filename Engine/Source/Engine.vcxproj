@@ -220,6 +220,7 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="ModuleEngineCamera.cpp" />
     <ClCompile Include="ModuleEngineInput.cpp" />
     <ClCompile Include="ModuleEngineResource.cpp" />
     <ClCompile Include="ModuleEngineScriptManager.cpp" />
@@ -301,6 +302,7 @@
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClCompile Include="EngineMain.cpp" />
+    <ClInclude Include="ModuleEngineCamera.h" />
     <ClInclude Include="ModuleEngineInput.h" />
     <ClInclude Include="ModuleEngineResource.h" />
     <ClInclude Include="ModuleEngineScriptManager.h" />
