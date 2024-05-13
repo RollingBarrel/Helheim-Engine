@@ -1,28 +1,23 @@
 #include "ScenePanel.h"
-#include "HierarchyPanel.h"
 #include "EngineApp.h"
+
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
 #include "ModuleFileSystem.h"
-#include "ProjectPanel.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
 #include "ModuleEngineCamera.h"
-#include "ModuleInput.h"
-#include "GameObject.h"
-#include "Component.h"
+#include "ModuleEditor.h"
+
+#include "HierarchyPanel.h"
+#include "EditorControlPanel.h"
+
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-#include "EditorControlPanel.h"
-#include "MeshRendererComponent.h"
-#include "ImporterModel.h"
-#include "ResourceModel.h"
-#include "debugdraw.h"
-
 #include "AnimationComponent.h"
 
+#include "ResourceModel.h"
 
 #include "Math/float2.h"
 #include "imgui.h"

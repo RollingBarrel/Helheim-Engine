@@ -1,7 +1,6 @@
 #pragma once
 #include "Module.h"
 #include "ModuleScriptManager.h"
-#include "Geometry/Ray.h"
 #include <vector>
 
 class ScriptComponent;
@@ -28,6 +27,5 @@ private:
 	void SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	int64_t mLastModificationTime = 0;
 	bool mPause = false;
-	Ray mRay;
 };
 
