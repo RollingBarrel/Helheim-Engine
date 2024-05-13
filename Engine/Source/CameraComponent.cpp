@@ -81,12 +81,6 @@ void CameraComponent::Update()
             meshComponent->SetInsideFrustum(true);
         }
     }
-
-    //TODO:SEPARATE GAME ENGINE
-    //App->GetOpenGL()->BindSceneFramebuffer();
-    //App->GetDebugDraw()->DrawFrustum(mFrustum);
-    //App->GetOpenGL()->UnbindSceneFramebuffer();
-
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const

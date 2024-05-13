@@ -664,7 +664,16 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     {
         DrawSkeleton(focusGameObject);
     }
-    
+    if (focusGameObject)
+    {
+        CameraComponent* camera = reinterpret_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
+        if (camera)
+        {
+            DrawFrustum(camera->GetFrustum());
+        }
+        
+    }
+
     dd::flush();
 }
 
