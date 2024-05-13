@@ -35,8 +35,6 @@ private:
     void OnNoButtonHoverOff();
 
     static GameManager* mInstance;
-    GameObject* mOwner = nullptr;
-
     GameObject* mPauseScreen = nullptr;
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;
