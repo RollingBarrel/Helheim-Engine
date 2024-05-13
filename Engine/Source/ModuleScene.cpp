@@ -13,12 +13,12 @@
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
+#include "ModuleDetourNavigation.h"
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
 #include "Tag.h"
 #include "Globals.h"
-#include "NavMeshController.h"
 
 #include <algorithm>
 #include <iterator>
@@ -28,7 +28,6 @@
 #include "ImporterMesh.h"
 
 ModuleScene::ModuleScene() {
-	mNavMeshController = new NavMeshController();
 
 	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
 	mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
@@ -47,7 +46,6 @@ ModuleScene::~ModuleScene()
 {
 	mQuadtreeRoot->CleanUp();
 	delete mQuadtreeRoot;
-	delete mNavMeshController;
 
 	delete mRoot;
 	delete mBackgroundScene;
@@ -76,10 +74,6 @@ update_status ModuleScene::Update(float dt)
 {
 	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-	if (mNavMeshController)
-	{
-		mNavMeshController->Update();
-	}
 	App->GetOpenGL()->Draw();
 
 	if (mShouldUpdateQuadtree)
@@ -331,6 +325,7 @@ void ModuleScene::Load(const char* sceneName)
 			if (sceneValue.HasMember("Name"))
 			{
 				mRoot->SetName(sceneValue["Name"].GetString());
+				App->GetNavigation()->LoadResourceData();
 			}
 
 			mSceneGO.clear();

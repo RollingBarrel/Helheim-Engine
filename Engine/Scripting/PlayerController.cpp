@@ -84,7 +84,6 @@ void PlayerController::Start()
         mGameManager = (GameManager*)script->GetScriptInstance();
     }
     mDashCharges = mMaxDashCharges;
-    mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
     mHealth = mMaxHealth;
     mShield = mMaxShield;

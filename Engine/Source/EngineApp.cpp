@@ -15,6 +15,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "Timer.h"
+#include "NavMeshController.h"
 
 EngineApplication* EngineApp = NULL;
 
@@ -43,6 +44,7 @@ EngineApplication::EngineApplication()
 	modules[11] = editor = new ModuleEditor();
 	modules[12] = ui = new ModuleUI();
 	modules[13] = event = new ModuleEvent();
+	mNavMeshController = new NavMeshController();
 }
 
 EngineApplication::~EngineApplication()
@@ -53,6 +55,7 @@ EngineApplication::~EngineApplication()
 	}
 	delete mEngineTimer;
 	delete mGameTimer;
+	delete mNavMeshController;
 }
 
 bool EngineApplication::Init()

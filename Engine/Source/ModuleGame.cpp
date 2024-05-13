@@ -21,8 +21,6 @@ bool ModuleGame::Init()
 	//App->GetScene()->Load("Level1");
 	//TODO:: This is bad for decoupling
 	App->GetScriptManager()->StartScripts();
-	//TODO: Do better!!!!
-	App->GetScene()->GetNavController()->HandleBuild();
 
 	//TODO: Add this code to is game playing in editor and game
 	//App->GetEngineScriptManager()->Start();

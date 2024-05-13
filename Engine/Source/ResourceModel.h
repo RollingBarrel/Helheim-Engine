@@ -9,6 +9,16 @@
 #include "Quat.h"
 
 
+struct Light
+{
+	std::string mType;
+	float3 mColor;
+	float mIntensity;
+	float mRange;
+	float mInnerConeAngle;
+	float mOuterConeAngle;
+};
+
 struct ModelNode
 {
 	//Game Object
@@ -23,7 +33,11 @@ struct ModelNode
 	int mParentIndex = -1;
 
 	bool mHasTransform = false;
+
+	Light mLight;
 	//Components
+
+	int mLightId = -1;
 	int mMeshId = -1;
 	int mCameraId = -1;
 	int mSkinId = -1;

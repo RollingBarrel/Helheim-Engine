@@ -13,6 +13,8 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "CameraComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "EditorControlPanel.h"
 #include "MeshRendererComponent.h"
 #include "ImporterModel.h"
@@ -62,6 +64,30 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 				cAnimation->SetModelUUID(rModel.GetUID());
 
 			}
+		}
+	}
+
+	if (node.mLightId > -1)
+	{
+		if (node.mLight.mType.compare("point") == 0)
+		{
+			PointLightComponent* cPoint = reinterpret_cast<PointLightComponent*>(gameObject->CreateComponent(ComponentType::POINTLIGHT));
+			cPoint->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
+			cPoint->SetIntensity(node.mLight.mIntensity);
+			cPoint->SetRadius(node.mLight.mRange);
+		}
+		else if (node.mLight.mType.compare("spot") == 0)
+		{
+			SpotLightComponent* cSpot = reinterpret_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
+			cSpot->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
+			cSpot->SetIntensity(node.mLight.mIntensity);
+			cSpot->SetRadius(node.mLight.mRange);
+			cSpot->SetInnerAngle(node.mLight.mInnerConeAngle);
+			cSpot->SetOuterAngle(node.mLight.mOuterConeAngle);
+		}
+		else
+		{
+			//Directional we don't import them xd
 		}
 	}
 
