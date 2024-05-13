@@ -255,8 +255,8 @@ void AnimationComponent::ChangeAnimation(ResourceAnimation* animation)
 void AnimationComponent::StartTransition(float transitionDuration)
 {
 	//mController->SetStartTransitionTime();
-	mController->SetTransitionDuration(transitionDuration);
 	mController->ActivateTransition();
+	mController->SetTransitionDuration(transitionDuration);
 	mController->SetClipStartTime(GetCurrentStartTime());
 }
 
