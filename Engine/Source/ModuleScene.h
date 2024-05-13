@@ -31,6 +31,10 @@ public:
 	// GameObjects
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
+	void AddGameObjectToScene(GameObject* gameObject);
+	void RemoveGameObjectFromScene(GameObject* gameObjet);
+	void RemoveGameObjectFromScene(int id); 
+	void RemoveGameObjectFromScene(const std::string& name);
 	void AddGameObjectToDelete(GameObject* gameObject) {
 		mGameObjectsToDelete.push_back(gameObject);
 	}
@@ -86,7 +90,7 @@ private:
 	void LoadGameObjectsIntoScripts();
 	
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
-	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive, int parentUuid) const;
+	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const;
 	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent);
 
 	GameObject* mRoot = nullptr;
