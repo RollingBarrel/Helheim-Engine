@@ -16,9 +16,11 @@ public:
 
     void WinScreen();
     void LoseScreen();
+
+    void LoadLevel(const char* LevelName);
 private:
     GameManager(GameObject* owner); 
-    ~GameManager() {}
+    ~GameManager();
 
     void Loading();
     void Controls();
@@ -35,7 +37,6 @@ private:
     void OnNoButtonHoverOff();
 
     static GameManager* mInstance;
-
     GameObject* mPauseScreen = nullptr;
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;

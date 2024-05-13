@@ -37,8 +37,15 @@ GameManager* GameManager::GetInstance()
 
 GameManager::GameManager(GameObject* owner) : Script(owner) {}
 
+GameManager::~GameManager()
+{
+    delete mInstance;
+}
+
 void GameManager::Start()
 {
+    mInstance = this;
+    
     mInstance->mPauseScreen->SetEnabled(false);
     mInstance->mWinScreen->SetEnabled(false);
     mInstance->mLoseScreen->SetEnabled(false);
@@ -97,7 +104,7 @@ void GameManager::Loading()
         if (Delay(0.1f))
         {
             mInstance->mLoading = false;
-            App->GetScene()->Load("MainMenu.json");
+            mInstance->LoadLevel("MainMenu.json");
         }
     }
 }
@@ -110,6 +117,11 @@ void GameManager::WinScreen()
 void GameManager::LoseScreen() 
 {
     mInstance->mLoseScreen->SetEnabled(true);
+}
+
+void GameManager::LoadLevel(const char* LevelName)
+{
+    App->GetScene()->Load(LevelName);
 }
 
 void GameManager::OnWinButtonClick() 
@@ -135,24 +147,24 @@ void GameManager::OnNoButtonClick()
 
 void GameManager::OnYesButtonHoverOn()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mYesGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mYesGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.7f, 0.7f, 0.7f));
 }
 
 void GameManager::OnNoButtonHoverOn()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mNoGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mNoGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.7f, 0.7f, 0.7f));
 }
 
 void GameManager::OnYesButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mYesGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mYesGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(1, 1, 1));
 }
 
 void GameManager::OnNoButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mNoGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mNoGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(1, 1, 1));
 }
