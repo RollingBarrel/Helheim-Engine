@@ -53,6 +53,7 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
+        void Moving2();
         bool IsMoving();
         void Dash();
         void Attack();
@@ -99,9 +100,9 @@ class PlayerController :public Script
         //Dash
         bool mIsDashing = false;
         bool mIsDashCoolDownActive = false;
-        float mDashCoolDown = 5.0f; // CoolDown: 0.7 seconds
+        float mDashCoolDown = 0.7f;
         float mDashCoolDownTimer = 0.0f;
-        float mDashDuration = 0.5f; // Dash duration: 0.5 seconds
+        float mDashDuration = 0.5f; 
         float mDashTimer = 0.0f;
         float mDashSpeed = 10.0f; // Adjust as needed
         float3 mDashDirection = float3::zero;

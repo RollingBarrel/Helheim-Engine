@@ -29,7 +29,6 @@ CREATE(PlayerController)
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashSpeed);
-    MEMBER(MemberType::FLOAT, mDashCoolDown);
 
     SEPARATOR("MELEE ATTACK");
     MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
@@ -121,6 +120,18 @@ void PlayerController::Update()
     UpdateHealth();
     UpdateBattleSituation();
 
+    if (mIsDashCoolDownActive)
+    {
+    mDashCoolDownTimer += App->GetDt();
+        if (mDashCoolDownTimer >= mDashCoolDown)
+        {
+            mDashCoolDownTimer = 0.0f;
+            mIsDashCoolDownActive = false;
+            mCurrentState = PlayerState::IDLE;
+
+        }
+    }
+
     switch (mCurrentState)
     {
     case PlayerState::IDLE:
@@ -187,9 +198,12 @@ void PlayerController::Idle()
             LOG("Melee");
         }
     }
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN )
     {
-         mCurrentState = PlayerState::DASH;
+        if (mIsDashCoolDownActive == false) 
+        {
+			mCurrentState = PlayerState::DASH;
+		}
     }
     else 
     {
@@ -314,14 +328,12 @@ void PlayerController::HandleRotation()
 }
 void PlayerController::Dash()
 {
-
-    if (!mIsDashing && !mIsDashCoolDownActive)
+    if (!mIsDashing)
     {
         // Start dashing
         mIsDashing = true;
         mDashTimer = 0.0f;
-        mIsDashCoolDownActive = true;
-        // Calculate dash direction based on current movement direction (WASD)
+
         mDashDirection = float3::zero;
         if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
             mDashDirection += float3::unitZ;
@@ -331,34 +343,24 @@ void PlayerController::Dash()
             mDashDirection += float3::unitX;
         if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
             mDashDirection -= float3::unitX;
-    }
-
-    if (mIsDashing)
+    }else
     {
         mDashTimer += App->GetDt();
 
         if (mDashTimer >= mDashDuration)
         {
+            //Finish dashing
             mIsDashing = false;
-            mCurrentState = PlayerState::IDLE; // Set state back to IDLE after dash
+            mCurrentState = PlayerState::IDLE; 
             mDashTimer = 0.0f;
+            mIsDashCoolDownActive = true;
         }
-        else
+        else 
         {
-            // Continue dashing in the current direction
+            // Continue dashing
             float3 dashDirection = mDashDirection;
-            float3 newPos = (mGameObject->GetPosition() + dashDirection * mDashSpeed * App->GetDt());
+             float3 newPos = (mGameObject->GetPosition() + dashDirection * mDashSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-        }
-    }
-
-    if (mIsDashCoolDownActive)
-    {
-        mDashCoolDownTimer += App->GetDt();
-        if (mDashCoolDownTimer >= mDashCoolDown)
-        {
-            mDashCoolDownTimer = 0.0f;
-            mIsDashCoolDownActive = false;
         }
     }
 }
@@ -488,7 +490,6 @@ void PlayerController::Shoot(float damage)
 
     if (bullet != nullptr)
     {
-        //  bullet->Update();
         bullet->SetEnabled(true);
         bullet->SetPosition(mGameObject->GetPosition() + float3(0.f, 1.0f, 0.f));
         bullet->SetRotation(mGameObject->GetRotation());
