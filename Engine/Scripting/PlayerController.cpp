@@ -77,7 +77,7 @@ void PlayerController::Start()
         ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
         mGameManager = (GameManager*)script->GetScriptInstance();
     }
-    mDashCharges = mMaxDashCharges;
+
     mBullets = mAmmoCapacity;
     mHealth = mMaxHealth;
     mShield = mMaxShield;

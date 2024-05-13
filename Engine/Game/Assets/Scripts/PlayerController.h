@@ -9,6 +9,7 @@ class AudioSourceComponent;
 class SliderComponent;
 class AudioSourceComponent;
 class ObjectPool;
+class GameManager;
 
 enum class PlayerState 
 {
@@ -53,7 +54,6 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
-        void Moving2();
         bool IsMoving();
         void Dash();
         void Attack();
@@ -86,6 +86,9 @@ class PlayerController :public Script
         AnimationComponent* mAnimationComponent = nullptr;
         GameObject* mBulletPoolHolder = nullptr;
         ObjectPool* mBulletPool = nullptr;
+
+        GameManager* mGameManager = nullptr;
+        GameObject* mGameManagerGO = nullptr;
 
         //Stats
         float mPlayerSpeed = 2.0f;
