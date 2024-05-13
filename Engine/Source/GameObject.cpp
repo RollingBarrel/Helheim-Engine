@@ -69,6 +69,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mTag(original.GetTag()), mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
 {
+	App->GetScene()->AddGameObjectToScene(this);
 
 	for (auto child : original.mChildren)
 	{
