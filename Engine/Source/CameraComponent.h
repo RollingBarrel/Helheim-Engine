@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Math/float4x4.h"
-#include "Math/float3.h"
 #include "Geometry/Frustum.h"
 
 class ENGINE_API CameraComponent :
@@ -12,11 +11,12 @@ public:
     CameraComponent(const CameraComponent& original, GameObject* owner);
     ~CameraComponent();
 
+    void Enable() override;
+    void Disable() override;
     void Update() override;
-    void UpdateRotation();
-    Component* Clone(GameObject* owner) const override;
     void Reset() override;
-    void SetRotation(const float3& rotation);
+    Component* Clone(GameObject* owner) const override;
+
 
     const Frustum& GetFrustum() const { return mFrustum; }
 
@@ -24,23 +24,15 @@ public:
     const float4x4 GetProjectionMatrix() const { return mFrustum.ProjectionMatrix(); }
     const float4x4 GetViewProjectionMatrix() const { return mFrustum.ViewProjMatrix(); }
 
-    void SetPos(const float3& value) { mFrustum.pos = value; }
-    void SetNearPlane(const float value) { mFrustum.nearPlaneDistance = value;}
-    void SetFarPlane(const float value) { mFrustum.farPlaneDistance = value; }
-    void SetFOV(const float value);
-    void SetAspectRatio(const float value);
+    void SetNearPlane(float value) { mFrustum.nearPlaneDistance = value;}
+    void SetFarPlane(float value) { mFrustum.farPlaneDistance = value; }
+    void SetFOV(float value);
+    void SetAspectRatio(float value);
 
-    void SetFrontUp(float3 front, float3 up);
+    float GetNearPlane() const { return mFrustum.nearPlaneDistance; }
+    float GetFarPlane() const { return mFrustum.farPlaneDistance; }
+    float GetVerticicalFOV() const { return mFrustum.verticalFov; }
 
-    float GetNearPlane() { return mFrustum.nearPlaneDistance; }
-    float GetFarPlane() { return mFrustum.farPlaneDistance; }
-    float GetVerticicalFOV() { return mFrustum.verticalFov; }
-
-
-    void LookAt(float3 eyePos, float3 targetPos, float3 upVector);
-    void Rotate(const float3& axis, float angleRad);
-    void Transform(float3 vec);
-    void CameraComponentTransform(float3 vec);
 
 private:
 

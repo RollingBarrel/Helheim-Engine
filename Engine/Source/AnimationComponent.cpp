@@ -38,10 +38,6 @@ AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, Com
 
 AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION)
 {
-	mAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.mAnimation->GetUID(), Resource::Type::Mesh));
-
-	mController = other.mController;
-
 	mClipNames.clear();
 	mClipTimes.clear();
 
@@ -64,6 +60,8 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mSpeed = 1.0;
 
 	mModelUid = other.mModelUid;
+
+	SetAnimation(other.mAnimation->GetUID());
 }
 
 AnimationComponent::~AnimationComponent()

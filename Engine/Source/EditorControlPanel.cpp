@@ -1,17 +1,15 @@
 #include "EditorControlPanel.h"
-
 #include "EngineApp.h"
-#include "ModuleCamera.h"
-#include "HierarchyPanel.h"
-#include "ModuleEditor.h"
-#include "ModuleScene.h"
-#include "GameObject.h"
-#include "Timer.h"
-#include "PreciseTimer.h"
+
 #include "ModuleEngineScriptManager.h"
-#include "NavMeshController.h"
-#include "IconsFontAwesome6.h"
 #include "ModuleAudio.h"
+
+#include "ScenePanel.h"
+#include "HierarchyPanel.h"
+
+#include "IconsFontAwesome6.h"
+
+
 
 
 EditorControlPanel::EditorControlPanel() : Panel(EDITORCONTROLPANEL, true)
@@ -186,7 +184,6 @@ void EditorControlPanel::Play()
 	
 
 	ImGui::SetWindowFocus("Game");
-	
 }
 
 void EditorControlPanel::Pause() 
@@ -220,6 +217,7 @@ void EditorControlPanel::Stop()
 	EngineApp->Stop();
 	mState = GameState::STOP;
 
+	ImGui::SetWindowFocus(SCENEPANEL);
 }
 
 void EditorControlPanel::Step()

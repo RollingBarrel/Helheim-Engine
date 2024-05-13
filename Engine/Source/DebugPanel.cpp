@@ -1,7 +1,7 @@
 #include "DebugPanel.h"
 #include "imgui.h"
 #include "EngineApp.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
@@ -151,7 +151,7 @@ void DebugPanel::Draw(int windowFlags) {
         {
             if (ImGui::Checkbox("Draw Mouse Picking RayCast", &mDrawRaycast)) 
             {
-                EngineApp->GetCamera()->DrawRayCast(mDrawRaycast);
+                EngineApp->GetEngineCamera()->DrawRaycast(mDrawRaycast);
             }
             ImGui::TreePop();
         }
