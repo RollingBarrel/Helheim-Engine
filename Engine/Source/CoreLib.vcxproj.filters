@@ -456,6 +456,9 @@
     <ClCompile Include="TrailComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="BezierCurve.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1081,6 +1084,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\Optick\include\optick.h">
       <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurve.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

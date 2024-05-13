@@ -23,9 +23,8 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
-mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mIsSpeedCurve(original.mIsSpeedCurve),
-mSpeedLineal(original.mSpeedLineal), mSpeedCurve(original.mSpeedCurve), mIsSizeCurve(original.mIsSizeCurve), mSizeCurve(original.mSizeCurve),
-mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping),
+mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mSpeedCurve(original.mSpeedCurve),
+mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping),
 mShapeType(original.mShapeType), Component(owner, ComponentType::PARTICLESYSTEM)
 {
     mColorGradient = new ColorGradient(*original.mColorGradient);
@@ -171,8 +170,8 @@ void ParticleSystemComponent::Update()
 		}
         else
         {
-            mParticles[i]->SetSpeed(mIsSpeedCurve ? mSpeedLineal + (BezierValue(dt, mSpeedCurve) * mSpeedCurveFactor) : mSpeedLineal);
-            mParticles[i]->SetSize(mIsSizeCurve ? mSizeLineal + (BezierValue(dt, mSizeCurve) * mSizeCurveFactor) : mSizeLineal);
+            mParticles[i]->SetSpeed(mSpeedCurve.GetValue(dt));
+            mParticles[i]->SetSize(mSizeCurve.GetValue(dt));
             mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
         }
 	}
@@ -198,8 +197,8 @@ void ParticleSystemComponent::Update()
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
             Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, mMaxLifeTime);
-            particle->SetSpeed(mSpeedLineal);
-            particle->SetSize(mSizeLineal);
+            particle->SetSpeed(mSpeedCurve.GetInitialValue());
+            particle->SetSize(mSizeCurve.GetInitialValue());
             
 			mParticles.push_back(particle);
 		}
@@ -224,17 +223,14 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddFloat("Duration", mDuration);
     archive.AddFloat("Life Time", mMaxLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
-    archive.AddFloat("Speed", mSpeedLineal);
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
-    archive.AddFloat("Size", mSizeLineal);
-    archive.AddFloat("Speed", mSpeedLineal);
-    archive.AddBool("isSpeedCurve", mIsSpeedCurve);
-    archive.AddBool("isSizeCurve", mIsSizeCurve);
-    archive.AddFloat4("SizeCurve", mSizeCurve.ptr());
-    archive.AddFloat4("SpeedCurve", mSpeedCurve.ptr());
-    archive.AddFloat("SizeFactor", mSizeCurveFactor);
-    archive.AddFloat("SpeedFactor", mSpeedCurveFactor);
+    Archive size;
+    Archive speed;
+    mSizeCurve.SaveJson(size);
+    mSpeedCurve.SaveJson(speed);
+    archive.AddObject("Size", size);
+    archive.AddObject("Speed", speed);
     mShape->Save(archive);
     
     mColorGradient->Save(archive);
@@ -260,21 +256,13 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mEmissionRate = data["Emission Rate"].GetFloat();
     }
-    if (data.HasMember("Speed") && data["Speed"].IsFloat())
+    if (data.HasMember("Speed") && data["Speed"].IsObject())
     {
-        mSpeedLineal = data["Speed"].GetFloat();
+        mSpeedCurve.LoadJson(data["Speed"]);
     } 
-    if (data.HasMember("Size") && data["Size"].IsFloat())
+    if (data.HasMember("Size") && data["Size"].IsObject())
     {
-        mSizeLineal = data["Size"].GetFloat();
-    }
-    if (data.HasMember("SpeedFactor") && data["SpeedFactor"].IsFloat())
-    {
-        mSpeedCurveFactor = data["SpeedFactor"].GetFloat();
-    }
-    if (data.HasMember("SizeFactor") && data["SizeFactor"].IsFloat())
-    {
-        mSizeCurveFactor = data["SizeFactor"].GetFloat();
+        mSizeCurve.LoadJson(data["Size"]);
     }
     if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
     {
@@ -288,14 +276,6 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mLooping = data["Looping"].GetBool();
     }
-    if (data.HasMember("isSpeedCurve") && data["isSpeedCurve"].IsBool())
-    {
-        mIsSpeedCurve = data["isSpeedCurve"].GetBool();
-    }
-    if (data.HasMember("isSizeCurve") && data["isSizeCurve"].IsBool())
-    {
-        mIsSizeCurve = data["isSizeCurve"].GetBool();
-    }
     if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
     {
         mColorGradient->LoadFromJSON(data);
@@ -307,34 +287,6 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
         mShape->LoadFromJSON(data);
     }
 
-    if (data.HasMember("SizeCurve") && data["SizeCurve"].IsArray())
-    {
-        const rapidjson::Value& values = data["SizeCurve"];
-        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-        if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
-        {
-            x = values[0].GetFloat();
-            y = values[1].GetFloat();
-            z = values[2].GetFloat();
-            w = values[3].GetFloat();
-        }
-
-        mSizeCurve = float4(x, y, z, w);
-    }
-    if (data.HasMember("SpeedCurve") && data["SpeedCurve"].IsArray())
-    {
-        const rapidjson::Value& values = data["SpeedCurve"];
-        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-        if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
-        {
-            x = values[0].GetFloat();
-            y = values[1].GetFloat();
-            z = values[2].GetFloat();
-            w = values[3].GetFloat();
-        }
-
-        mSpeedCurve = float4(x, y, z, w);
-    }
 }
 
 void ParticleSystemComponent::InitEmitterShape()

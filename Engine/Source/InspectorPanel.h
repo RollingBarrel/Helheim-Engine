@@ -21,6 +21,7 @@ class AudioListenerComponent;
 class Transform2DComponent;
 class SliderComponent;
 class ParticleSystemComponent;
+class BezierCurve;
 
 class InspectorPanel : public Panel
 {
@@ -63,4 +64,5 @@ private:
 	void MaterialVariables(MeshRendererComponent* renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
+	void DrawBezierCurve(BezierCurve* curve, const char* cLabel) const;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include "BezierCurve.h"
 #include <map>
 #include "EmitterShape.h"
 #include "ColorGradient.h"
@@ -50,15 +51,8 @@ private:
 	float mDuration = 5.0f;
 	float mMaxLifeTime = 3.0f;
 
-	bool mIsSpeedCurve;
-	float mSpeedLineal = 1.0f;
-	float4 mSpeedCurve;
-	float mSpeedCurveFactor = 1.0f;
-
-	bool mIsSizeCurve;
-	float mSizeLineal = 1.0f;
-	float4 mSizeCurve;
-	float mSizeCurveFactor = 1.0f;
+	BezierCurve mSpeedCurve = BezierCurve();
+	BezierCurve mSizeCurve = BezierCurve();
 
 	float mEmissionRate = 1.0f;
 	int mMaxParticles = 1000.0f;

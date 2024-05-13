@@ -2,6 +2,7 @@
 //#include "Application.h"
 //#include "ModuleOpenGL.h"
 //#include "ModuleResource.h"
+//#include "Trail.h"
 //
 //TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 //{
@@ -38,13 +39,14 @@
 //
 //}
 //
-//void TrailComponent::Draw() const
-//{
-//
-//}
-//
 //void TrailComponent::Update()
 //{
+//    float3 position = mOwner->GetPosition();
+//    float dposition = position.DistanceSq(mTrail.GetLastPosition());
+//    if (dposition >= mMinDistance * mMinDistance && mTrail.GetSize() < mMaxPoints)
+//    {
+//        mTrail.AddTrailPositions(position, mOwner->GetRotation());
+//    }
 //    mTrail.Update();
 //
 //}
@@ -52,7 +54,8 @@
 //void TrailComponent::SetImage(unsigned int resourceId)
 //{
 //    mResourceId = resourceId;
-//    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
+//    ResourceTexture* image = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
+//    mTrail.SetImage(image);
 //}
 //
 //void TrailComponent::Reset()
