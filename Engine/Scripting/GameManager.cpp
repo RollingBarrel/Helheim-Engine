@@ -142,24 +142,24 @@ void GameManager::OnNoButtonClick()
 
 void GameManager::OnYesButtonHoverOn()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mYesGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mYesGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.7f, 0.7f, 0.7f));
 }
 
 void GameManager::OnNoButtonHoverOn()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mNoGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mNoGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.7f, 0.7f, 0.7f));
 }
 
 void GameManager::OnYesButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mYesGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mYesGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(1, 1, 1));
 }
 
 void GameManager::OnNoButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mNoGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mInstance->mNoGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(1, 1, 1));
 }
