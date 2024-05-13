@@ -9,6 +9,7 @@ class AudioSourceComponent;
 class SliderComponent;
 class AudioSourceComponent;
 class ObjectPool;
+class GameManager;
 
 enum class PlayerState 
 {
@@ -53,6 +54,7 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
+        bool IsMoving();
         void Dash();
         void Attack();
 
@@ -63,7 +65,6 @@ class PlayerController :public Script
         void Shoot(float damage);
         void Reload();
         
-        void RechargeDash();
         void Death();
         void UpdateHealth();
         void UpdateBattleSituation();
@@ -86,6 +87,9 @@ class PlayerController :public Script
         GameObject* mBulletPoolHolder = nullptr;
         ObjectPool* mBulletPool = nullptr;
 
+        GameManager* mGameManager = nullptr;
+        GameObject* mGameManagerGO = nullptr;
+
         //Stats
         float mPlayerSpeed = 2.0f;
         float mHealth = 0.0f;
@@ -97,15 +101,14 @@ class PlayerController :public Script
         bool mPlayerIsDead = false;
 
         //Dash
+        bool mIsDashing = false;
         bool mIsDashCoolDownActive = false;
-        float mDashTimePassed = 0.0f;
-        float mDashMovement = 0;
-        int mMaxDashCharges = 3;
-        int mDashCharges = 0;//3
-        float mDashChargeRegenerationTime = 3.0f;
-        float mDashSpeed = 35.0f;//35
-        float mDashDistance = 5.0f;
-        float mDashCoolDown = 3.0f;
+        float mDashCoolDown = 0.7f;
+        float mDashCoolDownTimer = 0.0f;
+        float mDashDuration = 0.5f; 
+        float mDashTimer = 0.0f;
+        float mDashSpeed = 10.0f; // Adjust as needed
+        float3 mDashDirection = float3::zero;
 
         //Range
         int mAmmoCapacity = 500000;
@@ -130,13 +133,8 @@ class PlayerController :public Script
 
         //HUD
         GameObject* mHealthGO = nullptr;
-        GameObject* mDashGO_1 = nullptr;
-        GameObject* mDashGO_2 = nullptr;
-        GameObject* mDashGO_3 = nullptr;
         SliderComponent* mHealthSlider = nullptr;
-        SliderComponent* mDashSlider_1 = nullptr;
-        SliderComponent* mDashSlider_2 = nullptr;
-        SliderComponent* mDashSlider_3 = nullptr;
+
 
         //DEBUG
         bool mGodMode = false;
