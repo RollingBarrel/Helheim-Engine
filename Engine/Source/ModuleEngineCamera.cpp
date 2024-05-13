@@ -346,11 +346,14 @@ void ModuleEngineCamera::CameraControls(float dt)
 				MouseFix();
 			}	
 		}
-		
+	}
+
+	if ((mIsEditorCameraActive && !isGuizmoUsing))
+	{
 		if (App->GetInput()->GetKey(KeyboardKeys_F) == KeyState::KEY_DOWN)
 		{
 			GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-			if (selectedGameObject)
+			if (selectedGameObject && !selectedGameObject->IsRoot())
 			{
 				AABB objectAABB = selectedGameObject->GetAABB();
 				Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
@@ -360,10 +363,9 @@ void ModuleEngineCamera::CameraControls(float dt)
 				float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
 				mEditorCameraGameObject->SetPosition(finalCameraPosition);
 			}
-			
+
 		}
 	}
-
 }
 
 
