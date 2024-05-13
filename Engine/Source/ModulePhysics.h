@@ -35,9 +35,8 @@ public:
 private:
 	//void AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer);
 	btRigidBody* AddBoxBody(btMotionState* motionState, float3 size, float mass);
-	
-	void ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff);
 
+	void ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff);
 
 	btDefaultCollisionConfiguration* mCollisionConfiguration = nullptr;
 	btCollisionDispatcher* mDispatcher = nullptr;

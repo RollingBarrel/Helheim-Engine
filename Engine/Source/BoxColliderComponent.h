@@ -7,6 +7,7 @@
 
 class GameObject;
 class btRigidBody;
+class MotionState;
 
 class ENGINE_API BoxColliderComponent : public Component
 {
@@ -28,10 +29,12 @@ public:
 	inline const float3& GetCenter() const { return mCenter; }
 	inline const float3& GetSize() const { return mSize; }
 	inline btRigidBody* GetRigidBody() const { return mRigidBody; }
+	inline MotionState* GetMotionState() const { return mMotionState; }
 
 	void SetCenter(const float3& center);
 	void SetSize(const float3& size);
 	void SetRigidBody(btRigidBody* rigidBody) { mRigidBody = rigidBody; }
+	void SetMotionState(MotionState* motionState) { mMotionState = motionState; }
 
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
@@ -43,6 +46,7 @@ private:
 	float3 mSize = float3::one;
 
 	btRigidBody* mRigidBody = nullptr;
+	MotionState* mMotionState = nullptr;
 
 };
 

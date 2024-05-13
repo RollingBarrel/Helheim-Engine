@@ -79,6 +79,9 @@
     <Filter Include="Dependencies\Bullet">
       <UniqueIdentifier>{eb82668f-058e-403f-8347-8df4f5004ef6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Physics">
+      <UniqueIdentifier>{dcc454e7-5a41-4295-a9a3-ba7eb865c3af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -446,6 +449,9 @@
     </ClCompile>
     <ClCompile Include="ModulePhysics.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="MotionState.cpp">
+      <Filter>Utils\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1908,7 +1914,10 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
-      <Filter>Utils</Filter>
+      <Filter>Utils\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="MotionState.h">
+      <Filter>Utils\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

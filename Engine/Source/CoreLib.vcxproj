@@ -249,6 +249,7 @@
     <ClCompile Include="ModuleScriptManager.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="MotionState.cpp" />
     <ClCompile Include="NavMeshController.cpp" />
     <ClCompile Include="NavMeshObstacleComponent.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -738,6 +739,7 @@
     <ClInclude Include="ModuleScriptManager.h" />
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="MotionState.h" />
     <ClInclude Include="NavMeshController.h" />
     <ClInclude Include="NavMeshObstacleComponent.h" />
     <ClInclude Include="Physics.h" />

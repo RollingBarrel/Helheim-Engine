@@ -1,7 +1,10 @@
 #include "ModulePhysics.h"
+#include "ModuleScriptManager.h"
+#include "BoxColliderComponent.h"
+#include "Application.h"
 #include "GameObject.h"
 #include "Collider.h"
-#include "BoxColliderComponent.h"
+#include "MotionState.h"
 
 #include "btBulletDynamicsCommon.h"
 
@@ -27,27 +30,47 @@ bool ModulePhysics::Init()
 
 bool ModulePhysics::CleanUp()
 {
+	/*
+	for (int i = mWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+	{
+		btCollisionObject* obj = mWorld->getCollisionObjectArray()[i];
+		btRigidBody* body = btRigidBody::upcast(obj);
+		if (body)
+		{
+			if (body->getCollisionShape())
+			{
+				delete body->getCollisionShape();
+			}
+			if (body->getMotionState())
+			{
+				delete body->getMotionState();
+			}
+		}
+		mWorld->removeCollisionObject(obj);
+		delete obj;
+	}
+
 	delete(mWorld);
 	delete(mConstraintSolver);
 	delete(mBroadPhase);
 	delete(mDispatcher);
 	delete(mCollisionConfiguration);
-
+	*/
 	return true;
 }
 
 update_status ModulePhysics::PreUpdate(float dt)
 {
-	for (btRigidBody* rigidBody : mRigidBodiesToRemove) {
+	for (btRigidBody* rigidBody : mRigidBodiesToRemove)
+	{
 		mWorld->removeCollisionObject(rigidBody);
-		//btCollisionShape* shape = rigidBody->getCollisionShape();
-		//delete shape;
+		btCollisionShape* shape = rigidBody->getCollisionShape();
+		delete shape;
 		delete rigidBody;
 	}
 	mRigidBodiesToRemove.clear();
 
-	// TODO: if game is running
-	if (true)
+	if (App->GetScriptManager()->IsPlaying())
 	{
 		mWorld->stepSimulation(dt, 15);
 
@@ -105,11 +128,6 @@ void ModulePhysics::UpdateBoxRigidbody(BoxColliderComponent* boxCollider)
 	CreateBoxRigidbody(boxCollider);
 }
 
-//void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer)
-//{
-//
-//}
-
 btRigidBody* ModulePhysics::AddBoxBody(btMotionState* motionState, float3 size, float mass)
 {
 	btCollisionShape* collisionShape = new btBoxShape(btVector3(size.x, size.y, size.z));
@@ -124,6 +142,11 @@ btRigidBody* ModulePhysics::AddBoxBody(btMotionState* motionState, float3 size, 
 
 	return body;
 }
+
+//void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer)
+//{
+//
+//}
 
 void ModulePhysics::ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff)
 {
