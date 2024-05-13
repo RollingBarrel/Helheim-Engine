@@ -211,7 +211,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 
 		if (App->GetInput()->GetMouseWheelMotion() != 0)
 		{
-			mEditorCameraGameObject->Translate(float3(0, 0, speed * 10.f * App->GetInput()->GetMouseWheelMotion()));
+			mEditorCameraGameObject->Translate(mEditorCameraGameObject->GetFront() * speed * 10.f * App->GetInput()->GetMouseWheelMotion());
 		}
 		if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
 		{
