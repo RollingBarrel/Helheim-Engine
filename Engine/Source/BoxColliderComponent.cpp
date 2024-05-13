@@ -1,18 +1,36 @@
 #include "BoxColliderComponent.h"
+#include "ScriptComponent.h"
 #include "GameObject.h"
+#include "Application.h"
+#include "ModulePhysics.h"
 
 BoxColliderComponent::BoxColliderComponent(GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER)
 {
+	Init();
 }
 
 BoxColliderComponent::BoxColliderComponent(const BoxColliderComponent& original, GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER),
 	mCenter(original.mCenter), mSize(original.mSize)
 {
-	ComputeBoundingBox();
+	Init();
 }
 
 BoxColliderComponent::~BoxColliderComponent()
 {
+	if (mRigidBody)
+	{
+		App->GetPhysics()->RemoveBoxRigidbody(this);
+	}
+}
+
+void BoxColliderComponent::Init()
+{
+	if (!mRigidBody && IsEnabled() && mOwner->IsActive())
+	{
+		App->GetPhysics()->CreateBoxRigidbody(this);
+	}
+
+	ComputeBoundingBox();
 }
 
 void BoxColliderComponent::Reset()
@@ -26,8 +44,20 @@ Component* BoxColliderComponent::Clone(GameObject* owner) const
 	return new BoxColliderComponent(*this, owner);
 }
 
-void BoxColliderComponent::OnCollision(GameObject* gameObject, const float3& collisionNormal, const float3& penetrationDistance)
+void BoxColliderComponent::OnCollision(GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance)
 {
+	for (Component* component : mOwner->GetComponents(ComponentType::SCRIPT))
+	{
+		if (component != nullptr)
+		{
+			ScriptComponent* scriptComponent = static_cast<ScriptComponent*>(component);
+			Script* script = scriptComponent->GetScriptInstance();
+			if (script != nullptr)
+			{
+				script->OnCollision(collidedWith, collisionNormal, penetrationDistance);
+			}
+		}
+	}
 }
 
 void BoxColliderComponent::ComputeBoundingBox()
@@ -35,7 +65,7 @@ void BoxColliderComponent::ComputeBoundingBox()
 	float3 sizeIncrement = mSize * 0.5f;
 	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
 	mWorldOBB = OBB(mLocalAABB);
-	mWorldOBB.Transform(mOwner->GetWorldTransform()); // TODO: Check if correct
+	mWorldOBB.Transform(mOwner->GetWorldTransform());
 }
 
 void BoxColliderComponent::SetCenter(const float3& center)

@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Math/float3.h"
+#include <vector>
 
 class btDefaultCollisionConfiguration;
 class btCollisionDispatcher;
@@ -8,6 +9,9 @@ class btBroadphaseInterface;
 class btSequentialImpulseConstraintSolver;
 class btDiscreteDynamicsWorld;
 class btRigidBody;
+class btMotionState;
+class MotionState;
+class BoxColliderComponent;
 struct Collider;
 
 class ENGINE_API ModulePhysics : public Module
@@ -23,14 +27,24 @@ public:
 	float GetGravity() { return mGravity; }
 	void SetGravity(float gravity) { mGravity = gravity; }
 
+
+	void CreateBoxRigidbody(BoxColliderComponent* boxCollider);
+	void RemoveBoxRigidbody(BoxColliderComponent* boxCollider);
+	void UpdateBoxRigidbody(BoxColliderComponent* boxCollider);
+
 private:
+	//void AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer);
+	btRigidBody* AddBoxBody(btMotionState* motionState, float3 size, float mass);
+	
 	void ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff);
 
-	btDefaultCollisionConfiguration* collisionConfiguration = nullptr;
-	btCollisionDispatcher* dispatcher = nullptr;
-	btBroadphaseInterface* broadPhase = nullptr;
-	btSequentialImpulseConstraintSolver* constraintSolver = nullptr;
-	btDiscreteDynamicsWorld* world = nullptr;
+
+	btDefaultCollisionConfiguration* mCollisionConfiguration = nullptr;
+	btCollisionDispatcher* mDispatcher = nullptr;
+	btBroadphaseInterface* mBroadPhase = nullptr;
+	btSequentialImpulseConstraintSolver* mConstraintSolver = nullptr;
+	btDiscreteDynamicsWorld* mWorld = nullptr;
+	std::vector<btRigidBody*> mRigidBodiesToRemove;
 
 	float mGravity = -9.81f;
 };

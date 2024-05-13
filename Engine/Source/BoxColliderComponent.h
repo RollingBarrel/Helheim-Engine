@@ -6,6 +6,7 @@
 #include "Geometry/OBB.h"
 
 class GameObject;
+class btRigidBody;
 
 class ENGINE_API BoxColliderComponent : public Component
 {
@@ -14,20 +15,23 @@ public:
 	BoxColliderComponent(const BoxColliderComponent& original, GameObject* owner);
 	~BoxColliderComponent();
 
+	void Init();
 	void Reset() override;
-	void Update() override {}
+	void Update() override { ComputeBoundingBox(); } // TODO: Better only when transform is modified
 	Component* Clone(GameObject* owner) const override;
 
-	void OnCollision(GameObject* gameObject, const float3& collisionNormal, const float3& penetrationDistance);
+	void OnCollision(GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance);
 	void ComputeBoundingBox();
 
 	inline const AABB& GetAABB() const { return mLocalAABB; }
 	inline const OBB& GetOBB() const { return mWorldOBB; }
 	inline const float3& GetCenter() const { return mCenter; }
 	inline const float3& GetSize() const { return mSize; }
+	inline btRigidBody* GetRigidBody() const { return mRigidBody; }
 
 	void SetCenter(const float3& center);
 	void SetSize(const float3& size);
+	void SetRigidBody(btRigidBody* rigidBody) { mRigidBody = rigidBody; }
 
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
@@ -37,6 +41,8 @@ private:
 	OBB mWorldOBB = { mLocalAABB };
 	float3 mCenter = float3::zero;
 	float3 mSize = float3::one;
+
+	btRigidBody* mRigidBody = nullptr;
 
 };
 

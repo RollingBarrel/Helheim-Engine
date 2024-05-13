@@ -1,5 +1,6 @@
 #pragma once
 #include "Globals.h"
+#include "Math/float3.h"
 #include <vector>
 #include <string>
 
@@ -63,7 +64,9 @@ public:
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	const std::vector<Member*>& GetMembers() { return mMembers; }
+
 	virtual void OnButtonClick() {}
+	virtual void OnCollision(GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance) {}
 protected:
 
 	GameObject* mGameObject = nullptr;
