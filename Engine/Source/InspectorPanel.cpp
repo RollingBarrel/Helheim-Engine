@@ -1323,10 +1323,8 @@ bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
 	return true;
 }
 
-std::list<ColorGradientMark> findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
 {
-	std::list<ColorGradientMark> removedMarks;
-
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
 	auto marks = gradient->GetColorMarks();
 
@@ -1362,7 +1360,6 @@ static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* grad
 			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
 		}
 	}
-	return addedMarks;
 }
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
