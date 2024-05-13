@@ -35,7 +35,7 @@ update_status ModuleEngineCamera::Update(float dt)
 {
 	CameraControls(dt);
 	mEditorCameraGameObject->Update();
-	App->GetOpenGL()->SetOpenGlCameraUniforms();
+	//App->GetOpenGL()->SetOpenGlCameraUniforms();
 	//LOG("X: %f, Y: %f, Z: %f", RadToDeg(mEditorCameraGameObject->GetRotation().x), RadToDeg(mEditorCameraGameObject->GetRotation().y), RadToDeg(mEditorCameraGameObject->GetRotation().z));
 	return UPDATE_CONTINUE;
 }
@@ -276,7 +276,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			App->GetInput()->GetMouseMotion(mX, mY);
 			mEditorCameraGameObject->Translate(float3(mX * speed, 0, 0));
 			mEditorCameraGameObject->Translate(float3(0, mY * speed, 0));
-			MouseFix()
+			MouseFix();
 		}
 		
 		
@@ -287,7 +287,9 @@ void ModuleEngineCamera::CameraControls(float dt)
 			if (focusedObject)
 			{
 				active = true;
-				float distance = mEditorCameraGameObject->GetPosition().Distance(focusedObject->GetPosition());
+
+				//METHOD 1
+				/*float distance = mEditorCameraGameObject->GetPosition().Distance(focusedObject->GetPosition());
 				float3 dir = (focusedObject->GetPosition() - mEditorCameraGameObject->GetPosition()).Normalized();
 
 				int mX, mY;
@@ -317,11 +319,31 @@ void ModuleEngineCamera::CameraControls(float dt)
 				
 				mEditorCameraGameObject->Translate(-mEditorCameraGameObject->GetFront() * distance);
 				//mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
+				*/
 
-				MouseFix();
-			}
+
+				//METHOD 2
+				/*
+				float3 focus = mEditorCameraGameObject->GetPosition();
+				int mX, mY;
+				EngineApp->GetInput()->GetMouseMotion(mX, mY);
+
+				if (mX != 0)
+				{
+					float3x3 rotationMatrixX = float3x3::RotateAxisAngle(mEditorCameraGameObject->GetUp(), -mX * rotateCameraVel);
+					focus = rotationMatrixX.Mul(focus);
+				}
+				if (mY != 0)
+				{
+					float3x3 rotationMatrixY = float3x3::RotateAxisAngle(mEditorCameraGameObject->GetRight(), mY * rotateCameraVel);
+					focus = rotationMatrixY.Mul(focus);
+				}
+				mEditorCameraGameObject->SetPosition(focus);
+				mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
+				*/
 				
-			
+				MouseFix();
+			}	
 		}
 		
 		if (App->GetInput()->GetKey(KeyboardKeys_F) == KeyState::KEY_DOWN)
