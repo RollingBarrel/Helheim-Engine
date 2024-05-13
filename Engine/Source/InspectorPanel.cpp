@@ -1539,13 +1539,12 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		//ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
 
 		//::GRADIENT DATA::
-		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);;
+		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
 		static ImGradientMark* draggingMark = nullptr;
 		static ImGradientMark* selectedMark = nullptr;
 		if (!EqualGradients(gradient, component->mColorGradient))
 		{
-			ImGradient newGradient = ColorGradientToImGradient(component->mColorGradient);
-			gradient = newGradient;
+			gradient = ColorGradientToImGradient(component->mColorGradient);
 		}
 		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
 
