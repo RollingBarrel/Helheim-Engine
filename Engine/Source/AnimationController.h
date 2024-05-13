@@ -52,7 +52,7 @@ public:
 	float GetTransitionDuration() { return mTransitionDuration; }
 
 
-	float GetCurrentTime() const { return mCurrentTime; }
+	float GetAnimationCurrentTime() const { return mCurrentTime; }
 private:
 
 	//Time in milliseconds

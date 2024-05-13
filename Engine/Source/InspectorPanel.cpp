@@ -948,16 +948,17 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	int currentItem = component->GetCurrentClip();
 	float transitionDuration = component->GetAnimationController()->GetTransitionDuration();
+	float animationCurrentTime = component->GetAnimationController()->GetAnimationCurrentTime();
 
 	if (ImGui::Combo("Select State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
-		component->GetAnimationController()->SetStartTransitionTime(component->GetAnimationController());
+		component->GetAnimationController()->SetStartTransitionTime(animationCurrentTime);
 		component->SetCurrentClip(currentItem);
 		component->StartTransition(transitionDuration);
 	}
 	if (ImGui::Button("Restart Clip")) 
 	{
-		component->GetAnimationController()->SetStartTransitionTime();
+		component->GetAnimationController()->SetStartTransitionTime(animationCurrentTime);
 		component->SetCurrentClip(currentItem);
 		component->StartTransition(transitionDuration);
 	}
@@ -982,7 +983,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	ImGui::Text("(it changes into the same resource for now)");
 
 	if (ImGui::Button("Change/ Play whole animation")) {
-		component->GetAnimationController()->SetStartTransitionTime();
+		component->GetAnimationController()->SetStartTransitionTime(animationCurrentTime);
 		component->ChangeAnimation(component->GetAnimation());
 		component->StartTransition(transitionDuration);
 
