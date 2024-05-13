@@ -105,7 +105,11 @@ void InspectorPanel::Draw(int windowFlags)
 			}
 		}
 		//ImGui::PopItemWidth();
-
+		bool dynamic = focusedObject->IsDynamic();
+		if (ImGui::Checkbox("Dynamic",&dynamic))
+		{
+			focusedObject->SetDynamic(dynamic);
+		}
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();

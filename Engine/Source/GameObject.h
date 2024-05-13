@@ -60,7 +60,8 @@ public:
 	bool IsEnabled() const { return mIsEnabled; }
 	// Status for this GameObject and all its ancestors
 	bool IsActive() const { return mIsEnabled && mIsActive; }
-
+	bool IsDynamic() const { return mIsDynamic; }
+	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
 	void AddChild(GameObject* child, const int aboveThisId = 0);
@@ -129,6 +130,7 @@ private:
 
 	bool mIsEnabled = true;
 	bool mIsActive = true;
+	bool mIsDynamic = false;
 	bool mIsTransformModified = false;
 	int mPrefabResourceId = 0;
 	bool mPrefabOverride = true;

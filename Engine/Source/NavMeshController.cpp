@@ -453,7 +453,7 @@ void NavMeshController::GetGOMeshes(const GameObject* gameObj) {
 		for (const auto& child : gameObj->GetChildren()) 
 		{
 			MeshRendererComponent* meshRendererComponent = (MeshRendererComponent*)(child->GetComponent(ComponentType::MESHRENDERER));
-			if (meshRendererComponent) 
+			if (meshRendererComponent && !child->IsDynamic()) 
 			{
 				mGameObjects.push_back(child);
 			}
