@@ -35,7 +35,6 @@ enum class Weapon {
 };
 
 
-
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {

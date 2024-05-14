@@ -255,7 +255,6 @@ bool PlayerController::IsMoving()
 	}
 }
 
-
 void PlayerController::Moving()
 {
     bool anyKeyPressed = false;
@@ -370,7 +369,6 @@ void PlayerController::Dash()
     }
 }
 
-
 void PlayerController::Attack()
 {
 
@@ -395,7 +393,6 @@ void PlayerController::Attack()
 
     Idle();
 }
-
 
 void PlayerController::MeleeAttack() 
 {
@@ -534,57 +531,30 @@ void PlayerController::Reload()
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
-
 void PlayerController::TakeDamage(float damage)
 {
     if (!mIsDashing)
     {
-        if (mHealth > 0.0f)
+        if (!mGodMode) 
         {
-            mShield -= damage;
-            float remainingDamage = -mShield;
-            mShield = Min(mShield, 0.0f);
-
-            if (remainingDamage > 0)
+            if (mHealth > 0.0f)
             {
-                mHealth -= remainingDamage;
+                mShield -= damage;
+                float remainingDamage = -mShield;
+                mShield = Min(mShield, 0.0f);
 
-                /*
-                if (mHealth <= 0.0f && !mGodMode)
+                if (remainingDamage > 0)
                 {
-                    mCurrentState = PlayerState::DEATH;
+                    mHealth -= remainingDamage;
                 }
-                */
             }
-        }
-        else if(!mGodMode)
-        {
-            mCurrentState = PlayerState::DEATH;
-        }
-    }
-}
-
-/*
-void PlayerController::TakeDamage(float damage)
-{
-    if (!mIsDashing)
-    {
-        mShield -= damage;
-        float remainingDamage = -mShield;
-        mShield = Min(mShield, 0.0f);
-
-        if (remainingDamage > 0)
-        {
-            mHealth -= remainingDamage;
-
-            if (mHealth <= 0.0f && !mGodMode)
+            else
             {
                 mCurrentState = PlayerState::DEATH;
             }
-        }
+        }      
     }
 }
-*/
 
 void PlayerController::Death() 
 {
