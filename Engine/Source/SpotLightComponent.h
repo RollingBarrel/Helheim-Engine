@@ -1,6 +1,7 @@
 #ifndef _COMPONENT_SPOTLIGHT_H_
 #define _COMPONENT_SPOTLIGHT_H_
 #include "Component.h"
+#include "Geometry/Frustum.h"
 
 typedef struct SpotLight {
 	float range;
@@ -29,22 +30,23 @@ public:
 	const float* GetPosition() const;
 	void SetPosition(const float pos[3]);
 	const float* GetDirection() const { return mData.aimD; };
-	void SetDirection(const float dir[3]);
 	const float* GetColor() const { return mData.col; }
 	void SetColor(float col[3]);
 	float GetIntensity() const { return mData.pos[3]; }
 	void SetIntensity(float intensity);
 	float GetRange() const { return mData.range; }
-	void SetRange(float radius);
+	void SetRange(float range);
 	float GetOuterAngle() const; 
 	void SetOuterAngle(float angle);
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
+	const Frustum& GetFrustum() const { return mShadowFrustum; }
 	//Todo: Variable not necesary for the game mode
 	//bool debugDraw = false;
 
 private:
 	SpotLight mData;
+	Frustum mShadowFrustum;
 };
 
 #endif //_COMPONENT_SPOTLIGHT_H_

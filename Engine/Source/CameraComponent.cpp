@@ -131,16 +131,20 @@ void CameraComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* own
     float farPlane = { 1000.0f };
     
 
-    if (data.HasMember("AspectRatio") && data["AspectRatio"].IsFloat()) {
+    if (data.HasMember("AspectRatio") && data["AspectRatio"].IsFloat()) 
+    {
         aspectRatio = data["AspectRatio"].GetFloat();
     }
-    if (data.HasMember("NearPlane") && data["NearPlane"].IsFloat()) {
+    if (data.HasMember("NearPlane") && data["NearPlane"].IsFloat()) 
+    {
         nearPlane = data["NearPlane"].GetFloat();
     }
-    if (data.HasMember("FarPlane") && data["FarPlane"].IsFloat()) {
+    if (data.HasMember("FarPlane") && data["FarPlane"].IsFloat()) 
+    {
         farPlane = data["FarPlane"].GetFloat();
     }
-    if (data.HasMember("IsOrtographic") && data["IsOrtographic"].IsBool()) {
+    if (data.HasMember("IsOrtographic") && data["IsOrtographic"].IsBool()) 
+    {
         if (data["IsOrtographic"].GetBool())
             mFrustum.type = FrustumType::OrthographicFrustum;
     }
