@@ -44,12 +44,14 @@ void TrailComponent::Draw()
 void TrailComponent::Update()
 {
     if (IsEnabled())
-    {
-        float3 position = mOwner->GetPosition();
+    {        
+        float3 position, scale;
+        Quat rotation;
+        mOwner->GetWorldTransform().Decompose(position, rotation, scale);
         float dposition = position.DistanceSq(mTrail->GetLastPosition());
         if (dposition >= mMinDistance * mMinDistance && mTrail->GetSize() < mMaxPoints)
         {
-            mTrail->AddTrailPositions(position, mOwner->GetRotation());
+            mTrail->AddTrailPositions(position, rotation);
         }
         mTrail->Update();
     }

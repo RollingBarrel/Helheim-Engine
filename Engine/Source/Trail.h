@@ -41,7 +41,7 @@ public:
 	void Init();
 	void Draw();
 	
-	void AddTrailPositions(float3 position, float3 rotation);
+	void AddTrailPositions(float3 position, Quat rotation);
 
 	float3 GetLastPosition() const { return mPoints.back().GetPosition(); }
 	float3 GetFirstPosition() const { return mPoints.front().GetPosition(); }
