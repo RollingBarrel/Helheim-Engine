@@ -43,6 +43,7 @@ public:
 	void OnRestart();
 
 	void SetAnimation(unsigned int uid);
+	void SetStateMachine(std::vector<unsigned int> animationUids);
 	
 
 	void SetStartTime(float time);

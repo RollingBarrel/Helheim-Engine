@@ -117,6 +117,16 @@ void AnimationComponent::SetAnimation(unsigned int uid)
 	}
 }
 
+void AnimationComponent::SetStateMachine(std::vector<unsigned int> animationUids)
+{
+
+	if (!animationUids.empty())
+	{
+		mStateMachine = new AnimationStateMachine(animationUids);
+	}
+
+}
+
 void AnimationComponent::SetStartTime(float time)
 {
 	mClipTimes[mCurrentClip * 2] = time;
