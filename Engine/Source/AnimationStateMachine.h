@@ -1,4 +1,4 @@
-#pragma once
+#include "Globals.h"
 #include <vector>
 #include <string>
 
@@ -47,7 +47,7 @@ public:
 	std::string mTarget;
 };
 
-class AnimationStateMachine
+class ENGINE_API AnimationStateMachine
 {
 
 public:
@@ -60,7 +60,8 @@ public:
 	//Clips
 	void AddClip(unsigned int animationUID);
 	void RemoveClip(int index);
-
+	
+	void SetClipName(int index, std::string& name);
 	int  GetClipIndex(std::string& clipName);
 	unsigned int GetClipResource(int index);
 
@@ -100,3 +101,4 @@ private:
 	
 
 };
+

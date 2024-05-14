@@ -1,10 +1,10 @@
 #include "AnimationStateMachine.h"
-
 #include "ResourceAnimation.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleResource.h"
 #include "AnimationController.h"
+
 
 
 
@@ -17,8 +17,7 @@ AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animation
 		mClips.push_back(AnimationClip(resourceAnimation));
 	}
 
-	//AnimationState defaultState =  new AnimationState(mClips[0],"default")
-
+	mStates.push_back(AnimationState("default", "default"));
 }
 
 void AnimationStateMachine::Update()
@@ -44,6 +43,11 @@ void AnimationStateMachine::RemoveClip(int index)
 {
 
 	mClips.erase(mClips.begin()+index);
+}
+
+void AnimationStateMachine::SetClipName(int index, std::string& name)
+{
+	mClips[index].mName = name;
 }
 
 int AnimationStateMachine::GetClipIndex(std::string& clipName)
