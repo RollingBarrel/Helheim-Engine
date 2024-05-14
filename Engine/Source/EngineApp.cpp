@@ -15,6 +15,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "Timer.h"
+#include "optick.h"
 
 EngineApplication* EngineApp = NULL;
 
@@ -77,7 +78,7 @@ bool EngineApplication::Init()
 
 update_status EngineApplication::Update(float dt)
 {
-	//OPTICK_FRAME("MainThread");
+	OPTICK_FRAME("EngineThread");
 	if (mExit) return UPDATE_STOP;
 
 	mCurrentTimer->Update();

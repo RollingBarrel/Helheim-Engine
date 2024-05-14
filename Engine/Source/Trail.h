@@ -25,6 +25,7 @@ private:
 
 class Trail
 {
+	friend class InspectorPanel;
 public:
 	Trail();
 	~Trail();
@@ -36,6 +37,13 @@ public:
 	void AddTrailPositions(float3 position, float3 rotation);
 	void Save(Archive& archive) const;
 	void LoadFromJSON(const rapidjson::Value& data);
+
+	float3 GetLastPosition() const { return mPoints.back().mPosition; }
+	float3 GetFirstPosition() const { return mPoints.front().mPosition; }
+	int GetSize() const { return mPoints.size(); }
+
+
+	void SetImage(ResourceTexture* image) { mImage = image; }
 
 private:
 	std::deque<TrailPoint> mPoints;

@@ -14,6 +14,7 @@
 #include "ModuleEvent.h"
 #include "ModuleGame.h"
 #include "Timer.h"
+#include <optick.h>
 
 GameApplication* GameApp = NULL;
 
@@ -60,6 +61,7 @@ bool GameApplication::Init()
 
 update_status GameApplication::Update(float dt)
 {
+	OPTICK_FRAME("GameThread");
 	mCurrentTimer->Update();
 
 	if (mExit) return UPDATE_STOP;

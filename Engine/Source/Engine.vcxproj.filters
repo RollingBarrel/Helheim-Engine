@@ -283,12 +283,6 @@
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\Optick\include\optick.config.h">
-      <Filter>Dependencies\Optick</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Optick\include\optick.h">
-      <Filter>Dependencies\Optick</Filter>
-    </ClInclude>
     <ClInclude Include="ImporterScript.h">
       <Filter>Importers</Filter>
     </ClInclude>
@@ -365,9 +359,6 @@
     </Filter>
     <Filter Include="Dependencies\ImGuizmo">
       <UniqueIdentifier>{507b6f07-d49a-45f6-88cc-c49673feecf8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\Optick">
-      <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\ImGuiFileDialog">
       <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>
