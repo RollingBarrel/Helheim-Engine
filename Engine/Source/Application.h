@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Module.h"
-#include <optick.h>
+#include "optick.h"
 
 class ModuleOpenGL;
 class ModuleWindow;

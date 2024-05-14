@@ -1260,7 +1260,8 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 
 ImColor Float4ToImColor(const float4& color)
 {
-	return ImColor(color.x, color.y, color.z, color.w);
+	ImColor ret = ImColor(color.x, color.y, color.z, color.w);
+	return ret;
 }
 
 float4 ImColorToFloat4(const float* color)
@@ -1300,7 +1301,7 @@ bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> 
 	return false;
 }
 
-static void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
 {
 	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
 	auto marks = gradient->GetColorMarks();
@@ -1314,6 +1315,26 @@ static void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gr
 			}
 		);
 
+		if (it == marksEdited.end())
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+{
+	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+	auto marks = gradient->GetColorMarks();
+
+	// find if marksEdited has not a mark from the gradient to delete it
+	for (const auto& mark : marks) {
+		auto it = std::find_if(marksEdited.begin(), marksEdited.end(),[&](const ImGradientMark* mark1) 
+			{
+				return areMarksEquivalent(mark1, mark);
+			}
+		);
 		if (it == marksEdited.end()) 
 		{
 			gradient->RemoveColorGradientMark(mark.first);
@@ -1334,7 +1355,6 @@ static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* grad
 				return areMarksEquivalent(markEdit, mark);
 			}
 		);
-
 		if (it == marks.end()) 
 		{
 			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
@@ -1455,14 +1475,10 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
 		static ImGradientMark* draggingMark = nullptr;
 		static ImGradientMark* selectedMark = nullptr;
-		if (id != component->GetID())
+		if (!EqualGradients(gradient, component->mColorGradient))
 		{
 			gradient = ColorGradientToImGradient(component->mColorGradient);
-			draggingMark = nullptr;
-			selectedMark = nullptr;
-			id = component->GetID();
 		}
-
 		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
 
 		if (updated) {

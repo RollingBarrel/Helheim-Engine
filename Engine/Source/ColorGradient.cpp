@@ -4,7 +4,7 @@ ColorGradient::ColorGradient()
 {
 }
 
-ColorGradient::ColorGradient(ColorGradient& original)
+ColorGradient::ColorGradient(const ColorGradient& original)
 {
     mColorMarks = original.mColorMarks;
 }

@@ -9,7 +9,7 @@ class ENGINE_API ColorGradient
 {
 public:
 	ColorGradient();
-	ColorGradient(ColorGradient& original);
+	ColorGradient(const ColorGradient& original);
 	~ColorGradient();
 
 	void AddColorGradientMark(float position, const float4& color);

@@ -29,6 +29,7 @@ mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(new
     SetImage(original.mResourceId);
     Init();
     mShape->CopyShape(*original.mShape);
+    mColorGradient = new ColorGradient(*(original.mColorGradient));
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 

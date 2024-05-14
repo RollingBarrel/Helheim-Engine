@@ -54,7 +54,7 @@ private:
 	BezierCurve mSpeedCurve = BezierCurve();
 	BezierCurve mSizeCurve = BezierCurve();
 
-	float mEmissionRate = 1.0f;
+	float mEmissionRate = 10.0f;
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 
