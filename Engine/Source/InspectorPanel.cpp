@@ -28,6 +28,7 @@
 #include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TrailComponent.h"
 #include "EmitterShape.h"
 
 #include "ImporterMaterial.h"
@@ -39,6 +40,7 @@
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
+#include "Trail.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -440,6 +442,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					break;
 				case ComponentType::PARTICLESYSTEM:
 					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
+					break;
+				case ComponentType::TRAIL:
+					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
+					break;
 			}
 		}
 		ImGui::PopID();
@@ -1362,7 +1368,7 @@ static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* grad
 	}
 }
 
-void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
+void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
 	ImGui::Text("Looping");
 	ImGui::SameLine(); 
@@ -1488,6 +1494,85 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	}
 }
 
+void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
+{
+	ImGui::Text("Minimum distance between points");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Lifetime", &(component->mMinDistance), 1.0f, 0.0f);
+
+	ImGui::Separator();
+
+	ImGui::Text("Lifetime");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+
+	ImGui::Separator();
+	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+	
+	ImGui::Separator();
+	if (ImGui::CollapsingHeader("Texture & Tint"))
+	{
+		// Drag and drop	
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+
+		ResourceTexture* image = component->mTrail->mImage;
+
+		if (image)
+		{
+			ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+			ImGui::Image(imageID, ImVec2(50, 50));
+		}
+		else
+		{
+			ImGui::Text("Drop Image");
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			{
+				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+				if (resource && (resource->GetType() == Resource::Type::Texture))
+				{
+					component->SetImage(resource->GetUID());
+					component->SetFileName(asset->mName);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::NextColumn();
+		if (component->GetFileName() != nullptr)
+		{
+			ImGui::Text(component->GetFileName());
+		}
+
+		if (image)
+		{
+			ImGui::Text("Width:%dpx", image->GetWidth());
+			ImGui::Text("Height:%dpx", image->GetHeight());
+
+		}
+		ImGui::Columns(1);
+
+		//::GRADIENT DATA::
+		static unsigned int id = 0;
+		static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
+		static ImGradientMark* draggingMark = nullptr;
+		static ImGradientMark* selectedMark = nullptr;
+		if (!EqualGradients(gradient, &component->mTrail->mGradient))
+		{
+			gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
+		}
+		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
+
+		if (updated) {
+			findRemovedMarks(gradient, &component->mTrail->mGradient);
+			findAddedMarks(gradient, &component->mTrail->mGradient);
+		}
+	}
+}
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const
 {

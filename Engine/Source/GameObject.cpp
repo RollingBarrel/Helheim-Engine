@@ -26,6 +26,7 @@
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TrailComponent.h"
 
 #include "Tag.h"
 #include "Quadtree.h"
@@ -536,9 +537,12 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::PARTICLESYSTEM:
 	{
-		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
-		newComponent = pc;
+		newComponent = new ParticleSystemComponent(this);
 		break;
+	}
+	case ComponentType::TRAIL:
+	{
+		newComponent = new TrailComponent(this);
 	}
 	default:
 		break;

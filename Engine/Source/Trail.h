@@ -42,8 +42,6 @@ public:
 	void Draw();
 	
 	void AddTrailPositions(float3 position, float3 rotation);
-	void Save(Archive& archive) const;
-	void LoadFromJSON(const rapidjson::Value& data);
 
 	float3 GetLastPosition() const { return mPoints.back().GetPosition(); }
 	float3 GetFirstPosition() const { return mPoints.front().GetPosition(); }

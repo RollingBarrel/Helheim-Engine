@@ -17,7 +17,6 @@ mResourceId(original.mResourceId), mFileName(original.mFileName), mTrail(new Tra
 
 TrailComponent::~TrailComponent()
 {
-    App->GetOpenGL()->RemoveTrail(mTrail);
     delete mTrail;
 }
 
@@ -31,21 +30,20 @@ Component* TrailComponent::Clone(GameObject* owner) const
 void TrailComponent::Init()
 {
     SetImage(mResourceId);
-    mTrail.Init();
-    App->GetOpenGL()->AddTrail(mTrail);
+    mTrail->Init();
 }
 
 void TrailComponent::Draw() 
 {
     if (IsEnabled()) 
     {
-        mTrail.Draw();
+        mTrail->Draw();
     }
 }
 
 void TrailComponent::Update()
 {
-    if (IsEnabled)
+    if (IsEnabled())
     {
         float3 position = mOwner->GetPosition();
         float dposition = position.DistanceSq(mTrail->GetLastPosition());
@@ -66,7 +64,6 @@ void TrailComponent::SetImage(unsigned int resourceId)
 
 void TrailComponent::Reset()
 {
-    App->GetOpenGL()->RemoveTrail(mTrail);
     delete mTrail;
     *this = TrailComponent(mOwner);
 }
