@@ -14,12 +14,16 @@
 
 Trail::Trail()
 {
+}
 
-    mPoints.push_back(TrailPoint(position, direcction));
+Trail::Trail(const Trail& original): mPoints(original.mPoints), mGradient(ColorGradient(original.mGradient)), mWidth(original.mWidth)
+{
+
 }
 
 Trail::~Trail()
 {
+    App->GetOpenGL()->RemoveTrail(this);
 }
 
 
@@ -71,7 +75,6 @@ void Trail::Draw()
     glUseProgram(programId);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferData(GL_ARRAY_BUFFER, mPoints.size() * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
     float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
@@ -103,7 +106,7 @@ void Trail::Draw()
     glUnmapBuffer(GL_ARRAY_BUFFER);
     glBindVertexArray(mVAO);
 
-    CameraComponent* cam = (CameraComponent*)App->GetCamera()->GetCurrentCamera();
+    auto cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
     float4x4 projection = cam->GetViewProjectionMatrix();
 
     glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
@@ -121,14 +124,7 @@ void Trail::Draw()
 
 void Trail::AddTrailPositions(float3 position, float3 rotation)
 {
-}
-
-void Trail::Save(Archive& archive) const
-{
-}
-
-void Trail::LoadFromJSON(const rapidjson::Value& data)
-{
+    //mPoints.push_back(TrailPoint(position, direcction));
 }
 
 void Trail::SaveJson(Archive& archive) const
