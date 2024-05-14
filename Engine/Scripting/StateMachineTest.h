@@ -6,8 +6,10 @@
 class AnimationComponent;
 class NavMeshController;
 class GameManager;
+class AnimationStateMachine;
 
-enum class AnimationState 
+
+enum class AnimationStates
 {
 	IDLE,
 	WALK,
@@ -31,12 +33,12 @@ class StateMachineTest: public Script
 		void Moving();
 		void Die();
 
-		AnimationState mCurrentState = AnimationState::IDLE;
-		AnimationState mPreviousState = AnimationState::IDLE;
+		AnimationStates mCurrentState = AnimationStates::IDLE;
+		AnimationStates mPreviousState = AnimationStates::IDLE;
 
 		NavMeshController* mNavMeshControl = nullptr;
-		GameObject* mAnimationComponentHolder = nullptr;
 		AnimationComponent* mAnimationComponent = nullptr;
+		AnimationStateMachine* mStateMachine = nullptr;
 
 		GameManager* mGameManager = nullptr;
 		GameObject* mGameManagerGO = nullptr;

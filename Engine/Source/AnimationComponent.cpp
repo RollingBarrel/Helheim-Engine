@@ -83,6 +83,7 @@ void AnimationComponent::OnStart()
 		LoadAllChildJoints(mOwner, model);
 
 	}
+
 }
 
 void AnimationComponent::Update()

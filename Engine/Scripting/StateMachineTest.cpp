@@ -8,16 +8,18 @@
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
 #include "AnimationComponent.h"
+#include "AnimationStateMachine.h"
 #include "GameManager.h"
+#include "GameObject.h"
+
 
 
 CREATE(StateMachineTest) 
 {
 	CLASS(owner)
-	MEMBER(MemberType::GAMEOBJECT, mGameManagerGO);
 	MEMBER(MemberType::FLOAT, mPlayerSpeed);
-	MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
-
+	
+    END_CREATE;
 }
 
 
@@ -28,26 +30,46 @@ StateMachineTest::StateMachineTest(GameObject* owner) : Script(owner)
 
 void StateMachineTest::Start()
 {
-	if (mGameManagerGO)
-	{
-		ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
-		mGameManager = (GameManager*)script->GetScriptInstance();
-	}
+    
+
+    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
+    mStateMachine = mAnimationComponent->GetStateMachine();
+
+    std::string defaultState = "default";
+    std::string clip = "Zombunny";
+    std::string stateIdle = "Idle";
+    std::string stateWalk = "Walk";
+    std::string walkTrigger = "tWalk";
+    std::string idleTrigger = "tIdle";
+
+    mStateMachine->SetClipName(0, clip);
+
+    mStateMachine->AddState(clip, stateIdle);
+    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(stateIdle), 1.25);
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(stateIdle), 12.0);
+
+    mStateMachine->AddState(clip, stateWalk);
+    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(stateWalk), 0.0);
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(stateWalk), 1.25);
+    
+    mStateMachine->AddTransition(defaultState, stateIdle, idleTrigger);
+    mStateMachine->AddTransition(stateIdle, stateWalk, walkTrigger);
+    mStateMachine->AddTransition(stateWalk, stateIdle, idleTrigger);
 }
 
 void StateMachineTest::Update()
 {
     switch (mCurrentState)
     {
-    case AnimationState::IDLE:
+    case AnimationStates::IDLE:
         Idle();
         break;
    
-    case AnimationState::WALK:
+    case AnimationStates::WALK:
         Moving();
 
         break;
-    case AnimationState::DIE:
+    case AnimationStates::DIE:
         Die();
         break;
     }
@@ -62,11 +84,11 @@ void StateMachineTest::Idle()
         App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
         App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        mCurrentState = AnimationState::WALK;
+        mCurrentState = AnimationStates::WALK;
     }
     else
     {
-        mCurrentState = AnimationState::IDLE;
+        mCurrentState = AnimationStates::IDLE;
     }
 
 }
