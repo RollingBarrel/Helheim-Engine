@@ -518,11 +518,10 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetColor(col);
 	}
-	const float* sDir = component->GetDirection();
-	float dir[3] = { sDir[0], sDir[1] , sDir[2] };
-	if (ImGui::DragFloat3("Direction", dir, 0.05f, -1.f, 1.f))
+	float range = component->GetRange();
+	if (ImGui::DragFloat("Range", &range, 0.05f))
 	{
-		component->SetDirection(dir);
+		component->SetRange(range);
 	}
 	float intensity = component->GetIntensity();
 	if (ImGui::DragFloat("Intensity", &intensity, 0.5f, 0.0f, 300.f))

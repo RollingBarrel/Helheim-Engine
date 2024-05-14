@@ -8,6 +8,7 @@ typedef struct SpotLight {
 	float pos[4]; //w intensity
 	float aimD[4];//w cos inner angle
 	float col[4];//w cos outer angle
+	float range;
 }SpotLight;
 
 class ENGINE_API SpotLightComponent : public Component 
@@ -40,6 +41,8 @@ public:
 	void SetOuterAngle(float angle);
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
+	float GetRange() { return mData.range; }
+	void SetRange(float range);
 	//Todo: Variable not necesary for the game mode
 	//bool debugDraw = false;
 

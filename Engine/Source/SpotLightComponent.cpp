@@ -11,7 +11,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
-
+	mData.range = 10.0f;
 	App->GetOpenGL()->AddSpotLight(*this);
 }
 
@@ -75,6 +75,12 @@ float SpotLightComponent::GetInnerAngle() const {
 void SpotLightComponent::SetInnerAngle(float angle)
 {
 	mData.aimD[3] = cos(angle);
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
+void SpotLightComponent::SetRange(float range)
+{
+	mData.range = range;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 

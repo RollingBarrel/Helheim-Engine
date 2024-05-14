@@ -1,0 +1,235 @@
+{
+    "Scene": {
+        "Name": "ShadowsTest",
+        "GameObjects": [
+            {
+                "UID": 1830431869,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    3.8816661834716799
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    15.0,
+                    1.0,
+                    15.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1958604130,
+                "ParentUID": 1830431869,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2001142561,
+                "ParentUID": 1958604130,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1267527856,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 736753931,
+                "ParentUID": 1,
+                "Name": "Cube (2)",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    4.747383117675781,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 799482452,
+                "ParentUID": 736753931,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 836799308,
+                "ParentUID": 799482452,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 81555938,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1732227427,
+                "ParentUID": 1,
+                "Name": "Light",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    8.15666675567627,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "Position": [
+                            0.0,
+                            8.15666675567627,
+                            0.0,
+                            50.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -1.0,
+                            0.0,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.7880107760429382
+                        ],
+                        "Radius": 25.0
+                    }
+                ]
+            }
+        ]
+    }
+}
