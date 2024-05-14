@@ -172,8 +172,6 @@ void PlayerController::Update()
         break;
     }
 
-    //log out the current state
-    LOG("Current State: %i", mCurrentState);
     HandleRotation();
 
     if (mWinArea)
