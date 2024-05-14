@@ -61,7 +61,7 @@ private:
 	EmitterShape* mShape;
 	EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
 
-	ColorGradient* mColorGradient;
+	ColorGradient* mColorGradient = new ColorGradient();
 	std::vector<Particle*> mParticles;
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;
