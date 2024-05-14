@@ -123,6 +123,7 @@ void AnimationComponent::SetStateMachine(std::vector<unsigned int> animationUids
 	if (!animationUids.empty())
 	{
 		mStateMachine = new AnimationStateMachine(animationUids);
+		SetAnimation(animationUids[0]);
 	}
 
 }
