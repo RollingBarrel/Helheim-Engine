@@ -211,6 +211,7 @@ void AnimationComponent::ChangeState(std::string stateName)
 			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
 			mController->SetNextAnimation(tmpAnimation);
 			mController->SetClipStartTime(mStateMachine->GetStateStartTime(stateIndex));
+			mController->SetClipStartTime(mStateMachine->GetStateEndTime(stateIndex));
 			mController->ActivateTransition();
 			//SetAnimation(resourceAnimation);
 		}
