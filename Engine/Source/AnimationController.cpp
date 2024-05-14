@@ -39,12 +39,7 @@ void AnimationController::Update(GameObject* model)
 	{
 		mCurrentTransitionTime += App->GetDt();
 
-		if (mNextAnimation == nullptr) {
-			GetTransform_BlendingClips(model);
-		}
-		else {
-			GetTransform_BlendingAnimations(model);
-		}
+		GetTransform_Blending(model);
 	}
 	
 }
@@ -135,13 +130,14 @@ void AnimationController::GetTransform(GameObject* model)
 
 		if (channel->hasTranslation)
 		{
+			//Calculate(channel, "Translation", mCurrentTime, keyIndex, lambda);
+
 			std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
 			auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mCurrentTime);
 
 			if (upperBoundIterator != posTimeStampsVector.end())
 			{
 				keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
-
 				lambda = (mCurrentTime - channel->posTimeStamps[keyIndex - 1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex - 1]);
 			}
 			else
@@ -154,28 +150,21 @@ void AnimationController::GetTransform(GameObject* model)
 		}
 		if (channel->hasRotation)
 		{
-			//Conversion of std::unique_ptr<float[]> to std::vector<float>
+			//Calculate(channel, "Rotation", mCurrentTime, keyIndex, lambda);
+
 			std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
-			//Iterating using std::upper_bound to fins the first higher number than currentTime in an ordered array
 			auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mCurrentTime);
 
-			//If an upper bound has been found
 			if (upperBoundIterator != rotTimeStampsVector.end())
 			{
-				//Distance between the first element of the vector and the first higher element, aka the position of the first higher element
 				keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
-
-				//Calculating lambda 
 				lambda = (mCurrentTime - channel->rotTimeStamps[keyIndex - 1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex - 1]);
 			}
-			//In case there is no upper bound
 			else
 			{
-				//The index is the last element
 				keyIndex = channel->numRotations - 1;
 				lambda = 1;
 			}
-
 
 			model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
@@ -191,115 +180,12 @@ void AnimationController::GetTransform(GameObject* model)
 	}
 }
 
-void AnimationController::GetTransform_BlendingClips(GameObject* model)
+void AnimationController::GetTransform_Blending(GameObject* model)
 {
 	float weight = mSpeed * mCurrentTransitionTime / mTransitionDuration;
 	if (weight < 1)
 	{
 		std::string name = model->GetName();
-		ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
-
-		if (newChannel != nullptr)
-		{
-
-			ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
-			if (channel == nullptr)
-			{
-				return;
-			}
-
-			static float lambda;
-			static int keyIndex;
-
-			static float newClipIndex;
-
-			if (channel->hasTranslation)
-			{
-				std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
-				auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mStartTransitionTime);
-
-				if (upperBoundIterator != posTimeStampsVector.end())
-				{
-					keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
-
-					lambda = (mStartTransitionTime - channel->posTimeStamps[keyIndex - 1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex - 1]);
-				}
-				else
-				{
-					keyIndex = channel->numPositions - 1;
-					lambda = 1;
-				}
-
-				upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mClipStartTime);
-
-				if (upperBoundIterator != posTimeStampsVector.end())
-				{
-					newClipIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
-				}
-				else
-				{
-					newClipIndex = channel->numPositions - 1;
-				}
-
-				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
-			}
-			if (channel->hasRotation)
-			{
-				std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
-				auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mStartTransitionTime);
-
-				if (upperBoundIterator != rotTimeStampsVector.end())
-				{
-					keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
-
-					lambda = (mStartTransitionTime - channel->rotTimeStamps[keyIndex - 1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex - 1]);
-				}
-				else
-				{
-					keyIndex = channel->numRotations - 1;
-					lambda = 1;
-				}
-
-				upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mClipStartTime);
-
-				if (upperBoundIterator != rotTimeStampsVector.end())
-				{
-					newClipIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
-				}
-				else
-				{
-					newClipIndex = channel->numPositions - 1;
-				}
-
-				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
-			}
-			//else if (name == "scale") {
-			//}
-			else { return; }
-
-			model->RecalculateMatrices();
-		}
-		for (const auto& child : model->GetChildren())
-		{
-			GetTransform_BlendingClips(child);
-		}
-	}
-	else 
-	{
-		mTransition = false;
-		mCurrentTime = mClipStartTime;
-		mCurrentTransitionTime = 0.0f;
-	}
-}
-
-void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
-{
-	float weight = mSpeed * mCurrentTransitionTime / mTransitionDuration;
-	if (weight < 1)
-	{
-		//Checks and gets the channel we want
-		std::string name = model->GetName();
-		//LOG("%s", name.c_str());
 		ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
 		ResourceAnimation::AnimationChannel* newNextChannel = mNextAnimation->GetChannel(name);
 
@@ -320,13 +206,14 @@ void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
 
 			if (channel->hasTranslation)
 			{
+				//Calculate(channel, "Translation", mStartTransitionTime, keyIndex, lambda);
+
 				std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
 				auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mStartTransitionTime);
 
 				if (upperBoundIterator != posTimeStampsVector.end())
 				{
 					keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
-
 					lambda = (mStartTransitionTime - channel->posTimeStamps[keyIndex - 1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex - 1]);
 				}
 				else
@@ -335,17 +222,30 @@ void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
 					lambda = 1;
 				}
 
-				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), nextChannel->positions[0], weight));
+				//std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
+				upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), mClipStartTime);
+
+				if (upperBoundIterator != posTimeStampsVector.end())
+				{
+					newClipIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
+				}
+				else
+				{
+					newClipIndex = channel->numPositions - 1;
+				}
+
+				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), nextChannel->positions[newClipIndex], weight));
 			}
 			if (channel->hasRotation)
 			{
+				//Calculate(channel, "Rotation", mStartTransitionTime, keyIndex, lambda);
+
 				std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
 				auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mStartTransitionTime);
 
 				if (upperBoundIterator != rotTimeStampsVector.end())
 				{
 					keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
-
 					lambda = (mStartTransitionTime - channel->rotTimeStamps[keyIndex - 1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex - 1]);
 				}
 				else
@@ -354,7 +254,19 @@ void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
 					lambda = 1;
 				}
 
-				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), nextChannel->rotations[0], weight));
+				//std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+				upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mClipStartTime);
+
+				if (upperBoundIterator != rotTimeStampsVector.end())
+				{
+					newClipIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+				}
+				else
+				{
+					newClipIndex = channel->numPositions - 1;
+				}
+
+				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), nextChannel->rotations[newClipIndex], weight));
 			}
 			//else if (name == "scale") {
 			//}
@@ -364,19 +276,53 @@ void AnimationController::GetTransform_BlendingAnimations(GameObject* model)
 		}
 		for (const auto& child : model->GetChildren())
 		{
-			GetTransform_BlendingClips(child);
+			GetTransform_Blending(child);
 		}
 	}
-	else
+	else 
 	{
 		mTransition = false;
-		mCurrentTime = 0.0f;
+		mCurrentTime = mClipStartTime;
 		mCurrentTransitionTime = 0.0f;
 
 		//Change the animations once the transition is done
 		mCurrentAnimation = mNextAnimation;
 		mNextAnimation = nullptr;
 	}
-
-
 }
+
+/*void AnimationController::Calculate(ResourceAnimation::AnimationChannel* channel, const char* channelType, float timeToFind, int& keyIndex, float& lambda)
+{
+	if (channelType == "Translation")
+	{
+		std::vector<float> posTimeStampsVector(channel->posTimeStamps.get(), channel->posTimeStamps.get() + channel->numPositions);
+		auto upperBoundIterator = std::upper_bound(posTimeStampsVector.begin(), posTimeStampsVector.end(), timeToFind);
+
+		if (upperBoundIterator != posTimeStampsVector.end())
+		{
+			keyIndex = std::distance(posTimeStampsVector.begin(), upperBoundIterator);
+			lambda = (timeToFind - channel->posTimeStamps[keyIndex - 1]) / (channel->posTimeStamps[keyIndex] - channel->posTimeStamps[keyIndex - 1]);
+		}
+		else
+		{
+			keyIndex = channel->numPositions - 1;
+			lambda = 1;
+		}
+	}
+	else if (channelType == "Rotation")
+	{
+		std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+		auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), timeToFind);
+
+		if (upperBoundIterator != rotTimeStampsVector.end())
+		{
+			keyIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+			lambda = (timeToFind - channel->rotTimeStamps[keyIndex - 1]) / (channel->rotTimeStamps[keyIndex] - channel->rotTimeStamps[keyIndex - 1]);
+		}
+		else
+		{
+			keyIndex = channel->numRotations - 1;
+			lambda = 1;
+		}
+	}
+}*/

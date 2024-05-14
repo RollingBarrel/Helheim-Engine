@@ -947,11 +947,13 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	if (ImGui::Combo("Select State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
 		component->StartTransition(transitionDuration);
+		component->ChangeAnimation(component->GetAnimation());
 		component->SetCurrentClip(currentItem);
 	}
 	if (ImGui::Button("Restart Clip")) 
 	{
 		component->StartTransition(transitionDuration);
+		component->ChangeAnimation(component->GetAnimation());
 		component->SetCurrentClip(currentItem);
 	}
 
@@ -977,6 +979,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	if (ImGui::Button("Change/ Play whole animation")) {
 		component->ChangeAnimation(component->GetAnimation());
 		component->StartTransition(transitionDuration);
+		component->SetStartTime(0);
+		component->SetEndTime(component->GetAnimation()->GetDuration());
 
 	}
 }

@@ -6,6 +6,7 @@
 #include "Quat.h"
 
 class ResourceAnimation;
+struct AnimationChannel;
 class GameObject;
 
 class AnimationController
@@ -20,8 +21,9 @@ public:
 
 	//GetTransforms
 	void GetTransform(GameObject* model);
-	void GetTransform_BlendingClips(GameObject* model);
-	void GetTransform_BlendingAnimations(GameObject* model);
+	void GetTransform_Blending(GameObject* model);
+	//void GetTransform_BlendingAnimations(GameObject* model);
+	//void Calculate(ResourceAnimation::AnimationChannel* channel, const char* channelType, float timeToFind, int& keyIndex, float& lambda);
 
 	float3 Interpolate(const float3& first, const float3& second, float lambda);
 	Quat Interpolate(const Quat& first, const Quat& second, float lambda);
