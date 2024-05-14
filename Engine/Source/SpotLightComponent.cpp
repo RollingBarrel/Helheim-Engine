@@ -52,9 +52,9 @@ void SpotLightComponent::SetIntensity(float intensity)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-void SpotLightComponent::SetRadius(float radius)
+void SpotLightComponent::SetRange(float radius)
 {
-	mData.radius = radius;
+	mData.range = radius;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -75,12 +75,6 @@ float SpotLightComponent::GetInnerAngle() const {
 void SpotLightComponent::SetInnerAngle(float angle)
 {
 	mData.aimD[3] = cos(angle);
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
-}
-
-void SpotLightComponent::SetRange(float range)
-{
-	mData.range = range;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -114,7 +108,7 @@ void SpotLightComponent::Save(Archive& archive) const {
 	archive.AddFloat4("Position", mData.pos);
 	archive.AddFloat4("Direction", mData.aimD);
 	archive.AddFloat4("Color", mData.col);
-	archive.AddFloat("Radius", mData.radius);
+	archive.AddFloat("Range", mData.range);
 }
 
 //TODO: why is the GO owner passed here??
@@ -147,9 +141,9 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
-	if (componentJson.HasMember("Radius") && componentJson["Radius"].IsFloat())
+	if (componentJson.HasMember("Range") && componentJson["Range"].IsFloat())
 	{
-		mData.radius = componentJson["Radius"].GetFloat();
+		mData.range = componentJson["Range"].GetFloat();
 	}
 }
 

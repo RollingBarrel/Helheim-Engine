@@ -518,20 +518,15 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetColor(col);
 	}
-	float range = component->GetRange();
-	if (ImGui::DragFloat("Range", &range, 0.05f))
-	{
-		component->SetRange(range);
-	}
 	float intensity = component->GetIntensity();
 	if (ImGui::DragFloat("Intensity", &intensity, 0.5f, 0.0f, 300.f))
 	{
 		component->SetIntensity(intensity);
 	}
-	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 0.5f, 0.0f, 1000.f))
+	float radius = component->GetRange();
+	if (ImGui::DragFloat("Range", &radius, 0.5f, 0.0f, 1000.f))
 	{
-		component->SetRadius(radius);
+		component->SetRange(radius);
 	}
 	float innerAngle = RadToDeg(component->GetInnerAngle());
 	float outerAngle = RadToDeg(component->GetOuterAngle());

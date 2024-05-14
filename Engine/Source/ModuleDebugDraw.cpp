@@ -669,8 +669,10 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
 
         SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
         if (spotLight)
-        {
-            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr() , spotLight->GetColor(), spotLight->GetRadius());
+        {   
+
+            float radius = spotLight->GetRange()* tan(spotLight->GetOuterAngle());
+            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr() , spotLight->GetColor(), radius); 
         }
     }
 

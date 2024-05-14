@@ -76,7 +76,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			SpotLightComponent* cSpot = reinterpret_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
 			cSpot->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
 			cSpot->SetIntensity(node.mLight.mIntensity);
-			cSpot->SetRadius(node.mLight.mRange);
+			cSpot->SetRange(node.mLight.mRange);
 			cSpot->SetInnerAngle(node.mLight.mInnerConeAngle);
 			cSpot->SetOuterAngle(node.mLight.mOuterConeAngle);
 		}
