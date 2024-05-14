@@ -111,13 +111,14 @@ private:
 	unsigned int depthStencil;
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
-	unsigned int mGdepthStencil;
 	unsigned int mGDiffuse;
 	unsigned int mGSpecularRough;
 	unsigned int mGEmissive;
 	unsigned int mGNormals;
 	unsigned int mGPositions;
+	unsigned int mGDepth;
 	void ResizeGBuffer(unsigned int width, unsigned int height);
+	//void Draw();
 
 	//Camera
 	OpenGLBuffer* mCameraUniBuffer = nullptr;

@@ -54,7 +54,7 @@ vec3 V;
 float depth;
 vec3 emissiveCol;
 
-layout(location = 5) out vec4 outColor;
+out vec4 outColor;
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
