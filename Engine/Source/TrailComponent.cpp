@@ -36,7 +36,7 @@ void TrailComponent::Init()
 
 void TrailComponent::Update()
 {
-    if (IsEnabled)
+    if (IsEnabled())
     {
         float3 position = mOwner->GetPosition();
         float dposition = position.DistanceSq(mTrail->GetLastPosition());
