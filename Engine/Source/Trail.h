@@ -23,7 +23,7 @@ class Trail
 	friend class InspectorPanel;
 public:
 	Trail();
-	explicit Trail(Trail& original); //Copy constructor
+	explicit Trail(const Trail& original); //Copy constructor
 	~Trail();
 
 	void Update();
