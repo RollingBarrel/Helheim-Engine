@@ -6,10 +6,11 @@
 
 TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
+    mTrail = new Trail();
     Init();
 }
 
-TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner) : Component(owner, ComponentType::PARTICLESYSTEM), 
+TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner) : Component(owner, ComponentType::TRAIL), 
 mResourceId(original.mResourceId), mFileName(original.mFileName), mTrail(new Trail(*original.mTrail))
 {
     Init();
@@ -29,8 +30,8 @@ Component* TrailComponent::Clone(GameObject* owner) const
 
 void TrailComponent::Init()
 {
-    SetImage(mResourceId);
     mTrail->Init();
+    SetImage(mResourceId);
 }
 
 void TrailComponent::Draw() 

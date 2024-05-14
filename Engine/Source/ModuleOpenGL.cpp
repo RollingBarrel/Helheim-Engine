@@ -18,7 +18,7 @@
 #include "ModuleFileSystem.h"
 
 #include "CameraComponent.h"
-
+#include "Trail.h"
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -766,6 +766,10 @@ void ModuleOpenGL::Draw()
 	{
 		partSys->Draw();
 	}
+	for (auto trail : mTrails)
+	{
+		trail->Draw();
+	}
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
@@ -938,6 +942,17 @@ void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component
 		if (mParticleSystems[i] == component)
 		{
 			mParticleSystems.erase(mParticleSystems.begin() + i);
+		}
+	}
+}
+
+void ModuleOpenGL::RemoveTrail(const Trail* trail)
+{
+	for (int i = 0; i < mTrails.size(); ++i)
+	{
+		if (mTrails[i] == trail)
+		{
+			mTrails.erase(mTrails.begin() + i);
 		}
 	}
 }

@@ -13,11 +13,11 @@ public:
 	TrailPoint();
 	~TrailPoint();
 
-	float3 TopPointPosition();
-	float3 BotPointPosition();
-	float2 TopPointTexCoords();
-	float2 BotPointTexCoords();
-	float4 CalculateColor(const ColorGradient& gradient);
+	float3 TopPointPosition() const;
+	float3 BotPointPosition() const;
+	float2 TopPointTexCoords() const;
+	float2 BotPointTexCoords() const;
+	float4 CalculateColor(const ColorGradient& gradient) const;
 
 	float3 GetPosition() const { return mPosition; }
 	float3 GetDirection() const { return mDirection; }
@@ -39,12 +39,12 @@ public:
 
 	void Update();
 	void Init();
-	void Draw();
+	void Draw() const;
 	
 	void AddTrailPositions(float3 position, Quat rotation);
 
-	float3 GetLastPosition() const { return mPoints.back().GetPosition(); }
-	float3 GetFirstPosition() const { return mPoints.front().GetPosition(); }
+	float3 GetLastPosition() const;
+	float3 GetFirstPosition() const;
 	unsigned long long GetSize() const { return mPoints.size(); }
 
 	void SetImage(ResourceTexture* image) { mImage = image; }

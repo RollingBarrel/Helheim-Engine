@@ -536,14 +536,11 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new SliderComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
-	{
 		newComponent = new ParticleSystemComponent(this);
 		break;
-	}
 	case ComponentType::TRAIL:
-	{
 		newComponent = new TrailComponent(this);
-	}
+		break;
 	default:
 		break;
 	}

@@ -4,6 +4,7 @@
 #include "ModuleCamera.h"
 #include "CameraComponent.h"
 #include "ResourceTexture.h"
+#include "ModuleResource.h"
 #include "glew.h"
 
 #define POSITION_LOCATION 0
@@ -30,21 +31,21 @@ Trail::~Trail()
 void Trail::Init()
 {
     // set up mesh and attribute properties
-    float trailMesh[] = {
-    //  position            tex coord   color
-        0.0f,-0.5f,0.0f,    0.0f,0.0f,  1.0f,0.0f,0.0f,1.0f,
-        0.0f, 0.5f,0.0f,    0.0f,1.0f,  1.0f,0.0f,0.0f,1.0f,
-        0.5f, 0.5f,0.0f,    0.5f,1.0f,  0.0f,1.0f,0.0f,1.0f,
-        0.5f,-0.5f,0.0f,    0.5f,0.0f,  0.0f,1.0f,0.0f,1.0f,
-        1.0f, 0.5f,0.0f,    1.0f,1.0f,  0.0f,0.0f,1.0f,1.0f,
-        1.0f,-0.5f,0.0f,    1.0f,0.0f,  0.0f,0.0f,1.0f,1.0f
-    };
+    //float trailMesh[] = {
+    ////  position            tex coord   color
+    //    0.0f,-0.5f,0.0f,    0.0f,0.0f,  1.0f,0.0f,0.0f,1.0f,
+    //    0.0f, 0.5f,0.0f,    0.0f,1.0f,  1.0f,0.0f,0.0f,1.0f,
+    //    0.5f, 0.5f,0.0f,    0.5f,1.0f,  0.0f,1.0f,0.0f,1.0f,
+    //    0.5f,-0.5f,0.0f,    0.5f,0.0f,  0.0f,1.0f,0.0f,1.0f,
+    //    1.0f, 0.5f,0.0f,    1.0f,1.0f,  0.0f,0.0f,1.0f,1.0f,
+    //    1.0f,-0.5f,0.0f,    1.0f,0.0f,  0.0f,0.0f,1.0f,1.0f
+    //};
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
     glBindVertexArray(mVAO);
     // fill mesh buffer
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(trailMesh), trailMesh, GL_DYNAMIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(trailMesh), trailMesh, GL_DYNAMIC_DRAW);
 
     // Enable the attribute for vertex positions
     glEnableVertexAttribArray(POSITION_LOCATION);
@@ -64,7 +65,7 @@ void Trail::Update()
 {
 }
 
-void Trail::Draw()
+void Trail::Draw() const
 {
     unsigned int programId = App->GetOpenGL()->GetTrailProgramId();
     glDepthMask(GL_FALSE);
@@ -84,7 +85,7 @@ void Trail::Draw()
         float3 botPointPos = mPoints[i].BotPointPosition();
         float2 topPointTexCoord = mPoints[i].TopPointTexCoords();
         float2 botPointTexCoord = mPoints[i].BotPointTexCoords();
-        float4 color = mPoints[i].Color();
+        float4 color = mPoints[i].CalculateColor(mGradient);
 
         // Copiar topPoint
         memcpy(ptr, topPointPos.ptr(), sizeof(float3));
@@ -127,6 +128,24 @@ void Trail::AddTrailPositions(float3 position, Quat rotation)
     //mPoints.push_back(TrailPoint(position, direcction));
 }
 
+float3 Trail::GetLastPosition() const
+{
+    if (mPoints.empty()) 
+    {
+        return float3::nan;
+    }
+    return mPoints.back().GetPosition();
+}
+
+float3 Trail::GetFirstPosition() const
+{
+    if (mPoints.empty())
+    {
+        return float3::nan;
+    }
+    return mPoints.front().GetPosition();
+}
+
 void Trail::SaveJson(Archive& archive) const
 {
     archive.AddFloat("Max Life Time", mMaxLifeTime);
@@ -160,27 +179,27 @@ TrailPoint::~TrailPoint()
 {
 }
 
-float3 TrailPoint::TopPointPosition()
+float3 TrailPoint::TopPointPosition() const
 {
-    return mPosition + mDirection * width; // TODO
+    return mPosition + mDirection/* * width*/; // TODO
 }
 
-float3 TrailPoint::BotPointPosition()
+float3 TrailPoint::BotPointPosition() const
 {
-    return mPosition - mDirection * width; // TODO
+    return mPosition - mDirection/* * width*/; // TODO
 }
 
-float2 TrailPoint::TopPointTexCoords()
+float2 TrailPoint::TopPointTexCoords() const
 {
     return float2(0.0f,1.0f); // TODO
 }
 
-float2 TrailPoint::BotPointTexCoords()
+float2 TrailPoint::BotPointTexCoords() const
 {
     return float2(0.0f,0.0f); // TODO
 }
 
-float4 TrailPoint::CalculateColor(const ColorGradient& gradient)
+float4 TrailPoint::CalculateColor(const ColorGradient& gradient) const
 {
     return gradient.CalculateColor(mLifeTime); // TODO
 }
