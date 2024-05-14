@@ -29,8 +29,6 @@ public:
 
 	unsigned int GetID() const { return mID; }
 
-	virtual	void Enable() { }
-	virtual	void Disable() { }
 	bool IsEnabled() const { return mIsEnabled; }
 
 	static const char* GetNameFromType(ComponentType type);
@@ -53,5 +51,7 @@ private:
 	bool mIsEnabled = true;
 	unsigned int mID = 0;
 	ComponentType mType = ComponentType::NONE;
+	virtual	void Enable() { }
+	virtual	void Disable() { }
 };
 

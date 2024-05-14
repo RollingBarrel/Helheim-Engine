@@ -31,7 +31,7 @@ ButtonComponent:: ~ButtonComponent()
     {
         for (int j = 0; j < mEventHandlers->size(); j++) 
         {
-            mEventHandlers[i][j] = std::function<void()>();
+            mEventHandlers[i][j] = nullptr;
         }
         mEventHandlers[i].clear();
     }
@@ -43,7 +43,7 @@ Component* ButtonComponent::Clone(GameObject* owner) const
     return new ButtonComponent(*this, owner);
 }
 
-void ButtonComponent::AddEventHandler(EventType eventType, std::function<void()> handler) 
+void ButtonComponent::AddEventHandler(EventType eventType, std::function<void()>* handler) 
 {
     mEventHandlers[static_cast<int>(eventType)].push_back(handler);
 }
@@ -52,7 +52,7 @@ void ButtonComponent::TriggerEvent(EventType eventType)
 {
     for (auto& handler : mEventHandlers[static_cast<int>(eventType)]) 
     {
-        handler();
+        (*handler)();
     }
 }
 

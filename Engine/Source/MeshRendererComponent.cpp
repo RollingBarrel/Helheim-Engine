@@ -29,7 +29,6 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
-	GameObject* root = mOwner->FindFirstParent();
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -41,7 +40,6 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	//mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	App->GetOpenGL()->BatchAddMesh(this);
-	mAABBWorld = mOBB.MinimalEnclosingAABB();
 
 }
 
@@ -77,7 +75,6 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
-		mAABBWorld = mOBB.MinimalEnclosingAABB();
 		if (mMaterial)
 			App->GetOpenGL()->BatchAddMesh(this);
 	}
@@ -133,10 +130,10 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 {
 	mOBB = OBB(mAABB);
 	mOBB.Transform(mOwner->GetWorldTransform());
-	mAABBWorld = mOBB.MinimalEnclosingAABB();
 }
 
-void MeshRendererComponent::Save(Archive& archive) const {
+void MeshRendererComponent::Save(Archive& archive) const 
+{
 	archive.AddInt("ID", GetID());
 	archive.AddInt("MeshID", mMesh->GetUID());
 	archive.AddInt("MaterialID", mMaterial->GetUID());

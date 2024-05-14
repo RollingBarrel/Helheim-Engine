@@ -89,6 +89,8 @@ public:
 	bool EditMaterial(const MeshRendererComponent* component);
 	bool RemoveMeshComponent(const MeshRendererComponent* component);
 	void Draw();
+	void AddHighLight(std::vector<Component*> meshRendererComponents);
+	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
 
 private:
 	void RecreatePersistentSsbosAndIbo();
@@ -101,6 +103,7 @@ private:
 	bool mVBOFlag = false;
 	
 	std::vector<BatchMeshRendererComponent> mMeshComponents;
+	std::vector<BatchMeshRendererComponent> mHighLightMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;

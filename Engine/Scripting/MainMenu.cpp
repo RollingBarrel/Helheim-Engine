@@ -55,22 +55,22 @@ void MainMenu::Start()
     mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
     mBackCreditButton = static_cast<ButtonComponent*>(mBackCreditGO->GetComponent(ComponentType::BUTTON));
 
-    mSplashButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnSplashButtonClick, this));
-    mNewButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnNewButtonClick, this));
-    mOptionsButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnOptionsButtonClick, this));
-    mCreditsButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnCreditsButtonClick, this));
-    mQuitButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnQuitButtonClick, this));
-    mBackCreditButton->AddEventHandler(EventType::CLICK, std::bind(&MainMenu::OnMainButtonClick, this));
+    mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
+    mNewButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnNewButtonClick, this)));
+    mOptionsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonClick, this)));
+    mCreditsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonClick, this)));
+    mQuitButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonClick, this)));
+    mBackCreditButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMainButtonClick, this)));
 
-    mNewButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnNewButtonHover, this));
-    mOptionsButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnOptionsButtonHover, this));
-    mCreditsButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnCreditsButtonHover, this));
-    mQuitButton->AddEventHandler(EventType::HOVER, std::bind(&MainMenu::OnQuitButtonHover, this));
+    mNewButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnNewButtonHover, this)));
+    mOptionsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHover, this)));
+    mCreditsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHover, this)));
+    mQuitButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHover, this)));
 
-    mNewButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnNewButtonHoverOff, this));
-    mOptionsButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnOptionsButtonHoverOff, this));
-    mCreditsButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnCreditsButtonHoverOff, this));
-    mQuitButton->AddEventHandler(EventType::HOVEROFF, std::bind(&MainMenu::OnQuitButtonHoverOff, this));
+    mNewButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnNewButtonHoverOff, this)));
+    mOptionsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHoverOff, this)));
+    mCreditsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHoverOff, this)));
+    mQuitButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHoverOff, this)));
 
     OpenMenu(MENU_TYPE::SPLASH);
 }

@@ -49,6 +49,10 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
         bytes = sizeof(int);
         memcpy(cursor, &currentNode.mParentIndex, bytes);
         cursor += bytes;
+        //Light
+        bytes = sizeof(int);
+        memcpy(cursor, &currentNode.mLightId, bytes);
+        cursor += bytes;
         //MeshId
         bytes = sizeof(int);
         memcpy(cursor, &currentNode.mMeshId, bytes);
@@ -61,6 +65,33 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
         bytes = sizeof(int);
         memcpy(cursor, &currentNode.mSkinId, bytes);
         cursor += bytes;
+
+        if (currentNode.mLightId > -1)
+        {
+            unsigned int typeSize = currentNode.mLight.mType.length() + 1;
+            bytes = sizeof(unsigned int);
+            memcpy(cursor, &typeSize, bytes);
+            cursor += bytes;
+
+            bytes = typeSize;
+            memcpy(cursor, currentNode.mLight.mType.c_str(), bytes);
+            cursor += bytes;
+
+            float lightInfo[5] = { currentNode.mLight.mColor[0], currentNode.mLight.mColor[1], currentNode.mLight.mColor[2], currentNode.mLight.mIntensity, currentNode.mLight.mRange };
+            bytes = sizeof(lightInfo);
+            memcpy(cursor, lightInfo, bytes);
+            cursor += bytes;
+
+            if (currentNode.mLight.mType.compare("spot") == 0)
+            {
+                bytes = sizeof(float);
+                memcpy(cursor, &currentNode.mLight.mInnerConeAngle, bytes);
+                cursor += bytes;
+                bytes = sizeof(float);
+                memcpy(cursor, &currentNode.mLight.mOuterConeAngle, bytes);
+                cursor += bytes;
+            }
+        }
 
         if (currentNode.mMeshId > -1)
         {
@@ -80,6 +111,7 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
             }
         }
     }
+
     //Animation Uids
     unsigned int uidsSize = rModel->mAnimationUids.size();
     bytes = sizeof(unsigned int);
@@ -189,6 +221,10 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             cursor += bytes;
 
             bytes = sizeof(int);
+            memcpy(&node.mLightId, cursor, bytes);
+            cursor += bytes;
+
+            bytes = sizeof(int);
             memcpy(&node.mMeshId, cursor, bytes);
             cursor += bytes;
 
@@ -199,6 +235,40 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             bytes = sizeof(int);
             memcpy(&node.mSkinId, cursor, bytes);
             cursor += bytes;
+
+            if (node.mLightId > -1)
+            {
+                unsigned int typeSize = 0;
+                bytes = sizeof(unsigned int);
+                memcpy(&typeSize, cursor, bytes);
+                cursor += bytes;
+
+                char* type = new char[typeSize];
+                bytes = typeSize;
+                memcpy(type, cursor, bytes);
+                cursor += bytes;
+
+                node.mLight.mType = type;
+
+                float lightInfo[5];
+                bytes = sizeof(lightInfo);
+                memcpy(lightInfo, cursor, bytes);
+                cursor += bytes;
+
+                node.mLight.mColor = math::float3(lightInfo[0], lightInfo[1], lightInfo[2]);
+                node.mLight.mIntensity = lightInfo[3];
+                node.mLight.mRange = lightInfo[4];
+
+                if (node.mLight.mType.compare("spot") == 0)
+                {
+                    bytes = sizeof(float);
+                    memcpy(&node.mLight.mInnerConeAngle, cursor, bytes);
+                    cursor += bytes;
+                    bytes = sizeof(float);
+                    memcpy(&node.mLight.mOuterConeAngle, cursor, bytes);
+                    cursor += bytes;
+                }
+            }
 
             if (node.mMeshId > -1)
             {

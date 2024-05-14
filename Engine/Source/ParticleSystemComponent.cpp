@@ -113,41 +113,40 @@ void ParticleSystemComponent::Draw() const
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-        CameraComponent* cam = (CameraComponent*)App->GetCamera()->GetCurrentCamera();
-        float4x4 projection = cam->GetViewProjectionMatrix();
-        float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
-        float3 up = cam->GetFrustum().up;
-        float3 right = up.Cross(norm).Normalized();
-        //up = norm.Cross(right).Normalized();
-        glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
-        glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
-            nullptr, GL_DYNAMIC_DRAW);
-        float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-
-
-        for (int j = 0; j < mParticles.size(); ++j)
+        const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
+        if (cam)
         {
-            int i = mParticles.size() - 1 - j;
-            if (mParticles[i]->GetLifetime() > 0.0f)
+            float4x4 projection = cam->GetViewProjectionMatrix();
+            float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
+            float3 up = cam->GetFrustum().up;
+            float3 right = up.Cross(norm).Normalized();
+            //up = norm.Cross(right).Normalized();
+            glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
+            glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
+                nullptr, GL_DYNAMIC_DRAW);
+            float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+
+
+            for (int i = 0; i < mParticles.size(); ++i)
             {
-                
                 float scale = mParticles[i]->GetSize();
                 float3x3 scaleMatrix = float3x3::identity * scale;
                 float3 pos = mParticles[i]->GetPosition();
                 float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
                 transform = transform * scaleMatrix;
-                transform.Transpose();                
-                memcpy(ptr + 20 * j, transform.ptr(), sizeof(float) * 16);
-                memcpy(ptr + 20 * j + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
+                transform.Transpose();
+                memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
+                memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
             }
+            glUnmapBuffer(GL_ARRAY_BUFFER);
+            glBindVertexArray(mVAO);
+
+            glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &projection[0][0]);
+            glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
         }
-        glUnmapBuffer(GL_ARRAY_BUFFER);
-        glBindVertexArray(mVAO);
         
-        glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &projection[0][0]);
-        glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-        
-        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
@@ -161,18 +160,24 @@ void ParticleSystemComponent::Update()
 {
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
-    float3 camPosition = App->GetCamera()->GetCurrentCamera()->GetFrustum().pos;
-    //LOG("Time = %f", mEmitterTime)
 
-	for (int i = 0; i < mParticles.size(); i++)
-	{
-		bool isAlive = mParticles[i]->Update(App->GetDt(), camPosition);
-        if (!isAlive)
+    const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+    if (camera)
+    {
+        float3 camPosition = camera->GetFrustum().pos;
+        //LOG("Time = %f", mEmitterTime)
+
+        for (int i = 0; i < mParticles.size(); i++)
         {
-			mParticles.erase(mParticles.begin() + i);
-			i--;
-		}
-	}
+            bool isAlive = mParticles[i]->Update(App->GetDt(), camPosition);
+            if (!isAlive)
+            {
+                mParticles.erase(mParticles.begin() + i);
+                i--;
+            }
+        }
+    }
+    
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
@@ -413,4 +418,9 @@ void ParticleSystemComponent::Enable()
 void ParticleSystemComponent::Disable()
 {
     App->GetOpenGL()->RemoveParticleSystem(this);
+    for (Particle* particle : mParticles)
+    {
+        delete particle;
+    }
+    mParticles.clear();
 }

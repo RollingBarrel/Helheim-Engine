@@ -105,7 +105,11 @@ void InspectorPanel::Draw(int windowFlags)
 			}
 		}
 		//ImGui::PopItemWidth();
-
+		bool dynamic = focusedObject->IsDynamic();
+		if (ImGui::Checkbox("Dynamic",&dynamic))
+		{
+			focusedObject->SetDynamic(dynamic);
+		}
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
@@ -495,16 +499,16 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 		component->SetColor(col);
 	}
 	float intensity = component->GetIntensity();
-	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Intensity", &intensity, 0.5f, 0.0f, 300.f))
 	{
 		component->SetIntensity(intensity);
 	}
 	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Radius", &radius, 0.5f, 0.0f, 1000.f))
 	{
 		component->SetRadius(radius);
 	}
-	ImGui::Checkbox("Debug draw", &component->debugDraw);
+	//ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
 void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
@@ -521,12 +525,12 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 		component->SetDirection(dir);
 	}
 	float intensity = component->GetIntensity();
-	if (ImGui::DragFloat("Intensity", &intensity, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Intensity", &intensity, 0.5f, 0.0f, 300.f))
 	{
 		component->SetIntensity(intensity);
 	}
 	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 1.0f, 0.0f))
+	if (ImGui::DragFloat("Radius", &radius, 0.5f, 0.0f, 1000.f))
 	{
 		component->SetRadius(radius);
 	}
@@ -540,7 +544,7 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetOuterAngle(DegToRad(outerAngle));
 	}
-	ImGui::Checkbox("Debug draw", &component->debugDraw);
+	//ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
@@ -714,16 +718,6 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 		component->SetFOV(FOV);
 	}
 	ImGui::PopID();
-
-	if(ImGui::Button("Make Current Camera"))
-	{
-		EngineApp->GetCamera()->SetCurrentCamera(const_cast<GameObject*>(component->GetOwner()));
-	}
-
-	if (ImGui::Button("Return To Editor Camera"))
-	{
-		EngineApp->GetCamera()->ActivateEditorCamera();
-	}
 }
 
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
@@ -941,7 +935,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	float animSpeed = component->GetAnimSpeed();
 
-	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02, 0.0, 2.0))
+	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
 	{
 		component->SetAnimSpeed(animSpeed);
 	}
@@ -965,11 +959,11 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	float currentStartTime = component->GetCurrentStartTime();
 	float currentEndTime = component->GetCurrentEndTime();
 
-	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1, 0.0, maxTimeValue))
+	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1f, 0.0f, maxTimeValue))
 	{
 		component->SetStartTime(currentStartTime);
 	}
-	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1, 0.0, maxTimeValue))
+	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1f, 0.0f, maxTimeValue))
 	{
 		component->SetEndTime(currentEndTime);
 	}

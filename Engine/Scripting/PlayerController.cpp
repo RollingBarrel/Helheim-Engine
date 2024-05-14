@@ -84,7 +84,6 @@ void PlayerController::Start()
         mGameManager = (GameManager*)script->GetScriptInstance();
     }
     mDashCharges = mMaxDashCharges;
-    mNavMeshControl = App->GetScene()->GetNavController();
     mBullets = mAmmoCapacity;
     mHealth = mMaxHealth;
     mShield = mMaxShield;
@@ -274,8 +273,8 @@ void PlayerController::Move(float3 direction)
 void PlayerController::HandleRotation()
 {
     std::map<float, Hit> hits;
-    
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGameMousePosition());
+    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+    Ray ray = Physics::ScreenPointToRay(mousePosition);
     Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
     
     float distance;
@@ -377,7 +376,7 @@ void PlayerController::MeleeAttack()
     ModuleScene* scene = App->GetScene();
     std::vector<GameObject*> Enemies;
 
-    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Enemy")->GetID(), Enemies);
+    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
     float3 playerPosition = mGameObject->GetPosition();
 
     // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
