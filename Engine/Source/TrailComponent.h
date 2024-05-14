@@ -18,6 +18,7 @@ public:
 
 	void Init();
 	void Update() override;
+	void Draw();
 	void Enable() override;
 	void Disable() override;
 

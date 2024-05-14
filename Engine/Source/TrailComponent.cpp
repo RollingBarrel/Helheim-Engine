@@ -31,7 +31,16 @@ Component* TrailComponent::Clone(GameObject* owner) const
 void TrailComponent::Init()
 {
     SetImage(mResourceId);
+    mTrail.Init();
     App->GetOpenGL()->AddTrail(mTrail);
+}
+
+void TrailComponent::Draw() 
+{
+    if (IsEnabled()) 
+    {
+        mTrail.Draw();
+    }
 }
 
 void TrailComponent::Update()
