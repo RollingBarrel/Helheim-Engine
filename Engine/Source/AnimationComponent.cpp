@@ -62,6 +62,7 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mModelUid = other.mModelUid;
 
 	SetAnimation(other.mAnimation->GetUID());
+
 }
 
 AnimationComponent::~AnimationComponent()
@@ -200,6 +201,7 @@ void AnimationComponent::ChangeState(std::string stateName)
 	if (stateIndex < mStateMachine->GetNumStates())
 	{
 		mCurrentState = stateIndex;
+		
 		int clipIndex = mStateMachine->GetClipIndex(mStateMachine->GetStateClip(stateIndex));
 
 		unsigned int resourceAnimation = mStateMachine->GetClipResource(clipIndex);
@@ -300,4 +302,7 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 	{
 		mModelUid = data["ModelUID"].GetInt();
 	}
+
+	ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
+	SetStateMachine(model->mAnimationUids);
 }

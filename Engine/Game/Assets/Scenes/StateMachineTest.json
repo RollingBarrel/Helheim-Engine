@@ -83,7 +83,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 132288490,
+                        "ID": 1200941172,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -118,11 +118,22 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 78040870,
+                        "ID": 2012210783,
                         "AnimationID": 444466449,
                         "ModelUID": 444466441,
                         "ComponentType": 10,
                         "isEnabled": true
+                    },
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "StateMachineTest",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPlayerSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            }
+                        ]
                     }
                 ]
             },
@@ -207,7 +218,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 571305655,
+                        "ID": 556481392,
                         "MeshID": 444466442,
                         "MaterialID": 444466446,
                         "ComponentType": 0,
@@ -242,7 +253,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 516855778,
+                        "ID": 365065191,
                         "MeshID": 444466447,
                         "MaterialID": 444466448,
                         "ComponentType": 0,

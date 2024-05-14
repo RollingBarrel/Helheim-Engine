@@ -55,6 +55,9 @@ void StateMachineTest::Start()
     mStateMachine->AddTransition(defaultState, stateIdle, idleTrigger);
     mStateMachine->AddTransition(stateIdle, stateWalk, walkTrigger);
     mStateMachine->AddTransition(stateWalk, stateIdle, idleTrigger);
+
+    mAnimationComponent->OnStart();
+    mAnimationComponent->SetIsPlaying(true);
 }
 
 void StateMachineTest::Update()
@@ -77,7 +80,7 @@ void StateMachineTest::Update()
 
 void StateMachineTest::Idle()
 {
-    //mAnimationComponent->SendTrigger("Idle");
+    mAnimationComponent->SendTrigger("tIdle");
 
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
         App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
@@ -95,7 +98,7 @@ void StateMachineTest::Idle()
 
 void StateMachineTest::Moving()
 {
-    //mAnimationComponent->SendTrigger("Walk");
+    mAnimationComponent->SendTrigger("tWalk");
 
     Idle();
 }
