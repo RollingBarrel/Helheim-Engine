@@ -126,8 +126,6 @@ private:
 	unsigned int mIrradianceProgramId = 0;
 	unsigned int mSpecPrefilteredProgramId = 0;
 	unsigned int mSpecEnvBRDFProgramId = 0;
-	
-	
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
 

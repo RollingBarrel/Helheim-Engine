@@ -40,7 +40,7 @@ void Trail::Init()
     glBindVertexArray(mVAO);
     // fill mesh buffer
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(trailMesh), trailMesh, GL_DYNAMIC_DRAW); // Probably this wont be static at the end.
+    glBufferData(GL_ARRAY_BUFFER, sizeof(trailMesh), trailMesh, GL_DYNAMIC_DRAW);
 
     // Enable the attribute for vertex positions
     glEnableVertexAttribArray(POSITION_LOCATION);
@@ -107,7 +107,7 @@ void Trail::Draw()
     float4x4 projection = cam->GetViewProjectionMatrix();
 
     glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
-    glUniformMatrix4fv(glGetUniformLocation(programId, "model"), 1, GL_TRUE, mModel.ptr());
+    //glUniformMatrix4fv(glGetUniformLocation(programId, "model"), 1, GL_TRUE, mModel.ptr());
     glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
@@ -154,4 +154,37 @@ void Trail::LoadJson(const rapidjson::Value& data)
     {
         mWidth.LoadJson(data["Width"]);
     }
+}
+
+TrailPoint::TrailPoint()
+{
+}
+
+TrailPoint::~TrailPoint()
+{
+}
+
+float3 TrailPoint::TopPointPosition()
+{
+    return mPosition + mDirection * width; // TODO
+}
+
+float3 TrailPoint::BotPointPosition()
+{
+    return mPosition - mDirection * width; // TODO
+}
+
+float2 TrailPoint::TopPointTexCoords()
+{
+    return float2(0.0f,1.0f); // TODO
+}
+
+float2 TrailPoint::BotPointTexCoords()
+{
+    return float2(0.0f,0.0f); // TODO
+}
+
+float4 TrailPoint::CalculateColor(const ColorGradient& gradient)
+{
+    return gradient.CalculateColor(mLifeTime); // TODO
 }

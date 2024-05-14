@@ -17,7 +17,7 @@ public:
 	float3 BotPointPosition();
 	float2 TopPointTexCoords();
 	float2 BotPointTexCoords();
-	float4 Color();
+	float4 CalculateColor(const ColorGradient& gradient);
 
 	float3 GetPosition() const { return mPosition; }
 	float3 GetDirection() const { return mDirection; }
@@ -26,7 +26,7 @@ public:
 private:
 	float3 mPosition;
 	float3 mDirection;
-	float mLifeTime;
+	float mLifeTime = 0.0f;
 };
 
 class Trail

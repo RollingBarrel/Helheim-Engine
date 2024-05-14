@@ -162,6 +162,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "particle_fragment.glsl";
 	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "trail_vertex.glsl";
+	sourcesPaths[1] = "trail_fragment.glsl";
+	mTrailProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "skinning.comp";
 	int computeType = GL_COMPUTE_SHADER;
 	mSkinningProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
