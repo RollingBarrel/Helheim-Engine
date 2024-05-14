@@ -2,6 +2,8 @@
 #include <deque>
 #include "MathGeoLib.h"
 #include "ColorGradient.h"
+#include "BezierCurve.h"
+#include "Archive.h"
 
 class ResourceTexture;
 
@@ -21,6 +23,7 @@ class Trail
 	friend class InspectorPanel;
 public:
 	Trail();
+	explicit Trail(Trail& original); //Copy constructor
 	~Trail();
 
 	void Update();
@@ -29,16 +32,18 @@ public:
 
 	float3 GetLastPosition() const { return mPoints.back().mPosition; }
 	float3 GetFirstPosition() const { return mPoints.front().mPosition; }
-	int GetSize() const { return mPoints.size(); }
-
+	unsigned long long GetSize() const { return mPoints.size(); }
 
 	void SetImage(ResourceTexture* image) { mImage = image; }
+
+	void SaveJson(Archive& archive) const;
+	void LoadJson(const rapidjson::Value& data);
 
 private:
 	std::deque<TrailPoint> mPoints;
 	float mMaxLifeTime; // If maxLiftime is 0, it means infinite lifetime
-	float mWidth;
 	ColorGradient mGradient;
 	float3 mDirection; // Fixed direction for the normal of the trailPoints
 	ResourceTexture* mImage = nullptr;
+	BezierCurve mWidth = BezierCurve();
 };

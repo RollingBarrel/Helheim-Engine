@@ -17,17 +17,15 @@
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
-    mColorGradient = new ColorGradient();
     mColorGradient->AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
-mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mSpeedCurve(original.mSpeedCurve),
-mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping),
-mShapeType(original.mShapeType), Component(owner, ComponentType::PARTICLESYSTEM)
+Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime),
+mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
+mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(new ColorGradient(*original.mColorGradient))
 {
-    mColorGradient = new ColorGradient(*original.mColorGradient);
     SetImage(original.mResourceId);
     Init();
     mShape->CopyShape(*original.mShape);
@@ -92,9 +90,6 @@ void ParticleSystemComponent::Init()
         (const GLvoid*)(sizeof(GLfloat) * 16));
     glVertexAttribDivisor(COLOR_LOCATION, 1);
     glBindVertexArray(0);
-    // create this->amount default particle instances
-    //for (unsigned int i = 0; i < 100; ++i)
-    //    this->mParticles.push_back(new Particle());
 
     App->GetOpenGL()->AddParticleSystem(this);
     InitEmitterShape();
@@ -113,7 +108,7 @@ void ParticleSystemComponent::Draw() const
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-        CameraComponent* cam = (CameraComponent*)App->GetCamera()->GetCurrentCamera();
+        auto* cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
         float4x4 projection = cam->GetViewProjectionMatrix();
         float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
         float3 up = cam->GetFrustum().up;
@@ -122,7 +117,7 @@ void ParticleSystemComponent::Draw() const
         glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
         glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
             nullptr, GL_DYNAMIC_DRAW);
-        float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+        auto ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 
         for (int i = 0; i < mParticles.size(); ++i)
@@ -157,8 +152,6 @@ void ParticleSystemComponent::Update()
     OPTICK_EVENT();
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
-    float3 camPosition = App->GetCamera()->GetCurrentCamera()->GetFrustum().pos;
-    //LOG("Time = %f", mEmitterTime)
 
 	for (int i = 0; i < mParticles.size(); i++)
 	{
@@ -213,7 +206,13 @@ void ParticleSystemComponent::SetImage(unsigned int resourceId)
 
 void ParticleSystemComponent::Reset()
 {
-
+    delete mColorGradient;
+    for (auto particle : mParticles)
+    {
+        delete particle;
+    }
+    delete mShape;
+    *this = ParticleSystemComponent(mOwner);
 }
 
 void ParticleSystemComponent::Save(Archive& archive) const
@@ -264,13 +263,9 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mSizeCurve.LoadJson(data["Size"]);
     }
-    if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
+    if (data.HasMember("Max Particles") && data["Max Particles"].IsInt())
     {
-        mMaxParticles = data["Max Particles"].GetFloat();
-    }
-    if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
-    {
-        mMaxParticles = data["Max Particles"].GetFloat();
+        mMaxParticles = data["Max Particles"].IsInt();
     }
     if (data.HasMember("Looping") && data["Looping"].IsBool())
     {
@@ -322,36 +317,3 @@ void ParticleSystemComponent::Disable()
     mParticles.clear();
 }
 
-float ParticleSystemComponent::BezierValue(float dt01, float4 P)
-{
-    enum { STEPS = 256 };
-    float2 Q[4] = { {0, 0}, {P[0], P[1]}, {P[2], P[3]}, {1, 1} };
-    float2 results[STEPS + 1];
-    ParticleSystemComponent::BezierTable<STEPS>(Q, results);
-    return results[(int)((dt01 < 0 ? 0 : dt01 > 1 ? 1 : dt01) * STEPS)].y;
-}
-
-template <int steps>
-void ParticleSystemComponent::BezierTable(float2 P[], float2 results[])
-{
-    static float C[(steps + 1) * 4], * K = 0;
-    if (!K)
-    {
-        K = C;
-        for (unsigned step = 0; step <= steps; ++step)
-        {
-            float t = (float)step / (float)steps;
-            C[step * 4 + 0] = (1 - t) * (1 - t) * (1 - t); // * P0
-            C[step * 4 + 1] = 3 * (1 - t) * (1 - t) * t;   // * P1
-            C[step * 4 + 2] = 3 * (1 - t) * t * t;         // * P2
-            C[step * 4 + 3] = t * t * t;                   // * P3
-        }
-    }
-    for (unsigned step = 0; step <= steps; ++step)
-    {
-        float2 point = {
-            K[step * 4 + 0] * P[0].x + K[step * 4 + 1] * P[1].x + K[step * 4 + 2] * P[2].x + K[step * 4 + 3] * P[3].x,
-            K[step * 4 + 0] * P[0].y + K[step * 4 + 1] * P[1].y + K[step * 4 + 2] * P[2].y + K[step * 4 + 3] * P[3].y };
-        results[step] = point;
-    }
-}
