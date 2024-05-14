@@ -122,7 +122,7 @@ void Trail::Draw()
     glDepthMask(GL_TRUE);
 }
 
-void Trail::AddTrailPositions(float3 position, float3 rotation)
+void Trail::AddTrailPositions(float3 position, Quat rotation)
 {
     //mPoints.push_back(TrailPoint(position, direcction));
 }
