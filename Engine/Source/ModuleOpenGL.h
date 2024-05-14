@@ -54,19 +54,19 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 
+	void* GetOpenGlContext() { return context; }
 	void WindowResized(unsigned width, unsigned height);
 	void SceneFramebufferResized(unsigned width, unsigned height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
+	void BindSceneFramebuffer();
+	void UnbindSceneFramebuffer();
 	//unsigned int GetGBufferDepth() const { return depthStencil; }
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }
 	unsigned int GetGBufferNormals() const { return mGNormals; }
 	unsigned int GetGBufferPositions() const { return mGPositions; }
-	void BindSceneFramebuffer();
-	void UnbindSceneFramebuffer();
 	void SetOpenGlCameraUniforms() const;
-	void* GetOpenGlContext() { return context; }
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }

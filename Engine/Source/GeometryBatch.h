@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include "float4.h"
 #include "ResourceMesh.h"
 
@@ -88,19 +89,18 @@ public:
 	void AddMeshComponent(const MeshRendererComponent* component);
 	bool EditMaterial(const MeshRendererComponent* component);
 	bool RemoveMeshComponent(const MeshRendererComponent* component);
+	bool AddToDraw(const MeshRendererComponent* component);
 	void Draw();
+	void CleanUpCommands();
 	void AddHighLight(std::vector<Component*> meshRendererComponents);
 	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
 	void CheckDirtyFlags();
-	void ComputeAnimations();
-	void WaitGPU();
+	void ComputeAnimation(const MeshRendererComponent* cMesh);
 	void DrawGeometryPass();
 	void DrawLightingPass();
 	void DrawHighlight();
-	void SynchFence();
-	void CleanUpDraw();
 
 private:
 	void RecreatePersistentSsbosAndIbo();
@@ -112,14 +112,15 @@ private:
 	bool mPersistentsFlag = false;
 	bool mVBOFlag = false;
 	
-	std::vector<BatchMeshRendererComponent> mMeshComponents;
-	std::vector<BatchMeshRendererComponent> mHighLightMeshComponents;
+	std::map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
-	std::vector<Command> mHighLightCommands;
+
 	unsigned int mVertexSize = 0;
+	std::vector<BatchMeshRendererComponent> mHighLightMeshComponents;
+	std::vector<Command> mHighLightCommands;
 
 
 	unsigned int mVao = 0;
@@ -144,6 +145,7 @@ private:
 	unsigned int mEboNumElements = 0;
 
 	//Animation
+	bool mAnimationSkinning = false;
 	unsigned int mPaletteSsbo = 0;
 	unsigned int mBoneIndicesSsbo = 0;
 	unsigned int mWeightsSsbo = 0;
