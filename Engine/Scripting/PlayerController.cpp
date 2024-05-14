@@ -535,14 +535,44 @@ void PlayerController::Reload()
 }
 
 
-void PlayerController::TakeDamage(float damage) 
+void PlayerController::TakeDamage(float damage)
 {
     if (!mIsDashing)
-    {    
+    {
+        if (mHealth > 0.0f)
+        {
+            mShield -= damage;
+            float remainingDamage = -mShield;
+            mShield = Min(mShield, 0.0f);
+
+            if (remainingDamage > 0)
+            {
+                mHealth -= remainingDamage;
+
+                /*
+                if (mHealth <= 0.0f && !mGodMode)
+                {
+                    mCurrentState = PlayerState::DEATH;
+                }
+                */
+            }
+        }
+        else if(!mGodMode)
+        {
+            mCurrentState = PlayerState::DEATH;
+        }
+    }
+}
+
+/*
+void PlayerController::TakeDamage(float damage)
+{
+    if (!mIsDashing)
+    {
         mShield -= damage;
         float remainingDamage = -mShield;
         mShield = Min(mShield, 0.0f);
-            
+
         if (remainingDamage > 0)
         {
             mHealth -= remainingDamage;
@@ -551,10 +581,10 @@ void PlayerController::TakeDamage(float damage)
             {
                 mCurrentState = PlayerState::DEATH;
             }
-        }    
-    } 
+        }
+    }
 }
-
+*/
 
 void PlayerController::Death() 
 {
