@@ -16,7 +16,7 @@ public:
 	TrailComponent(GameObject* ownerGameObject);
 	TrailComponent(const TrailComponent& original, GameObject* owner);
 	~TrailComponent();
-	ResourceTexture* GetImage() const { return mImage; }
+
 	const char* GetFileName() const { return mFileName; }
 	void Reset();
 

@@ -14,6 +14,8 @@
 
 Trail::Trail()
 {
+
+    mPoints.push_back(TrailPoint(position, direcction));
 }
 
 Trail::~Trail()

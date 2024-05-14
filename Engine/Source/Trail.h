@@ -17,6 +17,10 @@ public:
 	float2 BotPointTexCoords();
 	float4 Color();
 
+	float3 GetPosition() const { return mPosition; }
+	float3 GetDirection() const { return mDirection; }
+	float GetLifeTime() const { return mLifeTime; }
+
 private:
 	float3 mPosition;
 	float3 mDirection;
@@ -38,8 +42,8 @@ public:
 	void Save(Archive& archive) const;
 	void LoadFromJSON(const rapidjson::Value& data);
 
-	float3 GetLastPosition() const { return mPoints.back().mPosition; }
-	float3 GetFirstPosition() const { return mPoints.front().mPosition; }
+	float3 GetLastPosition() const { return mPoints.back().GetPosition(); }
+	float3 GetFirstPosition() const { return mPoints.front().GetPosition(); }
 	int GetSize() const { return mPoints.size(); }
 
 
