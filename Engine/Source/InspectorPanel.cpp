@@ -28,6 +28,7 @@
 #include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TrailComponent.h"
 #include "EmitterShape.h"
 
 #include "ImporterMaterial.h"
@@ -440,6 +441,10 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					break;
 				case ComponentType::PARTICLESYSTEM:
 					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
+					break;
+				case ComponentType::TRAIL:
+					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
+					break;
 			}
 		}
 		ImGui::PopID();
@@ -1362,7 +1367,7 @@ static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* grad
 	}
 }
 
-void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) 
+void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
 	ImGui::Text("Looping");
 	ImGui::SameLine(); 
@@ -1488,6 +1493,10 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	}
 }
 
+void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
+{
+
+}
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const
 {
