@@ -44,6 +44,7 @@ public:
 
 	void SetAnimation(unsigned int uid);
 	void SetStateMachine(std::vector<unsigned int> animationUids);
+	AnimationStateMachine* GetStateMachine() const { return mStateMachine;};
 	
 
 	void SetStartTime(float time);
