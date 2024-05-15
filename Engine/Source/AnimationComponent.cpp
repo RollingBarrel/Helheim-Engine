@@ -125,7 +125,7 @@ void AnimationComponent::ChangeState(std::string stateName)
 {
 	int stateIndex = mStateMachine->GetStateIndex(stateName);
 
-	if (stateIndex < mStateMachine->GetNumStates())
+	if (stateIndex < mStateMachine->GetNumStates() && (stateIndex == 0 || stateIndex != mCurrentState))
 	{
 		mCurrentState = stateIndex;
 		
