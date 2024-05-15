@@ -1,3 +1,4 @@
+#include "AnimationComponent.h"
 #include "Application.h"
 #include "ModuleResource.h"
 #include "ResourceAnimation.h"
@@ -13,50 +14,12 @@
 
 AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimation(nullptr), mController(nullptr), mModelUid(0)
 {
-	mClipNames.clear();
-	mClipTimes.clear();
-
-	mClipNames.reserve(3);
-	mClipTimes.reserve(6);
-
-	mClipNames.push_back("Walk");
-	mClipTimes.push_back(0.0);
-	mClipTimes.push_back(1.25);
-
-	mClipNames.push_back("Idle");
-	mClipTimes.push_back(1.25);
-	mClipTimes.push_back(12.0);
-
-	mClipNames.push_back("Die");
-	mClipTimes.push_back(12.0);
-	mClipTimes.push_back(15.0);
-
-
-	mCurrentClip = 0;
 	mSpeed = 1.0;
 }
 
 AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION)
 {
-	mClipNames.clear();
-	mClipTimes.clear();
 
-	mClipNames.reserve(3);
-	mClipTimes.reserve(6);
-
-	mClipNames.push_back("Walk");
-	mClipTimes.push_back(0.0);
-	mClipTimes.push_back(1.25);
-
-	mClipNames.push_back("Idle");
-	mClipTimes.push_back(1.25);
-	mClipTimes.push_back(12.0);
-
-	mClipNames.push_back("Die");
-	mClipTimes.push_back(12.0);
-	mClipTimes.push_back(15.0);
-
-	mCurrentClip = 0;
 	mSpeed = 1.0;
 
 	mModelUid = other.mModelUid;
@@ -119,45 +82,6 @@ void AnimationComponent::SetAnimation(unsigned int uid)
 	}
 }
 
-void AnimationComponent::SetStateMachine(std::vector<unsigned int> animationUids)
-{
-
-	if (!animationUids.empty())
-	{
-		mStateMachine = new AnimationStateMachine(animationUids);
-		SetAnimation(animationUids[0]);
-	}
-
-}
-
-void AnimationComponent::SetStartTime(float time)
-{
-	mClipTimes[mCurrentClip * 2] = time;
-	mController->SetStartTime(time);
-}
-
-void AnimationComponent::SetEndTime(float time)
-{
-	mClipTimes[mCurrentClip * 2 + 1] = time;
-	mController->SetEndTime(time);
-}
-
-
-void AnimationComponent::SetCurrentClip(int currentClip)
-{
-	if (currentClip > mClipNames.size())
-	{
-		currentClip = 0;
-	}
-	if (mCurrentClip == currentClip)
-	{
-		return;
-	}
-	mCurrentClip = currentClip;
-	SetStartTime(mClipTimes[mCurrentClip * 2]);
-	SetEndTime(mClipTimes[mCurrentClip * 2 + 1]);
-
-}
 
 void AnimationComponent::SetAnimSpeed(float speed)
 {
@@ -210,13 +134,26 @@ void AnimationComponent::ChangeState(std::string stateName)
 		{
 			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
 			mController->SetNextAnimation(tmpAnimation);
-			mController->SetClipStartTime(mStateMachine->GetStateStartTime(stateIndex));
-			mController->SetClipStartTime(mStateMachine->GetStateEndTime(stateIndex));
+			float new_clip_start = mStateMachine->GetStateStartTime(stateIndex);
+			mController->SetClipStartTime(new_clip_start);
+			mController->SetStartTime(new_clip_start);
+			mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
 			mController->ActivateTransition();
-			//SetAnimation(resourceAnimation);
 		}
 	}
 
+}
+
+void AnimationComponent::SetModelUUID(unsigned int modelUid)
+{
+	if (modelUid == mModelUid)
+		return;
+	mModelUid = modelUid;
+	ResourceModel* my_model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(modelUid, Resource::Type::Model));
+	SetAnimation(my_model->mAnimationUids[0]);
+	if(mStateMachine)
+		delete mStateMachine;
+	mStateMachine = new AnimationStateMachine(my_model->mAnimationUids);
 }
 
 void AnimationComponent::AddJointNode(GameObject* node, ResourceModel* model)
@@ -258,19 +195,12 @@ void AnimationComponent::ChangeAnimation(ResourceAnimation* animation)
 {
 	mAnimation = animation;
 	mController->SetNextAnimation(animation);
-	//Current clip doesn't make sense in this context so its value is not important
-	//But it has to be 0 so ImGui::Combo() doesn't crash
-	mCurrentClip = 0;
-	SetStartTime(0);
-	SetEndTime(mAnimation->GetDuration());
 }
 
 void AnimationComponent::StartTransition(float transitionDuration)
 {
-	//mController->SetStartTransitionTime();
 	mController->ActivateTransition();
 	mController->SetTransitionDuration(transitionDuration);
-	mController->SetClipStartTime(GetCurrentStartTime());
 }
 
 Component* AnimationComponent::Clone(GameObject* owner) const
@@ -299,11 +229,12 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 	}
 	SetAnimation(animationID);
 
+	int modelUid = { 0 };
+
 	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
 	{
-		mModelUid = data["ModelUID"].GetInt();
+		modelUid = data["ModelUID"].GetInt();
 	}
 
-	ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
-	SetStateMachine(model->mAnimationUids);
+	SetModelUUID(modelUid);
 }

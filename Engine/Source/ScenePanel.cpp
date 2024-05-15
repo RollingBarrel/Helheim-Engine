@@ -55,7 +55,6 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			{
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
 				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
-				cAnimation->SetStateMachine(rModel.mAnimationUids);
 				cAnimation->SetModelUUID(rModel.GetUID());
 
 			}

@@ -43,34 +43,14 @@ public:
 	void OnRestart();
 
 	void SetAnimation(unsigned int uid);
-	void SetStateMachine(std::vector<unsigned int> animationUids);
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine;};
 	
-
-	void SetStartTime(float time);
-	void SetEndTime(float time);
-
 	//Pallete calculations
 	const std::vector<float4x4> GetPalette() const { return mPalette; }
 
 	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
 
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
-
-	//Clips
-	const std::vector<const char*>& GetClipNames() const { return mClipNames; }
-
-	void SetClipNames(const std::vector<const char*>& clipNames) { mClipNames = clipNames; }
-
-	const std::vector<float>& GetClipTimes() const { return mClipTimes; }
-
-	void SetClipTimes(const std::vector<float>& clipTimes) { mClipTimes = clipTimes; }
-
-	int GetCurrentClip() const { return mCurrentClip; }
-
-	void SetCurrentClip(int currentClip);
-	float GetCurrentStartTime() const { return mClipTimes[mCurrentClip * 2]; }
-	float GetCurrentEndTime() const { return mClipTimes[mCurrentClip * 2 + 1]; }
 
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
@@ -81,7 +61,7 @@ public:
 	void ChangeState(std::string stateName);
 	//Model UUID
 	unsigned int GetModelUUID() const { return mModelUid; }
-	void SetModelUUID(unsigned int modelUid) { mModelUid = modelUid; }
+	void SetModelUUID(unsigned int modelUid); 
 
 	
 
@@ -102,10 +82,6 @@ private:
 	bool mIsPlaying = false;
 
 	std::vector<float4x4> mPalette;
-
-	std::vector<const char*> mClipNames;
-	std::vector<float> mClipTimes;
-	int mCurrentClip;
 
 	float mSpeed;
 

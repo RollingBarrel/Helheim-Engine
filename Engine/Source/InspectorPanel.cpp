@@ -901,8 +901,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 			return;
 		component->OnStart();
 		bool play = component->GetIsPlaying();
-		(play) ? play = false : play = true;
-		component->SetIsPlaying(play);
+		component->SetIsPlaying(!play);
 
 	}
 
@@ -940,49 +939,22 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		component->SetAnimSpeed(animSpeed);
 	}
 
-	int currentItem = component->GetCurrentClip();
 	float transitionDuration = component->GetAnimationController()->GetTransitionDuration();
 	float animationCurrentTime = component->GetAnimationController()->GetAnimationCurrentTime();
 
+	/*
 	if (ImGui::Combo("Select State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
 	{
 		component->StartTransition(transitionDuration);
 		component->ChangeAnimation(component->GetAnimation());
 		component->SetCurrentClip(currentItem);
 	}
-	if (ImGui::Button("Restart Clip")) 
-	{
-		component->StartTransition(transitionDuration);
-		component->ChangeAnimation(component->GetAnimation());
-		component->SetCurrentClip(currentItem);
-	}
+	*/
 
-	float maxTimeValue = component->GetAnimation()->GetDuration();
-	float currentStartTime = component->GetCurrentStartTime();
-	float currentEndTime = component->GetCurrentEndTime();
-
-	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1f, 0.0f, maxTimeValue))
-	{
-		component->SetStartTime(currentStartTime);
-	}
-	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1f, 0.0f, maxTimeValue))
-	{
-		component->SetEndTime(currentEndTime);
-	}
 	if (ImGui::DragFloat("Transition duration", &transitionDuration, 0.02, 0.1, 10.0)) {
 		component->GetAnimationController()->SetTransitionDuration(transitionDuration);
 	}
 
-	ImGui::Text("TEMPORARY: Change animation resource");
-	ImGui::Text("(it changes into the same resource for now)");
-
-	if (ImGui::Button("Change/ Play whole animation")) {
-		component->ChangeAnimation(component->GetAnimation());
-		component->StartTransition(transitionDuration);
-		component->SetStartTime(0);
-		component->SetEndTime(component->GetAnimation()->GetDuration());
-
-	}
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) 

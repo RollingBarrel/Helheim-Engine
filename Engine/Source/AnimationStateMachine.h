@@ -9,7 +9,6 @@ public:
 
 		mName = std::to_string(animationUID);
 		mAnimationUID = animationUID;
-
 	};
 
 	std::string mName;

@@ -20,6 +20,13 @@ AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animation
 	mStates.push_back(AnimationState("default", "default"));
 }
 
+AnimationStateMachine::~AnimationStateMachine()
+{
+	mClips.clear();
+	mTransitions.clear();
+	mStates.clear();
+}
+
 void AnimationStateMachine::Update()
 {
 
