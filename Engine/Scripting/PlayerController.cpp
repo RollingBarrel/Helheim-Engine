@@ -533,16 +533,10 @@ void PlayerController::TakeDamage(float damage)
     {
         if (!mGodMode)
         {
-            if (!IsShieldDown)
+            if (mShield > 0.0f)
             {
                 mShield -= damage;
-                float remainingDamage = -mShield;
                 mShield = Max(mShield, 0.0f);
-
-                if (remainingDamage > 0)
-                {
-                    IsShieldDown = true;
-                }
             }
             else
             {

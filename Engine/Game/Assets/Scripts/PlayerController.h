@@ -96,7 +96,6 @@ class PlayerController :public Script
         float mSanity = 0.0f;
         float mMaxSanity = 100.0f;
         bool mPlayerIsDead = false;
-        bool IsShieldDown = false;
 
         //Dash
         bool mIsDashing = false;
