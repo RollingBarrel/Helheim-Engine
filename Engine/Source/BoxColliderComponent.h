@@ -28,12 +28,14 @@ public:
 	inline const OBB& GetOBB() const { return mWorldOBB; }
 	inline const float3& GetCenter() const { return mCenter; }
 	inline const float3& GetSize() const { return mSize; }
+	inline const bool GetFreezeRotation() const { return mFreezeRotation; }
 	inline btRigidBody* GetRigidBody() const { return mRigidBody; }
 	inline MotionState* GetMotionState() const { return mMotionState; }
 
 	void SetCenter(const float3& center);
 	void SetSize(const float3& size);
-	void SetRigidBody(btRigidBody* rigidBody) { mRigidBody = rigidBody; }
+	void SetFreezeRotation(bool freezeRotation) { mFreezeRotation = freezeRotation; }
+	void SetRigidBody(btRigidBody* rigidBody) { mRigidBody = rigidBody; /*rigidBody->setUserPointer(collider);*/ }
 	void SetMotionState(MotionState* motionState) { mMotionState = motionState; }
 
 	void Save(Archive& archive) const override;
@@ -44,9 +46,11 @@ private:
 	OBB mWorldOBB = { mLocalAABB };
 	float3 mCenter = float3::zero;
 	float3 mSize = float3::one;
+	bool mFreezeRotation = false;
 
 	btRigidBody* mRigidBody = nullptr;
 	MotionState* mMotionState = nullptr;
+	//Collider collider;
 
 };
 

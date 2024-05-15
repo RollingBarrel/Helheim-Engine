@@ -14,6 +14,20 @@ class MotionState;
 class BoxColliderComponent;
 struct Collider;
 
+enum class ColliderType : int
+{
+	DYNAMIC=0,
+	STATIC,
+	KINEMATIC,
+	TRIGGER,
+	COUNT
+};
+
+enum class WorldLayers : int
+{
+	COUNT
+};
+
 class ENGINE_API ModulePhysics : public Module
 {
 public:
@@ -33,7 +47,7 @@ public:
 	void UpdateBoxRigidbody(BoxColliderComponent* boxCollider);
 
 private:
-	//void AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer);
+	void AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer);
 	btRigidBody* AddBoxBody(btMotionState* motionState, float3 size, float mass);
 
 	void ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff);

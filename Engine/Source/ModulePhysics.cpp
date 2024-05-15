@@ -107,10 +107,10 @@ update_status ModulePhysics::PreUpdate(float dt)
 
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	/*boxCollider->motionState = MotionState(boxCollider, boxCollider->centerOffset, boxCollider->freezeRotation);
-	boxCollider->rigidBody = AddBoxBody(&boxCollider->motionState, boxCollider->size / 2, boxCollider->colliderType == ColliderType::DYNAMIC ? boxCollider->mass : 0);
-	boxCollider->rigidBody->setUserPointer(&boxCollider->col);
-	AddBodyToWorld(boxCollider->rigidBody, boxCollider->colliderType, boxCollider->layer);*/
+	boxCollider->SetMotionState(new MotionState(boxCollider, boxCollider->GetCenter(), boxCollider->GetFreezeRotation()));
+	boxCollider->SetRigidBody(AddBoxBody(boxCollider->GetMotionState(), boxCollider->GetSize() / 2.0f, 0.f));
+	// TODO: Define world layers, collider types
+	AddBodyToWorld(boxCollider->GetRigidBody(), ColliderType::STATIC, WorldLayers::COUNT);
 }
 
 void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
@@ -143,10 +143,34 @@ btRigidBody* ModulePhysics::AddBoxBody(btMotionState* motionState, float3 size, 
 	return body;
 }
 
-//void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer)
-//{
-//
-//}
+void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer)
+{
+	switch (colliderType)
+	{
+	case ColliderType::STATIC:
+		rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
+		break;
+	case ColliderType::KINEMATIC:
+		rigidbody->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
+		rigidbody->setActivationState(DISABLE_DEACTIVATION);
+		break;
+	case ColliderType::TRIGGER:
+		rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+		break;
+	default:
+		break;
+	}
+
+	int collisionMask = 0;
+	switch (layer)
+	{
+	default: //NO_COLLISION
+		collisionMask = 0;
+		break;
+	}
+
+	mWorld->addRigidBody(rigidbody, (short)layer, collisionMask);
+}
 
 void ModulePhysics::ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff)
 {
