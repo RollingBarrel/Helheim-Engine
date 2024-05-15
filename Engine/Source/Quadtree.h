@@ -31,7 +31,7 @@ public:
 	const std::map<float, Hit> RayCast(const Ray* ray) const;
 	void UpdateTree();
 	const char* GetName() const { return mName.c_str(); }
-	const std::set<GameObject*> GetObjectsInFrustum(Frustum* cam) const;
+	const std::set<MeshRendererComponent*> GetObjectsInFrustum(const Frustum* cam) const;
 	const AABB& GetBoundingBox() const { return mBoundingBox; }
 
 	void UpdateDrawableGameObjects(const Frustum* myCamera);

@@ -123,9 +123,9 @@ void Quadtree::CleanUp()
 	}
 }
 
-const std::set<GameObject*> Quadtree::GetObjectsInFrustum(Frustum* cam) const
+const std::set<MeshRendererComponent*> Quadtree::GetObjectsInFrustum(const Frustum* cam) const
 {
-	std::set<GameObject*> out;
+	std::set<MeshRendererComponent*> out;
 	if (!cam->Intersects(mBoundingBox))
 	{
 		return out;
@@ -133,10 +133,10 @@ const std::set<GameObject*> Quadtree::GetObjectsInFrustum(Frustum* cam) const
 
 	if (mFilled)
 	{
-		std::set<GameObject*> setA = mChildren[0]->GetObjectsInFrustum(cam);
-		std::set<GameObject*> setB = mChildren[1]->GetObjectsInFrustum(cam);
-		std::set<GameObject*> setC = mChildren[2]->GetObjectsInFrustum(cam);
-		std::set<GameObject*> setD = mChildren[3]->GetObjectsInFrustum(cam);
+		std::set<MeshRendererComponent*> setA = mChildren[0]->GetObjectsInFrustum(cam);
+		std::set<MeshRendererComponent*> setB = mChildren[1]->GetObjectsInFrustum(cam);
+		std::set<MeshRendererComponent*> setC = mChildren[2]->GetObjectsInFrustum(cam);
+		std::set<MeshRendererComponent*> setD = mChildren[3]->GetObjectsInFrustum(cam);
 		out.insert(setA.begin(), setA.end());
 		out.insert(setB.begin(), setB.end());
 		out.insert(setC.begin(), setC.end());
@@ -148,12 +148,13 @@ const std::set<GameObject*> Quadtree::GetObjectsInFrustum(Frustum* cam) const
 	{
 		for (auto& object : mGameObjects)
 		{
-
-			if (object->GetComponent(ComponentType::MESHRENDERER) != nullptr)
+			MeshRendererComponent* meshComponent = reinterpret_cast<MeshRendererComponent*>(object->GetComponent(ComponentType::MESHRENDERER));
+			if (meshComponent)
 			{
-				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->GetOBB();
-				if (cam->Intersects(temp)) {
-					out.insert(object);
+				OBB temp = meshComponent->GetOBB();
+				if (cam->Intersects(temp)) 
+				{
+					out.insert(meshComponent);
 				}
 
 			}

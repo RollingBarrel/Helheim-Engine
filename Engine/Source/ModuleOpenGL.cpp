@@ -162,6 +162,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "HighLight_Fragment.glsl";
 	mHighLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
+	sourcesPaths[1] = "Shadows_Fragment.glsl";
+	mShadowsProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "particle_vertex.glsl";
 	sourcesPaths[1] = "particle_fragment.glsl";
 	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -187,6 +191,20 @@ bool ModuleOpenGL::Init()
 
 	BakeIBL("Assets/Textures/skybox.hdr");
 	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
+
+	//SHADOWS
+	glGenTextures(1, &mShadowMapId);
+	glGenFramebuffers(1, &mShadowsFrameBufferId);
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, 512, 512, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMapId, 0);
+	glDrawBuffers(0, nullptr);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+
 	return true;
 }
 
@@ -289,7 +307,7 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 	//SetOpenGlCameraUniforms();
 }
 
-void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height = 0)
+void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
 {
 	static unsigned sWidth = 1;
 	static unsigned sHeight = 1;
@@ -734,6 +752,18 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		SceneFramebufferResized();
 	}
 
+}
+
+void ModuleOpenGL::Shadows(const Frustum& frustum)
+{
+	
+	mCameraUniBuffer->UpdateData( float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+	mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMapId, 0);
 }
 
 

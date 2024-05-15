@@ -13,6 +13,9 @@
 #include "ResourceTexture.h"
 #include "AnimationComponent.h"
 
+#include "Quadtree.h"
+#include "SpotLightComponent.h"
+
 GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 {
 	glGetIntegerv(GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT, &mSsboAligment);
@@ -467,6 +470,21 @@ void GeometryBatch::Draw()
 	std::vector<Command> highLightCommands;
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
 	unsigned int i = 0;
+
+	//SHADOWS
+	std::vector<std::set<MeshRendererComponent*>> objectsInFrustums;
+	const std::vector<const SpotLightComponent*> spotLights = App->GetOpenGL()->GetSpotLights(); 
+	std::vector<std::vector<Command>> commandsForLights;
+	for (const SpotLightComponent* spotLight : spotLights)
+	{
+		objectsInFrustums.push_back(App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&spotLight->GetFrustum()));
+	}
+	for (std::set<MeshRendererComponent*> frustum : objectsInFrustums)
+	{
+		commandsForLights.push_back(std::vector<Command>());
+	}
+	//END SHADOWS
+
 	for (const BatchMeshRendererComponent& batchMeshRenderer : mMeshComponents)
 	{
 		const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
@@ -495,6 +513,18 @@ void GeometryBatch::Draw()
 						highLightCommands.push_back(mCommands.back());
 					}
 				}
+
+				for (unsigned int i = 0; i < objectsInFrustums.size(); ++i)
+				{
+					for (MeshRendererComponent* meshComponent : objectsInFrustums[i])
+					{
+						if (meshComponent->GetID() == batchMeshRenderer.component->GetID())
+						{
+							commandsForLights[i].push_back(mCommands.back());
+						}
+					}
+				}
+
 			}
 		}
 		++i;
@@ -533,6 +563,26 @@ void GeometryBatch::Draw()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_STENCIL_TEST);
 	//END HIGHLIGHT
+
+
+	//DRAW SHADOWS
+	Frustum frustum = spotLights[0]->GetFrustum();
+	App->GetOpenGL()->Shadows(frustum);
+	glViewport(0, 0, 512, 512);
+
+	glUseProgram(App->GetOpenGL()->GetShadowsProgramId());
+	for (std::vector<Command> lightCommands : commandsForLights)
+	{
+		if (!lightCommands.empty())
+		{
+			glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, lightCommands.size() * sizeof(Command), lightCommands.data());
+			glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, lightCommands.size(), 0);
+		}
+	}
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	App->GetOpenGL()->SceneFramebufferResized();
+	//END SHADOWS
 	
 	glDeleteSync(mSync[idx]);
 	mSync[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);

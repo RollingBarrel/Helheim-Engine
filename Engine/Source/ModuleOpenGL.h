@@ -56,7 +56,7 @@ public:
 	bool CleanUp() override;
 
 	void WindowResized(unsigned width, unsigned height);
-	void SceneFramebufferResized(unsigned width, unsigned height);
+	void SceneFramebufferResized(unsigned width = 0, unsigned height = 0);
 	unsigned int GetFramebufferTexture() const { return colorAttachment; }
 	void BindSceneFramebuffer();
 	void UnbindSceneFramebuffer();
@@ -69,6 +69,7 @@ public:
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
+	unsigned int GetShadowsProgramId() const { return mShadowsProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
@@ -92,6 +93,9 @@ public:
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
 	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+
+	void Shadows(const Frustum& frustum);
+	const std::vector<const SpotLightComponent*>& GetSpotLights() { return mSpotLights; }
 
 private:
 	void* context = nullptr;
@@ -146,6 +150,11 @@ private:
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	friend class LightningPanel;
+
+	//Shadows
+    unsigned int mShadowsFrameBufferId = 0;
+	unsigned int mShadowsProgramId = 0;
+	unsigned int mShadowMapId = 0;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
 

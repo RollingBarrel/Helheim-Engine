@@ -68,15 +68,11 @@ void CameraComponent::Update()
 
     //Frustum culling updates
     App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
-    std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
+    std::set<MeshRendererComponent*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
 
-    for (const auto& object : drawableObjects)
+    for (MeshRendererComponent* meshComponent : drawableObjects)
     {
-        MeshRendererComponent* meshComponent = (MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER);
-        if (meshComponent != nullptr)
-        {
-            meshComponent->SetInsideFrustum(true);
-        }
+        meshComponent->SetInsideFrustum(true);
     }
 }
 
