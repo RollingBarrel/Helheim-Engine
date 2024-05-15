@@ -65,7 +65,7 @@ class PlayerController :public Script
         void Reload();
         
         void Death();
-        void UpdateHealth();
+        void UpdateShield();
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
@@ -91,13 +91,12 @@ class PlayerController :public Script
 
         //Stats
         float mPlayerSpeed = 2.0f;
-        float mHealth = 0.0f;
-        float mMaxHealth = 100.0f;
         float mShield = 0.0f;
         float mMaxShield = 100.0f;
         float mSanity = 0.0f;
         float mMaxSanity = 100.0f;
         bool mPlayerIsDead = false;
+        bool IsShieldDown = false;
 
         //Dash
         bool mIsDashing = false;
@@ -131,8 +130,8 @@ class PlayerController :public Script
         bool mIsChargedAttack = false;
 
         //HUD
-        GameObject* mHealthGO = nullptr;
-        SliderComponent* mHealthSlider = nullptr;
+        GameObject* mShieldGO = nullptr;
+        SliderComponent* mShieldSlider = nullptr;
 
 
         //DEBUG

@@ -22,7 +22,6 @@ CREATE(PlayerController)
     CLASS(owner);
 
     SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mMaxShield);
     MEMBER(MemberType::FLOAT, mMaxSanity);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
@@ -48,7 +47,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
 
     SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHealthGO);
+    MEMBER(MemberType::GAMEOBJECT, mShieldGO);
 ;
 
     SEPARATOR("DEBUG MODE");
@@ -79,11 +78,10 @@ void PlayerController::Start()
     }
 
     mBullets = mAmmoCapacity;
-    mHealth = mMaxHealth;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
 
-    if (mHealthGO != nullptr) mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+    if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
 
     if (mAnimationComponentHolder) 
     {
@@ -122,7 +120,7 @@ void PlayerController::Start()
 void PlayerController::Update()
 {
     CheckDebugOptions();
-    UpdateHealth();
+    UpdateShield();
     UpdateBattleSituation();
 
     if (mIsDashCoolDownActive)
@@ -533,24 +531,24 @@ void PlayerController::TakeDamage(float damage)
 {
     if (!mIsDashing)
     {
-        if (!mGodMode) 
+        if (!mGodMode)
         {
-            if (mHealth > 0.0f)
+            if (!IsShieldDown)
             {
                 mShield -= damage;
                 float remainingDamage = -mShield;
-                mShield = Min(mShield, 0.0f);
+                mShield = Max(mShield, 0.0f);
 
                 if (remainingDamage > 0)
                 {
-                    mHealth -= remainingDamage;
+                    IsShieldDown = true;
                 }
             }
             else
             {
                 mCurrentState = PlayerState::DEATH;
             }
-        }      
+        }
     }
 }
 
@@ -565,9 +563,9 @@ bool PlayerController::IsDead()
     return mPlayerIsDead;
 }
 
-void PlayerController::UpdateHealth() 
+void PlayerController::UpdateShield() 
 {
-    if (mHealthSlider) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
+    if (mShieldSlider) mShieldSlider->SetFillPercent(mShield / mMaxShield);
 }
 
 void PlayerController::CheckDebugOptions() 
@@ -580,7 +578,7 @@ void PlayerController::CheckDebugOptions()
 
 void PlayerController::UpdateBattleSituation()
 {
-    float hpRate = mHealth / mMaxHealth;
+    float hpRate = mShield / mMaxShield;
 
     if (mCurrentState == PlayerState::DEATH) 
     {
