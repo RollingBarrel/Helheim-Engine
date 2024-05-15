@@ -5,11 +5,7 @@
 struct AnimationClip
 {
 public:
-	AnimationClip(unsigned int animationUID) {
-
-		mName = std::to_string(animationUID);
-		mAnimationUID = animationUID;
-	};
+	AnimationClip(unsigned int animationUID);
 
 	std::string mName;
 	unsigned int mAnimationUID;
@@ -23,7 +19,9 @@ public:
 	AnimationState(std::string clipName, std::string name) {
 		mName = name;
 		mClip = clipName;
-		mStartTime = 0.0;
+		mStartTime = 0.0f;
+		mEndTime = 10.0f;
+		mLoop = true;
 	};
 
 	std::string mName;

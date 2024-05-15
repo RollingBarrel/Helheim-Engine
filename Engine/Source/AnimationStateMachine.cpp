@@ -6,7 +6,12 @@
 #include "AnimationController.h"
 
 
-
+AnimationClip::AnimationClip(unsigned int animationUID)
+{
+	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(animationUID, Resource::Type::Animation));
+	mName = anim ? anim->GetName() : std::to_string(animationUID);
+	mAnimationUID = animationUID;
+};
 
 
 AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animationUids)
@@ -17,7 +22,7 @@ AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animation
 		mClips.push_back(AnimationClip(resourceAnimation));
 	}
 
-	mStates.push_back(AnimationState("default", "default"));
+	mStates.push_back(AnimationState(mClips[0].mName, "default"));
 }
 
 AnimationStateMachine::~AnimationStateMachine()
