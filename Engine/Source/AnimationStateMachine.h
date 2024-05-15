@@ -20,7 +20,7 @@ public:
 		mName = name;
 		mClip = clipName;
 		mStartTime = 0.0f;
-		mEndTime = 10.0f;
+		mEndTime = 1.25f;
 		mLoop = true;
 	};
 

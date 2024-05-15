@@ -119,7 +119,6 @@ void AnimationComponent::SendTrigger(std::string trigger)
 
 void AnimationComponent::ChangeState(std::string stateName)
 {
-
 	int stateIndex = mStateMachine->GetStateIndex(stateName);
 
 	if (stateIndex < mStateMachine->GetNumStates())
@@ -133,12 +132,29 @@ void AnimationComponent::ChangeState(std::string stateName)
 		if (resourceAnimation !=0)
 		{
 			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
-			mController->SetNextAnimation(tmpAnimation);
-			float new_clip_start = mStateMachine->GetStateStartTime(stateIndex);
-			mController->SetClipStartTime(new_clip_start);
-			mController->SetStartTime(new_clip_start);
-			mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
-			mController->ActivateTransition();
+			if (!tmpAnimation)
+			{
+				LOG("ERROR loading animation on new state.");
+			}
+			if (mController)
+			{
+				mController->SetNextAnimation(tmpAnimation);
+				float new_clip_start = mStateMachine->GetStateStartTime(stateIndex);
+				mController->SetClipStartTime(new_clip_start);
+				mController->SetStartTime(new_clip_start);
+				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
+				mController->ActivateTransition();
+
+			}
+			else
+			{
+				mAnimation = tmpAnimation;
+				mController = new AnimationController(mAnimation, mAnimation->GetUID(), true);
+				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
+				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
+
+			}
+			
 		}
 	}
 
@@ -150,10 +166,12 @@ void AnimationComponent::SetModelUUID(unsigned int modelUid)
 		return;
 	mModelUid = modelUid;
 	ResourceModel* my_model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(modelUid, Resource::Type::Model));
-	SetAnimation(my_model->mAnimationUids[0]);
 	if(mStateMachine)
 		delete mStateMachine;
 	mStateMachine = new AnimationStateMachine(my_model->mAnimationUids);
+	ChangeState("default");
+
+	
 }
 
 void AnimationComponent::AddJointNode(GameObject* node, ResourceModel* model)
