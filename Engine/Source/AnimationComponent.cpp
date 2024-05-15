@@ -31,6 +31,10 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 AnimationComponent::~AnimationComponent()
 {
 	delete mController;
+	delete mStateMachine;
+	mGameobjectsInverseMatrices.clear();
+	mPalette.clear();
+	
 }
 
 void AnimationComponent::SetLoop(bool loop)

@@ -16,11 +16,11 @@ public:
 struct AnimationState
 {
 public:
-	AnimationState(std::string clipName, std::string name) {
+	AnimationState(std::string clipName, std::string name, float start, float end) {
 		mName = name;
 		mClip = clipName;
-		mStartTime = 0.0f;
-		mEndTime = 1.25f;
+		mStartTime = start;
+		mEndTime = end;
 		mLoop = true;
 	};
 

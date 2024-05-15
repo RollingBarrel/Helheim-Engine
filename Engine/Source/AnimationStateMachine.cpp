@@ -21,8 +21,10 @@ AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animation
 	{
 		mClips.push_back(AnimationClip(resourceAnimation));
 	}
+	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(animationUids[0], Resource::Type::Animation));
 
-	mStates.push_back(AnimationState(mClips[0].mName, "default"));
+
+	mStates.push_back(AnimationState(mClips[0].mName, "default", 0.0, anim->GetDuration()));
 }
 
 AnimationStateMachine::~AnimationStateMachine()
@@ -86,7 +88,10 @@ unsigned int AnimationStateMachine::GetClipResource(int index)
 
 void AnimationStateMachine::AddState(std::string& clipName, std::string& name)
 {
-	mStates.push_back(AnimationState(clipName,name));
+	int resource_idx = GetClipResource(GetClipIndex(clipName));
+	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resource_idx, Resource::Type::Animation));
+
+	mStates.push_back(AnimationState(clipName,name, 0.0f, anim->GetDuration()));
 }
 
 void AnimationStateMachine::RemoveState(int index)
