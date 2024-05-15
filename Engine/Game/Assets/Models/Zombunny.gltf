@@ -929,11 +929,7 @@
 			"occlusionTexture": {
 				"index": 2
 			},
-			"pbrMetallicRoughness": {
-				"baseColorTexture": {
-					"index": 3
-				}
-			}
+			"pbrMetallicRoughness": {}
 		},
 		{
 			"emissiveFactor": [
