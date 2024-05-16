@@ -3,6 +3,6 @@
 
 struct Collider
 {
-	void* collider;
-	const std::type_info& tid;
+	void* mCollider;
+	const std::type_info& mTypeId;
 };

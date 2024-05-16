@@ -72,12 +72,38 @@ void BoxColliderComponent::SetCenter(const float3& center)
 {
 	mCenter = center;
 	ComputeBoundingBox();
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetSize(const float3& size)
 {
 	mSize = size;
 	ComputeBoundingBox();
+	App->GetPhysics()->UpdateBoxRigidbody(this);
+}
+
+void BoxColliderComponent::SetColliderType(ColliderType colliderType)
+{
+	mColliderType = colliderType;
+	App->GetPhysics()->UpdateBoxRigidbody(this);
+}
+
+void BoxColliderComponent::SetFreezeRotation(bool freezeRotation)
+{
+	mFreezeRotation = freezeRotation;
+	App->GetPhysics()->UpdateBoxRigidbody(this);
+}
+
+void BoxColliderComponent::SetRigidBody(btRigidBody* rigidBody)
+{
+	mRigidBody = rigidBody;
+	App->GetPhysics()->UpdateBoxRigidbody(this);
+}
+
+void BoxColliderComponent::SetMotionState(MotionState* motionState)
+{
+	mMotionState = motionState;
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::Save(Archive& archive) const
@@ -85,6 +111,8 @@ void BoxColliderComponent::Save(Archive& archive) const
 	Component::Save(archive);
 	archive.AddFloat3("Center", mCenter);
 	archive.AddFloat3("Size", mSize);
+	archive.AddInt("ColliderType", static_cast<int>(mColliderType));
+	archive.AddBool("FreezeRotation", mFreezeRotation);
 }
 
 void BoxColliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -114,6 +142,14 @@ void BoxColliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 			z = sizeValues[2].GetFloat();
 		}
 		mSize = float3(x, y, z);
+	}
+	if (data.HasMember("ColliderType") && data["ColliderType"].IsInt())
+	{
+		mColliderType = static_cast<ColliderType>(data["ColliderType"].GetInt());
+	}
+	if (data.HasMember("FreezeRotation") && data["FreezeRotation"].IsBool())
+	{
+		mFreezeRotation = data["FreezeRotation"].GetBool();
 	}
 
 	ComputeBoundingBox();

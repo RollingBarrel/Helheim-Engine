@@ -3,7 +3,6 @@
 #include "BoxColliderComponent.h"
 #include "Application.h"
 #include "GameObject.h"
-#include "Collider.h"
 #include "MotionState.h"
 
 #include "btBulletDynamicsCommon.h"
@@ -108,7 +107,9 @@ update_status ModulePhysics::PreUpdate(float dt)
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
 	boxCollider->SetMotionState(new MotionState(boxCollider, boxCollider->GetCenter(), boxCollider->GetFreezeRotation()));
-	boxCollider->SetRigidBody(AddBoxBody(boxCollider->GetMotionState(), boxCollider->GetSize() / 2.0f, 0.f));
+	btRigidBody* rigidbody = AddBoxBody(boxCollider->GetMotionState(), boxCollider->GetSize() / 2.0f, 0.f);
+	rigidbody->setUserPointer(boxCollider->GetCollider().mCollider);
+	boxCollider->SetRigidBody(rigidbody);
 	// TODO: Define world layers, collider types
 	AddBodyToWorld(boxCollider->GetRigidBody(), ColliderType::STATIC, WorldLayers::COUNT);
 }
@@ -174,17 +175,17 @@ void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType collider
 
 void ModulePhysics::ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff)
 {
-	if (bodyA->tid == typeid(Component))
+	if (bodyA->mTypeId == typeid(Component))
 	{
-		Component* pbodyA = (Component*)bodyA->collider;
+		Component* pbodyA = (Component*)bodyA->mCollider;
 		switch (pbodyA->GetType())
 		{
 		case ComponentType::BOXCOLLIDER:
 		{
 			BoxColliderComponent* boxCollider = (BoxColliderComponent*)pbodyA;
-			if (bodyB->tid == typeid(Component))
+			if (bodyB->mTypeId == typeid(Component))
 			{
-				Component* pbodyB = (Component*)bodyB->collider;
+				Component* pbodyB = (Component*)bodyB->mCollider;
 				boxCollider->OnCollision(pbodyB->GetOwner(), collisionNormal, diff);
 			}
 			break;

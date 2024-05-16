@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "ModulePhysics.h"
 
 #include "Math/float3.h"
 #include "Geometry/AABB.h"
@@ -28,15 +29,18 @@ public:
 	inline const OBB& GetOBB() const { return mWorldOBB; }
 	inline const float3& GetCenter() const { return mCenter; }
 	inline const float3& GetSize() const { return mSize; }
+	inline const ColliderType GetColliderType() const { return mColliderType; }
 	inline const bool GetFreezeRotation() const { return mFreezeRotation; }
 	inline btRigidBody* GetRigidBody() const { return mRigidBody; }
 	inline MotionState* GetMotionState() const { return mMotionState; }
+	inline Collider GetCollider() const { return mCollider; }
 
 	void SetCenter(const float3& center);
 	void SetSize(const float3& size);
-	void SetFreezeRotation(bool freezeRotation) { mFreezeRotation = freezeRotation; }
-	void SetRigidBody(btRigidBody* rigidBody) { mRigidBody = rigidBody; /*rigidBody->setUserPointer(collider);*/ }
-	void SetMotionState(MotionState* motionState) { mMotionState = motionState; }
+	void SetColliderType(ColliderType colliderType);
+	void SetFreezeRotation(bool freezeRotation);
+	void SetRigidBody(btRigidBody* rigidBody);
+	void SetMotionState(MotionState* motionState);
 
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
@@ -46,11 +50,12 @@ private:
 	OBB mWorldOBB = { mLocalAABB };
 	float3 mCenter = float3::zero;
 	float3 mSize = float3::one;
+	ColliderType mColliderType = ColliderType::DYNAMIC;
 	bool mFreezeRotation = false;
 
 	btRigidBody* mRigidBody = nullptr;
 	MotionState* mMotionState = nullptr;
-	//Collider collider;
+	Collider mCollider{ this, typeid(Component) };
 
 };
 

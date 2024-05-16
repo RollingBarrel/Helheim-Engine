@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "Collider.h"
 #include "Math/float3.h"
 #include <vector>
 
@@ -12,11 +13,10 @@ class btRigidBody;
 class btMotionState;
 class MotionState;
 class BoxColliderComponent;
-struct Collider;
 
 enum class ColliderType : int
 {
-	DYNAMIC=0,
+	DYNAMIC = 0,
 	STATIC,
 	KINEMATIC,
 	TRIGGER,

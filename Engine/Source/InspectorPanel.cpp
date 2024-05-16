@@ -1278,7 +1278,8 @@ void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
 			ImGui::Text(labels[i]);
 			ImGui::PopItemWidth();
 
-			for (int j = 0; j < 3; ++j) {
+			for (int j = 0; j < 3; ++j) 
+			{
 				ImGui::TableNextColumn();
 				ImGui::PushItemWidth(-FLT_MIN);
 				ImGui::AlignTextToFramePadding();
@@ -1295,6 +1296,29 @@ void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
 				component->SetSize(newSize);
 			}
 		}
+
+		const char* colliderTypeItems[] = { "Dynamic", "Static", "Kinematic", "Trigger" };
+		ColliderType colliderType = component->GetColliderType();
+		const char* colliderCurrent = colliderTypeItems[static_cast<int>(colliderType)];
+		if (ImGui::BeginCombo("Collider Mode", colliderCurrent)) 
+		{
+			for (int n = 0; n < IM_ARRAYSIZE(colliderTypeItems); ++n) 
+			{
+				if (ImGui::Selectable(colliderTypeItems[n])) 
+				{
+					colliderType = ColliderType(n);
+					component->SetColliderType(colliderType);
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		bool freezeRotation = component->GetFreezeRotation();
+		if (ImGui::Checkbox("Freeze rotation", &freezeRotation))
+		{
+			component->SetFreezeRotation(freezeRotation);
+		}
+
 		ImGui::EndTable();
 	}
 }
