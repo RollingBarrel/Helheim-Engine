@@ -13,10 +13,7 @@ void Enemy::Start()
 
     ModuleScene* scene = App->GetScene();
     mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
-    mHealth = mMaxHealth;
-    
-    
-    
+    mHealth = mMaxHealth;   
 }
 
 void Enemy::Update()
@@ -51,6 +48,12 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
+
+    //*******************************************
+    if (ChanceDropping())
+    {
+
+    }
 }
 
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
@@ -67,8 +70,16 @@ bool Enemy::Delay(float delay) //Lapse of time for doing some action
 }
 
 
-void Enemy::PushBack() {
+void Enemy::PushBack() 
+{
     float3 direction = mGameObject->GetPosition() - mPlayer->GetPosition();
     direction.Normalize();
     mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
+}
+
+//***************************************************************************************
+
+bool Enemy::ChanceDropping()
+{
+    return true;
 }

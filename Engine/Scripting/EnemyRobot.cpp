@@ -30,7 +30,6 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
 }
 
-
 void EnemyRobot::Start()
 {
     Enemy::Start();
@@ -41,10 +40,7 @@ void EnemyRobot::Start()
         mAnimationComponent->SetIsPlaying(true);
         mAnimationComponent->SetCurrentClip(0);
     }
-
 }
-
-
 
 void EnemyRobot::Update()
 {
