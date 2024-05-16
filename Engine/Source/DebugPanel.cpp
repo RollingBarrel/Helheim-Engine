@@ -30,7 +30,7 @@ static void RenderTreeImGui(const Quadtree* qTree)
         return;
     bool treeNodeOpened = ImGui::TreeNode(qTree->GetName());
 
-    if (!qTree->IsLeaf() && treeNodeOpened)
+    if (qTree->IsFilled() && treeNodeOpened)
     {
         const Quadtree* children = qTree->GetChildren();
         for (int i = 0; i < 4; ++i)
@@ -56,7 +56,7 @@ static void RenderTreeImGui(const Quadtree* qTree)
 static void DrawQuadTree(const Quadtree& qTree)
 {
     EngineApp->GetDebugDraw()->DrawCube(qTree.GetBoundingBox(), float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
-    if (!qTree.IsLeaf())
+    if (qTree.IsFilled())
     {
         const Quadtree* children = qTree.GetChildren();
         for (int i = 0; i < 4; ++i)

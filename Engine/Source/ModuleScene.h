@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <vector>
+#include <set>
 #include <string>
 
 class Quadtree;
@@ -114,6 +115,7 @@ private:
 	NavMeshController* mNavMeshController;
 
 	std::vector<const MeshRendererComponent*>mCurrRenderComponents;
+	std::set<const MeshRendererComponent*>mCurrRenderComponentsSet;
 };
 
 #endif //_MODULE_SCENE_H_
