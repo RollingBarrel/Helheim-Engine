@@ -24,7 +24,7 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	void RefreshBoundingBoxes();
-	const OBB& GetOBB() const { return mOBB; }
+	const OBB& getOBB() const { return mOBB; }
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	void SetMesh(unsigned int uid);
 	const AABB& GetAABB() const { return mAABB; }

@@ -376,7 +376,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	{
 		mChildren.push_back(child);
 	}
-//	App->GetScene()->GetQuadtreeRoot()->AddObject(child);
+	App->GetScene()->GetQuadtreeRoot()->AddObject(child);
 }
 
 GameObject* GameObject::RemoveChild(const int id)
