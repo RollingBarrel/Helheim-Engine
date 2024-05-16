@@ -59,6 +59,7 @@ class PlayerController :public Script
         void Attack();
 
         void MeleeAttack();
+        void MeleeHit(float AttackRange, float AttackDamage);
         void RangedAttack();
         void Move(float3 position);
         void HandleRotation();
@@ -103,11 +104,11 @@ class PlayerController :public Script
         //Dash
         bool mIsDashing = false;
         bool mIsDashCoolDownActive = false;
-        float mDashCoolDown = 0.7f;
         float mDashCoolDownTimer = 0.0f;
-        float mDashDuration = 0.5f; 
+        float mDashCoolDown = 0.7f;
         float mDashTimer = 0.0f;
-        float mDashSpeed = 10.0f; // Adjust as needed
+        float mDashDuration = 0.5f;
+        float mDashRange = 2.0f;
         float3 mDashDirection = float3::zero;
 
         //Range
@@ -120,16 +121,20 @@ class PlayerController :public Script
         float mMaxRangeChargeTime = 10.0f;
         GameObject* bullet = nullptr;
 
-        float startingTime = 0.0F;
-
-        //Melee
-        float mMeleeBaseDamage = 1.0f;
-        float mMeleeChargeAttackMultiplier = 5.0f;
-        float mMinMeleeChargeTime = 5.0f;
-        float mMaxMeleeChargeTime = 10.0f;
-        
         float mChargedTime = 0.0f;
         bool mIsChargedAttack = false;
+
+        float mRangeTimer = 0.0f;
+
+        //Melee
+        float mMeleeBaseDamage = 2.0f;
+        float mMeleeBaseRange = 1.0f;
+        float mMeleeBaseTimer = 0.0f;
+        float mMeleeAttackDuration = 5.0f;
+
+        bool mIsAttacking = false;
+
+  
 
         //HUD
         GameObject* mHealthGO = nullptr;
