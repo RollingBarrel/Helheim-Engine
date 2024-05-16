@@ -1,11 +1,40 @@
 #pragma once
-#include <Script.h>
+#include "Script.h"
 #include "Macros.h"
-#include "Math/float3.h"
+#include "float3.h"
 
 class NavMeshController;
 class AnimationComponent;
-class Gun;
+class AudioSourceComponent;
+class SliderComponent;
+class AudioSourceComponent;
+class ObjectPool;
+class GameManager;
+
+enum class PlayerState 
+{
+    IDLE,
+    DASH,
+    MOVE,
+    ATTACK,
+    MOVE_ATTACK,
+    DEATH
+};
+
+enum class BattleSituation {
+    IDLE_HIGHT_HP,
+    IDLE_LOW_HP,
+    BATTLE_HIGHT_HP,
+    BATTLE_LOW_HP,
+    DEATH
+};
+
+enum class Weapon {
+    RANGE,
+    MELEE
+};
+
+
 
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
@@ -17,102 +46,124 @@ class PlayerController :public Script
         void Start() override;
         void Update() override;
 
-        void SetPlayerDamage(int damage);
-        bool GetPlayerIsDead();
+        void TakeDamage(float damage);
+        bool IsDead();
 
-        void WinTest();
-        void LoseTest();
-
-        //Stats variables
-        float mPlayerSpeed = 2.0f;
-        float mPlayerRotationSpeed = 0.5f;
-        GameObject* mWinArea = nullptr;
-        GameObject* mLoseArea = nullptr;
-        GameObject* mAnimationComponentHolder = nullptr;
-
-        //Dash Variables
-        float mDashSpeed = 5.0f;//35
-        float mDashDistance = 3.0f;
-        float mDashCoolDown = 3.0f;
-        int mDashCharges = 5;//3
-
-        int mHealth = 1;
-        int mShield = 100;
-        int mSanity = 100;
-
+        BattleSituation GetBattleSituation() {return mCurrentSituation;};
 
     private:
+        void Idle();
+        void Moving();
+        void Dash();
+        void Attack();
 
-        enum class PlayerState {
-            Idle,
-            Dash,
-            Forward,
-            Backward,
-            Left,
-            Right,
-            MeleeAttack,
-            RangedAttack,
-            Reload,
-            ThrowGrenade,
-            Death
-        };
-
-        void ChangeState(PlayerState newState);
-        void StateMachine();
-        void Controls();
-        void Forward();
-        void Backward();
-        void Left();
-        void Right();
-        void Move(float3 position);
-
-        //Attack functions
         void MeleeAttack();
         void RangedAttack();
-
-        void Shoot(bool isChargedShot, float chargeTime);
-        void ShootLogic(int damage);
+        void Move(float3 position);
+        void HandleRotation();
+        void Shoot(float damage);
         void Reload();
-
-        void ReloadWeapon();
-        void ThrowGrenade();
-
-        void Mouse_Rotation();
-        void Dash();
-        bool ShieldDamage(int damage);
-        void Sanity();
+        
+        void RechargeDash();
         void Death();
-        void WinMessage();
-        void LoseMessage();
-        void CheckRoute();
+        void UpdateHealth();
+        void UpdateBattleSituation();
+        void CheckDebugOptions();
+
+        void Victory();
+        void GameoOver();
+        bool Delay(float delay);
+        void Loading();
+
+        Weapon mWeapon = Weapon::RANGE;
+        PlayerState mCurrentState = PlayerState::IDLE;
+        PlayerState mPreviousState = PlayerState::IDLE;
+        BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+        float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;
+        GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
-        Gun* mGun = nullptr;
+        GameObject* mBulletPoolHolder = nullptr;
+        ObjectPool* mBulletPool = nullptr;
 
-        PlayerState mCurrentState;
-        PlayerState mPreviousState;
+        GameManager* mGameManager = nullptr;
+        GameObject* mGameManagerGO = nullptr;
 
-        //Dash variables
-        bool mIsDashActive = false;
-        bool mStartCounter = false;
+        //Stats
+        float mPlayerSpeed = 2.0f;
+        float mHealth = 0.0f;
+        float mMaxHealth = 100.0f;
+        float mShield = 0.0f;
+        float mMaxShield = 100.0f;
+        float mSanity = 0.0f;
+        float mMaxSanity = 100.0f;
+        bool mPlayerIsDead = false;
+
+        //Dash
+        bool mIsDashCoolDownActive = false;
         float mDashTimePassed = 0.0f;
         float mDashMovement = 0;
-        bool mDashTrigger = false;
+        int mMaxDashCharges = 3;
+        int mDashCharges = 0;//3
+        float mDashChargeRegenerationTime = 3.0f;
+        float mDashSpeed = 35.0f;//35
+        float mDashDistance = 5.0f;
+        float mDashCoolDown = 3.0f;
 
-        bool mPlayerIsDead = false;
+        //Range
+        int mAmmoCapacity = 500000;
+        int mBullets = 0;
+        float mFireRate = 1.0f;
+        float mRangeBaseDamage = 1.0f;
+        float mRangeChargeAttackMultiplier = 5.0f;
+        float mMinRangeChargeTime = 5.0f;
+        float mMaxRangeChargeTime = 10.0f;
+        GameObject* bullet = nullptr;
+
+        float startingTime = 0.0F;
+
+        //Melee
+        float mMeleeBaseDamage = 1.0f;
+        float mMeleeChargeAttackMultiplier = 5.0f;
+        float mMinMeleeChargeTime = 5.0f;
+        float mMaxMeleeChargeTime = 10.0f;
+        
+        float mChargedTime = 0.0f;
+        bool mIsChargedAttack = false;
+
+        //HUD
+        GameObject* mHealthGO = nullptr;
+        GameObject* mDashGO_1 = nullptr;
+        GameObject* mDashGO_2 = nullptr;
+        GameObject* mDashGO_3 = nullptr;
+        SliderComponent* mHealthSlider = nullptr;
+        SliderComponent* mDashSlider_1 = nullptr;
+        SliderComponent* mDashSlider_2 = nullptr;
+        SliderComponent* mDashSlider_3 = nullptr;
+
+        //DEBUG
+        bool mGodMode = false;
+
+        GameObject* mWinArea = nullptr;
+
+        // Audios section
+        // Footstep
+        GameObject* mFootStepAudioHolder = nullptr;
+        AudioSourceComponent* mFootStepAudio = nullptr;
         bool mIsMoving = false;
-        //bool mIsRecharging = false;
-        //float mReloadTimePassed = 0.0f;
+        bool mReadyToStep = false;
+        float mStepTimePassed = 0.0f;
+        float mStepCoolDown = 0.5f;
 
-        //Shooting variables
-        int mDamage = 1;
-        int mMaxBullets = 16;
-        int mBullets = 16;
-        float mChargedShotTime = 10.0f;
-        float mBulletCostPerSecond = 1.0f;
-        bool mIsChargedShot = false;
+        // Gunfire
+        GameObject* mGunfireAudioHolder = nullptr;
+        AudioSourceComponent* mGunfireAudio = nullptr;
 
-        //Reload variables
-        //float mReloadTime = 10.0f;
+        //SCREENS
+        bool mVictory = false;
+        bool mGameOver = false;
+        bool mLoadingActive = false;
+        float mTimeScreen = 3.0f;
+        float mTimePassed = 0.0f;
 };

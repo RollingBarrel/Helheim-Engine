@@ -1,14 +1,20 @@
 #pragma once
 
 #include <map>
+#include "float3.h"
+#include "float2.h"
 #include "MathGeoLibFwd.h"
 class GameObject;
 
-class ENGINE_API Physics
+struct Hit
 {
-public:
-	//Returns a map with the distance to the object and a pointer to the object
-	static std::map<float, GameObject*> Raycast(Ray* ray);
-
+	GameObject* mGameObject;
+	float3 mHitPoint;
+	float mDistance;
 };
 
+namespace Physics
+{
+	ENGINE_API std::map<float, Hit> Raycast(Ray* ray);
+	ENGINE_API Ray ScreenPointToRay(float2 mouseGlobalPosition);
+};

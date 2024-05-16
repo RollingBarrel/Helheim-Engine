@@ -1,32 +1,39 @@
 #include "ScenePanel.h"
-#include "HierarchyPanel.h"
-#include "Application.h"
+#include "EngineApp.h"
+
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
 #include "ModuleFileSystem.h"
-#include "ProjectPanel.h"
 #include "ModuleScene.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
-#include "GameObject.h"
-#include "Component.h"
-#include "CameraComponent.h"
-#include "EditorControlPanel.h"
-#include "MeshRendererComponent.h"
-#include "ImporterModel.h"
-#include "ResourceModel.h"
-#include "debugdraw.h"
 
+#include "HierarchyPanel.h"
+#include "EditorControlPanel.h"
+
+#include "CameraComponent.h"
+#include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "AnimationComponent.h"
 
+#include "ResourceModel.h"
 
 #include "Math/float2.h"
 #include "imgui.h"
 
-GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animationUids, GameObject* parent)
+GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rModel, GameObject* parent, bool isRoot)
 {
 	const char* name = "";
+	static int nodeIt = 0;
+	static AnimationComponent* cAnimation = nullptr;
+
+	//Reset nodeIt and cAnimation for the new model dragged to the scene
+	if (nodeNumber == 0)
+	{
+		nodeIt = 0;
+		cAnimation = nullptr;
+	}
 
 	if (node.mName == name)
 		name = "GameObject";
@@ -40,23 +47,57 @@ GameObject* DragToScene(const ModelNode& node, std::vector<unsigned int>& animat
 	gameObject->SetScale(node.mScale);
 	gameObject->RecalculateMatrices();
 
+	if (isRoot && nodeNumber == 0)
+	{
+		if (!rModel.mAnimationUids.empty())
+		{
+			if (rModel.mAnimationUids[0] != 0)
+			{
+				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
+				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
+				cAnimation->SetAnimation(rModel.mAnimationUids[0]);
+				cAnimation->SetModelUUID(rModel.GetUID());
+
+			}
+		}
+	}
+
+	if (node.mLightId > -1)
+	{
+		if (node.mLight.mType.compare("point") == 0)
+		{
+			PointLightComponent* cPoint = reinterpret_cast<PointLightComponent*>(gameObject->CreateComponent(ComponentType::POINTLIGHT));
+			cPoint->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
+			cPoint->SetIntensity(node.mLight.mIntensity);
+			cPoint->SetRadius(node.mLight.mRange);
+		}
+		else if (node.mLight.mType.compare("spot") == 0)
+		{
+			SpotLightComponent* cSpot = reinterpret_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
+			cSpot->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
+			cSpot->SetIntensity(node.mLight.mIntensity);
+			cSpot->SetRadius(node.mLight.mRange);
+			cSpot->SetInnerAngle(node.mLight.mInnerConeAngle);
+			cSpot->SetOuterAngle(node.mLight.mOuterConeAngle);
+		}
+		else
+		{
+			//Directional we don't import them xd
+		}
+	}
+
 	if (node.mMeshId > -1)
 	{
 		for (auto it = node.mUids.cbegin(); it != node.mUids.cend(); ++it)
 		{
+			if (name == "GameObject")
+			{
+				name = "MeshRenderer";
+			}
 			GameObject* gO = new GameObject(name, gameObject);
 			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
 			cMesh->SetMaterial(it->second);
-		}
-	}
-
-	if (strcmp(name,"Root") == 0)
-	{
-		if (!animationUids.empty())
-		{
-			AnimationComponent* cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->CreateComponent(ComponentType::ANIMATION));
-			cAnimation->SetAnimation(animationUids[0]);
 		}
 	}
 
@@ -79,11 +120,7 @@ void ScenePanel::Draw(int windowFlags)
 	{
 		if (ImGui::IsWindowAppearing())
 		{
-			GameObject* cameraGameObject = App->GetScene()->FindGameObjectWithTag("MainCamera");
-			if (cameraGameObject)
-			{
-				App->GetCamera()->SetCurrentCamera(cameraGameObject);
-			}
+			EngineApp->GetEngineCamera()->ActivateGameCamera();
 		}
 
 		DrawScene();
@@ -95,17 +132,13 @@ void ScenePanel::Draw(int windowFlags)
 	{
 		if (ImGui::IsWindowAppearing())
 		{
-			App->GetCamera()->ActivateEditorCamera();
-			
+			EngineApp->GetEngineCamera()->ActivateEditorCamera();
 		}
 
 		DrawScene();
-		
+
 	}
 	ImGui::End();
-
-
-	
 }
 
 void ScenePanel::DrawScene()
@@ -114,15 +147,18 @@ void ScenePanel::DrawScene()
 	ImVec2 size = ImGui::GetContentRegionAvail();
 	if (size.x != prevSizeX || size.y != prevSizeY)
 	{
-		App->GetOpenGL()->SceneFramebufferResized(size.x, size.y);
+		EngineApp->GetOpenGL()->SceneFramebufferResized(size.x, size.y);
 		prevSizeX = size.x;
 		prevSizeY = size.y;
 	}
-	ImGui::Image((void*)(intptr_t)App->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((void*)(intptr_t)EngineApp->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
 
 	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
-	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
+	EngineApp->GetWindow()->GameWindowsResized(mWindowsSize);
+	//LOG("mWindowsPosition: %f, %f", mWindowsPosition.x, mWindowsPosition.y);
+	//LOG("mWindowsSize: %f, %f", mWindowsSize.x, mWindowsSize.y);
 
 	if (ImGui::BeginDragDropTarget())
 	{
@@ -131,7 +167,7 @@ void ScenePanel::DrawScene()
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
 
-			Resource* resource = App->GetResource()->RequestResource(asset->mPath);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
 			if (resource)
 			{
 				switch (resource->GetType())
@@ -150,9 +186,9 @@ void ScenePanel::DrawScene()
 				{
 					std::string name;
 
-					App->GetFileSystem()->SplitPath(asset->mPath, &name);
+					EngineApp->GetFileSystem()->SplitPath(asset->mPath, &name);
 
-					GameObject* gameObjectRoot = new GameObject(name.c_str(), App->GetScene()->GetRoot());
+					GameObject* gameObjectRoot = new GameObject(name.c_str(), EngineApp->GetScene()->GetRoot());
 
 					std::vector<GameObject*> tempVec;
 
@@ -162,21 +198,31 @@ void ScenePanel::DrawScene()
 					{
 						ModelNode node = reinterpret_cast<ResourceModel*>(resource)->GetNodes()[i];
 						if (node.mParentIndex == -1)
-							tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, gameObjectRoot));
+							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), gameObjectRoot, true));
 						else
-							tempVec.push_back(DragToScene(node, reinterpret_cast<ResourceModel*>(resource)->mAnimationUids, tempVec.at(node.mParentIndex)));
+							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), tempVec.at(node.mParentIndex), false));
+
+						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
+						//{
+						//	if (reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first == i)
+						//	{
+						//		LOG("Current Node: %u, %s", i, node.mName.c_str());
+						//		LOG("Joint Index: %d", reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first);
+						//		break;
+						//	}
+						//}
 					}
 
 					tempVec.clear();
 
-					App->GetResource()->ReleaseResource(resource->GetUID());
+					//EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}
 				case Resource::Type::Scene:
 					break;
 				case Resource::Type::Object:
 				{
-					App->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
+					EngineApp->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
 					break;
 				}
 				case Resource::Type::NavMesh:
@@ -188,68 +234,72 @@ void ScenePanel::DrawScene()
 		ImGui::EndDragDropTarget();
 	}
 
-	ImGuizmo::OPERATION currentGuizmoOperation = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoOperation();
-	ImGuizmo::MODE currentGuizmoMode = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoMode();
-	bool useSnap = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetUseSnap();
-	float3 snap = ((EditorControlPanel*)App->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetSnap();
+	ImGuizmo::OPERATION currentGuizmoOperation = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoOperation();
+	ImGuizmo::MODE currentGuizmoMode = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoMode();
+	bool useSnap = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetUseSnap();
+	float3 snap = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetSnap();
 
 	ImVec2 windowPos = ImGui::GetWindowPos();
 	ImGuizmo::SetDrawlist();
 	ImGuizmo::SetRect(windowPos.x, windowPos.y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
 
-	const CameraComponent* camera = App->GetCamera()->GetEditorCamera();
-	float4x4 cameraView = camera->GetViewMatrix().Transposed();
-	float4x4 cameraProjection = camera->GetProjectionMatrix().Transposed();
-
-	GameObject* selectedGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-
-	//If there's a selected object in the hierarchy and it's not the root
-	if (selectedGameObject && (selectedGameObject != App->GetScene()->GetRoot())) 
+	if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
 	{
-		const float4x4* transform = &selectedGameObject->GetWorldTransform();
-		float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
+		const CameraComponent* camera = EngineApp->GetEngineCamera()->GetCurrentCamera();
+		float4x4 cameraView = camera->GetViewMatrix().Transposed();
+		float4x4 cameraProjection = camera->GetProjectionMatrix().Transposed();
 
-		//Draws the Guizmo axis
-		ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), currentGuizmoOperation, currentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
+		GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 
-		if (ImGuizmo::IsUsing()) 
+		//If there's a selected object in the hierarchy and it's not the root
+		if (selectedGameObject && (selectedGameObject != EngineApp->GetScene()->GetRoot()))
 		{
-			mIsGuizmoUsing = true;
-			GameObject* parent = selectedGameObject->GetParent();
-			float4x4 inverseParentMatrix = float4x4::identity;
-			float3 translation;
-			Quat rotation;
-			float3 scale;
+			const float4x4* transform = &selectedGameObject->GetWorldTransform();
+			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
-			if (parent != nullptr) 
+			//Draws the Guizmo axis
+			ImGuizmo::Manipulate(cameraView.ptr(), cameraProjection.ptr(), currentGuizmoOperation, currentGuizmoMode, modelMatrix.ptr(), NULL, useSnap ? &snap[0] : nullptr);
+
+			if (ImGuizmo::IsUsing())
 			{
-				const float4x4* parentTransform = &parent->GetWorldTransform();
-				inverseParentMatrix = parent->GetWorldTransform().Inverted();
+				mIsGuizmoUsing = true;
+				GameObject* parent = selectedGameObject->GetParent();
+				float4x4 inverseParentMatrix = float4x4::identity;
+				float3 translation;
+				Quat rotation;
+				float3 scale;
+
+				if (parent != nullptr)
+				{
+					const float4x4* parentTransform = &parent->GetWorldTransform();
+					inverseParentMatrix = parent->GetWorldTransform().Inverted();
+				}
+
+				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
+				localMatrix.Decompose(translation, rotation, scale);
+
+				switch (currentGuizmoOperation)
+				{
+				case ImGuizmo::TRANSLATE:
+					selectedGameObject->SetPosition(translation);
+					break;
+				case ImGuizmo::ROTATE:
+					selectedGameObject->SetRotation(rotation);
+					break;
+				case ImGuizmo::SCALE:
+					selectedGameObject->SetScale(scale);
+					break;
+				}
 			}
-
-			float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
-			localMatrix.Decompose(translation, rotation, scale);
-
-			switch (currentGuizmoOperation) 
+			else
 			{
-			case ImGuizmo::TRANSLATE:
-				selectedGameObject->SetPosition(translation);
-				break;
-			case ImGuizmo::ROTATE:
-				selectedGameObject->SetRotation(rotation);
-				break;
-			case ImGuizmo::SCALE:
-				selectedGameObject->SetScale(scale);
-				break;
+				mIsGuizmoUsing = false;
 			}
-		}
-		else 
-		{
-			mIsGuizmoUsing = false;
 		}
 	}
+	
 
-	//TODO: Find the way to only apply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
+	//TODO: Find the way to only EngineApply the LookAt when pressing the ViewManipulateCube, if not, it causes issues with the free movement camera
 	/*
 	float viewManipulateRight = windowPos.x + size.x;
 	float viewManipulateTop = windowPos.y;
@@ -258,7 +308,7 @@ void ScenePanel::DrawScene()
 	ImGuizmo::ViewManipulate(cameraView.ptr(), 4, ImVec2(viewManipulateRight - viewManipulateSize, viewManipulateTop), ImVec2(viewManipulateSize, viewManipulateSize), 0x10101010);
 	if (ImGui::IsWindowFocused()) {
 		float4x4 newCameraView = cameraView.InverseTransposed();
-		App->GetCamera()->LookAt(float3(newCameraView.Col(3).xyz()), float3(- newCameraView.Col(2).xyz()), float3(newCameraView.Col(1).xyz()));
+		EngineApp->GetCamera()->LookAt(float3(newCameraView.Col(3).xyz()), float3(- newCameraView.Col(2).xyz()), float3(newCameraView.Col(1).xyz()));
 	}
 	*/
 

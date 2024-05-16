@@ -5,34 +5,27 @@
 class ScriptComponent;
 struct Member;
 
-class ModuleScriptManager :	public Module
+class ENGINE_API ModuleScriptManager :	public Module
 {
 public:
 
 	ModuleScriptManager();
 	~ModuleScriptManager();
 
-	bool Init() override;
-	update_status PreUpdate(float dt) override;
-	update_status Update(float dt) override;
+	virtual bool Init() override;
+	virtual update_status PreUpdate(float dt) override { return UPDATE_CONTINUE;  }
+	virtual update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
-	void* GetDLLHandle() { return mHandle; }
 	
 	void AddScript(ScriptComponent* script);
 	void RemoveScript(ScriptComponent* script);
-	
-	void Play();
-	void Stop();
-	void Start();
+	void* GetDLLHandle() { return mHandle; }
+	virtual void StartScripts();
 
-private:
-	void HotReload();
-	void ReloadScripts(const std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
-	void SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
+
+protected:
 	std::vector<ScriptComponent*> mScripts;
 	void* mHandle = nullptr;
-	bool mIsPlaying = false;
-	int64_t mLastModificationTime = 0;
 };
 

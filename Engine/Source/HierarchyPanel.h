@@ -18,6 +18,7 @@ public:
 	const std::vector<GameObject*> FilterMarked() const;
 
 private:
+	void InternalSetFocus(GameObject* focusedObject);
 	void DrawTree(GameObject* node);
 	void DragAndDropSource(GameObject* source);
 	void DragAndDropTarget(GameObject* target, bool reorder = false);

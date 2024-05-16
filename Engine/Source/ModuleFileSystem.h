@@ -21,7 +21,18 @@
 #include <vector>
 #include <string>
 
-struct AssetDisplay;
+struct PathNode;
+
+struct AssetDisplay
+{
+	AssetDisplay(const char* name, const char* mPath, PathNode* parent);
+	~AssetDisplay();
+	const char* mName;
+	const char* mPath;
+	std::vector<unsigned int> mUid;
+	PathNode* mParent;
+	//Resource* mResource;
+};
 
 struct PathNode
 {
@@ -30,10 +41,15 @@ struct PathNode
 	PathNode* mParent;
 	std::vector<PathNode*> mChildren;
 	std::vector<AssetDisplay*> assets;
+
+	void CleanUp()
+	{
+		mChildren.clear();
+		assets.clear();
+	}
 };
 
-
-class ModuleFileSystem : public Module
+class ENGINE_API ModuleFileSystem : public Module
 {
 public:
 	ModuleFileSystem();
@@ -59,6 +75,9 @@ public:
 	const char* GetLibraryFile(unsigned int id, bool createDir = false) const;
 	int64_t GetLastModTime(const char* file) const;
 	int64_t GetCreationTime(const char* file) const;
+	bool IsClean()	{ return mIsClean; }
+	void SetIsClean(bool clean) { mIsClean = clean; }
+
 
 	bool AddToSearchPath(const char* path);
 
@@ -74,14 +93,14 @@ public:
 	const char* GetExtensionFromPath(const char* path) const;
 	const char* GetFileExtensionFromPath(const char* path) const;
 	void SplitPath(const char* path, std::string* file = nullptr, std::string* extension = nullptr) const;
+	void GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const;
 
 	PathNode* GetRootNode() { return mRoot; }
+	void CleanNode(PathNode* node);
 
 private:
 
-	void UpdateScripts();
-
-	void CleanNode(PathNode* node);
+	bool mIsClean = false;
 	PathNode* mRoot = nullptr;
 };
 

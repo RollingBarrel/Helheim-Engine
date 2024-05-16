@@ -1,4 +1,5 @@
 #include "MeshRendererComponent.h"
+#include "AnimationComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
@@ -6,7 +7,6 @@
 #include "Quadtree.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
-#include "ModuleDebugDraw.h"
 #include "DebugPanel.h"
 #include "GeometryBatch.h"
 
@@ -25,7 +25,7 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 {
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
+	//mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 
@@ -37,11 +37,25 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	mMaterial = (other.mMaterial) ? reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material)) : nullptr;
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
-	mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
+	//mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	App->GetOpenGL()->BatchAddMesh(this);
-	mAABBWorld = mOBB.MinimalEnclosingAABB();
 
+}
+
+MeshRendererComponent::~MeshRendererComponent()
+{
+	if (mMesh)
+	{
+		App->GetOpenGL()->BatchRemoveMesh(this);
+		App->GetResource()->ReleaseResource(mMesh->GetUID());
+		mMesh = nullptr;
+	}
+	if (mMaterial)
+	{
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMaterial = nullptr;
+	}
 }
 
 void MeshRendererComponent::SetMesh(unsigned int uid)
@@ -61,7 +75,6 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
-		mAABBWorld = mOBB.MinimalEnclosingAABB();
 		if (mMaterial)
 			App->GetOpenGL()->BatchAddMesh(this);
 	}
@@ -91,30 +104,21 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	//}
 }
 
+
+void MeshRendererComponent::Update() {
+
+}
+
 void MeshRendererComponent::Enable()
 {
-	App->GetOpenGL()->BatchAddMesh(this);
-
+	if(mMaterial && mMesh)
+		App->GetOpenGL()->BatchAddMesh(this);
 }
 
 void MeshRendererComponent::Disable()
 {
-	App->GetOpenGL()->BatchRemoveMesh(this);
-}
-
-MeshRendererComponent::~MeshRendererComponent()
-{
-	if (mMesh)
-	{
+	if (mMaterial && mMesh)
 		App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetResource()->ReleaseResource(mMesh->GetUID());
-		mMesh = nullptr;
-	}
-	if (mMaterial)
-	{
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMaterial = nullptr;
-	}
 }
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
@@ -126,10 +130,10 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 {
 	mOBB = OBB(mAABB);
 	mOBB.Transform(mOwner->GetWorldTransform());
-	mAABBWorld = mOBB.MinimalEnclosingAABB();
 }
 
-void MeshRendererComponent::Save(Archive& archive) const {
+void MeshRendererComponent::Save(Archive& archive) const 
+{
 	archive.AddInt("ID", GetID());
 	archive.AddInt("MeshID", mMesh->GetUID());
 	archive.AddInt("MaterialID", mMaterial->GetUID());

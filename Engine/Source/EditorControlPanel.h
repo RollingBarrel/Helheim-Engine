@@ -28,6 +28,10 @@ public:
 	const bool GetUseSnap() { return mUseSnap; }
 	const float3 GetSnap() { return mSnap; }
 
+	void Play();
+	void Pause();
+	void Stop();
+	void Step();
 
 private:
 	ImGuizmo::OPERATION mCurrentGuizmoOperation = ImGuizmo::TRANSLATE;
@@ -36,10 +40,5 @@ private:
 	float3 mSnap = { 1.f, 1.f, 1.f };
 	GameState mState = GameState::STOP;
 
-	void Play();
-	void Pause();
-	void Stop();
-	void Step();
-	
 };
 #endif /* _EDITOR_CONTROL_PANEL_H_ */

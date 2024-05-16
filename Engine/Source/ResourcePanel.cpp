@@ -1,6 +1,6 @@
 #include "ResourcePanel.h"
-#include "Application.h"
-#include "ModuleResource.h"
+#include "EngineApp.h"
+#include "ModuleEngineResource.h"
 #include "ResourceModel.h"
 
 #include "imgui.h"
@@ -13,7 +13,7 @@ void ResourcePanel::Draw(int windowFlags)
 {
 	if(ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{	
-		for (std::map<unsigned int, Resource*>::iterator it = App->GetResource()->mResources.begin(); it != App->GetResource()->mResources.end(); ++it)
+		for (std::map<unsigned int, Resource*>::iterator it = EngineApp->GetEngineResource()->mResources.begin(); it != EngineApp->GetEngineResource()->mResources.end(); ++it)
 		{
 			if(it->second != nullptr)
 			{

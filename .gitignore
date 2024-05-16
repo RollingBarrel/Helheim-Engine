@@ -405,11 +405,8 @@ FodyWeavers.xsd
 !/Engine/Source/Dependencies/DirectXTex/lib/x64/Release/
 !/Engine/Source/Dependencies/Optick/lib/x64/debug/
 !/Engine/Source/Dependencies/Optick/lib/x64/release/
-!/Engine/Source/Dependencies/Wwise/x64_vc170/Debug
-!/Engine/Source/Dependencies/Wwise/x64_vc170/Release
-!/Engine/Source/Dependencies/Freetype/lib/Debug
-!/Engine/Source/Dependencies/Freetype/lib/Release
-
+!/Engine/Source/Dependencies/FMOD/api/core/lib/x64
+!/Engine/Source/Dependencies/FMOD/api/studio/lib/x64
 
 # IMGUI
 /Engine/Game/imgui.ini
@@ -419,3 +416,4 @@ FodyWeavers.xsd
 /Engine/Game/Scripting.dll
 /Engine/Game/userSettings.txt
 /Engine/Scripting/Output/*
+/Engine/Game/CoreLib.dll

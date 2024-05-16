@@ -18,21 +18,64 @@
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 #include "CameraComponent.h"
+#include "ButtonComponent.h"
 
 #include "Math/TransformOps.h"
 
 ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) 
 {
+	FillVBO();
+	CreateVAO();
+
+	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
 {
+	FillVBO();
+	CreateVAO();
+
     SetImage(mResourceId);
+	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
+	if (canvas!= nullptr)
+	mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+
+	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
+	if (component != nullptr) 
+	{
+		component->AddEventHandler(EventType::PRESS, std::bind(&ImageComponent::OnPress, this));
+		component->AddEventHandler(EventType::HOVER, std::bind(&ImageComponent::OnHover, this));
+		component->AddEventHandler(EventType::CLICK, std::bind(&ImageComponent::OnClick, this));
+	}*/
+}
+
+ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE)
+{
+	FillVBO();
+	CreateVAO();
+
+	mImage = original.mImage;
+	mResourceId = original.mResourceId;
+	mFileName = original.mFileName;
+
+	mColor = original.mColor;
+	mAlpha = original.mAlpha;
+	mHasAlpha = original.mHasAlpha;
+
+	mTexOffset = original.mTexOffset;
+	mHasDiffuse = original.mHasDiffuse;
+	mMantainRatio = original.mMantainRatio;
+
+	mQuadVBO = original.mQuadVBO;
+	mQuadVAO = original.mQuadVAO;
+
+	mCanvas = original.mCanvas;
 }
 
 ImageComponent:: ~ImageComponent() 
 {
 	CleanUp();
+	mCanvas = nullptr;
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
@@ -54,11 +97,11 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 	}
 
 	return nullptr; // No canvas found on parents
-}
+} 
 
 void ImageComponent::Draw()
 { 
-	if (mImage)
+	if (mImage && mCanvas)
 	{
 
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
@@ -76,19 +119,20 @@ void ImageComponent::Draw()
 		float4x4 model = float4x4::identity;
 		float4x4 view = float4x4::identity;
 
-		if (App->GetUI()->GetScreenSpace()) //Ortographic Mode
+		if (mCanvas->GetScreenSpace()) //Ortographic Mode
 		{
 			Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 			if (component != nullptr)
 			{
 				model = component->GetGlobalMatrix();
 
-				float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+				//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
 				float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
 				model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
 
 			}
+			glEnable(GL_CULL_FACE);
 		}
 		else //World Mode
 		{
@@ -97,10 +141,8 @@ void ImageComponent::Draw()
 			proj = camera->GetProjectionMatrix();
 			model = GetOwner()->GetWorldTransform();
 			view = camera->GetViewMatrix();
+			glDisable(GL_CULL_FACE);
 		}
-
-		FillVBO();
-		CreateVAO();
 
 		glBindVertexArray(mQuadVAO);
 
@@ -130,12 +172,14 @@ void ImageComponent::Draw()
 
 		glUseProgram(0);
 		glDisable(GL_BLEND);
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CCW);
 	}
 }
 
 Component* ImageComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new ImageComponent(*this, owner);
 }
 
 void ImageComponent::Save(Archive& archive) const
@@ -225,7 +269,7 @@ void ImageComponent::CreateVAO()
 void ImageComponent::ResizeByRatio()
 {
 	float originalRatio = mImage->GetWidth() / mImage->GetHeight() ;
-	if (App->GetUI()->GetScreenSpace()) //Ortographic Mode
+	if (mCanvas->GetScreenSpace()) //Ortographic Mode
 	{
 		Transform2DComponent* component = ((Transform2DComponent*)GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 		float currentRatio = component->GetSize().x / component->GetSize().y;

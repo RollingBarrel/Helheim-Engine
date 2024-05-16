@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "SDL.h"
-#include "imgui_impl_sdl2.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
 //#include "SDL_scancode.h"
@@ -77,7 +76,8 @@ update_status ModuleInput::PreUpdate(float dt)
 
     mMouseReceivedInput = false;
     unsigned int mouseBitmask = SDL_GetRelativeMouseState(&mMouseMotionX, &mMouseMotionY);
-    SDL_GetMouseState(&mMousePositionX, &mMousePositionY);
+    SDL_GetMouseState(&mMouseLocalPositionX, &mMouseLocalPositionY);
+	SDL_GetGlobalMouseState(&mMouseGlobalPositionX, &mMouseGlobalPositionY);
     for (int i = 0; i < MouseKey::NUM_MOUSE_BUTTONS; ++i)
     {
         unsigned int pressed = mouseBitmask & SDL_BUTTON(i + 1);
@@ -155,7 +155,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
-        ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+
         switch (sdlEvent.type)
         {
         case SDL_QUIT:
@@ -192,15 +192,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					LOG("No joysticks currently attached to the system. SDL_Error: %s\n", SDL_GetError());
 				}
 			}
-        case SDL_DROPFILE:
-            LOG("File droped: %s\n", sdlEvent.drop.file);
-            App->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
-            App->GetResource()->ImportFile(sdlEvent.drop.file);
-
-            App->GetFileSystem()->GetRootNode()->mChildren.clear();
-            App->GetFileSystem()->DiscoverFiles("Assets", App->GetFileSystem()->GetRootNode());
-            SDL_free(sdlEvent.drop.file);
-            break;
+			break;
         }
     }
 

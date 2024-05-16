@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "KeyboardKeys.h"
+#include "float2.h"
 
 #define NUM_CONTROLLER_BUTTONS 15
 #define NUM_CONTROLLER_AXIS 4
@@ -33,7 +34,7 @@ enum class KeyState : unsigned char
 	KEY_UP
 };
 
-enum MouseKey 
+enum MouseKey
 {
 	BUTTON_LEFT,
 	BUTTON_MIDDLE,
@@ -90,10 +91,10 @@ class ENGINE_API ModuleInput : public Module
 public:
 
 	ModuleInput();
-	~ModuleInput();
+	virtual ~ModuleInput();
 
 	bool Init() override;
-	update_status PreUpdate(float dt) override;
+	virtual update_status PreUpdate(float dt) override;
 	bool CleanUp() override;
 
 	KeyState GetKey(int id) const { return mKeyboard[id]; }
@@ -101,29 +102,32 @@ public:
 
 	KeyState GetMouseKey(MouseKey id) const { return mMouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
-	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
+	float2 GetLocalMousePosition() const { return float2(mMouseLocalPositionX, mMouseLocalPositionY); }
+	float2 GetGlobalMousePosition() const { return float2(mMouseGlobalPositionX, mMouseGlobalPositionY); }
 	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
 
 	ButtonState	GetGameControllerButton(int id) const { return mGameController.mButtons[id]; }
 	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }
 	AxisState GetGameControllerAxis(int id) const { return mGameController.mAxis[id]; }
-	int	GetGameControllerAxisValue(int id) const;											
-	int	GetGameControllerAxisRaw(int id) const;												
-	int	GetGameControllerAxisInput(int id) const;											
+	int	GetGameControllerAxisValue(int id) const;
+	int	GetGameControllerAxisRaw(int id) const;
+	int	GetGameControllerAxisInput(int id) const;
 	bool GetGameControllerReceivedInputs() const { return mGameControllerReceivedInput; }
 
 
 	void HandleGameControllerInput();
 
-private:
+protected:
 
 	KeyState mMouse[MouseKey::NUM_MOUSE_BUTTONS] = {};
 	KeyState* mKeyboard = 0;
 	int mMouseMotionX = 0;
 	int mMouseMotionY = 0;
-	int mMousePositionX = 0;
-	int mMousePositionY = 0;
+	int mMouseLocalPositionX = 0; //Local is the position inside the window and global the position relative to the desktop
+	int mMouseLocalPositionY = 0;
+	int mMouseGlobalPositionX = 0;
+	int mMouseGlobalPositionY = 0;
 
 	int mWheelY = 0;
 

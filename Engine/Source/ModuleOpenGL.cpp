@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
@@ -13,6 +15,7 @@
 #include "BatchManager.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ModuleFileSystem.h"
 
 #include "CameraComponent.h"
 
@@ -96,6 +99,7 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Initialize scene framebuffer
@@ -118,19 +122,53 @@ bool ModuleOpenGL::Init()
 		return false;
 	}
 	unsigned int att = GL_COLOR_ATTACHMENT0;
-	glDrawBuffers(1, &att);
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glDrawBuffers(1, &att);;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//InitializePrograms
-	mPbrProgramId = CreateShaderProgramFromPaths("PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl");
-	mSkyBoxProgramId = CreateShaderProgramFromPaths("skybox.vs", "skybox.fs");
-	mDebugDrawProgramId = CreateShaderProgramFromPaths("basicDebugShader.vs", "basicDebugShader.fs");
-	mUIImageProgramId = CreateShaderProgramFromPaths("ui.vs", "ui.fs");
+	const char* sourcesPaths[2] = { "PBRCT_VertexShader.glsl", "PBRCT_PixelShader.glsl" };
+	int sourcesTypes[2] = { GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
+	mPbrProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "skybox.vs";
+	sourcesPaths[1] = "skybox.fs";
+	mSkyBoxProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "CubeMap_VertexShader.glsl";
+	sourcesPaths[1] = "Environment_FragmentShader.glsl";
+	mEnvironmentProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "CubeMap_VertexShader.glsl";
+	sourcesPaths[1] = "Irradiance_FragmentShader.glsl";
+	mIrradianceProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "CubeMap_VertexShader.glsl";
+	sourcesPaths[1] = "SpecPreFilteredEnvFragment.glsl";
+	mSpecPrefilteredProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "SpecEnvBRDFFragment.glsl";
+	mSpecEnvBRDFProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "basicDebugShader.vs";
+	sourcesPaths[1] = "basicDebugShader.fs";
+	mDebugDrawProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "ui.vs";
+	sourcesPaths[1] = "ui.fs";
+	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "HighLight_Vertex.glsl";
+	sourcesPaths[1] = "HighLight_Fragment.glsl";
+	mHighLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "particle_vertex.glsl";
+	sourcesPaths[1] = "particle_fragment.glsl";
+	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "skinning.comp";
+	int computeType = GL_COMPUTE_SHADER;
+	mSkinningProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -139,12 +177,7 @@ bool ModuleOpenGL::Init()
 	InitSkybox();
 
 	//Lighting uniforms
-	unsigned int program = App->GetOpenGL()->GetPBRProgramId();
-	glUseProgram(program);
-	glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
-	glUseProgram(0);
-
-	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirAmb), &mDirAmb);
+	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirLight), &mDirLight);
 
 	const uint32_t numPointLights[4] = { mPointLights.size(), 0, 0, 0 };
 	mPointsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 0, 16, &numPointLights);
@@ -152,17 +185,22 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
+	//BakeIBL("Assets/Textures/skybox.hdr");
+	BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 	return true;
 }
 
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
+	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	
 	//Draw the skybox
-	if (mSkyBoxTexture != 0)
+	if (mEnvironmentTextureId != 0)
 	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 		glUseProgram(mSkyBoxProgramId);
 		glBindVertexArray(mSkyVao);
 		glDepthMask(GL_FALSE);
@@ -173,7 +211,8 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	//BakeIBL(L"Assets/Textures/skybox.hdr");
 
 	return UPDATE_CONTINUE;
 }
@@ -218,17 +257,53 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+
+
+void ModuleOpenGL::AddHighLight(GameObject* gameObject)
+{
+	if (!gameObject->IsRoot())
+	{
+		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		if (!meshComponents.empty())
+		{
+			mBatchManager.AddHighLight(meshComponents);
+		}
+	}
+}
+
+void ModuleOpenGL::RemoveHighLight(GameObject* gameObject)
+{
+	if (!gameObject->IsRoot())
+	{
+		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		if (!meshComponents.empty())
+		{
+			mBatchManager.RemoveHighLight(meshComponents);
+		}
+	}
+}
+
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
-	SetOpenGlCameraUniforms();
+	//SetOpenGlCameraUniforms();
 }
 
-void ModuleOpenGL::SceneFramebufferResized(unsigned width, unsigned height)
+void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height = 0)
 {
+	static unsigned sWidth = 1;
+	static unsigned sHeight = 1;
+	if (width == 0 && height == 0)
+	{
+		width = sWidth;
+		height = sHeight;
+	}
+	sWidth = width;
+	sHeight = height;
+
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
-	((CameraComponent*)App->GetCamera()->GetCurrentCamera())->SetAspectRatio((float)width / (float)height);
+	App->GetCamera()->SetAspectRatio((float)width / (float)height);
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -241,24 +316,40 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
 	if (mCameraUniBuffer != nullptr)
 	{
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+		const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-		glUseProgram(mPbrProgramId);
-		glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
-		glUseProgram(0);
+		if (camera)
+		{
+			mCameraUniBuffer->UpdateData(camera->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(camera->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			glUseProgram(mPbrProgramId);
+			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
+			glUseProgram(0);
+		}
+		else
+		{
+			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			glUseProgram(mPbrProgramId);
+			glUniform3fv(1, 1, float3::zero.ptr());
+			glUseProgram(0);
+		}
+		
 	}
 }
 
 //TODO: This should not be here, we need like a resource or importer
 #include "DirectXTex.h"
+#include <MathConstants.h>
 static unsigned int LoadCubeMap()
 {
 	unsigned int ret = 0;
 	DirectX::ScratchImage image;
 
-	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap2.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
-
+	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
+	
 	if (res == S_OK)
 	{
 		const DirectX::TexMetadata& metadata = image.GetMetadata();
@@ -284,7 +375,6 @@ static unsigned int LoadCubeMap()
 
 void ModuleOpenGL::InitSkybox()
 {
-	mSkyBoxTexture = LoadCubeMap();
 
 	float skyboxVertices[] = {
 	   -1.0f,  1.0f, -1.0f,
@@ -337,10 +427,6 @@ void ModuleOpenGL::InitSkybox()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mSkyBoxTexture);
-
 	glBindVertexArray(0);
 }
 
@@ -387,11 +473,13 @@ unsigned int ModuleOpenGL::CompileShader(unsigned type, const char* source) cons
 	return shaderID;
 }
 
-unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, unsigned fragmentShaderID) const
+unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned int* shaderIds, unsigned int numShaders) const
 {
 	unsigned int programID = glCreateProgram();
-	glAttachShader(programID, vertexShaderID);
-	glAttachShader(programID, fragmentShaderID);
+	for (unsigned int i = 0; i < numShaders; ++i)
+	{
+		glAttachShader(programID, shaderIds[i]);
+	}
 	glLinkProgram(programID);
 	int resolution;
 	glGetProgramiv(programID, GL_LINK_STATUS, &resolution);
@@ -408,34 +496,254 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromIDs(unsigned vertexShaderID, u
 			free(info);
 		}
 	}
-	glDeleteShader(vertexShaderID);
-	glDeleteShader(fragmentShaderID);
+	for (unsigned int i = 0; i < numShaders; ++i)
+	{
+		glDeleteShader(shaderIds[i]);
+	}
 	return programID;
 }
-unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char* vertexShaderPath, const char* fragmentShaderPath) const
+
+unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const
 {
-	std::string fullVertexShaderPath = "Assets/Shaders/" + std::string(vertexShaderPath);
-	std::string fullFragmentShaderPath = "Assets/Shaders/" + std::string(fragmentShaderPath);
-	char* vertexSource = LoadShaderSource(fullVertexShaderPath.c_str());
-	char* fragmentSource = LoadShaderSource(fullFragmentShaderPath.c_str());
-	unsigned vertexShaderID = CompileShader(GL_VERTEX_SHADER, vertexSource);
-	unsigned fragmentShaderID = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
-	free(vertexSource);
-	free(fragmentSource);
-	return CreateShaderProgramFromIDs(vertexShaderID, fragmentShaderID);
+	unsigned int* shaderIds = (unsigned int*)malloc(sizeof(unsigned int) * numShaderSources);
+	for (unsigned int i = 0; i < numShaderSources; ++i)
+	{
+		char* fullShaderPath = (char*)malloc(strlen(shaderNames[i]) + 16);
+		fullShaderPath[0] = '\0';
+		strcat(fullShaderPath, "Assets/Shaders/");
+		strcat(fullShaderPath, shaderNames[i]);
+		char* shaderSource = LoadShaderSource(fullShaderPath);
+		free(fullShaderPath);
+		//assert(App->GetFileSystem()->Exists(fullShaderPath));
+		shaderIds[i] = CompileShader(type[i], shaderSource);
+		free(shaderSource);
+	}
+	unsigned int ret = CreateShaderProgramFromIDs(shaderIds, numShaderSources);
+	free(shaderIds);
+	return ret;
 }
 
-//Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
-PointLightComponent* ModuleOpenGL::AddPointLight(const PointLight& pLight, GameObject* owner)
+void ModuleOpenGL::BakeEnvironmentBRDF(unsigned int width, unsigned int height)
 {
-	PointLightComponent* newComponent = new PointLightComponent(owner, pLight);
-	mPointLights.push_back(newComponent);
-	mPointsBuffer->PushBackData(&pLight, sizeof(pLight));
+	if (mEnvBRDFTexId != 0)
+		glDeleteTextures(1, &mEnvBRDFTexId);
+	glGenTextures(1, &mEnvBRDFTexId);
+	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, width, height, 0, GL_RG, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glUseProgram(mSpecEnvBRDFProgramId);
+	glViewport(0, 0, width, height);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mEnvBRDFTexId, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, unsigned int specEnvBRDFSize, unsigned int specPrefilteredSize)
+{
+	DirectX::ScratchImage image;
+
+	size_t size = strlen(hdrTexPath) + 1;
+	wchar_t* pathTex = new wchar_t[size];
+	size_t outSize;
+	mbstowcs_s(&outSize, pathTex, size, hdrTexPath, size - 1);
+
+	HRESULT res = DirectX::LoadFromHDRFile(pathTex, nullptr, image);
+	delete[] pathTex;
+
+	if (res == S_OK)
+	{
+		if (mIrradianceTextureId != 0)
+		{
+			//TODO: Not all must be deleted if separated from here
+			glDeleteTextures(1, &mIrradianceTextureId);
+			glDeleteTextures(1, &mEnvironmentTextureId);
+			glDeleteTextures(1, &mSpecPrefilteredTexId);
+			mIrradianceTextureId = 0;
+		}
+
+		const float3 front[6] = { float3::unitX, -float3::unitX, float3::unitY,
+							 -float3::unitY, float3::unitZ, -float3::unitZ };
+
+		const float3 up[6] = { -float3::unitY, -float3::unitY, float3::unitZ,
+						 -float3::unitZ, -float3::unitY, -float3::unitY };
+
+		Frustum frustum;
+		frustum.type = FrustumType::PerspectiveFrustum;
+		frustum.pos = float3::zero;
+		frustum.nearPlaneDistance = 0.1f;
+		frustum.farPlaneDistance = 100.0f;
+		frustum.verticalFov = pi / 2.0f;
+		frustum.horizontalFov = pi / 2.0f;
+
+		const unsigned int irradianceWidth = irradianceSize;
+		const unsigned int irradianceHeight = irradianceSize;
+		glGenTextures(1, &mEnvironmentTextureId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
+				GL_RGB, GL_FLOAT, nullptr);
+		}
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+		const DirectX::TexMetadata& metadata = image.GetMetadata();
+
+		glGenTextures(1, &mHDRTextureId);
+		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, metadata.width, metadata.height, 0, GL_RGBA, GL_FLOAT, image.GetPixels());
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+		glUseProgram(mEnvironmentProgramId);
+		//glUniform1i(glGetUniformLocation(mEnvironmentProgramId, "HDRImage"), 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
+
+		//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+		unsigned int frameBuffer;
+		glGenFramebuffers(1, &frameBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+		//int viewPortSize[4];
+		//glGetIntegerv(GL_VIEWPORT, viewPortSize);
+		glViewport(0, 0, irradianceWidth, irradianceHeight);
+		glDepthMask(GL_FALSE);
+		glBindVertexArray(mSkyVao);
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mEnvironmentTextureId, 0);
+
+			frustum.front = front[i];
+			frustum.up = up[i];
+
+			glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
+			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+
+		glUseProgram(mIrradianceProgramId);
+		glUniform1ui(5, irradianceSize);
+		glGenTextures(1, &mIrradianceTextureId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
+				GL_RGB, GL_FLOAT, nullptr);
+		}
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+		for (unsigned int i = 0; i < 6; ++i)
+		{
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mIrradianceTextureId, 0);
+
+			frustum.front = front[i];
+			frustum.up = up[i];
+
+			glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
+			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
+		//Specular IBL
+		const unsigned int specWidth = specPrefilteredSize;
+		const unsigned int specHeight = specPrefilteredSize;
+		glGenTextures(1, &mSpecPrefilteredTexId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
+
+		for (int i = 0; i < 6; ++i)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, specWidth, specHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+		}
+		int numMipMaps = int(log(float(specWidth)) / log(2.0f));
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMipMaps);
+		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+		glUseProgram(mSpecPrefilteredProgramId);
+		glUniform1ui(5, specWidth);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+		for (int currMipMap = 0; currMipMap <= numMipMaps; ++currMipMap)
+		{
+			float roughness = (static_cast<float>(currMipMap) / static_cast<float>(numMipMaps - 1));
+			glUniform1f(3, roughness);
+			float coolMath = specWidth * pow(0.5f, currMipMap);
+			glViewport(0, 0, coolMath, coolMath);
+			// Render each cube plane
+			for (unsigned int i = 0; i < 6; ++i)
+			{
+				// TODO: Draw UnitCube using prefiltered environment map shader and roughness
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mSpecPrefilteredTexId, currMipMap);
+
+				frustum.front = front[i];
+				frustum.up = up[i];
+
+				glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
+				glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
+		}
+		
+		static unsigned int sizeX = 0;
+		static unsigned int sizeY = 0;
+		if (mEnvBRDFTexId == 0 || sizeX != specEnvBRDFSize || sizeY != specEnvBRDFSize)
+		{
+			sizeX = specEnvBRDFSize;
+			sizeY = specEnvBRDFSize;
+			BakeEnvironmentBRDF(specEnvBRDFSize, specEnvBRDFSize);
+		}
+
+		glUseProgram(0);
+		glBindVertexArray(0);
+		glDepthMask(GL_TRUE);
+
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
+		//glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDeleteFramebuffers(1, &frameBuffer);
+		glDeleteTextures(1, &mHDRTextureId);
+
+		glUseProgram(mPbrProgramId);
+		glUniform1ui(glGetUniformLocation(mPbrProgramId, "numLevels"), numMipMaps);
+		glUniform1i(glGetUniformLocation(mPbrProgramId, "prefilteredIBL"), 5);
+		glUniform1i(glGetUniformLocation(mPbrProgramId, "diffuseIBL"), 6);
+		glUniform1i(glGetUniformLocation(mPbrProgramId, "environmentBRDF"), 7);
+		glUseProgram(0);
+		SceneFramebufferResized();
+	}
+
+}
+
+
+//Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
+void ModuleOpenGL::AddPointLight(const PointLightComponent& component)
+{
+	mPointLights.push_back(&component);
+	mPointsBuffer->PushBackData(&component.GetData(), sizeof(PointLight));
 	uint32_t size = mPointLights.size();
-	newComponent->SetIntensity(pLight.col[3]);
-	newComponent->SetRadius(pLight.pos[3]);
 	mPointsBuffer->UpdateData(&size, sizeof(size), 0);
-	return newComponent;
 }
 
 void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
@@ -444,7 +752,7 @@ void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
 	{
 		if (mPointLights[i] == &cPointLight)
 		{
-			mPointsBuffer->UpdateData(&mPointLights[i]->mData, sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			mPointsBuffer->UpdateData(&mPointLights[i]->GetData(), sizeof(mPointLights[i]->GetData()), 16 + sizeof(mPointLights[i]->GetData()) * i);
 			return;
 		}
 	}
@@ -454,10 +762,10 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (mPointLights[i] == &cPointLight)
+		if (mPointLights[i]->GetID() == cPointLight.GetID())
 		{
 			mPointLights.erase(mPointLights.begin() + i);
-			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->mData), 16 + sizeof(mPointLights[i]->mData) * i);
+			mPointsBuffer->RemoveData(sizeof(mPointLights[i]->GetData()), 16 + sizeof(mPointLights[i]->GetData()) * i);
 			uint32_t size = mPointLights.size();
 			mPointsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
@@ -483,29 +791,36 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
 void ModuleOpenGL::Draw()
 {
 	BindSceneFramebuffer();
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
 	mBatchManager.Draw();
+	glActiveTexture(GL_TEXTURE0);
+	for (auto partSys : mParticleSystems)
+	{
+		partSys->Draw();
+	}
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
-SpotLightComponent* ModuleOpenGL::AddSpotLight(const SpotLight& sLight, GameObject* owner)
+void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 {
-	SpotLightComponent* newComponent = new SpotLightComponent(owner, sLight);
-	mSpotLights.push_back(newComponent);
-	mSpotsBuffer->PushBackData(&sLight, sizeof(sLight));
+	mSpotLights.push_back(&component);
+	mSpotsBuffer->PushBackData(&component.GetData(), sizeof(SpotLight));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
-	newComponent->SetIntensity(sLight.pos[3]);
-	newComponent->SetRadius(sLight.radius);
-	return newComponent;
 }
 
 void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 {
 	for (int i = 0; i < mSpotLights.size(); ++i)
 	{
-		if (mSpotLights[i] == &cSpotLight)
+		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
-			mSpotsBuffer->UpdateData(&mSpotLights[i]->mData, sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			mSpotsBuffer->UpdateData(&mSpotLights[i]->GetData(), sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
 			return;
 		}
 	}
@@ -515,10 +830,10 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 {
 	for (int i = 0; i < mSpotLights.size(); ++i)
 	{
-		if (mSpotLights[i] == &cSpotLight)
+		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
 			mSpotLights.erase(mSpotLights.begin() + i);
-			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->mData), 16 + sizeof(mSpotLights[i]->mData) * i);
+			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
@@ -651,4 +966,15 @@ void OpenGLBuffer::RemoveData(unsigned int dataSize, unsigned int offset)
 	glBindBuffer(GL_COPY_WRITE_BUFFER, mIdx);
 	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, mDataSize);
 	glDeleteBuffers(1, &tmp);
+}
+
+void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component)
+{
+	for (int i = 0; i < mParticleSystems.size(); ++i)
+	{
+		if (mParticleSystems[i] == component)
+		{
+			mParticleSystems.erase(mParticleSystems.begin() + i);
+		}
+	}
 }

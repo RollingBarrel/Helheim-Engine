@@ -3,11 +3,13 @@
 
 class ResourceTexture;
 class ModuleResource;
+class CanvasComponent;
 
-class ImageComponent : public Component
+class ENGINE_API ImageComponent : public Component
 {
 public:
     ImageComponent(GameObject* owner);
+    ImageComponent(const ImageComponent& original, GameObject* owner);
     ImageComponent(GameObject* owner, bool active);
     ~ImageComponent();
 
@@ -42,7 +44,7 @@ public:
 
 private:
     ResourceTexture* mImage = nullptr;
-    unsigned int mResourceId = 1220566130;
+    unsigned int mResourceId = 148626881; // Default white texture
 
     //TODO: Handle filename when setting the image
     const char* mFileName = nullptr;
@@ -57,4 +59,6 @@ private:
 
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;
+
+    CanvasComponent* mCanvas = nullptr;
 };

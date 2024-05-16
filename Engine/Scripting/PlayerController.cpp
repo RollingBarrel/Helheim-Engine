@@ -1,505 +1,528 @@
-#include "pch.h"
 #include "PlayerController.h"
-#include <utility>
-#include <limits.h>
-#include "Globals.h"
-#include "GameObject.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleWindow.h"
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
+#include "Geometry/Plane.h"
 #include "AnimationComponent.h"
-#include "Geometry/Ray.h"
+#include "AudioSourceComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
-#include <ScriptComponent.h>
+#include "SliderComponent.h"
+#include "Physics.h"
+#include "ObjectPool.h"
+#include "GameManager.h"
+
 
 CREATE(PlayerController)
 {
     CLASS(owner);
-    SEPARATOR("STATS");
-    MEMBER(MemberType::INT, mHealth);
-    MEMBER(MemberType::INT, mShield);
-    MEMBER(MemberType::INT, mSanity);
+    MEMBER(MemberType::GAMEOBJECT, mGameManagerGO);
 
+    SEPARATOR("STATS");
+    MEMBER(MemberType::FLOAT, mMaxHealth);
+    MEMBER(MemberType::FLOAT, mMaxShield);
+    MEMBER(MemberType::FLOAT, mMaxSanity);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
-    MEMBER(MemberType::FLOAT, mPlayerRotationSpeed);
+
+    SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashSpeed);
     MEMBER(MemberType::FLOAT, mDashDistance);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
-    MEMBER(MemberType::INT, mDashCharges);
+    MEMBER(MemberType::INT, mMaxDashCharges);
 
-    SEPARATOR("GAME OBJECTS");
-    MEMBER(MemberType::GAMEOBJECT, mWinArea);
-    MEMBER(MemberType::GAMEOBJECT, mLoseArea);
+    SEPARATOR("MELEE ATTACK");
+    MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
+    MEMBER(MemberType::FLOAT, mMinMeleeChargeTime);
+    MEMBER(MemberType::FLOAT, mMaxMeleeChargeTime);
+    MEMBER(MemberType::FLOAT, mMeleeChargeAttackMultiplier);
+
+    SEPARATOR("RANGE ATTACK");
+    MEMBER(MemberType::FLOAT, mRangeBaseDamage);
+    MEMBER(MemberType::FLOAT, mFireRate);
+    MEMBER(MemberType::INT, mAmmoCapacity);
+    MEMBER(MemberType::FLOAT, mMinRangeChargeTime);
+    MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);
+    MEMBER(MemberType::FLOAT, mRangeChargeAttackMultiplier);
+    
+    SEPARATOR("ANIMATION");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
+
+    SEPARATOR("HUD");
+    MEMBER(MemberType::GAMEOBJECT, mHealthGO);
+    MEMBER(MemberType::GAMEOBJECT, mDashGO_1);
+    MEMBER(MemberType::GAMEOBJECT, mDashGO_2);
+    MEMBER(MemberType::GAMEOBJECT, mDashGO_3);
+
+    SEPARATOR("DEBUG MODE");
+    MEMBER(MemberType::BOOL, mGodMode);
+
+    SEPARATOR("WIN AREA");
+    MEMBER(MemberType::GAMEOBJECT, mWinArea);
+    SEPARATOR("AUDIO");
+    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
+    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
+
+    SEPARATOR("BULLET POOL");
+    MEMBER(MemberType::GAMEOBJECT, mBulletPoolHolder);
+
     END_CREATE;
 }
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
-    mCurrentState = PlayerState::Idle;
-    mPreviousState = mCurrentState;
 }
 
 void PlayerController::Start()
 {
-    mNavMeshControl = App->GetScene()->GetNavController();
+    if (mGameManagerGO)
+    {
+        ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
+        mGameManager = (GameManager*)script->GetScriptInstance();
+    }
+    mDashCharges = mMaxDashCharges;
+    mBullets = mAmmoCapacity;
+    mHealth = mMaxHealth;
+    mShield = mMaxShield;
+    mSanity = mMaxSanity;
+
+    if (mHealthGO != nullptr) mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+    if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
+    if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
+    if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
 
     if (mAnimationComponentHolder) 
     {
         mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
         mAnimationComponent->OnStart();
+        mAnimationComponent->SetIsPlaying(true);
+
+        //Redefine player animation clips
+        mAnimationComponent->SetCurrentClip(0);
+        mAnimationComponent->SetStartTime(0.0f);
+        mAnimationComponent->SetEndTime(1.9f);
+        mAnimationComponent->SetCurrentClip(1);
+        mAnimationComponent->SetStartTime(1.9f);
+        mAnimationComponent->SetEndTime(2.9f);
+           
+        //Set to idle
+        mAnimationComponent->SetCurrentClip(0);
+
+
+
     }
-   
+
+    if (mFootStepAudioHolder)
+    {
+        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+
+    if (mGunfireAudioHolder)
+    {
+        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+    if (mBulletPoolHolder)
+    {
+        mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    }
 }
 
 
 void PlayerController::Update()
 {
-    //Sanity();
-    ChangeState(PlayerState::Dash);
-    Controls();
-    CheckRoute();
-   
-    WinTest();
-    LoseTest();
+    CheckDebugOptions();
+    UpdateHealth();
+    UpdateBattleSituation();
+    RechargeDash();
 
-    if (mAnimationComponent) 
+    switch (mCurrentState)
     {
-        mAnimationComponent->OnUpdate();
+    case PlayerState::IDLE:
+        if ((!mVictory) || (!mGameOver))
+        {
+            Idle();
+            if (mAnimationComponent)
+            {
+                mAnimationComponent->SetCurrentClip(0);
+            }
+
+        }
+        break;
+    case PlayerState::DASH:
+        Dash();
+        break;
+    case PlayerState::MOVE:
+        Moving();
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SetCurrentClip(1);
+        }
+        break;
+    case PlayerState::ATTACK:
+        Attack();
+        break;
+    case PlayerState::MOVE_ATTACK:
+        Moving();
+        Attack();
+        break;
+    case PlayerState::DEATH:
+        Death();
+        break;
     }
-}
 
-//Change actual animation state of the player
-void PlayerController::ChangeState(PlayerState newState) 
-{
-    mPreviousState = mCurrentState;
-    mCurrentState = newState;
-    StateMachine();
-}
+    HandleRotation();
 
-//Shows actual animation state of the player
-void PlayerController::StateMachine() 
-{
-    switch (mCurrentState) 
+    if (mWinArea)
     {
-        case PlayerState::Idle:
-            //LOG("Idle animation");
-            break;
-        case PlayerState::Dash:
-            Dash();
-            break;
-        case PlayerState::Forward:
-            Forward();
-            break;
-        case PlayerState::Backward:
-            Backward();
-            break;
-        case PlayerState::Left:
-            Left();
-            break;
-        case PlayerState::Right:
-            Right();
-            break;
-        case PlayerState::MeleeAttack:
-            MeleeAttack();
-            break;
-        case PlayerState::RangedAttack:
-            RangedAttack();
-            break;
-        case PlayerState::Reload:
-            Reload();
-            break;
-        case PlayerState::ThrowGrenade:
-            ThrowGrenade();
-            break;
-        /*
-        case PlayerState::Injured:
-            Injured();
-            break;
-        */
-        case PlayerState::Death:
-            Death();
-            break;
+        if (mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
+        {
+            mGameManager->WinScreen();
+        }
     }
+
+
+    Loading();
 }
 
-void PlayerController::Controls() 
+void PlayerController::Idle()
 {
-    Mouse_Rotation();
+
+    if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
+    {
+        mWeapon = (mWeapon == Weapon::RANGE) ? Weapon::MELEE : Weapon::RANGE;
+        
+        if (mWeapon == Weapon::RANGE)
+        {
+            LOG("Range");
+        } 
+        else 
+        {
+            LOG("Melee");
+        }
+    }
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && mDashCharges > 0)
+    {
+        mCurrentState = PlayerState::DASH;
+    }
+    else 
+    {
+
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        {
+            mCurrentState = PlayerState::MOVE;
+        }
+        else
+        {
+            mCurrentState = PlayerState::IDLE;
+        }
+
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+        {
+            if (mCurrentState == PlayerState::MOVE)
+            {
+                mCurrentState = PlayerState::MOVE_ATTACK;
+            }
+            else
+            {
+                mCurrentState = PlayerState::ATTACK;
+            }
+        }
+    }  
+}
+
+void PlayerController::Moving()
+{
 
     bool anyKeyPressed = false;
     
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
-        ChangeState(PlayerState::Forward);
-        mIsMoving = true;
+        Move(float3::unitZ);
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) 
+    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
-        ChangeState(PlayerState::Backward);
-        mIsMoving = true;
+        Move(-float3::unitZ);
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT) 
+    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        ChangeState(PlayerState::Left);
-        mIsMoving = true;
+        Move(float3::unitX);
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) 
+    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        ChangeState(PlayerState::Right);
-        mIsMoving = true;
-        anyKeyPressed = true;
-    }
- 
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mStartCounter)
-    {
-        mIsDashActive = true;
+        Move(-float3::unitX);
         anyKeyPressed = true;
     }
 
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+    // Hardcoded play-step-sound solution: reproduce every second 
+    // TODO play sound according the animation
+    if (anyKeyPressed)
     {
-        ChangeState(PlayerState::MeleeAttack);
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-    {
-        mChargedShotTime += App->GetGameDt();
-        if (mChargedShotTime > 5) {
-			mIsChargedShot = true;
-		}
-		else 
+        if (!mReadyToStep)
         {
-			mIsChargedShot = false;
-		}
-        ChangeState(PlayerState::RangedAttack);
-        anyKeyPressed = true;
-    }
-    else 
-    {
-        mChargedShotTime = 0;
-        mIsChargedShot = false;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN)
-    {
-        ChangeState(PlayerState::Reload);
-        anyKeyPressed = true;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN) 
-    {
-        ChangeState(PlayerState::ThrowGrenade);
-        anyKeyPressed = true;
-    }
-
-    //*******************************************************************************
-    // DAMAGE TEST
-    if (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN) 
-    {
-        SetPlayerDamage(5);
-    }
-    //*******************************************************************************
-
-    if (!anyKeyPressed) 
-    {
-        mIsMoving = false;
-        ChangeState(PlayerState::Idle);
-    }
-}
-
-void PlayerController::Forward() 
-{
-    //LOG("Forward animation");
-    Move(mGameObject->GetFront());
-}
-
-void PlayerController::Backward() 
-{
-    //LOG("Backward animation");
-    Move(mGameObject->GetFront() * -1);
-}
-
-void PlayerController::Left() 
-{
-    //LOG("Left animation");
-    Move(mGameObject->GetRight());
-}
-
-void PlayerController::Right() 
-{
-    //LOG("Right animation");
-    Move(mGameObject->GetRight() * -1);
-}
-
-void PlayerController::Move(float3 direction) 
-{
-    float3 newPos = (mGameObject->GetPosition() + direction * App->GetGameDt() * mPlayerSpeed);
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-}
-
-void PlayerController::Mouse_Rotation() 
-{
-        int mX, mY;
-        App->GetInput()->GetMouseMotion(mX, mY);
-        float3 rotation = { 0.0f, DegToRad(mX * mPlayerRotationSpeed), 0.0f };
-        mGameObject->SetRotation(rotation+ mGameObject->GetRotation());
-}
-
-void PlayerController::Dash()
-{
-    if (mIsDashActive)
-    {
-        if (mDashCharges >= 0) 
-        {
-            //LOG("Dash animation");
-
-            if (mDashTrigger == false) {
-                mDashCharges -= 1;
-             
-                /*
-                if (mDashCharges == 0) {
-                    mDashCharges = 0;
-                }
-                */
-                LOG("Dash Charges:  %i", mDashCharges);
-
-                mDashTrigger = true;
-            }
-
-            if (mDashMovement >= mDashDistance)
+            mStepTimePassed += App->GetDt();
+            if (mStepTimePassed >= mStepCoolDown)
             {
-                mStartCounter = false;
-                mDashMovement = 0;
-                mIsDashActive = false;
-                mDashTrigger = false;
-            }
-            if (mStartCounter)
-            {
-                mDashTimePassed += App->GetGameDt();
-                if (mDashTimePassed >= mDashCoolDown)
-                {
-                    mDashTimePassed = 0;
-                    mStartCounter = true;
-                }
-            }
-            else
-            {
-                mDashMovement += mDashSpeed * App->GetGameDt();
-                //mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mDashSpeed * App->GetGameDt());
-                float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
-                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-            }
-        }
-    }
-}
-
-/*
-void PlayerController::Dash()
-{
-    if (mIsDashActive)
-    {
-        LOG("Dash animation");
-
-        if (mDashMovement >= mDashDistance)
-        {
-            mStartCounter = false;
-            mDashMovement = 0;
-            mIsDashActive = false;
-        }
-        if (mStartCounter)
-        {
-            mDashTimePassed += App->GetGameDt();
-            if (mDashTimePassed >= mDashCoolDown)
-            {
-                mDashTimePassed = 0;
-                mStartCounter = true;       
+                mStepTimePassed = 0;
+                mStepTimePassed = false;
+                mReadyToStep = true;
             }
         }
         else
         {
-            mDashMovement += mDashSpeed * App->GetGameDt();
-            //mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mDashSpeed * App->GetGameDt());
-            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * App->GetGameDt() * mDashSpeed);
-            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+            mFootStepAudio->PlayOneShot();
+            mReadyToStep = false;
+        }
+    }
+
+    Idle();
+}
+
+void PlayerController::Move(float3 direction) 
+{
+    float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
+    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+}
+
+void PlayerController::HandleRotation()
+{
+    std::map<float, Hit> hits;
+    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+    Ray ray = Physics::ScreenPointToRay(mousePosition);
+    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
+    
+    float distance;
+    bool intersects = plane.Intersects(ray, &distance);
+    float3 hitPoint = ray.GetPoint(distance);
+    if (intersects)
+    {
+        float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
+        mGameObject->LookAt(target);
+    }
+
+}
+
+
+void PlayerController::Dash()
+{
+    if (mDashMovement >= mDashDistance)
+    {
+        mIsDashCoolDownActive = false;
+        mDashMovement = 0;
+        mDashCharges -= 1;
+        LOG("Dash Charges:  %i", mDashCharges);
+        Idle();
+    }
+    else
+    {
+        if (mIsDashCoolDownActive)
+        {
+            mDashTimePassed += App->GetDt();
+            if (mDashTimePassed >= mDashCoolDown)
+            {
+                mDashTimePassed = 0;
+                mIsDashCoolDownActive = true;
+            }
+        }
+        else
+        {
+            float3 dashDirection = float3::zero;
+            if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+            {
+                dashDirection += float3::unitZ;
+            }
+            if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+            {
+                dashDirection -= float3::unitZ;
+            }
+            if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+            {
+                dashDirection += float3::unitX;
+            }
+            if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+            {
+                dashDirection -= float3::unitX;
+            }
+
+            if (dashDirection.Dot(dashDirection) > 0.0f) 
+            {
+                dashDirection.Normalize();  
+
+                float3 newPos = (mGameObject->GetPosition() + dashDirection * App->GetDt() * mDashSpeed);
+                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+
+                mDashMovement += mDashSpeed * App->GetDt();
+            }
         }
     }
 }
-*/
 
-void PlayerController::MeleeAttack() 
+   
+
+void PlayerController::Attack()
 {
-    if (mIsMoving == false) 
+
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_UP)
     {
-        LOG("Melee attack animation");
+        mIsChargedAttack = true;
     }
     else 
     {
-        switch (mPreviousState) 
-        {
-            case PlayerState::Forward:
-                LOG("Forward while melee animation");
-                break;
-            case PlayerState::Backward:
-                LOG("Backward while melee animation");
-                break;
-            case PlayerState::Left:
-                LOG("Left while melee animation");
-                break;
-            case PlayerState::Right:
-                LOG("Right while melee animation");
-                break;
-        }
+        mIsChargedAttack = false;
     }
 
+    switch (mWeapon)
+    {
+    case Weapon::RANGE:
+        RangedAttack();
+        break;
+    case Weapon::MELEE:
+        MeleeAttack();
+        break;
+    }
+
+    Idle();
+}
+
+
+void PlayerController::MeleeAttack() 
+{
     ModuleScene* scene = App->GetScene();
     std::vector<GameObject*> Enemies;
 
-    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("Enemy")->GetID(), Enemies);
-    //player position
+    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
     float3 playerPosition = mGameObject->GetPosition();
+
     // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
     for (auto enemy : Enemies)
     {
-        // Componente de malla del enemigo
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
-
-        // Posición del enemigo
         float3 enemyPosition = enemy->GetPosition();
-        // Distancia entre el jugador y el enemigo
         float distanceToEnemy = (enemyPosition - playerPosition).Length();
-        float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
         float3 enemyToPlayer = (playerPosition - enemyPosition).Normalized();
 
         // Si el enemigo está frente al jugador y dentro del rango de ataque
-        float3 playerFront = float3(mGameObject->GetFront().x, mGameObject->GetFront().y, mGameObject->GetFront().z);
+        float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
         float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
 
         if (distanceToEnemy < 2.0f && dotProduct < 0)
         {
-
-            EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (enemyScript != nullptr) 
-            {
-                enemyScript->SetEnemyDamage(mDamage);
-            }
-            else {
-                EnemyRobot* enemyScript = (EnemyRobot*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-                if (enemyScript != nullptr) 
-                {
-                    enemyScript->SetEnemyDamage(mDamage);
-                }
-            }
+            Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+            enemyScript->TakeDamage(mMeleeBaseDamage);
+            enemyScript->PushBack();
         }
     }
 }
 
-void PlayerController::RangedAttack() {
-    if (mIsMoving == false) {
-        LOG("Range attack animation");
-    }
-    else
+void PlayerController::RangedAttack() 
+{
+    if (mIsChargedAttack) 
     {
-        switch (mPreviousState) {
-        case PlayerState::Forward:
-            LOG("Forward while ranged animation");
-            break;
-        case PlayerState::Backward:
-            LOG("Backward while ranged animation");
-            break;
-        case PlayerState::Left:
-            LOG("Left while ranged animation");
-            break;
-        case PlayerState::Right:
-            LOG("Right while ranged animation");
-            break;
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+        {
+            mChargedTime += App->GetDt();
+            LOG("Charged Time: %f ", mChargedTime);
         }
-    }
+        else if (mChargedTime >= mMinRangeChargeTime)
+        {
+            mChargedTime = Min(mMaxRangeChargeTime, mChargedTime);
+            float totalDamage;
 
-    Shoot(mIsChargedShot, mChargedShotTime);
-
-}
-
-
-void PlayerController::Shoot(bool isChargedShot, float chargeTime)
-{
-    if (isChargedShot) {
-        //definir que el maximo del tiempo de carga es 20 segundos y el minimo 5 segundos
-        if (chargeTime > 20) chargeTime = 20;
-
-        int mDamage = chargeTime * 5;
-        int bulletCost = chargeTime * mBulletCostPerSecond;
-        if (mBullets >= bulletCost) {
-            ShootLogic(mDamage);
-            mBullets -= bulletCost;
-            LOG("Charged shot fired. Damage:  %i", mDamage);
+            int bulletCost = static_cast<int>(mChargedTime * mFireRate);
+            if (mBullets >= bulletCost)
+            {
+                totalDamage = mChargedTime * mRangeBaseDamage * mRangeChargeAttackMultiplier;
+                Shoot(totalDamage);
+                mBullets -= bulletCost;
+                
+            }
+            else
+            {
+                totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
+                mBullets = 0;
+            }
+            mGunfireAudio->PlayOneShot();
+            mChargedTime = 0.0f;
+            LOG("Charged shot fired. Damage:  %f", totalDamage);
             LOG("Bullets:  %i", mBullets);
+
         }
-        else {
-            LOG("Not enough bullets to fire charged shot.");
+        else
+        {
+            mChargedTime = 0.0f;
         }
     }
-    else {
-        if (mBullets > 0) {
-            ShootLogic(mDamage);
-            mBullets--;
-            if (mBullets == 0) {
-                // Lógica para entrar en el estado de recarga
-                LOG("Out of bullets! Cannot shoot.");
+    else 
+    {
+        if (mBullets > 0) 
+        {  
+            if (startingTime > mFireRate)
+            {
+                mGunfireAudio->PlayOneShot();
+                startingTime = 0.0f;         
+                Shoot(mRangeBaseDamage);
+                mBullets -= static_cast<int>(mFireRate) + 1;
+                LOG("Basic shoot fire. Remining Bullets %i", mBullets);             
             }
-            else {
-                // Lógica para regresar al estado de reposo
-                LOG("Basic shoot fire. Remining Bullets %i", mBullets);
-            }
+            startingTime += App->GetDt();
         }
-        else {
-            LOG("Out of bullets! Cannot shoot.");
+        else
+        {
+            LOG("Out of bullets! Reload.");
+            Reload();
         }
     }
 }
 
 
-void PlayerController::ShootLogic(int damage)
+void PlayerController::Shoot(float damage)
 {
-    std::map<float, GameObject*> hits;
 
+    //request a bullet from the object pool
+    bullet = mBulletPool->GetPooledObject();
+
+    if (bullet != nullptr)
+    {
+        //  bullet->Update();
+        bullet->SetEnabled(true);
+        bullet->SetPosition(mGameObject->GetPosition() + float3(0.f, 1.0f, 0.f));
+        bullet->SetRotation(mGameObject->GetRotation());
+    }
+
+    std::map<float, Hit> hits;
+    
     Ray ray;
     ray.pos = mGameObject->GetPosition();
+    ray.pos.y++;
     ray.dir = mGameObject->GetFront();
-
+    
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
-
-    Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
-
-    //log the first object hit by the ray
-    if (!hits.empty()) {
-        LOG("Object %s dhas been hit at distance: %f", hits.begin()->second->GetName().c_str(), hits.begin()->first);
-        //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
-        for (auto hit : hits) {
-            if (hit.second->GetTag()->GetName() == "Enemy") {
-
-                EnemyExplosive* enemyScript = (EnemyExplosive*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-                if (enemyScript != nullptr) {
-					enemyScript->SetEnemyDamage(damage);
-				}
-                else {
-					EnemyRobot* enemyScript = (EnemyRobot*)((ScriptComponent*)hit.second->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-                    if (enemyScript != nullptr) {
-						enemyScript->SetEnemyDamage(damage);
-					}
-                }
+    
+    if (!hits.empty()) 
+    {
+        for (const std::pair<float, Hit>& hit : hits)
+        {
+            if (hit.second.mGameObject->GetTag()->GetName() == "Enemy") 
+            {
+                LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
+    
+                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+                if (enemy)
+                {
+                    enemy->TakeDamage(damage);
+                }   
             }
         }
     }
@@ -507,159 +530,189 @@ void PlayerController::ShootLogic(int damage)
 
 void PlayerController::Reload()
 {
-    mBullets = mMaxBullets;
+    mBullets = mAmmoCapacity;
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
 
-void PlayerController::ReloadWeapon()
+void PlayerController::TakeDamage(float damage) 
 {
-    if (mIsMoving == false) {
-        LOG("Reloading animation");
-    }
-    else {
-        switch (mPreviousState) {
-        case PlayerState::Forward:
-            LOG("Forward while reloading animation");
-            break;
-        case PlayerState::Backward:
-            LOG("Backward while reloading animation");
-            break;
-        case PlayerState::Left:
-            LOG("Left while reloading animation");
-            break;
-        case PlayerState::Right:
-            LOG("Right while reloading animation");
-            break;
-        }
-    }
+    if (mDashMovement == 0) 
+    {    
+        mShield -= damage;
+        float remainingDamage = -mShield;
+        mShield = Min(mShield, 0.0f);
+            
+        if (remainingDamage > 0)
+        {
+            mHealth -= remainingDamage;
 
-}
-
-void PlayerController::ThrowGrenade() {
-    if (mIsMoving == false) {
-        LOG("Throw Grenade animation");
-    }
-    else {
-        switch (mPreviousState) {
-            case PlayerState::Forward:
-                LOG("Forward while throwing grenade animation");
-                break;
-            case PlayerState::Backward:
-                LOG("Backward while throwing grenade animation");
-                break;
-            case PlayerState::Left:
-                LOG("Left while throwing grenade animation");
-                break;
-            case PlayerState::Right:
-                LOG("Right while throwing grenade animation");
-                break;
-        }
-    }
-
-    //CREATE GRENADE PROJECTILE CODE (If hits enemy = explode, if not, explode after some seconds)
-
-}
-
-void PlayerController::SetPlayerDamage(int damage) {
-    if (mIsDashActive == false) {
-        if (ShieldDamage(damage) == 0) {
-            if (mHealth > 0) {
-                mHealth -= damage;
+            if (mHealth <= 0.0f && !mGodMode)
+            {
+                mCurrentState = PlayerState::DEATH;
             }
-            else {
-                mHealth = 0;
-                ChangeState(PlayerState::Death);
-            }
-        }
+        }    
     } 
 }
 
-bool PlayerController::ShieldDamage(int damage) {
-    if (mShield > 0) {
-        mShield -= damage;
+
+
+void PlayerController::RechargeDash()
+{
+
+    static float actualRegenerationTime = 0.0f;
+
+    if (mDashCharges < mMaxDashCharges)
+    {
+        actualRegenerationTime += App->GetDt();
+
+        if (actualRegenerationTime >= mDashChargeRegenerationTime)
+        {
+            mDashCharges++;
+            actualRegenerationTime = 0.0f;
+            LOG("%i", mDashCharges);
+        }
     }
-    else {
-        mShield = 0;
+
+    // HUD
+    if (mDashSlider_1 == nullptr || mDashSlider_2 == nullptr || mDashSlider_3 == nullptr) return;
+    if (mDashCharges == 0) 
+    {
+        mDashSlider_1->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
+        mDashSlider_2->SetFillPercent(0);
+        mDashSlider_3->SetFillPercent(0);
+    }
+    else if (mDashCharges == 1) 
+    {
+        mDashSlider_1->SetFillPercent(1);
+        mDashSlider_2->SetFillPercent(actualRegenerationTime/mDashChargeRegenerationTime);
+        mDashSlider_3->SetFillPercent(0);
+    } 
+    else if (mDashCharges == 2) 
+    {
+        mDashSlider_1->SetFillPercent(1);
+        mDashSlider_2->SetFillPercent(1);
+        mDashSlider_3->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
+    }
+    else 
+    {
+        mDashSlider_1->SetFillPercent(1);
+        mDashSlider_2->SetFillPercent(1);
+        mDashSlider_3->SetFillPercent(1);
     }
     
-    LOG("Shield: %u", mShield);
-    LOG("Player Health: %u", mHealth);
-    
-    return mShield;
 }
 
-void PlayerController::Sanity() {
-
-}
-
-void PlayerController::Death() {
+void PlayerController::Death() 
+{
     mPlayerIsDead = true;
-    LOG("Death animation");
-   
-    LoseMessage();
+    mGameManager->LoseScreen();
 }
 
-//Returns if player is dead for the Game Manager
-bool PlayerController::GetPlayerIsDead() {
+bool PlayerController::IsDead() 
+{
     return mPlayerIsDead;
 }
 
-//PROBABLY THIS MESSAGES IS BETTER TO MANAGE IN GAME MANAGER
-void PlayerController::WinMessage() {
-    LOG("YOU WIN");
+void PlayerController::UpdateHealth() 
+{
+    if (mHealthSlider) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
 }
 
-void PlayerController::LoseMessage() {
-    LOG("YOU LOSE");
-}
-
-void PlayerController::CheckRoute(){
-    if (App->GetInput()->GetKey(Keys::Keys_P) == KeyState::KEY_REPEAT)
+void PlayerController::CheckDebugOptions() 
+{
+    if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT) 
     {
-        float3 winPosition = mWinArea->GetPosition();
-        float3 playerPosition = mGameObject->GetPosition();
-        std::vector<float3> pathPoints = App->GetNavigation()->FindNavPath(playerPosition, winPosition);
+        mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
+    }
+}
 
-        for (size_t i = 0; i < pathPoints.size() - 1; i++)
+void PlayerController::UpdateBattleSituation()
+{
+    float hpRate = mHealth / mMaxHealth;
+
+    if (mCurrentState == PlayerState::DEATH) 
+    {
+        mCurrentSituation = BattleSituation::DEATH;
+    }
+    else if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
+        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK)) 
+    {
+        mBattleStateTransitionTime += App->GetDt();
+        if (mBattleStateTransitionTime >= 8.0f) 
         {
-            if (i == 0)
+            if (hpRate <= 0.3) 
             {
-                Debug::DrawLine(playerPosition, pathPoints[i], float3(1.0f, 0.0f, 0.0f));
+                mCurrentSituation = BattleSituation::IDLE_LOW_HP;
             }
-            else if (i < pathPoints.size() - 1)
+            else 
             {
-                Debug::DrawLine(pathPoints[i], pathPoints[i + 1], float3(1.0f, 0.0f, 0.0f));
+                mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
             }
-            else
-            {
-                Debug::DrawLine(pathPoints[i], winPosition, float3(1.0f, 0.0f, 0.0f));
-            }
+            
+        }
+    }
+    else 
+    {
+        mBattleStateTransitionTime = 0.0f;
+
+        if (hpRate <= 0.3) 
+        {
+            mCurrentSituation = BattleSituation::BATTLE_LOW_HP;
+        }
+        else {
+            mCurrentSituation = BattleSituation::BATTLE_HIGHT_HP;
         }
     }
 }
 
-//*************************************************************
-//ONLY FOR TEST
-void PlayerController::WinTest() {
-    if (mWinArea) {
-        float3 winPosition = mWinArea->GetPosition();
-        float3 playerPosition = mGameObject->GetPosition();
+void PlayerController::Victory()
+{
+    mVictory = true;
+    App->GetScene()->Find("Victory")->SetEnabled(true);
 
-        float distance = winPosition.Distance(playerPosition);
-        if (distance < 3.0f) {
-            LOG("You WIN");
-        }
+    if (Delay(mTimeScreen))
+    {
+        App->GetScene()->Find("Victory")->SetEnabled(false);
+        mLoadingActive = true;
     }
 }
 
-void PlayerController::LoseTest() {
-    if (mWinArea) {
-        float3 losePosition = mLoseArea->GetPosition();
-        float3 playerPosition = mGameObject->GetPosition();
-        if (losePosition.Distance(playerPosition) < 3.0f)
+void PlayerController::GameoOver()
+{
+    mGameOver = true;
+    App->GetScene()->Find("Game_Over")->SetEnabled(true);
+
+    if (Delay(mTimeScreen))
+    {
+        App->GetScene()->Find("Game_Over")->SetEnabled(false);
+        mLoadingActive = true;
+    }
+}
+
+bool PlayerController::Delay(float delay)
+{
+    mTimePassed += App->GetDt();
+
+    if (mTimePassed >= delay)
+    {
+        mTimePassed = 0;
+        return true;
+    }
+    else return false;
+}
+
+void PlayerController::Loading()
+{
+    if (mLoadingActive)
+    {
+        App->GetScene()->Find("Loading_Screen")->SetEnabled(true);
+
+        if (Delay(3.0f))
         {
-            LOG("You have Lost");
+            mLoadingActive = false;
+            App->GetScene()->Find("Loading_Screen")->SetEnabled(false);
+            App->GetScene()->Load("MainMenu.json");
         }
     }
 }

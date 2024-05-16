@@ -1,18 +1,18 @@
 #include "SettingsPanel.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
-#include "ModuleCamera.h"
-#include "CameraComponent.h"
-#include "Quadtree.h"
+#include "ModuleEngineCamera.h"
+#include "GameObject.h"
 #include "Timer.h"
+
+#include "imgui.h"
 
 #include <fstream>
 #include <string>
 #include <sstream>
 
-#include "imgui.h"
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
 {
@@ -31,26 +31,26 @@ void SettingsPanel::Draw(int windowFlags)
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags)) 
 	{
 		//Config settings update
-		mCulling = App->GetScene()->GetApplyFrustumCulling();
-		mEngineVsyncEnabled = App->GetEngineClock()->GetVsyncStatus();
-		mGameVsyncEnabled = App->GetGameClock()->GetVsyncStatus();
-		mEngineFpsLimitEnabled = App->GetEngineClock()->IsFpsLimitEnabled();
-		mGameFpsLimitEnabled = App->GetGameClock()->IsFpsLimitEnabled();
-		mEngineFpsLimit = App->GetEngineClock()->GetFpsLimit();
-		mGameFpsLimit = App->GetGameClock()->GetFpsLimit();
-		mGrid = App->GetDebugDraw()->GetShouldRenderGrid();
+		mCulling = EngineApp->GetScene()->GetApplyFrustumCulling();
+		mEngineVsyncEnabled = EngineApp->GetEngineClock()->GetVsyncStatus();
+		mGameVsyncEnabled = EngineApp->GetGameClock()->GetVsyncStatus();
+		mEngineFpsLimitEnabled = EngineApp->GetEngineClock()->IsFpsLimitEnabled();
+		mGameFpsLimitEnabled = EngineApp->GetGameClock()->IsFpsLimitEnabled();
+		mEngineFpsLimit = EngineApp->GetEngineClock()->GetFpsLimit();
+		mGameFpsLimit = EngineApp->GetGameClock()->GetFpsLimit();
+		mGrid = EngineApp->GetDebugDraw()->GetShouldRenderGrid();
 
 		ImGui::SeparatorText("Graphic settings");
-		if (ImGui::Checkbox("Apply frustum culling", &mCulling))
+		if (ImGui::Checkbox("EngineApply frustum culling", &mCulling))
 		{
-			App->GetScene()->SetApplyFrustumCulling(mCulling);
+			EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
 		}
 		ImGui::Indent();
 		ImGui::SeparatorText("Engine");
 		ImGui::Checkbox("Engine Vsync enabled", &mEngineVsyncEnabled);
-		if (mEngineVsyncEnabled != App->GetEngineClock()->GetVsyncStatus())
+		if (mEngineVsyncEnabled != EngineApp->GetEngineClock()->GetVsyncStatus())
 		{
-			App->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
+			EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
 		}
 
 		if (mEngineVsyncEnabled) 
@@ -60,12 +60,12 @@ void SettingsPanel::Draw(int windowFlags)
 
 		if (ImGui::Checkbox("Enable FPS Limit##1", &mEngineFpsLimitEnabled))
 		{
-			App->GetEngineClock()->EnableFpsLimit(mEngineFpsLimitEnabled);
+			EngineApp->GetEngineClock()->EnableFpsLimit(mEngineFpsLimitEnabled);
 		}
 
 		if (ImGui::SliderInt("FPS Limit##1", &mEngineFpsLimit, 10, 240))
 		{
-			App->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
+			EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
 		}
 		
 		if (mEngineVsyncEnabled) 
@@ -76,9 +76,9 @@ void SettingsPanel::Draw(int windowFlags)
 		ImGui::Spacing();
 		ImGui::SeparatorText("Game");
 		ImGui::Checkbox("Game Vsync enabled", &mGameVsyncEnabled);
-		if (mGameVsyncEnabled != App->GetGameClock()->GetVsyncStatus()) 
+		if (mGameVsyncEnabled != EngineApp->GetGameClock()->GetVsyncStatus()) 
 		{
-			App->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
+			EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
 		}
 
 		if (mGameVsyncEnabled) 
@@ -88,12 +88,12 @@ void SettingsPanel::Draw(int windowFlags)
 
 		if (ImGui::Checkbox("Enable FPS Limit##2", &mGameFpsLimitEnabled))
 		{
-			App->GetGameClock()->EnableFpsLimit(mGameFpsLimitEnabled);
+			EngineApp->GetGameClock()->EnableFpsLimit(mGameFpsLimitEnabled);
 		}
 
 		if (ImGui::SliderInt("FPS Limit##2", &mGameFpsLimit, 10, 240))
 		{
-			App->GetGameClock()->SetFpsLimit(mGameFpsLimit);
+			EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
 		}
 
 		if (mGameVsyncEnabled) 
@@ -106,7 +106,7 @@ void SettingsPanel::Draw(int windowFlags)
 		ImGui::SeparatorText("Editor settings");
 		if (ImGui::Checkbox("Draw Grid", &mGrid)) 
 		{
-			App->GetDebugDraw()->SetRenderGrid(mGrid);
+			EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
 		}
 
 		if (ImGui::Button("Save settings")) 
@@ -116,12 +116,6 @@ void SettingsPanel::Draw(int windowFlags)
 		if (ImGui::Button("Load settings")) 
 		{
 			LoadProjectSettings();
-		}
-
-		if (ImGui::Button("camara"))
-		{
-			SaveCameraPosition();
-			LoadCameraPosition();
 		}
 	}
 	ImGui::End();
@@ -135,7 +129,7 @@ void SettingsPanel::SaveProjectSettings()
 	// Settings variables we want to store
 	if (out_file.is_open())
 	{
-		out_file << "Apply frustum culling: " << mCulling << "\n";
+		out_file << "EngineApply frustum culling: " << mCulling << "\n";
 		out_file << "Engine Vsync enabled: " << mEngineVsyncEnabled << "\n";
 		out_file << "Engine FPS Limit: " << mEngineFpsLimit << "\n";
 		out_file << "Game Vsync enabled: " << mGameVsyncEnabled << "\n";
@@ -144,8 +138,8 @@ void SettingsPanel::SaveProjectSettings()
 	}
 
 	// Window states
-	out_file << App->GetEditor()->GetPanelList().size() << "\n";
-	for (const auto& panels : App->GetEditor()->GetPanelList())	
+	out_file << EngineApp->GetEditor()->GetPanelList().size() << "\n";
+	for (const auto& panels : EngineApp->GetEditor()->GetPanelList())	
 	{
 		WindowState* windowState = new WindowState();
 		ImGui::Begin(panels.first);
@@ -175,32 +169,29 @@ void SettingsPanel::SaveProjectSettings()
 	}
 }
 
-void SettingsPanel::SaveCameraPosition()
+void SettingsPanel::SaveUserSettings()
 {
 	std::ofstream userSettings("userSettings.txt");
-	float3 cameraPosition = App->GetCamera()->GetEditorCamera()->GetFrustum().pos;
-	float3 cameraFront = App->GetCamera()->GetEditorCamera()->GetFrustum().front;
-	float3 cameraUp = App->GetCamera()->GetEditorCamera()->GetFrustum().up;
+	float3 cameraPosition = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition();
+	float3 cameraRotation = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation();
 
 	if (userSettings.is_open())
 	{
 		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
-		userSettings << "Camera Front:\n" << cameraFront.x << '\n' << cameraFront.y << '\n' << cameraFront.z << "\n";
-		userSettings << "Camera Up:\n" << cameraUp.x << '\n' << cameraUp.y << '\n' << cameraUp.z << "\n";
+		userSettings << "Camera Rotation:\n" << cameraRotation.x << '\n' << cameraRotation.y << '\n' << cameraRotation.z << "\n";
+		
+		userSettings << "Scene: \n" << App->GetScene()->GetName();
 	}
 }
 
-void SettingsPanel::LoadCameraPosition()
+void SettingsPanel::LoadUserSettings()
 {
 	std::ifstream userSettings("userSettings.txt");
 
 	std::string line;
 
 	float3 cameraPosition;
-	float3 cameraFront;
-	float3 cameraUp;
-
-	float3 rotation;
+	float3 cameraRotation;
 
 	if (userSettings.is_open())
 	{
@@ -214,25 +205,19 @@ void SettingsPanel::LoadCameraPosition()
 		for (int i = 0; i < 3; ++i)
 		{
 			if (std::getline(userSettings, line))
-			cameraFront[i] = std::stof(line);
-		}
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-			cameraUp[i] = std::stof(line);
-		}
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-				rotation[i] = std::stof(line);
+			cameraRotation[i] = std::stof(line);
 		}
 
-		App->GetCamera()->SetPosition(cameraPosition);
-		App->GetCamera()->SetFrontUp(cameraFront, cameraUp);
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(cameraPosition);
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(cameraRotation);
 		
+		std::getline(userSettings, line);
+		std::getline(userSettings, line);
+		App->GetScene()->Load(line.c_str());
+
 	}
+
+	
 
 
 }
@@ -272,7 +257,7 @@ void SettingsPanel::LoadProjectSettings()
 			mGrid = std::stoi(line.substr(line.find(":") + 1));
 		}
 
-		std::vector<const char*> panelNames = App->GetEditor()->GetPanelNames();
+		std::vector<const char*> panelNames = EngineApp->GetEditor()->GetPanelNames();
 
 		// Load the windows state
 		if (std::getline(in_file, line))
@@ -302,20 +287,20 @@ void SettingsPanel::LoadProjectSettings()
 					const char* panelName = *it;
 					if (windowState->name == panelName && windowState->IsOpen)
 					{
-						App->GetEditor()->GetPanel(panelName)->Open();
+						EngineApp->GetEditor()->GetPanel(panelName)->Open();
 					}
 					mOpenedWindowsInfo.push_back(windowState);
 				}
 			}
 		}
 
-		// Apply the loaded settings to the ImGui panel
-		App->GetScene()->SetApplyFrustumCulling(mCulling);
-		App->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
-		App->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
-		App->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
-		App->GetGameClock()->SetFpsLimit(mGameFpsLimit);
-		App->GetDebugDraw()->SetRenderGrid(mGrid);
+		// EngineApply the loaded settings to the ImGui panel
+		EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
+		EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
+		EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
+		EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
+		EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
+		EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
 
 		// Load the docking layout
 		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());

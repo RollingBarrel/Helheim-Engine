@@ -3,7 +3,6 @@
 #include "Globals.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
-#include "Importer.h"
 #include "ImporterTexture.h"
 
 #include "ProjectPanel.h"
@@ -32,6 +31,7 @@ ModuleFileSystem::ModuleFileSystem()
     CreateDirectory(ASSETS_SCENES_PATH);
     CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(ASSETS_SCRIPT_PATH);
+    CreateDirectory(ASSETS_NAVMESH_PATH);
     CreateDirectory(LIBRARY_PATH);
 
     mRoot = new PathNode("Assets");
@@ -42,7 +42,6 @@ ModuleFileSystem::ModuleFileSystem()
 ModuleFileSystem::~ModuleFileSystem()
 {
     PHYSFS_deinit();
-
 }
 
 // Called before render is available
@@ -57,14 +56,12 @@ bool ModuleFileSystem::Init()
 
     //CreateDirectoryLibrary();
 
-    UpdateScripts();
 
     return true;
 }
 
 update_status ModuleFileSystem::PreUpdate(float dt)
 {
-    UpdateScripts();
     return UPDATE_CONTINUE;
 }
 
@@ -425,43 +422,15 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
         *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
 }
 
-void ModuleFileSystem::UpdateScripts()
+void ModuleFileSystem::GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const
 {
-    char** files = PHYSFS_enumerateFiles("Assets/Scripts");
-
-    for (char** file = files; *file != nullptr; ++file)
+    char** dirFiles = PHYSFS_enumerateFiles("Assets/Scripts");
+    for (char** file = dirFiles; *file != nullptr; ++file)
     {
-        std::string filePath = "Assets/Scripts/";
-        filePath += *file;
-
-        if (!IsDirectory(filePath.c_str()))
-        {
-            if (filePath.back() == 'h') 
-            {
-                std::string filePathWithMeta;
-                filePathWithMeta = filePath + ".emeta";
-                if (!Exists(filePathWithMeta.c_str())) 
-                {
-                    filePath = "./" + filePath;
-                    App->GetResource()->ImportFile(filePath.c_str());
-                }
-            }
-            else if (filePath.find(".emeta") != std::string::npos) 
-            {
-                int pos = filePath.find(".emeta");
-                filePath.erase(pos);
-                if (!Exists(filePath.c_str())) 
-                {
-                    RemoveFile(filePath.c_str());
-                }
-            }
-
-        }
-
+        files.push_back(*file);
     }
 
-    PHYSFS_freeList(files);
-
+    PHYSFS_freeList(dirFiles);
 }
 
 void ModuleFileSystem::CleanNode(PathNode* node)
@@ -479,6 +448,7 @@ void ModuleFileSystem::CleanNode(PathNode* node)
 
     delete node->mName;
     delete node;
+    node = nullptr;
 }
 
 PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
@@ -486,4 +456,22 @@ PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
     unsigned int size = strlen(name) + 1;
     mName = new char[size];
     strcpy_s(const_cast<char*>(mName), size, name);
+}
+
+
+AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent) : mParent(parent)
+{
+    unsigned int sizeName = strlen(name) + 1;
+    mName = new char[sizeName];
+    strcpy_s(const_cast<char*>(mName), sizeName, name);
+
+    unsigned int sizePath = strlen(path) + 1;
+    mPath = new char[sizePath];
+    strcpy_s(const_cast<char*>(mPath), sizePath, path);
+}
+
+AssetDisplay::~AssetDisplay()
+{
+    delete mName;
+    delete mPath;
 }

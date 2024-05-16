@@ -4,9 +4,9 @@
 #include "Geometry/Frustum.h"
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
-#include "Application.h"
+#include "EngineApp.h"
 #include "ModuleOpenGL.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "DebugPanel.h"
@@ -628,12 +628,19 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update(float dt)
 {
-    App->GetOpenGL()->BindSceneFramebuffer();
-
-    float4x4 viewproj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix() * ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
-    Draw(viewproj, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
-    App->GetOpenGL()->UnbindSceneFramebuffer();
-	return UPDATE_CONTINUE;
+    if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
+    {
+        const CameraComponent* camera = EngineApp->GetEngineCamera()->GetEditorCamera();
+        if (camera)
+        {
+            float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
+            
+            EngineApp->GetOpenGL()->BindSceneFramebuffer();
+            Draw(viewproj, EngineApp->GetWindow()->GetGameWindowsSize().x, EngineApp->GetWindow()->GetGameWindowsSize().y);
+            EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
+        }
+    }
+    return UPDATE_CONTINUE;
 }
 
 void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned height)
@@ -646,18 +653,27 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
        DrawGrid();
     }
 
-    if (((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
+    if (((DebugPanel*)EngineApp->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
     {
-        DrawColliders(App->GetScene()->GetRoot());
+        DrawColliders(EngineApp->GetScene()->GetRoot());
 	}
 
-    GameObject* focusGameObject = ((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+    GameObject* focusGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
     
     if (focusGameObject && focusGameObject->GetComponent(ComponentType::ANIMATION))
     {
         DrawSkeleton(focusGameObject);
     }
-    
+    if (focusGameObject)
+    {
+        CameraComponent* camera = reinterpret_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
+        if (camera)
+        {
+            DrawFrustum(camera->GetFrustum());
+        }
+        
+    }
+
     dd::flush();
 }
 
@@ -736,7 +752,7 @@ void ModuleDebugDraw::DrawGrid()
 }
 void ModuleDebugDraw::DrawAxis()
 {
-    dd::axisTriad(((HierarchyPanel*)App->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetWorldTransform(), 0.1f, 1.0f);
+    dd::axisTriad(((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetWorldTransform(), 0.1f, 1.0f);
 }
 
 
@@ -763,11 +779,12 @@ void ModuleDebugDraw::DrawColliders(GameObject* root)
     if (root != nullptr) 
     {
         MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
-        if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) 
-        {
-            App->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
-            App->GetDebugDraw()->DrawCube(meshRenderer->GetAABBWorld(), float3(1.0f, 0.65f, 0.0f)); //Orange
-        }
+        //TODO: SEPARATE GAME ENGINE
+        //if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) 
+        //{
+        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
+        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->GetAABBWorld(), float3(1.0f, 0.65f, 0.0f)); //Orange
+        //}
 
         for (int i = 0; i < root->GetChildren().size(); i++) 
         {

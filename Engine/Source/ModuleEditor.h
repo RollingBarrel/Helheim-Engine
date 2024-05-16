@@ -26,14 +26,12 @@ public:
 	std::map<const char*, Panel*> GetPanelList() { return mPanels; }
 	std::vector<const char*> GetPanelNames() { return mPanelNames; }	
 	void OpenPanel(const char* name, const bool focus);
-	void SaveCameraPosition();
+	void SaveUserSettings();
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
 
 private:
 	ImGuiIO* io = nullptr;
-	bool mLoadSceneOpen = false;
-	bool mSaveSceneOpen = false;
 	std::map<const char*, Panel*> mPanels;
 	std::vector<const char*> mPanelNames;
 	OptickAdapter* mOptick = nullptr;

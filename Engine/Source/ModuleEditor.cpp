@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "EngineApp.h"
 #include "SDL.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
@@ -6,6 +6,8 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleCamera.h"
+#include "ModuleFileSystem.h"
+#include "ModuleEngineScriptManager.h"
 #include "Quadtree.h"
 
 #include "Panel.h"
@@ -80,7 +82,7 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io->ConfigDragClickToInputText = true;
 	io->IniFilename = NULL;
-	ImGui_ImplSDL2_InitForOpenGL(App->GetWindow()->window, App->GetOpenGL()->GetOpenGlContext());
+	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->window, EngineApp->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	io->Fonts->AddFontDefault();
@@ -101,7 +103,7 @@ bool ModuleEditor::Init()
 
 	// Load the saved layout when opening the engine
 	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadCameraPosition();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadUserSettings();
 	mPanels[SETTINGSPANEL]->Close();
 
 	Style();
@@ -125,6 +127,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 			}
 		}
 	}
+
 
 	static bool show = true;
 	//ImGui::ShowDemoWindow(&show);
@@ -183,9 +186,9 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 	panel->Open();
 }
 
-void ModuleEditor::SaveCameraPosition()
+void ModuleEditor::SaveUserSettings()
 {
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveCameraPosition();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveUserSettings();
 }
 
 void ModuleEditor::ShowMainMenuBar() 
@@ -196,25 +199,57 @@ void ModuleEditor::ShowMainMenuBar()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("New Scene"))
+			{
+				EngineApp->GetScene()->NewScene();
+			}
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".json", config);
-				mLoadSceneOpen = true;
 			}
-			if (ImGui::MenuItem("Save Scene"))
+			if (ImGui::MenuItem("Save"))
 			{
-				ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
-				mSaveSceneOpen = true;
+				if (!EngineApp->IsPlayMode())
+				{
+					std::string str = "Assets/Scenes/";
+					str += App->GetScene()->GetName();
+					str += ".json";
+					if (App->GetFileSystem()->Exists(str.c_str()))
+					{
+						App->GetScene()->Save(App->GetScene()->GetName().c_str());
+					}
+					else
+					{
+						ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+					}
+				}
+				else
+				{
+					LOG("YOU MUST EXIT PLAY MODE BEFORE SAVING");
+				}
+			}
+			if (ImGui::MenuItem("Save As"))
+			{
+				if (!EngineApp->IsPlayMode())
+				{
+					ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+				}
+				else
+				{
+					LOG("YOU MUST EXIT PLAY MODE BEFORE SAVING");
+				}
 			}
 			if (ImGui::MenuItem("Quit"))
 			{
-				exit(0);
+				App->Exit();
 			}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Edit")) {
+		if (ImGui::BeginMenu("Edit")) 
+		{
 			Panel* settingsPanel = mPanels[SETTINGSPANEL];
-			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) {
+			if (ImGui::MenuItem("Settings", NULL, settingsPanel->IsOpen())) 
+			{
 				if (settingsPanel)
 				{
 					settingsPanel->IsOpen() ? settingsPanel->Close() : settingsPanel->Open();
@@ -355,16 +390,11 @@ void ModuleEditor::ShowMainMenuBar()
 		}
 		ImGui::EndMainMenuBar();
 	}
-
-	if (mLoadSceneOpen) 
-	{
-		OpenLoadScene();
-	}
-
-	if (mSaveSceneOpen)
-	{
-		OpenSaveScene();
-	}
+		
+	OpenSaveScene();
+	OpenLoadScene();
+		
+	
 
 	ImGuiViewportP* viewport = (ImGuiViewportP*)(void*)ImGui::GetMainViewport();
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_MenuBar;
@@ -384,27 +414,33 @@ void ModuleEditor::ShowMainMenuBar()
 
 void ModuleEditor::OpenLoadScene() {
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
-	if (ImGuiFileDialog::Instance()->Display("LoadScene")) {
-		if (ImGuiFileDialog::Instance()->IsOk()) {
+	if (ImGuiFileDialog::Instance()->Display("LoadScene")) 
+	{
+		if (ImGuiFileDialog::Instance()->IsOk()) 
+		{
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
-			App->GetScene()->Load(filePathName.c_str());
+			if (EngineApp->IsPlayMode())
+			{
+				reinterpret_cast<EditorControlPanel*>(mPanels[EDITORCONTROLPANEL])->Stop();
+			}
+			EngineApp->GetScene()->Load(filePathName.c_str());
 		}
-
 		ImGuiFileDialog::Instance()->Close();
-		mLoadSceneOpen = false;
 	}
 }
 
 void ModuleEditor::OpenSaveScene() {
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
-	if (ImGuiFileDialog::Instance()->Display("SaveScene")) {
-		if (ImGuiFileDialog::Instance()->IsOk()) {
+	if (ImGuiFileDialog::Instance()->Display("SaveScene")) 
+	{
+		if (ImGuiFileDialog::Instance()->IsOk()) 
+		{
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
-			App->GetScene()->Save(filePathName.c_str());
+			filePathName = filePathName.substr(0, filePathName.find(".json"));
+			EngineApp->GetScene()->GetRoot()->SetName(filePathName.c_str());
+			EngineApp->GetScene()->Save(filePathName.c_str());
 		}
-
 		ImGuiFileDialog::Instance()->Close();
-		mSaveSceneOpen = false;
 	}
 }
 

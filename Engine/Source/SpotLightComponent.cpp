@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleDebugDraw.h"
+//#include "ModuleDebugDraw.h"
 #include "MathFunc.h"
 
 #include "SpotLightComponent.h"
@@ -11,6 +11,8 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
+
+	App->GetOpenGL()->AddSpotLight(*this);
 }
 
 SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemoveSpotLight(*this); }
@@ -87,15 +89,16 @@ void SpotLightComponent::Update()
 			SetPosition(pos);
 		}
 	}
-	if (debugDraw)
-	{
-		App->GetDebugDraw()->DrawCone(mData.pos, mData.aimD, mData.col, mData.radius);
-	}
+	//TODO: SEPARATE ENGINE
+	//if (debugDraw)
+	//{
+	//	App->GetDebugDraw()->DrawCone(mData.pos, mData.aimD, mData.col, mData.radius);
+	//}
 }
 
 inline Component* SpotLightComponent::Clone(GameObject* owner) const 
 { 
-	return App->GetOpenGL()->AddSpotLight(mData, owner);
+	return new SpotLightComponent(owner, mData);
 }
 
 void SpotLightComponent::Save(Archive& archive) const {
@@ -142,5 +145,14 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 	{
 		mData.radius = componentJson["Radius"].GetFloat();
 	}
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
+void SpotLightComponent::Enable()
+{
+	App->GetOpenGL()->AddSpotLight(*this);
+}
+
+void SpotLightComponent::Disable()
+{
+	App->GetOpenGL()->RemoveSpotLight(*this);
 }

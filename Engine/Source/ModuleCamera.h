@@ -2,54 +2,32 @@
 #define _MODULE_CAMERA_H_
 
 #include "Module.h"
-#include "Math/float4x4.h"
-#include "Math/float3.h"
-#include "Geometry/Frustum.h"
-#include <map>
+#include <vector>
 
 class CameraComponent;
 class GameObject;
 
-class ModuleCamera : public Module
+class ENGINE_API ModuleCamera : public Module
 {
 public:
 	bool Init() override;
 	update_status Update(float dt) override;
-
-
-	//void WindowResized(int w, int h);
-	void CheckRaycast();
-	void DrawRayCast(bool draw) { mDrawRayCast = draw; }
 	bool CleanUp() override;
 
-	const void CreateEditorCamera();
+	virtual bool AddEnabledCamera(CameraComponent* camera);
+	virtual bool RemoveEnabledCamera(CameraComponent* camera);
 
-	void SetCurrentCamera(GameObject* camera);
+	const virtual CameraComponent* GetCurrentCamera() const;
+	void SetAspectRatio(float aspectRatio);
 
-	const CameraComponent* GetCurrentCamera() const;
+protected:
+	
+	bool AddMainCamera(CameraComponent* camera);
+	bool RemoveMainCamera(CameraComponent* camera);
 
-	const CameraComponent* GetEditorCamera() const;
-	const float3& GetPosition() const;
-	const float3& GetRotation() const;
-	void SetPosition(float3 newPostion);
-	void SetRotation(float3 newRotation);
-	void SetFrontUp(float3 front, float3 up);
-	void ActivateEditorCamera();
-
-
-
-
-private:
-	GameObject* mEditorCamera = nullptr;
-	GameObject* mCurrentCamera = nullptr;
-
-	CameraComponent* mCurrentCameraComponent = nullptr;
-
-	Ray mRay;
-	bool mDrawRayCast = false; 
-	std::map<float, GameObject*> mIntersectMap;
-
-	float mShiftSpeed = 3.0f;
+	std::vector<CameraComponent*> mActiveCameras;
+	CameraComponent* mMainCamera = nullptr;
+	CameraComponent* mCurrentCamera = nullptr;
 };
 
 #endif /* _MODULE_CAMERA_H_ */

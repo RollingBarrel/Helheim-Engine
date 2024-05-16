@@ -10,8 +10,11 @@ typedef struct SpotLight {
 	float col[4];//w cos outer angle
 }SpotLight;
 
-class ENGINE_API SpotLightComponent : public Component {
+class ENGINE_API SpotLightComponent : public Component 
+{
 public:
+	SpotLightComponent(GameObject* owner, const SpotLight& light);
+	//SpotLightComponent(const SpotLightComponent& other, GameObject* owner);
 	~SpotLightComponent();
 
 	void Update() override;
@@ -19,7 +22,10 @@ public:
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 	void Reset() override {}
+	void Enable() override;
+	void Disable() override;
 
+	const SpotLight& GetData() const { return mData; }
 	const float* GetPosition() const;
 	void SetPosition(const float pos[3]);
 	const float* GetDirection() const { return mData.aimD; };
@@ -35,12 +41,10 @@ public:
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
 	//Todo: Variable not necesary for the game mode
-	bool debugDraw = false;
+	//bool debugDraw = false;
 
 private:
 	SpotLight mData;
-	SpotLightComponent(GameObject* owner, const SpotLight& light);
-	friend class ModuleOpenGL;
 };
 
 #endif //_COMPONENT_SPOTLIGHT_H_
