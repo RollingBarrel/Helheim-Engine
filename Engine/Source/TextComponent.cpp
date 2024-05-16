@@ -1,3 +1,5 @@
+//https://github.com/MissclickStudios/Projecte3/blob/main/NULL%20Engine/Source/C_UI_Text.cpp
+
 #include "TextComponent.h"
 
 #include <string>
@@ -116,6 +118,7 @@ void TextComponent::RenderText(const std::string& text, float x, float y, float 
             { xpos,     ypos + h,   0.0f, 1.0f },
             { xpos + w, ypos + h,   1.0f, 1.0f },
             { xpos + w, ypos,       1.0f, 0.0f },
+
             { xpos,     ypos + h,   0.0f, 1.0f },
             { xpos + w, ypos,       1.0f, 0.0f },
             { xpos,     ypos,       0.0f, 0.0f }
