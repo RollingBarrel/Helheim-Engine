@@ -46,12 +46,15 @@ public:
 	void SetInnerAngle(float angle);
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
 	void MakeShadowMapBindless(unsigned int shadowMapTextureId);
+
+	unsigned int GetShadowMap() const { return mShadowMapId; }
 	//Todo: Variable not necesary for the game mode
 	//bool debugDraw = false;
 
 private:
 	SpotLight mData;
 	Frustum mShadowFrustum;
+	unsigned int mShadowMapId;
 };
 
 #endif //_COMPONENT_SPOTLIGHT_H_

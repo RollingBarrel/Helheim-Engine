@@ -193,16 +193,10 @@ bool ModuleOpenGL::Init()
 	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 
 	//SHADOWS
-	glGenTextures(1, &mShadowMapId);
 	glGenFramebuffers(1, &mShadowsFrameBufferId);
 	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
-	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, 512, 512, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMapId, 0);
 	glDrawBuffers(0, nullptr);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 	
 
 	return true;

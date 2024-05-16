@@ -531,36 +531,27 @@ void GeometryBatch::Draw()
 	}
 
 	//DRAW SHADOWS
-	Frustum frustum = spotLights[0]->GetFrustum();
-	//App->GetOpenGL()->Shadows(frustum);
-
-	App->GetOpenGL()->GetCameraBuffer()->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
-	App->GetOpenGL()->GetCameraBuffer()->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
 	glBindFramebuffer(GL_FRAMEBUFFER, App->GetOpenGL()->GetShadowFrameBuffer());
-	glBindTexture(GL_TEXTURE_2D, App->GetOpenGL()->GetShadowMapTexture());
-
-
 	glViewport(0, 0, 512, 512);
-
 	glUseProgram(App->GetOpenGL()->GetShadowsProgramId());
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	for (std::vector<Command> lightCommands : commandsForLights)
+
+	for (int i = 0; i < commandsForLights.size(); ++i)
 	{
-		if (!lightCommands.empty())
+		if (!commandsForLights[i].empty())
 		{
-			glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, lightCommands.size() * sizeof(Command), lightCommands.data());
-			glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, lightCommands.size(), 0);
+			Frustum frustum = spotLights[i]->GetFrustum();
+			App->GetOpenGL()->GetCameraBuffer()->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+			App->GetOpenGL()->GetCameraBuffer()->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			glBindTexture(GL_TEXTURE_2D, spotLights[i]->GetShadowMap());
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLights[i]->GetShadowMap(), 0);
+			glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, commandsForLights[i].size() * sizeof(Command), commandsForLights[i].data());
+			glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, commandsForLights[i].size(), 0);
 		}
 	}
-
-	uint64_t shadowMapHandle;
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	//shadowMapHandle = glGetTextureHandleARB(App->GetOpenGL()->GetShadowMapTexture());
-	//glMakeTextureHandleResidentARB(shadowMapHandle);
-	//const_cast<SpotLightComponent*>(spotLights[0])->SetHandle(shadowMapHandle);
-	const_cast<SpotLightComponent*>(spotLights[0])->MakeShadowMapBindless(App->GetOpenGL()->GetShadowMapTexture());
+	
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	App->GetOpenGL()->SceneFramebufferResized();
@@ -569,7 +560,6 @@ void GeometryBatch::Draw()
 	
 
 	//PBRT SHADER
-	
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());

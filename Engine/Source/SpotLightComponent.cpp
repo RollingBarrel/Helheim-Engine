@@ -20,6 +20,18 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * mData.col[3];
 	mShadowFrustum.verticalFov =  2.0f * mData.col[3];
+
+	glGenTextures(1, &mShadowMapId);
+	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, 512, 512, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	//glGenerateMipmap(GL_TEXTURE_2D);
+	if (mData.shadowMapHandle != 0)
+	{
+		glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
+	}
+	mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
+	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
+
 }
 
 SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemoveSpotLight(*this); }
@@ -83,13 +95,7 @@ void SpotLightComponent::SetInnerAngle(float angle)
 
 void SpotLightComponent::MakeShadowMapBindless(unsigned int shadowMapTextureId)
 {
-	if (mData.shadowMapHandle != 0)
-	{
-		glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
-	}
 	
-	mData.shadowMapHandle = glGetTextureHandleARB(shadowMapTextureId);
-	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
 }
 
 void SpotLightComponent::Update()
