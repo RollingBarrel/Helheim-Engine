@@ -2,6 +2,7 @@
 #define _MODULE_ENGINE_RESOURCE_H_
 
 #include "ModuleResource.h"
+#include <string>
 
 class ModuleEngineResource : public ModuleResource
 {
@@ -10,12 +11,13 @@ public:
 	~ModuleEngineResource() {}
 	bool Init() override;
 	unsigned int ImportFile(const char* assetsFile, unsigned int forcedUid = 0, bool modifyAssets = true);
-
-private:
+	bool CreateAssetsMeta(const Resource& resource, const char* assetsFile) const;
 	Resource* CreateNewResource(const char* assetsFile, const char* importedFile, Resource::Type type, unsigned int forcedUid = 0, bool modifyAssets = true);
+private:
+	
 	Resource::Type DeduceResourceType(const char* assetsFile);
 
-	bool CreateAssetsMeta(const Resource& resource, const char* assetsFile) const;
+
 
 	std::string DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const;
 

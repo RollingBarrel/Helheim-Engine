@@ -1,4 +1,4 @@
-#include "Globals.h"
+ï»¿#include "Globals.h"
 #include "SaveLoadModel.h"
 #include "ImporterModel.h"
 #include "ImporterMesh.h"
@@ -11,7 +11,7 @@
 #include "ResourceMesh.h"
 #include "ResourceModel.h"
 #include "ResourceMaterial.h"
-#include <map>
+#include <unordered_map>
 
 #define TINYGLTF_IMPLEMENTATION
 
@@ -21,7 +21,7 @@
 #include "tiny_gltf.h"
 
 
-static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, std::map<unsigned int, unsigned int>&importedMaterials, std::map<unsigned int,unsigned int>& importedTextures, std::map<std::pair<unsigned int, unsigned int>, unsigned int>& importedMeshes, int parentIndex = -1)
+static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath, const tinygltf::Model& model, unsigned int index, unsigned int& uid, unsigned int& size, bool modifyAssets, std::unordered_map<unsigned int, unsigned int>& importedMaterials, std::unordered_map<unsigned int,unsigned int>& importedTextures, std::unordered_map<unsigned int, unsigned int>& importedMeshes, int parentIndex = -1)
 {
     ModelNode node;
 
@@ -75,6 +75,32 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
     }
 
+    node.mLightId = tinyNode.light;
+
+    if (node.mLightId > -1)
+    {
+        node.mLight.mType = model.lights[tinyNode.light].type;
+
+        if (!model.lights[tinyNode.light].color.empty())
+        {
+            node.mLight.mColor = math::float3(model.lights[tinyNode.light].color[0], model.lights[tinyNode.light].color[1], model.lights[tinyNode.light].color[2]);
+        }
+        else
+        {
+            node.mLight.mColor = math::float3(1.0f);
+        }
+
+        node.mLight.mIntensity = model.lights[tinyNode.light].intensity;
+        //TODO Lights: Range is infinite if is 0;
+        node.mLight.mRange = (model.lights[tinyNode.light].range == 0.0f) ? 100.0f : model.lights[tinyNode.light].range;
+
+        if (node.mLight.mType.compare("spot") == 0)
+        {
+            node.mLight.mInnerConeAngle = model.lights[tinyNode.light].spot.innerConeAngle;
+            node.mLight.mOuterConeAngle = model.lights[tinyNode.light].spot.outerConeAngle;
+        }
+    }
+
     node.mMeshId = tinyNode.mesh;
 
     node.mCameraId = tinyNode.camera;
@@ -89,16 +115,17 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         int i = 0;
         for (const auto& primitive : model.meshes[node.mMeshId].primitives)
         {
-            if (importedMeshes.find({ node.mMeshId, i}) == importedMeshes.end())
+            if (importedMeshes.find(node.mMeshId + 1000000000 + i) == importedMeshes.end())
             {
+                
                 ResourceMesh* rMesh = Importer::Mesh::Import(model, primitive, uid++);
                 meshId = rMesh->GetUID();
-                importedMeshes[{ node.mMeshId, i}] = meshId;
+                importedMeshes[node.mMeshId + 1000000000 + i] = meshId;
                 delete rMesh;
             }
             else
             {
-                meshId = importedMeshes[{ node.mMeshId, i}];
+                meshId = importedMeshes[node.mMeshId + 1000000000 + i];
             }
             if (primitive.material != -1)
             {
@@ -121,7 +148,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
                 materialId = rMaterial->GetUID();
                 delete rMaterial;
             }
-            node.mUids.push_back({meshId, materialId});
+            node.mUids.emplace_back(meshId, materialId);
             ++i;
         }
     }
@@ -130,7 +157,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 
     size += node.mName.length() + 1         //Name
             + sizeof(int)                   //Parent Index in the vector
-            + sizeof(int) * 3;              //Mesh/Camera/Skin 
+            + sizeof(int) * 4;              //Mesh/Camera/Skin/Light
 
     size += sizeof(bool);                   //Tranforms
 
@@ -139,6 +166,18 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         size += sizeof(float) * 3           //Pos
             + sizeof(float) * 4             //Rot
             + sizeof(float) * 3;            //Scale
+    }
+
+    if (node.mLightId > -1)
+    {
+        size += sizeof(unsigned int)
+                + node.mLight.mType.length() + 1
+                + sizeof(float) * 5;
+
+        if (node.mLight.mType.compare("spot"))
+        {
+            size += sizeof(float) * 2;
+        }
     }
 
     if (node.mMeshId > -1)
@@ -171,9 +210,9 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
     }
 
-    std::map<std::pair<unsigned int, unsigned int>, unsigned int>importedMeshes;
-    std::map<unsigned int, unsigned int>importedMaterials;
-    std::map<unsigned int, unsigned int>importedTextures;
+    std::unordered_map<unsigned int, unsigned int>importedMeshes;
+    std::unordered_map<unsigned int, unsigned int>importedMaterials;
+    std::unordered_map<unsigned int, unsigned int>importedTextures;
     unsigned int bufferSize = 0;
 
     unsigned int animationId = 0;
@@ -201,15 +240,14 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
                 float4x4 inverseBindMatrix;
 
-                for (size_t row = 0; row < 4; row++) 
+                for (size_t row = 0; row < 4; row++)
                 {
-                    for (size_t col = 0; col < 4; col++) 
+                    for (size_t col = 0; col < 4; col++)
                     {
                         inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
-
-                rModel->mJoints.push_back({ skins.joints[i], inverseBindMatrix });
+                rModel->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
 
             }
         }
@@ -241,18 +279,17 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         animationId = 0;
     }
 
-    rModel->mAnimationUids.push_back(animationId); 
+    rModel->mAnimationUids.push_back(animationId);
 
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
-    bufferSize += sizeof(unsigned int);                                     //Tamaño vector
+    bufferSize += sizeof(unsigned int);                                     //Size vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
     bufferSize += sizeof(unsigned int);
-    bufferSize += sizeof(int) * rModel->mJoints.size();
-
-    for (size_t i = 0; i < rModel->mJoints.size(); i++)
+    for (int i = 0; i < rModel->mInvBindMatrices.size(); ++i) 
     {
-        bufferSize += sizeof(unsigned int);
-        bufferSize += sizeof(float) * 16;
+        bufferSize += sizeof(float) * 16;                                   // Size of the float array
+        bufferSize += sizeof(unsigned int);                                 // Size of the string length
+        bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;       // Size of the string characters
     }
 
     if (rModel)

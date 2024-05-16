@@ -3,8 +3,7 @@
 #include "ModuleAudio.h"
 #include "GameObject.h"
 #include "Application.h"
-#include "FmodUtils.h"
-
+#include "fmod_studio.hpp"
 AudioListenerComponent::AudioListenerComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::AUDIOLISTENER)
 {
 	

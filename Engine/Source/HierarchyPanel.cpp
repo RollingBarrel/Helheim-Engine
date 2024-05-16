@@ -2,6 +2,8 @@
 #include "imgui.h"
 #include "EngineApp.h"
 #include "ModuleScene.h"
+#include "ModuleEngineResource.h"
+#include "ModuleOpenGL.h"
 #include "GameObject.h"
 
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
@@ -37,6 +39,7 @@ void HierarchyPanel::Draw(int windowFlags)
 
 void HierarchyPanel::SetFocus(GameObject* focusedObject) 
 { 
+	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
 	mUnmarkFlag = true;
 	mFocusId = focusedObject->GetID();
 	mLastClickedObject = focusedObject->GetID();
@@ -46,6 +49,7 @@ void HierarchyPanel::SetFocus(GameObject* focusedObject)
 		mNodesToOpen.insert(parent->GetID());
 		parent = parent->GetParent();
 	}
+	App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
@@ -74,7 +78,7 @@ void HierarchyPanel::OnLeftCkickNode(GameObject* node)
     }
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None) && !ImGui::IsItemToggledOpen())
 	{
-        mFocusId = node->GetID();
+		InternalSetFocus(node);
     }
 }
 
@@ -97,7 +101,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 			GameObject* gameObject = new GameObject(node);
 			//node->AddChild(gameObject);
 			mLastClickedObject = gameObject->GetID();
-			mFocusId = gameObject->GetID();
+			InternalSetFocus(gameObject);
 			mMarked.clear();
 		}
 		bool isPrefabRoot = (EngineApp->GetScene()->IsPrefabScene() && node->mParent->mIsRoot);
@@ -111,7 +115,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 					GameObject* gameObject = new GameObject(*object);
 					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
 					mLastClickedObject = gameObject->GetID();
-					mFocusId = gameObject->GetID();
+					InternalSetFocus(gameObject);
 					selectAfter.insert(gameObject);
 				}
 				mMarked = selectAfter;
@@ -123,7 +127,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				{
 					EngineApp->GetScene()->AddGameObjectToDelete(object);
 					mLastClickedObject = EngineApp->GetScene()->GetRoot()->GetID();
-					mFocusId = EngineApp->GetScene()->GetRoot()->GetID();
+					InternalSetFocus(EngineApp->GetScene()->GetRoot());
 				}
 				mMarked.clear();
 			}
@@ -133,13 +137,21 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				{
 					std::string file = "Assets/Prefabs/";
 					file.append('/' + object->GetName() + ".prfb");
-					EngineApp->GetScene()->SavePrefab(object, file.c_str());
+					unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
+					EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
 				}
 			}
 		}
 		ImGui::EndPopup();
 	}
 	ImGui::PopID();
+}
+
+void HierarchyPanel::InternalSetFocus(GameObject* focusedObject)
+{
+	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
+	mFocusId = focusedObject->GetID();
+	App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
 void HierarchyPanel::DrawTree(GameObject* node)

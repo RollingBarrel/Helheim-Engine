@@ -40,6 +40,8 @@ bool Quadtree::AddObject(GameObject* object)
 {
 	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
 	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
+	if (meshRenderer == nullptr)
+		return false;
 	AABB objectAABB = meshRenderer->GetAABB();
 		
 
@@ -149,7 +151,7 @@ const std::set<GameObject*> Quadtree::GetObjectsInFrustum(Frustum* cam) const
 
 			if (object->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 			{
-				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->getOBB();
+				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->GetOBB();
 				if (cam->Intersects(temp)) {
 					out.insert(object);
 				}
@@ -173,7 +175,7 @@ void Quadtree::AddHierarchyObjects(GameObject* node)
 	}
 }
 
-const std::map<float, Hit> Quadtree::RayCast(Ray* ray) const
+const std::map<float, Hit> Quadtree::RayCast(const Ray* ray) const
 {
 	if (mFilled) 
 	{
@@ -282,7 +284,7 @@ void Quadtree::UpdateDrawableGameObjects(const Frustum* myCamera)
 			
 			if (object->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 			{
-				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->getOBB();
+				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->GetOBB();
 				bool intersects = myCamera->Intersects(temp);
 				((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->SetInsideFrustum(intersects);
 

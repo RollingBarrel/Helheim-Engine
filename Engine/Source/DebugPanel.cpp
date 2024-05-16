@@ -1,11 +1,12 @@
 #include "DebugPanel.h"
 #include "imgui.h"
 #include "EngineApp.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleOpenGL.h"
+#include "ModuleAudio.h"
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
 #include "Panel.h"
@@ -132,11 +133,25 @@ void DebugPanel::Draw(int windowFlags) {
             ImGui::TreePop();
 		}
 
+        if (ImGui::TreeNode("Audio##2"))
+        {
+            ImGui::Text("FMOD Memory usage: %.6f MB", (float)App->GetAudio()->GetMemoryUsage() / (1000000));
+
+            float value = App->GetAudio()->GetVolume("bus:/");
+            if (ImGui::SliderFloat("Main Volume", &value, 0, 1, "%.1f"))
+            {
+                App->GetAudio()->SetVolume("bus:/", value);
+            }
+
+            ImGui::TreePop();
+        }
+
+
         if (ImGui::TreeNode("Others##2"))
         {
             if (ImGui::Checkbox("Draw Mouse Picking RayCast", &mDrawRaycast)) 
             {
-                EngineApp->GetCamera()->DrawRayCast(mDrawRaycast);
+                EngineApp->GetEngineCamera()->DrawRaycast(mDrawRaycast);
             }
             ImGui::TreePop();
         }

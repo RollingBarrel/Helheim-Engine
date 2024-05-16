@@ -1,17 +1,15 @@
 #include "EditorControlPanel.h"
-
 #include "EngineApp.h"
-#include "ModuleCamera.h"
-#include "HierarchyPanel.h"
-#include "ModuleEditor.h"
-#include "ModuleScene.h"
-#include "GameObject.h"
-#include "Timer.h"
-#include "PreciseTimer.h"
+
 #include "ModuleEngineScriptManager.h"
-#include "NavMeshController.h"
-#include "IconsFontAwesome6.h"
 #include "ModuleAudio.h"
+
+#include "ScenePanel.h"
+#include "HierarchyPanel.h"
+
+#include "IconsFontAwesome6.h"
+
+
 
 
 EditorControlPanel::EditorControlPanel() : Panel(EDITORCONTROLPANEL, true)
@@ -171,19 +169,13 @@ void EditorControlPanel::Play()
 {
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.05f, 0.05f, 0.07f, 1.0f };
-	EngineApp->SetCurrentClock(EngineApp->GetGameClock());
-	EngineApp->GetScene()->Save("TemporalScene");
-	EngineApp->GetEngineScriptManager()->Start();
-	EngineApp->GetGameClock()->Start();
-	EngineApp->GetScene()->GetNavController()->HandleBuild();
-	EngineApp->PlayMode(true);
-
+	
+	EngineApp->Start();
 	switch (mState)
 	{
 	case GameState::PAUSE:
 		mState = GameState::PLAY_PAUSE;
-		EngineApp->GetEngineScriptManager()->Stop();
-		EngineApp->GetAudio()->PauseAllChannels();
+		EngineApp->GetEngineScriptManager()->Pause(true);
 		break;
 	default:
 		mState = GameState::PLAY;
@@ -192,7 +184,6 @@ void EditorControlPanel::Play()
 	
 
 	ImGui::SetWindowFocus("Game");
-	
 }
 
 void EditorControlPanel::Pause() 
@@ -201,15 +192,16 @@ void EditorControlPanel::Pause()
 	{
 	case GameState::PLAY:
 		mState = GameState::PLAY_PAUSE;
-		EngineApp->GetEngineScriptManager()->Stop();
-		EngineApp->GetAudio()->PauseAllChannels();
+		EngineApp->GetEngineScriptManager()->Pause(true);
+		EngineApp->GetAudio()->AudioPause();
 		break;
 	case GameState::PAUSE:
 		mState = GameState::STOP;
 		break;
 	case GameState::PLAY_PAUSE:
 		mState = GameState::PLAY;
-		EngineApp->GetEngineScriptManager()->Play();
+		EngineApp->GetEngineScriptManager()->Pause(false);
+		EngineApp->GetAudio()->AudioResume();
 		break;
 	default:
 		mState = GameState::PAUSE;
@@ -222,18 +214,10 @@ void EditorControlPanel::Stop()
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };
 
-	EngineApp->GetEngineClock()->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
-	EngineApp->GetGameClock()->Stop();		
-	EngineApp->SetCurrentClock(EngineApp->GetEngineClock());	
-	EngineApp->GetEngineClock()->Resume();				
-	EngineApp->GetEngineScriptManager()->Stop();
-	EngineApp->GetAudio()->PauseAllChannels();
-	EngineApp->PlayMode(false);
-	EngineApp->GetScene()->Load("TemporalScene");
-	ImGui::SetWindowFocus("Scene##");
-
+	EngineApp->Stop();
 	mState = GameState::STOP;
 
+	ImGui::SetWindowFocus(SCENEPANEL);
 }
 
 void EditorControlPanel::Step()
@@ -244,10 +228,10 @@ void EditorControlPanel::Step()
 		mState = GameState::PLAY_PAUSE;
 		[[fallthrough]];
 	case GameState::PLAY_PAUSE:
-		EngineApp->GetEngineScriptManager()->Play();
+		EngineApp->GetEngineScriptManager()->Pause(false);
 		EngineApp->GetEngineScriptManager()->Update(EngineApp->GetRealDt());
-		EngineApp->GetEngineScriptManager()->Stop();
-		EngineApp->GetAudio()->PauseAllChannels();
+		EngineApp->GetEngineScriptManager()->Pause(true);
+		EngineApp->GetAudio()->AudioPause();
 		break;
 	default:
 		break;

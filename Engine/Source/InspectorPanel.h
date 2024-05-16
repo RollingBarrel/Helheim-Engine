@@ -20,6 +20,7 @@ class AudioSourceComponent;
 class AudioListenerComponent;
 class Transform2DComponent;
 class SliderComponent;
+class ParticleSystemComponent;
 class BoxColliderComponent;
 
 class InspectorPanel : public Panel
@@ -30,12 +31,12 @@ public:
 	void Draw(int windowFlags) override;
 
 private:
-	bool mSameComponentPopup = false;
-
+	
+	GameObject* mLockedGameObject = nullptr;
 	Component* mComponent = nullptr;
 
 	bool mLocked = false;
-	GameObject* mLockedGameObject = nullptr;
+	bool mSameComponentPopup = false;
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);
@@ -56,6 +57,7 @@ private:
 	void DrawAudioSourceComponent(AudioSourceComponent* component);
 	void DrawListenerComponent(AudioListenerComponent* component);
 	void DrawTransform2DComponent(Transform2DComponent* component);
+	void DrawParticleSystemComponent(ParticleSystemComponent* component);
 	void DrawBoxColliderComponent(BoxColliderComponent* component);
 
 	void DragAndDropSource(Component* component);

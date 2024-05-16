@@ -27,7 +27,7 @@ void MotionState::getWorldTransform(btTransform& worldTransform) const
 
 void MotionState::setWorldTransform(const btTransform& worldTransform)
 {
-	if (App->GetScriptManager()->IsPlaying())
+	if (false) // TODO: Check game is running App->GetScriptManager()->IsPlaying()
 	{
 		// TODO: generalize collider common properties on super class
 		bool freezeRotation = static_cast<BoxColliderComponent*>(mCollider)->GetFreezeRotation();

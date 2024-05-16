@@ -7,6 +7,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
+
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
@@ -31,15 +32,17 @@ static unsigned int ImportTexture(const char* filePath, const std::string& texPa
     return EngineApp->GetEngineResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
 }
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::unordered_map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)
 {
     const tinygltf::PbrMetallicRoughness& material = tinyMaterial.pbrMetallicRoughness;
     float baseColorFactor[4] = { static_cast<float>(material.baseColorFactor[0]), static_cast<float>(material.baseColorFactor[1]), static_cast<float>(material.baseColorFactor[2]), static_cast<float>(material.baseColorFactor[3]) };
     float metalicFactor = static_cast<float>(material.metallicFactor);
     float roughnessFactor = static_cast<float>(material.roughnessFactor);
+    float emissiveFactor[3] = { static_cast<float>(tinyMaterial.emissiveFactor[0]), static_cast<float>(tinyMaterial.emissiveFactor[1]), static_cast<float>(tinyMaterial.emissiveFactor[2]) };
     unsigned int baseColorTex = 0;
     unsigned int metallicRoughTex = 0;
     unsigned int normalTex = 0;
+    unsigned int emissiveTex = 0;
 
     int baseColorTexIdx = material.baseColorTexture.index;
     if (baseColorTexIdx >= 0)
@@ -73,32 +76,43 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
 
     const char* name = tinyMaterial.name.c_str();
 
-    if (tinyMaterial.additionalValues.size() > 0)
-    {
-        for (const auto& content : tinyMaterial.additionalValues)
-        {
-            if (content.first == "normalTexture")
-            {
-                const int indexValue = content.second.TextureIndex();
 
-                if (indexValue) {
-                    int normalIndex = indexValue;
-                    if (importedTextures.find(normalIndex) == importedTextures.end())
-                    {
-                        std::string textPath = tinyModel.images[tinyModel.textures[normalIndex].source].uri;
-                        normalTex = ImportTexture(filePath, textPath, uid, modifyAssets);
-                        importedTextures[normalIndex] = normalTex;
-                    }
-                    else
-                    {
-                        normalTex = importedTextures[normalIndex];
-                    }
+    for (const auto& content : tinyMaterial.additionalValues)
+    {
+        if (content.first == "normalTexture")
+        {
+            const int indexValue = content.second.TextureIndex();
+    
+            if (indexValue) {
+                int normalIndex = indexValue;
+                if (importedTextures.find(normalIndex) == importedTextures.end())
+                {
+                    std::string textPath = tinyModel.images[tinyModel.textures[normalIndex].source].uri;
+                    normalTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+                    importedTextures[normalIndex] = normalTex;
+                }
+                else
+                {
+                    normalTex = importedTextures[normalIndex];
                 }
             }
         }
     }
 
-    ResourceMaterial* rMaterial = new ResourceMaterial(uid++, baseColorFactor, metalicFactor, roughnessFactor, baseColorTex, metallicRoughTex, normalTex);
+    if (tinyMaterial.emissiveTexture.index != -1)
+    {
+        if (importedTextures.find(tinyMaterial.emissiveTexture.index) == importedTextures.end())
+        {
+            std::string textPath = tinyModel.images[tinyModel.textures[tinyMaterial.emissiveTexture.index].source].uri;
+            emissiveTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+            importedTextures[tinyMaterial.emissiveTexture.index] = emissiveTex;
+        }
+        else
+        {
+            emissiveTex = importedTextures[tinyMaterial.emissiveTexture.index];
+        }
+    }
+    ResourceMaterial* rMaterial = new ResourceMaterial(uid++, baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex);
     Importer::Material::Save(rMaterial);
     return rMaterial;
 }
@@ -111,107 +125,11 @@ ResourceMaterial* Importer::Material::ImportDefault()
     unsigned int baseColorTex = 0;
     unsigned int metallicRoughTex = 0;
     unsigned int normalTex = 0;
+    unsigned int emissiveTex = 0;
+    float emissiveFactor[4] = { 0.f };
 
-    ResourceMaterial* rMaterial = new ResourceMaterial(999999999, baseColorFactor, metalicFactor, roughnessFactor, baseColorTex, metallicRoughTex, normalTex);
+    ResourceMaterial* rMaterial = new ResourceMaterial(999999999, baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex);
     if(!App->GetFileSystem()->Exists("Library/99/999999999"))
         Importer::Material::Save(rMaterial);
     return rMaterial;
 }
-
-void Importer::Material::Save(const ResourceMaterial* rMaterial)
-{
-    unsigned int texturesUID[3] = { (rMaterial->GetBaseColorTexture() != nullptr) ? rMaterial->GetBaseColorTexture()->GetUID() : 0,
-                                    (rMaterial->GetMetallicRoughnessTexture() != nullptr) ? rMaterial->GetMetallicRoughnessTexture()->GetUID() : 0,
-                                    (rMaterial->GetNormalTexture() != nullptr) ? rMaterial->GetNormalTexture()->GetUID() : 0};
-
-    bool enables[3] = { 
-        rMaterial->IsBaseColorEnabled(),
-        rMaterial->IsMetallicRoughnessEnabled(),
-        rMaterial->IsNormalMapEnabled()};
-
-    unsigned int size = sizeof(texturesUID) +
-                        sizeof(enables) +
-                        sizeof(float) * 4 + 
-                        sizeof(float) + 
-                        sizeof(float);
-
-    char* fileBuffer = new char[size];
-    char* cursor = fileBuffer;
-
-    unsigned int bytes = sizeof(texturesUID);
-    memcpy(cursor, texturesUID, bytes);
-    cursor += bytes;
-
-    bytes = sizeof(enables);
-    memcpy(cursor, enables, bytes);
-    cursor += bytes;
-
-    float4 baseColorFactor = rMaterial->GetBaseColorFactor();
-    bytes = sizeof(float) * 4;
-    memcpy(cursor, &baseColorFactor, bytes);
-    cursor += bytes;
-
-    float metallicFactorFactor = rMaterial->GetMetallicFactor();
-    bytes = sizeof(float);
-    memcpy(cursor, &metallicFactorFactor, bytes);
-    cursor += bytes;
-
-    float roughnessFactor = rMaterial->GetRoughnessFactor();
-    bytes = sizeof(float);
-    memcpy(cursor, &roughnessFactor, bytes);
-    cursor += bytes;
-
-    const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rMaterial->GetUID(), true);
-    App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
-
-    delete[] libraryPath;
-    delete[] fileBuffer;
-}
-
-ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned int uid )
-{
-    char* fileBuffer = nullptr;
-    ResourceMaterial* ret = nullptr;
-    if (App->GetFileSystem()->Load(fileName, &fileBuffer))
-    {
-
-        char* cursor = fileBuffer;
-        unsigned int texturesUID[3];
-        unsigned int bytes = sizeof(texturesUID);
-
-        memcpy(texturesUID, cursor, bytes);
-        cursor += bytes;
-
-        bool enables[3];
-        bytes = sizeof(enables);
-        memcpy(enables, cursor, bytes);
-        cursor += bytes;
-
-        bool enablebaseColorTexture = enables[0];
-        bool enableMetallicRoughnessTexture = enables[1];
-        bool enableNormalTexture = enables[2];
-
-        float4 baseColorFactor;
-        bytes = sizeof(float) * 4;
-        memcpy(&baseColorFactor, cursor, bytes);
-        cursor += bytes;
-
-        float metallicFactor;
-        bytes = sizeof(float);
-        memcpy(&metallicFactor, cursor, bytes);
-        cursor += bytes;
-
-        float roughnessFator;
-        bytes = sizeof(float);
-        memcpy(&roughnessFator, cursor, bytes);
-        cursor += bytes;
-        ret = new ResourceMaterial(uid, baseColorFactor.ptr(), metallicFactor, roughnessFator, texturesUID[0], texturesUID[1], texturesUID[2]);
-        Importer::Material::Save(ret);
-
-        delete[] fileBuffer;
-    }
-
-    return ret;
-}
-
-

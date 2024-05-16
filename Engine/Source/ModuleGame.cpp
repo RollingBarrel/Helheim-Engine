@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "ModuleScriptManager.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "NavMeshController.h"
 #include "glew.h"
 
@@ -16,15 +17,17 @@ bool ModuleGame::Init()
 	glGenVertexArrays(1, &mVAO);
 
 	//TODO: read the name of the fitrst scene to load from somewhere
-	//App->GetScene()->Load("MainMenu");
-	App->GetScene()->Load("Level1");
+	App->GetScene()->Load("MainMenu");
+	//App->GetScene()->Load("Level1");
 	//TODO:: This is bad for decoupling
 	App->GetScriptManager()->StartScripts();
-	//TODO: Do better!!!!
-	App->GetScene()->GetNavController()->HandleBuild();
+
+	//TODO: Add this code to is game playing in editor and game
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
 	
+	//App->GetWindow()->SetGameWindowsPosition({0,0});
+
 	//Camera
 	//Find camera on the scene and set !!!);
 	return true;
@@ -34,6 +37,9 @@ update_status ModuleGame::PreUpdate(float dt)
 {
 	int width = App->GetWindow()->GetWidth();
 	int height = App->GetWindow()->GetHeight();
+
+	App->GetWindow()->GameWindowsResized({ (float)width, (float)height });
+
 	if (width != mScreenPrevSizeX || height != mScreenPrevSizeY)
 	{
 		App->GetOpenGL()->SceneFramebufferResized(width, height);
@@ -45,6 +51,8 @@ update_status ModuleGame::PreUpdate(float dt)
 
 update_status ModuleGame::Update(float dt)
 {
+
+
 	glUseProgram(mGameProgramId);
 	glBindVertexArray(mVAO);
 	glActiveTexture(GL_TEXTURE0);

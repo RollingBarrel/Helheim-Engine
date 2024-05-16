@@ -3,7 +3,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleEngineInput.h"
 #include "ModuleScene.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEngineScriptManager.h"
 #include "ModuleResource.h"
@@ -16,6 +16,7 @@
 #include "ModuleEditor.h"
 #include "ModulePhysics.h"
 #include "Timer.h"
+#include "NavMeshController.h"
 
 EngineApplication* EngineApp = NULL;
 
@@ -29,7 +30,8 @@ EngineApplication::EngineApplication()
 	modules[0] = engineInput = new ModuleEngineInput();
 	input = engineInput;
 	modules[1] = window = new ModuleWindow();
-	modules[2] = camera = new ModuleCamera();
+	modules[2] = engineCamera = new ModuleEngineCamera();
+	camera = engineCamera;
 	modules[3] = fileSystem = new ModuleFileSystem();
 	modules[4] = audio = new ModuleAudio();
 	modules[5] = render = new ModuleOpenGL();
@@ -44,6 +46,7 @@ EngineApplication::EngineApplication()
 	modules[12] = ui = new ModuleUI();
 	modules[13] = event = new ModuleEvent();
 	modules[14] = physics = new ModulePhysics();
+	mNavMeshController = new NavMeshController();
 }
 
 EngineApplication::~EngineApplication()
@@ -54,6 +57,7 @@ EngineApplication::~EngineApplication()
 	}
 	delete mEngineTimer;
 	delete mGameTimer;
+	delete mNavMeshController;
 }
 
 bool EngineApplication::Init()
@@ -80,6 +84,7 @@ bool EngineApplication::Init()
 update_status EngineApplication::Update(float dt)
 {
 	//OPTICK_FRAME("MainThread");
+	if (mExit) return UPDATE_STOP;
 
 	mCurrentTimer->Update();
 
@@ -99,13 +104,36 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	editor->SaveCameraPosition();
+	editor->SaveUserSettings();
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)
 		ret = modules[i]->CleanUp();
 
 	return ret;
+}
+
+void EngineApplication::Start()
+{
+	mIsPlayMode = true;
+
+	SetCurrentClock(EngineApp->GetGameClock());
+	scene->Save("TemporalScene");
+	engineScriptManager->StartScripts();
+	mGameTimer->Start();
+}
+
+void EngineApplication::Stop()
+{
+	mIsPlayMode = false;
+
+	mEngineTimer->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
+	mGameTimer->Stop();
+	SetCurrentClock(EngineApp->GetEngineClock());
+	mEngineTimer->Resume();
+	EngineApp->GetAudio()->EngineStop();
+	scene->Load("TemporalScene");
+
 }
 
 float EngineApplication::GetRealDt() const

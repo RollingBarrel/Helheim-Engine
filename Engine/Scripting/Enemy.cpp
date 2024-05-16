@@ -5,17 +5,18 @@
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
-#include "AnimationComponent.h"
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
 void Enemy::Start()
 {
-    mNavMeshControl = App->GetScene()->GetNavController();
 
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag(scene->GetRoot(), scene->GetTagByName("Player")->GetID());
+    mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
     mHealth = mMaxHealth;
+    
+    
+    
 }
 
 void Enemy::Update()
@@ -41,7 +42,6 @@ void Enemy::TakeDamage(float damage)
     
     LOG("Enemy Health: %f", mHealth);
 
-
     if (mHealth <= 0)
     {
         Death();
@@ -64,4 +64,11 @@ bool Enemy::Delay(float delay) //Lapse of time for doing some action
         return true;
     }
     else return false;
+}
+
+
+void Enemy::PushBack() {
+    float3 direction = mGameObject->GetPosition() - mPlayer->GetPosition();
+    direction.Normalize();
+    mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
 }

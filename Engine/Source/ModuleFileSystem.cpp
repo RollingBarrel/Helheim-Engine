@@ -31,6 +31,7 @@ ModuleFileSystem::ModuleFileSystem()
     CreateDirectory(ASSETS_SCENES_PATH);
     CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(ASSETS_SCRIPT_PATH);
+    CreateDirectory(ASSETS_NAVMESH_PATH);
     CreateDirectory(LIBRARY_PATH);
 
     mRoot = new PathNode("Assets");

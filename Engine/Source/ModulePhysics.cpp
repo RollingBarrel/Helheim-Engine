@@ -69,7 +69,7 @@ update_status ModulePhysics::PreUpdate(float dt)
 	}
 	mRigidBodiesToRemove.clear();
 
-	if (App->GetScriptManager()->IsPlaying())
+	if (false) // TODO: Check game is running App->GetScriptManager()->IsPlaying()
 	{
 		mWorld->stepSimulation(dt, 15);
 

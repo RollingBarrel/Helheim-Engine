@@ -22,7 +22,7 @@ void PlayerCamera::Start()
     mCameraComponent = reinterpret_cast<CameraComponent*>(mGameObject->GetComponent(ComponentType::CAMERA));
 
     ModuleScene* scene = App->GetScene();
-    scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("CombatArea")->GetID(), mCombatAreas);
+    //scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("CombatArea")->GetID(), mCombatAreas);
 
 
     //follow the target
@@ -34,98 +34,46 @@ void PlayerCamera::Start()
     //look at the target
     if (mLookTarget && mCameraComponent)
     {
-        mCameraComponent->LookAt(mGameObject->GetWorldPosition(), mLookTarget->GetWorldPosition(), mGameObject->GetUp());
+        mGameObject->LookAt(mLookTarget->GetWorldPosition());
     }
 
     mAuxLookTarget = mLookTarget;
 
-    SetView(float3(0, -8.0f, 16.0f), 0.3f);
+    SetView(float3(0, -10.0f, 16.0f), 0.4f);
 
 
 }
 
 void PlayerCamera::Update()
 {
-    CameraManager();
+    //CameraManager();
 
-    float3 closePosition = float3(0, -5.0f, 7.0f);
-    float closeRotation = 0.5f;
-    float3 topPosition = float3(0, -8.0f, 16.0f);
-    float topRotation = 0.3f;
+    float3 topPosition = float3(0, -10.0f, 16.0f);
+    float topRotation = 0.4f;
 
     float transitionTime = 1.0f;
     static float deltaTime = transitionTime;
 
     float3 position = mFollowTarget->GetWorldPosition() - mGameObject->GetPosition();
 
-    switch (mCameraMode)
+    if ((position - topPosition).Abs().Length() > 0.9)
     {
-    case CameraMode::CLOSE:
-        if ((position - closePosition).Abs().Length() > 0.7)
+        float3 direction = topPosition - position;
+        deltaTime = deltaTime - App->GetDt(); // Quizas seria mejor usar el GameManager en vez de App
+        float rotation = topRotation - mGameObject->GetRotation().x;
+        if (deltaTime > 0) 
         {
-            float3 direction = closePosition - position;
-            deltaTime = deltaTime - App->GetDt(); // Quizas seria mejor usar el GameManager en vez de App
-            float rotation = closeRotation - mGameObject->GetRotation().x;
-            if (deltaTime > 0) 
-            {
-                float factor = (transitionTime - deltaTime) / transitionTime;
-                SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
-            }
+            float factor = (transitionTime - deltaTime) / transitionTime;
+            SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
         }
-        else
-        {
-            deltaTime = transitionTime;
-            SetView(closePosition, closeRotation);
-        }
-        break;
-
-    case CameraMode::TOP:
-        if ((position - topPosition).Abs().Length() > 0.9)
-        {
-            float3 direction = topPosition - position;
-            deltaTime = deltaTime - App->GetDt(); // Quizas seria mejor usar el GameManager en vez de App
-            float rotation = topRotation - mGameObject->GetRotation().x;
-            if (deltaTime > 0) 
-            {
-                float factor = (transitionTime - deltaTime) / transitionTime;
-                SetView(position + direction * factor, mGameObject->GetRotation().x + rotation * factor);
-            }
-        }
-        else
-        {
-            deltaTime = transitionTime;
-            SetView(topPosition, topRotation);
-        }
-        break;
+    }
+    else
+    {
+        deltaTime = transitionTime;
+        SetView(topPosition, topRotation);
     }
 
 
-}
-
-//if the target is inside a cube with tag "CombatArea" the camera will move to the top of the cube
-void PlayerCamera::CameraManager()
-{
-    float3 playerPosition = mFollowTarget->GetWorldPosition();
-
-    for (auto area : mCombatAreas)
-    {
-        float3 areaPosition = area->GetPosition();
-        float3 areaSize = area->GetScale();
-        if (playerPosition.x > areaPosition.x - areaSize.x / 2 && playerPosition.x < areaPosition.x + areaSize.x / 2 &&
-            playerPosition.z > areaPosition.z - areaSize.z / 2 && playerPosition.z < areaPosition.z + areaSize.z / 2)
-        {
-            mCameraMode = CameraMode::TOP;
-            mLookTarget = area;
-
-            return;
-        }
-        else
-        {
-            mLookTarget = mAuxLookTarget;
-            mCameraMode = CameraMode::CLOSE;
-        }
-
-    }
 }
 
 void PlayerCamera::SetView(float3 position, float rotation)

@@ -37,7 +37,7 @@ jobs:
             files-changed-only: false
             extensions: h,cpp
             ignore: Engine/Source/Dependencies
-            extra-args: -std=c++14
+            extra-args: -std=c++17
             # The following value will only update a single comment
             # in a pull request's thread. Set it to false to disable the comment.
             # Set it to true to post a new comment (and delete the old comment).

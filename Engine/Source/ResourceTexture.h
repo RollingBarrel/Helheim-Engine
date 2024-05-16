@@ -1,5 +1,6 @@
 #pragma once
 #include "Resource.h"
+#include <stdint.h>
 
 class ENGINE_API ResourceTexture : public Resource
 {
@@ -16,6 +17,7 @@ public:
 
 	ResourceTexture(
 		unsigned int uid,
+		unsigned int glTarget,
 		unsigned int width, 
 		unsigned int height, 
 		unsigned int internalFormat, 
@@ -24,8 +26,7 @@ public:
 		unsigned int mipLevels, 
 		unsigned int numPixels,
 		bool hasAlpha,
-		unsigned int openGLId,
-		unsigned int texHandle);
+		unsigned int texelSize);
 
 	~ResourceTexture();
 
@@ -37,12 +38,20 @@ public:
 	unsigned int GetTexFormat() const { return mTexFormat; }
 	unsigned int GetDataType() const { return mDataType; }
 	unsigned int GetMipLevels() const { return mMipLevels; }
-	unsigned int GetNumPixels() const { return mNumPixels; }
+	unsigned int GetPixelsSize() const { return mPixelsSize; }
 	bool HasAlpha() const { return mHasAlpha; }
 	unsigned int GetOpenGLId() const { return mOpenGLId; }
 	unsigned int GetTextureHandle() const { return static_cast<unsigned int>(mTexHandle); }
+	bool IsBindless() const { return mTexHandle != 0; }
+	unsigned int GetTextureGLTarget() const { return mGLTarget; }
+	bool IsCubemap() const;
+	unsigned int GetTexelSize() const { return mTexelSize; }
+
+	void MakeTextutureBindless();
+	void GenerateMipmaps();
 
 private:
+	unsigned int mGLTarget;
 	unsigned int mWidth;
 	unsigned int mHeight;
 
@@ -50,7 +59,8 @@ private:
 	unsigned int mTexFormat;
 	unsigned int mDataType;
 	unsigned int mMipLevels;
-	unsigned int mNumPixels;
+	unsigned int mPixelsSize;
+	unsigned int mTexelSize;
 
 	bool mHasAlpha;
 
