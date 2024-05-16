@@ -1007,7 +1007,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	float3* color = imageComponent->GetColor();
 	float* alpha = imageComponent->GetAlpha();
 	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
-	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
+	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("Alpha", alpha, 0.0f, 1.0f);
 
 	// Image Info.
 	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
@@ -1040,6 +1040,12 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 			rows = 1;
 		}
 		imageComponent->SetSpritesheetLayout(columns, rows);
+
+		// Reproduction speed slider
+		float reproductionSpeed = imageComponent->GetFrameDuration();
+		ImGui::Text("Reproduction Speed:"); ImGui::SameLine();
+		ImGui::SliderFloat("Reproduction Speed", &reproductionSpeed, 0.0f, 1.0f);
+		imageComponent->SetFrameDuration(reproductionSpeed);
 
 		// Display the spritesheet image
 		if (image != nullptr)

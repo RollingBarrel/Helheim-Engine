@@ -285,9 +285,6 @@ void ImageComponent::FillSpriteSheetVBO()
 		 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
 	};
 
-	LOG("uStart: %f, vStart: %f, uEnd: %f, vEnd: %f", uStart, vStart, uEnd, vEnd);
-	LOG(" ");
-
 	glGenBuffers(1, &mQuadVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);

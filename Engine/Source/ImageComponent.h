@@ -44,6 +44,8 @@ public:
     int GetColumns() const { return mColumns; }
     int GetRows() const { return mRows; }
     void SetSpritesheetLayout(int columns, int rows);
+    float GetFrameDuration() const { return mFrameDuration; }
+    void SetFrameDuration(float frameDuration) { mFrameDuration = frameDuration; }
 
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
