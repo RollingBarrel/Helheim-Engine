@@ -4,7 +4,7 @@
 #include "ModuleResource.h"
 #include "Trail.h"
 
-TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
+TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::TRAIL)
 {
     mTrail = new Trail();
     Init();
@@ -49,8 +49,9 @@ void TrailComponent::Update()
         float3 position, scale;
         Quat rotation;
         mOwner->GetWorldTransform().Decompose(position, rotation, scale);
-        float dposition = position.DistanceSq(mTrail->GetLastPosition());
-        if (dposition >= mMinDistance * mMinDistance && mTrail->GetSize() < mMaxPoints)
+        const float3 lastPosition = mTrail->GetLastPosition();
+        const float dposition = position.DistanceSq(lastPosition);
+        if (mTrail->GetSize() <= 0 || dposition >= mMinDistance * mMinDistance && mTrail->GetSize() < mMaxPoints)
         {
             mTrail->AddTrailPositions(position, rotation);
         }

@@ -33,8 +33,8 @@ private:
 	unsigned int mResourceId = 452546727; // Default particle texture
 	const char* mFileName = nullptr;
 
-	float mMinDistance = 1.0f;
+	float mMinDistance = 0.1f;
 	int mMaxPoints = 1000.0f;
 
-	Trail* mTrail;
+	Trail* mTrail = nullptr;
 };
