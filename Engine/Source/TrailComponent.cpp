@@ -61,9 +61,9 @@ void TrailComponent::Update()
 
 void TrailComponent::SetImage(unsigned int resourceId)
 {
-    mResourceId = resourceId;
-    auto image = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
-    mTrail->SetImage(image);
+    //mResourceId = resourceId;
+    //auto image = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
+    //mTrail->SetImage(image);
 }
 
 void TrailComponent::Reset()

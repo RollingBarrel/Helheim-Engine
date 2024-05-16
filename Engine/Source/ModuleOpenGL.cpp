@@ -16,9 +16,10 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ModuleFileSystem.h"
+#include "ParticleSystemComponent.h"
+#include "Trail.h"
 
 #include "CameraComponent.h"
-#include "Trail.h"
 
 ModuleOpenGL::ModuleOpenGL()
 {

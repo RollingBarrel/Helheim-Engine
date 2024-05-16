@@ -5,7 +5,6 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
-#include "ParticleSystemComponent.h"
 #include <vector>
 
 typedef struct DirectionalLight 
@@ -17,6 +16,7 @@ typedef struct DirectionalLight
 class PointLightComponent;
 class SpotLightComponent;
 class Trail;
+class ParticleSystemComponent;
 struct PointLight;
 struct SpotLight;
 struct SDL_Texture;

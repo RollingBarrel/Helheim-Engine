@@ -7,26 +7,12 @@
 
 class ResourceTexture;
 
-class TrailPoint
+struct TrailPoint
 {
-public:
-	TrailPoint();
-	~TrailPoint();
+	float3 position;
+	float3 direction;
 
-	float3 TopPointPosition() const;
-	float3 BotPointPosition() const;
-	float2 TopPointTexCoords() const;
-	float2 BotPointTexCoords() const;
-	float4 CalculateColor(const ColorGradient& gradient) const;
-
-	float3 GetPosition() const { return mPosition; }
-	float3 GetDirection() const { return mDirection; }
-	float GetLifeTime() const { return mLifeTime; }
-
-private:
-	float3 mPosition;
-	float3 mDirection;
-	float mLifeTime = 0.0f;
+	float creationTime = 0.0f;
 };
 
 class Trail
@@ -57,6 +43,7 @@ private:
 	float mMaxLifeTime; // If maxLiftime is 0, it means infinite lifetime
 	ColorGradient mGradient;
 	float3 mDirection = float3::unitY; // Fixed direction for the normal of the trailPoints
+	float mTrailTime = 0.0f;
 
 	float4x4 mModel = float4x4::identity;
 	ResourceTexture* mImage = nullptr;

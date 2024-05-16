@@ -63,6 +63,11 @@ void Trail::Init()
 
 void Trail::Update()
 {
+    mTrailTime += App->GetDt();
+    if (mMaxLifeTime > 0 && (mTrailTime - mPoints.front().creationTime) >= mMaxLifeTime)
+    {
+        mPoints.pop_front();
+    }
 }
 
 void Trail::Draw() const
@@ -76,16 +81,31 @@ void Trail::Draw() const
     glUseProgram(programId);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-    glBufferData(GL_ARRAY_BUFFER, mPoints.size() * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-    float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+    std::vector<TrailPoint> exp;
+    exp.push_back(mPoints.front());
+    exp.push_back(mPoints.back());
 
-    for (int i = 0; i < mPoints.size(); ++i)
+    glBufferData(GL_ARRAY_BUFFER, 2* mPoints.size() * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+    float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+    
+
+    for (int i = 0; i < exp.size() && mPoints.size() > 1; ++i)
     {
-        float3 topPointPos = mPoints[i].TopPointPosition();
-        float3 botPointPos = mPoints[i].BotPointPosition();
-        float2 topPointTexCoord = mPoints[i].TopPointTexCoords();
-        float2 botPointTexCoord = mPoints[i].BotPointTexCoords();
-        float4 color = mPoints[i].CalculateColor(mGradient);
+        float dp = i;// / mPoints.size() - 1;
+        
+        float3 topPointPos = exp[i].position + exp[i].direction * mWidth.GetValue(dp);
+        float3 botPointPos = exp[i].position - exp[i].direction * mWidth.GetValue(dp);
+        float2 topPointTexCoord = float2(dp, 1);
+        float2 botPointTexCoord = float2(dp, 0);
+        float4 color = mGradient.CalculateColor(dp);
+
+        // Copiar botPoint
+        memcpy(ptr, botPointPos.ptr(), sizeof(float3));
+        ptr += sizeof(float3);
+        memcpy(ptr, botPointTexCoord.ptr(), sizeof(float2));
+        ptr += sizeof(float2);
+        memcpy(ptr, color.ptr(), sizeof(float4));
+        ptr += sizeof(float4);
 
         // Copiar topPoint
         memcpy(ptr, topPointPos.ptr(), sizeof(float3));
@@ -95,13 +115,7 @@ void Trail::Draw() const
         memcpy(ptr, color.ptr(), sizeof(float4));
         ptr += sizeof(float4);
 
-        // Copiar botPoint
-        memcpy(ptr, botPointPos.ptr(), sizeof(float3));
-        ptr += sizeof(float3);
-        memcpy(ptr, botPointTexCoord.ptr(), sizeof(float2));
-        ptr += sizeof(float2);
-        memcpy(ptr, color.ptr(), sizeof(float4));
-        ptr += sizeof(float4);
+        
     }
 
     glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -112,9 +126,9 @@ void Trail::Draw() const
 
     glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
     //glUniformMatrix4fv(glGetUniformLocation(programId, "model"), 1, GL_TRUE, mModel.ptr());
-    glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+    //glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, exp.size() * 2);
 
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
@@ -125,7 +139,8 @@ void Trail::Draw() const
 
 void Trail::AddTrailPositions(float3 position, Quat rotation)
 {
-    //mPoints.push_back(TrailPoint(position, direcction));
+    float3 direction = float3::unitY;
+    mPoints.push_back(TrailPoint{ position, direction, mTrailTime });
 }
 
 float3 Trail::GetLastPosition() const
@@ -134,7 +149,7 @@ float3 Trail::GetLastPosition() const
     {
         return float3::nan;
     }
-    return mPoints.back().GetPosition();
+    return mPoints.back().position;
 }
 
 float3 Trail::GetFirstPosition() const
@@ -143,7 +158,7 @@ float3 Trail::GetFirstPosition() const
     {
         return float3::nan;
     }
-    return mPoints.front().GetPosition();
+    return mPoints.front().position;
 }
 
 void Trail::SaveJson(Archive& archive) const
@@ -169,37 +184,4 @@ void Trail::LoadJson(const rapidjson::Value& data)
     {
         mWidth.LoadJson(data["Width"]);
     }
-}
-
-TrailPoint::TrailPoint()
-{
-}
-
-TrailPoint::~TrailPoint()
-{
-}
-
-float3 TrailPoint::TopPointPosition() const
-{
-    return mPosition + mDirection/* * width*/; // TODO
-}
-
-float3 TrailPoint::BotPointPosition() const
-{
-    return mPosition - mDirection/* * width*/; // TODO
-}
-
-float2 TrailPoint::TopPointTexCoords() const
-{
-    return float2(0.0f,1.0f); // TODO
-}
-
-float2 TrailPoint::BotPointTexCoords() const
-{
-    return float2(0.0f,0.0f); // TODO
-}
-
-float4 TrailPoint::CalculateColor(const ColorGradient& gradient) const
-{
-    return gradient.CalculateColor(mLifeTime); // TODO
 }
