@@ -1498,7 +1498,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 {
 	ImGui::Text("Minimum distance between points");
 	ImGui::SameLine();
-	ImGui::DragFloat("##Lifetime", &(component->mMinDistance), 1.0f, 0.0f);
+	ImGui::DragFloat("##MinDistance", &(component->mMinDistance), 1.0f, 0.0f);
 
 	ImGui::Separator();
 
