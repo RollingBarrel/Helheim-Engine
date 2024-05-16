@@ -329,6 +329,9 @@ void ImageComponent::Update()
 	if (mIsSpritesheet)
 	{
 		mElapsedTime += App->GetCurrentClock()->GetDelta();
+		LOG("Get Delta: %li", App->GetCurrentClock()->GetDelta());
+		LOG("Elapsed Time: %f", mElapsedTime);
+		LOG("Frame Duration: %f", mFrameDuration);
 		if (mElapsedTime > mFrameDuration)
 		{
 			mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
@@ -340,7 +343,7 @@ void ImageComponent::Update()
 			{
 				mCurrentFrame = 0;
 			}
-			mElapsedTime -= mFrameDuration;
+			mElapsedTime = 0;
 		}
 	}
 }

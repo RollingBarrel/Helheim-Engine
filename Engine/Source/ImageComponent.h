@@ -75,8 +75,8 @@ private:
     int mColumns = 1;
     int mRows = 1;
     int mCurrentFrame = 0;
-    float mElapsedTime = 0.0f;
-    float mFrameDuration = 1.0f / 30.0f; // 30 FPS
+    long mElapsedTime = 0;
+    float mFrameDuration = 30.0f; // 30 FPS
 
     CanvasComponent* mCanvas = nullptr;
 };
