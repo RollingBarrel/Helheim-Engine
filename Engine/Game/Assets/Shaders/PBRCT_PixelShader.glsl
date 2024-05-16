@@ -20,12 +20,14 @@ readonly layout(std430, binding = 0) buffer PointLights
 };
 struct SpotLight
 {
-	float radius;
 	vec4 pos; //w intensity
 	vec4 aimD;//w cos inner angle
 	vec4 col;//w cos outer angle
 	mat4 viewProjMatrix;
 	sampler2D shadowMap;
+	float radius;
+	int spotPad0;
+
 };
 readonly layout(std430, binding = 1) buffer SpotLights
 {

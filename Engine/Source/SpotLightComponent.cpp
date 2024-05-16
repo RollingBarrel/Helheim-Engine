@@ -24,6 +24,8 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	glGenTextures(1, &mShadowMapId);
 	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, 512, 512, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	//glGenerateMipmap(GL_TEXTURE_2D);
 	if (mData.shadowMapHandle != 0)
 	{
@@ -121,7 +123,7 @@ void SpotLightComponent::Update()
 
 		App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	}
-
+	LOG("offestof: %i", offsetof(SpotLight, shadowMapHandle));
 }
 
 inline Component* SpotLightComponent::Clone(GameObject* owner) const 

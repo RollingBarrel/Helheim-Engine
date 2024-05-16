@@ -4,14 +4,22 @@
 #include "Geometry/Frustum.h"
 
 typedef struct SpotLight {
-	float range;
-	float padding[3];
+	//float range;
+	//float padding[3];
+	//float pos[4]; //w intensity
+	//float aimD[4];//w cos inner angle
+	//float col[4];//w cos outer angle
+	//float4x4 viewProjMatrix;
+	//uint64_t shadowMapHandle;
+	//float padding2[2];
+
 	float pos[4]; //w intensity
 	float aimD[4];//w cos inner angle
 	float col[4];//w cos outer angle
 	float4x4 viewProjMatrix;
 	uint64_t shadowMapHandle;
-	float padding2[2];
+	float range;
+	float padding3;
 
 }SpotLight;
 
