@@ -260,9 +260,7 @@ bool PlayerController::IsMoving()
 void PlayerController::Moving()
 {
     
-    float3 cameradirection = mCamera->GetFront();
-    cameradirection.Normalize();
-
+    float3 cameradirection = mCamera->GetFront().Normalized();
 
     bool anyKeyPressed = false;
     
