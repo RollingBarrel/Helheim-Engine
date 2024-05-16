@@ -175,16 +175,17 @@ void ScenePanel::DrawScene()
 					GameObject* gameObjectRoot = new GameObject(name.c_str(), EngineApp->GetScene()->GetRoot());
 
 					std::vector<GameObject*> tempVec;
+					ResourceModel* rModel = reinterpret_cast<ResourceModel*>(resource);
+					
+					tempVec.reserve(rModel->GetNodes().size());
 
-					tempVec.reserve(reinterpret_cast<ResourceModel*>(resource)->GetNodes().size());
-
-					for (int i = 0; i < tempVec.capacity(); ++i)
+					for (int i = 0; i < rModel->GetNodes().size(); ++i)
 					{
-						ModelNode node = reinterpret_cast<ResourceModel*>(resource)->GetNodes()[i];
+						ModelNode node = rModel->GetNodes()[i];
 						if (node.mParentIndex == -1)
-							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), gameObjectRoot, true));
+							tempVec.push_back(DragToScene(node, i, *rModel, gameObjectRoot, true));
 						else
-							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), tempVec.at(node.mParentIndex), false));
+							tempVec.push_back(DragToScene(node, i, *rModel, tempVec.at(node.mParentIndex), false));
 
 						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
 						//{
@@ -199,7 +200,7 @@ void ScenePanel::DrawScene()
 
 					tempVec.clear();
 
-					//EngineApp->GetResource()->ReleaseResource(resource->GetUID());
+					EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}
 				case Resource::Type::Scene:

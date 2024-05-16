@@ -21,7 +21,7 @@ public:
 	~Quadtree();
 
 	bool AddObject(const GameObject& object);
-	bool RemoveObject(const GameObject* object);
+	void RemoveObject(const GameObject& object);
 	bool Intersects(const OBB& boundingBox) const;
 	bool Intersects(const Ray& ray) const;
 	bool IsLeaf() const { return mChildren[0] == nullptr; }
