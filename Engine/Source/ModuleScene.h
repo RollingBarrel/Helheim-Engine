@@ -26,7 +26,7 @@ public:
 	// Getters
 	GameObject* GetRoot() const { return mRoot; }
 	NavMeshController* GetNavController() const { return mNavMeshController; }
-	std::string const GetName();
+	const std::string& GetName() const;
 
 	// GameObjects
 	GameObject* Find(const char* name) const;
@@ -41,6 +41,8 @@ public:
 		mGameObjectsToLoadIntoScripts.push_back(pair);
 	}
 
+	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
+
 	// Quadtree
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
@@ -49,7 +51,6 @@ public:
 	// Frustum Culling
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
-	void ResetFrustumCulling(GameObject* obj);
 
 	// Save / Load Scene
 	void NewScene();
@@ -111,6 +112,8 @@ private:
 
 	// Others
 	NavMeshController* mNavMeshController;
+
+	std::vector<const MeshRendererComponent*>mCurrRenderComponents;
 };
 
 #endif //_MODULE_SCENE_H_

@@ -5,8 +5,6 @@
 #include <vector>
 #include "Math/float4x4.h"
 
-class Mesh;
-struct Material;
 class ResourceMesh;
 class ResourceMaterial;
 class GeometryBatch;
@@ -26,17 +24,12 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	void RefreshBoundingBoxes();
-	const OBB getOBB() const { return mOBB; }
+	const OBB& getOBB() const { return mOBB; }
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	void SetMesh(unsigned int uid);
-	const AABB GetAABB() const { return mAABB; }
-	const AABB GetAABBWorld() const { return mAABBWorld; }
+	const AABB& GetAABB() const { return mAABB; }
+	const AABB& GetAABBWorld() const { return mAABBWorld; }
 
-	void Enable() override;
-	void Disable() override;
-
-	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
-	bool IsInsideFrustum() const { return mInsideFrustum; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMaterial(unsigned int uid);
 
@@ -50,6 +43,5 @@ private:
 	OBB mOBB;
 	AABB mAABB;
 	AABB mAABBWorld;
-	bool mInsideFrustum = true;
 	int mTemporalID = -1;
 };

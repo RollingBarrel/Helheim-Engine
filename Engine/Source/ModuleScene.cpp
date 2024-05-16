@@ -80,12 +80,13 @@ update_status ModuleScene::Update(float dt)
 	{
 		mNavMeshController->Update();
 	}
-	App->GetOpenGL()->Draw();
-
 	if (mShouldUpdateQuadtree)
 	{
 		mQuadtreeRoot->UpdateTree();
 	}
+	mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
+	App->GetOpenGL()->Draw(mCurrRenderComponents);
+	mCurrRenderComponents.clear();
 
 	return UPDATE_CONTINUE;
 }
@@ -123,7 +124,7 @@ update_status ModuleScene::PostUpdate(float dt)
 		}
 	}
 
-	const Frustum frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
+	//const Frustum& frustum = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum();
 
 	return UPDATE_CONTINUE;
 }
@@ -508,18 +509,9 @@ void ModuleScene::LoadGameObjectsIntoScripts()
 
 #pragma region Others
 
-void ModuleScene::ResetFrustumCulling(GameObject* obj)
+void ModuleScene::AddMeshToRender(const MeshRendererComponent& meshRendererComponent)
 {
-	MeshRendererComponent* meshRend = (MeshRendererComponent*)obj->GetComponent(ComponentType::MESHRENDERER);
-	if (meshRend != nullptr)
-	{
-		meshRend->SetInsideFrustum(false);
-	}
-	for (GameObject* child : obj->GetChildren())
-	{
-		ResetFrustumCulling(child);
-	}
-
+	mCurrRenderComponents.push_back(&meshRendererComponent);
 }
 
 void ModuleScene::NewScene()
@@ -530,7 +522,8 @@ void ModuleScene::NewScene()
 	mRoot = new GameObject("Untlitled", nullptr);
 }
 
-std::string const ModuleScene::GetName() {
+const std::string& ModuleScene::GetName() const
+{
 	return mRoot->GetName();
 }
 

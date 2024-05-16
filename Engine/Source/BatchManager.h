@@ -17,7 +17,9 @@ public:
 	void AddHighLight(std::vector<Component*> meshComponents);
 	void RemoveHighLight(std::vector<Component*> meshComponents);
 
+	void AddCommand(const MeshRendererComponent* meshComponent);
 	void Draw();
+	void EndFrameDraw();
 
 private:
 	std::vector<GeometryBatch*> mBatches;

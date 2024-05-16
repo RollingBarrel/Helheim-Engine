@@ -60,7 +60,6 @@ public:
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
 	void UnbindSceneFramebuffer();
-	//unsigned int GetGBufferDepth() const { return depthStencil; }
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }
@@ -88,7 +87,7 @@ public:
 	void BatchAddMesh(MeshRendererComponent* mesh);
 	void BatchRemoveMesh(MeshRendererComponent* mesh);
 	void BatchEditMaterial(const MeshRendererComponent* mesh);
-	void Draw();
+	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
 	void SetWireframe(bool wireframe);
 	void AddHighLight(GameObject* gameObject);
 	void RemoveHighLight(GameObject* gameObject);
@@ -154,6 +153,8 @@ private:
 	unsigned int mIrradianceTextureId = 0;
 	unsigned int mSpecPrefilteredTexId = 0;
 	unsigned int mEnvBRDFTexId = 0;
+
+	unsigned int mEmptyVAO = 0;
 	
 
 	//Lighting uniforms

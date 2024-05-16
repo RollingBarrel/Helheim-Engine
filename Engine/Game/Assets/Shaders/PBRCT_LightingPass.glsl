@@ -34,27 +34,26 @@ in vec2 uv;
 
 layout(location = 1)uniform vec3 cPos;
 //Gbuffer
-uniform sampler2D diffuseTex;
-uniform sampler2D specularRoughTex;
-uniform sampler2D normalTex;
-uniform sampler2D positionTex;
-uniform sampler2D emissiveTex;
+layout(binding = 0)uniform sampler2D diffuseTex;
+layout(binding = 1)uniform sampler2D specularRoughTex;
+layout(binding = 2)uniform sampler2D normalTex;
+layout(binding = 3)uniform sampler2D positionTex;
+layout(binding = 4)uniform sampler2D emissiveTex;
 //Ambient
-uniform samplerCube prefilteredIBL;
-uniform samplerCube diffuseIBL;
-uniform sampler2D environmentBRDF;
+layout(binding = 5)uniform samplerCube prefilteredIBL;
+layout(binding = 6)uniform samplerCube diffuseIBL;
+layout(binding = 7)uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 
-vec3 cDiff;
+vec3 cDif;
 vec3 cSpec;
 float rough;
 vec3 N;
 vec3 pos;
 vec3 V;
-float depth;
 vec3 emissiveCol;
 
-out vec4 outColor;
+layout(location = 5)out vec4 outColor;
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
@@ -87,18 +86,17 @@ vec3 GetAmbientLight()
 
 void main() 
 {
-	cDiff = texture(diffuseTex, uv).rgb;
+	cDif = texture(diffuseTex, uv).rgb;
 	vec4 specColorTex = texture(specularRoughTex, uv);
 	cSpec = specColorTex.rgb;
-	rough = specColorTex.rgb.a;
+	rough = specColorTex.a;
 	N = normalize(texture(normalTex, uv).rgb * 2.0 - 1.0);
-	vec4 posDepth = texture(diffuseTex, uv);
-	pos = posDepth.rgb;
-	depth = posDepth.a;
+	pos = texture(positionTex, uv).rgb;
 	emissiveCol = texture(emissiveTex, uv).rgb;
 	V = normalize(cPos - pos);
 
 	vec3 pbrCol = vec3(0);
+	//Directional light
 	pbrCol += GetPBRLightColor(dirDir.xyz, dirCol.xyz, dirCol.w, 1);
 	
 	//Point lights

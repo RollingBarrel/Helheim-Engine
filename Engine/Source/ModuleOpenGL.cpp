@@ -124,7 +124,7 @@ bool ModuleOpenGL::Init()
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
-	unsigned int att = GL_COLOR_ATTACHMENT0;
+	const GLenum att = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1, &att);
 
 	//Gbuffer: diffuse color, specular+rough, normal, position, depth
@@ -138,9 +138,9 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGDepth);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
-	glGenTextures(1, &sceneTexture);
-	ResizeGBuffer(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -156,19 +156,22 @@ bool ModuleOpenGL::Init()
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	ResizeGBuffer(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGDiffuse, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGSpecularRough, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mGNormals, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGPositions, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
-	unsigned int att[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
-	glDrawBuffers(5, att);
+	const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(6, att2);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glGenVertexArrays(1, &mEmptyVAO);
 
 	//InitializePrograms
 	const char* sourcesPaths[2];
@@ -249,7 +252,9 @@ bool ModuleOpenGL::Init()
 
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
-	
+	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
@@ -294,6 +299,7 @@ bool ModuleOpenGL::CleanUp()
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteProgram(mUIImageProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
+	glDeleteVertexArrays(1, &mEmptyVAO);
 	glDeleteBuffers(1, &mSkyVbo);
 	glDeleteFramebuffers(1, &sFbo);
 	glDeleteTextures(1, &sceneTexture);
@@ -364,7 +370,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height =
 	glBindTexture(GL_TEXTURE_2D, sceneTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	ResizeGBuffer(width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -373,11 +379,11 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
 	if (mCameraUniBuffer != nullptr)
 	{
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+		mCameraUniBuffer->UpdateData(reinterpret_cast<const CameraComponent*>(App->GetCamera()->GetCurrentCamera())->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(reinterpret_cast<const CameraComponent*>(App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 		glUseProgram(mPbrLightingPassProgramId);
-		glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
+		glUniform3fv(1, 1, reinterpret_cast<const CameraComponent*>(App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
 		glUseProgram(0);
 	}
 }
@@ -417,6 +423,8 @@ static unsigned int LoadCubeMap()
 
 void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+	glViewport(0, 0, width, height);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
@@ -426,9 +434,9 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGPositions);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGDepth)
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -787,9 +795,6 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		//TODO: put in the init of openGL
 		glUseProgram(mPbrLightingPassProgramId);
 		glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), numMipMaps);
-		glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "prefilteredIBL"), 5);
-		glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "diffuseIBL"), 6);
-		glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "environmentBRDF"), 7);
 		glUseProgram(0);
 		SceneFramebufferResized();
 	}
@@ -848,22 +853,57 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
 	mBatchManager.EditMaterial(mesh);
 }
 
-void ModuleOpenGL::Draw()
+void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes)
 {
-	BindSceneFramebuffer();
+	for (const MeshRendererComponent* mesh : sceneMeshes)
+	{
+		mBatchManager.AddCommand(mesh);
+	}
+	//GaometryPass
+	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+	glDisable(GL_BLEND);
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilMask(0xFF);
+	glUseProgram(mPbrGeoPassProgramId);
+	mBatchManager.Draw();
+	
+	//Lighting Pass
+	glStencilFunc(GL_EQUAL, 1, 0xFF);
+	glStencilMask(0x00);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, mGNormals);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, mGPositions);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
 	glActiveTexture(GL_TEXTURE6);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
-	mBatchManager.Draw();
-	glActiveTexture(GL_TEXTURE0);
-	for (auto partSys : mParticleSystems)
+	glBindVertexArray(mEmptyVAO);
+	glUseProgram(mPbrLightingPassProgramId);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	
+	glStencilMask(0xFF);
+	glDisable(GL_STENCIL_TEST);
+	glUseProgram(0);
+	glBindVertexArray(0);
+	mBatchManager.EndFrameDraw();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+	for (const ParticleSystemComponent* partSys : mParticleSystems)
 	{
 		partSys->Draw();
 	}
-	UnbindSceneFramebuffer();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
 void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)

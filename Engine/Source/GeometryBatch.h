@@ -32,6 +32,7 @@ public:
 class BatchMeshRendererComponent
 {
 public:
+	BatchMeshRendererComponent(): component(nullptr), bMeshIdx(0), bMaterialIdx(0), bCAnim(nullptr) {}
 	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx, const AnimationComponent* cAnim = nullptr) : 
 		component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx), bCAnim(cAnim) {}
 	
@@ -91,15 +92,13 @@ public:
 	bool RemoveMeshComponent(const MeshRendererComponent* component);
 	bool AddToDraw(const MeshRendererComponent* component);
 	void Draw();
+	void EndFrameDraw();
 	void CleanUpCommands();
-	void AddHighLight(std::vector<Component*> meshRendererComponents);
+	void AddHighLight(const std::vector<Component*>& meshRendererComponents);
 	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
-	void CheckDirtyFlags();
 	void ComputeAnimation(const MeshRendererComponent* cMesh);
-	void DrawGeometryPass();
-	void DrawLightingPass();
 	void DrawHighlight();
 
 private:
@@ -112,7 +111,7 @@ private:
 	bool mPersistentsFlag = false;
 	bool mVBOFlag = false;
 	
-	std::map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
+	std::unordered_map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;

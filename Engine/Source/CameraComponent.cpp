@@ -54,20 +54,6 @@ void CameraComponent::Update()
 
 
         UpdateRotation();
-
-    }
-
-    //Frustum culling updates
-    App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
-    std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
-
-    for (const auto& object : drawableObjects)
-    {
-        MeshRendererComponent* meshComponent = (MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER);
-        if (meshComponent != nullptr)
-        {
-            meshComponent->SetInsideFrustum(true);
-        }
     }
 
     //TODO:SEPARATE GAME ENGINE

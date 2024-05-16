@@ -107,21 +107,22 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 }
 
 
-void MeshRendererComponent::Update() {
-
-}
-
-void MeshRendererComponent::Enable()
+void MeshRendererComponent::Update() 
 {
-	if(mMaterial && mMesh)
-		App->GetOpenGL()->BatchAddMesh(this);
+
 }
 
-void MeshRendererComponent::Disable()
-{
-	if (mMaterial && mMesh)
-		App->GetOpenGL()->BatchRemoveMesh(this);
-}
+//void MeshRendererComponent::Enable()
+//{
+//	if(mMaterial && mMesh)
+//		App->GetOpenGL()->BatchAddMesh(this);
+//}
+//
+//void MeshRendererComponent::Disable()
+//{
+//	if (mMaterial && mMesh)
+//		App->GetOpenGL()->BatchRemoveMesh(this);
+//}
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {

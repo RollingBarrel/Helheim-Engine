@@ -376,10 +376,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	{
 		mChildren.push_back(child);
 	}
-	if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr) 
-	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(child);
-	}
+	App->GetScene()->GetQuadtreeRoot()->AddObject(child);
 }
 
 GameObject* GameObject::RemoveChild(const int id)
@@ -644,11 +641,10 @@ void GameObject::RefreshBoundingBoxes()
 	{
 		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
 		App->GetScene()->SetShouldUpdateQuadtree(true);
-		
 	}
 	else
 	{
-		for (auto children : mChildren)
+		for (GameObject* children : mChildren)
 		{
 			children->RefreshBoundingBoxes();
 		}
