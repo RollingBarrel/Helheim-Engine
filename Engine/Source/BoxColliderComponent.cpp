@@ -39,25 +39,30 @@ void BoxColliderComponent::Reset()
 	mSize = float3::one;
 }
 
+void BoxColliderComponent::Update()
+{
+	// TODO: Better only when transform is modified
+	ComputeBoundingBox();
+	// TODO: If game is running and data has been modified, update Physics
+	//App->GetPhysics()->UpdateBoxRigidbody(this);
+}
+
 Component* BoxColliderComponent::Clone(GameObject* owner) const
 {
 	return new BoxColliderComponent(*this, owner);
 }
 
-void BoxColliderComponent::OnCollision(GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance)
+void BoxColliderComponent::AddCollisionEventHandler(CollisionEventType eventType, std::function<void()> handler)
 {
-	for (Component* component : mOwner->GetComponents(ComponentType::SCRIPT))
-	{
-		if (component != nullptr)
+	mEventHandlers[static_cast<int>(eventType)].push_back(handler);
+}
+
+void BoxColliderComponent::OnCollision(CollisionEventType eventType, GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance)
+{
+	for (auto& handler : mEventHandlers[static_cast<int>(eventType)])
 		{
-			ScriptComponent* scriptComponent = static_cast<ScriptComponent*>(component);
-			Script* script = scriptComponent->GetScriptInstance();
-			if (script != nullptr)
-			{
-				script->OnCollision(collidedWith, collisionNormal, penetrationDistance);
-			}
+			handler();
 		}
-	}
 }
 
 void BoxColliderComponent::ComputeBoundingBox()
@@ -65,45 +70,39 @@ void BoxColliderComponent::ComputeBoundingBox()
 	float3 sizeIncrement = mSize * 0.5f;
 	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
 	mWorldOBB = OBB(mLocalAABB);
-	mWorldOBB.Transform(mOwner->GetWorldTransform());
+	mWorldOBB.Transform(float4x4(mOwner->GetRotationQuat(), mOwner->GetWorldPosition()));
 }
 
 void BoxColliderComponent::SetCenter(const float3& center)
 {
 	mCenter = center;
 	ComputeBoundingBox();
-	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetSize(const float3& size)
 {
 	mSize = size;
 	ComputeBoundingBox();
-	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetColliderType(ColliderType colliderType)
 {
 	mColliderType = colliderType;
-	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetFreezeRotation(bool freezeRotation)
 {
 	mFreezeRotation = freezeRotation;
-	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetRigidBody(btRigidBody* rigidBody)
 {
 	mRigidBody = rigidBody;
-	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetMotionState(MotionState* motionState)
 {
 	mMotionState = motionState;
-	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::Save(Archive& archive) const

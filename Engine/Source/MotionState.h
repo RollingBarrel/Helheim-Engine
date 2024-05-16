@@ -18,7 +18,5 @@ public:
 private:
 	Component* mCollider = nullptr;
 	btTransform mMassCenterOffset = btTransform::getIdentity();
-	float3 mCenterOffset = float3::zero;
-	bool mFreezeRotation = false;
 };
 

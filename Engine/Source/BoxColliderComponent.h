@@ -5,10 +5,20 @@
 #include "Math/float3.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
+#include <functional>
+#include <vector>
 
 class GameObject;
 class btRigidBody;
 class MotionState;
+
+enum class CollisionEventType : int
+{
+	ON_COLLISION_ENTER = 0,
+	ON_COLLISION_EXIT,
+	ON_DESTROY,
+	COUNT
+};
 
 class ENGINE_API BoxColliderComponent : public Component
 {
@@ -19,10 +29,11 @@ public:
 
 	void Init();
 	void Reset() override;
-	void Update() override { ComputeBoundingBox(); } // TODO: Better only when transform is modified
+	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
-	void OnCollision(GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance);
+	void AddCollisionEventHandler(CollisionEventType eventType, std::function<void()> handler);
+	void OnCollision(CollisionEventType eventType, GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance);
 	void ComputeBoundingBox();
 
 	inline const AABB& GetAABB() const { return mLocalAABB; }
@@ -56,6 +67,8 @@ private:
 	btRigidBody* mRigidBody = nullptr;
 	MotionState* mMotionState = nullptr;
 	Collider mCollider{ this, typeid(Component) };
+
+	std::vector<std::function<void()>> mEventHandlers[(int)CollisionEventType::COUNT];
 
 };
 

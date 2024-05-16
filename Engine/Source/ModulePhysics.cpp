@@ -186,7 +186,8 @@ void ModulePhysics::ProcessCollision(Collider* bodyA, Collider* bodyB, const flo
 			if (bodyB->mTypeId == typeid(Component))
 			{
 				Component* pbodyB = (Component*)bodyB->mCollider;
-				boxCollider->OnCollision(pbodyB->GetOwner(), collisionNormal, diff);
+				// TODO: Distinguish event types
+				boxCollider->OnCollision(CollisionEventType::ON_COLLISION_ENTER, pbodyB->GetOwner(), collisionNormal, diff);
 			}
 			break;
 		}

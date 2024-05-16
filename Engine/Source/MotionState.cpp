@@ -3,11 +3,12 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScriptManager.h"
+#include "BoxColliderComponent.h"
 
 #include "Math/float4x4.h"
 
 MotionState::MotionState(Component* componentCollider, float3 centerOffset, bool freezeRotation) :
-	mCollider(componentCollider), mCenterOffset(centerOffset), mFreezeRotation(freezeRotation)
+	mCollider(componentCollider)
 {
 	mMassCenterOffset = btTransform(btMatrix3x3::getIdentity(), btVector3(centerOffset.x, centerOffset.y, centerOffset.z)).inverse();
 }
@@ -28,17 +29,20 @@ void MotionState::setWorldTransform(const btTransform& worldTransform)
 {
 	if (App->GetScriptManager()->IsPlaying())
 	{
-		btTransform mTransform = worldTransform * (mFreezeRotation ? btTransform::getIdentity() : mMassCenterOffset);
+		// TODO: generalize collider common properties on super class
+		bool freezeRotation = static_cast<BoxColliderComponent*>(mCollider)->GetFreezeRotation();
+		
+		btTransform mTransform = worldTransform * (freezeRotation ? btTransform::getIdentity() : mMassCenterOffset);
 		float3 parentScale = mCollider->GetOwner()->GetParent()->GetScale();
 		float3 parentPosition = mCollider->GetOwner()->GetParent()->GetPosition();
 		Quat parentRotation = mCollider->GetOwner()->GetParent()->GetRotationQuat().Inverted();
 
 		// Set Local Position
-		float3 position = (float3)(mTransform.getOrigin() + (mFreezeRotation ? mMassCenterOffset.getOrigin() : btVector3(0, 0, 0)));
+		float3 position = (float3)(mTransform.getOrigin() + (freezeRotation ? mMassCenterOffset.getOrigin() : btVector3(0, 0, 0)));
 		mCollider->GetOwner()->SetPosition(parentRotation.Transform(((position).Div(parentScale) - parentPosition)));
 
 		// Set Local Rotation
-		if (!mFreezeRotation) {
+		if (!freezeRotation) {
 			btQuaternion rotation;
 			mTransform.getBasis().getRotation(rotation);
 			mCollider->GetOwner()->SetRotation(parentRotation * (Quat)rotation);
