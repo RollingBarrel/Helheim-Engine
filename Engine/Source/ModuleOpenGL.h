@@ -67,6 +67,7 @@ public:
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
+	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 
@@ -119,6 +120,7 @@ private:
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
+	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;

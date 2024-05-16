@@ -10,6 +10,7 @@
 #include "GameObject.h"
 #include "CanvasComponent.h"
 #include "ImageComponent.h"
+#include "TextComponent.h"
 #include "Transform2DComponent.h"
 
 #include "glew.h"
@@ -73,6 +74,15 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			if (image->IsEnabled())
 			{
 				image->Draw();
+			}
+		}
+
+		for (Component* component : gameObject->GetComponents(ComponentType::TEXT))
+		{
+			TextComponent* text = (TextComponent*)component;
+			if (text->IsEnabled())
+			{
+				text->Draw();
 			}
 		}
 

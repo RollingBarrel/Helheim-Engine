@@ -21,6 +21,7 @@ class AudioListenerComponent;
 class Transform2DComponent;
 class SliderComponent;
 class ParticleSystemComponent;
+class TextComponent;
 
 class InspectorPanel : public Panel
 {
@@ -57,6 +58,7 @@ private:
 	void DrawListenerComponent(AudioListenerComponent* component);
 	void DrawTransform2DComponent(Transform2DComponent* component);
 	void DrawParticleSystemComponent(ParticleSystemComponent* component);
+	void DrawTextComponent(TextComponent* component);
 
 
 	void DragAndDropSource(Component* component);

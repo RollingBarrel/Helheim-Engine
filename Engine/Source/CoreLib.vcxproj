@@ -119,7 +119,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib\Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
@@ -147,7 +147,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\DirectXTex\lib\x64\Release;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib\Release</AdditionalLibraryDirectories>
       <AdditionalDependencies>DirectXTex.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
@@ -188,6 +188,10 @@
     <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshBuilder.cpp" />
     <ClCompile Include="Dependencies\Detour\Include\DetourNavMeshQuery.cpp" />
     <ClCompile Include="Dependencies\Detour\Include\DetourNode.cpp" />
+    <ClCompile Include="Dependencies\GLFont\FontAtlas.cpp" />
+    <ClCompile Include="Dependencies\GLFont\FTLabel.cpp" />
+    <ClCompile Include="Dependencies\GLFont\GLFont.cpp" />
+    <ClCompile Include="Dependencies\GLFont\GLUtils.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Geometry\Capsule.cpp" />
@@ -361,6 +365,10 @@
     <ClInclude Include="Dependencies\Freetype\include\freetype\tttables.h" />
     <ClInclude Include="Dependencies\Freetype\include\freetype\tttags.h" />
     <ClInclude Include="Dependencies\Freetype\include\ft2build.h" />
+    <ClInclude Include="Dependencies\GLFont\FontAtlas.h" />
+    <ClInclude Include="Dependencies\GLFont\FTLabel.h" />
+    <ClInclude Include="Dependencies\GLFont\GLFont.h" />
+    <ClInclude Include="Dependencies\GLFont\GLUtils.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB.h" />
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Geometry\AABB2D.h" />

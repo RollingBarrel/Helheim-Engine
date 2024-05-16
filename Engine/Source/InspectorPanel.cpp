@@ -27,6 +27,7 @@
 #include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TextComponent.h"
 #include "EmitterShape.h"
 
 #include "ImporterMaterial.h"
@@ -432,16 +433,18 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
-				
 				case ComponentType::AUDIOSOURCE: 
 					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
 					break;
-				
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
 				case ComponentType::PARTICLESYSTEM:
 					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
+					break;
+				case ComponentType::TEXT:
+					DrawTextComponent(reinterpret_cast<TextComponent*>(component));
+					break;
 			}
 		}
 		ImGui::PopID();
@@ -1419,5 +1422,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
 		ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
 	}
+}
+
+void InspectorPanel::DrawTextComponent(TextComponent* component)
+{
 }
 

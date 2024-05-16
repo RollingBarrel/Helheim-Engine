@@ -21,6 +21,7 @@
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TextComponent.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -405,6 +406,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::SLIDER:
 		newComponent = new SliderComponent(this);
+		break;
+	case ComponentType::TEXT:
+		newComponent = new TextComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
 	{
