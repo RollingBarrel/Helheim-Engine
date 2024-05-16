@@ -39,7 +39,7 @@ void PlayerCamera::Start()
 
     mAuxLookTarget = mLookTarget;
 
-    SetView(float3(0, -10.0f, 16.0f), 0.4f);
+    SetView(float3(-5.0f, -10.0f, 16.0f), 0.4f);
 
 
 }
@@ -48,7 +48,7 @@ void PlayerCamera::Update()
 {
     //CameraManager();
 
-    float3 topPosition = float3(0, -10.0f, 16.0f);
+    float3 topPosition = float3(-5.0f, -10.0f, 16.0f);
     float topRotation = 0.4f;
 
     float transitionTime = 1.0f;
@@ -76,10 +76,20 @@ void PlayerCamera::Update()
 
 }
 
+//float3 PlayerCamera::GetCameraDirection() const
+//{
+//    // Ritorna la direzione della telecamera rispetto al player
+//    if (mCameraComponent && mFollowTarget)
+//    {
+//        return (mLookTarget->GetWorldPosition() - mFollowTarget->GetWorldPosition()).Normalized();
+//    }
+//    return float3::zero;
+//}
+
 void PlayerCamera::SetView(float3 position, float rotation)
 {
     float3 newPosition = mFollowTarget->GetWorldPosition() - position;
 
     mGameObject->SetPosition(newPosition);
-    mGameObject->SetRotation(float3(rotation, 0.0f, 0.0f));
+    mGameObject->SetRotation(float3(0.3f, -0.39f, 0.19f));
 }

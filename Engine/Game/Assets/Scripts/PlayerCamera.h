@@ -14,7 +14,8 @@ public:
     void Start() override;
     void Update() override;
 
-
+    //// Funzione per ottenere la direzione della telecamera
+    //float3 GetCameraDirection() const;
 
 
 private:

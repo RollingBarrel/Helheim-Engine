@@ -253,29 +253,35 @@ bool PlayerController::IsMoving()
 
 void PlayerController::Moving()
 {
+    ModuleScene* scene = App->GetScene();
+    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
+    float3 cameradirection = mGameObject->GetPosition() - mCamera->GetPosition();
+    cameradirection.Normalize();
+
+
     bool anyKeyPressed = false;
     
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitZ);
+        Move(cameradirection);
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitZ);
+        Move(-cameradirection);
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitX);
+        Move(float3::unitY.Cross(cameradirection).Normalized());
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitX);
+        Move(float3::unitY.Cross(-cameradirection).Normalized());
         anyKeyPressed = true;
     }
 
