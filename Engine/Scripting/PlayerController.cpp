@@ -114,6 +114,12 @@ void PlayerController::Start()
     {
         mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
     }
+
+    // CAMERA
+
+    ModuleScene* scene = App->GetScene();
+    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
+
 }
 
 
@@ -253,9 +259,8 @@ bool PlayerController::IsMoving()
 
 void PlayerController::Moving()
 {
-    ModuleScene* scene = App->GetScene();
-    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
-    float3 cameradirection = mGameObject->GetPosition() - mCamera->GetPosition();
+    
+    float3 cameradirection = mCamera->GetFront();
     cameradirection.Normalize();
 
 
