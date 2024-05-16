@@ -754,17 +754,6 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 
 }
 
-void ModuleOpenGL::Shadows(const Frustum& frustum)
-{
-	
-	mCameraUniBuffer->UpdateData( float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
-	mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
-	
-	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
-	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMapId, 0);
-}
 
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??

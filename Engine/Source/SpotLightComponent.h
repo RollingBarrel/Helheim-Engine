@@ -9,6 +9,10 @@ typedef struct SpotLight {
 	float pos[4]; //w intensity
 	float aimD[4];//w cos inner angle
 	float col[4];//w cos outer angle
+	float4x4 viewProjMatrix;
+	uint64_t shadowMapHandle;
+	float padding2[2];
+
 }SpotLight;
 
 class ENGINE_API SpotLightComponent : public Component 
@@ -41,6 +45,7 @@ public:
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
+	void MakeShadowMapBindless(unsigned int shadowMapTextureId);
 	//Todo: Variable not necesary for the game mode
 	//bool debugDraw = false;
 

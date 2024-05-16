@@ -1,6 +1,7 @@
 #include "ModuleOpenGL.h"
 #include "Application.h"
 #include "SpotLightComponent.h"
+#include "glew.h"
 
 SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) 
 {
@@ -80,6 +81,17 @@ void SpotLightComponent::SetInnerAngle(float angle)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
+void SpotLightComponent::MakeShadowMapBindless(unsigned int shadowMapTextureId)
+{
+	if (mData.shadowMapHandle != 0)
+	{
+		glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
+	}
+	
+	mData.shadowMapHandle = glGetTextureHandleARB(shadowMapTextureId);
+	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
+}
+
 void SpotLightComponent::Update()
 {
 	if (mOwner->HasUpdatedTransform())
@@ -93,11 +105,15 @@ void SpotLightComponent::Update()
 		mData.aimD[0] = newDirection[0];
 		mData.aimD[1] = newDirection[1];
 		mData.aimD[2] = newDirection[2];
-		App->GetOpenGL()->UpdateSpotLightInfo(*this);
+		
 
 		mShadowFrustum.pos = newPosition;
 		mShadowFrustum.front = newDirection;
 		mShadowFrustum.up = mOwner->GetUp();
+
+		mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
+
+		App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	}
 
 }

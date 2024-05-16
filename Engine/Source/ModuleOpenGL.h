@@ -94,8 +94,11 @@ public:
 
 	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
 
-	void Shadows(const Frustum& frustum);
+	unsigned int GetShadowMapTexture() { return mShadowMapId; }
+	unsigned int GetShadowFrameBuffer() { return mShadowsFrameBufferId; }
+	OpenGLBuffer* GetCameraBuffer() { return mCameraUniBuffer; }
 	const std::vector<const SpotLightComponent*>& GetSpotLights() { return mSpotLights; }
+
 
 private:
 	void* context = nullptr;
