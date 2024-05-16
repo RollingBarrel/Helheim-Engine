@@ -48,13 +48,13 @@ bool ModulePhysics::CleanUp()
 		mWorld->removeCollisionObject(obj);
 		delete obj;
 	}
-
+	*/
 	delete(mWorld);
 	delete(mConstraintSolver);
 	delete(mBroadPhase);
 	delete(mDispatcher);
 	delete(mCollisionConfiguration);
-	*/
+	
 	return true;
 }
 
@@ -187,7 +187,8 @@ void ModulePhysics::ProcessCollision(Collider* bodyA, Collider* bodyB, const flo
 			{
 				Component* pbodyB = (Component*)bodyB->mCollider;
 				// TODO: Distinguish event types
-				boxCollider->OnCollision(CollisionEventType::ON_COLLISION_ENTER, pbodyB->GetOwner(), collisionNormal, diff);
+				CollisionData collisionData{ CollisionEventType::ON_COLLISION_ENTER, pbodyB->GetOwner(), collisionNormal, diff };
+				boxCollider->OnCollision(&collisionData);
 			}
 			break;
 		}

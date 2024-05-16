@@ -20,6 +20,14 @@ enum class CollisionEventType : int
 	COUNT
 };
 
+struct CollisionData
+{
+	CollisionEventType eventType;
+	GameObject* collidedWith;
+	const float3& collisionNormal;
+	const float3& penetrationDistance;
+};
+
 class ENGINE_API BoxColliderComponent : public Component
 {
 public:
@@ -32,8 +40,8 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
-	void AddCollisionEventHandler(CollisionEventType eventType, std::function<void()> handler);
-	void OnCollision(CollisionEventType eventType, GameObject* collidedWith, const float3& collisionNormal, const float3& penetrationDistance);
+	void AddCollisionEventHandler(CollisionEventType eventType, std::function<void(CollisionData*)> handler);
+	void OnCollision(CollisionData* collisionData);
 	void ComputeBoundingBox();
 
 	inline const AABB& GetAABB() const { return mLocalAABB; }
@@ -68,7 +76,7 @@ private:
 	MotionState* mMotionState = nullptr;
 	Collider mCollider{ this, typeid(Component) };
 
-	std::vector<std::function<void()>> mEventHandlers[(int)CollisionEventType::COUNT];
+	std::vector<std::function<void(CollisionData*)>> mEventHandlers[(int)CollisionEventType::COUNT];
 
 };
 
