@@ -22,13 +22,12 @@ public:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
     void Draw();
-    void RenderText(const std::string& text, float x, float y, float scale, const float3& color);
+    void RenderText(const std::string& text, float x, float y, float scale);
 
 private:
     void InitFreeType();
     void LoadFont(const std::string& fontPath);
-    void FillVBO();
-    void CreateVAO();
+    void CreateBuffers();
 
     struct Character {
         unsigned int  TextureID; // ID handle of the glyph texture
@@ -40,6 +39,8 @@ private:
     std::map<char, Character> Characters;
     FT_Library ft;
     FT_Face face;
+
+    float3 mColor = float3(1.f,1.f,1.f);
 
     unsigned int  mQuadVAO, mQuadVBO;
 };
