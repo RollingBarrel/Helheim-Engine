@@ -60,7 +60,6 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 
 	mColor = original.mColor;
 	mAlpha = original.mAlpha;
-	mHasAlpha = original.mHasAlpha;
 
 	mTexOffset = original.mTexOffset;
 	mHasDiffuse = original.mHasDiffuse;
@@ -107,12 +106,6 @@ void ImageComponent::Draw()
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
 
-		if (mHasAlpha)
-		{
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		}
-
 		glUseProgram(UIImageProgram);
 
 		float4x4 proj = float4x4::identity;
@@ -158,11 +151,8 @@ void ImageComponent::Draw()
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
 		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
-		if (mAlpha < 1.0) 
-		{
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		}
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -187,7 +177,6 @@ void ImageComponent::Save(Archive& archive) const
     archive.AddInt("ImageID", mImage->GetUID());
     archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat3("Color", mColor);
-	archive.AddBool("HasAlpha", mHasAlpha);
 	archive.AddFloat("Alpha", mAlpha);
 }
 
@@ -221,13 +210,6 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 		const rapidjson::Value& alphaValue = data["Alpha"];
 		
 		mAlpha = alphaValue.GetFloat();
-	}
-	
-	if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) 
-	{
-		const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
-
-		mHasAlpha = hasAlphaValue.GetBool();
 	}
 }
 

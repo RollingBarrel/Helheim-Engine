@@ -19,9 +19,9 @@ public:
 
 	void CheckRaycast();
 	void FindCanvas(GameObject* gameObject);
+	void DrawWidget(GameObject* gameObject);
 
 private:
-	void DrawWidget(GameObject* gameObject);
 	void CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered);
 };
 
