@@ -530,8 +530,11 @@ void GeometryBatch::Draw()
 		++i;
 	}
 
+	
 	//DRAW SHADOWS
+	//glActiveTexture(GL_TEXTURE0);
 	glBindFramebuffer(GL_FRAMEBUFFER, App->GetOpenGL()->GetShadowFrameBuffer());
+	//glClear(GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, 512, 512);
 	glUseProgram(App->GetOpenGL()->GetShadowsProgramId());
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
@@ -544,20 +547,25 @@ void GeometryBatch::Draw()
 			App->GetOpenGL()->GetCameraBuffer()->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
 			App->GetOpenGL()->GetCameraBuffer()->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
+			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, spotLights[i]->GetShadowMap());
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLights[i]->GetShadowMap(), 0);
+			glClear(GL_DEPTH_BUFFER_BIT);
 			glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, commandsForLights[i].size() * sizeof(Command), commandsForLights[i].data());
 			glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, commandsForLights[i].size(), 0);
 		}
 	}
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glClear(GL_DEPTH_BUFFER_BIT);
 	App->GetOpenGL()->SceneFramebufferResized();
 	App->GetOpenGL()->BindSceneFramebuffer();
 	//END SHADOWS
 	
+
+	const char* label = "DepthTextureJEJE";
+	if (!spotLights.empty())
+	glObjectLabel(GL_TEXTURE, spotLights[0]->GetShadowMap(), strlen(label), label);
 
 	//PBRT SHADER
 	glUseProgram(App->GetOpenGL()->GetPBRProgramId());

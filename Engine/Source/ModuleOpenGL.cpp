@@ -812,6 +812,7 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
 	mBatchManager.Draw();
 	glActiveTexture(GL_TEXTURE0);
+	
 	for (auto partSys : mParticleSystems)
 	{
 		partSys->Draw();
