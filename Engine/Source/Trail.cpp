@@ -85,7 +85,7 @@ void Trail::Draw() const
     exp.push_back(mPoints.front());
     exp.push_back(mPoints.back());
 
-    glBufferData(GL_ARRAY_BUFFER, 2* mPoints.size() * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 2* exp.size() * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
     float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
     
 
