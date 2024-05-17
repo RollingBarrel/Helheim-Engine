@@ -290,9 +290,16 @@ void ImageComponent::FillVBO()
 		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
 		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
 	};
-	glGenBuffers(1, &mQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+	if (mQuadVBO == 0) {
+		glGenBuffers(1, &mQuadVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	}
+	else {
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
+	}
 }
 
 void ImageComponent::FillSpriteSheetVBO()
@@ -314,9 +321,15 @@ void ImageComponent::FillSpriteSheetVBO()
 		 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
 	};
 
-	glGenBuffers(1, &mQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	if (mQuadVBO == 0) {
+		glGenBuffers(1, &mQuadVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	}
+	else {
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
+	}
 }
 
 void ImageComponent::CreateVAO()
