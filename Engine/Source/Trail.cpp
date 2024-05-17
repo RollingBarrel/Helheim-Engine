@@ -57,6 +57,9 @@ void Trail::Init()
     glEnableVertexAttribArray(COLOR_LOCATION);
     glVertexAttribPointer(COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(5 * sizeof(float)));
 
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     App->GetOpenGL()->AddTrail(this);
 }
 
@@ -72,29 +75,29 @@ void Trail::Update()
 
 void Trail::Draw() const
 {
+    if (mPoints.size() <= 1) return;
     unsigned int programId = App->GetOpenGL()->GetTrailProgramId();
     glDepthMask(GL_FALSE);
+    glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);									// Enable Blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
     //glEnable(GL_TEXTURE_2D);
     //glBlendEquation(GL_FUNC_ADD);
     glUseProgram(programId);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBufferData(GL_ARRAY_BUFFER, mPoints.size() * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+    byte* ptr = static_cast<byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+    int testSize = 0;
 
-    std::vector<TrailPoint> exp;
-    exp.push_back(mPoints.front());
-    exp.push_back(mPoints.back());
-
-    glBufferData(GL_ARRAY_BUFFER, 2* exp.size() * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-    float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-    
-
-    for (int i = 0; i < exp.size() && mPoints.size() > 1; ++i)
+    for (int i = 0; i < mPoints.size(); ++i)
     {
-        float dp = i;// / mPoints.size() - 1;
-        
-        float3 topPointPos = exp[i].position + exp[i].direction * mWidth.GetValue(dp);
-        float3 botPointPos = exp[i].position - exp[i].direction * mWidth.GetValue(dp);
+        float dp = static_cast<float>(i) / (mPoints.size() - 1);
+        if (i > 0)
+        {
+            ptr += sizeof(float4);
+        }
+        float3 topPointPos = mPoints[i].position + mPoints[i].direction * mWidth.GetValue(dp) * 0.5f;
+        float3 botPointPos = mPoints[i].position - mPoints[i].direction * mWidth.GetValue(dp) * 0.5f;
         float2 topPointTexCoord = float2(dp, 1);
         float2 botPointTexCoord = float2(dp, 0);
         float4 color = mGradient.CalculateColor(dp);
@@ -113,9 +116,6 @@ void Trail::Draw() const
         memcpy(ptr, topPointTexCoord.ptr(), sizeof(float2));
         ptr += sizeof(float2);
         memcpy(ptr, color.ptr(), sizeof(float4));
-        ptr += sizeof(float4);
-
-        
     }
 
     glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -125,16 +125,17 @@ void Trail::Draw() const
     float4x4 projection = cam->GetViewProjectionMatrix();
 
     glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
-    //glUniformMatrix4fv(glGetUniformLocation(programId, "model"), 1, GL_TRUE, mModel.ptr());
-    //glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+    glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, exp.size() * 2);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
 
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glUseProgram(0);
     glDisable(GL_BLEND);
     glDepthMask(GL_TRUE);
+    glEnable(GL_CULL_FACE);
 }
 
 void Trail::AddTrailPositions(float3 position, Quat rotation)
