@@ -89,7 +89,7 @@ void main()
 	cDif = texture(diffuseTex, uv).rgb;
 	vec4 specColorTex = texture(specularRoughTex, uv);
 	cSpec = specColorTex.rgb;
-	rough = specColorTex.a;
+	rough = max(specColorTex.a * specColorTex.a, 0.001f);
 	N = normalize(texture(normalTex, uv).rgb * 2.0 - 1.0);
 	pos = texture(positionTex, uv).rgb;
 	emissiveCol = texture(emissiveTex, uv).rgb;

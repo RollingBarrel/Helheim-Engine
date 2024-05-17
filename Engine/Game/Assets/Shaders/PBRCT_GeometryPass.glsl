@@ -65,8 +65,6 @@ void main()
 		metal *= metRough.b;
 		rough *= metRough.g;
 	}
-	rough *= rough;
-	max(rough, 0.001f);
 	vec3 N = vec3(0.0f);
 	if (material.hasNormalMap)
 	{
