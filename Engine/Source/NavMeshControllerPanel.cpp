@@ -7,7 +7,7 @@
 #include "ModuleDetourNavigation.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleOpenGL.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "CameraComponent.h"
 #include "float4x4.h"
 NavMeshControllerPanel::NavMeshControllerPanel() : Panel(NAVMESHPANEL, false)
@@ -151,8 +151,9 @@ void NavMeshControllerPanel::DrawDebugPolyMesh()
     NavMeshController* navController = EngineApp->GetNavController();
     unsigned int program = App->GetOpenGL()->GetDebugDrawProgramId();
     float4x4 identity = float4x4::identity;
-    float4x4 view = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix();
-    float4x4 proj = ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix();
+    float4x4 view = EngineApp->GetEngineCamera()->GetEditorCamera()->GetViewMatrix();
+
+    float4x4 proj = EngineApp->GetEngineCamera()->GetEditorCamera()->GetProjectionMatrix();
 
     GLint viewLoc = glGetUniformLocation(program, "view");
     GLint projLoc = glGetUniformLocation(program, "proj");

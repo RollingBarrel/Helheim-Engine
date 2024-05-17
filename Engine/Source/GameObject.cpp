@@ -332,6 +332,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 	}
 }
 
+
 #pragma endregion
 
 #pragma region Components
@@ -578,7 +579,7 @@ void GameObject::Save(Archive& archive) const
 	archive.AddInt("Tag", mTag->GetID());
 	archive.AddInt("PrefabId", mPrefabResourceId);
 	archive.AddBool("OverridePrefab", mPrefabOverride);
-
+	archive.AddBool("Dynamic", mIsDynamic);
 	// Save components
 	std::vector<Archive> componentsArchiveVector;
 
@@ -621,6 +622,7 @@ GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObjec
 	float3 scale;
 	Quat rotation;
 	bool isEnabled = true;
+	bool isDynamic = false;
 	Tag* tag = App->GetScene()->GetTagByName("Untagged");
 
 	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt())
@@ -700,6 +702,10 @@ GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObjec
 			tag = loadedTag;
 		}
 	}
+	if (gameObject.HasMember("Dynamic") && gameObject["Dynamic"].IsBool())
+	{
+		isDynamic = gameObject["Dynamic"].GetBool();
+	}
 
 	GameObject* go;
 
@@ -720,6 +726,7 @@ GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObjec
 	go->SetPrefabOverride(overridePrefab);
 	go->SetTag(tag);
 	go->SetEnabled(isEnabled);
+	go->SetDynamic(isDynamic);
 
 	return go;
 }
