@@ -68,8 +68,8 @@
                         "ComponentType": 9,
                         "isEnabled": true,
                         "Translation": [
-                            -754.2000122070313,
-                            300.0,
+                            0.0,
+                            0.0,
                             0.0
                         ],
                         "Rotation": [
@@ -79,8 +79,8 @@
                             1.0
                         ],
                         "Size": [
-                            300.0,
-                            300.0
+                            800.0,
+                            800.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -104,7 +104,11 @@
                             1.0
                         ],
                         "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": true,
+                        "Columns": 8,
+                        "Rows": 4,
+                        "Speed": 55.683998107910159
                     }
                 ]
             }

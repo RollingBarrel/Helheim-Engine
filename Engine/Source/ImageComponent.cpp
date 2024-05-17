@@ -203,6 +203,11 @@ void ImageComponent::Save(Archive& archive) const
 	archive.AddFloat3("Color", mColor);
 	archive.AddBool("HasAlpha", mHasAlpha);
 	archive.AddFloat("Alpha", mAlpha);
+
+	archive.AddBool("IsSpritesheet", mIsSpritesheet);
+	archive.AddInt("Columns", mColumns);
+	archive.AddInt("Rows", mRows);
+	archive.AddFloat("Speed", mFrameDuration);
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -242,6 +247,30 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 		const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
 
 		mHasAlpha = hasAlphaValue.GetBool();
+	}
+
+	if (data.HasMember("IsSpritesheet") && data["IsSpritesheet"].IsBool())
+	{
+		const rapidjson::Value& isSpritesheetValue = data["IsSpritesheet"];
+		mIsSpritesheet = isSpritesheetValue.GetBool();
+	}
+
+	if (data.HasMember("Columns") && data["Columns"].IsInt())
+	{
+		const rapidjson::Value& columnsValue = data["Columns"];
+		mColumns = columnsValue.GetInt();
+	}
+
+	if (data.HasMember("Rows") && data["Rows"].IsInt())
+	{
+		const rapidjson::Value& rowsValue = data["Rows"];
+		mRows = rowsValue.GetInt();
+	}
+
+	if (data.HasMember("Speed") && data["Speed"].IsFloat())
+	{
+		const rapidjson::Value& speedValue = data["Speed"];
+		mFrameDuration = speedValue.GetFloat();
 	}
 }
 
@@ -330,7 +359,7 @@ void ImageComponent::Update()
 	{
 		mElapsedTime += App->GetCurrentClock()->GetDelta();
 		LOG("Get Delta: %li", App->GetCurrentClock()->GetDelta());
-		LOG("Elapsed Time: %f", mElapsedTime);
+		LOG("Elapsed Time: %li", mElapsedTime);
 		LOG("Frame Duration: %f", mFrameDuration);
 		if (mElapsedTime > mFrameDuration)
 		{
