@@ -1065,10 +1065,12 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		int rows = imageComponent->GetRows();
 		ImGui::InputInt("Columns", &columns);
 		ImGui::InputInt("Rows", &rows);
-		if (columns <= 0) {
+		if (columns <= 0) 
+		{
 			columns = 1;
 		}
-		if (rows <= 0) {
+		if (rows <= 0) 
+		{
 			rows = 1;
 		}
 		imageComponent->SetSpritesheetLayout(columns, rows);
