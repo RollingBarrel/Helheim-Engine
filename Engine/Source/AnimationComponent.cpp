@@ -106,7 +106,7 @@ std::string AnimationComponent::GetCurrentStateName()
 	return currentStateName;
 }
 
-void AnimationComponent::SendTrigger(std::string trigger)
+void AnimationComponent::SendTrigger(std::string trigger, float transitionTime)
 {
 
 	std::string currentStateName = GetCurrentStateName();
@@ -115,17 +115,17 @@ void AnimationComponent::SendTrigger(std::string trigger)
 	{
 		if (currentStateName == mStateMachine->GetTransitionSource(i) && trigger == mStateMachine->GetTransitionTrigger(i))
 		{
-			ChangeState(mStateMachine->GeTransitionTarget(i));
+			ChangeState(mStateMachine->GeTransitionTarget(i), transitionTime);
 		}
 	}
 
 }
 
-void AnimationComponent::ChangeState(std::string stateName)
+void AnimationComponent::ChangeState(std::string stateName, float transitionTime)
 {
 	int stateIndex = mStateMachine->GetStateIndex(stateName);
 
-	if (stateIndex < mStateMachine->GetNumStates() && (stateIndex == 0 || stateIndex != mCurrentState))
+	if (stateIndex < mStateMachine->GetNumStates() /*&& (stateIndex == 0 || stateIndex != mCurrentState)*/)
 	{
 		mCurrentState = stateIndex;
 		
@@ -144,9 +144,11 @@ void AnimationComponent::ChangeState(std::string stateName)
 			{
 				mController->SetNextAnimation(tmpAnimation);
 				float new_clip_start = mStateMachine->GetStateStartTime(stateIndex);
+				float new_clip_end = mStateMachine->GetStateEndTime(stateIndex);
 				mController->SetClipStartTime(new_clip_start);
 				mController->SetStartTime(new_clip_start);
-				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
+				mController->SetEndTime(new_clip_end);
+				//mController->SetTransitionDuration(transitionTime);
 				mController->ActivateTransition();
 
 			}
@@ -173,7 +175,7 @@ void AnimationComponent::SetModelUUID(unsigned int modelUid)
 	if(mStateMachine)
 		delete mStateMachine;
 	mStateMachine = new AnimationStateMachine(my_model->mAnimationUids);
-	ChangeState("default");
+	ChangeState("default", 0.0);
 
 	
 }

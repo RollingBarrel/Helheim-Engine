@@ -57,8 +57,8 @@ public:
 	void SetAnimSpeed(float speed);
 
 	std::string GetCurrentStateName();
-	void SendTrigger(std::string trigger);
-	void ChangeState(std::string stateName);
+	void SendTrigger(std::string trigger, float transitionTime);
+	void ChangeState(std::string stateName, float transitionTime);
 	//Model UUID
 	unsigned int GetModelUUID() const { return mModelUid; }
 	void SetModelUUID(unsigned int modelUid); 
