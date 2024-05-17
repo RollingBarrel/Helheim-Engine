@@ -108,4 +108,5 @@ void TrailComponent::Enable()
 void TrailComponent::Disable()
 {
     App->GetOpenGL()->RemoveTrail(mTrail);
+    mTrail->Clear();
 }

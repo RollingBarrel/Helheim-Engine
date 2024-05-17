@@ -26,6 +26,7 @@ public:
 	void Update();
 	void Init();
 	void Draw() const;
+	void Clear() { mPoints.clear(); }
 	
 	void AddTrailPositions(float3 position, Quat rotation);
 

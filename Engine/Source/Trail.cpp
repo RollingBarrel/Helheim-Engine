@@ -83,21 +83,31 @@ void Trail::Draw() const
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
     //glEnable(GL_TEXTURE_2D);
     //glBlendEquation(GL_FUNC_ADD);
+    auto cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
+    float4x4 projection = cam->GetViewProjectionMatrix();
+    float3 up = cam->GetFrustum().up;
+    float3 norm = cam->GetFrustum().front;
+    float3 right = up.Cross(norm).Normalized();
     glUseProgram(programId);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferData(GL_ARRAY_BUFFER, mPoints.size() * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
     byte* ptr = static_cast<byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
     int testSize = 0;
+    float3 lastPoint = mPoints[1].position;
 
     for (int i = 0; i < mPoints.size(); ++i)
     {
         float dp = static_cast<float>(i) / (mPoints.size() - 1);
+        float3 direction = (mPoints[i].position - lastPoint).Normalized();
+        lastPoint = mPoints[i].position;
         if (i > 0)
         {
             ptr += sizeof(float4);
         }
-        float3 topPointPos = mPoints[i].position + mPoints[i].direction * mWidth.GetValue(dp) * 0.5f;
-        float3 botPointPos = mPoints[i].position - mPoints[i].direction * mWidth.GetValue(dp) * 0.5f;
+        float3 billboardDirection = (direction.Cross(norm)) + (direction.Cross(right).Length())*up;
+        billboardDirection.Normalize();
+        float3 topPointPos = mPoints[i].position + billboardDirection * mWidth.GetValue(dp) * 0.5f;
+        float3 botPointPos = mPoints[i].position - billboardDirection * mWidth.GetValue(dp) * 0.5f;
         float2 topPointTexCoord = float2(dp, 1);
         float2 botPointTexCoord = float2(dp, 0);
         float4 color = mGradient.CalculateColor(dp);
@@ -120,9 +130,6 @@ void Trail::Draw() const
 
     glUnmapBuffer(GL_ARRAY_BUFFER);
     glBindVertexArray(mVAO);
-
-    auto cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
-    float4x4 projection = cam->GetViewProjectionMatrix();
 
     glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
     glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
