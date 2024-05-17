@@ -105,9 +105,9 @@ private:
 	BatchManager mBatchManager;
 
 	//Framebuffer
-	unsigned int sFbo;
-	unsigned int colorAttachment;
-	unsigned int depthStencil;
+	unsigned int sFbo = 0;
+	unsigned int colorAttachment = 0;
+	unsigned int depthStencil = 0;
 
 	//Camera
 	OpenGLBuffer* mCameraUniBuffer = nullptr;

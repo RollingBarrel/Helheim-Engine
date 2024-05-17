@@ -538,7 +538,38 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetOuterAngle(DegToRad(outerAngle));
 	}
-	//ImGui::Checkbox("Debug draw", &component->debugDraw);
+
+	ImGui::SeparatorText("Shadows");
+
+	bool castShadow = component->CanCastShadow();
+	if (ImGui::Checkbox("Cast Shadow", &castShadow))
+	{
+		component->SetCastShadow(castShadow);
+	}
+
+	if (!castShadow)
+	{
+		ImGui::BeginDisabled();
+	}
+
+	float bias = component->GetBias();
+	if (ImGui::DragFloat("Bias", &bias, 0.00001f, 0.0f, 1.0, "%.5f"))
+	{
+		component->SetBias(bias);
+	}
+
+
+	float shadowMapSize = component->GetShadowMapSize();
+	if (ImGui::DragFloat("Shadow Map Size", &shadowMapSize, 1.0f))
+	{
+		component->SetShadowMapSize(shadowMapSize);
+	}
+
+	if (!castShadow)
+	{
+		ImGui::EndDisabled();
+	}
+
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {

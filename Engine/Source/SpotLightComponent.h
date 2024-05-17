@@ -19,7 +19,7 @@ typedef struct SpotLight {
 	float4x4 viewProjMatrix;
 	uint64_t shadowMapHandle;
 	float range;
-	float padding3;
+	float bias;
 
 }SpotLight;
 
@@ -27,7 +27,6 @@ class ENGINE_API SpotLightComponent : public Component
 {
 public:
 	SpotLightComponent(GameObject* owner, const SpotLight& light);
-	//SpotLightComponent(const SpotLightComponent& other, GameObject* owner);
 	~SpotLightComponent();
 
 	void Update() override;
@@ -51,20 +50,23 @@ public:
 	void SetOuterAngle(float angle);
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
+	bool CanCastShadow() { return mCastShadow; }
+	void SetCastShadow(bool castShadow) { mCastShadow = castShadow; }
+	float GetBias() { return mData.bias; }
+	void SetBias(float bias);
+
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
-	void MakeShadowMapBindless(unsigned int shadowMapTextureId);
 
 	unsigned int GetShadowMap() const { return mShadowMapId; }
 	unsigned int GetShadowMapSize() const { return mShadowMapSize; }
-
-	//Todo: Variable not necesary for the game mode
-	//bool debugDraw = false;
+	void SetShadowMapSize(unsigned int shadowMapSize);
 
 private:
 	SpotLight mData;
 	unsigned int mShadowMapSize = 0;
 	Frustum mShadowFrustum;
-	unsigned int mShadowMapId;
+	unsigned int mShadowMapId = 0;
+	bool mCastShadow = false;
 };
 
 #endif //_COMPONENT_SPOTLIGHT_H_

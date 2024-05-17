@@ -249,9 +249,11 @@ bool ModuleOpenGL::CleanUp()
 	glDeleteProgram(mPbrProgramId);
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteProgram(mUIImageProgramId);
+	glDeleteProgram(mShadowsProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteBuffers(1, &mSkyVbo);
 	glDeleteFramebuffers(1, &sFbo);
+	glDeleteFramebuffers(1, &mShadowsFrameBufferId);
 	glDeleteTextures(1, &colorAttachment);
 	glDeleteTextures(1, &depthStencil);
 

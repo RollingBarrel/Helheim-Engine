@@ -5,7 +5,7 @@
             {
                 "UID": 1830431869,
                 "ParentUID": 1,
-                "Name": "Cube",
+                "Name": "Floor1",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -83,7 +83,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 760067351,
+                        "ID": 612886398,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -172,7 +172,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1668458257,
+                        "ID": 937505219,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -226,9 +226,2342 @@
                             1.0,
                             0.7880107760429382
                         ],
-                        "Range": 180.0
+                        "Range": 180.0,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "ShadowMapSize": 512
                     }
                 ]
+            },
+            {
+                "UID": 1034962798,
+                "ParentUID": 1,
+                "Name": "Floor1 (2)",
+                "isEnabled": true,
+                "Translation": [
+                    -38.73427200317383,
+                    0.0,
+                    3.880000114440918
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    15.0,
+                    1.0,
+                    15.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1039766647,
+                "ParentUID": 1034962798,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1041298309,
+                "ParentUID": 1039766647,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1659057263,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1052390867,
+                "ParentUID": 1,
+                "Name": "Light (2)",
+                "isEnabled": true,
+                "Translation": [
+                    -28.950000762939454,
+                    1.7385567426681519,
+                    0.30289140343666079
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "Position": [
+                            -28.950000762939454,
+                            1.7385567426681519,
+                            0.30289140343666079,
+                            300.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            0.0,
+                            1.0,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.7880107760429382
+                        ],
+                        "Range": 64.5,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "ShadowMapSize": 512
+                    }
+                ]
+            },
+            {
+                "UID": 1892668025,
+                "ParentUID": 1,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "Translation": [
+                    -28.95159339904785,
+                    0.9758610725402832,
+                    4.132266998291016
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.5,
+                    1.5,
+                    1.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 2000687510,
+                        "AnimationID": 1174571689,
+                        "ModelUID": 1174571681,
+                        "ComponentType": 10,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1981643663,
+                "ParentUID": 1892668025,
+                "Name": "RootNode",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 452464117,
+                "ParentUID": 1981643663,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 495768379,
+                "ParentUID": 452464117,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 460925572,
+                        "MeshID": 1174571682,
+                        "MaterialID": 1174571686,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 10523486,
+                "ParentUID": 452464117,
+                "Name": "Zombunny (2)",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 187539467,
+                        "MeshID": 1174571687,
+                        "MaterialID": 1174571688,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 286825333,
+                "ParentUID": 1981643663,
+                "Name": "Ctrl_Grp",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 352269073,
+                "ParentUID": 286825333,
+                "Name": "Root",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.7071067690849304,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 390142897,
+                "ParentUID": 352269073,
+                "Name": "Hips",
+                "isEnabled": true,
+                "Translation": [
+                    0.2909983694553375,
+                    0.0027264284435659649,
+                    0.0002082364517264068
+                ],
+                "Rotation": [
+                    -0.5340902805328369,
+                    0.48241564631462099,
+                    -0.47549593448638918,
+                    0.5058916211128235
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 434004127,
+                "ParentUID": 390142897,
+                "Name": "Spine",
+                "isEnabled": true,
+                "Translation": [
+                    0.0002581339213065803,
+                    -0.00005960099588264711,
+                    0.19401027262210847
+                ],
+                "Rotation": [
+                    0.09070304781198502,
+                    -0.11479450762271881,
+                    0.0038652895018458368,
+                    0.9892321228981018
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 472713403,
+                "ParentUID": 434004127,
+                "Name": "Head",
+                "isEnabled": true,
+                "Translation": [
+                    7.105427198782324e-17,
+                    8.881783998477906e-18,
+                    0.23028619587421418
+                ],
+                "Rotation": [
+                    0.11890615522861481,
+                    0.05964769795536995,
+                    -0.03455062583088875,
+                    0.9905098080635071
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 510517606,
+                "ParentUID": 472713403,
+                "Name": "HeadEnd",
+                "isEnabled": true,
+                "Translation": [
+                    1.376676561123106e-16,
+                    -3.552713599391162e-17,
+                    0.36048606038093569
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 551872480,
+                "ParentUID": 472713403,
+                "Name": "LeftEar",
+                "isEnabled": true,
+                "Translation": [
+                    0.33966490626335146,
+                    0.06945112347602844,
+                    0.40904220938682558
+                ],
+                "Rotation": [
+                    -0.1281338781118393,
+                    0.46012216806411745,
+                    0.03681415319442749,
+                    0.8777892589569092
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 592740007,
+                "ParentUID": 551872480,
+                "Name": "LeftEarEnd",
+                "isEnabled": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    2.4868995857482627e-16,
+                    0.21373941004276277
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 632772082,
+                "ParentUID": 472713403,
+                "Name": "RightEar",
+                "isEnabled": true,
+                "Translation": [
+                    -0.3396649956703186,
+                    0.06945109367370606,
+                    0.4090425372123718
+                ],
+                "Rotation": [
+                    0.9452946186065674,
+                    -0.03366024047136307,
+                    0.2971512973308563,
+                    0.1303311288356781
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 673569988,
+                "ParentUID": 632772082,
+                "Name": "RightEarEnd",
+                "isEnabled": true,
+                "Translation": [
+                    -8.285292665277666e-7,
+                    -9.097042408257039e-8,
+                    -0.2137383073568344
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 713462821,
+                "ParentUID": 434004127,
+                "Name": "LeftUpperArm",
+                "isEnabled": true,
+                "Translation": [
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
+                ],
+                "Rotation": [
+                    0.37590306997299197,
+                    0.6522644758224487,
+                    -0.3564247786998749,
+                    0.5533618330955505
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 754956937,
+                "ParentUID": 713462821,
+                "Name": "LeftLowerArm",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.2511610686779022
+                ],
+                "Rotation": [
+                    0.011576068587601185,
+                    -0.029623854905366899,
+                    -0.008396320044994355,
+                    0.9994587898254395
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 795615601,
+                "ParentUID": 754956937,
+                "Name": "LeftWrist",
+                "isEnabled": true,
+                "Translation": [
+                    2.8421708795129299e-16,
+                    0.0,
+                    0.23802845180034638
+                ],
+                "Rotation": [
+                    2.7469248700954909e-17,
+                    -0.014149601571261883,
+                    -2.043004756724705e-17,
+                    0.9998998641967773
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 841495840,
+                "ParentUID": 434004127,
+                "Name": "LeftUpperArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
+                ],
+                "Rotation": [
+                    0.37590306997299197,
+                    0.6522644758224487,
+                    -0.3564247786998749,
+                    0.5533618330955505
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 885914038,
+                "ParentUID": 841495840,
+                "Name": "LeftLowerArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    3.552713599391162e-17,
+                    0.2511610686779022
+                ],
+                "Rotation": [
+                    0.011576068587601185,
+                    -0.029623854905366899,
+                    -0.008396320044994355,
+                    0.9994587898254395
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 928243606,
+                "ParentUID": 885914038,
+                "Name": "LeftWristFK",
+                "isEnabled": true,
+                "Translation": [
+                    2.8421708795129299e-16,
+                    -7.105427198782324e-17,
+                    0.23802845180034638
+                ],
+                "Rotation": [
+                    -2.805857849145199e-17,
+                    -0.014149601571261883,
+                    -2.1215822827058124e-17,
+                    0.9998998641967773
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 969876964,
+                "ParentUID": 434004127,
+                "Name": "LeftUpperArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    0.17286542057991029,
+                    0.06917708367109299,
+                    0.1919027417898178
+                ],
+                "Rotation": [
+                    0.8927685618400574,
+                    -0.003494823584333062,
+                    0.4503646194934845,
+                    0.011125014163553715
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1015130614,
+                "ParentUID": 969876964,
+                "Name": "LeftLowerArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    0.2511610686779022
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1057181698,
+                "ParentUID": 1015130614,
+                "Name": "LeftWristIK",
+                "isEnabled": true,
+                "Translation": [
+                    4.2632563192693947e-16,
+                    0.0,
+                    0.23802845180034638
+                ],
+                "Rotation": [
+                    0.16060243546962739,
+                    0.010572995990514756,
+                    0.9848306775093079,
+                    0.06483478844165802
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1098745435,
+                "ParentUID": 434004127,
+                "Name": "RightUpperArm",
+                "isEnabled": true,
+                "Translation": [
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
+                ],
+                "Rotation": [
+                    0.5234715938568115,
+                    0.4341411590576172,
+                    0.6424335241317749,
+                    -0.3532394766807556
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1144416811,
+                "ParentUID": 1098745435,
+                "Name": "RightLowerArm",
+                "isEnabled": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.25116100907325747
+                ],
+                "Rotation": [
+                    -0.019711928442120553,
+                    0.03358307108283043,
+                    0.006860698107630014,
+                    0.9992179870605469
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1186328653,
+                "ParentUID": 1144416811,
+                "Name": "RightWrist",
+                "isEnabled": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -9.769962563761818e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1227753148,
+                "ParentUID": 434004127,
+                "Name": "RightUpperArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
+                ],
+                "Rotation": [
+                    0.5234715938568115,
+                    0.4341411590576172,
+                    0.6424335241317749,
+                    -0.3532394766807556
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1273772629,
+                "ParentUID": 1227753148,
+                "Name": "RightLowerArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    -2.8421708795129299e-16,
+                    -5.773159516292577e-17,
+                    -0.25116100907325747
+                ],
+                "Rotation": [
+                    -0.019711928442120553,
+                    0.03358307108283043,
+                    0.006860698107630014,
+                    0.9992179870605469
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1316032576,
+                "ParentUID": 1273772629,
+                "Name": "RightWristFK",
+                "isEnabled": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1357805176,
+                "ParentUID": 434004127,
+                "Name": "RightUpperArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    -0.17286500334739686,
+                    0.06917709857225418,
+                    0.19190272688865663
+                ],
+                "Rotation": [
+                    0.02874944359064102,
+                    0.558962345123291,
+                    -0.002436212031170726,
+                    0.8286908864974976
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1406122150,
+                "ParentUID": 1357805176,
+                "Name": "RightLowerArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    -2.1316281596346973e-16,
+                    -3.552713599391162e-17,
+                    -0.25116100907325747
+                ],
+                "Rotation": [
+                    -4.463939526182237e-14,
+                    0.4854694902896881,
+                    2.4788075306020515e-14,
+                    0.8742536306381226
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1449844138,
+                "ParentUID": 1406122150,
+                "Name": "RightWristIK",
+                "isEnabled": true,
+                "Translation": [
+                    -1.4210854397564649e-16,
+                    -3.552713599391162e-17,
+                    -0.23802900314331056
+                ],
+                "Rotation": [
+                    -0.15728804469108582,
+                    -0.015486222691833973,
+                    0.9826798439025879,
+                    0.0967523604631424
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1494123094,
+                "ParentUID": 390142897,
+                "Name": "LeftLeg",
+                "isEnabled": true,
+                "Translation": [
+                    0.15488280355930329,
+                    -0.12964345514774323,
+                    0.00019751557556446642
+                ],
+                "Rotation": [
+                    0.9999510049819946,
+                    -4.076128923750525e-18,
+                    0.009899534285068512,
+                    6.12636894657517e-17
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1537079251,
+                "ParentUID": 1494123094,
+                "Name": "LeftFoot",
+                "isEnabled": true,
+                "Translation": [
+                    0.048644665628671649,
+                    0.07756918668746948,
+                    0.12021666020154953
+                ],
+                "Rotation": [
+                    -0.5085270404815674,
+                    -0.008523808792233467,
+                    -0.005034427624195814,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1578086020,
+                "ParentUID": 390142897,
+                "Name": "RightLeg",
+                "isEnabled": true,
+                "Translation": [
+                    -0.1548829972743988,
+                    -0.12964299321174622,
+                    0.0001973873731913045
+                ],
+                "Rotation": [
+                    3.487133314220917e-18,
+                    0.009899534285068512,
+                    -1.7693312652399539e-18,
+                    0.9999510049819946
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1621459903,
+                "ParentUID": 1578086020,
+                "Name": "RightFoot",
+                "isEnabled": true,
+                "Translation": [
+                    -0.00982758030295372,
+                    0.09173905849456787,
+                    -0.24033106863498689
+                ],
+                "Rotation": [
+                    -0.5085270404815674,
+                    -0.008523808792233467,
+                    -0.005034427624195814,
+                    0.8609890937805176
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1534256909,
+                "ParentUID": 1,
+                "Name": "Wall",
+                "isEnabled": true,
+                "Translation": [
+                    -39.284034729003909,
+                    0.1414700150489807,
+                    9.257862091064454
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    25.100000381469728,
+                    1.0,
+                    15.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1540105073,
+                "ParentUID": 1534256909,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1541149388,
+                "ParentUID": 1540105073,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 511670941,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1435323742,
+                "ParentUID": 1,
+                "Name": "Light (1)",
+                "isEnabled": true,
+                "Translation": [
+                    -45.34000015258789,
+                    3.455202102661133,
+                    -2.969529867172241
+                ],
+                "Rotation": [
+                    0.4916639029979706,
+                    0.0,
+                    0.0,
+                    0.8707851767539978
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "Position": [
+                            -45.34000015258789,
+                            3.455202102661133,
+                            -2.969529867172241,
+                            300.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -0.8562671542167664,
+                            0.5165331959724426,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.7547096014022827
+                        ],
+                        "Range": 8.0,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "ShadowMapSize": 512
+                    }
+                ]
+            },
+            {
+                "UID": 746942340,
+                "ParentUID": 1,
+                "Name": "Zombunny (2)",
+                "isEnabled": true,
+                "Translation": [
+                    -45.34257507324219,
+                    0.9758610725402832,
+                    -2.369462728500366
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.5,
+                    1.5,
+                    1.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 973258171,
+                        "AnimationID": 1174571689,
+                        "ModelUID": 1174571681,
+                        "ComponentType": 10,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 753347472,
+                "ParentUID": 746942340,
+                "Name": "RootNode",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 754391787,
+                "ParentUID": 753347472,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 755366481,
+                "ParentUID": 754391787,
+                "Name": "Zombunny",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 990245695,
+                        "MeshID": 1174571682,
+                        "MaterialID": 1174571686,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 772910973,
+                "ParentUID": 754391787,
+                "Name": "Zombunny (2)",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1060702147,
+                        "MeshID": 1174571687,
+                        "MaterialID": 1174571688,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 779524968,
+                "ParentUID": 753347472,
+                "Name": "Ctrl_Grp",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 780499662,
+                "ParentUID": 779524968,
+                "Name": "Root",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 781335114,
+                "ParentUID": 780499662,
+                "Name": "Hips",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 782031324,
+                "ParentUID": 781335114,
+                "Name": "Spine",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 782797155,
+                "ParentUID": 782031324,
+                "Name": "Head",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 783562986,
+                "ParentUID": 782797155,
+                "Name": "HeadEnd",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 784537680,
+                "ParentUID": 782797155,
+                "Name": "LeftEar",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 787879488,
+                "ParentUID": 784537680,
+                "Name": "LeftEarEnd",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 789341529,
+                "ParentUID": 782797155,
+                "Name": "RightEar",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 791639022,
+                "ParentUID": 789341529,
+                "Name": "RightEarEnd",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 793658031,
+                "ParentUID": 782031324,
+                "Name": "LeftUpperArm",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 794563104,
+                "ParentUID": 793658031,
+                "Name": "LeftLowerArm",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 795468177,
+                "ParentUID": 794563104,
+                "Name": "LeftWrist",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 797208702,
+                "ParentUID": 782031324,
+                "Name": "LeftUpperArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 798113775,
+                "ParentUID": 797208702,
+                "Name": "LeftLowerArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 798879606,
+                "ParentUID": 798113775,
+                "Name": "LeftWristFK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 800550510,
+                "ParentUID": 782031324,
+                "Name": "LeftUpperArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 801385962,
+                "ParentUID": 800550510,
+                "Name": "LeftLowerArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 802082172,
+                "ParentUID": 801385962,
+                "Name": "LeftWristIK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 803683455,
+                "ParentUID": 782031324,
+                "Name": "RightUpperArm",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 804518907,
+                "ParentUID": 803683455,
+                "Name": "RightLowerArm",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 805215117,
+                "ParentUID": 804518907,
+                "Name": "RightWrist",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 806816400,
+                "ParentUID": 782031324,
+                "Name": "RightUpperArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 807582231,
+                "ParentUID": 806816400,
+                "Name": "RightLowerArmFK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 808556925,
+                "ParentUID": 807582231,
+                "Name": "RightWristFK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 809879724,
+                "ParentUID": 782031324,
+                "Name": "RightUpperArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 810784797,
+                "ParentUID": 809879724,
+                "Name": "RightLowerArmIK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 811620249,
+                "ParentUID": 810784797,
+                "Name": "RightWristIK",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 814335468,
+                "ParentUID": 781335114,
+                "Name": "LeftLeg",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 815101299,
+                "ParentUID": 814335468,
+                "Name": "LeftFoot",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 816424098,
+                "ParentUID": 781335114,
+                "Name": "RightLeg",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 817189929,
+                "ParentUID": 816424098,
+                "Name": "RightFoot",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
             }
         ]
     }

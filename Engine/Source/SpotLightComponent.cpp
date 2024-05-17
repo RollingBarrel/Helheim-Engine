@@ -1,3 +1,7 @@
+#include "SpotLightComponent.h"
+#include "SpotLightComponent.h"
+#include "SpotLightComponent.h"
+#include "SpotLightComponent.h"
 #include "ModuleOpenGL.h"
 #include "Application.h"
 #include "SpotLightComponent.h"
@@ -9,7 +13,8 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
-	mData.range = 10.0f;
+	mData.range = 15.0f;
+	mData.bias = 0.00001f;
 	App->GetOpenGL()->AddSpotLight(*this);
 
 	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
@@ -36,7 +41,12 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 
 }
 
-SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemoveSpotLight(*this); }
+SpotLightComponent::~SpotLightComponent() 
+{ 
+	App->GetOpenGL()->RemoveSpotLight(*this);
+	glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
+	glDeleteTextures(1, &mShadowMapId);
+}
 
 const float* SpotLightComponent::GetPosition() const 
 { 
@@ -87,10 +97,29 @@ void SpotLightComponent::SetInnerAngle(float angle)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-void SpotLightComponent::MakeShadowMapBindless(unsigned int shadowMapTextureId)
-{
-	
+void SpotLightComponent::SetBias(float bias) 
+{ 
+	mData.bias = bias;
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
+
+void SpotLightComponent::SetShadowMapSize(unsigned int shadowMapSize) 
+{ 
+	mShadowMapSize = shadowMapSize;
+	glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
+	glDeleteTextures(1, &mShadowMapId);
+	glGenTextures(1, &mShadowMapId);
+	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
+	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
 
 void SpotLightComponent::Update()
 {
@@ -129,6 +158,9 @@ void SpotLightComponent::Save(Archive& archive) const
 	archive.AddFloat4("Direction", mData.aimD);
 	archive.AddFloat4("Color", mData.col);
 	archive.AddFloat("Range", mData.range);
+	archive.AddBool("CastShadow", mCastShadow);
+	archive.AddFloat("Bias", mData.bias);
+	archive.AddInt("ShadowMapSize", mShadowMapSize);
 }
 
 //TODO: why is the GO owner passed here??
@@ -143,6 +175,7 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 			mData.pos[i] = posArray[i].GetFloat();
 		}
 	}
+
 	if (componentJson.HasMember("Direction") && componentJson["Direction"].IsArray())
 	{
 		const auto& posArray = componentJson["Direction"].GetArray();
@@ -151,6 +184,7 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 			mData.aimD[i] = posArray[i].GetFloat();
 		}
 	}
+
 	if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
 	{
 		const auto& posArray = componentJson["Color"].GetArray();
@@ -159,10 +193,27 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 			mData.col[i] = posArray[i].GetFloat();
 		}
 	}
+
 	if (componentJson.HasMember("Range") && componentJson["Range"].IsFloat())
 	{
 		mData.range = componentJson["Range"].GetFloat();
 	}
+
+	if (componentJson.HasMember("CastShadow") && componentJson["CastShadow"].IsBool())
+	{
+		mCastShadow = componentJson["CastShadow"].GetBool();
+	}
+
+	if (componentJson.HasMember("Bias") && componentJson["Bias"].IsFloat())
+	{
+		mData.bias = componentJson["Bias"].GetFloat();
+	}
+
+	if (componentJson.HasMember("ShadowMapSize") && componentJson["ShadowMapSize"].IsInt())
+	{
+		mShadowMapSize = componentJson["ShadowMapSize"].GetInt();
+	}
+
 
 	mShadowFrustum.pos = owner->GetWorldPosition();
 	mShadowFrustum.front = owner->GetFront();

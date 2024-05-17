@@ -13,7 +13,7 @@ CameraComponent::CameraComponent(GameObject* owner) :Component(owner, ComponentT
 {
     mFrustum.pos = owner->GetPosition();
     mFrustum.type = FrustumType::PerspectiveFrustum;
-    mFrustum.nearPlaneDistance = 0.01f;
+    mFrustum.nearPlaneDistance = 0.1f;
     mFrustum.farPlaneDistance = 1000.0f;
 
     float w = static_cast<float>(App->GetWindow()->GetWidth());

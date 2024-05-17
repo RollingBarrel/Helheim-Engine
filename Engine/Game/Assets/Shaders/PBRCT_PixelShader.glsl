@@ -26,7 +26,7 @@ struct SpotLight
 	mat4 viewProjMatrix;
 	sampler2D shadowMap;
 	float radius;
-	int spotPad0;
+	float bias;
 
 };
 readonly layout(std430, binding = 1) buffer SpotLights
@@ -173,11 +173,11 @@ void main()
 	//Spot lights
 	for(int i = 0; i<numSLights; ++i)
 	{
-		float bias = 0.0000001;
+		
 		vec4 lightClipSpace =  sLights[i].viewProjMatrix * vec4(sPos,1);
 		vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
 		lightNDC.xy = lightNDC.xy * 0.5 + 0.5;
-		float shadowDepth = texture(sLights[i].shadowMap, lightNDC.xy).r + bias;
+		float shadowDepth = texture(sLights[i].shadowMap, lightNDC.xy).r + sLights[i].bias;
 		float fragmentDepth = lightNDC.z;
 		float shadowValue = fragmentDepth < shadowDepth  ? 1.0 : 0.0;
 		
