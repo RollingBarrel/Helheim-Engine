@@ -173,14 +173,13 @@ void main()
 	//Spot lights
 	for(int i = 0; i<numSLights; ++i)
 	{
-		float bias = 0.001;
+		float bias = 0.0000001;
 		vec4 lightClipSpace =  sLights[i].viewProjMatrix * vec4(sPos,1);
 		vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
-		lightNDC = lightNDC * 0.5 + 0.5;
+		lightNDC.xy = lightNDC.xy * 0.5 + 0.5;
 		float shadowDepth = texture(sLights[i].shadowMap, lightNDC.xy).r + bias;
 		float fragmentDepth = lightNDC.z;
 		float shadowValue = fragmentDepth < shadowDepth  ? 1.0 : 0.0;
-
 		
 		vec3 mVector = sPos - sLights[i].pos.xyz;
 		vec3 sDir = normalize(mVector);

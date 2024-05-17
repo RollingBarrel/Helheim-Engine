@@ -21,9 +21,11 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mShadowFrustum.horizontalFov = 2.0f * mData.col[3];
 	mShadowFrustum.verticalFov =  2.0f * mData.col[3];
 
+	mShadowMapSize = 512; // 512
+
 	glGenTextures(1, &mShadowMapId);
 	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, 512, 512, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -39,15 +41,6 @@ SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemoveSpotLight(*t
 const float* SpotLightComponent::GetPosition() const 
 { 
 	return mOwner->GetWorldPosition().ptr(); 
-}
-
-void SpotLightComponent::SetPosition(const float pos[3])
-{
-	mData.pos[0] = pos[0];
-	mData.pos[1] = pos[1];
-	mData.pos[2] = pos[2];
-	mShadowFrustum.pos = float3(pos);
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::SetColor(float col[3])
@@ -68,6 +61,7 @@ void SpotLightComponent::SetRange(float range)
 {
 	mData.range = range;
 	mShadowFrustum.farPlaneDistance = range;
+	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -121,7 +115,6 @@ void SpotLightComponent::Update()
 
 		App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	}
-	LOG("offestof: %i", offsetof(SpotLight, shadowMapHandle));
 }
 
 inline Component* SpotLightComponent::Clone(GameObject* owner) const 
@@ -131,8 +124,6 @@ inline Component* SpotLightComponent::Clone(GameObject* owner) const
 
 void SpotLightComponent::Save(Archive& archive) const 
 {
-	//TODO: Do we need id???
-	//archive.AddInt("ID", mID);
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat4("Position", mData.pos);
 	archive.AddFloat4("Direction", mData.aimD);
@@ -143,10 +134,7 @@ void SpotLightComponent::Save(Archive& archive) const
 //TODO: why is the GO owner passed here??
 void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
 {
-	//int id = 0;
-	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
-	//	id = componentJson["ID"].GetInt();
-	//}
+
 	if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
 	{
 		const auto& posArray = componentJson["Position"].GetArray();

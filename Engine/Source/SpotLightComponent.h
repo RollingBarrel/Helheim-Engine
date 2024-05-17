@@ -40,7 +40,6 @@ public:
 
 	const SpotLight& GetData() const { return mData; }
 	const float* GetPosition() const;
-	void SetPosition(const float pos[3]);
 	const float* GetDirection() const { return mData.aimD; };
 	const float* GetColor() const { return mData.col; }
 	void SetColor(float col[3]);
@@ -56,11 +55,14 @@ public:
 	void MakeShadowMapBindless(unsigned int shadowMapTextureId);
 
 	unsigned int GetShadowMap() const { return mShadowMapId; }
+	unsigned int GetShadowMapSize() const { return mShadowMapSize; }
+
 	//Todo: Variable not necesary for the game mode
 	//bool debugDraw = false;
 
 private:
 	SpotLight mData;
+	unsigned int mShadowMapSize = 0;
 	Frustum mShadowFrustum;
 	unsigned int mShadowMapId;
 };

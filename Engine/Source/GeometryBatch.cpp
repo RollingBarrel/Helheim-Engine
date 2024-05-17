@@ -535,7 +535,7 @@ void GeometryBatch::Draw()
 	//glActiveTexture(GL_TEXTURE0);
 	glBindFramebuffer(GL_FRAMEBUFFER, App->GetOpenGL()->GetShadowFrameBuffer());
 	//glClear(GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, 512, 512);
+	
 	glUseProgram(App->GetOpenGL()->GetShadowsProgramId());
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
 
@@ -543,6 +543,7 @@ void GeometryBatch::Draw()
 	{
 		if (!commandsForLights[i].empty())
 		{
+			glViewport(0, 0, spotLights[i]->GetShadowMapSize(), spotLights[i]->GetShadowMapSize());
 			Frustum frustum = spotLights[i]->GetFrustum();
 			App->GetOpenGL()->GetCameraBuffer()->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
 			App->GetOpenGL()->GetCameraBuffer()->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
