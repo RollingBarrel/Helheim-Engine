@@ -44,8 +44,8 @@ public:
     int GetColumns() const { return mColumns; }
     int GetRows() const { return mRows; }
     void SetSpritesheetLayout(int columns, int rows);
-    float GetFrameDuration() const { return mFrameDuration; }
-    void SetFrameDuration(float frameDuration) { mFrameDuration = frameDuration; }
+    int GetFrameDuration() const { return mFPS; }
+    void SetFrameDuration(int frameDuration) { mFPS = frameDuration; }
 
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
@@ -75,8 +75,8 @@ private:
     int mColumns = 1;
     int mRows = 1;
     int mCurrentFrame = 0;
-    long mElapsedTime = 0;
-    float mFrameDuration = 30.0f; // 30 FPS
+    long double mElapsedTime = 0;
+    int mFPS = 30.0f;
 
     CanvasComponent* mCanvas = nullptr;
 };

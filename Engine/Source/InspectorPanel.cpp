@@ -1042,9 +1042,9 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		imageComponent->SetSpritesheetLayout(columns, rows);
 
 		// Reproduction speed slider
-		float reproductionSpeed = imageComponent->GetFrameDuration();
-		ImGui::Text("Reproduction Speed:"); ImGui::SameLine();
-		ImGui::SliderFloat("Reproduction Speed", &reproductionSpeed, 1.0f, 100.0f);
+		int reproductionSpeed = imageComponent->GetFrameDuration();
+		ImGui::Text("Reproduction Speed (FPS):"); ImGui::SameLine();
+		ImGui::SliderInt("Reproduction Speed", &reproductionSpeed, 1, 100);
 		imageComponent->SetFrameDuration(reproductionSpeed);
 
 		// Display the spritesheet image

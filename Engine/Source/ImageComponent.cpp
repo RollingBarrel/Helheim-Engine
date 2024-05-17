@@ -207,7 +207,7 @@ void ImageComponent::Save(Archive& archive) const
 	archive.AddBool("IsSpritesheet", mIsSpritesheet);
 	archive.AddInt("Columns", mColumns);
 	archive.AddInt("Rows", mRows);
-	archive.AddFloat("Speed", mFrameDuration);
+	archive.AddInt("Speed", mFPS);
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -267,10 +267,10 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 		mRows = rowsValue.GetInt();
 	}
 
-	if (data.HasMember("Speed") && data["Speed"].IsFloat())
+	if (data.HasMember("Speed") && data["Speed"].IsInt())
 	{
 		const rapidjson::Value& speedValue = data["Speed"];
-		mFrameDuration = speedValue.GetFloat();
+		mFPS = speedValue.GetInt();
 	}
 }
 
@@ -357,21 +357,12 @@ void ImageComponent::Update()
 {
 	if (mIsSpritesheet)
 	{
-		mElapsedTime += App->GetCurrentClock()->GetDelta();
-		LOG("Get Delta: %li", App->GetCurrentClock()->GetDelta());
-		LOG("Elapsed Time: %li", mElapsedTime);
-		LOG("Frame Duration: %f", mFrameDuration);
-		if (mElapsedTime > mFrameDuration)
+		mElapsedTime += App->GetCurrentClock()->GetDelta() / 1000.0f;
+		float frameDuration = 1.0f / mFPS;
+
+		if (mElapsedTime > frameDuration)
 		{
 			mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
-			if (mColumns != 0 && mRows != 0) 
-			{
-				mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
-			}
-			else 
-			{
-				mCurrentFrame = 0;
-			}
 			mElapsedTime = 0;
 		}
 	}
