@@ -26,6 +26,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1808344031,
@@ -62,6 +63,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1174257840,
@@ -108,7 +110,8 @@
                         "IsSpritesheet": true,
                         "Columns": 8,
                         "Rows": 4,
-                        "Speed": 16
+                        "Speed": 20,
+                        "IsPlaying": true
                     }
                 ]
             }

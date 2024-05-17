@@ -1033,26 +1033,6 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	}
 	if (imageComponent->IsSpritesheet())
 	{
-		int columns = imageComponent->GetColumns();
-		int rows = imageComponent->GetRows();
-		ImGui::InputInt("Columns", &columns);
-		ImGui::InputInt("Rows", &rows);
-		if (columns <= 0) {
-			columns = 1;
-		}
-		if (rows <= 0) {
-			rows = 1;
-		}
-		imageComponent->SetSpritesheetLayout(columns, rows);
-
-		// Reproduction speed slider
-		int reproductionSpeed = imageComponent->GetFrameDuration();
-		ImGui::Text("Speed (FPS):"); ImGui::SameLine();
-		ImGui::PushItemWidth(100);
-		ImGui::SliderInt("Reproduction Speed", &reproductionSpeed, 1, 100);
-		ImGui::PopItemWidth();
-		imageComponent->SetFrameDuration(reproductionSpeed);
-
 		// Play/Pause/Stop buttons
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 1.0f, 0.6f, 1.0f)); // Pale green
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black text
@@ -1079,6 +1059,27 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 			imageComponent->StopAnimation();
 		}
 		ImGui::PopStyleColor(2);
+
+		// Columns and rows selector
+		int columns = imageComponent->GetColumns();
+		int rows = imageComponent->GetRows();
+		ImGui::InputInt("Columns", &columns);
+		ImGui::InputInt("Rows", &rows);
+		if (columns <= 0) {
+			columns = 1;
+		}
+		if (rows <= 0) {
+			rows = 1;
+		}
+		imageComponent->SetSpritesheetLayout(columns, rows);
+
+		// Reproduction speed slider
+		int reproductionSpeed = imageComponent->GetFrameDuration();
+		ImGui::Text("Speed (FPS):"); ImGui::SameLine();
+		ImGui::PushItemWidth(100);
+		ImGui::SliderInt("Reproduction Speed", &reproductionSpeed, 1, 100);
+		ImGui::PopItemWidth();
+		imageComponent->SetFrameDuration(reproductionSpeed);
 
 		// Display the spritesheet image
 		if (image != nullptr)
