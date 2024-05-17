@@ -92,7 +92,7 @@ void main()
 	outDiffuse = baseColor * (1 - metal);
 	outSpecularRough.rgb = mix(vec3(0.04), baseColor, metal);
 	outSpecularRough.a = rough;
-	outNormal = N;
+	outNormal = (N + 1.0) * 0.5;
 	outPosition.rgb = sPos;
 	outPosition.a = gl_FragCoord.z;
 }

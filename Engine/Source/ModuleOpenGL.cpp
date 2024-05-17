@@ -905,6 +905,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
 void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 {
