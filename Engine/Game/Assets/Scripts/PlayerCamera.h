@@ -21,11 +21,10 @@ private:
 
     GameObject* mLookTarget = nullptr;
     GameObject* mFollowTarget = nullptr;
-    GameObject* mAuxLookTarget = nullptr;
     CameraComponent* mCameraComponent = nullptr;
-
-    void CameraManager();
-    void SetView(float3 position, float rotation);
+    float3 mCameraPosition = float3(0, -9.5f, 10.0f);
+    float3 mCameraRotation = float3(0.65f, 0.0f, 0.0f);
+    void SetView(float3 position, float3 rotation);
 
 
 };
