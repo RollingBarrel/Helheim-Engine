@@ -100,11 +100,11 @@ class PlayerController :public Script
         //Dash
         bool mIsDashing = false;
         bool mIsDashCoolDownActive = false;
-        float mDashCoolDown = 0.7f;
         float mDashCoolDownTimer = 0.0f;
-        float mDashDuration = 0.5f; 
+        float mDashCoolDown = 0.7f;
         float mDashTimer = 0.0f;
-        float mDashSpeed = 10.0f; // Adjust as needed
+        float mDashDuration = 0.5f;
+        float mDashRange = 8.0f;
         float3 mDashDirection = float3::zero;
 
         //Range
