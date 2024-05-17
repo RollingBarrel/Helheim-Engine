@@ -1049,6 +1049,33 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		ImGui::PopItemWidth();
 		imageComponent->SetFrameDuration(reproductionSpeed);
 
+		// Play/Pause/Stop buttons
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 1.0f, 0.6f, 1.0f)); // Pale green
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black text
+		if (ImGui::Button("Play"))
+		{
+			imageComponent->PlayAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 0.6f, 1.0f)); // Pale yellow
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Pause"))
+		{
+			imageComponent->PauseAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.6f, 0.6f, 1.0f)); // Pale red
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Stop"))
+		{
+			imageComponent->StopAnimation();
+		}
+		ImGui::PopStyleColor(2);
+
 		// Display the spritesheet image
 		if (image != nullptr)
 		{

@@ -196,6 +196,23 @@ void ImageComponent::SetSpritesheetLayout(int columns, int rows)
 	mIsSpritesheet = true;
 }
 
+void ImageComponent::PlayAnimation()
+{
+	mIsPlaying = true;
+}
+
+void ImageComponent::PauseAnimation()
+{
+	mIsPlaying = false;
+}
+
+void ImageComponent::StopAnimation()
+{
+	mIsPlaying = false;
+	mCurrentFrame = 0;
+	mElapsedTime = 0;
+}
+
 void ImageComponent::Save(Archive& archive) const
 {
     archive.AddInt("ImageID", mImage->GetUID());
@@ -208,6 +225,7 @@ void ImageComponent::Save(Archive& archive) const
 	archive.AddInt("Columns", mColumns);
 	archive.AddInt("Rows", mRows);
 	archive.AddInt("Speed", mFPS);
+	archive.AddBool("IsPlaying", mIsPlaying);
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -238,14 +256,12 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) 
 	{
 		const rapidjson::Value& alphaValue = data["Alpha"];
-		
 		mAlpha = alphaValue.GetFloat();
 	}
 	
 	if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) 
 	{
 		const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
-
 		mHasAlpha = hasAlphaValue.GetBool();
 	}
 
@@ -271,6 +287,12 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 	{
 		const rapidjson::Value& speedValue = data["Speed"];
 		mFPS = speedValue.GetInt();
+	}
+
+	if (data.HasMember("IsPlaying") && data["IsPlaying"].IsBool())
+	{
+		const rapidjson::Value& isPlaying = data["IsPlaying"];
+		mIsPlaying = isPlaying.GetBool();
 	}
 }
 
@@ -368,7 +390,7 @@ void ImageComponent::ResizeByRatio()
 
 void ImageComponent::Update()
 {
-	if (mIsSpritesheet)
+	if (mIsSpritesheet && mIsPlaying)
 	{
 		mElapsedTime += App->GetCurrentClock()->GetDelta() / 1000.0f;
 		float frameDuration = 1.0f / mFPS;

@@ -47,6 +47,10 @@ public:
     int GetFrameDuration() const { return mFPS; }
     void SetFrameDuration(int frameDuration) { mFPS = frameDuration; }
 
+    void PlayAnimation();
+    void PauseAnimation();
+    void StopAnimation();
+
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
     GameObject* FindCanvasOnParents(GameObject* gameObject);
@@ -77,6 +81,7 @@ private:
     int mCurrentFrame = 0;
     long double mElapsedTime = 0;
     int mFPS = 30.0f;
+    bool mIsPlaying = false;
 
     CanvasComponent* mCanvas = nullptr;
 };
