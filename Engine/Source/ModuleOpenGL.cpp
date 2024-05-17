@@ -217,13 +217,18 @@ bool ModuleOpenGL::Init()
 	int computeType = GL_COMPUTE_SHADER;
 	mSkinningProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
+	mPbrLightingPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "PassThroughVertex.glsl";
+	sourcesPaths[1] = "PassThroughPixel.glsl";
+	mPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
 	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	sourcesPaths[0] = "GameVertex.glsl";
-	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
-	mPbrLightingPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 
 	//Initialize camera uniforms
@@ -328,7 +333,10 @@ void ModuleOpenGL::AddHighLight(GameObject* gameObject)
 		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
 		if (!meshComponents.empty())
 		{
-			mBatchManager.AddHighLight(meshComponents);
+			for (Component* comp : meshComponents)
+			{
+				mHighlightedObjects.push_back(comp->GetOwner());
+			}
 		}
 	}
 }
@@ -340,7 +348,18 @@ void ModuleOpenGL::RemoveHighLight(GameObject* gameObject)
 		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
 		if (!meshComponents.empty())
 		{
-			mBatchManager.RemoveHighLight(meshComponents);
+			for (Component* comp : meshComponents)
+			{
+				for (std::vector<const GameObject*>::iterator it = mHighlightedObjects.begin(); it != mHighlightedObjects.end(); ++it)
+				{
+					if (comp->GetOwner()->GetID() == (*it)->GetID())
+					{
+						mHighlightedObjects.erase(it);
+						break;
+					}
+				}
+			}
+			meshComponents;
 		}
 	}
 }
@@ -857,6 +876,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 {
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
+		mBatchManager.ComputeAnimations(mesh);
 		mBatchManager.AddCommand(mesh);
 	}
 	//GaometryPass
@@ -896,9 +916,43 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glDisable(GL_STENCIL_TEST);
 	glUseProgram(0);
 	glBindVertexArray(0);
+
+	//Highlight
+	mBatchManager.CleanUpCommands();
+	for (const GameObject* object : mHighlightedObjects)
+	{
+		for (const MeshRendererComponent* sMesh : sceneMeshes)
+		{
+			if (sMesh->GetOwner()->GetID() == object->GetID())
+			{
+				mBatchManager.AddCommand(sMesh);
+				break;
+			}
+		}
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+	//Higlight pass
+	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilMask(0xFF);
+	glUseProgram(mPassThroughProgramId);
+	mBatchManager.Draw();
+	
+	glDisable(GL_DEPTH_TEST);
+	glStencilMask(0x00);
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	
+	glUseProgram(mHighLightProgramId);
+	mBatchManager.Draw();
+	
+	glStencilMask(0xFF);
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+
 	mBatchManager.EndFrameDraw();
 
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	for (const ParticleSystemComponent* partSys : mParticleSystems)
 	{
 		partSys->Draw();

@@ -89,6 +89,7 @@ public:
 	void BatchEditMaterial(const MeshRendererComponent* mesh);
 	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
 	void SetWireframe(bool wireframe);
+
 	void AddHighLight(GameObject* gameObject);
 	void RemoveHighLight(GameObject* gameObject);
 
@@ -133,6 +134,7 @@ private:
 	unsigned int CreateShaderProgramFromIDs(unsigned int* shaderIds, unsigned int numShaders) const;
 	unsigned int mPbrGeoPassProgramId = 0;
 	unsigned int mPbrLightingPassProgramId = 0;
+	unsigned int mPassThroughProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
@@ -169,6 +171,7 @@ private:
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
 
 	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
+	std::vector<const GameObject*> mHighlightedObjects;
 };
 
 #endif /* _MODULEOPENGL_H_ */

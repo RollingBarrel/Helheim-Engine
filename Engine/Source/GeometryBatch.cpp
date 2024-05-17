@@ -142,12 +142,8 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent* cMesh)
 	return true;
 }
 
-void GeometryBatch::RecreatePersistentSsbosAndIbo()
+void GeometryBatch::RecreatePersistentSsbos()
 {
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferData(GL_DRAW_INDIRECT_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_STATIC_DRAW);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
-
 	GLbitfield flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
 
 	glDeleteBuffers(1, &mSsboModelMatrices);
@@ -227,39 +223,6 @@ void GeometryBatch::RecreateMaterials()
 
 	mMaterialFlag = false;
 }
-
-void GeometryBatch::AddHighLight(const std::vector<Component*>& meshRendererComponents)
-{
-	for (unsigned int i = 0; i < meshRendererComponents.size(); ++i)
-	{
-		for (unsigned int j = 0; j < mMeshComponents.size(); ++j)
-		{
-			if (reinterpret_cast<MeshRendererComponent*>(meshRendererComponents[i])->GetID() == mMeshComponents[j].component->GetID())
-			{
-				mHighLightMeshComponents.push_back(mMeshComponents[j]);
-			}
-		}
-	}
-}
-
-void GeometryBatch::RemoveHighLight(std::vector<Component*> meshRendererComponents)
-{
-	for (Component* meshComponent : meshRendererComponents)
-	{
-		for (std::vector<BatchMeshRendererComponent>::iterator it = mHighLightMeshComponents.begin(); it != mHighLightMeshComponents.end(); ++it)
-		{
-			if (it->component->GetID() == meshComponent->GetID())
-			{
-				mHighLightMeshComponents.erase(it);
-				break;
-			}
-			
-		}
-	}
-	
-}
-
-
 
 
 void GeometryBatch::AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx)
@@ -351,14 +314,6 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 		found = true;
 		bMeshIdx = mapIterator->second.bMeshIdx;
 		bMaterialIdx = mapIterator->second.bMaterialIdx;
-		for (std::vector<BatchMeshRendererComponent>::iterator highLightMesh = mHighLightMeshComponents.begin(); highLightMesh != mHighLightMeshComponents.end(); ++highLightMesh)
-		{
-			if (highLightMesh->component->GetID() == mapIterator->second.component->GetID())
-			{
-				mHighLightMeshComponents.erase(highLightMesh);
-				break;
-			}
-		}
 		mMeshComponents.erase(mapIterator);
 	}
 	if (!found)
@@ -403,19 +358,25 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 {
 	if (mMeshComponents.find(component->GetID()) == mMeshComponents.end())
+	{
 		return false;
+	}
+	if (mComandsMap.find(component->GetID()) != mComandsMap.end())
+	{
+		mCommands.emplace_back(*mComandsMap[component->GetID()]);
+		return false;
+	}
 
 	if (mVBOFlag)
 		RecreateVboAndEbo();
 	if (mMaterialFlag)
 		RecreateMaterials();
 	if (mPersistentsFlag)
-		RecreatePersistentSsbosAndIbo();
+		RecreatePersistentSsbos();
 	
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
-	ComputeAnimation(component);
 
-	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[component->GetID()];
+	const BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[component->GetID()];
 	if (batchMeshRenderer.IsAnimated() && batchMeshRenderer.bCAnim->GetIsPlaying())
 	{
 		memcpy(mSsboModelMatricesData[idx] + 16 * mCommands.size(), float4x4::identity.ptr(), sizeof(float) * 16);
@@ -428,14 +389,8 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	memcpy(mSsboIndicesData[idx] + mCommands.size(), &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
 	
 	mCommands.emplace_back(component->GetResourceMesh()->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
-
-	for (const BatchMeshRendererComponent& highLightMesh : mHighLightMeshComponents)
-	{
-		if (highLightMesh.component->GetID() == batchMeshRenderer.component->GetID())
-		{
-			mHighLightCommands.push_back(mCommands.back());
-		}
-	}
+	mComandsMap[component->GetID()] = &mCommands.back();
+	mIboFlag = true;
 	return true;
 }
 
@@ -463,7 +418,11 @@ void GeometryBatch::Draw()
 
 	glBindVertexArray(mVao);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mCommands.size() * sizeof(Command), mCommands.data());
+	if (mIboFlag)
+	{
+		glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
+		mIboFlag = false;
+	}
 
 	unsigned int structSize = ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
@@ -482,20 +441,24 @@ void GeometryBatch::Draw()
 void GeometryBatch::CleanUpCommands()
 {
 	mCommands.clear();
-	mHighLightCommands.clear();
 }
 
 void GeometryBatch::EndFrameDraw()
 {
 	CleanUpCommands();
+	mComandsMap.clear();
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 	glDeleteSync(mSync[idx]);
 	mSync[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 	++mDrawCount;
 }
 
-void GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
+bool GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
 {
+	if (mMeshComponents.find(cMesh->GetID()) == mMeshComponents.end())
+	{
+		return false;
+	}
 	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[cMesh->GetID()];
 	const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
 	const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
@@ -522,30 +485,6 @@ void GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
 		mAnimationSkinning = true;
 	}
 	glUseProgram(0);
-}
 
-
-void GeometryBatch::DrawHighlight()
-{
-	glEnable(GL_STENCIL_TEST);
-	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	glStencilMask(0xFF);
-	glBufferSubData(GL_DRAW_INDIRECT_BUFFER, 0, mHighLightCommands.size() * sizeof(Command), mHighLightCommands.data());
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mHighLightCommands.size(), 0);
-
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	//glStencilFunc(GL_EQUAL, 1, 0xFF);
-	glStencilMask(0x00);
-	glDisable(GL_DEPTH_TEST);
-
-	glUseProgram(App->GetOpenGL()->GetHighLightProgramId());
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mHighLightCommands.size(), 0);
-
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-	glStencilMask(0xFF);
-	glStencilFunc(GL_ALWAYS, 0, 0xFF);
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_STENCIL_TEST);
-	//END HIGHLIGHT
+	return true;
 }

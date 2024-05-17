@@ -94,15 +94,12 @@ public:
 	void Draw();
 	void EndFrameDraw();
 	void CleanUpCommands();
-	void AddHighLight(const std::vector<Component*>& meshRendererComponents);
-	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
-	void ComputeAnimation(const MeshRendererComponent* cMesh);
-	void DrawHighlight();
+	bool ComputeAnimation(const MeshRendererComponent* cMesh);
 
 private:
-	void RecreatePersistentSsbosAndIbo();
+	void RecreatePersistentSsbos();
 	void RecreateVboAndEbo();
 	void RecreateMaterials();
 	void AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx);
@@ -110,16 +107,16 @@ private:
 	bool mMaterialFlag = false;
 	bool mPersistentsFlag = false;
 	bool mVBOFlag = false;
+	bool mIboFlag = false;
 	
 	std::unordered_map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
+	std::unordered_map<unsigned int, const Command*> mComandsMap;
 
 	unsigned int mVertexSize = 0;
-	std::vector<BatchMeshRendererComponent> mHighLightMeshComponents;
-	std::vector<Command> mHighLightCommands;
 
 
 	unsigned int mVao = 0;

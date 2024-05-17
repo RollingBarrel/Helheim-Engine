@@ -49,7 +49,7 @@ void HierarchyPanel::SetFocus(GameObject* focusedObject)
 		mNodesToOpen.insert(parent->GetID());
 		parent = parent->GetParent();
 	}
-	//App->GetOpenGL()->AddHighLight(focusedObject);
+	App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
 void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
@@ -151,7 +151,7 @@ void HierarchyPanel::InternalSetFocus(GameObject* focusedObject)
 {
 	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
 	mFocusId = focusedObject->GetID();
-	//App->GetOpenGL()->AddHighLight(focusedObject);
+	App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
 void HierarchyPanel::DrawTree(GameObject* node)
