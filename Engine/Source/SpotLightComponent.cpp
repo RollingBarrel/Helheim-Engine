@@ -84,6 +84,7 @@ void SpotLightComponent::SetOuterAngle(float angle)
 	mData.col[3] = cos(angle);
 	mShadowFrustum.horizontalFov = 2.0f * angle;
 	mShadowFrustum.verticalFov = 2.0f * angle;
+	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -141,7 +142,6 @@ void SpotLightComponent::Update()
 		mShadowFrustum.up = mOwner->GetUp();
 
 		mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
-
 		App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	}
 }
@@ -214,7 +214,6 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 		mShadowMapSize = componentJson["ShadowMapSize"].GetInt();
 	}
 
-
 	mShadowFrustum.pos = owner->GetWorldPosition();
 	mShadowFrustum.front = owner->GetFront();
 	mShadowFrustum.up = owner->GetUp();
@@ -222,7 +221,7 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * mData.col[3];
 	mShadowFrustum.verticalFov = 2.0f * mData.col[3];
-
+	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 }
 
 void SpotLightComponent::Enable()

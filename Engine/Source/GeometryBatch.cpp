@@ -541,7 +541,10 @@ void GeometryBatch::Draw()
 
 	for (int i = 0; i < commandsForLights.size(); ++i)
 	{
-		if (!commandsForLights[i].empty())
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLights[i]->GetShadowMap(), 0);
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		if (!commandsForLights[i].empty() && spotLights[i]->CanCastShadow())
 		{
 			glViewport(0, 0, spotLights[i]->GetShadowMapSize(), spotLights[i]->GetShadowMapSize());
 			Frustum frustum = spotLights[i]->GetFrustum();

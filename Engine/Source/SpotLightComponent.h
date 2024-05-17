@@ -50,7 +50,7 @@ public:
 	void SetOuterAngle(float angle);
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
-	bool CanCastShadow() { return mCastShadow; }
+	bool CanCastShadow() const { return mCastShadow; }
 	void SetCastShadow(bool castShadow) { mCastShadow = castShadow; }
 	float GetBias() { return mData.bias; }
 	void SetBias(float bias);
