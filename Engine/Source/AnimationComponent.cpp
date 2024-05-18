@@ -14,6 +14,7 @@
 
 AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimationUid(0), mController(nullptr), mModelUid(0)
 {
+	mStateMachine = nullptr;
 	mSpeed = 1.0;
 }
 
@@ -21,10 +22,12 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 {
 
 	mSpeed = 1.0;
+	mStateMachine = nullptr;
 
 	mModelUid = other.mModelUid;
 
 	SetAnimation(other.mAnimationUid);
+
 
 }
 
