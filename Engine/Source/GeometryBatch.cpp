@@ -530,7 +530,6 @@ void GeometryBatch::Draw()
 		++i;
 	}
 
-	
 	//DRAW SHADOWS
 	//glActiveTexture(GL_TEXTURE0);
 	glBindFramebuffer(GL_FRAMEBUFFER, App->GetOpenGL()->GetShadowFrameBuffer());

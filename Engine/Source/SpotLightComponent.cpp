@@ -219,8 +219,8 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.01f;
 	mShadowFrustum.farPlaneDistance = mData.range;
-	mShadowFrustum.horizontalFov = 2.0f * mData.col[3];
-	mShadowFrustum.verticalFov = 2.0f * mData.col[3];
+	mShadowFrustum.horizontalFov = 2.0f * acos(mData.col[3]);
+	mShadowFrustum.verticalFov = 2.0f * acos(mData.col[3]);
 	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
