@@ -477,7 +477,7 @@ GameObject* ModuleScene::Find(unsigned int UID) const
 void ModuleScene::DeleteGameObjects()
 {
 
-	for (auto gameObject : mGameObjectsToDelete)
+	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
 		gameObject->GetParent()->DeleteChild(gameObject);
 	}
@@ -488,7 +488,7 @@ void ModuleScene::DeleteGameObjects()
 void ModuleScene::DuplicateGameObjects()
 {
 
-	for (auto gameObject : mGameObjectsToDuplicate)
+	for (GameObject* gameObject : mGameObjectsToDuplicate)
 	{
 		gameObject->GetParent()->AddChild(gameObject);
 	}

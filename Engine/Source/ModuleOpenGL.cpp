@@ -876,7 +876,6 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 {
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
-		mBatchManager.ComputeAnimations(mesh);
 		mBatchManager.AddCommand(mesh);
 	}
 	//GaometryPass

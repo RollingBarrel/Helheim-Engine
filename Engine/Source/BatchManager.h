@@ -15,7 +15,6 @@ public:
 	void RemoveMeshComponent(const MeshRendererComponent* meshComponent);
 	void EditMaterial(const MeshRendererComponent* meshComponent);
 
-	void ComputeAnimations(const MeshRendererComponent* meshComponent);
 	void AddCommand(const MeshRendererComponent* meshComponent);
 	void CleanUpCommands();
 	void Draw();

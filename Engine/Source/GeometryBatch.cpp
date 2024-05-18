@@ -364,7 +364,8 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	if (mComandsMap.find(component->GetID()) != mComandsMap.end())
 	{
 		mCommands.emplace_back(*mComandsMap[component->GetID()]);
-		return false;
+		mIboFlag = true;
+		return true;
 	}
 
 	if (mVBOFlag)
@@ -374,6 +375,8 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	if (mPersistentsFlag)
 		RecreatePersistentSsbos();
 	
+	ComputeAnimation(component);
+
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 
 	const BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[component->GetID()];
@@ -453,12 +456,8 @@ void GeometryBatch::EndFrameDraw()
 	++mDrawCount;
 }
 
-bool GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
+void GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
 {
-	if (mMeshComponents.find(cMesh->GetID()) == mMeshComponents.end())
-	{
-		return false;
-	}
 	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[cMesh->GetID()];
 	const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
 	const ResourceMesh* rMesh = meshRenderer->GetResourceMesh();
@@ -485,6 +484,4 @@ bool GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
 		mAnimationSkinning = true;
 	}
 	glUseProgram(0);
-
-	return true;
 }

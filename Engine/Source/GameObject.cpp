@@ -67,17 +67,16 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mTag(original.GetTag()), mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
 {
+	for (Component* component : original.mComponents)
+	{
+		mComponents.push_back(component->Clone(this));
+	}
 
-	for (auto child : original.mChildren) 
+	for (GameObject* child : original.mChildren) 
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
-	}
-
-	for (auto component : original.mComponents) 
-	{
-		mComponents.push_back(component->Clone(this));
 	}
 }
 
@@ -86,13 +85,15 @@ GameObject::~GameObject()
 	for (GameObject* gameObject : mChildren) 
 	{
 		delete gameObject;
-		gameObject = nullptr;
 	}
 	mChildren.clear();
 	for (Component* component : mComponents) 
 	{
+		if (component->GetType() == ComponentType::MESHRENDERER)
+		{
+			App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this);
+		}
 		delete component;
-		component = nullptr;
 	}
 	mComponents.clear();
 
@@ -262,7 +263,6 @@ void GameObject::DeleteChild(GameObject* child)
 {
 	RemoveChild(child->mID);
 	delete child;
-	child = nullptr;
 }
 
 void GameObject::AddComponentToDelete(Component* component)
@@ -382,7 +382,6 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 GameObject* GameObject::RemoveChild(const int id)
 {
 	GameObject* movedObject = nullptr;
-	std::vector<GameObject*>::iterator itTargetPosition = mChildren.end();
 	for (std::vector<GameObject*>::iterator it = mChildren.begin(); it != mChildren.cend(); ++it) 
 	{
 		if ((*it)->GetID() == id) 

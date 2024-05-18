@@ -65,17 +65,6 @@ void BatchManager::EditMaterial(const MeshRendererComponent* meshComponent)
 	}
 }
 
-void BatchManager::ComputeAnimations(const MeshRendererComponent* meshComponent)
-{
-	for (GeometryBatch* batch : mBatches)
-	{
-		if (batch->ComputeAnimation(meshComponent))
-		{
-			return;
-		}
-	}
-}
-
 void BatchManager::AddCommand(const MeshRendererComponent* meshComponent)
 {
 	for (GeometryBatch* batch : mBatches)

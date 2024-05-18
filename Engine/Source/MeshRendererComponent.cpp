@@ -46,9 +46,9 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 
 MeshRendererComponent::~MeshRendererComponent()
 {
+	App->GetOpenGL()->BatchRemoveMesh(this);
 	if (mMesh)
 	{
-		App->GetOpenGL()->BatchRemoveMesh(this);
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
 		mMesh = nullptr;
 	}

@@ -96,7 +96,7 @@ public:
 	void CleanUpCommands();
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
-	bool ComputeAnimation(const MeshRendererComponent* cMesh);
+	void ComputeAnimation(const MeshRendererComponent* cMesh);
 
 private:
 	void RecreatePersistentSsbos();
