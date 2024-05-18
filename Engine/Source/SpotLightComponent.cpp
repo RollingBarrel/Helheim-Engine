@@ -211,7 +211,7 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 
 	if (componentJson.HasMember("ShadowMapSize") && componentJson["ShadowMapSize"].IsInt())
 	{
-		mShadowMapSize = componentJson["ShadowMapSize"].GetInt();
+		SetShadowMapSize(componentJson["ShadowMapSize"].GetInt());
 	}
 
 	mShadowFrustum.pos = owner->GetWorldPosition();
@@ -222,6 +222,7 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 	mShadowFrustum.horizontalFov = 2.0f * mData.col[3];
 	mShadowFrustum.verticalFov = 2.0f * mData.col[3];
 	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::Enable()
