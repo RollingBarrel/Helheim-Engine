@@ -83,7 +83,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1686894985,
+                        "ID": 723849293,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -94,7 +94,7 @@
             {
                 "UID": 736753931,
                 "ParentUID": 1,
-                "Name": "Cube (2)",
+                "Name": "Cube (1)",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -172,7 +172,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 2039571069,
+                        "ID": 1152899614,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -236,7 +236,7 @@
             {
                 "UID": 1034962798,
                 "ParentUID": 1,
-                "Name": "Floor1 (1)",
+                "Name": "Floor1 (2)",
                 "isEnabled": true,
                 "Translation": [
                     -38.73427200317383,
@@ -314,7 +314,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 414036059,
+                        "ID": 714472275,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -325,7 +325,7 @@
             {
                 "UID": 1052390867,
                 "ParentUID": 1,
-                "Name": "Light (1)",
+                "Name": "Light (2)",
                 "isEnabled": true,
                 "Translation": [
                     -28.950000762939454,
@@ -402,7 +402,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 658893116,
+                        "ID": 1739293395,
                         "AnimationID": 1174571689,
                         "ModelUID": 1174571681,
                         "ComponentType": 10,
@@ -491,7 +491,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 674836325,
+                        "ID": 266576480,
                         "MeshID": 1174571682,
                         "MaterialID": 1174571686,
                         "ComponentType": 0,
@@ -502,7 +502,7 @@
             {
                 "UID": 10523486,
                 "ParentUID": 452464117,
-                "Name": "Zombunny (1)",
+                "Name": "Zombunny (2)",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -526,7 +526,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1603319628,
+                        "ID": 2147403357,
                         "MeshID": 1174571687,
                         "MaterialID": 1174571688,
                         "ComponentType": 0,
@@ -1479,7 +1479,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1913457281,
+                        "ID": 431824492,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -1490,7 +1490,7 @@
             {
                 "UID": 1435323742,
                 "ParentUID": 1,
-                "Name": "Light (2)",
+                "Name": "Light (1)",
                 "isEnabled": true,
                 "Translation": [
                     -35.88251495361328,
@@ -1543,7 +1543,7 @@
             {
                 "UID": 746942340,
                 "ParentUID": 1435323742,
-                "Name": "Zombunny (1)",
+                "Name": "Zombunny (2)",
                 "isEnabled": true,
                 "Translation": [
                     -0.002574920654296875,
@@ -1567,7 +1567,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 275529733,
+                        "ID": 1210535377,
                         "AnimationID": 1174571689,
                         "ModelUID": 1174571681,
                         "ComponentType": 10,
@@ -1656,7 +1656,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 294884371,
+                        "ID": 1231352056,
                         "MeshID": 1174571682,
                         "MaterialID": 1174571686,
                         "ComponentType": 0,
@@ -1667,7 +1667,7 @@
             {
                 "UID": 772910973,
                 "ParentUID": 754391787,
-                "Name": "Zombunny (1)",
+                "Name": "Zombunny (2)",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -1691,7 +1691,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 374043448,
+                        "ID": 1309397197,
                         "MeshID": 1174571687,
                         "MaterialID": 1174571688,
                         "ComponentType": 0,
@@ -2566,7 +2566,7 @@
             {
                 "UID": 1340921324,
                 "ParentUID": 1,
-                "Name": "Zombunny (1)",
+                "Name": "Zombunny (2)",
                 "isEnabled": true,
                 "Translation": [
                     -44.42772674560547,
@@ -2590,7 +2590,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1446397139,
+                        "ID": 1394404438,
                         "AnimationID": 1174571689,
                         "ModelUID": 1174571681,
                         "ComponentType": 10,
@@ -2679,7 +2679,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1530917033,
+                        "ID": 1407005839,
                         "MeshID": 1174571682,
                         "MaterialID": 1174571686,
                         "ComponentType": 0,
@@ -2690,7 +2690,7 @@
             {
                 "UID": 1595177216,
                 "ParentUID": 1459973234,
-                "Name": "Zombunny (1)",
+                "Name": "Zombunny (2)",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -2714,7 +2714,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1630614305,
+                        "ID": 1506215764,
                         "MeshID": 1174571687,
                         "MaterialID": 1174571688,
                         "ComponentType": 0,
@@ -3593,8 +3593,8 @@
                 "isEnabled": true,
                 "Translation": [
                     -44.33586502075195,
-                    3.776646614074707,
-                    -1.4328491687774659
+                    3.7034976482391359,
+                    -1.4223730564117432
                 ],
                 "Rotation": [
                     0.6550705432891846,
@@ -3616,8 +3616,8 @@
                         "ComponentType": 2,
                         "Position": [
                             -44.33586502075195,
-                            3.776646614074707,
-                            -1.4328491687774659,
+                            3.7034976482391359,
+                            -1.4223730564117432,
                             300.0
                         ],
                         "Direction": [
@@ -3632,10 +3632,10 @@
                             1.0,
                             0.7880107760429382
                         ],
-                        "Range": 8.0,
+                        "Range": 10.0,
                         "CastShadow": true,
-                        "Bias": 0.0,
-                        "ShadowMapSize": 328
+                        "Bias": 0.000009999999747378752,
+                        "ShadowMapSize": 512
                     }
                 ]
             }
