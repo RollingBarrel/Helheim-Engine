@@ -14,18 +14,18 @@ public:
     void Start() override;
     void Update() override;
 
-
+    //// Funzione per ottenere la direzione della telecamera
+    //float3 GetCameraDirection() const;
 
 
 private:
 
     GameObject* mLookTarget = nullptr;
     GameObject* mFollowTarget = nullptr;
-    GameObject* mAuxLookTarget = nullptr;
     CameraComponent* mCameraComponent = nullptr;
-
-    void CameraManager();
-    void SetView(float3 position, float rotation);
+    float3 mCameraPosition = float3(-11.90, -9.1f, 2.6f);
+    float3 mCameraRotation = float3(0.60f, -1.30f, 0.0f);
+    void SetView(float3 position, float3 rotation);
 
 
 };
