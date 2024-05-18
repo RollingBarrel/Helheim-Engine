@@ -220,6 +220,7 @@
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleEngineCamera.cpp" />
     <ClCompile Include="ModuleEngineInput.cpp" />
     <ClCompile Include="ModuleEngineResource.cpp" />
@@ -233,7 +234,6 @@
     <ClCompile Include="OptickAdapter.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
-    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
     <ClCompile Include="TagsManagerPanel.cpp" />
@@ -302,6 +302,7 @@
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClCompile Include="EngineMain.cpp" />
+    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleEngineCamera.h" />
     <ClInclude Include="ModuleEngineInput.h" />
     <ClInclude Include="ModuleEngineResource.h" />
@@ -310,7 +311,6 @@
     <ClInclude Include="NavMeshControllerPanel.h" />
     <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
-    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="TagsManagerPanel.h" />

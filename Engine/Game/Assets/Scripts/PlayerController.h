@@ -18,6 +18,7 @@ enum class PlayerState
     MOVE,
     ATTACK,
     MOVE_ATTACK,
+    GRENADE_POINTING,
     DEATH
 };
 
@@ -127,6 +128,14 @@ class PlayerController :public Script
         
         float mChargedTime = 0.0f;
         bool mIsChargedAttack = false;
+
+        // Grenade
+        float mGrenadeDPS = 1.0f;
+        float mGrenadeDuration = 4.0f;
+        float mGrenadeRadius = 2.0f;
+
+        float mGrenadThrowDistance = 3.0f;
+        float mGrenadeCoolDown = 15.0f;
 
         //HUD
         GameObject* mShieldGO = nullptr;

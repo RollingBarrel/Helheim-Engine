@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
@@ -229,7 +230,9 @@ void PlayerController::Idle()
             mCurrentState = PlayerState::IDLE;
         }
 
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT)  // Grenade
         {
             if (mCurrentState == PlayerState::MOVE)
             {
@@ -375,6 +378,11 @@ void PlayerController::Dash()
 
 void PlayerController::Attack()
 {
+    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT)
+    {
+        //App->GetDebugDraw()->DrawCircle(mGameObject->GetPosition(), mGrenadeRadius);
+        return;
+    }
 
     if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_UP)
     {

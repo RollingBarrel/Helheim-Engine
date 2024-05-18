@@ -67,9 +67,6 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDebugDraw.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -226,6 +223,9 @@
     <ClCompile Include="ModuleEngineCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleDebugDraw.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -321,9 +321,6 @@
     </ClInclude>
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleDebugDraw.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
@@ -476,6 +473,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEngineCamera.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
