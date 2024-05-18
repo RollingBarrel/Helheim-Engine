@@ -103,28 +103,12 @@ void CameraComponent::SetFOV(float value)
 {
     mFrustum.horizontalFov = math::DegToRad(value);
     mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
-
 }
 
 void CameraComponent::SetAspectRatio(float value)
 {
     mAspectRatio = value;
     mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
-
-}
-
-void CameraComponent::SetNearPlane(float value) 
-{
-    mFrustum.nearPlaneDistance = value;
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
-}
-void CameraComponent::SetFarPlane(float value) 
-{ 
-    mFrustum.farPlaneDistance = value;
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
-
 }
 
 void CameraComponent::Save(Archive& archive) const

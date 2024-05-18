@@ -157,7 +157,4 @@ class PlayerController :public Script
         bool mLoadingActive = false;
         float mTimeScreen = 3.0f;
         float mTimePassed = 0.0f;
-
-        //CAMERA
-        GameObject* mCamera = nullptr;
 };

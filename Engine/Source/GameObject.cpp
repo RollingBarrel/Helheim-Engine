@@ -287,12 +287,7 @@ void GameObject::SetEnabled(bool enabled)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
-	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
-	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
-	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
-	mRotation = yQuat * xQuat * zQuat;
-
-	/*mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);*/
+	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
 	mEulerRotation = rotationInRadians;
 	mIsTransformModified = true;
 }

@@ -227,7 +227,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			Quat newQuat = Quat(rotation);
 			newQuat =  newQuat * quatOriginal;
 			float3 eulerRotation = newQuat.ToEulerXYZ();
-			mEditorCameraGameObject->SetRotation(newQuat);
+			mEditorCameraGameObject->SetRotation(eulerRotation);
 
 			MouseFix();
 

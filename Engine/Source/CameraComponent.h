@@ -24,8 +24,8 @@ public:
     const float4x4 GetProjectionMatrix() const { return mFrustum.ProjectionMatrix(); }
     const float4x4 GetViewProjectionMatrix() const { return mFrustum.ViewProjMatrix(); }
 
-    void SetNearPlane(float value);
-    void SetFarPlane(float value);
+    void SetNearPlane(float value) { mFrustum.nearPlaneDistance = value;}
+    void SetFarPlane(float value) { mFrustum.farPlaneDistance = value; }
     void SetFOV(float value);
     void SetAspectRatio(float value);
 
