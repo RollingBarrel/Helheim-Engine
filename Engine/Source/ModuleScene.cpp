@@ -46,11 +46,11 @@ ModuleScene::ModuleScene() {
 ModuleScene::~ModuleScene()
 {
 	mQuadtreeRoot->CleanUp();
-	delete mQuadtreeRoot;
 	delete mNavMeshController;
 
 	delete mRoot;
 	delete mBackgroundScene;
+	delete mQuadtreeRoot;
 
 	for (Tag* tag : mTags) 
 	{
