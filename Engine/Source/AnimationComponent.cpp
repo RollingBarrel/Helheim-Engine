@@ -32,6 +32,7 @@ AnimationComponent::~AnimationComponent()
 {
 	delete mController;
 	delete mStateMachine;
+	delete mAnimation;
 	mGameobjectsInverseMatrices.clear();
 	mPalette.clear();
 	
@@ -154,6 +155,7 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 			}
 			else
 			{
+				delete mAnimation;
 				mAnimation = tmpAnimation;
 				mController = new AnimationController(mAnimation, mAnimation->GetUID(), true);
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
@@ -217,6 +219,7 @@ void AnimationComponent::UpdatePalette()
 //is passed in the controller as mNextAnimation until the transition is done
 void AnimationComponent::ChangeAnimation(ResourceAnimation* animation)
 {
+	delete mAnimation;
 	mAnimation = animation;
 	mController->SetNextAnimation(animation);
 }

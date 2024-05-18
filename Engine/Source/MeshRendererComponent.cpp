@@ -66,7 +66,8 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		if (mMaterial)
 			App->GetOpenGL()->BatchRemoveMesh(this);
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
-		mMesh = nullptr;
+		delete mMesh;
+
 	}
 	if (tmpMesh)
 	{
