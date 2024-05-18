@@ -27,7 +27,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
-    MEMBER(MemberType::FLOAT, mDashSpeed);
+    MEMBER(MemberType::FLOAT, mDashRange);
+    MEMBER(MemberType::FLOAT, mDashCoolDown);
+    MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE ATTACK");
     MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
@@ -264,32 +266,40 @@ void PlayerController::Moving()
     matrix.RotateX(mCamera->GetRotation().x);
     //float3x3 rotation = float3x3::FromEulerXYZ(mCamera->GetRotation().x, 0.0f, 0.0f).Inverted();
     //float3 cameraDirection = rotation * mCamera->GetFront();
+    float3 moveDirection = float3::zero;
 
     float3 cameraDirection = matrix.MulDir(mCamera->GetFront()).Normalized();
 
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
+        moveDirection += cameraDirection;
         Move(cameraDirection);
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
+        moveDirection -= cameraDirection;
         Move(-cameraDirection);
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
+        moveDirection += float3::unitY.Cross(cameraDirection);
         Move(float3::unitY.Cross(cameraDirection).Normalized());
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
+        moveDirection -= float3::unitY.Cross(cameraDirection);
         Move(float3::unitY.Cross(-cameraDirection).Normalized());
     }
 
+    moveDirection.Normalize();
+    mDashDirection = moveDirection;
+
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation
- 
+    
     if (!mReadyToStep)
     {
         mStepTimePassed += App->GetDt();
@@ -341,15 +351,6 @@ void PlayerController::Dash()
         mIsDashing = true;
         mDashTimer = 0.0f;
 
-        mDashDirection = float3::zero;
-        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
-            mDashDirection += float3::unitZ;
-        if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-            mDashDirection -= float3::unitZ;
-        if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
-            mDashDirection += float3::unitX;
-        if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-            mDashDirection -= float3::unitX;
     }else
     {
         mDashTimer += App->GetDt();
@@ -365,8 +366,8 @@ void PlayerController::Dash()
         else 
         {
             // Continue dashing
-            float3 dashDirection = mDashDirection;
-             float3 newPos = (mGameObject->GetPosition() + dashDirection * mDashSpeed * App->GetDt());
+            float dashSpeed = mDashRange / mDashDuration;
+            float3 newPos = (mGameObject->GetPosition() + mDashDirection * dashSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
         }
     }
