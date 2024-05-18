@@ -968,40 +968,31 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	}
 }
 
-void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) 
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 {
-	static int resourceId = int(imageComponent->GetResourceId());
-
-	//TODO: Handle the case where the resource is not found
-	//ImGui::Text("Resource Id: "); ImGui::SameLine(); ImGui::InputInt("", &resourceId, 0); ImGui::SameLine();
-	//if (ImGui::Button("Load"))
-	//{
-	//	imageComponent->SetImage(resourceId);
-	//}
-
 	// Drag and drop	
 	ImGui::Columns(2);
 	ImGui::SetColumnWidth(0, 70.0);
-	
+
 	ResourceTexture* image = imageComponent->GetImage();
-	
+
 	if (image)
 	{
 		ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
 		ImGui::Image(imageID, ImVec2(50, 50));
 	}
-	else 
+	else
 	{
 		ImGui::Text("Drop Image");
 	}
-	
-	if (ImGui::BeginDragDropTarget()) 
+
+	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE")) 
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
 		{
 			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
 			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
-			if (resource && (resource->GetType() == Resource::Type::Texture)) 
+			if (resource && (resource->GetType() == Resource::Type::Texture))
 			{
 				imageComponent->SetImage(resource->GetUID());
 				imageComponent->SetFileName(asset->mName);
@@ -1010,7 +1001,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		ImGui::EndDragDropTarget();
 	}
 	ImGui::NextColumn();
-	if (imageComponent->GetFileName() != nullptr) 
+	if (imageComponent->GetFileName() != nullptr)
 	{
 		ImGui::Text(imageComponent->GetFileName());
 	}
@@ -1019,7 +1010,6 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	{
 		ImGui::Text("Width:%dpx", image->GetWidth());
 		ImGui::Text("Height:%dpx", image->GetHeight());
-		
 	}
 	ImGui::Columns(1);
 
@@ -1027,7 +1017,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	float3* color = imageComponent->GetColor();
 	float* alpha = imageComponent->GetAlpha();
 	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
-	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
+	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("Alpha", alpha, 0.0f, 1.0f);
 
 	// Image Info.
 	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
@@ -1039,7 +1029,124 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 			imageComponent->ResizeByRatio();
 		}
 	}
+
+	// Display options based on the type of the image
+	const char* items[] = { "Image", "Spritesheet" };
+	int currentItem = imageComponent->IsSpritesheet() ? 1 : 0;
+	if (ImGui::Combo("Image Type", &currentItem, items, IM_ARRAYSIZE(items)))
+	{
+		imageComponent->SetIsSpritesheet(currentItem == 1);
+	}
+	if (imageComponent->IsSpritesheet())
+	{
+		// Play/Pause/Stop buttons
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 1.0f, 0.6f, 1.0f)); // Pale green
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black text
+		if (ImGui::Button("Play"))
+		{
+			imageComponent->PlayAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 0.6f, 1.0f)); // Pale yellow
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Pause"))
+		{
+			imageComponent->PauseAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.6f, 0.6f, 1.0f)); // Pale red
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Stop"))
+		{
+			imageComponent->StopAnimation();
+		}
+		ImGui::PopStyleColor(2);
+
+		// Columns and rows selector
+		int columns = imageComponent->GetColumns();
+		int rows = imageComponent->GetRows();
+		ImGui::InputInt("Columns", &columns);
+		ImGui::InputInt("Rows", &rows);
+		if (columns <= 0) 
+		{
+			columns = 1;
+		}
+		if (rows <= 0) 
+		{
+			rows = 1;
+		}
+		imageComponent->SetSpritesheetLayout(columns, rows);
+
+		// Reproduction speed slider
+		int reproductionSpeed = imageComponent->GetFrameDuration();
+		ImGui::Text("Speed (FPS):"); ImGui::SameLine();
+		ImGui::PushItemWidth(100);
+		ImGui::SliderInt("Reproduction Speed", &reproductionSpeed, 1, 100);
+		ImGui::PopItemWidth();
+		imageComponent->SetFrameDuration(reproductionSpeed);
+
+		// Display the spritesheet image
+		if (image != nullptr)
+		{
+			ImVec2 imageSize(175, 175);
+			ImVec4 tint(color->x, color->y, color->z, *alpha);
+			ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), imageSize, ImVec2(0, 0), ImVec2(1, 1), tint);
+
+			// Draw lines to divide the image into columns and rows
+			ImVec2 imagePos = ImGui::GetItemRectMin();
+			float columnWidth = imageSize.x / columns;
+			float rowHeight = imageSize.y / rows;
+			for (int i = 1; i < columns; ++i)
+			{
+				ImVec2 start(imagePos.x + i * columnWidth, imagePos.y);
+				ImVec2 end(imagePos.x + i * columnWidth, imagePos.y + imageSize.y);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+			for (int i = 1; i < rows; ++i)
+			{
+				ImVec2 start(imagePos.x, imagePos.y + i * rowHeight);
+				ImVec2 end(imagePos.x + imageSize.x, imagePos.y + i * rowHeight);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+
+			// Display a list of the slices
+			if (ImGui::CollapsingHeader("Slices", ImGuiTreeNodeFlags_None))
+			{
+				float sliceWidth = 1.0f / columns;
+				float sliceHeight = 1.0f / rows;
+				ImVec2 sliceSize(50, 50);
+				
+				for (int row = 0; row < rows; ++row)
+				{
+					for (int col = 0; col < columns; ++col)
+					{
+						// Calculate the texture coordinates for the slice
+						ImVec2 uv0(col * sliceWidth, row * sliceHeight);
+						ImVec2 uv1((col + 1) * sliceWidth, (row + 1) * sliceHeight);
+
+						ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), sliceSize, uv0, uv1, tint);
+
+						if (col < columns - 1)
+						{
+							ImGui::SameLine();
+							ImGui::Text(" ");
+							ImGui::SameLine();
+						}
+					}
+					if (row < rows - 1)
+					{
+						ImGui::NewLine();
+					}
+				}
+			}
+		}
+	}
 }
+
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
 {
