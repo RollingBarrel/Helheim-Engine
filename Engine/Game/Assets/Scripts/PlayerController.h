@@ -53,7 +53,6 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
-        bool IsMoving();
         void Dash();
         void Attack();
 
@@ -127,22 +126,17 @@ class PlayerController :public Script
         //Melee
        float mMeleeBaseDamage = 2.0f;
         float mMeleeBaseRange = 1.0f;
-        /*
-        float mMeleeBaseTimer = 0.0f;
-        float mMeleeAttackDuration = 15;
-        float mMeleeBasicComboCounter = 0;*/ 
-        int mMeleeBaseComboStep = 0;
+   	    float mMeleeBaseSpeed = 8.0f;
+        int mMeleeBaseComboStep = 1;
         float mMeleeBaseComboTimer = 0.0f;
         const float mMeleeBaseMaxComboInterval = 5.0f; // Maximum time interval between combo hits
+        const float mMeleeBaseFinalAttackDuration = 5.0f; // Maximum time interval between combo hits
+        float mMeleeBaseFinalAttackTimer = 0.0f;
         bool mIsMeleeBaseComboActive = false;
+        float mMeleeBaseMoveDuration = 0.5f;
+        float mMeleeBaseMoveRange = 8.0f;
 
 
-        // Combo timing array
-        float3 mMeleeComboTiming = float3(0.5f, 0.5f, 0.75f );
-
-        bool mIsAttacking = false;
-
-  
 
         //HUD
         GameObject* mShieldGO = nullptr;

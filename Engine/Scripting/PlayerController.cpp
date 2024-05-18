@@ -28,6 +28,8 @@ CREATE(PlayerController)
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
+    MEMBER(MemberType::FLOAT, mDashCoolDown);
+    MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE ATTACK");
    // MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
@@ -137,7 +139,7 @@ void PlayerController::Update()
         if (mMeleeBaseComboTimer >= mMeleeBaseMaxComboInterval)
         {
             LOG("Combo timer exceeded max interval, resetting combo");
-            mMeleeBaseComboStep = 0;
+            mMeleeBaseComboStep = 1;
             mIsMeleeBaseComboActive = false;
             mMeleeBaseComboTimer = 0.0f;
         }
@@ -199,8 +201,6 @@ void PlayerController::Idle()
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == Weapon::RANGE) ? Weapon::MELEE : Weapon::RANGE;
-        LOG(mWeapon == Weapon::RANGE ? "Switched to Range" : "Switched to Melee");
-
     }
     if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
     {
@@ -208,7 +208,10 @@ void PlayerController::Idle()
     }
     else 
     {
-        if (IsMoving())
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
         {
             mCurrentState = PlayerState::MOVE;
         }
@@ -235,51 +238,32 @@ void PlayerController::Idle()
     }  
 }
 
-//is Moving function 
-bool PlayerController::IsMoving()
-{
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-    {
-		return true;
-	}
-    else
-    {
-		return false;
-	}
-}
-
 void PlayerController::Moving()
 {
     bool anyKeyPressed = false;
-    
+    float3 moveDirection = float3::zero;
+
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitZ);
-        mDashDirection = float3::unitZ;
+        moveDirection += float3::unitZ;
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitZ);
-        mDashDirection = -float3::unitZ;
+        moveDirection -= float3::unitZ;
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitX);
-        mDashDirection = float3::unitX;
+        moveDirection += float3::unitX;
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitX);     
-        mDashDirection = -float3::unitX;
+        moveDirection -= float3::unitX;
         anyKeyPressed = true;
     }
 
@@ -287,6 +271,11 @@ void PlayerController::Moving()
     // TODO play sound according the animation
     if (anyKeyPressed)
     {
+        // Normalize the direction to handle diagonal movement
+        moveDirection.Normalize();
+        mDashDirection = moveDirection;
+        Move(moveDirection);
+
         if (!mReadyToStep)
         {
             mStepTimePassed += App->GetDt();
@@ -354,7 +343,7 @@ void PlayerController::Dash()
         {
             // Continue dashing
             float dashSpeed = mDashRange / mDashDuration;
-             float3 newPos = (mGameObject->GetPosition() + mDashDirection * dashSpeed * App->GetDt());
+            float3 newPos = (mGameObject->GetPosition() + mDashDirection * dashSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
         }
     }
@@ -362,8 +351,6 @@ void PlayerController::Dash()
 
 void PlayerController::Attack()
 {
-    LOG("Attack state, weapon type: %i", static_cast<int>(mWeapon));
-
     switch (mWeapon)
     {
     case Weapon::RANGE:
@@ -380,40 +367,47 @@ void PlayerController::Attack()
 
 void PlayerController::MeleeAttack()  
 {
-    LOG("MeleeAttack called, combo active: %i", mIsMeleeBaseComboActive);
-  //  if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT){
-      MeleeBaseCombo();
-   // }
+    MeleeBaseCombo();
 }
 
 void PlayerController::MeleeBaseCombo()
 {
     mMeleeBaseComboTimer = 0.0f;
     mIsMeleeBaseComboActive = true;
-    mMeleeBaseComboStep = (mMeleeBaseComboStep % 3) + 1;
-
-    LOG("MeleeBaseCombo called, current step: %i", mMeleeBaseComboStep);
 
     switch (mMeleeBaseComboStep)
     {
     case 1:
-
+        LOG("First attack");
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        LOG("Melee Base Combo Step 1");
+        mMeleeBaseComboStep++;
         break;
+
     case 2:
+        LOG("Second attack");
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-		LOG("Melee Base Combo Step 2");
+        mMeleeBaseComboStep++;
         break;
+
     case 3:
+        LOG("Final attack")
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        LOG("Melee Base Combo Step 3");
-        //Move the player forward
-        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * 10.0f);
-        mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-
+        mMeleeBaseFinalAttackTimer += App->GetDt();
+        if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
+        {
+			mMeleeBaseComboStep = 1;
+			mIsMeleeBaseComboActive = false;
+			mMeleeBaseFinalAttackTimer = 0.0f;
+            mCurrentState = PlayerState::IDLE;
+		}
+        else
+        {
+            float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
+            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
+            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+        }
+        
         break;
-
 	}
 }
 
