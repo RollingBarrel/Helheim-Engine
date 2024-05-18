@@ -12,7 +12,7 @@
 #include "ResourceModel.h"
 #include "float4x4.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimation(nullptr), mController(nullptr), mModelUid(0)
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimationUid(0), mController(nullptr), mModelUid(0)
 {
 	mSpeed = 1.0;
 }
@@ -24,7 +24,7 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 
 	mModelUid = other.mModelUid;
 
-	SetAnimation(other.mAnimation->GetUID());
+	SetAnimation(other.mAnimationUid);
 
 }
 
@@ -32,7 +32,6 @@ AnimationComponent::~AnimationComponent()
 {
 	delete mController;
 	delete mStateMachine;
-	delete mAnimation;
 	mGameobjectsInverseMatrices.clear();
 	mPalette.clear();
 	
@@ -46,7 +45,7 @@ void AnimationComponent::SetLoop(bool loop)
 
 void AnimationComponent::OnStart()
 {
-	if (mGameobjectsInverseMatrices.size() == 0 && mModelUid != 0)
+	if (mGameobjectsInverseMatrices.size() == 0 && mModelUid != 0 && mAnimationUid != 0)
 	{
 		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
 		LoadAllChildJoints(mOwner, model);
@@ -79,11 +78,12 @@ void AnimationComponent::SetAnimation(unsigned int uid)
 	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(uid, Resource::Type::Animation));
 	if (tmpAnimation)
 	{
-		mAnimation = tmpAnimation;
-
+		mAnimationUid = uid;
 		if (mController)
+		{
 			delete mController;
-		mController = new AnimationController(mAnimation, uid, true);
+		}
+		mController = new AnimationController(tmpAnimation, uid, true);
 	}
 }
 
@@ -149,15 +149,14 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 				mController->SetClipStartTime(new_clip_start);
 				mController->SetStartTime(new_clip_start);
 				mController->SetEndTime(new_clip_end);
-				//mController->SetTransitionDuration(transitionTime);
+				mController->SetTransitionDuration(transitionTime);
 				mController->ActivateTransition();
 
 			}
 			else
 			{
-				delete mAnimation;
-				mAnimation = tmpAnimation;
-				mController = new AnimationController(mAnimation, mAnimation->GetUID(), true);
+				mAnimationUid = tmpAnimation->GetUID();
+				mController = new AnimationController(tmpAnimation, mAnimationUid, true);
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
 				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
 
@@ -212,16 +211,6 @@ void AnimationComponent::UpdatePalette()
 	{
 		mPalette.push_back((mGameobjectsInverseMatrices[i].first->GetWorldTransform() * mGameobjectsInverseMatrices[i].second).Transposed());
 	}
-
-}
-
-//The animation Resource is changed immediatlly in the component but
-//is passed in the controller as mNextAnimation until the transition is done
-void AnimationComponent::ChangeAnimation(ResourceAnimation* animation)
-{
-	delete mAnimation;
-	mAnimation = animation;
-	mController->SetNextAnimation(animation);
 }
 
 void AnimationComponent::StartTransition(float transitionDuration)
@@ -238,7 +227,7 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 void AnimationComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ID", GetID());
-	archive.AddInt("AnimationID", mAnimation->GetUID());
+	archive.AddInt("AnimationID", mAnimationUid);
 	archive.AddInt("ModelUID", mModelUid);
 
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
@@ -248,7 +237,6 @@ void AnimationComponent::Save(Archive& archive) const
 
 void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
-
 	int animationID = { 0 };
 	if (data.HasMember("AnimationID") && data["AnimationID"].IsInt()) 
 	{

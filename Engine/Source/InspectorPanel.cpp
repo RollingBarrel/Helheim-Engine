@@ -897,12 +897,9 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	if (ImGui::Button("Play/Pause"))
 	{
-		if (component->GetAnimation() == nullptr)
-			return;
 		component->OnStart();
 		bool play = component->GetIsPlaying();
 		component->SetIsPlaying(!play);
-
 	}
 
 	ImGui::SameLine();
@@ -918,41 +915,29 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		ImGui::Text("PAUSED");
 	}
 
+	/*
 	if (ImGui::Button("Stop"))
 	{
 		component->SetIsPlaying(false);
 		component->OnRestart();
 	}
+	*/
 
 	if (ImGui::Button("Restart"))
 	{
 		component->OnRestart();
 	}
 
-	ImGui::Checkbox("Loop", &loop);
-	component->SetLoop(loop);
+	if (ImGui::Checkbox("Loop", &loop))
+	{
+		component->SetLoop(loop);
+	}
 
 	float animSpeed = component->GetAnimSpeed();
 
 	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
 	{
 		component->SetAnimSpeed(animSpeed);
-	}
-
-	float transitionDuration = component->GetAnimationController()->GetTransitionDuration();
-	float animationCurrentTime = component->GetAnimationController()->GetAnimationCurrentTime();
-
-	/*
-	if (ImGui::Combo("Select State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
-	{
-		component->StartTransition(transitionDuration);
-		component->ChangeAnimation(component->GetAnimation());
-		component->SetCurrentClip(currentItem);
-	}
-	*/
-
-	if (ImGui::DragFloat("Transition duration", &transitionDuration, 0.02, 0.1, 10.0)) {
-		component->GetAnimationController()->SetTransitionDuration(transitionDuration);
 	}
 
 }

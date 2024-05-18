@@ -26,12 +26,8 @@ public:
 
 	//Animation Resources
 	//std::vector<ResourceAnimation*> GetAnimations() { return mAnimations; }
-	ResourceAnimation* GetAnimation() { return mAnimation; }
-
-	void ChangeAnimation(ResourceAnimation* animation);
+	unsigned int GetAnimation() { return mAnimationUid; }
 	
-	AnimationController* GetAnimationController() const { return mController; }
-
 	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop);
 
@@ -71,8 +67,6 @@ private:
 	void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
 
-	//std::vector<ResourceAnimation*> mAnimations;
-	ResourceAnimation* mAnimation;
 
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
@@ -86,6 +80,8 @@ private:
 	float mSpeed;
 
 	unsigned int mModelUid;
+	unsigned int mAnimationUid;
+
 	
 };
 
