@@ -395,7 +395,12 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
+	GameObject* parent = gameObject->GetParent();
+	parent->RemoveChild(gameObject->GetID());
+	mRoot->AddChild(gameObject);
 	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
+	mRoot->RemoveChild(gameObject->GetID());
+	parent->AddChild(gameObject);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 	prefabArchive->AddObject("Prefab", *archive);
 
