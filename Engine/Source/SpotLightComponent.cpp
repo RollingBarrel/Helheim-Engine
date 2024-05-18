@@ -21,10 +21,10 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mShadowFrustum.pos = owner->GetWorldPosition();
 	mShadowFrustum.front = owner->GetFront();
 	mShadowFrustum.up = owner->GetUp();
-	mShadowFrustum.nearPlaneDistance = 0.01f;
+	mShadowFrustum.nearPlaneDistance = 0.1f;
 	mShadowFrustum.farPlaneDistance = mData.range;
-	mShadowFrustum.horizontalFov = 2.0f * mData.col[3];
-	mShadowFrustum.verticalFov =  2.0f * mData.col[3];
+	mShadowFrustum.horizontalFov = 2.0f * acos(mData.col[3]);
+	mShadowFrustum.verticalFov =  2.0f * acos(mData.col[3]);
 
 	mShadowMapSize = 512; // 512
 
