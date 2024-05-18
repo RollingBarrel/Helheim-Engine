@@ -363,7 +363,7 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	}
 	if (mComandsMap.find(component->GetID()) != mComandsMap.end())
 	{
-		mCommands.emplace_back(*mComandsMap[component->GetID()]);
+		mCommands.emplace_back(mComandsMap[component->GetID()]);
 		mIboFlag = true;
 		return true;
 	}
@@ -392,7 +392,7 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	memcpy(mSsboIndicesData[idx] + mCommands.size(), &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
 	
 	mCommands.emplace_back(component->GetResourceMesh()->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
-	mComandsMap[component->GetID()] = &mCommands.back();
+	mComandsMap[component->GetID()] = mCommands.back();
 	mIboFlag = true;
 	return true;
 }

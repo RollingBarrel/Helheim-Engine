@@ -114,7 +114,7 @@ private:
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
-	std::unordered_map<unsigned int, const Command*> mComandsMap;
+	std::unordered_map<unsigned int, Command> mComandsMap;
 
 	unsigned int mVertexSize = 0;
 

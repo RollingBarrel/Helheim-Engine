@@ -82,12 +82,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 
 GameObject::~GameObject()
 {
-	for (GameObject* gameObject : mChildren) 
-	{
-		delete gameObject;
-	}
-	mChildren.clear();
-	for (Component* component : mComponents) 
+	for (Component* component : mComponents)
 	{
 		if (component->GetType() == ComponentType::MESHRENDERER)
 		{
@@ -95,6 +90,12 @@ GameObject::~GameObject()
 		}
 		delete component;
 	}
+
+	for (GameObject* gameObject : mChildren) 
+	{
+		delete gameObject;
+	}
+	mChildren.clear();
 	mComponents.clear();
 
 }

@@ -16,6 +16,10 @@
 
 Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
+	mChildren[0] = nullptr;
+	mChildren[1] = nullptr;
+	mChildren[2] = nullptr;
+	mChildren[3] = nullptr;
 }
 
 Quadtree::Quadtree(const AABB& boundingBox, int depth, std::string&& name) : mBoundingBox(boundingBox), mDepthLevel(depth), mName(std::move(name))
