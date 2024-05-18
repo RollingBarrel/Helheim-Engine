@@ -59,6 +59,7 @@ class PlayerController :public Script
         void Attack();
 
         void MeleeAttack();
+        void MeleeBaseCombo();
         void MeleeHit(float AttackRange, float AttackDamage);
         void RangedAttack();
         void Move(float3 position);
@@ -127,10 +128,20 @@ class PlayerController :public Script
         float mRangeTimer = 0.0f;
 
         //Melee
-        float mMeleeBaseDamage = 2.0f;
+       float mMeleeBaseDamage = 2.0f;
         float mMeleeBaseRange = 1.0f;
+        /*
         float mMeleeBaseTimer = 0.0f;
-        float mMeleeAttackDuration = 5.0f;
+        float mMeleeAttackDuration = 15;
+        float mMeleeBasicComboCounter = 0;*/ 
+        int mMeleeBaseComboStep = 0;
+        float mMeleeBaseComboTimer = 0.0f;
+        const float mMeleeBaseMaxComboInterval = 5.0f; // Maximum time interval between combo hits
+        bool mIsMeleeBaseComboActive = false;
+
+
+        // Combo timing array
+        float3 mMeleeComboTiming = float3(0.5f, 0.5f, 0.75f );
 
         bool mIsAttacking = false;
 

@@ -28,7 +28,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("MELEE ATTACK");
-    MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
+   // MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
@@ -112,7 +112,6 @@ void PlayerController::Start()
     }
 }
 
-
 void PlayerController::Update()
 {
     CheckDebugOptions();
@@ -121,7 +120,7 @@ void PlayerController::Update()
 
     if (mIsDashCoolDownActive)
     {
-    mDashCoolDownTimer += App->GetDt();
+        mDashCoolDownTimer += App->GetDt();
         if (mDashCoolDownTimer >= mDashCoolDown)
         {
             mDashCoolDownTimer = 0.0f;
@@ -130,10 +129,23 @@ void PlayerController::Update()
         }
     }
 
+    if (mIsMeleeBaseComboActive)
+    {
+        mMeleeBaseComboTimer += App->GetDt();
+
+        if (mMeleeBaseComboTimer >= mMeleeBaseMaxComboInterval)
+        {
+            LOG("Combo timer exceeded max interval, resetting combo");
+            mMeleeBaseComboStep = 0;
+            mIsMeleeBaseComboActive = false;
+            mMeleeBaseComboTimer = 0.0f;
+        }
+    }
+
     switch (mCurrentState)
     {
     case PlayerState::IDLE:
-        if ((!mVictory) || (!mGameOver))
+        if (!mVictory && !mGameOver)
         {
             Idle();
             if (mAnimationComponent)
@@ -141,11 +153,12 @@ void PlayerController::Update()
                 mAnimationComponent->SetCurrentClip(0);
             }
         }
-
         break;
+
     case PlayerState::DASH:
         Dash();
         break;
+
     case PlayerState::MOVE:
         Moving();
         if (mAnimationComponent)
@@ -153,32 +166,31 @@ void PlayerController::Update()
             mAnimationComponent->SetCurrentClip(1);
         }
         break;
+
     case PlayerState::ATTACK:
         Attack();
         break;
+
     case PlayerState::MOVE_ATTACK:
         Moving();
         Attack();
         break;
+
     case PlayerState::DEATH:
         Death();
         break;
     }
 
-    //log out the current state
-    LOG("Current State: %i", mCurrentState);
     HandleRotation();
 
-    if (mWinArea)
+    if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
     {
-        if (mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
-        {
-            GameManager::GetInstance()->WinScreen();
-        }
+        GameManager::GetInstance()->WinScreen();
     }
 
     Loading();
 }
+
 
 void PlayerController::Idle()
 {
@@ -186,29 +198,16 @@ void PlayerController::Idle()
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == Weapon::RANGE) ? Weapon::MELEE : Weapon::RANGE;
-        
-        if (mWeapon == Weapon::RANGE)
-        {
-            LOG("Range");
-        } 
-        else 
-        {
-            LOG("Melee");
-        }
+        LOG(mWeapon == Weapon::RANGE ? "Switched to Range" : "Switched to Melee");
+
     }
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN )
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
     {
-        if (mIsDashCoolDownActive == false) 
-        {
-			mCurrentState = PlayerState::DASH;
-		}
+	    mCurrentState = PlayerState::DASH;
     }
     else 
     {
-        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        if (IsMoving())
         {
             mCurrentState = PlayerState::MOVE;
         }
@@ -216,16 +215,20 @@ void PlayerController::Idle()
         {
             mCurrentState = PlayerState::IDLE;
         }
-
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+        //Check if the player is attacking
+        if (mWeapon == Weapon::RANGE)
         {
-            if (mCurrentState == PlayerState::MOVE)
+            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT
+                || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
             {
-                mCurrentState = PlayerState::MOVE_ATTACK;
+                mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
             }
-            else
+        }else 
+        {
+            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN
+                || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
             {
-                mCurrentState = PlayerState::ATTACK;
+                mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
             }
         }
     }  
@@ -365,6 +368,8 @@ void PlayerController::Dash()
 
 void PlayerController::Attack()
 {
+    LOG("Attack state, weapon type: %i", static_cast<int>(mWeapon));
+
     switch (mWeapon)
     {
     case Weapon::RANGE:
@@ -379,35 +384,43 @@ void PlayerController::Attack()
 }
 
 
-void PlayerController::MeleeAttack() 
+void PlayerController::MeleeAttack()  
 {
-    if (!mIsAttacking) {
-        mIsAttacking = true;
-        mMeleeBaseTimer = 0.0f;
-	}
-    else
+    LOG("MeleeAttack called, combo active: %i", mIsMeleeBaseComboActive);
+  //  if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT){
+      MeleeBaseCombo();
+   // }
+}
+
+void PlayerController::MeleeBaseCombo()
+{
+    mMeleeBaseComboTimer = 0.0f;
+    mIsMeleeBaseComboActive = true;
+    mMeleeBaseComboStep = (mMeleeBaseComboStep % 3) + 1;
+
+    LOG("MeleeBaseCombo called, current step: %i", mMeleeBaseComboStep);
+
+    switch (mMeleeBaseComboStep)
     {
-        mMeleeBaseTimer += App->GetDt();
+    case 1:
 
-        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        LOG("Melee Base Combo Step 1");
+        break;
+    case 2:
+		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+		LOG("Melee Base Combo Step 2");
+        break;
+    case 3:
+		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        LOG("Melee Base Combo Step 3");
+        //Move the player forward
+        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * 10.0f);
+        mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
 
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-        {
-			MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        }
-        else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-        {
-            MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-            mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * 0.75f);
-        }
+        break;
 
-        if (mMeleeBaseTimer >= mMeleeAttackDuration)
-        {
-            mIsAttacking = false;
-            mMeleeBaseTimer = 0.0f;
-            mCurrentState = PlayerState::IDLE;
-        }
-    }
+	}
 }
 
 void PlayerController::MeleeHit (float AttackRange, float AttackDamage) {
