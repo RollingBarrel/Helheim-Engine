@@ -35,7 +35,6 @@ enum class Weapon {
 };
 
 
-
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {
@@ -68,7 +67,7 @@ class PlayerController :public Script
         void Reload();
         
         void Death();
-        void UpdateHealth();
+        void UpdateShield();
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
@@ -94,8 +93,6 @@ class PlayerController :public Script
 
         //Stats
         float mPlayerSpeed = 2.0f;
-        float mHealth = 0.0f;
-        float mMaxHealth = 100.0f;
         float mShield = 0.0f;
         float mMaxShield = 100.0f;
         float mSanity = 0.0f;
@@ -109,7 +106,7 @@ class PlayerController :public Script
         float mDashCoolDown = 0.7f;
         float mDashTimer = 0.0f;
         float mDashDuration = 0.5f;
-        float mDashRange = 2.0f;
+        float mDashRange = 8.0f;
         float3 mDashDirection = float3::zero;
 
         //Range
@@ -148,8 +145,8 @@ class PlayerController :public Script
   
 
         //HUD
-        GameObject* mHealthGO = nullptr;
-        SliderComponent* mHealthSlider = nullptr;
+        GameObject* mShieldGO = nullptr;
+        SliderComponent* mShieldSlider = nullptr;
 
 
         //DEBUG

@@ -22,10 +22,12 @@ CREATE(PlayerController)
     CLASS(owner);
 
     SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mMaxShield);
     MEMBER(MemberType::FLOAT, mMaxSanity);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
+
+    SEPARATOR("DASH");
+    MEMBER(MemberType::FLOAT, mDashRange);
 
     SEPARATOR("MELEE ATTACK");
    // MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
@@ -42,7 +44,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
 
     SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHealthGO);
+    MEMBER(MemberType::GAMEOBJECT, mShieldGO);
 ;
 
     SEPARATOR("DEBUG MODE");
@@ -73,11 +75,10 @@ void PlayerController::Start()
     }
 
     mBullets = mAmmoCapacity;
-    mHealth = mMaxHealth;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
 
-    if (mHealthGO != nullptr) mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+    if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
 
     if (mAnimationComponentHolder) 
     {
@@ -115,7 +116,7 @@ void PlayerController::Start()
 void PlayerController::Update()
 {
     CheckDebugOptions();
-    UpdateHealth();
+    UpdateShield();
     UpdateBattleSituation();
 
     if (mIsDashCoolDownActive)
@@ -250,7 +251,6 @@ bool PlayerController::IsMoving()
 	}
 }
 
-
 void PlayerController::Moving()
 {
     bool anyKeyPressed = false;
@@ -258,24 +258,28 @@ void PlayerController::Moving()
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         Move(float3::unitZ);
+        mDashDirection = float3::unitZ;
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
         Move(-float3::unitZ);
+        mDashDirection = -float3::unitZ;
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
         Move(float3::unitX);
+        mDashDirection = float3::unitX;
         anyKeyPressed = true;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitX);
+        Move(-float3::unitX);     
+        mDashDirection = -float3::unitX;
         anyKeyPressed = true;
     }
 
@@ -334,15 +338,6 @@ void PlayerController::Dash()
         mIsDashing = true;
         mDashTimer = 0.0f;
 
-        mDashDirection = float3::zero;
-        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
-            mDashDirection += float3::unitZ;
-        if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-            mDashDirection -= float3::unitZ;
-        if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
-            mDashDirection += float3::unitX;
-        if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-            mDashDirection -= float3::unitX;
     }else
     {
         mDashTimer += App->GetDt();
@@ -364,7 +359,6 @@ void PlayerController::Dash()
         }
     }
 }
-
 
 void PlayerController::Attack()
 {
@@ -562,27 +556,24 @@ void PlayerController::Reload()
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
-
-void PlayerController::TakeDamage(float damage) 
+void PlayerController::TakeDamage(float damage)
 {
     if (!mIsDashing)
-    {    
-        mShield -= damage;
-        float remainingDamage = -mShield;
-        mShield = Min(mShield, 0.0f);
-            
-        if (remainingDamage > 0)
+    {
+        if (!mGodMode)
         {
-            mHealth -= remainingDamage;
-
-            if (mHealth <= 0.0f && !mGodMode)
+            if (mShield > 0.0f)
+            {
+                mShield -= damage;
+                mShield = Max(mShield, 0.0f);
+            }
+            else
             {
                 mCurrentState = PlayerState::DEATH;
             }
-        }    
-    } 
+        }
+    }
 }
-
 
 void PlayerController::Death() 
 {
@@ -595,9 +586,9 @@ bool PlayerController::IsDead()
     return mPlayerIsDead;
 }
 
-void PlayerController::UpdateHealth() 
+void PlayerController::UpdateShield() 
 {
-    if (mHealthSlider) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
+    if (mShieldSlider) mShieldSlider->SetFillPercent(mShield / mMaxShield);
 }
 
 void PlayerController::CheckDebugOptions() 
@@ -610,7 +601,7 @@ void PlayerController::CheckDebugOptions()
 
 void PlayerController::UpdateBattleSituation()
 {
-    float hpRate = mHealth / mMaxHealth;
+    float hpRate = mShield / mMaxShield;
 
     if (mCurrentState == PlayerState::DEATH) 
     {
