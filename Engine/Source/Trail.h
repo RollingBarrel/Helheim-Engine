@@ -45,6 +45,7 @@ private:
 	ColorGradient mGradient;
 	float3 mDirection = float3::unitY; // Fixed direction for the normal of the trailPoints
 	float mTrailTime = 0.0f;
+	bool mIsBillboard = true;
 
 	float4x4 mModel = float4x4::identity;
 	ResourceTexture* mImage = nullptr;

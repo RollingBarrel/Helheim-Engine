@@ -98,16 +98,24 @@ void Trail::Draw() const
     for (int i = 0; i < mPoints.size(); ++i)
     {
         float dp = static_cast<float>(i) / (mPoints.size() - 1);
-        float3 direction = (mPoints[i].position - lastPoint).Normalized();
+        float3 direction = (mPoints[i].position - lastPoint).Normalized(); // this can be computed once
         lastPoint = mPoints[i].position;
         if (i > 0)
         {
             ptr += sizeof(float4);
         }
-        float3 billboardDirection = (direction.Cross(norm)) + (direction.Cross(right).Length())*up;
-        billboardDirection.Normalize();
-        float3 topPointPos = mPoints[i].position + billboardDirection * mWidth.GetValue(dp) * 0.5f;
-        float3 botPointPos = mPoints[i].position - billboardDirection * mWidth.GetValue(dp) * 0.5f;
+        if (mIsBillboard)
+        {
+            direction = direction.Cross(norm);
+            direction.Normalize();
+        }
+        else 
+        {
+            direction = mDirection.Normalized();
+        }
+
+        float3 topPointPos = mPoints[i].position + direction * mWidth.GetValue(dp) * 0.5f;
+        float3 botPointPos = mPoints[i].position - direction * mWidth.GetValue(dp) * 0.5f;
         float2 topPointTexCoord = float2(dp, 1);
         float2 botPointTexCoord = float2(dp, 0);
         float4 color = mGradient.CalculateColor(dp);
