@@ -27,7 +27,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
-    MEMBER(MemberType::FLOAT, mDashRange);
+    MEMBER(MemberType::FLOAT, mDashSpeed);
 
     SEPARATOR("MELEE ATTACK");
     MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
@@ -114,6 +114,12 @@ void PlayerController::Start()
     {
         mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
     }
+
+    // CAMERA
+
+    ModuleScene* scene = App->GetScene();
+    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
+
 }
 
 
@@ -253,56 +259,53 @@ bool PlayerController::IsMoving()
 
 void PlayerController::Moving()
 {
-    bool anyKeyPressed = false;
-    
+
+    float4x4 matrix = float4x4::identity;
+    matrix.RotateX(mCamera->GetRotation().x);
+    //float3x3 rotation = float3x3::FromEulerXYZ(mCamera->GetRotation().x, 0.0f, 0.0f).Inverted();
+    //float3 cameraDirection = rotation * mCamera->GetFront();
+
+    float3 cameraDirection = matrix.MulDir(mCamera->GetFront()).Normalized();
+
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitZ);
-        mDashDirection = float3::unitZ;
-        anyKeyPressed = true;
+        Move(cameraDirection);
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitZ);
-        mDashDirection = -float3::unitZ;
-        anyKeyPressed = true;
+        Move(-cameraDirection);
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitX);
-        mDashDirection = float3::unitX;
-        anyKeyPressed = true;
+        Move(float3::unitY.Cross(cameraDirection).Normalized());
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitX);     
-        mDashDirection = -float3::unitX;
-        anyKeyPressed = true;
+        Move(float3::unitY.Cross(-cameraDirection).Normalized());
     }
 
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation
-    if (anyKeyPressed)
+ 
+    if (!mReadyToStep)
     {
-        if (!mReadyToStep)
+        mStepTimePassed += App->GetDt();
+        if (mStepTimePassed >= mStepCoolDown)
         {
-            mStepTimePassed += App->GetDt();
-            if (mStepTimePassed >= mStepCoolDown)
-            {
-                mStepTimePassed = 0;
-                mStepTimePassed = false;
-                mReadyToStep = true;
-            }
-        }
-        else
-        {
-            mFootStepAudio->PlayOneShot();
-            mReadyToStep = false;
+            mStepTimePassed = 0;
+            mStepTimePassed = false;
+            mReadyToStep = true;
         }
     }
+    else
+    {
+        mFootStepAudio->PlayOneShot();
+        mReadyToStep = false;
+    }
+    
 
     Idle();
 }
@@ -338,6 +341,15 @@ void PlayerController::Dash()
         mIsDashing = true;
         mDashTimer = 0.0f;
 
+        mDashDirection = float3::zero;
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+            mDashDirection += float3::unitZ;
+        if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+            mDashDirection -= float3::unitZ;
+        if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+            mDashDirection += float3::unitX;
+        if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+            mDashDirection -= float3::unitX;
     }else
     {
         mDashTimer += App->GetDt();
@@ -353,8 +365,8 @@ void PlayerController::Dash()
         else 
         {
             // Continue dashing
-            float dashSpeed = mDashRange / mDashDuration;
-             float3 newPos = (mGameObject->GetPosition() + mDashDirection * dashSpeed * App->GetDt());
+            float3 dashDirection = mDashDirection;
+             float3 newPos = (mGameObject->GetPosition() + dashDirection * mDashSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
         }
     }
