@@ -37,15 +37,16 @@ EngineApplication::EngineApplication()
 	modules[5] = render = new ModuleOpenGL();
 	modules[6] = engineResources = new ModuleEngineResource();
 	resource = engineResources;
-	modules[7] = engineScriptManager = new ModuleEngineScriptManager();
+	modules[7] = physics = new ModulePhysics();
+	modules[8] = engineScriptManager = new ModuleEngineScriptManager();
 	scriptManager = engineScriptManager;
-	modules[8] = debugDraw = new ModuleDebugDraw();
-	modules[9] = scene = new ModuleScene();
-	modules[10] = navigation = new ModuleDetourNavigation();
-	modules[11] = editor = new ModuleEditor();
-	modules[12] = ui = new ModuleUI();
-	modules[13] = event = new ModuleEvent();
-	modules[14] = physics = new ModulePhysics();
+	modules[9] = debugDraw = new ModuleDebugDraw();
+	modules[10] = scene = new ModuleScene();
+	modules[11] = navigation = new ModuleDetourNavigation();
+	modules[12] = editor = new ModuleEditor();
+	modules[13] = ui = new ModuleUI();
+	modules[14] = event = new ModuleEvent();
+	
 	mNavMeshController = new NavMeshController();
 }
 
