@@ -30,8 +30,8 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 void AnimationController::Update(GameObject* model)
 {
 	mCurrentTime += App->GetDt() * mSpeed;
-	//LOG("%f", mCurrentTime);
-	if (!mTransition) {
+	if (!mTransition) 
+	{
 		GetTransform(model);
 	}
 	else 

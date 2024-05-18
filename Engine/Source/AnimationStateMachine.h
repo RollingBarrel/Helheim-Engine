@@ -50,42 +50,39 @@ class ENGINE_API AnimationStateMachine
 public:
 	AnimationStateMachine(std::vector<unsigned int> animationUids);
 	~AnimationStateMachine();
-	void Update();
-	void SetLoop(bool loop);
-
 	
 	//Clips
 	void AddClip(unsigned int animationUID);
 	void RemoveClip(int index);
 	
 	void SetClipName(int index, std::string& name);
-	int  GetClipIndex(std::string& clipName);
-	unsigned int GetClipResource(int index);
+	const int  GetClipIndex(const std::string& clipName) const;
+	const unsigned int GetClipResource(int index) const;
 
 	//States
 	void AddState(std::string& clipName, std::string& name);
 	void RemoveState(int index);
 
-	int GetStateIndex(std::string& stateName);
-	std::string& GetStateClip(int index);
-	std::string& GetStateName(int index);
-	float GetStateStartTime(int index);
-	float GetStateEndTime(int index);
+	const int GetStateIndex(std::string& stateName) const;
+	const std::string& GetStateClip(int index) const;
+	const std::string& GetStateName(int index) const;
+	const float GetStateStartTime(int index) const;
+	const float GetStateEndTime(int index) const;
 	void SetStateClip(int index, std::string& clipName);
 	void SetStateName(int index, std::string& name);
 	void SetStateStartTime(int index, float time);
 	void SetStateEndTime(int index, float time);
-	int GetNumStates() { return mStates.size();}
+	const int GetNumStates() const { return mStates.size();}
 
 	//Transitions
 	void AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger);
 	void RemoveTransition(int index);
 
-	int GetTransitionIndex(std::string& sourceName, std::string& trigger);
-	std::string& GetTransitionTrigger(int index);
-	std::string& GetTransitionSource(int index); 
-	std::string& GeTransitionTarget(int index);
-	unsigned int GetnNumTransitions() { return mTransitions.size();};
+	const int GetTransitionIndex(std::string& sourceName, std::string& trigger) const;
+	const std::string& GetTransitionTrigger(int index) const;
+	const std::string& GetTransitionSource(int index) const;
+	const std::string& GeTransitionTarget(int index) const;
+	const unsigned int GetnNumTransitions() const { return mTransitions.size();};
 
 private:
 

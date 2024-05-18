@@ -5,7 +5,6 @@
 
 #include "AnimationController.h"
 #include "AnimationStateMachine.h"
-#include "AnimationComponent.h"
 
 #include "GameObject.h"
 

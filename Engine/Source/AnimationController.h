@@ -28,7 +28,7 @@ public:
 	float3 Interpolate(const float3& first, const float3& second, float lambda);
 	Quat Interpolate(const Quat& first, const Quat& second, float lambda);
 
-	bool GetLoop() { return mLoop; }
+	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop) { mLoop = loop; }
 
 	//Clips
@@ -50,7 +50,7 @@ public:
 	void ActivateTransition() { mTransition = true; mStartTransitionTime = mCurrentTime; }
 	void SetClipStartTime(float time) { mClipStartTime = time; }
 
-	float GetTransitionDuration() { return mTransitionDuration; }
+	float GetTransitionDuration() const { return mTransitionDuration; }
 
 
 	float GetAnimationCurrentTime() const { return mCurrentTime; }

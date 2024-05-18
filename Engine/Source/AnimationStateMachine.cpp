@@ -34,17 +34,6 @@ AnimationStateMachine::~AnimationStateMachine()
 	mStates.clear();
 }
 
-void AnimationStateMachine::Update()
-{
-
-
-	//if (mController)
-	//{
-	//	// Do AnimationController update
-	//	mController->Update(mOwner);
-
-	//}
-}
 
 void AnimationStateMachine::AddClip(unsigned int animationUID)
 {
@@ -64,7 +53,7 @@ void AnimationStateMachine::SetClipName(int index, std::string& name)
 	mClips[index].mName = name;
 }
 
-int AnimationStateMachine::GetClipIndex(std::string& clipName)
+const int AnimationStateMachine::GetClipIndex(const std::string& clipName) const
 {
 	int index = 0;
 
@@ -81,7 +70,7 @@ int AnimationStateMachine::GetClipIndex(std::string& clipName)
 	return index;
 }
 
-unsigned int AnimationStateMachine::GetClipResource(int index)
+const unsigned int AnimationStateMachine::GetClipResource(int index) const
 {
 	return mClips[index].mAnimationUID;
 }
@@ -101,7 +90,7 @@ void AnimationStateMachine::RemoveState(int index)
 
 }
 
-int AnimationStateMachine::GetStateIndex(std::string& stateName)
+const int AnimationStateMachine::GetStateIndex(std::string& stateName) const
 {
 	int index = 0;
 
@@ -117,22 +106,22 @@ int AnimationStateMachine::GetStateIndex(std::string& stateName)
 	return index;
 }
 
-std::string& AnimationStateMachine::GetStateClip(int index)
+const std::string& AnimationStateMachine::GetStateClip(int index) const
 {
 	return mStates[index].mClip;
 }
 
-std::string& AnimationStateMachine::GetStateName(int index)
+const std::string& AnimationStateMachine::GetStateName(int index) const
 {
 	return mStates[index].mName;
 }
 
-float AnimationStateMachine::GetStateStartTime(int index)
+const float AnimationStateMachine::GetStateStartTime(int index) const
 {
 	return mStates[index].mStartTime;
 }
 
-float AnimationStateMachine::GetStateEndTime(int index)
+const float AnimationStateMachine::GetStateEndTime(int index) const
 {
 	return mStates[index].mEndTime;
 }
@@ -168,7 +157,7 @@ void AnimationStateMachine::RemoveTransition(int index)
 	mTransitions.erase(mTransitions.begin() + index);
 }
 
-int AnimationStateMachine::GetTransitionIndex(std::string& sourceName, std::string& trigger)
+const int AnimationStateMachine::GetTransitionIndex(std::string& sourceName, std::string& trigger) const
 {
 	int index = 0;
 
@@ -184,17 +173,17 @@ int AnimationStateMachine::GetTransitionIndex(std::string& sourceName, std::stri
 	return index;
 }
 
-std::string& AnimationStateMachine::GetTransitionTrigger(int index)
+const std::string& AnimationStateMachine::GetTransitionTrigger(int index) const
 {
 	return mTransitions[index].mTrigger;
 }
 
-std::string& AnimationStateMachine::GetTransitionSource(int index)
+const std::string& AnimationStateMachine::GetTransitionSource(int index) const
 {
 	return mTransitions[index].mSource;
 }
 
-std::string& AnimationStateMachine::GeTransitionTarget(int index)
+const std::string& AnimationStateMachine::GeTransitionTarget(int index) const
 {
 	return mTransitions[index].mTarget;
 }
