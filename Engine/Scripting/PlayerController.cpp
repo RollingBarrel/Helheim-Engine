@@ -259,55 +259,53 @@ bool PlayerController::IsMoving()
 
 void PlayerController::Moving()
 {
-    
-    float3 cameradirection = mCamera->GetFront().Normalized();
 
-    bool anyKeyPressed = false;
-    
+    float4x4 matrix = float4x4::identity;
+    matrix.RotateX(mCamera->GetRotation().x);
+    //float3x3 rotation = float3x3::FromEulerXYZ(mCamera->GetRotation().x, 0.0f, 0.0f).Inverted();
+    //float3 cameraDirection = rotation * mCamera->GetFront();
+
+    float3 cameraDirection = matrix.MulDir(mCamera->GetFront()).Normalized();
+
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
-        Move(cameradirection);
-        anyKeyPressed = true;
+        Move(cameraDirection);
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
-        Move(-cameradirection);
-        anyKeyPressed = true;
+        Move(-cameraDirection);
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitY.Cross(cameradirection).Normalized());
-        anyKeyPressed = true;
+        Move(float3::unitY.Cross(cameraDirection).Normalized());
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitY.Cross(-cameradirection).Normalized());
-        anyKeyPressed = true;
+        Move(float3::unitY.Cross(-cameraDirection).Normalized());
     }
 
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation
-    if (anyKeyPressed)
+ 
+    if (!mReadyToStep)
     {
-        if (!mReadyToStep)
+        mStepTimePassed += App->GetDt();
+        if (mStepTimePassed >= mStepCoolDown)
         {
-            mStepTimePassed += App->GetDt();
-            if (mStepTimePassed >= mStepCoolDown)
-            {
-                mStepTimePassed = 0;
-                mStepTimePassed = false;
-                mReadyToStep = true;
-            }
-        }
-        else
-        {
-            mFootStepAudio->PlayOneShot();
-            mReadyToStep = false;
+            mStepTimePassed = 0;
+            mStepTimePassed = false;
+            mReadyToStep = true;
         }
     }
+    else
+    {
+        mFootStepAudio->PlayOneShot();
+        mReadyToStep = false;
+    }
+    
 
     Idle();
 }
