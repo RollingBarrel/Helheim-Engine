@@ -30,7 +30,7 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 void AnimationController::Update(GameObject* model)
 {
 	mCurrentTime += App->GetDt() * mSpeed;
-	if (!mTransition) 
+	if (!mTransition)
 	{
 		GetTransform(model);
 	}
@@ -116,7 +116,8 @@ void AnimationController::GetTransform(GameObject* model)
 		{
 			if (mLoop)
 			{
-				mCurrentTime = std::fmod(mCurrentTime, mEndTime - mStartTime) + mStartTime;
+				//mCurrentTime = std::fmod(mCurrentTime, mEndTime - mStartTime) + mStartTime;
+				mCurrentTime = mStartTime + (mEndTime - mCurrentTime);
 			}
 			else
 			{

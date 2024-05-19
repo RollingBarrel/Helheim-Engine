@@ -58,24 +58,24 @@ void StateMachineTest::Start()
 
     //States
     mStateMachine->AddState(clip, sIdle);
-    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(6.03));
-    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(12.0));
+    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(6.2));
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(11.4));
     
     mStateMachine->AddState(clip, sWalkForward);
-    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.53));
-    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.52));
+    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.89));
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.87));
 
     mStateMachine->AddState(clip, sWalkBack);
-    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(3.53));
-    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(4.52));
+    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(3.90));
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(4.88));
 
     mStateMachine->AddState(clip, sStrafeLeft);
     mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0));
-    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(1.26));
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(1.43));
 
     mStateMachine->AddState(clip, sStrafeRight);
-    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(1.27));
-    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.52));
+    mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(1.46));
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.85));
 
     //Transitions
     mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
@@ -130,21 +130,41 @@ void StateMachineTest::Update()
 
 void StateMachineTest::Idle()
 {
-    
+    bool forward;
+    bool backwards;
+    bool left;
+    bool right;
 
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+        forward = true;
+    else
+        forward = false;
+
+    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+        backwards = true;
+    else
+        backwards = false;
+
+    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+        left = true;
+    else
+        left = false;
+
+    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        right = true;
+    else
+        right = false;
+
+    if (forward == backwards && left == right)
     {
         
-        mCurrentState = AnimationStates::WALK;
+        mCurrentState = AnimationStates::IDLE;
     }
     else
     {
         
 
-        mCurrentState = AnimationStates::IDLE;
+        mCurrentState = AnimationStates::WALK;
         
     }
 
@@ -152,22 +172,46 @@ void StateMachineTest::Idle()
 
 void StateMachineTest::Moving()
 {
-    
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT )
-    {
-        mAnimationComponent->SendTrigger("tWalkForward",0.0);
-    }
+    bool forward;
+    bool backwards;
+    bool left;
+    bool right;
+
+    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+        forward = true;
+    else
+        forward = false;
+
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-    {
-        mAnimationComponent->SendTrigger("tWalkBack", 0.0);
-    }
+        backwards = true;
+    else
+        backwards = false;
+
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+        left = true;
+    else
+        left = false;
+
+    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        right = true;
+    else
+        right = false;
+
+    if (forward && !backwards)
+    {
+        mAnimationComponent->SendTrigger("tWalkForward", 0.0f);
+    }
+    if (backwards && !forward)
+    {
+        mAnimationComponent->SendTrigger("tWalkBack", 0.0f);
+    }
+    if (left && !right)
     {
         mAnimationComponent->SendTrigger("tStrafeLeft", 0.0);
     }
-    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+    if (right && !left)
     {
-        mAnimationComponent->SendTrigger("tStrafeRight", 0.0);
+        mAnimationComponent->SendTrigger("tStrafeRight", 0.0f);
     }
     
 
