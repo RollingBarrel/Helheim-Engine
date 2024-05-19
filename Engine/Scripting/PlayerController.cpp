@@ -119,6 +119,12 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
+    //****************************************************************************
+
+    LOG("Shield: %f", mShield);
+
+    //****************************************************************************
+
     CheckDebugOptions();
     UpdateShield();
     UpdateBattleSituation();
@@ -526,6 +532,23 @@ void PlayerController::Reload()
     mBullets = mAmmoCapacity;
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
+
+//*********************************************************************
+
+void PlayerController::SetShield(float shield)
+{
+    if (mShield < mMaxShield)
+    {
+        mShield += shield;
+
+        if (mShield >= mMaxShield)
+        {
+            mShield = mMaxShield;
+        }
+    }
+}
+
+//*********************************************************************
 
 void PlayerController::TakeDamage(float damage)
 {

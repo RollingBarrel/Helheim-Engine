@@ -24,6 +24,7 @@ class Enemy : public Script
 		//**************************************************
 		
 		bool ChanceDropping();
+		void DropHealth();
 
 		//**************************************************
 				
@@ -38,4 +39,7 @@ class Enemy : public Script
 	private:
 		void ActivateEnemy();
 		NavMeshController* mNavMeshControl = nullptr;		
+
+		//***************************************************
+		//Drop Health
 };

@@ -45,6 +45,7 @@ class PlayerController :public Script
         void Start() override;
         void Update() override;
 
+        void SetShield(float shield);
         void TakeDamage(float damage);
         bool IsDead();
 

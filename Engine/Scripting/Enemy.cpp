@@ -6,7 +6,21 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 
-Enemy::Enemy(GameObject* owner) : Script(owner) {}
+//******************************************
+
+//Includes para en srand
+#include <cstdlib>
+#include <ctime>
+
+//******************************************
+
+Enemy::Enemy(GameObject* owner) : Script(owner) {
+
+    //*******************************************************
+    // Inicializa el generador de números aleatorios
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    //*******************************************************
+}
 
 void Enemy::Start()
 {
@@ -50,10 +64,15 @@ void Enemy::Death()
     mGameObject->SetEnabled(false);
 
     //*******************************************
-    if (ChanceDropping())
-    {
+    
+    //App->GetScene()->Find("RootNode")->SetEnabled(false);
 
-    }
+    //if (ChanceDropping())
+    //{
+        DropHealth();
+    //}
+
+    //*************************************************
 }
 
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
@@ -81,5 +100,18 @@ void Enemy::PushBack()
 
 bool Enemy::ChanceDropping()
 {
-    return true;
+    // Genera un número aleatorio entre 0 y 99
+    int randomValue = std::rand() % 100;
+
+    // Retorna true si el valor está en el rango 0-19 (20% de probabilidad)
+    if (randomValue < 20)
+    {
+        return true;
+    }
+}
+
+void Enemy::DropHealth()
+{
+    LOG("DROP HEALTH");
+    App->GetScene()->Find("Health_Item")->SetEnabled(true);
 }

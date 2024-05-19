@@ -51,6 +51,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ItemHealth.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -90,6 +93,9 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="ObjectPool.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHealth.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>
