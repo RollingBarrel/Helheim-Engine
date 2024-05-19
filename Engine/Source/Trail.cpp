@@ -30,22 +30,11 @@ Trail::~Trail()
 
 void Trail::Init()
 {
-    // set up mesh and attribute properties
-    //float trailMesh[] = {
-    ////  position            tex coord   color
-    //    0.0f,-0.5f,0.0f,    0.0f,0.0f,  1.0f,0.0f,0.0f,1.0f,
-    //    0.0f, 0.5f,0.0f,    0.0f,1.0f,  1.0f,0.0f,0.0f,1.0f,
-    //    0.5f, 0.5f,0.0f,    0.5f,1.0f,  0.0f,1.0f,0.0f,1.0f,
-    //    0.5f,-0.5f,0.0f,    0.5f,0.0f,  0.0f,1.0f,0.0f,1.0f,
-    //    1.0f, 0.5f,0.0f,    1.0f,1.0f,  0.0f,0.0f,1.0f,1.0f,
-    //    1.0f,-0.5f,0.0f,    1.0f,0.0f,  0.0f,0.0f,1.0f,1.0f
-    //};
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
     glBindVertexArray(mVAO);
     // fill mesh buffer
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(trailMesh), trailMesh, GL_DYNAMIC_DRAW);
 
     // Enable the attribute for vertex positions
     glEnableVertexAttribArray(POSITION_LOCATION);
@@ -53,7 +42,7 @@ void Trail::Init()
     // Enable the attribute for texture coordinates
     glEnableVertexAttribArray(TEXCOORD_LOCATION);
     glVertexAttribPointer(TEXCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
-    // Enable the attribute for texture coordinates
+    // Enable the attribute for vertex color
     glEnableVertexAttribArray(COLOR_LOCATION);
     glVertexAttribPointer(COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(5 * sizeof(float)));
 
@@ -71,11 +60,6 @@ void Trail::Update()
     {
         mPoints.pop_front();
     }
-    //float3 lastPoint = mPoints[1].position;
-    //float3 direction = (mPoints[i].position - lastPoint).Normalized(); // this can be computed once
-    //lastPoint = mPoints[i].position;
-
-
 }
 
 void Trail::Draw() const
@@ -86,8 +70,6 @@ void Trail::Draw() const
     glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);									// Enable Blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
-    //glEnable(GL_TEXTURE_2D);
-    //glBlendEquation(GL_FUNC_ADD);
     auto cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
     float4x4 projection = cam->GetViewProjectionMatrix();
     float3 up = cam->GetFrustum().up;
@@ -102,7 +84,7 @@ void Trail::Draw() const
     float3 direction;
     for (int i = 0; i < mPoints.size(); ++i)
     {
-        float dp = static_cast<float>(i) / (mPoints.size() - 1);
+        float dp = 1 - (static_cast<float>(i) / (mPoints.size() - 1));
         if (mIsBillboard and i < mPoints.size()-1)
         {
             nextPoint = mPoints[i + 1].position;
@@ -110,7 +92,7 @@ void Trail::Draw() const
             direction = direction.Cross(norm);
             direction.Normalize();
         }
-        else 
+        else if(!mIsBillboard)
         {
             direction = mPoints[i].direction.Normalized();
         }
@@ -157,12 +139,10 @@ void Trail::Draw() const
 void Trail::AddTrailPositions(float3 position, Quat rotation)
 {
     rotation.Normalize();
-    Quat vectorQuat(0, mDirection.x, mDirection.y, mDirection.z);
-    Quat rotatedQuat = (rotation * vectorQuat) * Quat(rotation.w, -rotation.x, -rotation.y, -rotation.z);
+    Quat rotatedQuat = rotation * Quat(0, mDirection.x, mDirection.y, mDirection.z) * rotation.Inverted();
     float3 rotatedVector(rotatedQuat.x, rotatedQuat.y, rotatedQuat.z);
-    // Needs some fix still
-
-    mPoints.push_back(TrailPoint{ position, rotatedVector.Normalized(), mTrailTime});
+    rotatedVector.Normalize();
+    mPoints.push_back(TrailPoint{ position, rotatedVector, mTrailTime});
 }
 
 float3 Trail::GetLastPosition() const
