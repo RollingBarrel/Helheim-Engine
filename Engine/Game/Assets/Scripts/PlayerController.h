@@ -18,7 +18,6 @@ enum class PlayerState
     MOVE,
     ATTACK,
     MOVE_ATTACK,
-    GRENADE_POINTING,
     DEATH
 };
 
@@ -69,6 +68,9 @@ class PlayerController :public Script
         void UpdateShield();
         void UpdateBattleSituation();
         void CheckDebugOptions();
+
+        void AimGrenade();
+        void ThrowGrenade();
 
         void Victory();
         void GameoOver();
@@ -132,10 +134,12 @@ class PlayerController :public Script
         // Grenade
         float mGrenadeDPS = 1.0f;
         float mGrenadeDuration = 4.0f;
-        float mGrenadeRadius = 2.0f;
+        float mGrenadeRadius = 3.0f;
 
         float mGrenadThrowDistance = 3.0f;
         float mGrenadeCoolDown = 15.0f;
+
+        GameObject* mGrenadeAimArea = nullptr;
 
         //HUD
         GameObject* mShieldGO = nullptr;

@@ -46,6 +46,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);
     MEMBER(MemberType::FLOAT, mRangeChargeAttackMultiplier);
     
+    SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimArea);
+
     SEPARATOR("ANIMATION");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
 
@@ -243,7 +246,12 @@ void PlayerController::Idle()
                 mCurrentState = PlayerState::ATTACK;
             }
         }
-    }  
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
+    {
+        mGrenadeAimArea->SetEnabled(false);
+    }
 }
 
 //is Moving function 
@@ -380,6 +388,9 @@ void PlayerController::Attack()
 {
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT)
     {
+        AimGrenade();
+        
+        Idle();
         //App->GetDebugDraw()->DrawCircle(mGameObject->GetPosition(), mGrenadeRadius);
         return;
     }
@@ -584,6 +595,42 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
     }
+}
+
+void PlayerController::AimGrenade()
+{
+    // Initialize circle
+    mGrenadeAimArea->SetEnabled(true);
+    mGrenadeAimArea->SetScale(float3(mGrenadeRadius, 0.5, mGrenadeRadius));
+
+    // Aim
+    std::map<float, Hit> hits;
+
+    Ray ray;
+    ray.pos = mGameObject->GetPosition();
+    ray.pos.y++;
+    ray.dir = mGameObject->GetFront();
+
+    float distance = 100.0f;
+    hits = Physics::Raycast(&ray);
+
+    if (!hits.empty())
+    {
+        for (const std::pair<float, Hit>& hit : hits)
+        {
+            if (hit.second.mGameObject->GetTag()->GetName() == "AimGrenadeArea")
+            {
+                LOG("Iit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
+                 
+            }
+        }
+    }
+
+}
+
+void PlayerController::ThrowGrenade()
+{
+
 }
 
 void PlayerController::UpdateBattleSituation()
