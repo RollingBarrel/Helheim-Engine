@@ -59,7 +59,7 @@ void StateMachineTest::Start()
     //States
     mStateMachine->AddState(clip, sIdle);
     mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(6.2));
-    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(11.4));
+    mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(11.57));
     
     mStateMachine->AddState(clip, sWalkForward);
     mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.89));
