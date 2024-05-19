@@ -133,7 +133,6 @@ class PlayerController :public Script
         GameObject* mShieldGO = nullptr;
         SliderComponent* mShieldSlider = nullptr;
 
-
         //DEBUG
         bool mGodMode = false;
 

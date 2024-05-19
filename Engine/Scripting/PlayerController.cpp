@@ -336,8 +336,8 @@ void PlayerController::HandleRotation()
         float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
         mGameObject->LookAt(target);
     }
-
 }
+
 void PlayerController::Dash()
 {
     if (!mIsDashing)

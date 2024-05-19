@@ -9,6 +9,9 @@ CREATE(ItemHealth)
 {
 	CLASS(owner);
 
+    MEMBER(MemberType::FLOAT, mHealthRecovered);
+    MEMBER(MemberType::FLOAT, mActivationRange);
+
 	END_CREATE;
 }
 
@@ -29,7 +32,7 @@ void ItemHealth::Update()
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
         if (playerScript != nullptr)
         {
-            playerScript->SetShield(15.0f);
+            playerScript->SetShield(mHealthRecovered);
         }
     }
 }

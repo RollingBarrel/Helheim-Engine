@@ -19,5 +19,6 @@ private:
     bool IsPlayerInRange(float range);
 
     float mActivationRange = 1.0f;
+    float mHealthRecovered = 15.0f;
     GameObject* mPlayer = nullptr;
 };
