@@ -53,7 +53,6 @@ void TestScript::Update()
 		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetDt() * mPlayerSpeed);
 	}
 	
-
     if (mRobot != nullptr) {
         if (mMovement >= mHeight)
         {
@@ -61,8 +60,6 @@ void TestScript::Update()
             mMovement = 0;
             mUp = mUp ? false : true;
         }
-
-
 
         if (mStartCounter)
         {
@@ -86,7 +83,6 @@ void TestScript::Update()
                 mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - mSpeed * App->GetDt(), mRobot->GetPosition().z));
             }
         }
-
     }
 
     if (mGameObject->GetPosition().x > 10.0f) {

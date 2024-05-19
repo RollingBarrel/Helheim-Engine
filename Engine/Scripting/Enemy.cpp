@@ -61,10 +61,10 @@ void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
 
-    if (ChanceDropping())
-    {
+    //if (ChanceDropping())
+    //{
         DropHealth();
-    }
+    //}
 }
 
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
@@ -99,17 +99,19 @@ bool Enemy::ChanceDropping()
 void Enemy::DropHealth()
 {
     LOG("DROP HEALTH");
-    App->GetScene()->Find("Health_Item")->SetEnabled(true);
+    //App->GetScene()->Find("Health_Item")->SetEnabled(true);
 
     //******************************************************
 
-    /*
-    GameObject* item_health = App->GetScene()->Find("Item_Health");
+    if (!mCreateItem)
+    {
+        mCreateItem = true;
 
-    // Create an instance from a prefab
-    // We need the Prefab's filename
-    Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/Health_Item.prfb");
+        GameObject* health = App->GetScene()->Find("Items");
 
-    App->GetScene()->LoadPrefab("Assets/Prefabs/Health_Item.prfb", resource->GetUID(), item_health);
-    */
+        // Create an instance from a prefab
+        // We need the Prefab's filename
+        Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/Item_Health.prfb");
+        App->GetScene()->LoadPrefab("Assets/Prefabs/Item_Health.prfb", resource->GetUID(), health);
+    }
 }

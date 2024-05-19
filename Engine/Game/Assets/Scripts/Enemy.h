@@ -34,5 +34,6 @@ class Enemy : public Script
 	private:
 		void ActivateEnemy();
 		int randomValue = 0;
+		bool mCreateItem = false;
 		NavMeshController* mNavMeshControl = nullptr;		
 };
