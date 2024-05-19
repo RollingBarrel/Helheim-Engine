@@ -1496,25 +1496,23 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 {
-	ImGui::Text("Billbording");
+	ImGui::Text("Fixed Direction");
 	ImGui::SameLine();
-	ImGui::Checkbox("##Billbording", &(component->mTrail->mIsBillboard));
+	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
 
-	ImGui::Text("Trail Direction");
-	ImGui::SameLine();
-	ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
+	if (component->mTrail->mFixedDirection) {
+		ImGui::Text("Trail Direction");
+		ImGui::SameLine();
+		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
+	}
 
-	ImGui::Text("Minimum distance between points");
+	ImGui::Text("Minimum distance");
 	ImGui::SameLine();
 	ImGui::DragFloat("##MinDistance", &(component->mMinDistance), 1.0f, 0.0f);
-
-	ImGui::Separator();
 
 	ImGui::Text("Lifetime");
 	ImGui::SameLine();
 	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
-
-
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mTrail->mWidth), "Width");

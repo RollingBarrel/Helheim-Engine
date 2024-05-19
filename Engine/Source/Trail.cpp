@@ -85,14 +85,16 @@ void Trail::Draw() const
     for (int i = 0; i < mPoints.size(); ++i)
     {
         float dp = 1 - (static_cast<float>(i) / (mPoints.size() - 1));
-        if (mIsBillboard and i < mPoints.size()-1)
+        // The last point uses the direction of the previous
+        // because there is no next point to calculate the direction
+        if (!mFixedDirection and i < mPoints.size()-1)
         {
             nextPoint = mPoints[i + 1].position;
             direction = (nextPoint - mPoints[i].position).Normalized();
             direction = direction.Cross(norm);
             direction.Normalize();
         }
-        else if(!mIsBillboard)
+        else if(mFixedDirection)
         {
             direction = mPoints[i].direction.Normalized();
         }
