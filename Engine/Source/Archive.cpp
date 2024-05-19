@@ -1,3 +1,4 @@
+#include "Archive.h"
 #include "archive.h"
 
 Archive::Archive() : mDocument(std::make_unique<rapidjson::Document>()) {
@@ -343,4 +344,15 @@ std::string Archive::Serialize() const
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
     mDocument->Accept(writer);
     return buffer.GetString();
+}
+
+bool Archive::Deserialize(char** buffer) const
+{
+    rapidjson::ParseResult error = mDocument->Parse(*buffer);
+    if (!error)
+    {
+        return false;
+    }
+
+    return true;
 }

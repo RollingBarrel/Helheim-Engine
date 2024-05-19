@@ -137,7 +137,7 @@ void SettingsPanel::SaveSettings()
 	Archive camera;
 	camera.AddFloat3("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition());
 	camera.AddFloat3("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetEulerAngles());
-	archive->AddObject("Camera Setting", camera);
+	archive->AddObject("Camera Settings", camera);
 
 	Archive scene;
 	scene.AddString("Name", App->GetScene()->GetName().c_str());
@@ -160,6 +160,16 @@ void SettingsPanel::SaveSettings()
 
 void SettingsPanel::LoadSettings()
 {
+	char* fileBuffer;
+	App->GetFileSystem()->Load("projectSettings.txt", &fileBuffer);
+
+	Archive* archive = new Archive();
+	archive->Deserialize(&fileBuffer);
+	
+	if (archive->GetDocument()->HasMember("Engine Settings"))
+	{
+		LOG("hi");
+	}
 	//std::ifstream userSettings("userSettings.txt");
 	//
 	//std::string line;

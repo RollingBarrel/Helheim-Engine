@@ -79,6 +79,9 @@ public:
     void CopyFrom(const Archive& other);
 
     std::string Serialize() const;
+    bool Deserialize(char** buffer) const;
+
+    rapidjson::Document* GetDocument() { return mDocument.get(); }
 
 private:
     std::unique_ptr<rapidjson::Document> mDocument;
