@@ -124,15 +124,8 @@ void PlayerController::Start()
 
 }
 
-
 void PlayerController::Update()
 {
-    //****************************************************************************
-
-    LOG("Shield: %f", mShield);
-
-    //****************************************************************************
-
     CheckDebugOptions();
     UpdateShield();
     UpdateBattleSituation();
@@ -145,7 +138,6 @@ void PlayerController::Update()
             mDashCoolDownTimer = 0.0f;
             mIsDashCoolDownActive = false;
             mCurrentState = PlayerState::IDLE;
-
         }
     }
 
@@ -159,7 +151,6 @@ void PlayerController::Update()
             {
                 mAnimationComponent->SetCurrentClip(0);
             }
-
         }
         break;
     case PlayerState::DASH:
@@ -267,7 +258,6 @@ bool PlayerController::IsMoving()
 
 void PlayerController::Moving()
 {
-
     float4x4 matrix = float4x4::identity;
     matrix.RotateX(mCamera->GetRotation().x);
     //float3x3 rotation = float3x3::FromEulerXYZ(mCamera->GetRotation().x, 0.0f, 0.0f).Inverted();
@@ -322,7 +312,6 @@ void PlayerController::Moving()
         mReadyToStep = false;
     }
     
-
     Idle();
 }
 
@@ -493,10 +482,8 @@ void PlayerController::RangedAttack()
     }
 }
 
-
 void PlayerController::Shoot(float damage)
 {
-
     //request a bullet from the object pool
     bullet = mBulletPool->GetPooledObject();
 
@@ -541,8 +528,6 @@ void PlayerController::Reload()
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
-//*********************************************************************
-
 void PlayerController::SetShield(float shield)
 {
     if (mShield < mMaxShield)
@@ -555,8 +540,6 @@ void PlayerController::SetShield(float shield)
         }
     }
 }
-
-//*********************************************************************
 
 void PlayerController::TakeDamage(float damage)
 {
@@ -622,8 +605,7 @@ void PlayerController::UpdateBattleSituation()
             else 
             {
                 mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
-            }
-            
+            }          
         }
     }
     else 

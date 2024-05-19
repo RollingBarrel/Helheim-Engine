@@ -19,14 +19,9 @@ class Enemy : public Script
 		
 	protected:
 		bool Delay(float delay);
-		bool IsPlayerInRange(float range);
-
-		//**************************************************
-		
+		bool IsPlayerInRange(float range);		
 		bool ChanceDropping();
 		void DropHealth();
-
-		//**************************************************
 				
 		float mHealth = 0.0f;
 		float mMaxHealth = 100.0f;
@@ -38,8 +33,6 @@ class Enemy : public Script
 
 	private:
 		void ActivateEnemy();
+		int randomValue = 0;
 		NavMeshController* mNavMeshControl = nullptr;		
-
-		//***************************************************
-		//Drop Health
 };

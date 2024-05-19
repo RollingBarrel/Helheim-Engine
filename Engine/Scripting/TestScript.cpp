@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ModuleResource.h"
 #include "Keys.h"
 
 CREATE(TestScript)
@@ -27,6 +28,14 @@ void TestScript::Start()
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
     GameObject* juan = App->GetScene()->Find("Juan");
+
+
+    // Create an instance from a prefab
+    // We need the Prefab's filename
+    Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/Zombunny.prfb"); //Bullet Prefab
+
+    App->GetScene()->LoadPrefab("Assets/Prefabs/Zombunny.prfb", resource->GetUID(), juan);
+
 }
 
 void TestScript::Update()
