@@ -71,6 +71,11 @@ void Trail::Update()
     {
         mPoints.pop_front();
     }
+    //float3 lastPoint = mPoints[1].position;
+    //float3 direction = (mPoints[i].position - lastPoint).Normalized(); // this can be computed once
+    //lastPoint = mPoints[i].position;
+
+
 }
 
 void Trail::Draw() const
@@ -93,25 +98,21 @@ void Trail::Draw() const
     glBufferData(GL_ARRAY_BUFFER, mPoints.size() * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
     byte* ptr = static_cast<byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
     int testSize = 0;
-    float3 lastPoint = mPoints[1].position;
-
+    float3 nextPoint = mPoints[1].position;
+    float3 direction;
     for (int i = 0; i < mPoints.size(); ++i)
     {
         float dp = static_cast<float>(i) / (mPoints.size() - 1);
-        float3 direction = (mPoints[i].position - lastPoint).Normalized(); // this can be computed once
-        lastPoint = mPoints[i].position;
-        if (i > 0)
+        if (mIsBillboard and i < mPoints.size()-1)
         {
-            ptr += sizeof(float4);
-        }
-        if (mIsBillboard)
-        {
+            nextPoint = mPoints[i + 1].position;
+            direction = (nextPoint - mPoints[i].position).Normalized();
             direction = direction.Cross(norm);
             direction.Normalize();
         }
         else 
         {
-            direction = mDirection.Normalized();
+            direction = mPoints[i].direction.Normalized();
         }
 
         float3 topPointPos = mPoints[i].position + direction * mWidth.GetValue(dp) * 0.5f;
@@ -127,13 +128,13 @@ void Trail::Draw() const
         ptr += sizeof(float2);
         memcpy(ptr, color.ptr(), sizeof(float4));
         ptr += sizeof(float4);
-
         // Copiar topPoint
         memcpy(ptr, topPointPos.ptr(), sizeof(float3));
         ptr += sizeof(float3);
         memcpy(ptr, topPointTexCoord.ptr(), sizeof(float2));
         ptr += sizeof(float2);
         memcpy(ptr, color.ptr(), sizeof(float4));
+        ptr += sizeof(float4);
     }
 
     glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -155,8 +156,13 @@ void Trail::Draw() const
 
 void Trail::AddTrailPositions(float3 position, Quat rotation)
 {
-    float3 direction = float3::unitY;
-    mPoints.push_back(TrailPoint{ position, direction, mTrailTime });
+    rotation.Normalize();
+    Quat vectorQuat(0, mDirection.x, mDirection.y, mDirection.z);
+    Quat rotatedQuat = (rotation * vectorQuat) * Quat(rotation.w, -rotation.x, -rotation.y, -rotation.z);
+    float3 rotatedVector(rotatedQuat.x, rotatedQuat.y, rotatedQuat.z);
+    // Needs some fix still
+
+    mPoints.push_back(TrailPoint{ position, rotatedVector.Normalized(), mTrailTime});
 }
 
 float3 Trail::GetLastPosition() const
