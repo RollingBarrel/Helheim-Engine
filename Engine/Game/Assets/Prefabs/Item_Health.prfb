@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 393100149,
+                "UID": 1223742381,
                 "ParentUID": 1,
                 "Name": "Item_Health (1)",
                 "isEnabled": true,
@@ -35,8 +35,8 @@
                 ]
             },
             {
-                "UID": 401872395,
-                "ParentUID": 393100149,
+                "UID": 1229938650,
+                "ParentUID": 1223742381,
                 "Name": "Cube",
                 "isEnabled": true,
                 "Translation": [
@@ -62,8 +62,8 @@
                 "Components": []
             },
             {
-                "UID": 403264815,
-                "ParentUID": 401872395,
+                "UID": 1232584248,
+                "ParentUID": 1229938650,
                 "Name": "Cube",
                 "isEnabled": true,
                 "Translation": [
@@ -88,7 +88,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 405074961,
+                        "ID": 1234255152,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,

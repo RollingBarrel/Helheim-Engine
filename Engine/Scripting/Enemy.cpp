@@ -6,11 +6,8 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 
-//******************************************
-
 #include "ModuleResource.h"
 
-//******************************************
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
@@ -98,20 +95,23 @@ bool Enemy::ChanceDropping()
 
 void Enemy::DropHealth()
 {
-    LOG("DROP HEALTH");
-    //App->GetScene()->Find("Health_Item")->SetEnabled(true);
-
-    //******************************************************
+    //App->GetScene()->Find("Item_Health")->SetEnabled(true);
 
     if (!mCreateItem)
     {
         mCreateItem = true;
 
-        GameObject* health = App->GetScene()->Find("Items");
-
-        // Create an instance from a prefab
-        // We need the Prefab's filename
+        GameObject* items = App->GetScene()->Find("Items");
         Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/Item_Health.prfb");
-        App->GetScene()->LoadPrefab("Assets/Prefabs/Item_Health.prfb", resource->GetUID(), health);
+        App->GetScene()->LoadPrefab("Assets/Prefabs/Item_Health.prfb", resource->GetUID(), items);
+
+        float3 enemyPosition = mGameObject->GetPosition();
+        float3 healthPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+
+        GameObject* health = App->GetScene()->Find("Item_Health (2)");
+        health->SetPosition(healthPosition);
+
+        float3 scale = float3(0.25f, 0.25f, 0.25f);
+        health->SetScale(scale);
     }
 }
