@@ -89,7 +89,6 @@ private:
 	void DuplicateGameObjects();
 	void LoadGameObjectsIntoScripts();
 	
-	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const;
 	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent);
 

@@ -224,14 +224,13 @@ void ModuleScene::DeleteTag(Tag* tag)
 
 	if (it != mTags.end())
 	{
-
 		// 1. Set tags to untagged
-		std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
-		for (auto object : objects)
-		{
-			object->SetTag(GetTagByName("Untagged"));
-		}
-
+		//std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
+		//for (auto object : objects)
+		//{
+		//	object->SetTag(GetTagByName("Untagged"));
+		//}
+		//
 		// 2. Delete it
 		mTags.erase(it);
 		delete tag;
@@ -259,22 +258,9 @@ void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vec
 	}
 }
 
-void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const
-{
-
-	std::vector<Archive> gameObjectsArchiveVector;
-
-	for (GameObject* gameObject : gameObjects)
-	{
-		SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
-	}
-
-	rootArchive.AddObjectArray("GameObjects", gameObjectsArchiveVector);
-}
-
 void ModuleScene::Save(const char* sceneName) const
 {
-	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
+	std::string saveFilePath = ASSETS_SCENES_PATH + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos)
 	{
 		saveFilePath += ".json";
@@ -294,18 +280,17 @@ void ModuleScene::Save(const char* sceneName) const
 	}
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 
-	Archive* sceneArchive = new Archive();
-	sceneArchive->AddObject("Scene", *archive);
-	std::string out = sceneArchive->Serialize();
+	//TODO: Might Fail Xddddd
+	archive->AddObject("Scene", *archive);
+	std::string out = archive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 	
-	delete sceneArchive;
 	delete archive;
 }
 
 void ModuleScene::Load(const char* sceneName)
 {
-	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
+	std::string loadFilePath = ASSETS_SCENES_PATH + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos)
 	{
 		loadFilePath += ".json";
@@ -325,10 +310,10 @@ void ModuleScene::Load(const char* sceneName)
 
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
-		delete mRoot;
 		mSceneGO.clear();
-		mRoot = new GameObject("SampleScene", nullptr);
+		delete mRoot;
 
+		mRoot = new GameObject("SampleScene", nullptr);
 
 		if (document.HasMember("Scene") && document["Scene"].IsObject())
 		{
@@ -336,7 +321,7 @@ void ModuleScene::Load(const char* sceneName)
 			if (sceneValue.HasMember("Name"))
 			{
 				mRoot->SetName(sceneValue["Name"].GetString());
-				App->GetNavigation()->LoadResourceData();
+				App->GetNavigation()->LoadResourceData();		//TODO: Redo navigation resources 
 			}
 
 			LoadGameObject(sceneValue, mRoot);
@@ -362,7 +347,11 @@ void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameOb
 		{
 			if (gameObjects[i].IsObject())
 			{
-				GameObject::LoadGameObjectFromJSON(gameObjects[i], parent);
+				GameObject::LoadGameObjectFromJSON(gameObjects[i], parent);	
+				/*TODO: Redo GameObject Load function.They should have a Load function and return the loaded gameobject
+						This game object should be added into the Scene GameObjects vector 
+						
+				*/
 			}
 		}
 
@@ -379,7 +368,6 @@ void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameOb
 
 	}
 }
-
 #pragma endregion
 
 #pragma region Prefabs
@@ -488,7 +476,7 @@ GameObject* ModuleScene::Find(unsigned int UID) const
 
 	return nullptr;
 }
-
+//TOOD: Redo Change this we are doing only a push back in the worst place possible
 void ModuleScene::AddGameObjectToScene(GameObject* gameObject) 
 {
 	mSceneGO.push_back(gameObject);

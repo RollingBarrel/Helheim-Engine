@@ -36,67 +36,80 @@ public:
 
 	void Update();
 
-	void Translate(float3 translation);
-
-	// Getters
-	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
-	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
-	const float3& GetRotation() const { return mEulerRotation; }
-	const Quat& GetRotationQuat() const { return mRotation; }
-	float3 GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
-	const float3& GetPosition() const { return mPosition; }
-	const float3& GetScale() const { return mScale; }
+	//Getters
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
+	unsigned int GetID() const { return mID; }
 	float3 GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); } 
 	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
 	AABB GetAABB();
+	bool IsDynamic() const { return mIsDynamic; }
 
-	unsigned int GetID() const { return mID; }
+	//Setters
+	void SetTag(Tag* tag) { mTag = tag; };
+	void SetName(const char* name) { mName = name; };
+	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
+
 	bool IsRoot() const { return mIsRoot; }
 	// Status for this GameObject
+	void SetEnabled(bool enabled);
 	bool IsEnabled() const { return mIsEnabled; }
 	// Status for this GameObject and all its ancestors
 	bool IsActive() const { return mIsEnabled && mIsActive; }
-	bool IsDynamic() const { return mIsDynamic; }
-	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
+
 	// Children
 	void AddChild(GameObject* child, const int aboveThisId = 0);
 	GameObject* RemoveChild(const int id);
 	void DeleteChild(GameObject* child);
 
-	// Setters
-	void SetRotation(const float3& rotation);
-	void SetRotation(const Quat& rotation);
+	//Transform
+	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
+	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
+	void RecalculateMatrices();
+
+	//Position
+	const float3& GetPosition() const { return mPosition; }
+	const float3& GetLocalPosition() const { return mLocalPosition; }
 	void SetPosition(const float3& position);
+	void SetLocalPosition(const float3& position);
+	//Rotation
+	const Quat& GetRotation() const { return mRotation; }
+	const Quat& GetLocalRotation() const { return mLocalRotation; }
+	const float3& GetEulerAngles() const { return mEulerAngles; }
+	const float3& GetLocalEulerAngles() const { return mLocalEulerAngles; }
+	void SetRotation(const float3& rotation);
+	void SetLocalRotation(const float3& rotation);
+	void SetRotation(const Quat& rotation);
+	void SetLocalRotation(const Quat& rotation);
+	//Scale
+	const float3& GetScale() const { return mScale; }
+	const float3& GetLocalScale() const { return mLocalScale; }
 	void SetScale(const float3& scale);
-	void SetTag(Tag* tag) { mTag = tag; };
-	void SetName(const char* name) { mName = name; };
-	void SetEnabled(bool enabled);
+	void SetLocalScale(const float3& scale);
 
 	// Transform
 	const bool HasUpdatedTransform() const;
+
+	void Translate(float3 translation);
 	void LookAt(float3 target);
 	void ResetTransform();
-	void RecalculateMatrices();
 
 	// Finds
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
-	static GameObject* FindGameObjectWithTag(std::string tagname);
-	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
+	std::vector<Component*>& FindComponentsInChildren(GameObject* parent, const ComponentType type);
+	GameObject* FindGameObjectWithTag(std::string tagname);
+	std::vector<GameObject*>& FindGameObjectsWithTag(std::string tagname);
 
 	// Components
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type) const;
-	std::vector<Component*> GetComponents(ComponentType type) const;
-	std::vector<Component*> GetComponentsInChildren(ComponentType type) const;
+	std::vector<Component*>& GetComponents(ComponentType type) const;
+	std::vector<Component*>& GetComponentsInChildren(ComponentType type) const;
 	Component* GetComponentInParent(ComponentType type) const;
-	std::vector<Component*> FindComponentsInChildren(GameObject* parent, const ComponentType type);
-	const AnimationComponent* FindAnimationComponent();
 	void AddComponent(Component* component, Component* position);
 	void AddComponentToDelete(Component* component);
 
@@ -117,10 +130,8 @@ private:
 	void DeleteComponents();
 	Component* RemoveComponent(Component* component);
 
-	void RecalculateLocalTransform();
 	void RefreshBoundingBoxes();
 	void SetActiveInHierarchy(bool active);
-	std::pair<GameObject*, int> RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind);
 
 	const unsigned int mID;
 	std::string mName = "GameObject";
@@ -136,10 +147,18 @@ private:
 	// Transform
 	float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;
+	//Position
 	float3 mPosition = float3::zero;
+	float3 mLocalPosition = float3::zero;
+	//Rotation
 	Quat mRotation = Quat::identity;
-	float3 mEulerRotation = float3::zero;
+	Quat mLocalRotation = Quat::identity;
+	//Rotation in Euler Angles (Rads Always)
+	float3 mEulerAngles = float3::zero;
+	float3 mLocalEulerAngles = float3::zero;
+	//Scale
 	float3 mScale = float3::one;
+	float3 mLocalScale = float3::one;
 
 	// Prefabs
 	int mPrefabResourceId = 0;

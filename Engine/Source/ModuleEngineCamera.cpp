@@ -223,7 +223,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(-mX));
 			float3x3 rotation = rotationY.Mul(rotationX);
 
-			Quat quatOriginal = mEditorCameraGameObject->GetRotationQuat();
+			Quat quatOriginal = mEditorCameraGameObject->GetRotation();
 			Quat newQuat = Quat(rotation);
 			newQuat =  newQuat * quatOriginal;
 			float3 eulerRotation = newQuat.ToEulerXYZ();
@@ -305,7 +305,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 				}
 
 				mEditorCameraGameObject->SetPosition(focus);
-				mEditorCameraGameObject->LookAt(focusedObject->GetWorldPosition());
+				mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
 				
 				MouseFix();
 			}	
@@ -323,7 +323,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 				Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
 				float distance = objectSphere.r * 2.5f;
 
-				float3 selectedObjectPosition = selectedGameObject->GetWorldPosition();
+				float3 selectedObjectPosition = selectedGameObject->GetPosition();
 				float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
 				mEditorCameraGameObject->SetPosition(finalCameraPosition);
 			}

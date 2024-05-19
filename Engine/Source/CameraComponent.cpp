@@ -55,7 +55,7 @@ void CameraComponent::Update()
 {
     if (mOwner->HasUpdatedTransform())
     {
-        float3 position = mOwner->GetWorldPosition();
+        float3 position = mOwner->GetPosition();
         mFrustum.pos = position;
 
 

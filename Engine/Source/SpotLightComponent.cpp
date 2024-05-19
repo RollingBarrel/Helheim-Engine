@@ -7,7 +7,7 @@
 
 SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) 
 {
-	const float3& pos = owner->GetWorldPosition();
+	const float3& pos = owner->GetPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
@@ -19,7 +19,7 @@ SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemoveSpotLight(*t
 
 const float* SpotLightComponent::GetPosition() const 
 { 
-	return mOwner->GetWorldPosition().ptr(); 
+	return mOwner->GetPosition().ptr(); 
 }
 
 void SpotLightComponent::SetPosition(const float pos[3])
@@ -81,7 +81,7 @@ void SpotLightComponent::SetInnerAngle(float angle)
 void SpotLightComponent::Update()
 {
 	//TODO: No mirarlo cada frame ??
-	const float* pos = mOwner->GetWorldPosition().ptr();
+	const float* pos = mOwner->GetPosition().ptr();
 	for (int i = 0; i < 3; ++i)
 	{
 		if (pos[i] != mData.pos[i])

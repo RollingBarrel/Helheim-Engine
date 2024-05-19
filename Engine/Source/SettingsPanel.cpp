@@ -4,14 +4,12 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "ModuleEngineCamera.h"
+#include "ModuleFileSystem.h"
+#include "Archive.h"
 #include "GameObject.h"
 #include "Timer.h"
 
 #include "imgui.h"
-
-#include <fstream>
-#include <string>
-#include <sstream>
 
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
@@ -21,9 +19,6 @@ SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
 
 SettingsPanel::~SettingsPanel()
 {
-	for (auto window : mOpenedWindowsInfo) {
-		delete window;
-	}
 }
 
 void SettingsPanel::Draw(int windowFlags) 
@@ -111,200 +106,175 @@ void SettingsPanel::Draw(int windowFlags)
 
 		if (ImGui::Button("Save settings")) 
 		{
-			SaveProjectSettings();
+			SaveSettings();
 		}
 		if (ImGui::Button("Load settings")) 
 		{
-			LoadProjectSettings();
+			LoadSettings();
 		}
 	}
 	ImGui::End();
 }
 
-void SettingsPanel::SaveProjectSettings()
+void SettingsPanel::SaveSettings()
 {
-	mOpenedWindowsInfo.clear();
-	std::ofstream out_file("projectSettings.txt");
+	Archive* archive = new Archive();
 
-	// Settings variables we want to store
-	if (out_file.is_open())
-	{
-		out_file << "EngineApply frustum culling: " << mCulling << "\n";
-		out_file << "Engine Vsync enabled: " << mEngineVsyncEnabled << "\n";
-		out_file << "Engine FPS Limit: " << mEngineFpsLimit << "\n";
-		out_file << "Game Vsync enabled: " << mGameVsyncEnabled << "\n";
-		out_file << "Game FPS Limit: " << mGameFpsLimit << "\n";
-		out_file << "Draw Grid: " << mGrid << "\n";
-	}
-
-	// Window states
-	out_file << EngineApp->GetEditor()->GetPanelList().size() << "\n";
-	for (const auto& panels : EngineApp->GetEditor()->GetPanelList())	
-	{
-		WindowState* windowState = new WindowState();
-		ImGui::Begin(panels.first);
-		windowState->name = panels.first;
-		windowState->IsOpen = panels.second->IsOpen();
-		windowState->position = ImGui::GetWindowPos();
-		windowState->size = ImGui::GetWindowSize();
-		ImGui::End();
-		mOpenedWindowsInfo.push_back(windowState);
-
-		if (out_file.is_open())	
-		{
-			out_file << windowState->name << "\n";
-			out_file << windowState->IsOpen << "\n";
-			out_file << windowState->position.x << " " << windowState->position.y << "\n";
-			out_file << windowState->size.x << " " << windowState->size.y << "\n";
-		}
-	}
-
-	// Saves the docking layout
-	if (out_file.is_open())	
-	{
-		size_t settings_len;
-		const char* settings = ImGui::SaveIniSettingsToMemory(&settings_len);
-		out_file.write(settings, settings_len);
-		out_file.close();
-	}
-}
-
-void SettingsPanel::SaveUserSettings()
-{
-	std::ofstream userSettings("userSettings.txt");
-	float3 cameraPosition = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition();
-	float3 cameraRotation = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation();
-
-	if (userSettings.is_open())
-	{
-		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
-		userSettings << "Camera Rotation:\n" << cameraRotation.x << '\n' << cameraRotation.y << '\n' << cameraRotation.z << "\n";
-		
-		userSettings << "Scene: \n" << App->GetScene()->GetName();
-	}
-}
-
-void SettingsPanel::LoadUserSettings()
-{
-	std::ifstream userSettings("userSettings.txt");
-
-	std::string line;
-
-	float3 cameraPosition;
-	float3 cameraRotation;
-
-	if (userSettings.is_open())
-	{
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-			cameraPosition[i] = std::stof(line);
-		}
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-			cameraRotation[i] = std::stof(line);
-		}
-
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(cameraPosition);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(cameraRotation);
-		
-		std::getline(userSettings, line);
-		std::getline(userSettings, line);
-		App->GetScene()->Load(line.c_str());
-
-	}
-
+	Archive engine;
+	engine.AddBool("Draw Grid", mGrid);
+	engine.AddBool("Frustum Culling", mCulling);
+	engine.AddBool("Vsync", mEngineVsyncEnabled);
+	engine.AddBool("Enable FPS Limit", mEngineFpsLimitEnabled);
+	engine.AddFloat("FPS Limit", mEngineFpsLimit);
+	archive->AddObject("Engine Settings", engine);
 	
+	Archive game;
+	game.AddBool("Vsync", mGameVsyncEnabled);
+	game.AddBool("Enable FPS", mGameFpsLimitEnabled);
+	game.AddFloat("FPS Limit", mGameFpsLimit);
+	archive->AddObject("Game Settings", game);
 
+	Archive camera;
+	camera.AddFloat3("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition());
+	camera.AddFloat3("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetEulerAngles());
+	archive->AddObject("Camera Setting", camera);
 
-}
+	Archive scene;
+	scene.AddString("Name", App->GetScene()->GetName().c_str());
 
-void SettingsPanel::LoadProjectSettings()
-{
-	mOpenedWindowsInfo.clear();
-	// Load the settings for all the windows
-	std::ifstream in_file("projectSettings.txt");
-	if (in_file.is_open()) 
+	Archive tag;
+	for (int i = 0; i < App->GetScene()->GetSystemTag().size(); ++i)
 	{
-		std::string line;
-
-		// Load the settings variables
-		if (std::getline(in_file, line))
-		{
-			mCulling = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mEngineVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mEngineFpsLimit = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mGameVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mGameFpsLimit = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mGrid = std::stoi(line.substr(line.find(":") + 1));
-		}
-
-		std::vector<const char*> panelNames = EngineApp->GetEditor()->GetPanelNames();
-
-		// Load the windows state
-		if (std::getline(in_file, line))
-		{
-			int numWindows = std::stoi(line);
-
-			for (int i = 0; i < numWindows; ++i)
-			{
-				WindowState* windowState = new WindowState();
-
-				if (std::getline(in_file, line)) windowState->name = line.c_str();
-				if (std::getline(in_file, line)) windowState->IsOpen = std::stoi(line);
-				if (std::getline(in_file, line))
-				{
-					std::istringstream iss(line);
-					iss >> windowState->position.x >> windowState->position.y;
-				}
-				if (std::getline(in_file, line))
-				{
-					std::istringstream iss(line);
-					iss >> windowState->size.x >> windowState->size.y;
-				}
-				auto it = std::find(panelNames.begin(), panelNames.end(), windowState->name);
-				bool panelExists = it != panelNames.end();
-				if (panelExists)
-				{
-					const char* panelName = *it;
-					if (windowState->name == panelName && windowState->IsOpen)
-					{
-						EngineApp->GetEditor()->GetPanel(panelName)->Open();
-					}
-					mOpenedWindowsInfo.push_back(windowState);
-				}
-			}
-		}
-
-		// EngineApply the loaded settings to the ImGui panel
-		EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
-		EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
-		EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
-		EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
-		EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
-		EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
-
-		// Load the docking layout
-		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
-		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
-		in_file.close();
+		tag.AddInt(App->GetScene()->GetSystemTag()[i]->GetName().c_str(), App->GetScene()->GetSystemTag()[i]->GetID());
 	}
+	scene.AddObject("Tags", tag);
+	archive->AddObject("Scene", scene);
+
+	std::string fileBuffer = archive->Serialize();
+
+	std::string savePath = "projectSettings.txt";
+	App->GetFileSystem()->Save(savePath.c_str(), fileBuffer.c_str(), static_cast<unsigned int>(fileBuffer.length() + 1));
+
+	delete archive;
 }
+
+void SettingsPanel::LoadSettings()
+{
+	//std::ifstream userSettings("userSettings.txt");
+	//
+	//std::string line;
+	//
+	//float3 cameraPosition;
+	//float3 cameraRotation;
+	//
+	//if (userSettings.is_open())
+	//{
+	//	std::getline(userSettings, line);
+	//	for (int i = 0; i < 3; ++i)
+	//	{
+	//		if (std::getline(userSettings, line))
+	//		cameraPosition[i] = std::stof(line);
+	//	}
+	//	std::getline(userSettings, line);
+	//	for (int i = 0; i < 3; ++i)
+	//	{
+	//		if (std::getline(userSettings, line))
+	//		cameraRotation[i] = std::stof(line);
+	//	}
+	//
+	//	EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(cameraPosition);
+	//	EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(cameraRotation);
+	//	
+	//	std::getline(userSettings, line);
+	//	std::getline(userSettings, line);
+	//	App->GetScene()->Load(line.c_str());
+	//
+	//}
+}	
+
+//void SettingsPanel::LoadProjectSettings()
+//{
+	//mOpenedWindowsInfo.clear();
+	//// Load the settings for all the windows
+	//std::ifstream in_file("projectSettings.txt");
+	//if (in_file.is_open()) 
+	//{
+	//	std::string line;
+	//
+	//	// Load the settings variables
+	//	if (std::getline(in_file, line))
+	//	{
+	//		mCulling = std::stoi(line.substr(line.find(":") + 1));
+	//	}
+	//	if (std::getline(in_file, line))
+	//	{
+	//		mEngineVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
+	//	}
+	//	if (std::getline(in_file, line))
+	//	{
+	//		mEngineFpsLimit = std::stoi(line.substr(line.find(":") + 1));
+	//	}
+	//	if (std::getline(in_file, line))
+	//	{
+	//		mGameVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
+	//	}
+	//	if (std::getline(in_file, line))
+	//	{
+	//		mGameFpsLimit = std::stoi(line.substr(line.find(":") + 1));
+	//	}
+	//	if (std::getline(in_file, line))
+	//	{
+	//		mGrid = std::stoi(line.substr(line.find(":") + 1));
+	//	}
+	//
+	//	std::vector<const char*> panelNames = EngineApp->GetEditor()->GetPanelNames();
+	//
+	//	// Load the windows state
+	//	if (std::getline(in_file, line))
+	//	{
+	//		int numWindows = std::stoi(line);
+	//
+	//		for (int i = 0; i < numWindows; ++i)
+	//		{
+	//			WindowState* windowState = new WindowState();
+	//
+	//			if (std::getline(in_file, line)) windowState->name = line.c_str();
+	//			if (std::getline(in_file, line)) windowState->IsOpen = std::stoi(line);
+	//			if (std::getline(in_file, line))
+	//			{
+	//				std::istringstream iss(line);
+	//				iss >> windowState->position.x >> windowState->position.y;
+	//			}
+	//			if (std::getline(in_file, line))
+	//			{
+	//				std::istringstream iss(line);
+	//				iss >> windowState->size.x >> windowState->size.y;
+	//			}
+	//			auto it = std::find(panelNames.begin(), panelNames.end(), windowState->name);
+	//			bool panelExists = it != panelNames.end();
+	//			if (panelExists)
+	//			{
+	//				const char* panelName = *it;
+	//				if (windowState->name == panelName && windowState->IsOpen)
+	//				{
+	//					EngineApp->GetEditor()->GetPanel(panelName)->Open();
+	//				}
+	//				mOpenedWindowsInfo.push_back(windowState);
+	//			}
+	//		}
+	//	}
+	//
+	//	// EngineApply the loaded settings to the ImGui panel
+	//	EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
+	//	EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
+	//	EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
+	//	EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
+	//	EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
+	//	EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
+	//
+	//	// Load the docking layout
+	//	std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
+	//	ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
+	//	in_file.close();
+	//}
+//}

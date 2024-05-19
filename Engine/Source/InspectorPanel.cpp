@@ -181,7 +181,7 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 
 			bool modifiedTransform = false;
 			float3 newPosition = object->mPosition;
-			float3 newRotation = RadToDeg(object->mEulerRotation);
+			float3 newRotation = RadToDeg(object->mLocalEulerAngles);
 			float3 newScale = object->mScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
@@ -472,21 +472,21 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	}
 	ImGui::Text("tag is ");
 	ImGui::SameLine();
-	GameObject* found = GameObject::FindGameObjectWithTag(tags[component->mTestSavedTag1]->GetName());
-	if (found != nullptr)
-	{
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
-	}
-	else 
-	{
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
-	}
+	//GameObject* found = GameObject::FindGameObjectWithTag(tags[component->mTestSavedTag1]->GetName());
+	//if (found != nullptr)
+	//{
+	//	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
+	//}
+	//else 
+	//{
+	//	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
+	//}
 
 
 	ImGui::Separator();
 	ImGui::Text("There is ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), std::to_string(GameObject::FindGameObjectsWithTag(tags[component->mTestSavedTag1]->GetName()).capacity()).c_str());
+	//ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), std::to_string(GameObject::FindGameObjectsWithTag(tags[component->mTestSavedTag1]->GetName()).capacity()).c_str());
 	ImGui::SameLine();
 	ImGui::Text(" gameobjects with the same tag.");
 }

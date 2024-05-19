@@ -6,7 +6,7 @@
 
 PointLightComponent::PointLightComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::POINTLIGHT), mData(light) 
 {
-	const float3& pos = owner->GetWorldPosition();
+	const float3& pos = owner->GetPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
@@ -17,7 +17,7 @@ PointLightComponent::~PointLightComponent() { App->GetOpenGL()->RemovePointLight
 
 const float* PointLightComponent::GetPosition() const 
 { 
-	return mOwner->GetWorldPosition().ptr(); 
+	return mOwner->GetPosition().ptr(); 
 }
 
 void PointLightComponent::SetPosition(const float pos[3])
@@ -51,7 +51,7 @@ void PointLightComponent::SetRadius(float radius)
 void PointLightComponent::Update()
 {
 	//TODO: No mirarlo cada frame ??
-	const float* pos = mOwner->GetWorldPosition().ptr();
+	const float* pos = mOwner->GetPosition().ptr();
 	for (int i = 0; i < 3; ++i)
 	{
 		if (pos[i] != mData.pos[i])

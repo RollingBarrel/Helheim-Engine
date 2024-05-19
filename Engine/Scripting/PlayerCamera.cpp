@@ -24,24 +24,21 @@ void PlayerCamera::Start()
     ModuleScene* scene = App->GetScene();
     //scene->FindGameObjectsWithTag(scene->GetRoot(), scene->GetTagByName("CombatArea")->GetID(), mCombatAreas);
 
-
     //follow the target
     if (mFollowTarget)
     {
-        float3 actualPosition = mGameObject->GetWorldPosition();
-        mGameObject->SetPosition(float3(mFollowTarget->GetWorldPosition().x, actualPosition.y, actualPosition.z));
+        float3 actualPosition = mGameObject->GetPosition();
+        mGameObject->SetPosition(float3(mFollowTarget->GetPosition().x, actualPosition.y, actualPosition.z));
     }
     //look at the target
     if (mLookTarget && mCameraComponent)
     {
-        mGameObject->LookAt(mLookTarget->GetWorldPosition());
+        mGameObject->LookAt(mLookTarget->GetPosition());
     }
 
     mAuxLookTarget = mLookTarget;
 
     SetView(float3(0, -10.0f, 16.0f), 0.4f);
-
-
 }
 
 void PlayerCamera::Update()
@@ -54,7 +51,7 @@ void PlayerCamera::Update()
     float transitionTime = 1.0f;
     static float deltaTime = transitionTime;
 
-    float3 position = mFollowTarget->GetWorldPosition() - mGameObject->GetPosition();
+    float3 position = mFollowTarget->GetPosition() - mGameObject->GetPosition();
 
     if ((position - topPosition).Abs().Length() > 0.9)
     {
@@ -78,7 +75,7 @@ void PlayerCamera::Update()
 
 void PlayerCamera::SetView(float3 position, float rotation)
 {
-    float3 newPosition = mFollowTarget->GetWorldPosition() - position;
+    float3 newPosition = mFollowTarget->GetPosition() - position;
 
     mGameObject->SetPosition(newPosition);
     mGameObject->SetRotation(float3(rotation, 0.0f, 0.0f));

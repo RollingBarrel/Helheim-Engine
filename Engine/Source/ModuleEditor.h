@@ -26,7 +26,7 @@ public:
 	std::map<const char*, Panel*> GetPanelList() { return mPanels; }
 	std::vector<const char*> GetPanelNames() { return mPanelNames; }	
 	void OpenPanel(const char* name, const bool focus);
-	void SaveUserSettings();
+	void SaveSettings();
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
 

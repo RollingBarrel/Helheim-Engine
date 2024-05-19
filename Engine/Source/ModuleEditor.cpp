@@ -81,7 +81,6 @@ bool ModuleEditor::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	io->ConfigDragClickToInputText = true;
-	io->IniFilename = NULL;
 	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->window, EngineApp->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
@@ -102,8 +101,7 @@ bool ModuleEditor::Init()
 	mOptick = new OptickAdapter();
 
 	// Load the saved layout when opening the engine
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadUserSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
 	mPanels[SETTINGSPANEL]->Close();
 
 	Style();
@@ -127,7 +125,6 @@ update_status ModuleEditor::PreUpdate(float dt)
 			}
 		}
 	}
-
 
 	static bool show = true;
 	//ImGui::ShowDemoWindow(&show);
@@ -186,9 +183,9 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 	panel->Open();
 }
 
-void ModuleEditor::SaveUserSettings()
+void ModuleEditor::SaveSettings()
 {
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveUserSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveSettings();
 }
 
 void ModuleEditor::ShowMainMenuBar() 

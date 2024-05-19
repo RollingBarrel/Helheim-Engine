@@ -133,102 +133,7 @@ void GameObject::Update()
 
 #pragma endregion
 
-#pragma region Setters and Getters
-
-Component* GameObject::GetComponent(ComponentType type) const
-{
-	for (Component* component : mComponents)
-	{
-		if (component->GetType() == type)
-		{
-			return component;
-		}
-	}
-	return nullptr;
-}
-
-std::vector<Component*> GameObject::GetComponents(ComponentType type) const
-{
-	std::vector<Component*> matchingComponents;
-
-	for (auto component : mComponents)
-	{
-		if (component->GetType() == type)
-		{
-			matchingComponents.push_back(component);
-		}
-	}
-
-	return matchingComponents;
-}
-
-std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) const
-{
-	std::vector<Component*> componentVector;
-
-	Component* gameObjectComponent = GetComponent(type);
-
-	if (gameObjectComponent)
-	{
-		componentVector.push_back(gameObjectComponent);
-	}
-
-	for (GameObject* child : mChildren)
-	{
-		std::vector<Component*> childComponents = child->GetComponentsInChildren(type);
-		if (!childComponents.empty())
-		{
-			componentVector.insert(componentVector.end(), childComponents.begin(), childComponents.end());
-		}
-
-	}
-
-	return componentVector;
-}
-
-Component* GameObject::GetComponentInParent(ComponentType type) const
-{
-	Component* component = nullptr;
-	const GameObject* parent = this;
-	while (parent)
-	{
-		component = parent->GetComponent(type);
-
-		if (component)
-		{
-			return component;
-		}
-		else
-		{
-			parent = parent->mParent;
-		}
-	}
-	return nullptr;
-}
-
-void GameObject::RecalculateMatrices()
-{
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-	
-	mWorldTransformMatrix =  mLocalTransformMatrix;
-	if (mParent != nullptr)
-	{
-		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
-	}
-	
-
-	for (size_t i = 0; i < mChildren.size(); i++) 
-	{
-		mChildren[i]->RecalculateMatrices();
-	}
-
-}
-
-void GameObject::Translate(float3 translation)
-{
-	SetPosition(mPosition + translation);
-}
-
+#pragma region Getter & Setters
 AABB GameObject::GetAABB()
 {
 	std::vector<Component*> components = GetComponentsInChildren(ComponentType::MESHRENDERER);
@@ -244,33 +149,6 @@ AABB GameObject::GetAABB()
 	return mixedAABB;
 }
 
-void GameObject::LookAt(float3 target)
-{
-	float4x4 rotationMatrix = float4x4::identity;
-
-	//rotationMatrix = rotationMatrix.RotateFromTo(GetFront().Normalized() , (target - mPosition).Normalized());
-	
-	float3 forward = -(target - GetWorldPosition()).Normalized();
-	float3 right = Cross(forward, float3::unitY).Normalized();
-	float3 up = Cross(right, forward).Normalized();
-	
-	rotationMatrix[0][0] = right.x;
-	rotationMatrix[1][0] = right.y;
-	rotationMatrix[2][0] = right.z;
-	rotationMatrix[0][1] = up.x;
-	rotationMatrix[1][1] = up.y;
-	rotationMatrix[2][1] = up.z;
-	rotationMatrix[0][2] = -forward.x;
-	rotationMatrix[1][2] = -forward.y;
-	rotationMatrix[2][2] = -forward.z;
-
-	
-	mRotation = Quat(rotationMatrix);
-	mEulerRotation = mRotation.ToEulerXYZ();
-
-	mIsTransformModified = true;
-}
-
 void GameObject::SetEnabled(bool enabled)
 {
 	// TODO, kind of redundant, no?
@@ -283,32 +161,6 @@ void GameObject::SetEnabled(bool enabled)
 			SetActiveInHierarchy(enabled);
 		}
 	}
-}
-
-void GameObject::SetRotation(const float3& rotationInRadians)
-{
-	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
-	mEulerRotation = rotationInRadians;
-	mIsTransformModified = true;
-}
-
-void GameObject::SetRotation(const Quat& rotation)
-{
-	mRotation = rotation;
-	mEulerRotation = rotation.ToEulerXYZ();
-	mIsTransformModified = true;
-}
-
-void GameObject::SetPosition(const float3& position)
-{
-	mPosition = position;
-	mIsTransformModified = true;
-}
-
-void GameObject::SetScale(const float3& scale)
-{
-	mScale = scale;
-	mIsTransformModified = true;
 }
 
 void GameObject::SetActiveInHierarchy(bool active)
@@ -332,16 +184,147 @@ void GameObject::SetActiveInHierarchy(bool active)
 	}
 }
 
+#pragma endregion
 
+#pragma region Transform
+void GameObject::RecalculateMatrices()
+{
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+
+	mWorldTransformMatrix = mLocalTransformMatrix;
+	if (mParent != nullptr)
+	{
+		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+	}
+
+	for (size_t i = 0; i < mChildren.size(); i++)
+	{
+		mChildren[i]->RecalculateMatrices();
+	}
+
+}
+
+//Position
+void GameObject::SetPosition(const float3& position)
+{
+	mPosition = position;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetLocalPosition(const float3& position)
+{
+	mLocalPosition = position;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetRotation(const float3& rotationInRadians)
+{
+	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
+	mEulerAngles = rotationInRadians;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetLocalRotation(const float3& rotationInRadians)
+{
+	mLocalRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
+	mLocalEulerAngles = rotationInRadians;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetRotation(const Quat& rotation)
+{
+	mRotation = rotation;
+	mEulerAngles = rotation.ToEulerXYZ();
+	mIsTransformModified = true;
+}
+
+void GameObject::SetLocalRotation(const Quat& rotation)
+{
+	mLocalRotation = rotation;
+	mLocalEulerAngles = rotation.ToEulerXYZ();
+	mIsTransformModified = true;
+}
+
+void GameObject::SetScale(const float3& scale)
+{
+	mScale = scale;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetLocalScale(const float3& scale)
+{
+	mLocalScale = scale;
+	mIsTransformModified = true;
+}
+
+const bool GameObject::HasUpdatedTransform() const
+{
+	if (!mIsTransformModified && mParent != nullptr)
+	{
+		if (mParent->HasUpdatedTransform())
+		{
+			return true;
+		}
+	}
+	return mIsTransformModified;
+}
+
+void GameObject::Translate(float3 translation)
+{
+	SetPosition(mPosition + translation);
+}
+
+void GameObject::LookAt(float3 target)
+{
+	float4x4 rotationMatrix = float4x4::identity;
+
+	float3 forward = -(target - GetPosition()).Normalized();
+	float3 right = Cross(forward, float3::unitY).Normalized();
+	float3 up = Cross(right, forward).Normalized();
+
+	rotationMatrix[0][0] = right.x;
+	rotationMatrix[1][0] = right.y;
+	rotationMatrix[2][0] = right.z;
+	rotationMatrix[0][1] = up.x;
+	rotationMatrix[1][1] = up.y;
+	rotationMatrix[2][1] = up.z;
+	rotationMatrix[0][2] = -forward.x;
+	rotationMatrix[1][2] = -forward.y;
+	rotationMatrix[2][2] = -forward.z;
+
+
+	mRotation = Quat(rotationMatrix);
+	mEulerAngles = mRotation.ToEulerXYZ();
+
+	mIsTransformModified = true;
+}
+
+void GameObject::ResetTransform()
+{
+	SetPosition(float3::zero);
+	SetRotation(float3::zero);
+	SetScale(float3::one);
+}
+
+void GameObject::RefreshBoundingBoxes()
+{
+	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
+	{
+		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
+		App->GetScene()->SetShouldUpdateQuadtree(true);
+
+	}
+	else
+	{
+		for (auto children : mChildren)
+		{
+			children->RefreshBoundingBoxes();
+		}
+	}
+}
 #pragma endregion
 
 #pragma region Components
-
-void GameObject::AddComponentToDelete(Component* component)
-{
-	mComponentsToDelete.push_back(component);
-}
-
 //TODO: Crate a component that requires ids not clean now
 Component* GameObject::CreateComponent(ComponentType type)
 {
@@ -358,14 +341,14 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::POINTLIGHT:
 	{
-		const float3 pos = GetWorldPosition();
+		const float3 pos = mPosition;
 		const PointLight def = { pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f };
 		newComponent = new PointLightComponent(this, def);
 		break;
 	}
 	case ComponentType::SPOTLIGHT:
 	{
-		const float3 pos = GetWorldPosition();
+		const float3 pos = mPosition;
 		const SpotLight def = { 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) };
 		newComponent = new SpotLightComponent(this, def);
 		break;
@@ -427,6 +410,95 @@ Component* GameObject::CreateComponent(ComponentType type)
 	return newComponent;
 }
 
+Component* GameObject::GetComponent(ComponentType type) const
+{
+	for (Component* component : mComponents)
+	{
+		if (component->GetType() == type)
+		{
+			return component;
+		}
+	}
+	return nullptr;
+}
+
+std::vector<Component*>& GameObject::GetComponents(ComponentType type) const
+{
+	std::vector<Component*> matchingComponents;
+
+	for (auto component : mComponents)
+	{
+		if (component->GetType() == type)
+		{
+			matchingComponents.push_back(component);
+		}
+	}
+
+	return matchingComponents;
+}
+
+std::vector<Component*>& GameObject::GetComponentsInChildren(ComponentType type) const
+{
+	std::vector<Component*> componentVector;
+
+	Component* gameObjectComponent = GetComponent(type);
+
+	if (gameObjectComponent)
+	{
+		componentVector.push_back(gameObjectComponent);
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		std::vector<Component*> childComponents = child->GetComponentsInChildren(type);
+		if (!childComponents.empty())
+		{
+			componentVector.insert(componentVector.end(), childComponents.begin(), childComponents.end());
+		}
+
+	}
+
+	return componentVector;
+}
+
+Component* GameObject::GetComponentInParent(ComponentType type) const
+{
+	Component* component = nullptr;
+	const GameObject* parent = this;
+	while (parent)
+	{
+		component = parent->GetComponent(type);
+
+		if (component)
+		{
+			return component;
+		}
+		else
+		{
+			parent = parent->mParent;
+		}
+	}
+	return nullptr;
+}
+
+void GameObject::AddComponent(Component* component, Component* position)
+{
+	if (position == nullptr)
+	{
+		mComponents.push_back(component);
+	}
+	else
+	{
+		auto it = std::find(mComponents.begin(), mComponents.end(), position);
+		mComponents.insert(it, component);
+	}
+}
+
+void GameObject::AddComponentToDelete(Component* component)
+{
+	mComponentsToDelete.push_back(component);
+}
+
 void GameObject::DeleteComponents()
 {
 	for (auto component : mComponentsToDelete)
@@ -455,107 +527,6 @@ Component* GameObject::RemoveComponent(Component* component)
 	}
 	return movedComponent;
 }
-
-void GameObject::AddComponent(Component* component, Component* position)
-{
-	if (position == nullptr)
-	{
-		mComponents.push_back(component);
-	}
-	else
-	{
-		auto it = std::find(mComponents.begin(), mComponents.end(), position);
-		mComponents.insert(it, component);
-	}
-}
-
-std::vector<Component*> GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
-{
-	std::vector<Component*> components = parent->GetComponents(type);
-
-	std::vector<GameObject*> children = parent->GetChildren();
-	for (GameObject* child : children)
-	{
-		std::vector<Component*> childComponents = FindComponentsInChildren(child, type);
-		components.insert(components.end(), childComponents.begin(), childComponents.end());
-	}
-
-	return components;
-}
-
-const AnimationComponent* GameObject::FindAnimationComponent() {
-
-	const AnimationComponent* cAnim = reinterpret_cast<AnimationComponent*>(this->GetComponent(ComponentType::ANIMATION));
-	if (cAnim == nullptr && mParent != nullptr)
-	{
-		return mParent->FindAnimationComponent();
-	}
-	else
-		return cAnim;
-
-	return nullptr;
-}
-
-#pragma endregion
-
-#pragma region Transform
-
-void GameObject::ResetTransform()
-{
-	SetPosition(float3::zero);
-	SetRotation(float3::zero);
-	SetScale(float3::one);
-}
-
-void GameObject::RecalculateLocalTransform() 
-{
-	if (mParent->mWorldTransformMatrix.Determinant4() != 0)
-	{
-		mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
-	}
-	else 
-	{
-		mLocalTransformMatrix = float4x4::identity;
-	}
-
-	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
-	mEulerRotation = mRotation.ToEulerXYZ();
-
-	if (mEulerRotation.Equals(float3::zero)) 
-	{
-		mEulerRotation = float3::zero;
-	}
-}
-
-const bool GameObject::HasUpdatedTransform() const
-{
-	if (!mIsTransformModified && mParent != nullptr)
-	{
-		if (mParent->HasUpdatedTransform())
-		{
-			return true;
-		}
-	}
-	return mIsTransformModified;
-}
-
-void GameObject::RefreshBoundingBoxes()
-{
-	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
-		App->GetScene()->SetShouldUpdateQuadtree(true);
-		
-	}
-	else
-	{
-		for (auto children : mChildren)
-		{
-			children->RefreshBoundingBoxes();
-		}
-	}
-}
-
 #pragma endregion
 
 #pragma region Save / Load
@@ -591,7 +562,23 @@ void GameObject::Save(Archive& archive) const
 	}
 
 	archive.AddObjectArray("Components", componentsArchiveVector);
+}
 
+void GameObject::Load(const rapidjson::Value& gameObjectsJson)
+{
+	// Manage GameObjects inside the Scene
+	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
+	{
+		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
+		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+		{
+			if (gameObjects[i].IsObject())
+			{
+				//LoadGameObjectFromJSON(gameObjects[i], this);
+			}
+		}
+	}
+	RecalculateMatrices();
 }
 
 void GameObject::LoadComponentsFromJSON(const rapidjson::Value& components)
@@ -781,26 +768,6 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 	}
 
 }
-
-void GameObject::Load(const rapidjson::Value& gameObjectsJson)
-{
-	//GameObject* scene = App->GetScene()->GetRoot();
-
-	// Manage GameObjects inside the Scene
-	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
-	{
-		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
-		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-		{
-			if (gameObjects[i].IsObject())
-			{
-				//LoadGameObjectFromJSON(gameObjects[i], this);
-			}
-		}
-	}
-	RecalculateMatrices();
-}
-
 #pragma endregion
 
 #pragma region Finds
@@ -887,13 +854,18 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID)
 	return gameObjectParent;
 }
 
-std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
+std::vector<Component*>& GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
 {
-	std::vector<GameObject*> foundGameObjects;
-	Tag* tag = App->GetScene()->GetTagByName(tagname);
-	App->GetScene()->FindGameObjectsWithTag(tag->GetID(), foundGameObjects);
+	std::vector<Component*> components = parent->GetComponents(type);
 
-	return foundGameObjects;
+	std::vector<GameObject*> children = parent->GetChildren();
+	for (GameObject* child : children)
+	{
+		std::vector<Component*> childComponents = FindComponentsInChildren(child, type);
+		components.insert(components.end(), childComponents.begin(), childComponents.end());
+	}
+
+	return components;
 }
 
 GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
@@ -911,28 +883,14 @@ GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 
 }
 
-std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind) {
+std::vector<GameObject*>& GameObject::FindGameObjectsWithTag(std::string tagname)
+{
+	std::vector<GameObject*> foundGameObjects;
+	Tag* tag = App->GetScene()->GetTagByName(tagname);
+	App->GetScene()->FindGameObjectsWithTag(tag->GetID(), foundGameObjects);
 
-	if (currentGameObject.first == nullptr)
-	{
-		std::vector<GameObject*> children = owner->GetChildren();
-		currentGameObject.second++;
-
-		if (currentGameObject.second == objectToFind)
-		{
-			std::pair<GameObject*, int> pair(owner, currentGameObject.second);
-			return pair;
-		}
-
-		for (GameObject* child : children)
-		{
-			currentGameObject = RecursiveTreeSearch(child, currentGameObject, objectToFind);
-		}
-	}
-
-	return currentGameObject;
+	return foundGameObjects;
 }
-
 #pragma endregion
 
 #pragma region Children
@@ -961,7 +919,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 		}
 	}
 
-	child->RecalculateLocalTransform();
+	child->RecalculateMatrices();
 	child->SetActiveInHierarchy(mIsActive && child->mIsEnabled);
 
 	if (!inserted)

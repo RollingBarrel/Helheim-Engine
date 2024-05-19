@@ -300,14 +300,14 @@ void PlayerController::HandleRotation()
     std::map<float, Hit> hits;
     float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
     Ray ray = Physics::ScreenPointToRay(mousePosition);
-    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
+    Plane plane = Plane(mGameObject->GetPosition(), float3::unitY);
     
     float distance;
     bool intersects = plane.Intersects(ray, &distance);
     float3 hitPoint = ray.GetPoint(distance);
     if (intersects)
     {
-        float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
+        float3 target = float3(hitPoint.x, mGameObject->GetPosition().y, hitPoint.z);
         mGameObject->LookAt(target);
     }
 
