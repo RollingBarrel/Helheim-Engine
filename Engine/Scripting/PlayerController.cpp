@@ -528,7 +528,7 @@ void PlayerController::Reload()
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
-void PlayerController::SetShield(float shield)
+void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield)
     {

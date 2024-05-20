@@ -32,7 +32,7 @@ void ItemHealth::Update()
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
         if (playerScript != nullptr)
         {
-            playerScript->SetShield(mHealthRecovered);
+            playerScript->RechargeShield(mHealthRecovered);
         }
     }
 }

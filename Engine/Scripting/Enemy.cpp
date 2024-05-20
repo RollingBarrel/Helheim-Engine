@@ -5,9 +5,7 @@
 #include "ModuleDetourNavigation.h"
 #include "Keys.h"
 #include "Math/MathFunc.h"
-
 #include "ModuleResource.h"
-
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
@@ -42,8 +40,7 @@ bool Enemy::IsPlayerInRange(float range)
 }
 
 void Enemy::TakeDamage(float damage) 
-{
-    
+{   
     mHealth -= damage;
     
     //LOG("Enemy Health: %f", mHealth);
@@ -58,7 +55,7 @@ void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
 
-    //if (ChanceDropping())
+    //if (randomValue < 20)
     //{
         DropHealth();
     //}
@@ -84,19 +81,8 @@ void Enemy::PushBack()
     mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
 }
 
-bool Enemy::ChanceDropping()
-{
-    if (randomValue < 20)
-    {
-        return true;
-    }
-    else return false;
-}
-
 void Enemy::DropHealth()
 {
-    //App->GetScene()->Find("Item_Health")->SetEnabled(true);
-
     if (!mCreateItem)
     {
         mCreateItem = true;
