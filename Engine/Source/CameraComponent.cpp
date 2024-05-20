@@ -9,6 +9,9 @@
 #include "Quadtree.h"
 #include "MeshRendererComponent.h"
 
+#include "Math/MathConstants.h"
+#include "Math/MathFunc.h"
+
 CameraComponent::CameraComponent(GameObject* owner) :Component(owner, ComponentType::CAMERA)
 {
     mFrustum.pos = owner->GetPosition();

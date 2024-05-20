@@ -474,7 +474,7 @@
     </ClInclude>
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h">
       <Filter>Dependencies\ImGuizmo</Filter>
-    </ClCompile>
+    </ClInclude>
     <ClInclude Include="ModuleEngineCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>

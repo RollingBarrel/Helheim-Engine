@@ -1114,13 +1114,11 @@
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="trail_fragment.glsl" />
-    <None Include="trail_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\trail_fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\trail_vertex.glsl">
-          <Filter>Shaders</Filter>
+      <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl">
       <Filter>Shaders</Filter>
