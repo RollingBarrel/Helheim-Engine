@@ -15,7 +15,6 @@ public:
 
 	const float2& GetWindowsPos() { return mWindowsPosition; };
 	const float2& GetWindowsSize() { return mWindowsSize; }
-	const float2& GetMousePosition() { return mMousePosition; }
 	bool IsGuizmoUsing() { return mIsGuizmoUsing; }
 
 private:
@@ -28,7 +27,6 @@ private:
 
 	float2 mWindowsPosition;
 	float2 mWindowsSize;
-	float2 mMousePosition;
   
 	bool mIsGuizmoUsing = false;
 	unsigned int currentScene = 0;

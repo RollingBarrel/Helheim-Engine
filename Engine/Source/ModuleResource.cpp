@@ -9,6 +9,7 @@
 #include "ResourceModel.h"
 #include "ResourceScript.h"
 #include "ResourceAnimation.h"
+#include "ResourceNavMesh.h"
 
 #include "SaveLoadModel.h"
 #include "SaveLoadMesh.h"
@@ -16,6 +17,7 @@
 #include "SaveLoadAnimation.h"
 #include "SaveLoadScript.h"
 #include "SaveLoadTexture.h"
+#include "SaveLoadNavMesh.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -96,6 +98,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 	case Resource::Type::Mesh:
 	{
 		ret = Importer::Mesh::Load(lPath, uid);
+		break;
+	}
+	case Resource::Type::NavMesh:
+	{
+		ret = Importer::NavMesh::Load(lPath, uid);
 		break;
 	}
 	case Resource::Type::Material:

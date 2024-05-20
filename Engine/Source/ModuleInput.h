@@ -102,9 +102,8 @@ public:
 
 	KeyState GetMouseKey(MouseKey id) const { return mMouse[id]; }
 	void GetMouseMotion(int& x, int& y) const { x = mMouseMotionX; y = mMouseMotionY; }
-	void GetMousePosition(int& x, int& y) const { x = mMousePositionX; y = mMousePositionY; }
-	float2 GetGameMousePosition() const { return mGameMousePosition; }
-	void SetGameMousePosition(float2 gameMousePosition) { mGameMousePosition = gameMousePosition; }
+	float2 GetLocalMousePosition() const { return float2(mMouseLocalPositionX, mMouseLocalPositionY); }
+	float2 GetGlobalMousePosition() const { return float2(mMouseGlobalPositionX, mMouseGlobalPositionY); }
 	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
 
@@ -125,9 +124,10 @@ protected:
 	KeyState* mKeyboard = 0;
 	int mMouseMotionX = 0;
 	int mMouseMotionY = 0;
-	int mMousePositionX = 0;
-	int mMousePositionY = 0;
-	float2 mGameMousePosition;
+	int mMouseLocalPositionX = 0; //Local is the position inside the window and global the position relative to the desktop
+	int mMouseLocalPositionY = 0;
+	int mMouseGlobalPositionX = 0;
+	int mMouseGlobalPositionY = 0;
 
 	int mWheelY = 0;
 

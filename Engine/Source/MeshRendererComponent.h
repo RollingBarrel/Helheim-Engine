@@ -19,26 +19,25 @@ public:
 	~MeshRendererComponent();
 
 	void Reset() override {}
-
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
 	void RefreshBoundingBoxes();
 	const OBB& GetOBB() const { return mOBB; }
-	const ResourceMesh* GetResourceMesh() const { return mMesh; }
-	void SetMesh(unsigned int uid);
 	const AABB& GetAABB() const { return mAABB; }
 	const AABB& GetAABBWorld() const { return mAABBWorld; }
 
+	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
+	void SetMesh(unsigned int uid);
 	void SetMaterial(unsigned int uid);
 
 private:
-	ResourceMesh* mMesh = nullptr;
-	ResourceMaterial* mMaterial = nullptr;
-
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
+	ResourceMesh* mMesh = nullptr;
+	ResourceMaterial* mMaterial = nullptr;
 
 	OBB mOBB;
 	AABB mAABB;

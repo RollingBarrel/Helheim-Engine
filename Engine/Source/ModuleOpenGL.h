@@ -16,6 +16,7 @@ typedef struct DirectionalLight
 
 class PointLightComponent;
 class SpotLightComponent;
+class CameraComponent;
 struct PointLight;
 struct SpotLight;
 struct SDL_Texture;
@@ -74,7 +75,6 @@ public:
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
-
 
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
