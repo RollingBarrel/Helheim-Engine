@@ -10,6 +10,7 @@
 #include "TagsManagerPanel.h"
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
 #include "GameObject.h"
@@ -51,36 +52,36 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
-	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
+	mFocusedGameObject= hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) 
 	{
-		focusedObject = mLockedGameObject;
+		mFocusedGameObject = mLockedGameObject;
 	}
 
-	if (focusedObject == nullptr) return;
+	if (mFocusedGameObject == nullptr) return;
 
 	char nameArray[100];
-	strcpy_s(nameArray, focusedObject->mName.c_str());
-	bool enabled = focusedObject->IsEnabled();
-	ImGui::PushID(focusedObject->mID);
+	strcpy_s(nameArray, mFocusedGameObject->mName.c_str());
+	bool enabled = mFocusedGameObject->IsEnabled();
+	ImGui::PushID(mFocusedGameObject->mID);
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	if (!focusedObject->IsRoot())
+	if (!mFocusedGameObject->IsRoot())
 	{
 		if (ImGui::Checkbox("##enabled", &enabled))
 		{
-			focusedObject->SetEnabled(enabled);
+			mFocusedGameObject->SetEnabled(enabled);
 		}
 		ImGui::SameLine();
 
 
 		// Rename
-		ImGui::PushID(focusedObject->mID);
+		ImGui::PushID(mFocusedGameObject->mID);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
-		focusedObject->mName = nameArray;
+		mFocusedGameObject->mName = nameArray;
 		ImGui::PopID();
 
 		// Lock
@@ -97,7 +98,7 @@ void InspectorPanel::Draw(int windowFlags)
 		{
 			mLocked = !mLocked;
 			if (mLocked) {
-				mLockedGameObject = focusedObject;
+				mLockedGameObject = mFocusedGameObject;
 			}
 			else
 			{
@@ -105,23 +106,23 @@ void InspectorPanel::Draw(int windowFlags)
 			}
 		}
 		//ImGui::PopItemWidth();
-		bool dynamic = focusedObject->IsDynamic();
+		bool dynamic = mFocusedGameObject->IsDynamic();
 		if (ImGui::Checkbox("Dynamic",&dynamic))
 		{
-			focusedObject->SetDynamic(dynamic);
+			mFocusedGameObject->SetDynamic(dynamic);
 		}
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
 		std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
-		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
+		if (ImGui::BeginCombo("##tags", mFocusedGameObject->GetTag()->GetName().c_str()))
 		{
 			for (auto i = 0; i < tags.size(); i++) 
 			{
 				if (ImGui::Selectable(tags[i]->GetName().c_str()))
 				{
-					focusedObject->SetTag(tags[i]);
+					mFocusedGameObject->SetTag(tags[i]);
 				}
 			}
 
@@ -135,15 +136,15 @@ void InspectorPanel::Draw(int windowFlags)
 			EngineApp->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
 		}
 
-		if (focusedObject->mPrefabResourceId != 0) {
+		if (mFocusedGameObject->mPrefabResourceId != 0) {
 			ImGui::Text("From Prefab");
-			ImGui::Checkbox("Override Prefab", &focusedObject->mPrefabOverride);
+			ImGui::Checkbox("Override Prefab", &mFocusedGameObject->mPrefabOverride);
 		}
 
-		DrawTransform(focusedObject);
-		DrawComponents(focusedObject);
+		DrawTransform(mFocusedGameObject);
+		DrawComponents(mFocusedGameObject);
 		ImGui::Separator();
-		AddComponentButton(focusedObject);
+		AddComponentButton(mFocusedGameObject);
 	}
 
 	if (mSameComponentPopup)
@@ -718,6 +719,14 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 		component->SetFOV(FOV);
 	}
 	ImGui::PopID();
+	if (mFocusedGameObject)
+	{
+		CameraComponent* camera = reinterpret_cast<CameraComponent*>(mFocusedGameObject->GetComponent(ComponentType::CAMERA));
+		if (camera)
+		{
+			EngineApp->GetDebugDraw()->DrawFrustum(camera->GetFrustum());
+		}
+	}
 }
 
 void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
@@ -964,6 +973,11 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1f, 0.0f, maxTimeValue))
 	{
 		component->SetEndTime(currentEndTime);
+	}
+
+	if (mFocusedGameObject && mFocusedGameObject->GetComponent(ComponentType::ANIMATION))
+	{
+		EngineApp->GetDebugDraw()->DrawSkeleton(mFocusedGameObject);
 	}
 }
 

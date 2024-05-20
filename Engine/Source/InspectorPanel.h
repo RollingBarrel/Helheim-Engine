@@ -33,7 +33,7 @@ private:
 	
 	GameObject* mLockedGameObject = nullptr;
 	Component* mComponent = nullptr;
-
+	GameObject* mFocusedGameObject = nullptr;
 	bool mLocked = false;
 	bool mSameComponentPopup = false;
 

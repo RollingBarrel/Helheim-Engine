@@ -9,6 +9,7 @@
 #include "Geometry/Plane.h"
 #include "AnimationComponent.h"
 #include "AudioSourceComponent.h"
+#include "Debug.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
 #include "SliderComponent.h"
@@ -507,6 +508,7 @@ void PlayerController::Shoot(float damage)
     ray.pos.y++;
     ray.dir = mGameObject->GetFront();
     
+    Debug::DrawLine(ray.pos, ray.pos + ray.dir * 100, float3(0.0f, 0.0f, 1.0f));
     float distance = 100.0f;
     hits = Physics::Raycast(&ray);
     
