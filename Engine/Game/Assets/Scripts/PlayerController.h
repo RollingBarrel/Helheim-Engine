@@ -18,7 +18,7 @@ enum class PlayerState
     MOVE,
     ATTACK,
     MOVE_ATTACK,
-    DEATH
+    DEATH,
 };
 
 enum class BattleSituation {
@@ -54,11 +54,13 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
-        bool IsMoving();
         void Dash();
         void Attack();
 
         void MeleeAttack();
+        void MeleeBaseCombo();
+
+        void MeleeHit(float AttackRange, float AttackDamage);
         void RangedAttack();
         void Move(float3 position);
         void HandleRotation();
@@ -90,6 +92,7 @@ class PlayerController :public Script
         GameManager* mGameManager = nullptr;
         GameObject* mGameManagerGO = nullptr;
 
+
         //Stats
         float mPlayerSpeed = 2.0f;
         float mShield = 0.0f;
@@ -97,6 +100,7 @@ class PlayerController :public Script
         float mSanity = 0.0f;
         float mMaxSanity = 100.0f;
         bool mPlayerIsDead = false;
+        float3 mMoveDirection = float3::zero;
 
         //Dash
         bool mIsDashing = false;
@@ -106,7 +110,6 @@ class PlayerController :public Script
         float mDashTimer = 0.0f;
         float mDashDuration = 0.5f;
         float mDashRange = 8.0f;
-        float3 mDashDirection = float3::zero;
 
         //Range
         int mAmmoCapacity = 500000;
@@ -118,16 +121,25 @@ class PlayerController :public Script
         float mMaxRangeChargeTime = 10.0f;
         GameObject* bullet = nullptr;
 
-        float startingTime = 0.0F;
-
-        //Melee
-        float mMeleeBaseDamage = 1.0f;
-        float mMeleeChargeAttackMultiplier = 5.0f;
-        float mMinMeleeChargeTime = 5.0f;
-        float mMaxMeleeChargeTime = 10.0f;
-        
         float mChargedTime = 0.0f;
         bool mIsChargedAttack = false;
+
+        float mRangeTimer = 0.0f;
+
+        //Melee
+       float mMeleeBaseDamage = 2.0f;
+        float mMeleeBaseRange = 1.0f;
+   	    float mMeleeBaseSpeed = 8.0f;
+        int mMeleeBaseComboStep = 1;
+        float mMeleeBaseComboTimer = 0.0f;
+        const float mMeleeBaseMaxComboInterval = 5.0f; 
+        const float mMeleeBaseFinalAttackDuration = 0.5f; 
+        float mMeleeBaseFinalAttackTimer = 0.0f;
+        bool mIsMeleeBaseComboActive = false;
+        float mMeleeBaseMoveDuration = 0.5f;
+        float mMeleeBaseMoveRange = 8.0f;
+
+
 
         //HUD
         GameObject* mShieldGO = nullptr;

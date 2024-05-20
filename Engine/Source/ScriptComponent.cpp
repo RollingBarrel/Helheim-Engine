@@ -66,7 +66,10 @@ void ScriptComponent::Update()
 
 Component* ScriptComponent::Clone(GameObject* owner) const
 {
-	return new ScriptComponent(*this, owner);
+	ScriptComponent* scriptComponent = new ScriptComponent(*this, owner);
+	scriptComponent->mScript->Awake();
+	return scriptComponent;
+
 }
 
 void ScriptComponent::Reset()
@@ -77,44 +80,49 @@ void::ScriptComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddString("ScriptName",mName.c_str());
-
-	std::vector<Archive> objectArray;
-	std::vector<Member*> members = mScript->GetMembers();
-
-	for (const Member* member : members) 
+	
+	
+	if (mScript)
 	{
+		std::vector<Archive> objectArray;
+		std::vector<Member*> members = mScript->GetMembers();
 
-		Archive dataArchive;	
-		dataArchive.AddString("VariableName", member->mName);
-		dataArchive.AddInt("MemberType", (int)member->mType);
-		switch (member->mType)
+		for (const Member* member : members)
 		{
-		case MemberType::INT:
-			dataArchive.AddInt("VariableData", *reinterpret_cast<int*>((((char*)mScript) + member->mOffset)));
-			break;
-		case MemberType::FLOAT:
-			dataArchive.AddFloat("VariableData", *reinterpret_cast<float*>((((char*)mScript) + member->mOffset)));
-			break;
-		case MemberType::BOOL:
-			dataArchive.AddBool("VariableData", *reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)));
-			break;
-		case MemberType::FLOAT3:
-			dataArchive.AddFloat3("VariableData", *reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)));
-			break;
-		case MemberType::GAMEOBJECT:
-		{
-			GameObject* gameObject = *reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset));
-			gameObject ? dataArchive.AddInt("VariableData", (gameObject->GetID())) : dataArchive.AddInt("VariableData", -1);		
-			break;
+
+			Archive dataArchive;
+			dataArchive.AddString("VariableName", member->mName);
+			dataArchive.AddInt("MemberType", (int)member->mType);
+			switch (member->mType)
+			{
+			case MemberType::INT:
+				dataArchive.AddInt("VariableData", *reinterpret_cast<int*>((((char*)mScript) + member->mOffset)));
+				break;
+			case MemberType::FLOAT:
+				dataArchive.AddFloat("VariableData", *reinterpret_cast<float*>((((char*)mScript) + member->mOffset)));
+				break;
+			case MemberType::BOOL:
+				dataArchive.AddBool("VariableData", *reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)));
+				break;
+			case MemberType::FLOAT3:
+				dataArchive.AddFloat3("VariableData", *reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)));
+				break;
+			case MemberType::GAMEOBJECT:
+			{
+				GameObject* gameObject = *reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset));
+				gameObject ? dataArchive.AddInt("VariableData", (gameObject->GetID())) : dataArchive.AddInt("VariableData", -1);
+				break;
+			}
+			default:
+				break;
+			}
+
+			objectArray.push_back(dataArchive);
 		}
-		default:
-			break;
-		}
-		
-		objectArray.push_back(dataArchive);
+
+		archive.AddObjectArray("ScriptVariables", objectArray);
 	}
-
-	archive.AddObjectArray("ScriptVariables", objectArray);
+	
 }
 
 void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
@@ -230,7 +238,11 @@ void ScriptComponent::LoadScript(const char* scriptName)
 void ScriptComponent::Enable()
 {
 	App->GetScriptManager()->AddScript(this);
-		
+	
+	if (mHasStarted)
+	{
+		mScript->Start();
+	}
 }
 
 void ScriptComponent::Disable()
