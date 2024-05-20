@@ -88,30 +88,16 @@ void ModuleScriptManager::AwakeScripts()
 	}
 }
 
-void ModuleScriptManager::AwakeScripts(GameObject* gameObject)
-{
-
-	ScriptComponent* script = reinterpret_cast<ScriptComponent*>(gameObject->GetComponent(ComponentType::SCRIPT));
-	if (script)
-	{
-		script->mScript->Awake();
-	}
-
-	for (GameObject* child : gameObject->GetChildren())
-	{
-		AwakeScripts(child);
-	}
-
-}
-
 void ModuleScriptManager::StartScripts()
 {
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
 	{
-		mScripts[i]->mScript->Start();
-		mScripts[i]->mHasStarted = true;
+		if (!mScripts[i]->mHasStarted)
+		{
+			mScripts[i]->mScript->Start();
+			mScripts[i]->mHasStarted = true;
+		}
 	}
-
 }
 
 

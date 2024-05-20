@@ -445,6 +445,7 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 		}
 
 		LoadGameObjectsIntoScripts();
+		App->GetScriptManager()->StartScripts();
 	}
 
 	delete[] loadedBuffer;

@@ -22,7 +22,6 @@ public:
 	void RemoveScript(ScriptComponent* script);
 	void* GetDLLHandle() { return mHandle; }
 	void AwakeScripts();
-	void AwakeScripts(GameObject* gameObject);
 	virtual void StartScripts();
 
 

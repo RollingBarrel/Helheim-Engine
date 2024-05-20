@@ -137,15 +137,7 @@ void PlayerController::Update()
     CheckDebugOptions();
     UpdateHealth();
     UpdateBattleSituation();
-    RechargeDash();
-
-    if (App->GetInput()->GetKey(Keys::Keys_G) == KeyState::KEY_DOWN)
-    {
-        Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/prefab.prfb"); //Bullet Prefab
-
-        App->GetScene()->LoadPrefab("Assets/Prefabs/prefab.prfb", resource->GetUID(), App->GetScene()->GetRoot());
-    }
-    
+    RechargeDash();   
 
     switch (mCurrentState)
     {
