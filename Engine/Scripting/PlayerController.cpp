@@ -137,7 +137,7 @@ void PlayerController::Update()
     CheckDebugOptions();
     UpdateHealth();
     UpdateBattleSituation();
-    RechargeDash();   
+    RechargeDash();
 
     switch (mCurrentState)
     {
