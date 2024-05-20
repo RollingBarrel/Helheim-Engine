@@ -261,41 +261,31 @@ bool PlayerController::IsMoving()
 
 void PlayerController::Moving()
 {
-
-    float4x4 matrix = float4x4::identity;
-    matrix.RotateX(mCamera->GetRotation().x);
-    //float3x3 rotation = float3x3::FromEulerXYZ(mCamera->GetRotation().x, 0.0f, 0.0f).Inverted();
-    //float3 cameraDirection = rotation * mCamera->GetFront();
-    float3 moveDirection = float3::zero;
-
-    float3 cameraDirection = matrix.MulDir(mCamera->GetFront()).Normalized();
+    mMoveDirection = float3::zero;
+    float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized();
 
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
-        moveDirection += cameraDirection;
-        Move(cameraDirection);
+        mMoveDirection += front;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
-        moveDirection -= cameraDirection;
-        Move(-cameraDirection);
+        mMoveDirection -= front;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        moveDirection += float3::unitY.Cross(cameraDirection);
-        Move(float3::unitY.Cross(cameraDirection).Normalized());
+        mMoveDirection += float3::unitY.Cross(front);
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        moveDirection -= float3::unitY.Cross(cameraDirection);
-        Move(float3::unitY.Cross(-cameraDirection).Normalized());
+        mMoveDirection -= float3::unitY.Cross(front);
     }
 
-    moveDirection.Normalize();
-    mDashDirection = moveDirection;
+    mMoveDirection.Normalize();
+    Move(mMoveDirection);    
 
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation
@@ -367,7 +357,7 @@ void PlayerController::Dash()
         {
             // Continue dashing
             float dashSpeed = mDashRange / mDashDuration;
-            float3 newPos = (mGameObject->GetPosition() + mDashDirection * dashSpeed * App->GetDt());
+            float3 newPos = (mGameObject->GetPosition() + mMoveDirection * dashSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
         }
     }

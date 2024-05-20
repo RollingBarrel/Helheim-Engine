@@ -89,6 +89,7 @@ class PlayerController :public Script
         GameManager* mGameManager = nullptr;
         GameObject* mGameManagerGO = nullptr;
 
+
         //Stats
         float mPlayerSpeed = 2.0f;
         float mShield = 0.0f;
@@ -96,6 +97,7 @@ class PlayerController :public Script
         float mSanity = 0.0f;
         float mMaxSanity = 100.0f;
         bool mPlayerIsDead = false;
+        float3 mMoveDirection = float3::zero;
 
         //Dash
         bool mIsDashing = false;
@@ -105,7 +107,6 @@ class PlayerController :public Script
         float mDashTimer = 0.0f;
         float mDashDuration = 0.5f;
         float mDashRange = 8.0f;
-        float3 mDashDirection = float3::zero;
 
         //Range
         int mAmmoCapacity = 500000;
