@@ -14,7 +14,7 @@ class ModuleDetourNavigation;
 class ModuleAudio;
 class ModuleEvent;
 class ModuleScriptManager;
-
+class ModuleDebugDraw;
 class Timer;
 
 class ENGINE_API Application
@@ -36,6 +36,7 @@ public:
     ModuleAudio* GetAudio() { return audio; }
     ModuleEvent* GetEvent() { return event; }
     ModuleScriptManager* GetScriptManager() { return scriptManager; }
+    ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
 
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     float GetDt() const;
@@ -55,7 +56,7 @@ protected:
     ModuleDetourNavigation* navigation = nullptr;
     ModuleEvent* event = nullptr;
     ModuleScriptManager* scriptManager = nullptr;
-
+    ModuleDebugDraw* debugDraw = nullptr;
     Timer* mCurrentTimer = nullptr;
     bool mEnableVsync = true;
     

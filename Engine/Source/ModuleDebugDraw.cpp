@@ -4,7 +4,7 @@
 #include "Geometry/Frustum.h"
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
-#include "EngineApp.h"
+#include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEngineCamera.h"
 #include "ModuleWindow.h"
@@ -628,16 +628,16 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update(float dt)
 {
-    if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
+    if (App->GetCamera()->GetCurrentCamera())
     {
-        const CameraComponent* camera = EngineApp->GetEngineCamera()->GetEditorCamera();
+        const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
         if (camera)
         {
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
             
-            EngineApp->GetOpenGL()->BindSceneFramebuffer();
-            Draw(viewproj, EngineApp->GetWindow()->GetGameWindowsSize().x, EngineApp->GetWindow()->GetGameWindowsSize().y);
-            EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
+            App->GetOpenGL()->BindSceneFramebuffer();
+            Draw(viewproj, App->GetWindow()->GetGameWindowsSize().x, App->GetWindow()->GetGameWindowsSize().y);
+            App->GetOpenGL()->UnbindSceneFramebuffer();
         }
     }
     return UPDATE_CONTINUE;
@@ -653,27 +653,16 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
        DrawGrid();
     }
 
-    if (((DebugPanel*)EngineApp->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
-    {
-        DrawColliders(EngineApp->GetScene()->GetRoot());
-	}
-
-    GameObject* focusGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-    
-    if (focusGameObject && focusGameObject->GetComponent(ComponentType::ANIMATION))
-    {
-        DrawSkeleton(focusGameObject);
-    }
-    if (focusGameObject)
+/*    if (focusGameObject)
     {
         CameraComponent* camera = reinterpret_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
         if (camera)
         {
             DrawFrustum(camera->GetFrustum());
         }
-        
+      
     }
-
+     */
     dd::flush();
 }
 
@@ -717,9 +706,9 @@ void ModuleDebugDraw::DrawCone(const float pos[3], const float dir[3], const flo
     dd::cone(ddVec3(pos), ddVec3(dir), ddVec3(color), bRadius, 0.0f);
 }
 
-void ModuleDebugDraw::DrawLine(const float3& position, const float3& direction, const float3& color)
+void ModuleDebugDraw::DrawLine(const float3& position, const float3& end, const float3& color)
 {
-    dd::line(position, direction, color);
+    dd::line(position, end, color);
 }
 
 void ModuleDebugDraw::DrawLine(const float3& start, const float3& end, const float3& color, float duration, bool depthTest)
@@ -750,9 +739,9 @@ void ModuleDebugDraw::DrawGrid()
     dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);
     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 }
-void ModuleDebugDraw::DrawAxis()
+void ModuleDebugDraw::DrawAxis(const float4x4 transform, const float size, const float length)
 {
-    dd::axisTriad(((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()->GetWorldTransform(), 0.1f, 1.0f);
+    dd::axisTriad(transform,size, length);
 }
 
 

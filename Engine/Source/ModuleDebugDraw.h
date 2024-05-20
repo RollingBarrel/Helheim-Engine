@@ -9,7 +9,7 @@ class DDRenderInterfaceCoreGL;
 class Camera;
 class GameObject;
 
-class ModuleDebugDraw : public Module
+class ENGINE_API ModuleDebugDraw : public Module
 {
 
 public:
@@ -22,14 +22,14 @@ public:
 	bool            CleanUp() override;
 
     void Draw(const float4x4& viewproj, unsigned width, unsigned height);
-    void DrawAxis();
+    void DrawAxis(const float4x4 transform,const float size, const float length);
     void DrawFrustum(const Frustum& frustum);
     bool GetShouldRenderGrid() const { return mDrawGrid; }
     void SetRenderGrid(bool a) { mDrawGrid = a; }
     void DrawCube(const OBB& obb, const float3& color);
     void DrawSphere(const float center[3], const float color[3], const float radius);
     void DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius);
-    void DrawLine(const float3& position, const float3& direction, const float3& color);
+    void DrawLine(const float3& position, const float3& end, const float3& color);
     void DrawLine(const float3& start, const float3& end, const float3& color, float duration, bool depthTest);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color);

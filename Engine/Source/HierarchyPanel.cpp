@@ -4,8 +4,9 @@
 #include "ModuleScene.h"
 #include "ModuleEngineResource.h"
 #include "ModuleOpenGL.h"
+#include "ModuleDebugDraw.h"
 #include "GameObject.h"
-
+#include "CameraComponent.h"
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 
 void HierarchyPanel::Draw(int windowFlags)
@@ -35,6 +36,19 @@ void HierarchyPanel::Draw(int windowFlags)
 	DragAndDropTarget(root);
 	
 	ImGui::End();
+	if(GetFocusedObject() && GetFocusedObject()->GetComponent(ComponentType::ANIMATION))
+	{
+		EngineApp->GetDebugDraw()->DrawSkeleton(GetFocusedObject());
+	}
+	if (GetFocusedObject()) 
+	{
+		CameraComponent* camera = reinterpret_cast<CameraComponent*>(GetFocusedObject()->GetComponent(ComponentType::CAMERA));
+		if (camera)
+		{
+			EngineApp->GetDebugDraw()->DrawFrustum(camera->GetFrustum());
+		}
+	}
+
 }
 
 void HierarchyPanel::SetFocus(GameObject* focusedObject) 
@@ -349,4 +363,9 @@ GameObject* HierarchyPanel::GetFocusedObject() const
 	GameObject* focus = root->Find(mFocusId);
 	if (focus == nullptr) { return root; }
 	else { return focus; }
+}
+
+void HierarchyPanel::DrawObjectAxis() const
+{
+	EngineApp->GetDebugDraw()->DrawAxis(GetFocusedObject()->GetWorldTransform(), 0.1f, 1.0f);
 }

@@ -30,5 +30,6 @@ private:
 
 	void SetShouldDrawForAll(GameObject* root, bool shouldDraw);
 	int GetTotalTriangleCount(GameObject* root);
+	void DrawColliders(GameObject* root);
 };
 

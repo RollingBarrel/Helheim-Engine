@@ -13,6 +13,7 @@
 #include "ModuleAudio.h"
 #include "ModuleEvent.h"
 #include "ModuleGame.h"
+#include "ModuleDebugDraw.h"
 #include "Timer.h"
 
 GameApplication* GameApp = NULL;
@@ -35,6 +36,7 @@ GameApplication::GameApplication()
 	modules[10] = ui = new ModuleUI();
 	modules[11] = event = new ModuleEvent();
 	modules[12] = game = new ModuleGame();
+	modules[12] = debugDraw = new ModuleDebugDraw();
 }
 
 GameApplication::~GameApplication()
