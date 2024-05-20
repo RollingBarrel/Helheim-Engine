@@ -15,6 +15,7 @@
 #include "SliderComponent.h"
 #include "Physics.h"
 #include "ObjectPool.h"
+#include "Quadtree.h"
 #include "GameManager.h"
 
 
@@ -48,6 +49,7 @@ CREATE(PlayerController)
     
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimArea);
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewArea);
 
     SEPARATOR("ANIMATION");
     MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
@@ -390,6 +392,11 @@ void PlayerController::Attack()
     {
         AimGrenade();
         
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
+        {
+            //GrenadeTarget();
+        }
+
         Idle();
         //App->GetDebugDraw()->DrawCircle(mGameObject->GetPosition(), mGrenadeRadius);
         return;
@@ -601,36 +608,33 @@ void PlayerController::AimGrenade()
 {
     // Initialize circle
     mGrenadeAimArea->SetEnabled(true);
-    mGrenadeAimArea->SetScale(float3(mGrenadeRadius, 0.5, mGrenadeRadius));
+    mGrenadeAimArea->SetScale(float3(mGrenadThrowDistance, 0.5, mGrenadThrowDistance));
+    mGrenadeAimArea->SetPosition(mGameObject->GetPosition());
+}
 
-    // Aim
-    std::map<float, Hit> hits;
+void PlayerController::GrenadeTarget()
+{
+    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
 
-    Ray ray;
-    ray.pos = mGameObject->GetPosition();
-    ray.pos.y++;
-    ray.dir = mGameObject->GetFront();
+    Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
-    float distance = 100.0f;
-    hits = Physics::Raycast(&ray);
-
+    std::map<float, Hit> hits = root->RayCast(&ray);
     if (!hits.empty())
     {
-        for (const std::pair<float, Hit>& hit : hits)
+        std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();
+        if (intersectGameObjectPair.second.mGameObject->GetTag()->GetName() == "AimGrenadeArea")
         {
-            if (hit.second.mGameObject->GetTag()->GetName() == "AimGrenadeArea")
-            {
-                LOG("Iit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
-                 
-            }
+            float3 point = intersectGameObjectPair.second.mHitPoint;
+
+            mGrenadeExplotionPreviewArea->SetEnabled(true);
+            mGrenadeExplotionPreviewArea->SetScale(float3(mGrenadeRadius, 0.5, mGrenadeRadius));
+            mGrenadeExplotionPreviewArea->SetPosition(point);
         }
     }
-
 }
 
 void PlayerController::ThrowGrenade()
 {
-
 }
 
 void PlayerController::UpdateBattleSituation()

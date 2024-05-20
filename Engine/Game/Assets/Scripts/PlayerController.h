@@ -70,6 +70,7 @@ class PlayerController :public Script
         void CheckDebugOptions();
 
         void AimGrenade();
+        void GrenadeTarget();
         void ThrowGrenade();
 
         void Victory();
@@ -136,10 +137,11 @@ class PlayerController :public Script
         float mGrenadeDuration = 4.0f;
         float mGrenadeRadius = 3.0f;
 
-        float mGrenadThrowDistance = 3.0f;
+        float mGrenadThrowDistance = 5.0f;
         float mGrenadeCoolDown = 15.0f;
 
         GameObject* mGrenadeAimArea = nullptr;
+        GameObject* mGrenadeExplotionPreviewArea = nullptr;
 
         //HUD
         GameObject* mShieldGO = nullptr;
