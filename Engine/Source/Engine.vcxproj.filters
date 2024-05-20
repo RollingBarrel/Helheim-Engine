@@ -67,9 +67,6 @@
     <ClCompile Include="ImporterMaterial.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDebugDraw.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -295,12 +292,6 @@
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="InspectorPanel.h" />
-    <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp">
-      <Filter>Dependencies\DebugDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\DebugDraw\debugdraw.h">
-      <Filter>Dependencies\DebugDraw</Filter>
-    </ClInclude>
     <ClInclude Include="ScenePanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -321,9 +312,6 @@
     </ClInclude>
     <ClInclude Include="ImporterMaterial.h">
       <Filter>Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleDebugDraw.h">
-      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
@@ -497,9 +485,6 @@
     </Filter>
     <Filter Include="Dependencies\TinyGLTF">
       <UniqueIdentifier>{b7577db9-f68a-494d-a49f-c95d2c21f9ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\DebugDraw">
-      <UniqueIdentifier>{2c4a22f9-4369-4564-a01f-b373358df20e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\MikkTspace">
       <UniqueIdentifier>{58fe3eb7-9da9-4e89-b4ef-7117bf4acc3c}</UniqueIdentifier>

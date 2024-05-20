@@ -73,6 +73,9 @@
     <Filter Include="Utils\Particles">
       <UniqueIdentifier>{50fe897a-e47d-4091-9d21-2bf00e84878c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies\DebugDraw">
+      <UniqueIdentifier>{015327a3-8c37-47b7-b7ed-5cedab9e47bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -406,6 +409,9 @@
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1005,6 +1011,15 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCamera.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DebugDraw\debugdraw.h">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp">
+      <Filter>Dependencies\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

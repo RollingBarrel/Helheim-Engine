@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ENGINE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -145,7 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ENGINE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -233,7 +233,6 @@
     <ClCompile Include="OptickAdapter.cpp" />
     <ClCompile Include="ProjectPanel.cpp" />
     <ClCompile Include="ScenePanel.cpp" />
-    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
     <ClCompile Include="TagsManagerPanel.cpp" />
@@ -242,8 +241,6 @@
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="ConsolePanel.h" />
-    <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
-    <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
     <ClInclude Include="DebugPanel.h" />
     <ClInclude Include="Dependencies\DetourCrowd\Include\DetourCrowd.h" />
     <ClInclude Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.h" />
@@ -310,7 +307,6 @@
     <ClInclude Include="NavMeshControllerPanel.h" />
     <ClInclude Include="ResourcePanel.h" />
     <ClInclude Include="LightningPanel.h" />
-    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ImporterTexture.h" />
     <ClInclude Include="TagsManagerPanel.h" />
