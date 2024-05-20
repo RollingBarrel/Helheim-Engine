@@ -57,7 +57,7 @@ bool ModuleScriptManager::CleanUp()
 
 void ModuleScriptManager::AddScript(ScriptComponent* script) 
 { 
-	mScripts.push_back(script); 
+	mScripts.push_back(script);
 }
 
 void ModuleScriptManager::RemoveScript(ScriptComponent* script)
@@ -80,13 +80,24 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 		
 }
 
+void ModuleScriptManager::AwakeScripts()
+{
+	for (unsigned int i = 0; i < mScripts.size(); ++i)
+	{
+		mScripts[i]->mScript->Awake();
+	}
+}
+
 void ModuleScriptManager::StartScripts()
 {
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
 	{
-		mScripts[i]->mScript->Start();
+		if (!mScripts[i]->mHasStarted)
+		{
+			mScripts[i]->mScript->Start();
+			mScripts[i]->mHasStarted = true;
+		}
 	}
-
 }
 
 
