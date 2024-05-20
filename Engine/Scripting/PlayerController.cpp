@@ -16,7 +16,6 @@
 #include "ObjectPool.h"
 #include "GameManager.h"
 
-#include "ModuleResource.h"
 
 CREATE(PlayerController)
 {
