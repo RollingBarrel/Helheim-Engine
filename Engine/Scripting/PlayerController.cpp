@@ -217,10 +217,10 @@ void PlayerController::Idle()
     else 
     {
 
-        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
         {
             mCurrentState = PlayerState::MOVE;
         }
@@ -243,49 +243,36 @@ void PlayerController::Idle()
     }  
 }
 
-//is Moving function 
-bool PlayerController::IsMoving()
-{
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-    {
-		return true;
-	}
-    else
-    {
-		return false;
-	}
-}
-
 void PlayerController::Moving()
 {
     mMoveDirection = float3::zero;
     float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized();
 
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         mMoveDirection += front;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
         mMoveDirection -= front;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
         mMoveDirection += float3::unitY.Cross(front);
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
         mMoveDirection -= float3::unitY.Cross(front);
     }
 
-    mMoveDirection.Normalize();
-    Move(mMoveDirection);    
+    if (!mMoveDirection.Equals(float3::zero))
+    {
+        mMoveDirection.Normalize();
+        Move(mMoveDirection);
+    }
 
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation

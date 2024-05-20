@@ -53,7 +53,6 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
-        bool IsMoving();
         void Dash();
         void Attack();
 
