@@ -346,7 +346,7 @@ void ModuleScene::Load(const char* sceneName)
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
-
+		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
 	}
 }
@@ -443,6 +443,8 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 			}
 			parent->DeleteChild(temp);
 		}
+
+		LoadGameObjectsIntoScripts();
 	}
 
 	delete[] loadedBuffer;

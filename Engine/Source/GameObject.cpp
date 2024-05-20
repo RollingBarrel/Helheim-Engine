@@ -32,6 +32,10 @@
 
 #pragma region Constructors and Destructors
 
+GameObject::GameObject(const char* name) : GameObject(LCG().Int(), name , App->GetScene()->GetRoot())
+{
+}
+
 GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
 {
 }

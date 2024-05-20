@@ -57,7 +57,7 @@ bool ModuleScriptManager::CleanUp()
 
 void ModuleScriptManager::AddScript(ScriptComponent* script) 
 { 
-	mScripts.push_back(script); 
+	mScripts.push_back(script);
 }
 
 void ModuleScriptManager::RemoveScript(ScriptComponent* script)
@@ -80,11 +80,36 @@ void ModuleScriptManager::RemoveScript(ScriptComponent* script)
 		
 }
 
+void ModuleScriptManager::AwakeScripts()
+{
+	for (unsigned int i = 0; i < mScripts.size(); ++i)
+	{
+		mScripts[i]->mScript->Awake();
+	}
+}
+
+void ModuleScriptManager::AwakeScripts(GameObject* gameObject)
+{
+
+	ScriptComponent* script = reinterpret_cast<ScriptComponent*>(gameObject->GetComponent(ComponentType::SCRIPT));
+	if (script)
+	{
+		script->mScript->Awake();
+	}
+
+	for (GameObject* child : gameObject->GetChildren())
+	{
+		AwakeScripts(child);
+	}
+
+}
+
 void ModuleScriptManager::StartScripts()
 {
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
 	{
 		mScripts[i]->mScript->Start();
+		mScripts[i]->mHasStarted = true;
 	}
 
 }

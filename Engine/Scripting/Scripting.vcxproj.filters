@@ -51,6 +51,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\PrefabTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -92,5 +93,6 @@
     <ClCompile Include="ObjectPool.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
+    <ClCompile Include="PrefabTest.cpp" />
   </ItemGroup>
 </Project>
