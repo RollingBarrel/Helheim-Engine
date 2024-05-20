@@ -10,11 +10,13 @@
 
 ModuleInput::ModuleInput()
 {
+	
+
 	mKeyboard = new KeyState[SDL_NUM_SCANCODES];
 	memset(mKeyboard, 0, SDL_NUM_SCANCODES);
 
-    mGameController.mButtons = new ButtonState[NUM_CONTROLLER_BUTTONS];
-    memset(mGameController.mButtons, 0, sizeof(ButtonState) * NUM_CONTROLLER_BUTTONS);		// 0 = BUTTON_IDLE
+    mGameController.mButtons = new ButtonState[SDL_CONTROLLER_BUTTON_MAX];
+    memset(mGameController.mButtons, 0, sizeof(ButtonState) * SDL_CONTROLLER_BUTTON_MAX);		// 0 = BUTTON_IDLE
 
 	mGameController.mTriggers = new ButtonState[NUM_CONTROLLER_TRIGGERS];						// Only 2 triggers are supported for a given game controller.
     memset(mGameController.mTriggers, 0, sizeof(ButtonState) * NUM_CONTROLLER_TRIGGERS);		// 0 = BUTTON_IDLE
@@ -27,9 +29,9 @@ ModuleInput::ModuleInput()
 ModuleInput::~ModuleInput()
 {
 	delete[] mKeyboard;
-    delete mGameController.mButtons;
-    delete mGameController.mTriggers;
-    delete mGameController.mAxis;
+    delete[] mGameController.mButtons;
+    delete[] mGameController.mTriggers;
+    delete[] mGameController.mAxis;
 }
 
 bool ModuleInput::Init()
