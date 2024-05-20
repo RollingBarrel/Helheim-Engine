@@ -44,9 +44,12 @@ update_status ModuleUI::Update(float dt)
 	CheckRaycast();
 
 	// Draw the UI
+	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_STENCIL_TEST);
 	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(App->GetScene()->GetRoot());
 	App->GetOpenGL()->UnbindSceneFramebuffer();
+	glEnable(GL_DEPTH_TEST);
 
 	return UPDATE_CONTINUE;
 }
