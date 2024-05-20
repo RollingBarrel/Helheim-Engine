@@ -32,7 +32,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE ATTACK");
-   // MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
+    //MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
@@ -47,7 +47,6 @@ CREATE(PlayerController)
 
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mShieldGO);
-;
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -115,10 +114,8 @@ void PlayerController::Start()
     }
 
     // CAMERA
-
     ModuleScene* scene = App->GetScene();
     mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
-
 }
 
 void PlayerController::Update()
@@ -214,7 +211,6 @@ void PlayerController::Idle()
     }
     else 
     {
-
         if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
             App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
             App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
@@ -226,8 +222,7 @@ void PlayerController::Idle()
         {
             mCurrentState = PlayerState::IDLE;
         }
-
-    
+ 
         if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN
             || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
         {
@@ -286,7 +281,6 @@ void PlayerController::Moving()
         mReadyToStep = false;
     }
     
-
     Idle();
 }
 
@@ -311,8 +305,8 @@ void PlayerController::HandleRotation()
         float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
         mGameObject->LookAt(target);
     }
-
 }
+
 void PlayerController::Dash()
 {
     if (!mIsDashing)
@@ -355,7 +349,6 @@ void PlayerController::Attack()
         break;
     }
 }
-
 
 void PlayerController::MeleeAttack()  
 {
@@ -440,13 +433,10 @@ void PlayerController::RangedAttack()
 {
 
     Shoot(mRangeBaseDamage);
-
 }
-
 
 void PlayerController::Shoot(float damage)
 {
-
     //request a bullet from the object pool
     bullet = mBulletPool->GetPooledObject();
 
@@ -484,13 +474,25 @@ void PlayerController::Shoot(float damage)
         }
     }
     mCurrentState = PlayerState::IDLE;
-
 }
 
 void PlayerController::Reload()
 {
     mBullets = mAmmoCapacity;
     LOG("Reloaded!Remaining bullets : %i", mBullets);
+}
+
+void PlayerController::RechargeShield(float shield)
+{
+    if (mShield < mMaxShield)
+    {
+        mShield += shield;
+
+        if (mShield >= mMaxShield)
+        {
+            mShield = mMaxShield;
+        }
+    }
 }
 
 void PlayerController::TakeDamage(float damage)
@@ -557,8 +559,7 @@ void PlayerController::UpdateBattleSituation()
             else 
             {
                 mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
-            }
-            
+            }          
         }
     }
     else 

@@ -92,7 +92,6 @@ class PlayerController :public Script
         GameManager* mGameManager = nullptr;
         GameObject* mGameManagerGO = nullptr;
 
-
         //Stats
         float mPlayerSpeed = 2.0f;
         float mShield = 0.0f;
@@ -138,8 +137,6 @@ class PlayerController :public Script
         bool mIsMeleeBaseComboActive = false;
         float mMeleeBaseMoveDuration = 0.5f;
         float mMeleeBaseMoveRange = 8.0f;
-
-
 
         //HUD
         GameObject* mShieldGO = nullptr;

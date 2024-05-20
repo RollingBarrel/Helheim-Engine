@@ -17,10 +17,6 @@ void Enemy::Start()
 
     srand(static_cast<unsigned int>(std::time(nullptr)));
     randomValue = rand() % 100;
-
-    //*******************************************************
-    LOG("RANDOM: %i", randomValue);
-    //*******************************************************
 }
 
 void Enemy::Update()
@@ -55,10 +51,10 @@ void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
 
-    //if (randomValue < 20)
-    //{
+    if (randomValue < 20)
+    {
         DropHealth();
-    //}
+    }
 }
 
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
