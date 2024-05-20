@@ -21,6 +21,7 @@ public:
 	void AddScript(ScriptComponent* script);
 	void RemoveScript(ScriptComponent* script);
 	void* GetDLLHandle() { return mHandle; }
+	void AwakeScripts();
 	virtual void StartScripts();
 
 
