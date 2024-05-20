@@ -18,7 +18,7 @@ enum class PlayerState
     MOVE,
     ATTACK,
     MOVE_ATTACK,
-    DEATH
+    DEATH,
 };
 
 enum class BattleSituation {
@@ -58,6 +58,7 @@ class PlayerController :public Script
 
         void MeleeAttack();
         void MeleeBaseCombo();
+
         void MeleeHit(float AttackRange, float AttackDamage);
         void RangedAttack();
         void Move(float3 position);
@@ -129,8 +130,8 @@ class PlayerController :public Script
    	    float mMeleeBaseSpeed = 8.0f;
         int mMeleeBaseComboStep = 1;
         float mMeleeBaseComboTimer = 0.0f;
-        const float mMeleeBaseMaxComboInterval = 5.0f; // Maximum time interval between combo hits
-        const float mMeleeBaseFinalAttackDuration = 5.0f; // Maximum time interval between combo hits
+        const float mMeleeBaseMaxComboInterval = 5.0f; 
+        const float mMeleeBaseFinalAttackDuration = 0.5f; 
         float mMeleeBaseFinalAttackTimer = 0.0f;
         bool mIsMeleeBaseComboActive = false;
         float mMeleeBaseMoveDuration = 0.5f;

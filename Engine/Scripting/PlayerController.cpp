@@ -135,13 +135,13 @@ void PlayerController::Update()
     if (mIsMeleeBaseComboActive)
     {
         mMeleeBaseComboTimer += App->GetDt();
-
         if (mMeleeBaseComboTimer >= mMeleeBaseMaxComboInterval)
         {
             LOG("Combo timer exceeded max interval, resetting combo");
             mMeleeBaseComboStep = 1;
             mIsMeleeBaseComboActive = false;
             mMeleeBaseComboTimer = 0.0f;
+            mCurrentState = PlayerState::IDLE;
         }
     }
 
@@ -219,21 +219,12 @@ void PlayerController::Idle()
         {
             mCurrentState = PlayerState::IDLE;
         }
-        //Check if the player is attacking
-        if (mWeapon == Weapon::RANGE)
+
+    
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN
+            || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
         {
-            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT
-                || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
-            {
-                mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
-            }
-        }else 
-        {
-            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN
-                || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
-            {
-                mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
-            }
+            mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
         }
     }  
 }
@@ -292,7 +283,6 @@ void PlayerController::Moving()
             mReadyToStep = false;
         }
     }
-
     Idle();
 }
 
@@ -360,8 +350,6 @@ void PlayerController::Attack()
         MeleeAttack();
         break;
     }
-
-    Idle();
 }
 
 
@@ -378,19 +366,20 @@ void PlayerController::MeleeBaseCombo()
     switch (mMeleeBaseComboStep)
     {
     case 1:
-        LOG("First attack");
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
         mMeleeBaseComboStep++;
+        mCurrentState = PlayerState::IDLE;
+
         break;
 
     case 2:
-        LOG("Second attack");
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
         mMeleeBaseComboStep++;
+        mCurrentState = PlayerState::IDLE;
+
         break;
 
     case 3:
-        LOG("Final attack")
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
         mMeleeBaseFinalAttackTimer += App->GetDt();
         if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
@@ -405,8 +394,9 @@ void PlayerController::MeleeBaseCombo()
             float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
             float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+            mCurrentState = PlayerState::ATTACK;
         }
-        
+
         break;
 	}
 }
@@ -444,62 +434,9 @@ void PlayerController::MeleeHit (float AttackRange, float AttackDamage) {
 
 void PlayerController::RangedAttack() 
 {
-    if (mIsChargedAttack) 
-    {
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
-        {
-            mChargedTime += App->GetDt();
-            LOG("Charged Time: %f ", mChargedTime);
-        }
-        else if (mChargedTime >= mMinRangeChargeTime)
-        {
-            mChargedTime = Min(mMaxRangeChargeTime, mChargedTime);
-            float totalDamage;
 
-            int bulletCost = static_cast<int>(mChargedTime * mFireRate);
-            if (mBullets >= bulletCost)
-            {
-                totalDamage = mChargedTime * mRangeBaseDamage * mRangeChargeAttackMultiplier;
-                Shoot(totalDamage);
-                mBullets -= bulletCost;
-                
-            }
-            else
-            {
-                totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
-                mBullets = 0;
-            }
-            mGunfireAudio->PlayOneShot();
-            mChargedTime = 0.0f;
-            LOG("Charged shot fired. Damage:  %f", totalDamage);
-            LOG("Bullets:  %i", mBullets);
+    Shoot(mRangeBaseDamage);
 
-        }
-        else
-        {
-            mChargedTime = 0.0f;
-        }
-    }
-    else 
-    {
-        if (mBullets > 0) 
-        {  
-            if (mRangeTimer > mFireRate)
-            {
-                mGunfireAudio->PlayOneShot();
-                mRangeTimer = 0.0f;
-                Shoot(mRangeBaseDamage);
-                mBullets -= static_cast<int>(mFireRate) + 1;
-                LOG("Basic shoot fire. Remining Bullets %i", mBullets);             
-            }
-            mRangeTimer += App->GetDt();
-        }
-        else
-        {
-            LOG("Out of bullets! Reload.");
-            Reload();
-        }
-    }
 }
 
 
@@ -542,6 +479,8 @@ void PlayerController::Shoot(float damage)
             }
         }
     }
+    mCurrentState = PlayerState::IDLE;
+
 }
 
 void PlayerController::Reload()
