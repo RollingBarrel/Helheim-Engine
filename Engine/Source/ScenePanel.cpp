@@ -158,6 +158,7 @@ void ScenePanel::DrawScene()
 	}
 	ImGui::Image((void*)(intptr_t)currentScene, size, ImVec2(0, 1), ImVec2(1, 0));
 
+	
 	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
@@ -270,16 +271,6 @@ void ScenePanel::DrawScene()
 			currentSceneName = "POSITIONS";
 		}
 		ImGui::EndCombo();
-	}
-
-	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
-	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
-	EngineApp->GetWindow()->GameWindowsResized(mWindowsSize);
-	mMousePosition = float2(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
-	if (!mMousePosition.Equals(float2(-FLT_MAX, -FLT_MAX)))
-	{
-		EngineApp->GetInput()->SetGameMousePosition(mMousePosition);
 	}
 
 

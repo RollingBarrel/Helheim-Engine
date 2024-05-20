@@ -90,8 +90,8 @@ public:
 	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
 	void SetWireframe(bool wireframe);
 
-	void AddHighLight(GameObject* gameObject);
-	void RemoveHighLight(GameObject* gameObject);
+	void AddHighLight(const GameObject& gameObject);
+	void RemoveHighLight(const GameObject& gameObject);
 
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);

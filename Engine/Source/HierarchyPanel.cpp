@@ -37,13 +37,13 @@ void HierarchyPanel::Draw(int windowFlags)
 	ImGui::End();
 }
 
-void HierarchyPanel::SetFocus(GameObject* focusedObject) 
+void HierarchyPanel::SetFocus(const GameObject& focusedObject) 
 { 
-	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
+	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mUnmarkFlag = true;
-	mFocusId = focusedObject->GetID();
-	mLastClickedObject = focusedObject->GetID();
-	GameObject* parent = focusedObject->GetParent();
+	mFocusId = focusedObject.GetID();
+	mLastClickedObject = focusedObject.GetID();
+	GameObject* parent = focusedObject.GetParent();
 	while (parent != nullptr)
 	{
 		mNodesToOpen.insert(parent->GetID());
@@ -149,9 +149,9 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 
 void HierarchyPanel::InternalSetFocus(GameObject* focusedObject)
 {
-	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
+	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mFocusId = focusedObject->GetID();
-	App->GetOpenGL()->AddHighLight(focusedObject);
+	App->GetOpenGL()->AddHighLight(*focusedObject);
 }
 
 void HierarchyPanel::DrawTree(GameObject* node)

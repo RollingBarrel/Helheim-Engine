@@ -322,14 +322,14 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 
 
 
-void ModuleOpenGL::AddHighLight(GameObject* gameObject)
+void ModuleOpenGL::AddHighLight(const GameObject& gameObject)
 {
-	if (!gameObject->IsRoot())
+	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
 		if (!meshComponents.empty())
 		{
-			for (Component* comp : meshComponents)
+			for (const Component* comp : meshComponents)
 			{
 				mHighlightedObjects.push_back(comp->GetOwner());
 			}
@@ -337,11 +337,11 @@ void ModuleOpenGL::AddHighLight(GameObject* gameObject)
 	}
 }
 
-void ModuleOpenGL::RemoveHighLight(GameObject* gameObject)
+void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
 {
-	if (!gameObject->IsRoot())
+	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
 		if (!meshComponents.empty())
 		{
 			for (Component* comp : meshComponents)
@@ -453,7 +453,6 @@ static unsigned int LoadCubeMap()
 
 void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	glViewport(0, 0, width, height);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);

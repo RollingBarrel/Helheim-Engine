@@ -970,7 +970,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	}
 	if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(child);
+		App->GetScene()->GetQuadtreeRoot()->AddObject(*child);
 	}
 }
 
@@ -984,7 +984,7 @@ GameObject* GameObject::RemoveChild(const int id)
 		{
 			if ((*it)->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 			{
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject((*it));
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*(*it));
 			}
 			movedObject = *it;
 			mChildren.erase(it);

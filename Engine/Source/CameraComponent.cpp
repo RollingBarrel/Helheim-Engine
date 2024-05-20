@@ -67,8 +67,8 @@ void CameraComponent::Update()
     }
 
     //Frustum culling updates
-    App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
-    std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
+    //App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
+    //std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
 
     //for (const auto& object : drawableObjects)
     //{
