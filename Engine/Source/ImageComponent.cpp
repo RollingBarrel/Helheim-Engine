@@ -1,3 +1,4 @@
+#include "ImageComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleScene.h"
@@ -6,6 +7,7 @@
 #include "ModuleWindow.h"
 #include "ModuleUI.h"
 #include "ModuleEditor.h"
+#include "Timer.h"
 
 #include "ScenePanel.h"
 
@@ -36,7 +38,9 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	CreateVAO();
 
     SetImage(mResourceId);
-	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
+	if (canvas!= nullptr)
+	mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
 
 	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
 	if (component != nullptr) 
@@ -99,6 +103,11 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 { 
+	if (mIsSpritesheet)
+	{
+		FillSpriteSheetVBO();
+		CreateVAO();
+	}
 	if (mImage && mCanvas)
 	{
 
@@ -180,6 +189,30 @@ Component* ImageComponent::Clone(GameObject* owner) const
 	return new ImageComponent(*this, owner);
 }
 
+void ImageComponent::SetSpritesheetLayout(int columns, int rows)
+{
+	mColumns = columns;
+	mRows = rows;
+	mIsSpritesheet = true;
+}
+
+void ImageComponent::PlayAnimation()
+{
+	mIsPlaying = true;
+}
+
+void ImageComponent::PauseAnimation()
+{
+	mIsPlaying = false;
+}
+
+void ImageComponent::StopAnimation()
+{
+	mIsPlaying = false;
+	mCurrentFrame = 0;
+	mElapsedTime = 0;
+}
+
 void ImageComponent::Save(Archive& archive) const
 {
     archive.AddInt("ImageID", mImage->GetUID());
@@ -187,6 +220,12 @@ void ImageComponent::Save(Archive& archive) const
 	archive.AddFloat3("Color", mColor);
 	archive.AddBool("HasAlpha", mHasAlpha);
 	archive.AddFloat("Alpha", mAlpha);
+
+	archive.AddBool("IsSpritesheet", mIsSpritesheet);
+	archive.AddInt("Columns", mColumns);
+	archive.AddInt("Rows", mRows);
+	archive.AddInt("Speed", mFPS);
+	archive.AddBool("IsPlaying", mIsPlaying);
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -217,15 +256,43 @@ void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
 	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) 
 	{
 		const rapidjson::Value& alphaValue = data["Alpha"];
-		
 		mAlpha = alphaValue.GetFloat();
 	}
 	
 	if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) 
 	{
 		const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
-
 		mHasAlpha = hasAlphaValue.GetBool();
+	}
+
+	if (data.HasMember("IsSpritesheet") && data["IsSpritesheet"].IsBool())
+	{
+		const rapidjson::Value& isSpritesheetValue = data["IsSpritesheet"];
+		mIsSpritesheet = isSpritesheetValue.GetBool();
+	}
+
+	if (data.HasMember("Columns") && data["Columns"].IsInt())
+	{
+		const rapidjson::Value& columnsValue = data["Columns"];
+		mColumns = columnsValue.GetInt();
+	}
+
+	if (data.HasMember("Rows") && data["Rows"].IsInt())
+	{
+		const rapidjson::Value& rowsValue = data["Rows"];
+		mRows = rowsValue.GetInt();
+	}
+
+	if (data.HasMember("Speed") && data["Speed"].IsInt())
+	{
+		const rapidjson::Value& speedValue = data["Speed"];
+		mFPS = speedValue.GetInt();
+	}
+
+	if (data.HasMember("IsPlaying") && data["IsPlaying"].IsBool())
+	{
+		const rapidjson::Value& isPlaying = data["IsPlaying"];
+		mIsPlaying = isPlaying.GetBool();
 	}
 }
 
@@ -245,9 +312,50 @@ void ImageComponent::FillVBO()
 		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
 		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
 	};
-	glGenBuffers(1, &mQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+	if (mQuadVBO == 0) 
+	{
+		glGenBuffers(1, &mQuadVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	}
+	else 
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
+	}
+}
+
+void ImageComponent::FillSpriteSheetVBO()
+{
+	int row = mCurrentFrame / mColumns;
+	int column = mCurrentFrame % mColumns;
+
+	float uStart = (float)column / mColumns;
+	float vStart = (float)row / mRows;
+	float uEnd = uStart + 1.0f / mColumns;
+	float vEnd = vStart + 1.0f / mRows;
+
+	float vertices[] = {
+		-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
+		-0.5f, -0.5f,  uStart, vEnd,     // bottom-left vertex
+		 0.5f, -0.5f,  uEnd,   vEnd,     // bottom-right vertex
+		 0.5f,  0.5f,  uEnd,   vStart,   // top-right vertex
+		-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
+		 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
+	};
+
+	if (mQuadVBO == 0) 
+	{
+		glGenBuffers(1, &mQuadVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	}
+	else 
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
+	}
 }
 
 void ImageComponent::CreateVAO()
@@ -281,6 +389,21 @@ void ImageComponent::ResizeByRatio()
 		float ratio = currentRatio / originalRatio;
 		float3 newScale = float3(GetOwner()->GetScale().x, GetOwner()->GetScale().y * ratio, GetOwner()->GetScale().z);
 		GetOwner()->SetScale(newScale);
+	}
+}
+
+void ImageComponent::Update()
+{
+	if (mIsSpritesheet && mIsPlaying)
+	{
+		mElapsedTime += App->GetCurrentClock()->GetDelta() / 1000.0f;
+		float frameDuration = 1.0f / mFPS;
+
+		if (mElapsedTime > frameDuration)
+		{
+			mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
+			mElapsedTime = 0;
+		}
 	}
 }
 

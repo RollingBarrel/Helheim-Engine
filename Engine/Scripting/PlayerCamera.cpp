@@ -34,7 +34,7 @@ void PlayerCamera::Start()
     //look at the target
     if (mLookTarget && mCameraComponent)
     {
-        mCameraComponent->LookAt(mGameObject->GetWorldPosition(), mLookTarget->GetWorldPosition(), mGameObject->GetUp());
+        mGameObject->LookAt(mLookTarget->GetWorldPosition());
     }
 
     mAuxLookTarget = mLookTarget;

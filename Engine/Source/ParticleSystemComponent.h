@@ -6,11 +6,10 @@
 #include "EmitterShape.h"
 #include "ColorGradient.h"
 
-class Material;
 class ResourceTexture;
 class Particle;
 //class EmitterShape;
-struct Mesh;
+
 
 class ENGINE_API ParticleSystemComponent : public Component
 {

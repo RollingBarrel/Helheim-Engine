@@ -159,6 +159,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "ui.fs";
 	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "HighLight_Vertex.glsl";
+	sourcesPaths[1] = "HighLight_Fragment.glsl";
+	mHighLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "particle_vertex.glsl";
 	sourcesPaths[1] = "particle_fragment.glsl";
 	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -178,10 +182,6 @@ bool ModuleOpenGL::Init()
 	InitSkybox();
 
 	//Lighting uniforms
-	glUseProgram(mPbrProgramId);
-	glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
-	glUseProgram(0);
-
 	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirLight), &mDirLight);
 
 	const uint32_t numPointLights[4] = { mPointLights.size(), 0, 0, 0 };
@@ -199,7 +199,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 {
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
 	//Draw the skybox
 	if (mEnvironmentTextureId != 0)
@@ -216,7 +216,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	//BakeIBL(L"Assets/Textures/skybox.hdr");
 
 	return UPDATE_CONTINUE;
@@ -262,6 +262,32 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+
+
+void ModuleOpenGL::AddHighLight(GameObject* gameObject)
+{
+	if (!gameObject->IsRoot())
+	{
+		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		if (!meshComponents.empty())
+		{
+			mBatchManager.AddHighLight(meshComponents);
+		}
+	}
+}
+
+void ModuleOpenGL::RemoveHighLight(GameObject* gameObject)
+{
+	if (!gameObject->IsRoot())
+	{
+		std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+		if (!meshComponents.empty())
+		{
+			mBatchManager.RemoveHighLight(meshComponents);
+		}
+	}
+}
+
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
@@ -282,7 +308,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height =
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
-	((CameraComponent*)App->GetCamera()->GetCurrentCamera())->SetAspectRatio((float)width / (float)height);
+	App->GetCamera()->SetAspectRatio((float)width / (float)height);
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -295,12 +321,27 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
 	if (mCameraUniBuffer != nullptr)
 	{
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+		const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-		glUseProgram(mPbrProgramId);
-		glUniform3fv(1, 1, ((CameraComponent*)App->GetCamera()->GetCurrentCamera())->GetFrustum().pos.ptr());
-		glUseProgram(0);
+		if (camera)
+		{
+			mCameraUniBuffer->UpdateData(camera->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(camera->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			glUseProgram(mPbrProgramId);
+			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
+			glUseProgram(0);
+		}
+		else
+		{
+			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			glUseProgram(mPbrProgramId);
+			glUniform3fv(1, 1, float3::zero.ptr());
+			glUseProgram(0);
+		}
+		
 	}
 }
 
@@ -537,7 +578,7 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		Frustum frustum;
 		frustum.type = FrustumType::PerspectiveFrustum;
 		frustum.pos = float3::zero;
-		frustum.nearPlaneDistance = 0.1;
+		frustum.nearPlaneDistance = 0.1f;
 		frustum.farPlaneDistance = 100.0f;
 		frustum.verticalFov = pi / 2.0f;
 		frustum.horizontalFov = pi / 2.0f;

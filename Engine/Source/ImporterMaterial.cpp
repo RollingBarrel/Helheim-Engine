@@ -7,6 +7,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 
+
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
@@ -31,7 +32,7 @@ static unsigned int ImportTexture(const char* filePath, const std::string& texPa
     return EngineApp->GetEngineResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
 }
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)
+ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::unordered_map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)
 {
     const tinygltf::PbrMetallicRoughness& material = tinyMaterial.pbrMetallicRoughness;
     float baseColorFactor[4] = { static_cast<float>(material.baseColorFactor[0]), static_cast<float>(material.baseColorFactor[1]), static_cast<float>(material.baseColorFactor[2]), static_cast<float>(material.baseColorFactor[3]) };

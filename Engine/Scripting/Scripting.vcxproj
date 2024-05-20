@@ -120,7 +120,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)\Source\Dependencies\MathGeoLib-v1.5\include\Math;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;$(SolutionDir)Source\Dependencies\FMOD\api\core\inc;$(SolutionDir)Source\Dependencies\FMOD\api\studio\inc;$(SolutionDir)Source\Dependencies\Optick\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996;4251;33010</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838; 33010</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

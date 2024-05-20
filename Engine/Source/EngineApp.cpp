@@ -3,7 +3,7 @@
 #include "ModuleOpenGL.h"
 #include "ModuleEngineInput.h"
 #include "ModuleScene.h"
-#include "ModuleCamera.h"
+#include "ModuleEngineCamera.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEngineScriptManager.h"
 #include "ModuleResource.h"
@@ -16,6 +16,7 @@
 #include "ModuleEditor.h"
 #include "Timer.h"
 #include "optick.h"
+#include "NavMeshController.h"
 
 EngineApplication* EngineApp = NULL;
 
@@ -29,7 +30,8 @@ EngineApplication::EngineApplication()
 	modules[0] = engineInput = new ModuleEngineInput();
 	input = engineInput;
 	modules[1] = window = new ModuleWindow();
-	modules[2] = camera = new ModuleCamera();
+	modules[2] = engineCamera = new ModuleEngineCamera();
+	camera = engineCamera;
 	modules[3] = fileSystem = new ModuleFileSystem();
 	modules[4] = audio = new ModuleAudio();
 	modules[5] = render = new ModuleOpenGL();
@@ -43,6 +45,7 @@ EngineApplication::EngineApplication()
 	modules[11] = editor = new ModuleEditor();
 	modules[12] = ui = new ModuleUI();
 	modules[13] = event = new ModuleEvent();
+	mNavMeshController = new NavMeshController();
 }
 
 EngineApplication::~EngineApplication()
@@ -53,6 +56,7 @@ EngineApplication::~EngineApplication()
 	}
 	delete mEngineTimer;
 	delete mGameTimer;
+	delete mNavMeshController;
 }
 
 bool EngineApplication::Init()
