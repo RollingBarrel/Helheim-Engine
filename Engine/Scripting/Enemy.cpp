@@ -1,9 +1,6 @@
 #include "Enemy.h"
 #include "Application.h"
-#include "ModuleInput.h"
 #include "ModuleScene.h"
-#include "ModuleDetourNavigation.h"
-#include "Keys.h"
 #include "Math/MathFunc.h"
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
@@ -33,14 +30,17 @@ bool Enemy::IsPlayerInRange(float range)
 
 void Enemy::TakeDamage(float damage) 
 {   
-    mHealth -= damage;
-    
-    //LOG("Enemy Health: %f", mHealth);
-
-    if (mHealth <= 0)
+    if (mHealth > 0)
     {
-        Death();
+        mHealth -= damage;
+
+        if (mHealth <= 0)
+        {
+            Death();
+        }
     }
+
+    //LOG("Enemy Health: %f", mHealth);
 }
 
 void Enemy::Death()
