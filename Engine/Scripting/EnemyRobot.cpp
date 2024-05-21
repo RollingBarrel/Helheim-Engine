@@ -13,6 +13,7 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mActivationRange);
+    MEMBER(MemberType::INT, mHealthPercent);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::FLOAT, mRangeDistance);

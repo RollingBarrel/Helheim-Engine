@@ -21,7 +21,8 @@ class Enemy : public Script
 		bool Delay(float delay);
 		bool IsPlayerInRange(float range);		
 		void DropHealth();
-				
+		
+		int mHealthPercent = 20;
 		float mHealth = 0.0f;
 		float mMaxHealth = 100.0f;
 		float mSpeed = 1.0f;
@@ -32,7 +33,6 @@ class Enemy : public Script
 
 	private:
 		void ActivateEnemy();
-		int randomValue = 0;
-		bool mCreateItem = false;
+
 		NavMeshController* mNavMeshControl = nullptr;		
 };
