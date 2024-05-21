@@ -104,7 +104,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 			InternalSetFocus(gameObject);
 			mMarked.clear();
 		}
-		bool isPrefabRoot = (EngineApp->GetScene()->IsPrefabScene() && node->mParent->mIsRoot);
+		bool isPrefabRoot = (EngineApp->GetScene()->IsPrefabScene() && node->mIsRoot);
 		if (!node->mIsRoot && !isPrefabRoot) 
 		{
 			if (ImGui::Selectable("Duplicate")) 

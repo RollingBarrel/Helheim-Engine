@@ -96,7 +96,7 @@ update_status ModuleScene::PostUpdate(float dt)
 	}
 	if (mClosePrefab)
 	{
-		int resourceId = SavePrefab(mRoot->GetChildren()[0], mPrefabPath);
+		int resourceId = SavePrefab(*mRoot->GetChildren()[0], mPrefabPath);
 		delete mRoot;
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
