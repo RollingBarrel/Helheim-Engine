@@ -22,7 +22,7 @@ class Enemy : public Script
 		bool IsPlayerInRange(float range);		
 		void DropHealth();
 		
-		int mHealthPercent = 20;
+		int mHealthDropRate = 20;
 		float mHealth = 0.0f;
 		float mMaxHealth = 100.0f;
 		float mSpeed = 1.0f;

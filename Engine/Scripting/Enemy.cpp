@@ -74,8 +74,21 @@ void Enemy::DropHealth()
     srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomValue = rand() % 100;
 
-    if (randomValue < mHealthPercent)
+    if (randomValue < mHealthDropRate)
     {
+        float3 enemyPosition = mGameObject->GetPosition();
+        float3 healthPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+
+        //GameObject* health = ModuleScene::InstantiatePrefab("Item_Health.prfb");
+        GameObject* health = App->GetScene()->InstantiatePrefab("Item_Health.prfb");
+        health->SetPosition(healthPosition);
+
+        float3 scale = float3(0.25f, 0.25f, 0.25f);
+        health->SetScale(scale);
+
+        //************************************************************
+
+        /*
         ModuleScene::InstantiatePrefab("Item_Health.prfb");
 
         float3 enemyPosition = mGameObject->GetPosition();
@@ -86,5 +99,6 @@ void Enemy::DropHealth()
 
         float3 scale = float3(0.25f, 0.25f, 0.25f);
         health->SetScale(scale);
+        */
     }
 }
