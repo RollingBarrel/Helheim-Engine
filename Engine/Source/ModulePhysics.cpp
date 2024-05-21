@@ -49,8 +49,8 @@ bool ModulePhysics::CleanUp()
 		delete obj;
 	}
 	*/
-	//delete mWorld;
-	//delete mBroadPhase;
+	delete mWorld;
+	delete mBroadPhase;
 	
 	delete mConstraintSolver;
 	delete mDispatcher;
