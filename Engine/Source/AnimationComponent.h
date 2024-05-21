@@ -3,10 +3,12 @@
 #include "Component.h"
 #include "float4x4.h"
 #include <vector>
+#include <string>
 
 class AnimationController;
-class ResourceAnimation;
+class AnimationStateMachine;
 class ResourceModel;
+
 
 class ENGINE_API AnimationComponent : public Component {
 public:
@@ -20,10 +22,7 @@ public:
 
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
-
-	const ResourceAnimation* GetAnimation() const { return mAnimation; }
-	const AnimationController* GetAnimationController() const { return mController; }
-
+	
 	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop);
 
@@ -34,56 +33,49 @@ public:
 	void OnStop();
 	void OnRestart();
 
-	void SetAnimation(unsigned int uid);
-
-	void SetStartTime(float time);
-	void SetEndTime(float time);
+	const AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
+	
+	//Pallete calculations
 	const std::vector<float4x4> GetPalette() const { return mPalette; }
-
 
 	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
 
 
-	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
-
-
-	const std::vector<const char*>& GetClipNames() const { return mClipNames; }
-
-	void SetClipNames(const std::vector<const char*>& clipNames) { mClipNames = clipNames; }
-
-	const std::vector<float>& GetClipTimes() const { return mClipTimes; }
-
-	void SetClipTimes(const std::vector<float>& clipTimes) { mClipTimes = clipTimes; }
-
-	int GetCurrentClip() const { return mCurrentClip; }
-
-	void SetCurrentClip(int currentClip);
-	float GetCurrentStartTime() const { return mClipTimes[mCurrentClip * 2]; }
-	float GetCurrentEndTime() const { return mClipTimes[mCurrentClip * 2 + 1]; }
-
-	unsigned int GetModelUUID() const { return mModelUid; }
-	void SetModelUUID(unsigned int modelUid) { mModelUid = modelUid; }
-
+	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed);
 
+	std::string GetCurrentStateName();
+	void SendTrigger(std::string trigger, float transitionTime);
+	void ChangeState(std::string stateName, float transitionTime);
+	//Model UUID
+	unsigned int GetModelUUID() const { return mModelUid; }
+	void SetModelUUID(unsigned int modelUid); 
+
+	
+
+	void StartTransition(float transitionDuration);
 
 private:
 	void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
-	ResourceAnimation* mAnimation;
+
+
 	AnimationController* mController;
+	AnimationStateMachine* mStateMachine;
+	int mCurrentState = 0;
 
 	bool mLoop = true;
 	bool mIsPlaying = false;
+
+	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 	std::vector<float4x4> mPalette;
-	std::vector<const char*> mClipNames;
-	std::vector<float> mClipTimes;
-	int mCurrentClip;
-	unsigned int mModelUid;
+
 	float mSpeed;
 
+	unsigned int mModelUid;
 
+	
 };
 
 #endif

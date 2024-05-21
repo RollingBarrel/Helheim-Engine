@@ -163,6 +163,7 @@
     <ClCompile Include="AIAgentComponent.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="AudioListenerComponent.cpp" />
@@ -276,6 +277,7 @@
     <ClInclude Include="AIAgentComponent.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Archive.h" />
     <ClInclude Include="AudioListenerComponent.h" />

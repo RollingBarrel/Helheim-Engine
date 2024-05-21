@@ -178,6 +178,7 @@
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
     <ClInclude Include="MainMenuManager.h" />
+    <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="StateMachineTest.cpp" />
     <ClCompile Include="TestScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
