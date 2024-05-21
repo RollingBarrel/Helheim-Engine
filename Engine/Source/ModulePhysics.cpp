@@ -70,37 +70,36 @@ update_status ModulePhysics::PreUpdate(float dt)
 	}
 	mRigidBodiesToRemove.clear();
 
-	if (false) // TODO: Check game is running App->GetScriptManager()->IsPlaying()
+	
+	mWorld->stepSimulation(dt, 15);
+
+	int numManifolds = mWorld->getDispatcher()->getNumManifolds();
+	for (int i = 0; i < numManifolds; i++)
 	{
-		mWorld->stepSimulation(dt, 15);
+		btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
+		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
 
-		int numManifolds = mWorld->getDispatcher()->getNumManifolds();
-		for (int i = 0; i < numManifolds; i++)
+		int numContacts = contactManifold->getNumContacts();
+		if (numContacts > 0)
 		{
-			btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
-			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-			btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+			Collider* bodyA = (Collider*)obA->getUserPointer();
+			Collider* bodyB = (Collider*)obB->getUserPointer();
 
-			int numContacts = contactManifold->getNumContacts();
-			if (numContacts > 0)
+			if (bodyA && bodyB)
 			{
-				Collider* bodyA = (Collider*)obA->getUserPointer();
-				Collider* bodyB = (Collider*)obB->getUserPointer();
+				float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
+				float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
 
-				if (bodyA && bodyB)
-				{
-					float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
-					float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
+				float3 diff = contactOnB - contactOnA;
+				float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
 
-					float3 diff = contactOnB - contactOnA;
-					float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
-
-					ProcessCollision(bodyA, bodyB, collisionNormal, diff);
-					ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
-				}
+				ProcessCollision(bodyA, bodyB, collisionNormal, diff);
+				ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
 			}
 		}
 	}
+	
 
 	return UPDATE_CONTINUE;
 }
