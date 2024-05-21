@@ -57,7 +57,7 @@ void AnimationController::Update(GameObject* model)
 
 void AnimationController::Restart()
 {
-	mCurrentTime = 0;
+	mCurrentTime = mStartTime;
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda)

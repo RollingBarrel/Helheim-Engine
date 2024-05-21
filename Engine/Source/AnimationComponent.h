@@ -33,7 +33,7 @@ public:
 	void OnStop();
 	void OnRestart();
 
-	AnimationStateMachine* GetStateMachine() const { return mStateMachine;};
+	const AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	
 	//Pallete calculations
 	const std::vector<float4x4> GetPalette() const { return mPalette; }
@@ -64,11 +64,11 @@ private:
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
 	int mCurrentState = 0;
-	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 	bool mLoop = true;
 	bool mIsPlaying = false;
 
+	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 	std::vector<float4x4> mPalette;
 
 	float mSpeed;
