@@ -21,7 +21,7 @@
 
 bool ModuleEngineCamera::Init()
 {
-	mEditorCameraGameObject = new GameObject(nullptr);
+	mEditorCameraGameObject = new GameObject("EditorCamera", nullptr);
 	mEditorCamera = reinterpret_cast<CameraComponent*>(mEditorCameraGameObject->CreateComponent(ComponentType::CAMERA));
 	mActiveCameras.clear();
 	if (App != nullptr)

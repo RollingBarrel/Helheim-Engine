@@ -420,6 +420,7 @@
     <ClCompile Include="BezierCurve.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -1037,6 +1038,7 @@
     <ClInclude Include="BezierCurve.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>

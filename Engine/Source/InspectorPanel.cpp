@@ -141,7 +141,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 		if (focusedObject->mPrefabResourceId != 0) {
 			ImGui::Text("From Prefab");
-			ImGui::Checkbox("override after editing prefab", &focusedObject->mPrefabOverride);
+			ImGui::Checkbox("Override Prefab", &focusedObject->mPrefabOverride);
 		}
 
 		DrawTransform(focusedObject);
@@ -777,6 +777,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 				currentItem = scriptNames[n].c_str();
 				component->LoadScript(currentItem);
 				currentItem = component->GetScriptName();
+
+				if (component->mScript)
+				{
+					component->mScript->Awake();
+				}
 			}
 
 			if (is_selected) 
@@ -900,18 +905,14 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
 	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
 
-	bool loop = true;
+	bool loop = component->GetLoop();
 	//bool play = false;
 
 	if (ImGui::Button("Play/Pause"))
 	{
-		if (component->GetAnimation() == nullptr)
-			return;
 		component->OnStart();
 		bool play = component->GetIsPlaying();
-		(play) ? play = false : play = true;
-		component->SetIsPlaying(play);
-
+		component->SetIsPlaying(!play);
 	}
 
 	ImGui::SameLine();
@@ -927,21 +928,23 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		ImGui::Text("PAUSED");
 	}
 
+	/*
 	if (ImGui::Button("Stop"))
 	{
 		component->SetIsPlaying(false);
 		component->OnRestart();
 	}
-
-	//component->SetIsPlaying(play);
+	*/
 
 	if (ImGui::Button("Restart"))
 	{
 		component->OnRestart();
 	}
 
-	ImGui::Checkbox("Loop", &loop);
-	component->SetLoop(loop);
+	if (ImGui::Checkbox("Loop", &loop))
+	{
+		component->SetLoop(loop);
+	}
 
 	float animSpeed = component->GetAnimSpeed();
 
@@ -950,24 +953,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 		component->SetAnimSpeed(animSpeed);
 	}
 
-	int currentItem = component->GetCurrentClip();
-
-	if (ImGui::Combo("Select Animation State", &currentItem, component->GetClipNames().data(), component->GetClipNames().size()))
-	{
-		component->SetCurrentClip(currentItem);
-	}
-	float maxTimeValue = component->GetAnimation()->GetDuration();
-	float currentStartTime = component->GetCurrentStartTime();
-	float currentEndTime = component->GetCurrentEndTime();
-
-	if (ImGui::DragFloat("StartTime", &currentStartTime, 0.1f, 0.0f, maxTimeValue))
-	{
-		component->SetStartTime(currentStartTime);
-	}
-	if (ImGui::DragFloat("EndTime", &currentEndTime, 0.1f, 0.0f, maxTimeValue))
-	{
-		component->SetEndTime(currentEndTime);
-	}
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)

@@ -33,6 +33,10 @@
 
 #pragma region Constructors and Destructors
 
+GameObject::GameObject(const char* name) : GameObject(LCG().Int(), name , App->GetScene()->GetRoot())
+{
+}
+
 GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
 {
 }
@@ -72,14 +76,14 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 {
 	App->GetScene()->AddGameObjectToScene(this);
 
-	for (auto child : original.mChildren)
+	for (GameObject* child : original.mChildren)
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
 
-	for (auto component : original.mComponents)
+	for (Component* component : original.mComponents)
 	{
 		mComponents.push_back(component->Clone(this));
 	}
