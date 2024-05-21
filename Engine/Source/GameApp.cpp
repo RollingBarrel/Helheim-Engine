@@ -31,12 +31,13 @@ GameApplication::GameApplication()
 	modules[5] = render = new ModuleOpenGL();
 	modules[6] = resource = new ModuleResource();
 	modules[7] = scriptManager = new ModuleScriptManager();
-	modules[8] = scene = new ModuleScene();
-	modules[9] = navigation = new ModuleDetourNavigation();
-	modules[10] = ui = new ModuleUI();
-	modules[11] = event = new ModuleEvent();
-	modules[12] = game = new ModuleGame();
-	modules[13] = debugDraw = new ModuleDebugDraw();
+	modules[8] = debugDraw = new ModuleDebugDraw();
+	modules[9] = scene = new ModuleScene();
+	modules[10] = navigation = new ModuleDetourNavigation();
+	modules[11] = ui = new ModuleUI();
+	modules[12] = event = new ModuleEvent();
+	modules[13] = game = new ModuleGame();
+
 }
 
 GameApplication::~GameApplication()
