@@ -33,7 +33,7 @@ public:
 	void OnStop();
 	void OnRestart();
 
-	const AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
+	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	
 	//Pallete calculations
 	const std::vector<float4x4> GetPalette() const { return mPalette; }
