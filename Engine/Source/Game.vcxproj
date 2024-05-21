@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
     </ClCompile>
     <Link>
