@@ -4,18 +4,10 @@
 #include "Geometry/Frustum.h"
 
 typedef struct SpotLight {
-	//float range;
-	//float padding[3];
-	//float pos[4]; //w intensity
-	//float aimD[4];//w cos inner angle
-	//float col[4];//w cos outer angle
-	//float4x4 viewProjMatrix;
-	//uint64_t shadowMapHandle;
-	//float padding2[2];
 
 	float pos[4]; //w intensity
 	float aimD[4];//w cos inner angle
-	float col[4];//w cos outer angle
+	float color[4];//w cos outer angle
 	float4x4 viewProjMatrix;
 	uint64_t shadowMapHandle;
 	float range;
@@ -26,7 +18,8 @@ typedef struct SpotLight {
 class ENGINE_API SpotLightComponent : public Component 
 {
 public:
-	SpotLightComponent(GameObject* owner, const SpotLight& light);
+	SpotLightComponent(GameObject* owner);
+	SpotLightComponent(const SpotLightComponent* original, GameObject* owner);
 	~SpotLightComponent();
 
 	void Update() override;
@@ -40,7 +33,7 @@ public:
 	const SpotLight& GetData() const { return mData; }
 	const float* GetPosition() const;
 	const float* GetDirection() const { return mData.aimD; };
-	const float* GetColor() const { return mData.col; }
+	const float* GetColor() const { return mData.color; }
 	void SetColor(float col[3]);
 	float GetIntensity() const { return mData.pos[3]; }
 	void SetIntensity(float intensity);
@@ -63,8 +56,8 @@ public:
 
 private:
 	SpotLight mData;
-	unsigned int mShadowMapSize = 0;
 	Frustum mShadowFrustum;
+	unsigned int mShadowMapSize = 0;
 	unsigned int mShadowMapId = 0;
 	bool mCastShadow = false;
 };

@@ -7,15 +7,31 @@
 #include "SpotLightComponent.h"
 #include "glew.h"
 
-SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) 
+SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, ComponentType::SPOTLIGHT)
 {
+
 	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
+	mData.pos[3] = 50.0f; //intensity
+
+	const float3& dir = owner->GetFront();
+	mData.aimD[0] = dir.x;
+	mData.aimD[1] = dir.y;
+	mData.aimD[2] = dir.z;
+	mData.aimD[3] = cos(DegToRad(25.f)); //cos inner angle
+
+	mData.color[0] = 1.0f;
+	mData.color[1] = 1.0f;
+	mData.color[2] = 1.0f;
+	mData.color[3] = cos(DegToRad(38.f)); //cos outer angle
+
+	mData.viewProjMatrix = float4x4::identity;
+
 	mData.range = 15.0f;
 	mData.bias = 0.00001f;
-	App->GetOpenGL()->AddSpotLight(*this);
+	
 
 	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
 	mShadowFrustum.pos = owner->GetWorldPosition();
@@ -23,10 +39,10 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.1f;
 	mShadowFrustum.farPlaneDistance = mData.range;
-	mShadowFrustum.horizontalFov = 2.0f * acos(mData.col[3]);
-	mShadowFrustum.verticalFov =  2.0f * acos(mData.col[3]);
+	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
+	mShadowFrustum.verticalFov =  2.0f * acos(mData.color[3]);
 
-	mShadowMapSize = 512; // 512
+	mShadowMapSize = 512;
 
 	glGenTextures(1, &mShadowMapId);
 	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
@@ -35,10 +51,26 @@ SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//glGenerateMipmap(GL_TEXTURE_2D);
 	mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
 	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
 
+	App->GetOpenGL()->AddSpotLight(*this);
+}
+
+SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner) 
+	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mShadowMapSize(original->mShadowMapSize), mCastShadow(original->mCastShadow)
+{
+	glGenTextures(1, &mShadowMapId);
+	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
+	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
+
+	App->GetOpenGL()->AddSpotLight(*this);
 }
 
 SpotLightComponent::~SpotLightComponent() 
@@ -53,11 +85,11 @@ const float* SpotLightComponent::GetPosition() const
 	return mOwner->GetWorldPosition().ptr(); 
 }
 
-void SpotLightComponent::SetColor(float col[3])
+void SpotLightComponent::SetColor(float color[3])
 {
-	mData.col[0] = col[0];
-	mData.col[1] = col[1];
-	mData.col[2] = col[2];
+	mData.color[0] = color[0];
+	mData.color[1] = color[1];
+	mData.color[2] = color[2];
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -76,12 +108,12 @@ void SpotLightComponent::SetRange(float range)
 }
 
 float SpotLightComponent::GetOuterAngle() const {
-	return acos(mData.col[3]);
+	return acos(mData.color[3]);
 }
 
 void SpotLightComponent::SetOuterAngle(float angle)
 {
-	mData.col[3] = cos(angle);
+	mData.color[3] = cos(angle);
 	mShadowFrustum.horizontalFov = 2.0f * angle;
 	mShadowFrustum.verticalFov = 2.0f * angle;
 	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
@@ -148,7 +180,7 @@ void SpotLightComponent::Update()
 
 inline Component* SpotLightComponent::Clone(GameObject* owner) const 
 { 
-	return new SpotLightComponent(owner, mData);
+	return new SpotLightComponent(this, owner);
 }
 
 void SpotLightComponent::Save(Archive& archive) const 
@@ -156,7 +188,7 @@ void SpotLightComponent::Save(Archive& archive) const
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat4("Position", mData.pos);
 	archive.AddFloat4("Direction", mData.aimD);
-	archive.AddFloat4("Color", mData.col);
+	archive.AddFloat4("Color", mData.color);
 	archive.AddFloat("Range", mData.range);
 	archive.AddBool("CastShadow", mCastShadow);
 	archive.AddFloat("Bias", mData.bias);
@@ -190,7 +222,7 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 		const auto& posArray = componentJson["Color"].GetArray();
 		for (unsigned int i = 0; i < posArray.Size(); ++i)
 		{
-			mData.col[i] = posArray[i].GetFloat();
+			mData.color[i] = posArray[i].GetFloat();
 		}
 	}
 
@@ -219,8 +251,8 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.01f;
 	mShadowFrustum.farPlaneDistance = mData.range;
-	mShadowFrustum.horizontalFov = 2.0f * acos(mData.col[3]);
-	mShadowFrustum.verticalFov = 2.0f * acos(mData.col[3]);
+	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
+	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
