@@ -40,7 +40,7 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
-	void AddCollisionEventHandler(CollisionEventType eventType, std::function<void(CollisionData*)> handler);
+	void AddCollisionEventHandler(CollisionEventType eventType, std::function<void(CollisionData*)>* handler);
 	void OnCollision(CollisionData* collisionData);
 	void ComputeBoundingBox();
 
@@ -76,7 +76,7 @@ private:
 	MotionState* mMotionState = nullptr;
 	Collider mCollider{ this, typeid(Component) };
 
-	std::vector<std::function<void(CollisionData*)>> mEventHandlers[(int)CollisionEventType::COUNT];
+	std::vector<std::function<void(CollisionData*)>*> mEventHandlers[(int)CollisionEventType::COUNT];
 
 };
 

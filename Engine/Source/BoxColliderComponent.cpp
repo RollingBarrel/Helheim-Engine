@@ -52,7 +52,7 @@ Component* BoxColliderComponent::Clone(GameObject* owner) const
 	return new BoxColliderComponent(*this, owner);
 }
 
-void BoxColliderComponent::AddCollisionEventHandler(CollisionEventType eventType, std::function<void(CollisionData*)> handler)
+void BoxColliderComponent::AddCollisionEventHandler(CollisionEventType eventType, std::function<void(CollisionData*)>* handler)
 {
 	mEventHandlers[static_cast<int>(eventType)].push_back(handler);
 }
@@ -61,7 +61,7 @@ void BoxColliderComponent::OnCollision(CollisionData* collisionData)
 {
 	for (auto& handler : mEventHandlers[static_cast<int>(collisionData->eventType)])
 	{
-		handler(collisionData);
+		(*handler)(collisionData);
 	}
 }
 
