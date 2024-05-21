@@ -109,35 +109,38 @@ void ParticleSystemComponent::Draw() const
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-        auto* cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
-        float4x4 projection = cam->GetViewProjectionMatrix();
-        float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
-        float3 up = cam->GetFrustum().up;
-        float3 right = up.Cross(norm).Normalized();
-        //up = norm.Cross(right).Normalized();
-        glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
-        glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
-            nullptr, GL_DYNAMIC_DRAW);
-        auto ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+        const CameraComponent* cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
+        if (cam) {
+            float4x4 projection = cam->GetViewProjectionMatrix();
+            float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
+            float3 up = cam->GetFrustum().up;
+            float3 right = up.Cross(norm).Normalized();
+            //up = norm.Cross(right).Normalized();
+            glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
+            glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
+                nullptr, GL_DYNAMIC_DRAW);
+            auto ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
-        for (int i = 0; i < mParticles.size(); ++i)
-        {
-            float scale = mParticles[i]->GetSize();
-            float3x3 scaleMatrix = float3x3::identity * scale;
-            float3 pos = mParticles[i]->GetPosition();
-            float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
-            transform = transform * scaleMatrix;
-            transform.Transpose();
-            memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
-            memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
+            for (int i = 0; i < mParticles.size(); ++i)
+            {
+                float scale = mParticles[i]->GetSize();
+                float3x3 scaleMatrix = float3x3::identity * scale;
+                float3 pos = mParticles[i]->GetPosition();
+                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+                transform = transform * scaleMatrix;
+                transform.Transpose();
+                memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
+                memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
+            }
+            glUnmapBuffer(GL_ARRAY_BUFFER);
+            glBindVertexArray(mVAO);
+
+            glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &projection[0][0]);
+            glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+
+            glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
+
         }
-        glUnmapBuffer(GL_ARRAY_BUFFER);
-        glBindVertexArray(mVAO);
-
-        glUniformMatrix4fv(glGetUniformLocation(programId, "projection"), 1, GL_TRUE, &projection[0][0]);
-        glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-
-        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());        
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
