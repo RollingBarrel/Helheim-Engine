@@ -36,7 +36,7 @@ GameApplication::GameApplication()
 	modules[10] = ui = new ModuleUI();
 	modules[11] = event = new ModuleEvent();
 	modules[12] = game = new ModuleGame();
-	modules[12] = debugDraw = new ModuleDebugDraw();
+	modules[13] = debugDraw = new ModuleDebugDraw();
 }
 
 GameApplication::~GameApplication()
