@@ -8,6 +8,7 @@
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
 #include "AnimationComponent.h"
+#include "AnimationStateMachine.h"
 #include "AudioSourceComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
@@ -42,8 +43,6 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);
     MEMBER(MemberType::FLOAT, mRangeChargeAttackMultiplier);
     
-    SEPARATOR("ANIMATION");
-    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
 
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mShieldGO);
@@ -100,6 +99,92 @@ void PlayerController::Start()
     // CAMERA
     ModuleScene* scene = App->GetScene();
     mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
+
+
+    //Animation
+    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
+    if (mAnimationComponent)
+    {
+        mStateMachine = mAnimationComponent->GetStateMachine();
+
+    }
+    if (mStateMachine)
+    {
+        std::string clip = "Character";
+
+        std::string defaultState = "default";
+        std::string sIdle = "Idle";
+        std::string sWalkForward = "Walk Forward";
+        std::string sWalkBack = "Walk Back";
+        std::string sStrafeLeft = "Strafe Left";
+        std::string sStrafeRight = "Strafe Right";
+        std::string sShooting = "Shooting";
+
+        std::string idleTrigger = "tIdle";
+        std::string forwardTrigger = "tWalkForward";
+        std::string backTrigger = "tWalkBack";
+        std::string strafeLeftTrigger = "tStrafeLeft";
+        std::string strafeRightTrigger = "tStrafeRight";
+
+
+        mStateMachine->SetClipName(0, clip);
+
+        //States
+        mStateMachine->AddState(clip, sIdle);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(6.2));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(11.57));
+
+        mStateMachine->AddState(clip, sWalkForward);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.89));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.87));
+
+        mStateMachine->AddState(clip, sWalkBack);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(3.90));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(4.88));
+
+        mStateMachine->AddState(clip, sStrafeLeft);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(1.43));
+
+        mStateMachine->AddState(clip, sStrafeRight);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(1.46));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.85));
+
+        //Transitions
+        mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
+
+
+        mStateMachine->AddTransition(sIdle, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sIdle, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sWalkBack, sWalkForward, sWalkForward);
+        mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sWalkForward, sWalkForward);
+        mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sWalkForward, sWalkForward);
+        mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
+
+        mAnimationComponent->OnStart();
+        mAnimationComponent->SetIsPlaying(true);
+
+    }
+
+    //END ANIMATION
 }
 
 void PlayerController::Update()
@@ -136,9 +221,13 @@ void PlayerController::Update()
     {
     case PlayerState::IDLE:
         if (!mVictory && !mGameOver)
-        {
+        {   
+            if (mAnimationComponent)
+            {
+                mAnimationComponent->SendTrigger("tIdle", 0.1f);
+            }
             Idle();
-            
+
 
         }
         break;
@@ -218,21 +307,41 @@ void PlayerController::Moving()
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         mMoveDirection += front;
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+        }
+
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
         mMoveDirection -= front;
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+        }
+
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
         mMoveDirection += float3::unitY.Cross(front);
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+        }
+
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
         mMoveDirection -= float3::unitY.Cross(front);
+        if (mAnimationComponent)
+        {
+            mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+        }
+
     }
 
     if (!mMoveDirection.Equals(float3::zero))

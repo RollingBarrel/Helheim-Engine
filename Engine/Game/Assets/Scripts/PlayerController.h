@@ -10,6 +10,7 @@ class SliderComponent;
 class AudioSourceComponent;
 class ObjectPool;
 class GameManager;
+class AnimationStateMachine;
 
 enum class PlayerState 
 {
@@ -84,8 +85,9 @@ class PlayerController :public Script
         float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;
-        GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
+        AnimationStateMachine* mStateMachine = nullptr;
+
         GameObject* mBulletPoolHolder = nullptr;
         ObjectPool* mBulletPool = nullptr;
 
