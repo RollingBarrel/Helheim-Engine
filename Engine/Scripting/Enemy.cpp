@@ -1,11 +1,7 @@
 #include "Enemy.h"
 #include "Application.h"
-#include "ModuleInput.h"
 #include "ModuleScene.h"
-#include "ModuleDetourNavigation.h"
-#include "Keys.h"
 #include "Math/MathFunc.h"
-#include "ModuleResource.h"
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
@@ -14,9 +10,6 @@ void Enemy::Start()
     ModuleScene* scene = App->GetScene();
     mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
     mHealth = mMaxHealth;   
-
-    srand(static_cast<unsigned int>(std::time(nullptr)));
-    randomValue = rand() % 100;
 }
 
 void Enemy::Update()
@@ -37,24 +30,23 @@ bool Enemy::IsPlayerInRange(float range)
 
 void Enemy::TakeDamage(float damage) 
 {   
-    mHealth -= damage;
-    
-    //LOG("Enemy Health: %f", mHealth);
-
-    if (mHealth <= 0)
+    if (mHealth > 0)
     {
-        Death();
+        mHealth -= damage;
+
+        if (mHealth <= 0)
+        {
+            Death();
+        }
     }
+
+    //LOG("Enemy Health: %f", mHealth);
 }
 
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-
-    if (randomValue < 20)
-    {
-        DropHealth();
-    }
+    DropHealth();
 }
 
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
@@ -79,13 +71,12 @@ void Enemy::PushBack()
 
 void Enemy::DropHealth()
 {
-    if (!mCreateItem)
-    {
-        mCreateItem = true;
+    srand(static_cast<unsigned int>(std::time(nullptr)));
+    int randomValue = rand() % 100;
 
-        GameObject* items = App->GetScene()->Find("Items");
-        Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/Item_Health.prfb");
-        App->GetScene()->LoadPrefab("Assets/Prefabs/Item_Health.prfb", resource->GetUID(), items);
+    if (randomValue < mHealthPercent)
+    {
+        ModuleScene::InstantiatePrefab("Item_Health.prfb");
 
         float3 enemyPosition = mGameObject->GetPosition();
         float3 healthPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
