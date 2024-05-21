@@ -123,7 +123,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 
 			if (ImGui::Selectable("Delete")) 
 			{
-				for (auto object : FilterMarked()) 
+				for (GameObject* object : FilterMarked()) 
 				{
 					EngineApp->GetScene()->AddGameObjectToDelete(object);
 					mLastClickedObject = EngineApp->GetScene()->GetRoot()->GetID();
@@ -324,7 +324,7 @@ void HierarchyPanel::ShiftClick(GameObject* node, bool selected, bool click)
 const std::vector<GameObject*> HierarchyPanel::FilterMarked() const 
 {
 	std::vector<GameObject*> filteredList;
-	for (auto object : mMarked) 
+	for (GameObject* object : mMarked) 
 	{
 		GameObject* parent = object->mParent;
 		while (parent != nullptr) 
