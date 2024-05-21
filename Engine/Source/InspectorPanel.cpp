@@ -137,7 +137,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 		if (focusedObject->mPrefabResourceId != 0) {
 			ImGui::Text("From Prefab");
-			ImGui::Checkbox("override after editing prefab", &focusedObject->mPrefabOverride);
+			ImGui::Checkbox("Override Prefab", &focusedObject->mPrefabOverride);
 		}
 
 		DrawTransform(focusedObject);
@@ -769,6 +769,11 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 				currentItem = scriptNames[n].c_str();
 				component->LoadScript(currentItem);
 				currentItem = component->GetScriptName();
+
+				if (component->mScript)
+				{
+					component->mScript->Awake();
+				}
 			}
 
 			if (is_selected) 
