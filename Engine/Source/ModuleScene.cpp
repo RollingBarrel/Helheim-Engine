@@ -346,7 +346,7 @@ void ModuleScene::Load(const char* sceneName)
 		delete[] loadedBuffer;
 
 		LoadGameObjectsIntoScripts();
-
+		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
 	}
 }
@@ -384,6 +384,20 @@ void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameOb
 
 #pragma region Prefabs
 
+GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
+{
+	if (!parent)
+	{
+		parent = App->GetScene()->GetRoot();
+	}
+
+	std::string strName = name;
+	strName = ASSETS_PREFABS_PATH + strName;
+	Resource* resource = App->GetResource()->RequestResource(strName.c_str()); //Bullet Prefab
+	GameObject* gameObject = App->GetScene()->LoadPrefab(strName.c_str(), resource->GetUID(), parent);
+	return gameObject;
+}
+
 int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
 	GameObject* gameObject = new GameObject(objectToSave); //Make a copy to change IDs
@@ -415,8 +429,9 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	return resourceId;
 }
 
-void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, GameObject* parent)
+GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, GameObject* parent)
 {
+	GameObject* ret = nullptr;
 	if (parent == nullptr) parent = mRoot;
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
@@ -426,7 +441,7 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 	if (!ok)
 	{
 		LOG("Object was not loaded.");
-		return;
+		return nullptr;
 	}
 
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
@@ -445,12 +460,17 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 				GameObject* newObject = new GameObject(*child, parent);
 				parent->AddChild(newObject);
 				newObject->SetPrefabId(resourceId);
+				ret = child;
 			}
 			parent->DeleteChild(temp);
 		}
-	}
 
+		LoadGameObjectsIntoScripts();
+		App->GetScriptManager()->StartScripts();
+	}
 	delete[] loadedBuffer;
+	
+	return ret;
 }
 
 void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
