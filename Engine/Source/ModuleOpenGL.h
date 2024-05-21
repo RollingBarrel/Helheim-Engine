@@ -5,7 +5,6 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
-#include "ParticleSystemComponent.h"
 #include <vector>
 
 typedef struct DirectionalLight 
@@ -16,6 +15,8 @@ typedef struct DirectionalLight
 
 class PointLightComponent;
 class SpotLightComponent;
+class Trail;
+class ParticleSystemComponent;
 class CameraComponent;
 struct PointLight;
 struct SpotLight;
@@ -70,6 +71,7 @@ public:
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
+	unsigned int GetTrailProgramId() const { return mTrailProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
@@ -95,6 +97,9 @@ public:
 
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
+
+	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
+	void RemoveTrail(const Trail* trail);
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
@@ -147,6 +152,7 @@ private:
 	
 	
 	unsigned int mParticleProgramId = 0;
+	unsigned int mTrailProgramId = 0;
 
 
 	//IBL
@@ -169,6 +175,7 @@ private:
 	friend class LightningPanel;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
+	std::vector<const Trail*> mTrails;
 
 	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 	std::vector<const GameObject*> mHighlightedObjects;
