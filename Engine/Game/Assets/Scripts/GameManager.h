@@ -14,6 +14,8 @@ public:
     void Start();
     void Update();
 
+    GameObject* GetPlayer() { return mPlayer; };
+
     void WinScreen();
     void LoseScreen();
 
