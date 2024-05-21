@@ -81,23 +81,7 @@ void PlayerController::Start()
 
     if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
 
-    if (mAnimationComponentHolder) 
-    {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-
-        //Redefine player animation clips
-        mAnimationComponent->SetCurrentClip(0);
-        mAnimationComponent->SetStartTime(0.0f);
-        mAnimationComponent->SetEndTime(1.9f);
-        mAnimationComponent->SetCurrentClip(1);
-        mAnimationComponent->SetStartTime(1.9f);
-        mAnimationComponent->SetEndTime(2.9f);
-           
-        //Set to idle
-        mAnimationComponent->SetCurrentClip(0);
-    }
+    
 
     if (mFootStepAudioHolder)
     {
@@ -154,10 +138,8 @@ void PlayerController::Update()
         if (!mVictory && !mGameOver)
         {
             Idle();
-            if (mAnimationComponent)
-            {
-                mAnimationComponent->SetCurrentClip(0);
-            }
+            
+
         }
         break;
 
@@ -167,10 +149,7 @@ void PlayerController::Update()
 
     case PlayerState::MOVE:
         Moving();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(1);
-        }
+       
         break;
 
     case PlayerState::ATTACK:

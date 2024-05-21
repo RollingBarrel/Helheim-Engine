@@ -34,13 +34,6 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 void EnemyRobot::Start()
 {
     Enemy::Start();
-    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-        mAnimationComponent->SetCurrentClip(0);
-    }
 }
 
 void EnemyRobot::Update()
@@ -51,19 +44,11 @@ void EnemyRobot::Update()
     case EnemyState::IDLE:
 
         Idle();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(0);
-        }
 
         break;
     case EnemyState::CHASE:
 
         Chase();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(1);
-        }
         break;
     case EnemyState::ATTACK:
         Attack();
@@ -175,7 +160,7 @@ void EnemyRobot::RangeAttack()
     
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
     
-        //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
+        //recorrer todos los hits y hacer daï¿½o a los objetos que tengan tag = target
         for (const std::pair<float, Hit>& hit : hits) 
         {
             if (hit.second.mGameObject->GetTag()->GetName() == "Player") 

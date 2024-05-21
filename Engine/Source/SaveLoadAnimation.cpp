@@ -5,9 +5,10 @@
 
 void Importer::Animation::Save(ResourceAnimation* ourAnimation)
 {
-    float header[2] = { (ourAnimation->GetChannels().size()), ourAnimation->GetDuration() };
+    float header[2] = { (ourAnimation->GetChannels().size()), ourAnimation->GetDuration()};
 
     unsigned int size = sizeof(header);
+    size += sizeof(char) * (ourAnimation->GetName().size() + 1) + sizeof(unsigned int);
     for (const auto& channel : ourAnimation->GetChannels()) {
         size += sizeof(unsigned int) + channel.first.length() + 1;
 
@@ -29,9 +30,23 @@ void Importer::Animation::Save(ResourceAnimation* ourAnimation)
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
 
+    //Header
     unsigned int bytes = sizeof(header);
     memcpy(cursor, header, bytes);
     cursor += bytes;
+
+    //Name Length
+    bytes = sizeof(unsigned int);
+    unsigned int nameLength = ourAnimation->GetName().length() + 1;
+    memcpy(cursor, &nameLength, bytes);
+    cursor += bytes;
+
+    //Name 
+    bytes = sizeof(char) * (ourAnimation->GetName().length() + 1);
+    const char* animName = ourAnimation->GetName().c_str();
+    memcpy(cursor, animName, bytes);
+    cursor += bytes;
+
 
     for (const auto& channel : ourAnimation->GetChannels()) {
 
@@ -88,7 +103,6 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
 
     if (App->GetFileSystem()->Load(filePath, &fileBuffer))
     {
-        ourAnimation = new ResourceAnimation(uid, "");
 
         // Load Header
         char* cursor = fileBuffer;
@@ -97,7 +111,23 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
         memcpy(header, cursor, bytes);
         cursor += bytes;
         unsigned int numChannels = header[0];
+
+        //Name length
+        unsigned int nameLength;
+        bytes = sizeof(unsigned int);
+        memcpy(&nameLength, cursor, bytes);
+        cursor += bytes;
+
+        //Name
+        char* animName = new char[nameLength];
+        bytes = sizeof(char) * nameLength;
+        memcpy(animName, cursor, bytes);
+        cursor += bytes;
+
+        ourAnimation = new ResourceAnimation(uid, animName);
         ourAnimation->mDuration = header[1];
+
+
 
         // Load Channels
         for (unsigned int i = 0; i < numChannels; ++i)
