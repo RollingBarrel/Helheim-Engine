@@ -40,7 +40,6 @@ public:
 
 	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
 
-	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
@@ -65,6 +64,7 @@ private:
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
 	int mCurrentState = 0;
+	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 
 	bool mLoop = true;
 	bool mIsPlaying = false;
