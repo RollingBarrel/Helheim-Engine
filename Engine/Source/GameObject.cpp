@@ -743,7 +743,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 		{
 			DeleteChild(child);
 		}
-
+		GameObject* temp = new GameObject(mParent);
 		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray())
 		{
 			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
@@ -770,11 +770,17 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					}
 					else
 					{
-						LoadGameObjectFromJSON(gameObjects[i], mParent);
+						LoadGameObjectFromJSON(gameObjects[i], temp);
 					}
 				}
 			}
 		}
+		for (GameObject* child : temp->GetChildren())
+		{
+			GameObject* newObject = new GameObject(*child, this);
+			AddChild(newObject);
+		}
+		mParent->DeleteChild(temp);
 	}
 	else
 	{
