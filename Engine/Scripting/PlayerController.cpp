@@ -33,7 +33,10 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE ATTACK");
-    //MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
+    MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
+    MEMBER(MemberType::FLOAT, mMeleeBaseRange);
+    MEMBER(MemberType::FLOAT, mMeleeSpecialDamage);
+    MEMBER(MemberType::FLOAT, mMeleeSpecialRange);
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
@@ -209,10 +212,20 @@ void PlayerController::Update()
         mMeleeBaseComboTimer += App->GetDt();
         if (mMeleeBaseComboTimer >= mMeleeBaseMaxComboInterval)
         {
-            LOG("Combo timer exceeded max interval, resetting combo");
             mMeleeBaseComboStep = 1;
             mIsMeleeBaseComboActive = false;
             mMeleeBaseComboTimer = 0.0f;
+            mCurrentState = PlayerState::IDLE;
+        }
+    }
+
+    if (mIsMeleeSpecialCoolDownActive)
+    {
+        mMeleeSpecialCoolDownTimer += App->GetDt();
+        if (mMeleeSpecialCoolDownTimer >= mMeleeSpecialCoolDown)
+        {
+            mMeleeSpecialCoolDownTimer = 0.0f;
+            mIsMeleeSpecialCoolDownActive = false;
             mCurrentState = PlayerState::IDLE;
         }
     }
@@ -290,11 +303,16 @@ void PlayerController::Idle()
         {
             mCurrentState = PlayerState::IDLE;
         }
- 
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN
-            || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+    
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
         {
             mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
+            mLeftMouseButtonPressed = true;
+        }
+        else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+		{
+            mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
+            mLeftMouseButtonPressed = false;
         }
     }  
 }
@@ -380,6 +398,11 @@ void PlayerController::Move(float3 direction)
 
 void PlayerController::HandleRotation()
 {
+    if (mCurrentState == PlayerState::ATTACK && mIsMeleeSpecialCoolDownActive)
+    {
+        return;
+    }
+
     std::map<float, Hit> hits;
     float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
     Ray ray = Physics::ScreenPointToRay(mousePosition);
@@ -440,7 +463,14 @@ void PlayerController::Attack()
 
 void PlayerController::MeleeAttack()  
 {
-    MeleeBaseCombo();
+    if (mLeftMouseButtonPressed) 
+    {
+        MeleeBaseCombo();
+    }
+    else 
+    {
+		MeleeSpecialCombo();
+	}
 }
 
 void PlayerController::MeleeBaseCombo()
@@ -451,6 +481,7 @@ void PlayerController::MeleeBaseCombo()
     switch (mMeleeBaseComboStep)
     {
     case 1:
+        //TODO: Implement base attack animation move 1
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
         mMeleeBaseComboStep++;
         mCurrentState = PlayerState::IDLE;
@@ -458,6 +489,7 @@ void PlayerController::MeleeBaseCombo()
         break;
 
     case 2:
+        //TODO: Implement base attack animation move 2
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
         mMeleeBaseComboStep++;
         mCurrentState = PlayerState::IDLE;
@@ -476,6 +508,7 @@ void PlayerController::MeleeBaseCombo()
 		}
         else
         {
+            //TODO: Implement base attack animation move 3
             float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
             float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
             mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
@@ -484,6 +517,27 @@ void PlayerController::MeleeBaseCombo()
 
         break;
 	}
+}
+
+void PlayerController::MeleeSpecialCombo() {
+
+    mIsMeleeSpecialCoolDownActive = true;
+    mMeleeSpecialTimer += App->GetDt();
+    if (mMeleeSpecialTimer >= mMeleeSpecialAttackDuration)
+    {
+        mIsMeleeSpecialCoolDownActive = false; 
+        mMeleeSpecialTimer = 0.0f;
+	    mCurrentState = PlayerState::IDLE;
+    }
+    else
+    {
+        //TODO: Implement special attack animation
+        mGameObject->SetPosition(mGameObject->GetPosition());
+        mGameObject->SetRotation(mGameObject->GetRotation());
+        MeleeHit(mMeleeSpecialRange, mMeleeSpecialDamage);
+        mCurrentState = PlayerState::ATTACK;        
+    }
+
 }
 
 void PlayerController::MeleeHit (float AttackRange, float AttackDamage) {

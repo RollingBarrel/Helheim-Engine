@@ -60,6 +60,7 @@ class PlayerController :public Script
 
         void MeleeAttack();
         void MeleeBaseCombo();
+        void MeleeSpecialCombo();
 
         void MeleeHit(float AttackRange, float AttackDamage);
         void RangedAttack();
@@ -115,30 +116,35 @@ class PlayerController :public Script
         //Range
         int mAmmoCapacity = 500000;
         int mBullets = 0;
-        float mFireRate = 1.0f;
-        float mRangeBaseDamage = 1.0f;
-        float mRangeChargeAttackMultiplier = 5.0f;
-        float mMinRangeChargeTime = 5.0f;
-        float mMaxRangeChargeTime = 10.0f;
         GameObject* bullet = nullptr;
-
-        float mChargedTime = 0.0f;
-        bool mIsChargedAttack = false;
-
-        float mRangeTimer = 0.0f;
+        float mRangeBaseDamage = 1.0f;
 
         //Melee
-       float mMeleeBaseDamage = 2.0f;
+        bool mLeftMouseButtonPressed = false;
+
+            //Melee Base Attack
+        float mMeleeBaseDamage = 2.0f;
         float mMeleeBaseRange = 1.0f;
-   	    float mMeleeBaseSpeed = 8.0f;
+               //Combo
         int mMeleeBaseComboStep = 1;
         float mMeleeBaseComboTimer = 0.0f;
         const float mMeleeBaseMaxComboInterval = 5.0f; 
+        bool mIsMeleeBaseComboActive = false;
+               //Final Attack
         const float mMeleeBaseFinalAttackDuration = 0.5f; 
         float mMeleeBaseFinalAttackTimer = 0.0f;
-        bool mIsMeleeBaseComboActive = false;
         float mMeleeBaseMoveDuration = 0.5f;
         float mMeleeBaseMoveRange = 8.0f;
+
+          //Melee Special Attack
+        float mMeleeSpecialTimer = 0.0f;
+        const float mMeleeSpecialAttackDuration = 2.0f;
+        float mMeleeSpecialDamage = 4.0f;
+        float mMeleeSpecialRange = 2.0f;
+               //Cooldown
+        bool mIsMeleeSpecialCoolDownActive = false;
+        float mMeleeSpecialCoolDownTimer = 0.0f;
+        float mMeleeSpecialCoolDown = 4.0f;
 
         //HUD
         GameObject* mShieldGO = nullptr;
