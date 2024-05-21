@@ -85,15 +85,16 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
 	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
-	if (tmpMaterial && mMaterial)
-	{
-		if (mMesh)
-			App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMaterial = nullptr;
-	}
 	if (tmpMaterial)
 	{
+		if (mMaterial)
+		{
+			if (mMesh)
+				App->GetOpenGL()->BatchRemoveMesh(this);
+			App->GetResource()->ReleaseResource(mMaterial->GetUID());
+			mMaterial = nullptr;
+		}
+
 		mMaterial = tmpMaterial;
 		if (mMesh)
 			App->GetOpenGL()->BatchAddMesh(this);

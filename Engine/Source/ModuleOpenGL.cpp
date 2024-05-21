@@ -413,6 +413,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 			glUseProgram(mPbrLightingPassProgramId);
+			glUniformMatrix4fv(0, 1, GL_TRUE, float4x4::identity.ptr());
 			glUniform3fv(1, 1, float3::zero.ptr());
 			glUseProgram(0);
 		}
