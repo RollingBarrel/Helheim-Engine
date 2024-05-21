@@ -7,7 +7,6 @@
 
 class AnimationController;
 class AnimationStateMachine;
-class ResourceAnimation;
 class ResourceModel;
 
 
@@ -23,10 +22,6 @@ public:
 
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
-
-	//Animation Resources
-	//std::vector<ResourceAnimation*> GetAnimations() { return mAnimations; }
-	unsigned int GetAnimation() { return mAnimationUid; }
 	
 	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop);
@@ -38,7 +33,6 @@ public:
 	void OnStop();
 	void OnRestart();
 
-	void SetAnimation(unsigned int uid);
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine;};
 	
 	//Pallete calculations
@@ -80,7 +74,6 @@ private:
 	float mSpeed;
 
 	unsigned int mModelUid;
-	unsigned int mAnimationUid;
 
 	
 };

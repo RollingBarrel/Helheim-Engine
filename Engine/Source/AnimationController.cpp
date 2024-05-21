@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "Timer.h"
+#include "ModuleResource.h"
 
 #include <cmath>
 #include <vector>
@@ -11,9 +12,8 @@
 
 #include "Globals.h"
 
-AnimationController::AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop) {
+AnimationController::AnimationController(ResourceAnimation* animation,  bool loop) {
 	mCurrentAnimation = animation;
-	mResource = resource;
 	mLoop = loop;
 
 	mCurrentTime = 0;
@@ -21,10 +21,22 @@ AnimationController::AnimationController(ResourceAnimation* animation, unsigned 
 	mEndTime = animation->GetDuration();
 }
 
-AnimationController::AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop, float startTime, float endTime) : AnimationController(animation, resource, loop)
+AnimationController::AnimationController(ResourceAnimation* animation,  bool loop, float startTime, float endTime) : AnimationController(animation, loop)
 {
 	mStartTime = startTime;
 	mEndTime = endTime;
+}
+
+AnimationController::~AnimationController()
+{
+	if (mCurrentAnimation)
+	{
+		App->GetResource()->ReleaseResource(mCurrentAnimation->GetUID());
+	}
+	if (mNextAnimation)
+	{
+		App->GetResource()->ReleaseResource(mNextAnimation->GetUID());
+	}
 }
 
 void AnimationController::Update(GameObject* model)
@@ -154,7 +166,7 @@ void AnimationController::GetTransform(GameObject* model)
 
 void AnimationController::GetTransform_Blending(GameObject* model)
 {
-	float weight = mSpeed * mCurrentTransitionTime / mTransitionDuration;
+	float weight = mCurrentTransitionTime / mTransitionDuration;
 	if (weight < 1)
 	{
 		std::string name = model->GetName();

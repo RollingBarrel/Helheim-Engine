@@ -13,8 +13,9 @@ class AnimationController
 {
 public:
 
-	AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop);
-	AnimationController(ResourceAnimation* animation, unsigned int resource, bool loop, float startTime, float endTime);
+	AnimationController(ResourceAnimation* animation, bool loop);
+	AnimationController(ResourceAnimation* animation, bool loop, float startTime, float endTime);
+	~AnimationController();
 
 	void Update(GameObject* model);
 	void Restart();
@@ -71,8 +72,6 @@ private:
 	float mSpeed = 1.0;
 
 	bool mLoop = true;
-
-	unsigned int mResource;
 
 	ResourceAnimation* mCurrentAnimation = nullptr;
 	ResourceAnimation* mNextAnimation = nullptr;

@@ -11,7 +11,7 @@
 #include "ResourceModel.h"
 #include "float4x4.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION), mAnimationUid(0), mController(nullptr), mModelUid(0)
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mModelUid(0)
 {
 	mStateMachine = nullptr;
 	mSpeed = 1.0;
@@ -24,9 +24,6 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mStateMachine = nullptr;
 
 	mModelUid = other.mModelUid;
-
-	SetAnimation(other.mAnimationUid);
-
 
 }
 
@@ -47,7 +44,7 @@ void AnimationComponent::SetLoop(bool loop)
 
 void AnimationComponent::OnStart()
 {
-	if (mGameobjectsInverseMatrices.size() == 0 && mModelUid != 0 && mAnimationUid != 0)
+	if (mGameobjectsInverseMatrices.size() == 0 && mModelUid != 0)
 	{
 		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
 		LoadAllChildJoints(mOwner, model);
@@ -73,20 +70,6 @@ void AnimationComponent::OnStop()
 void AnimationComponent::OnRestart()
 {
 	mController->Restart();
-}
-
-void AnimationComponent::SetAnimation(unsigned int uid)
-{
-	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(uid, Resource::Type::Animation));
-	if (tmpAnimation)
-	{
-		mAnimationUid = uid;
-		if (mController)
-		{
-			delete mController;
-		}
-		mController = new AnimationController(tmpAnimation, uid, true);
-	}
 }
 
 
@@ -157,8 +140,7 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 			}
 			else
 			{
-				mAnimationUid = tmpAnimation->GetUID();
-				mController = new AnimationController(tmpAnimation, mAnimationUid, true);
+				mController = new AnimationController(tmpAnimation, true);
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
 				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
 
@@ -178,7 +160,7 @@ void AnimationComponent::SetModelUUID(unsigned int modelUid)
 	if(mStateMachine)
 		delete mStateMachine;
 	mStateMachine = new AnimationStateMachine(my_model->mAnimationUids);
-	ChangeState("default", 0.0);
+	ChangeState("default", 0.0f);
 
 	
 }
@@ -229,7 +211,6 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 void AnimationComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ID", GetID());
-	archive.AddInt("AnimationID", mAnimationUid);
 	archive.AddInt("ModelUID", mModelUid);
 
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
@@ -239,13 +220,6 @@ void AnimationComponent::Save(Archive& archive) const
 
 void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
-	int animationID = { 0 };
-	if (data.HasMember("AnimationID") && data["AnimationID"].IsInt()) 
-	{
-		animationID = data["AnimationID"].GetInt();
-	}
-	SetAnimation(animationID);
-
 	int modelUid = { 0 };
 
 	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
