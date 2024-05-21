@@ -266,9 +266,9 @@ void ScenePanel::DrawScene()
 			currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();
 			currentSceneName = "NORMALS";
 		}
-		if (ImGui::Selectable("POSITIONS")) {
-			currentScene = EngineApp->GetOpenGL()->GetGBufferPositions();
-			currentSceneName = "POSITIONS";
+		if (ImGui::Selectable("DEPTH")) {
+			currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
+			currentSceneName = "DEPTH";
 		}
 		ImGui::EndCombo();
 	}

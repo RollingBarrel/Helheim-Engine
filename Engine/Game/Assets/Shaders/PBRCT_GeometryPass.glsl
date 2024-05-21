@@ -42,7 +42,7 @@ in VertToFrag {
 layout(location = 0) out vec3 outDiffuse;
 layout(location = 1) out vec4 outSpecularRough;
 layout(location = 2) out vec3 outNormal;
-layout(location = 3) out vec4 outPosition;
+layout(location = 3) out float outDepth;
 layout(location = 4) out vec3 outEmissive;
 
 void main() 
@@ -91,6 +91,5 @@ void main()
 	outSpecularRough.rgb = mix(vec3(0.04), baseColor, metal);
 	outSpecularRough.a = rough;
 	outNormal = (N + 1.0) * 0.5;
-	outPosition.rgb = sPos;
-	outPosition.a = gl_FragCoord.z;
+	outDepth = gl_FragCoord.z;
 }

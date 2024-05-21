@@ -1,6 +1,25 @@
 #version 460 core
 #define PI 3.1415926535897932384626433832795
 
+layout(location = 0)uniform mat4 invView;
+layout(std140, binding = 0) uniform CameraMatrices
+{
+	mat4 view;
+	mat4 proj;
+};
+float GetLinearZ(float depth)
+{
+	return -proj[3][2] / (proj[2][2] + depth);
+}
+vec3 GetWorldPos(float depth, vec2 texCoords)
+{
+	float viewZ = GetLinearZ(depth);
+	float viewX = (texCoords.x * 2.0 - 1.0)*(-viewZ) / proj[0][0];
+	float viewY = (texCoords.y * 2.0 - 1.0)*(-viewZ) / proj[1][1];
+	vec3 viewPos = vec3(viewX, viewY, viewZ);
+	return (invView * vec4(viewPos, 1.0)).xyz;
+}
+
 //Light properties
 layout(std140, binding = 1) uniform DirLight
 {
@@ -37,7 +56,7 @@ layout(location = 1)uniform vec3 cPos;
 layout(binding = 0)uniform sampler2D diffuseTex;
 layout(binding = 1)uniform sampler2D specularRoughTex;
 layout(binding = 2)uniform sampler2D normalTex;
-layout(binding = 3)uniform sampler2D positionTex;
+layout(binding = 3)uniform sampler2D depthTex;
 layout(binding = 4)uniform sampler2D emissiveTex;
 //Ambient
 layout(binding = 5)uniform samplerCube prefilteredIBL;
@@ -49,6 +68,7 @@ vec3 cDif;
 vec3 cSpec;
 float rough;
 vec3 N;
+float depth;
 vec3 pos;
 vec3 V;
 vec3 emissiveCol;
@@ -91,7 +111,8 @@ void main()
 	cSpec = specColorTex.rgb;
 	rough = max(specColorTex.a * specColorTex.a, 0.001f);
 	N = normalize(texture(normalTex, uv).rgb * 2.0 - 1.0);
-	pos = texture(positionTex, uv).rgb;
+	depth = texture(depthTex, uv).r;
+	pos = GetWorldPos(depth, uv);
 	emissiveCol = texture(emissiveTex, uv).rgb;
 	V = normalize(cPos - pos);
 

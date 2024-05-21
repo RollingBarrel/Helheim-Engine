@@ -133,7 +133,7 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGDiffuse);
 	glGenTextures(1, &mGSpecularRough);
 	glGenTextures(1, &mGNormals);
-	glGenTextures(1, &mGPositions);
+	glGenTextures(1, &mGColDepth);
 	glGenTextures(1, &mGEmissive);
 	glGenTextures(1, &mGDepth);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
@@ -150,7 +150,7 @@ bool ModuleOpenGL::Init()
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, mGPositions);
+	glBindTexture(GL_TEXTURE_2D, mGColDepth);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
@@ -160,7 +160,7 @@ bool ModuleOpenGL::Init()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGDiffuse, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGSpecularRough, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mGNormals, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGPositions, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -402,6 +402,8 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 			mCameraUniBuffer->UpdateData(camera->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 			glUseProgram(mPbrLightingPassProgramId);
+			//world transform is the invViewMatrix
+			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetOwner()->GetWorldTransform().ptr());
 			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
 			glUseProgram(0);
 		}
@@ -462,8 +464,8 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGPositions);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -908,7 +910,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, mGPositions);
+	glBindTexture(GL_TEXTURE_2D, mGColDepth);
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glActiveTexture(GL_TEXTURE5);

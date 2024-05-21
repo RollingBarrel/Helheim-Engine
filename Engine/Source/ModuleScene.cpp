@@ -44,11 +44,18 @@ ModuleScene::ModuleScene() {
 
 ModuleScene::~ModuleScene()
 {
-	mQuadtreeRoot->CleanUp();
-
-	delete mRoot;
-	delete mBackgroundScene;
-	delete mQuadtreeRoot;
+	if (mRoot)
+	{
+		delete mRoot;
+	}
+	if (mBackgroundScene)
+	{
+		delete mBackgroundScene;
+	}
+	if (mQuadtreeRoot)
+	{
+		delete mQuadtreeRoot;
+	}
 
 	for (Tag* tag : mTags) 
 	{
