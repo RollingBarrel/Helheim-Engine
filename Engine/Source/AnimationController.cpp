@@ -91,7 +91,6 @@ void AnimationController::SetStartTime(float time)
 {
 	float start = std::max(time, 0.0f);
 	mStartTime = std::min(start, mEndTime);
-	mCurrentTime = mStartTime;
 
 }
 
