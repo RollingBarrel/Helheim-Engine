@@ -807,7 +807,6 @@ void ModuleOpenGL::Draw()
 	{
 		partSys->Draw();
 	}
-	App->GetUI()->DrawWidget(App->GetScene()->GetRoot());
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
