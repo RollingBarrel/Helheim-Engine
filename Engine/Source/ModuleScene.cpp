@@ -267,7 +267,7 @@ void ModuleScene::Save(const char* sceneName) const
 	}
 
 	Archive* archive = new Archive();
-	archive->AddString("Name", mRoot->GetName().c_str());
+	//archive->AddString("Name", mRoot->GetName().c_str());
 	
 	// Not using recursive to save, using the sceneGO vector
 	//SaveGame(mRoot->GetChildren(), *archive);
@@ -278,10 +278,10 @@ void ModuleScene::Save(const char* sceneName) const
 		go->Save(gameObjectArchive);
 		gameObjectsArchiveVector.push_back(gameObjectArchive);
 	}
-	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 
 	//TODO: Might Fail Xddddd
-	archive->AddObject("Scene", *archive);
+	//archive->AddObject("Scene", *archive);
 	std::string out = archive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 	
@@ -384,8 +384,8 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
 	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
-	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
-	prefabArchive->AddObject("Prefab", *archive);
+	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
+	//prefabArchive->AddObject("Prefab", *archive);
 
 	std::string out = prefabArchive->Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));

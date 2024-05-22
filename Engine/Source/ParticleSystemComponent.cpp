@@ -241,21 +241,21 @@ void ParticleSystemComponent::Reset()
 void ParticleSystemComponent::Save(Archive& archive) const
 {
     Component::Save(archive);
-    archive.AddInt("Image", mResourceId);
-    archive.AddFloat("Duration", mDuration);
-    archive.AddFloat("Life Time", mMaxLifeTime);
-    archive.AddFloat("Emission Rate", mEmissionRate);
-    archive.AddFloat("Speed", mSpeedLineal);
-    archive.AddInt("Max Particles", mMaxParticles);
-    archive.AddBool("Looping", mLooping);
-    archive.AddFloat("Size", mSizeLineal);
-    archive.AddFloat("Speed", mSpeedLineal);
-    archive.AddBool("isSpeedCurve", mIsSpeedCurve);
-    archive.AddBool("isSizeCurve", mIsSizeCurve);
-    archive.AddFloat4("SizeCurve", mSizeCurve.ptr());
-    archive.AddFloat4("SpeedCurve", mSpeedCurve.ptr());
-    archive.AddFloat("SizeFactor", mSizeCurveFactor);
-    archive.AddFloat("SpeedFactor", mSpeedCurveFactor);
+    //archive.AddInt("Image", mResourceId);
+    //archive.AddFloat("Duration", mDuration);
+    //archive.AddFloat("Life Time", mMaxLifeTime);
+    //archive.AddFloat("Emission Rate", mEmissionRate);
+    //archive.AddFloat("Speed", mSpeedLineal);
+    //archive.AddInt("Max Particles", mMaxParticles);
+    //archive.AddBool("Looping", mLooping);
+    //archive.AddFloat("Size", mSizeLineal);
+    //archive.AddFloat("Speed", mSpeedLineal);
+    //archive.AddBool("isSpeedCurve", mIsSpeedCurve);
+    //archive.AddBool("isSizeCurve", mIsSizeCurve);
+    //archive.AddFloat4("SizeCurve", mSizeCurve.ptr());
+    //archive.AddFloat4("SpeedCurve", mSpeedCurve.ptr());
+    //archive.AddFloat("SizeFactor", mSizeCurveFactor);
+    //archive.AddFloat("SpeedFactor", mSpeedCurveFactor);
     mShape->Save(archive);
     
     std::vector<Archive> objectArray;
@@ -266,12 +266,12 @@ void ParticleSystemComponent::Save(Archive& archive) const
         float time = it->first;
         float4 color = it->second;
         Archive colorArchive;
-        colorArchive.AddFloat("Time", time);
+        //colorArchive.AddFloat("Time", time);
         const float c[4] = { color.x, color.y, color.z, color.w };
-        colorArchive.AddFloat4("Color", c);
+        //colorArchive.AddFloat4("Color", c);
         objectArray.push_back(colorArchive);
     }
-    archive.AddObjectArray("Color Gradient", objectArray);
+    //archive.AddObjectArray("Color Gradient", objectArray);
 }
 
 void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

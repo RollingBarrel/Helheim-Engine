@@ -84,9 +84,6 @@ public:
     JsonObject GetRootObject();
 
     std::string Serialize() const;
-    bool Deserialize(char** buffer) const;
-
-    rapidjson::Document* GetDocument() { return mDocument.get(); }
 
 private:
     rapidjson::Document mDocument;

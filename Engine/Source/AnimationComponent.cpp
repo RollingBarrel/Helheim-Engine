@@ -193,12 +193,12 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 
 void AnimationComponent::Save(Archive& archive) const
 {
-	archive.AddInt("ID", GetID());
-	archive.AddInt("AnimationID", mAnimation->GetUID());
-	archive.AddInt("ModelUID", mModelUid);
-
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddBool("isEnabled", IsEnabled());
+	//archive.AddInt("ID", GetID());
+	//archive.AddInt("AnimationID", mAnimation->GetUID());
+	//archive.AddInt("ModelUID", mModelUid);
+	//
+	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	//archive.AddBool("isEnabled", IsEnabled());
 
 }
 

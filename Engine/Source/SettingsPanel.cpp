@@ -118,44 +118,44 @@ void SettingsPanel::Draw(int windowFlags)
 
 void SettingsPanel::SaveSettings()
 {
-	Archive* archive = new Archive();
+	//Archive* archive = new Archive();
 
-	Archive engine;
-	engine.AddBool("Draw Grid", mGrid);
-	engine.AddBool("Frustum Culling", mCulling);
-	engine.AddBool("Vsync", mEngineVsyncEnabled);
-	engine.AddBool("Enable FPS Limit", mEngineFpsLimitEnabled);
-	engine.AddFloat("FPS Limit", mEngineFpsLimit);
-	archive->AddObject("Engine Settings", engine);
-	
-	Archive game;
-	game.AddBool("Vsync", mGameVsyncEnabled);
-	game.AddBool("Enable FPS", mGameFpsLimitEnabled);
-	game.AddFloat("FPS Limit", mGameFpsLimit);
-	archive->AddObject("Game Settings", game);
-
-	Archive camera;
-	camera.AddFloat3("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition());
-	camera.AddFloat3("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetEulerAngles());
-	archive->AddObject("Camera Settings", camera);
-
-	Archive scene;
-	scene.AddString("Name", App->GetScene()->GetName().c_str());
-
-	Archive tag;
-	for (int i = 0; i < App->GetScene()->GetSystemTag().size(); ++i)
-	{
-		tag.AddInt(App->GetScene()->GetSystemTag()[i]->GetName().c_str(), App->GetScene()->GetSystemTag()[i]->GetID());
-	}
-	scene.AddObject("Tags", tag);
-	archive->AddObject("Scene", scene);
-
-	std::string fileBuffer = archive->Serialize();
-
-	std::string savePath = "projectSettings.txt";
-	App->GetFileSystem()->Save(savePath.c_str(), fileBuffer.c_str(), static_cast<unsigned int>(fileBuffer.length() + 1));
-
-	delete archive;
+	//Archive engine;
+	//engine.AddBool("Draw Grid", mGrid);
+	//engine.AddBool("Frustum Culling", mCulling);
+	//engine.AddBool("Vsync", mEngineVsyncEnabled);
+	//engine.AddBool("Enable FPS Limit", mEngineFpsLimitEnabled);
+	//engine.AddFloat("FPS Limit", mEngineFpsLimit);
+	//archive->AddObject("Engine Settings", engine);
+	//
+	//Archive game;
+	//game.AddBool("Vsync", mGameVsyncEnabled);
+	//game.AddBool("Enable FPS", mGameFpsLimitEnabled);
+	//game.AddFloat("FPS Limit", mGameFpsLimit);
+	//archive->AddObject("Game Settings", game);
+	//
+	//Archive camera;
+	//camera.AddFloat3("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition());
+	//camera.AddFloat3("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetEulerAngles());
+	//archive->AddObject("Camera Settings", camera);
+	//
+	//Archive scene;
+	//scene.AddString("Name", App->GetScene()->GetName().c_str());
+	//
+	//Archive tag;
+	//for (int i = 0; i < App->GetScene()->GetSystemTag().size(); ++i)
+	//{
+	//	tag.AddInt(App->GetScene()->GetSystemTag()[i]->GetName().c_str(), App->GetScene()->GetSystemTag()[i]->GetID());
+	//}
+	//scene.AddObject("Tags", tag);
+	//archive->AddObject("Scene", scene);
+	//
+	//std::string fileBuffer = archive->Serialize();
+	//
+	//std::string savePath = "projectSettings.txt";
+	//App->GetFileSystem()->Save(savePath.c_str(), fileBuffer.c_str(), static_cast<unsigned int>(fileBuffer.length() + 1));
+	//
+	//delete archive;
 }
 
 void SettingsPanel::LoadSettings()
@@ -164,12 +164,12 @@ void SettingsPanel::LoadSettings()
 	App->GetFileSystem()->Load("projectSettings.txt", &fileBuffer);
 
 	Archive* archive = new Archive();
-	archive->Deserialize(&fileBuffer);
-	
-	if (archive->GetDocument()->HasMember("Engine Settings"))
-	{
-		LOG("hi");
-	}
+	//archive->Deserialize(&fileBuffer);
+	//
+	//if (archive->GetDocument()->HasMember("Engine Settings"))
+	//{
+	//	LOG("hi");
+	//}
 	//std::ifstream userSettings("userSettings.txt");
 	//
 	//std::string line;

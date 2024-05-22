@@ -533,35 +533,35 @@ Component* GameObject::RemoveComponent(Component* component)
 
 void GameObject::Save(Archive& archive) const
 {
-	archive.AddInt("UID", mID);
-	if (mParent == App->GetScene()->GetRoot())
-	{
-		archive.AddInt("ParentUID", 1);
-	}
-	else
-	{
-		archive.AddInt("ParentUID", mParent->GetID());
-	}
-	archive.AddString("Name", mName.c_str());
-	archive.AddBool("isEnabled", mIsEnabled);
-	archive.AddFloat3("Translation", mPosition);
-	archive.AddQuat("Rotation", mRotation);
-	archive.AddFloat3("Scale", mScale);
-	archive.AddInt("Tag", mTag->GetID());
-	archive.AddInt("PrefabId", mPrefabResourceId);
-	archive.AddBool("OverridePrefab", mPrefabOverride);
-	archive.AddBool("Dynamic", mIsDynamic);
-	// Save components
-	std::vector<Archive> componentsArchiveVector;
-
-	for (const auto& component : mComponents)
-	{
-		Archive componentArchive;
-		component->Save(componentArchive);
-		componentsArchiveVector.push_back(componentArchive);
-	}
-
-	archive.AddObjectArray("Components", componentsArchiveVector);
+	//archive.AddInt("UID", mID);
+	//if (mParent == App->GetScene()->GetRoot())
+	//{
+	//	archive.AddInt("ParentUID", 1);
+	//}
+	//else
+	//{
+	//	archive.AddInt("ParentUID", mParent->GetID());
+	//}
+	//archive.AddString("Name", mName.c_str());
+	//archive.AddBool("isEnabled", mIsEnabled);
+	//archive.AddFloat3("Translation", mPosition);
+	//archive.AddQuat("Rotation", mRotation);
+	//archive.AddFloat3("Scale", mScale);
+	//archive.AddInt("Tag", mTag->GetID());
+	//archive.AddInt("PrefabId", mPrefabResourceId);
+	//archive.AddBool("OverridePrefab", mPrefabOverride);
+	//archive.AddBool("Dynamic", mIsDynamic);
+	//// Save components
+	//std::vector<Archive> componentsArchiveVector;
+	//
+	//for (const auto& component : mComponents)
+	//{
+	//	Archive componentArchive;
+	//	component->Save(componentArchive);
+	//	componentsArchiveVector.push_back(componentArchive);
+	//}
+	//
+	//archive.AddObjectArray("Components", componentsArchiveVector);
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson)

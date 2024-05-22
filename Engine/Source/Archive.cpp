@@ -1,4 +1,3 @@
-#include "Archive.h"
 #include "archive.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/prettywriter.h"
@@ -23,14 +22,14 @@ Archive::Archive(Archive&& other) noexcept : mDocument(std::move(other.mDocument
 
 Archive::~Archive() {}
 
-Archive& Archive::operator=(const Archive& other) 
+Archive& Archive::operator=(const Archive& other)
 {
     assert(this != &other && "this is the same than other");
     mDocument.CopyFrom(other.mDocument, mDocument.GetAllocator());
     return *this;
 }
 
-Archive& Archive::operator=(Archive&& other) noexcept 
+Archive& Archive::operator=(Archive&& other) noexcept
 {
     assert(this != &other && "other is the same than this");
     mDocument = std::move(other.mDocument);
@@ -86,7 +85,7 @@ void JsonArray::PopBack()
     mArray.PopBack();
 }
 
-JsonObject::JsonObject(const rapidjson::Value::Object& obj, rapidjson::MemoryPoolAllocator<>& allocator): mObject(obj), mAllocator(allocator){}
+JsonObject::JsonObject(const rapidjson::Value::Object& obj, rapidjson::MemoryPoolAllocator<>& allocator) : mObject(obj), mAllocator(allocator) {}
 
 JsonObject::JsonObject(const JsonObject& other) : mObject(other.mObject), mAllocator(other.mAllocator) {}
 
@@ -113,7 +112,7 @@ void JsonObject::AddBool(const char* key, bool value)
 void JsonObject::AddInts(const char* key, const int* array, unsigned int numInts) {
     rapidjson::Value jsonArray(rapidjson::kArrayType);
     jsonArray.Reserve(numInts * sizeof(int), mAllocator);
-    for (unsigned int i = 0; i < numInts; ++i) 
+    for (unsigned int i = 0; i < numInts; ++i)
     {
         jsonArray.PushBack(array[i], mAllocator);
     }
@@ -254,15 +253,4 @@ std::string Archive::Serialize() const
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
     mDocument.Accept(writer);
     return buffer.GetString();
-}
-
-bool Archive::Deserialize(char** buffer) const
-{
-    rapidjson::ParseResult error = mDocument->Parse(*buffer);
-    if (!error)
-    {
-        return false;
-    }
-
-    return true;
 }
