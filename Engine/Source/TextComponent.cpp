@@ -135,7 +135,7 @@ void TextComponent::RenderText(const std::string& text)
             { xpos + w, ypos + h,   1.0f, 0.0f }
         };
 
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE5);
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
