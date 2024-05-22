@@ -1,0 +1,1460 @@
+{
+    "Scene": {
+        "Name": "CollidersTest",
+        "GameObjects": [
+            {
+                "UID": 1968805342,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    20.0,
+                    1.0,
+                    20.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 63393912,
+                "ParentUID": 1968805342,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 104261439,
+                "ParentUID": 63393912,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1414639564,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 221876349,
+                "ParentUID": 1,
+                "Name": "personaje",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    1.0382996797561646,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1631276214,
+                        "ModelUID": 1355797557,
+                        "ComponentType": 10,
+                        "isEnabled": true
+                    },
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "PlayerController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mGameManagerGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mMaxHealth",
+                                "MemberType": 1,
+                                "VariableData": 100.0
+                            },
+                            {
+                                "VariableName": "mMaxShield",
+                                "MemberType": 1,
+                                "VariableData": 100.0
+                            },
+                            {
+                                "VariableName": "mMaxSanity",
+                                "MemberType": 1,
+                                "VariableData": 100.0
+                            },
+                            {
+                                "VariableName": "mPlayerSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "DASH",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDashSpeed",
+                                "MemberType": 1,
+                                "VariableData": 35.0
+                            },
+                            {
+                                "VariableName": "mDashDistance",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mDashCoolDown",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mMaxDashCharges",
+                                "MemberType": 0,
+                                "VariableData": 3
+                            },
+                            {
+                                "VariableName": "MELEE ATTACK",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mMeleeBaseDamage",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mMinMeleeChargeTime",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mMaxMeleeChargeTime",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mMeleeChargeAttackMultiplier",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "RANGE ATTACK",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mRangeBaseDamage",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mFireRate",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mAmmoCapacity",
+                                "MemberType": 0,
+                                "VariableData": 500000
+                            },
+                            {
+                                "VariableName": "mMinRangeChargeTime",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mMaxRangeChargeTime",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mRangeChargeAttackMultiplier",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "ANIMATION",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAnimationComponentHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "HUD",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHealthGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDashGO_1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDashGO_2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDashGO_3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "DEBUG MODE",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mGodMode",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "WIN AREA",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mWinArea",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "AUDIO",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mFootStepAudioHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGunfireAudioHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "BULLET POOL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBulletPoolHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    },
+                    {
+                        "ID": 1865032552,
+                        "ComponentType": 16,
+                        "isEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 283351692,
+                "ParentUID": 221876349,
+                "Name": "Player",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 730457754,
+                "ParentUID": 283351692,
+                "Name": "OB_maincharacter_tpose",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 780097527,
+                "ParentUID": 730457754,
+                "Name": "OB_maincharacter_tpose",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 649944317,
+                        "MeshID": 1355797558,
+                        "MaterialID": 1355797563,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1755242009,
+                "ParentUID": 283351692,
+                "Name": "mixamorig:Hips",
+                "isEnabled": true,
+                "Translation": [
+                    0.3908335268497467,
+                    101.67827606201172,
+                    -1.0333127975463868
+                ],
+                "Rotation": [
+                    5.9502347937723246e-8,
+                    2.0458656990740565e-10,
+                    1.2152453658970739e-17,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1835445401,
+                "ParentUID": 1755242009,
+                "Name": "mixamorig:Spine",
+                "isEnabled": true,
+                "Translation": [
+                    -5.887059728593158e-8,
+                    11.327621459960938,
+                    -0.7606485486030579
+                ],
+                "Rotation": [
+                    -0.03351837769150734,
+                    1.468831456463704e-8,
+                    -5.063202079824691e-10,
+                    0.9994381070137024
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1877148380,
+                "ParentUID": 1835445401,
+                "Name": "mixamorig:Spine1",
+                "isEnabled": true,
+                "Translation": [
+                    -5.3088442086846047e-8,
+                    13.245330810546875,
+                    0.000003111089199592243
+                ],
+                "Rotation": [
+                    1.4901161193847657e-8,
+                    7.450582373280668e-9,
+                    5.35901122706206e-16,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1918364012,
+                "ParentUID": 1877148380,
+                "Name": "mixamorig:Spine2",
+                "isEnabled": true,
+                "Translation": [
+                    9.774325349098945e-9,
+                    15.137530326843262,
+                    0.000002163238832508796
+                ],
+                "Rotation": [
+                    2.60770320892334e-7,
+                    2.2506698726942888e-8,
+                    1.732962663886055e-14,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1958535329,
+                "ParentUID": 1918364012,
+                "Name": "mixamorig:Neck",
+                "isEnabled": true,
+                "Translation": [
+                    -4.184093427284097e-8,
+                    17.029699325561525,
+                    -0.000002349121359657147
+                ],
+                "Rotation": [
+                    0.03351828455924988,
+                    -3.982789920087271e-8,
+                    1.67144287299692e-9,
+                    0.9994381070137024
+                ],
+                "Scale": [
+                    1.0,
+                    0.9999999403953552,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1997523089,
+                "ParentUID": 1958535329,
+                "Name": "mixamorig:Head",
+                "isEnabled": true,
+                "Translation": [
+                    -2.8651548689140328e-8,
+                    5.87466287612915,
+                    1.7463500499725342
+                ],
+                "Rotation": [
+                    6.678789077341207e-9,
+                    -2.9901769948992298e-9,
+                    -1.858405771097002e-16,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2036858954,
+                "ParentUID": 1997523089,
+                "Name": "mixamorig:HeadTop_End",
+                "isEnabled": true,
+                "Translation": [
+                    -1.831777396432699e-8,
+                    25.663469314575197,
+                    7.628932476043701
+                ],
+                "Rotation": [
+                    8.905061577024754e-9,
+                    -9.362829787532248e-23,
+                    -2.481541837659083e-23,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2078910038,
+                "ParentUID": 1918364012,
+                "Name": "mixamorig:LeftShoulder",
+                "isEnabled": true,
+                "Translation": [
+                    8.811417579650879,
+                    14.541083335876465,
+                    -0.3611522912979126
+                ],
+                "Rotation": [
+                    0.5495219826698303,
+                    0.4388073980808258,
+                    -0.5721777081489563,
+                    0.4220028221607208
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999998807907105,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2121587711,
+                "ParentUID": 2078910038,
+                "Name": "mixamorig:LeftArm",
+                "isEnabled": true,
+                "Translation": [
+                    -8.344650268554688e-7,
+                    18.499237060546876,
+                    0.00005519390106201172
+                ],
+                "Rotation": [
+                    -0.11366976797580719,
+                    -0.0055564939975738529,
+                    0.04850885272026062,
+                    0.9923180937767029
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0000001192092896,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 30079348,
+                "ParentUID": 2121587711,
+                "Name": "mixamorig:LeftForeArm",
+                "isEnabled": true,
+                "Translation": [
+                    -0.0000171661376953125,
+                    25.21112632751465,
+                    -0.00016638636589050293
+                ],
+                "Rotation": [
+                    -0.02411448396742344,
+                    0.0008278135792352259,
+                    -0.034315112978219989,
+                    0.9991198182106018
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 72060811,
+                "ParentUID": 30079348,
+                "Name": "mixamorig:LeftHand",
+                "isEnabled": true,
+                "Translation": [
+                    0.000003814697265625,
+                    25.659154891967775,
+                    0.0000254213809967041
+                ],
+                "Rotation": [
+                    0.01144599262624979,
+                    -0.00002047841735475231,
+                    -0.0017600210849195719,
+                    0.9999329447746277
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 113554927,
+                "ParentUID": 72060811,
+                "Name": "mixamorig:LeftHandIndex1",
+                "isEnabled": true,
+                "Translation": [
+                    0.000003814697265625,
+                    13.231815338134766,
+                    0.000017911195755004884
+                ],
+                "Rotation": [
+                    -0.07836376875638962,
+                    -0.003084735944867134,
+                    0.03920994699001312,
+                    0.9961487054824829
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 155745253,
+                "ParentUID": 113554927,
+                "Name": "mixamorig:LeftHandIndex2",
+                "isEnabled": true,
+                "Translation": [
+                    -9.5367431640625e-7,
+                    1.4215010404586793,
+                    0.000007569789886474609
+                ],
+                "Rotation": [
+                    0.000012519305528257974,
+                    0.0000010342338327973267,
+                    -1.1548401346317405e-7,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999999403953552,
+                    0.9999998807907105
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 197865958,
+                "ParentUID": 155745253,
+                "Name": "mixamorig:LeftHandIndex3",
+                "isEnabled": true,
+                "Translation": [
+                    0.06619143486022949,
+                    2.0312302112579347,
+                    0.49718689918518069
+                ],
+                "Rotation": [
+                    -0.000004645437002182007,
+                    -2.5564804673194887e-7,
+                    1.1362135410308838e-7,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 240056284,
+                "ParentUID": 197865958,
+                "Name": "mixamorig:LeftHandIndex4",
+                "isEnabled": true,
+                "Translation": [
+                    0.5320181846618652,
+                    1.5313003063201905,
+                    0.5738475322723389
+                ],
+                "Rotation": [
+                    -8.265487849712372e-9,
+                    2.561137080192566e-9,
+                    1.862645149230957e-8,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 283221304,
+                "ParentUID": 1918364012,
+                "Name": "mixamorig:RightShoulder",
+                "isEnabled": true,
+                "Translation": [
+                    -8.811420440673829,
+                    14.515125274658204,
+                    0.025187689810991288
+                ],
+                "Rotation": [
+                    0.56247878074646,
+                    -0.42883145809173586,
+                    0.560697615146637,
+                    0.4305107295513153
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 326386324,
+                "ParentUID": 283221304,
+                "Name": "mixamorig:RightArm",
+                "isEnabled": true,
+                "Translation": [
+                    -0.000002034008502960205,
+                    18.499231338500978,
+                    0.000010222196578979493
+                ],
+                "Rotation": [
+                    -0.11704128235578537,
+                    0.0009480401058681309,
+                    -0.008045151829719544,
+                    0.9930939674377441
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 367044988,
+                "ParentUID": 326386324,
+                "Name": "mixamorig:RightForeArm",
+                "isEnabled": true,
+                "Translation": [
+                    -0.000007152557373046875,
+                    25.17531394958496,
+                    0.00008031725883483887
+                ],
+                "Rotation": [
+                    -0.022420259192585946,
+                    -0.0004653234500437975,
+                    0.02073786035180092,
+                    0.999533474445343
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999999403953552,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 408608725,
+                "ParentUID": 367044988,
+                "Name": "mixamorig:RightHand",
+                "isEnabled": true,
+                "Translation": [
+                    -0.000004410743713378906,
+                    25.663116455078126,
+                    0.000018656253814697267
+                ],
+                "Rotation": [
+                    0.006792475003749132,
+                    -0.0001742880413075909,
+                    -0.0256708525121212,
+                    0.9996473789215088
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 449406631,
+                "ParentUID": 408608725,
+                "Name": "mixamorig:RightHandIndex1",
+                "isEnabled": true,
+                "Translation": [
+                    -0.00000286102294921875,
+                    11.207122802734375,
+                    0.000016003847122192384
+                ],
+                "Rotation": [
+                    -0.01835802011191845,
+                    -0.00025550471036694944,
+                    0.013924365863204003,
+                    0.9997344613075256
+                ],
+                "Scale": [
+                    1.0,
+                    0.9999999403953552,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 491457715,
+                "ParentUID": 449406631,
+                "Name": "mixamorig:RightHandIndex2",
+                "isEnabled": true,
+                "Translation": [
+                    0.000002123415470123291,
+                    1.5699113607406617,
+                    0.000044733285903930667
+                ],
+                "Rotation": [
+                    0.000008753300789976493,
+                    -6.091813702369109e-7,
+                    -2.9502552933990957e-7,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 533439178,
+                "ParentUID": 491457715,
+                "Name": "mixamorig:RightHandIndex3",
+                "isEnabled": true,
+                "Translation": [
+                    -0.0020474418997764589,
+                    2.44827938079834,
+                    0.1889110803604126
+                ],
+                "Rotation": [
+                    -0.000008109025657176972,
+                    1.1958945833612234e-7,
+                    -3.885943442583084e-7,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 575907988,
+                "ParentUID": 533439178,
+                "Name": "mixamorig:RightHandIndex4",
+                "isEnabled": true,
+                "Translation": [
+                    -0.19507966935634614,
+                    2.003308057785034,
+                    0.313062459230423
+                ],
+                "Rotation": [
+                    -7.2832331277083998e-9,
+                    7.38600647309795e-9,
+                    6.219488568603993e-8,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 617610967,
+                "ParentUID": 1755242009,
+                "Name": "mixamorig:LeftUpLeg",
+                "isEnabled": true,
+                "Translation": [
+                    9.047194480895996,
+                    -6.3031158447265629,
+                    0.5039992928504944
+                ],
+                "Rotation": [
+                    0.000019245760995545426,
+                    0.0020172432996332647,
+                    -0.9999526143074036,
+                    0.009523342363536358
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 659383567,
+                "ParentUID": 617610967,
+                "Name": "mixamorig:LeftLeg",
+                "isEnabled": true,
+                "Translation": [
+                    -0.000018836675735656173,
+                    46.760066986083987,
+                    4.887860995950177e-7
+                ],
+                "Rotation": [
+                    -0.017699556425213815,
+                    0.00026736196014098823,
+                    -0.015057871118187905,
+                    0.9997299313545227
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 699972610,
+                "ParentUID": 659383567,
+                "Name": "mixamorig:LeftFoot",
+                "isEnabled": true,
+                "Translation": [
+                    -0.000002894892531912774,
+                    37.356719970703128,
+                    -0.0000011511147022247315
+                ],
+                "Rotation": [
+                    0.45113006234169009,
+                    0.013414982706308365,
+                    -0.006781888660043478,
+                    0.8923316597938538
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 740352790,
+                "ParentUID": 699972610,
+                "Name": "mixamorig:LeftToeBase",
+                "isEnabled": true,
+                "Translation": [
+                    0.000008912524208426476,
+                    18.429889678955079,
+                    0.000009514391422271729
+                ],
+                "Rotation": [
+                    0.3537377119064331,
+                    -0.005912476219236851,
+                    0.0022360493894666435,
+                    0.9353232979774475
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 781429180,
+                "ParentUID": 740352790,
+                "Name": "mixamorig:LeftToe_End",
+                "isEnabled": true,
+                "Translation": [
+                    6.698537617921829e-7,
+                    7.148324012756348,
+                    -0.0000019818544387817384
+                ],
+                "Rotation": [
+                    -1.2863893061876297e-8,
+                    2.4010661903162146e-8,
+                    -2.0372682707492374e-10,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 823410643,
+                "ParentUID": 1755242009,
+                "Name": "mixamorig:RightUpLeg",
+                "isEnabled": true,
+                "Translation": [
+                    -9.047195434570313,
+                    -6.303123474121094,
+                    0.7190271019935608
+                ],
+                "Rotation": [
+                    0.000045875833166064697,
+                    -0.004817293956875801,
+                    0.9999430179595947,
+                    0.009523251093924046
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0000001192092896,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 866297179,
+                "ParentUID": 823410643,
+                "Name": "mixamorig:RightLeg",
+                "isEnabled": true,
+                "Translation": [
+                    -0.000015600176993757488,
+                    46.761817932128909,
+                    7.664938266316312e-7
+                ],
+                "Rotation": [
+                    -0.023931249976158143,
+                    -0.00036110368091613054,
+                    0.01505400612950325,
+                    0.9996002316474915
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 906886222,
+                "ParentUID": 866297179,
+                "Name": "mixamorig:RightFoot",
+                "isEnabled": true,
+                "Translation": [
+                    0.00001392723061144352,
+                    37.38945770263672,
+                    -0.000003396999090909958
+                ],
+                "Rotation": [
+                    0.47189629077911379,
+                    -0.012386797927320004,
+                    0.006630472838878632,
+                    0.8815420866012573
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 949563895,
+                "ParentUID": 906886222,
+                "Name": "mixamorig:RightToeBase",
+                "isEnabled": true,
+                "Translation": [
+                    -0.000007527414709329605,
+                    19.126007080078126,
+                    -0.0000048317015171051029
+                ],
+                "Rotation": [
+                    0.33985915780067446,
+                    0.004904530476778746,
+                    -0.0017723219934850932,
+                    0.9404619336128235
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1020716557,
+                "ParentUID": 949563895,
+                "Name": "mixamorig:RightToe_End",
+                "isEnabled": true,
+                "Translation": [
+                    6.845220923423767e-7,
+                    7.272384166717529,
+                    -0.0000015050172805786133
+                ],
+                "Rotation": [
+                    1.3489624528517652e-8,
+                    -8.527422323822975e-9,
+                    -2.9103830456733706e-11,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1453079938,
+                "ParentUID": 1,
+                "Name": "Cube (1)",
+                "isEnabled": true,
+                "Translation": [
+                    -4.911086082458496,
+                    2.0444209575653078,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1693688488,
+                        "ComponentType": 16,
+                        "isEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.25,
+                            1.600000023841858,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1521169276,
+                "ParentUID": 1453079938,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1560574762,
+                "ParentUID": 1521169276,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 664368223,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1522340463,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "AspectRatio": 1.7777777910232545,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            }
+        ]
+    }
+}
