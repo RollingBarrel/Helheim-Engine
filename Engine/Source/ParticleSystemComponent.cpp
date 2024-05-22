@@ -152,7 +152,6 @@ void ParticleSystemComponent::Draw() const
 
 void ParticleSystemComponent::Update()
 {
-    OPTICK_EVENT();
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
 

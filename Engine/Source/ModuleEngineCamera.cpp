@@ -103,7 +103,7 @@ bool ModuleEngineCamera::AddEnabledCamera(CameraComponent* camera)
 bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
 {
 	bool removed = ModuleCamera::RemoveEnabledCamera(camera);
-	if (mIsEditorCameraActive)
+	if (mIsEditorCameraActive || mCurrentCamera == nullptr)
 	{
 		mCurrentCamera = mEditorCamera;
 		App->GetOpenGL()->SetOpenGlCameraUniforms();
@@ -129,20 +129,20 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 			std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();
 			if (intersectGameObjectPair.second.mGameObject != nullptr)
 			{
-				GameObject* parentGameObject = intersectGameObjectPair.second.mGameObject;
+				const GameObject* parentGameObject = intersectGameObjectPair.second.mGameObject;
 				while (!parentGameObject->GetParent()->IsRoot())
 				{
 					parentGameObject = parentGameObject->GetParent();
 				}
 
-				GameObject* focusedGameObject = reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+				const GameObject* focusedGameObject = reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 				if (focusedGameObject->GetID() == parentGameObject->GetID())
 				{
-					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(intersectGameObjectPair.second.mGameObject);
+					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*intersectGameObjectPair.second.mGameObject);
 				}
 				else
 				{
-					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(parentGameObject);
+					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*parentGameObject);
 				}
 			}
 		}

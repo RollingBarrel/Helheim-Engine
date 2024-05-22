@@ -28,7 +28,7 @@ class ENGINE_API GameObject
 
 public:
 	GameObject(const char* name);
-	GameObject(GameObject* parent);
+	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
 	GameObject(const GameObject& original);

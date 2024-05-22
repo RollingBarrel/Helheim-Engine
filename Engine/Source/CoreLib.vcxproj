@@ -493,6 +493,10 @@
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
+    <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl" />
+    <None Include="..\Game\Assets\Shaders\PassThroughVertex.glsl" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_LightingPass.glsl" />
+    <None Include="..\Game\Assets\Shaders\PBRCT_GeometryPass.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\skinning.comp" />

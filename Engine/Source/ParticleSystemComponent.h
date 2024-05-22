@@ -10,7 +10,6 @@ class ResourceTexture;
 class Particle;
 //class EmitterShape;
 
-
 class ENGINE_API ParticleSystemComponent : public Component
 {
 	friend class InspectorPanel;
