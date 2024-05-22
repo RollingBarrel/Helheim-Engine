@@ -149,12 +149,12 @@ void ImageComponent::Draw()
 
 		glBindVertexArray(mQuadVAO);
 
-		glActiveTexture(GL_TEXTURE0);
 
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
 		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);

@@ -1128,5 +1128,8 @@
     <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\uiText.fs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

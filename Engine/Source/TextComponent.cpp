@@ -99,20 +99,25 @@ void TextComponent::LoadFont(const std::string& fontPath)
 }
 
 void TextComponent::CreateBuffers() {
-
     glGenVertexArrays(1, &mQuadVAO);
     glGenBuffers(1, &mQuadVBO);
     glBindVertexArray(mQuadVAO);
+
     glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, nullptr, GL_DYNAMIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
     glBindVertexArray(0);
 }
 
 void TextComponent::RenderText(const std::string& text) 
 {
+    glBindVertexArray(mQuadVAO);
     int x = 0, y = 0;
 
     for (char c : text) 
@@ -124,18 +129,24 @@ void TextComponent::RenderText(const std::string& text)
         float w = ch.Size.x;
         float h = ch.Size.y;
 
-        float vertices[6][4] = 
+        if (c == ' ')
         {
-            { xpos,     ypos + h,   0.0f, 0.0f },
-            { xpos,     ypos,       0.0f, 1.0f },
-            { xpos + w, ypos,       1.0f, 1.0f },
+            x += (ch.Advance >> 6);
+            continue;
+        }
 
-            { xpos,     ypos + h,   0.0f, 0.0f },
-            { xpos + w, ypos,       1.0f, 1.0f },
-            { xpos + w, ypos + h,   1.0f, 0.0f }
+        float vertices[] = 
+        {
+             xpos,     ypos + h,   0.0f, 0.0f,
+             xpos,     ypos,       0.0f, 1.0f,
+             xpos + w, ypos,       1.0f, 1.0f,
+
+             xpos + w, ypos + h,   1.0f, 0.0f,
+             xpos,     ypos + h,   0.0f, 0.0f,
+             xpos + w, ypos,       1.0f, 1.0f
         };
 
-        glActiveTexture(GL_TEXTURE5);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
@@ -158,7 +169,7 @@ void TextComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner
 
 void TextComponent::Draw() 
 {
-    unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
+    unsigned int UIImageProgram = App->GetOpenGL()->GetTextProgram();
     if (UIImageProgram == 0) return;
 
     glUseProgram(UIImageProgram);
@@ -192,9 +203,6 @@ void TextComponent::Draw()
         glDisable(GL_CULL_FACE);
     }
 
-    glBindVertexArray(mQuadVAO);
-    glActiveTexture(GL_TEXTURE0);
-
     glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 
     glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
@@ -207,9 +215,6 @@ void TextComponent::Draw()
     RenderText(text);
 
     // Clean
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDisable(GL_BLEND);
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);

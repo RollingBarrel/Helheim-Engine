@@ -159,8 +159,8 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "ui.fs";
 	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	sourcesPaths[0] = "fontVertex.glsl";
-	sourcesPaths[1] = "fontFragment.glsl";
+	sourcesPaths[0] = "ui.vs";
+	sourcesPaths[1] = "uiText.fs";
 	mTextProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "HighLight_Vertex.glsl";
