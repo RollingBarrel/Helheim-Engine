@@ -1,11 +1,11 @@
-#include "ItemHealth.h"
+#include "ItemShield.h"
 #include "PlayerController.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "Math/MathFunc.h"
 #include "ScriptComponent.h"
 
-CREATE(ItemHealth)
+CREATE(ItemShield)
 {
 	CLASS(owner);
 
@@ -15,15 +15,15 @@ CREATE(ItemHealth)
 	END_CREATE;
 }
 
-ItemHealth::ItemHealth(GameObject* owner) : Script(owner) {}
+ItemShield::ItemShield(GameObject* owner) : Script(owner) {}
 
-void ItemHealth::Start()
+void ItemShield::Start()
 {
     ModuleScene* scene = App->GetScene();
     mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
 }
 
-void ItemHealth::Update()
+void ItemShield::Update()
 {
     if (IsPlayerInRange(mActivationRange))
     {
@@ -37,7 +37,7 @@ void ItemHealth::Update()
     }
 }
 
-bool ItemHealth::IsPlayerInRange(float range)
+bool ItemShield::IsPlayerInRange(float range)
 {
     float distance = 0.0f;
     distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;

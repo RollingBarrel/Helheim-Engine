@@ -3,15 +3,15 @@
 #include "Macros.h"
 #include "GameObject.h"
 
-GENERATE_BODY(ItemHealth);
+GENERATE_BODY(ItemShield);
 
-class ItemHealth : public Script
+class ItemShield : public Script
 {
-    FRIEND(ItemHealth)
+    FRIEND(ItemShield)
 
 public:
-    ItemHealth(GameObject* owner);
-    ~ItemHealth() {}
+    ItemShield(GameObject* owner);
+    ~ItemShield() {}
     void Start() override;
     void Update() override;
     

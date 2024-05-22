@@ -2,9 +2,9 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1223742381,
+                "UID": 616464171,
                 "ParentUID": 1,
-                "Name": "Item_Health (1)",
+                "Name": "Item_Shield (1)",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -29,14 +29,25 @@
                 "Components": [
                     {
                         "ComponentType": 3,
-                        "ScriptName": "ItemHealth",
-                        "ScriptVariables": []
+                        "ScriptName": "ItemShield",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mHealthRecovered",
+                                "MemberType": 1,
+                                "VariableData": 15.0
+                            },
+                            {
+                                "VariableName": "mActivationRange",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1229938650,
-                "ParentUID": 1223742381,
+                "UID": 623774376,
+                "ParentUID": 616464171,
                 "Name": "Cube",
                 "isEnabled": true,
                 "Translation": [
@@ -62,8 +73,8 @@
                 "Components": []
             },
             {
-                "UID": 1232584248,
-                "ParentUID": 1229938650,
+                "UID": 624749070,
+                "ParentUID": 623774376,
                 "Name": "Cube",
                 "isEnabled": true,
                 "Translation": [
@@ -88,7 +99,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1234255152,
+                        "ID": 626489595,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
