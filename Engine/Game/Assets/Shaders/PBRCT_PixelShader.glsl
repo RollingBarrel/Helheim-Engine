@@ -176,7 +176,7 @@ void main()
 		
 		vec4 lightClipSpace =  sLights[i].viewProjMatrix * vec4(sPos,1);
 		vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
-		lightNDC.xy = lightNDC.xy * 0.5 + 0.5;
+		lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
 		float shadowDepth = texture(sLights[i].shadowMap, lightNDC.xy).r + sLights[i].bias;
 		float fragmentDepth = lightNDC.z;
 		float shadowValue = fragmentDepth < shadowDepth  ? 1.0 : 0.0;
