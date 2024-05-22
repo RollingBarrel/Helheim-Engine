@@ -29,26 +29,6 @@ bool ModulePhysics::Init()
 
 bool ModulePhysics::CleanUp()
 {
-	/*
-	for (int i = mWorld->getNumCollisionObjects() - 1; i >= 0; i--)
-	{
-		btCollisionObject* obj = mWorld->getCollisionObjectArray()[i];
-		btRigidBody* body = btRigidBody::upcast(obj);
-		if (body)
-		{
-			if (body->getCollisionShape())
-			{
-				delete body->getCollisionShape();
-			}
-			if (body->getMotionState())
-			{
-				delete body->getMotionState();
-			}
-		}
-		mWorld->removeCollisionObject(obj);
-		delete obj;
-	}
-	*/
 	delete mWorld;
 	delete mBroadPhase;
 	
@@ -110,10 +90,10 @@ void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 	boxCollider->SetMotionState(new MotionState(boxCollider, boxCollider->GetCenter(), boxCollider->GetFreezeRotation()));
 
 	// Calculate the size (half extents) for the box shape
-	float3 halfExtents = boxCollider->GetSize() / 2.0f;
+	float3 boxSize = boxCollider->GetSize();
 
 	// Create the collision shape for the box
-	btCollisionShape* collisionShape = new btBoxShape(btVector3(halfExtents.x, halfExtents.y, halfExtents.z));
+	btCollisionShape* collisionShape = new btBoxShape(btVector3(boxSize.x, boxSize.y, boxSize.z));
 
 	// Define the mass and local inertia for the rigid body
 	float mass = 0.0f; // You might want to adjust this based on whether the object is static or dynamic
@@ -157,7 +137,8 @@ btRigidBody* ModulePhysics::AddBoxBody(btMotionState* motionState, float3 size, 
 	btCollisionShape* collisionShape = new btBoxShape(btVector3(size.x, size.y, size.z));
 
 	btVector3 localInertia(0, 0, 0);
-	if (mass != 0.f) {
+	if (mass != 0.f) 
+	{
 		collisionShape->calculateLocalInertia(mass, localInertia);
 	}
 
