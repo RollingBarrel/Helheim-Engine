@@ -6,6 +6,7 @@
 #include "ModuleCamera.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
+#include "ModulePhysics.h"
 #include "ModuleResource.h"
 #include "ModuleDetourNavigation.h"
 #include "ModuleResource.h"
@@ -14,7 +15,6 @@
 #include "ModuleEvent.h"
 #include "ModuleGame.h"
 #include "Timer.h"
-#include <optick.h>
 
 GameApplication* GameApp = NULL;
 
@@ -30,6 +30,7 @@ GameApplication::GameApplication()
 	modules[4] = audio = new ModuleAudio();
 	modules[5] = render = new ModuleOpenGL();
 	modules[6] = resource = new ModuleResource();
+	modules[7] = physics = new ModulePhysics();
 	modules[7] = scriptManager = new ModuleScriptManager();
 	modules[8] = scene = new ModuleScene();
 	modules[9] = navigation = new ModuleDetourNavigation();
@@ -61,7 +62,6 @@ bool GameApplication::Init()
 
 update_status GameApplication::Update(float dt)
 {
-	OPTICK_FRAME("GameThread");
 	mCurrentTimer->Update();
 
 	if (mExit) return UPDATE_STOP;

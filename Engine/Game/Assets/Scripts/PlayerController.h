@@ -10,6 +10,8 @@ class SliderComponent;
 class AudioSourceComponent;
 class ObjectPool;
 class GameManager;
+class BoxColliderComponent;
+struct CollisionData;
 
 enum class PlayerState 
 {
@@ -74,6 +76,8 @@ class PlayerController :public Script
         void GameoOver();
         bool Delay(float delay);
         void Loading();
+
+        void OnCollisionEnter(CollisionData* collisionData);
 
         Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
@@ -166,4 +170,7 @@ class PlayerController :public Script
         bool mLoadingActive = false;
         float mTimeScreen = 3.0f;
         float mTimePassed = 0.0f;
+
+        //Collider
+        BoxColliderComponent* mCollider;
 };

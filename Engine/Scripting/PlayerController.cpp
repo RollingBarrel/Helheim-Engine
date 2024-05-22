@@ -15,7 +15,8 @@
 #include "Physics.h"
 #include "ObjectPool.h"
 #include "GameManager.h"
-
+#include "BoxColliderComponent.h"
+#include <functional>
 
 CREATE(PlayerController)
 {
@@ -108,6 +109,14 @@ void PlayerController::Start()
     if (mBulletPoolHolder)
     {
         mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    }
+
+
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&PlayerController::OnCollisionEnter, this, std::placeholders::_1)));
     }
 }
 
@@ -691,3 +700,9 @@ void PlayerController::Loading()
         }
     }
 }
+
+void PlayerController::OnCollisionEnter(CollisionData* collisionData)
+{
+    LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
+}
+

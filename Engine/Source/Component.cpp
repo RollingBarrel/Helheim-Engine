@@ -65,6 +65,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Slider";
 		case ComponentType::PARTICLESYSTEM:
 			return "Particle System";
+		case ComponentType::BOXCOLLIDER:
+			return "Box Collider";
 		case ComponentType::TRAIL:
 			return "Trail";
 		default:
