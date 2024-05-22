@@ -763,21 +763,19 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
     
 }
 
-void ModuleDebugDraw::DrawColliders(GameObject* root)
+void ModuleDebugDraw::DrawColliders(GameObject* go)
 {
-    if (root != nullptr) 
+    if (go != nullptr)
     {
-        MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
-        //TODO: SEPARATE GAME ENGINE
-        //if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) 
-        //{
-        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
-        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->GetAABBWorld(), float3(1.0f, 0.65f, 0.0f)); //Orange
-        //}
-
-        for (int i = 0; i < root->GetChildren().size(); i++) 
+        MeshRendererComponent* meshRenderer = (MeshRendererComponent*)go->GetComponent(ComponentType::MESHRENDERER);
+        if (meshRenderer != nullptr && meshRenderer->IsInsideFrustum())
         {
-            DrawColliders(root->GetChildren()[i]);
+            DrawCube(meshRenderer->GetOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
+            DrawCube(meshRenderer->GetAABB(), float3(1.0f, 0.65f, 0.0f)); //Orange
+        }
+        for (int i = 0; i < go->GetChildren().size(); i++)
+        {
+            DrawColliders(go->GetChildren()[i]);
         }
     }
 }

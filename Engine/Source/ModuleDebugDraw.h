@@ -26,6 +26,8 @@ public:
     void DrawFrustum(const Frustum& frustum);
     bool GetShouldRenderGrid() const { return mDrawGrid; }
     void SetRenderGrid(bool a) { mDrawGrid = a; }
+    bool GetGameDebugDrawActive() const { return mGameDebugDrawActive; }
+    void SetGameDebugDrawActive(bool drawActive) { mGameDebugDrawActive = drawActive; }
     void DrawCube(const OBB& obb, const float3& color);
     void DrawSphere(const float center[3], const float color[3], const float radius);
     void DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius);
@@ -34,13 +36,14 @@ public:
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color);
     void DrawSkeleton(GameObject* model);
-    void DrawColliders(GameObject* root);
+    void DrawColliders(GameObject* go);
+    
 
 private:
 
     static DDRenderInterfaceCoreGL* implementation;
     bool mDrawGrid = true;
-
+    bool mGameDebugDrawActive = false;
     void DrawGrid();
     
 
