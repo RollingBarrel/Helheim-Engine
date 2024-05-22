@@ -525,21 +525,36 @@ void ModuleScene::AddGameObjectToScene(GameObject* gameObject)
 
 void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObjet) 
 {
-	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
-		[gameObjet](const auto& obj) { return obj->GetID() == gameObjet->GetID(); }),
-		mSceneGO.end());
+	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
+	{
+		if ((*it)->GetID() == gameObjet->GetID())
+		{
+			mSceneGO.erase(it);
+			return;
+		}
+	}
 }
 
 void ModuleScene::RemoveGameObjectFromScene(int id) {
-	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
-		[id](const auto& obj) { return obj->GetID() == id; }),
-		mSceneGO.end());
+	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
+	{
+		if ((*it)->GetID() == id)
+		{
+			mSceneGO.erase(it);
+			return;
+		}
+	}
 }
 
 void ModuleScene::RemoveGameObjectFromScene(const std::string& name) {
-	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
-		[&name](const auto& obj) { return obj->GetName() == name; }),
-		mSceneGO.end());
+	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
+	{
+		if ((*it)->GetName() == name)
+		{
+			mSceneGO.erase(it);
+			return;
+		}
+	}
 }
 
 void ModuleScene::DeleteGameObjects()

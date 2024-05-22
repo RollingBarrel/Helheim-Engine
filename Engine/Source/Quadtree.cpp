@@ -81,8 +81,8 @@ void Quadtree::RemoveObject(const GameObject& object)
 	}
 	else
 	{
-		std::remove_if(mGameObjects.begin(), mGameObjects.end(),
-			[&](const GameObject* ptr) { return ptr->GetID() == object.GetID(); }), mGameObjects.end();
+		mGameObjects.erase(std::remove_if(mGameObjects.begin(), mGameObjects.end(),
+			[&](const GameObject* ptr) { return ptr->GetID() == object.GetID(); }), mGameObjects.end());
 	}
 }
 

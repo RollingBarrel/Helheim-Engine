@@ -115,17 +115,20 @@ void ScenePanel::Draw(int windowFlags)
 {
 	windowFlags |= ImGuiWindowFlags_NoMove | ImGuiWindowFlags_MenuBar;
 
-	if (ImGui::Begin("Game", &mOpen, windowFlags))
+	if (EngineApp->GetEngineCamera()->HaveGameCameras())
 	{
-		MenuGBuffer();
-		if (ImGui::IsWindowAppearing())
+		if (ImGui::Begin("Game", &mOpen, windowFlags))
 		{
-			EngineApp->GetEngineCamera()->ActivateGameCamera();
-		}
+			MenuGBuffer();
+			if (ImGui::IsWindowAppearing())
+			{
+				EngineApp->GetEngineCamera()->ActivateGameCamera();
+			}
 
-		DrawScene();
+			DrawScene();
+		}
+		ImGui::End();
 	}
-	ImGui::End();
 
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
