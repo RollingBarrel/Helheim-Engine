@@ -703,6 +703,6 @@ void PlayerController::Loading()
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
-    LOG("COLLISION");
+    LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
 }
 

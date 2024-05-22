@@ -83,7 +83,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1414639564,
+                        "ID": 1370384296,
                         "MeshID": 496453540,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -118,7 +118,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1631276214,
+                        "ID": 1788410597,
                         "ModelUID": 1355797557,
                         "ComponentType": 10,
                         "isEnabled": true
@@ -414,7 +414,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 649944317,
+                        "ID": 1610713903,
                         "MeshID": 1355797558,
                         "MaterialID": 1355797563,
                         "ComponentType": 0,
@@ -1314,13 +1314,85 @@
                 "Components": []
             },
             {
-                "UID": 1453079938,
+                "UID": 1239741240,
                 "ParentUID": 1,
-                "Name": "Cube (1)",
+                "Name": "DamagedHelmet",
                 "isEnabled": true,
                 "Translation": [
-                    -4.911086082458496,
-                    2.0444209575653078,
+                    -4.609249591827393,
+                    2.4565443992614748,
+                    1.3599848747253419
+                ],
+                "Rotation": [
+                    0.0,
+                    0.8605071902275086,
+                    0.0,
+                    0.5094382762908936
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 121630115,
+                        "ComponentType": 16,
+                        "isEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1311729354,
+                "ParentUID": 1239741240,
+                "Name": "node_damagedHelmet_-6514",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    -0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1355938689,
+                "ParentUID": 1311729354,
+                "Name": "node_damagedHelmet_-6514",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
                     0.0
                 ],
                 "Rotation": [
@@ -1330,9 +1402,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.5,
-                    0.5,
-                    0.5
+                    1.0,
+                    1.0,
+                    1.0
                 ],
                 "Tag": 0,
                 "PrefabId": 0,
@@ -1340,7 +1412,42 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1693688488,
+                        "ID": 805996855,
+                        "MeshID": 1333012430,
+                        "MaterialID": 1333012435,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1543007022,
+                "ParentUID": 1,
+                "Name": "DamagedHelmet (2)",
+                "isEnabled": true,
+                "Translation": [
+                    -1.9850431680679322,
+                    2.4565443992614748,
+                    6.143839359283447
+                ],
+                "Rotation": [
+                    0.0,
+                    0.8605073690414429,
+                    0.0,
+                    0.509438157081604
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1548715944,
                         "ComponentType": 16,
                         "isEnabled": true,
                         "Center": [
@@ -1349,8 +1456,8 @@
                             0.0
                         ],
                         "Size": [
-                            1.25,
-                            1.600000023841858,
+                            1.0,
+                            1.0,
                             1.0
                         ],
                         "ColliderType": 0,
@@ -1359,9 +1466,9 @@
                 ]
             },
             {
-                "UID": 1521169276,
-                "ParentUID": 1453079938,
-                "Name": "Cube",
+                "UID": 1572665568,
+                "ParentUID": 1543007022,
+                "Name": "node_damagedHelmet_-6514",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -1386,9 +1493,9 @@
                 "Components": []
             },
             {
-                "UID": 1560574762,
-                "ParentUID": 1521169276,
-                "Name": "Cube",
+                "UID": 1574197230,
+                "ParentUID": 1572665568,
+                "Name": "node_damagedHelmet_-6514",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -1412,18 +1519,125 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 664368223,
-                        "MeshID": 496453540,
-                        "MaterialID": 999999999,
+                        "ID": 831880154,
+                        "MeshID": 1333012430,
+                        "MaterialID": 1333012435,
                         "ComponentType": 0,
                         "isEnabled": true
                     }
                 ]
             },
             {
-                "UID": 1522340463,
+                "UID": 104266247,
                 "ParentUID": 1,
-                "Name": "GameObject",
+                "Name": "DamagedHelmet (1)",
+                "isEnabled": true,
+                "Translation": [
+                    -3.142024040222168,
+                    2.4565443992614748,
+                    4.034695625305176
+                ],
+                "Rotation": [
+                    0.0,
+                    0.8605073690414429,
+                    0.0,
+                    0.509438157081604
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 110323274,
+                        "ComponentType": 16,
+                        "isEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 133924793,
+                "ParentUID": 104266247,
+                "Name": "node_damagedHelmet_-6514",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 135247592,
+                "ParentUID": 133924793,
+                "Name": "node_damagedHelmet_-6514",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1537628231,
+                        "MeshID": 1333012430,
+                        "MaterialID": 1333012435,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 9525637,
+                "ParentUID": 1,
+                "Name": "Camera",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
