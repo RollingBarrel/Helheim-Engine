@@ -448,6 +448,7 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					break;
 				case ComponentType::TEXT:
 					DrawTextComponent(reinterpret_cast<TextComponent*>(component));
+					break;
 				case ComponentType::TRAIL:
 					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
 					break;

@@ -12,6 +12,7 @@
 #include "CameraComponent.h"
 #include "ModuleCamera.h"
 #include "GameObject.h"
+#include "Math/TransformOps.h"
 
 TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) {
     InitFreeType();
@@ -78,8 +79,8 @@ void TextComponent::LoadFont(const std::string& fontPath)
             face->glyph->bitmap.buffer
         );
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         
@@ -98,6 +99,7 @@ void TextComponent::LoadFont(const std::string& fontPath)
 }
 
 void TextComponent::CreateBuffers() {
+
     glGenVertexArrays(1, &mQuadVAO);
     glGenBuffers(1, &mQuadVBO);
     glBindVertexArray(mQuadVAO);
@@ -156,28 +158,6 @@ void TextComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner
 
 void TextComponent::Draw() 
 {
-    /*GLuint program = App->GetOpenGL()->GetTextProgram();
-    glUseProgram(program);
-    
-    glUniform3f(glGetUniformLocation(program, "textColor"), mColor.x, mColor.y, mColor.z);
-    glActiveTexture(GL_TEXTURE0);
-    glBindVertexArray(mQuadVAO);
-
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    RenderText("Hello, World!", 0.0f, 0.0f, 1.0f);
-
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glDisable(GL_BLEND);
-    glDisable(GL_CULL_FACE);
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glUseProgram(0);*/
-
     unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
     if (UIImageProgram == 0) return;
 
