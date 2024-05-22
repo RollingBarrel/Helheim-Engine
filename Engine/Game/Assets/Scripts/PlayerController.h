@@ -11,6 +11,8 @@ class AudioSourceComponent;
 class ObjectPool;
 class GameManager;
 class AnimationStateMachine;
+class BoxColliderComponent;
+struct CollisionData;
 
 enum class PlayerState 
 {
@@ -88,6 +90,8 @@ class PlayerController :public Script
         bool Delay(float delay);
         void Loading();
         
+
+        void OnCollisionEnter(CollisionData* collisionData);
 
         Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
@@ -188,4 +192,6 @@ class PlayerController :public Script
 
         //CAMERA
         GameObject* mCamera = nullptr;
+        //Collider
+        BoxColliderComponent* mCollider;
 };

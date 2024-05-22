@@ -10,7 +10,9 @@
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "DebugPanel.h"
+#include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
+#include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 
 //This will be removed when functional gizmos are implmented
@@ -653,9 +655,13 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
        DrawGrid();
     }
 
-    if (((DebugPanel*)EngineApp->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
+    if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawColliders())
     {
-        DrawColliders(EngineApp->GetScene()->GetRoot());
+        GameObject* focusedGameObject = reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+        if (focusedGameObject) 
+        {
+            DrawColliders(focusedGameObject);
+        }
 	}
 
     GameObject* focusGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
@@ -778,13 +784,16 @@ void ModuleDebugDraw::DrawColliders(GameObject* root)
 {
     if (root != nullptr) 
     {
-        MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
-        //TODO: SEPARATE GAME ENGINE
-        //if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) 
+        //MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
+        //if (meshRenderer != nullptr) 
         //{
         //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
-        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->GetAABBWorld(), float3(1.0f, 0.65f, 0.0f)); //Orange
         //}
+        BoxColliderComponent* boxCollider = (BoxColliderComponent*)root->GetComponent(ComponentType::BOXCOLLIDER);
+        if (boxCollider != nullptr)
+        {
+            EngineApp->GetDebugDraw()->DrawCube(boxCollider->GetOBB(), float3(0.7f, 1.0f, 0.7f)); // Light green
+        }
 
         for (int i = 0; i < root->GetChildren().size(); i++) 
         {

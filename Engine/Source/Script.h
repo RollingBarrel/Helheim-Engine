@@ -1,5 +1,6 @@
 #pragma once
 #include "Globals.h"
+#include "Math/float3.h"
 #include <vector>
 #include <string>
 
@@ -64,7 +65,7 @@ public:
 	virtual void Start() {};
 	virtual void Update() {};
 	const std::vector<Member*>& GetMembers() { return mMembers; }
-	virtual void OnButtonClick() {}
+
 protected:
 
 	GameObject* mGameObject = nullptr;
