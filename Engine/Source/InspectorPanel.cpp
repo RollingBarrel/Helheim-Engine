@@ -1142,6 +1142,7 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 	}
 
 }
+
 void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
 {
 
@@ -1426,5 +1427,24 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 void InspectorPanel::DrawTextComponent(TextComponent* component)
 {
+	// Color and alpha
+	float3* color = component->GetColor();
+	float* alpha = component->GetAlpha();
+	std::string* text = component->GetText();
+
+	/*// Create a buffer for ImGui input
+	std::vector<char> buffer(text->begin(), text->end());
+	buffer.resize(256); // Adjust buffer size as needed
+	buffer.push_back('\0'); // Ensure null-termination
+
+	ImGui::Text("Text:");
+	ImGui::SameLine();
+	if (ImGui::InputText("##TextInput", buffer.data(), buffer.size())) {
+		// Update the std::string if the text was changed
+		*text = std::string(buffer.data());
+	}*/
+
+	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
+	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
 }
 

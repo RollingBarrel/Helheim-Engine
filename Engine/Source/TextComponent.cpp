@@ -7,11 +7,18 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include <iostream>
+#include "Transform2DComponent.h"
+#include "CanvasComponent.h"
+#include "CameraComponent.h"
+#include "ModuleCamera.h"
+#include "GameObject.h"
 
 TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) {
     InitFreeType();
     LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
     CreateBuffers();
+
+    mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 }
 
 TextComponent::TextComponent(const TextComponent& other, GameObject* owner)
@@ -102,17 +109,18 @@ void TextComponent::CreateBuffers() {
     glBindVertexArray(0);
 }
 
-void TextComponent::RenderText(const std::string& text, float x, float y, float scale) 
+void TextComponent::RenderText(const std::string& text) 
 {
-    
+    int x = 0, y = 0;
+
     for (char c : text) 
     {
         Character ch = Characters[c];
 
-        float xpos = x + ch.Bearing.x * scale;
-        float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
-        float w = ch.Size.x * scale;
-        float h = ch.Size.y * scale;
+        float xpos = x + ch.Bearing.x;
+        float ypos = y - (ch.Size.y - ch.Bearing.y);
+        float w = ch.Size.x;
+        float h = ch.Size.y;
 
         float vertices[6][4] = 
         {
@@ -131,7 +139,7 @@ void TextComponent::RenderText(const std::string& text, float x, float y, float 
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        x += (ch.Advance >> 6) * scale;
+        x += (ch.Advance >> 6);
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -148,7 +156,7 @@ void TextComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner
 
 void TextComponent::Draw() 
 {
-    GLuint program = App->GetOpenGL()->GetTextProgram();
+    /*GLuint program = App->GetOpenGL()->GetTextProgram();
     glUseProgram(program);
     
     glUniform3f(glGetUniformLocation(program, "textColor"), mColor.x, mColor.y, mColor.z);
@@ -156,7 +164,7 @@ void TextComponent::Draw()
     glBindVertexArray(mQuadVAO);
 
     glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND); //enabled in draw 2d render ui
+    glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     RenderText("Hello, World!", 0.0f, 0.0f, 1.0f);
@@ -168,5 +176,83 @@ void TextComponent::Draw()
     glDisable(GL_CULL_FACE);
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
+    glUseProgram(0);*/
+
+    unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
+    if (UIImageProgram == 0) return;
+
+    glUseProgram(UIImageProgram);
+
+    float4x4 proj = float4x4::identity;
+    float4x4 model = float4x4::identity;
+    float4x4 view = float4x4::identity;
+
+    if (mCanvas->GetScreenSpace()) //Ortographic Mode
+    {
+        Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        if (component != nullptr)
+        {
+            model = component->GetGlobalMatrix();
+
+            //float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+            float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+
+            model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+
+        }
+        glEnable(GL_CULL_FACE);
+    }
+    else //World Mode
+    {
+        const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+
+        proj = camera->GetProjectionMatrix();
+        model = GetOwner()->GetWorldTransform();
+        view = camera->GetViewMatrix();
+        glDisable(GL_CULL_FACE);
+    }
+
+    glBindVertexArray(mQuadVAO);
+    glActiveTexture(GL_TEXTURE0);
+
+    glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
+
+    glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
+    glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+    glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    RenderText(text);
+
+    // Clean
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDisable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
     glUseProgram(0);
+}
+
+GameObject* TextComponent::FindCanvasOnParents(GameObject* gameObject)
+{
+    if (gameObject == nullptr)
+    {
+        return nullptr;
+    }
+
+    GameObject* currentObject = gameObject;
+
+    while (currentObject != nullptr)
+    {
+        if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr)
+        {
+            return currentObject;
+        }
+        currentObject = currentObject->GetParent();
+    }
+
+    return nullptr; // No canvas found on parents
 }

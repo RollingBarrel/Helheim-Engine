@@ -1,10 +1,13 @@
 #pragma once
-#include "Component.h"
-#include "GameObject.h"
 #include <map>
+#include "Component.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+class CanvasComponent;
+class GameObject;
+class Component;
 
 class ENGINE_API TextComponent : public Component
 {
@@ -22,12 +25,18 @@ public:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
     void Draw();
-    void RenderText(const std::string& text, float x, float y, float scale);
+    void RenderText(const std::string& text);
+
+    float3* GetColor() { return &mColor; }
+    float* GetAlpha() { return &mAlpha; }
+    std::string* GetText() { return &text; }
 
 private:
     void InitFreeType();
     void LoadFont(const std::string& fontPath);
     void CreateBuffers();
+
+    GameObject* FindCanvasOnParents(GameObject* gameObject);
 
     struct Character {
         unsigned int  TextureID; // ID handle of the glyph texture
@@ -41,6 +50,10 @@ private:
     FT_Face face;
 
     float3 mColor = float3(1.f,1.f,1.f);
+    float mAlpha = 1.0f;
+    std::string text = "Hello World!";
 
     unsigned int  mQuadVAO, mQuadVBO;
+
+    CanvasComponent* mCanvas = nullptr;
 };
