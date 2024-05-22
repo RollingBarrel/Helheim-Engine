@@ -12,6 +12,7 @@
 #include "Resource.h"
 #include "DetourNavMesh.h"
 #include "ModuleDetourNavigation.h"
+#include "SaveLoadNavMesh.h"
 
 
 ResourceNavMesh* Importer::NavMesh::Import(unsigned int uid)
