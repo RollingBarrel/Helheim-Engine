@@ -14,10 +14,11 @@ public:
 	void AddMeshComponent(const MeshRendererComponent* meshComponent);
 	void RemoveMeshComponent(const MeshRendererComponent* meshComponent);
 	void EditMaterial(const MeshRendererComponent* meshComponent);
-	void AddHighLight(std::vector<Component*> meshComponents);
-	void RemoveHighLight(std::vector<Component*> meshComponents);
 
+	void AddCommand(const MeshRendererComponent* meshComponent);
+	void CleanUpCommands();
 	void Draw();
+	void EndFrameDraw();
 
 private:
 	std::vector<GeometryBatch*> mBatches;

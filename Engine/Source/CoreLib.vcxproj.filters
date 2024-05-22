@@ -73,6 +73,9 @@
     <Filter Include="Utils\Particles">
       <UniqueIdentifier>{50fe897a-e47d-4091-9d21-2bf00e84878c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies\Optick">
+      <UniqueIdentifier>{f158abaa-05ca-4692-b043-3ae443e8355f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -404,6 +407,18 @@
     </ClCompile>
     <ClCompile Include="ParticleSystemComponent.cpp">
       <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorGradient.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Trail.cpp">
+      <Filter>Utils\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="TrailComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierCurve.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="ModuleCamera.cpp">
@@ -1005,6 +1020,24 @@
     <ClInclude Include="ParticleSystemComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ColorGradient.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Trail.h">
+      <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="TrailComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.config.h">
+      <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\Optick\include\optick.h">
+      <Filter>Dependencies\Optick</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurve.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
@@ -1083,10 +1116,28 @@
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\trail_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\trail_vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
     <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBRCT_GeometryPass.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PBRCT_LightingPass.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PassThroughVertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
