@@ -16,10 +16,10 @@ EmitterShape::~EmitterShape()
 
 void EmitterShape::Save(Archive& archive) const
 {
-    archive.AddInt("ShapeType", mType);
-    archive.AddFloat("ShapeRadius", mShapeRadius);
-    archive.AddFloat("ShapeAngle", mShapeAngle);
-    archive.AddFloat2("ShapeSize", mShapeSize);
+    //archive.AddInt("ShapeType", mType);
+    //archive.AddFloat("ShapeRadius", mShapeRadius);
+    //archive.AddFloat("ShapeAngle", mShapeAngle);
+    //archive.AddFloat2("ShapeSize", mShapeSize);
 }
 
 void EmitterShape::LoadFromJSON(const rapidjson::Value& data)

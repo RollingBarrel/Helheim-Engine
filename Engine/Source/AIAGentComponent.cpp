@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleDetourNavigation.h"
 #include "GameObject.h"
+
 AIAgentComponent::AIAgentComponent(GameObject* ownerGameObject)
  : Component(ownerGameObject, ComponentType::AIAGENT)
 {
@@ -63,7 +64,7 @@ void AIAgentComponent::MoveAgent(float3 destination, float speed )
 
 void AIAgentComponent::Save(Archive& archive) const
 {
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	//archive.AddFloat("Radius", mRadius);
 	//archive.AddFloat("Height", mHeight);
 	//archive.AddFloat("StepHeight", mStepHeight);

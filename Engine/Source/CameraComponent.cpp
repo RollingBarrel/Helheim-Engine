@@ -113,11 +113,11 @@ void CameraComponent::SetAspectRatio(float value)
 
 void CameraComponent::Save(Archive& archive) const
 {
-    archive.AddInt("ComponentType", static_cast<int>(GetType()));
-    archive.AddFloat("AspectRatio", mAspectRatio);
-    archive.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
-    archive.AddFloat("FarPlane", mFrustum.farPlaneDistance);
-    archive.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
+    //archive.AddInt("ComponentType", static_cast<int>(GetType()));
+    //archive.AddFloat("AspectRatio", mAspectRatio);
+    //archive.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
+    //archive.AddFloat("FarPlane", mFrustum.farPlaneDistance);
+    //archive.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
 }
 
 void CameraComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

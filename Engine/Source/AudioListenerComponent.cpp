@@ -39,7 +39,7 @@ Component* AudioListenerComponent::Clone(GameObject* owner) const
 
 void AudioListenerComponent::Save(Archive& archive) const
 {
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
 }
 
 void AudioListenerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

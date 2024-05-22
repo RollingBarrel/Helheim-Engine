@@ -1,20 +1,16 @@
 #pragma once
-#include <vector>
 #include "Globals.h"
+#include <string>
+#include <vector>
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
+#include "Math/float4.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
-#include "string"
-#include "Archive.h"
 #include "Tag.h"
 #include "MeshRendererComponent.h"
-
-#undef max
-#undef min
-#define NOMINMAX
-#include "rapidjson/document.h"
+#include "Archive.h"
 
 class AIAgentComponent;
 class CameraComponent;

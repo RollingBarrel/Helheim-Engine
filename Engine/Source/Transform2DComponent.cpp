@@ -52,14 +52,14 @@ void Transform2DComponent::Reset()
 
 void Transform2DComponent::Save(Archive& archive) const
 {
-	Component::Save(archive);
-
-	archive.AddFloat3("Translation", mPosition);
-	archive.AddQuat("Rotation", mRotation);
-	archive.AddFloat2("Size", mSize);
-	archive.AddFloat2("AnchorMin", mAnchorMin);
-	archive.AddFloat2("AnchorMax", mAnchorMax);
-	archive.AddFloat2("Pivot", mPivot);
+	//Component::Save(archive);
+	//
+	//archive.AddFloat3("Translation", mPosition);
+	//archive.AddQuat("Rotation", mRotation);
+	//archive.AddFloat2("Size", mSize);
+	//archive.AddFloat2("AnchorMin", mAnchorMin);
+	//archive.AddFloat2("AnchorMax", mAnchorMax);
+	//archive.AddFloat2("Pivot", mPivot);
 }
 
 void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

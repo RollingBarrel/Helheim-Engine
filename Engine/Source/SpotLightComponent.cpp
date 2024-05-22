@@ -104,11 +104,11 @@ inline Component* SpotLightComponent::Clone(GameObject* owner) const
 void SpotLightComponent::Save(Archive& archive) const {
 	//TODO: Do we need id???
 	//archive.AddInt("ID", mID);
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddFloat4("Position", mData.pos);
-	archive.AddFloat4("Direction", mData.aimD);
-	archive.AddFloat4("Color", mData.col);
-	archive.AddFloat("Radius", mData.radius);
+	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	//archive.AddFloat4("Position", mData.pos);
+	//archive.AddFloat4("Direction", mData.aimD);
+	//archive.AddFloat4("Color", mData.col);
+	//archive.AddFloat("Radius", mData.radius);
 }
 
 //TODO: why is the GO owner passed here??

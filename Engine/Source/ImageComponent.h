@@ -1,5 +1,7 @@
 #pragma once
 #include "Component.h"
+#include "float3.h"
+#include "float2.h"
 
 class ResourceTexture;
 class ModuleResource;
@@ -63,7 +65,7 @@ private:
     //TODO: Handle filename when setting the image
     const char* mFileName = nullptr;
 
-    float3 mColor = float3(1.0f, 1.0f, 1.0f);
+    math::float3 mColor = math::float3(1.0f, 1.0f, 1.0f);
     float mAlpha = 1.0f;
     bool mHasAlpha = false;
 

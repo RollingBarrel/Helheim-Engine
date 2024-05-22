@@ -176,30 +176,30 @@ Component* AudioSourceComponent::Clone(GameObject* owner) const
 
 void AudioSourceComponent::Save(Archive& archive) const
 {
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-
-	archive.AddString("EventName", mName.c_str());
-
-	std::vector<int> parameterKeys;
-	std::vector<float> parameterValues;
-
-	for (const auto& pair : mParameters) 
-	{
-		parameterKeys.push_back(pair.first);
-		parameterValues.push_back(pair.second);
-	}
-
-	std::vector<Archive> objectArray;
-	for (auto i = 0; i < parameterKeys.size(); i++)
-	{
-		Archive dataArchive;
-		dataArchive.AddInt("ParametersKey", parameterKeys[i]);
-		dataArchive.AddFloat("ParametersValue", parameterValues[i]);
-
-		objectArray.push_back(dataArchive);
-	}
-
-	archive.AddObjectArray("ParametersVariables", objectArray);
+	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	//
+	//archive.AddString("EventName", mName.c_str());
+	//
+	//std::vector<int> parameterKeys;
+	//std::vector<float> parameterValues;
+	//
+	//for (const auto& pair : mParameters) 
+	//{
+	//	parameterKeys.push_back(pair.first);
+	//	parameterValues.push_back(pair.second);
+	//}
+	//
+	//std::vector<Archive> objectArray;
+	//for (auto i = 0; i < parameterKeys.size(); i++)
+	//{
+	//	Archive dataArchive;
+	//	dataArchive.AddInt("ParametersKey", parameterKeys[i]);
+	//	dataArchive.AddFloat("ParametersValue", parameterValues[i]);
+	//
+	//	objectArray.push_back(dataArchive);
+	//}
+	//
+	//archive.AddObjectArray("ParametersVariables", objectArray);
 }
 
 void AudioSourceComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

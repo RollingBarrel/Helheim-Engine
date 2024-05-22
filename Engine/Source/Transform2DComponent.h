@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "Math/float2.h" 
+#include "Math/Quat.h"
+#include "Math/float4x4.h" 
 
 class ComponentCanvas;
 

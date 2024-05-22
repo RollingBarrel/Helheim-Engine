@@ -26,8 +26,8 @@ Component* NavMeshObstacleComponent::Clone(GameObject* owner) const
 
 void NavMeshObstacleComponent::Save(Archive& archive) const
 {
-	archive.AddFloat("Radius", mRadius);
-	archive.AddFloat("Height", mHeight);
+	//archive.AddFloat("Radius", mRadius);
+	//archive.AddFloat("Height", mHeight);
 }
 
 void NavMeshObstacleComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

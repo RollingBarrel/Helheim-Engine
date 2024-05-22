@@ -215,17 +215,17 @@ void ImageComponent::StopAnimation()
 
 void ImageComponent::Save(Archive& archive) const
 {
-    archive.AddInt("ImageID", mImage->GetUID());
-    archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddFloat3("Color", mColor);
-	archive.AddBool("HasAlpha", mHasAlpha);
-	archive.AddFloat("Alpha", mAlpha);
-
-	archive.AddBool("IsSpritesheet", mIsSpritesheet);
-	archive.AddInt("Columns", mColumns);
-	archive.AddInt("Rows", mRows);
-	archive.AddInt("Speed", mFPS);
-	archive.AddBool("IsPlaying", mIsPlaying);
+    //archive.AddInt("ImageID", mImage->GetUID());
+    //archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	//archive.AddFloat3("Color", mColor);
+	//archive.AddBool("HasAlpha", mHasAlpha);
+	//archive.AddFloat("Alpha", mAlpha);
+	//
+	//archive.AddBool("IsSpritesheet", mIsSpritesheet);
+	//archive.AddInt("Columns", mColumns);
+	//archive.AddInt("Rows", mRows);
+	//archive.AddInt("Speed", mFPS);
+	//archive.AddBool("IsPlaying", mIsPlaying);
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

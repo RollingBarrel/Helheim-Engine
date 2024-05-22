@@ -74,9 +74,9 @@ inline Component* PointLightComponent::Clone(GameObject* owner) const
 void PointLightComponent::Save(Archive& archive) const {
 	//TODO: Do we need id???
 	//archive.AddInt("ID", mID);
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddFloat4("Position", mData.pos);
-	archive.AddFloat4("Color", mData.col);
+	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	//archive.AddFloat4("Position", mData.pos);
+	//archive.AddFloat4("Color", mData.col);
 
 }
 

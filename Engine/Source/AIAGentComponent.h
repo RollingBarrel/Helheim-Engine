@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "float3.h"
 
 class ENGINE_API AIAgentComponent :public Component
 {
@@ -30,7 +31,7 @@ public:
 	//void SetStoppingDistance(float stoppingDistance) { mStoppingDistance = stoppingDistance; };
 
 
-	void MoveAgent(float3 destination, float speed);
+	void MoveAgent(math::float3 destination, float speed);
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 private:

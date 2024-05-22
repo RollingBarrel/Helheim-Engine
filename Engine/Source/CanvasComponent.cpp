@@ -41,9 +41,9 @@ void CanvasComponent::Reset()
 
 void CanvasComponent::Save(Archive& archive)const 
 {
-	Component::Save(archive);
-
-	archive.AddFloat2("Size", mSize);
+	//Component::Save(archive);
+	//
+	//archive.AddFloat2("Size", mSize);
 }
 
 void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
