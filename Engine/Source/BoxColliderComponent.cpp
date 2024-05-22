@@ -6,6 +6,7 @@
 
 BoxColliderComponent::BoxColliderComponent(GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER)
 {
+	mCollider = new Collider(this, ComponentType::BOXCOLLIDER );
 	Init();
 }
 

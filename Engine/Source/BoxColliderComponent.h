@@ -52,7 +52,7 @@ public:
 	inline const bool GetFreezeRotation() const { return mFreezeRotation; }
 	inline btRigidBody* GetRigidBody() const { return mRigidBody; }
 	inline MotionState* GetMotionState() const { return mMotionState; }
-	inline Collider GetCollider() const { return mCollider; }
+	inline Collider* GetCollider() const { return mCollider; }
 
 	void SetCenter(const float3& center);
 	void SetSize(const float3& size);
@@ -74,7 +74,7 @@ private:
 
 	btRigidBody* mRigidBody = nullptr;
 	MotionState* mMotionState = nullptr;
-	Collider mCollider{ this, typeid(Component) };
+	Collider* mCollider;
 
 	std::vector<std::function<void(CollisionData*)>*> mEventHandlers[(int)CollisionEventType::COUNT];
 

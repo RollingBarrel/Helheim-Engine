@@ -106,12 +106,35 @@ update_status ModulePhysics::PreUpdate(float dt)
 
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
+	// Set up the motion state for the box collider
 	boxCollider->SetMotionState(new MotionState(boxCollider, boxCollider->GetCenter(), boxCollider->GetFreezeRotation()));
-	btRigidBody* rigidbody = AddBoxBody(boxCollider->GetMotionState(), boxCollider->GetSize() / 2.0f, 0.f);
-	rigidbody->setUserPointer(boxCollider->GetCollider().mCollider);
-	boxCollider->SetRigidBody(rigidbody);
-	// TODO: Define world layers, collider types
-	AddBodyToWorld(boxCollider->GetRigidBody(), ColliderType::STATIC, WorldLayers::COUNT);
+
+	// Calculate the size (half extents) for the box shape
+	float3 halfExtents = boxCollider->GetSize() / 2.0f;
+
+	// Create the collision shape for the box
+	btCollisionShape* collisionShape = new btBoxShape(btVector3(halfExtents.x, halfExtents.y, halfExtents.z));
+
+	// Define the mass and local inertia for the rigid body
+	float mass = 0.0f; // You might want to adjust this based on whether the object is static or dynamic
+	btVector3 localInertia(0, 0, 0);
+	if (mass != 0.0f)
+	{
+		collisionShape->calculateLocalInertia(mass, localInertia);
+	}
+
+	// Set up the construction info for the rigid body
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, boxCollider->GetMotionState(), collisionShape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	// Set the user pointer to the collider for later collision processing
+	body->setUserPointer((void*)(boxCollider->GetCollider()));
+
+	// Add the rigid body to the box collider
+	boxCollider->SetRigidBody(body);
+
+	// Add the rigid body to the physics world
+	AddBodyToWorld(body, boxCollider->GetColliderType());
 }
 
 void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
@@ -144,14 +167,15 @@ btRigidBody* ModulePhysics::AddBoxBody(btMotionState* motionState, float3 size, 
 	return body;
 }
 
-void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType, WorldLayers layer)
+void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType)
 {
+	// Configure collision flags based on the collider type
 	switch (colliderType)
 	{
 	case ColliderType::STATIC:
 		rigidbody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
 		break;
-	case ColliderType::KINEMATIC:
+	case ColliderType::DYNAMIC:
 		rigidbody->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
 		rigidbody->setActivationState(DISABLE_DEACTIVATION);
 		break;
@@ -162,38 +186,37 @@ void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType collider
 		break;
 	}
 
-	int collisionMask = 0;
-	switch (layer)
-	{
-	default: //NO_COLLISION
-		collisionMask = 0;
-		break;
-	}
+	// All objects should collide with all other objects
+	short group = 1;
+	short mask = 1;
 
-	mWorld->addRigidBody(rigidbody, (short)layer, collisionMask);
+	// Add the rigid body to the physics world with the appropriate layer and collision mask
+	mWorld->addRigidBody(rigidbody, group, mask);
 }
 
 void ModulePhysics::ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff)
 {
-	if (bodyA->mTypeId == typeid(Component))
+	// TODO: Distinguish event types
+	Component* componentA = (Component*)bodyA->mCollider;
+
+	switch (bodyA->mTypeId)
 	{
-		Component* pbodyA = (Component*)bodyA->mCollider;
-		switch (pbodyA->GetType())
-		{
 		case ComponentType::BOXCOLLIDER:
 		{
-			BoxColliderComponent* boxCollider = (BoxColliderComponent*)pbodyA;
-			if (bodyB->mTypeId == typeid(Component))
+			BoxColliderComponent* boxColliderA = (BoxColliderComponent*)componentA;
+
+			switch (bodyB->mTypeId) 
 			{
-				Component* pbodyB = (Component*)bodyB->mCollider;
-				// TODO: Distinguish event types
-				CollisionData collisionData{ CollisionEventType::ON_COLLISION_ENTER, pbodyB->GetOwner(), collisionNormal, diff };
-				boxCollider->OnCollision(&collisionData);
+				case ComponentType::BOXCOLLIDER:
+					BoxColliderComponent* boxColliderB = (BoxColliderComponent*)bodyB->mCollider;
+					CollisionData collisionData{ CollisionEventType::ON_COLLISION_ENTER, boxColliderB->GetOwner(), collisionNormal, diff };
+					boxColliderA->OnCollision(&collisionData);
+					break;
 			}
 			break;
 		}
 		default:
 			break;
-		}
 	}
+	
 }
