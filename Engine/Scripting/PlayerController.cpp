@@ -16,6 +16,7 @@
 #include "Physics.h"
 #include "ObjectPool.h"
 #include "GameManager.h"
+#include "MathConstants.h"
 
 
 CREATE(PlayerController)
@@ -165,17 +166,17 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
 
         mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sWalkBack, sWalkForward, sWalkForward);
+        mStateMachine->AddTransition(sWalkBack, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
 
         mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sWalkForward, sWalkForward);
+        mStateMachine->AddTransition(sStrafeLeft, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
 
         mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sWalkForward, sWalkForward);
+        mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
 
@@ -317,14 +318,33 @@ void PlayerController::Idle()
 void PlayerController::Moving()
 {
     mMoveDirection = float3::zero;
-    float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized();
+    float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized(); 
+    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+    ClosestMouseDirection(mousePosition);
 
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         mMoveDirection += front;
         if (mAnimationComponent)
         {
-            mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+            switch (mLookingAt)
+            {
+            case MouseDirection::UP:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MouseDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MouseDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MouseDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            default:
+                break;
+            }
+            
         }
 
     }
@@ -334,9 +354,29 @@ void PlayerController::Moving()
         mMoveDirection -= front;
         if (mAnimationComponent)
         {
-            mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-        }
+            switch (mLookingAt)
+            {
+            case MouseDirection::UP:
+                
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MouseDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
 
+                break;
+            case MouseDirection::LEFT:
+                
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MouseDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+
+                break;
+            default:
+                break;
+            }
+
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
@@ -344,7 +384,28 @@ void PlayerController::Moving()
         mMoveDirection += float3::unitY.Cross(front);
         if (mAnimationComponent)
         {
-            mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+            switch (mLookingAt)
+            {
+            case MouseDirection::UP:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                
+                break;
+            case MouseDirection::DOWN:
+                
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MouseDirection::LEFT:
+
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MouseDirection::RIGHT:
+                
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            default:
+                break;
+            }
+
         }
 
     }
@@ -354,7 +415,28 @@ void PlayerController::Moving()
         mMoveDirection -= float3::unitY.Cross(front);
         if (mAnimationComponent)
         {
-            mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+            switch (mLookingAt)
+            {
+            case MouseDirection::UP:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+
+                break;
+            case MouseDirection::DOWN:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                
+                break;
+            case MouseDirection::LEFT:
+
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MouseDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                
+                break;
+            default:
+                break;
+            }
+
         }
 
     }
@@ -619,6 +701,30 @@ void PlayerController::Reload()
 {
     mBullets = mAmmoCapacity;
     LOG("Reloaded!Remaining bullets : %i", mBullets);
+}
+
+void PlayerController::ClosestMouseDirection(float2 mouseState)
+{
+    int dx = mouseState.x - 960.0;
+    int dy = mouseState.y - 540.0;
+
+    // Determine the primary direction based on the largest absolute difference
+    if (std::abs(dx) > std::abs(dy)) {
+        if (dx > 0) {
+            mLookingAt = MouseDirection::RIGHT;
+        }
+        else {
+            mLookingAt = MouseDirection::LEFT;
+        }
+    }
+    else {
+        if (dy > 0) {
+            mLookingAt = MouseDirection::DOWN;;
+        }
+        else {
+            mLookingAt = MouseDirection::UP;
+        }
+    }
 }
 
 void PlayerController::RechargeShield(float shield)

@@ -35,6 +35,13 @@ enum class Weapon {
     MELEE
 };
 
+enum class MouseDirection {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    DEFAULT
+};
 
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
@@ -57,6 +64,7 @@ class PlayerController :public Script
         void Moving();
         void Dash();
         void Attack();
+        void InitAnimations();
 
         void MeleeAttack();
         void MeleeBaseCombo();
@@ -68,7 +76,8 @@ class PlayerController :public Script
         void HandleRotation();
         void Shoot(float damage);
         void Reload();
-        
+        void ClosestMouseDirection(float2 mouseState);
+      
         void Death();
         void UpdateShield();
         void UpdateBattleSituation();
@@ -78,11 +87,13 @@ class PlayerController :public Script
         void GameoOver();
         bool Delay(float delay);
         void Loading();
+        
 
         Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+        MouseDirection mLookingAt = MouseDirection::DEFAULT;
         float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;
