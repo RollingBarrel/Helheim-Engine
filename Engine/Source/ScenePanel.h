@@ -19,6 +19,7 @@ public:
 
 private:
 
+	void MenuGBuffer();
 	void DrawScene();
 
 	unsigned int prevSizeX = 0;
