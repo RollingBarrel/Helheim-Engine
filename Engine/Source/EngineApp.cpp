@@ -16,6 +16,7 @@
 #include "ModuleEditor.h"
 #include "ModulePhysics.h"
 #include "Timer.h"
+#include "optick.h"
 #include "NavMeshController.h"
 
 EngineApplication* EngineApp = NULL;
@@ -43,8 +44,8 @@ EngineApplication::EngineApplication()
 	modules[9] = debugDraw = new ModuleDebugDraw();
 	modules[10] = scene = new ModuleScene();
 	modules[11] = navigation = new ModuleDetourNavigation();
-	modules[12] = editor = new ModuleEditor();
-	modules[13] = ui = new ModuleUI();
+	modules[12] = ui = new ModuleUI();
+	modules[13] = editor = new ModuleEditor();
 	modules[14] = event = new ModuleEvent();
 	
 	mNavMeshController = new NavMeshController();
@@ -84,7 +85,7 @@ bool EngineApplication::Init()
 
 update_status EngineApplication::Update(float dt)
 {
-	//OPTICK_FRAME("MainThread");
+	OPTICK_FRAME("EngineThread");
 	if (mExit) return UPDATE_STOP;
 
 	mCurrentTimer->Update();

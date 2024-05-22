@@ -30,7 +30,7 @@ static void RenderTreeImGui(const Quadtree* qTree)
         return;
     bool treeNodeOpened = ImGui::TreeNode(qTree->GetName());
 
-    if (qTree->IsFilled() && treeNodeOpened)
+    if (!qTree->IsLeaf() && treeNodeOpened)
     {
         const Quadtree* children = qTree->GetChildren();
         for (int i = 0; i < 4; ++i)
@@ -53,15 +53,15 @@ static void RenderTreeImGui(const Quadtree* qTree)
         ImGui::TreePop();
 }
 
-static void DrawQuadTree(const Quadtree* qTree)
+static void DrawQuadTree(const Quadtree& qTree)
 {
-    EngineApp->GetDebugDraw()->DrawCube(qTree->GetBoundingBox(), float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
-    if (qTree->IsFilled())
+    EngineApp->GetDebugDraw()->DrawCube(qTree.GetBoundingBox(), float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
+    if (!qTree.IsLeaf())
     {
-        const Quadtree* children = qTree->GetChildren();
+        const Quadtree* children = qTree.GetChildren();
         for (int i = 0; i < 4; ++i)
         {
-            DrawQuadTree(children + i);
+            DrawQuadTree(*(children + i));
         }
     }
 }
@@ -117,7 +117,11 @@ void DebugPanel::Draw(int windowFlags) {
             if (draw)
             {
                 EngineApp->GetOpenGL()->BindSceneFramebuffer();
-                DrawQuadTree(EngineApp->GetScene()->GetQuadtreeRoot());
+                Quadtree* rootQtree = EngineApp->GetScene()->GetQuadtreeRoot();
+                if (rootQtree)
+                {
+                    DrawQuadTree(*rootQtree);
+                }
                 EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
             }
 

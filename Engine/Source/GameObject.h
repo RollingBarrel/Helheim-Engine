@@ -27,7 +27,8 @@ class ENGINE_API GameObject
 	friend class InspectorPanel;
 
 public:
-	GameObject(GameObject* parent);
+	GameObject(const char* name);
+	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
 	GameObject(const GameObject& original);

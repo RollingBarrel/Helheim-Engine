@@ -61,8 +61,9 @@ public:
 	Script(GameObject* owner);
 	virtual ~Script();
 	void SetName(const std::string& name) { mName = name; }
-	virtual void Start() = 0;
-	virtual void Update() = 0;
+	virtual void Awake() {};
+	virtual void Start() {};
+	virtual void Update() {};
 	const std::vector<Member*>& GetMembers() { return mMembers; }
 
 protected:

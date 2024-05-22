@@ -95,26 +95,7 @@ void PlayerController::Start()
     if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
     if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
 
-    if (mAnimationComponentHolder) 
-    {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-
-        //Redefine player animation clips
-        mAnimationComponent->SetCurrentClip(0);
-        mAnimationComponent->SetStartTime(0.0f);
-        mAnimationComponent->SetEndTime(1.9f);
-        mAnimationComponent->SetCurrentClip(1);
-        mAnimationComponent->SetStartTime(1.9f);
-        mAnimationComponent->SetEndTime(2.9f);
-           
-        //Set to idle
-        mAnimationComponent->SetCurrentClip(0);
-
-
-
-    }
+    
 
     if (mFootStepAudioHolder)
     {
@@ -153,10 +134,7 @@ void PlayerController::Update()
         if ((!mVictory) || (!mGameOver))
         {
             Idle();
-            if (mAnimationComponent)
-            {
-                mAnimationComponent->SetCurrentClip(0);
-            }
+            
 
         }
         break;
@@ -165,10 +143,7 @@ void PlayerController::Update()
         break;
     case PlayerState::MOVE:
         Moving();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(1);
-        }
+       
         break;
     case PlayerState::ATTACK:
         Attack();

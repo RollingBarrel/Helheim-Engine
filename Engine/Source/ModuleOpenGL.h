@@ -5,7 +5,6 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
-#include "ParticleSystemComponent.h"
 #include <vector>
 
 typedef struct DirectionalLight 
@@ -16,6 +15,8 @@ typedef struct DirectionalLight
 
 class PointLightComponent;
 class SpotLightComponent;
+class Trail;
+class ParticleSystemComponent;
 class CameraComponent;
 struct PointLight;
 struct SpotLight;
@@ -55,20 +56,27 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 
+	void* GetOpenGlContext() { return context; }
 	void WindowResized(unsigned width, unsigned height);
 	void SceneFramebufferResized(unsigned width, unsigned height);
-	unsigned int GetFramebufferTexture() const { return colorAttachment; }
+	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
 	void UnbindSceneFramebuffer();
+	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
+	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
+	unsigned int GetGBufferEmissive() const { return mGEmissive; }
+	unsigned int GetGBufferNormals() const { return mGNormals; }
+	unsigned int GetGBufferDepth() const { return mGColDepth; }
 	void SetOpenGlCameraUniforms() const;
-	void* GetOpenGlContext() { return context; }
 
-	unsigned int GetPBRProgramId() const { return mPbrProgramId; }
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
+	unsigned int GetTrailProgramId() const { return mTrailProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
+	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
+	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
@@ -81,13 +89,17 @@ public:
 	void BatchAddMesh(MeshRendererComponent* mesh);
 	void BatchRemoveMesh(MeshRendererComponent* mesh);
 	void BatchEditMaterial(const MeshRendererComponent* mesh);
-	void Draw();
+	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
 	void SetWireframe(bool wireframe);
-	void AddHighLight(GameObject* gameObject);
-	void RemoveHighLight(GameObject* gameObject);
+
+	void AddHighLight(const GameObject& gameObject);
+	void RemoveHighLight(const GameObject& gameObject);
 
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
+
+	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
+	void RemoveTrail(const Trail* trail);
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
@@ -98,10 +110,20 @@ private:
 
 	BatchManager mBatchManager;
 
-	//Framebuffer
+	//scene Framebuffer
 	unsigned int sFbo;
-	unsigned int colorAttachment;
+	unsigned int sceneTexture;
 	unsigned int depthStencil;
+	//Gbuffer Framebuffer
+	unsigned int mGFbo;
+	unsigned int mGDiffuse;
+	unsigned int mGSpecularRough;
+	unsigned int mGEmissive;
+	unsigned int mGNormals;
+	unsigned int mGColDepth;
+	unsigned int mGDepth;
+	void ResizeGBuffer(unsigned int width, unsigned int height);
+	//void Draw();
 
 	//Camera
 	OpenGLBuffer* mCameraUniBuffer = nullptr;
@@ -115,7 +137,9 @@ private:
 	char* LoadShaderSource(const char* shaderFileName) const;
 	unsigned int CompileShader(unsigned type, const char* source) const;
 	unsigned int CreateShaderProgramFromIDs(unsigned int* shaderIds, unsigned int numShaders) const;
-	unsigned int mPbrProgramId = 0;
+	unsigned int mPbrGeoPassProgramId = 0;
+	unsigned int mPbrLightingPassProgramId = 0;
+	unsigned int mPassThroughProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
@@ -128,6 +152,7 @@ private:
 	
 	
 	unsigned int mParticleProgramId = 0;
+	unsigned int mTrailProgramId = 0;
 
 
 	//IBL
@@ -136,6 +161,8 @@ private:
 	unsigned int mIrradianceTextureId = 0;
 	unsigned int mSpecPrefilteredTexId = 0;
 	unsigned int mEnvBRDFTexId = 0;
+
+	unsigned int mEmptyVAO = 0;
 	
 
 	//Lighting uniforms
@@ -148,8 +175,10 @@ private:
 	friend class LightningPanel;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
+	std::vector<const Trail*> mTrails;
 
 	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
+	std::vector<const GameObject*> mHighlightedObjects;
 };
 
 #endif /* _MODULEOPENGL_H_ */

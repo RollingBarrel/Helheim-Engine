@@ -26,7 +26,7 @@ public:
 
 	// Getters
 	GameObject* GetRoot() const { return mRoot; }
-	std::string const GetName();
+	const std::string& GetName() const;
 
 	// GameObjects
 	GameObject* Find(const char* name) const;
@@ -45,6 +45,8 @@ public:
 		mGameObjectsToLoadIntoScripts.push_back(pair);
 	}
 
+	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
+
 	// Quadtree
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
@@ -53,7 +55,6 @@ public:
 	// Frustum Culling
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
-	void ResetFrustumCulling(GameObject* obj);
 
 	// Save / Load Scene
 	void NewScene();
@@ -77,9 +78,10 @@ public:
 	void DeleteTag(Tag* tag);
 
 	// Prefabs
+	static GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
 	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
-	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, GameObject* parent = nullptr);
-	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, GameObject* parent) { LoadPrefab(saveFilePath, resourceId, false, parent); }
+	GameObject* LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, GameObject* parent = nullptr);
+	GameObject* LoadPrefab(const char* saveFilePath, unsigned int resourceId, GameObject* parent) { return LoadPrefab(saveFilePath, resourceId, false, parent); }
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }
@@ -115,6 +117,8 @@ private:
 	std::vector<Tag*> mTags;
 	unsigned mLastTagIndex = 10;
 
+	// Others
+	std::vector<const MeshRendererComponent*>mCurrRenderComponents;
 };
 
 #endif //_MODULE_SCENE_H_
