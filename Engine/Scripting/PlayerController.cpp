@@ -40,11 +40,8 @@ CREATE(PlayerController)
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
-    MEMBER(MemberType::FLOAT, mFireRate);
     MEMBER(MemberType::INT, mAmmoCapacity);
-    MEMBER(MemberType::FLOAT, mMinRangeChargeTime);
-    MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);
-    MEMBER(MemberType::FLOAT, mRangeChargeAttackMultiplier);
+
     
 
     SEPARATOR("HUD");
