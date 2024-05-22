@@ -78,9 +78,10 @@ public:
 	void DeleteTag(Tag* tag);
 
 	// Prefabs
+	static GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
 	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
-	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, GameObject* parent = nullptr);
-	void LoadPrefab(const char* saveFilePath, unsigned int resourceId, GameObject* parent) { LoadPrefab(saveFilePath, resourceId, false, parent); }
+	GameObject* LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, GameObject* parent = nullptr);
+	GameObject* LoadPrefab(const char* saveFilePath, unsigned int resourceId, GameObject* parent) { return LoadPrefab(saveFilePath, resourceId, false, parent); }
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }

@@ -21,6 +21,7 @@
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TrailComponent.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -31,6 +32,10 @@
 #include <regex>
 
 #pragma region Constructors and Destructors
+
+GameObject::GameObject(const char* name) : GameObject(LCG().Int(), name , App->GetScene()->GetRoot())
+{
+}
 
 GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
 {
@@ -409,11 +414,11 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new SliderComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
-	{
-		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
-		newComponent = pc;
+		newComponent = new ParticleSystemComponent(this);
 		break;
-	}
+	case ComponentType::TRAIL:
+		newComponent = new TrailComponent(this);
+		break;
 	default:
 		break;
 	}

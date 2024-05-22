@@ -34,13 +34,6 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 void EnemyRobot::Start()
 {
     Enemy::Start();
-    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-        mAnimationComponent->SetCurrentClip(0);
-    }
 
 }
 
@@ -54,19 +47,11 @@ void EnemyRobot::Update()
     case EnemyState::IDLE:
 
         Idle();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(0);
-        }
 
         break;
     case EnemyState::CHASE:
 
         Chase();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(1);
-        }
         break;
     case EnemyState::ATTACK:
         Attack();

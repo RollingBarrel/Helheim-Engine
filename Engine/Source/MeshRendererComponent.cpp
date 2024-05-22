@@ -61,15 +61,15 @@ MeshRendererComponent::~MeshRendererComponent()
 void MeshRendererComponent::SetMesh(unsigned int uid)
 {
 	ResourceMesh* tmpMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
-	if (tmpMesh && mMesh)
-	{
-		if (mMaterial)
-			App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetResource()->ReleaseResource(mMesh->GetUID());
-		mMesh = nullptr;
-	}
 	if (tmpMesh)
 	{
+		if (mMesh)
+		{
+			if (mMaterial)
+				App->GetOpenGL()->BatchRemoveMesh(this);
+			App->GetResource()->ReleaseResource(mMesh->GetUID());
+			mMesh = nullptr;
+		}
 		mMesh = tmpMesh;
 
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
@@ -77,6 +77,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		if (mMaterial)
 			App->GetOpenGL()->BatchAddMesh(this);
+
 	}
 }
 
@@ -84,15 +85,16 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
 	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
-	if (tmpMaterial && mMaterial)
-	{
-		if (mMesh)
-			App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMaterial = nullptr;
-	}
 	if (tmpMaterial)
 	{
+		if (mMaterial)
+		{
+			if (mMesh)
+				App->GetOpenGL()->BatchRemoveMesh(this);
+			App->GetResource()->ReleaseResource(mMaterial->GetUID());
+			mMaterial = nullptr;
+		}
+
 		mMaterial = tmpMaterial;
 		if (mMesh)
 			App->GetOpenGL()->BatchAddMesh(this);

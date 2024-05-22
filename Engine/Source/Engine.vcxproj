@@ -194,6 +194,7 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.cpp" />
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp" />
     <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c" />
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c" />
@@ -276,12 +277,11 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.h" />
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h" />
     <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h" />
     <ClInclude Include="Dependencies\MikkTSpace\weldmesh.h" />
-    <ClInclude Include="Dependencies\Optick\include\optick.config.h" />
-    <ClInclude Include="Dependencies\Optick\include\optick.h" />
     <ClInclude Include="Dependencies\Recast\Include\Recast.h" />
     <ClInclude Include="Dependencies\Recast\Include\RecastAlloc.h" />
     <ClInclude Include="Dependencies\Recast\Include\RecastAssert.h" />
