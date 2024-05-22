@@ -667,7 +667,11 @@ void PlayerController::RangedAttack()
 void PlayerController::Shoot(float damage)
 {
     //request a bullet from the object pool
-    bullet = mBulletPool->GetPooledObject();
+    if (mBulletPool)
+    {
+        bullet = mBulletPool->GetPooledObject();
+    }
+    
 
     if (bullet != nullptr)
     {
