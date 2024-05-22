@@ -16,9 +16,10 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ModuleFileSystem.h"
+#include "ParticleSystemComponent.h"
+#include "Trail.h"
 
 #include "CameraComponent.h"
-
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -169,6 +170,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[0] = "particle_vertex.glsl";
 	sourcesPaths[1] = "particle_fragment.glsl";
 	mParticleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "trail_vertex.glsl";
+	sourcesPaths[1] = "trail_fragment.glsl";
+	mTrailProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "skinning.comp";
 	int computeType = GL_COMPUTE_SHADER;
@@ -807,6 +812,10 @@ void ModuleOpenGL::Draw()
 	{
 		partSys->Draw();
 	}
+	for (auto trail : mTrails)
+	{
+		trail->Draw();
+	}
 	UnbindSceneFramebuffer();
 }
 //Es pot optimitzar el emplace back pasantli els parameters de SpotLight ??
@@ -979,6 +988,17 @@ void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component
 		if (mParticleSystems[i] == component)
 		{
 			mParticleSystems.erase(mParticleSystems.begin() + i);
+		}
+	}
+}
+
+void ModuleOpenGL::RemoveTrail(const Trail* trail)
+{
+	for (int i = 0; i < mTrails.size(); ++i)
+	{
+		if (mTrails[i] == trail)
+		{
+			mTrails.erase(mTrails.begin() + i);
 		}
 	}
 }

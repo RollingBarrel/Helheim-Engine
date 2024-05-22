@@ -14,7 +14,7 @@ public:
     ~ImageComponent();
 
     void Reset() override {}
-    void Update() override {}
+    void Update();
     bool CleanUp();
     Component* Clone(GameObject* owner) const override;
 
@@ -22,6 +22,7 @@ public:
 
     void SetImage(ResourceTexture* image) { mImage = image; }
     void FillVBO();
+    void FillSpriteSheetVBO();
     void CreateVAO();
     void ResizeByRatio();
 
@@ -38,9 +39,22 @@ public:
     inline void SetAlpha(float alpha) { mAlpha = alpha; }
     inline void SetMantainRatio(bool ratio) { mMantainRatio = ratio; }
 
+    bool IsSpritesheet() const { return mIsSpritesheet; }
+    void SetIsSpritesheet(bool isSpritesheet) { mIsSpritesheet = isSpritesheet; }
+    int GetColumns() const { return mColumns; }
+    int GetRows() const { return mRows; }
+    void SetSpritesheetLayout(int columns, int rows);
+    int GetFrameDuration() const { return mFPS; }
+    void SetFrameDuration(int frameDuration) { mFPS = frameDuration; }
+
+    void PlayAnimation();
+    void PauseAnimation();
+    void StopAnimation();
+
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
     GameObject* FindCanvasOnParents(GameObject* gameObject);
+
 
 private:
     ResourceTexture* mImage = nullptr;
@@ -58,6 +72,15 @@ private:
 
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;
+
+    //Spritesheet
+    bool mIsSpritesheet = false;
+    int mColumns = 1;
+    int mRows = 1;
+    int mCurrentFrame = 0;
+    long double mElapsedTime = 0;
+    int mFPS = 30.0f;
+    bool mIsPlaying = false;
 
     CanvasComponent* mCanvas = nullptr;
 };

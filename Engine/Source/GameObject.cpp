@@ -22,6 +22,7 @@
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
+#include "TrailComponent.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -32,6 +33,10 @@
 #include <regex>
 
 #pragma region Constructors and Destructors
+
+GameObject::GameObject(const char* name) : GameObject(LCG().Int(), name , App->GetScene()->GetRoot())
+{
+}
 
 GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
 {
@@ -72,14 +77,14 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 {
 	App->GetScene()->AddGameObjectToScene(this);
 
-	for (auto child : original.mChildren)
+	for (GameObject* child : original.mChildren)
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
 
-	for (auto component : original.mComponents)
+	for (Component* component : original.mComponents)
 	{
 		mComponents.push_back(component->Clone(this));
 	}
@@ -411,11 +416,11 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new TextComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
-	{
-		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
-		newComponent = pc;
+		newComponent = new ParticleSystemComponent(this);
 		break;
-	}
+	case ComponentType::TRAIL:
+		newComponent = new TrailComponent(this);
+		break;
 	default:
 		break;
 	}

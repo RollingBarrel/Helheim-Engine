@@ -7,6 +7,7 @@
 
 #include "Geometry/AABB.h"
 #include "Geometry/Sphere.h"
+#include "Math/MathFunc.h"
 
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
@@ -20,7 +21,7 @@
 
 bool ModuleEngineCamera::Init()
 {
-	mEditorCameraGameObject = new GameObject(nullptr);
+	mEditorCameraGameObject = new GameObject("EditorCamera", nullptr);
 	mEditorCamera = reinterpret_cast<CameraComponent*>(mEditorCameraGameObject->CreateComponent(ComponentType::CAMERA));
 	mActiveCameras.clear();
 	if (App != nullptr)

@@ -67,6 +67,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Text";
 		case ComponentType::PARTICLESYSTEM:
 			return "Particle System";
+		case ComponentType::TRAIL:
+			return "Trail";
 		default:
 			return "None";
 		}
