@@ -1,23 +1,19 @@
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
-#include "Math/float4x4.h"
-#include "Geometry/Frustum.h"
-#include "Geometry/OBB.h"
-#include "Geometry/AABB.h"
+#include "ModuleDebugDraw.h"
 #include "EngineApp.h"
+
 #include "ModuleOpenGL.h"
 #include "ModuleEngineCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
-#include "DebugPanel.h"
-#include "MeshRendererComponent.h"
+
+#include "SpotLightComponent.h"
 #include "CameraComponent.h"
 
-//This will be removed when functional gizmos are implmented
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
-#include "InspectorPanel.h"
-#include "GameObject.h"
+#include "DebugPanel.h"
 
 
 #define DEBUG_DRAW_IMPLEMENTATION
@@ -648,30 +644,39 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-    if (mDrawGrid) 
+    if (mDrawGrid)
     {
-       DrawGrid();
+        DrawGrid();
     }
 
     if (((DebugPanel*)EngineApp->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
     {
         DrawColliders(EngineApp->GetScene()->GetRoot());
-	}
+    }
 
     GameObject* focusGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-    
-    if (focusGameObject && focusGameObject->GetComponent(ComponentType::ANIMATION))
-    {
-        DrawSkeleton(focusGameObject);
-    }
     if (focusGameObject)
     {
+        if (focusGameObject->GetComponent(ComponentType::ANIMATION))
+        {
+            DrawSkeleton(focusGameObject);
+        }
+
         CameraComponent* camera = reinterpret_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
         if (camera)
         {
             DrawFrustum(camera->GetFrustum());
         }
-        
+
+        SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
+        if (spotLight)
+        {
+
+            float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
+            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
+            Frustum ShadowFrustum = spotLight->GetFrustum();
+            DrawFrustum(spotLight->GetFrustum());
+        }
     }
 
     dd::flush();

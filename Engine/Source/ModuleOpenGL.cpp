@@ -251,8 +251,8 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
-	//BakeIBL("Assets/Textures/skybox.hdr");
-	BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
+	BakeIBL("Assets/Textures/skybox.hdr");
+	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 	return true;
 }
 

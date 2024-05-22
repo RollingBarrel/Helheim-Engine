@@ -372,9 +372,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 	}
 	case ComponentType::SPOTLIGHT:
 	{
-		const float3 pos = GetWorldPosition();
-		const SpotLight def = { 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) };
-		newComponent = new SpotLightComponent(this, def);
+		newComponent = new SpotLightComponent(this);
 		break;
 	}
 	case ComponentType::SCRIPT:

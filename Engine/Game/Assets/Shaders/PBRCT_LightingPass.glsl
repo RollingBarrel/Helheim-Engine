@@ -1,5 +1,6 @@
 #version 460 core
 #define PI 3.1415926535897932384626433832795
+#extension GL_ARB_bindless_texture : require
 
 layout(location = 0)uniform mat4 invView;
 layout(std140, binding = 0) uniform CameraMatrices
@@ -38,10 +39,13 @@ readonly layout(std430, binding = 0) buffer PointLights
 };
 struct SpotLight
 {
-	float radius;
 	vec4 pos; //w intensity
 	vec4 aimD;//w cos inner angle
-	vec4 col;//w cos outer angle
+	vec4 col; //w cos outer angle
+	mat4 viewProjMatrix;
+	sampler2D shadowMap;
+	float radius;
+	float bias;
 };
 readonly layout(std430, binding = 1) buffer SpotLights
 {
