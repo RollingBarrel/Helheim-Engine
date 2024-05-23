@@ -27,6 +27,13 @@ public:
     inline JsonObject PushBackNewObject(const char* key);
     inline void PopBack();
 
+    inline bool GetBool(unsigned int idx) const;
+    inline int GetInt(unsigned int idx) const;
+    inline float GetFloat(unsigned int idx) const;
+    inline std::string GetString(unsigned int idx) const;
+    inline JsonObject GetJsonObject(unsigned int idx);
+    inline JsonArray GetJsonArray(unsigned int idx);
+
 private:
     rapidjson::Value::Array mArray;
     rapidjson::MemoryPoolAllocator<>& mAllocator;
@@ -43,21 +50,15 @@ public:
 
     inline void AddBool(const char* key, bool value);
     inline void AddInt(const char* key, int value);
-    void AddInts(const char* key, const int* array, unsigned int numInts);
     inline void AddFloat(const char* key, float value);
-    void AddFloats(const char* key, const float* floats, unsigned int numFloats);
     inline void AddString(const char* key, const char* value);
     inline JsonObject AddNewJsonObject(const char* key);
     inline JsonArray AddNewJsonArray(const char* key);
 
     inline bool GetBool(const char* key) const;
     inline int GetInt(const char* key) const;
-    //Delete the memory returned in this pointer !!!
-    int* GetInts(const char* key) const;
     unsigned int GetInts(const char* key, int* fillInts) const;
     inline float GetFloat(const char* key) const;
-    //Delete the memory returned in this pointer !!!
-    float* GetFloats(const char* key) const;
     unsigned int GetFloats(const char* key, float* fillFloats) const;
     inline std::string GetString(const char* key) const;
     inline JsonObject GetJsonObject(const char* key);

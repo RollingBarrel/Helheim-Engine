@@ -93,6 +93,42 @@ void JsonArray::PopBack()
     mArray.PopBack();
 }
 
+inline bool JsonArray::GetBool(unsigned int idx) const
+{
+    assert(mArray[idx].IsBool() && "This member is not a bool");
+    return mArray[idx].GetBool();
+}
+
+inline int JsonArray::GetInt(unsigned int idx) const
+{
+    assert(mArray[idx].IsInt() && "This member is not an int");
+    return mArray[idx].GetInt();
+}
+
+inline float JsonArray::GetFloat(unsigned int idx) const
+{
+    assert(mArray[idx].IsFloat() && "This member is not a float");
+    return mArray[idx].GetFloat();
+}
+
+inline std::string JsonArray::GetString(unsigned int idx) const
+{
+    assert(mArray[idx].IsString() && "This member is not a string");
+    return mArray[idx].GetString();
+}
+
+inline JsonObject JsonArray::GetJsonObject(unsigned int idx)
+{
+    assert(mArray[idx].IsObject() && "This member is not an object");
+    return JsonObject(mArray[idx].GetObject(), mAllocator);
+}
+
+inline JsonArray JsonArray::GetJsonArray(unsigned int idx)
+{
+    assert(mArray[idx].IsArray() && "This member is not an array");
+    return JsonArray(mArray[idx].GetArray(), mAllocator);
+}
+
 JsonObject::JsonObject(const rapidjson::Value::Object& obj, rapidjson::MemoryPoolAllocator<>& allocator) : mObject(obj), mAllocator(allocator) {}
 
 JsonObject::JsonObject(const JsonObject& other) : mObject(other.mObject), mAllocator(other.mAllocator) {}
@@ -117,16 +153,6 @@ void JsonObject::AddBool(const char* key, bool value)
     mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetBool(value), mAllocator);
 }
 
-void JsonObject::AddInts(const char* key, const int* array, unsigned int numInts) {
-    rapidjson::Value jsonArray(rapidjson::kArrayType);
-    jsonArray.Reserve(numInts * sizeof(int), mAllocator);
-    for (unsigned int i = 0; i < numInts; ++i)
-    {
-        jsonArray.PushBack(array[i], mAllocator);
-    }
-    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), jsonArray, mAllocator);
-}
-
 JsonArray JsonObject::AddNewJsonArray(const char* key)
 {
     rapidjson::Value o(rapidjson::kArrayType);
@@ -141,18 +167,6 @@ JsonObject JsonObject::AddNewJsonObject(const char* key)
     return JsonObject(mObject[key].GetObject(), mAllocator);
 }
 
-void JsonObject::AddFloats(const char* key, const float* floats, unsigned int numFloats)
-{
-    rapidjson::Value jsonArray(rapidjson::kArrayType);
-    jsonArray.Reserve(numFloats * sizeof(float), mAllocator);
-    for (int i = 0; i < numFloats; ++i)
-    {
-        jsonArray.PushBack(floats[i], mAllocator);
-    }
-
-    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), jsonArray, mAllocator);
-}
-
 bool JsonObject::GetBool(const char* key) const
 {
     assert(mObject.HasMember(key) && "Document does not have this member");
@@ -165,20 +179,6 @@ int JsonObject::GetInt(const char* key) const
     assert(mObject.HasMember(key) && "Document does not have this member");
     assert(mObject[key].IsInt() && "This member is not an int");
     return mObject[key].GetInt();
-}
-
-int* JsonObject::GetInts(const char* key) const
-{
-    assert(mObject.HasMember(key) && "Document does not have this member");
-    assert(mObject[key].IsArray() && "This member is not an array");
-    const rapidjson::Value::Array& ints = mObject[key].GetArray();
-    rapidjson::SizeType numInts = ints.Size();
-    int* ret = new int[numInts];
-    for (rapidjson::SizeType i = 0; i < numInts; ++i)
-    {
-        ret[i] = ints[i].GetInt();
-    }
-    return ret;
 }
 
 unsigned int JsonObject::GetInts(const char* key, int* fillInts) const
@@ -199,20 +199,6 @@ float JsonObject::GetFloat(const char* key) const
     assert(mObject.HasMember(key) && "Document does not have this member");
     assert(mObject[key].IsFloat() && "This member is not a float");
     return mObject[key].GetFloat();
-}
-
-float* JsonObject::GetFloats(const char* key) const
-{
-    assert(mObject.HasMember(key) && "Document does not have this member");
-    assert(mObject[key].IsArray() && "This member is not an array");
-    const rapidjson::Value& floats = mObject[key].GetArray();
-    rapidjson::SizeType numFloats = floats.Size();
-    float* ret = new float[numFloats];
-    for (rapidjson::SizeType i = 0; i < numFloats; ++i)
-    {
-        ret[i] = floats[i].GetFloat();
-    }
-    return ret;
 }
 
 unsigned int JsonObject::GetFloats(const char* key, float* fillFloats) const
