@@ -739,6 +739,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 {
 	if (mPrefabOverride && mPrefabResourceId == id)
 	{
+		std::vector<GameObject*> loadedObjects;
 		for (GameObject* child : mChildren)
 		{
 			DeleteChild(child);
@@ -760,17 +761,28 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					if (parentUID == 1) {
 						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
 						{
-							LoadComponentsFromJSON(gameObjects[i]["Components"]);
+							loadedObjects.push_back(this);
+							//LoadComponentsFromJSON(gameObjects[i]["Components"]);
 						}
 					}
 					else
 					{
 						GameObject* go = LoadGameObjectFromJSON(gameObjects[i], temp);
-						go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+						loadedObjects.push_back(go);
+						//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
 			}
+			mParent->RecalculateMatrices();
+			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+			{
+				if (gameObjects[i].IsObject())
+				{
+					loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+				}
+			}
 		}
+		
 		for (GameObject* child : temp->GetChildren())
 		{
 			GameObject* newObject = new GameObject(*child, this);
