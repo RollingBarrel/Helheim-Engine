@@ -221,7 +221,7 @@ void ScenePanel::DrawScene()
 					break;
 				case Resource::Type::Object:
 				{
-					EngineApp->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
+					EngineApp->GetScene()->LoadPrefab(asset->mPath);
 					break;
 				}
 				case Resource::Type::NavMesh:

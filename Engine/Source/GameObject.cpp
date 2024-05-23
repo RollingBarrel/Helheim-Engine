@@ -771,6 +771,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					else
 					{
 						LoadGameObjectFromJSON(gameObjects[i], temp);
+						LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
 			}

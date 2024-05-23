@@ -31,10 +31,8 @@ void TestScript::Start()
 
     // Create an instance from a prefab
     // We need the Prefab's filename
-    Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/Zombunny.prfb"); //Bullet Prefab
-    // Resource* resource = App->GetResource()->RequestResource("Assets/Prefabs/Bullet 1.prfb"); //using the name
 
-    App->GetScene()->LoadPrefab("Assets/Prefabs/Zombunny.prfb", resource->GetUID(), juan);
+    App->GetScene()->LoadPrefab("Assets/Prefabs/Zombunny.prfb", juan);
 }
 
 void TestScript::Update()

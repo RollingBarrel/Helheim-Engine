@@ -101,20 +101,16 @@ update_status ModuleScene::PostUpdate(float dt)
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
-		LoadPrefab(mPrefabPath, resourceId, true);
+		LoadPrefab(mPrefabPath, true);
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
 	if (mPrefabPath != "" && mBackgroundScene == nullptr)
 	{
-		Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-		if (resource->GetType() == Resource::Type::Object)
-		{
-			mBackgroundScene = mRoot;
-			mBackgroundScene->SetEnabled(false);
-			mRoot = new GameObject(mPrefabPath, nullptr);
-			LoadPrefab(mPrefabPath, resource->GetUID());
-		}
+		mBackgroundScene = mRoot;
+		mBackgroundScene->SetEnabled(false);
+		mRoot = new GameObject(mPrefabPath, nullptr);
+		LoadPrefab(mPrefabPath);
 	}
 	return UPDATE_CONTINUE;
 }
@@ -393,8 +389,7 @@ GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 
 	std::string strName = name;
 	strName = ASSETS_PREFABS_PATH + strName;
-	Resource* resource = App->GetResource()->RequestResource(strName.c_str()); //Bullet Prefab
-	GameObject* gameObject = App->GetScene()->LoadPrefab(strName.c_str(), resource->GetUID(), parent);
+	GameObject* gameObject = App->GetScene()->LoadPrefab(strName.c_str(), parent);
 	return gameObject;
 }
 
@@ -403,9 +398,7 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	GameObject* gameObject = new GameObject(objectToSave); //Make a copy to change IDs
 	gameObject->ResetTransform();
 	gameObject->RecalculateMatrices();
-	unsigned int resourceId = LCG().Int();
-	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-	if (resource != nullptr) { resourceId = resource->GetUID(); }
+	//Resource* resource = App->GetResource()->RequestResource(mPrefabPath); 
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
@@ -415,6 +408,8 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
 	mRoot->RemoveChild(gameObject->GetID());
 	parent->AddChild(gameObject);
+	int prefabId = gameObject->GetID();
+	archive->AddInt("PrefabId", prefabId);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 	prefabArchive->AddObject("Prefab", *archive);
 
@@ -426,10 +421,10 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	delete prefabArchive;
 	delete archive;
 	gameObject->GetParent()->DeleteChild(gameObject);
-	return resourceId;
+	return prefabId;
 }
 
-GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, GameObject* parent)
+GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameObject* parent)
 {
 	GameObject* ret = nullptr;
 	if (parent == nullptr) parent = mRoot;
@@ -447,9 +442,19 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resou
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
 	{
 		const rapidjson::Value& sceneValue = d["Prefab"];
-		if (update) 
-		{ 
-			mRoot->LoadChangesPrefab(sceneValue, resourceId); 
+		int prefabId = 0;
+		if (sceneValue.HasMember("PrefabId") && sceneValue["PrefabId"].IsInt())
+		{
+			prefabId = sceneValue["PrefabId"].GetInt();
+		}
+		else
+		{
+			LOG("Outdated file. JSON should cointain a PrefabId value.");
+		}
+
+		if (update)
+		{
+			mRoot->LoadChangesPrefab(sceneValue, prefabId);
 		}
 		else
 		{
@@ -459,7 +464,7 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resou
 			{
 				GameObject* newObject = new GameObject(*child, parent);
 				parent->AddChild(newObject);
-				newObject->SetPrefabId(resourceId);
+				newObject->SetPrefabId(prefabId);
 				ret = child;
 			}
 			parent->DeleteChild(temp);
@@ -467,6 +472,7 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resou
 
 		LoadGameObjectsIntoScripts();
 		App->GetScriptManager()->StartScripts();
+		
 	}
 	delete[] loadedBuffer;
 	
