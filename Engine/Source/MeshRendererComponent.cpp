@@ -109,6 +109,10 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 
 void MeshRendererComponent::Update() 
 {
+	if (mOwner->HasUpdatedTransform())
+	{
+		RefreshBoundingBoxes();
+	}
 
 }
 
@@ -131,8 +135,12 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 
 void MeshRendererComponent::RefreshBoundingBoxes()
 {
-	mOBB = OBB(mAABB);
-	mOBB.Transform(mOwner->GetWorldTransform());
+
+	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+
+	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+	mAABB.SetFrom(mOBB);
 }
 
 void MeshRendererComponent::Save(Archive& archive) const 

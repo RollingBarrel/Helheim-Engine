@@ -122,7 +122,6 @@ void GameObject::Update()
 		if (mIsTransformModified)
 		{
 			RecalculateMatrices();
-			RefreshBoundingBoxes();
 		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
@@ -250,6 +249,14 @@ AABB GameObject::GetAABB()
 	}
 
 	return mixedAABB;
+}
+
+OBB GameObject::GetOBB()
+{
+	OBB obb(GetAABB());
+	obb.Transform(mWorldTransformMatrix);
+
+	return obb;
 }
 
 void GameObject::LookAt(float3 target)
@@ -553,22 +560,6 @@ const bool GameObject::HasUpdatedTransform() const
 		}
 	}
 	return mIsTransformModified;
-}
-
-void GameObject::RefreshBoundingBoxes()
-{
-	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
-		App->GetScene()->SetShouldUpdateQuadtree(true);
-	}
-	else
-	{
-		for (GameObject* children : mChildren)
-		{
-			children->RefreshBoundingBoxes();
-		}
-	}
 }
 
 #pragma endregion
