@@ -76,30 +76,13 @@ void Enemy::DropShield()
 
     if (randomValue < mShieldDropRate)
     {
-
         float3 enemyPosition = mGameObject->GetPosition();
         float3 shieldPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
 
-        //GameObject* shield = ModuleScene::InstantiatePrefab("Item_Shield.prfb");
         GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
         shield->SetPosition(shieldPosition);
 
         float3 scale = float3(0.25f, 0.25f, 0.25f);
         shield->SetScale(scale);
-
-        //************************************************************
-
-        /*
-        ModuleScene::InstantiatePrefab("Item_Shield.prfb");
-
-        float3 enemyPosition = mGameObject->GetPosition();
-        float3 shieldPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
-
-        GameObject* shield = App->GetScene()->Find("Item_Shield (2)");
-        shield->SetPosition(shieldPosition);
-
-        float3 scale = float3(0.25f, 0.25f, 0.25f);
-        shield->SetScale(scale);
-        */
     }
 }
