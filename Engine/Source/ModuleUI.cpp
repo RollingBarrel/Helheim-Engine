@@ -43,10 +43,10 @@ update_status ModuleUI::PreUpdate(float dt)
 update_status ModuleUI::Update(float dt) 
 {
 	// Draw the UI
-	App->GetOpenGL()->BindSceneFramebuffer();
+	/*App->GetOpenGL()->BindSceneFramebuffer();
 	App->GetUI()->DrawWidget(App->GetScene()->GetRoot());
 	App->GetOpenGL()->UnbindSceneFramebuffer();
-	
+	*/
 
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
@@ -71,6 +71,7 @@ bool ModuleUI::CleanUp()
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
 {
+	// TODO register canvas on a list to not search on the herarchy
 	if (!gameObject) return;
 
 	if (gameObject->IsEnabled())
@@ -102,6 +103,7 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 
 void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) 
 {
+	// TODO register canvas on a list to not search on the herarchy
 	if (gameObject == nullptr || eventTriggered) return;
 	if (gameObject->GetChildren().empty() || gameObject->GetChildren().size() == 0) return;
 	
