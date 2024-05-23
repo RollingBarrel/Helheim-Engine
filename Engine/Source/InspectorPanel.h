@@ -22,6 +22,7 @@ class Transform2DComponent;
 class SliderComponent;
 class ParticleSystemComponent;
 class TextComponent;
+class BoxColliderComponent;
 class TrailComponent;
 class BezierCurve;
 
@@ -60,6 +61,7 @@ private:
 	void DrawListenerComponent(AudioListenerComponent* component);
 	void DrawTransform2DComponent(Transform2DComponent* component);
 	void DrawTextComponent(TextComponent* component);
+	void DrawBoxColliderComponent(BoxColliderComponent* component);
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
 

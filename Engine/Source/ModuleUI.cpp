@@ -36,7 +36,6 @@ bool ModuleUI::Init()
 
 update_status ModuleUI::PreUpdate(float dt) 
 {
-	
 
 	return UPDATE_CONTINUE;
 }
@@ -48,6 +47,11 @@ update_status ModuleUI::Update(float dt)
 	App->GetUI()->DrawWidget(App->GetScene()->GetRoot());
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 	
+
+	// Draw the UI
+	App->GetOpenGL()->BindSceneFramebuffer();
+	DrawWidget(App->GetScene()->GetRoot());
+	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	return UPDATE_CONTINUE;
 }
