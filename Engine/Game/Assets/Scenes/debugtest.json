@@ -1,0 +1,114 @@
+{
+    "Scene": {
+        "Name": "debugtest",
+        "GameObjects": [
+            {
+                "UID": 805633914,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.13997715711593629,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1493568113,
+                        "ComponentType": 16,
+                        "isEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 950793699,
+                "ParentUID": 805633914,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 984907989,
+                "ParentUID": 950793699,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1012269042,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            }
+        ]
+    }
+}

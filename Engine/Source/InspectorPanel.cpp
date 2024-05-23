@@ -1665,6 +1665,7 @@ void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
 	{
 		component->SetFreezeRotation(freezeRotation);
 	}
+	App->GetDebugDraw()->DrawColliders(mFocusedGameObject);
 }
 
 void InspectorPanel::DrawTrailComponent(TrailComponent* component) const

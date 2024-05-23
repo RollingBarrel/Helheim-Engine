@@ -19,17 +19,14 @@ public:
 	~DebugPanel();
 
 	void Draw(int windowFlags) override;
-	bool ShouldDrawColliders() const { return mDrawColliders; }
 	RenderMode GetRenderMode() const { return mRenderMode; }
 
 private:
 	bool mDrawRaycast = false;
-	bool mDrawColliders = true;
 	bool mShowFpsOnEditor = false;
 	RenderMode mRenderMode = RenderMode::Shaded;
 
 	void SetShouldDrawForAll(GameObject* root, bool shouldDraw);
 	int GetTotalTriangleCount(GameObject* root);
-	void DrawColliders(GameObject* root);
 };
 
