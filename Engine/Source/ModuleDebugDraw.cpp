@@ -650,21 +650,13 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
+#ifdef _DEBUG
     if (mDrawGrid) 
     {
        DrawGrid();
     }
+#endif
 
-/*    if (focusGameObject)
-    {
-        CameraComponent* camera = reinterpret_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
-        if (camera)
-        {
-            DrawFrustum(camera->GetFrustum());
-        }
-      
-    }
-     */
     dd::flush();
 }
 
