@@ -1004,88 +1004,29 @@ GameObject* GameObject::RemoveChild(const int id)
 void GameObject::AddSuffix()
 {
 	bool found = true;
-	int count = 1;
-	bool hasNextItemSufix = false;
-	//size_t lastPos = -1;
+	int count = 0;
+	std::regex regularExpression(".+\\s\\(\\d+\\)$");
+	std::string nameWithoutSuffix = mName;
+
+	if (std::regex_match(nameWithoutSuffix, regularExpression))
+	{
+		nameWithoutSuffix.erase(nameWithoutSuffix.rfind(" ("));
+	}
 	while (found)
 	{
-		std::regex regularExpression(".+\\s\\(\\d+\\)$");
-
-		std::string sufix = " (" + std::to_string(count) + ')';
-		size_t pos = std::string::npos;
-		size_t hasSufix = std::string::npos;
-		std::string nameWithoutSufix = mName;
-
-		if (std::regex_match(mName, regularExpression) || hasNextItemSufix)
+		found = false;
+		if (count > 0)
 		{
-			hasSufix = mName.rfind(" (");
-
-			if (hasSufix != std::string::npos)
+			mName = nameWithoutSuffix + " (" + std::to_string(count) + ")";
+		}
+		for (GameObject* child : mParent->mChildren)
+		{
+			if (child != this && child->mName == mName)
 			{
-				nameWithoutSufix.erase(hasSufix);
-			}
-
-			std::string nameWithSufix = nameWithoutSufix + sufix;
-
-			for (auto gameObject : mParent->mChildren)
-			{
-				if (pos == std::string::npos)
-				{
-					pos = gameObject->mName.find(nameWithSufix);
-				}
-
-			}
-
-			if (pos == std::string::npos)
-			{
-				if (mParent->mChildren.size() > 0)
-				{
-					mName = nameWithSufix;
-				}
-				found = false;
-			}
-			else
-			{
-				count++;
-				//lastPos = pos;
+				found = true;
 			}
 		}
-		else
-		{
-			for (auto child : mParent->mChildren)
-			{
-				if (pos == std::string::npos && child != this)
-				{
-					pos = child->mName.find(mName);
-				}
-
-			}
-
-			size_t isObjectWithSufix = std::string::npos;
-			for (auto child : mParent->mChildren)
-			{
-				if (isObjectWithSufix == std::string::npos && child != this)
-				{
-					isObjectWithSufix = child->mName.find(mName + sufix);
-				}
-			}
-
-			if (pos != std::string::npos && isObjectWithSufix == std::string::npos)
-			{
-				mName += sufix;
-				found = false;
-			}
-			else if (isObjectWithSufix != std::string::npos)
-			{
-				hasNextItemSufix = true;
-			}
-			else
-			{
-				found = false;
-			}
-
-
-		}
+		count++;
 	}
 }
 
