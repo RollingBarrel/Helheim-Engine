@@ -333,7 +333,7 @@ void PlayerController::Moving()
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
         mMoveDirection += front;
-        if (mAnimationComponent)
+        /*if (mAnimationComponent)
         {
             switch (mLookingAt)
             {
@@ -353,14 +353,14 @@ void PlayerController::Moving()
                 break;
             }
             
-        }
+        }*/
 
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
         mMoveDirection -= front;
-        if (mAnimationComponent)
+        /*if (mAnimationComponent)
         {
             switch (mLookingAt)
             {
@@ -384,13 +384,13 @@ void PlayerController::Moving()
                 break;
             }
 
-        }
+        }*/
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
         mMoveDirection += float3::unitY.Cross(front);
-        if (mAnimationComponent)
+       /* if (mAnimationComponent)
         {
             switch (mLookingAt)
             {
@@ -414,14 +414,14 @@ void PlayerController::Moving()
                 break;
             }
 
-        }
+        }*/
 
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
         mMoveDirection -= float3::unitY.Cross(front);
-        if (mAnimationComponent)
+        /*if (mAnimationComponent)
         {
             switch (mLookingAt)
             {
@@ -445,13 +445,53 @@ void PlayerController::Moving()
                 break;
             }
 
-        }
+        }*/
 
     }
 
     if (!mMoveDirection.Equals(float3::zero))
     {
-        mMoveDirection.Normalize();
+
+
+        mMoveDirection.Normalize(); 
+        switch (mLookingAt)
+        {
+        case MouseDirection::UP:
+            if (std::abs(mMoveDirection.x) > std::abs(mMoveDirection.z)) {
+                if (mMoveDirection.x > 0) {
+
+                }
+                else {
+
+                }
+            }
+            else {
+                if (mMoveDirection.z > 0) {
+
+                }
+                else {
+
+                }
+            }
+
+            break;
+        case MouseDirection::DOWN:
+            
+
+            break;
+        case MouseDirection::LEFT:
+
+            break;
+        case MouseDirection::RIGHT:
+            
+
+            break;
+        default:
+            break;
+        }
+
+        
+
         Move(mMoveDirection);
     }
 
