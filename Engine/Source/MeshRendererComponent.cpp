@@ -137,10 +137,16 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 {
 
 	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+	
 	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+	mAABB.TransformAsAABB(mOwner->GetWorldTransform());
 
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
-	mAABB.SetFrom(mOBB);
+	//mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+
+	mOBB.SetFrom(mAABB);
+	mOBB.Transform(mOwner->GetWorldTransform().RotatePart().ToQuat());
+	//mAABB.SetFrom(mOBB);
+	
 }
 
 void MeshRendererComponent::Save(Archive& archive) const 
