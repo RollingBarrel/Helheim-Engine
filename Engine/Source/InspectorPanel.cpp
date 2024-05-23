@@ -13,6 +13,7 @@
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
+#include "ModuleDebugDraw.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -30,6 +31,7 @@
 #include "ParticleSystemComponent.h"
 #include "TrailComponent.h"
 #include "EmitterShape.h"
+#include "BoxColliderComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
@@ -446,6 +448,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 					break;
 				case ComponentType::PARTICLESYSTEM:
 					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
+					break;
+				case ComponentType::BOXCOLLIDER:
+					DrawBoxColliderComponent(reinterpret_cast<BoxColliderComponent*>(component));
 					break;
 				case ComponentType::TRAIL:
 					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
@@ -1577,6 +1582,74 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			findRemovedMarks(gradient, component->mColorGradient);
 			findAddedMarks(gradient, component->mColorGradient);			
 		}
+	}
+}
+
+void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
+{
+	if (ImGui::BeginTable("transformTable", 4))
+	{
+		bool isModified = false;
+		float3 newCenter = component->GetCenter();
+		float3 newSize = component->GetSize();
+
+		const char* labels[2] = { "Center", "Size" };
+		const char* axisLabels[3] = { "X", "Y", "Z" };
+		float3* vectors[2] = { &newCenter, &newSize };
+
+		for (int i = 0; i < 2; ++i)
+		{
+			ImGui::PushID(i);
+			ImGui::TableNextRow();
+
+			ImGui::TableNextColumn();
+			ImGui::PushItemWidth(-FLT_MIN);
+			ImGui::Text(labels[i]);
+			ImGui::PopItemWidth();
+
+			for (int j = 0; j < 3; ++j)
+			{
+				ImGui::TableNextColumn();
+				ImGui::PushItemWidth(-FLT_MIN);
+				ImGui::AlignTextToFramePadding();
+				ImGui::Text(axisLabels[j]);
+				ImGui::SameLine();
+				isModified = ImGui::DragFloat(axisLabels[j], &(*vectors[i])[j], 0.05f, 0.0f, 0.0f, "%.2f") || isModified;
+				ImGui::PopItemWidth();
+			}
+			ImGui::PopID();
+
+			if (isModified)
+			{
+				component->SetCenter(newCenter);
+				component->SetSize(newSize);
+			}
+		}
+	}
+	ImGui::EndTable();
+
+	const char* colliderTypeItems[] = { "Dynamic", "Static", "Kinematic", "Trigger" };
+	ColliderType colliderType = component->GetColliderType();
+	const char* colliderCurrent = colliderTypeItems[static_cast<int>(colliderType)];
+	ImGui::Text("Collider Mode");
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("##coliderMode", colliderCurrent)) 
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(colliderTypeItems); ++n) 
+		{
+			if (ImGui::Selectable(colliderTypeItems[n])) 
+			{
+				colliderType = ColliderType(n);
+				component->SetColliderType(colliderType);
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	bool freezeRotation = component->GetFreezeRotation();
+	if (ImGui::Checkbox("Freeze rotation", &freezeRotation))
+	{
+		component->SetFreezeRotation(freezeRotation);
 	}
 }
 
