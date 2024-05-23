@@ -24,7 +24,7 @@ public:
 
 private:
 	bool mDrawRaycast = false;
-	bool mDrawColliders = false;
+	bool mDrawColliders = true;
 	bool mShowFpsOnEditor = false;
 	RenderMode mRenderMode = RenderMode::Shaded;
 

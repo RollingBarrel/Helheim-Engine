@@ -16,7 +16,8 @@
 #include "Physics.h"
 #include "ObjectPool.h"
 #include "GameManager.h"
-
+#include "BoxColliderComponent.h"
+#include <functional>
 
 CREATE(PlayerController)
 {
@@ -95,26 +96,7 @@ void PlayerController::Start()
     if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
     if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
 
-    if (mAnimationComponentHolder) 
-    {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-
-        //Redefine player animation clips
-        mAnimationComponent->SetCurrentClip(0);
-        mAnimationComponent->SetStartTime(0.0f);
-        mAnimationComponent->SetEndTime(1.9f);
-        mAnimationComponent->SetCurrentClip(1);
-        mAnimationComponent->SetStartTime(1.9f);
-        mAnimationComponent->SetEndTime(2.9f);
-           
-        //Set to idle
-        mAnimationComponent->SetCurrentClip(0);
-
-
-
-    }
+    
 
     if (mFootStepAudioHolder)
     {
@@ -128,6 +110,14 @@ void PlayerController::Start()
     if (mBulletPoolHolder)
     {
         mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    }
+
+
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&PlayerController::OnCollisionEnter, this, std::placeholders::_1)));
     }
 }
 
@@ -145,10 +135,7 @@ void PlayerController::Update()
         if ((!mVictory) || (!mGameOver))
         {
             Idle();
-            if (mAnimationComponent)
-            {
-                mAnimationComponent->SetCurrentClip(0);
-            }
+            
 
         }
         break;
@@ -157,10 +144,7 @@ void PlayerController::Update()
         break;
     case PlayerState::MOVE:
         Moving();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(1);
-        }
+       
         break;
     case PlayerState::ATTACK:
         Attack();
@@ -718,3 +702,9 @@ void PlayerController::Loading()
         }
     }
 }
+
+void PlayerController::OnCollisionEnter(CollisionData* collisionData)
+{
+    LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
+}
+

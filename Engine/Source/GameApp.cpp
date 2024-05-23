@@ -6,6 +6,7 @@
 #include "ModuleCamera.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
+#include "ModulePhysics.h"
 #include "ModuleResource.h"
 #include "ModuleDetourNavigation.h"
 #include "ModuleResource.h"
@@ -30,6 +31,7 @@ GameApplication::GameApplication()
 	modules[4] = audio = new ModuleAudio();
 	modules[5] = render = new ModuleOpenGL();
 	modules[6] = resource = new ModuleResource();
+	modules[7] = physics = new ModulePhysics();
 	modules[7] = scriptManager = new ModuleScriptManager();
 	modules[8] = debugDraw = new ModuleDebugDraw();
 	modules[9] = scene = new ModuleScene();

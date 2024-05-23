@@ -220,6 +220,9 @@
     <ClCompile Include="ImBezier.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.cpp">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleEngineCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -355,12 +358,6 @@
     <ClInclude Include="OptickAdapter.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\Optick\include\optick.config.h">
-      <Filter>Dependencies\Optick</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\Optick\include\optick.h">
-      <Filter>Dependencies\Optick</Filter>
-    </ClInclude>
     <ClInclude Include="ImporterScript.h">
       <Filter>Importers</Filter>
     </ClInclude>
@@ -463,6 +460,9 @@
     <ClInclude Include="ImBezier.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h">
+      <Filter>Dependencies\ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleEngineCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -500,9 +500,6 @@
     </Filter>
     <Filter Include="Dependencies\ImGuizmo">
       <UniqueIdentifier>{507b6f07-d49a-45f6-88cc-c49673feecf8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\Optick">
-      <UniqueIdentifier>{eeac2180-7dbb-4737-8251-a86eaeee5e7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\ImGuiFileDialog">
       <UniqueIdentifier>{5f6fa63f-3e02-45f7-83ea-433622a96a28}</UniqueIdentifier>

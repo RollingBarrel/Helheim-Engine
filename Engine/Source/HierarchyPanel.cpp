@@ -51,13 +51,13 @@ void HierarchyPanel::Draw(int windowFlags)
 
 }
 
-void HierarchyPanel::SetFocus(GameObject* focusedObject) 
+void HierarchyPanel::SetFocus(const GameObject& focusedObject) 
 { 
-	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
+	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mUnmarkFlag = true;
-	mFocusId = focusedObject->GetID();
-	mLastClickedObject = focusedObject->GetID();
-	GameObject* parent = focusedObject->GetParent();
+	mFocusId = focusedObject.GetID();
+	mLastClickedObject = focusedObject.GetID();
+	GameObject* parent = focusedObject.GetParent();
 	while (parent != nullptr)
 	{
 		mNodesToOpen.insert(parent->GetID());
@@ -137,7 +137,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 
 			if (ImGui::Selectable("Delete")) 
 			{
-				for (auto object : FilterMarked()) 
+				for (GameObject* object : FilterMarked()) 
 				{
 					EngineApp->GetScene()->AddGameObjectToDelete(object);
 					mLastClickedObject = EngineApp->GetScene()->GetRoot()->GetID();
@@ -163,9 +163,9 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 
 void HierarchyPanel::InternalSetFocus(GameObject* focusedObject)
 {
-	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
+	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mFocusId = focusedObject->GetID();
-	App->GetOpenGL()->AddHighLight(focusedObject);
+	App->GetOpenGL()->AddHighLight(*focusedObject);
 }
 
 void HierarchyPanel::DrawTree(GameObject* node)
@@ -338,7 +338,7 @@ void HierarchyPanel::ShiftClick(GameObject* node, bool selected, bool click)
 const std::vector<GameObject*> HierarchyPanel::FilterMarked() const 
 {
 	std::vector<GameObject*> filteredList;
-	for (auto object : mMarked) 
+	for (GameObject* object : mMarked) 
 	{
 		GameObject* parent = object->mParent;
 		while (parent != nullptr) 

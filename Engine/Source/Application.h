@@ -15,6 +15,8 @@ class ModuleAudio;
 class ModuleEvent;
 class ModuleScriptManager;
 class ModuleDebugDraw;
+class ModulePhysics;
+
 class Timer;
 
 class ENGINE_API Application
@@ -37,6 +39,7 @@ public:
     ModuleEvent* GetEvent() { return event; }
     ModuleScriptManager* GetScriptManager() { return scriptManager; }
     ModuleDebugDraw* GetDebugDraw() { return debugDraw; }
+    ModulePhysics* GetPhysics() { return physics; }
 
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     float GetDt() const;
@@ -57,6 +60,8 @@ protected:
     ModuleEvent* event = nullptr;
     ModuleScriptManager* scriptManager = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
+    ModulePhysics* physics = nullptr;
+
     Timer* mCurrentTimer = nullptr;
     bool mEnableVsync = true;
     

@@ -10,7 +10,9 @@
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "DebugPanel.h"
+#include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
+#include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 
 //This will be removed when functional gizmos are implmented
@@ -767,11 +769,15 @@ void ModuleDebugDraw::DrawColliders(GameObject* go)
 {
     if (go != nullptr)
     {
-        MeshRendererComponent* meshRenderer = (MeshRendererComponent*)go->GetComponent(ComponentType::MESHRENDERER);
-        if (meshRenderer != nullptr && meshRenderer->IsInsideFrustum())
+        //MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
+        //if (meshRenderer != nullptr) 
+        //{
+        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
+        //}
+        BoxColliderComponent* boxCollider = (BoxColliderComponent*)go->GetComponent(ComponentType::BOXCOLLIDER);
+        if (boxCollider != nullptr)
         {
-            DrawCube(meshRenderer->GetOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
-            DrawCube(meshRenderer->GetAABB(), float3(1.0f, 0.65f, 0.0f)); //Orange
+            DrawCube(boxCollider->GetOBB(), float3(0.7f, 1.0f, 0.7f)); // Light green
         }
         for (int i = 0; i < go->GetChildren().size(); i++)
         {

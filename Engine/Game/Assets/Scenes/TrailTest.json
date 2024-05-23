@@ -1,0 +1,55 @@
+{
+    "Scene": {
+        "Name": "TrailTest",
+        "GameObjects": [
+            {
+                "UID": 811378273,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Components": [
+                    {
+                        "ID": 1945384220,
+                        "ComponentType": 16,
+                        "isEnabled": true,
+                        "Image": 452546727,
+                        "Max Points": 1000,
+                        "Min Distance": 0.10000000149011612,
+                        "Max Life Time": 0.0,
+                        "Width": {
+                            "Lineal": 1.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Factor": 1.0
+                        },
+                        "Color Gradient": []
+                    }
+                ]
+            }
+        ]
+    }
+}
