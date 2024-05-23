@@ -14,18 +14,10 @@ float GetLinearZ(float inputDepth)
 
 vec3 GetWorldPos(float inDepth, vec2 texCoords)
 {
-	//CARLOS ORIGINAL CODE (INVERTED)
-	//float viewZ = GetLinearZ(inDepth);
-	//float viewX = (texCoords.x * 2.0 - 1.0) * (-viewZ) / proj[0][0];
-	//float viewY = (texCoords.y * 2.0 - 1.0) * (-viewZ) / proj[1][1];
-	//vec3 viewPos = vec3(viewX, viewY, viewZ);
-	//return (invView * vec4(viewPos, 1.0)).xyz;
-
 	float viewZ = GetLinearZ(inDepth);
 	float viewX = (texCoords.x * 2.0 - 1.0) * (-viewZ) / proj[0][0];
 	float viewY = (texCoords.y * 2.0 - 1.0) * (-viewZ) / proj[1][1];
-	//WHY DO I HAVE TO NEGATE VIEWX AND VIEW Z??
-	vec3 viewPos = vec3(-viewX, viewY, -viewZ);
+	vec3 viewPos = vec3(viewX, viewY, viewZ);
 	return (invView * vec4(viewPos, 1.0)).xyz;
 }
 
