@@ -523,11 +523,11 @@ void ModuleScene::AddGameObjectToScene(GameObject* gameObject)
 	mSceneGO.push_back(gameObject);
 }
 
-void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObjet) 
+void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObject) 
 {
 	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
 	{
-		if ((*it)->GetID() == gameObjet->GetID())
+		if ((*it)->GetID() == gameObject->GetID())
 		{
 			mSceneGO.erase(it);
 			return;

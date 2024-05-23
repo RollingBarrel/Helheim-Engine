@@ -44,7 +44,11 @@ update_status ModuleUI::Update(float dt)
 {
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
-	DrawWidget(App->GetScene()->GetRoot());
+	
+	for (GameObject* gameObject : mCanvasList) {
+		DrawWidget(gameObject);
+	}
+
 	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	return UPDATE_CONTINUE;
@@ -53,7 +57,9 @@ update_status ModuleUI::Update(float dt)
 update_status ModuleUI::PostUpdate(float dt) 
 {
 	// TODO: Check if app is on Menu or Pause
-	CheckRaycast();
+	for (GameObject* gameObject : mCanvasList) {
+		CheckRaycast();
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -65,7 +71,6 @@ bool ModuleUI::CleanUp()
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
 {
-	// TODO register canvas on a list to not search on the herarchy
 	if (!gameObject) return;
 
 	if (gameObject->IsEnabled())
@@ -95,9 +100,27 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 	}
 }
 
+void ModuleUI::RemoveCanvas(GameObject* gameObject)
+{
+	if (mCanvasList.empty()) return;
+
+	for (std::vector<GameObject*>::iterator it = mCanvasList.begin(); it != mCanvasList.end(); ++it)
+	{
+		if ((*it)->GetID() == gameObject->GetID())
+		{
+			mCanvasList.erase(it);
+			return;
+		}
+	}
+}
+
+void ModuleUI::AddCanvas(GameObject* gameObject)
+{
+	mCanvasList.push_back(gameObject);
+}
+
 void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) 
 {
-	// TODO register canvas on a list to not search on the herarchy
 	if (gameObject == nullptr || eventTriggered) return;
 	if (gameObject->GetChildren().empty() || gameObject->GetChildren().size() == 0) return;
 	

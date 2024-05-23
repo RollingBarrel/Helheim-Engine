@@ -18,10 +18,14 @@ public:
 	bool CleanUp() override;
 
 	void CheckRaycast();
-	void FindCanvas(GameObject* gameObject);
 	void DrawWidget(GameObject* gameObject);
+	
+	void RemoveCanvas(GameObject* gameObject);
+	void AddCanvas(GameObject* gameObject);
 
 private:
 	void CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered);
+
+	std::vector<GameObject*> mCanvasList;
 };
 
