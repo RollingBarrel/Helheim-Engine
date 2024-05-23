@@ -7,9 +7,10 @@
 #include "rapidjson/document.h"
 #include "rapidjson/allocators.h"
 #include <string>
+#include "Globals.h"
 
 class JsonObject;
-class JsonArray {
+class ENGINE_API JsonArray {
 public:
     JsonArray() = delete;
     JsonArray(const rapidjson::Value::Array& arr, rapidjson::MemoryPoolAllocator<>& allocator);
@@ -21,8 +22,9 @@ public:
     inline void PushBackBool(bool value);
     inline void PushBackInt(int value);
     inline void PushBackFloat(float value);
-    inline void PushBackArray(const JsonArray& arr);
-    inline void PushBackObject(const JsonObject& obj);
+    inline void PushBackString(const char* value);
+    inline JsonArray PushBackNewArray(const char* key);
+    inline JsonObject PushBackNewObject(const char* key);
     inline void PopBack();
 
 private:
@@ -32,7 +34,7 @@ private:
     friend class JsonObject;
 };
 
-class JsonObject {
+class ENGINE_API JsonObject {
 public:
     JsonObject() = delete;
     JsonObject(const rapidjson::Value::Object& obj, rapidjson::MemoryPoolAllocator<>& allocator);
@@ -45,8 +47,8 @@ public:
     inline void AddFloat(const char* key, float value);
     void AddFloats(const char* key, const float* floats, unsigned int numFloats);
     inline void AddString(const char* key, const char* value);
-    inline void AddJsonObject(const char* key, JsonObject obj);
-    inline void AddJsonArray(const char* key, JsonArray arr);
+    inline JsonObject AddNewJsonObject(const char* key);
+    inline JsonArray AddNewJsonArray(const char* key);
 
     inline bool GetBool(const char* key) const;
     inline int GetInt(const char* key) const;
@@ -69,7 +71,7 @@ private:
     friend class JsonArray;
 };
 
-class Archive
+class ENGINE_API Archive
 {
 public:
     Archive();

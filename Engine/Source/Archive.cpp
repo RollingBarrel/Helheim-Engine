@@ -6,7 +6,6 @@
 Archive::Archive()
 {
     mDocument.SetObject();
-    JsonObject Object(mDocument.GetObject(), mDocument.GetAllocator());
 }
 Archive::Archive(const char* json)
 {
@@ -70,14 +69,23 @@ void JsonArray::PushBackFloat(float value)
     mArray.PushBack(rapidjson::Value().SetFloat(value), mAllocator);
 }
 
-void JsonArray::PushBackArray(const JsonArray& arr)
+void JsonArray::PushBackString(const char* value)
 {
-    mArray.PushBack(arr.mArray, mAllocator);
+    mArray.PushBack(rapidjson::Value().SetString(value, mAllocator), mAllocator);
 }
 
-void JsonArray::PushBackObject(const JsonObject& obj)
+JsonArray JsonArray::PushBackNewArray(const char* key)
 {
-    mArray.PushBack(obj.mObject, mAllocator);
+    rapidjson::Value a(rapidjson::kArrayType);
+    mArray.PushBack(a, mAllocator);
+    return JsonArray(mArray[mArray.Size() - 1].GetArray(), mAllocator);
+}
+
+JsonObject JsonArray::PushBackNewObject(const char* key)
+{
+    rapidjson::Value o(rapidjson::kObjectType);
+    mArray.PushBack(o, mAllocator);
+    return JsonObject(mArray[mArray.Size() - 1].GetObject(), mAllocator);
 }
 
 void JsonArray::PopBack()
@@ -119,14 +127,18 @@ void JsonObject::AddInts(const char* key, const int* array, unsigned int numInts
     mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), jsonArray, mAllocator);
 }
 
-void JsonObject::AddJsonArray(const char* key, JsonArray arr)
+JsonArray JsonObject::AddNewJsonArray(const char* key)
 {
-    //mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), arr.mArray, mAllocator);
+    rapidjson::Value o(rapidjson::kArrayType);
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), o, mAllocator);
+    return JsonArray(mObject[key].GetArray(), mAllocator);
 }
 
-void JsonObject::AddJsonObject(const char* key, JsonObject obj)
+JsonObject JsonObject::AddNewJsonObject(const char* key)
 {
-    //mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), obj.mObject, mAllocator);
+    rapidjson::Value o(rapidjson::kObjectType);
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), o, mAllocator);
+    return JsonObject(mObject[key].GetObject(), mAllocator);
 }
 
 void JsonObject::AddFloats(const char* key, const float* floats, unsigned int numFloats)
