@@ -46,7 +46,7 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-    DropHealth();
+    DropShield();
 }
 
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
@@ -69,22 +69,20 @@ void Enemy::PushBack()
     mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
 }
 
-void Enemy::DropHealth()
+void Enemy::DropShield()
 {
     srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomValue = rand() % 100;
 
-    if (randomValue < mHealthPercent)
+    if (randomValue < mShieldDropRate)
     {
-        ModuleScene::InstantiatePrefab("Item_Health.prfb");
-
         float3 enemyPosition = mGameObject->GetPosition();
-        float3 healthPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+        float3 shieldPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
 
-        GameObject* health = App->GetScene()->Find("Item_Health (2)");
-        health->SetPosition(healthPosition);
+        GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
+        shield->SetPosition(shieldPosition);
 
         float3 scale = float3(0.25f, 0.25f, 0.25f);
-        health->SetScale(scale);
+        shield->SetScale(scale);
     }
 }

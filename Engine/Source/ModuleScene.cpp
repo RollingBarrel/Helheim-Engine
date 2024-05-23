@@ -464,7 +464,7 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resou
 				GameObject* newObject = new GameObject(*child, parent);
 				parent->AddChild(newObject);
 				newObject->SetPrefabId(resourceId);
-				ret = child;
+				ret = newObject;
 			}
 			parent->DeleteChild(temp);
 		}
