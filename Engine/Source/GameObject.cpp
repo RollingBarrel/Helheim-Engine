@@ -24,7 +24,6 @@
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
-#include <unordered_map>
 #include "MathFunc.h"
 #include "Tag.h"
 #include "Quadtree.h"
@@ -615,7 +614,7 @@ void GameObject::LoadComponentsFromJSON(const rapidjson::Value& components)
 	}
 }
 
-GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent)
+GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent, std::unordered_map<int, int>* uuids)
 {
 	unsigned int uuid{ 0 };
 	int parentUID{ 0 };
@@ -712,15 +711,23 @@ GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObjec
 	}
 
 	GameObject* go;
-
-	if (parentUID == 1)
+	if (uuids == nullptr)
 	{
-		go = new GameObject(uuid, name, parent);
+		if (parentUID == 1)
+		{
+			go = new GameObject(uuid, name, parent);
+		}
+		else
+		{
+			GameObject* gameObjectParent = App->GetScene()->Find(parentUID);
+			go = new GameObject(uuid, name, gameObjectParent);
+		}
 	}
 	else
 	{
-		GameObject* gameObjectParent = App->GetScene()->Find(parentUID);
-		go = new GameObject(uuid, name, gameObjectParent);
+		GameObject* gameObjectParent = App->GetScene()->Find((*uuids)[parentUID]);
+		go = new GameObject(name, gameObjectParent);
+		(*uuids)[uuid] = go->mID;
 	}
 
 	go->SetPosition(position);
@@ -745,7 +752,8 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 			delete child;
 		}
 		mChildren.clear();
-		GameObject* temp = new GameObject(mParent);
+		std::unordered_map<int, int> uuids = { {1, mParent->mID} };
+		
 		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray())
 		{
 			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
@@ -753,22 +761,28 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 			{
 				if (gameObjects[i].IsObject())
 				{
-					int parentUID{ 0 };
+					unsigned int parentUID{ 0 };
+					unsigned int uuid{ 0 };
 
 					if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt())
 					{
 						parentUID = gameObjects[i]["ParentUID"].GetInt();
 					}
+					if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt())
+					{
+						uuid = gameObjects[i]["UID"].GetInt();
+					}
 					if (parentUID == 1) {
 						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
 						{
 							loadedObjects.push_back(this);
+							uuids[uuid] = mID;
 							//LoadComponentsFromJSON(gameObjects[i]["Components"]);
 						}
 					}
 					else
 					{
-						GameObject* go = LoadGameObjectFromJSON(gameObjects[i], temp);
+						GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
 						loadedObjects.push_back(go);
 						//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
@@ -783,13 +797,6 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 				}
 			}
 		}
-		
-		for (GameObject* child : temp->GetChildren())
-		{
-			GameObject* newObject = new GameObject(*child, this);
-			AddChild(newObject);
-		}
-		mParent->DeleteChild(temp);
 	}
 	else
 	{
