@@ -752,15 +752,10 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 				if (gameObjects[i].IsObject())
 				{
 					int parentUID{ 0 };
-					unsigned int uuid{ 0 };
 
 					if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt())
 					{
 						parentUID = gameObjects[i]["ParentUID"].GetInt();
-					}
-					if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt())
-					{
-						uuid = gameObjects[i]["UID"].GetInt();
 					}
 					if (parentUID == 1) {
 						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
@@ -770,8 +765,8 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					}
 					else
 					{
-						LoadGameObjectFromJSON(gameObjects[i], temp);
-						LoadComponentsFromJSON(gameObjects[i]["Components"]);
+						GameObject* go = LoadGameObjectFromJSON(gameObjects[i], temp);
+						go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
 			}
