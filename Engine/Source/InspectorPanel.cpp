@@ -1590,12 +1590,14 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 void InspectorPanel::DrawTextComponent(TextComponent* component)
 {
-	// Color and alpha
 	float3* color = component->GetColor();
 	float* alpha = component->GetAlpha();
 	std::string* text = component->GetText();
+	int* fontSize = component->GetFontSize();
+	int* lineSpacing = component->GetLineSpacing();
+	int* lineWidth = component->GetLineWidth();
 
-	/*// Create a buffer for ImGui input
+	// Create a buffer for ImGui input
 	std::vector<char> buffer(text->begin(), text->end());
 	buffer.resize(256); // Adjust buffer size as needed
 	buffer.push_back('\0'); // Ensure null-termination
@@ -1605,10 +1607,15 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 	if (ImGui::InputText("##TextInput", buffer.data(), buffer.size())) {
 		// Update the std::string if the text was changed
 		*text = std::string(buffer.data());
-	}*/
+	}
 
-	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
-	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", alpha, 0.0f, 1.0f);
+	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("##Color", (float*)color);
+	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("##Alpha", alpha, 0.0f, 1.0f);
+
+	ImGui::Text("Font Size:"); ImGui::SameLine(); ImGui::DragInt("##Font Size", fontSize);
+	ImGui::Text("Line Spacing:"); ImGui::SameLine(); ImGui::DragInt("##Line Space", lineSpacing);
+	ImGui::Text("Line Width:"); ImGui::SameLine(); ImGui::DragInt("##Line Width", lineWidth);
+	
 }
 
 void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)

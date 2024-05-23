@@ -1,5 +1,3 @@
-//https://github.com/MissclickStudios/Projecte3/blob/main/NULL%20Engine/Source/C_UI_Text.cpp
-
 #include "TextComponent.h"
 
 #include <string>
@@ -23,13 +21,36 @@ TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType
 }
 
 TextComponent::TextComponent(const TextComponent& other, GameObject* owner)
-    : Component(owner, ComponentType::TEXT), Characters(other.Characters), ft(other.ft), face(other.face) {
+    : Component(owner, ComponentType::TEXT),
+    mCharacters(other.mCharacters),
+    mFontSize(other.mFontSize),
+    mLineSpacing(other.mLineSpacing),
+    mLineWidth(other.mLineWidth),
+    mColor(other.mColor),
+    mAlpha(other.mAlpha),
+    mText(other.mText),
+    mQuadVAO(0),
+    mQuadVBO(0),
+    mCanvas(nullptr) {
+    InitFreeType();
     CreateBuffers();
+
+    mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+
+    LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
 }
 
 TextComponent::~TextComponent() {
     glDeleteBuffers(1, &mQuadVBO);
     glDeleteVertexArrays(1, &mQuadVAO);
+
+    // FreeType cleanup
+    if (mFace) {
+        FT_Done_Face(mFace);
+    }
+    if (mFt) {
+        FT_Done_FreeType(mFt);
+    }
 }
 
 Component* TextComponent::Clone(GameObject* owner) const
@@ -38,7 +59,7 @@ Component* TextComponent::Clone(GameObject* owner) const
 }
 
 void TextComponent::InitFreeType() {
-    if (FT_Init_FreeType(&ft)) {
+    if (FT_Init_FreeType(&mFt)) {
         std::cerr << "Could not init FreeType Library" << std::endl;
         return;
     }
@@ -46,19 +67,19 @@ void TextComponent::InitFreeType() {
 
 void TextComponent::LoadFont(const std::string& fontPath)
 {
-    if (FT_New_Face(ft, fontPath.c_str(), 0, &face)) 
+    if (FT_New_Face(mFt, fontPath.c_str(), 0, &mFace)) 
     {
         std::cerr << "Failed to load font" << std::endl;
         return;
     }
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(mFace, 0, mFontSize);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
-    Characters.clear();
+    mCharacters.clear();
     for (unsigned char c = 0; c < 128; c++) 
     {
-        if (FT_Load_Char(face, c, FT_LOAD_RENDER)) 
+        if (FT_Load_Char(mFace, c, FT_LOAD_RENDER)) 
         {
             LOG("Failed to load Glyph");
             continue;
@@ -71,12 +92,12 @@ void TextComponent::LoadFont(const std::string& fontPath)
             GL_TEXTURE_2D,
             0,
             GL_RED,
-            face->glyph->bitmap.width,
-            face->glyph->bitmap.rows,
+            mFace->glyph->bitmap.width,
+            mFace->glyph->bitmap.rows,
             0,
             GL_RED,
             GL_UNSIGNED_BYTE,
-            face->glyph->bitmap.buffer
+            mFace->glyph->bitmap.buffer
         );
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
@@ -87,15 +108,15 @@ void TextComponent::LoadFont(const std::string& fontPath)
         Character character = 
         {
             texture,
-            float2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-            float2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            face->glyph->advance.x
+            float2(mFace->glyph->bitmap.width, mFace->glyph->bitmap.rows),
+            float2(mFace->glyph->bitmap_left, mFace->glyph->bitmap_top),
+            mFace->glyph->advance.x
         };
-        Characters.insert(std::pair<char, Character>(c, character));
+        mCharacters.insert(std::pair<char, Character>(c, character));
     }
 
-    FT_Done_Face(face);
-    FT_Done_FreeType(ft);
+    FT_Done_Face(mFace);
+    FT_Done_FreeType(mFt);
 }
 
 void TextComponent::CreateBuffers() {
@@ -115,14 +136,28 @@ void TextComponent::CreateBuffers() {
     glBindVertexArray(0);
 }
 
-void TextComponent::RenderText(const std::string& text) 
+void TextComponent::RenderText(const std::string& text)
 {
     glBindVertexArray(mQuadVAO);
     int x = 0, y = 0;
+    const int lineHeight = mFontSize + mLineSpacing; // Adjust line height based on your font size
 
-    for (char c : text) 
+    for (char c : text)
     {
-        Character ch = Characters[c];
+        if (c == '\n')
+        {
+            y -= lineHeight;
+            x = 0;
+            continue;
+        }
+
+        Character ch = mCharacters[c];
+
+        if (x + (ch.Advance >> 6) > mLineWidth && mLineWidth != 0)
+        {
+            y -= lineHeight;
+            x = 0;
+        }
 
         float xpos = x + ch.Bearing.x;
         float ypos = y - (ch.Size.y - ch.Bearing.y);
@@ -135,7 +170,7 @@ void TextComponent::RenderText(const std::string& text)
             continue;
         }
 
-        float vertices[] = 
+        float vertices[] =
         {
              xpos,     ypos + h,   0.0f, 0.0f,
              xpos,     ypos,       0.0f, 1.0f,
@@ -161,10 +196,37 @@ void TextComponent::RenderText(const std::string& text)
 
 void TextComponent::Save(Archive& archive) const
 {
+    Component::Save(archive);
+
+    archive.AddString("Text", mText.c_str());
+    archive.AddFloat3("Color", mColor);
+    archive.AddFloat("Alpha", mAlpha);
 }
 
 void TextComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+    Component::LoadFromJSON(data, owner);
+
+    if (data.HasMember("Text") && data["Text"].IsString())
+    {
+        mText = data["Text"].GetString();
+    }
+
+    if (data.HasMember("Color") && data["Color"].IsArray())
+    {
+        const rapidjson::Value& values = data["Color"];
+        if (values.Size() == 3 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat())
+        {
+            mColor.x = values[0].GetFloat();
+            mColor.y = values[1].GetFloat();
+            mColor.z = values[2].GetFloat();
+        }
+    }
+
+    if (data.HasMember("Alpha") && data["Alpha"].IsFloat())
+    {
+        mAlpha = data["Alpha"].GetFloat();
+    }
 }
 
 void TextComponent::Draw() 
@@ -185,7 +247,6 @@ void TextComponent::Draw()
         {
             model = component->GetGlobalMatrix();
 
-            //float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
             float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
             model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
@@ -212,7 +273,7 @@ void TextComponent::Draw()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    RenderText(text);
+    RenderText(mText);
 
     // Clean
     glDisable(GL_BLEND);

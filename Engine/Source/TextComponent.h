@@ -25,17 +25,20 @@ public:
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
     void Draw();
-    void RenderText(const std::string& text);
 
     float3* GetColor() { return &mColor; }
     float* GetAlpha() { return &mAlpha; }
-    std::string* GetText() { return &text; }
+    std::string* GetText() { return &mText; }
+    int* GetFontSize() { return &mFontSize; }
+    int* GetLineSpacing() { return &mLineSpacing; }
+    int* GetLineWidth() { return &mLineWidth; }
 
 private:
     void InitFreeType();
     void LoadFont(const std::string& fontPath);
     void CreateBuffers();
 
+    void RenderText(const std::string& text);
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
     struct Character {
@@ -45,13 +48,17 @@ private:
         unsigned int  Advance;  // Offset to advance to next glyph
     };
 
-    std::map<char, Character> Characters;
-    FT_Library ft;
-    FT_Face face;
+    std::map<char, Character> mCharacters;
+    FT_Library mFt;
+    FT_Face mFace;
+
+    int mFontSize = 48;
+    int mLineSpacing = 0;
+    int mLineWidth = 0;
 
     float3 mColor = float3(1.f,1.f,1.f);
     float mAlpha = 1.0f;
-    std::string text = "Hello World!";
+    std::string mText = "Hello World!";
 
     unsigned int  mQuadVAO, mQuadVBO;
 
