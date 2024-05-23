@@ -321,9 +321,14 @@ void ModuleEngineCamera::CameraControls(float dt)
 			if (selectedGameObject && !selectedGameObject->IsRoot())
 			{
 				AABB objectAABB = selectedGameObject->GetAABB();
-				Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
-				float distance = objectSphere.r * 2.5f;
-
+				
+				float distance = 2.5f;
+				if (objectAABB.IsFinite())
+				{
+					Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
+					distance *= objectSphere.r;
+				}
+				
 				float3 selectedObjectPosition = selectedGameObject->GetWorldPosition();
 				float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
 				mEditorCameraGameObject->SetPosition(finalCameraPosition);
