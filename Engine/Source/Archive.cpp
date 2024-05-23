@@ -121,12 +121,12 @@ void JsonObject::AddInts(const char* key, const int* array, unsigned int numInts
 
 void JsonObject::AddJsonArray(const char* key, JsonArray arr)
 {
-    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), arr.mArray, mAllocator);
+    //mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), arr.mArray, mAllocator);
 }
 
 void JsonObject::AddJsonObject(const char* key, JsonObject obj)
 {
-    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), obj.mObject, mAllocator);
+    //mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), obj.mObject, mAllocator);
 }
 
 void JsonObject::AddFloats(const char* key, const float* floats, unsigned int numFloats)
