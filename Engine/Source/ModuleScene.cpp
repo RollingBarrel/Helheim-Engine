@@ -398,7 +398,9 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	GameObject* gameObject = new GameObject(objectToSave); //Make a copy to change IDs
 	gameObject->ResetTransform();
 	gameObject->RecalculateMatrices();
-	//Resource* resource = App->GetResource()->RequestResource(mPrefabPath); 
+	unsigned int resourceId = LCG().Int();
+	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
+	if (resource != nullptr) { resourceId = resource->GetUID(); }
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
@@ -408,8 +410,7 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
 	mRoot->RemoveChild(gameObject->GetID());
 	parent->AddChild(gameObject);
-	int prefabId = gameObject->GetID();
-	archive->AddInt("PrefabId", prefabId);
+	archive->AddInt("PrefabId", resourceId);
 	archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 	prefabArchive->AddObject("Prefab", *archive);
 
@@ -421,7 +422,7 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	delete prefabArchive;
 	delete archive;
 	gameObject->GetParent()->DeleteChild(gameObject);
-	return prefabId;
+	return resourceId;
 }
 
 GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameObject* parent)

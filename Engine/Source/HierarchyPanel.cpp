@@ -138,6 +138,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 					std::string file = "Assets/Prefabs/";
 					file.append('/' + object->GetName() + ".prfb");
 					unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
+					object->SetPrefabId(resourceId);
 					EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
 				}
 			}

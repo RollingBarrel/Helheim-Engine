@@ -69,9 +69,9 @@ GameObject::GameObject(const GameObject& original) : GameObject(original, origin
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mTag(original.GetTag()), mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
+	mTag(original.GetTag()), mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
+	mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride),
+	mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled), mIsRoot(original.mIsRoot)
 {
 	App->GetScene()->AddGameObjectToScene(this);
 
@@ -742,8 +742,9 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 		std::vector<GameObject*> loadedObjects;
 		for (GameObject* child : mChildren)
 		{
-			DeleteChild(child);
+			delete child;
 		}
+		mChildren.clear();
 		GameObject* temp = new GameObject(mParent);
 		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray())
 		{
