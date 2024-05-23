@@ -1,9 +1,10 @@
 #pragma once
 #include "Panel.h"
-#include <vector>
 
 #define CONSOLEPANEL "Console##"
-#define VECTOR_LENGH 300
+#define LOGS_MAX_SIZE 300
+
+struct ImGuiTextBuffer;
 
 class ConsolePanel : public Panel
 {
@@ -12,8 +13,8 @@ public:
 	~ConsolePanel();
 
 	void Draw(int windowFlags) override;
-	void SetLog(const char* logBuffer);
+	void AddLog(const char* log);
 
 private:
-	std::vector<const char*> log;
+	ImGuiTextBuffer* mLogs = nullptr;
 };

@@ -12,6 +12,8 @@
 CREATE(GameManager)
 {
     CLASS(owner);
+    SEPARATOR("Player");
+    MEMBER(MemberType::GAMEOBJECT, mPlayer);
     SEPARATOR("Screens");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);

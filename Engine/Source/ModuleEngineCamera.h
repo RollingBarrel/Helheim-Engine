@@ -21,6 +21,8 @@ public:
 	bool IsEditorCameraActive() { return mIsEditorCameraActive; }
 	void DrawRaycast(bool draw) { mDrawRayCast = draw; }
 
+	bool HaveGameCameras() const { return mActiveCameras.size() != 0; }
+
 private:
 	void MousePicking(Ray& ray);
 	void MouseFix();

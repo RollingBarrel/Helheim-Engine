@@ -10,6 +10,9 @@ class SliderComponent;
 class AudioSourceComponent;
 class ObjectPool;
 class GameManager;
+class AnimationStateMachine;
+class BoxColliderComponent;
+struct CollisionData;
 
 enum class PlayerState 
 {
@@ -18,7 +21,7 @@ enum class PlayerState
     MOVE,
     ATTACK,
     MOVE_ATTACK,
-    DEATH
+    DEATH,
 };
 
 enum class BattleSituation {
@@ -34,6 +37,13 @@ enum class Weapon {
     MELEE
 };
 
+enum class MouseDirection {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    DEFAULT
+};
 
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
@@ -45,6 +55,7 @@ class PlayerController :public Script
         void Start() override;
         void Update() override;
 
+        void RechargeShield(float shield);
         void TakeDamage(float damage);
         bool IsDead();
 
@@ -53,17 +64,22 @@ class PlayerController :public Script
     private:
         void Idle();
         void Moving();
-        bool IsMoving();
         void Dash();
         void Attack();
+        void InitAnimations();
 
         void MeleeAttack();
+        void MeleeBaseCombo();
+        void MeleeSpecialCombo();
+
+        void MeleeHit(float AttackRange, float AttackDamage);
         void RangedAttack();
         void Move(float3 position);
         void HandleRotation();
         void Shoot(float damage);
         void Reload();
-        
+        void ClosestMouseDirection(float2 mouseState);
+      
         void Death();
         void UpdateShield();
         void UpdateBattleSituation();
@@ -77,16 +93,21 @@ class PlayerController :public Script
         void GameoOver();
         bool Delay(float delay);
         void Loading();
+        
+
+        void OnCollisionEnter(CollisionData* collisionData);
 
         Weapon mWeapon = Weapon::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+        MouseDirection mLookingAt = MouseDirection::DEFAULT;
         float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;
-        GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
+        AnimationStateMachine* mStateMachine = nullptr;
+
         GameObject* mBulletPoolHolder = nullptr;
         ObjectPool* mBulletPool = nullptr;
 
@@ -100,6 +121,7 @@ class PlayerController :public Script
         float mSanity = 0.0f;
         float mMaxSanity = 100.0f;
         bool mPlayerIsDead = false;
+        float3 mMoveDirection = float3::zero;
 
         //Dash
         bool mIsDashing = false;
@@ -109,28 +131,39 @@ class PlayerController :public Script
         float mDashTimer = 0.0f;
         float mDashDuration = 0.5f;
         float mDashRange = 8.0f;
-        float3 mDashDirection = float3::zero;
 
         //Range
         int mAmmoCapacity = 500000;
         int mBullets = 0;
-        float mFireRate = 1.0f;
-        float mRangeBaseDamage = 1.0f;
-        float mRangeChargeAttackMultiplier = 5.0f;
-        float mMinRangeChargeTime = 5.0f;
-        float mMaxRangeChargeTime = 10.0f;
         GameObject* bullet = nullptr;
-
-        float startingTime = 0.0F;
+        float mRangeBaseDamage = 1.0f;
 
         //Melee
-        float mMeleeBaseDamage = 1.0f;
-        float mMeleeChargeAttackMultiplier = 5.0f;
-        float mMinMeleeChargeTime = 5.0f;
-        float mMaxMeleeChargeTime = 10.0f;
-        
-        float mChargedTime = 0.0f;
-        bool mIsChargedAttack = false;
+        bool mLeftMouseButtonPressed = false;
+
+            //Melee Base Attack
+        float mMeleeBaseDamage = 2.0f;
+        float mMeleeBaseRange = 1.0f;
+               //Combo
+        int mMeleeBaseComboStep = 1;
+        float mMeleeBaseComboTimer = 0.0f;
+        const float mMeleeBaseMaxComboInterval = 5.0f; 
+        bool mIsMeleeBaseComboActive = false;
+               //Final Attack
+        const float mMeleeBaseFinalAttackDuration = 0.5f; 
+        float mMeleeBaseFinalAttackTimer = 0.0f;
+        float mMeleeBaseMoveDuration = 0.5f;
+        float mMeleeBaseMoveRange = 8.0f;
+
+          //Melee Special Attack
+        float mMeleeSpecialTimer = 0.0f;
+        const float mMeleeSpecialAttackDuration = 2.0f;
+        float mMeleeSpecialDamage = 4.0f;
+        float mMeleeSpecialRange = 2.0f;
+               //Cooldown
+        bool mIsMeleeSpecialCoolDownActive = false;
+        float mMeleeSpecialCoolDownTimer = 0.0f;
+        float mMeleeSpecialCoolDown = 4.0f;
 
         // Grenade
         float mGrenadeDPS = 1.0f;
@@ -146,7 +179,6 @@ class PlayerController :public Script
         //HUD
         GameObject* mShieldGO = nullptr;
         SliderComponent* mShieldSlider = nullptr;
-
 
         //DEBUG
         bool mGodMode = false;
@@ -175,4 +207,6 @@ class PlayerController :public Script
 
         //CAMERA
         GameObject* mCamera = nullptr;
+        //Collider
+        BoxColliderComponent* mCollider;
 };

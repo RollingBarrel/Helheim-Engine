@@ -4,13 +4,12 @@
 
 ConsolePanel::ConsolePanel() : Panel(CONSOLEPANEL, true)
 {
+    mLogs = new ImGuiTextBuffer();
 }
 
 ConsolePanel::~ConsolePanel()
 {
-    for (auto oneLog : log) {
-        delete[] oneLog;
-    }
+    delete mLogs;
 }
 
 void ConsolePanel::Draw(int windowFlags)
@@ -21,10 +20,7 @@ void ConsolePanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
-		for (const char* logs : log) 
-        {
-			ImGui::TextUnformatted(logs);
-		}
+			ImGui::TextUnformatted(mLogs->begin(), mLogs->end());
 
         if (autoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
         {
@@ -36,16 +32,7 @@ void ConsolePanel::Draw(int windowFlags)
 	ImGui::End();
 }
 
-void ConsolePanel::SetLog(const char* logBuffer)
+void ConsolePanel::AddLog(const char* log)
 {
-    if (log.size() >= VECTOR_LENGH) {
-        delete[] log[0];
-        log.erase(log.begin());
-    }
-
-    size_t len = strlen(logBuffer);
-    char* newLog = new char[len + 1];
-    memcpy(newLog, logBuffer, len + 1);
-
-    log.push_back(newLog);
+    mLogs->appendf(log);
 }

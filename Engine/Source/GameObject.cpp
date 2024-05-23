@@ -21,6 +21,8 @@
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "BoxColliderComponent.h"
+#include "TrailComponent.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -31,6 +33,10 @@
 #include <regex>
 
 #pragma region Constructors and Destructors
+
+GameObject::GameObject(const char* name) : GameObject(LCG().Int(), name , App->GetScene()->GetRoot())
+{
+}
 
 GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
 {
@@ -69,38 +75,40 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mTag(original.GetTag()), mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride)
 {
+	for (Component* component : original.mComponents)
+	{
+		mComponents.push_back(component->Clone(this));
+	}
+ 
 	App->GetScene()->AddGameObjectToScene(this);
 
-	for (auto child : original.mChildren)
+	for (GameObject* child : original.mChildren)
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
-
-	for (auto component : original.mComponents)
-	{
-		mComponents.push_back(component->Clone(this));
-	}
 }
 
 GameObject::~GameObject()
 {
+	for (Component* component : mComponents)
+	{
+		if (component->GetType() == ComponentType::MESHRENDERER)
+		{
+			App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this);
+		}
+		delete component;
+	}
+	mComponents.clear();
+ 
 	App->GetScene()->RemoveGameObjectFromScene(this);
 
 	for (GameObject* gameObject : mChildren)
 	{
 		delete gameObject;
-		gameObject = nullptr;
 	}
 	mChildren.clear();
-
-	for (Component* component : mComponents)
-	{
-		delete component;
-		component = nullptr;
-	}
-	mComponents.clear();
 }
 
 #pragma endregion
@@ -114,7 +122,6 @@ void GameObject::Update()
 		if (mIsTransformModified)
 		{
 			RecalculateMatrices();
-			RefreshBoundingBoxes();
 		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
@@ -242,6 +249,14 @@ AABB GameObject::GetAABB()
 	}
 
 	return mixedAABB;
+}
+
+OBB GameObject::GetOBB()
+{
+	OBB obb(GetAABB());
+	obb.Transform(mWorldTransformMatrix);
+
+	return obb;
 }
 
 void GameObject::LookAt(float3 target)
@@ -412,11 +427,14 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new SliderComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
-	{
-		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
-		newComponent = pc;
+		newComponent = new ParticleSystemComponent(this);
 		break;
-	}
+	case ComponentType::TRAIL:
+		newComponent = new TrailComponent(this);
+		break;
+	case ComponentType::BOXCOLLIDER:
+		newComponent = new BoxColliderComponent(this);
+		break;
 	default:
 		break;
 	}
@@ -427,7 +445,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 	}
 	if (type == ComponentType::MESHRENDERER)
 	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(this);
+		App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 	}
 	return newComponent;
 }
@@ -542,23 +560,6 @@ const bool GameObject::HasUpdatedTransform() const
 		}
 	}
 	return mIsTransformModified;
-}
-
-void GameObject::RefreshBoundingBoxes()
-{
-	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
-		App->GetScene()->SetShouldUpdateQuadtree(true);
-		
-	}
-	else
-	{
-		for (auto children : mChildren)
-		{
-			children->RefreshBoundingBoxes();
-		}
-	}
 }
 
 #pragma endregion
@@ -946,7 +947,6 @@ void GameObject::DeleteChild(GameObject* child)
 {
 	RemoveChild(child->mID);
 	delete child;
-	child = nullptr;
 }
 
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
@@ -975,7 +975,7 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	}
 	if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(child);
+		App->GetScene()->GetQuadtreeRoot()->AddObject(*child);
 	}
 }
 
@@ -989,7 +989,7 @@ GameObject* GameObject::RemoveChild(const int id)
 		{
 			if ((*it)->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 			{
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject((*it));
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*(*it));
 			}
 			movedObject = *it;
 			mChildren.erase(it);

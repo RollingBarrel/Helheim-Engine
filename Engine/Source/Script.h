@@ -1,5 +1,6 @@
 #pragma once
 #include "Globals.h"
+#include "Math/float3.h"
 #include <vector>
 #include <string>
 
@@ -60,10 +61,11 @@ public:
 	Script(GameObject* owner);
 	virtual ~Script();
 	void SetName(const std::string& name) { mName = name; }
-	virtual void Start() = 0;
-	virtual void Update() = 0;
+	virtual void Awake() {};
+	virtual void Start() {};
+	virtual void Update() {};
 	const std::vector<Member*>& GetMembers() { return mMembers; }
-	virtual void OnButtonClick() {}
+
 protected:
 
 	GameObject* mGameObject = nullptr;

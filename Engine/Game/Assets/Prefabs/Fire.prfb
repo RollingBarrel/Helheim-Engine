@@ -2,184 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 274026296,
-                "ParentUID": 1,
-                "Name": "Fire",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": []
-            },
-            {
-                "UID": 1701955483,
-                "ParentUID": 274026296,
-                "Name": "GameObject",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    -0.6123223900794983,
-                    0.32555487751960757,
-                    0.23339466750621797,
-                    0.6816173791885376
-                ],
-                "Scale": [
-                    1.0,
-                    0.9999999403953552,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 919763307,
-                        "ComponentType": 15,
-                        "isEnabled": true,
-                        "Image": 1793205130,
-                        "Duration": 5.0,
-                        "Life Time": 0.5,
-                        "Emission Rate": 20.0,
-                        "Speed": 1.0,
-                        "Max Particles": 1000,
-                        "Looping": true,
-                        "Size": 3.0,
-                        "Speed": 1.0,
-                        "isSpeedCurve": false,
-                        "isSizeCurve": false,
-                        "SizeCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SpeedCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SizeFactor": 1.0,
-                        "SpeedFactor": 1.0,
-                        "ShapeType": 1,
-                        "ShapeRadius": 0.5,
-                        "ShapeAngle": 0.0,
-                        "ShapeSize": [
-                            1.0,
-                            1.0
-                        ],
-                        "Color Gradient": [
-                            {
-                                "Time": 0.0,
-                                "Color": [
-                                    0.6127451062202454,
-                                    0.283756822347641,
-                                    0.024029217660427095,
-                                    1.0
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 904492065,
-                "ParentUID": 274026296,
-                "Name": "GameObject (2)",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    -0.6123223900794983,
-                    0.32555487751960757,
-                    0.23339466750621797,
-                    0.6816173791885376
-                ],
-                "Scale": [
-                    1.0,
-                    0.9999999403953552,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 906023727,
-                        "ComponentType": 15,
-                        "isEnabled": true,
-                        "Image": 1205420700,
-                        "Duration": 5.0,
-                        "Life Time": 3.0,
-                        "Emission Rate": 30.0,
-                        "Speed": 1.0,
-                        "Max Particles": 1000,
-                        "Looping": true,
-                        "Size": 3.0,
-                        "Speed": 1.0,
-                        "isSpeedCurve": false,
-                        "isSizeCurve": false,
-                        "SizeCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SpeedCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SizeFactor": 1.0,
-                        "SpeedFactor": 1.0,
-                        "ShapeType": 1,
-                        "ShapeRadius": 0.5,
-                        "ShapeAngle": 0.0,
-                        "ShapeSize": [
-                            1.0,
-                            1.0
-                        ],
-                        "Color Gradient": [
-                            {
-                                "Time": 0.0,
-                                "Color": [
-                                    0.2450980544090271,
-                                    0.2384193390607834,
-                                    0.2366878241300583,
-                                    0.4909999966621399
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 1304726740,
-                "ParentUID": 274026296,
+                "UID": 743674763,
+                "ParentUID": 1121186018,
                 "Name": "GameObject (1)",
                 "isEnabled": true,
                 "Translation": [
@@ -188,69 +12,21 @@
                     0.0
                 ],
                 "Rotation": [
-                    -0.6123223900794983,
-                    0.32555487751960757,
-                    0.23339466750621797,
-                    0.6816173791885376
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
-                    0.9999999403953552,
+                    1.0,
                     1.0
                 ],
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 1306188781,
-                        "ComponentType": 15,
-                        "isEnabled": true,
-                        "Image": 755923683,
-                        "Duration": 5.0,
-                        "Life Time": 1.0,
-                        "Emission Rate": 40.0,
-                        "Speed": 1.0,
-                        "Max Particles": 1000,
-                        "Looping": true,
-                        "Size": 5.0,
-                        "Speed": 1.0,
-                        "isSpeedCurve": false,
-                        "isSizeCurve": false,
-                        "SizeCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SpeedCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SizeFactor": 1.0,
-                        "SpeedFactor": 1.0,
-                        "ShapeType": 1,
-                        "ShapeRadius": 0.5,
-                        "ShapeAngle": 0.0,
-                        "ShapeSize": [
-                            1.0,
-                            1.0
-                        ],
-                        "Color Gradient": [
-                            {
-                                "Time": 0.0,
-                                "Color": [
-                                    0.6127451062202454,
-                                    0.14523540437221528,
-                                    0.024029182270169259,
-                                    0.3919999897480011
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                "Dynamic": false,
+                "Components": []
             }
         ]
     }

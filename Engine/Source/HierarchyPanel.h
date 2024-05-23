@@ -14,7 +14,7 @@ public:
 
 	void Draw(int windowFlags) override;
 	GameObject* GetFocusedObject() const;
-	void SetFocus(GameObject* focusedObject);
+	void SetFocus(const GameObject& focusedObject);
 	const std::vector<GameObject*> FilterMarked() const;
 
 private:

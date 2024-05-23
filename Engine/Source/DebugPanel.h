@@ -19,12 +19,12 @@ public:
 	~DebugPanel();
 
 	void Draw(int windowFlags) override;
-	bool ShouldDrawColliders() const { return mDrawColliders; }
+	bool ShouldDrawBoundingBoxes() const { return mDrawBoundingBoxes; }
 	RenderMode GetRenderMode() const { return mRenderMode; }
 
 private:
 	bool mDrawRaycast = false;
-	bool mDrawColliders = false;
+	bool mDrawBoundingBoxes = true;
 	bool mShowFpsOnEditor = false;
 	RenderMode mRenderMode = RenderMode::Shaded;
 

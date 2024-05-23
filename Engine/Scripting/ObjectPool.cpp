@@ -91,3 +91,7 @@ void ObjectPool::Pop(std::vector<GameObject*>& vec, size_t index) {
     //}
     ///vec.pop_back(); // Remove the last element (which is now duplicated at the end)
 }
+
+void ObjectPool::RefillPool()
+{
+}

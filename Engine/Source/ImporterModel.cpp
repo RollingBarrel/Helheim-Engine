@@ -270,16 +270,13 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         {
             ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, currentUid);
             animationId = ourAnimation->GetUID();
+            rModel->mAnimationUids.push_back(animationId);
 
             delete ourAnimation;
         }
     }
-    else
-    {
-        animationId = 0;
-    }
 
-    rModel->mAnimationUids.push_back(animationId);
+
 
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
     bufferSize += sizeof(unsigned int);                                     //Size vector

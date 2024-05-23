@@ -52,6 +52,10 @@
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
     <ClInclude Include="Grenade.h">
+    <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachineTest.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -96,6 +100,10 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="Grenade.cpp">
+    <ClCompile Include="ItemShield.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachineTest.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
   </ItemGroup>

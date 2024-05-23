@@ -36,6 +36,7 @@ public:
     void DrawCircle(const float3 center, const float radius);
     void DrawSkeleton(GameObject* model);
     void DrawColliders(GameObject* root);
+    void DrawBoundingBoxes(GameObject* gameObject);
 
 private:
 

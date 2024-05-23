@@ -47,7 +47,7 @@ private:
 	NavMeshController* mNavMeshController;
 
 
-#define NUM_MODULES 14
+#define NUM_MODULES 15
 	Module* modules[NUM_MODULES];
 
 	Timer* mEngineTimer = nullptr;
