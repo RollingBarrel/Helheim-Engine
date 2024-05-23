@@ -6,6 +6,7 @@
 #include "Archive.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 class Quadtree;
 class GameObject;
@@ -92,7 +93,7 @@ private:
 	
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const;
-	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent);
+	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent, std::unordered_map<int, int>* uuids = nullptr);
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;

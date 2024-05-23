@@ -725,9 +725,18 @@ GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObjec
 	}
 	else
 	{
-		GameObject* gameObjectParent = App->GetScene()->Find((*uuids)[parentUID]);
-		go = new GameObject(name, gameObjectParent);
-		(*uuids)[uuid] = go->mID;
+		if (parentUID == 1)
+		{
+			go = new GameObject(name, parent);
+			(*uuids)[uuid] = go->mID;
+		}
+		else
+		{
+			GameObject* gameObjectParent = App->GetScene()->Find((*uuids)[parentUID]);
+			go = new GameObject(name, gameObjectParent);
+			(*uuids)[uuid] = go->mID;
+		}
+		
 	}
 
 	go->SetPosition(position);
@@ -752,7 +761,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 			delete child;
 		}
 		mChildren.clear();
-		std::unordered_map<int, int> uuids = { {1, mParent->mID} };
+		std::unordered_map<int, int> uuids;
 		
 		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray())
 		{
@@ -1038,6 +1047,10 @@ void GameObject::AddSuffix()
 		if (count > 0)
 		{
 			mName = nameWithoutSuffix + " (" + std::to_string(count) + ")";
+		}
+		else
+		{
+			mName = nameWithoutSuffix;
 		}
 		for (GameObject* child : mParent->mChildren)
 		{
