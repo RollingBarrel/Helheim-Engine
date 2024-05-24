@@ -1474,9 +1474,13 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		ImGui::SameLine(); 
 		ImGui::DragFloat("##Duration", &(component->mDuration), 0.1f, 0.0f);
 	}
+
+	ImGui::Text("Max Particles");
+	ImGui::SameLine();
+	ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0,200);
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
-	ImGui::DragFloat("##Emision Rate", &(component->mEmissionRate), 0.1f, 0.0f);
+	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
 	ImGui::Text("Lifetime");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 0.1f, 0.0f);

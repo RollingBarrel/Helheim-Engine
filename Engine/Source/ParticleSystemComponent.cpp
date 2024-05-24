@@ -171,7 +171,7 @@ void ParticleSystemComponent::Update()
             mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
         }
 	}
-    if (mEmitterTime - mDelay > mDuration) return;
+    if (!mLooping and mEmitterTime - mDelay > mDuration) return;
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
