@@ -12,7 +12,8 @@
 #include "GameObject.h"
 #include "Math/TransformOps.h"
 
-TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) {
+TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) 
+{
     InitFreeType();
     LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
     CreateBuffers();
@@ -40,7 +41,8 @@ TextComponent::TextComponent(const TextComponent& other, GameObject* owner)
     LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
 }
 
-TextComponent::~TextComponent() {
+TextComponent::~TextComponent() 
+{
     glDeleteBuffers(1, &mQuadVBO);
     glDeleteVertexArrays(1, &mQuadVAO);
 
@@ -58,8 +60,10 @@ Component* TextComponent::Clone(GameObject* owner) const
     return new TextComponent(*this, owner);
 }
 
-void TextComponent::InitFreeType() {
-    if (FT_Init_FreeType(&mFt)) {
+void TextComponent::InitFreeType() 
+{
+    if (FT_Init_FreeType(&mFt)) 
+    {
         std::cerr << "Could not init FreeType Library" << std::endl;
         return;
     }
@@ -119,7 +123,8 @@ void TextComponent::LoadFont(const std::string& fontPath)
     FT_Done_FreeType(mFt);
 }
 
-void TextComponent::CreateBuffers() {
+void TextComponent::CreateBuffers() 
+{
     glGenVertexArrays(1, &mQuadVAO);
     glGenBuffers(1, &mQuadVBO);
     glBindVertexArray(mQuadVAO);

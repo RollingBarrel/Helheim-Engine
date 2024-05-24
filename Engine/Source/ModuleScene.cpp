@@ -27,7 +27,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
-ModuleScene::ModuleScene() {
+ModuleScene::ModuleScene() 
+{
 
 	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
 	mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
