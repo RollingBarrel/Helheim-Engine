@@ -650,12 +650,12 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-#ifdef _DEBUG
-    if (mDrawGrid) 
-    {
-       DrawGrid();
-    }
-#endif
+//#ifdef _DEBUG
+//    if (mDrawGrid) 
+//    {
+//       DrawGrid();
+//    }
+//#endif
 
     dd::flush();
 }
