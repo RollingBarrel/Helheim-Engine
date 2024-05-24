@@ -154,6 +154,7 @@ void ParticleSystemComponent::Update()
 {
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
+    if (mEmitterTime < mDelay) return;
 
 	for (int i = 0; i < mParticles.size(); i++)
 	{
@@ -170,6 +171,7 @@ void ParticleSystemComponent::Update()
             mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
         }
 	}
+    if (mEmitterTime - mDelay > mDuration) return;
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
@@ -307,6 +309,7 @@ void ParticleSystemComponent::InitEmitterShape()
 void ParticleSystemComponent::Enable()
 {
     App->GetOpenGL()->AddParticleSystem(this);
+    mEmitterTime = 0.0f;
 }
 
 void ParticleSystemComponent::Disable()
