@@ -41,6 +41,7 @@ private:
 
 	OBB mOBB;
 	AABB mAABB;
+	AABB mOriginalAABB;
 	AABB mAABBWorld;
 	int mTemporalID = -1;
 };

@@ -8,15 +8,16 @@ layout(std140, binding = 0) uniform CameraMatrices
 	mat4 view;
 	mat4 proj;
 };
-float GetLinearZ(float depth)
+float GetLinearZ(float inputDepth)
 {
-	return -proj[3][2] / (proj[2][2] + depth);
+	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
 }
-vec3 GetWorldPos(float depth, vec2 texCoords)
+
+vec3 GetWorldPos(float inDepth, vec2 texCoords)
 {
-	float viewZ = GetLinearZ(depth);
-	float viewX = (texCoords.x * 2.0 - 1.0)*(-viewZ) / proj[0][0];
-	float viewY = (texCoords.y * 2.0 - 1.0)*(-viewZ) / proj[1][1];
+	float viewZ = GetLinearZ(inDepth);
+	float viewX = (texCoords.x * 2.0 - 1.0) * (-viewZ) / proj[0][0];
+	float viewY = (texCoords.y * 2.0 - 1.0) * (-viewZ) / proj[1][1];
 	vec3 viewPos = vec3(viewX, viewY, viewZ);
 	return (invView * vec4(viewPos, 1.0)).xyz;
 }

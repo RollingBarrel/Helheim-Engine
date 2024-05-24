@@ -19,8 +19,10 @@ class Enemy : public Script
 		
 	protected:
 		bool Delay(float delay);
-		bool IsPlayerInRange(float range);
-				
+		bool IsPlayerInRange(float range);		
+		void DropShield();
+		
+		int mShieldDropRate = 20;
 		float mHealth = 0.0f;
 		float mMaxHealth = 100.0f;
 		float mSpeed = 1.0f;
@@ -31,7 +33,6 @@ class Enemy : public Script
 
 	private:
 		void ActivateEnemy();
-		NavMeshController* mNavMeshControl = nullptr;
-		
-			
+
+		NavMeshController* mNavMeshControl = nullptr;		
 };
