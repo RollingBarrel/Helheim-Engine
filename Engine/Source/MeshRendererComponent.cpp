@@ -41,6 +41,10 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 
 MeshRendererComponent::~MeshRendererComponent()
 {
+	if (mMesh && mMaterial)
+	{
+		App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
+	}
 	App->GetOpenGL()->BatchRemoveMesh(this);
 	if (mMesh)
 	{
@@ -62,7 +66,10 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		if (mMesh)
 		{
 			if (mMaterial)
+			{
 				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
+			}
 			App->GetResource()->ReleaseResource(mMesh->GetUID());
 			mMesh = nullptr;
 		}
@@ -73,7 +80,10 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mOriginalAABB = mAABB;
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		if (mMaterial)
+		{
 			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetScene()->GetQuadtreeRoot()->AddObject(*this->GetOwner());
+		}
 
 	}
 }
@@ -87,14 +97,20 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		if (mMaterial)
 		{
 			if (mMesh)
+			{
 				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
+			}
 			App->GetResource()->ReleaseResource(mMaterial->GetUID());
 			mMaterial = nullptr;
 		}
 
 		mMaterial = tmpMaterial;
 		if (mMesh)
+		{
 			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetScene()->GetQuadtreeRoot()->AddObject(*this->GetOwner());
+		}
 	}
 	//TODO: Material Default
 	//else

@@ -93,10 +93,6 @@ GameObject::~GameObject()
 {
 	for (Component* component : mComponents)
 	{
-		if (component->GetType() == ComponentType::MESHRENDERER)
-		{
-			App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this);
-		}
 		delete component;
 	}
 	mComponents.clear();
@@ -431,10 +427,6 @@ Component* GameObject::CreateComponent(ComponentType type)
 	if (newComponent)
 	{
 		mComponents.push_back(newComponent);
-	}
-	if (type == ComponentType::MESHRENDERER)
-	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 	}
 	return newComponent;
 }
@@ -994,10 +986,6 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	{
 		mChildren.push_back(child);
 	}
-	if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(*child);
-	}
 }
 
 GameObject* GameObject::RemoveChild(const int id)
@@ -1008,10 +996,6 @@ GameObject* GameObject::RemoveChild(const int id)
 	{
 		if ((*it)->GetID() == id)
 		{
-			if ((*it)->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-			{
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*(*it));
-			}
 			movedObject = *it;
 			mChildren.erase(it);
 			break;

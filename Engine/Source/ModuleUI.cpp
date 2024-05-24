@@ -46,7 +46,7 @@ update_status ModuleUI::Update(float dt)
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
 	DrawWidget(App->GetScene()->GetRoot());
-	App->GetOpenGL()->UnbindSceneFramebuffer();
+	App->GetOpenGL()->UnbindFramebuffer();
 
 	return UPDATE_CONTINUE;
 }

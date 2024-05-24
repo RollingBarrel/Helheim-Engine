@@ -61,7 +61,8 @@ public:
 	void SceneFramebufferResized(unsigned width, unsigned height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
-	void UnbindSceneFramebuffer();
+	void BindGFramebuffer();
+	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }

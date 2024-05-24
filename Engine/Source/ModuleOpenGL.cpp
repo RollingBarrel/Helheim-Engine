@@ -70,7 +70,12 @@ void ModuleOpenGL::BindSceneFramebuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 }
 
-void ModuleOpenGL::UnbindSceneFramebuffer()
+void ModuleOpenGL::BindGFramebuffer()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+}
+
+void ModuleOpenGL::UnbindFramebuffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -949,7 +954,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Higlight pass
-	glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
@@ -965,8 +970,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	mBatchManager.Draw();
 	
 	glStencilMask(0xFF);
-	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_STENCIL_TEST);
+	glEnable(GL_DEPTH_TEST);
 
 	mBatchManager.EndFrameDraw();
 

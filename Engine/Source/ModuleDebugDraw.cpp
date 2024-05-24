@@ -533,7 +533,7 @@ private:
 // ========================================================
 
 const char * DDRenderInterfaceCoreGL::linePointVertShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec3 in_Position;\n"
     "in vec4 in_ColorPointSize;\n"
@@ -549,10 +549,10 @@ const char * DDRenderInterfaceCoreGL::linePointVertShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::linePointFragShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in  vec4 v_Color;\n"
-    "out vec4 out_FragColor;\n"
+    "layout(location = 5)out vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -560,7 +560,7 @@ const char * DDRenderInterfaceCoreGL::linePointFragShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::textVertShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec2 in_Position;\n"
     "in vec2 in_TexCoords;\n"
@@ -583,13 +583,13 @@ const char * DDRenderInterfaceCoreGL::textVertShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::textFragShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec2 v_TexCoords;\n"
     "in vec4 v_Color;\n"
     "\n"
     "uniform sampler2D u_glyphTexture;\n"
-    "out vec4 out_FragColor;\n"
+    "out layout(location = 5) vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -635,9 +635,9 @@ update_status  ModuleDebugDraw::Update(float dt)
         {
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
             
-            EngineApp->GetOpenGL()->BindSceneFramebuffer();
+            EngineApp->GetOpenGL()->BindGFramebuffer();
             Draw(viewproj, EngineApp->GetWindow()->GetGameWindowsSize().x, EngineApp->GetWindow()->GetGameWindowsSize().y);
-            EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
+            EngineApp->GetOpenGL()->UnbindFramebuffer();
         }
     }
     return UPDATE_CONTINUE;
