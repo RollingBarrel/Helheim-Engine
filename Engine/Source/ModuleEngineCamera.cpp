@@ -275,10 +275,11 @@ void ModuleEngineCamera::CameraControls(float dt)
 		{
 			active = true;
 			int mX, mY;
-			App->GetInput()->GetMouseMotion(mX, mY);
-			mEditorCameraGameObject->Translate(float3(mX * speed, 0, 0));
-			mEditorCameraGameObject->Translate(float3(0, mY * speed, 0));
 			MouseFix();
+			App->GetInput()->GetMouseMotion(mX, mY);
+			mEditorCameraGameObject->Translate(mEditorCameraGameObject->GetRight() * mX * speed);
+			mEditorCameraGameObject->Translate(mEditorCameraGameObject->GetUp() * mY * speed);
+			
 		}
 		
 		
