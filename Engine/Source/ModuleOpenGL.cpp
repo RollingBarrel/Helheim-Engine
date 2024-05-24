@@ -17,6 +17,7 @@
 #include "SpotLightComponent.h"
 #include "ModuleFileSystem.h"
 #include "ParticleSystemComponent.h"
+#include "ModuleDebugDraw.h"
 #include "Trail.h"
 
 #include "CameraComponent.h"
@@ -978,6 +979,9 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	{
 		trail->Draw();
 	}
+
+    App->GetDebugDraw()->Draw();
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

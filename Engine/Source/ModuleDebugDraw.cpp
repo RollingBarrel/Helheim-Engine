@@ -630,34 +630,34 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update(float dt)
 {
+    return UPDATE_CONTINUE;
+}
+
+void ModuleDebugDraw::Draw()
+{
     if (App->GetCamera()->GetCurrentCamera())
     {
+        glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DebugDraw");
+
         const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
         if (camera)
         {
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
-            
+
             App->GetOpenGL()->BindSceneFramebuffer();
-            Draw(viewproj, App->GetWindow()->GetGameWindowsSize().x, App->GetWindow()->GetGameWindowsSize().y);
+            implementation->width = App->GetWindow()->GetGameWindowsSize().x;
+            implementation->height = App->GetWindow()->GetGameWindowsSize().y;
+            implementation->mvpMatrix = viewproj;
+
+            dd::flush();
+
             App->GetOpenGL()->UnbindSceneFramebuffer();
         }
+
+        glPopDebugGroup();
+
     }
-    return UPDATE_CONTINUE;
-}
 
-void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned height)
-{
-    implementation->width = width;
-    implementation->height = height;
-    implementation->mvpMatrix = viewproj;
-//#ifdef _DEBUG
-//    if (mDrawGrid) 
-//    {
-//       DrawGrid();
-//    }
-//#endif
-
-    dd::flush();
 }
 
 void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
@@ -668,9 +668,9 @@ void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
     {
         points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
     };
-    dd::box(orderedPoints, color);
+    dd::box(orderedPoints, color, 0, false);
 
-    dd::flush();
+    //dd::flush();
 }
 
 void ModuleDebugDraw::DrawSphere(const float center[3], const float color[3], const float radius)

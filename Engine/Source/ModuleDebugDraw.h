@@ -21,7 +21,7 @@ public:
 	update_status   Update(float dt) override;
 	bool            CleanUp() override;
 
-    void Draw(const float4x4& viewproj, unsigned width, unsigned height);
+    void Draw();
     void DrawAxis(const float4x4 transform,const float size, const float length);
     void DrawFrustum(const Frustum& frustum);
     bool GetShouldRenderGrid() const { return mDrawGrid; }
