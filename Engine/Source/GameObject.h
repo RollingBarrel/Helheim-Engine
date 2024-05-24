@@ -10,6 +10,7 @@
 #include "Archive.h"
 #include "Tag.h"
 #include "MeshRendererComponent.h"
+#include <unordered_map>
 
 #undef max
 #undef min
@@ -105,7 +106,7 @@ public:
 	// Save / Load
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
-	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
+	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent, std::unordered_map<int,int>* uuids = nullptr);
 	void LoadComponentsFromJSON(const rapidjson::Value& components);
 
 	// Prefabs
