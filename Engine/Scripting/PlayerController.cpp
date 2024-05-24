@@ -775,7 +775,7 @@ void PlayerController::ClosestMouseDirection(float2 mouseState)
     }
     else {
         if (dy > 0) {
-            mLookingAt = MouseDirection::DOWN;;
+            mLookingAt = MouseDirection::DOWN;
         }
         else {
             mLookingAt = MouseDirection::UP;
@@ -792,9 +792,9 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
     bool movingLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
 
     bool movingUpRight = moveDirection.x < 0 && moveDirection.z < 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
-    bool movingUpLeft = moveDirection.x < 0 && moveDirection.z > 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);;
-    bool movingDownRight = moveDirection.x > 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);;
-    bool movingDownLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);;
+    bool movingUpLeft = moveDirection.x < 0 && moveDirection.z > 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
+    bool movingDownRight = moveDirection.x > 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
+    bool movingDownLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
 
 
     if (movingDownLeft) {
