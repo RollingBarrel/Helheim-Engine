@@ -412,7 +412,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 
 			glUseProgram(mPbrLightingPassProgramId);
 			//world transform is the invViewMatrix
-			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetOwner()->GetWorldTransform().ptr());
+			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
 			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
 			glUseProgram(0);
 		}

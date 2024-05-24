@@ -859,7 +859,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			ImGui::Dummy(ImVec2(spacing, 0.0f));
 			ImGui::SameLine();
 			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
-			ImGui::DragFloat3(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::DragFloat3(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)), 0.05f, 0.0f, 0.0f, "%.2f");
 			ImGui::PopItemWidth();
 			break;
 		case MemberType::GAMEOBJECT:

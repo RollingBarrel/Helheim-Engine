@@ -228,7 +228,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			Quat newQuat = Quat(rotation);
 			newQuat =  newQuat * quatOriginal;
 			float3 eulerRotation = newQuat.ToEulerXYZ();
-			mEditorCameraGameObject->SetRotation(eulerRotation);
+			mEditorCameraGameObject->SetRotation(newQuat);
 
 			MouseFix();
 
@@ -275,10 +275,11 @@ void ModuleEngineCamera::CameraControls(float dt)
 		{
 			active = true;
 			int mX, mY;
-			App->GetInput()->GetMouseMotion(mX, mY);
-			mEditorCameraGameObject->Translate(float3(mX * speed, 0, 0));
-			mEditorCameraGameObject->Translate(float3(0, mY * speed, 0));
 			MouseFix();
+			App->GetInput()->GetMouseMotion(mX, mY);
+			mEditorCameraGameObject->Translate(mEditorCameraGameObject->GetRight() * mX * speed);
+			mEditorCameraGameObject->Translate(mEditorCameraGameObject->GetUp() * mY * speed);
+			
 		}
 		
 		
@@ -315,20 +316,28 @@ void ModuleEngineCamera::CameraControls(float dt)
 
 	if ((mIsEditorCameraActive && !isGuizmoUsing))
 	{
-		if (App->GetInput()->GetKey(KeyboardKeys_F) == KeyState::KEY_DOWN)
+		if (!EngineApp->GetEditor()->WantToCaptureKeyboard())
 		{
-			GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-			if (selectedGameObject && !selectedGameObject->IsRoot())
+			if (App->GetInput()->GetKey(KeyboardKeys_F) == KeyState::KEY_DOWN)
 			{
-				AABB objectAABB = selectedGameObject->GetAABB();
-				Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
-				float distance = objectSphere.r * 2.5f;
+				GameObject* selectedGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+				if (selectedGameObject && !selectedGameObject->IsRoot())
+				{
+					AABB objectAABB = selectedGameObject->GetAABB();
 
-				float3 selectedObjectPosition = selectedGameObject->GetWorldPosition();
-				float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
-				mEditorCameraGameObject->SetPosition(finalCameraPosition);
+					float distance = 2.5f;
+					if (objectAABB.IsFinite())
+					{
+						Sphere objectSphere = objectAABB.MinimalEnclosingSphere();
+						distance *= objectSphere.r;
+					}
+
+					float3 selectedObjectPosition = selectedGameObject->GetWorldPosition();
+					float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
+					mEditorCameraGameObject->SetPosition(finalCameraPosition);
+				}
+
 			}
-
 		}
 	}
 }

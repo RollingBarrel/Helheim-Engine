@@ -10,6 +10,7 @@
 #include "Archive.h"
 #include "Tag.h"
 #include "MeshRendererComponent.h"
+#include <unordered_map>
 
 #undef max
 #undef min
@@ -55,6 +56,7 @@ public:
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
 	AABB GetAABB();
+	OBB GetOBB();
 
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
@@ -104,7 +106,7 @@ public:
 	// Save / Load
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
-	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
+	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent, std::unordered_map<int,int>* uuids = nullptr);
 	void LoadComponentsFromJSON(const rapidjson::Value& components);
 
 	// Prefabs
@@ -119,7 +121,6 @@ private:
 	Component* RemoveComponent(Component* component);
 
 	void RecalculateLocalTransform();
-	void RefreshBoundingBoxes();
 	void SetActiveInHierarchy(bool active);
 	std::pair<GameObject*, int> RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind);
 

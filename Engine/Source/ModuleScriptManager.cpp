@@ -94,8 +94,8 @@ void ModuleScriptManager::StartScripts()
 	{
 		if (!mScripts[i]->mHasStarted)
 		{
-			mScripts[i]->mScript->Start();
 			mScripts[i]->mHasStarted = true;
+			mScripts[i]->mScript->Start();
 		}
 	}
 }

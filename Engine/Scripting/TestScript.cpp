@@ -1,10 +1,12 @@
 #include "TestScript.h"
 #include "GameObject.h"
 #include "Application.h"
+#include "ModuleResource.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
+#include "ModuleResource.h"
 #include "Keys.h"
 
 CREATE(TestScript)
@@ -27,6 +29,11 @@ void TestScript::Start()
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
     GameObject* juan = App->GetScene()->Find("Juan");
+
+    // Create an instance from a prefab
+    // We need the Prefab's filename
+
+    App->GetScene()->InstantiatePrefab("Item_Shield.prfb", juan);
 }
 
 void TestScript::Update()
@@ -44,7 +51,6 @@ void TestScript::Update()
 		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetDt() * mPlayerSpeed);
 	}
 	
-
     if (mRobot != nullptr) {
         if (mMovement >= mHeight)
         {
@@ -52,8 +58,6 @@ void TestScript::Update()
             mMovement = 0;
             mUp = mUp ? false : true;
         }
-
-
 
         if (mStartCounter)
         {
@@ -77,7 +81,6 @@ void TestScript::Update()
                 mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - mSpeed * App->GetDt(), mRobot->GetPosition().z));
             }
         }
-
     }
 
     if (mGameObject->GetPosition().x > 10.0f) {
