@@ -23,7 +23,7 @@ private:
 	void DragAndDropSource(GameObject* source);
 	void DragAndDropTarget(GameObject* target, bool reorder = false);
 	void OnRightClickNode(GameObject* node);
-	void OnLeftCkickNode(GameObject* node);
+	void OnLeftClickNode(GameObject* node);
 	void ShiftClick(GameObject* node, bool selected, bool click = false);
 
 	std::unordered_set<GameObject*> mMarked;
