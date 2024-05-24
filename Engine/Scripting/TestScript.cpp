@@ -29,7 +29,11 @@ void TestScript::Start()
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
     GameObject* juan = App->GetScene()->Find("Juan");
-    App->GetScene()->InstantiatePrefab("Assets/Prefabs/Zombunny.prfb", juan);
+
+    // Create an instance from a prefab
+    // We need the Prefab's filename
+
+    App->GetScene()->InstantiatePrefab("Item_Shield.prfb", juan);
 }
 
 void TestScript::Update()

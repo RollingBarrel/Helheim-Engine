@@ -404,13 +404,11 @@ void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameOb
 
 GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 {
-	if (!parent)
-	{
-		parent = App->GetScene()->GetRoot();
-	}
-
 	std::string strName = name;
-	strName = ASSETS_PREFABS_PATH + strName;
+	if (strName.find(ASSETS_PREFABS_PATH) == std::string::npos)
+	{
+		strName = ASSETS_PREFABS_PATH + strName;
+	}
 	GameObject* gameObject = App->GetScene()->LoadPrefab(strName.c_str(), parent);
 	return gameObject;
 }
