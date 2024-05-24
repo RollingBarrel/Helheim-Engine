@@ -1307,7 +1307,7 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 			ImGui::PopID();
 		}
 
-		if (modifiedTransform) 
+		if (modifiedTransform)
 		{
 			component->SetPosition(newPosition);
 			component->SetRotation(DegToRad(newRotation));
@@ -1346,7 +1346,7 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 			ImGui::PopID();
 		}
 
-		if (modifiedTransform) 
+		if (modifiedTransform)
 		{
 			component->SetSize(newSize);
 			component->SetAnchorMax(newAnchorMax);

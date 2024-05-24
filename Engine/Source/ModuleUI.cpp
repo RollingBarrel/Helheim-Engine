@@ -75,6 +75,11 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 
 	if (gameObject->IsEnabled())
 	{
+		for (GameObject* child : gameObject->GetChildren())
+		{
+			DrawWidget(child);
+		}
+
 		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
 		{
 			ImageComponent* image = (ImageComponent*)component;
@@ -91,11 +96,6 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			{
 				text->Draw();
 			}
-		}
-
-		for (GameObject* child : gameObject->GetChildren())
-		{
-			DrawWidget(child);
 		}
 	}
 }
@@ -127,6 +127,9 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 	
 	for (auto child : gameObject->GetChildren()) 
 	{
+		// Recursively check children
+		CheckRaycastRecursive(child, eventTriggered);
+		
 		if (eventTriggered) return;
 		if (child == nullptr) continue;
 		if (!child->IsEnabled()) continue;
@@ -185,8 +188,6 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			}
 		}
 
-		// Recursively check children
-		CheckRaycastRecursive(child, eventTriggered);
 	}
 }
 
