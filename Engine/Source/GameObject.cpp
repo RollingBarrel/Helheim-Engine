@@ -250,14 +250,6 @@ AABB GameObject::GetAABB()
 	return mixedAABB;
 }
 
-OBB GameObject::GetOBB()
-{
-	OBB obb(GetAABB());
-	obb.Transform(mWorldTransformMatrix);
-
-	return obb;
-}
-
 void GameObject::LookAt(float3 target)
 {
 	float4x4 rotationMatrix = float4x4::identity;

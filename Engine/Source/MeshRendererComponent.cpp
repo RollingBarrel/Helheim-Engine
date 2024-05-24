@@ -132,11 +132,10 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 
 void MeshRendererComponent::RefreshBoundingBoxes()
 {	
-	mAABB = AABB(mOriginalAABB);
-	mAABB.TransformAsAABB(mOwner->GetWorldTransform());
-
 	mOBB = OBB(mOriginalAABB);
 	mOBB.Transform(mOwner->GetWorldTransform());
+
+	mAABB.SetFrom(mOBB);
 }
 
 void MeshRendererComponent::Save(Archive& archive) const 

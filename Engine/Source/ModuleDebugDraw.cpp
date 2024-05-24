@@ -789,23 +789,24 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 
 void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
 {
-    //AABB aabb = gameObject->GetAABB();
+    
     std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
 
     if (!meshComponents.empty())
     {
-        AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
+        AABB aabb = gameObject->GetAABB();
+        //AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
         if (aabb.IsFinite())
         {
-            EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+            //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
         }
 
-        //OBB obb = gameObject->GetOBB();
-        OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
-        if (obb.IsFinite())
-        {
-            EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
-        }
+      ////OBB obb = gameObject->GetOBB();
+      //OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
+      //if (obb.IsFinite())
+      //{
+      //   // EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
+      //}
     }
     
 }
