@@ -7,8 +7,6 @@ class PlayerController;
 
 GENERATE_BODY(Level1AManager);
 
-
-
 class Level1AManager :public Script
 {
 	// Level 1 ABOVE

@@ -51,6 +51,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
     <ClInclude Include="StateMachineTest.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
@@ -93,6 +96,9 @@
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="ObjectPool.cpp">
+      <Filter>SricptCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemShield.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="StateMachineTest.cpp">

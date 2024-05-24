@@ -121,7 +121,6 @@ void GameObject::Update()
 		if (mIsTransformModified)
 		{
 			RecalculateMatrices();
-			RefreshBoundingBoxes();
 		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
@@ -251,6 +250,14 @@ AABB GameObject::GetAABB()
 	return mixedAABB;
 }
 
+OBB GameObject::GetOBB()
+{
+	OBB obb(GetAABB());
+	obb.Transform(mWorldTransformMatrix);
+
+	return obb;
+}
+
 void GameObject::LookAt(float3 target)
 {
 	float4x4 rotationMatrix = float4x4::identity;
@@ -294,7 +301,12 @@ void GameObject::SetEnabled(bool enabled)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
-	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
+	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
+	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
+	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
+	mRotation = yQuat * xQuat * zQuat;
+
+	/*mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);*/
 	mEulerRotation = rotationInRadians;
 	mIsTransformModified = true;
 }
@@ -547,22 +559,6 @@ const bool GameObject::HasUpdatedTransform() const
 		}
 	}
 	return mIsTransformModified;
-}
-
-void GameObject::RefreshBoundingBoxes()
-{
-	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
-		App->GetScene()->SetShouldUpdateQuadtree(true);
-	}
-	else
-	{
-		for (GameObject* children : mChildren)
-		{
-			children->RefreshBoundingBoxes();
-		}
-	}
 }
 
 #pragma endregion
