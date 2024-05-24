@@ -223,6 +223,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
 {
     Component::Save(archive);
     archive.AddInt("Image", mResourceId);
+    archive.AddFloat("Delay", mDelay);
     archive.AddFloat("Duration", mDuration);
     archive.AddFloat("Life Time", mMaxLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
@@ -242,6 +243,10 @@ void ParticleSystemComponent::Save(Archive& archive) const
 void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
     Component::LoadFromJSON(data, owner);
+    if (data.HasMember("Delay") && data["Delay"].IsFloat())
+    {
+        mDelay = data["Delay"].GetFloat();
+    }
     if (data.HasMember("Duration") && data["Duration"].IsFloat())
     {
         mDuration = data["Duration"].GetFloat();
