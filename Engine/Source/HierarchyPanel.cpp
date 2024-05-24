@@ -7,6 +7,8 @@
 #include "ModuleDebugDraw.h"
 #include "GameObject.h"
 #include "CameraComponent.h"
+#include "ModuleFileSystem.h"
+
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 
 void HierarchyPanel::Draw(int windowFlags)
@@ -32,6 +34,12 @@ void HierarchyPanel::Draw(int windowFlags)
 	DrawTree(root);
 	ImGui::InvisibleButton("##", ImVec2(-1, -1));
 	OnRightClickNode(root);
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+	{
+		mMarked.clear();
+		mLastClickedObject = 0;
+		InternalSetFocus(root);
+	}
 	ImGui::EndChild();
 	DragAndDropTarget(root);
 	
@@ -66,7 +74,7 @@ void HierarchyPanel::SetFocus(const GameObject& focusedObject)
 	App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
-void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
+void HierarchyPanel::OnLeftClickNode(GameObject* node) 
 {    
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) 
 	{
@@ -118,7 +126,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 			InternalSetFocus(gameObject);
 			mMarked.clear();
 		}
-		bool isPrefabRoot = (EngineApp->GetScene()->IsPrefabScene() && node->mParent->mIsRoot);
+		bool isPrefabRoot = (EngineApp->GetScene()->IsPrefabScene() && node->mIsRoot);
 		if (!node->mIsRoot && !isPrefabRoot) 
 		{
 			if (ImGui::Selectable("Duplicate")) 
@@ -152,6 +160,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 					std::string file = "Assets/Prefabs/";
 					file.append('/' + object->GetName() + ".prfb");
 					unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
+					object->SetPrefabId(resourceId);
 					EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
 				}
 			}
@@ -212,7 +221,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			ImGui::PopStyleColor(3);
 		}
 		DragAndDropSource(node);
-		OnLeftCkickNode(node);
+		OnLeftClickNode(node);
 		OnRightClickNode(node);
 	}
 	else 
@@ -225,7 +234,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			}
 			ImGui::SameLine();
 		}
-		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 		ImGui::PopStyleVar();
 		OnRightClickNode(node);
 	}
@@ -294,6 +303,27 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						if (reorder) { target->mParent->AddChild(pMovedObject, target->mID); }
 						else { target->AddChild(pMovedObject); }
 					}
+				}
+			}
+		}
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+		{
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+			if (resource)
+			{
+				switch (resource->GetType())
+				{
+				case Resource::Type::Object:
+				{
+					GameObject* newGO = EngineApp->GetScene()->LoadPrefab(asset->mPath, target);
+					if (reorder && newGO != nullptr)
+					{
+						target->RemoveChild(newGO->mID);
+						target->mParent->AddChild(newGO, target->mID);
+					}
+					break;
+				}
 				}
 			}
 		}
