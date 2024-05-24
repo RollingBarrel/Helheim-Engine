@@ -219,7 +219,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			}
 			ImGui::SameLine();
 		}
-		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 		ImGui::PopStyleVar();
 		OnRightClickNode(node);
 	}
