@@ -150,7 +150,7 @@ private:
 	unsigned int mSpecPrefilteredProgramId = 0;
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
-	
+	unsigned int mDepthPassProgramId = 0;
 	
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
@@ -165,6 +165,8 @@ private:
 
 	unsigned int mEmptyVAO = 0;
 	
+	//Shadows
+	unsigned int mShadowsFrameBufferId = 0;
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;

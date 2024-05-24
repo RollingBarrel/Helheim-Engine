@@ -4,22 +4,26 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
-#include "ModuleUI.h"
-#include "SDL.h"
-#include "glew.h"
 #include "ModuleCamera.h"
-#include "ModuleUI.h"
-#include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleFileSystem.h"
+#include "ModuleUI.h"
+
 #include "GameObject.h"
-#include "BatchManager.h"
+#include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
-#include "ModuleFileSystem.h"
 #include "ParticleSystemComponent.h"
+
+#include "Quadtree.h"
+#include "BatchManager.h"
+
 #include "Trail.h"
 
-#include "CameraComponent.h"
+#include "SDL.h"
+#include "glew.h"
+
+
 
 ModuleOpenGL::ModuleOpenGL()
 {
@@ -239,6 +243,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
 	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
+	sourcesPaths[1] = "PassThroughPixel.glsl";
+	mDepthPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 
 
 	//Initialize camera uniforms
@@ -258,6 +266,14 @@ bool ModuleOpenGL::Init()
 
 	BakeIBL("Assets/Textures/skybox.hdr");
 	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
+
+	//SHADOWS
+	glGenFramebuffers(1, &mShadowsFrameBufferId);
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	glDrawBuffers(0, nullptr);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 	return true;
 }
 
@@ -309,6 +325,7 @@ bool ModuleOpenGL::CleanUp()
 
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteProgram(mUIImageProgramId);
+	glDeleteProgram(mDepthPassProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteVertexArrays(1, &mEmptyVAO);
 	glDeleteBuffers(1, &mSkyVbo);
@@ -897,6 +914,47 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
 
 void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes)
 {
+
+	//Shadows
+	std::vector<const MeshRendererComponent*> meshInFrustum;
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	glUseProgram(mDepthPassProgramId);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	for (const SpotLightComponent* spotLight : mSpotLights)
+	{
+		mBatchManager.CleanUpCommands();
+		
+		const Frustum& frustum = spotLight->GetFrustum();
+		meshInFrustum.clear();
+		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
+
+		for (const MeshRendererComponent* mesh : meshInFrustum)
+		{
+			mBatchManager.AddCommand(mesh);
+		}
+		
+		glViewport(0, 0, spotLight->GetShadowMapSize(), spotLight->GetShadowMapSize());
+		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, spotLight->GetShadowMap());
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
+		
+		mBatchManager.Draw();
+
+	}
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	SceneFramebufferResized();
+	BindSceneFramebuffer();
+
+
+
+	mBatchManager.CleanUpCommands();
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
 		mBatchManager.AddCommand(mesh);
@@ -910,7 +968,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glStencilMask(0xFF);
 	glUseProgram(mPbrGeoPassProgramId);
 	mBatchManager.Draw();
-	
+
 	//Lighting Pass
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
 	glStencilMask(0x00);
@@ -938,6 +996,9 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glDisable(GL_STENCIL_TEST);
 	glUseProgram(0);
 	glBindVertexArray(0);
+
+	
+
 
 	//Highlight
 	mBatchManager.CleanUpCommands();

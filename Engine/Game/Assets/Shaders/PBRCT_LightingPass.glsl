@@ -138,6 +138,14 @@ void main()
 	//Spot lights
 	for(int i = 0; i<numSLights; ++i)
 	{
+		//Shadows
+		vec4 lightClipSpace =  sLights[i].viewProjMatrix * vec4(pos,1);
+		vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
+		lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
+		float shadowDepth = texture(sLights[i].shadowMap, lightNDC.xy).r + sLights[i].bias;
+		float fragmentDepth = lightNDC.z;
+		float shadowValue = fragmentDepth < shadowDepth  ? 1.0 : 0.0;
+		
 		vec3 mVector = pos - sLights[i].pos.xyz;
 		vec3 sDir = normalize(mVector);
 		vec3 aimDir = normalize(sLights[i].aimD.xyz);
@@ -153,7 +161,7 @@ void main()
 			//cAtt = (c - cOuter) / (cInner - cOuter);
 		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
 		att *= cAtt;
-		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att);
+		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att) * shadowValue;
 	}
 
 	pbrCol += GetAmbientLight();
