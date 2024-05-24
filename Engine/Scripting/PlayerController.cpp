@@ -190,7 +190,6 @@ void PlayerController::Start()
 
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
-
     }
 
     //END ANIMATION
@@ -494,9 +493,10 @@ void PlayerController::Moving()
             break;
         }
 
-        
-
         Move(mMoveDirection);
+    }
+    else {
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
     }
 
     // Hardcoded play-step-sound solution: reproduce every second 
@@ -796,7 +796,7 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
     bool movingDownRight = moveDirection.x > 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);;
     bool movingDownLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);;
 
-
+    LOG("x: %f, z: %f", moveDirection.x, moveDirection.z);
     if (movingDownLeft) {
         mMovingTo = MoveDirection::DOWN_LEFT;
     }
@@ -823,7 +823,6 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
         mMovingTo = MoveDirection::LEFT;
     }
     else {
-        
         mMovingTo = MoveDirection::NOT_MOVING;
     }
 }
