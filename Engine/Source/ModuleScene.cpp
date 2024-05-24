@@ -279,6 +279,12 @@ void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive&
 
 void ModuleScene::Save(const char* sceneName) const
 {
+	//Don't save an open Prefab over the scene
+	if (mBackgroundScene != nullptr)
+	{
+		LOG("Can't save scene while the Prefab editor is open");
+		return;
+	}
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos)
 	{
@@ -310,6 +316,14 @@ void ModuleScene::Save(const char* sceneName) const
 
 void ModuleScene::Load(const char* sceneName)
 {
+	//Close Prefab editor before loading a new scene
+	if (mBackgroundScene != nullptr)
+	{
+		delete mRoot;
+		mRoot = mBackgroundScene;
+		mBackgroundScene = nullptr;
+		mRoot->SetEnabled(true);
+	}
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos)
 	{
