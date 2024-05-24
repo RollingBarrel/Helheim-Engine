@@ -11,7 +11,6 @@
 #include "TagsManagerPanel.h"
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
 #include "ModuleDebugDraw.h"
@@ -1665,7 +1664,7 @@ void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
 	{
 		component->SetFreezeRotation(freezeRotation);
 	}
-	App->GetDebugDraw()->DrawColliders(mFocusedGameObject);
+	EngineApp->GetDebugDraw()->DrawColliders(mFocusedGameObject);
 }
 
 void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
