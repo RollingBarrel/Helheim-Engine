@@ -27,7 +27,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
-ModuleScene::ModuleScene() {
+ModuleScene::ModuleScene() 
+{
 
 	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
 	mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
@@ -530,11 +531,11 @@ void ModuleScene::AddGameObjectToScene(GameObject* gameObject)
 	mSceneGO.push_back(gameObject);
 }
 
-void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObjet) 
+void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObject) 
 {
 	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
 	{
-		if ((*it)->GetID() == gameObjet->GetID())
+		if ((*it)->GetID() == gameObject->GetID())
 		{
 			mSceneGO.erase(it);
 			return;
