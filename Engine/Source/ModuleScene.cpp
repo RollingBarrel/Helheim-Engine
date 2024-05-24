@@ -450,6 +450,7 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameO
 			if (mSceneGO.size() > offset)
 			{
 				mSceneGO[offset]->SetPrefabId(resource->GetUID());
+				ret = mSceneGO[offset];
 			}
 		}
 

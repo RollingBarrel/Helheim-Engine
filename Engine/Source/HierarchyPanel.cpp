@@ -5,6 +5,7 @@
 #include "ModuleEngineResource.h"
 #include "ModuleOpenGL.h"
 #include "GameObject.h"
+#include "ModuleFileSystem.h"
 
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 
@@ -31,6 +32,12 @@ void HierarchyPanel::Draw(int windowFlags)
 	DrawTree(root);
 	ImGui::InvisibleButton("##", ImVec2(-1, -1));
 	OnRightClickNode(root);
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+	{
+		mMarked.clear();
+		mLastClickedObject = 0;
+		InternalSetFocus(root);
+	}
 	ImGui::EndChild();
 	DragAndDropTarget(root);
 	
@@ -52,7 +59,7 @@ void HierarchyPanel::SetFocus(GameObject* focusedObject)
 	App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
-void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
+void HierarchyPanel::OnLeftClickNode(GameObject* node) 
 {    
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) 
 	{
@@ -199,7 +206,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			ImGui::PopStyleColor(3);
 		}
 		DragAndDropSource(node);
-		OnLeftCkickNode(node);
+		OnLeftClickNode(node);
 		OnRightClickNode(node);
 	}
 	else 
@@ -281,6 +288,27 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						if (reorder) { target->mParent->AddChild(pMovedObject, target->mID); }
 						else { target->AddChild(pMovedObject); }
 					}
+				}
+			}
+		}
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+		{
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+			if (resource)
+			{
+				switch (resource->GetType())
+				{
+				case Resource::Type::Object:
+				{
+					GameObject* newGO = EngineApp->GetScene()->LoadPrefab(asset->mPath, target);
+					if (reorder && newGO != nullptr)
+					{
+						target->RemoveChild(newGO->mID);
+						target->mParent->AddChild(newGO, target->mID);
+					}
+					break;
+				}
 				}
 			}
 		}
