@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include "float4.h"
 #include "ResourceMesh.h"
 
@@ -31,6 +32,7 @@ public:
 class BatchMeshRendererComponent
 {
 public:
+	BatchMeshRendererComponent(): component(nullptr), bMeshIdx(0), bMaterialIdx(0), bCAnim(nullptr) {}
 	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx, const AnimationComponent* cAnim = nullptr) : 
 		component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx), bCAnim(cAnim) {}
 	
@@ -88,12 +90,16 @@ public:
 	void AddMeshComponent(const MeshRendererComponent* component);
 	bool EditMaterial(const MeshRendererComponent* component);
 	bool RemoveMeshComponent(const MeshRendererComponent* component);
+	bool AddToDraw(const MeshRendererComponent* component);
 	void Draw();
-	void AddHighLight(std::vector<Component*> meshRendererComponents);
-	void RemoveHighLight(std::vector<Component*> meshRendererComponents);
+	void EndFrameDraw();
+	void CleanUpCommands();
+
+	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
+	void ComputeAnimation(const MeshRendererComponent* cMesh);
 
 private:
-	void RecreatePersistentSsbosAndIbo();
+	void RecreatePersistentSsbos();
 	void RecreateVboAndEbo();
 	void RecreateMaterials();
 	void AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx);
@@ -101,13 +107,15 @@ private:
 	bool mMaterialFlag = false;
 	bool mPersistentsFlag = false;
 	bool mVBOFlag = false;
+	bool mIboFlag = false;
 	
-	std::vector<BatchMeshRendererComponent> mMeshComponents;
-	std::vector<BatchMeshRendererComponent> mHighLightMeshComponents;
+	std::unordered_map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
 	std::vector<Command> mCommands;
+	std::unordered_map<unsigned int, Command> mComandsMap;
+
 	unsigned int mVertexSize = 0;
 
 
@@ -133,6 +141,7 @@ private:
 	unsigned int mEboNumElements = 0;
 
 	//Animation
+	bool mAnimationSkinning = false;
 	unsigned int mPaletteSsbo = 0;
 	unsigned int mBoneIndicesSsbo = 0;
 	unsigned int mWeightsSsbo = 0;

@@ -39,7 +39,7 @@ void CanvasComponent::Reset()
 {
 }
 
-void CanvasComponent::Save(Archive& archive)const 
+void CanvasComponent::Save(Archive& archive) const 
 {
 	Component::Save(archive);
 

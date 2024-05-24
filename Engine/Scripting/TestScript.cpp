@@ -94,9 +94,6 @@ void TestScript::Update()
     LOG("hola %s" , typeid(mTestFloat3).name());
 }
 
-void TestScript::OnButtonClick()
-{
-    LOG("Script Button Onclick");
-}
+
 
 

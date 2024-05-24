@@ -8,7 +8,7 @@ class GameObject;
 
 struct Hit
 {
-	GameObject* mGameObject;
+	const GameObject* mGameObject;
 	float3 mHitPoint;
 	float mDistance;
 };

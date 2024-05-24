@@ -44,11 +44,18 @@ ModuleScene::ModuleScene() {
 
 ModuleScene::~ModuleScene()
 {
-	mQuadtreeRoot->CleanUp();
-	delete mQuadtreeRoot;
-
-	delete mRoot;
-	delete mBackgroundScene;
+	if (mRoot)
+	{
+		delete mRoot;
+	}
+	if (mBackgroundScene)
+	{
+		delete mBackgroundScene;
+	}
+	if (mQuadtreeRoot)
+	{
+		delete mQuadtreeRoot;
+	}
 
 	for (Tag* tag : mTags) 
 	{
@@ -74,12 +81,14 @@ update_status ModuleScene::Update(float dt)
 {
 	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-	App->GetOpenGL()->Draw();
 
 	if (mShouldUpdateQuadtree)
 	{
 		mQuadtreeRoot->UpdateTree();
 	}
+	mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
+	App->GetOpenGL()->Draw(mCurrRenderComponents);
+	mCurrRenderComponents.clear();
 
 	return UPDATE_CONTINUE;
 }
@@ -511,27 +520,42 @@ void ModuleScene::AddGameObjectToScene(GameObject* gameObject)
 
 void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObjet) 
 {
-	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
-		[gameObjet](const auto& obj) { return obj->GetID() == gameObjet->GetID(); }),
-		mSceneGO.end());
+	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
+	{
+		if ((*it)->GetID() == gameObjet->GetID())
+		{
+			mSceneGO.erase(it);
+			return;
+		}
+	}
 }
 
 void ModuleScene::RemoveGameObjectFromScene(int id) {
-	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
-		[id](const auto& obj) { return obj->GetID() == id; }),
-		mSceneGO.end());
+	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
+	{
+		if ((*it)->GetID() == id)
+		{
+			mSceneGO.erase(it);
+			return;
+		}
+	}
 }
 
 void ModuleScene::RemoveGameObjectFromScene(const std::string& name) {
-	mSceneGO.erase(std::remove_if(mSceneGO.begin(), mSceneGO.end(),
-		[&name](const auto& obj) { return obj->GetName() == name; }),
-		mSceneGO.end());
+	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
+	{
+		if ((*it)->GetName() == name)
+		{
+			mSceneGO.erase(it);
+			return;
+		}
+	}
 }
 
 void ModuleScene::DeleteGameObjects()
 {
 
-	for (auto gameObject : mGameObjectsToDelete)
+	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
 		gameObject->GetParent()->DeleteChild(gameObject);
 	}
@@ -542,7 +566,7 @@ void ModuleScene::DeleteGameObjects()
 void ModuleScene::DuplicateGameObjects()
 {
 
-	for (auto gameObject : mGameObjectsToDuplicate)
+	for (GameObject* gameObject : mGameObjectsToDuplicate)
 	{
 		gameObject->GetParent()->AddChild(gameObject);
 	}
@@ -563,18 +587,9 @@ void ModuleScene::LoadGameObjectsIntoScripts()
 
 #pragma region Others
 
-void ModuleScene::ResetFrustumCulling(GameObject* obj)
+void ModuleScene::AddMeshToRender(const MeshRendererComponent& meshRendererComponent)
 {
-	MeshRendererComponent* meshRend = (MeshRendererComponent*)obj->GetComponent(ComponentType::MESHRENDERER);
-	if (meshRend != nullptr)
-	{
-		meshRend->SetInsideFrustum(false);
-	}
-	for (GameObject* child : obj->GetChildren())
-	{
-		ResetFrustumCulling(child);
-	}
-
+	mCurrRenderComponents.push_back(&meshRendererComponent);
 }
 
 void ModuleScene::NewScene()
@@ -585,7 +600,7 @@ void ModuleScene::NewScene()
 	mRoot = new GameObject("Untlitled", nullptr);
 }
 
-std::string const ModuleScene::GetName() 
+const std::string& ModuleScene::GetName() const
 {
 	return mRoot->GetName();
 }

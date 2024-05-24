@@ -9,6 +9,9 @@
 #include "Quadtree.h"
 #include "MeshRendererComponent.h"
 
+#include "Math/MathConstants.h"
+#include "Math/MathFunc.h"
+
 CameraComponent::CameraComponent(GameObject* owner) :Component(owner, ComponentType::CAMERA)
 {
     mFrustum.pos = owner->GetPosition();
@@ -67,17 +70,17 @@ void CameraComponent::Update()
     }
 
     //Frustum culling updates
-    App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
-    std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
+    //App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
+    //std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
 
-    for (const auto& object : drawableObjects)
-    {
-        MeshRendererComponent* meshComponent = (MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER);
-        if (meshComponent != nullptr)
-        {
-            meshComponent->SetInsideFrustum(true);
-        }
-    }
+    //for (const auto& object : drawableObjects)
+    //{
+    //    MeshRendererComponent* meshComponent = (MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER);
+    //    if (meshComponent != nullptr)
+    //    {
+    //        meshComponent->SetInsideFrustum(true);
+    //    }
+    //}
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
