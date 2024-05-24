@@ -1,16 +1,29 @@
 {
-    "works": 10,
-    "patata": {
-        "potatoe": "tuberculo",
-        "manzana": {
-            "apple": "tasty",
-            "looking good": true
-        }
+    "Engine Settings": {
+        "Draw Grid": true,
+        "Frustum Culling": false,
+        "Vsync": true,
+        "Enable FPS Limit": true,
+        "FPS Limit": 60.0
     },
-    "Objects": [
-        {
-            "tres": 3,
-            "sd": false
-        }
-    ]
+    "Game Settings": {
+        "Vsync": true,
+        "Enable FPS Limit": true,
+        "FPS Limit": 60.0
+    },
+    "Camera Settings": {
+        "Position": [
+            131.17022705078126,
+            27.691553115844728,
+            -4.1584672927856449
+        ],
+        "Rotation": [
+            1.4505723714828492,
+            -1.043074131011963,
+            1.431849718093872
+        ]
+    },
+    "Scene Settings": {
+        "Name": "Level1"
+    }
 }
