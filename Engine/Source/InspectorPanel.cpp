@@ -1604,7 +1604,8 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 
 	ImGui::Text("Text:");
 	ImGui::SameLine();
-	if (ImGui::InputText("##TextInput", buffer.data(), buffer.size())) {
+	if (ImGui::InputText("##TextInput", buffer.data(), buffer.size())) 
+	{
 		// Update the std::string if the text was changed
 		*text = std::string(buffer.data());
 	}
@@ -1692,7 +1693,8 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 	ImGui::SameLine();
 	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
 
-	if (component->mTrail->mFixedDirection) {
+	if (component->mTrail->mFixedDirection) 
+	{
 		ImGui::Text("Trail Direction");
 		ImGui::SameLine();
 		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
@@ -1767,7 +1769,8 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		}
 		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
 
-		if (updated) {
+		if (updated) 
+		{
 			findRemovedMarks(gradient, &component->mTrail->mGradient);
 			findAddedMarks(gradient, &component->mTrail->mGradient);
 		}

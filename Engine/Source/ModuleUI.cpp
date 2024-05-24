@@ -36,7 +36,6 @@ bool ModuleUI::Init()
 
 update_status ModuleUI::PreUpdate(float dt) 
 {
-
 	return UPDATE_CONTINUE;
 }
 
@@ -45,7 +44,8 @@ update_status ModuleUI::Update(float dt)
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
 	
-	for (GameObject* gameObject : mCanvasList) {
+	for (GameObject* gameObject : mCanvasList) 
+	{
 		DrawWidget(gameObject);
 	}
 
@@ -57,7 +57,8 @@ update_status ModuleUI::Update(float dt)
 update_status ModuleUI::PostUpdate(float dt) 
 {
 	// TODO: Check if app is on Menu or Pause
-	for (GameObject* gameObject : mCanvasList) {
+	for (GameObject* gameObject : mCanvasList) 
+	{
 		CheckRaycast();
 	}
 
