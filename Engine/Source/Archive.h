@@ -50,7 +50,9 @@ public:
 
     inline void AddBool(const char* key, bool value);
     inline void AddInt(const char* key, int value);
+    void AddInts(const char* key, const int* array, unsigned int numInts);
     inline void AddFloat(const char* key, float value);
+    void AddFloats(const char* key, const float* floats, unsigned int numFloats);
     inline void AddString(const char* key, const char* value);
     inline JsonObject AddNewJsonObject(const char* key);
     inline JsonArray AddNewJsonArray(const char* key);

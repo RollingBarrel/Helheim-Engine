@@ -138,6 +138,17 @@ void JsonObject::AddInt(const char* key, int value)
     mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetInt(value), mAllocator);
 }
 
+void JsonObject::AddInts(const char* key, const int* array, unsigned int numInts)
+{
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
+    jsonArray.Reserve(numInts * sizeof(int), mAllocator);
+    for (unsigned int i = 0; i < numInts; ++i)
+    {
+        jsonArray.PushBack(array[i], mAllocator);
+    }
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), jsonArray, mAllocator);
+}
+
 void JsonObject::AddString(const char* key, const char* value)
 {
     mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetString(value, mAllocator), mAllocator);
@@ -146,6 +157,18 @@ void JsonObject::AddString(const char* key, const char* value)
 void JsonObject::AddFloat(const char* key, float value)
 {
     mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetFloat(value), mAllocator);
+}
+
+void JsonObject::AddFloats(const char* key, const float* floats, unsigned int numFloats)
+{
+    rapidjson::Value jsonArray(rapidjson::kArrayType);
+    jsonArray.Reserve(numFloats * sizeof(float), mAllocator);
+    for (unsigned int i = 0; i < numFloats; ++i)
+    {
+        jsonArray.PushBack(floats[i], mAllocator);
+    }
+
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), jsonArray, mAllocator);
 }
 
 void JsonObject::AddBool(const char* key, bool value)

@@ -120,6 +120,27 @@ void SettingsPanel::SaveSettings()
 {
 	//Archive* archive = new Archive();
 
+	Archive doc;
+	JsonObject root = doc.GetRootObject();
+	JsonObject engine = root.AddNewJsonObject("EngineSettings");
+	engine.AddBool("Draw Grid", mGrid);
+	engine.AddBool("Frustum Culling", mCulling);
+	engine.AddBool("Vsync", mEngineVsyncEnabled);
+	engine.AddBool("Enable FPS Limit", mEngineFpsLimitEnabled);
+	engine.AddFloat("FPS Limit", mEngineFpsLimit);
+
+	JsonObject game = root.AddNewJsonObject("Game Settings");
+	game.AddBool("Vsync", mGameVsyncEnabled);
+	game.AddBool("Enable FPS", mGameFpsLimitEnabled);
+	game.AddFloat("FPS Limit", mGameFpsLimit);
+
+	JsonObject camera = root.AddNewJsonObject("Camera Settings");
+	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition().ptr(), 3);
+	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetEulerAngles().ptr(), 3);
+
+	std::string buffer = doc.Serialize();
+	App->GetFileSystem()->Save("projectSettings.txt", buffer.c_str(), buffer.length());
+
 	//Archive engine;
 	//engine.AddBool("Draw Grid", mGrid);
 	//engine.AddBool("Frustum Culling", mCulling);
