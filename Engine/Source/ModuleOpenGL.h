@@ -7,6 +7,19 @@
 #include "BatchManager.h"
 #include <vector>
 
+#define NUM_SHADOW_MAPS 4
+#define SHADOW_MAPS_SIZE 512
+
+
+typedef struct Shadow
+{
+	float4x4 viewProjMatrix;
+	uint64_t shadowMapHandle;
+	float bias;
+	float padding;
+
+}Shadow;
+
 typedef struct DirectionalLight 
 {
 	float mDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
@@ -166,7 +179,13 @@ private:
 	unsigned int mEmptyVAO = 0;
 	
 	//Shadows
-	unsigned int mShadowsFrameBufferId = 0;
+	unsigned int mShadowsFrameBuffersId[NUM_SHADOW_MAPS] = {0};
+	unsigned int mShadowMaps[NUM_SHADOW_MAPS] = { 0 };
+	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
+	OpenGLBuffer* mShadowsBuffer = nullptr;
+
+
+
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;

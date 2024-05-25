@@ -25,8 +25,8 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mData.color[3] = cos(DegToRad(38.f)); //cos outer angle
 
 	mData.range = 15.0f;
-	mData.bias = 0.00001f;
-
+	//mData.bias = 0.00001f;
+	mBias = 0.00001f;
 
 	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
 	mShadowFrustum.pos = owner->GetWorldPosition();
@@ -37,35 +37,35 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
-	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
+	//mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 
-	mShadowMapSize = 512;
-
-	glGenTextures(1, &mShadowMapId);
-	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
-	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
+	//mShadowMapSize = 512;
+	//
+	//glGenTextures(1, &mShadowMapId);
+	//glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
+	//glMakeTextureHandleResidentARB(mData.shadowMapHandle);
 
 	App->GetOpenGL()->AddSpotLight(*this);
 }
 
 SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
-	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mShadowMapSize(original->mShadowMapSize), mCastShadow(original->mCastShadow)
+	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow)
 {
-	glGenTextures(1, &mShadowMapId);
-	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
-	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
+	//glGenTextures(1, &mShadowMapId);
+	//glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
+	//glMakeTextureHandleResidentARB(mData.shadowMapHandle);
 
 	App->GetOpenGL()->AddSpotLight(*this);
 }
@@ -73,8 +73,8 @@ SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameO
 SpotLightComponent::~SpotLightComponent()
 {
 	App->GetOpenGL()->RemoveSpotLight(*this);
-	glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
-	glDeleteTextures(1, &mShadowMapId);
+	//glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
+	//glDeleteTextures(1, &mShadowMapId);
 }
 
 const float* SpotLightComponent::GetPosition() const
@@ -100,7 +100,7 @@ void SpotLightComponent::SetRange(float range)
 {
 	mData.range = range;
 	mShadowFrustum.farPlaneDistance = range;
-	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
+	//mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -113,7 +113,7 @@ void SpotLightComponent::SetOuterAngle(float angle)
 	mData.color[3] = cos(angle);
 	mShadowFrustum.horizontalFov = 2.0f * angle;
 	mShadowFrustum.verticalFov = 2.0f * angle;
-	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
+	//mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -129,25 +129,25 @@ void SpotLightComponent::SetInnerAngle(float angle)
 
 void SpotLightComponent::SetBias(float bias)
 {
-	mData.bias = bias;
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	mBias = bias;
+	//App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::SetShadowMapSize(unsigned int shadowMapSize)
 {
-	mShadowMapSize = shadowMapSize;
-	glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
-	glDeleteTextures(1, &mShadowMapId);
-	glGenTextures(1, &mShadowMapId);
-	glBindTexture(GL_TEXTURE_2D, mShadowMapId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
-	glMakeTextureHandleResidentARB(mData.shadowMapHandle);
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	//mShadowMapSize = shadowMapSize;
+	//glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
+	//glDeleteTextures(1, &mShadowMapId);
+	//glGenTextures(1, &mShadowMapId);
+	//glBindTexture(GL_TEXTURE_2D, mShadowMapId);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, mShadowMapSize, mShadowMapSize, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//mData.shadowMapHandle = glGetTextureHandleARB(mShadowMapId);
+	//glMakeTextureHandleResidentARB(mData.shadowMapHandle);
+	//App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 
@@ -170,7 +170,7 @@ void SpotLightComponent::Update()
 		mShadowFrustum.front = newDirection;
 		mShadowFrustum.up = mOwner->GetUp();
 
-		mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
+		//mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 		App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	}
 }
@@ -188,8 +188,8 @@ void SpotLightComponent::Save(Archive& archive) const
 	archive.AddFloat4("Color", mData.color);
 	archive.AddFloat("Range", mData.range);
 	archive.AddBool("CastShadow", mCastShadow);
-	archive.AddFloat("Bias", mData.bias);
-	archive.AddInt("ShadowMapSize", mShadowMapSize);
+	//archive.AddFloat("Bias", mData.bias);
+	//archive.AddInt("ShadowMapSize", mShadowMapSize);
 }
 
 //TODO: why is the GO owner passed here??
@@ -233,15 +233,15 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 		mCastShadow = componentJson["CastShadow"].GetBool();
 	}
 
-	if (componentJson.HasMember("Bias") && componentJson["Bias"].IsFloat())
-	{
-		mData.bias = componentJson["Bias"].GetFloat();
-	}
-
-	if (componentJson.HasMember("ShadowMapSize") && componentJson["ShadowMapSize"].IsInt())
-	{
-		SetShadowMapSize(componentJson["ShadowMapSize"].GetInt());
-	}
+	//if (componentJson.HasMember("Bias") && componentJson["Bias"].IsFloat())
+	//{
+	//	mData.bias = componentJson["Bias"].GetFloat();
+	//}
+	//
+	//if (componentJson.HasMember("ShadowMapSize") && componentJson["ShadowMapSize"].IsInt())
+	//{
+	//	SetShadowMapSize(componentJson["ShadowMapSize"].GetInt());
+	//}
 
 	mShadowFrustum.pos = owner->GetWorldPosition();
 	mShadowFrustum.front = owner->GetFront();
@@ -250,7 +250,7 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
-	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
+	//mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 

@@ -43,15 +43,29 @@ struct SpotLight
 	vec4 pos; //w intensity
 	vec4 aimD;//w cos inner angle
 	vec4 col; //w cos outer angle
-	mat4 viewProjMatrix;
-	sampler2D shadowMap;
+	//mat4 viewProjMatrix;
+	//sampler2D shadowMap;
 	float radius;
-	float bias;
+	int shadowIndex;
+	//float bias;
 };
 readonly layout(std430, binding = 1) buffer SpotLights
 {
 	uint numSLights;
 	SpotLight sLights[];
+};
+
+
+struct Shadow
+{
+	mat4 viewProjMatrix;
+	sampler2D shadowMap;
+	float bias;
+};
+
+readonly layout(std430, binding = 4) buffer SpotLightShadows
+{
+	Shadow shadows[];
 };
 
 in vec2 uv;
@@ -139,15 +153,24 @@ void main()
 	for (int i = 0; i < numSLights; ++i)
 	{
 		//Shadows
-		vec4 lightClipSpace = sLights[i].viewProjMatrix * vec4(pos, 1);
-		vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
-		lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
-		float shadowDepth = texture(sLights[i].shadowMap, lightNDC.xy).r + sLights[i].bias;
-		float fragmentDepth = lightNDC.z;
-		if (lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
-			lightNDC.y >= 0.0 && lightNDC.y <= 1.0f &&
-			fragmentDepth < shadowDepth)
+		float shadowValue = 1.0;
+		if (sLights[i].shadowIndex >= 0)
 		{
+			vec4 lightClipSpace = shadows[sLights[i].shadowIndex].viewProjMatrix * vec4(pos, 1);
+			vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
+			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
+			float shadowDepth = texture(shadows[sLights[i].shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLights[i].shadowIndex].bias;
+			float fragmentDepth = lightNDC.z;
+
+			if(!(lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
+				lightNDC.y >= 0.0 && lightNDC.y <= 1.0f &&
+				fragmentDepth < shadowDepth))
+				{
+					shadowValue = 0.0;
+				}
+
+		}
+
 			vec3 mVector = pos - sLights[i].pos.xyz;
 			vec3 sDir = normalize(mVector);
 			vec3 aimDir = normalize(sLights[i].aimD.xyz);
@@ -163,8 +186,8 @@ void main()
 				//cAtt = (c - cOuter) / (cInner - cOuter);
 			float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
 			att *= cAtt;
-			pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb, sLights[i].pos.w, att);
-		}
+			pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb, sLights[i].pos.w, att) * shadowValue;
+		
 	}
 
 	pbrCol += GetAmbientLight();
