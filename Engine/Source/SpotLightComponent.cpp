@@ -188,7 +188,7 @@ void SpotLightComponent::Save(Archive& archive) const
 	archive.AddFloat4("Color", mData.color);
 	archive.AddFloat("Range", mData.range);
 	archive.AddBool("CastShadow", mCastShadow);
-	//archive.AddFloat("Bias", mData.bias);
+	archive.AddFloat("Bias", mBias);
 	//archive.AddInt("ShadowMapSize", mShadowMapSize);
 }
 
@@ -233,11 +233,11 @@ void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, Gam
 		mCastShadow = componentJson["CastShadow"].GetBool();
 	}
 
-	//if (componentJson.HasMember("Bias") && componentJson["Bias"].IsFloat())
-	//{
-	//	mData.bias = componentJson["Bias"].GetFloat();
-	//}
-	//
+	if (componentJson.HasMember("Bias") && componentJson["Bias"].IsFloat())
+	{
+		mBias = componentJson["Bias"].GetFloat();
+	}
+	
 	//if (componentJson.HasMember("ShadowMapSize") && componentJson["ShadowMapSize"].IsInt())
 	//{
 	//	SetShadowMapSize(componentJson["ShadowMapSize"].GetInt());

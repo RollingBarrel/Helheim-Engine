@@ -285,6 +285,7 @@ bool ModuleOpenGL::Init()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		mShadowMapsHandle[i] = glGetTextureHandleARB(mShadowMaps[i]);
 		glMakeTextureHandleResidentARB(mShadowMapsHandle[i]);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	mShadowsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 4, sizeof(Shadow) * NUM_SHADOW_MAPS, nullptr);
@@ -1007,6 +1008,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
+		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
 		mBatchManager.CleanUpCommands();
 
