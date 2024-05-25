@@ -43,11 +43,8 @@ struct SpotLight
 	vec4 pos; //w intensity
 	vec4 aimD;//w cos inner angle
 	vec4 col; //w cos outer angle
-	//mat4 viewProjMatrix;
-	//sampler2D shadowMap;
 	float radius;
 	int shadowIndex;
-	//float bias;
 };
 readonly layout(std430, binding = 1) buffer SpotLights
 {

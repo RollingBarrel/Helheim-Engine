@@ -946,9 +946,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	{
 		mBatchManager.AddCommand(mesh);
 	}
-	//shadows
-
-
+	
+	//Shadows
 	std::map<float,const SpotLightComponent*> orderedLights;
 	std::vector<const SpotLightComponent*> chosenLights;
 
@@ -982,33 +981,11 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 			mBatchManager.AddCommand(mesh);
 		}	
 	}
-	
-	
-
-	
-	/*
-	for (const SpotLightComponent* spotLight : mSpotLights)
-	{
-		if (spotLight->CanCastShadow())
-		{
-			const Frustum& frustum = spotLight->GetFrustum();
-			meshInFrustum.clear();
-			App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
-			for (const MeshRendererComponent* mesh : meshInFrustum)
-			{
-				mBatchManager.AddCommand(mesh);
-			}
-		}
-	}
-	*/
-
 
 	meshInFrustum.clear();
 	mBatchManager.CleanUpCommands();
 
 	//Shadows
-
-	
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
@@ -1046,48 +1023,13 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		
 	}
 
-	/*glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
-	glUseProgram(mDepthPassProgramId);
-	for (const SpotLightComponent* spotLight : mSpotLights)
-	{
-		if (spotLight->CanCastShadow())
-		{
-			mBatchManager.CleanUpCommands();
-
-			const Frustum& frustum = spotLight->GetFrustum();
-			meshInFrustum.clear();
-			App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
-
-			for (const MeshRendererComponent* mesh : meshInFrustum)
-			{
-				mBatchManager.AddCommand(mesh);
-			}
-
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
-			glClear(GL_DEPTH_BUFFER_BIT);
-
-			glUseProgram(mDepthPassProgramId);
-
-			glViewport(0, 0, spotLight->GetShadowMapSize(), spotLight->GetShadowMapSize());
-			mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
-			mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
-			mBatchManager.Draw();
-		}
-		else
-		{
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
-			glClear(GL_DEPTH_BUFFER_BIT);
-		}
-
-	}
-	*/
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	SceneFramebufferResized();
 	BindSceneFramebuffer();
+
 
 
 	mBatchManager.CleanUpCommands();

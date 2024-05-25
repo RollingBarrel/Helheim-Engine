@@ -674,8 +674,8 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
 
             float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
             DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
-            Frustum ShadowFrustum = spotLight->GetFrustum();
-            DrawFrustum(spotLight->GetFrustum());
+            //Frustum ShadowFrustum = spotLight->GetFrustum();
+            //DrawFrustum(spotLight->GetFrustum());
         }
         
         BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -780,7 +780,6 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 
     for (const auto& child : model->GetChildren()) 
     {
-
         DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
         DrawSkeleton(child);
     }

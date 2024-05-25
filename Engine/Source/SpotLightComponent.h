@@ -8,8 +8,6 @@ typedef struct SpotLight {
 	float pos[4]; //w intensity
 	float aimD[4];//w cos inner angle
 	float color[4];//w cos outer angle
-	//float4x4 viewProjMatrix;
-	//uint64_t shadowMapHandle;
 	float range;
 	int shadowIndex;
 	float padding[2];
@@ -54,15 +52,11 @@ public:
 
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
 
-	//unsigned int GetShadowMap() const { return mShadowMapId; }
-	//unsigned int GetShadowMapSize() const { return mShadowMapSize; }
-	void SetShadowMapSize(unsigned int shadowMapSize);
 
 private:
 	SpotLight mData;
 	Frustum mShadowFrustum;
-	//unsigned int mShadowMapSize = 0;
-	//unsigned int mShadowMapId = 0;
+
 	bool mCastShadow = false;
 	float mBias;
 };

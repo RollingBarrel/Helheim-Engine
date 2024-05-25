@@ -577,13 +577,6 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 		component->SetBias(bias);
 	}
 
-
-	//float shadowMapSize = component->GetShadowMapSize();
-	//if (ImGui::DragFloat("Shadow Map Size", &shadowMapSize, 1.0f))
-	//{
-	//	component->SetShadowMapSize(shadowMapSize);
-	//}
-
 	if (!castShadow)
 	{
 		ImGui::EndDisabled();
