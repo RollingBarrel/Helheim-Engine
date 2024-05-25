@@ -951,15 +951,17 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		{
 			mBatchManager.AddCommand(mesh);
 		}
-		
-		glViewport(0, 0, spotLight->GetShadowMapSize(), spotLight->GetShadowMapSize());
-		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_2D, spotLight->GetShadowMap());
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
 		glClear(GL_DEPTH_BUFFER_BIT);
+
+		glUseProgram(mDepthPassProgramId);
+
+		glViewport(0, 0, spotLight->GetShadowMapSize(), spotLight->GetShadowMapSize());
+		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 		
 		mBatchManager.Draw();
 
