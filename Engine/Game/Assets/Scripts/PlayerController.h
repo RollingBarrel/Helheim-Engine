@@ -10,6 +10,7 @@ class SliderComponent;
 class AudioSourceComponent;
 class ObjectPool;
 class GameManager;
+class AnimationStateMachine;
 class BoxColliderComponent;
 struct CollisionData;
 
@@ -20,7 +21,7 @@ enum class PlayerState
     MOVE,
     ATTACK,
     MOVE_ATTACK,
-    DEATH
+    DEATH,
 };
 
 enum class BattleSituation {
@@ -36,7 +37,25 @@ enum class Weapon {
     MELEE
 };
 
+enum class MouseDirection {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    DEFAULT
+};
 
+enum class MoveDirection {
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT,
+    UP_RIGHT,
+    UP_LEFT,
+    DOWN_RIGHT,
+    DOWN_LEFT,
+    NOT_MOVING
+};
 
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
@@ -48,6 +67,7 @@ class PlayerController :public Script
         void Start() override;
         void Update() override;
 
+        void RechargeShield(float shield);
         void TakeDamage(float damage);
         bool IsDead();
 
@@ -58,17 +78,23 @@ class PlayerController :public Script
         void Moving();
         void Dash();
         void Attack();
+        void InitAnimations();
 
         void MeleeAttack();
+        void MeleeBaseCombo();
+        void MeleeSpecialCombo();
+
+        void MeleeHit(float AttackRange, float AttackDamage);
         void RangedAttack();
         void Move(float3 position);
         void HandleRotation();
         void Shoot(float damage);
         void Reload();
-        
-        void RechargeDash();
+        void ClosestMouseDirection(float2 mouseState);
+        void SetMovingDirection(float3 moveDirection);
+      
         void Death();
-        void UpdateHealth();
+        void UpdateShield();
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
@@ -76,6 +102,7 @@ class PlayerController :public Script
         void GameoOver();
         bool Delay(float delay);
         void Loading();
+        
 
         void OnCollisionEnter(CollisionData* collisionData);
 
@@ -83,11 +110,14 @@ class PlayerController :public Script
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+        MouseDirection mLookingAt = MouseDirection::DEFAULT;
+        MoveDirection mMovingTo = MoveDirection::NOT_MOVING;
         float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;
-        GameObject* mAnimationComponentHolder = nullptr;
         AnimationComponent* mAnimationComponent = nullptr;
+        AnimationStateMachine* mStateMachine = nullptr;
+
         GameObject* mBulletPoolHolder = nullptr;
         ObjectPool* mBulletPool = nullptr;
 
@@ -96,55 +126,58 @@ class PlayerController :public Script
 
         //Stats
         float mPlayerSpeed = 2.0f;
-        float mHealth = 0.0f;
-        float mMaxHealth = 100.0f;
         float mShield = 0.0f;
         float mMaxShield = 100.0f;
         float mSanity = 0.0f;
         float mMaxSanity = 100.0f;
         bool mPlayerIsDead = false;
+        float3 mMoveDirection = float3::zero;
 
         //Dash
+        bool mIsDashing = false;
         bool mIsDashCoolDownActive = false;
-        float mDashTimePassed = 0.0f;
-        float mDashMovement = 0;
-        int mMaxDashCharges = 3;
-        int mDashCharges = 0;//3
-        float mDashChargeRegenerationTime = 3.0f;
-        float mDashSpeed = 35.0f;//35
-        float mDashDistance = 5.0f;
-        float mDashCoolDown = 3.0f;
+        float mDashCoolDownTimer = 0.0f;
+        float mDashCoolDown = 0.7f;
+        float mDashTimer = 0.0f;
+        float mDashDuration = 0.5f;
+        float mDashRange = 8.0f;
 
         //Range
         int mAmmoCapacity = 500000;
         int mBullets = 0;
-        float mFireRate = 1.0f;
-        float mRangeBaseDamage = 1.0f;
-        float mRangeChargeAttackMultiplier = 5.0f;
-        float mMinRangeChargeTime = 5.0f;
-        float mMaxRangeChargeTime = 10.0f;
         GameObject* bullet = nullptr;
-
-        float startingTime = 0.0F;
+        float mRangeBaseDamage = 1.0f;
 
         //Melee
-        float mMeleeBaseDamage = 1.0f;
-        float mMeleeChargeAttackMultiplier = 5.0f;
-        float mMinMeleeChargeTime = 5.0f;
-        float mMaxMeleeChargeTime = 10.0f;
-        
-        float mChargedTime = 0.0f;
-        bool mIsChargedAttack = false;
+        bool mLeftMouseButtonPressed = false;
+
+            //Melee Base Attack
+        float mMeleeBaseDamage = 2.0f;
+        float mMeleeBaseRange = 1.0f;
+               //Combo
+        int mMeleeBaseComboStep = 1;
+        float mMeleeBaseComboTimer = 0.0f;
+        const float mMeleeBaseMaxComboInterval = 5.0f; 
+        bool mIsMeleeBaseComboActive = false;
+               //Final Attack
+        const float mMeleeBaseFinalAttackDuration = 0.5f; 
+        float mMeleeBaseFinalAttackTimer = 0.0f;
+        float mMeleeBaseMoveDuration = 0.5f;
+        float mMeleeBaseMoveRange = 8.0f;
+
+          //Melee Special Attack
+        float mMeleeSpecialTimer = 0.0f;
+        const float mMeleeSpecialAttackDuration = 2.0f;
+        float mMeleeSpecialDamage = 4.0f;
+        float mMeleeSpecialRange = 2.0f;
+               //Cooldown
+        bool mIsMeleeSpecialCoolDownActive = false;
+        float mMeleeSpecialCoolDownTimer = 0.0f;
+        float mMeleeSpecialCoolDown = 4.0f;
 
         //HUD
-        GameObject* mHealthGO = nullptr;
-        GameObject* mDashGO_1 = nullptr;
-        GameObject* mDashGO_2 = nullptr;
-        GameObject* mDashGO_3 = nullptr;
-        SliderComponent* mHealthSlider = nullptr;
-        SliderComponent* mDashSlider_1 = nullptr;
-        SliderComponent* mDashSlider_2 = nullptr;
-        SliderComponent* mDashSlider_3 = nullptr;
+        GameObject* mShieldGO = nullptr;
+        SliderComponent* mShieldSlider = nullptr;
 
         //DEBUG
         bool mGodMode = false;
@@ -171,6 +204,8 @@ class PlayerController :public Script
         float mTimeScreen = 3.0f;
         float mTimePassed = 0.0f;
 
+        //CAMERA
+        GameObject* mCamera = nullptr;
         //Collider
         BoxColliderComponent* mCollider;
 };

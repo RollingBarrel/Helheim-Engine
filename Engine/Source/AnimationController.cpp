@@ -89,16 +89,13 @@ Quat AnimationController::Interpolate(const Quat& first, const Quat& second, flo
 
 void AnimationController::SetStartTime(float time)
 {
-	float start = std::max(time, 0.0f);
-	mStartTime = std::min(start, mEndTime);
-	mCurrentTime = mStartTime;
+	mStartTime = std::max(time, 0.0f);
 
 }
 
 void AnimationController::SetEndTime(float time)
 {
-	float end = std::min(time, mCurrentAnimation->GetDuration());
-	mEndTime = std::max(end, mStartTime);
+	mEndTime = std::min(time, mCurrentAnimation->GetDuration());
 
 }
 

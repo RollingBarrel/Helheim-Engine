@@ -7,5 +7,5 @@ uniform sampler2D sprite;
 
 void main()
 {
-    color = (VertexColor);
+    color = (texture(sprite, TexCoords) * VertexColor);
 }

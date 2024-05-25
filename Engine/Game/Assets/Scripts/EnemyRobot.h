@@ -26,10 +26,8 @@ public:
 	~EnemyRobot() {}
 	void Update() override;
 	void Start() override;
-
 	
 private:
-
 	void Idle();
 	void Chase();
 	void Attack();
@@ -40,13 +38,11 @@ private:
 	EnemyState mCurrentState = EnemyState::IDLE;
 	RobotType mType = RobotType::MELEE;
 
-
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
 
 	float mMeleeDistance = 2.0f;
 	float mMeeleDamage = 10.0f;
 	float mMeleeAttackCoolDown = 1.0f;
-
 };
 

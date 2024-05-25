@@ -42,10 +42,11 @@ void BoxColliderComponent::Reset()
 
 void BoxColliderComponent::Update()
 {
-	// TODO: Better only when transform is modified
-	ComputeBoundingBox();
-	// TODO: If game is running and data has been modified, update Physics
-	//App->GetPhysics()->UpdateBoxRigidbody(this);
+	if (mOwner->HasUpdatedTransform())
+	{
+		ComputeBoundingBox();
+		//App->GetPhysics()->UpdateBoxRigidbody(this);
+	}
 }
 
 Component* BoxColliderComponent::Clone(GameObject* owner) const

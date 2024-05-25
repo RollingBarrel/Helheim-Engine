@@ -657,6 +657,8 @@ void ModuleDebugDraw::Draw()
         glPopDebugGroup();
 
     }
+    
+
 
 }
 
@@ -710,22 +712,16 @@ void ModuleDebugDraw::DrawLine(const float3& start, const float3& end, const flo
     dd::line(start, end, color, duration, depthTest);
 }
 
-void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)
-{
-    dd::line(v1, v2, dd::colors::Red);
-    dd::line(v1, v3, dd::colors::Red);
-    dd::line(v3, v2, dd::colors::Red);
-
-
-}
-
 void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color)
 {
     dd::line(v1, v2, color);
     dd::line(v1, v3, color);
     dd::line(v3, v2, color);
+}
 
-
+void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)
+{
+    DrawTriangle(v1, v2, v3, dd::colors::Red);
 }
 
 void ModuleDebugDraw::DrawGrid()
@@ -757,15 +753,33 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
     
 }
 
+void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
+{
+    //AABB aabb = gameObject->GetAABB();
+    std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+
+    if (!meshComponents.empty())
+    {
+        AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
+        if (aabb.IsFinite())
+        {
+            EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+        }
+
+        //OBB obb = gameObject->GetOBB();
+        OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
+        if (obb.IsFinite())
+        {
+            EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
+        }
+    }
+    
+}
+
 void ModuleDebugDraw::DrawColliders(GameObject* go)
 {
     if (go != nullptr)
     {
-        //MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
-        //if (meshRenderer != nullptr) 
-        //{
-        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
-        //}
         BoxColliderComponent* boxCollider = (BoxColliderComponent*)go->GetComponent(ComponentType::BOXCOLLIDER);
         if (boxCollider != nullptr)
         {
