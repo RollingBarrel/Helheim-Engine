@@ -133,6 +133,12 @@ void SpotLightComponent::SetBias(float bias)
 	//App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
+inline void SpotLightComponent::SetShadowIndex(int index)
+{ 
+	mData.shadowIndex = index;
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
 void SpotLightComponent::SetShadowMapSize(unsigned int shadowMapSize)
 {
 	//mShadowMapSize = shadowMapSize;

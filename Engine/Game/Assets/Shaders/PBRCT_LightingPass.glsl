@@ -168,7 +168,6 @@ void main()
 				{
 					shadowValue = 0.0;
 				}
-
 		}
 
 			vec3 mVector = pos - sLights[i].pos.xyz;

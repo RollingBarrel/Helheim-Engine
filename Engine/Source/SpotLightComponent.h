@@ -12,6 +12,7 @@ typedef struct SpotLight {
 	//uint64_t shadowMapHandle;
 	float range;
 	int shadowIndex;
+	float padding[2];
 	
 
 }SpotLight;
@@ -49,7 +50,7 @@ public:
 	float GetBias() const { return mBias; }
 	void SetBias(float bias);
 	int GetIndex() const { return mData.shadowIndex; }
-	void SetShadowIndex(int index) { mData.shadowIndex = index; }
+	void SetShadowIndex(int index);
 
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
 
