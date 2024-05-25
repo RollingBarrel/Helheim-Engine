@@ -1491,6 +1491,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
 	ImGui::Separator();
+	ImGui::Text("Stretched Billboard");
+	ImGui::SameLine();
+	ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
 	DrawBezierCurve(&(component->mSizeCurve), "Size");
 	ImGui::Separator();
 	static const char* items[]{ "Cone","Square","Circle" };
