@@ -1,5 +1,6 @@
 #include "Grenade.h"
 #include "GameObject.h"
+#include "Application.h"
 
 CREATE(Grenade)
 {
@@ -30,10 +31,34 @@ void Grenade::Start()
 
 void Grenade::Update()
 {
+	Explotion();
+}
 
+void Grenade::Explotion()
+{
+    if (mExplotionStart)
+    {
+        if (mGrenadeCurrentTime > 0)
+        {
+            mGrenadeCurrentTime -= App->GetDt();
+            if (mGrenadeCurrentTime <= 0)
+            {
+                EndExplotion();  
+            }
+        }
+    }
+}
+
+void Grenade::EndExplotion()
+{
+    mGameObject->SetEnabled(false);
+    mGrenadeCurrentTime = mGrenadeDuration;
+    mExplotionStart = false;
 }
 
 void Grenade::SetDestionation(float3 destination)
 {
 	mDestination = destination;
+
+	mExplotionStart = true;
 }

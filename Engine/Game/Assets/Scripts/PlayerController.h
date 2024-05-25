@@ -85,9 +85,10 @@ class PlayerController :public Script
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
+        void GrenadeAttack();
         void AimGrenade();
         void GrenadeTarget();
-        void ThrowGrenade();
+        void ThrowGrenade(float3 target);
 
         void Victory();
         void GameoOver();
@@ -166,11 +167,14 @@ class PlayerController :public Script
         float mMeleeSpecialCoolDown = 4.0f;
 
         // Grenade
+        bool mAimingGrenade = false;
+        bool mThrowingGrenade = false;
         float mGrenadeDPS = 1.0f;
         float mGrenadeDuration = 4.0f;
         float mGrenadeRadius = 3.0f;
 
         float mGrenadThrowDistance = 5.0f;
+        float mGrenadeCoolDownTimer = 0.0f;
         float mGrenadeCoolDown = 15.0f;
 
         GameObject* mGrenadeAimArea = nullptr;

@@ -27,6 +27,9 @@ public:
 	const AABB& GetAABB() const { return mAABB; }
 	const AABB& GetAABBWorld() const { return mAABBWorld; }
 
+	const bool GetIgnoreRaycast() const { return mIgnoreRaycast; }
+	void SetIgnoreRaycast(bool ignoreRaycast) { mIgnoreRaycast = ignoreRaycast; }
+
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMesh(unsigned int uid);
@@ -35,6 +38,8 @@ public:
 private:
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
+	bool mIgnoreRaycast = false;
 
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;

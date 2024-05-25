@@ -218,7 +218,7 @@ const std::map<float, Hit> Quadtree::RayCast(const Ray* ray) const
 
 			MeshRendererComponent* rMesh = reinterpret_cast<MeshRendererComponent*>(child->GetComponent(ComponentType::MESHRENDERER));
 
-			if (rMesh != nullptr) {
+			if (rMesh != nullptr && !rMesh->GetIgnoreRaycast()) {
 
 				Ray localRay(*ray);
 				localRay.pos = child->GetWorldTransform().Inverted().MulPos(ray->pos);
