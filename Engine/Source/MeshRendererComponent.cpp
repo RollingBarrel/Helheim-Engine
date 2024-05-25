@@ -25,10 +25,8 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 {
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	//mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
-
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -37,17 +35,15 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	mMaterial = (other.mMaterial) ? reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material)) : nullptr;
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
-	//mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	App->GetOpenGL()->BatchAddMesh(this);
-
 }
 
 MeshRendererComponent::~MeshRendererComponent()
 {
+	App->GetOpenGL()->BatchRemoveMesh(this);
 	if (mMesh)
 	{
-		App->GetOpenGL()->BatchRemoveMesh(this);
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
 		mMesh = nullptr;
 	}
@@ -61,23 +57,24 @@ MeshRendererComponent::~MeshRendererComponent()
 void MeshRendererComponent::SetMesh(unsigned int uid)
 {
 	ResourceMesh* tmpMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
-	if (tmpMesh && mMesh)
-	{
-		if (mMaterial)
-			App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetResource()->ReleaseResource(mMesh->GetUID());
-		delete mMesh;
-
-	}
 	if (tmpMesh)
 	{
+		if (mMesh)
+		{
+			if (mMaterial)
+				App->GetOpenGL()->BatchRemoveMesh(this);
+			App->GetResource()->ReleaseResource(mMesh->GetUID());
+			mMesh = nullptr;
+		}
 		mMesh = tmpMesh;
 
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		mOriginalAABB = mAABB;
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		if (mMaterial)
 			App->GetOpenGL()->BatchAddMesh(this);
+
 	}
 }
 
@@ -85,15 +82,16 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
 	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
-	if (tmpMaterial && mMaterial)
-	{
-		if (mMesh)
-			App->GetOpenGL()->BatchRemoveMesh(this);
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
-		mMaterial = nullptr;
-	}
 	if (tmpMaterial)
 	{
+		if (mMaterial)
+		{
+			if (mMesh)
+				App->GetOpenGL()->BatchRemoveMesh(this);
+			App->GetResource()->ReleaseResource(mMaterial->GetUID());
+			mMaterial = nullptr;
+		}
+
 		mMaterial = tmpMaterial;
 		if (mMesh)
 			App->GetOpenGL()->BatchAddMesh(this);
@@ -106,21 +104,26 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 }
 
 
-void MeshRendererComponent::Update() {
-
-}
-
-void MeshRendererComponent::Enable()
+void MeshRendererComponent::Update() 
 {
-	if(mMaterial && mMesh)
-		App->GetOpenGL()->BatchAddMesh(this);
+	if (mOwner->HasUpdatedTransform())
+	{
+		RefreshBoundingBoxes();
+	}
+
 }
 
-void MeshRendererComponent::Disable()
-{
-	if (mMaterial && mMesh)
-		App->GetOpenGL()->BatchRemoveMesh(this);
-}
+//void MeshRendererComponent::Enable()
+//{
+//	if(mMaterial && mMesh)
+//		App->GetOpenGL()->BatchAddMesh(this);
+//}
+//
+//void MeshRendererComponent::Disable()
+//{
+//	if (mMaterial && mMesh)
+//		App->GetOpenGL()->BatchRemoveMesh(this);
+//}
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
@@ -128,8 +131,11 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 }
 
 void MeshRendererComponent::RefreshBoundingBoxes()
-{
-	mOBB = OBB(mAABB);
+{	
+	mAABB = AABB(mOriginalAABB);
+	mAABB.TransformAsAABB(mOwner->GetWorldTransform());
+
+	mOBB = OBB(mOriginalAABB);
 	mOBB.Transform(mOwner->GetWorldTransform());
 }
 
@@ -142,17 +148,21 @@ void MeshRendererComponent::Save(Archive& archive) const
 	archive.AddBool("isEnabled", IsEnabled());
 }
 
-void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
+void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
+{
 	int ID = { 0 };
 	int meshID = { 0 };
 	int materialID = { 0 };
-	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) 
+	{
 		ID = componentJson["ID"].GetInt();
 	}
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
+	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) 
+	{
 		meshID = componentJson["MeshID"].GetInt();
 	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
+	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) 
+	{
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 

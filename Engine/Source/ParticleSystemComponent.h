@@ -10,7 +10,6 @@ class ResourceTexture;
 class Particle;
 //class EmitterShape;
 
-
 class ENGINE_API ParticleSystemComponent : public Component
 {
 	friend class InspectorPanel;
@@ -47,11 +46,13 @@ private:
 	float mEmitterTime = 0.0f;
 	float mEmitterDeltaTime = 0.0f;
 
+	float mDelay = 0.0f;
 	float mDuration = 5.0f;
 	float mMaxLifeTime = 3.0f;
 
 	BezierCurve mSpeedCurve = BezierCurve();
 	BezierCurve mSizeCurve = BezierCurve();
+	bool mStretchedBillboard = false;
 
 	float mEmissionRate = 10.0f;
 	int mMaxParticles = 1000.0f;

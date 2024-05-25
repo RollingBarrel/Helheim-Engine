@@ -5,6 +5,7 @@
 #include "ModuleEngineResource.h"
 #include "ModuleOpenGL.h"
 #include "GameObject.h"
+#include "ModuleFileSystem.h"
 
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 
@@ -31,19 +32,25 @@ void HierarchyPanel::Draw(int windowFlags)
 	DrawTree(root);
 	ImGui::InvisibleButton("##", ImVec2(-1, -1));
 	OnRightClickNode(root);
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+	{
+		mMarked.clear();
+		mLastClickedObject = 0;
+		InternalSetFocus(root);
+	}
 	ImGui::EndChild();
 	DragAndDropTarget(root);
 	
 	ImGui::End();
 }
 
-void HierarchyPanel::SetFocus(GameObject* focusedObject) 
+void HierarchyPanel::SetFocus(const GameObject& focusedObject) 
 { 
-	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
+	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mUnmarkFlag = true;
-	mFocusId = focusedObject->GetID();
-	mLastClickedObject = focusedObject->GetID();
-	GameObject* parent = focusedObject->GetParent();
+	mFocusId = focusedObject.GetID();
+	mLastClickedObject = focusedObject.GetID();
+	GameObject* parent = focusedObject.GetParent();
 	while (parent != nullptr)
 	{
 		mNodesToOpen.insert(parent->GetID());
@@ -52,7 +59,7 @@ void HierarchyPanel::SetFocus(GameObject* focusedObject)
 	App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
-void HierarchyPanel::OnLeftCkickNode(GameObject* node) 
+void HierarchyPanel::OnLeftClickNode(GameObject* node) 
 {    
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left) && !ImGui::IsItemToggledOpen()) 
 	{
@@ -104,7 +111,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 			InternalSetFocus(gameObject);
 			mMarked.clear();
 		}
-		bool isPrefabRoot = (EngineApp->GetScene()->IsPrefabScene() && node->mParent->mIsRoot);
+		bool isPrefabRoot = (EngineApp->GetScene()->IsPrefabScene() && node->mIsRoot);
 		if (!node->mIsRoot && !isPrefabRoot) 
 		{
 			if (ImGui::Selectable("Duplicate")) 
@@ -123,7 +130,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 
 			if (ImGui::Selectable("Delete")) 
 			{
-				for (auto object : FilterMarked()) 
+				for (GameObject* object : FilterMarked()) 
 				{
 					EngineApp->GetScene()->AddGameObjectToDelete(object);
 					mLastClickedObject = EngineApp->GetScene()->GetRoot()->GetID();
@@ -138,6 +145,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 					std::string file = "Assets/Prefabs/";
 					file.append('/' + object->GetName() + ".prfb");
 					unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
+					object->SetPrefabId(resourceId);
 					EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
 				}
 			}
@@ -149,9 +157,9 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 
 void HierarchyPanel::InternalSetFocus(GameObject* focusedObject)
 {
-	App->GetOpenGL()->RemoveHighLight(GetFocusedObject());
+	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mFocusId = focusedObject->GetID();
-	App->GetOpenGL()->AddHighLight(focusedObject);
+	App->GetOpenGL()->AddHighLight(*focusedObject);
 }
 
 void HierarchyPanel::DrawTree(GameObject* node)
@@ -198,7 +206,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			ImGui::PopStyleColor(3);
 		}
 		DragAndDropSource(node);
-		OnLeftCkickNode(node);
+		OnLeftClickNode(node);
 		OnRightClickNode(node);
 	}
 	else 
@@ -211,7 +219,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			}
 			ImGui::SameLine();
 		}
-		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
+		nodeOpen = ImGui::CollapsingHeader(node->mName.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 		ImGui::PopStyleVar();
 		OnRightClickNode(node);
 	}
@@ -283,6 +291,27 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 				}
 			}
 		}
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+		{
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+			if (resource)
+			{
+				switch (resource->GetType())
+				{
+				case Resource::Type::Object:
+				{
+					GameObject* newGO = EngineApp->GetScene()->LoadPrefab(asset->mPath, target);
+					if (reorder && newGO != nullptr)
+					{
+						target->RemoveChild(newGO->mID);
+						target->mParent->AddChild(newGO, target->mID);
+					}
+					break;
+				}
+				}
+			}
+		}
 		ImGui::EndDragDropTarget();
 	}
 }
@@ -324,7 +353,7 @@ void HierarchyPanel::ShiftClick(GameObject* node, bool selected, bool click)
 const std::vector<GameObject*> HierarchyPanel::FilterMarked() const 
 {
 	std::vector<GameObject*> filteredList;
-	for (auto object : mMarked) 
+	for (GameObject* object : mMarked) 
 	{
 		GameObject* parent = object->mParent;
 		while (parent != nullptr) 

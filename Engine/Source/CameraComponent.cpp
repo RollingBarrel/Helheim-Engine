@@ -70,17 +70,17 @@ void CameraComponent::Update()
     }
 
     //Frustum culling updates
-    App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
-    std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
+    //App->GetScene()->ResetFrustumCulling(App->GetScene()->GetRoot());
+    //std::set<GameObject*> drawableObjects = App->GetScene()->GetQuadtreeRoot()->GetObjectsInFrustum(&mFrustum);
 
-    for (const auto& object : drawableObjects)
-    {
-        MeshRendererComponent* meshComponent = (MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER);
-        if (meshComponent != nullptr)
-        {
-            meshComponent->SetInsideFrustum(true);
-        }
-    }
+    //for (const auto& object : drawableObjects)
+    //{
+    //    MeshRendererComponent* meshComponent = (MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER);
+    //    if (meshComponent != nullptr)
+    //    {
+    //        meshComponent->SetInsideFrustum(true);
+    //    }
+    //}
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
@@ -106,12 +106,28 @@ void CameraComponent::SetFOV(float value)
 {
     mFrustum.horizontalFov = math::DegToRad(value);
     mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
+
 }
 
 void CameraComponent::SetAspectRatio(float value)
 {
     mAspectRatio = value;
     mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
+
+}
+
+void CameraComponent::SetNearPlane(float value) 
+{
+    mFrustum.nearPlaneDistance = value;
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
+}
+void CameraComponent::SetFarPlane(float value) 
+{ 
+    mFrustum.farPlaneDistance = value;
+    App->GetOpenGL()->SetOpenGlCameraUniforms();
+
 }
 
 void CameraComponent::Save(Archive& archive) const

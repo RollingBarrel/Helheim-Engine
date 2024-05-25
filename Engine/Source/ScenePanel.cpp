@@ -113,22 +113,27 @@ ScenePanel::~ScenePanel()
 
 void ScenePanel::Draw(int windowFlags)
 {
-	windowFlags |= ImGuiWindowFlags_NoMove;
+	windowFlags |= ImGuiWindowFlags_NoMove | ImGuiWindowFlags_MenuBar;
 
-	if (ImGui::Begin("Game", &mOpen, windowFlags))
+	if (EngineApp->GetEngineCamera()->HaveGameCameras())
 	{
-		if (ImGui::IsWindowAppearing())
+		if (ImGui::Begin("Game", &mOpen, windowFlags))
 		{
-			EngineApp->GetEngineCamera()->ActivateGameCamera();
-		}
+			MenuGBuffer();
+			if (ImGui::IsWindowAppearing())
+			{
+				EngineApp->GetEngineCamera()->ActivateGameCamera();
+			}
 
-		DrawScene();
+			DrawScene();
+		}
+		ImGui::End();
 	}
-	ImGui::End();
 
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
+		MenuGBuffer();
 		if (ImGui::IsWindowAppearing())
 		{
 			EngineApp->GetEngineCamera()->ActivateEditorCamera();
@@ -138,6 +143,46 @@ void ScenePanel::Draw(int windowFlags)
 
 	}
 	ImGui::End();
+}
+
+void ScenePanel::MenuGBuffer()
+{
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginCombo("##Screen Output", currentSceneName.c_str(), ImGuiComboFlags_PopupAlignLeft))
+		{
+			if (ImGui::Selectable("SCENE")) {
+				currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
+				currentSceneName = "SCENE";
+			}
+			//if (ImGui::Selectable("DEPTH")) {
+			//	currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
+			//	currentSceneName = "DEPTH";
+			//}
+			if (ImGui::Selectable("DIFFUSE")) {
+				currentScene = EngineApp->GetOpenGL()->GetGBufferDiffuse();
+				currentSceneName = "DIFFUSE";
+			}
+			if (ImGui::Selectable("SPECULAR")) {
+				currentScene = EngineApp->GetOpenGL()->GetGBufferSpecularRough();
+				currentSceneName = "SPECULAR";
+			}
+			if (ImGui::Selectable("EMISSIVE")) {
+				currentScene = EngineApp->GetOpenGL()->GetGBufferEmissive();
+				currentSceneName = "EMISSIVE";
+			}
+			if (ImGui::Selectable("NORMALS")) {
+				currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();
+				currentSceneName = "NORMALS";
+			}
+			if (ImGui::Selectable("DEPTH")) {
+				currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
+				currentSceneName = "DEPTH";
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::EndMenuBar();
+	}
 }
 
 void ScenePanel::DrawScene()
@@ -150,8 +195,14 @@ void ScenePanel::DrawScene()
 		prevSizeX = size.x;
 		prevSizeY = size.y;
 	}
-	ImGui::Image((void*)(intptr_t)EngineApp->GetOpenGL()->GetFramebufferTexture(), size, ImVec2(0, 1), ImVec2(1, 0));
+	if (currentScene == 0)
+	{
+		currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
+		currentSceneName = "SCENE";
+	}
+	ImGui::Image((void*)(intptr_t)currentScene, size, ImVec2(0, 1), ImVec2(1, 0));
 
+	
 	mWindowsPosition = float2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
 	mWindowsSize = float2(ImGui::GetWindowSize().x, ImGui::GetWindowSize().y);
 	EngineApp->GetWindow()->SetGameWindowsPosition(mWindowsPosition);
@@ -190,16 +241,17 @@ void ScenePanel::DrawScene()
 					GameObject* gameObjectRoot = new GameObject(name.c_str(), EngineApp->GetScene()->GetRoot());
 
 					std::vector<GameObject*> tempVec;
+					ResourceModel* rModel = reinterpret_cast<ResourceModel*>(resource);
+					
+					tempVec.reserve(rModel->GetNodes().size());
 
-					tempVec.reserve(reinterpret_cast<ResourceModel*>(resource)->GetNodes().size());
-
-					for (int i = 0; i < tempVec.capacity(); ++i)
+					for (int i = 0; i < rModel->GetNodes().size(); ++i)
 					{
-						ModelNode node = reinterpret_cast<ResourceModel*>(resource)->GetNodes()[i];
+						ModelNode node = rModel->GetNodes()[i];
 						if (node.mParentIndex == -1)
-							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), gameObjectRoot, true));
+							tempVec.push_back(DragToScene(node, i, *rModel, gameObjectRoot, true));
 						else
-							tempVec.push_back(DragToScene(node, i, *(reinterpret_cast<ResourceModel*>(resource)), tempVec.at(node.mParentIndex), false));
+							tempVec.push_back(DragToScene(node, i, *rModel, tempVec.at(node.mParentIndex), false));
 
 						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
 						//{
@@ -221,7 +273,7 @@ void ScenePanel::DrawScene()
 					break;
 				case Resource::Type::Object:
 				{
-					EngineApp->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
+					EngineApp->GetScene()->LoadPrefab(asset->mPath);
 					break;
 				}
 				case Resource::Type::NavMesh:
@@ -232,6 +284,7 @@ void ScenePanel::DrawScene()
 
 		ImGui::EndDragDropTarget();
 	}
+
 
 	ImGuizmo::OPERATION currentGuizmoOperation = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoOperation();
 	ImGuizmo::MODE currentGuizmoMode = ((EditorControlPanel*)EngineApp->GetEditor()->GetPanel(EDITORCONTROLPANEL))->GetGuizmoMode();

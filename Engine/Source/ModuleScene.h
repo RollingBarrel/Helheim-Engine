@@ -6,6 +6,7 @@
 #include "Archive.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 class Quadtree;
 class GameObject;
@@ -26,7 +27,7 @@ public:
 
 	// Getters
 	GameObject* GetRoot() const { return mRoot; }
-	std::string const GetName();
+	const std::string& GetName() const;
 
 	// GameObjects
 	GameObject* Find(const char* name) const;
@@ -45,6 +46,8 @@ public:
 		mGameObjectsToLoadIntoScripts.push_back(pair);
 	}
 
+	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
+
 	// Quadtree
 	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
 	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
@@ -53,7 +56,6 @@ public:
 	// Frustum Culling
 	bool GetApplyFrustumCulling() const { return mApplyculling; }
 	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
-	void ResetFrustumCulling(GameObject* obj);
 
 	// Save / Load Scene
 	void NewScene();
@@ -77,10 +79,10 @@ public:
 	void DeleteTag(Tag* tag);
 
 	// Prefabs
-	static GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
+	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
 	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
-	GameObject* LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update = false, GameObject* parent = nullptr);
-	GameObject* LoadPrefab(const char* saveFilePath, unsigned int resourceId, GameObject* parent) { return LoadPrefab(saveFilePath, resourceId, false, parent); }
+	GameObject* LoadPrefab(const char* saveFilePath, bool update = false, GameObject* parent = nullptr);
+	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent) { return LoadPrefab(saveFilePath, false, parent); }
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }
@@ -92,7 +94,7 @@ private:
 	
 	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
 	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const;
-	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent);
+	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent, std::unordered_map<int, int>* uuids = nullptr);
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
@@ -116,6 +118,8 @@ private:
 	std::vector<Tag*> mTags;
 	unsigned mLastTagIndex = 10;
 
+	// Others
+	std::vector<const MeshRendererComponent*>mCurrRenderComponents;
 };
 
 #endif //_MODULE_SCENE_H_

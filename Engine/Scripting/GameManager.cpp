@@ -12,6 +12,8 @@
 CREATE(GameManager)
 {
     CLASS(owner);
+    SEPARATOR("Player");
+    MEMBER(MemberType::GAMEOBJECT, mPlayer);
     SEPARATOR("Screens");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
@@ -23,10 +25,29 @@ CREATE(GameManager)
     END_CREATE;
 }
 
+
+GameManager* GameManager::mInstance = nullptr;
+
+GameManager* GameManager::GetInstance()
+{
+    if (mInstance == nullptr) {
+        LOG("GameManager instance has not been initialized.");
+        throw std::runtime_error("GameManager instance has not been initialized.");
+    }
+    return mInstance;
+}
+
 GameManager::GameManager(GameObject* owner) : Script(owner) {}
 
-void GameManager::Start() 
+GameManager::~GameManager()
 {
+    delete mInstance;
+}
+
+void GameManager::Start()
+{
+    mInstance = this;
+    
     mPauseScreen->SetEnabled(false);
     mWinScreen->SetEnabled(false);
     mLoseScreen->SetEnabled(false);
@@ -51,8 +72,8 @@ void GameManager::Start()
 
 void GameManager::Update()
 {
-    Controls();
-    Loading();
+     Controls();
+     Loading();
 }
 
 bool GameManager::Delay(float delay)
@@ -78,14 +99,14 @@ void GameManager::Controls()
 
 void GameManager::Loading()
 {
-    if (mLoading)
+    if ( mLoading)
     {
         mLoadingScreen->SetEnabled(true);
 
         if (Delay(0.1f))
         {
             mLoading = false;
-            App->GetScene()->Load("MainMenu.json");
+            LoadLevel("MainMenu.json");
         }
     }
 }
@@ -98,6 +119,11 @@ void GameManager::WinScreen()
 void GameManager::LoseScreen() 
 {
     mLoseScreen->SetEnabled(true);
+}
+
+void GameManager::LoadLevel(const char* LevelName)
+{
+    App->GetScene()->Load(LevelName);
 }
 
 void GameManager::OnWinButtonClick() 

@@ -65,19 +65,22 @@ void BatchManager::EditMaterial(const MeshRendererComponent* meshComponent)
 	}
 }
 
-void BatchManager::AddHighLight(std::vector<Component*> meshComponents)
+void BatchManager::AddCommand(const MeshRendererComponent* meshComponent)
 {
 	for (GeometryBatch* batch : mBatches)
 	{
-		batch->AddHighLight(meshComponents);
+		if (batch->AddToDraw(meshComponent))
+		{
+			return;
+		}
 	}
 }
 
-void BatchManager::RemoveHighLight(std::vector<Component*> meshComponents)
+void BatchManager::CleanUpCommands()
 {
 	for (GeometryBatch* batch : mBatches)
 	{
-		batch->RemoveHighLight(meshComponents);
+		batch->CleanUpCommands();
 	}
 }
 
@@ -89,4 +92,10 @@ void BatchManager::Draw()
 	}
 }
 
-
+void BatchManager::EndFrameDraw()
+{
+	for (GeometryBatch* batch : mBatches)
+	{
+		batch->EndFrameDraw();
+	}
+}

@@ -35,6 +35,7 @@ public:
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color);
     void DrawSkeleton(GameObject* model);
     void DrawColliders(GameObject* root);
+    void DrawBoundingBoxes(GameObject* gameObject);
 
 private:
 

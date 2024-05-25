@@ -234,6 +234,7 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 
 Resource::Type ModuleEngineResource::DeduceResourceType(const char* assetsFile)
 {
+
 	// Extract file extension
 	if (const char* fileExtension = strrchr(assetsFile, '.'))
 	{

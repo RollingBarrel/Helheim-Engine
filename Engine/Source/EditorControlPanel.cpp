@@ -1,6 +1,8 @@
+#include "Globals.h"
 #include "EditorControlPanel.h"
 #include "EngineApp.h"
 
+#include "ModuleEngineCamera.h"
 #include "ModuleEngineScriptManager.h"
 #include "ModuleAudio.h"
 
@@ -167,6 +169,11 @@ void EditorControlPanel::Draw(int windowFlags)
 
 void EditorControlPanel::Play() 
 {
+	if (!EngineApp->GetEngineCamera()->HaveGameCameras())
+	{
+		LOG("WARNING: can not start a game without camera; add a component camera to the scene");
+		return;
+	}
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.05f, 0.05f, 0.07f, 1.0f };
 	
