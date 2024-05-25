@@ -31,12 +31,16 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
 {
-	mMesh = (other.mMesh) ? reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh)) : nullptr;
-	mMaterial = (other.mMaterial) ? reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material)) : nullptr;
+	if (other.mMesh)
+	{
+		SetMesh(other.mMesh->GetUID());
+	}
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
-
-	App->GetOpenGL()->BatchAddMesh(this);
+	if (other.mMaterial)
+	{
+		SetMaterial(other.mMaterial->GetUID());
+	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -82,7 +86,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		if (mMaterial)
 		{
 			App->GetOpenGL()->BatchAddMesh(this);
-			App->GetScene()->GetQuadtreeRoot()->AddObject(*this->GetOwner());
+			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 
 	}
@@ -109,7 +113,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		if (mMesh)
 		{
 			App->GetOpenGL()->BatchAddMesh(this);
-			App->GetScene()->GetQuadtreeRoot()->AddObject(*this->GetOwner());
+			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 	}
 	//TODO: Material Default

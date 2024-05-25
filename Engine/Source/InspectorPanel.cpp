@@ -1411,9 +1411,10 @@ ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
 }
 
 
-constexpr float FLOAT_TOLERANCE = 1e-6;
+#define FLOAT_TOLERANCE 1e-6f
 
-inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) {
+inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
+{
 	return std::fabs(a - b) < tolerance;
 }
 
