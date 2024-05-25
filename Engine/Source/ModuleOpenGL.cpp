@@ -974,6 +974,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 	mBatchManager.EndFrameDraw();
 
+	glActiveTexture(GL_TEXTURE0);
 	for (const ParticleSystemComponent* partSys : mParticleSystems)
 	{
 		partSys->Draw();
