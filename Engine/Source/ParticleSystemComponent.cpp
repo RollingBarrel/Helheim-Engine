@@ -124,9 +124,21 @@ void ParticleSystemComponent::Draw() const
             for (int i = 0; i < mParticles.size(); ++i)
             {
                 float scale = mParticles[i]->GetSize();
-                float3x3 scaleMatrix = float3x3::identity * scale;
                 float3 pos = mParticles[i]->GetPosition();
-                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+                float3x3 scaleMatrix = float3x3::identity * scale;
+                float4x4 transform;
+                if (mStretchedBillboard) 
+                {
+                    float3 aux1 = Cross(norm, mParticles[i]->GetDirection() * mParticles[i]->GetSpeed()).Normalized();
+                    float3 aux2 = Cross(aux1, norm).Normalized();
+                    transform = { float4(aux2, 0), float4(aux1, 0),float4(norm, 0),float4(pos, 1) };
+                    float stretch = (mParticles[i]->GetDirection() * mParticles[i]->GetSpeed()).Dot(aux2);
+                    scaleMatrix[0][0] = scaleMatrix[0][0] * std::max(1.0f, Sqrt(stretch/scale));
+                }
+                else 
+                {
+                    transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+                }
                 transform = transform * scaleMatrix;
                 transform.Transpose();
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
@@ -229,6 +241,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddFloat("Emission Rate", mEmissionRate);
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
+    archive.AddBool("Stretched Billboard", mStretchedBillboard);
     Archive size;
     Archive speed;
     mSizeCurve.SaveJson(size);
@@ -279,6 +292,10 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     if (data.HasMember("Looping") && data["Looping"].IsBool())
     {
         mLooping = data["Looping"].GetBool();
+    }
+    if (data.HasMember("Stretched Billboard") && data["Stretched Billboard"].IsBool())
+    {
+        mStretchedBillboard = data["Stretched Billboard"].GetBool();
     }
     if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
     {
