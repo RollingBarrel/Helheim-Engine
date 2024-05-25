@@ -46,6 +46,7 @@ private:
 	float mEmitterTime = 0.0f;
 	float mEmitterDeltaTime = 0.0f;
 
+	float mDelay = 0.0f;
 	float mDuration = 5.0f;
 	float mMaxLifeTime = 3.0f;
 

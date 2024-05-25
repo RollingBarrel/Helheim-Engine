@@ -1464,6 +1464,10 @@ static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* grad
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
+	ImGui::Text("Delay");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Delay", &(component->mDelay), 0.1f, 0.0f);
+
 	ImGui::Text("Looping");
 	ImGui::SameLine(); 
 	ImGui::Checkbox("##Looping", &(component->mLooping));
@@ -1471,15 +1475,18 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	{
 		ImGui::Text("Duration");
 		ImGui::SameLine(); 
-		ImGui::DragFloat("##Duration", &(component->mDuration), 1.0f, 0.0f);
+		ImGui::DragFloat("##Duration", &(component->mDuration), 0.1f, 0.0f);
 	}
+
+	ImGui::Text("Max Particles");
+	ImGui::SameLine();
+	ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0,200);
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
-	ImGui::DragFloat("##Emision Rate", &(component->mEmissionRate), 1.0f, 0.0f);
+	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
 	ImGui::Text("Lifetime");
 	ImGui::SameLine(); 
-	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
-	//ImGui::DragFloat("Start size", &(component->mSize));
+	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 0.1f, 0.0f);
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
@@ -1490,7 +1497,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	static int Selecteditem = 0;
 	ImGui::Text("Shape");
 	ImGui::SameLine();
-	bool check = ImGui::Combo("##", &Selecteditem, items, IM_ARRAYSIZE(items));
+	bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
 	if (check)
 	{
 		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
@@ -1501,20 +1508,20 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		case EmitterShape::Type::CONE:
 			ImGui::Text("Angle");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Angle", &component->mShape->mShapeAngle, 1.0f, 0.0f);
+			ImGui::DragFloat("##Angle", &component->mShape->mShapeAngle, 0.1f, 0.0f);
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 1.0f, 0.0f);
+			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
 			break;
 		case EmitterShape::Type::SQUARE:
 			ImGui::Text("Width");
 			ImGui::SameLine();
-			ImGui::DragFloat2("##Width", &component->mShape->mShapeSize.x, 1.0f, 0.0f);
+			ImGui::DragFloat2("##Width", &component->mShape->mShapeSize.x, 0.1f, 0.0f);
 			break;
 		case EmitterShape::Type::CIRCLE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 1.0f, 0.0f);
+			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
 			break;
 
 	}

@@ -154,6 +154,7 @@ void ParticleSystemComponent::Update()
 {
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
+    if (mEmitterTime < mDelay) return;
 
 	for (int i = 0; i < mParticles.size(); i++)
 	{
@@ -170,6 +171,7 @@ void ParticleSystemComponent::Update()
             mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
         }
 	}
+    if (!mLooping and mEmitterTime - mDelay > mDuration) return;
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
@@ -221,6 +223,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
 {
     Component::Save(archive);
     archive.AddInt("Image", mResourceId);
+    archive.AddFloat("Delay", mDelay);
     archive.AddFloat("Duration", mDuration);
     archive.AddFloat("Life Time", mMaxLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
@@ -240,6 +243,10 @@ void ParticleSystemComponent::Save(Archive& archive) const
 void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
     Component::LoadFromJSON(data, owner);
+    if (data.HasMember("Delay") && data["Delay"].IsFloat())
+    {
+        mDelay = data["Delay"].GetFloat();
+    }
     if (data.HasMember("Duration") && data["Duration"].IsFloat())
     {
         mDuration = data["Duration"].GetFloat();
@@ -307,6 +314,7 @@ void ParticleSystemComponent::InitEmitterShape()
 void ParticleSystemComponent::Enable()
 {
     App->GetOpenGL()->AddParticleSystem(this);
+    mEmitterTime = 0.0f;
 }
 
 void ParticleSystemComponent::Disable()
