@@ -35,12 +35,10 @@ Quadtree::~Quadtree()
 	CleanUp();
 }
 
-bool Quadtree::AddObject(const GameObject& object)
+bool Quadtree::AddObject(const MeshRendererComponent& meshRenderer)
 {
-	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(object.GetComponent(ComponentType::MESHRENDERER));
-	if (meshRenderer == nullptr)
-		return false;
-	const AABB& objectAABB = meshRenderer->GetAABB();
+	const GameObject& object = *meshRenderer.GetOwner();
+	const AABB& objectAABB = meshRenderer.GetAABB();
 
 
 	if (!mBoundingBox.Intersects(objectAABB))
@@ -59,10 +57,10 @@ bool Quadtree::AddObject(const GameObject& object)
 		{
 			SplitNode();
 		}
-		mChildren[0]->AddObject(object);
-		mChildren[1]->AddObject(object);
-		mChildren[2]->AddObject(object);
-		mChildren[3]->AddObject(object);
+		mChildren[0]->AddObject(meshRenderer);
+		mChildren[1]->AddObject(meshRenderer);
+		mChildren[2]->AddObject(meshRenderer);
+		mChildren[3]->AddObject(meshRenderer);
 		return true;
 	}
 
@@ -169,9 +167,10 @@ void Quadtree::AddHierarchyObjects(const GameObject& node)
 {
 	for (const GameObject* child : node.GetChildren()) {
 		//TODO Detect if the child is already inside to avoid duplicates when pressing button more than twice in a row
-		if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
+		MeshRendererComponent* mesh = reinterpret_cast<MeshRendererComponent*>(child->GetComponent(ComponentType::MESHRENDERER));
+		if (mesh)
 		{
-			AddObject(*child);
+			AddObject(*mesh);
 		}
 		AddHierarchyObjects(*child);
 	}
@@ -286,10 +285,12 @@ void Quadtree::SplitNode()
 
 	for (const GameObject* object : mGameObjects)
 	{
-		mChildren[0]->AddObject(*object);
-		mChildren[1]->AddObject(*object);
-		mChildren[2]->AddObject(*object);
-		mChildren[3]->AddObject(*object);
+		MeshRendererComponent* mesh = reinterpret_cast<MeshRendererComponent*>(object->GetComponent(ComponentType::MESHRENDERER));
+		assert(mesh && "Game object does not have mesh renderer component");
+		mChildren[0]->AddObject(*mesh);
+		mChildren[1]->AddObject(*mesh);
+		mChildren[2]->AddObject(*mesh);
+		mChildren[3]->AddObject(*mesh);
 	}
 
 	mGameObjects.clear();
