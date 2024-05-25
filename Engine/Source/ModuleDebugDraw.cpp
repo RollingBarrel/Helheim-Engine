@@ -657,6 +657,10 @@ void ModuleDebugDraw::Draw()
         glPopDebugGroup();
 
     }
+#ifdef _DEBUG
+    DrawGrid();
+#endif // DEBUG
+
     
 
 
@@ -677,23 +681,6 @@ void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
 
 void ModuleDebugDraw::DrawSphere(const float center[3], const float color[3], const float radius)
 {
-    ////math::float3 dCenter = math::float3(center);
-    //math::float3 iFrom = { -radius, 0, 0};
-    //math::float3 iTo = { radius, 0, 0};
-    //math::float3 oFrom;
-    //math::float3 oTo;
-    //for (int j = 0; j < precision; ++j)
-    //{
-    //    float angleZ = dd::degreesToRadians((180 / precision) * j);
-    //    for (int i = 0; i < precision; ++i)
-    //    {
-    //        float angleY = dd::degreesToRadians((180 / precision) * i);
-    //        ddMat4x4 mat = ddMat4x4::FromTRS(math::float3(center), ddMat4x4::FromEulerXYZ(0, angleY, angleZ), { 1,1,1 });
-    //        dd::matTransformPointXYZ(oFrom, iFrom, mat);
-    //        dd::matTransformPointXYZ(oTo, iTo, mat);
-    //        dd::line(oFrom, oTo, math::float3(color));
-    //    }
-    //}
     dd::sphere(ddVec3(center), ddVec3(color), radius);
 }
 
@@ -763,14 +750,14 @@ void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
         AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
         if (aabb.IsFinite())
         {
-            EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+           DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
         }
 
         //OBB obb = gameObject->GetOBB();
         OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
         if (obb.IsFinite())
         {
-            EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
+           DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
         }
     }
     
