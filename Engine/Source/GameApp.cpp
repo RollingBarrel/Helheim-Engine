@@ -31,15 +31,14 @@ GameApplication::GameApplication()
 	modules[4] = audio = new ModuleAudio();
 	modules[5] = render = new ModuleOpenGL();
 	modules[6] = resource = new ModuleResource();
-	modules[7] = physics = new ModulePhysics();
 	modules[7] = scriptManager = new ModuleScriptManager();
 	modules[8] = debugDraw = new ModuleDebugDraw();
+	modules[8] = physics = new ModulePhysics();
 	modules[9] = scene = new ModuleScene();
 	modules[10] = navigation = new ModuleDetourNavigation();
 	modules[11] = ui = new ModuleUI();
 	modules[12] = event = new ModuleEvent();
 	modules[13] = game = new ModuleGame();
-
 }
 
 GameApplication::~GameApplication()

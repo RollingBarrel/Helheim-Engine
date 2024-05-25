@@ -94,10 +94,6 @@ GameObject::~GameObject()
 {
 	for (Component* component : mComponents)
 	{
-		if (component->GetType() == ComponentType::MESHRENDERER)
-		{
-			App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this);
-		}
 		delete component;
 	}
 	mComponents.clear();
@@ -251,14 +247,6 @@ AABB GameObject::GetAABB()
 	return mixedAABB;
 }
 
-OBB GameObject::GetOBB()
-{
-	OBB obb(GetAABB());
-	obb.Transform(mWorldTransformMatrix);
-
-	return obb;
-}
-
 void GameObject::LookAt(float3 target)
 {
 	float4x4 rotationMatrix = float4x4::identity;
@@ -385,9 +373,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 	}
 	case ComponentType::SPOTLIGHT:
 	{
-		const float3 pos = GetWorldPosition();
-		const SpotLight def = { 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) };
-		newComponent = new SpotLightComponent(this, def);
+		newComponent = new SpotLightComponent(this);
 		break;
 	}
 	case ComponentType::SCRIPT:
@@ -445,10 +431,6 @@ Component* GameObject::CreateComponent(ComponentType type)
 	if (newComponent)
 	{
 		mComponents.push_back(newComponent);
-	}
-	if (type == ComponentType::MESHRENDERER)
-	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 	}
 	return newComponent;
 }
@@ -1008,10 +990,6 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	{
 		mChildren.push_back(child);
 	}
-	if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(*child);
-	}
 }
 
 GameObject* GameObject::RemoveChild(const int id)
@@ -1022,10 +1000,6 @@ GameObject* GameObject::RemoveChild(const int id)
 	{
 		if ((*it)->GetID() == id)
 		{
-			if ((*it)->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-			{
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*(*it));
-			}
 			movedObject = *it;
 			mChildren.erase(it);
 			break;
