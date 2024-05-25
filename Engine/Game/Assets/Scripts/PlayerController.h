@@ -12,6 +12,7 @@ class ObjectPool;
 class GameManager;
 class AnimationStateMachine;
 class BoxColliderComponent;
+class HudController;
 struct CollisionData;
 
 enum class PlayerState 
@@ -99,11 +100,10 @@ class PlayerController :public Script
         void CheckDebugOptions();
 
         void Victory();
-        void GameoOver();
+        void GameOver();
         bool Delay(float delay);
         void Loading();
         
-
         void OnCollisionEnter(CollisionData* collisionData);
 
         Weapon mWeapon = Weapon::RANGE;
@@ -151,15 +151,17 @@ class PlayerController :public Script
         //Melee
         bool mLeftMouseButtonPressed = false;
 
-            //Melee Base Attack
+        //Melee Base Attack
         float mMeleeBaseDamage = 2.0f;
         float mMeleeBaseRange = 1.0f;
-               //Combo
+               
+        //Combo
         int mMeleeBaseComboStep = 1;
         float mMeleeBaseComboTimer = 0.0f;
         const float mMeleeBaseMaxComboInterval = 5.0f; 
         bool mIsMeleeBaseComboActive = false;
-               //Final Attack
+               
+        //Final Attack
         const float mMeleeBaseFinalAttackDuration = 0.5f; 
         float mMeleeBaseFinalAttackTimer = 0.0f;
         float mMeleeBaseMoveDuration = 0.5f;
@@ -170,14 +172,15 @@ class PlayerController :public Script
         const float mMeleeSpecialAttackDuration = 2.0f;
         float mMeleeSpecialDamage = 4.0f;
         float mMeleeSpecialRange = 2.0f;
-               //Cooldown
+              
+        //Cooldown
         bool mIsMeleeSpecialCoolDownActive = false;
         float mMeleeSpecialCoolDownTimer = 0.0f;
         float mMeleeSpecialCoolDown = 4.0f;
 
         //HUD
-        GameObject* mShieldGO = nullptr;
-        SliderComponent* mShieldSlider = nullptr;
+        GameObject* mHudControllerGO = nullptr;
+        HudController* mHudController = nullptr;
 
         //DEBUG
         bool mGodMode = false;

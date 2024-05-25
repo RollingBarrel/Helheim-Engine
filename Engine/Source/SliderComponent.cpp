@@ -10,7 +10,7 @@ SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(own
 
 SliderComponent::SliderComponent(const SliderComponent& original, GameObject* owner) : Component(owner, ComponentType::SLIDER)
 {
-	mFillPercent = original.mFillPercent;
+	mValue = original.mValue;
 	mCanvas = original.mCanvas;
 }
 
@@ -63,12 +63,12 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	//mFillTransform2D->SetSize(float2(mFillPercent, 1));
 }
 
-void SliderComponent::SetFillPercent(float fillPercent)
+void SliderComponent::SetValue(float fillPercent)
 {
 	if (mFillTransform2D == nullptr) mFillTransform2D = (Transform2DComponent*)mFill->GetComponent(ComponentType::TRANSFORM2D);
 	if (mBackground == nullptr) mBgTransform2D = (Transform2DComponent*)mBackground->GetComponent(ComponentType::TRANSFORM2D);
 
-	this->mFillPercent = fillPercent;
+	this->mValue = fillPercent;
 
 	if (!mCanvas) return;
 	if (mCanvas->GetScreenSpace()) 

@@ -1,24 +1,31 @@
 #include "PlayerController.h"
+
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleScene.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "ModuleDetourNavigation.h"
-#include "Keys.h"
-#include "Math/MathFunc.h"
-#include "Geometry/Plane.h"
+#include "Physics.h"
+#include "ModuleScene.h"
+
 #include "AnimationComponent.h"
 #include "AnimationStateMachine.h"
 #include "AudioSourceComponent.h"
+#include "SliderComponent.h"
+#include "BoxColliderComponent.h"
+#include "CameraComponent.h"
+
+#include "Keys.h"
+#include "Math/MathFunc.h"
+#include "Geometry/Plane.h"
+#include <functional>
+
+#include "MathConstants.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
-#include "SliderComponent.h"
-#include "Physics.h"
 #include "ObjectPool.h"
 #include "GameManager.h"
-#include "MathConstants.h"
-#include "BoxColliderComponent.h"
-#include <functional>
+#include "HudController.h"
 
 CREATE(PlayerController)
 {
@@ -47,7 +54,7 @@ CREATE(PlayerController)
     
 
     SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mShieldGO);
+    MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -80,8 +87,11 @@ void PlayerController::Start()
     mShield = mMaxShield;
     mSanity = mMaxSanity;
 
-    if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
-
+    if (mHudControllerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
+        mHudController = static_cast<HudController*>(script->GetScriptInstance());
+    }
     
 
     if (mFootStepAudioHolder)
@@ -106,9 +116,7 @@ void PlayerController::Start()
     }
 
     // CAMERA
-    ModuleScene* scene = App->GetScene();
-    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
-
+    mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
 
     //Animation
     mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
@@ -278,7 +286,7 @@ void PlayerController::Update()
 
     if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
     {
-        GameManager::GetInstance()->WinScreen();
+        mHudController->SetScreen(SCREEN::WIN, true);
     }
 
     Loading();
@@ -865,7 +873,7 @@ void PlayerController::TakeDamage(float damage)
 void PlayerController::Death() 
 {
     mPlayerIsDead = true;
-    GameManager::GetInstance()->LoseScreen();
+    mHudController->SetScreen(SCREEN::LOSE, true);
 }
 
 bool PlayerController::IsDead() 
@@ -875,7 +883,7 @@ bool PlayerController::IsDead()
 
 void PlayerController::UpdateShield() 
 {
-    if (mShieldSlider) mShieldSlider->SetFillPercent(mShield / mMaxShield);
+    mHudController->SetHealth(mShield / mMaxShield);
 }
 
 void PlayerController::CheckDebugOptions() 
@@ -927,23 +935,23 @@ void PlayerController::UpdateBattleSituation()
 void PlayerController::Victory()
 {
     mVictory = true;
-    App->GetScene()->Find("Victory")->SetEnabled(true);
+    mHudController->SetScreen(SCREEN::WIN, true);
 
     if (Delay(mTimeScreen))
     {
-        App->GetScene()->Find("Victory")->SetEnabled(false);
+        mHudController->SetScreen(SCREEN::WIN, true);
         mLoadingActive = true;
     }
 }
 
-void PlayerController::GameoOver()
+void PlayerController::GameOver()
 {
     mGameOver = true;
-    App->GetScene()->Find("Game_Over")->SetEnabled(true);
+    mHudController->SetScreen(SCREEN::LOSE, true);
 
     if (Delay(mTimeScreen))
     {
-        App->GetScene()->Find("Game_Over")->SetEnabled(false);
+        mHudController->SetScreen(SCREEN::LOSE, false);
         mLoadingActive = true;
     }
 }
@@ -964,13 +972,13 @@ void PlayerController::Loading()
 {
     if (mLoadingActive)
     {
-        App->GetScene()->Find("Loading_Screen")->SetEnabled(true);
+        mHudController->SetScreen(SCREEN::LOAD, true);
 
         if (Delay(3.0f))
         {
             mLoadingActive = false;
-            App->GetScene()->Find("Loading_Screen")->SetEnabled(false);
-            App->GetScene()->Load("MainMenu.json");
+            mHudController->SetScreen(SCREEN::LOAD, false);
+            GameManager::GetInstance()->LoadLevel("MainMenu.json");
         }
     }
 }
