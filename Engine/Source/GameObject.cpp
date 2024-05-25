@@ -21,6 +21,7 @@
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TextComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
 
@@ -410,6 +411,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::SLIDER:
 		newComponent = new SliderComponent(this);
+		break;
+	case ComponentType::TEXT:
+		newComponent = new TextComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
 		newComponent = new ParticleSystemComponent(this);

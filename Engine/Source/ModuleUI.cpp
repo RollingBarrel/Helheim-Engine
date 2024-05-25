@@ -10,6 +10,7 @@
 #include "GameObject.h"
 #include "CanvasComponent.h"
 #include "ImageComponent.h"
+#include "TextComponent.h"
 #include "Transform2DComponent.h"
 
 #include "glew.h"
@@ -40,19 +41,27 @@ update_status ModuleUI::PreUpdate(float dt)
 
 update_status ModuleUI::Update(float dt) 
 {
-	// TODO: Check if app is on Menu or Pause
-	CheckRaycast();
-
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
-	DrawWidget(App->GetScene()->GetRoot());
-	App->GetOpenGL()->UnbindFramebuffer();
+	
+	for (GameObject* gameObject : mCanvasList) 
+	{
+		DrawWidget(gameObject);
+	}
+
+	App->GetOpenGL()->UnbindSceneFramebuffer();
 
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleUI::PostUpdate(float dt) 
 {
+	// TODO: Check if app is on Menu or Pause
+	for (GameObject* gameObject : mCanvasList) 
+	{
+		CheckRaycast();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -67,6 +76,11 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 
 	if (gameObject->IsEnabled())
 	{
+		for (GameObject* child : gameObject->GetChildren())
+		{
+			DrawWidget(child);
+		}
+
 		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
 		{
 			ImageComponent* image = (ImageComponent*)component;
@@ -76,11 +90,34 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			}
 		}
 
-		for (GameObject* child : gameObject->GetChildren())
+		for (Component* component : gameObject->GetComponents(ComponentType::TEXT))
 		{
-			DrawWidget(child);
+			TextComponent* text = (TextComponent*)component;
+			if (text->IsEnabled())
+			{
+				text->Draw();
+			}
 		}
 	}
+}
+
+void ModuleUI::RemoveCanvas(GameObject* gameObject)
+{
+	if (mCanvasList.empty()) return;
+
+	for (std::vector<GameObject*>::iterator it = mCanvasList.begin(); it != mCanvasList.end(); ++it)
+	{
+		if ((*it)->GetID() == gameObject->GetID())
+		{
+			mCanvasList.erase(it);
+			return;
+		}
+	}
+}
+
+void ModuleUI::AddCanvas(GameObject* gameObject)
+{
+	mCanvasList.push_back(gameObject);
 }
 
 void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered) 
@@ -91,6 +128,9 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 	
 	for (auto child : gameObject->GetChildren()) 
 	{
+		// Recursively check children
+		CheckRaycastRecursive(child, eventTriggered);
+		
 		if (eventTriggered) return;
 		if (child == nullptr) continue;
 		if (!child->IsEnabled()) continue;
@@ -115,23 +155,22 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			float2 minImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize) - transform2D->GetSize().Div(canvasSize);
 			float2 maxImagePoint = transform2D->GetGlobalMatrix().TranslatePart().xy().Mul(float2(2.0f, 2.0f)).Div(canvasSize) + transform2D->GetSize().Div(canvasSize);
 
-			// Check if the mouse position is inside the bounds of the image
 			if (mouseX >= minImagePoint.x && mouseY >= minImagePoint.y && mouseX <= maxImagePoint.x && mouseY <= maxImagePoint.y) 
 			{
 				KeyState mouseButtonLeftState = App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT);
-				// Click event (button released after press)
+				
 				if (mouseButtonLeftState == KeyState::KEY_UP)
 				{
 					button->TriggerEvent(EventType::CLICK);
 					eventTriggered = true;
-					return; // Terminate function
+					return; 
 				}
 				// Button pressed
 				else if (mouseButtonLeftState == KeyState::KEY_DOWN || mouseButtonLeftState == KeyState::KEY_REPEAT)
 				{
 					button->TriggerEvent(EventType::PRESS);
 					eventTriggered = true;
-					return; // Terminate function
+					return; 
 				}
 				// Mouse hover
 				else 
@@ -139,7 +178,7 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 					button->TriggerEvent(EventType::HOVER);
 					button->SetHovered(true);
 					eventTriggered = true;
-					return; // Terminate function
+					return;
 				}
 			}
 
@@ -150,8 +189,6 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			}
 		}
 
-		// Recursively check children
-		CheckRaycastRecursive(child, eventTriggered);
 	}
 }
 
