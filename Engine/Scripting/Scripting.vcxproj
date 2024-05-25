@@ -119,7 +119,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)\Source\Dependencies\MathGeoLib-v1.5\include\Math;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;$(SolutionDir)Source\Dependencies\FMOD\api\core\inc;$(SolutionDir)Source\Dependencies\FMOD\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Game\Assets\Scripts;$(SolutionDir)Source;$(SolutionDir)Source\Dependencies\MathGeoLib-v1.5\include;$(SolutionDir)\Source\Dependencies\MathGeoLib-v1.5\include\Math;$(SolutionDir)Source\Dependencies\RapidJSON-1.1.0\include;$(SolutionDir)Source\Dependencies\FMOD\api\core\inc;$(SolutionDir)Source\Dependencies\FMOD\api\studio\inc;$(SolutionDir)Source\Dependencies\Optick\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838; 33010</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -170,6 +170,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
     <ClInclude Include="MainMenuManager.h" />
+    <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
@@ -185,6 +187,7 @@
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="ItemShield.cpp" />
     <ClCompile Include="Level1AManager.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
@@ -192,6 +195,7 @@
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="StateMachineTest.cpp" />
     <ClCompile Include="TestScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

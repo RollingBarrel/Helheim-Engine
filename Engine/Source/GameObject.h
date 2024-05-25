@@ -10,6 +10,7 @@
 #include "Archive.h"
 #include "Tag.h"
 #include "MeshRendererComponent.h"
+#include <unordered_map>
 
 #undef max
 #undef min
@@ -27,7 +28,8 @@ class ENGINE_API GameObject
 	friend class InspectorPanel;
 
 public:
-	GameObject(GameObject* parent);
+	GameObject(const char* name);
+	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
 	GameObject(const GameObject& original);
@@ -103,7 +105,7 @@ public:
 	// Save / Load
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
-	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
+	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent, std::unordered_map<int,int>* uuids = nullptr);
 	void LoadComponentsFromJSON(const rapidjson::Value& components);
 
 	// Prefabs
@@ -118,7 +120,6 @@ private:
 	Component* RemoveComponent(Component* component);
 
 	void RecalculateLocalTransform();
-	void RefreshBoundingBoxes();
 	void SetActiveInHierarchy(bool active);
 	std::pair<GameObject*, int> RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind);
 

@@ -21,6 +21,6 @@ void EngineLog(const char file[], int line, const char* format, ...)
 
 	if (App != nullptr)
 	{
-		((ConsolePanel*)EngineApp->GetEditor()->GetPanel(CONSOLEPANEL))->SetLog(tmp_string2);
+		((ConsolePanel*)EngineApp->GetEditor()->GetPanel(CONSOLEPANEL))->AddLog(tmp_string2);
 	}
 }

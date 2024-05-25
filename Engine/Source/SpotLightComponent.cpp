@@ -1,11 +1,8 @@
 #include "SpotLightComponent.h"
-#include "SpotLightComponent.h"
-#include "SpotLightComponent.h"
-#include "SpotLightComponent.h"
 #include "ModuleOpenGL.h"
 #include "Application.h"
-#include "SpotLightComponent.h"
 #include "glew.h"
+#include "MathFunc.h"
 
 SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, ComponentType::SPOTLIGHT)
 {
@@ -31,7 +28,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 
 	mData.range = 15.0f;
 	mData.bias = 0.00001f;
-	
+
 
 	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
 	mShadowFrustum.pos = owner->GetWorldPosition();
@@ -40,7 +37,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mShadowFrustum.nearPlaneDistance = 0.1f;
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
-	mShadowFrustum.verticalFov =  2.0f * acos(mData.color[3]);
+	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
 	mShadowMapSize = 512;
 
@@ -57,7 +54,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	App->GetOpenGL()->AddSpotLight(*this);
 }
 
-SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner) 
+SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
 	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mShadowMapSize(original->mShadowMapSize), mCastShadow(original->mCastShadow)
 {
 	glGenTextures(1, &mShadowMapId);
@@ -73,16 +70,16 @@ SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameO
 	App->GetOpenGL()->AddSpotLight(*this);
 }
 
-SpotLightComponent::~SpotLightComponent() 
-{ 
+SpotLightComponent::~SpotLightComponent()
+{
 	App->GetOpenGL()->RemoveSpotLight(*this);
 	glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
 	glDeleteTextures(1, &mShadowMapId);
 }
 
-const float* SpotLightComponent::GetPosition() const 
-{ 
-	return mOwner->GetWorldPosition().ptr(); 
+const float* SpotLightComponent::GetPosition() const
+{
+	return mOwner->GetWorldPosition().ptr();
 }
 
 void SpotLightComponent::SetColor(float color[3])
@@ -130,14 +127,14 @@ void SpotLightComponent::SetInnerAngle(float angle)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-void SpotLightComponent::SetBias(float bias) 
-{ 
+void SpotLightComponent::SetBias(float bias)
+{
 	mData.bias = bias;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-void SpotLightComponent::SetShadowMapSize(unsigned int shadowMapSize) 
-{ 
+void SpotLightComponent::SetShadowMapSize(unsigned int shadowMapSize)
+{
 	mShadowMapSize = shadowMapSize;
 	glMakeTextureHandleNonResidentARB(mData.shadowMapHandle);
 	glDeleteTextures(1, &mShadowMapId);
@@ -167,7 +164,7 @@ void SpotLightComponent::Update()
 		mData.aimD[0] = newDirection[0];
 		mData.aimD[1] = newDirection[1];
 		mData.aimD[2] = newDirection[2];
-		
+
 
 		mShadowFrustum.pos = newPosition;
 		mShadowFrustum.front = newDirection;
@@ -178,12 +175,12 @@ void SpotLightComponent::Update()
 	}
 }
 
-inline Component* SpotLightComponent::Clone(GameObject* owner) const 
-{ 
+inline Component* SpotLightComponent::Clone(GameObject* owner) const
+{
 	return new SpotLightComponent(this, owner);
 }
 
-void SpotLightComponent::Save(Archive& archive) const 
+void SpotLightComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddFloat4("Position", mData.pos);
@@ -196,7 +193,7 @@ void SpotLightComponent::Save(Archive& archive) const
 }
 
 //TODO: why is the GO owner passed here??
-void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
+void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner)
 {
 
 	if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())

@@ -8,6 +8,7 @@
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
 #include "AnimationComponent.h"
+#include "AnimationStateMachine.h"
 #include "AudioSourceComponent.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
@@ -15,47 +16,38 @@
 #include "Physics.h"
 #include "ObjectPool.h"
 #include "GameManager.h"
-
+#include "MathConstants.h"
+#include "BoxColliderComponent.h"
+#include <functional>
 
 CREATE(PlayerController)
 {
     CLASS(owner);
-    MEMBER(MemberType::GAMEOBJECT, mGameManagerGO);
 
     SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mMaxShield);
     MEMBER(MemberType::FLOAT, mMaxSanity);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
-    MEMBER(MemberType::FLOAT, mDashSpeed);
-    MEMBER(MemberType::FLOAT, mDashDistance);
+    MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
-    MEMBER(MemberType::INT, mMaxDashCharges);
+    MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE ATTACK");
     MEMBER(MemberType::FLOAT, mMeleeBaseDamage);
-    MEMBER(MemberType::FLOAT, mMinMeleeChargeTime);
-    MEMBER(MemberType::FLOAT, mMaxMeleeChargeTime);
-    MEMBER(MemberType::FLOAT, mMeleeChargeAttackMultiplier);
+    MEMBER(MemberType::FLOAT, mMeleeBaseRange);
+    MEMBER(MemberType::FLOAT, mMeleeSpecialDamage);
+    MEMBER(MemberType::FLOAT, mMeleeSpecialRange);
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
-    MEMBER(MemberType::FLOAT, mFireRate);
     MEMBER(MemberType::INT, mAmmoCapacity);
-    MEMBER(MemberType::FLOAT, mMinRangeChargeTime);
-    MEMBER(MemberType::FLOAT, mMaxRangeChargeTime);
-    MEMBER(MemberType::FLOAT, mRangeChargeAttackMultiplier);
+
     
-    SEPARATOR("ANIMATION");
-    MEMBER(MemberType::GAMEOBJECT, mAnimationComponentHolder);
 
     SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHealthGO);
-    MEMBER(MemberType::GAMEOBJECT, mDashGO_1);
-    MEMBER(MemberType::GAMEOBJECT, mDashGO_2);
-    MEMBER(MemberType::GAMEOBJECT, mDashGO_3);
+    MEMBER(MemberType::GAMEOBJECT, mShieldGO);
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -83,37 +75,14 @@ void PlayerController::Start()
         ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
         mGameManager = (GameManager*)script->GetScriptInstance();
     }
-    mDashCharges = mMaxDashCharges;
+
     mBullets = mAmmoCapacity;
-    mHealth = mMaxHealth;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
 
-    if (mHealthGO != nullptr) mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
-    if (mDashGO_1 != nullptr) mDashSlider_1 = static_cast<SliderComponent*>(mDashGO_1->GetComponent(ComponentType::SLIDER));
-    if (mDashGO_2 != nullptr) mDashSlider_2 = static_cast<SliderComponent*>(mDashGO_2->GetComponent(ComponentType::SLIDER));
-    if (mDashGO_3 != nullptr) mDashSlider_3 = static_cast<SliderComponent*>(mDashGO_3->GetComponent(ComponentType::SLIDER));
+    if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
 
-    if (mAnimationComponentHolder) 
-    {
-        mAnimationComponent = (AnimationComponent*)mAnimationComponentHolder->GetComponent(ComponentType::ANIMATION);
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-
-        //Redefine player animation clips
-        mAnimationComponent->SetCurrentClip(0);
-        mAnimationComponent->SetStartTime(0.0f);
-        mAnimationComponent->SetEndTime(1.9f);
-        mAnimationComponent->SetCurrentClip(1);
-        mAnimationComponent->SetStartTime(1.9f);
-        mAnimationComponent->SetEndTime(2.9f);
-           
-        //Set to idle
-        mAnimationComponent->SetCurrentClip(0);
-
-
-
-    }
+    
 
     if (mFootStepAudioHolder)
     {
@@ -124,50 +93,182 @@ void PlayerController::Start()
     {
         mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
+
     if (mBulletPoolHolder)
     {
         mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
     }
-}
 
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&PlayerController::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+
+    // CAMERA
+    ModuleScene* scene = App->GetScene();
+    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
+
+
+    //Animation
+    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
+    if (mAnimationComponent)
+    {
+        mStateMachine = mAnimationComponent->GetStateMachine();
+
+    }
+    if (mStateMachine)
+    {
+        std::string clip = "Character";
+
+        std::string defaultState = "default";
+        std::string sIdle = "Idle";
+        std::string sWalkForward = "Walk Forward";
+        std::string sWalkBack = "Walk Back";
+        std::string sStrafeLeft = "Strafe Left";
+        std::string sStrafeRight = "Strafe Right";
+        std::string sShooting = "Shooting";
+
+        std::string idleTrigger = "tIdle";
+        std::string forwardTrigger = "tWalkForward";
+        std::string backTrigger = "tWalkBack";
+        std::string strafeLeftTrigger = "tStrafeLeft";
+        std::string strafeRightTrigger = "tStrafeRight";
+
+
+        mStateMachine->SetClipName(0, clip);
+
+        //States
+        mStateMachine->AddState(clip, sIdle);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(6.2));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(11.57));
+
+        mStateMachine->AddState(clip, sWalkForward);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.89));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.87));
+
+        mStateMachine->AddState(clip, sWalkBack);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(3.90));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(4.88));
+
+        mStateMachine->AddState(clip, sStrafeLeft);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(1.43));
+
+        mStateMachine->AddState(clip, sStrafeRight);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(1.46));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.85));
+
+        //Transitions
+        mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
+
+
+        mStateMachine->AddTransition(sIdle, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sIdle, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sWalkBack, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
+
+        mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
+
+        mAnimationComponent->OnStart();
+        mAnimationComponent->SetIsPlaying(true);
+
+    }
+
+    //END ANIMATION
+}
 
 void PlayerController::Update()
 {
     CheckDebugOptions();
-    UpdateHealth();
+    UpdateShield();
     UpdateBattleSituation();
-    RechargeDash();
+
+    if (mIsDashCoolDownActive)
+    {
+        mDashCoolDownTimer += App->GetDt();
+        if (mDashCoolDownTimer >= mDashCoolDown)
+        {
+            mDashCoolDownTimer = 0.0f;
+            mIsDashCoolDownActive = false;
+            mCurrentState = PlayerState::IDLE;
+        }
+    }
+
+    if (mIsMeleeBaseComboActive)
+    {
+        mMeleeBaseComboTimer += App->GetDt();
+        if (mMeleeBaseComboTimer >= mMeleeBaseMaxComboInterval)
+        {
+            mMeleeBaseComboStep = 1;
+            mIsMeleeBaseComboActive = false;
+            mMeleeBaseComboTimer = 0.0f;
+            mCurrentState = PlayerState::IDLE;
+        }
+    }
+
+    if (mIsMeleeSpecialCoolDownActive)
+    {
+        mMeleeSpecialCoolDownTimer += App->GetDt();
+        if (mMeleeSpecialCoolDownTimer >= mMeleeSpecialCoolDown)
+        {
+            mMeleeSpecialCoolDownTimer = 0.0f;
+            mIsMeleeSpecialCoolDownActive = false;
+            mCurrentState = PlayerState::IDLE;
+        }
+    }
 
     switch (mCurrentState)
     {
     case PlayerState::IDLE:
-        if ((!mVictory) || (!mGameOver))
-        {
-            Idle();
+        if (!mVictory && !mGameOver)
+        {   
             if (mAnimationComponent)
             {
-                mAnimationComponent->SetCurrentClip(0);
+                mAnimationComponent->SendTrigger("tIdle", 0.1f);
             }
+            Idle();
+
 
         }
         break;
+
     case PlayerState::DASH:
         Dash();
         break;
+
     case PlayerState::MOVE:
         Moving();
-        if (mAnimationComponent)
-        {
-            mAnimationComponent->SetCurrentClip(1);
-        }
+       
         break;
+
     case PlayerState::ATTACK:
         Attack();
         break;
+
     case PlayerState::MOVE_ATTACK:
         Moving();
         Attack();
         break;
+
     case PlayerState::DEATH:
         Death();
         break;
@@ -175,17 +276,14 @@ void PlayerController::Update()
 
     HandleRotation();
 
-    if (mWinArea)
+    if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
     {
-        if (mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
-        {
-            mGameManager->WinScreen();
-        }
+        GameManager::GetInstance()->WinScreen();
     }
-
 
     Loading();
 }
+
 
 void PlayerController::Idle()
 {
@@ -193,27 +291,17 @@ void PlayerController::Idle()
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == Weapon::RANGE) ? Weapon::MELEE : Weapon::RANGE;
-        
-        if (mWeapon == Weapon::RANGE)
-        {
-            LOG("Range");
-        } 
-        else 
-        {
-            LOG("Melee");
-        }
     }
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_REPEAT && mDashCharges > 0)
+    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
     {
-        mCurrentState = PlayerState::DASH;
+	    mCurrentState = PlayerState::DASH;
     }
     else 
     {
-
-        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
         {
             mCurrentState = PlayerState::MOVE;
         }
@@ -221,71 +309,215 @@ void PlayerController::Idle()
         {
             mCurrentState = PlayerState::IDLE;
         }
-
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+    
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
         {
-            if (mCurrentState == PlayerState::MOVE)
-            {
-                mCurrentState = PlayerState::MOVE_ATTACK;
-            }
-            else
-            {
-                mCurrentState = PlayerState::ATTACK;
-            }
+            mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
+            mLeftMouseButtonPressed = true;
+        }
+        else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+		{
+            mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
+            mLeftMouseButtonPressed = false;
         }
     }  
 }
 
 void PlayerController::Moving()
 {
+    mMoveDirection = float3::zero;
+    float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized(); 
+    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+    ClosestMouseDirection(mousePosition);
 
-    bool anyKeyPressed = false;
-    
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitZ);
-        anyKeyPressed = true;
+        mMoveDirection += front;
+
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitZ);
-        anyKeyPressed = true;
+        mMoveDirection -= front;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
     {
-        Move(float3::unitX);
-        anyKeyPressed = true;
+        mMoveDirection += float3::unitY.Cross(front);
+
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
     {
-        Move(-float3::unitX);
-        anyKeyPressed = true;
+        mMoveDirection -= float3::unitY.Cross(front);
+
+    }
+
+    if (!mMoveDirection.Equals(float3::zero))
+    {
+
+
+        mMoveDirection.Normalize(); 
+        SetMovingDirection(mMoveDirection);
+        switch (mLookingAt)
+        {
+        case MouseDirection::UP:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            default:
+                break;
+            }
+
+            break;
+        case MouseDirection::DOWN:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT: 
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            default:
+                break;
+            }
+
+            break;
+        case MouseDirection::LEFT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            default:
+                break;
+            }
+            break;
+        case MouseDirection::RIGHT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            default:
+                break;
+            }
+
+            break;
+        default:
+            break;
+        }
+
+        
+
+        Move(mMoveDirection);
     }
 
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation
-    if (anyKeyPressed)
+    
+    if (!mReadyToStep)
     {
-        if (!mReadyToStep)
+        mStepTimePassed += App->GetDt();
+        if (mStepTimePassed >= mStepCoolDown)
         {
-            mStepTimePassed += App->GetDt();
-            if (mStepTimePassed >= mStepCoolDown)
-            {
-                mStepTimePassed = 0;
-                mStepTimePassed = false;
-                mReadyToStep = true;
-            }
-        }
-        else
-        {
-            mFootStepAudio->PlayOneShot();
-            mReadyToStep = false;
+            mStepTimePassed = 0;
+            mStepTimePassed = false;
+            mReadyToStep = true;
         }
     }
-
+    else
+    {
+        mFootStepAudio->PlayOneShot();
+        mReadyToStep = false;
+    }
+    
     Idle();
 }
 
@@ -297,6 +529,11 @@ void PlayerController::Move(float3 direction)
 
 void PlayerController::HandleRotation()
 {
+    if (mCurrentState == PlayerState::ATTACK && mIsMeleeSpecialCoolDownActive)
+    {
+        return;
+    }
+
     std::map<float, Hit> hits;
     float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
     Ray ray = Physics::ScreenPointToRay(mousePosition);
@@ -310,78 +547,40 @@ void PlayerController::HandleRotation()
         float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
         mGameObject->LookAt(target);
     }
-
 }
-
 
 void PlayerController::Dash()
 {
-    if (mDashMovement >= mDashDistance)
+    if (!mIsDashing)
     {
-        mIsDashCoolDownActive = false;
-        mDashMovement = 0;
-        mDashCharges -= 1;
-        LOG("Dash Charges:  %i", mDashCharges);
-        Idle();
-    }
-    else
+        // Start dashing
+        mIsDashing = true;
+        mDashTimer = 0.0f;
+
+    }else
     {
-        if (mIsDashCoolDownActive)
+        mDashTimer += App->GetDt();
+
+        if (mDashTimer >= mDashDuration)
         {
-            mDashTimePassed += App->GetDt();
-            if (mDashTimePassed >= mDashCoolDown)
-            {
-                mDashTimePassed = 0;
-                mIsDashCoolDownActive = true;
-            }
+            //Finish dashing
+            mIsDashing = false;
+            mCurrentState = PlayerState::IDLE; 
+            mDashTimer = 0.0f;
+            mIsDashCoolDownActive = true;
         }
-        else
+        else 
         {
-            float3 dashDirection = float3::zero;
-            if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
-            {
-                dashDirection += float3::unitZ;
-            }
-            if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-            {
-                dashDirection -= float3::unitZ;
-            }
-            if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
-            {
-                dashDirection += float3::unitX;
-            }
-            if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-            {
-                dashDirection -= float3::unitX;
-            }
-
-            if (dashDirection.Dot(dashDirection) > 0.0f) 
-            {
-                dashDirection.Normalize();  
-
-                float3 newPos = (mGameObject->GetPosition() + dashDirection * App->GetDt() * mDashSpeed);
-                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-
-                mDashMovement += mDashSpeed * App->GetDt();
-            }
+            // Continue dashing
+            float dashSpeed = mDashRange / mDashDuration;
+            float3 newPos = (mGameObject->GetPosition() + mMoveDirection * dashSpeed * App->GetDt());
+            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
         }
     }
 }
 
-   
-
 void PlayerController::Attack()
 {
-
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_UP)
-    {
-        mIsChargedAttack = true;
-    }
-    else 
-    {
-        mIsChargedAttack = false;
-    }
-
     switch (mWeapon)
     {
     case Weapon::RANGE:
@@ -391,13 +590,89 @@ void PlayerController::Attack()
         MeleeAttack();
         break;
     }
-
-    Idle();
 }
 
-
-void PlayerController::MeleeAttack() 
+void PlayerController::MeleeAttack()  
 {
+    if (mLeftMouseButtonPressed) 
+    {
+        MeleeBaseCombo();
+    }
+    else 
+    {
+		MeleeSpecialCombo();
+	}
+}
+
+void PlayerController::MeleeBaseCombo()
+{
+    mMeleeBaseComboTimer = 0.0f;
+    mIsMeleeBaseComboActive = true;
+
+    switch (mMeleeBaseComboStep)
+    {
+    case 1:
+        //TODO: Implement base attack animation move 1
+		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        mMeleeBaseComboStep++;
+        mCurrentState = PlayerState::IDLE;
+
+        break;
+
+    case 2:
+        //TODO: Implement base attack animation move 2
+		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        mMeleeBaseComboStep++;
+        mCurrentState = PlayerState::IDLE;
+
+        break;
+
+    case 3:
+		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        mMeleeBaseFinalAttackTimer += App->GetDt();
+        if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
+        {
+			mMeleeBaseComboStep = 1;
+			mIsMeleeBaseComboActive = false;
+			mMeleeBaseFinalAttackTimer = 0.0f;
+            mCurrentState = PlayerState::IDLE;
+		}
+        else
+        {
+            //TODO: Implement base attack animation move 3
+            float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
+            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
+            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+            mCurrentState = PlayerState::ATTACK;
+        }
+
+        break;
+	}
+}
+
+void PlayerController::MeleeSpecialCombo() {
+
+    mIsMeleeSpecialCoolDownActive = true;
+    mMeleeSpecialTimer += App->GetDt();
+    if (mMeleeSpecialTimer >= mMeleeSpecialAttackDuration)
+    {
+        mIsMeleeSpecialCoolDownActive = false; 
+        mMeleeSpecialTimer = 0.0f;
+	    mCurrentState = PlayerState::IDLE;
+    }
+    else
+    {
+        //TODO: Implement special attack animation
+        mGameObject->SetPosition(mGameObject->GetPosition());
+        mGameObject->SetRotation(mGameObject->GetRotation());
+        MeleeHit(mMeleeSpecialRange, mMeleeSpecialDamage);
+        mCurrentState = PlayerState::ATTACK;        
+    }
+
+}
+
+void PlayerController::MeleeHit (float AttackRange, float AttackDamage) {
+
     ModuleScene* scene = App->GetScene();
     std::vector<GameObject*> Enemies;
 
@@ -416,85 +691,34 @@ void PlayerController::MeleeAttack()
         float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
         float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
 
-        if (distanceToEnemy < 2.0f && dotProduct < 0)
+        if (distanceToEnemy < AttackRange && dotProduct < 0)
         {
             Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            enemyScript->TakeDamage(mMeleeBaseDamage);
-            enemyScript->PushBack();
+            if(enemyScript){
+                enemyScript->TakeDamage(AttackDamage);
+                enemyScript->PushBack();
+            }
         }
     }
 }
 
 void PlayerController::RangedAttack() 
 {
-    if (mIsChargedAttack) 
-    {
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
-        {
-            mChargedTime += App->GetDt();
-            LOG("Charged Time: %f ", mChargedTime);
-        }
-        else if (mChargedTime >= mMinRangeChargeTime)
-        {
-            mChargedTime = Min(mMaxRangeChargeTime, mChargedTime);
-            float totalDamage;
 
-            int bulletCost = static_cast<int>(mChargedTime * mFireRate);
-            if (mBullets >= bulletCost)
-            {
-                totalDamage = mChargedTime * mRangeBaseDamage * mRangeChargeAttackMultiplier;
-                Shoot(totalDamage);
-                mBullets -= bulletCost;
-                
-            }
-            else
-            {
-                totalDamage = ((float)mBullets / mFireRate) * mRangeBaseDamage * mRangeChargeAttackMultiplier;
-                mBullets = 0;
-            }
-            mGunfireAudio->PlayOneShot();
-            mChargedTime = 0.0f;
-            LOG("Charged shot fired. Damage:  %f", totalDamage);
-            LOG("Bullets:  %i", mBullets);
-
-        }
-        else
-        {
-            mChargedTime = 0.0f;
-        }
-    }
-    else 
-    {
-        if (mBullets > 0) 
-        {  
-            if (startingTime > mFireRate)
-            {
-                mGunfireAudio->PlayOneShot();
-                startingTime = 0.0f;         
-                Shoot(mRangeBaseDamage);
-                mBullets -= static_cast<int>(mFireRate) + 1;
-                LOG("Basic shoot fire. Remining Bullets %i", mBullets);             
-            }
-            startingTime += App->GetDt();
-        }
-        else
-        {
-            LOG("Out of bullets! Reload.");
-            Reload();
-        }
-    }
+    Shoot(mRangeBaseDamage);
 }
-
 
 void PlayerController::Shoot(float damage)
 {
-
     //request a bullet from the object pool
-    bullet = mBulletPool->GetPooledObject();
+    if (mBulletPool)
+    {
+        bullet = mBulletPool->GetPooledObject();
+    }
+    
 
     if (bullet != nullptr)
     {
-        //  bullet->Update();
         bullet->SetEnabled(true);
         bullet->SetPosition(mGameObject->GetPosition() + float3(0.f, 1.0f, 0.f));
         bullet->SetRotation(mGameObject->GetRotation());
@@ -526,6 +750,7 @@ void PlayerController::Shoot(float damage)
             }
         }
     }
+    mCurrentState = PlayerState::IDLE;
 }
 
 void PlayerController::Reload()
@@ -534,79 +759,113 @@ void PlayerController::Reload()
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
-
-void PlayerController::TakeDamage(float damage) 
+void PlayerController::ClosestMouseDirection(float2 mouseState)
 {
-    if (mDashMovement == 0) 
-    {    
-        mShield -= damage;
-        float remainingDamage = -mShield;
-        mShield = Min(mShield, 0.0f);
-            
-        if (remainingDamage > 0)
-        {
-            mHealth -= remainingDamage;
+    int dx = mouseState.x - 960.0;
+    int dy = mouseState.y - 540.0;
 
-            if (mHealth <= 0.0f && !mGodMode)
-            {
-                mCurrentState = PlayerState::DEATH;
-            }
-        }    
-    } 
+    // Determine the primary direction based on the largest absolute difference
+    if (std::abs(dx) > std::abs(dy)) {
+        if (dx > 0) {
+            mLookingAt = MouseDirection::RIGHT;
+        }
+        else {
+            mLookingAt = MouseDirection::LEFT;
+        }
+    }
+    else {
+        if (dy > 0) {
+            mLookingAt = MouseDirection::DOWN;
+        }
+        else {
+            mLookingAt = MouseDirection::UP;
+        }
+    }
+}
+
+void PlayerController::SetMovingDirection(float3 moveDirection)
+{
+
+    bool movingUp = moveDirection.z > 0 && moveDirection.x < 0 && std::abs(moveDirection.z) < std::abs(moveDirection.x);
+    bool movingDown = moveDirection.z < 0 && moveDirection.x > 0 && std::abs(moveDirection.z) < std::abs(moveDirection.x);
+    bool movingRight = moveDirection.x < 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
+    bool movingLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
+
+    bool movingUpRight = moveDirection.x < 0 && moveDirection.z < 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
+    bool movingUpLeft = moveDirection.x < 0 && moveDirection.z > 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
+    bool movingDownRight = moveDirection.x > 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
+    bool movingDownLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
+
+
+    if (movingDownLeft) {
+        mMovingTo = MoveDirection::DOWN_LEFT;
+    }
+    else if (movingUpLeft) {
+        mMovingTo = MoveDirection::UP_LEFT;
+    }
+    else if (movingDownRight) {
+        mMovingTo = MoveDirection::DOWN_RIGHT;
+    }
+    else if (movingUpRight) {
+        mMovingTo = MoveDirection::UP_RIGHT;
+    }
+    else if (movingUp) {
+        mMovingTo = MoveDirection::UP;
+    }
+    else if (movingDown) {
+        mMovingTo = MoveDirection::DOWN;
+    }
+    else if (movingRight) {
+        mMovingTo = MoveDirection::RIGHT;
+    }
+    else if (movingLeft) {
+       
+        mMovingTo = MoveDirection::LEFT;
+    }
+    else {
+        
+        mMovingTo = MoveDirection::NOT_MOVING;
+    }
 }
 
 
 
-void PlayerController::RechargeDash()
+void PlayerController::RechargeShield(float shield)
 {
-
-    static float actualRegenerationTime = 0.0f;
-
-    if (mDashCharges < mMaxDashCharges)
+    if (mShield < mMaxShield)
     {
-        actualRegenerationTime += App->GetDt();
+        mShield += shield;
 
-        if (actualRegenerationTime >= mDashChargeRegenerationTime)
+        if (mShield >= mMaxShield)
         {
-            mDashCharges++;
-            actualRegenerationTime = 0.0f;
-            LOG("%i", mDashCharges);
+            mShield = mMaxShield;
         }
     }
+}
 
-    // HUD
-    if (mDashSlider_1 == nullptr || mDashSlider_2 == nullptr || mDashSlider_3 == nullptr) return;
-    if (mDashCharges == 0) 
+void PlayerController::TakeDamage(float damage)
+{
+    if (!mIsDashing)
     {
-        mDashSlider_1->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
-        mDashSlider_2->SetFillPercent(0);
-        mDashSlider_3->SetFillPercent(0);
+        if (!mGodMode)
+        {
+            if (mShield > 0.0f)
+            {
+                mShield -= damage;
+                mShield = Max(mShield, 0.0f);
+            }
+            else
+            {
+                mCurrentState = PlayerState::DEATH;
+            }
+        }
     }
-    else if (mDashCharges == 1) 
-    {
-        mDashSlider_1->SetFillPercent(1);
-        mDashSlider_2->SetFillPercent(actualRegenerationTime/mDashChargeRegenerationTime);
-        mDashSlider_3->SetFillPercent(0);
-    } 
-    else if (mDashCharges == 2) 
-    {
-        mDashSlider_1->SetFillPercent(1);
-        mDashSlider_2->SetFillPercent(1);
-        mDashSlider_3->SetFillPercent(actualRegenerationTime / mDashChargeRegenerationTime);
-    }
-    else 
-    {
-        mDashSlider_1->SetFillPercent(1);
-        mDashSlider_2->SetFillPercent(1);
-        mDashSlider_3->SetFillPercent(1);
-    }
-    
 }
 
 void PlayerController::Death() 
 {
     mPlayerIsDead = true;
-    mGameManager->LoseScreen();
+    GameManager::GetInstance()->LoseScreen();
 }
 
 bool PlayerController::IsDead() 
@@ -614,9 +873,9 @@ bool PlayerController::IsDead()
     return mPlayerIsDead;
 }
 
-void PlayerController::UpdateHealth() 
+void PlayerController::UpdateShield() 
 {
-    if (mHealthSlider) mHealthSlider->SetFillPercent(mHealth / mMaxHealth);
+    if (mShieldSlider) mShieldSlider->SetFillPercent(mShield / mMaxShield);
 }
 
 void PlayerController::CheckDebugOptions() 
@@ -629,7 +888,7 @@ void PlayerController::CheckDebugOptions()
 
 void PlayerController::UpdateBattleSituation()
 {
-    float hpRate = mHealth / mMaxHealth;
+    float hpRate = mShield / mMaxShield;
 
     if (mCurrentState == PlayerState::DEATH) 
     {
@@ -648,8 +907,7 @@ void PlayerController::UpdateBattleSituation()
             else 
             {
                 mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
-            }
-            
+            }          
         }
     }
     else 
@@ -716,3 +974,9 @@ void PlayerController::Loading()
         }
     }
 }
+
+void PlayerController::OnCollisionEnter(CollisionData* collisionData)
+{
+    LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
+}
+

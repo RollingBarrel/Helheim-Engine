@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Math/float4x4.h"
+#include "Math/float3.h"
 #include "Geometry/Frustum.h"
 
 class ENGINE_API CameraComponent :
@@ -24,8 +25,8 @@ public:
     const float4x4 GetProjectionMatrix() const { return mFrustum.ProjectionMatrix(); }
     const float4x4 GetViewProjectionMatrix() const { return mFrustum.ViewProjMatrix(); }
 
-    void SetNearPlane(float value) { mFrustum.nearPlaneDistance = value;}
-    void SetFarPlane(float value) { mFrustum.farPlaneDistance = value; }
+    void SetNearPlane(float value);
+    void SetFarPlane(float value);
     void SetFOV(float value);
     void SetAspectRatio(float value);
 

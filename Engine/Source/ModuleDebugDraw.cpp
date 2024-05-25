@@ -1,3 +1,5 @@
+#include "Globals.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleDebugDraw.h"
 #include "EngineApp.h"
 
@@ -7,12 +9,15 @@
 #include "ModuleScene.h"
 
 #include "SpotLightComponent.h"
+#include "DebugPanel.h"
+#include "HierarchyPanel.h"
+#include "MeshRendererComponent.h"
+#include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
 #include "DebugPanel.h"
-
 
 
 #define DEBUG_DRAW_IMPLEMENTATION
@@ -528,7 +533,7 @@ private:
 // ========================================================
 
 const char * DDRenderInterfaceCoreGL::linePointVertShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec3 in_Position;\n"
     "in vec4 in_ColorPointSize;\n"
@@ -544,10 +549,10 @@ const char * DDRenderInterfaceCoreGL::linePointVertShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::linePointFragShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in  vec4 v_Color;\n"
-    "out vec4 out_FragColor;\n"
+    "layout(location = 5)out vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -555,7 +560,7 @@ const char * DDRenderInterfaceCoreGL::linePointFragShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::textVertShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec2 in_Position;\n"
     "in vec2 in_TexCoords;\n"
@@ -578,13 +583,13 @@ const char * DDRenderInterfaceCoreGL::textVertShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::textFragShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec2 v_TexCoords;\n"
     "in vec4 v_Color;\n"
     "\n"
     "uniform sampler2D u_glyphTexture;\n"
-    "out vec4 out_FragColor;\n"
+    "out layout(location = 5) vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -630,9 +635,9 @@ update_status  ModuleDebugDraw::Update(float dt)
         {
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
             
-            EngineApp->GetOpenGL()->BindSceneFramebuffer();
+            EngineApp->GetOpenGL()->BindGFramebuffer();
             Draw(viewproj, EngineApp->GetWindow()->GetGameWindowsSize().x, EngineApp->GetWindow()->GetGameWindowsSize().y);
-            EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
+            EngineApp->GetOpenGL()->UnbindFramebuffer();
         }
     }
     return UPDATE_CONTINUE;
@@ -643,18 +648,14 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-    if (mDrawGrid) 
+    if (mDrawGrid)
     {
-       DrawGrid();
+        DrawGrid();
     }
 
-    if (((DebugPanel*)EngineApp->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders())
-    {
-        DrawColliders(EngineApp->GetScene()->GetRoot());
-	}
 
-    GameObject* focusGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
-    if (focusGameObject)
+    GameObject* focusGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();   
+    if (focusGameObject && !focusGameObject->IsRoot())
     {
         if (focusGameObject->GetComponent(ComponentType::ANIMATION))
         {
@@ -669,14 +670,28 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
 
         SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
         if (spotLight)
-        {   
+        {
 
-            float radius = spotLight->GetRange()* tan(spotLight->GetOuterAngle());
-            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr() , spotLight->GetColor(), radius); 
+            float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
+            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
             Frustum ShadowFrustum = spotLight->GetFrustum();
             DrawFrustum(spotLight->GetFrustum());
         }
+        
+        BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+        if (boxCollider)
+        {
+            DrawColliders(focusGameObject);
+        }
+
+        if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawBoundingBoxes())
+        {
+            DrawBoundingBoxes(focusGameObject);
+        }
+        
     }
+    
+
 
     dd::flush();
 }
@@ -731,22 +746,16 @@ void ModuleDebugDraw::DrawLine(const float3& start, const float3& end, const flo
     dd::line(start, end, color, duration, depthTest);
 }
 
-void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)
-{
-    dd::line(v1, v2, dd::colors::Red);
-    dd::line(v1, v3, dd::colors::Red);
-    dd::line(v3, v2, dd::colors::Red);
-
-
-}
-
 void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color)
 {
     dd::line(v1, v2, color);
     dd::line(v1, v3, color);
     dd::line(v3, v2, color);
+}
 
-
+void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const float3& v3)
+{
+    DrawTriangle(v1, v2, v3, dd::colors::Red);
 }
 
 void ModuleDebugDraw::DrawGrid()
@@ -778,17 +787,39 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
     
 }
 
+void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
+{
+    
+    std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+
+    if (!meshComponents.empty())
+    {
+        AABB aabb = gameObject->GetAABB();
+        //AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
+        if (aabb.IsFinite())
+        {
+            //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+        }
+
+      ////OBB obb = gameObject->GetOBB();
+      //OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
+      //if (obb.IsFinite())
+      //{
+      //   // EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
+      //}
+    }
+    
+}
+
 void ModuleDebugDraw::DrawColliders(GameObject* root)
 {
     if (root != nullptr) 
     {
-        MeshRendererComponent* meshRenderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
-        //TODO: SEPARATE GAME ENGINE
-        //if (meshRenderer != nullptr && meshRenderer->ShouldDraw()) 
-        //{
-        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->getOBB(), float3(0.0f, 0.0f, 1.0f)); //Blue
-        //    EngineApp->GetDebugDraw()->DrawCube(meshRenderer->GetAABBWorld(), float3(1.0f, 0.65f, 0.0f)); //Orange
-        //}
+        BoxColliderComponent* boxCollider = (BoxColliderComponent*)root->GetComponent(ComponentType::BOXCOLLIDER);
+        if (boxCollider != nullptr)
+        {
+            EngineApp->GetDebugDraw()->DrawCube(boxCollider->GetOBB(), float3(0.5f, 1.0f, 0.5f));
+        }
 
         for (int i = 0; i < root->GetChildren().size(); i++) 
         {

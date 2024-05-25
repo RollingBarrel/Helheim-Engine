@@ -16,48 +16,46 @@
 
 Quadtree::Quadtree(const AABB& boundingBox) : Quadtree(boundingBox, 0, "R")
 {
-}
-
-Quadtree::Quadtree(const AABB& boundingBox, int depth, const char* name)
-{
-	mBoundingBox = boundingBox;
-	mDepthLevel = depth;
-	mFilled = false;
 	mChildren[0] = nullptr;
 	mChildren[1] = nullptr;
 	mChildren[2] = nullptr;
 	mChildren[3] = nullptr;
-	mName = name;
+}
+
+Quadtree::Quadtree(const AABB& boundingBox, int depth, std::string&& name) : mBoundingBox(boundingBox), mDepthLevel(depth), mName(std::move(name))
+{
+	mChildren[0] = nullptr;
+	mChildren[1] = nullptr;
+	mChildren[2] = nullptr;
+	mChildren[3] = nullptr;
 }
 
 Quadtree::~Quadtree()
 {
 	CleanUp();
-	mGameObjects.clear();
 }
 
-bool Quadtree::AddObject(GameObject* object)
+bool Quadtree::AddObject(const GameObject& object)
 {
-	Component* component = object->GetComponent(ComponentType::MESHRENDERER);
-	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(component);
+	MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(object.GetComponent(ComponentType::MESHRENDERER));
 	if (meshRenderer == nullptr)
 		return false;
-	AABB objectAABB = meshRenderer->GetAABB();
-		
+	const AABB& objectAABB = meshRenderer->GetAABB();
+
 
 	if (!mBoundingBox.Intersects(objectAABB))
 	{
 		return false;
 	}
 
-	if (mGameObjects.size() >= CAPACITY || mFilled) 
+	if (mGameObjects.size() >= CAPACITY || !IsLeaf())
 	{
-		if (mDepthLevel >= MAX_DEPTH) 
+		if (mDepthLevel >= MAX_DEPTH)
 		{
-			mGameObjects.push_back(object);
+			mGameObjects.push_back(&object);
 			return true;
 		}
-		if(!mFilled)
+		if (IsLeaf())
 		{
 			SplitNode();
 		}
@@ -65,44 +63,42 @@ bool Quadtree::AddObject(GameObject* object)
 		mChildren[1]->AddObject(object);
 		mChildren[2]->AddObject(object);
 		mChildren[3]->AddObject(object);
-		mFilled = true;
 		return true;
 	}
 
-	mGameObjects.push_back(object);
+	mGameObjects.push_back(&object);
 	return true;
 }
 
-void Quadtree::RemoveObject(const GameObject* object)
+void Quadtree::RemoveObject(const GameObject& object)
 {
-	if (mFilled) 
+	if (!IsLeaf())
 	{
 		mChildren[0]->RemoveObject(object);
 		mChildren[1]->RemoveObject(object);
 		mChildren[2]->RemoveObject(object);
 		mChildren[3]->RemoveObject(object);
 	}
-	else 
+	else
 	{
 		mGameObjects.erase(std::remove_if(mGameObjects.begin(), mGameObjects.end(),
-			[object](GameObject* ptr) { return ptr == object; }),
-			mGameObjects.end());
+			[&](const GameObject* ptr) { return ptr->GetID() == object.GetID(); }), mGameObjects.end());
 	}
 }
 
-bool Quadtree::Intersects(const OBB* boundingBox) const
+bool Quadtree::Intersects(const OBB& boundingBox) const
 {
-	return boundingBox->Intersects(mBoundingBox);
+	return boundingBox.Intersects(mBoundingBox);
 }
 
-bool Quadtree::Intersects(const Ray* ray) const
+bool Quadtree::Intersects(const Ray& ray) const
 {
-	return ray->Intersects(mBoundingBox);
+	return ray.Intersects(mBoundingBox);
 }
 
 void Quadtree::CleanUp()
 {
-	if (mFilled) 
+	if (!IsLeaf()) 
 	{
 		mChildren[0]->CleanUp();
 		mChildren[1]->CleanUp();
@@ -110,75 +106,80 @@ void Quadtree::CleanUp()
 		mChildren[3]->CleanUp();
 
 		delete mChildren[0];
+		mChildren[0] = nullptr;
 		delete mChildren[1];
+		mChildren[1] = nullptr;
 		delete mChildren[2];
+		mChildren[2] = nullptr;
 		delete mChildren[3];
-
-		mFilled = false;
-	}
-	else 
-	{
-		mGameObjects.clear();
-		return;
-	}
-}
-
-const std::set<MeshRendererComponent*> Quadtree::GetObjectsInFrustum(const Frustum* cam) const
-{
-	std::set<MeshRendererComponent*> out;
-	if (!cam->Intersects(mBoundingBox))
-	{
-		return out;
-	}
-
-	if (mFilled)
-	{
-		std::set<MeshRendererComponent*> setA = mChildren[0]->GetObjectsInFrustum(cam);
-		std::set<MeshRendererComponent*> setB = mChildren[1]->GetObjectsInFrustum(cam);
-		std::set<MeshRendererComponent*> setC = mChildren[2]->GetObjectsInFrustum(cam);
-		std::set<MeshRendererComponent*> setD = mChildren[3]->GetObjectsInFrustum(cam);
-		out.insert(setA.begin(), setA.end());
-		out.insert(setB.begin(), setB.end());
-		out.insert(setC.begin(), setC.end());
-		out.insert(setD.begin(), setD.end());
-
-
+		mChildren[3] = nullptr;
 	}
 	else
 	{
-		for (auto& object : mGameObjects)
-		{
-			MeshRendererComponent* meshComponent = reinterpret_cast<MeshRendererComponent*>(object->GetComponent(ComponentType::MESHRENDERER));
-			if (meshComponent)
-			{
-				OBB temp = meshComponent->GetOBB();
-				if (cam->Intersects(temp)) 
-				{
-					out.insert(meshComponent);
-				}
+		mGameObjects.clear();
+	}
+}
 
+void Quadtree::GetRenderComponentsInFrustum(const Frustum& cam, std::vector<const MeshRendererComponent*>& components) const
+{
+	if (!cam.Intersects(mBoundingBox))
+	{
+		return;
+	}
+
+	if (!IsLeaf())
+	{
+		mChildren[0]->GetRenderComponentsInFrustum(cam, components);
+		mChildren[1]->GetRenderComponentsInFrustum(cam, components);
+		mChildren[2]->GetRenderComponentsInFrustum(cam, components);
+		mChildren[3]->GetRenderComponentsInFrustum(cam, components);
+	}
+	else
+	{
+		for (const GameObject* object : mGameObjects)
+		{
+			if (object->IsActive())
+			{
+				const MeshRendererComponent* comp = reinterpret_cast<const MeshRendererComponent*>(object->GetComponent(ComponentType::MESHRENDERER));
+				if (comp != nullptr && comp->IsEnabled())
+				{
+					if (cam.Intersects(comp->GetOBB()))
+					{
+						bool alreadyFound = false;
+						for (const MeshRendererComponent* component : components)
+						{
+							if (comp->GetID() == component->GetID())
+							{
+								alreadyFound = true;
+								break;
+							}
+						}
+						if (!alreadyFound)
+						{
+							components.push_back(comp);
+						}
+					}
+				}
 			}
 		}
 	}
-
-	return out;
 }
 
-void Quadtree::AddHierarchyObjects(GameObject* node)
+void Quadtree::AddHierarchyObjects(const GameObject& node)
 {
-	for (const auto& child : node->GetChildren()) {
+	for (const GameObject* child : node.GetChildren()) {
 		//TODO Detect if the child is already inside to avoid duplicates when pressing button more than twice in a row
 		if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
 		{
-			AddObject(child);
+			AddObject(*child);
 		}
-		AddHierarchyObjects(child);
+		AddHierarchyObjects(*child);
 	}
 }
 
 const std::map<float, Hit> Quadtree::RayCast(const Ray* ray) const
 {
-	if (mFilled) 
+	if (!IsLeaf()) 
 	{
 
 		std::map<float, Hit> map;
@@ -213,9 +214,9 @@ const std::map<float, Hit> Quadtree::RayCast(const Ray* ray) const
 		bool intersects = false;
 		bool intersectsTriangle = false;
 
-		for (const auto& child : mGameObjects) {
+		for (const GameObject* child : mGameObjects) {
 
-			MeshRendererComponent* rMesh = (MeshRendererComponent*)child->GetComponent(ComponentType::MESHRENDERER);
+			MeshRendererComponent* rMesh = reinterpret_cast<MeshRendererComponent*>(child->GetComponent(ComponentType::MESHRENDERER));
 
 			if (rMesh != nullptr) {
 
@@ -260,39 +261,7 @@ const std::map<float, Hit> Quadtree::RayCast(const Ray* ray) const
 void Quadtree::UpdateTree()
 {
 	CleanUp();
-	AddHierarchyObjects(App->GetScene()->GetRoot());
-}
-
-void Quadtree::UpdateDrawableGameObjects(const Frustum* myCamera)
-{
-	if (!myCamera->Intersects(mBoundingBox))
-	{
-		return;
-	}
-
-	if (mFilled)
-	{
-		mChildren[0]->UpdateDrawableGameObjects(myCamera);
-		mChildren[1]->UpdateDrawableGameObjects(myCamera);
-		mChildren[2]->UpdateDrawableGameObjects(myCamera);
-		mChildren[3]->UpdateDrawableGameObjects(myCamera);
-
-	}
-	else 
-	{
-		for (auto& object : mGameObjects)
-		{
-			
-			if (object->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-			{
-				OBB temp = ((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->GetOBB();
-				bool intersects = myCamera->Intersects(temp);
-				((MeshRendererComponent*)object->GetComponent(ComponentType::MESHRENDERER))->SetInsideFrustum(intersects);
-
-			}
-		}
-	}
-
+	AddHierarchyObjects(*App->GetScene()->GetRoot());
 }
 
 void Quadtree::SplitNode()
@@ -315,12 +284,12 @@ void Quadtree::SplitNode()
 	mChildren[2] = new Quadtree(AABB(bf_z, uf_x), mDepthLevel + 1, (mName + "_C").c_str());
 	mChildren[3] = new Quadtree(AABB(bf_center, maxPoint), mDepthLevel + 1, (mName + "_D").c_str());
 
-	for (const auto& object : mGameObjects)
+	for (const GameObject* object : mGameObjects)
 	{
-		mChildren[0]->AddObject(object);
-		mChildren[1]->AddObject(object);
-		mChildren[2]->AddObject(object);
-		mChildren[3]->AddObject(object);
+		mChildren[0]->AddObject(*object);
+		mChildren[1]->AddObject(*object);
+		mChildren[2]->AddObject(*object);
+		mChildren[3]->AddObject(*object);
 	}
 
 	mGameObjects.clear();

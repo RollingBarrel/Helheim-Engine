@@ -35,11 +35,6 @@ bool ModuleUI::Init()
 
 update_status ModuleUI::PreUpdate(float dt) 
 {
-	// Draw the UI
-	App->GetOpenGL()->BindSceneFramebuffer();
-	DrawWidget(App->GetScene()->GetRoot());
-	App->GetOpenGL()->UnbindSceneFramebuffer();
-
 	return UPDATE_CONTINUE;
 }
 
@@ -47,6 +42,11 @@ update_status ModuleUI::Update(float dt)
 {
 	// TODO: Check if app is on Menu or Pause
 	CheckRaycast();
+
+	// Draw the UI
+	App->GetOpenGL()->BindSceneFramebuffer();
+	DrawWidget(App->GetScene()->GetRoot());
+	App->GetOpenGL()->UnbindFramebuffer();
 
 	return UPDATE_CONTINUE;
 }
