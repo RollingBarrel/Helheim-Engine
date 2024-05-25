@@ -375,7 +375,7 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	if (mPersistentsFlag)
 		RecreatePersistentSsbos();
 	
-	ComputeAnimation(component);
+	//ComputeAnimation(component);
 
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 

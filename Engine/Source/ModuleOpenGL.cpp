@@ -272,10 +272,32 @@ bool ModuleOpenGL::Init()
 	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 
 	//SHADOWS
-	glGenFramebuffers(1, &mShadowsFrameBufferId);
-	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
-	glDrawBuffers(0, nullptr);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	for (unsigned int i = 0; i < NUM_SHADOW_MAPS; ++i)
+	{
+		glGenFramebuffers(1, &mShadowsFrameBuffersId[i]);
+		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
+		glDrawBuffers(0, nullptr);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+		glGenTextures(1, &mShadowMaps[i]);
+		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		mShadowMapsHandle[i] = glGetTextureHandleARB(mShadowMaps[i]);
+		glMakeTextureHandleResidentARB(mShadowMapsHandle[i]);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	mShadowsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 4, sizeof(Shadow) * NUM_SHADOW_MAPS, nullptr);
+
+	//glGenFramebuffers(1, &mShadowsFrameBufferId);
+	//glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	//glDrawBuffers(0, nullptr);
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
 	return true;
@@ -925,7 +947,46 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		mBatchManager.AddCommand(mesh);
 	}
 	//shadows
+
+
+	std::map<float,const SpotLightComponent*> orderedLights;
+	std::vector<const SpotLightComponent*> chosenLights;
+
+	for (const SpotLightComponent* spotLight : mSpotLights)
+	{
+		if (spotLight->CanCastShadow())
+		{
+			float distance = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetPosition().Distance(spotLight->GetOwner()->GetPosition());
+			orderedLights.insert(std::pair<float, const SpotLightComponent*>(distance, spotLight));
+		}
+		const_cast<SpotLightComponent*>(spotLight)->SetShadowIndex(-1);
+	}
+
 	std::vector<const MeshRendererComponent*> meshInFrustum;
+
+	int count = 0;
+	for (std::map<float, const SpotLightComponent*>::iterator it = orderedLights.begin(); it != orderedLights.end(); ++it)
+	{	
+		if (count == NUM_SHADOW_MAPS)
+		{
+			break;
+		}
+		count++;
+
+		chosenLights.push_back(it->second);
+		const Frustum& frustum = it->second->GetFrustum(); //->GetFrustum();
+		meshInFrustum.clear();
+		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
+		for (const MeshRendererComponent* mesh : meshInFrustum)
+		{
+			mBatchManager.AddCommand(mesh);
+		}	
+	}
+	
+	
+
+	
+	/*
 	for (const SpotLightComponent* spotLight : mSpotLights)
 	{
 		if (spotLight->CanCastShadow())
@@ -939,12 +1000,53 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 			}
 		}
 	}
+	*/
+
 
 	meshInFrustum.clear();
 	mBatchManager.CleanUpCommands();
 
 	//Shadows
-	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+
+	
+	for (unsigned int i = 0; i < chosenLights.size(); ++i)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
+		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
+		mBatchManager.CleanUpCommands();
+
+
+		const Frustum& frustum = chosenLights[i]->GetFrustum();
+		meshInFrustum.clear();
+		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
+
+		for (const MeshRendererComponent* mesh : meshInFrustum)
+		{
+			mBatchManager.AddCommand(mesh);
+		}
+
+		
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glUseProgram(mDepthPassProgramId);
+		glViewport(0, 0, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE);
+		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+		const_cast<SpotLightComponent*>(chosenLights[i])->SetShadowIndex(i);
+		Shadow shadow;
+		shadow.shadowMapHandle = mShadowMapsHandle[i];
+		shadow.viewProjMatrix = frustum.ViewProjMatrix().Transposed();
+		shadow.bias = chosenLights[i]->GetBias();
+
+		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
+
+		mBatchManager.Draw();
+		
+		
+	}
+
+	/*glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
 	glUseProgram(mDepthPassProgramId);
 	for (const SpotLightComponent* spotLight : mSpotLights)
 	{
@@ -979,7 +1081,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		}
 
 	}
-	
+	*/
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
