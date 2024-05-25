@@ -13,6 +13,7 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mActivationRange);
+    MEMBER(MemberType::INT, mShieldDropRate);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::FLOAT, mRangeDistance);
@@ -30,14 +31,10 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
 }
 
-
 void EnemyRobot::Start()
 {
     Enemy::Start();
-
 }
-
-
 
 void EnemyRobot::Update()
 {
@@ -163,7 +160,7 @@ void EnemyRobot::RangeAttack()
     
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
     
-        //recorrer todos los hits y hacer daño a los objetos que tengan tag = target
+        //recorrer todos los hits y hacer daï¿½o a los objetos que tengan tag = target
         for (const std::pair<float, Hit>& hit : hits) 
         {
             if (hit.second.mGameObject->GetTag()->GetName() == "Player") 

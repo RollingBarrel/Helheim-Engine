@@ -191,7 +191,6 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 			}
 		}
 	}
-	//App->GetScriptManager()->AddScript(this);
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
@@ -248,5 +247,5 @@ void ScriptComponent::Enable()
 
 void ScriptComponent::Disable()
 {
-		App->GetScriptManager()->RemoveScript(this);
+	App->GetScriptManager()->RemoveScript(this);
 }

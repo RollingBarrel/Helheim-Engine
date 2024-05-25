@@ -79,7 +79,7 @@ public:
 	void DeleteTag(Tag* tag);
 
 	// Prefabs
-	static GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
+	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
 	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
 	GameObject* LoadPrefab(const char* saveFilePath, bool update = false, GameObject* parent = nullptr);
 	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent) { return LoadPrefab(saveFilePath, false, parent); }

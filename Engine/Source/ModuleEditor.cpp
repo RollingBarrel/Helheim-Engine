@@ -75,17 +75,17 @@ bool ModuleEditor::Init()
 {
 	ImGui::CreateContext();
 
-	io = &(ImGui::GetIO());
-	io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-	io->ConfigDragClickToInputText = true;
-	io->IniFilename = NULL;
+	mIO = &(ImGui::GetIO());
+	//mIO->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	mIO->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	mIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+	mIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+	mIO->ConfigDragClickToInputText = true;
+	mIO->IniFilename = NULL;
 	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->window, EngineApp->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
-	io->Fonts->AddFontDefault();
+	mIO->Fonts->AddFontDefault();
 	float baseFontSize = 34.0f; // 13.0f is the size of the default font. Change to the font size you use.
 	float iconFontSize = baseFontSize * 2.0f / 3.0f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
 	
@@ -97,7 +97,7 @@ bool ModuleEditor::Init()
 	icons_config.GlyphMinAdvanceX = iconFontSize;
 	icons_config.GlyphOffset = ImVec2(0, 5); // This Y offset works with the Guizmo buttons and its pertinent icons, but could be different for other button sizes
 
-	io->Fonts->AddFontFromFileTTF("InternalAssets/Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
+	mIO->Fonts->AddFontFromFileTTF("InternalAssets/Fonts/fa-solid-900.ttf", iconFontSize, &icons_config, icons_ranges);
 
 	mOptick = new OptickAdapter();
 
@@ -142,7 +142,7 @@ update_status ModuleEditor::Update(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	if (mIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
 		SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
@@ -569,4 +569,9 @@ void ModuleEditor::ResetFloatingPanels(bool openPanels) {
 		settingsPanel->Close();
 		aboutPanel->Close();
 	}
+}
+
+bool ModuleEditor::WantToCaptureKeyboard()
+{
+	return mIO->WantCaptureKeyboard;
 }

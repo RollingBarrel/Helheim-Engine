@@ -27,7 +27,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
-ModuleScene::ModuleScene() {
+ModuleScene::ModuleScene() 
+{
 
 	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
 	mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
@@ -404,13 +405,11 @@ void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameOb
 
 GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 {
-	if (!parent)
-	{
-		parent = App->GetScene()->GetRoot();
-	}
-
 	std::string strName = name;
-	strName = ASSETS_PREFABS_PATH + strName;
+	if (strName.find(ASSETS_PREFABS_PATH) == std::string::npos)
+	{
+		strName = ASSETS_PREFABS_PATH + strName;
+	}
 	GameObject* gameObject = App->GetScene()->LoadPrefab(strName.c_str(), parent);
 	return gameObject;
 }
@@ -532,11 +531,11 @@ void ModuleScene::AddGameObjectToScene(GameObject* gameObject)
 	mSceneGO.push_back(gameObject);
 }
 
-void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObjet) 
+void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObject) 
 {
 	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
 	{
-		if ((*it)->GetID() == gameObjet->GetID())
+		if ((*it)->GetID() == gameObject->GetID())
 		{
 			mSceneGO.erase(it);
 			return;

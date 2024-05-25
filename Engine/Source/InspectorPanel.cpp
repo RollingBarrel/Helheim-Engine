@@ -29,6 +29,7 @@
 #include "AudioSourceComponent.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TextComponent.h"
 #include "TrailComponent.h"
 #include "EmitterShape.h"
 #include "BoxColliderComponent.h"
@@ -438,16 +439,17 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
-				
 				case ComponentType::AUDIOSOURCE: 
 					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
 					break;
-				
 				case ComponentType::TRANSFORM2D:
 					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
 					break;
 				case ComponentType::PARTICLESYSTEM:
 					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
+					break;
+				case ComponentType::TEXT:
+					DrawTextComponent(reinterpret_cast<TextComponent*>(component));
 					break;
 				case ComponentType::BOXCOLLIDER:
 					DrawBoxColliderComponent(reinterpret_cast<BoxColliderComponent*>(component));
@@ -857,7 +859,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			ImGui::Dummy(ImVec2(spacing, 0.0f));
 			ImGui::SameLine();
 			ImGui::PushItemWidth(inspectorWidth - textSize.x - spacing);
-			ImGui::DragFloat3(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)));
+			ImGui::DragFloat3(label.c_str(), reinterpret_cast<float*>((((char*)component->mScript) + member->mOffset)), 0.05f, 0.0f, 0.0f, "%.2f");
 			ImGui::PopItemWidth();
 			break;
 		case MemberType::GAMEOBJECT:
@@ -1244,6 +1246,7 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 	}
 
 }
+
 void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
 {
 
@@ -1304,7 +1307,7 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 			ImGui::PopID();
 		}
 
-		if (modifiedTransform) 
+		if (modifiedTransform)
 		{
 			component->SetPosition(newPosition);
 			component->SetRotation(DegToRad(newRotation));
@@ -1343,7 +1346,7 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 			ImGui::PopID();
 		}
 
-		if (modifiedTransform) 
+		if (modifiedTransform)
 		{
 			component->SetSize(newSize);
 			component->SetAnchorMax(newAnchorMax);
@@ -1592,6 +1595,37 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	}
 }
 
+void InspectorPanel::DrawTextComponent(TextComponent* component)
+{
+	float3* color = component->GetColor();
+	float* alpha = component->GetAlpha();
+	std::string* text = component->GetText();
+	int* fontSize = component->GetFontSize();
+	int* lineSpacing = component->GetLineSpacing();
+	int* lineWidth = component->GetLineWidth();
+
+	// Create a buffer for ImGui input
+	std::vector<char> buffer(text->begin(), text->end());
+	buffer.resize(256); // Adjust buffer size as needed
+	buffer.push_back('\0'); // Ensure null-termination
+
+	ImGui::Text("Text:");
+	ImGui::SameLine();
+	if (ImGui::InputText("##TextInput", buffer.data(), buffer.size())) 
+	{
+		// Update the std::string if the text was changed
+		*text = std::string(buffer.data());
+	}
+
+	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("##Color", (float*)color);
+	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("##Alpha", alpha, 0.0f, 1.0f);
+
+	ImGui::Text("Font Size:"); ImGui::SameLine(); ImGui::DragInt("##Font Size", fontSize);
+	ImGui::Text("Line Spacing:"); ImGui::SameLine(); ImGui::DragInt("##Line Space", lineSpacing);
+	ImGui::Text("Line Width:"); ImGui::SameLine(); ImGui::DragInt("##Line Width", lineWidth);
+	
+}
+
 void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
 {
 	if (ImGui::BeginTable("transformTable", 4))
@@ -1666,7 +1700,8 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 	ImGui::SameLine();
 	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
 
-	if (component->mTrail->mFixedDirection) {
+	if (component->mTrail->mFixedDirection) 
+	{
 		ImGui::Text("Trail Direction");
 		ImGui::SameLine();
 		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
@@ -1741,7 +1776,8 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		}
 		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
 
-		if (updated) {
+		if (updated) 
+		{
 			findRemovedMarks(gradient, &component->mTrail->mGradient);
 			findAddedMarks(gradient, &component->mTrail->mGradient);
 		}

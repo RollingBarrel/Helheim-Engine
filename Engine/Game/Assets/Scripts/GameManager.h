@@ -9,14 +9,21 @@ class GameManager : public Script
 {
     FRIEND(GameManager)
 public:
-    GameManager(GameObject* owner);
-    ~GameManager() {}
-    void Start() override;
-    void Update() override;
+    static GameManager* GetInstance(); 
+
+    void Start();
+    void Update();
+
+    GameObject* GetPlayer() { return mPlayer; };
 
     void WinScreen();
     void LoseScreen();
+
+    void LoadLevel(const char* LevelName);
 private:
+    GameManager(GameObject* owner); 
+    ~GameManager();
+
     void Loading();
     void Controls();
     bool Delay(float delay);
@@ -31,6 +38,7 @@ private:
     void OnYesButtonHoverOff();
     void OnNoButtonHoverOff();
 
+    static GameManager* mInstance;
     GameObject* mPauseScreen = nullptr;
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;

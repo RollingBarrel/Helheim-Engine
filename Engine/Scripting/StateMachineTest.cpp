@@ -115,7 +115,7 @@ void StateMachineTest::Update()
     switch (mCurrentState)
     {
     case AnimationStates::IDLE:
-        mAnimationComponent->SendTrigger("tIdle", 1.2f);
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
         Idle();
         break;
 
@@ -199,19 +199,19 @@ void StateMachineTest::Moving()
 
     if (forward && !backwards)
     {
-        mAnimationComponent->SendTrigger("tWalkForward", 1.2f);
+        mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
     }
     if (backwards && !forward)
     {
-        mAnimationComponent->SendTrigger("tWalkBack", 1.2f);
+        mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
     }
     if (left && !right)
     {
-        mAnimationComponent->SendTrigger("tStrafeLeft", 1.2f);
+        mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
     }
     if (right && !left)
     {
-        mAnimationComponent->SendTrigger("tStrafeRight", 1.2f);
+        mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
     }
     
 
