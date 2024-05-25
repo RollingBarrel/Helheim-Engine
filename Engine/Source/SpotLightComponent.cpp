@@ -24,8 +24,6 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mData.color[2] = 1.0f;
 	mData.color[3] = cos(DegToRad(38.f)); //cos outer angle
 
-	mData.viewProjMatrix = float4x4::identity;
-
 	mData.range = 15.0f;
 	mData.bias = 0.00001f;
 
@@ -38,6 +36,8 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
+
+	mData.viewProjMatrix = mShadowFrustum.ViewProjMatrix().Transposed();
 
 	mShadowMapSize = 512;
 

@@ -924,12 +924,15 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	std::vector<const MeshRendererComponent*> meshInFrustum;
 	for (const SpotLightComponent* spotLight : mSpotLights)
 	{
-		const Frustum& frustum = spotLight->GetFrustum();
-		meshInFrustum.clear();
-		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
-		for (const MeshRendererComponent* mesh : meshInFrustum)
+		if (spotLight->CanCastShadow())
 		{
-			mBatchManager.AddCommand(mesh);
+			const Frustum& frustum = spotLight->GetFrustum();
+			meshInFrustum.clear();
+			App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
+			for (const MeshRendererComponent* mesh : meshInFrustum)
+			{
+				mBatchManager.AddCommand(mesh);
+			}
 		}
 	}
 
@@ -941,29 +944,35 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glUseProgram(mDepthPassProgramId);
 	for (const SpotLightComponent* spotLight : mSpotLights)
 	{
-		mBatchManager.CleanUpCommands();
-		
-		const Frustum& frustum = spotLight->GetFrustum();
-		meshInFrustum.clear();
-		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
-
-		for (const MeshRendererComponent* mesh : meshInFrustum)
+		if (spotLight->CanCastShadow())
 		{
-			mBatchManager.AddCommand(mesh);
+			mBatchManager.CleanUpCommands();
+
+			const Frustum& frustum = spotLight->GetFrustum();
+			meshInFrustum.clear();
+			App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
+
+			for (const MeshRendererComponent* mesh : meshInFrustum)
+			{
+				mBatchManager.AddCommand(mesh);
+			}
+
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			glUseProgram(mDepthPassProgramId);
+
+			glViewport(0, 0, spotLight->GetShadowMapSize(), spotLight->GetShadowMapSize());
+			mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+			mBatchManager.Draw();
 		}
-
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, spotLight->GetShadowMap());
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
-		glClear(GL_DEPTH_BUFFER_BIT);
-
-		glUseProgram(mDepthPassProgramId);
-
-		glViewport(0, 0, spotLight->GetShadowMapSize(), spotLight->GetShadowMapSize());
-		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-		
-		mBatchManager.Draw();
+		else
+		{
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
+			glClear(GL_DEPTH_BUFFER_BIT);
+		}
 
 	}
 	
@@ -1083,7 +1092,7 @@ void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 	{
 		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
-			mSpotsBuffer->UpdateData(&mSpotLights[i]->GetData(), sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
+			mSpotsBuffer->UpdateData(&mSpotLights[i]->GetData(), sizeof(SpotLight), 16 + sizeof(SpotLight) * i);
 			return;
 		}
 	}
@@ -1096,7 +1105,7 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
 			mSpotLights.erase(mSpotLights.begin() + i);
-			mSpotsBuffer->RemoveData(sizeof(mSpotLights[i]->GetData()), 16 + sizeof(mSpotLights[i]->GetData()) * i);
+			mSpotsBuffer->RemoveData(sizeof(SpotLight), 16 + sizeof(SpotLight) * i);
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 			return;
