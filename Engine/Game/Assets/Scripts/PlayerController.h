@@ -45,6 +45,18 @@ enum class MouseDirection {
     DEFAULT
 };
 
+enum class MoveDirection {
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT,
+    UP_RIGHT,
+    UP_LEFT,
+    DOWN_RIGHT,
+    DOWN_LEFT,
+    NOT_MOVING
+};
+
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {
@@ -79,6 +91,7 @@ class PlayerController :public Script
         void Shoot(float damage);
         void Reload();
         void ClosestMouseDirection(float2 mouseState);
+        void SetMovingDirection(float3 moveDirection);
       
         void Death();
         void UpdateShield();
@@ -103,6 +116,7 @@ class PlayerController :public Script
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
         MouseDirection mLookingAt = MouseDirection::DEFAULT;
+        MoveDirection mMovingTo = MoveDirection::NOT_MOVING;
         float mBattleStateTransitionTime = 0.0f;
 
         NavMeshController* mNavMeshControl = nullptr;

@@ -1,64 +1,66 @@
-#ifndef FREE_NEHE_H
-#define FREE_NEHE_H
+#pragma once
+#include <map>
+#include "Component.h"
 
-// FreeType Headers
 #include <ft2build.h>
-#include <freetype/freetype.h>
-#include <freetype/ftglyph.h>
-#include <freetype/ftoutln.h>
-#include <freetype/fttrigon.h>
+#include FT_FREETYPE_H
 
-// OpenGL Headers
-#include <windows.h>                                      // (The GL Headers Need It)
-#include <GL/gl.h>
-#include <GL/glu.h>
+class CanvasComponent;
+class GameObject;
+class Component;
 
-// Some STL Headers
-#include <vector>
-#include <string>
-
-// Using The STL Exception Library Increases The
-// Chances That Someone Else Using Our Code Will Correctly
-// Catch Any Exceptions That We Throw.
-#include <stdexcept>
-
-// MSVC Will Spit Out All Sorts Of Useless Warnings If
-// You Create Vectors Of Strings, This Pragma Gets Rid Of Them.
-#pragma warning(disable: 4786)
-
-// Wrap Everything In A Namespace, That Way We Can Use A Common
-// Function Name Like "print" Without Worrying About
-// Overlapping With Anyone Else's Code.
-namespace freetype 
+class ENGINE_API TextComponent : public Component
 {
+public:
+    TextComponent(GameObject* owner);
+    TextComponent(const TextComponent& original, GameObject* owner);
+    ~TextComponent();
 
-    // Inside Of This Namespace, Give Ourselves The Ability
-    // To Write Just "vector" Instead Of "std::vector"
-    using std::vector;
+    void Reset() override {}
+    void Update() override {}
 
-    // Ditto For String.
-    using std::string;
+    Component* Clone(GameObject* owner) const override;
 
-    // This Holds All Of The Information Related To Any
-    // FreeType Font That We Want To Create. 
-    struct font_data {
-        float h;                                        // Holds The Height Of The Font.
-        GLuint* textures;                                  // Holds The Texture Id's
-        GLuint list_base;                                   // Holds The First Display List Id
+    void Save(Archive& archive) const override;
+    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
-        // The Init Function Will Create A Font With
-        // The Height h From The File fname.
-        void init(const char* fname, unsigned int h);
+    void Draw();
 
-        // Free All The Resources Associated With The Font.
-        void clean();
+    float3* GetColor() { return &mColor; }
+    float* GetAlpha() { return &mAlpha; }
+    std::string* GetText() { return &mText; }
+    int* GetFontSize() { return &mFontSize; }
+    int* GetLineSpacing() { return &mLineSpacing; }
+    int* GetLineWidth() { return &mLineWidth; }
+
+private:
+    void InitFreeType();
+    void LoadFont(const std::string& fontPath);
+    void CreateBuffers();
+
+    void RenderText(const std::string& text);
+    GameObject* FindCanvasOnParents(GameObject* gameObject);
+
+    struct Character {
+        unsigned int  TextureID; // ID handle of the glyph texture
+        float2 Size;  // Size of glyph
+        float2 Bearing;  // Offset from baseline to left/top of glyph
+        unsigned int  Advance;  // Offset to advance to next glyph
     };
 
-    // The Flagship Function Of The Library - This Thing Will Print
-    // Out Text At Window Coordinates X, Y, Using The Font ft_font.
-    // The Current Modelview Matrix Will Also Be Applied To The Text.
-    void print(const font_data& ft_font, float x, float y, const char* fmt, ...);
+    std::map<char, Character> mCharacters;
+    FT_Library mFt;
+    FT_Face mFace;
 
-}                                               // Close The Namespace
+    int mFontSize = 48;
+    int mLineSpacing = 0;
+    int mLineWidth = 0;
 
-#endif
+    float3 mColor = float3(1.f,1.f,1.f);
+    float mAlpha = 1.0f;
+    std::string mText = "Hello World!";
+
+    unsigned int  mQuadVAO, mQuadVBO;
+
+    CanvasComponent* mCanvas = nullptr;
+};

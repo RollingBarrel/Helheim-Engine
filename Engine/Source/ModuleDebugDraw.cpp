@@ -673,7 +673,7 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
         if (boxCollider)
         {
-            //DrawColliders(focusGameObject);
+            DrawColliders(focusGameObject);
         }
 
         if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawBoundingBoxes())
@@ -801,14 +801,14 @@ void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
         AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
         if (aabb.IsFinite())
         {
-            //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(0.0f, 0.0f, 1.0f));
+            EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
         }
 
         //OBB obb = gameObject->GetOBB();
         OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
         if (obb.IsFinite())
         {
-            EngineApp->GetDebugDraw()->DrawCube(obb, float3(1.0f, 0.0f, 0.0f));
+            EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
         }
     }
     

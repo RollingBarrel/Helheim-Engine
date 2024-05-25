@@ -206,6 +206,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "ui.fs";
 	mUIImageProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "ui.vs";
+	sourcesPaths[1] = "uiText.fs";
+	mTextProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "HighLight_Vertex.glsl";
 	sourcesPaths[1] = "HighLight_Fragment.glsl";
 	mHighLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -408,7 +412,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 
 			glUseProgram(mPbrLightingPassProgramId);
 			//world transform is the invViewMatrix
-			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetOwner()->GetWorldTransform().ptr());
+			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
 			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
 			glUseProgram(0);
 		}
@@ -970,6 +974,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 	mBatchManager.EndFrameDraw();
 
+	glActiveTexture(GL_TEXTURE0);
 	for (const ParticleSystemComponent* partSys : mParticleSystems)
 	{
 		partSys->Draw();
