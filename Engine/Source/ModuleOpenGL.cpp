@@ -914,12 +914,31 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
 
 void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes)
 {
+	//NOTE: Before the first draw call we need to add all the commands of the frame
+	//scene
+	for (const MeshRendererComponent* mesh : sceneMeshes)
+	{
+		mBatchManager.AddCommand(mesh);
+	}
+	//shadows
+	std::vector<const MeshRendererComponent*> meshInFrustum;
+	for (const SpotLightComponent* spotLight : mSpotLights)
+	{
+		const Frustum& frustum = spotLight->GetFrustum();
+		meshInFrustum.clear();
+		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
+		for (const MeshRendererComponent* mesh : meshInFrustum)
+		{
+			mBatchManager.AddCommand(mesh);
+		}
+	}
+
+	meshInFrustum.clear();
+	mBatchManager.CleanUpCommands();
 
 	//Shadows
-	std::vector<const MeshRendererComponent*> meshInFrustum;
 	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
 	glUseProgram(mDepthPassProgramId);
-	glClear(GL_DEPTH_BUFFER_BIT);
 	for (const SpotLightComponent* spotLight : mSpotLights)
 	{
 		mBatchManager.CleanUpCommands();
@@ -937,9 +956,10 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
 		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, spotLight->GetShadowMap());
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, spotLight->GetShadowMap());
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, spotLight->GetShadowMap(), 0);
+		glClear(GL_DEPTH_BUFFER_BIT);
 		
 		mBatchManager.Draw();
 
@@ -951,7 +971,6 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 	SceneFramebufferResized();
 	BindSceneFramebuffer();
-
 
 
 	mBatchManager.CleanUpCommands();

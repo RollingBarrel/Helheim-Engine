@@ -136,32 +136,35 @@ void main()
 	}
 	
 	//Spot lights
-	for(int i = 0; i<numSLights; ++i)
+	for (int i = 0; i < numSLights; ++i)
 	{
 		//Shadows
-		vec4 lightClipSpace =  sLights[i].viewProjMatrix * vec4(pos,1);
+		vec4 lightClipSpace = sLights[i].viewProjMatrix * vec4(pos, 1);
 		vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
 		lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
 		float shadowDepth = texture(sLights[i].shadowMap, lightNDC.xy).r + sLights[i].bias;
 		float fragmentDepth = lightNDC.z;
-		float shadowValue = fragmentDepth < shadowDepth  ? 1.0 : 0.0;
-		
-		vec3 mVector = pos - sLights[i].pos.xyz;
-		vec3 sDir = normalize(mVector);
-		vec3 aimDir = normalize(sLights[i].aimD.xyz);
-		float dist = dot(mVector, aimDir);
-		//TODO: Check that the radius of spot light is correct
-		float r = sLights[i].radius;
-		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
-		float c = dot(sDir, aimDir);
-		float cInner = sLights[i].aimD.w;
-		float cOuter = sLights[i].col.w;
-		//float cAtt = 1;
-		//if(cInner > c && c > cOuter)
-			//cAtt = (c - cOuter) / (cInner - cOuter);
-		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
-		att *= cAtt;
-		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att) * shadowValue;
+		if (lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
+			lightNDC.y >= 0.0 && lightNDC.y <= 1.0f &&
+			fragmentDepth < shadowDepth)
+		{
+			vec3 mVector = pos - sLights[i].pos.xyz;
+			vec3 sDir = normalize(mVector);
+			vec3 aimDir = normalize(sLights[i].aimD.xyz);
+			float dist = dot(mVector, aimDir);
+			//TODO: Check that the radius of spot light is correct
+			float r = sLights[i].radius;
+			float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
+			float c = dot(sDir, aimDir);
+			float cInner = sLights[i].aimD.w;
+			float cOuter = sLights[i].col.w;
+			//float cAtt = 1;
+			//if(cInner > c && c > cOuter)
+				//cAtt = (c - cOuter) / (cInner - cOuter);
+			float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
+			att *= cAtt;
+			pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb, sLights[i].pos.w, att);
+		}
 	}
 
 	pbrCol += GetAmbientLight();
