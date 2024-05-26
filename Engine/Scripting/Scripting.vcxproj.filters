@@ -22,6 +22,15 @@
     <Filter Include="Sound">
       <UniqueIdentifier>{c7e2f35b-49aa-45e2-b9b3-786402cac0a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weapons\Melee">
+      <UniqueIdentifier>{af3599da-f46a-407d-957c-6e0c61d4d39f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapons\Range">
+      <UniqueIdentifier>{a5234334-8063-4966-9fdf-1bdf4286b373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapons\Range\Pistol">
+      <UniqueIdentifier>{26a052d1-42d1-4771-81c9-b465aab29ef1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
@@ -63,13 +72,16 @@
     <ClInclude Include="MainMenuManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="MeleeWeapon.h">
-      <Filter>Weapons</Filter>
+    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h">
+      <Filter>Weapons\Melee</Filter>
     </ClInclude>
-    <ClInclude Include="RangeWeapon.h">
-      <Filter>Weapons</Filter>
+    <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h">
+      <Filter>Weapons\Range</Filter>
     </ClInclude>
-    <ClInclude Include="Pistol.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
+      <Filter>Weapons\Range\Pistol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -111,12 +123,15 @@
     <ClCompile Include="MainMenuManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="MeleeWeapon.cpp">
-      <Filter>Weapons</Filter>
+      <Filter>Weapons\Melee</Filter>
     </ClCompile>
     <ClCompile Include="RangeWeapon.cpp">
-      <Filter>Weapons</Filter>
+      <Filter>Weapons\Range</Filter>
     </ClCompile>
-    <ClCompile Include="Pistol.cpp" />
+    <ClCompile Include="Pistol.cpp">
+      <Filter>Weapons\Range\Pistol</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

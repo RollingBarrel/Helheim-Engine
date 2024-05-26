@@ -165,26 +165,28 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Pistol.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
     <ClInclude Include="MainMenuManager.h" />
-    <ClInclude Include="MeleeWeapon.h" />
-    <ClInclude Include="Pistol.h" />
-    <ClInclude Include="RangeWeapon.h" />
     <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />

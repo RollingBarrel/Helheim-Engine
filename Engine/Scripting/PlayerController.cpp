@@ -18,6 +18,7 @@
 #include "GameManager.h"
 #include "MathConstants.h"
 #include "BoxColliderComponent.h"
+#include "RangeWeapon.h"
 #include <functional>
 
 CREATE(PlayerController)
@@ -43,7 +44,7 @@ CREATE(PlayerController)
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
     MEMBER(MemberType::INT, mAmmoCapacity);
-
+    MEMBER(MemberType::GAMEOBJECT, mRangeWeaponGameObject);
     
 
     SEPARATOR("HUD");
@@ -79,6 +80,13 @@ void PlayerController::Start()
     mBullets = mAmmoCapacity;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
+
+    //Weapons
+    if (mRangeWeaponGameObject)
+    {
+        mRangeWeapon = reinterpret_cast<RangeWeapon*>(reinterpret_cast<ScriptComponent*>(mRangeWeaponGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    }
+    
 
     if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
 
@@ -290,7 +298,7 @@ void PlayerController::Idle()
 
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
-        mWeapon = (mWeapon == Weapon::RANGE) ? Weapon::MELEE : Weapon::RANGE;
+        mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
     }
     if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
     {
@@ -583,10 +591,10 @@ void PlayerController::Attack()
 {
     switch (mWeapon)
     {
-    case Weapon::RANGE:
+    case WeaponType::RANGE:
         RangedAttack();
         break;
-    case Weapon::MELEE:
+    case WeaponType::MELEE:
         MeleeAttack();
         break;
     }
@@ -705,12 +713,18 @@ void PlayerController::MeleeHit (float AttackRange, float AttackDamage) {
 void PlayerController::RangedAttack() 
 {
 
-    Shoot(mRangeBaseDamage);
+    //Shoot(mRangeBaseDamage);
+    if (mRangeWeapon)
+    {
+        mRangeWeapon->BasicAttack();
+    }
+    
+    Idle();
 }
 
 void PlayerController::Shoot(float damage)
 {
-    //request a bullet from the object pool
+  /*  //request a bullet from the object pool
     if (mBulletPool)
     {
         bullet = mBulletPool->GetPooledObject();
@@ -751,6 +765,7 @@ void PlayerController::Shoot(float damage)
         }
     }
     mCurrentState = PlayerState::IDLE;
+    */
 }
 
 void PlayerController::Reload()

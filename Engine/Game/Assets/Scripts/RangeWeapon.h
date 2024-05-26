@@ -3,9 +3,11 @@
 class RangeWeapon : public Weapon
 {
 
-private:
+public:
+	RangeWeapon(GameObject* owner) : Weapon(owner) {}
 
-	GameObject* mProjectile;
+protected:
+
 	GameObject* mShootPoint;
 
 	float mCurrentAmmo;

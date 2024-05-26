@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "ObjectPool.h"
 
+unsigned int Bullet::mNumBullets = 0;
+
 CREATE(Bullet)
 {
 	CLASS(owner);
@@ -11,39 +13,31 @@ CREATE(Bullet)
 	END_CREATE;
 }
 
-Bullet::Bullet(GameObject* owner) : Script(owner) {}
-
-
-void Bullet::Start()
+Bullet::Bullet(GameObject* owner) : Script(owner)
 {
-
+	mNumBullets++;
 }
+
+Bullet::~Bullet()
+{
+	mNumBullets--;
+}
+
+
 
 void Bullet::Update()
 {
-	Move();
-	//TODO:check if the bullet is out of range
-    
-    if (Delay(0.5f)) {
-        objectPool->ReturnToPool(this->mGameObject);
-    }
+	if (mTotalMovement <= mRange)
+	{
+		mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront() * mSpeed));
+		mGameObject->SetPosition(mGameObject->GetWorldPosition() + mGameObject->GetFront() * mSpeed);
+	}
+	else
+	{
+		App->GetScene()->AddGameObjectToDelete(mGameObject);
+	}
+	
 }
 
-bool Bullet::Delay(float delay)
-{
-    mTimePassed += App->GetDt();
-
-    if (mTimePassed >= delay)
-    {
-        mTimePassed = 0;
-        return true;
-    }
-    else return false;
-}
-
-void Bullet::Move()
-{
-	mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront()* mSpeed);
-}
 
 

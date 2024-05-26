@@ -14,6 +14,8 @@ class AnimationStateMachine;
 class BoxColliderComponent;
 struct CollisionData;
 
+class RangeWeapon;
+
 enum class PlayerState 
 {
     IDLE,
@@ -32,7 +34,7 @@ enum class BattleSituation {
     DEATH
 };
 
-enum class Weapon {
+enum class WeaponType {
     RANGE,
     MELEE
 };
@@ -106,7 +108,7 @@ class PlayerController :public Script
 
         void OnCollisionEnter(CollisionData* collisionData);
 
-        Weapon mWeapon = Weapon::RANGE;
+        WeaponType mWeapon = WeaponType::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
@@ -145,7 +147,10 @@ class PlayerController :public Script
         //Range
         int mAmmoCapacity = 500000;
         int mBullets = 0;
-        GameObject* bullet = nullptr;
+        //GameObject* bullet = nullptr;
+        GameObject* mRangeWeaponGameObject = nullptr;
+        RangeWeapon* mRangeWeapon = nullptr;
+
         float mRangeBaseDamage = 1.0f;
 
         //Melee

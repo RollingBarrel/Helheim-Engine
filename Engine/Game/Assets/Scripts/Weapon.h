@@ -5,15 +5,16 @@
 
 class Weapon : public Script
 {
+public:
 
+	Weapon(GameObject* owner) : Script(owner) {}
 	virtual void BasicAttack() = 0;
 	virtual void SpecialAttack() = 0;
 
-private:
+protected:
 
-	float mDamage;
-	float mAttackRate;
+	float mDamage = 0.0f;
+	float mAttackRate = 0.0f;
 	
-
 };
 
