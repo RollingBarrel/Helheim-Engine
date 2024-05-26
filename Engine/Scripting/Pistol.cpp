@@ -34,9 +34,9 @@ void Pistol::BasicAttack()
 
     if (bullet != nullptr)
     {
-        bullet->SetEnabled(true);
         if (mShootPoint)
         {
+            LOG("%f, %f, %f", mShootPoint->GetWorldPosition().x, mShootPoint->GetWorldPosition().y, mShootPoint->GetWorldPosition().z);
             bullet->SetPosition(mShootPoint->GetWorldPosition() + float3(0.0f, 1.0f, 0.0f));
         }
         bullet->SetRotation(mGameObject->GetWorldRotation());

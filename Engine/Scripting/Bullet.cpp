@@ -29,8 +29,8 @@ void Bullet::Update()
 {
 	if (mTotalMovement <= mRange)
 	{
-		mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront() * mSpeed));
-		mGameObject->SetPosition(mGameObject->GetWorldPosition() + mGameObject->GetFront() * mSpeed);
+		mTotalMovement += mGameObject->GetPosition().Distance((mGameObject->GetPosition() + mGameObject->GetFront() * mSpeed));
+		mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mSpeed);
 	}
 	else
 	{
