@@ -9,6 +9,9 @@
 CREATE(Grenade)
 {
 	CLASS(owner);
+    MEMBER(MemberType::FLOAT, mGrenadeDPS);
+    MEMBER(MemberType::FLOAT, mGrenadeDuration);
+    MEMBER(MemberType::FLOAT, mGrenadeRadius);
 	END_CREATE;
 }
 
@@ -112,10 +115,8 @@ void Grenade::SetDestionation(float3 destination)
 	mExplotionStart = true;
 }
 
-void Grenade::SetGrenadeParameters(float dps, float duration, float area)
+float Grenade::GetGrenadeRadius()
 {
-    // If player upgrades grenade
-    mGrenadeDPS = dps;
-    mGrenadeDuration = duration;
-    mGrenadeRadius = area;
+    return mGrenadeRadius;
 }
+

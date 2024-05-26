@@ -12,6 +12,7 @@ class ObjectPool;
 class GameManager;
 class AnimationStateMachine;
 class BoxColliderComponent;
+class Grenade;
 struct CollisionData;
 
 enum class PlayerState 
@@ -184,13 +185,12 @@ class PlayerController :public Script
         // Grenade
         bool mAimingGrenade = false;
         bool mThrowAwayGrenade = false;
-        float mGrenadeDPS = 1.0f;
-        float mGrenadeDuration = 4.0f;
-        float mGrenadeRadius = 3.0f; // mGrenadeExplotionPreviewAreaGO radius
        
         float mGrenadThrowDistance = 5.0f;  // mGrenadeAimAreaGO radius
-        float mGrenadeCoolDown = 15.0f;
+        float mGrenadeCoolDown = 5.0f;
         float mGrenadeCoolDownTimer = mGrenadeCoolDown;
+
+        Grenade* mGrenade = nullptr;
 
         GameObject* mGrenadeAimAreaGO = nullptr;
         GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;

@@ -20,7 +20,7 @@ public:
 
 	void SetDestionation(float3 destination);
 
-	void SetGrenadeParameters(float dps, float duration, float area);
+	float GetGrenadeRadius();
 private:
 	void Explotion();
 	void BlackHole();
@@ -33,7 +33,7 @@ private:
 	float mGrenadeDPS = 1.0f;
 	float mGrenadeDuration = 4.0f;
 	float mGrenadeCurrentTime = mGrenadeDuration;
-	float mGrenadeRadius = 2.0f;
+	float mGrenadeRadius = 3.0f; // Explotion area
 
 	float3 mDestination = float3(0, 0, 0); // Init destination to 0,0,0
 

@@ -50,6 +50,8 @@ CREATE(PlayerController)
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
+    MEMBER(MemberType::FLOAT, mGrenadThrowDistance);
+    MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
 
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mShieldGO);
@@ -117,9 +119,7 @@ void PlayerController::Start()
     if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
     {
         ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
-        Grenade* grenade = (Grenade*)script->GetScriptInstance();
-
-        grenade->SetGrenadeParameters(mGrenadeDPS, mGrenadeDuration, mGrenadeRadius);
+        mGrenade = (Grenade*)script->GetScriptInstance();
     }
 
     //Animation
@@ -344,7 +344,8 @@ void PlayerController::Idle()
 
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
     {
-        if (mGrenadeAimAreaGO) {
+        if (mGrenadeAimAreaGO) 
+        {
             mGrenadeAimAreaGO->SetEnabled(false);
         }
     }
@@ -919,6 +920,11 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
     }
+
+    if (App->GetInput()->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN)
+    {
+        mCurrentState = PlayerState::IDLE;
+    }
 }
 
 void PlayerController::UpdateGrenadeCooldown()
@@ -953,7 +959,6 @@ void PlayerController::GrenadeAttack()
         mAimingGrenade = false;
         mGrenadeAimAreaGO->SetEnabled(false);
         mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
-
     }
 }
 
@@ -985,14 +990,26 @@ void PlayerController::GrenadeTarget()
 
     bool hit = distanceSquared <= radiusSquared;
 
-    if (intersects && hit)
+    if (intersects)
     {
+        float3 finalPosition;
+        if (hit)
+        {
+            finalPosition = hitPoint;
+        }
+        else
+        {
+            // Project hitPoint to the edge of the circle
+            float distanceToEdge = mGrenadThrowDistance / sqrtf(distanceSquared);
+            finalPosition = mGameObject->GetWorldPosition() + diff * distanceToEdge;
+        }
+
         mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
-        mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenadeRadius, 0.5f, mGrenadeRadius));
-        mGrenadeExplotionPreviewAreaGO->SetPosition(float3(hitPoint.x, 0.3f, hitPoint.z));
+        mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+        mGrenadeExplotionPreviewAreaGO->SetPosition(float3(finalPosition.x, 0.3f, finalPosition.z));
 
         if ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)) {
-            ThrowGrenade(hitPoint);
+            ThrowGrenade(finalPosition);
         }
     }
 }
