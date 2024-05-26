@@ -40,8 +40,8 @@ public:
 	void ResetTransform();
 
 private:
-	float3 GetPositionRelativeToParent();
-	float3 GetScreenPosition();
+	GameObject* FindCanvasOnParents(GameObject* gameObject);
+	void RescaleMatrices(float2 ratio);
 
 	float3 mPosition= float3::zero;
 	float3 mEulerRotation = float3::zero;

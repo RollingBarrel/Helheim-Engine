@@ -21,19 +21,15 @@ public:
 	void Reset() override {}
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
-	void Enable() override;
-	void Disable() override;
 
 	void RefreshBoundingBoxes();
 	const OBB& GetOBB() const { return mOBB; }
 	const AABB& GetAABB() const { return mAABB; }
-	const ResourceMesh* GetResourceMesh() const { return mMesh; }
-	void SetMesh(unsigned int uid);
-	
-	void SetInsideFrustum(bool inside) { mInsideFrustum = inside; }
-	bool IsInsideFrustum() const { return mInsideFrustum; }
+	const AABB& GetAABBWorld() const { return mAABBWorld; }
 
+	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
+	void SetMesh(unsigned int uid);
 	void SetMaterial(unsigned int uid);
 
 private:
@@ -45,6 +41,7 @@ private:
 
 	OBB mOBB;
 	AABB mAABB;
-	bool mInsideFrustum = true;
+	AABB mOriginalAABB;
+	AABB mAABBWorld;
 	int mTemporalID = -1;
 };

@@ -12,11 +12,18 @@
 #include "Resource.h"
 #include "DetourNavMesh.h"
 #include "ModuleDetourNavigation.h"
+#include "SaveLoadNavMesh.h"
 
 
-ResourceNavMesh* Importer::NavMesh::Import(unsigned int uid)
+ResourceNavMesh* Importer::NavMesh::Import(unsigned int uid,const char* assetsFile)
 {
 	dtNavMesh* detourNavMesh = App->GetNavigation()->GetDetourNavMesh();
+	
+	if (!detourNavMesh) 
+	{
+		CheckLibraryFileExists(uid, assetsFile);
+		return nullptr;
+	}
 
 	ResourceNavMesh* resourceNavMesh = new ResourceNavMesh(uid, detourNavMesh);
 
@@ -29,6 +36,21 @@ ResourceNavMesh* Importer::NavMesh::Import(unsigned int uid)
 	EngineApp->GetEngineResource()->CreateAssetsMeta(*resourceNavMesh, (pathStr + navMeshName + ".navmesshi").c_str());
 
 	return resourceNavMesh;
+}
+
+
+void Importer::NavMesh::CheckLibraryFileExists(unsigned int uid, const char* assetsFile)
+{
+	const char* libraryFile = EngineApp->GetFileSystem()->GetLibraryFile(uid);
+
+	if(!EngineApp->GetFileSystem()->Exists(libraryFile))
+	{
+		char* fileBuffer = nullptr;
+		int size = App->GetFileSystem()->Load(assetsFile, &fileBuffer);
+		std::string path = App->GetFileSystem()->GetLibraryFile(uid, true);
+		App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+	}
+
 }
 
 

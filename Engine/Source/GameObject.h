@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
@@ -22,7 +23,8 @@ class ENGINE_API GameObject
 	friend class InspectorPanel;
 
 public:
-	GameObject(GameObject* parent);
+	GameObject(const char* name);
+	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
 	GameObject(const GameObject& original);
@@ -121,7 +123,6 @@ private:
 	void DeleteComponents();
 	Component* RemoveComponent(Component* component);
 
-	void RefreshBoundingBoxes();
 	void SetActiveInHierarchy(bool active);
 
 	const unsigned int mUid;

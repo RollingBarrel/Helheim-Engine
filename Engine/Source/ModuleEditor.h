@@ -29,9 +29,10 @@ public:
 	void SaveSettings();
 	void ShowMainMenuBar();
 	void ResetFloatingPanels(bool openPanels);
+	bool WantToCaptureKeyboard();
 
 private:
-	ImGuiIO* io = nullptr;
+	ImGuiIO* mIO = nullptr;
 	std::map<const char*, Panel*> mPanels;
 	std::vector<const char*> mPanelNames;
 	OptickAdapter* mOptick = nullptr;

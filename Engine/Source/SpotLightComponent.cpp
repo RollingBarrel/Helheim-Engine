@@ -1,48 +1,64 @@
-#include "Application.h"
+#include "SpotLightComponent.h"
 #include "ModuleOpenGL.h"
-//#include "ModuleDebugDraw.h"
+#include "Application.h"
+#include "glew.h"
 #include "MathFunc.h"
 
-#include "SpotLightComponent.h"
-
-SpotLightComponent::SpotLightComponent(GameObject* owner, const SpotLight& light) : Component(owner, ComponentType::SPOTLIGHT), mData(light) 
+SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, ComponentType::SPOTLIGHT)
 {
 	const float3& pos = owner->GetPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
+	mData.pos[3] = 50.0f; //intensity
+
+	const float3& dir = owner->GetFront();
+	mData.aimD[0] = dir.x;
+	mData.aimD[1] = dir.y;
+	mData.aimD[2] = dir.z;
+	mData.aimD[3] = cos(DegToRad(25.f)); //cos inner angle
+
+	mData.color[0] = 1.0f;
+	mData.color[1] = 1.0f;
+	mData.color[2] = 1.0f;
+	mData.color[3] = cos(DegToRad(38.f)); //cos outer angle
+
+	mData.range = 15.0f;
+	mBias = 0.00001f;
+
+	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
+	mShadowFrustum.pos = owner->GetWorldPosition();
+	mShadowFrustum.front = owner->GetFront();
+	mShadowFrustum.up = owner->GetUp();
+	mShadowFrustum.nearPlaneDistance = 0.1f;
+	mShadowFrustum.farPlaneDistance = mData.range;
+	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
+	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
 	App->GetOpenGL()->AddSpotLight(*this);
 }
 
-SpotLightComponent::~SpotLightComponent() { App->GetOpenGL()->RemoveSpotLight(*this); }
-
-const float* SpotLightComponent::GetPosition() const 
-{ 
-	return mOwner->GetPosition().ptr(); 
+SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
+	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow)
+{
+	App->GetOpenGL()->AddSpotLight(*this);
 }
 
-void SpotLightComponent::SetPosition(const float pos[3])
+SpotLightComponent::~SpotLightComponent()
 {
-	mData.pos[0] = pos[0];
-	mData.pos[1] = pos[1];
-	mData.pos[2] = pos[2];
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	App->GetOpenGL()->RemoveSpotLight(*this);
 }
 
-void SpotLightComponent::SetDirection(const float dir[3])
+const float* SpotLightComponent::GetPosition() const
 {
-	mData.aimD[0] = dir[0];
-	mData.aimD[1] = dir[1];
-	mData.aimD[2] = dir[2];
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	return mOwner->GetWorldPosition().ptr();
 }
 
-void SpotLightComponent::SetColor(float col[3])
+void SpotLightComponent::SetColor(float color[3])
 {
-	mData.col[0] = col[0];
-	mData.col[1] = col[1];
-	mData.col[2] = col[2];
+	mData.color[0] = color[0];
+	mData.color[1] = color[1];
+	mData.color[2] = color[2];
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -52,19 +68,22 @@ void SpotLightComponent::SetIntensity(float intensity)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-void SpotLightComponent::SetRadius(float radius)
+void SpotLightComponent::SetRange(float range)
 {
-	mData.radius = radius;
+	mData.range = range;
+	mShadowFrustum.farPlaneDistance = range;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 float SpotLightComponent::GetOuterAngle() const {
-	return acos(mData.col[3]);
+	return acos(mData.color[3]);
 }
 
 void SpotLightComponent::SetOuterAngle(float angle)
 {
-	mData.col[3] = cos(angle);
+	mData.color[3] = cos(angle);
+	mShadowFrustum.horizontalFov = 2.0f * angle;
+	mShadowFrustum.verticalFov = 2.0f * angle;
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
@@ -78,27 +97,43 @@ void SpotLightComponent::SetInnerAngle(float angle)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-void SpotLightComponent::Update()
+void SpotLightComponent::SetBias(float bias)
 {
-	//TODO: No mirarlo cada frame ??
-	const float* pos = mOwner->GetPosition().ptr();
-	for (int i = 0; i < 3; ++i)
-	{
-		if (pos[i] != mData.pos[i])
-		{
-			SetPosition(pos);
-		}
-	}
-	//TODO: SEPARATE ENGINE
-	//if (debugDraw)
-	//{
-	//	App->GetDebugDraw()->DrawCone(mData.pos, mData.aimD, mData.col, mData.radius);
-	//}
+	mBias = bias;
 }
 
-inline Component* SpotLightComponent::Clone(GameObject* owner) const 
+inline void SpotLightComponent::SetShadowIndex(int index)
 { 
-	return new SpotLightComponent(owner, mData);
+	mData.shadowIndex = index;
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
+
+void SpotLightComponent::Update()
+{
+	if (mOwner->HasUpdatedTransform())
+	{
+		float3 newPosition = mOwner->GetWorldPosition();
+		mData.pos[0] = newPosition[0];
+		mData.pos[1] = newPosition[1];
+		mData.pos[2] = newPosition[2];
+
+		float3 newDirection = mOwner->GetFront();
+		mData.aimD[0] = newDirection[0];
+		mData.aimD[1] = newDirection[1];
+		mData.aimD[2] = newDirection[2];
+
+		mShadowFrustum.pos = newPosition;
+		mShadowFrustum.front = newDirection;
+		mShadowFrustum.up = mOwner->GetUp();
+
+		App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	}
+}
+
+inline Component* SpotLightComponent::Clone(GameObject* owner) const
+{
+	return new SpotLightComponent(this, owner);
 }
 
 void SpotLightComponent::Save(JsonObject& obj) const 
@@ -108,6 +143,8 @@ void SpotLightComponent::Save(JsonObject& obj) const
 	obj.AddFloats("Direction", mData.aimD, 4);
 	obj.AddFloats("Color", mData.col, 4);
 	obj.AddFloat("Radius", mData.radius);
+	obj.AddBool("CastShadow", mCastShadow);
+	obj.AddFloat("Bias", mBias);
 }
 
 //TODO: why is the GO owner passed here??
@@ -121,12 +158,14 @@ void SpotLightComponent::Load(const JsonObject& data)
 	{
 		mData.pos[i] = pos[i];
 	}
+
 	float dir[4];
 	data.GetFloats("Direction", dir);
 	for (unsigned int i = 0; i < 4; ++i)
 	{
 		mData.aimD[i] = dir[i];
 	}
+
 	float col[4];
 	data.GetFloats("Color", col);
 	for (unsigned int i = 0; i < 4; ++i)
@@ -135,6 +174,20 @@ void SpotLightComponent::Load(const JsonObject& data)
 	}
 
 	mData.radius = data.GetFloat("Radius");
+
+	mCastShadow = data.GetBool("CastShadow");
+	
+	mBias = data.GetFloat("Bias");
+	
+	mShadowFrustum.pos = owner->GetWorldPosition();
+	mShadowFrustum.front = owner->GetFront();
+	mShadowFrustum.up = owner->GetUp();
+	mShadowFrustum.nearPlaneDistance = 0.01f;
+	mShadowFrustum.farPlaneDistance = mData.range;
+	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
+	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
+
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
 void SpotLightComponent::Enable()

@@ -165,7 +165,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Scene:
 		break;
 	case Resource::Type::NavMesh:
-		ret = Importer::NavMesh::Import(uid);
+		ret = Importer::NavMesh::Import(uid, assetsFile);
 		break;
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);
@@ -234,6 +234,7 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 
 Resource::Type ModuleEngineResource::DeduceResourceType(const char* assetsFile)
 {
+
 	// Extract file extension
 	if (const char* fileExtension = strrchr(assetsFile, '.'))
 	{

@@ -62,7 +62,6 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 
 	mColor = original.mColor;
 	mAlpha = original.mAlpha;
-	mHasAlpha = original.mHasAlpha;
 
 	mTexOffset = original.mTexOffset;
 	mHasDiffuse = original.mHasDiffuse;
@@ -114,11 +113,8 @@ void ImageComponent::Draw()
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
 
-		if (mHasAlpha)
-		{
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		}
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glUseProgram(UIImageProgram);
 
@@ -153,12 +149,12 @@ void ImageComponent::Draw()
 
 		glBindVertexArray(mQuadVAO);
 
-		glActiveTexture(GL_TEXTURE0);
 
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
 		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
@@ -220,7 +216,6 @@ void ImageComponent::Save(JsonObject& obj) const
 	obj.AddFloats("Color", mColor.ptr(), 3);
 	obj.AddBool("HasAlpha", mHasAlpha);
 	obj.AddFloat("Alpha", mAlpha);
-
 	obj.AddBool("IsSpritesheet", mIsSpritesheet);
 	obj.AddInt("Columns", mColumns);
 	obj.AddInt("Rows", mRows);

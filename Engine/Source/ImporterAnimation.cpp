@@ -87,7 +87,7 @@ static void AddChannels(ResourceAnimation* rAnim, const tinygltf::Model& model, 
 
 ResourceAnimation* Importer::Animation::Import(const tinygltf::Model& model, const tinygltf::Animation& animation, unsigned int& uid) {
 
-    std::string rootName = model.nodes[0].name;
+    std::string rootName = animation.name;
 
     ResourceAnimation* rAnimation = new ResourceAnimation(uid++, rootName);
 

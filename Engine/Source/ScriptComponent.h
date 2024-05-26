@@ -35,5 +35,6 @@ private:
 	ResourceScript* mResourceScript = nullptr;
 	Script* mScript = nullptr;
 	std::string mName = "";
+	bool mHasStarted = false;
 };
 

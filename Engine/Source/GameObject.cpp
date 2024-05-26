@@ -20,14 +20,20 @@
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "BoxColliderComponent.h"
+#include "TrailComponent.h"
+
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
-#include <unordered_map>
 #include "MathFunc.h"
 #include "Quadtree.h"
 #include <regex>
 
 #pragma region Constructors and Destructors
+
+GameObject::GameObject(const char* name) : GameObject(LCG().Int(), name , App->GetScene()->GetRoot())
+{
+}
 
 GameObject::GameObject(GameObject* parent) : GameObject(LCG().Int(), "GameObject", parent)
 {
@@ -66,38 +72,36 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mTag(original.GetTag()), mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride)
 {
+	for (Component* component : original.mComponents)
+	{
+		mComponents.push_back(component->Clone(this));
+	}
+ 
 	App->GetScene()->AddGameObjectToScene(this);
 
-	for (auto child : original.mChildren)
+	for (GameObject* child : original.mChildren)
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
 		gameObject->mParent = this;
 		mChildren.push_back(gameObject);
 	}
-
-	for (auto component : original.mComponents)
-	{
-		mComponents.push_back(component->Clone(this));
-	}
 }
 
 GameObject::~GameObject()
 {
+	for (Component* component : mComponents)
+	{
+		delete component;
+	}
+	mComponents.clear();
+ 
 	App->GetScene()->RemoveGameObjectFromScene(this);
 
 	for (GameObject* gameObject : mChildren)
 	{
 		delete gameObject;
-		gameObject = nullptr;
 	}
 	mChildren.clear();
-
-	for (Component* component : mComponents)
-	{
-		delete component;
-		component = nullptr;
-	}
-	mComponents.clear();
 }
 
 #pragma endregion
@@ -111,7 +115,6 @@ void GameObject::Update()
 		if (mIsTransformModified)
 		{
 			RecalculateMatrices();
-			RefreshBoundingBoxes();
 		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
@@ -216,14 +219,22 @@ void GameObject::SetLocalPosition(const float3& position)
 
 void GameObject::SetRotation(const float3& rotationInRadians)
 {
-	mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
+	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
+	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
+	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
+	mRotation = yQuat * xQuat * zQuat;
+
 	mEulerAngles = rotationInRadians;
 	mIsTransformModified = true;
 }
 
 void GameObject::SetLocalRotation(const float3& rotationInRadians)
 {
-	mLocalRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
+	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
+	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
+	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
+	mLocalRotation = yQuat * xQuat * zQuat;
+
 	mLocalEulerAngles = rotationInRadians;
 	mIsTransformModified = true;
 }
@@ -592,11 +603,14 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 {
 	if (mPrefabOverride && mPrefabId == id)
 	{
+		std::vector<GameObject*> loadedObjects;
 		for (GameObject* child : mChildren)
 		{
-			DeleteChild(child);
+			delete child;
 		}
-
+		mChildren.clear();
+		std::unordered_map<int, int> uuids;
+		
 		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray())
 		{
 			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
@@ -604,7 +618,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 			{
 				if (gameObjects[i].IsObject())
 				{
-					int parentUID{ 0 };
+					unsigned int parentUID{ 0 };
 					unsigned int uuid{ 0 };
 
 					if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt())
@@ -618,13 +632,25 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 					if (parentUID == 1) {
 						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
 						{
+							loadedObjects.push_back(this);
+							uuids[uuid] = mID;
 							//LoadComponentsFromJSON(gameObjects[i]["Components"]);
 						}
 					}
 					else
 					{
-						//LoadGameObjectFromJSON(gameObjects[i], mParent);
+						GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+						loadedObjects.push_back(go);
+						//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
+				}
+			}
+			mParent->RecalculateMatrices();
+			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+			{
+				if (gameObjects[i].IsObject())
+				{
+					loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 				}
 			}
 		}
@@ -769,7 +795,6 @@ void GameObject::DeleteChild(GameObject* child)
 {
 	RemoveChild(child->mUid);
 	delete child;
-	child = nullptr;
 }
 
 void GameObject::AddChild(GameObject* child, const int aboveThisId)
@@ -796,10 +821,6 @@ void GameObject::AddChild(GameObject* child, const int aboveThisId)
 	{
 		mChildren.push_back(child);
 	}
-	if (child->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(child);
-	}
 }
 
 GameObject* GameObject::RemoveChild(const int id)
@@ -810,10 +831,6 @@ GameObject* GameObject::RemoveChild(const int id)
 	{
 		if ((*it)->GetID() == id)
 		{
-			if ((*it)->GetComponent(ComponentType::MESHRENDERER) != nullptr)
-			{
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject((*it));
-			}
 			movedObject = *it;
 			mChildren.erase(it);
 			break;
@@ -826,88 +843,33 @@ GameObject* GameObject::RemoveChild(const int id)
 void GameObject::AddSuffix()
 {
 	bool found = true;
-	int count = 1;
-	bool hasNextItemSufix = false;
-	//size_t lastPos = -1;
+	int count = 0;
+	std::regex regularExpression(".+\\s\\(\\d+\\)$");
+	std::string nameWithoutSuffix = mName;
+
+	if (std::regex_match(nameWithoutSuffix, regularExpression))
+	{
+		nameWithoutSuffix.erase(nameWithoutSuffix.rfind(" ("));
+	}
 	while (found)
 	{
-		std::regex regularExpression(".+\\s\\(\\d+\\)$");
-
-		std::string sufix = " (" + std::to_string(count) + ')';
-		size_t pos = std::string::npos;
-		size_t hasSufix = std::string::npos;
-		std::string nameWithoutSufix = mName;
-
-		if (std::regex_match(mName, regularExpression) || hasNextItemSufix)
+		found = false;
+		if (count > 0)
 		{
-			hasSufix = mName.rfind(" (");
-
-			if (hasSufix != std::string::npos)
-			{
-				nameWithoutSufix.erase(hasSufix);
-			}
-
-			std::string nameWithSufix = nameWithoutSufix + sufix;
-
-			for (auto gameObject : mParent->mChildren)
-			{
-				if (pos == std::string::npos)
-				{
-					pos = gameObject->mName.find(nameWithSufix);
-				}
-
-			}
-
-			if (pos == std::string::npos)
-			{
-				if (mParent->mChildren.size() > 0)
-				{
-					mName = nameWithSufix;
-				}
-				found = false;
-			}
-			else
-			{
-				count++;
-				//lastPos = pos;
-			}
+			mName = nameWithoutSuffix + " (" + std::to_string(count) + ")";
 		}
 		else
 		{
-			for (auto child : mParent->mChildren)
-			{
-				if (pos == std::string::npos && child != this)
-				{
-					pos = child->mName.find(mName);
-				}
-
-			}
-
-			size_t isObjectWithSufix = std::string::npos;
-			for (auto child : mParent->mChildren)
-			{
-				if (isObjectWithSufix == std::string::npos && child != this)
-				{
-					isObjectWithSufix = child->mName.find(mName + sufix);
-				}
-			}
-
-			if (pos != std::string::npos && isObjectWithSufix == std::string::npos)
-			{
-				mName += sufix;
-				found = false;
-			}
-			else if (isObjectWithSufix != std::string::npos)
-			{
-				hasNextItemSufix = true;
-			}
-			else
-			{
-				found = false;
-			}
-
-
+			mName = nameWithoutSuffix;
 		}
+		for (GameObject* child : mParent->mChildren)
+		{
+			if (child != this && child->mName == mName)
+			{
+				found = true;
+			}
+		}
+		count++;
 	}
 }
 

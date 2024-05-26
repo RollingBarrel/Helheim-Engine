@@ -20,7 +20,8 @@ bool ModuleGame::Init()
 	App->GetScene()->Load("MainMenu");
 	//App->GetScene()->Load("Level1");
 	//TODO:: This is bad for decoupling
-	App->GetScriptManager()->StartScripts();
+	//App->GetScriptManager()->AwakeScripts();
+	//App->GetScriptManager()->StartScripts();
 
 	//TODO: Add this code to is game playing in editor and game
 	//App->GetEngineScriptManager()->Start();

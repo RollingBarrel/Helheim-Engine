@@ -67,7 +67,6 @@ private:
 
     math::float3 mColor = math::float3(1.0f, 1.0f, 1.0f);
     float mAlpha = 1.0f;
-    bool mHasAlpha = false;
 
     float2 mTexOffset = float2::zero;
     bool mHasDiffuse = true;

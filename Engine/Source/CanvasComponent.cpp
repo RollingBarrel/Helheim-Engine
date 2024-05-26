@@ -6,24 +6,23 @@
 #include "Application.h"
 #include "ScenePanel.h"
 #include "ModuleEditor.h"
-
-CanvasComponent::CanvasComponent(bool active, GameObject* owner): Component(owner, ComponentType::CANVAS), 
-	mSize(1920, 1080) 
-{
-}
+#include "ModuleUI.h"
 
 CanvasComponent::CanvasComponent(GameObject* owner) : Component(owner, ComponentType::CANVAS),
 	mSize(1920, 1080) 
 {
+	App->GetUI()->AddCanvas(this->GetOwner());
 }
 
 CanvasComponent::CanvasComponent(const CanvasComponent& original, GameObject* owner) :Component(owner, ComponentType::CANVAS)
 {
+	App->GetUI()->AddCanvas(this->GetOwner());
 	mSize = original.mSize;
 }
 
 CanvasComponent:: ~CanvasComponent() 
 {
+	App->GetUI()->RemoveCanvas(this->GetOwner());
 }
 
 void CanvasComponent::Update() 

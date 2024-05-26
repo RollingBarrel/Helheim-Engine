@@ -94,22 +94,33 @@ void Transform2DComponent::Load(const JsonObject& data)
 
 void Transform2DComponent::CalculateMatrices()
 {
-	mLocalMatrix = float4x4::FromTRS(GetPositionRelativeToParent(), mRotation, float3(mSize,0))
-		/** float4x4::Translate(float3((-mPivot + float2(0.5f, 0.5f))/*.Mul(mSize), 0.0f))*/;
+	mLocalMatrix = float4x4::FromTRS(mPosition, mRotation, float3(mSize, 1.0f));
+
+	CanvasComponent* canvas = (CanvasComponent*)FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS);
+	float2 canvasSize = canvas ? canvas->GetSize() : float2(1.0f, 1.0f); // Default to 1.0f if canvas size is not found
 
 	GameObject* parent = GetOwner()->GetParent();
-
 	if (parent)
 	{
 		Transform2DComponent* parentTransform = (Transform2DComponent*)parent->GetComponent(ComponentType::TRANSFORM2D);
 		if (parentTransform)
 		{
-			mGlobalMatrix = parentTransform->GetGlobalMatrix().Mul(mLocalMatrix);
+			// Get the parent global matrix
+			float4x4 mParentMatrix = parentTransform->GetGlobalMatrix();
+			mGlobalMatrix = float4x4::FromTRS(mParentMatrix.TranslatePart(), mParentMatrix.RotatePart(), float3::one.Div(mParentMatrix.ExtractScale()));
+
+			// Translate the parent matrix by the transform translate
+			float4x4 localMatrix = float4x4::FromTRS(mPosition, mRotation, float3(mSize, 1.0f));
+			mGlobalMatrix = mGlobalMatrix.Mul(localMatrix);
 		}
 		else
 		{
 			mGlobalMatrix = mLocalMatrix;
 		}
+	}
+	else
+	{
+		mGlobalMatrix = mLocalMatrix;
 	}
 
 	for (GameObject* child : GetOwner()->GetChildren())
@@ -122,52 +133,18 @@ void Transform2DComponent::CalculateMatrices()
 	}
 }
 
-float3 Transform2DComponent::GetPositionRelativeToParent()
+void Transform2DComponent::RescaleMatrices(float2 ratio)
 {
-	float2 parentSize(0, 0);
-
-	GameObject* parent = GetOwner()->GetParent();
-	if (parent != nullptr)
+	mSize = float2(mSize.x * ratio.x, mSize.y * ratio.y);
+	
+	for (GameObject* child : GetOwner()->GetChildren())
 	{
-		CanvasComponent* parentCanvas = (CanvasComponent*) parent->GetComponent(ComponentType::CANVAS);
-		Transform2DComponent* parentTransform2D = (Transform2DComponent*) parent->GetComponent(ComponentType::TRANSFORM2D);
-
-		if (parentCanvas != nullptr)
+		Transform2DComponent* childTransform = (Transform2DComponent*)child->GetComponent(ComponentType::TRANSFORM2D);
+		if (childTransform)
 		{
-			parentSize = parentCanvas->GetSize(); // / parentCanvas->GetScreenFactor();
-		}
-		else
-		{
-			if (parentTransform2D != nullptr)
-			{
-				parentSize = parentTransform2D->GetSize();
-				
-			}	
+			childTransform->RescaleMatrices(ratio);
 		}
 	}
-
-	float3 positionRelativeToParent;
-	positionRelativeToParent.x = mPosition.x + (parentSize.x * (mAnchorMin.x - 0.5f));
-	positionRelativeToParent.y = mPosition.y + (parentSize.y * (mAnchorMin.y - 0.5f));
-	positionRelativeToParent.z = mPosition.z;
-	return positionRelativeToParent;
-}
-
-float3 Transform2DComponent::GetScreenPosition()
-{
-	float3 screenPosition = GetPositionRelativeToParent();
-	GameObject* parent = GetOwner()->GetParent();
-
-	while (parent != nullptr)
-	{
-		Transform2DComponent* parentTransform2D = (Transform2DComponent*)parent->GetComponent(ComponentType::TRANSFORM2D);
-		if (parentTransform2D == nullptr)
-			break;
-		screenPosition += parentTransform2D->GetPositionRelativeToParent();
-		parent = parent->GetParent();
-	}
-
-	return screenPosition;
 }
 
 void Transform2DComponent::ResetTransform() {
@@ -201,31 +178,7 @@ void Transform2DComponent::SetRotation(const float3& rotation)
 
 void Transform2DComponent::SetSize(const float2 size)
 { 
-	/*ImageComponent* component = ((ImageComponent*)GetOwner()->GetComponent(ComponentType::IMAGE));
-	if ( component->GetMantainRatio() )
-	{
-		if (size.x != mSize.x)
-		{
-			float originalRatio = component->GetImage()->GetWidth() / component->GetImage()->GetHeight();
-			float currentRatio = size.x / size.y;
-			float ratio = currentRatio / originalRatio;
-			float2 newSize = float2(mSize.x * ratio, mSize.y);
-			mSize = newSize;
-		}
-		else 
-		{
-			float originalRatio = component->GetImage()->GetWidth() / component->GetImage()->GetHeight();
-			float currentRatio = size.x / size.y;
-			float ratio = currentRatio / originalRatio;
-			float2 newSize = float2(mSize.x, mSize.y * ratio);
-			mSize = newSize;
-		}
-	}
-	else 
-	{*/
-		mSize = size; 
-	//}
-
+	RescaleMatrices(size.Div(mSize));
 	CalculateMatrices(); 
 }
 
@@ -245,4 +198,25 @@ void Transform2DComponent::SetPivot(const float2 pivot)
 {
 	mPivot = pivot;
 	CalculateMatrices();
+}
+
+GameObject* Transform2DComponent::FindCanvasOnParents(GameObject* gameObject)
+{
+	if (gameObject == nullptr)
+	{
+		return nullptr;
+	}
+
+	GameObject* currentObject = gameObject;
+
+	while (currentObject != nullptr)
+	{
+		if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr)
+		{
+			return currentObject;
+		}
+		currentObject = currentObject->GetParent();
+	}
+
+	return nullptr; // No canvas found on parents
 }

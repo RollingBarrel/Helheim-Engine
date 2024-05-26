@@ -46,9 +46,6 @@ ScriptComponent::ScriptComponent(const ScriptComponent& other, GameObject* owner
 			}
 		}
 	}
-	
-	Enable();
-
 }
 
 ScriptComponent::~ScriptComponent()
@@ -69,7 +66,10 @@ void ScriptComponent::Update()
 
 Component* ScriptComponent::Clone(GameObject* owner) const
 {
-	return new ScriptComponent(*this, owner);
+	ScriptComponent* scriptComponent = new ScriptComponent(*this, owner);
+	scriptComponent->mScript->Awake();
+	return scriptComponent;
+
 }
 
 void ScriptComponent::Reset()
@@ -171,8 +171,6 @@ void::ScriptComponent::Load(const JsonObject& data)
 			}
 		}
 	}
-
-	App->GetScriptManager()->AddScript(this);
 }
 
 void ScriptComponent::LoadScript(const char* scriptName)
@@ -220,10 +218,14 @@ void ScriptComponent::LoadScript(const char* scriptName)
 void ScriptComponent::Enable()
 {
 	App->GetScriptManager()->AddScript(this);
-		
+	
+	if (mHasStarted)
+	{
+		mScript->Start();
+	}
 }
 
 void ScriptComponent::Disable()
 {
-		App->GetScriptManager()->RemoveScript(this);
+	App->GetScriptManager()->RemoveScript(this);
 }

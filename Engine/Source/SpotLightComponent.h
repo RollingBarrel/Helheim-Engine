@@ -1,20 +1,25 @@
 #ifndef _COMPONENT_SPOTLIGHT_H_
 #define _COMPONENT_SPOTLIGHT_H_
 #include "Component.h"
+#include "Geometry/Frustum.h"
 
 typedef struct SpotLight {
-	float radius;
-	float padding[3];
+
 	float pos[4]; //w intensity
 	float aimD[4];//w cos inner angle
-	float col[4];//w cos outer angle
+	float color[4];//w cos outer angle
+	float range;
+	int shadowIndex;
+	float padding[2];
+	
+
 }SpotLight;
 
 class ENGINE_API SpotLightComponent : public Component 
 {
 public:
-	SpotLightComponent(GameObject* owner, const SpotLight& light);
-	//SpotLightComponent(const SpotLightComponent& other, GameObject* owner);
+	SpotLightComponent(GameObject* owner);
+	SpotLightComponent(const SpotLightComponent* original, GameObject* owner);
 	~SpotLightComponent();
 
 	void Update() override;
@@ -29,24 +34,33 @@ public:
 
 	const SpotLight& GetData() const { return mData; }
 	const float* GetPosition() const;
-	void SetPosition(const float pos[3]);
 	const float* GetDirection() const { return mData.aimD; };
-	void SetDirection(const float dir[3]);
-	const float* GetColor() const { return mData.col; }
+	const float* GetColor() const { return mData.color; }
 	void SetColor(float col[3]);
 	float GetIntensity() const { return mData.pos[3]; }
 	void SetIntensity(float intensity);
-	float GetRadius() const { return mData.radius; }
-	void SetRadius(float radius);
+	float GetRange() const { return mData.range; }
+	void SetRange(float range);
 	float GetOuterAngle() const; 
 	void SetOuterAngle(float angle);
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
-	//Todo: Variable not necesary for the game mode
-	//bool debugDraw = false;
+	bool CanCastShadow() const { return mCastShadow; }
+	void SetCastShadow(bool castShadow) { mCastShadow = castShadow; }
+	float GetBias() const { return mBias; }
+	void SetBias(float bias);
+	int GetIndex() const { return mData.shadowIndex; }
+	void SetShadowIndex(int index);
+
+	const Frustum& GetFrustum() const { return mShadowFrustum; }
+
 
 private:
 	SpotLight mData;
+	Frustum mShadowFrustum;
+
+	bool mCastShadow = false;
+	float mBias;
 };
 
 #endif //_COMPONENT_SPOTLIGHT_H_

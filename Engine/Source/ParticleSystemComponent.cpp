@@ -9,7 +9,6 @@
 #include "Resource.h"
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
-#include<algorithm>
 
 #define MATRICES_LOCATION 2
 #define COLOR_LOCATION 1
@@ -18,19 +17,19 @@
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
-    mColorGradient[0.0f] = float4::one;
+    mColorGradient->AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
-mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime), mFileName(original.mFileName), mIsSpeedCurve(original.mIsSpeedCurve),
-mSpeedLineal(original.mSpeedLineal), mSpeedCurve(original.mSpeedCurve), mIsSizeCurve(original.mIsSizeCurve), mSizeCurve(original.mSizeCurve),
-mSizeLineal(original.mSizeLineal), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles), mLooping(original.mLooping),
-mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), Component(owner, ComponentType::PARTICLESYSTEM)
+Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime),
+mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
+mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(new ColorGradient(*original.mColorGradient))
 {
     SetImage(original.mResourceId);
     Init();
     mShape->CopyShape(*original.mShape);
+    mColorGradient = new ColorGradient(*(original.mColorGradient));
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 
@@ -39,12 +38,12 @@ ParticleSystemComponent::~ParticleSystemComponent()
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
     delete mShape;
+    delete mColorGradient;
     for (auto particle : mParticles)
     {
         delete particle;
     }
     mParticles.clear();
-    mColorGradient.clear();
 }
 
 Component* ParticleSystemComponent::Clone(GameObject* owner) const
@@ -92,9 +91,6 @@ void ParticleSystemComponent::Init()
         (const GLvoid*)(sizeof(GLfloat) * 16));
     glVertexAttribDivisor(COLOR_LOCATION, 1);
     glBindVertexArray(0);
-    // create this->amount default particle instances
-    //for (unsigned int i = 0; i < 100; ++i)
-    //    this->mParticles.push_back(new Particle());
 
     App->GetOpenGL()->AddParticleSystem(this);
     InitEmitterShape();
@@ -113,9 +109,8 @@ void ParticleSystemComponent::Draw() const
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
-        const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
-        if (cam)
-        {
+        const CameraComponent* cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
+        if (cam) {
             float4x4 projection = cam->GetViewProjectionMatrix();
             float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
             float3 up = cam->GetFrustum().up;
@@ -124,15 +119,26 @@ void ParticleSystemComponent::Draw() const
             glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
             glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
                 nullptr, GL_DYNAMIC_DRAW);
-            float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-
+            auto ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
             for (int i = 0; i < mParticles.size(); ++i)
             {
                 float scale = mParticles[i]->GetSize();
-                float3x3 scaleMatrix = float3x3::identity * scale;
                 float3 pos = mParticles[i]->GetPosition();
-                float4x4 transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+                float3x3 scaleMatrix = float3x3::identity * scale;
+                float4x4 transform;
+                if (mStretchedBillboard) 
+                {
+                    float3 aux1 = Cross(norm, mParticles[i]->GetDirection() * mParticles[i]->GetSpeed()).Normalized();
+                    float3 aux2 = Cross(aux1, norm).Normalized();
+                    transform = { float4(aux2, 0), float4(aux1, 0),float4(norm, 0),float4(pos, 1) };
+                    float stretch = (mParticles[i]->GetDirection() * mParticles[i]->GetSpeed()).Dot(aux2);
+                    scaleMatrix[0][0] = scaleMatrix[0][0] * std::max(1.0f, Sqrt(stretch/scale));
+                }
+                else 
+                {
+                    transform = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+                }
                 transform = transform * scaleMatrix;
                 transform.Transpose();
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
@@ -145,8 +151,8 @@ void ParticleSystemComponent::Draw() const
             glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
+
         }
-        
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
@@ -160,24 +166,24 @@ void ParticleSystemComponent::Update()
 {
     mEmitterTime += App->GetDt();
     mEmitterDeltaTime += App->GetDt();
+    if (mEmitterTime < mDelay) return;
 
-    const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
-    if (camera)
-    {
-        float3 camPosition = camera->GetFrustum().pos;
-        //LOG("Time = %f", mEmitterTime)
-
-        for (int i = 0; i < mParticles.size(); i++)
+	for (int i = 0; i < mParticles.size(); i++)
+	{
+		float dt = mParticles[i]->Update(App->GetDt());
+        if (dt >= 1)
         {
-            bool isAlive = mParticles[i]->Update(App->GetDt(), camPosition);
-            if (!isAlive)
-            {
-                mParticles.erase(mParticles.begin() + i);
-                i--;
-            }
+			mParticles.erase(mParticles.begin() + i);
+			i--;
+		}
+        else
+        {
+            mParticles[i]->SetSpeed(mSpeedCurve.GetValue(dt));
+            mParticles[i]->SetSize(mSizeCurve.GetValue(dt));
+            mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
         }
-    }
-    
+	}
+    if (!mLooping and mEmitterTime - mDelay > mDuration) return;
 
 	if (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
@@ -199,29 +205,10 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient[0.0f], rotation, mMaxLifeTime, mIsSpeedCurve, mIsSizeCurve);
+            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, mMaxLifeTime);
+            particle->SetSpeed(mSpeedCurve.GetInitialValue());
+            particle->SetSize(mSizeCurve.GetInitialValue());
             
-            if (mIsSpeedCurve) 
-            {
-                particle->SetSpeedCurve(mSpeedCurve);
-                particle->SetSpeedFactor(mSpeedCurveFactor);
-            }
-            else
-            {
-                particle->SetSpeedLineal(mSpeedLineal);
-            }
-            
-            if (mIsSizeCurve)
-            {
-                particle->SetSizeCurve(mSizeCurve);
-                particle->SetSizeFactor(mSizeCurveFactor);
-
-            }
-            else
-            {
-                particle->SetSize(mSizeLineal);
-            }
-
 			mParticles.push_back(particle);
 		}
 	}
@@ -235,7 +222,13 @@ void ParticleSystemComponent::SetImage(unsigned int resourceId)
 
 void ParticleSystemComponent::Reset()
 {
-
+    delete mColorGradient;
+    for (auto particle : mParticles)
+    {
+        delete particle;
+    }
+    delete mShape;
+    *this = ParticleSystemComponent(mOwner);
 }
 
 void ParticleSystemComponent::Save(JsonObject& obj) const
@@ -267,7 +260,27 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
         colorObj.AddFloat("Time", time);
         colorObj.AddFloats("Color", color.ptr(), 4);
     }
+
+    /*Component::Save(archive);
+    archive.AddInt("Image", mResourceId);
+    archive.AddFloat("Delay", mDelay);
+    archive.AddFloat("Duration", mDuration);
+    archive.AddFloat("Life Time", mMaxLifeTime);
+    archive.AddFloat("Emission Rate", mEmissionRate);
+    archive.AddInt("Max Particles", mMaxParticles);
+    archive.AddBool("Looping", mLooping);
+    archive.AddBool("Stretched Billboard", mStretchedBillboard);
+    Archive size;
+    Archive speed;
+    mSizeCurve.SaveJson(size);
+    mSpeedCurve.SaveJson(speed);
+    archive.AddObject("Size", size);
+    archive.AddObject("Speed", speed);
+    mShape->Save(archive);
+    
+    mColorGradient->Save(archive);*/
 }
+
 
 void ParticleSystemComponent::Load(const JsonObject& data)
 {
@@ -309,6 +322,60 @@ void ParticleSystemComponent::Load(const JsonObject& data)
     float speed[4];
     data.GetFloats("SpeedCurve", speed);
     mSpeedCurve = float4(speed);
+
+    /*Component::LoadFromJSON(data, owner);
+    if (data.HasMember("Delay") && data["Delay"].IsFloat())
+    {
+        mDelay = data["Delay"].GetFloat();
+    }
+    if (data.HasMember("Duration") && data["Duration"].IsFloat())
+    {
+        mDuration = data["Duration"].GetFloat();
+    }
+    if (data.HasMember("Image") && data["Image"].IsInt())
+    {
+        mResourceId = data["Image"].GetInt();
+        SetImage(mResourceId);
+    }
+    if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
+    {
+        mMaxLifeTime = data["Life Time"].GetFloat();
+    }
+    if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
+    {
+        mEmissionRate = data["Emission Rate"].GetFloat();
+    }
+    if (data.HasMember("Speed") && data["Speed"].IsObject())
+    {
+        mSpeedCurve.LoadJson(data["Speed"]);
+    } 
+    if (data.HasMember("Size") && data["Size"].IsObject())
+    {
+        mSizeCurve.LoadJson(data["Size"]);
+    }
+    if (data.HasMember("Max Particles") && data["Max Particles"].IsInt())
+    {
+        mMaxParticles = data["Max Particles"].IsInt();
+    }
+    if (data.HasMember("Looping") && data["Looping"].IsBool())
+    {
+        mLooping = data["Looping"].GetBool();
+    }
+    if (data.HasMember("Stretched Billboard") && data["Stretched Billboard"].IsBool())
+    {
+        mStretchedBillboard = data["Stretched Billboard"].GetBool();
+    }
+    if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
+    {
+        mColorGradient->LoadFromJSON(data);
+    }
+    if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
+    {
+        mShapeType = (EmitterShape::Type)data["ShapeType"].GetInt();
+        InitEmitterShape();
+        mShape->LoadFromJSON(data);
+    }
+*/
 }
 
 void ParticleSystemComponent::InitEmitterShape()
@@ -332,6 +399,7 @@ void ParticleSystemComponent::InitEmitterShape()
 void ParticleSystemComponent::Enable()
 {
     App->GetOpenGL()->AddParticleSystem(this);
+    mEmitterTime = 0.0f;
 }
 
 void ParticleSystemComponent::Disable()
@@ -343,3 +411,4 @@ void ParticleSystemComponent::Disable()
     }
     mParticles.clear();
 }
+
