@@ -101,7 +101,8 @@ inline Component* SpotLightComponent::Clone(GameObject* owner) const
 	return new SpotLightComponent(owner, mData);
 }
 
-void SpotLightComponent::Save(JsonObject& obj) const {
+void SpotLightComponent::Save(JsonObject& obj) const 
+{
 	Component::Save(obj);
 	obj.AddFloats("Position", mData.pos, 4);
 	obj.AddFloats("Direction", mData.aimD, 4);
@@ -110,39 +111,37 @@ void SpotLightComponent::Save(JsonObject& obj) const {
 }
 
 //TODO: why is the GO owner passed here??
-void SpotLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
-	//int id = 0;
-	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
-	//	id = componentJson["ID"].GetInt();
+void SpotLightComponent::Load(const JsonObject& data, GameObject* owner) 
+{	
+	Component::Load(data, owner);
+	//if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
+	//{
+	//	const auto& posArray = componentJson["Position"].GetArray();
+	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
+	//	{
+	//		mData.pos[i] = posArray[i].GetFloat();
+	//	}
 	//}
-	if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
-	{
-		const auto& posArray = componentJson["Position"].GetArray();
-		for (unsigned int i = 0; i < posArray.Size(); ++i)
-		{
-			mData.pos[i] = posArray[i].GetFloat();
-		}
-	}
-	if (componentJson.HasMember("Direction") && componentJson["Direction"].IsArray())
-	{
-		const auto& posArray = componentJson["Direction"].GetArray();
-		for (unsigned int i = 0; i < posArray.Size(); ++i)
-		{
-			mData.aimD[i] = posArray[i].GetFloat();
-		}
-	}
-	if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
-	{
-		const auto& posArray = componentJson["Color"].GetArray();
-		for (unsigned int i = 0; i < posArray.Size(); ++i)
-		{
-			mData.col[i] = posArray[i].GetFloat();
-		}
-	}
-	if (componentJson.HasMember("Radius") && componentJson["Radius"].IsFloat())
-	{
-		mData.radius = componentJson["Radius"].GetFloat();
-	}
+	//if (componentJson.HasMember("Direction") && componentJson["Direction"].IsArray())
+	//{
+	//	const auto& posArray = componentJson["Direction"].GetArray();
+	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
+	//	{
+	//		mData.aimD[i] = posArray[i].GetFloat();
+	//	}
+	//}
+	//if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
+	//{
+	//	const auto& posArray = componentJson["Color"].GetArray();
+	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
+	//	{
+	//		mData.col[i] = posArray[i].GetFloat();
+	//	}
+	//}
+	//if (componentJson.HasMember("Radius") && componentJson["Radius"].IsFloat())
+	//{
+	//	mData.radius = componentJson["Radius"].GetFloat();
+	//}
 }
 
 void SpotLightComponent::Enable()

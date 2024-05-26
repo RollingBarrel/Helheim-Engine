@@ -19,12 +19,13 @@ public:
     inline void Reserve(unsigned int size);
     inline unsigned int Size() const;
     inline unsigned int Capacity() const;
+
     inline void PushBackBool(bool value);
     inline void PushBackInt(int value);
     inline void PushBackFloat(float value);
     inline void PushBackString(const char* value);
-    inline JsonArray PushBackNewArray();
     inline JsonObject PushBackNewObject();
+    inline JsonArray PushBackNewArray();
     inline void PopBack();
 
     inline bool GetBool(unsigned int idx) const;
@@ -63,8 +64,8 @@ public:
     inline float GetFloat(const char* key) const;
     unsigned int GetFloats(const char* key, float* fillFloats) const;
     inline std::string GetString(const char* key) const;
-    inline JsonObject GetJsonObject(const char* key);
-    inline JsonArray GetJsonArray(const char* key);
+    inline const JsonObject GetJsonObject(const char* key) const;
+    inline const JsonArray GetJsonArray(const char* key) const;
     bool HasMember(const char* key) const;
 
 private:

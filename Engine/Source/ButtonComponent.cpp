@@ -61,9 +61,9 @@ void ButtonComponent::Save(JsonObject& obj) const
     Component::Save(obj);
 }
 
-void ButtonComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
+void ButtonComponent::Load(const JsonObject& data, GameObject* owner)
 {
-    Component::LoadFromJSON(data, owner);
+    Component::Load(data, owner);
 }
 
 

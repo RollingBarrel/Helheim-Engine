@@ -2,11 +2,9 @@
 #include "EngineApp.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
-#include "Tag.h"
 #include "imgui.h"
 
 #include <vector>
-
 
 
 TagsManagerPanel::TagsManagerPanel() : Panel(TAGSMANAGERPANEL, true)
@@ -32,33 +30,33 @@ void TagsManagerPanel::Draw(int windowFlags)
 
 void TagsManagerPanel::DrawTagsList()
 {
-    int yMax;
-    if (18 * EngineApp->GetScene()->GetCustomTagsSize() >= 300) {
-        yMax = 300;
-    }
-    else if (18 * EngineApp->GetScene()->GetCustomTagsSize() == 0) {
-        yMax = 18;
-    }
-    else {
-        yMax = 18 * EngineApp->GetScene()->GetCustomTagsSize();
-    }
-    ImVec2 size = ImVec2(200.0f, yMax);
-
-    std::vector<Tag*> customTags = EngineApp->GetScene()->GetCustomTag();
-
-    if (ImGui::BeginListBox("##Tags", size))
-    {
-        for (auto i = 0; i < customTags.size(); i++) {
-            bool isSelected = (mSelectedIdx == i);
-            if (ImGui::Selectable(customTags[i]->GetName().c_str(), isSelected))
-            {
-                mSelectedIdx = i;
-                mSelectedTag = customTags[i];
-            }
-        }
-
-        ImGui::EndListBox();
-    }
+    //int yMax;
+    //if (18 * EngineApp->GetScene()->GetCustomTagsSize() >= 300) {
+    //    yMax = 300;
+    //}
+    //else if (18 * EngineApp->GetScene()->GetCustomTagsSize() == 0) {
+    //    yMax = 18;
+    //}
+    //else {
+    //    yMax = 18 * EngineApp->GetScene()->GetCustomTagsSize();
+    //}
+    //ImVec2 size = ImVec2(200.0f, yMax);
+    //
+    //std::vector<Tag*> customTags = EngineApp->GetScene()->GetCustomTag();
+    //
+    //if (ImGui::BeginListBox("##Tags", size))
+    //{
+    //    for (auto i = 0; i < customTags.size(); i++) {
+    //        bool isSelected = (mSelectedIdx == i);
+    //        if (ImGui::Selectable(customTags[i]->GetName().c_str(), isSelected))
+    //        {
+    //            mSelectedIdx = i;
+    //            mSelectedTag = customTags[i];
+    //        }
+    //    }
+    //
+    //    ImGui::EndListBox();
+    //}
 }
 
 void TagsManagerPanel::DrawDeleteButton()
@@ -67,7 +65,7 @@ void TagsManagerPanel::DrawDeleteButton()
     if (ImGui::Button("Delete selected tag"))
     {
         if (mSelectedTag != nullptr) {
-            EngineApp->GetScene()->DeleteTag(mSelectedTag);
+            //EngineApp->GetScene()->DeleteTag(mSelectedTag);
         }
     }
 }
@@ -80,7 +78,7 @@ void TagsManagerPanel::DrawAddButton()
 
     if (ImGui::Button("Add") && std::strlen(inputBuffer) > 0)
     {
-        EngineApp->GetScene()->AddTag(inputBuffer);
+        //EngineApp->GetScene()->AddTag(inputBuffer);
         strcpy_s(inputBuffer, "");
     }
 }

@@ -19,8 +19,10 @@ public:
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
+
 	void Save(JsonObject& obj) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Load(const JsonObject& data, GameObject* owner) override;
+
 	void Reset() override {}
 	void Enable() override;
 	void Disable() override;

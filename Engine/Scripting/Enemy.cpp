@@ -12,7 +12,7 @@ void Enemy::Start()
 {
 
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
+    //TAG: mPlayer = scene->FindGameObjectWithTag(scene->GetTag("Player")->GetID());
     mHealth = mMaxHealth;
     
     

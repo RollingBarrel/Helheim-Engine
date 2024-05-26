@@ -11,20 +11,20 @@ void Component::Save(JsonObject& obj) const
 	obj.AddBool("isEnabled", IsEnabled());
 }
 
-void Component::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void Component::Load(const JsonObject& data, GameObject* owner)
 {
-	if (data.HasMember("ID") && data["ID"].IsInt())
-	{
-		mID = data["ID"].GetInt();
-	}
-	if (data.HasMember("ComponentType") && data["ComponentType"].IsInt())
-	{
-		mType = static_cast<ComponentType>(data["ComponentType"].GetInt());
-	}
-	if (data.HasMember("isEnabled") && data["isEnabled"].IsBool())
-	{
-		mIsEnabled = data["isEnabled"].GetBool();
-	}
+	//if (data.HasMember("ID") && data["ID"].IsInt())
+	//{
+	//	mID = data["ID"].GetInt();
+	//}
+	//if (data.HasMember("ComponentType") && data["ComponentType"].IsInt())
+	//{
+	//	mType = static_cast<ComponentType>(data["ComponentType"].GetInt());
+	//}
+	//if (data.HasMember("isEnabled") && data["isEnabled"].IsBool())
+	//{
+	//	mIsEnabled = data["isEnabled"].GetBool();
+	//}
 }
 
 const char* Component::GetNameFromType(ComponentType type)
@@ -37,8 +37,6 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Point Light";
 		case ComponentType::SPOTLIGHT:
 			return "Spot Light";
-		case ComponentType::TEST:
-			return "Test";
 		case ComponentType::CAMERA:
 			return "Camera";
 		case ComponentType::SCRIPT:

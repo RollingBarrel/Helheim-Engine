@@ -19,7 +19,7 @@ public:
 	Component* Clone(GameObject* owner) const override;
 	void Reset();
 	void Save(JsonObject& obj) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Load(const JsonObject& data, GameObject* owner) override;
 
 	inline const float4x4& GetGlobalMatrix() const { return mGlobalMatrix; }
 	inline const float3& GetPosition() const { return mPosition; }

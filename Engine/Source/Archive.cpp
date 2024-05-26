@@ -245,14 +245,14 @@ std::string JsonObject::GetString(const char* key) const
     return mObject[key].GetString();
 }
 
-JsonObject JsonObject::GetJsonObject(const char* key)
+const JsonObject JsonObject::GetJsonObject(const char* key) const
 {
     assert(mObject.HasMember(key) && "Document does not have this member");
     assert(mObject[key].IsObject() && "This member is not an object");
     return JsonObject(mObject[key].GetObject(), mAllocator);
 }
 
-JsonArray JsonObject::GetJsonArray(const char* key)
+const JsonArray JsonObject::GetJsonArray(const char* key) const
 {
     assert(mObject.HasMember(key) && "Document does not have this member");
     assert(mObject[key].IsArray() && "This member is not an array");

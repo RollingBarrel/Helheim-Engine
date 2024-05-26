@@ -401,7 +401,7 @@ void PlayerController::MeleeAttack()
     ModuleScene* scene = App->GetScene();
     std::vector<GameObject*> Enemies;
 
-    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
+    //TAG: scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
     float3 playerPosition = mGameObject->GetPosition();
 
     // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
@@ -514,7 +514,7 @@ void PlayerController::Shoot(float damage)
     {
         for (const std::pair<float, Hit>& hit : hits)
         {
-            if (hit.second.mGameObject->GetTag()->GetName() == "Enemy") 
+            //if (hit.second.mGameObject->GetTag()->GetName() == "Enemy") 
             {
                 LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
     

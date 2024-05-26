@@ -75,8 +75,9 @@ void AIAgentComponent::Save(JsonObject& obj) const
 	//obj.AddFloat("StoppingDistance", mStoppingDistance);
 }
 
-void AIAgentComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AIAgentComponent::Load(const JsonObject& data, GameObject* owner)
 {
+	Component::Load(data, owner);
 	//if (data.HasMember("Radius")) 
 	//{
 	//	mRadius = data["Radius"].GetFloat();

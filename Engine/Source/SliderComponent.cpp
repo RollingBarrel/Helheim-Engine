@@ -22,10 +22,11 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	if (self->GetChildren().empty()) 
 	{
 		self->SetName("Slider");
-		mFill = new GameObject("Fill", self);
-		mBackground = new GameObject("Background", self);
-
 		mSliderTransform2D = new Transform2DComponent(self);
+
+		mBackground = this->GetOwner()->GetChildren()[0];
+		mFill = this->GetOwner()->GetChildren()[1];
+
 		mBgImage = new ImageComponent(mBackground);
 		mFillImage = new ImageComponent(mFill);
 		mBgTransform2D = new Transform2DComponent(mBackground);
@@ -89,9 +90,9 @@ void SliderComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 }
 
-void SliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void SliderComponent::Load(const JsonObject& data, GameObject* owner)
 {
-	Component::LoadFromJSON(data, owner);
+	Component::Load(data, owner);
 }
 
 SliderComponent:: ~SliderComponent()

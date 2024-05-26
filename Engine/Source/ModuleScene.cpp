@@ -17,7 +17,6 @@
 #include "HierarchyPanel.h"
 #include "ModuleEditor.h"
 #include "ModuleResource.h"
-#include "Tag.h"
 #include "Globals.h"
 
 #include <algorithm>
@@ -27,19 +26,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
-ModuleScene::ModuleScene() {
-
-	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
-	mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
-	mTags.push_back(new Tag(2, "Finish", TagType::SYSTEM));
-	mTags.push_back(new Tag(3, "EditorOnly", TagType::SYSTEM));
-	mTags.push_back(new Tag(4, "MainCamera", TagType::SYSTEM));
-	mTags.push_back(new Tag(5, "Player", TagType::SYSTEM));
-	mTags.push_back(new Tag(6, "Obstacle", TagType::SYSTEM));
-	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
-	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
-	mTags.push_back(new Tag(9, "Bullet", TagType::SYSTEM));
-
+ModuleScene::ModuleScene() 
+{
 }
 
 ModuleScene::~ModuleScene()
@@ -123,11 +111,11 @@ update_status ModuleScene::PostUpdate(float dt)
 
 #pragma region Tags
 
-GameObject* ModuleScene::FindGameObjectWithTag(unsigned tagID)
+GameObject* ModuleScene::FindGameObjectWithTag(const std::string& tagID)
 {
 	for (GameObject* go : mSceneGO)
 	{
-		if (go->GetTag()->GetID() == tagID && go != mRoot)
+		if (go->GetTag() == tagID)
 		{
 			return go;
 		}
@@ -136,128 +124,99 @@ GameObject* ModuleScene::FindGameObjectWithTag(unsigned tagID)
 	return nullptr;
 }
 
-GameObject* ModuleScene::FindGameObjectWithTag(const char* tagName)
-{
-	Tag* tag = App->GetScene()->GetTagByName(tagName);
-	return FindGameObjectWithTag(tag->GetID());
-}
-
-void ModuleScene::FindGameObjectsWithTag(unsigned tagID, std::vector<GameObject*>& foundGameObjects)
+void ModuleScene::FindGameObjectsWithTag(const std::string& tagID, std::vector<GameObject*>& foundGameObjects)
 {
 	for (GameObject* go : mSceneGO)
 	{
-		if (go->GetTag()->GetID() == tagID && go != mRoot)
+		if (go->GetTag() == tagID)
 		{
 			foundGameObjects.push_back(go);
 		}
 	}
 }
 
-void ModuleScene::FindGameObjectsWithTag(const char* tagName, std::vector<GameObject*>& foundGameObjects)
-{
-	Tag* tag = App->GetScene()->GetTagByName(tagName);
-	FindGameObjectsWithTag(tag->GetID(), foundGameObjects);
-}
 
-void ModuleScene::AddTag(std::string tagname)
-{
-	if (GetTagByName(tagname) == nullptr)
-	{
-		Tag* newTag = new Tag(mLastTagIndex, tagname, TagType::CUSTOM);
-		mTags.push_back(newTag);
-
-		++mLastTagIndex;
-	}
-}
-
-int ModuleScene::GetCustomTagsSize()
-{
-	std::vector<Tag*> customs = GetCustomTag();
-	return customs.size();
-}
-
-std::vector<Tag*> ModuleScene::GetSystemTag()
-{
-	std::vector<Tag*> systemTags;
-	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
-		[](Tag* tag) { return tag->GetType() == TagType::SYSTEM; });
-
-	return systemTags;
-}
-
-std::vector<Tag*> ModuleScene::GetCustomTag()
-{
-	std::vector<Tag*> systemTags;
-	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
-		[](Tag* tag) { return tag->GetType() == TagType::CUSTOM; });
-
-	return systemTags;
-}
-
-Tag* ModuleScene::GetTagByName(std::string tagname)
-{
-	for (Tag* tag : mTags)
-	{
-		if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0)
-		{
-			return tag;
-		}
-	}
-	return nullptr;
-}
-
-Tag* ModuleScene::GetTagByID(unsigned id)
-{
-	for (Tag* tag : mTags)
-	{
-		if (tag->GetID() == id)
-		{
-			return tag;
-		}
-	}
-	return nullptr;
-}
-
-void ModuleScene::DeleteTag(Tag* tag)
-{
-	auto it = std::find(mTags.begin(), mTags.end(), tag);
-
-	if (it != mTags.end())
-	{
-		// 1. Set tags to untagged
-		//std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
-		//for (auto object : objects)
-		//{
-		//	object->SetTag(GetTagByName("Untagged"));
-		//}
-		//
-		// 2. Delete it
-		mTags.erase(it);
-		delete tag;
-	}
-}
+//void ModuleScene::AddTag(std::string tagname)
+//{
+//	if (GetTagByName(tagname) == nullptr)
+//	{
+//		Tag* newTag = new Tag(mLastTagIndex, tagname, TagType::CUSTOM);
+//		mTags.push_back(newTag);
+//
+//		++mLastTagIndex;
+//	}
+//}
+//
+//int ModuleScene::GetCustomTagsSize()
+//{
+//	std::vector<Tag*> customs = GetCustomTag();
+//	return customs.size();
+//}
+//
+//std::vector<Tag*> ModuleScene::GetSystemTag()
+//{
+//	std::vector<Tag*> systemTags;
+//	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
+//		[](Tag* tag) { return tag->GetType() == TagType::SYSTEM; });
+//
+//	return systemTags;
+//}
+//
+//std::vector<Tag*> ModuleScene::GetCustomTag()
+//{
+//	std::vector<Tag*> systemTags;
+//	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
+//		[](Tag* tag) { return tag->GetType() == TagType::CUSTOM; });
+//
+//	return systemTags;
+//}
+//
+//Tag* ModuleScene::GetTagByName(std::string tagname)
+//{
+//	for (Tag* tag : mTags)
+//	{
+//		if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0)
+//		{
+//			return tag;
+//		}
+//	}
+//	return nullptr;
+//}
+//
+//Tag* ModuleScene::GetTagByID(unsigned id)
+//{
+//	for (Tag* tag : mTags)
+//	{
+//		if (tag->GetID() == id)
+//		{
+//			return tag;
+//		}
+//	}
+//	return nullptr;
+//}
+//
+//void ModuleScene::DeleteTag(Tag* tag)
+//{
+//	auto it = std::find(mTags.begin(), mTags.end(), tag);
+//
+//	if (it != mTags.end())
+//	{
+//		// 1. Set tags to untagged
+//		//std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
+//		//for (auto object : objects)
+//		//{
+//		//	object->SetTag(GetTagByName("Untagged"));
+//		//}
+//		//
+//		// 2. Delete it
+//		mTags.erase(it);
+//		delete tag;
+//	}
+//}
 
 #pragma endregion
 
 #pragma region Save / Load Scene
-
-void ModuleScene::SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const
-{
-	// Save the current GameObject to its archive
-	Archive gameObjectArchive;
-	gameObject->Save(gameObjectArchive);
-	gameObjectsArchive.push_back(gameObjectArchive);
-
-	const std::vector<GameObject*>& children = gameObject->GetChildren();
-	if (!children.empty())
-	{
-		for (GameObject* child : children)
-		{
-			SaveGameObjectRecursive(child, gameObjectsArchive);
-		}
-	}
-}
-
 void ModuleScene::Save(const char* sceneName) const
 {
 	std::string saveFilePath = ASSETS_SCENES_PATH + std::string(sceneName);
@@ -268,102 +227,62 @@ void ModuleScene::Save(const char* sceneName) const
 
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
-	root.AddString("Name", mRoot->GetName().c_str());
-	
-	// Not using recursive to save, using the sceneGO vector
-	//SaveGame(mRoot->GetChildren(), *archive);
-	JsonArray objArray = root.AddNewJsonArray("GameObjects");
+
+	JsonObject scene = root.AddNewJsonObject("Scene");
+	scene.AddString("Name", mRoot->GetName().c_str());
+
+	JsonArray objArray = scene.AddNewJsonArray("GameObjects");
 	for (const GameObject* go : mSceneGO) 
 	{
 		JsonObject gameObjectData = objArray.PushBackNewObject();
 		go->Save(gameObjectData);
 	}
-	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
-	
-	delete archive;
 }
 
 void ModuleScene::Load(const char* sceneName)
 {
-	std::string loadFilePath = ASSETS_SCENES_PATH + std::string(sceneName);
-	if (loadFilePath.find(".json") == std::string::npos)
+	std::string filePath = ASSETS_SCENES_PATH + std::string(sceneName);
+	if (filePath.find(".json") == std::string::npos)
 	{
-		loadFilePath += ".json";
+		filePath += ".json";
 	}
 
-	char* loadedBuffer = nullptr;
+	char* fileBuffer = nullptr;
 
-	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &loadedBuffer) > 0)
+	if (App->GetFileSystem()->Load(filePath.c_str(), &fileBuffer) > 0)
 	{
-		rapidjson::Document document;
-		rapidjson::ParseResult ok = document.Parse(loadedBuffer);
-		if (!ok)
-		{
-			LOG("Scene was not loaded.");
-			return;
-		}
-
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
 		mSceneGO.clear();
 		delete mRoot;
-
 		mRoot = new GameObject("SampleScene", nullptr);
 
-		if (document.HasMember("Scene") && document["Scene"].IsObject())
-		{
-			const rapidjson::Value& sceneValue = document["Scene"];
-			if (sceneValue.HasMember("Name"))
-			{
-				mRoot->SetName(sceneValue["Name"].GetString());
-				App->GetNavigation()->LoadResourceData();		//TODO: Redo navigation resources 
-			}
+		Archive doc(fileBuffer);
+		JsonObject root = doc.GetRootObject();
 
-			LoadGameObject(sceneValue, mRoot);
+		JsonObject scene = root.GetJsonObject("Scene");
+		mRoot->SetName(scene.GetString("Name").c_str());
+
+		JsonArray gameObjects = scene.GetJsonArray("GameObjects");
+		for (int i = 0; i < gameObjects.Size(); ++i)
+		{
+			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
+			GameObject* gO = new GameObject(gameObjectData.GetInt("UID"), gameObjectData.GetString("Name").c_str(), Find(gameObjectData.GetInt("ParentUID")));
+			gO->Load(gameObjectData);
+			mSceneGO.push_back(gO);
 		}
 
+		mRoot->RecalculateMatrices();		
 		mQuadtreeRoot->UpdateTree();
-		delete[] loadedBuffer;
+
+		delete[] fileBuffer;
 
 		LoadGameObjectsIntoScripts();
 
 		App->GetScriptManager()->StartScripts();
-	}
-}
-
-void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent)
-{
-	// Manage GameObjects inside the Scene
-	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
-	{
-		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
-		int offset = mSceneGO.size();
-		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-		{
-			if (gameObjects[i].IsObject())
-			{
-				GameObject::LoadGameObjectFromJSON(gameObjects[i], parent);	
-				/*TODO: Redo GameObject Load function.They should have a Load function and return the loaded gameobject
-						This game object should be added into the Scene GameObjects vector 
-						
-				*/
-			}
-		}
-
-		parent->RecalculateMatrices();
-
-		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-		{
-			// Manage Components
-			if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
-			{
-				mSceneGO[offset + i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-			}
-		}
-
 	}
 }
 #pragma endregion
@@ -381,7 +300,7 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	Archive* prefabArchive = new Archive();
 	Archive* archive = new Archive();
 	std::vector<Archive> gameObjectsArchiveVector;
-	SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
+	//SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
 	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 	//prefabArchive->AddObject("Prefab", *archive);
 
@@ -420,7 +339,7 @@ void ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, 
 		else
 		{
 			GameObject* temp = new GameObject("Temp", parent);
-			LoadGameObject(sceneValue, temp);
+			//LoadGameObject(sceneValue, temp);
 			for (GameObject* child : temp->GetChildren())
 			{
 				GameObject* newObject = new GameObject(*child, parent);
@@ -467,9 +386,17 @@ GameObject* ModuleScene::Find(const char* name) const
 
 GameObject* ModuleScene::Find(unsigned int UID) const
 {
+	if (UID == 1)
+	{
+		return mRoot;
+	}
+
 	for (GameObject* go : mSceneGO)
 	{
-		if (go->GetID() == UID) return go;
+		if (go->GetID() == UID)
+		{
+			return go;
+		}
 	}
 
 	return nullptr;

@@ -187,7 +187,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			mNodesToOpen.erase(node->GetID());
 			ImGui::SetNextItemOpen(true);
 		}
-		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->mID, baseFlags, node->mName.c_str()) && (node->mChildren.size() > 0);
+		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->mUid, baseFlags, node->mName.c_str()) && (node->mChildren.size() > 0);
 		ImGui::PopStyleVar();
 		if (!node->IsActive())
 		{
@@ -266,7 +266,7 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 					GameObject* parent = target->mParent;
 					while (parent != nullptr) 
 					{
-						if (parent->mID == movedObject->mID) 
+						if (parent->mUid == movedObject->mUid) 
 						{
 							isParent = true;
 						}
@@ -277,7 +277,7 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 					if (!isParent) 
 					{
 						GameObject* pMovedObject = movedObject->mParent->RemoveChild(movedObject->GetID());
-						if (reorder) { target->mParent->AddChild(pMovedObject, target->mID); }
+						if (reorder) { target->mParent->AddChild(pMovedObject, target->mUid); }
 						else { target->AddChild(pMovedObject); }
 					}
 				}

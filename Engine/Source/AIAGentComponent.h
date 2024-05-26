@@ -33,7 +33,7 @@ public:
 
 	void MoveAgent(math::float3 destination, float speed);
 	void Save(JsonObject& obj) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Load(const JsonObject& data, GameObject* owner) override;
 private:
 	//Agent Parameters:
 	//float mRadius = 0.0f;

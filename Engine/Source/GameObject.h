@@ -8,7 +8,6 @@
 #include "Math/float4.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
-#include "Tag.h"
 #include "MeshRendererComponent.h"
 #include "Archive.h"
 
@@ -36,16 +35,16 @@ public:
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
-	unsigned int GetID() const { return mID; }
+	unsigned int GetID() const { return mUid; }
 	float3 GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); } 
 	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
-	Tag* GetTag() const { return mTag; }
+	const std::string& GetTag() const { return mTag; }
 	AABB GetAABB();
 	bool IsDynamic() const { return mIsDynamic; }
 
 	//Setters
-	void SetTag(Tag* tag) { mTag = tag; };
+	void SetTag(unsigned int tag) { mTag = tag; };
 	void SetName(const char* name) { mName = name; };
 	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
 
@@ -97,8 +96,6 @@ public:
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
 	std::vector<Component*>& FindComponentsInChildren(GameObject* parent, const ComponentType type);
-	GameObject* FindGameObjectWithTag(std::string tagname);
-	std::vector<GameObject*>& FindGameObjectsWithTag(std::string tagname);
 
 	// Components
 	Component* CreateComponent(ComponentType type);
@@ -111,13 +108,11 @@ public:
 
 	// Save / Load
 	void Save(JsonObject& obj) const;
-	void Load(const rapidjson::Value& gameObjectsJson);
-	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
-	void LoadComponentsFromJSON(const rapidjson::Value& components);
+	void Load(const JsonObject& obj);
 
 	// Prefabs
 	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
-	void SetPrefabId(unsigned int id) { mPrefabResourceId = id; }
+	void SetPrefabId(unsigned int id) { mPrefabId = id; }
 	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }
 
 private:
@@ -129,16 +124,11 @@ private:
 	void RefreshBoundingBoxes();
 	void SetActiveInHierarchy(bool active);
 
-	const unsigned int mID;
+	const unsigned int mUid;
 	std::string mName = "GameObject";
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
-
-	// Components
-	std::vector<Component*> mComponents;
-	std::vector<Component*> mComponentsToDelete;
-	Tag* mTag = nullptr;
 
 	// Transform
 	float4x4 mWorldTransformMatrix = float4x4::identity;
@@ -156,9 +146,15 @@ private:
 	float3 mScale = float3::one;
 	float3 mLocalScale = float3::one;
 
+	// Components
+	std::vector<Component*> mComponents;
+	std::vector<Component*> mComponentsToDelete;
+
 	// Prefabs
-	int mPrefabResourceId = 0;
+	int mPrefabId = 0;
 	bool mPrefabOverride = true;
+
+	std::string mTag = "Untagged";
 
 	bool mIsEnabled = true;
 	bool mIsActive = true;

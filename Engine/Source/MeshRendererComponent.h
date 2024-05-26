@@ -38,7 +38,7 @@ public:
 
 private:
 	void Save(JsonObject& obj) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Load(const JsonObject& data, GameObject* owner) override;
 
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;

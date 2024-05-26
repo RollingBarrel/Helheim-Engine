@@ -198,18 +198,19 @@ void AnimationComponent::Save(JsonObject& obj) const
 	obj.AddInt("ModelUID", mModelUid);
 }
 
-void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AnimationComponent::Load(const JsonObject& data, GameObject* owner)
 {
+	Component:Load(data, owner);
 
-	int animationID = { 0 };
-	if (data.HasMember("AnimationID") && data["AnimationID"].IsInt()) 
-	{
-		animationID = data["AnimationID"].GetInt();
-	}
-	SetAnimation(animationID);
-
-	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
-	{
-		mModelUid = data["ModelUID"].GetInt();
-	}
+	//int animationID = { 0 };
+	//if (data.HasMember("AnimationID") && data["AnimationID"].IsInt()) 
+	//{
+	//	animationID = data["AnimationID"].GetInt();
+	//}
+	//SetAnimation(animationID);
+	//
+	//if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
+	//{
+	//	mModelUid = data["ModelUID"].GetInt();
+	//}
 }

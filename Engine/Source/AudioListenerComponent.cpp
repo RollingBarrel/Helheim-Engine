@@ -42,8 +42,9 @@ void AudioListenerComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 }
 
-void AudioListenerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AudioListenerComponent::Load(const JsonObject& data, GameObject* owner)
 {
+	Component::Load(data, owner);
 }
 
 void AudioListenerComponent::Enable()

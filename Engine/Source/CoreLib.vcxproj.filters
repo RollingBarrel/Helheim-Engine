@@ -78,9 +78,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Tag.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -112,9 +109,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="SpotLightComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TestComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="CanvasComponent.cpp">
@@ -413,9 +407,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Tag.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
@@ -447,9 +438,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="SpotLightComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TestComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="CanvasComponent.h">

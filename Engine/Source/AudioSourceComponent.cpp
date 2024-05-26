@@ -188,27 +188,28 @@ void AudioSourceComponent::Save(JsonObject& obj) const
 	}
 }
 
-void AudioSourceComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AudioSourceComponent::Load(const JsonObject& data, GameObject* owner)
 {
-	if (data.HasMember("EventName") && data["EventName"].IsString()) 
-	{
-		SetEventByName(data["EventName"].GetString());
-	}
-
-	if (data.HasMember("ParametersVariables") && data["ParametersVariables"].IsArray()) 
-	{
-		UpdateParameters();
-
-		const auto& array = data["ParametersVariables"].GetArray();
-
-		for (unsigned int i = 0; i < array.Size(); ++i)
-		{
-			unsigned key = array[i]["ParametersKey"].GetInt();
-			int value = array[i]["ParametersValue"].GetFloat();
-
-			UpdateParameterValueByIndex(key, value);
-		}
-	}
+	Component::Load(data, owner);
+	//if (data.HasMember("EventName") && data["EventName"].IsString()) 
+	//{
+	//	SetEventByName(data["EventName"].GetString());
+	//}
+	//
+	//if (data.HasMember("ParametersVariables") && data["ParametersVariables"].IsArray()) 
+	//{
+	//	UpdateParameters();
+	//
+	//	const auto& array = data["ParametersVariables"].GetArray();
+	//
+	//	for (unsigned int i = 0; i < array.Size(); ++i)
+	//	{
+	//		unsigned key = array[i]["ParametersKey"].GetInt();
+	//		int value = array[i]["ParametersValue"].GetFloat();
+	//
+	//		UpdateParameterValueByIndex(key, value);
+	//	}
+	//}
 }
 
 void AudioSourceComponent::Enable()

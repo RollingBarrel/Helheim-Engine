@@ -229,72 +229,72 @@ void ImageComponent::Save(JsonObject& obj) const
 	obj.AddBool("IsPlaying", mIsPlaying);
 }
 
-void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void ImageComponent::Load(const JsonObject& data, GameObject* owner)
 {
-    
-    if (data.HasMember("ImageID") && data["ImageID"].IsInt()) 
-	{
-		const rapidjson::Value& imageIdValue = data["ImageID"];
-		
-		mResourceId = imageIdValue.GetInt();
-		SetImage(mResourceId);
-    }
-
-	if (data.HasMember("Color") && data["Color"].IsArray()) 
-	{
-		const rapidjson::Value& colorValues = data["Color"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (colorValues.Size() == 3 && colorValues[0].IsFloat() && colorValues[1].IsFloat() && colorValues[2].IsFloat()) 
-		{
-			x = colorValues[0].GetFloat();
-			y = colorValues[1].GetFloat();
-			z = colorValues[2].GetFloat();
-		}
-
-		mColor = float3(x, y, z);
-	}
-
-	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) 
-	{
-		const rapidjson::Value& alphaValue = data["Alpha"];
-		mAlpha = alphaValue.GetFloat();
-	}
-	
-	if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) 
-	{
-		const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
-		mHasAlpha = hasAlphaValue.GetBool();
-	}
-
-	if (data.HasMember("IsSpritesheet") && data["IsSpritesheet"].IsBool())
-	{
-		const rapidjson::Value& isSpritesheetValue = data["IsSpritesheet"];
-		mIsSpritesheet = isSpritesheetValue.GetBool();
-	}
-
-	if (data.HasMember("Columns") && data["Columns"].IsInt())
-	{
-		const rapidjson::Value& columnsValue = data["Columns"];
-		mColumns = columnsValue.GetInt();
-	}
-
-	if (data.HasMember("Rows") && data["Rows"].IsInt())
-	{
-		const rapidjson::Value& rowsValue = data["Rows"];
-		mRows = rowsValue.GetInt();
-	}
-
-	if (data.HasMember("Speed") && data["Speed"].IsInt())
-	{
-		const rapidjson::Value& speedValue = data["Speed"];
-		mFPS = speedValue.GetInt();
-	}
-
-	if (data.HasMember("IsPlaying") && data["IsPlaying"].IsBool())
-	{
-		const rapidjson::Value& isPlaying = data["IsPlaying"];
-		mIsPlaying = isPlaying.GetBool();
-	}
+	Component::Load(data, owner);
+    //if (data.HasMember("ImageID") && data["ImageID"].IsInt()) 
+	//{
+	//	const rapidjson::Value& imageIdValue = data["ImageID"];
+	//	
+	//	mResourceId = imageIdValue.GetInt();
+	//	SetImage(mResourceId);
+    //}
+	//
+	//if (data.HasMember("Color") && data["Color"].IsArray()) 
+	//{
+	//	const rapidjson::Value& colorValues = data["Color"];
+	//	float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
+	//	if (colorValues.Size() == 3 && colorValues[0].IsFloat() && colorValues[1].IsFloat() && colorValues[2].IsFloat()) 
+	//	{
+	//		x = colorValues[0].GetFloat();
+	//		y = colorValues[1].GetFloat();
+	//		z = colorValues[2].GetFloat();
+	//	}
+	//
+	//	mColor = float3(x, y, z);
+	//}
+	//
+	//if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) 
+	//{
+	//	const rapidjson::Value& alphaValue = data["Alpha"];
+	//	mAlpha = alphaValue.GetFloat();
+	//}
+	//
+	//if (data.HasMember("HasAlpha") && data["HasAlpha"].IsBool()) 
+	//{
+	//	const rapidjson::Value& hasAlphaValue = data["HasAlpha"];
+	//	mHasAlpha = hasAlphaValue.GetBool();
+	//}
+	//
+	//if (data.HasMember("IsSpritesheet") && data["IsSpritesheet"].IsBool())
+	//{
+	//	const rapidjson::Value& isSpritesheetValue = data["IsSpritesheet"];
+	//	mIsSpritesheet = isSpritesheetValue.GetBool();
+	//}
+	//
+	//if (data.HasMember("Columns") && data["Columns"].IsInt())
+	//{
+	//	const rapidjson::Value& columnsValue = data["Columns"];
+	//	mColumns = columnsValue.GetInt();
+	//}
+	//
+	//if (data.HasMember("Rows") && data["Rows"].IsInt())
+	//{
+	//	const rapidjson::Value& rowsValue = data["Rows"];
+	//	mRows = rowsValue.GetInt();
+	//}
+	//
+	//if (data.HasMember("Speed") && data["Speed"].IsInt())
+	//{
+	//	const rapidjson::Value& speedValue = data["Speed"];
+	//	mFPS = speedValue.GetInt();
+	//}
+	//
+	//if (data.HasMember("IsPlaying") && data["IsPlaying"].IsBool())
+	//{
+	//	const rapidjson::Value& isPlaying = data["IsPlaying"];
+	//	mIsPlaying = isPlaying.GetBool();
+	//}
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) 

@@ -21,6 +21,7 @@
 
 
 #define DEBUG_DRAW_IMPLEMENTATION
+#define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
 
 #include "glew.h"
@@ -648,6 +649,7 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
+
     if (mDrawGrid) 
     {
        DrawGrid();

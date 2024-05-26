@@ -113,72 +113,74 @@ void::ScriptComponent::Save(JsonObject& obj) const
 	}
 }
 
-void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
+void::ScriptComponent::Load(const JsonObject& data, GameObject* owner)
 {
-	if (data.HasMember("ScriptName") && data["ScriptName"].IsString())
-	{
-		mName = data["ScriptName"].GetString();
-		
-		if (!mName.empty()) 
-		{
-			LoadScript(mName.c_str());
-		}
-		
-	}
-	
-	if (mScript && data.HasMember("ScriptVariables") && data["ScriptVariables"].IsArray())
-	{
-		const auto& array = data["ScriptVariables"].GetArray();
-		
-		for (unsigned int i = 0; i < array.Size(); ++i) 
-		{
-			const char* name;
-			if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) 
-			{
-				name = array[i]["VariableName"].GetString();
+	Component::Load(data, owner);
 
-				std::vector<Member*> members = mScript->GetMembers();
-				for (const Member* member : members) 
-				{
-					if (strcmp(member->mName, name) == 0) 
-					{
-						if (array[i].HasMember("VariableData")) 
-						{
-							switch (member->mType)
-							{
-							case MemberType::INT:
-								*reinterpret_cast<int*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetInt();
-								break;
-							case MemberType::FLOAT:
-								*reinterpret_cast<float*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetFloat();
-								break;
-							case MemberType::BOOL:
-								*reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetBool();
-								break;
-							case MemberType::FLOAT3:
-							{
-								const auto& floatArray = array[i]["VariableData"].GetArray();
-								*reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)) = float3(floatArray[0].GetFloat(), floatArray[1].GetFloat(), floatArray[2].GetFloat());
-								break;
-							}
-							case MemberType::GAMEOBJECT:
-							{
-								int  UID = array[i]["VariableData"].GetInt();
-								if (UID != -1) 
-								{
-									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset))));
-								}
-								break;
-							}
-							default:
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	//if (data.HasMember("ScriptName") && data["ScriptName"].IsString())
+	//{
+	//	mName = data["ScriptName"].GetString();
+	//	
+	//	if (!mName.empty()) 
+	//	{
+	//		LoadScript(mName.c_str());
+	//	}
+	//	
+	//}
+	//
+	//if (mScript && data.HasMember("ScriptVariables") && data["ScriptVariables"].IsArray())
+	//{
+	//	const auto& array = data["ScriptVariables"].GetArray();
+	//	
+	//	for (unsigned int i = 0; i < array.Size(); ++i) 
+	//	{
+	//		const char* name;
+	//		if (array[i].HasMember("VariableName") && array[i]["VariableName"].IsString()) 
+	//		{
+	//			name = array[i]["VariableName"].GetString();
+	//
+	//			std::vector<Member*> members = mScript->GetMembers();
+	//			for (const Member* member : members) 
+	//			{
+	//				if (strcmp(member->mName, name) == 0) 
+	//				{
+	//					if (array[i].HasMember("VariableData")) 
+	//					{
+	//						switch (member->mType)
+	//						{
+	//						case MemberType::INT:
+	//							*reinterpret_cast<int*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetInt();
+	//							break;
+	//						case MemberType::FLOAT:
+	//							*reinterpret_cast<float*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetFloat();
+	//							break;
+	//						case MemberType::BOOL:
+	//							*reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)) = array[i]["VariableData"].GetBool();
+	//							break;
+	//						case MemberType::FLOAT3:
+	//						{
+	//							const auto& floatArray = array[i]["VariableData"].GetArray();
+	//							*reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)) = float3(floatArray[0].GetFloat(), floatArray[1].GetFloat(), floatArray[2].GetFloat());
+	//							break;
+	//						}
+	//						case MemberType::GAMEOBJECT:
+	//						{
+	//							int  UID = array[i]["VariableData"].GetInt();
+	//							if (UID != -1) 
+	//							{
+	//								App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset))));
+	//							}
+	//							break;
+	//						}
+	//						default:
+	//							break;
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 	//App->GetScriptManager()->AddScript(this);
 }
 

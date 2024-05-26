@@ -6,8 +6,8 @@ enum class ENGINE_API ComponentType : unsigned int
 {
 	MESHRENDERER, POINTLIGHT, SPOTLIGHT, SCRIPT, NAVMESHOBSTACLE, AIAGENT, 
 	CAMERA, CANVAS, IMAGE, TRANSFORM2D, ANIMATION, BUTTON, SLIDER,
-	AUDIOSOURCE, AUDIOLISTENER, PARTICLESYSTEM,
-	TEST, NONE
+	AUDIOSOURCE, AUDIOLISTENER, PARTICLESYSTEM, 
+	NONE
 };
 
 class GameObject;
@@ -22,8 +22,9 @@ public:
 	virtual	void Update() = 0;
 	
 	virtual Component* Clone(GameObject* owner) const = 0;
+
 	virtual void Save(JsonObject& obj) const;
-	virtual void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
+	virtual void Load(const JsonObject& data, GameObject* owner);
 
 	ComponentType GetType() const { return mType; }
 	GameObject* const GetOwner() const { return mOwner; }

@@ -61,20 +61,18 @@ public:
 	void Load(const char* saveFilePath);
 
 	// Tags
-	GameObject* FindGameObjectWithTag(unsigned tagID);
-	GameObject* FindGameObjectWithTag(const char* tagName);
-	void FindGameObjectsWithTag(unsigned tagID, std::vector<GameObject*>& foundGameObjects);
-	void FindGameObjectsWithTag(const char* tagName, std::vector<GameObject*>& foundGameObjects);
+	GameObject* FindGameObjectWithTag(const std::string& tagID);
+	void FindGameObjectsWithTag(const std::string& tagID, std::vector<GameObject*>& foundGameObjects);
 
-	void AddTag(std::string tag);
-	unsigned int GetSize() { return static_cast<unsigned int>(mTags.size()); };
-	int GetCustomTagsSize();
-	std::vector<Tag*> GetAllTags() { return mTags; };
-	std::vector<Tag*> GetSystemTag();
-	std::vector<Tag*> GetCustomTag();
-	Tag* GetTagByName(std::string tagname);
-	Tag* GetTagByID(unsigned id);
-	void DeleteTag(Tag* tag);
+	//void AddTag(std::string tag);
+	//unsigned int GetSize() { return static_cast<unsigned int>(mTags.size()); };
+	//int GetCustomTagsSize();
+	//std::vector<Tag*> GetAllTags() { return mTags; };
+	//std::vector<Tag*> GetSystemTag();
+	//std::vector<Tag*> GetCustomTag();
+	//Tag* GetTagByName(std::string tagname);
+	//Tag* GetTagByID(unsigned id);
+	//void DeleteTag(Tag* tag);
 
 	// Prefabs
 	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
@@ -88,9 +86,6 @@ private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
 	void LoadGameObjectsIntoScripts();
-	
-	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const;
-	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent);
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;

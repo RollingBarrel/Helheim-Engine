@@ -266,8 +266,6 @@
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SliderComponent.cpp" />
     <ClCompile Include="SpotLightComponent.cpp" />
-    <ClCompile Include="Tag.cpp" />
-    <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform2DComponent.cpp" />
@@ -467,8 +465,6 @@
     <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SliderComponent.h" />
     <ClInclude Include="SpotLightComponent.h" />
-    <ClInclude Include="Tag.h" />
-    <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform2DComponent.h" />

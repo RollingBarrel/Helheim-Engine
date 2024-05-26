@@ -79,28 +79,29 @@ void PointLightComponent::Save(JsonObject& obj) const
 }
 
 //TODO: why is the GO owner passed here??
-void PointLightComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
+void PointLightComponent::Load(const JsonObject& data, GameObject* owner)
 {
+	Component::Load(data, owner);
 	//int id = 0;
 	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
 	//	id = componentJson["ID"].GetInt();
 	//}
-	if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
-	{
-		const auto& posArray = componentJson["Position"].GetArray();
-		for (unsigned int i = 0; i < posArray.Size(); ++i)
-		{
-			mData.pos[i] = posArray[i].GetFloat();
-		}
-	}
-	if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
-	{
-		const auto& posArray = componentJson["Color"].GetArray();
-		for (unsigned int i = 0; i < posArray.Size(); ++i)
-		{
-			mData.col[i] = posArray[i].GetFloat();
-		}
-	}
+	//if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
+	//{
+	//	const auto& posArray = componentJson["Position"].GetArray();
+	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
+	//	{
+	//		mData.pos[i] = posArray[i].GetFloat();
+	//	}
+	//}
+	//if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
+	//{
+	//	const auto& posArray = componentJson["Color"].GetArray();
+	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
+	//	{
+	//		mData.col[i] = posArray[i].GetFloat();
+	//	}
+	//}
 }
 
 void PointLightComponent::Enable()

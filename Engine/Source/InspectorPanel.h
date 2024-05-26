@@ -43,7 +43,6 @@ private:
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
 
-	void DrawTestComponent(TestComponent* component);
 	void DrawCameraComponent(CameraComponent* component);
 	void DrawScriptComponent(ScriptComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);

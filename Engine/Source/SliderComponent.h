@@ -22,7 +22,7 @@ public:
     void SetFillPercent(float fillPercent);
 
     void Save(JsonObject& obj) const override;
-    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+    void Load(const JsonObject& data, GameObject* owner) override;
 
 private:
     GameObject* FindCanvasOnParents(GameObject* gameObject);

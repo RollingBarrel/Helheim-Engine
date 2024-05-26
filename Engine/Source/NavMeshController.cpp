@@ -13,7 +13,6 @@
 #include "DetourNavMesh.h"
 #include "DetourNavMeshQuery.h"
 #include "Recast.h"
-#include "Tag.h"
 #include "ModuleFileSystem.h"
 #include "Algorithm/Random/LCG.h"
 #include "ImporterNavMesh.h"
@@ -121,13 +120,13 @@ void NavMeshController::HandleBuild()
 		}
 		int meshIndiceNumber = testMesh->GetResourceMesh()->GetNumberIndices();
 		const unsigned int* meshIndices = testMesh->GetResourceMesh()->GetIndices();
-		Tag* goTag = mGameObjects[index]->GetTag();
-		if (goTag && goTag->GetName() == "Obstacle") 
-		{
-
-			ObstacleTriangle obstacle{ lastIndex/3,meshIndiceNumber };
-			mObstaclesTriangles.push_back(obstacle);
-		}
+		//Tag* goTag = mGameObjects[index]->GetTag();
+		//if (goTag && goTag->GetName() == "Obstacle") 
+		//{
+		//
+		//	ObstacleTriangle obstacle{ lastIndex/3,meshIndiceNumber };
+		//	mObstaclesTriangles.push_back(obstacle);
+		//}
 
 		for (int i = 0; i < meshIndiceNumber; i++) 
 		{

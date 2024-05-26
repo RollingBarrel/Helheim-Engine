@@ -141,21 +141,24 @@ void MeshRendererComponent::Save(JsonObject& obj) const
 	obj.AddBool("isEnabled", IsEnabled());
 }
 
-void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
-	int ID = { 0 };
-	int meshID = { 0 };
-	int materialID = { 0 };
-	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
-		ID = componentJson["ID"].GetInt();
-	}
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
-		meshID = componentJson["MeshID"].GetInt();
-	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
-		materialID = componentJson["MaterialID"].GetInt();
-	}
+void MeshRendererComponent::Load(const JsonObject& data, GameObject* owner) 
+{
+	Component::Load(data, owner);
 
-	SetMesh(meshID);
-	SetMaterial(materialID);
+	//int ID = { 0 };
+	//int meshID = { 0 };
+	//int materialID = { 0 };
+	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+	//	ID = componentJson["ID"].GetInt();
+	//}
+	//if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
+	//	meshID = componentJson["MeshID"].GetInt();
+	//}
+	//if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
+	//	materialID = componentJson["MaterialID"].GetInt();
+	//}
+	//
+	//SetMesh(meshID);
+	//SetMaterial(materialID);
 }
 
