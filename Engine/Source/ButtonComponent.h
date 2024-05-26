@@ -29,7 +29,7 @@ public:
     void SetHovered(bool hovered) { mHovered = hovered; }
 
     void Save(JsonObject& obj) const override;
-    void Load(const JsonObject& data, GameObject* owner) override;
+    void Load(const JsonObject& data) override;
 
     void TriggerEvent(EventType eventType);
     void AddEventHandler(EventType eventType, std::function<void()>* handler);

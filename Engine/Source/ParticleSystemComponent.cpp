@@ -250,8 +250,8 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddBool("Looping", mLooping);
     obj.AddFloat("Size", mSizeLineal);
     obj.AddFloat("Speed", mSpeedLineal);
-    obj.AddBool("isSpeedCurve", mIsSpeedCurve);
-    obj.AddBool("isSizeCurve", mIsSizeCurve);
+    obj.AddBool("IsSpeedCurve", mIsSpeedCurve);
+    obj.AddBool("IsSizeCurve", mIsSizeCurve);
     obj.AddFloats("SizeCurve", mSizeCurve.ptr(), 4);
     obj.AddFloats("SpeedCurve", mSpeedCurve.ptr(), 4);
     obj.AddFloat("SizeFactor", mSizeCurveFactor);
@@ -269,123 +269,46 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     }
 }
 
-void ParticleSystemComponent::Load(const JsonObject& data, GameObject* owner)
+void ParticleSystemComponent::Load(const JsonObject& data)
 {
-    Component::Load(data, owner);
+    Component::Load(data);
 
-    //if (data.HasMember("Duration") && data["Duration"].IsFloat())
-    //{
-    //    mDuration = data["Duration"].GetFloat();
-    //}
-    //if (data.HasMember("Image") && data["Image"].IsInt())
-    //{
-    //    mResourceId = data["Image"].GetInt();
-    //    SetImage(mResourceId);
-    //}
-    //if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
-    //{
-    //    mMaxLifeTime = data["Life Time"].GetFloat();
-    //}
-    //if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
-    //{
-    //    mEmissionRate = data["Emission Rate"].GetFloat();
-    //}
-    //if (data.HasMember("Speed") && data["Speed"].IsFloat())
-    //{
-    //    mSpeedLineal = data["Speed"].GetFloat();
-    //} 
-    //if (data.HasMember("Size") && data["Size"].IsFloat())
-    //{
-    //    mSizeLineal = data["Size"].GetFloat();
-    //}
-    //if (data.HasMember("SpeedFactor") && data["SpeedFactor"].IsFloat())
-    //{
-    //    mSpeedCurveFactor = data["SpeedFactor"].GetFloat();
-    //}
-    //if (data.HasMember("SizeFactor") && data["SizeFactor"].IsFloat())
-    //{
-    //    mSizeCurveFactor = data["SizeFactor"].GetFloat();
-    //}
-    //if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
-    //{
-    //    mMaxParticles = data["Max Particles"].GetFloat();
-    //}
-    //if (data.HasMember("Max Particles") && data["Max Particles"].IsFloat())
-    //{
-    //    mMaxParticles = data["Max Particles"].GetFloat();
-    //}
-    //if (data.HasMember("Looping") && data["Looping"].IsBool())
-    //{
-    //    mLooping = data["Looping"].GetBool();
-    //}
-    //if (data.HasMember("isSpeedCurve") && data["isSpeedCurve"].IsBool())
-    //{
-    //    mIsSpeedCurve = data["isSpeedCurve"].GetBool();
-    //}
-    //if (data.HasMember("isSizeCurve") && data["isSizeCurve"].IsBool())
-    //{
-    //    mIsSizeCurve = data["isSizeCurve"].GetBool();
-    //}
-    //if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
-    //{
-    //    const auto& colorArray = data["Color Gradient"].GetArray();
-    //    for (unsigned int i = 0; i < colorArray.Size(); ++i)
-    //    {
-    //        float time = 0.0f;
-    //        if (colorArray[i].HasMember("Time") && colorArray[i]["Time"].IsFloat())
-    //        {
-    //            time = colorArray[i]["Time"].GetFloat();
-    //        }
-    //        if (colorArray[i].HasMember("Color") && colorArray[i]["Color"].IsArray())
-    //        {
-    //            float colorVec[4] { 0 };
-    //            const auto& colArray = colorArray[i]["Color"].GetArray();
-    //            if (colArray.Size() == 4)
-    //            for (unsigned int j = 0; j < colArray.Size(); ++j)
-    //            {
-    //                if (colArray[j].IsFloat() && j < 4) {
-    //                    colorVec[j] = colArray[j].GetFloat();
-    //                }
-    //            }
-    //            mColorGradient[time] = float4(colorVec);
-    //        }
-    //    }
-    //}
-    //if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
-    //{
-    //    mShapeType = (EmitterShape::Type)data["ShapeType"].GetInt();
-    //    InitEmitterShape();
-    //    mShape->LoadFromJSON(data);
-    //}
-    //
-    //if (data.HasMember("SizeCurve") && data["SizeCurve"].IsArray())
-    //{
-    //    const rapidjson::Value& values = data["SizeCurve"];
-    //    float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-    //    if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
-    //    {
-    //        x = values[0].GetFloat();
-    //        y = values[1].GetFloat();
-    //        z = values[2].GetFloat();
-    //        w = values[3].GetFloat();
-    //    }
-    //
-    //    mSizeCurve = float4(x, y, z, w);
-    //}
-    //if (data.HasMember("SpeedCurve") && data["SpeedCurve"].IsArray())
-    //{
-    //    const rapidjson::Value& values = data["SpeedCurve"];
-    //    float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-    //    if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
-    //    {
-    //        x = values[0].GetFloat();
-    //        y = values[1].GetFloat();
-    //        z = values[2].GetFloat();
-    //        w = values[3].GetFloat();
-    //    }
-    //
-    //    mSpeedCurve = float4(x, y, z, w);
-    //}
+    mResourceId = data.GetInt("Image");
+    SetImage(mResourceId);
+
+    mDuration = data.GetFloat("Duration");
+    mMaxLifeTime = data.GetFloat("Life Time");
+    mEmissionRate = data.GetFloat("Emission Rate");
+    mSpeedLineal = data.GetFloat("Speed");
+    mSizeLineal = data.GetFloat("Size");
+    mSpeedCurveFactor = data.GetFloat("SpeedFactor");
+    mSizeCurveFactor = data.GetFloat("SizeFactor");
+    mMaxParticles = data.GetInt("Max Particles");
+    mLooping = data.GetBool("Looping");
+    mIsSpeedCurve = data.GetBool("IsSpeedCurve");
+    mIsSizeCurve = data.GetBool("IsSizeCurve");
+
+    JsonArray arr = data.GetJsonArray("Color Gradient");
+    for (unsigned int i = 0; i < arr.Size(); ++i)
+    {
+        JsonObject color = arr.GetJsonObject(i);
+        float time = 0.0f;
+        time = color.GetFloat("Time");
+        float col[4];
+        color.GetFloats("Color", col);
+        mColorGradient[time] = float4(col);
+    }
+
+    InitEmitterShape();
+    mShape->Load(data);
+
+    float size[4];
+    data.GetFloats("SizeCurve", size);
+    mSizeCurve = float4(size);
+
+    float speed[4];
+    data.GetFloats("SpeedCurve", speed);
+    mSpeedCurve = float4(speed);
 }
 
 void ParticleSystemComponent::InitEmitterShape()

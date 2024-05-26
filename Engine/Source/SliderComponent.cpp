@@ -90,9 +90,9 @@ void SliderComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 }
 
-void SliderComponent::Load(const JsonObject& data, GameObject* owner)
+void SliderComponent::Load(const JsonObject& data)
 {
-	Component::Load(data, owner);
+	Component::Load(data);
 }
 
 SliderComponent:: ~SliderComponent()

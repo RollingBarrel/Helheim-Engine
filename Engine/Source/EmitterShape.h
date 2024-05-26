@@ -20,7 +20,7 @@ public:
     virtual float3 RandomInitPosition();
     virtual float3 RandomInitDirection();
     void Save(JsonObject& obj) const;
-    void LoadFromJSON(const rapidjson::Value& data);
+    void Load(const JsonObject& data);
 
     void CopyShape(const EmitterShape &original);
 

@@ -24,7 +24,7 @@ public:
 	virtual Component* Clone(GameObject* owner) const = 0;
 
 	virtual void Save(JsonObject& obj) const;
-	virtual void Load(const JsonObject& data, GameObject* owner);
+	virtual void Load(const JsonObject& data);
 
 	ComponentType GetType() const { return mType; }
 	GameObject* const GetOwner() const { return mOwner; }

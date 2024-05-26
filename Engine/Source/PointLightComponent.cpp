@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
-//#include "ModuleDebugDraw.h"
 
 #include "PointLightComponent.h"
 
@@ -74,34 +73,31 @@ inline Component* PointLightComponent::Clone(GameObject* owner) const
 void PointLightComponent::Save(JsonObject& obj) const 
 {
 	Component::Save(obj);
-	obj.AddFloats("Position", mData.pos, 4);
-	obj.AddFloats("Color", mData.col, 4);
+	obj.AddFloats("Position", mData.pos, 3);
+	obj.AddFloat("Radius", mData.radius);
+	obj.AddFloats("Color", mData.col, 3);
+	obj.AddFloat("Intensity", mData.intensity);
 }
 
 //TODO: why is the GO owner passed here??
-void PointLightComponent::Load(const JsonObject& data, GameObject* owner)
+void PointLightComponent::Load(const JsonObject& data)
 {
-	Component::Load(data, owner);
-	//int id = 0;
-	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
-	//	id = componentJson["ID"].GetInt();
-	//}
-	//if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
-	//{
-	//	const auto& posArray = componentJson["Position"].GetArray();
-	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
-	//	{
-	//		mData.pos[i] = posArray[i].GetFloat();
-	//	}
-	//}
-	//if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
-	//{
-	//	const auto& posArray = componentJson["Color"].GetArray();
-	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
-	//	{
-	//		mData.col[i] = posArray[i].GetFloat();
-	//	}
-	//}
+	Component::Load(data);
+
+	float pos[3];
+	data.GetFloats("Position", pos);
+	for (unsigned int i = 0; i < 3; ++i)
+	{
+		mData.pos[i] = pos[i];
+	}
+	mData.radius = data.GetFloat("Radius");
+	float color[3];
+	data.GetFloats("Color", color);
+	for (unsigned int i = 0; i < 3; ++i)
+	{
+		mData.col[i] = color[i];
+	}
+	mData.intensity = data.GetFloat("Intensity");
 }
 
 void PointLightComponent::Enable()

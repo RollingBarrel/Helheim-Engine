@@ -582,10 +582,9 @@ void GameObject::Load(const JsonObject& jsonObject)
 	for (int i = 0; i < components.Size(); ++i)
 	{
 		JsonObject componentData = components.GetJsonObject(i);
-		componentData.GetInt("ComponentType");
 		ComponentType cType = (ComponentType) componentData.GetInt("ComponentType");
 		Component* component = this->CreateComponent(cType);
-		component->Load(componentData, this);
+		component->Load(componentData);
 	}
 }
 
@@ -727,7 +726,7 @@ static GameObject* FindGameObjectParent(GameObject* gameObject, int UID)
 
 std::vector<Component*>& GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
 {
-	std::vector<Component*> components = parent->GetComponents(type);
+	std::vector<Component*> components;
 
 	std::vector<GameObject*> children = parent->GetChildren();
 	for (GameObject* child : children)

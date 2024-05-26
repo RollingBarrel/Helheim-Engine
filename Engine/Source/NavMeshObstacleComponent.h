@@ -12,7 +12,7 @@ public:
 	void Reset();
 	Component* Clone(GameObject* owner) const override;
 	void Save(JsonObject& obj) const override;
-	void Load(const JsonObject& data, GameObject* owner) override;
+	void Load(const JsonObject& data) override;
 
 	float GetRadius() {
 		return mRadius;

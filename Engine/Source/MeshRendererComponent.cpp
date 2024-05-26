@@ -20,7 +20,6 @@
 #include "ResourceTexture.h"
 
 
-
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
 {
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
@@ -137,28 +136,13 @@ void MeshRendererComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 	obj.AddInt("MeshID", mMesh->GetUID());
 	obj.AddInt("MaterialID", mMaterial->GetUID());
-	obj.AddInt("ComponentType", static_cast<int>(GetType()));
-	obj.AddBool("isEnabled", IsEnabled());
 }
 
-void MeshRendererComponent::Load(const JsonObject& data, GameObject* owner) 
+void MeshRendererComponent::Load(const JsonObject& data) 
 {
-	Component::Load(data, owner);
+	Component::Load(data);
 
-	//int ID = { 0 };
-	//int meshID = { 0 };
-	//int materialID = { 0 };
-	//if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
-	//	ID = componentJson["ID"].GetInt();
-	//}
-	//if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
-	//	meshID = componentJson["MeshID"].GetInt();
-	//}
-	//if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
-	//	materialID = componentJson["MaterialID"].GetInt();
-	//}
-	//
-	//SetMesh(meshID);
-	//SetMaterial(materialID);
+	SetMesh(data.GetInt("MeshID"));
+	SetMaterial(data.GetInt("MaterialID"));
 }
 

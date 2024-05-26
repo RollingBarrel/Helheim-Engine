@@ -24,7 +24,7 @@ public:
     void SetScreenSpace(bool screen) { mScreenSpace = screen; }
 
     void Save(JsonObject& obj) const override;
-    void Load(const JsonObject& data, GameObject* owner) override;
+    void Load(const JsonObject& data) override;
 
 private:
     float2 mSize;

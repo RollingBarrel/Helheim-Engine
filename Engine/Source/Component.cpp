@@ -8,23 +8,14 @@ void Component::Save(JsonObject& obj) const
 {
 	obj.AddInt("ID", GetID());
 	obj.AddInt("ComponentType", static_cast<int>(GetType()));
-	obj.AddBool("isEnabled", IsEnabled());
+	obj.AddBool("IsEnabled", IsEnabled());
 }
 
-void Component::Load(const JsonObject& data, GameObject* owner)
+void Component::Load(const JsonObject& data)
 {
-	//if (data.HasMember("ID") && data["ID"].IsInt())
-	//{
-	//	mID = data["ID"].GetInt();
-	//}
-	//if (data.HasMember("ComponentType") && data["ComponentType"].IsInt())
-	//{
-	//	mType = static_cast<ComponentType>(data["ComponentType"].GetInt());
-	//}
-	//if (data.HasMember("isEnabled") && data["isEnabled"].IsBool())
-	//{
-	//	mIsEnabled = data["isEnabled"].GetBool();
-	//}
+	mID = data.GetInt("ID");
+	mType = (ComponentType) data.GetInt("ComponentType");
+	mIsEnabled = data.GetBool("IsEnabled");
 }
 
 const char* Component::GetNameFromType(ComponentType type)

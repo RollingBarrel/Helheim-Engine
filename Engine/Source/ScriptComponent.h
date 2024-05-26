@@ -21,7 +21,7 @@ public:
 	void Reset() override;
 
 	void Save(JsonObject& obj) const override;
-	void Load(const JsonObject& data, GameObject* owner) override;
+	void Load(const JsonObject& data) override;
 
 	void LoadScript(const char* scriptName);
 	const char* GetScriptName() const { return mName.c_str(); }

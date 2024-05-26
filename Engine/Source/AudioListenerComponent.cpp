@@ -42,9 +42,9 @@ void AudioListenerComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 }
 
-void AudioListenerComponent::Load(const JsonObject& data, GameObject* owner)
+void AudioListenerComponent::Load(const JsonObject& data)
 {
-	Component::Load(data, owner);
+	Component::Load(data);
 }
 
 void AudioListenerComponent::Enable()

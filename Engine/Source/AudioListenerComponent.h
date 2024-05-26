@@ -11,7 +11,7 @@ public:
     void Update();
     Component* Clone(GameObject* owner) const;
     void Save(JsonObject& obj) const override;
-    void Load(const JsonObject& data, GameObject* owner) override;
+    void Load(const JsonObject& data) override;
 
     void Enable();
     void Disable();

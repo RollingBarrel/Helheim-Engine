@@ -21,7 +21,7 @@ public:
 
 	Component* Clone(GameObject* owner) const override;
 	void Save(JsonObject& obj) const override;
-	void Load(const JsonObject& data, GameObject* owner) override;
+	void Load(const JsonObject& data) override;
 	void Reset() override {}
 
 	const PointLight& GetData() const { return mData; };

@@ -111,37 +111,30 @@ void SpotLightComponent::Save(JsonObject& obj) const
 }
 
 //TODO: why is the GO owner passed here??
-void SpotLightComponent::Load(const JsonObject& data, GameObject* owner) 
+void SpotLightComponent::Load(const JsonObject& data) 
 {	
-	Component::Load(data, owner);
-	//if (componentJson.HasMember("Position") && componentJson["Position"].IsArray())
-	//{
-	//	const auto& posArray = componentJson["Position"].GetArray();
-	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
-	//	{
-	//		mData.pos[i] = posArray[i].GetFloat();
-	//	}
-	//}
-	//if (componentJson.HasMember("Direction") && componentJson["Direction"].IsArray())
-	//{
-	//	const auto& posArray = componentJson["Direction"].GetArray();
-	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
-	//	{
-	//		mData.aimD[i] = posArray[i].GetFloat();
-	//	}
-	//}
-	//if (componentJson.HasMember("Color") && componentJson["Color"].IsArray())
-	//{
-	//	const auto& posArray = componentJson["Color"].GetArray();
-	//	for (unsigned int i = 0; i < posArray.Size(); ++i)
-	//	{
-	//		mData.col[i] = posArray[i].GetFloat();
-	//	}
-	//}
-	//if (componentJson.HasMember("Radius") && componentJson["Radius"].IsFloat())
-	//{
-	//	mData.radius = componentJson["Radius"].GetFloat();
-	//}
+	Component::Load(data);
+
+	float pos[4];
+	data.GetFloats("Position", pos);
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		mData.pos[i] = pos[i];
+	}
+	float dir[4];
+	data.GetFloats("Direction", dir);
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		mData.aimD[i] = dir[i];
+	}
+	float col[4];
+	data.GetFloats("Color", col);
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		mData.col[i] = col[i];
+	}
+
+	mData.radius = data.GetFloat("Radius");
 }
 
 void SpotLightComponent::Enable()

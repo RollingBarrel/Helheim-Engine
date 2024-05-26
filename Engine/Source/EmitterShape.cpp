@@ -22,29 +22,14 @@ void EmitterShape::Save(JsonObject& obj) const
     obj.AddFloats("ShapeSize", mShapeSize.ptr(), 2);
 }
 
-void EmitterShape::LoadFromJSON(const rapidjson::Value& data)
+void EmitterShape::Load(const JsonObject& data)
 {
-    if (data.HasMember("ShapeRadius") && data["ShapeRadius"].IsFloat())
-    {
-        mShapeRadius = data["ShapeRadius"].GetFloat();
-    }
-    if (data.HasMember("ShapeAngle") && data["ShapeAngle"].IsFloat())
-    {
-        mShapeAngle = data["ShapeAngle"].GetFloat();
-    }
-    if (data.HasMember("ShapeSize") && data["ShapeSize"].IsArray())
-    {
-        const rapidjson::Value& values = data["ShapeSize"];
-        float x{ 0.0f }, y{ 0.0f };
-        if (values.Size() == 2 && values[0].IsFloat() && values[1].IsFloat())
-        {
-            x = values[0].GetFloat();
-            y = values[1].GetFloat();
-        }
-
-        mShapeSize = float2(x, y);
-    }
-
+    mType = (Type) data.GetInt("ShapeType");
+    mShapeRadius = data.GetFloat("ShapeRadius");
+    mShapeAngle = data.GetFloat("ShapeAngle");
+    float size[2];
+    data.GetFloats("ShapeSize", size);
+    mShapeSize = float2(size);
 }
 
 void EmitterShape::CopyShape(const EmitterShape& original)

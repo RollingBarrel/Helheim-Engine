@@ -61,9 +61,9 @@ void ButtonComponent::Save(JsonObject& obj) const
     Component::Save(obj);
 }
 
-void ButtonComponent::Load(const JsonObject& data, GameObject* owner)
+void ButtonComponent::Load(const JsonObject& data)
 {
-    Component::Load(data, owner);
+    Component::Load(data);
 }
 
 
