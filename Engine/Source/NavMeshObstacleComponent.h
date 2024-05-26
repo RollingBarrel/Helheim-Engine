@@ -11,7 +11,7 @@ public:
 	void Update() override;
 	void Reset();
 	Component* Clone(GameObject* owner) const override;
-	void Save(Archive& archive) const override;
+	void Save(JsonObject& obj) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 	float GetRadius() {

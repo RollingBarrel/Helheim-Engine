@@ -84,9 +84,9 @@ void SliderComponent::SetFillPercent(float fillPercent)
 	
 }
 
-void SliderComponent::Save(Archive& archive) const
+void SliderComponent::Save(JsonObject& obj) const
 {
-	Component::Save(archive);
+	Component::Save(obj);
 }
 
 void SliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

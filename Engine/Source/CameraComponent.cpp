@@ -111,13 +111,14 @@ void CameraComponent::SetAspectRatio(float value)
     mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
 }
 
-void CameraComponent::Save(Archive& archive) const
+void CameraComponent::Save(JsonObject& obj) const
 {
-    //archive.AddInt("ComponentType", static_cast<int>(GetType()));
-    //archive.AddFloat("AspectRatio", mAspectRatio);
-    //archive.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
-    //archive.AddFloat("FarPlane", mFrustum.farPlaneDistance);
-    //archive.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
+    Component::Save(obj);
+    obj.AddInt("ComponentType", static_cast<int>(GetType()));
+    obj.AddFloat("AspectRatio", mAspectRatio);
+    obj.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
+    obj.AddFloat("FarPlane", mFrustum.farPlaneDistance);
+    obj.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
 }
 
 void CameraComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

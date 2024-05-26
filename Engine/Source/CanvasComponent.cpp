@@ -39,11 +39,11 @@ void CanvasComponent::Reset()
 {
 }
 
-void CanvasComponent::Save(Archive& archive)const 
+void CanvasComponent::Save(JsonObject& obj)const 
 {
-	//Component::Save(archive);
-	//
-	//archive.AddFloat2("Size", mSize);
+	Component::Save(obj);
+	
+	obj.AddFloats("Size", mSize.ptr(), 2);
 }
 
 void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 

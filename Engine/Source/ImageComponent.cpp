@@ -213,19 +213,20 @@ void ImageComponent::StopAnimation()
 	mElapsedTime = 0;
 }
 
-void ImageComponent::Save(Archive& archive) const
+void ImageComponent::Save(JsonObject& obj) const
 {
-    //archive.AddInt("ImageID", mImage->GetUID());
-    //archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	//archive.AddFloat3("Color", mColor);
-	//archive.AddBool("HasAlpha", mHasAlpha);
-	//archive.AddFloat("Alpha", mAlpha);
-	//
-	//archive.AddBool("IsSpritesheet", mIsSpritesheet);
-	//archive.AddInt("Columns", mColumns);
-	//archive.AddInt("Rows", mRows);
-	//archive.AddInt("Speed", mFPS);
-	//archive.AddBool("IsPlaying", mIsPlaying);
+	Component::Save(obj);
+	obj.AddInt("ImageID", mImage->GetUID());
+    obj.AddInt("ComponentType", static_cast<int>(GetType()));
+	obj.AddFloats("Color", mColor.ptr(), 3);
+	obj.AddBool("HasAlpha", mHasAlpha);
+	obj.AddFloat("Alpha", mAlpha);
+
+	obj.AddBool("IsSpritesheet", mIsSpritesheet);
+	obj.AddInt("Columns", mColumns);
+	obj.AddInt("Rows", mRows);
+	obj.AddInt("Speed", mFPS);
+	obj.AddBool("IsPlaying", mIsPlaying);
 }
 
 void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

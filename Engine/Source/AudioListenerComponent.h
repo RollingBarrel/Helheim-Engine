@@ -10,7 +10,7 @@ public:
     
     void Update();
     Component* Clone(GameObject* owner) const;
-    void Save(Archive& archive) const;
+    void Save(JsonObject& obj) const;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
 
     void Enable();

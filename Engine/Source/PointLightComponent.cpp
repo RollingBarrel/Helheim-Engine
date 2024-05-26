@@ -71,13 +71,11 @@ inline Component* PointLightComponent::Clone(GameObject* owner) const
 	return new PointLightComponent(owner, mData);
 }
 
-void PointLightComponent::Save(Archive& archive) const {
-	//TODO: Do we need id???
-	//archive.AddInt("ID", mID);
-	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	//archive.AddFloat4("Position", mData.pos);
-	//archive.AddFloat4("Color", mData.col);
-
+void PointLightComponent::Save(JsonObject& obj) const 
+{
+	Component::Save(obj);
+	obj.AddFloats("Position", mData.pos, 4);
+	obj.AddFloats("Color", mData.col, 4);
 }
 
 //TODO: why is the GO owner passed here??

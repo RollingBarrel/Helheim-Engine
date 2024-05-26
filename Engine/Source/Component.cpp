@@ -4,11 +4,11 @@
 
 Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int()){}
 
-void Component::Save(Archive& archive) const
+void Component::Save(JsonObject& obj) const
 {
-	//archive.AddInt("ID", GetID());
-	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	//archive.AddBool("isEnabled", IsEnabled());
+	obj.AddInt("ID", GetID());
+	obj.AddInt("ComponentType", static_cast<int>(GetType()));
+	obj.AddBool("isEnabled", IsEnabled());
 }
 
 void Component::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

@@ -37,7 +37,7 @@ public:
 	void SetMaterial(unsigned int uid);
 
 private:
-	void Save(Archive& archive) const override;
+	void Save(JsonObject& obj) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 	ResourceMesh* mMesh = nullptr;

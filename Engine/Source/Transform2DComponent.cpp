@@ -50,16 +50,15 @@ void Transform2DComponent::Reset()
 	ResetTransform();
 }
 
-void Transform2DComponent::Save(Archive& archive) const
+void Transform2DComponent::Save(JsonObject& obj) const
 {
-	//Component::Save(archive);
-	//
-	//archive.AddFloat3("Translation", mPosition);
-	//archive.AddQuat("Rotation", mRotation);
-	//archive.AddFloat2("Size", mSize);
-	//archive.AddFloat2("AnchorMin", mAnchorMin);
-	//archive.AddFloat2("AnchorMax", mAnchorMax);
-	//archive.AddFloat2("Pivot", mPivot);
+	Component::Save(obj);
+	obj.AddFloats("Translation", mPosition.ptr(), 3);
+	obj.AddFloats("Rotation", mRotation.ptr(), 4);
+	obj.AddFloats("Size", mSize.ptr(), 2);
+	obj.AddFloats("AnchorMin", mAnchorMin.ptr(), 2);
+	obj.AddFloats("AnchorMax", mAnchorMax.ptr(), 2);
+	obj.AddFloats("Pivot", mPivot.ptr(), 2);
 }
 
 void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)

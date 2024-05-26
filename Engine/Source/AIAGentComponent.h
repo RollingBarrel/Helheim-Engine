@@ -32,7 +32,7 @@ public:
 
 
 	void MoveAgent(math::float3 destination, float speed);
-	void Save(Archive& archive) const override;
+	void Save(JsonObject& obj) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 private:
 	//Agent Parameters:

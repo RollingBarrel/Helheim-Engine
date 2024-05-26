@@ -531,37 +531,33 @@ Component* GameObject::RemoveComponent(Component* component)
 
 #pragma region Save / Load
 
-void GameObject::Save(Archive& archive) const
+void GameObject::Save(JsonObject& obj) const
 {
-	//archive.AddInt("UID", mID);
-	//if (mParent == App->GetScene()->GetRoot())
-	//{
-	//	archive.AddInt("ParentUID", 1);
-	//}
-	//else
-	//{
-	//	archive.AddInt("ParentUID", mParent->GetID());
-	//}
-	//archive.AddString("Name", mName.c_str());
-	//archive.AddBool("isEnabled", mIsEnabled);
-	//archive.AddFloat3("Translation", mPosition);
-	//archive.AddQuat("Rotation", mRotation);
-	//archive.AddFloat3("Scale", mScale);
-	//archive.AddInt("Tag", mTag->GetID());
-	//archive.AddInt("PrefabId", mPrefabResourceId);
-	//archive.AddBool("OverridePrefab", mPrefabOverride);
-	//archive.AddBool("Dynamic", mIsDynamic);
-	//// Save components
-	//std::vector<Archive> componentsArchiveVector;
-	//
-	//for (const auto& component : mComponents)
-	//{
-	//	Archive componentArchive;
-	//	component->Save(componentArchive);
-	//	componentsArchiveVector.push_back(componentArchive);
-	//}
-	//
-	//archive.AddObjectArray("Components", componentsArchiveVector);
+	obj.AddInt("UID", mID);
+	if (mParent == App->GetScene()->GetRoot())
+	{
+		obj.AddInt("ParentUID", 1);
+	}
+	else
+	{
+		obj.AddInt("ParentUID", mParent->GetID());
+	}
+	obj.AddString("Name", mName.c_str());
+	obj.AddBool("isEnabled", mIsEnabled);
+	obj.AddFloats("Translation", mPosition.ptr(), 3);
+	obj.AddFloats("Rotation", mRotation.ptr(), 4);
+	obj.AddFloats("Scale", mScale.ptr(), 3);
+	obj.AddInt("Tag", mTag->GetID());
+	obj.AddInt("PrefabId", mPrefabResourceId);
+	obj.AddBool("OverridePrefab", mPrefabOverride);
+	obj.AddBool("Dynamic", mIsDynamic);
+	JsonArray components = obj.AddNewJsonArray("Components");
+	// Save components
+	for (const Component* component : mComponents)
+	{
+		JsonObject comp = components.PushBackNewObject();
+		component->Save(comp);
+	}
 }
 
 void GameObject::Load(const rapidjson::Value& gameObjectsJson)

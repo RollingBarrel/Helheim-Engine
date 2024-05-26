@@ -132,13 +132,13 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 	mOBB.Transform(mOwner->GetWorldTransform());
 }
 
-void MeshRendererComponent::Save(Archive& archive) const 
+void MeshRendererComponent::Save(JsonObject& obj) const 
 {
-	//archive.AddInt("ID", GetID());
-	//archive.AddInt("MeshID", mMesh->GetUID());
-	//archive.AddInt("MaterialID", mMaterial->GetUID());
-	//archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	//archive.AddBool("isEnabled", IsEnabled());
+	Component::Save(obj);
+	obj.AddInt("MeshID", mMesh->GetUID());
+	obj.AddInt("MaterialID", mMaterial->GetUID());
+	obj.AddInt("ComponentType", static_cast<int>(GetType()));
+	obj.AddBool("isEnabled", IsEnabled());
 }
 
 void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {

@@ -14,12 +14,12 @@ EmitterShape::~EmitterShape()
 {
 }
 
-void EmitterShape::Save(Archive& archive) const
+void EmitterShape::Save(JsonObject& obj) const
 {
-    //archive.AddInt("ShapeType", mType);
-    //archive.AddFloat("ShapeRadius", mShapeRadius);
-    //archive.AddFloat("ShapeAngle", mShapeAngle);
-    //archive.AddFloat2("ShapeSize", mShapeSize);
+    obj.AddInt("ShapeType", mType);
+    obj.AddFloat("ShapeRadius", mShapeRadius);
+    obj.AddFloat("ShapeAngle", mShapeAngle);
+    obj.AddFloats("ShapeSize", mShapeSize.ptr(), 2);
 }
 
 void EmitterShape::LoadFromJSON(const rapidjson::Value& data)

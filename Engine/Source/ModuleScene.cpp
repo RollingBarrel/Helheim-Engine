@@ -266,23 +266,21 @@ void ModuleScene::Save(const char* sceneName) const
 		saveFilePath += ".json";
 	}
 
-	Archive* archive = new Archive();
-	//archive->AddString("Name", mRoot->GetName().c_str());
+	Archive doc;
+	JsonObject root = doc.GetRootObject();
+	root.AddString("Name", mRoot->GetName().c_str());
 	
 	// Not using recursive to save, using the sceneGO vector
 	//SaveGame(mRoot->GetChildren(), *archive);
-	std::vector<Archive> gameObjectsArchiveVector;
-	for (GameObject* go : mSceneGO) 
+	JsonArray objArray = root.AddNewJsonArray("GameObjects");
+	for (const GameObject* go : mSceneGO) 
 	{
-		Archive gameObjectArchive;
-		go->Save(gameObjectArchive);
-		gameObjectsArchiveVector.push_back(gameObjectArchive);
+		JsonObject gameObjectData = objArray.PushBackNewObject();
+		go->Save(gameObjectData);
 	}
 	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
 
-	//TODO: Might Fail Xddddd
-	//archive->AddObject("Scene", *archive);
-	std::string out = archive->Serialize();
+	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 	
 	delete archive;

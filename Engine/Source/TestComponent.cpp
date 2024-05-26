@@ -31,9 +31,9 @@ Component* TestComponent::Clone(GameObject* owner) const
     return new TestComponent(*this, owner); //Calls the copy contrustctor of your component
 }
 
-void TestComponent::Save(Archive& archive) const 
+void TestComponent::Save(JsonObject& obj) const 
 {
-	//archive.AddString("type", Component::GetNameFromType(ComponentType::TEST));
+	//obj.AddString("type", Component::GetNameFromType(ComponentType::TEST));
 }
 
 void TestComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
