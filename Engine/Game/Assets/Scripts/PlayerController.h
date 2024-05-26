@@ -147,6 +147,7 @@ class PlayerController :public Script
         int mBullets = 0;
         GameObject* bullet = nullptr;
         float mRangeBaseDamage = 1.0f;
+        GameObject* mHitEffect = nullptr;
 
         //Melee
         bool mLeftMouseButtonPressed = false;
