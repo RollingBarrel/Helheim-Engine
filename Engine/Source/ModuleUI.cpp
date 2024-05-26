@@ -43,13 +43,11 @@ update_status ModuleUI::Update(float dt)
 {
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
-	
 	for (GameObject* gameObject : mCanvasList) 
 	{
 		DrawWidget(gameObject);
 	}
-
-	App->GetOpenGL()->UnbindSceneFramebuffer();
+	App->GetOpenGL()->UnbindFramebuffer();
 
 	return UPDATE_CONTINUE;
 }

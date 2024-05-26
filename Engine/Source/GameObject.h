@@ -56,7 +56,6 @@ public:
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
 	AABB GetAABB();
-	OBB GetOBB();
 
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }

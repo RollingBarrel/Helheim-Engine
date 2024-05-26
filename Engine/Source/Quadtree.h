@@ -20,7 +20,7 @@ public:
 	Quadtree(const AABB& boundingBox);
 	~Quadtree();
 
-	bool AddObject(const GameObject& object);
+	bool AddObject(const MeshRendererComponent& mesh);
 	void RemoveObject(const GameObject& object);
 	bool Intersects(const OBB& boundingBox) const;
 	bool Intersects(const Ray& ray) const;
