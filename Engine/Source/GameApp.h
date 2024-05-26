@@ -16,7 +16,7 @@ public:
 private:
 	ModuleGame* game = nullptr;
 
-#define NUM_MODULES 14
+#define NUM_MODULES 15
 	Module* modules[NUM_MODULES];
 };
 

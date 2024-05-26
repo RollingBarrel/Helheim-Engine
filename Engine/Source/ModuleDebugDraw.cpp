@@ -554,7 +554,7 @@ const char * DDRenderInterfaceCoreGL::linePointFragShaderSrc = "\n"
     "#version 460 core\n"
     "\n"
     "in  vec4 v_Color;\n"
-    "layout(location = 5)out vec4 out_FragColor;\n"
+    "layout(location = 5) out vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -591,7 +591,7 @@ const char * DDRenderInterfaceCoreGL::textFragShaderSrc = "\n"
     "in vec4 v_Color;\n"
     "\n"
     "uniform sampler2D u_glyphTexture;\n"
-    "out layout(location = 5) vec4 out_FragColor;\n"
+    "layout(location = 5) out vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -630,14 +630,16 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update(float dt)
 {
+    Draw();
     return UPDATE_CONTINUE;
 }
 
 void ModuleDebugDraw::Draw()
 {
+    glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DebugDraw");
     if (App->GetCamera()->GetCurrentCamera())
     {
-        glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DebugDraw");
+        
 
         const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
         if (camera)
@@ -651,33 +653,18 @@ void ModuleDebugDraw::Draw()
 
             dd::flush();
 
-            App->GetOpenGL()->UnbindSceneFramebuffer();
+            App->GetOpenGL()->UnbindFramebuffer();
         }
 
-        glPopDebugGroup();
-        SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
-        if (spotLight)
-        {
-
-            float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
-            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
-            //Frustum ShadowFrustum = spotLight->GetFrustum();
-            //DrawFrustum(spotLight->GetFrustum());
-        }
-        
-        BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-        if (boxCollider)
-        {
-            DrawColliders(focusGameObject);
-        }
-
+      
     }
+   
 #ifdef _DEBUG
     DrawGrid();
 #endif // DEBUG
 
     
-
+    glPopDebugGroup();
 
 }
 

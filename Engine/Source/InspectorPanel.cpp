@@ -582,6 +582,13 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 		ImGui::EndDisabled();
 	}
 
+
+		const int spotRadius = component->GetRange() * tan(component->GetOuterAngle());
+		App->GetDebugDraw()->DrawCone(component->GetOwner()->GetWorldPosition().ptr(), (component->GetOwner()->GetFront() * component->GetRange()).ptr(), component->GetColor(), spotRadius);
+		//Frustum ShadowFrustum = spotLight->GetFrustum();
+		//DrawFrustum(spotLight->GetFrustum());
+	
+
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
