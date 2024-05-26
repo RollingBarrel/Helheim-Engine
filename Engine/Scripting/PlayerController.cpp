@@ -43,7 +43,6 @@ CREATE(PlayerController)
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
     MEMBER(MemberType::INT, mAmmoCapacity);
-    MEMBER(MemberType::GAMEOBJECT, mHitEffect);
 
     
 
@@ -749,11 +748,6 @@ void PlayerController::Shoot(float damage)
                     enemy->TakeDamage(damage);
                 }   
             }
-        }
-        if (mHitEffect) {
-            mHitEffect->SetEnabled(false);
-            mHitEffect->SetPosition(hits.begin()->second.mHitPoint);
-            mHitEffect->SetEnabled(true);
         }
     }
     mCurrentState = PlayerState::IDLE;
