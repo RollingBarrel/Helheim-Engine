@@ -34,7 +34,12 @@ void Bullet::Start()
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Bullet::OnCollisionEnter, this, std::placeholders::_1)));
 	}
-	mParticleSystem = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
+	
+	mParticleSystem = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));	
+	if (mParticleSystem)
+	{
+		mParticleSystem->SetEnable(false);
+	}
 
 }
 
@@ -65,6 +70,7 @@ void Bullet::Update()
 
 void Bullet::OnCollisionEnter(CollisionData* collisionData)
 {
+	mCollider->SetEnable(true);
 	mHasCollided = true;
 }
 
