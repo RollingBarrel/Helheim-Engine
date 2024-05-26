@@ -54,6 +54,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Grenade.h">
+      <Filter>ScriptHeaders</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Grenade.cpp">
+      <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="ItemShield.cpp">
       <Filter>Player</Filter>

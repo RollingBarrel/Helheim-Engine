@@ -72,6 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)Output\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)Output</OutDir>
@@ -180,6 +181,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
+    <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
     <ClInclude Include="MainMenuManager.h" />
@@ -191,6 +193,7 @@
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="ItemShield.cpp" />
     <ClCompile Include="Level1AManager.cpp" />
     <ClCompile Include="Macros.h" />

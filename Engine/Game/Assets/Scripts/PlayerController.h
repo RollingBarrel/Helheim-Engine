@@ -12,6 +12,7 @@ class ObjectPool;
 class GameManager;
 class AnimationStateMachine;
 class BoxColliderComponent;
+class Grenade;
 struct CollisionData;
 
 class RangeWeapon;
@@ -100,6 +101,12 @@ class PlayerController :public Script
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
+        void UpdateGrenadeCooldown();
+        void GrenadeAttack();
+        void AimGrenade();
+        void GrenadeTarget();
+        void ThrowGrenade(float3 target);
+
         void Victory();
         void GameoOver();
         bool Delay(float delay);
@@ -179,6 +186,19 @@ class PlayerController :public Script
         bool mIsMeleeSpecialCoolDownActive = false;
         float mMeleeSpecialCoolDownTimer = 0.0f;
         float mMeleeSpecialCoolDown = 4.0f;
+
+        // Grenade
+        bool mAimingGrenade = false;
+        bool mThrowAwayGrenade = false;
+       
+        float mGrenadThrowDistance = 5.0f;  // mGrenadeAimAreaGO radius
+        float mGrenadeCoolDown = 5.0f;
+        float mGrenadeCoolDownTimer = mGrenadeCoolDown;
+
+        Grenade* mGrenade = nullptr;
+
+        GameObject* mGrenadeAimAreaGO = nullptr;
+        GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
 
         //HUD
         GameObject* mShieldGO = nullptr;
