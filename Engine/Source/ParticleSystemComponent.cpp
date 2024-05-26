@@ -285,9 +285,9 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mSizeCurve.LoadJson(data["Size"]);
     }
-    if (data.HasMember("Max Particles") && data["Max Particles"].IsInt())
+    if (data.HasMember("Max Particles") && data["Max Particles"].GetInt())
     {
-        mMaxParticles = data["Max Particles"].IsInt();
+        mMaxParticles = data["Max Particles"].GetInt();
     }
     if (data.HasMember("Looping") && data["Looping"].IsBool())
     {
