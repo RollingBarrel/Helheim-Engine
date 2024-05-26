@@ -44,10 +44,13 @@ GameManager::~GameManager()
     delete mInstance;
 }
 
-void GameManager::Start()
+void GameManager::Awake()
 {
     mInstance = this;
-    
+}
+
+void GameManager::Start()
+{
     mPauseScreen->SetEnabled(false);
     mWinScreen->SetEnabled(false);
     mLoseScreen->SetEnabled(false);

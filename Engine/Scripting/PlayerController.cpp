@@ -77,6 +77,9 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 
 void PlayerController::Start()
 {
+    // TODO remove this line after testing
+    GameManager::GetInstance()->GetPlayer();
+
     if (mGameManagerGO)
     {
         ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
