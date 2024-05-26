@@ -586,12 +586,6 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
 {
-
-	bool ignoreRaycast = component->GetIgnoreRaycast();
-	if (ImGui::Checkbox("Ignore raycast", &ignoreRaycast)) {
-		component->SetIgnoreRaycast(ignoreRaycast);
-	}
-
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);

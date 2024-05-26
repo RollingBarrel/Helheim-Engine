@@ -758,18 +758,6 @@ void ModuleDebugDraw::DrawTriangle(const float3& v1, const float3& v2, const flo
     DrawTriangle(v1, v2, v3, dd::colors::Red);
 }
 
-void ModuleDebugDraw::DrawCircle(const float3 center, const float radius)
-{
-    ddVec3 ddCenter = ddVec3(center);
-
-    ddVec3 ddPlaneNormal = ddVec3(0.0f, 0.0f, 1.0f);
-
-    const int durationMillis = 0; 
-    const bool depthEnabled = true;
-
-    dd::circle(ddCenter, ddPlaneNormal, dd::colors::Red, radius, 36, durationMillis, depthEnabled);
-}
-
 void ModuleDebugDraw::DrawGrid()
 {
     dd::xzSquareGrid(-500, 500, 0.0f, 1.0f, dd::colors::Gray);

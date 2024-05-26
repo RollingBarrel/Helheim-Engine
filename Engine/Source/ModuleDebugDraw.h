@@ -33,7 +33,6 @@ public:
     void DrawLine(const float3& start, const float3& end, const float3& color, float duration, bool depthTest);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3);
     void DrawTriangle(const float3& v1, const float3& v2, const float3& v3, const float3& color);
-    void DrawCircle(const float3 center, const float radius);
     void DrawSkeleton(GameObject* model);
     void DrawColliders(GameObject* root);
     void DrawBoundingBoxes(GameObject* gameObject);
