@@ -9,8 +9,9 @@ public:
 	BezierCurve();
 	float GetValue(float dt) const;
 	float GetInitialValue() const { return mLineal; }
-	void SaveJson(Archive& archive) const;
-	void LoadJson(const rapidjson::Value& data);
+
+	void Save(JsonObject& archive) const;
+	void Load(const JsonObject& data);
 
 private:
 	template <int steps>

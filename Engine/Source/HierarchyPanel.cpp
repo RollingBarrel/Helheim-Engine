@@ -304,8 +304,8 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 					GameObject* newGO = EngineApp->GetScene()->LoadPrefab(asset->mPath, target);
 					if (reorder && newGO != nullptr)
 					{
-						target->RemoveChild(newGO->mID);
-						target->mParent->AddChild(newGO, target->mID);
+						target->RemoveChild(newGO->mUid);
+						target->mParent->AddChild(newGO, target->mUid);
 					}
 					break;
 				}

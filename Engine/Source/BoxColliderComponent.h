@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "ModulePhysics.h"
-
 #include "Math/float3.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
@@ -61,8 +60,8 @@ public:
 	void SetRigidBody(btRigidBody* rigidBody);
 	void SetMotionState(MotionState* motionState);
 
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data) override;
 
 private:
 	AABB mLocalAABB = { float3(-0.5f), float3(0.5f) };

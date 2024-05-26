@@ -423,7 +423,6 @@
     <ClCompile Include="BezierCurve.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -435,6 +434,9 @@
     </ClCompile>
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationStateMachine.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1044,7 +1046,6 @@
     <ClInclude Include="BezierCurve.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -1909,6 +1910,9 @@
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationStateMachine.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
@@ -2008,6 +2012,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

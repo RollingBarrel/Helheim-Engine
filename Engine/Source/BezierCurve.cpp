@@ -43,40 +43,21 @@ void BezierCurve::BezierTable(float2 P[], float2 results[])
     }
 }
 
-void BezierCurve::SaveJson(Archive& archive) const
+void BezierCurve::Save(JsonObject& obj) const
 {
-    archive.AddFloat("Lineal", mLineal);
-    archive.AddBool("isCurve", mIsCurve);
-    archive.AddFloat4("Curve", mCurve.ptr());
-    archive.AddFloat("Factor", mCurveFactor);
+    obj.AddFloat("Lineal", mLineal);
+    obj.AddFloat("Factor", mCurveFactor);
+    obj.AddBool("IsCurve", mIsCurve);
+    obj.AddFloats("Curve", mCurve.ptr(), 4);
 }
 
-void BezierCurve::LoadJson(const rapidjson::Value& data)
+void BezierCurve::Load(const JsonObject& data)
 {
-    if (data.HasMember("Lineal") && data["Lineal"].IsFloat())
-    {
-        mLineal = data["Lineal"].GetFloat();
-    }
-    if (data.HasMember("Factor") && data["Factor"].IsFloat())
-    {
-        mCurveFactor = data["Factor"].GetFloat();
-    }
-    if (data.HasMember("isCurve") && data["isCurve"].IsBool())
-    {
-        mIsCurve = data["isCurve"].GetBool();
-    }
-    if (data.HasMember("Curve") && data["Curve"].IsArray())
-    {
-        const rapidjson::Value& values = data["Curve"];
-        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-        if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
-        {
-            x = values[0].GetFloat();
-            y = values[1].GetFloat();
-            z = values[2].GetFloat();
-            w = values[3].GetFloat();
-        }
+    mLineal = data.GetFloat("Lineal");
+    mIsCurve = data.GetBool("IsCurve");
+    mCurveFactor = data.GetFloat("Factor");
 
-        mCurve = float4(x, y, z, w);
-    }
+    float curve[4];
+    data.GetFloats("Curve", curve);
+    mCurve = float4(curve);
 }

@@ -223,7 +223,6 @@ void AnimationComponent::Save(JsonObject& obj) const
 
 void AnimationComponent::Load(const JsonObject& data)
 {
-
 	Component::Load(data);	
-	SetModelUUID(data.GetInt("ModelUID"))
+	SetModelUUID(data.GetInt("ModelUID"));
 }

@@ -27,7 +27,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mBias = 0.00001f;
 
 	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
-	mShadowFrustum.pos = owner->GetWorldPosition();
+	mShadowFrustum.pos = owner->GetPosition();
 	mShadowFrustum.front = owner->GetFront();
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.1f;
@@ -51,7 +51,7 @@ SpotLightComponent::~SpotLightComponent()
 
 const float* SpotLightComponent::GetPosition() const
 {
-	return mOwner->GetWorldPosition().ptr();
+	return mOwner->GetPosition().ptr();
 }
 
 void SpotLightComponent::SetColor(float color[3])
@@ -113,7 +113,7 @@ void SpotLightComponent::Update()
 {
 	if (mOwner->HasUpdatedTransform())
 	{
-		float3 newPosition = mOwner->GetWorldPosition();
+		float3 newPosition = mOwner->GetPosition();
 		mData.pos[0] = newPosition[0];
 		mData.pos[1] = newPosition[1];
 		mData.pos[2] = newPosition[2];
@@ -141,8 +141,8 @@ void SpotLightComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 	obj.AddFloats("Position", mData.pos, 4);
 	obj.AddFloats("Direction", mData.aimD, 4);
-	obj.AddFloats("Color", mData.col, 4);
-	obj.AddFloat("Radius", mData.radius);
+	obj.AddFloats("Color", mData.color, 4);
+	obj.AddFloat("Range", mData.range);
 	obj.AddBool("CastShadow", mCastShadow);
 	obj.AddFloat("Bias", mBias);
 }
@@ -170,16 +170,17 @@ void SpotLightComponent::Load(const JsonObject& data)
 	data.GetFloats("Color", col);
 	for (unsigned int i = 0; i < 4; ++i)
 	{
-		mData.col[i] = col[i];
+		mData.color[i] = col[i];
 	}
 
-	mData.radius = data.GetFloat("Radius");
+	mData.range = data.GetFloat("Range");
 
 	mCastShadow = data.GetBool("CastShadow");
 	
 	mBias = data.GetFloat("Bias");
 	
-	mShadowFrustum.pos = owner->GetWorldPosition();
+	GameObject* owner = this->GetOwner();
+	mShadowFrustum.pos = owner->GetPosition();
 	mShadowFrustum.front = owner->GetFront();
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.01f;

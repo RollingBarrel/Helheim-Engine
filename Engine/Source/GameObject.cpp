@@ -314,22 +314,6 @@ void GameObject::ResetTransform()
 	SetScale(float3::one);
 }
 
-void GameObject::RefreshBoundingBoxes()
-{
-	if (GetComponent(ComponentType::MESHRENDERER) != nullptr)
-	{
-		((MeshRendererComponent*)GetComponent(ComponentType::MESHRENDERER))->RefreshBoundingBoxes();
-		App->GetScene()->SetShouldUpdateQuadtree(true);
-
-	}
-	else
-	{
-		for (auto children : mChildren)
-		{
-			children->RefreshBoundingBoxes();
-		}
-	}
-}
 #pragma endregion
 
 #pragma region Components
@@ -356,9 +340,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 	}
 	case ComponentType::SPOTLIGHT:
 	{
-		const float3 pos = mPosition;
-		const SpotLight def = { 25.f , 0.0f, 0.0f, 0.0f, pos.x, pos.y, pos.z, 50.0f, 0.f, -1.f, 0.f, cos(DegToRad(25.f)), 1.f, 1.f, 1.f , cos(DegToRad(38.f)) };
-		newComponent = new SpotLightComponent(this, def);
+		newComponent = new SpotLightComponent(this);
 		break;
 	}
 	case ComponentType::SCRIPT:
@@ -590,7 +572,7 @@ void GameObject::Load(const JsonObject& jsonObject)
 
 	// Load components
 	JsonArray components = jsonObject.GetJsonArray("Components");
-	for (int i = 0; i < components.Size(); ++i)
+	for (unsigned int i = 0; i < components.Size(); ++i)
 	{
 		JsonObject componentData = components.GetJsonObject(i);
 		ComponentType cType = (ComponentType) componentData.GetInt("ComponentType");
@@ -633,14 +615,14 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
 						{
 							loadedObjects.push_back(this);
-							uuids[uuid] = mID;
+							uuids[uuid] = mUid;
 							//LoadComponentsFromJSON(gameObjects[i]["Components"]);
 						}
 					}
 					else
 					{
-						GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
-						loadedObjects.push_back(go);
+						//GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+						//loadedObjects.push_back(go);
 						//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
@@ -650,7 +632,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 			{
 				if (gameObjects[i].IsObject())
 				{
-					loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+					//loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 				}
 			}
 		}

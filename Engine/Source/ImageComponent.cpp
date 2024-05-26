@@ -213,8 +213,7 @@ void ImageComponent::Save(JsonObject& obj) const
 {
 	Component::Save(obj);
 	obj.AddInt("ImageID", mImage->GetUID());
-	obj.AddFloats("Color", mColor.ptr(), 3);
-	obj.AddBool("HasAlpha", mHasAlpha);
+	obj.AddFloats("Color", mColor.ptr(), 3);;
 	obj.AddFloat("Alpha", mAlpha);
 	obj.AddBool("IsSpritesheet", mIsSpritesheet);
 	obj.AddInt("Columns", mColumns);
@@ -232,7 +231,6 @@ void ImageComponent::Load(const JsonObject& data)
 	float col[2];
 	data.GetFloats("Color", col);
 	mColor = float3(col);
-	mHasAlpha = data.GetBool("HasAlpha");
 	mAlpha = data.GetFloat("Alpha");
 	mIsSpritesheet = data.GetBool("IsSpritesheet");
 	mColumns = data.GetInt("Columns");

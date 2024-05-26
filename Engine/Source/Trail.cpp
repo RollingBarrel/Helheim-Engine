@@ -165,27 +165,24 @@ float3 Trail::GetFirstPosition() const
     return mPoints.front().position;
 }
 
-void Trail::SaveJson(Archive& archive) const
+void Trail::Save(JsonObject& obj) const
 {
-    archive.AddFloat("Max Life Time", mMaxLifeTime);
-    Archive width;
-    mWidth.SaveJson(width);
-    archive.AddObject("Width", width);
-    mGradient.Save(archive);
+    obj.AddFloat("Max Life Time", mMaxLifeTime);
+
+    obj.AddNewJsonObject("Width");
+    mWidth.Save(obj);
+
+    obj.AddNewJsonObject("Gradient");
+    mGradient.Save(obj);
 }
 
-void Trail::LoadJson(const rapidjson::Value& data)
+void Trail::Load(const JsonObject& data)
 {
-    if (data.HasMember("Max Life Time") && data["Max Life Time"].IsFloat())
-    {
-        mMaxLifeTime = data["Max Life Time"].GetFloat();
-    }
-    if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
-    {
-        mGradient.LoadFromJSON(data);
-    }
-    if (data.HasMember("Width") && data["Width"].IsObject())
-    {
-        mWidth.LoadJson(data["Width"]);
-    }
+    mMaxLifeTime = data.GetFloat("Max Life Time");
+
+    JsonObject width = data.GetJsonObject("Width");
+    mWidth.Load(width);
+
+    JsonObject gradient = data.GetJsonObject("Gradient");
+    mWidth.Load(gradient);
 }

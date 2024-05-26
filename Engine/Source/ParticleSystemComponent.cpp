@@ -235,50 +235,19 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
 {
     Component::Save(obj);
     obj.AddInt("Image", mResourceId);
+    obj.AddFloat("Delay", mDelay);
     obj.AddFloat("Duration", mDuration);
     obj.AddFloat("Life Time", mMaxLifeTime);
     obj.AddFloat("Emission Rate", mEmissionRate);
-    obj.AddFloat("Speed", mSpeedLineal);
     obj.AddInt("Max Particles", mMaxParticles);
+    obj.AddBool("Stretched Billboard", mStretchedBillboard);
     obj.AddBool("Looping", mLooping);
-    obj.AddFloat("Size", mSizeLineal);
-    obj.AddFloat("Speed", mSpeedLineal);
-    obj.AddBool("IsSpeedCurve", mIsSpeedCurve);
-    obj.AddBool("IsSizeCurve", mIsSizeCurve);
-    obj.AddFloats("SizeCurve", mSizeCurve.ptr(), 4);
-    obj.AddFloats("SpeedCurve", mSpeedCurve.ptr(), 4);
-    obj.AddFloat("SizeFactor", mSizeCurveFactor);
-    obj.AddFloat("SpeedFactor", mSpeedCurveFactor);
-    mShape->Save(obj);
-    
-    JsonArray arr = obj.AddNewJsonArray("Color Gradient");
-    for (std::map<float, float4>::const_iterator it = mColorGradient.begin(); it != mColorGradient.end(); it++)
-    {
-        float time = it->first;
-        float4 color = it->second;
-        JsonObject colorObj = arr.PushBackNewObject();
-        colorObj.AddFloat("Time", time);
-        colorObj.AddFloats("Color", color.ptr(), 4);
-    }
+    obj.AddInt("ShapeType", mShapeType);
 
-    /*Component::Save(archive);
-    archive.AddInt("Image", mResourceId);
-    archive.AddFloat("Delay", mDelay);
-    archive.AddFloat("Duration", mDuration);
-    archive.AddFloat("Life Time", mMaxLifeTime);
-    archive.AddFloat("Emission Rate", mEmissionRate);
-    archive.AddInt("Max Particles", mMaxParticles);
-    archive.AddBool("Looping", mLooping);
-    archive.AddBool("Stretched Billboard", mStretchedBillboard);
-    Archive size;
-    Archive speed;
-    mSizeCurve.SaveJson(size);
-    mSpeedCurve.SaveJson(speed);
-    archive.AddObject("Size", size);
-    archive.AddObject("Speed", speed);
-    mShape->Save(archive);
-    
-    mColorGradient->Save(archive);*/
+    mSizeCurve.Save(obj);
+    mSpeedCurve.Save(obj);
+    mShape->Save(obj);
+    mColorGradient->Save(obj);
 }
 
 
@@ -289,93 +258,23 @@ void ParticleSystemComponent::Load(const JsonObject& data)
     mResourceId = data.GetInt("Image");
     SetImage(mResourceId);
 
+    mDelay = data.GetFloat("Delay");
     mDuration = data.GetFloat("Duration");
     mMaxLifeTime = data.GetFloat("Life Time");
     mEmissionRate = data.GetFloat("Emission Rate");
-    mSpeedLineal = data.GetFloat("Speed");
-    mSizeLineal = data.GetFloat("Size");
-    mSpeedCurveFactor = data.GetFloat("SpeedFactor");
-    mSizeCurveFactor = data.GetFloat("SizeFactor");
     mMaxParticles = data.GetInt("Max Particles");
+    mStretchedBillboard = data.GetBool("Stretched Billboard");
     mLooping = data.GetBool("Looping");
-    mIsSpeedCurve = data.GetBool("IsSpeedCurve");
-    mIsSizeCurve = data.GetBool("IsSizeCurve");
 
-    JsonArray arr = data.GetJsonArray("Color Gradient");
-    for (unsigned int i = 0; i < arr.Size(); ++i)
-    {
-        JsonObject color = arr.GetJsonObject(i);
-        float time = 0.0f;
-        time = color.GetFloat("Time");
-        float col[4];
-        color.GetFloats("Color", col);
-        mColorGradient[time] = float4(col);
-    }
+    mSizeCurve.Load(data);
+    mSpeedCurve.Load(data);
 
+    mShapeType = (EmitterShape::Type)data.GetInt("ShapeType");
     InitEmitterShape();
     mShape->Load(data);
 
-    float size[4];
-    data.GetFloats("SizeCurve", size);
-    mSizeCurve = float4(size);
+    mColorGradient->Load(data);
 
-    float speed[4];
-    data.GetFloats("SpeedCurve", speed);
-    mSpeedCurve = float4(speed);
-
-    /*Component::LoadFromJSON(data, owner);
-    if (data.HasMember("Delay") && data["Delay"].IsFloat())
-    {
-        mDelay = data["Delay"].GetFloat();
-    }
-    if (data.HasMember("Duration") && data["Duration"].IsFloat())
-    {
-        mDuration = data["Duration"].GetFloat();
-    }
-    if (data.HasMember("Image") && data["Image"].IsInt())
-    {
-        mResourceId = data["Image"].GetInt();
-        SetImage(mResourceId);
-    }
-    if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
-    {
-        mMaxLifeTime = data["Life Time"].GetFloat();
-    }
-    if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
-    {
-        mEmissionRate = data["Emission Rate"].GetFloat();
-    }
-    if (data.HasMember("Speed") && data["Speed"].IsObject())
-    {
-        mSpeedCurve.LoadJson(data["Speed"]);
-    } 
-    if (data.HasMember("Size") && data["Size"].IsObject())
-    {
-        mSizeCurve.LoadJson(data["Size"]);
-    }
-    if (data.HasMember("Max Particles") && data["Max Particles"].IsInt())
-    {
-        mMaxParticles = data["Max Particles"].IsInt();
-    }
-    if (data.HasMember("Looping") && data["Looping"].IsBool())
-    {
-        mLooping = data["Looping"].GetBool();
-    }
-    if (data.HasMember("Stretched Billboard") && data["Stretched Billboard"].IsBool())
-    {
-        mStretchedBillboard = data["Stretched Billboard"].GetBool();
-    }
-    if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
-    {
-        mColorGradient->LoadFromJSON(data);
-    }
-    if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
-    {
-        mShapeType = (EmitterShape::Type)data["ShapeType"].GetInt();
-        InitEmitterShape();
-        mShape->LoadFromJSON(data);
-    }
-*/
 }
 
 void ParticleSystemComponent::InitEmitterShape()

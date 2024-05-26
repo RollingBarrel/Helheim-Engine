@@ -36,8 +36,8 @@ public:
 
 	void SetImage(ResourceTexture* image) { mImage = image; }
 
-	void SaveJson(Archive& archive) const;
-	void LoadJson(const rapidjson::Value& data);
+	void Save(JsonObject& archive) const;
+	void Load(const JsonObject& data);
 
 private:
 	std::deque<TrailPoint> mPoints;

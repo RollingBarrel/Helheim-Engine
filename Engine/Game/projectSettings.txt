@@ -2,28 +2,28 @@
     "Engine Settings": {
         "Draw Grid": true,
         "Frustum Culling": false,
-        "Vsync": true,
-        "Enable FPS Limit": true,
-        "FPS Limit": 60.0
+        "Vsync": false,
+        "Enable FPS Limit": false,
+        "FPS Limit": 0.0
     },
     "Game Settings": {
-        "Vsync": true,
-        "Enable FPS Limit": true,
-        "FPS Limit": 60.0
+        "Vsync": false,
+        "Enable FPS Limit": false,
+        "FPS Limit": 0.0
     },
     "Camera Settings": {
         "Position": [
-            1.075604796409607,
-            1.382016897201538,
-            3.3348491191864015
+            -4.199251651763916,
+            2.7402238845825197,
+            3.109489917755127
         ],
         "Rotation": [
-            2.9127044677734377,
-            -0.13600251078605653,
-            3.1100032329559328
+            2.5140013694763185,
+            0.7674221992492676,
+            -2.675035238265991
         ]
     },
     "Scene Settings": {
-        "Name": "gos"
+        "Name": "SampleScene"
     }
 }
