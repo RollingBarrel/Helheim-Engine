@@ -16,6 +16,8 @@ class Enemy : public Script
 		virtual void TakeDamage(float damage);
 		virtual void Death();
 		virtual void PushBack();
+
+		virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 		
 	protected:
 		bool Delay(float delay);
@@ -28,6 +30,7 @@ class Enemy : public Script
 		float mSpeed = 1.0f;
 		float mRotationSpeed = 1.0f;
 		float mActivationRange = 15.0f;
+		bool mBeAttracted = false;
 		GameObject* mPlayer = nullptr;
 		AnimationComponent* mAnimationComponent = nullptr;
 

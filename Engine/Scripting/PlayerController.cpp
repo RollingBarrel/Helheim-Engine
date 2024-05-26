@@ -48,8 +48,8 @@ CREATE(PlayerController)
     MEMBER(MemberType::INT, mAmmoCapacity);
 
     SEPARATOR("Grenade");
-    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimArea);
-    MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewArea);
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
 
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mShieldGO);
@@ -114,6 +114,13 @@ void PlayerController::Start()
     ModuleScene* scene = App->GetScene();
     mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
 
+    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    {
+        ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
+        Grenade* grenade = (Grenade*)script->GetScriptInstance();
+
+        grenade->SetGrenadeParameters(mGrenadeDPS, mGrenadeDuration, mGrenadeRadius);
+    }
 
     //Animation
     mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
@@ -205,6 +212,7 @@ void PlayerController::Update()
 {
     CheckDebugOptions();
     UpdateShield();
+    UpdateGrenadeCooldown();
     UpdateBattleSituation();
 
     if (mIsDashCoolDownActive)
@@ -298,7 +306,7 @@ void PlayerController::Idle()
         mWeapon = (mWeapon == Weapon::RANGE) ? Weapon::MELEE : Weapon::RANGE;
     }
 
-    else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT)
+    else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
     {
         mCurrentState = PlayerState::ATTACK;
         mAimingGrenade = true;
@@ -336,7 +344,9 @@ void PlayerController::Idle()
 
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
     {
-        mGrenadeAimArea->SetEnabled(false);
+        if (mGrenadeAimAreaGO) {
+            mGrenadeAimAreaGO->SetEnabled(false);
+        }
     }
 }
 
@@ -598,10 +608,14 @@ void PlayerController::Dash()
 
 void PlayerController::Attack()
 {
-    if (mAimingGrenade && !mThrowingGrenade) {
-        GrenadeAttack();
+    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    {
+        if (mAimingGrenade && !mThrowAwayGrenade) {
+            GrenadeAttack();
+        }
         return;
     }
+
     switch (mWeapon)
     {
     case Weapon::RANGE:
@@ -907,18 +921,38 @@ void PlayerController::CheckDebugOptions()
     }
 }
 
+void PlayerController::UpdateGrenadeCooldown()
+{
+    if (mThrowAwayGrenade)
+    {
+        if (mGrenadeCoolDownTimer <= 0.0f)
+        {
+            mGrenadeCoolDownTimer = mGrenadeCoolDown;
+            mThrowAwayGrenade = false; 
+        }
+
+        if (mGrenadeCoolDownTimer > 0.0f)
+        {
+            mGrenadeCoolDownTimer -= App->GetDt();
+            LOG("Grenade cooldown, wait %f seconds", mGrenadeCoolDownTimer);
+        }
+        else
+        {
+            mGrenadeCoolDownTimer = 0.0f;
+        }
+    }
+}
+
 void PlayerController::GrenadeAttack()
 {
-
-    //TODO COOLDOWN
     AimGrenade();
 
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
     {
         mCurrentState = PlayerState::IDLE;
         mAimingGrenade = false;
-        mGrenadeAimArea->SetEnabled(false);
-        mGrenadeExplotionPreviewArea->SetEnabled(false);
+        mGrenadeAimAreaGO->SetEnabled(false);
+        mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
 
     }
 }
@@ -926,35 +960,39 @@ void PlayerController::GrenadeAttack()
 void PlayerController::AimGrenade()
 {
     // Initialize circle
-    mGrenadeAimArea->SetEnabled(true);
-    mGrenadeAimArea->SetScale(float3(mGrenadThrowDistance, 0.5, mGrenadThrowDistance));
-    mGrenadeAimArea->SetPosition(mGameObject->GetPosition());
+    mGrenadeAimAreaGO->SetEnabled(true);
+    mGrenadeAimAreaGO->SetScale(float3(mGrenadThrowDistance, 0.5, mGrenadThrowDistance));
+    mGrenadeAimAreaGO->SetPosition(mGameObject->GetPosition());
 
     GrenadeTarget();
 }
 
 void PlayerController::GrenadeTarget()
 {
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+    Ray ray = Physics::ScreenPointToRay(mousePosition);
+    Plane plane = Plane(mGrenadeAimAreaGO->GetWorldPosition(), float3::unitY);
 
-    Quadtree* root = App->GetScene()->GetQuadtreeRoot();
+    float distance;
+    bool intersects = plane.Intersects(ray, &distance);
+    float3 hitPoint = ray.GetPoint(distance);
 
-    std::map<float, Hit> hits = root->RayCast(&ray);
-    if (!hits.empty())
+    // Check if mouse hit inside circle
+    // TODO: Check hit with physic
+    float3 diff = hitPoint - mGameObject->GetWorldPosition();
+    float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+    float radiusSquared = mGrenadThrowDistance * mGrenadThrowDistance;
+
+    bool hit = distanceSquared <= radiusSquared;
+
+    if (intersects && hit)
     {
-        std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();
-        if (intersectGameObjectPair.second.mGameObject->GetTag()->GetName() == "AimGrenadeArea")
-        {
-            float3 point = intersectGameObjectPair.second.mHitPoint;
-            LOG("%f", intersectGameObjectPair.second.mDistance);
-            mGrenadeExplotionPreviewArea->SetEnabled(true);
-            mGrenadeExplotionPreviewArea->SetScale(float3(mGrenadeRadius, 0.5, mGrenadeRadius));
-            mGrenadeExplotionPreviewArea->SetPosition(float3(point.x, 0.5, point.z));
+        mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
+        mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenadeRadius, 0.5f, mGrenadeRadius));
+        mGrenadeExplotionPreviewAreaGO->SetPosition(float3(hitPoint.x, 0.3f, hitPoint.z));
 
-            if ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)) {
-                ThrowGrenade(point);
-            }
-
+        if ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)) {
+            ThrowGrenade(hitPoint);
         }
     }
 }
@@ -963,13 +1001,14 @@ void PlayerController::ThrowGrenade(float3 target)
 {
     mCurrentState = PlayerState::IDLE;
     mAimingGrenade = false;
-    mGrenadeAimArea->SetEnabled(false);
+    mGrenadeAimAreaGO->SetEnabled(false);
 
-    mThrowingGrenade = true;
+    mThrowAwayGrenade = true;
 
-    ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewArea->GetComponent(ComponentType::SCRIPT);
+    ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
     Grenade* grenade = (Grenade*)script->GetScriptInstance();
 
+    // TODO wait for thow animation time
     grenade->SetDestionation(target);
 }
 

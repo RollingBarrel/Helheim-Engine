@@ -14,6 +14,7 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
+    mBeAttracted = false;
 }
 
 void Enemy::ActivateEnemy() 
@@ -79,10 +80,10 @@ void Enemy::DropShield()
         float3 enemyPosition = mGameObject->GetPosition();
         float3 shieldPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
 
-        GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
-        shield->SetPosition(shieldPosition);
+        //GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
+        //shield->SetPosition(shieldPosition);
 
-        float3 scale = float3(0.25f, 0.25f, 0.25f);
-        shield->SetScale(scale);
+        //float3 scale = float3(0.25f, 0.25f, 0.25f);
+        //shield->SetScale(scale);
     }
 }
