@@ -23,8 +23,8 @@ public:
     inline void PushBackInt(int value);
     inline void PushBackFloat(float value);
     inline void PushBackString(const char* value);
-    inline JsonArray PushBackNewArray(const char* key);
-    inline JsonObject PushBackNewObject(const char* key);
+    inline JsonArray PushBackNewArray();
+    inline JsonObject PushBackNewObject();
     inline void PopBack();
 
     inline bool GetBool(unsigned int idx) const;

@@ -9,7 +9,8 @@ Archive::Archive()
 }
 Archive::Archive(const char* json)
 {
-    mDocument.Parse(json);
+    rapidjson::ParseResult ok = mDocument.Parse(json);
+    assert(ok && "Json not parsed correctly");
 }
 // Copy constructor
 Archive::Archive(const Archive& other)
@@ -74,14 +75,14 @@ void JsonArray::PushBackString(const char* value)
     mArray.PushBack(rapidjson::Value().SetString(value, mAllocator), mAllocator);
 }
 
-JsonArray JsonArray::PushBackNewArray(const char* key)
+JsonArray JsonArray::PushBackNewArray()
 {
     rapidjson::Value a(rapidjson::kArrayType);
     mArray.PushBack(a, mAllocator);
     return JsonArray(mArray[mArray.Size() - 1].GetArray(), mAllocator);
 }
 
-JsonObject JsonArray::PushBackNewObject(const char* key)
+JsonObject JsonArray::PushBackNewObject()
 {
     rapidjson::Value o(rapidjson::kObjectType);
     mArray.PushBack(o, mAllocator);
