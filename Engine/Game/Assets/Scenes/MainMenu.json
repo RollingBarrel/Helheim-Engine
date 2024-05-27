@@ -26,6 +26,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 772950227,
@@ -62,6 +63,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 2117416502,
@@ -219,6 +221,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": []
             },
             {
@@ -245,6 +248,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1675635989,
@@ -286,8 +290,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     },
                     {
                         "ID": 408373276,
@@ -320,6 +328,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1867986188,
@@ -379,6 +388,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1512194991,
@@ -420,8 +430,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     },
                     {
                         "ID": 1514770968,
@@ -454,6 +468,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 366051831,
@@ -495,8 +510,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     },
                     {
                         "ID": 368558187,
@@ -529,6 +548,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1837196087,
@@ -570,8 +590,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     },
                     {
                         "ID": 1839772064,
@@ -604,6 +628,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 461668055,
@@ -645,8 +670,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     },
                     {
                         "ID": 688266281,
@@ -679,6 +708,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": []
             },
             {
@@ -705,6 +735,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1265047648,
@@ -746,8 +777,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     },
                     {
                         "ID": 1276743976,
@@ -780,6 +815,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1254985751,
@@ -821,8 +857,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     }
                 ]
             },
@@ -850,6 +890,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 715984069,
@@ -891,8 +932,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     }
                 ]
             },
@@ -920,6 +965,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 979603251,
@@ -961,8 +1007,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     }
                 ]
             },
@@ -990,6 +1040,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 2122941879,
@@ -1031,8 +1082,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     }
                 ]
             },
@@ -1060,6 +1115,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ImageID": 1017268219,
@@ -1069,8 +1125,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     },
                     {
                         "ID": 1925860871,
@@ -1135,6 +1195,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1677024220,
@@ -1176,8 +1237,12 @@
                             1.0,
                             1.0
                         ],
-                        "HasAlpha": false,
-                        "Alpha": 1.0
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     }
                 ]
             },
@@ -1202,9 +1267,10 @@
                     1.0,
                     1.0
                 ],
-                "Tag": 0,
+                "Tag": 4,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 6,
@@ -1239,6 +1305,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 3,
@@ -1287,6 +1354,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 13,
@@ -1328,6 +1396,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 13,
@@ -1360,6 +1429,7 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 13,
