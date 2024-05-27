@@ -16,6 +16,7 @@ CREATE(Level1AManager)
     MEMBER(MemberType::GAMEOBJECT, mLevel1AMainThemeHolder);
     MEMBER(MemberType::GAMEOBJECT, mPlayerControllerHolder);
     MEMBER(MemberType::GAMEOBJECT, mEnemyFootStepHolder);
+    MEMBER(MemberType::GAMEOBJECT, mStangeBackgroudSoundHolder);
     END_CREATE;
 }
 
@@ -30,51 +31,40 @@ Level1AManager::~Level1AManager()
 void Level1AManager::Start()
 {
 
-    if (mLevel1AMainThemeHolder != nullptr) 
+    if (mLevel1AMainThemeHolder != nullptr)
     {
         mLevel1AMainTheme = (AudioSourceComponent*)mLevel1AMainThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
         mLevel1AMainTheme->Play();
     }
 
-    if (mPlayerControllerHolder != nullptr) 
+    if (mLevel1AMainDeadHolder != nullptr)
     {
-        ScriptComponent* PlayerControllerScript = (ScriptComponent*)mPlayerControllerHolder->GetComponent(ComponentType::SCRIPT);
-        mPlayerController = (PlayerController*) PlayerControllerScript->GetScriptInstance();
+        mLevel1ADeadTheme = (AudioSourceComponent*)mLevel1AMainThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
 
+    if (mPlayerControllerHolder != nullptr)
+    {
+        ScriptComponent* PlayerControllerScript = (ScriptComponent*)mPlayerControllerHolder->GetComponent(ComponentType::SCRIPT);
+        mPlayerController = (PlayerController*)PlayerControllerScript->GetScriptInstance();
+    }
 
+    if (mEnemyFootStepHolder != nullptr)
+    {
+        mEnemyFootStep = (AudioSourceComponent*)mEnemyFootStepHolder->GetComponent(ComponentType::AUDIOSOURCE);
+    }
+
+    if (mStangeBackgroudSoundHolder != nullptr)
+    {
+        mStrangeBackgroundSound = (AudioSourceComponent*)mStangeBackgroudSoundHolder->GetComponent(ComponentType::AUDIOSOURCE);
+        mStrangeBackgroundSound->SetPositionWithGameObject(false);
+        mStrangeBackgroundSound->Play();
+    }
 }
 
 void Level1AManager::Update() {
     //UpdateBackgroundMusic();
-    ModuleScene* scene = App->GetScene();
-
-    if (mEnemyFootStepHolder != nullptr) {
-        mEnemyFootStep = (AudioSourceComponent*)mEnemyFootStepHolder->GetComponent(ComponentType::AUDIOSOURCE);
-
-        std::vector<GameObject*> Enemies;
-        scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
-
-        if (!mReadyToStep) {
-            mStepTimePassed += App->GetDt();
-            if (mStepTimePassed >= mStepCoolDown) {
-                mStepTimePassed = 0;
-                mReadyToStep = true;
-            }
-        } else {
-            for (auto* e : Enemies) {
-                float dist = e->GetWorldPosition().Distance(GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-
-                ScriptComponent* enemyscript = (ScriptComponent*)e->GetComponent(ComponentType::SCRIPT);
-                Enemy* enemy = (Enemy*)enemyscript->GetScriptInstance();
-
-                if (dist < 10 && enemy->IsMoving()) {
-                    mEnemyFootStep->PlayOneShotPosition(e->GetPosition());
-                }
-            }
-            mReadyToStep = false;
-        }
-    }
+    UpdateEnemyFootStepMusic();
+    UpdateBackgroundStrangeMusic();
 }
 
 void Level1AManager::UpdateBackgroundMusic()
@@ -104,5 +94,61 @@ void Level1AManager::UpdateBackgroundMusic()
     if (currentSituation == BattleSituation::DEATH) 
     {
         mLevel1AMainTheme->Stop(true);
+        mLevel1AMainTheme->Play();
+    }
+}
+
+void Level1AManager::UpdateEnemyFootStepMusic()
+{
+    ModuleScene* scene = App->GetScene();
+
+    std::vector<GameObject*> Enemies;
+    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
+
+    if (!mReadyToStep) {
+        mStepTimePassed += App->GetDt();
+        if (mStepTimePassed >= mStepCoolDown) {
+            mStepTimePassed = 0;
+            mReadyToStep = true;
+        }
+    }
+    else {
+        for (auto* e : Enemies) {
+            float dist = e->GetWorldPosition().Distance(GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+            ScriptComponent* enemyscript = (ScriptComponent*)e->GetComponent(ComponentType::SCRIPT);
+            Enemy* enemy = (Enemy*)enemyscript->GetScriptInstance();
+
+            if (dist < 10 && enemy->IsMoving()) {
+                mEnemyFootStep->PlayOneShotPosition(e->GetPosition());
+            }
+        }
+        mReadyToStep = false;
+    }
+}
+
+void Level1AManager::UpdateBackgroundStrangeMusic() {
+    ModuleScene* scene = App->GetScene();
+
+    std::vector<GameObject*> machines;
+    scene->FindGameObjectsWithTag(scene->GetTagByName("Machine")->GetID(), machines);
+
+    GameObject* nearestMachine = nullptr;
+    float nearestDistance = std::numeric_limits<float>::max();
+
+    auto* player = GameManager::GetInstance()->GetPlayer();
+    auto playerPosition = player->GetWorldPosition();
+
+    for (auto* machine : machines) {
+        float dist = machine->GetWorldPosition().Distance(playerPosition);
+
+        if (dist < nearestDistance) {
+            nearestDistance = dist;
+            nearestMachine = machine;
+        }
+    }
+
+    if (nearestMachine != nullptr) {
+        mStrangeBackgroundSound->UpdatePosition(nearestMachine->GetWorldPosition());
     }
 }

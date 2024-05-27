@@ -40,6 +40,7 @@ ModuleScene::ModuleScene()
 	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
 	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
 	mTags.push_back(new Tag(9, "Bullet", TagType::SYSTEM));
+	mTags.push_back(new Tag(10, "Machine", TagType::SYSTEM));
 }
 
 ModuleScene::~ModuleScene()
