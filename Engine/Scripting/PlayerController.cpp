@@ -1104,6 +1104,7 @@ bool PlayerController::IsDead()
 
 void PlayerController::UpdateShield() 
 {
+    if (mHudController == nullptr) return;
     mHudController->SetHealth(mShield / mMaxShield);
 }
 
