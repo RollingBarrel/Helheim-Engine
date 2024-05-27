@@ -592,10 +592,12 @@ void ModuleScene::DuplicateGameObjects()
 
 void ModuleScene::LoadGameObjectsIntoScripts()
 {
-	for (auto& pair : mGameObjectsToLoadIntoScripts)
+	for (std::pair<unsigned int, GameObject**> pair : mGameObjectsToLoadIntoScripts)
 	{
 		*(pair.second) = Find(pair.first);
 	}
+
+	mGameObjectsToLoadIntoScripts.clear();
 }
 
 #pragma endregion

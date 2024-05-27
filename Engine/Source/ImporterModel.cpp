@@ -174,7 +174,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
                 + node.mLight.mType.length() + 1
                 + sizeof(float) * 5;
 
-        if (node.mLight.mType.compare("spot"))
+        if (node.mLight.mType.compare("spot") == 0)
         {
             size += sizeof(float) * 2;
         }

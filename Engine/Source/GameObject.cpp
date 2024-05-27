@@ -480,7 +480,7 @@ void GameObject::AddComponent(Component* component, Component* position)
 
 std::vector<Component*> GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
 {
-	std::vector<Component*> components = parent->GetComponents(type);
+	std::vector<Component*> components;
 
 	std::vector<GameObject*> children = parent->GetChildren();
 	for (GameObject* child : children)
