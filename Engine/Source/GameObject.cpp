@@ -533,6 +533,11 @@ void GameObject::RecalculateLocalTransform()
 	{
 		mEulerRotation = float3::zero;
 	}
+	
+	for (int i = 0; i < mChildren.size(); ++i)
+	{
+		mChildren[i]->RecalculateLocalTransform();
+	}
 }
 
 const bool GameObject::HasUpdatedTransform() const
