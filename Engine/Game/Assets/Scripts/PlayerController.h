@@ -161,6 +161,7 @@ class PlayerController :public Script
         //GameObject* bullet = nullptr;
         GameObject* mRangeWeaponGameObject = nullptr;
         RangeWeapon* mRangeWeapon = nullptr;
+        float mShootingTimer = 0.0f;
 
         float mRangeBaseDamage = 1.0f;
 
