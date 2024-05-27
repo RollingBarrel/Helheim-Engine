@@ -35,12 +35,6 @@ public:
 
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	
-	//Pallete calculations
-	const std::vector<float4x4> GetPalette() const { return mPalette; }
-
-	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
-
-
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed);
@@ -48,6 +42,7 @@ public:
 	std::string GetCurrentStateName();
 	void SendTrigger(std::string trigger, float transitionTime);
 	void ChangeState(std::string stateName, float transitionTime);
+
 	//Model UUID
 	unsigned int GetModelUUID() const { return mModelUid; }
 	void SetModelUUID(unsigned int modelUid); 
@@ -57,9 +52,6 @@ public:
 	void StartTransition(float transitionDuration);
 
 private:
-	void AddJointNode(GameObject* node, ResourceModel* model);
-	void UpdatePalette();
-
 
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
@@ -67,9 +59,6 @@ private:
 
 	bool mLoop = true;
 	bool mIsPlaying = false;
-
-	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
-	std::vector<float4x4> mPalette;
 
 	float mSpeed;
 

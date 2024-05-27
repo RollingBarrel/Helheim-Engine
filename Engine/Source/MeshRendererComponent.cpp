@@ -18,6 +18,7 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "ResourceModel.h"
 
 
 
@@ -60,6 +61,9 @@ MeshRendererComponent::~MeshRendererComponent()
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
 		mMaterial = nullptr;
 	}
+
+	mGameobjectsInverseMatrices.clear();
+	mPalette.clear();
 }
 
 void MeshRendererComponent::SetMesh(unsigned int uid)
@@ -131,6 +135,11 @@ void MeshRendererComponent::Update()
 		RefreshBoundingBoxes();
 	}
 
+	if (mHasSkinning)
+	{
+		UpdatePalette();
+	}
+
 }
 
 //void MeshRendererComponent::Enable()
@@ -163,7 +172,9 @@ void MeshRendererComponent::Save(Archive& archive) const
 	archive.AddInt("ID", GetID());
 	archive.AddInt("MeshID", mMesh->GetUID());
 	archive.AddInt("MaterialID", mMaterial->GetUID());
+	archive.AddInt("ModelUID", mModelUid);
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+
 	archive.AddBool("isEnabled", IsEnabled());
 }
 
@@ -184,8 +195,76 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 	{
 		materialID = componentJson["MaterialID"].GetInt();
 	}
+	int modelUid = { 0 };
 
+	if (componentJson.HasMember("ModelUID") && componentJson["ModelUID"].IsInt())
+	{
+		modelUid = componentJson["ModelUID"].GetInt();
+	}
+
+	SetModelUUID(modelUid);
 	SetMesh(meshID);
 	SetMaterial(materialID);
+}
+
+void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
+{
+	AddJointNode(currentObject, model);
+	for (const auto& object : currentObject->GetChildren())
+	{
+		LoadAllChildJoints(object, model);
+	}
+}
+
+void MeshRendererComponent::AddJointNode(GameObject* node, ResourceModel* model)
+{
+	for (const auto& pair : model->mInvBindMatrices)
+	{
+		if (pair.first == node->GetName())
+		{
+			mGameobjectsInverseMatrices.push_back(std::pair<GameObject*, float4x4>(node, pair.second));
+			break;
+		}
+	}
+
+}
+
+void MeshRendererComponent::UpdatePalette()
+{
+	if (mModelUid == 0)
+	{
+		return;
+	}
+
+	if (mGameobjectsInverseMatrices.size() == 0)
+	{
+		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
+		if (model->mInvBindMatrices.size() == 0)
+		{
+			mHasSkinning = false;
+			return;
+		}
+		// Initialize vector
+		GameObject* root = mOwner;
+		if (root->GetParent() != nullptr)
+		{
+			while (root->GetParent()->GetParent() != nullptr)
+			{
+				root = root->GetParent();
+			}
+			root = root->GetParent(); //Gets the root of the model?
+		}
+
+		LoadAllChildJoints(root, model);
+		App->GetResource()->ReleaseResource(mModelUid); // Is it fine to release resource after use?
+	}
+
+	mPalette.clear();
+	mPalette.reserve(mGameobjectsInverseMatrices.size());
+	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
+	{
+		mPalette.push_back((mGameobjectsInverseMatrices[i].first->GetWorldTransform() * mGameobjectsInverseMatrices[i].second).Transposed());
+	}
+
 }
 

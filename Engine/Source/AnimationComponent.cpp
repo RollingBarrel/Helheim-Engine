@@ -31,8 +31,6 @@ AnimationComponent::~AnimationComponent()
 {
 	delete mController;
 	delete mStateMachine;
-	mGameobjectsInverseMatrices.clear();
-	mPalette.clear();
 	
 }
 
@@ -44,13 +42,7 @@ void AnimationComponent::SetLoop(bool loop)
 
 void AnimationComponent::OnStart()
 {
-	if (mGameobjectsInverseMatrices.size() == 0 && mModelUid != 0)
-	{
-		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
-		LoadAllChildJoints(mOwner, model);
-
-	}
-
+	
 }
 
 void AnimationComponent::Update()
@@ -61,7 +53,6 @@ void AnimationComponent::Update()
 		{
 			mController->Update(mOwner);
 		}
-		UpdatePalette();
 	}
 }
 
@@ -168,40 +159,9 @@ void AnimationComponent::SetModelUUID(unsigned int modelUid)
 		delete mStateMachine;
 	mStateMachine = new AnimationStateMachine(my_model->mAnimationUids);
 	ChangeState("default", 0.0f);
+	App->GetResource()->ReleaseResource(mModelUid);
 
 	
-}
-
-void AnimationComponent::AddJointNode(GameObject* node, ResourceModel* model)
-{
-	for (const auto& pair : model->mInvBindMatrices)
-	{
-		if (pair.first == node->GetName())
-		{
-			mGameobjectsInverseMatrices.push_back(std::pair<GameObject*, float4x4>(node, pair.second));
-			break;
-		}
-	}
-}
-
-void AnimationComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
-{
-	AddJointNode(currentObject, model);
-	for (const auto& object : currentObject->GetChildren())
-	{
-		LoadAllChildJoints(object, model);
-	}
-
-}
-
-void AnimationComponent::UpdatePalette()
-{
-	mPalette.clear();
-	mPalette.reserve(mGameobjectsInverseMatrices.size());
-	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
-	{
-		mPalette.push_back((mGameobjectsInverseMatrices[i].first->GetWorldTransform() * mGameobjectsInverseMatrices[i].second).Transposed());
-	}
 }
 
 void AnimationComponent::StartTransition(float transitionDuration)

@@ -41,7 +41,7 @@ public:
 	uint32_t bMaterialIdx;
 	const AnimationComponent* bCAnim;
 
-	bool IsAnimated() const { return bCAnim != nullptr; }
+	bool IsAnimated() const;
 };
 
 
@@ -96,7 +96,7 @@ public:
 	void CleanUpCommands();
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
-	void ComputeAnimation(const MeshRendererComponent* cMesh);
+	void ComputeSkinning(const MeshRendererComponent* cMesh);
 
 private:
 	void RecreatePersistentSsbos();
