@@ -490,7 +490,10 @@ void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
 	{ 
 		mClosePrefab = true; 
 	}
-	mPrefabPath = saveFilePath;
+	else
+	{
+		mPrefabPath = saveFilePath;
+	}
 }
 
 void ModuleScene::ClosePrefabScreen()
