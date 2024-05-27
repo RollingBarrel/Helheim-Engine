@@ -1,286 +1,309 @@
-// Include Our Header File.
 #include "TextComponent.h"
-/*
-namespace freetype {
-    // This Function Gets The First Power Of 2 >= The
-    // Int That We Pass It.
-    inline int next_p2(int a)
+
+#include <string>
+#include "glew.h"
+#include "Application.h"
+#include "ModuleOpenGL.h"
+#include <iostream>
+#include "Transform2DComponent.h"
+#include "CanvasComponent.h"
+#include "CameraComponent.h"
+#include "ModuleCamera.h"
+#include "GameObject.h"
+#include "Math/TransformOps.h"
+
+TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) 
+{
+    InitFreeType();
+    LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
+    CreateBuffers();
+
+    mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+}
+
+TextComponent::TextComponent(const TextComponent& other, GameObject* owner)
+    : Component(owner, ComponentType::TEXT),
+    mCharacters(other.mCharacters),
+    mFontSize(other.mFontSize),
+    mLineSpacing(other.mLineSpacing),
+    mLineWidth(other.mLineWidth),
+    mColor(other.mColor),
+    mAlpha(other.mAlpha),
+    mText(other.mText),
+    mQuadVAO(0),
+    mQuadVBO(0),
+    mCanvas(nullptr) {
+    InitFreeType();
+    CreateBuffers();
+
+    mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+
+    LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
+}
+
+TextComponent::~TextComponent() 
+{
+    glDeleteBuffers(1, &mQuadVBO);
+    glDeleteVertexArrays(1, &mQuadVAO);
+
+    // FreeType cleanup
+    if (mFace) {
+        FT_Done_Face(mFace);
+    }
+    if (mFt) {
+        FT_Done_FreeType(mFt);
+    }
+}
+
+Component* TextComponent::Clone(GameObject* owner) const
+{
+    return new TextComponent(*this, owner);
+}
+
+void TextComponent::InitFreeType() 
+{
+    if (FT_Init_FreeType(&mFt)) 
     {
-        int rval = 1;
-        // rval<<=1 Is A Prettier Way Of Writing rval*=2;
-        while (rval < a) rval <<= 1;
-        return rval;
+        std::cerr << "Could not init FreeType Library" << std::endl;
+        return;
     }
+}
 
-    // Create A Display List Corresponding To The Given Character.
-    void make_dlist(FT_Face face, char ch, GLuint list_base, GLuint* tex_base) {
+void TextComponent::LoadFont(const std::string& fontPath)
+{
+    if (FT_New_Face(mFt, fontPath.c_str(), 0, &mFace)) 
+    {
+        std::cerr << "Failed to load font" << std::endl;
+        return;
+    }
+    FT_Set_Pixel_Sizes(mFace, 0, mFontSize);
 
-        // The First Thing We Do Is Get FreeType To Render Our Character
-        // Into A Bitmap.  This Actually Requires A Couple Of FreeType Commands:
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
-        // Load The Glyph For Our Character.
-        if (FT_Load_Glyph(face, FT_Get_Char_Index(face, ch), FT_LOAD_DEFAULT))
-            throw std::runtime_error("FT_Load_Glyph failed");
-
-        // Move The Face's Glyph Into A Glyph Object.
-        FT_Glyph glyph;
-        if (FT_Get_Glyph(face->glyph, &glyph))
-            throw std::runtime_error("FT_Get_Glyph failed");
-
-        // Convert The Glyph To A Bitmap.
-        FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1);
-        FT_BitmapGlyph bitmap_glyph = (FT_BitmapGlyph)glyph;
-
-        // This Reference Will Make Accessing The Bitmap Easier.
-        FT_Bitmap& bitmap = bitmap_glyph->bitmap;
-
-        // Use Our Helper Function To Get The Widths Of
-        // The Bitmap Data That We Will Need In Order To Create
-        // Our Texture.
-        int width = next_p2(bitmap.width);
-        int height = next_p2(bitmap.rows);
-
-        // Allocate Memory For The Texture Data.
-        GLubyte* expanded_data = new GLubyte[2 * width * height];
-
-        // Here We Fill In The Data For The Expanded Bitmap.
-        // Notice That We Are Using A Two Channel Bitmap (One For
-        // Channel Luminosity And One For Alpha), But We Assign
-        // Both Luminosity And Alpha To The Value That We
-        // Find In The FreeType Bitmap.
-        // We Use The ?: Operator To Say That Value Which We Use
-        // Will Be 0 If We Are In The Padding Zone, And Whatever
-        // Is The FreeType Bitmap Otherwise.
-        for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++) {
-                expanded_data[2 * (i + j * width)] = expanded_data[2 * (i + j * width) + 1] =
-                    (i >= bitmap.width || j >= bitmap.rows) ?
-                    0 : bitmap.buffer[i + bitmap.width * j];
-            }
+    mCharacters.clear();
+    for (unsigned char c = 0; c < 128; c++) 
+    {
+        if (FT_Load_Char(mFace, c, FT_LOAD_RENDER)) 
+        {
+            LOG("Failed to load Glyph");
+            continue;
         }
 
-        // Now We Just Setup Some Texture Parameters.
-        glBindTexture(GL_TEXTURE_2D, tex_base[ch]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        GLuint texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RED,
+            mFace->glyph->bitmap.width,
+            mFace->glyph->bitmap.rows,
+            0,
+            GL_RED,
+            GL_UNSIGNED_BYTE,
+            mFace->glyph->bitmap.buffer
+        );
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-        // Here We Actually Create The Texture Itself, Notice
-        // That We Are Using GL_LUMINANCE_ALPHA To Indicate That
-        // We Are Using 2 Channel Data.
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-            GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, expanded_data);
-
-        // With The Texture Created, We Don't Need The Expanded Data Anymore.
-        delete[] expanded_data;
-
-        // Now We Create The Display List
-        glNewList(list_base + ch, GL_COMPILE);
-
-        glBindTexture(GL_TEXTURE_2D, tex_base[ch]);
-
-        glPushMatrix();
-
-        // First We Need To Move Over A Little So That
-        // The Character Has The Right Amount Of Space
-        // Between It And The One Before It.
-        glTranslatef(bitmap_glyph->left, 0, 0);
-
-        // Now We Move Down A Little In The Case That The
-        // Bitmap Extends Past The Bottom Of The Line
-        // This Is Only True For Characters Like 'g' Or 'y'.
-        glTranslatef(0, bitmap_glyph->top - bitmap.rows, 0);
-
-        // Now We Need To Account For The Fact That Many Of
-        // Our Textures Are Filled With Empty Padding Space.
-        // We Figure What Portion Of The Texture Is Used By
-        // The Actual Character And Store That Information In
-        // The x And y Variables, Then When We Draw The
-        // Quad, We Will Only Reference The Parts Of The Texture
-        // That Contains The Character Itself.
-        float   x = (float)bitmap.width / (float)width,
-            y = (float)bitmap.rows / (float)height;
-
-        // Here We Draw The Texturemapped Quads.
-        // The Bitmap That We Got From FreeType Was Not
-        // Oriented Quite Like We Would Like It To Be,
-        // But We Link The Texture To The Quad
-        // In Such A Way That The Result Will Be Properly Aligned.
-        glBegin(GL_QUADS);
-        glTexCoord2d(0, 0); glVertex2f(0, bitmap.rows);
-        glTexCoord2d(0, y); glVertex2f(0, 0);
-        glTexCoord2d(x, y); glVertex2f(bitmap.width, 0);
-        glTexCoord2d(x, 0); glVertex2f(bitmap.width, bitmap.rows);
-        glEnd();
-        glPopMatrix();
-        glTranslatef(face->glyph->advance.x >> 6, 0, 0);
-
-        // Increment The Raster Position As If We Were A Bitmap Font.
-        // (Only Needed If You Want To Calculate Text Length)
-        // glBitmap(0,0,0,0,face->glyph->advance.x >> 6,0,NULL);
-
-        // Finish The Display List
-        glEndList();
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+        Character character = 
+        {
+            texture,
+            float2(mFace->glyph->bitmap.width, mFace->glyph->bitmap.rows),
+            float2(mFace->glyph->bitmap_left, mFace->glyph->bitmap_top),
+            mFace->glyph->advance.x
+        };
+        mCharacters.insert(std::pair<char, Character>(c, character));
     }
 
-    void font_data::init(const char* fname, unsigned int h) {
-        // Allocate Some Memory To Store The Texture Ids.
-        textures = new GLuint[128];
+    FT_Done_Face(mFace);
+    FT_Done_FreeType(mFt);
+}
 
-        this->h = h;
+void TextComponent::CreateBuffers() 
+{
+    glGenVertexArrays(1, &mQuadVAO);
+    glGenBuffers(1, &mQuadVBO);
+    glBindVertexArray(mQuadVAO);
 
-        // Create And Initilize A FreeType Font Library.
-        FT_Library library;
-        if (FT_Init_FreeType(&library))
-            throw std::runtime_error("FT_Init_FreeType failed");
+    glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, nullptr, GL_DYNAMIC_DRAW);
 
-        // The Object In Which FreeType Holds Information On A Given
-        // Font Is Called A "face".
-        FT_Face face;
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-        // This Is Where We Load In The Font Information From The File.
-        // Of All The Places Where The Code Might Die, This Is The Most Likely,
-        // As FT_New_Face Will Fail If The Font File Does Not Exist Or Is Somehow Broken.
-        if (FT_New_Face(library, fname, 0, &face))
-            throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
-        // For Some Twisted Reason, FreeType Measures Font Size
-        // In Terms Of 1/64ths Of Pixels.  Thus, To Make A Font
-        // h Pixels High, We Need To Request A Size Of h*64.
-        // (h << 6 Is Just A Prettier Way Of Writing h*64)
-        FT_Set_Char_Size(face, h << 6, h << 6, 96, 96);
+    glBindVertexArray(0);
+}
 
-        // Here We Ask OpenGL To Allocate Resources For
-        // All The Textures And Display Lists Which We
-        // Are About To Create. 
-        list_base = glGenLists(128);
-        glGenTextures(128, textures);
+void TextComponent::RenderText(const std::string& text)
+{
+    glBindVertexArray(mQuadVAO);
+    int x = 0, y = 0;
+    const int lineHeight = mFontSize + mLineSpacing; // Adjust line height based on your font size
 
-        // This Is Where We Actually Create Each Of The Fonts Display Lists.
-        for (unsigned char i = 0; i < 128; i++)
-            make_dlist(face, i, list_base, textures);
-
-        // We Don't Need The Face Information Now That The Display
-        // Lists Have Been Created, So We Free The Assosiated Resources.
-        FT_Done_Face(face);
-
-        // Ditto For The Font Library.
-        FT_Done_FreeType(library);
-    }
-
-    void font_data::clean() {
-        glDeleteLists(list_base, 128);
-        glDeleteTextures(128, textures);
-        delete[] textures;
-    }
-
-    // A Fairly Straightforward Function That Pushes
-    // A Projection Matrix That Will Make Object World
-    // Coordinates Identical To Window Coordinates.
-    inline void pushScreenCoordinateMatrix() {
-        glPushAttrib(GL_TRANSFORM_BIT);
-        GLint   viewport[4];
-        glGetIntegerv(GL_VIEWPORT, viewport);
-        glMatrixMode(GL_PROJECTION);
-        glPushMatrix();
-        glLoadIdentity();
-        gluOrtho2D(viewport[0], viewport[2], viewport[1], viewport[3]);
-        glPopAttrib();
-    }
-
-    // Pops The Projection Matrix Without Changing The Current
-    // MatrixMode.
-    inline void pop_projection_matrix() {
-        glPushAttrib(GL_TRANSFORM_BIT);
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-        glPopAttrib();
-    }
-
-    // Much Like NeHe's glPrint Function, But Modified To Work
-// With FreeType Fonts.
-    void print(const font_data& ft_font, float x, float y, const char* fmt, ...) {
-
-        // We Want A Coordinate System Where Distance Is Measured In Window Pixels.
-        pushScreenCoordinateMatrix();
-
-        GLuint font = ft_font.list_base;
-        // We Make The Height A Little Bigger.  There Will Be Some Space Between Lines.
-        float h = ft_font.h / .63f;
-        char    text[256];                                  // Holds Our String
-        va_list ap;                                     // Pointer To List Of Arguments
-
-        if (fmt == NULL)                                    // If There's No Text
-            *text = 0;                                    // Do Nothing
-        else {
-            va_start(ap, fmt);                              // Parses The String For Variables
-            vsprintf(text, fmt, ap);                            // And Converts Symbols To Actual Numbers
-            va_end(ap);                                 // Results Are Stored In Text
+    for (char c : text)
+    {
+        if (c == '\n')
+        {
+            y -= lineHeight;
+            x = 0;
+            continue;
         }
 
-        // Here Is Some Code To Split The Text That We Have Been
-        // Given Into A Set Of Lines. 
-        // This Could Be Made Much Neater By Using
-        // A Regular Expression Library Such As The One Available From
-        // boost.org (I've Only Done It Out By Hand To Avoid Complicating
-        // This Tutorial With Unnecessary Library Dependencies).
-        const char* start_line = text;
-        vector<string> lines;
-        for (const char* c = text; *c; c++) {
-            if (*c == '\n') {
-                string line;
-                for (const char* n = start_line; n < c; n++) line.append(1, *n);
-                lines.push_back(line);
-                start_line = c + 1;
-            }
-        }
-        if (start_line) {
-            string line;
-            //for (const char* n = start_line; n < c; n++) line.append(1, *n);
-            lines.push_back(line);
+        Character ch = mCharacters[c];
+
+        if (x + (ch.Advance >> 6) > mLineWidth && mLineWidth != 0)
+        {
+            y -= lineHeight;
+            x = 0;
         }
 
-        glPushAttrib(GL_LIST_BIT | GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);
-        glMatrixMode(GL_MODELVIEW);
-        glDisable(GL_LIGHTING);
-        glEnable(GL_TEXTURE_2D);
-        glDisable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        float xpos = x + ch.Bearing.x;
+        float ypos = y - (ch.Size.y - ch.Bearing.y);
+        float w = ch.Size.x;
+        float h = ch.Size.y;
 
-        glListBase(font);
-
-        float modelview_matrix[16];
-        glGetFloatv(GL_MODELVIEW_MATRIX, modelview_matrix);
-
-        // This Is Where The Text Display Actually Happens.
-        // For Each Line Of Text We Reset The Modelview Matrix
-        // So That The Line's Text Will Start In The Correct Position.
-        // Notice That We Need To Reset The Matrix, Rather Than Just Translating
-        // Down By h. This Is Because When Each Character Is
-        // Drawn It Modifies The Current Matrix So That The Next Character
-        // Will Be Drawn Immediately After It. 
-        for (int i = 0; i < lines.size(); i++) {
-            glPushMatrix();
-            glLoadIdentity();
-            glTranslatef(x, y - h * i, 0);
-            glMultMatrixf(modelview_matrix);
-
-            // The Commented Out Raster Position Stuff Can Be Useful If You Need To
-            // Know The Length Of The Text That You Are Creating.
-            // If You Decide To Use It Make Sure To Also Uncomment The glBitmap Command
-            // In make_dlist().
-                // glRasterPos2f(0,0);
-            glCallLists(lines[i].length(), GL_UNSIGNED_BYTE, lines[i].c_str());
-            // float rpos[4];
-            // glGetFloatv(GL_CURRENT_RASTER_POSITION ,rpos);
-            // float len=x-rpos[0]; (Assuming No Rotations Have Happend)
-
-            glPopMatrix();
+        if (c == ' ')
+        {
+            x += (ch.Advance >> 6);
+            continue;
         }
 
-        glPopAttrib();
+        float vertices[] =
+        {
+             xpos,     ypos + h,   0.0f, 0.0f,
+             xpos,     ypos,       0.0f, 1.0f,
+             xpos + w, ypos,       1.0f, 1.0f,
 
-        pop_projection_matrix();
+             xpos + w, ypos + h,   1.0f, 0.0f,
+             xpos,     ypos + h,   0.0f, 0.0f,
+             xpos + w, ypos,       1.0f, 1.0f
+        };
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+        glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        x += (ch.Advance >> 6);
+    }
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glUseProgram(0);
+}
+
+void TextComponent::Save(Archive& archive) const
+{
+    Component::Save(archive);
+
+    archive.AddString("Text", mText.c_str());
+    archive.AddFloat3("Color", mColor);
+    archive.AddFloat("Alpha", mAlpha);
+}
+
+void TextComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+{
+    Component::LoadFromJSON(data, owner);
+
+    if (data.HasMember("Text") && data["Text"].IsString())
+    {
+        mText = data["Text"].GetString();
     }
 
-}*/
+    if (data.HasMember("Color") && data["Color"].IsArray())
+    {
+        const rapidjson::Value& values = data["Color"];
+        if (values.Size() == 3 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat())
+        {
+            mColor.x = values[0].GetFloat();
+            mColor.y = values[1].GetFloat();
+            mColor.z = values[2].GetFloat();
+        }
+    }
+
+    if (data.HasMember("Alpha") && data["Alpha"].IsFloat())
+    {
+        mAlpha = data["Alpha"].GetFloat();
+    }
+}
+
+void TextComponent::Draw() 
+{
+    unsigned int UIImageProgram = App->GetOpenGL()->GetTextProgram();
+    if (UIImageProgram == 0) return;
+
+    glUseProgram(UIImageProgram);
+
+    float4x4 proj = float4x4::identity;
+    float4x4 model = float4x4::identity;
+    float4x4 view = float4x4::identity;
+
+    if (mCanvas->GetScreenSpace()) //Ortographic Mode
+    {
+        Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        if (component != nullptr)
+        {
+            model = component->GetGlobalMatrix();
+
+            float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+
+            model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+
+        }
+        glEnable(GL_CULL_FACE);
+    }
+    else //World Mode
+    {
+        const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+
+        proj = camera->GetProjectionMatrix();
+        model = GetOwner()->GetWorldTransform();
+        view = camera->GetViewMatrix();
+        glDisable(GL_CULL_FACE);
+    }
+
+    glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
+
+    glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
+    glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+    glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    RenderText(mText);
+
+    // Clean
+    glDisable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
+    glUseProgram(0);
+}
+
+GameObject* TextComponent::FindCanvasOnParents(GameObject* gameObject)
+{
+    if (gameObject == nullptr)
+    {
+        return nullptr;
+    }
+
+    GameObject* currentObject = gameObject;
+
+    while (currentObject != nullptr)
+    {
+        if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr)
+        {
+            return currentObject;
+        }
+        currentObject = currentObject->GetParent();
+    }
+
+    return nullptr; // No canvas found on parents
+}

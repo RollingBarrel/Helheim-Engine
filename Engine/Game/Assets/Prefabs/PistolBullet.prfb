@@ -1,0 +1,140 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 933388093,
+                "ParentUID": 1,
+                "Name": "PistolBullet",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 986016241,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 937078006,
+                        "ComponentType": 17,
+                        "isEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.10000000149011612,
+                            0.10000000149011612,
+                            0.10000000149011612
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "Bullet",
+                        "ScriptVariables": []
+                    },
+                    {
+                        "ID": 1474064779,
+                        "ComponentType": 18,
+                        "isEnabled": true,
+                        "Image": 148626881,
+                        "Max Points": 1000,
+                        "Min Distance": 0.10000000149011612,
+                        "Max Life Time": 0.20000000298023225,
+                        "Width": {
+                            "Lineal": 0.5,
+                            "isCurve": true,
+                            "Curve": [
+                                1.0,
+                                0.2031249850988388,
+                                1.0,
+                                0.3046875
+                            ],
+                            "Factor": -0.5
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.3455149531364441,
+                                "Color": [
+                                    1.0,
+                                    0.15196079015731812,
+                                    0.15196079015731812,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "ID": 1487432011,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 452546727,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "Life Time": 3.0,
+                        "Emission Rate": 10.0,
+                        "Max Particles": 1000,
+                        "Looping": true,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 17.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Factor": 1.0
+                        },
+                        "Speed": {
+                            "Lineal": 1.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Factor": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.0,
+                        "ShapeAngle": 0.7853749990463257,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    0.0,
+                                    0.6470589637756348,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

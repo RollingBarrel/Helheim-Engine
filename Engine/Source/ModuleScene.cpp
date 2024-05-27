@@ -27,7 +27,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
-ModuleScene::ModuleScene() {
+ModuleScene::ModuleScene() 
+{
 
 	mTags.push_back(new Tag(0, "Untagged", TagType::SYSTEM));
 	mTags.push_back(new Tag(1, "Respawn", TagType::SYSTEM));
@@ -39,7 +40,6 @@ ModuleScene::ModuleScene() {
 	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
 	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
 	mTags.push_back(new Tag(9, "Bullet", TagType::SYSTEM));
-
 }
 
 ModuleScene::~ModuleScene()
@@ -110,20 +110,16 @@ update_status ModuleScene::PostUpdate(float dt)
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
-		LoadPrefab(mPrefabPath, resourceId, true);
+		LoadPrefab(mPrefabPath, true);
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
 	if (mPrefabPath != "" && mBackgroundScene == nullptr)
 	{
-		Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-		if (resource->GetType() == Resource::Type::Object)
-		{
-			mBackgroundScene = mRoot;
-			mBackgroundScene->SetEnabled(false);
-			mRoot = new GameObject(mPrefabPath, nullptr);
-			LoadPrefab(mPrefabPath, resource->GetUID());
-		}
+		mBackgroundScene = mRoot;
+		mBackgroundScene->SetEnabled(false);
+		mRoot = new GameObject(mPrefabPath, nullptr);
+		LoadPrefab(mPrefabPath);
 	}
 	return UPDATE_CONTINUE;
 }
@@ -283,6 +279,12 @@ void ModuleScene::SaveGame(const std::vector<GameObject*>& gameObjects, Archive&
 
 void ModuleScene::Save(const char* sceneName) const
 {
+	//Don't save an open Prefab over the scene
+	if (mBackgroundScene != nullptr)
+	{
+		LOG("Can't save scene while the Prefab editor is open");
+		return;
+	}
 	std::string saveFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (saveFilePath.find(".json") == std::string::npos)
 	{
@@ -314,6 +316,14 @@ void ModuleScene::Save(const char* sceneName) const
 
 void ModuleScene::Load(const char* sceneName)
 {
+	//Close Prefab editor before loading a new scene
+	if (mBackgroundScene != nullptr)
+	{
+		delete mRoot;
+		mRoot = mBackgroundScene;
+		mBackgroundScene = nullptr;
+		mRoot->SetEnabled(true);
+	}
 	std::string loadFilePath = "Assets/Scenes/" + std::string(sceneName);
 	if (loadFilePath.find(".json") == std::string::npos)
 	{
@@ -347,7 +357,6 @@ void ModuleScene::Load(const char* sceneName)
 				mRoot->SetName(sceneValue["Name"].GetString());
 				App->GetNavigation()->LoadResourceData();
 			}
-
 			LoadGameObject(sceneValue, mRoot);
 		}
 
@@ -360,7 +369,7 @@ void ModuleScene::Load(const char* sceneName)
 	}
 }
 
-void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent)
+void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent, std::unordered_map<int, int>* uuids)
 {
 	// Manage GameObjects inside the Scene
 	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
@@ -371,7 +380,7 @@ void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameOb
 		{
 			if (gameObjects[i].IsObject())
 			{
-				GameObject::LoadGameObjectFromJSON(gameObjects[i], parent);
+				GameObject::LoadGameObjectFromJSON(gameObjects[i], parent, uuids);
 			}
 		}
 
@@ -395,22 +404,20 @@ void ModuleScene::LoadGameObject(const rapidjson::Value& gameObjectsJson, GameOb
 
 GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 {
-	if (!parent)
-	{
-		parent = App->GetScene()->GetRoot();
-	}
-
 	std::string strName = name;
-	strName = ASSETS_PREFABS_PATH + strName;
-	Resource* resource = App->GetResource()->RequestResource(strName.c_str()); //Bullet Prefab
-	GameObject* gameObject = App->GetScene()->LoadPrefab(strName.c_str(), resource->GetUID(), parent);
+	if (strName.find(ASSETS_PREFABS_PATH) == std::string::npos)
+	{
+		strName = ASSETS_PREFABS_PATH + strName;
+	}
+	GameObject* gameObject = App->GetScene()->LoadPrefab(strName.c_str(), parent);
 	return gameObject;
 }
 
 int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
-	GameObject* gameObject = new GameObject(objectToSave); //Make a copy to change IDs
-	gameObject->ResetTransform();
+	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
+	gameObject->SetRotation(float3::zero);
+	gameObject->SetPosition(float3::zero);
 	gameObject->RecalculateMatrices();
 	unsigned int resourceId = LCG().Int();
 	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
@@ -433,13 +440,13 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	return resourceId;
 }
 
-GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resourceId, bool update, GameObject* parent)
+GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameObject* parent)
 {
 	GameObject* ret = nullptr;
 	if (parent == nullptr) parent = mRoot;
 	char* loadedBuffer = nullptr;
 	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
-
+	Resource* resource = App->GetResource()->RequestResource(saveFilePath);
 	rapidjson::Document d;
 	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
 	if (!ok)
@@ -447,30 +454,30 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, unsigned int resou
 		LOG("Object was not loaded.");
 		return nullptr;
 	}
+	std::unordered_map<int, int> uuids;
 
 	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
 	{
 		const rapidjson::Value& sceneValue = d["Prefab"];
-		if (update) 
-		{ 
-			mRoot->LoadChangesPrefab(sceneValue, resourceId); 
+
+		if (update)
+		{
+			mRoot->LoadChangesPrefab(sceneValue, resource->GetUID());
 		}
 		else
 		{
-			GameObject* temp = new GameObject("Temp", parent);
-			LoadGameObject(sceneValue, temp);
-			for (GameObject* child : temp->GetChildren())
+			int offset = mSceneGO.size();
+			LoadGameObject(sceneValue, parent, &uuids);
+			if (mSceneGO.size() > offset)
 			{
-				GameObject* newObject = new GameObject(*child, parent);
-				parent->AddChild(newObject);
-				newObject->SetPrefabId(resourceId);
-				ret = newObject;
+				mSceneGO[offset]->SetPrefabId(resource->GetUID());
+				ret = mSceneGO[offset];
 			}
-			parent->DeleteChild(temp);
 		}
 
 		LoadGameObjectsIntoScripts();
 		App->GetScriptManager()->StartScripts();
+		
 	}
 	delete[] loadedBuffer;
 	
@@ -523,11 +530,11 @@ void ModuleScene::AddGameObjectToScene(GameObject* gameObject)
 	mSceneGO.push_back(gameObject);
 }
 
-void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObjet) 
+void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObject) 
 {
 	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
 	{
-		if ((*it)->GetID() == gameObjet->GetID())
+		if ((*it)->GetID() == gameObject->GetID())
 		{
 			mSceneGO.erase(it);
 			return;

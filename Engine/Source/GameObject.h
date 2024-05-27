@@ -10,6 +10,7 @@
 #include "Archive.h"
 #include "Tag.h"
 #include "MeshRendererComponent.h"
+#include <unordered_map>
 
 #undef max
 #undef min
@@ -45,6 +46,7 @@ public:
 	const float3& GetRotation() const { return mEulerRotation; }
 	const Quat& GetRotationQuat() const { return mRotation; }
 	float3 GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
+	float3 GetWorldRotation() const { return mWorldTransformMatrix.RotatePart().ToEulerXYZ(); }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
 	GameObject* GetParent() const { return mParent; }
@@ -55,7 +57,6 @@ public:
 	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	Tag* GetTag() const { return mTag; }
 	AABB GetAABB();
-	OBB GetOBB();
 
 	unsigned int GetID() const { return mID; }
 	bool IsRoot() const { return mIsRoot; }
@@ -105,7 +106,7 @@ public:
 	// Save / Load
 	void Save(Archive& archive) const;
 	void Load(const rapidjson::Value& gameObjectsJson);
-	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent);
+	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent, std::unordered_map<int,int>* uuids = nullptr);
 	void LoadComponentsFromJSON(const rapidjson::Value& components);
 
 	// Prefabs

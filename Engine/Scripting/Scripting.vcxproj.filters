@@ -1,108 +1,143 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="SricptCode">
-      <UniqueIdentifier>{adea13f6-df24-498c-8695-591149a489c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ScriptHeaders">
-      <UniqueIdentifier>{e1c46372-ff12-408a-8bfc-3a56552ae226}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{c6e27a37-576d-4ba4-96c5-6b19a29a42e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapons">
+      <UniqueIdentifier>{a7bf8d75-7f03-45a1-b6f5-f509be09373a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemies">
+      <UniqueIdentifier>{9ec33e2e-78f0-48bf-95ad-0fd5de1feb50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{31b01f4c-7c82-436f-b62b-72a15c6bcea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{dc78f4f6-f403-4de3-86a0-bb4cc3921b16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{23585057-e09e-4ec7-b536-f7a1bd17e6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{c7e2f35b-49aa-45e2-b9b3-786402cac0a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapons\Melee">
+      <UniqueIdentifier>{af3599da-f46a-407d-957c-6e0c61d4d39f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapons\Range">
+      <UniqueIdentifier>{a5234334-8063-4966-9fdf-1bdf4286b373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Weapons\Range\Pistol">
+      <UniqueIdentifier>{26a052d1-42d1-4771-81c9-b465aab29ef1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\TestScript.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h">
-      <Filter>ScriptHeaders</Filter>
+    <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
+    <ClInclude Include="StateMachineTest.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Weapon.h">
+      <Filter>Weapons</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h">
-      <Filter>ScriptHeaders</Filter>
+      <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h">
-      <Filter>ScriptHeaders</Filter>
+      <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h">
-      <Filter>ScriptHeaders</Filter>
+      <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
-      <Filter>ScriptHeaders</Filter>
+      <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Level1AManager.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuManager.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h">
+    <ClInclude Include="Grenade.h">
       <Filter>ScriptHeaders</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
-      <Filter>ScriptHeaders</Filter>
+      <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="StateMachineTest.h">
-      <Filter>ScriptHeaders</Filter>
+    <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Level1AManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h">
+      <Filter>Weapons\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
+      <Filter>Weapons\Range\Pistol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="TestScript.cpp">
-      <Filter>SricptCode</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerController.cpp">
-      <Filter>SricptCode</Filter>
+    <ClCompile Include="TestScript.cpp" />
+    <ClCompile Include="StateMachineTest.cpp" />
+    <ClCompile Include="ObjectPool.cpp" />
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Weapons</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>SricptCode</Filter>
+      <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="EnemyExplosive.cpp">
-      <Filter>SricptCode</Filter>
+      <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="EnemyRobot.cpp">
-      <Filter>SricptCode</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerCamera.cpp">
-      <Filter>SricptCode</Filter>
+      <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
-      <Filter>SricptCode</Filter>
+      <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>SricptCode</Filter>
-    </ClCompile>
-    <ClCompile Include="Level1AManager.cpp">
-      <Filter>SricptCode</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuManager.cpp">
-      <Filter>SricptCode</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>SricptCode</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectPool.cpp">
+    <ClCompile Include="Grenade.cpp">
       <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="ItemShield.cpp">
-      <Filter>SricptCode</Filter>
+      <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="StateMachineTest.cpp">
-      <Filter>SricptCode</Filter>
+    <ClCompile Include="PlayerCamera.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Level1AManager.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuManager.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="MeleeWeapon.cpp">
+      <Filter>Weapons\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="RangeWeapon.cpp">
+      <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="Pistol.cpp">
+      <Filter>Weapons\Range\Pistol</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

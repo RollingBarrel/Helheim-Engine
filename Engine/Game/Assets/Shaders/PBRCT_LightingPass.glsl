@@ -1,5 +1,6 @@
 #version 460 core
 #define PI 3.1415926535897932384626433832795
+#extension GL_ARB_bindless_texture : require
 
 layout(location = 0)uniform mat4 invView;
 layout(std140, binding = 0) uniform CameraMatrices
@@ -7,15 +8,16 @@ layout(std140, binding = 0) uniform CameraMatrices
 	mat4 view;
 	mat4 proj;
 };
-float GetLinearZ(float depth)
+float GetLinearZ(float inputDepth)
 {
-	return -proj[3][2] / (proj[2][2] + depth);
+	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
 }
-vec3 GetWorldPos(float depth, vec2 texCoords)
+
+vec3 GetWorldPos(float inDepth, vec2 texCoords)
 {
-	float viewZ = GetLinearZ(depth);
-	float viewX = (texCoords.x * 2.0 - 1.0)*(-viewZ) / proj[0][0];
-	float viewY = (texCoords.y * 2.0 - 1.0)*(-viewZ) / proj[1][1];
+	float viewZ = GetLinearZ(inDepth);
+	float viewX = (texCoords.x * 2.0 - 1.0) * (-viewZ) / proj[0][0];
+	float viewY = (texCoords.y * 2.0 - 1.0) * (-viewZ) / proj[1][1];
 	vec3 viewPos = vec3(viewX, viewY, viewZ);
 	return (invView * vec4(viewPos, 1.0)).xyz;
 }
@@ -38,15 +40,29 @@ readonly layout(std430, binding = 0) buffer PointLights
 };
 struct SpotLight
 {
-	float radius;
 	vec4 pos; //w intensity
 	vec4 aimD;//w cos inner angle
-	vec4 col;//w cos outer angle
+	vec4 col; //w cos outer angle
+	float radius;
+	int shadowIndex;
 };
 readonly layout(std430, binding = 1) buffer SpotLights
 {
 	uint numSLights;
 	SpotLight sLights[];
+};
+
+
+struct Shadow
+{
+	mat4 viewProjMatrix;
+	sampler2D shadowMap;
+	float bias;
+};
+
+readonly layout(std430, binding = 4) buffer SpotLightShadows
+{
+	Shadow shadows[];
 };
 
 in vec2 uv;
@@ -131,24 +147,43 @@ void main()
 	}
 	
 	//Spot lights
-	for(int i = 0; i<numSLights; ++i)
+	for (int i = 0; i < numSLights; ++i)
 	{
-		vec3 mVector = pos - sLights[i].pos.xyz;
-		vec3 sDir = normalize(mVector);
-		vec3 aimDir = normalize(sLights[i].aimD.xyz);
-		float dist = dot(mVector, aimDir);
-		//TODO: Check that the radius of spot light is correct
-		float r = sLights[i].radius;
-		float att = pow(max(1 - pow(dist/r,4), 0),2) / (dist*dist + 1);
-		float c = dot(sDir, aimDir);
-		float cInner = sLights[i].aimD.w;
-		float cOuter = sLights[i].col.w;
-		//float cAtt = 1;
-		//if(cInner > c && c > cOuter)
-			//cAtt = (c - cOuter) / (cInner - cOuter);
-		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
-		att *= cAtt;
-		pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb,  sLights[i].pos.w, att);
+		//Shadows
+		float shadowValue = 1.0;
+		if (sLights[i].shadowIndex >= 0)
+		{
+			vec4 lightClipSpace = shadows[sLights[i].shadowIndex].viewProjMatrix * vec4(pos, 1);
+			vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
+			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
+			float shadowDepth = texture(shadows[sLights[i].shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLights[i].shadowIndex].bias;
+			float fragmentDepth = lightNDC.z;
+
+			if(!(lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
+				lightNDC.y >= 0.0 && lightNDC.y <= 1.0f &&
+				fragmentDepth < shadowDepth))
+				{
+					shadowValue = 0.0;
+				}
+		}
+
+			vec3 mVector = pos - sLights[i].pos.xyz;
+			vec3 sDir = normalize(mVector);
+			vec3 aimDir = normalize(sLights[i].aimD.xyz);
+			float dist = dot(mVector, aimDir);
+			//TODO: Check that the radius of spot light is correct
+			float r = sLights[i].radius;
+			float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
+			float c = dot(sDir, aimDir);
+			float cInner = sLights[i].aimD.w;
+			float cOuter = sLights[i].col.w;
+			//float cAtt = 1;
+			//if(cInner > c && c > cOuter)
+				//cAtt = (c - cOuter) / (cInner - cOuter);
+			float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
+			att *= cAtt;
+			pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb, sLights[i].pos.w, att) * shadowValue;
+		
 	}
 
 	pbrCol += GetAmbientLight();

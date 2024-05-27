@@ -25,26 +25,30 @@ MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owne
 {
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
 	mAABB = AABB();
-	//mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
 
 	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
-
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
 {
-	mMesh = (other.mMesh) ? reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(other.mMesh->GetUID(), Resource::Type::Mesh)) : nullptr;
-	mMaterial = (other.mMaterial) ? reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(other.mMaterial->GetUID(), Resource::Type::Material)) : nullptr;
+	if (other.mMesh)
+	{
+		SetMesh(other.mMesh->GetUID());
+	}
 	mOBB = other.mOBB;
 	mAABB = other.mAABB;
-	//mDrawBox = ((DebugPanel*)App->GetEditor()->GetPanel(DEBUGPANEL))->ShouldDrawColliders();
-
-	App->GetOpenGL()->BatchAddMesh(this);
-
+	if (other.mMaterial)
+	{
+		SetMaterial(other.mMaterial->GetUID());
+	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()
 {
+	if (mMesh && mMaterial)
+	{
+		App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
+	}
 	App->GetOpenGL()->BatchRemoveMesh(this);
 	if (mMesh)
 	{
@@ -66,7 +70,10 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		if (mMesh)
 		{
 			if (mMaterial)
+			{
 				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
+			}
 			App->GetResource()->ReleaseResource(mMesh->GetUID());
 			mMesh = nullptr;
 		}
@@ -74,9 +81,13 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		mOriginalAABB = mAABB;
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		if (mMaterial)
+		{
 			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
+		}
 
 	}
 }
@@ -90,14 +101,20 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		if (mMaterial)
 		{
 			if (mMesh)
+			{
 				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
+			}
 			App->GetResource()->ReleaseResource(mMaterial->GetUID());
 			mMaterial = nullptr;
 		}
 
 		mMaterial = tmpMaterial;
 		if (mMesh)
+		{
 			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
+		}
 	}
 	//TODO: Material Default
 	//else
@@ -134,19 +151,11 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 }
 
 void MeshRendererComponent::RefreshBoundingBoxes()
-{
+{	
+	mOBB = OBB(mOriginalAABB);
+	mOBB.Transform(mOwner->GetWorldTransform());
 
-	const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-	
-	mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-	mAABB.TransformAsAABB(mOwner->GetWorldTransform());
-
-	//mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-
-	mOBB.SetFrom(mAABB);
-	mOBB.Transform(mOwner->GetWorldTransform().RotatePart().ToQuat());
-	//mAABB.SetFrom(mOBB);
-	
+	mAABB.SetFrom(mOBB);
 }
 
 void MeshRendererComponent::Save(Archive& archive) const 
@@ -158,17 +167,21 @@ void MeshRendererComponent::Save(Archive& archive) const
 	archive.AddBool("isEnabled", IsEnabled());
 }
 
-void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) {
+void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
+{
 	int ID = { 0 };
 	int meshID = { 0 };
 	int materialID = { 0 };
-	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) {
+	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) 
+	{
 		ID = componentJson["ID"].GetInt();
 	}
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) {
+	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) 
+	{
 		meshID = componentJson["MeshID"].GetInt();
 	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) {
+	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) 
+	{
 		materialID = componentJson["MaterialID"].GetInt();
 	}
 

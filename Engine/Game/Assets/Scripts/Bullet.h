@@ -3,33 +3,36 @@
 #include "Macros.h"
 #include "float3.h"
 
-class ObjectPool;
+class BoxColliderComponent;
+class ParticleSystemComponent;
+struct CollisionData;
 
 GENERATE_BODY(Bullet);
-
 class Bullet : public Script
 {
 	FRIEND(Bullet)
 public:
 	Bullet(GameObject* owner);
-	~Bullet() {}
+	~Bullet();
 	void Start() override;
 	void Update() override;
 
-	//object pool for bullets
-	void SetRange(float range) { mRange = range; }
+	void OnCollisionEnter(CollisionData* collisionData);
 
-	ObjectPool* objectPool = nullptr;
-	float mTimePassed = 0.0f;
-
-private: 
-	void Move();
 	bool Delay(float delay);
 
+	static unsigned int GetNumBullets() { return mNumBullets; }
+
+private: 
+
+	static unsigned int mNumBullets;
 
 	float mRange = 15.0f;
 	float mSpeed = 1.0f;
-	bool mActive = false;
-	float3 mStartPosition; //to check the range of the bullet
-
+	float3 mDirection = float3::zero;
+	float mTimePassed = 0.0f;
+	float mTotalMovement = 0.0f;
+	BoxColliderComponent* mCollider;
+	bool mHasCollided = false;
+	ParticleSystemComponent* mParticleSystem = nullptr;
 };

@@ -17,7 +17,7 @@ AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, Com
 	mSpeed = 1.0;
 }
 
-AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION)
+AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION), mController(nullptr)
 {
 
 	mSpeed = 1.0;
@@ -57,7 +57,10 @@ void AnimationComponent::Update()
 {
 	if (mIsPlaying)
 	{
-		mController->Update(mOwner);
+		if (mController)
+		{
+			mController->Update(mOwner);
+		}
 		UpdatePalette();
 	}
 }
@@ -140,6 +143,10 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 			}
 			else
 			{
+				if (mController)
+				{
+					delete mController;
+				}
 				mController = new AnimationController(tmpAnimation, true);
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
 				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));

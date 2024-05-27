@@ -75,7 +75,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			SpotLightComponent* cSpot = reinterpret_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
 			cSpot->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
 			cSpot->SetIntensity(node.mLight.mIntensity);
-			cSpot->SetRadius(node.mLight.mRange);
+			cSpot->SetRange(node.mLight.mRange);
 			cSpot->SetInnerAngle(node.mLight.mInnerConeAngle);
 			cSpot->SetOuterAngle(node.mLight.mOuterConeAngle);
 		}
@@ -273,7 +273,7 @@ void ScenePanel::DrawScene()
 					break;
 				case Resource::Type::Object:
 				{
-					EngineApp->GetScene()->LoadPrefab(asset->mPath, resource->GetUID());
+					EngineApp->GetScene()->LoadPrefab(asset->mPath);
 					break;
 				}
 				case Resource::Type::NavMesh:

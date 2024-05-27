@@ -41,13 +41,12 @@ public:
 
 private:
 	std::deque<TrailPoint> mPoints;
-	float mMaxLifeTime; // If maxLiftime is 0, it means infinite lifetime
+	float mMaxLifeTime = 0; // If maxLiftime is 0, it means infinite lifetime
 	ColorGradient mGradient;
 	float3 mDirection = float3::unitY; // Fixed direction for the normal of the trailPoints
 	float mTrailTime = 0.0f;
 	bool mFixedDirection = false;
 
-	float4x4 mModel = float4x4::identity;
 	ResourceTexture* mImage = nullptr;
 
 	unsigned int mVAO = 0;

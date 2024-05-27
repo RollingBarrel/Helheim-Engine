@@ -122,7 +122,7 @@ void DebugPanel::Draw(int windowFlags) {
                 {
                     DrawQuadTree(*rootQtree);
                 }
-                EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
+                EngineApp->GetOpenGL()->UnbindFramebuffer();
             }
 
             ImGui::Separator();

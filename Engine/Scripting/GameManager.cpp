@@ -41,33 +41,36 @@ GameManager::GameManager(GameObject* owner) : Script(owner) {}
 
 GameManager::~GameManager()
 {
-    delete mInstance;
+    mInstance = nullptr;
+}
+
+void GameManager::Awake()
+{
+    mInstance = this;
 }
 
 void GameManager::Start()
 {
-    mInstance = this;
-    
-    mPauseScreen->SetEnabled(false);
-    mWinScreen->SetEnabled(false);
-    mLoseScreen->SetEnabled(false);
-    mLoadingScreen->SetEnabled(false);
+    //mPauseScreen->SetEnabled(false);
+    //mWinScreen->SetEnabled(false);
+    //mLoseScreen->SetEnabled(false);
+    //mLoadingScreen->SetEnabled(false);
 
-    mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
-    mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
-    mYesBtn = static_cast<ButtonComponent*>(mYesGO->GetComponent(ComponentType::BUTTON));
-    mNoBtn = static_cast<ButtonComponent*>(mNoGO->GetComponent(ComponentType::BUTTON));
+    //mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
+    //mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
+    //mYesBtn = static_cast<ButtonComponent*>(mYesGO->GetComponent(ComponentType::BUTTON));
+    //mNoBtn = static_cast<ButtonComponent*>(mNoGO->GetComponent(ComponentType::BUTTON));
 
-    
-    mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnWinButtonClick, this)));
-    mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnLoseButtonClick, this)));
-    mYesBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnYesButtonClick, this)));
-    mNoBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnNoButtonClick, this)));
+    //
+    //mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnWinButtonClick, this)));
+    //mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnLoseButtonClick, this)));
+    //mYesBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnYesButtonClick, this)));
+    //mNoBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&GameManager::OnNoButtonClick, this)));
 
-    mYesBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOn, this)));
-    mNoBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOn, this)));
-    mYesBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOff, this)));
-    mNoBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOff, this)));
+    //mYesBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOn, this)));
+    //mNoBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOn, this)));
+    //mYesBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnYesButtonHoverOff, this)));
+    //mNoBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&GameManager::OnNoButtonHoverOff, this)));
 }
 
 void GameManager::Update()

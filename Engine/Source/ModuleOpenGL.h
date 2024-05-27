@@ -7,6 +7,19 @@
 #include "BatchManager.h"
 #include <vector>
 
+#define NUM_SHADOW_MAPS 4
+#define SHADOW_MAPS_SIZE 512
+
+
+typedef struct Shadow
+{
+	float4x4 viewProjMatrix;
+	uint64_t shadowMapHandle;
+	float bias;
+	float padding;
+
+}Shadow;
+
 typedef struct DirectionalLight 
 {
 	float mDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
@@ -61,7 +74,8 @@ public:
 	void SceneFramebufferResized(unsigned width, unsigned height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
-	void UnbindSceneFramebuffer();
+	void BindGFramebuffer();
+	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }
@@ -73,6 +87,7 @@ public:
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetTrailProgramId() const { return mTrailProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
+	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
@@ -143,13 +158,14 @@ private:
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
+	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
 	unsigned int mSpecPrefilteredProgramId = 0;
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
-	
+	unsigned int mDepthPassProgramId = 0;
 	
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
@@ -164,6 +180,14 @@ private:
 
 	unsigned int mEmptyVAO = 0;
 	
+	//Shadows
+	unsigned int mShadowsFrameBuffersId[NUM_SHADOW_MAPS] = {0};
+	unsigned int mShadowMaps[NUM_SHADOW_MAPS] = { 0 };
+	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
+	OpenGLBuffer* mShadowsBuffer = nullptr;
+
+
+
 
 	//Lighting uniforms
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
