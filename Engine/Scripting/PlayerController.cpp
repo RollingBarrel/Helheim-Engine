@@ -136,6 +136,8 @@ void PlayerController::Start()
     // CAMERA
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
     
+    //ModuleScene* scene = App->GetScene();
+    //mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
 
     if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
     {
