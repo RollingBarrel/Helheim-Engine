@@ -1415,6 +1415,10 @@ void PlayerController::Loading()
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
+    if (collisionData->collidedWith->GetName().compare("WinArea")==0)
+    {
+         mHudController->SetScreen(SCREEN::WIN, true);
+    }
     LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
 }
 
