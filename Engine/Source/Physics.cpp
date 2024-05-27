@@ -18,24 +18,19 @@ Ray Physics::ScreenPointToRay(float2 mouseGlobalPosition)
 {
 	Ray ray;
 
-	float2 screenPoint(mouseGlobalPosition - App->GetWindow()->GetGameWindowsPosition());
-	screenPoint.x /= App->GetWindow()->GetGameWindowsSize().x;
-	screenPoint.y /= App->GetWindow()->GetGameWindowsSize().y;
-	screenPoint *= 2.0f - 1.0f;
+	float normalizedX = -1.0 + 2.0 * (float)(mouseGlobalPosition.x - App->GetWindow()->GetGameWindowsPosition().x) / (float)App->GetWindow()->GetGameWindowsSize().x;
+	float normalizedY = 1.0 - 2.0 * (float)(mouseGlobalPosition.y - App->GetWindow()->GetGameWindowsPosition().y) / (float)App->GetWindow()->GetGameWindowsSize().y;
 
 	const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 	if (camera)
 	{
-		//float4 view = camera->GetFrustum().ViewMatrix() * float4(screenPoint, 1.0f, 1.0f);
-		//ray.dir = (float3(view.x, view.y, view.z) - float3(0.0f)).Normalized();
-		//ray.pos = camera->GetFrustum().pos;
-		LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(screenPoint.x, screenPoint.y);
+		LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
 		ray.pos = raySegment.a;
 		ray.dir = (raySegment.b - raySegment.a).Normalized();
 
 		return (ray.dir.IsNormalized()) ? ray : Ray();
 	}
-	
+
 	return ray;
     
 }
