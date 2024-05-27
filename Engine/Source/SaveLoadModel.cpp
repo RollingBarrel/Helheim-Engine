@@ -256,7 +256,8 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
                 cursor += bytes;
 
                 node.mLight.mColor = math::float3(lightInfo[0], lightInfo[1], lightInfo[2]);
-                node.mLight.mIntensity = lightInfo[3];
+                
+                node.mLight.mIntensity = (lightInfo[3] >= 100.0f) ? 100.0f: lightInfo[3];
                 node.mLight.mRange = lightInfo[4];
 
                 if (node.mLight.mType.compare("spot") == 0)

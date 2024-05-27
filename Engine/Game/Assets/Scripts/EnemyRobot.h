@@ -4,6 +4,8 @@
 #include "ScriptComponent.h"
 
 class AnimationStateMachine;
+struct CollisionData;
+class BoxColliderComponent;
 
 enum class EnemyState 
 {
@@ -35,8 +37,9 @@ private:
 	void Attack();
 	bool IsMoving();
 
-	void MeleeAttack() ;
+	void MeleeAttack();
 	void RangeAttack();
+	void OnCollisionEnter(CollisionData* collisionData);
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	RobotType mType = RobotType::MELEE;
@@ -51,5 +54,8 @@ private:
 	float mMeleeAttackCoolDown = 1.0f;
 	float mTimerAttack = 0.0f;
 	float mTimerDisengage = 0.0f;
+
+	//Collider
+	BoxColliderComponent* mCollider;
 };
 

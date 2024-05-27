@@ -45,7 +45,7 @@ void Pistol::BasicAttack()
         bullet->SetRotation(mGameObject->GetWorldRotation());
     }
 
-    std::map<float, Hit> hits;
+    /*std::map<float, Hit> hits;
 
     Ray ray;
     ray.pos = mGameObject->GetPosition();
@@ -70,7 +70,7 @@ void Pistol::BasicAttack()
                 }
             }
         }
-    }
+    }*/
 }
 
 void Pistol::SpecialAttack()

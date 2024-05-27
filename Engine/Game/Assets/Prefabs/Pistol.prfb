@@ -1,0 +1,441 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1421306337,
+                "ParentUID": 1,
+                "Name": "Pistol",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 1588373424,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "Pistol",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mShootPoint",
+                                "MemberType": 3,
+                                "VariableData": 1430295507
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2051863734,
+                "ParentUID": 1421306337,
+                "Name": "ShootPoint",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.08812487125396729,
+                    0.15985682606697083
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2055762510,
+                "ParentUID": 2051863734,
+                "Name": "Smoke",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 2056946067,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 452546727,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "Life Time": 0.6000000238418579,
+                        "Emission Rate": 100.0,
+                        "Max Particles": 8,
+                        "Looping": false,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 0.5,
+                            "isCurve": true,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": 3.5
+                        },
+                        "Speed": {
+                            "Lineal": 2.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -2.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.0,
+                        "ShapeAngle": 0.9850000143051148,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.024916963651776315,
+                                "Color": [
+                                    0.21568626165390016,
+                                    0.07189541310071945,
+                                    0.07189541310071945,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9003322124481201,
+                                "Color": [
+                                    0.29901963472366335,
+                                    0.27849867939949038,
+                                    0.27849867939949038,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2086256508,
+                "ParentUID": 2051863734,
+                "Name": "Sparks",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 2086952718,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 452546727,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "Life Time": 0.6000000238418579,
+                        "Emission Rate": 1000.0,
+                        "Max Particles": 63,
+                        "Looping": false,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 1.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -0.8999999761581421
+                        },
+                        "Speed": {
+                            "Lineal": 3.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -3.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.0,
+                        "ShapeAngle": 0.9850000143051148,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5581393241882324,
+                                "Color": [
+                                    1.0,
+                                    0.9117647409439087,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9817274808883667,
+                                "Color": [
+                                    0.16176468133926392,
+                                    0.16176468133926392,
+                                    0.14194057881832124,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2097047763,
+                "ParentUID": 2051863734,
+                "Name": "Color",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 2097743973,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 452546727,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "Life Time": 0.20000000298023225,
+                        "Emission Rate": 13.800000190734864,
+                        "Max Particles": 50,
+                        "Looping": false,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 3.5,
+                            "isCurve": true,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -0.800000011920929
+                        },
+                        "Speed": {
+                            "Lineal": 3.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -3.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.019999999552965165,
+                        "ShapeAngle": 0.46000000834465029,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.01661110669374466,
+                                "Color": [
+                                    0.36274510622024538,
+                                    0.001778156729415059,
+                                    0.001778156729415059,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.7076414227485657,
+                                "Color": [
+                                    0.3970588445663452,
+                                    0.2357356995344162,
+                                    0.0603373758494854,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9750828742980957,
+                                "Color": [
+                                    0.35784316062927248,
+                                    0.3578431308269501,
+                                    0.07016532123088837,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2106655461,
+                "ParentUID": 2051863734,
+                "Name": "Sparks (1)",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 2107282050,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 452546727,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "Life Time": 0.6000000238418579,
+                        "Emission Rate": 1000.0,
+                        "Max Particles": 63,
+                        "Looping": false,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 0.5,
+                            "isCurve": true,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -0.4000000059604645
+                        },
+                        "Speed": {
+                            "Lineal": 7.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.5,
+                                0.34299999475479128,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -6.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.0,
+                        "ShapeAngle": 0.10000000149011612,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5581393241882324,
+                                "Color": [
+                                    1.0,
+                                    0.9117647409439087,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9817274808883667,
+                                "Color": [
+                                    0.16176468133926392,
+                                    0.16176468133926392,
+                                    0.14194057881832124,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
