@@ -59,17 +59,19 @@ void EnemyRobot::Start()
 
         mStateMachine->SetClipName(0, clip);
 
+        mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
+
         mStateMachine->AddState(clip, sIdle);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(6.2));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(11.57));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(0.0));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(1.97));
 
         mStateMachine->AddState(clip, sWalkForward);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.89));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.87));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.01));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.11));
 
         mStateMachine->AddState(clip, sAttack);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sAttack), float(3.90));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sAttack), float(4.88));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sAttack), float(3.15));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sAttack), float(10.0));
 
         mStateMachine->AddTransition(sIdle, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sIdle, sAttack, attackTrigger);
@@ -80,6 +82,11 @@ void EnemyRobot::Start()
         
         mStateMachine->AddTransition(sAttack, sIdle, idleTrigger);
         mStateMachine->AddTransition(sAttack, sWalkForward, forwardTrigger);
+
+        mAnimationComponent->OnStart();
+        mAnimationComponent->SetIsPlaying(true);
+
+        mAnimationComponent->SendTrigger("tIdle", 0.1);
     }
 }
 
@@ -108,17 +115,18 @@ void EnemyRobot::Update()
 
 void EnemyRobot::Idle()
 {
-    mAnimationComponent->SendTrigger("tIdle", 0.2);
+    
 
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
+        mAnimationComponent->SendTrigger("tWalkForward", 0.2);
     }
 }
 
 void EnemyRobot::Chase()
 {
-    mAnimationComponent->SendTrigger("tWalkForward", 0.2);
+    
 
     float range = 0.0f;
     if (IsPlayerInRange(mActivationRange))
@@ -146,11 +154,13 @@ void EnemyRobot::Chase()
         if (IsPlayerInRange(range))
         {
             mCurrentState = EnemyState::ATTACK;
+            mAnimationComponent->SendTrigger("tAttack", 0.2);
         }
     }
     else
     {
         mCurrentState = EnemyState::IDLE;
+        mAnimationComponent->SendTrigger("tIdle", 0.2);
     }
 }
 
@@ -170,19 +180,26 @@ void EnemyRobot::Attack()
         break;
     }
 
-    if (!IsPlayerInRange(range))
+    bool playerInRange = IsPlayerInRange(range);
+
+    if (!playerInRange && mTimerDisengage>1.0f)
     {
+
         mCurrentState = EnemyState::CHASE;
+        mAnimationComponent->SendTrigger("tWalkForward", 0.3);
+        mTimerDisengage = 0.0f;
+    }
+    else if (!playerInRange) {
+        mTimerDisengage += App->GetDt();
     }
 
 }
 
 void EnemyRobot::MeleeAttack() 
 {
-    if (Delay(mMeleeAttackCoolDown))
+    if ( mTimerAttack > mMeleeAttackCoolDown )
     {
-       mAnimationComponent->SendTrigger("tAttack", 0.2);
-
+       
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
         float3 playerPosition = mPlayer->GetPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetPosition()).Length();
@@ -198,6 +215,11 @@ void EnemyRobot::MeleeAttack()
                 playerScript->TakeDamage(mMeeleDamage);
             }
         }
+
+        mTimerAttack = 0.0f;
+    }
+    else {
+        mTimerAttack += App->GetDt();
     }
 }
 
