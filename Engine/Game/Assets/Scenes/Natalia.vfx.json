@@ -635,7 +635,7 @@
                             "Factor": 1.0
                         },
                         "Speed": {
-                            "Lineal": 20.0,
+                            "Lineal": 30.0,
                             "isCurve": false,
                             "Curve": [
                                 0.0,
@@ -670,7 +670,7 @@
                 "UID": 1942496793,
                 "ParentUID": 1,
                 "Name": "VFX_Shield",
-                "isEnabled": true,
+                "isEnabled": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -695,7 +695,7 @@
                     {
                         "ID": 72879536,
                         "ComponentType": 15,
-                        "isEnabled": true,
+                        "isEnabled": false,
                         "Image": 1883366318,
                         "Delay": 0.0,
                         "Duration": 3.0,
@@ -710,8 +710,8 @@
                             "Curve": [
                                 0.0,
                                 1.0,
-                                0.7289999723434448,
-                                0.4480000138282776
+                                0.0,
+                                1.0
                             ],
                             "Factor": 1.0
                         },
