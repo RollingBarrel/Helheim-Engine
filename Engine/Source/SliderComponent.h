@@ -22,6 +22,7 @@ public:
     void SetValue(float fillPercent);
 
     float GetValue() { return mValue; }
+    float* GetValuePointer() { return &mValue; }
 
     void Save(Archive& archive) const override;
     void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;

@@ -27,7 +27,7 @@ GameManager::GameManager(GameObject* owner) : Script(owner) {}
 
 GameManager::~GameManager()
 {
-    delete mInstance;
+    mInstance = nullptr;
 }
 
 void GameManager::Awake()

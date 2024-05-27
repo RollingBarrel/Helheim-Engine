@@ -232,7 +232,6 @@ void PlayerController::Start()
 void PlayerController::Update()
 {
     CheckDebugOptions();
-    UpdateShield();
     UpdateGrenadeCooldown();
     UpdateBattleSituation();
 
@@ -892,8 +891,6 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
     }
 }
 
-
-
 void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield)
@@ -905,6 +902,8 @@ void PlayerController::RechargeShield(float shield)
             mShield = mMaxShield;
         }
     }
+
+    UpdateShield();
 }
 
 void PlayerController::TakeDamage(float damage)
@@ -922,6 +921,7 @@ void PlayerController::TakeDamage(float damage)
             {
                 mCurrentState = PlayerState::DEATH;
             }
+            UpdateShield();
         }
     }
 }
@@ -1102,7 +1102,7 @@ void PlayerController::Victory()
 
     if (Delay(mTimeScreen))
     {
-        mHudController->SetScreen(SCREEN::WIN, true);
+        mHudController->SetScreen(SCREEN::WIN, false);
         mLoadingActive = true;
     }
 }

@@ -1,7 +1,9 @@
 #include "InspectorPanel.h"
+
 #include "ImBezier.h"
 #include "imgui.h"
 #include "imgui_color_gradient.h"
+
 #include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -14,6 +16,8 @@
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleOpenGL.h"
+#include "ModuleUI.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -33,13 +37,13 @@
 #include "TrailComponent.h"
 #include "EmitterShape.h"
 #include "BoxColliderComponent.h"
+#include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
+#include "SliderComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
 #include "MathFunc.h"
-#include "NavMeshObstacleComponent.h"
-#include "AnimationComponent.h"
-#include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
@@ -48,8 +52,6 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
-
-#include "ModuleUI.h"
 
 #include "IconsFontAwesome6.h"
 
@@ -436,6 +438,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					break;
 				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+					break;
+				case ComponentType::SLIDER:
+					DrawSliderComponent(reinterpret_cast<SliderComponent*>(component));
 					break;
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
@@ -1277,6 +1282,14 @@ void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
 ;
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
 {
+}
+
+void InspectorPanel::DrawSliderComponent(SliderComponent* component)
+{
+	float value = component->GetValue();
+
+	ImGui::Text("Fill Percent:"); ImGui::SameLine(); ImGui::SliderFloat("##Fill Percent", &value, 0.0f, 1.0f);
+	component->SetValue(value);
 }
 
 void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 

@@ -52,36 +52,31 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 			}
 		}
 	}
-	
-	// Set default values
-	//mBgImage->SetColor(float3(1.f, 0, 0));
-	//mFillImage->SetColor(float3(0, 1.f, 0));
-	//mSliderTransform2D->SetSize(float2(500, 50));
-	//mBgTransform2D->SetSize(float2::one);
-
-	//mFillTransform2D->SetPosition(float3(((1 - mFillPercent) / 2) * -1, 0, 0));
-	//mFillTransform2D->SetSize(float2(mFillPercent, 1));
 }
 
 void SliderComponent::SetValue(float fillPercent)
 {
 	if (mFillTransform2D == nullptr) mFillTransform2D = (Transform2DComponent*)mFill->GetComponent(ComponentType::TRANSFORM2D);
-	if (mBackground == nullptr) mBgTransform2D = (Transform2DComponent*)mBackground->GetComponent(ComponentType::TRANSFORM2D);
+	if (mBgTransform2D == nullptr) mBgTransform2D = (Transform2DComponent*)mBackground->GetComponent(ComponentType::TRANSFORM2D);
 
 	this->mValue = fillPercent;
 
 	if (!mCanvas) return;
-	if (mCanvas->GetScreenSpace()) 
+
+	float backgroundWidth = mBgTransform2D->GetSize().x;
+	float fillWidth = backgroundWidth * fillPercent;
+	float fillPositionX = (backgroundWidth - fillWidth) / 2 * -1; // Center the fill
+
+	if (mCanvas->GetScreenSpace())
 	{
-		mFillTransform2D->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
-		mFillTransform2D->SetSize(float2(fillPercent, mFillTransform2D->GetSize().y));
+		mFillTransform2D->SetPosition(float3(fillPositionX, 0, 0));
+		mFillTransform2D->SetSize(float2(fillWidth, mFillTransform2D->GetSize().y));
 	}
-	else 
+	else
 	{
-		mFill->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
-		mFill->SetScale(float3(fillPercent, mFillTransform2D->GetSize().y, 0));
+		mFill->SetPosition(float3(fillPositionX, 0, 0));
+		mFill->SetScale(float3(fillPercent, 1.0f, 1.0f));
 	}
-	
 }
 
 void SliderComponent::Save(Archive& archive) const

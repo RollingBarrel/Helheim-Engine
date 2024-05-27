@@ -22,7 +22,7 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetHealth(int health);
+    void SetHealth(float health);
     void SwitchWeapon();
     void SetGrenadeOnCooldown();
     void SetScreen(SCREEN menu, bool active);

@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "Math/TransformOps.h"
 
+
 TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) 
 {
     InitFreeType();
