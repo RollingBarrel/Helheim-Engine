@@ -115,7 +115,7 @@ void AudioSourceComponent::SmoothUpdateParameterValueByName(const char* name, fl
 void AudioSourceComponent::Update()
 {
 	// UPDATE 3D parameters
-	float3 gameobjectPosition = GetOwner()->GetPosition();
+	float3 gameobjectPosition = GetOwner()->GetWorldPosition();
 
 	FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
@@ -148,6 +148,17 @@ void AudioSourceComponent::PlayOneShot()
 		mEventDescription->createInstance(&eventInstance);
 
 		eventInstance->start();
+		float3 gameobjectPosition = GetOwner()->GetWorldPosition();
+
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+		attributes.position.x = gameobjectPosition.x;
+		attributes.position.z = gameobjectPosition.z;
+
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		eventInstance->set3DAttributes(&attributes);
 		eventInstance->release();
 	}
 	else 

@@ -21,10 +21,14 @@ public:
 
 private:
 	void UpdateBackgroundMusic();
+
 	GameObject* mPlayerControllerHolder = nullptr;
 	PlayerController* mPlayerController = nullptr;
 
 	GameObject* mLevel1AMainThemeHolder = nullptr;
 	AudioSourceComponent* mLevel1AMainTheme = nullptr;
+
+	GameObject* mEnemyFootStepHolder = nullptr;
+	AudioSourceComponent* mEnemyFootStep = nullptr;
 };
 

@@ -1225,10 +1225,22 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
+
+	if (ImGui::Button("Play"))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		component->Stop(false);
+	}
+
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
 	std::string name = component->GetName();
+
 	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
 	{
 		for (auto i = 0; i < events.size(); i++) 
