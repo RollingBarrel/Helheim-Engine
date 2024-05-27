@@ -941,7 +941,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 	if (ImGui::Button("Play/Pause"))
 	{
-		component->OnStart();
+		//component->OnStart();
 		bool play = component->GetIsPlaying();
 		component->SetIsPlaying(!play);
 	}

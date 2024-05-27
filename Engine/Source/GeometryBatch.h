@@ -32,14 +32,13 @@ public:
 class BatchMeshRendererComponent
 {
 public:
-	BatchMeshRendererComponent(): component(nullptr), bMeshIdx(0), bMaterialIdx(0), bCAnim(nullptr) {}
-	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx, const AnimationComponent* cAnim = nullptr) : 
-		component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx), bCAnim(cAnim) {}
+	BatchMeshRendererComponent(): component(nullptr), bMeshIdx(0), bMaterialIdx(0) {}
+	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx) : 
+		component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx) {}
 	
 	const MeshRendererComponent* component;
 	uint32_t bMeshIdx;
 	uint32_t bMaterialIdx;
-	const AnimationComponent* bCAnim;
 
 	bool IsAnimated() const;
 };

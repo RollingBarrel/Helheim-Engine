@@ -299,7 +299,7 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 			AddUniqueMesh(cMesh, meshIdx);
 		}
 	}
-	mMeshComponents[cMesh->GetID()] = {cMesh, meshIdx, matIdx, cAnim};
+	mMeshComponents[cMesh->GetID()] = {cMesh, meshIdx, matIdx};
 	mPersistentsFlag = true;
 }
 
@@ -380,7 +380,7 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 
 	const BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[component->GetID()];
-	if (batchMeshRenderer.IsAnimated() && batchMeshRenderer.bCAnim->GetIsPlaying())
+	if (batchMeshRenderer.IsAnimated())
 	{
 		memcpy(mSsboModelMatricesData[idx] + 16 * mCommands.size(), float4x4::identity.ptr(), sizeof(float) * 16);
 	}
