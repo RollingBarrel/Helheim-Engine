@@ -46,6 +46,10 @@ enum class MouseDirection {
     DOWN,
     LEFT,
     RIGHT,
+    UP_RIGHT,
+    UP_LEFT,
+    DOWN_RIGHT,
+    DOWN_LEFT,
     DEFAULT
 };
 
@@ -94,8 +98,8 @@ class PlayerController :public Script
         void HandleRotation();
         void Shoot(float damage);
         void Reload();
-        void ClosestMouseDirection(float2 mouseState);
-        void SetMovingDirection(float3 moveDirection);
+        void ClosestMouseDirection(const float2& mouseState); 
+        void SetMovingDirection(const float3& moveDirection);
       
         void Death();
         void UpdateShield();

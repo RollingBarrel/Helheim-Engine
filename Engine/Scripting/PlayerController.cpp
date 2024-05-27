@@ -223,7 +223,6 @@ void PlayerController::Start()
 
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
-
     }
 
     //END ANIMATION
@@ -375,8 +374,6 @@ void PlayerController::Moving()
 {
     mMoveDirection = float3::zero;
     float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized(); 
-    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
-    ClosestMouseDirection(mousePosition);
 
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
@@ -403,10 +400,10 @@ void PlayerController::Moving()
 
     if (!mMoveDirection.Equals(float3::zero))
     {
-
-
         mMoveDirection.Normalize(); 
         SetMovingDirection(mMoveDirection);
+        float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+        ClosestMouseDirection(mousePosition);
         switch (mLookingAt)
         {
         case MouseDirection::UP:
@@ -536,15 +533,144 @@ void PlayerController::Moving()
             default:
                 break;
             }
+            break;
 
+        case MouseDirection::UP_RIGHT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            default:
+                break;
+            }
+            break;
+        case MouseDirection::UP_LEFT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            default:
+                break;
+            }
+            break;
+        case MouseDirection::DOWN_RIGHT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            default:
+                break;
+            }
+            break;
+        case MouseDirection::DOWN_LEFT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break; HandleRotation();
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            default:
+                break;
+            }
             break;
         default:
             break;
         }
 
-        
-
         Move(mMoveDirection);
+    }
+    else {
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
     }
 
     // Hardcoded play-step-sound solution: reproduce every second 
@@ -822,12 +948,11 @@ void PlayerController::Reload()
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
-void PlayerController::ClosestMouseDirection(float2 mouseState)
+void PlayerController::ClosestMouseDirection(const float2& mouseState)
 {
     int dx = mouseState.x - 960.0;
     int dy = mouseState.y - 540.0;
 
-    // Determine the primary direction based on the largest absolute difference
     if (std::abs(dx) > std::abs(dy)) {
         if (dx > 0) {
             mLookingAt = MouseDirection::RIGHT;
@@ -844,9 +969,27 @@ void PlayerController::ClosestMouseDirection(float2 mouseState)
             mLookingAt = MouseDirection::UP;
         }
     }
+
+    if (std::abs(dx) > 0.5 * std::abs(dy) && std::abs(dy) > 0.5 * std::abs(dx)) {
+        if (dx > 0 && dy > 0) {
+            mLookingAt = MouseDirection::DOWN_RIGHT;
+        }
+        else if (dx > 0 && dy < 0) {
+            mLookingAt = MouseDirection::UP_RIGHT;
+        }
+        else if (dx < 0 && dy > 0) {
+            mLookingAt = MouseDirection::DOWN_LEFT;
+        }
+        else if (dx < 0 && dy < 0) {
+            mLookingAt = MouseDirection::UP_LEFT;
+        }
+    }
+    
+
+    
 }
 
-void PlayerController::SetMovingDirection(float3 moveDirection)
+void PlayerController::SetMovingDirection(const float3& moveDirection)
 {
 
     bool movingUp = moveDirection.z > 0 && moveDirection.x < 0 && std::abs(moveDirection.z) < std::abs(moveDirection.x);
@@ -859,7 +1002,7 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
     bool movingDownRight = moveDirection.x > 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
     bool movingDownLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
 
-
+    //LOG("x: %f, z: %f", moveDirection.x, moveDirection.z);
     if (movingDownLeft) {
         mMovingTo = MoveDirection::DOWN_LEFT;
     }
@@ -886,7 +1029,6 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
         mMovingTo = MoveDirection::LEFT;
     }
     else {
-        
         mMovingTo = MoveDirection::NOT_MOVING;
     }
 }
