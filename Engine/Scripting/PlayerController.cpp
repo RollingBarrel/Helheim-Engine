@@ -163,7 +163,9 @@ void PlayerController::Start()
         std::string sStrafeLeft = "Strafe Left";
         std::string sStrafeRight = "Strafe Right";
         std::string sShooting = "Shooting";
-        std::string sMeleecombo = "MeleeCombo";
+        std::string sMeleeCombo1 = "MeleeCombo1";
+        std::string sMeleeCombo2 = "MeleeCombo2";
+        std::string sMeleeCombo3 = "MeleeCombo3";
 
 
         std::string idleTrigger = "tIdle";
@@ -178,32 +180,42 @@ void PlayerController::Start()
 
         //States
         mStateMachine->AddState(clip, sIdle);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(11.6f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(23.3f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(12.4f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(23.14f));
 
         mStateMachine->AddState(clip, sWalkForward);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(5.07f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(7.21f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(5.78f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(7.74f));
 
         mStateMachine->AddState(clip, sWalkBack);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(7.22f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(9.17f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(7.8f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(9.76f));
 
         mStateMachine->AddState(clip, sStrafeLeft);
         mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(2.33f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(2.86f));
 
         mStateMachine->AddState(clip, sStrafeRight);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.34f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(5.06f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.92f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(5.72f));
 
         mStateMachine->AddState(clip, sShooting);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(9.18f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(11.6f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(9.8f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(12.36f));
 
-        mStateMachine->AddState(clip, sMeleecombo);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleecombo), float(23.5f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleecombo), float(100.0f));
+        mStateMachine->AddState(clip, sMeleeCombo1);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(23.6f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(25.0f));
+
+        mStateMachine->AddState(clip, sMeleeCombo2);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(25.3f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(25.9f));
+
+
+        mStateMachine->AddState(clip, sMeleeCombo3);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(26.3f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(100.0f));
+
 
         //Transitions
         mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
@@ -214,34 +226,34 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
         mStateMachine->AddTransition(sIdle, sShooting, shootingTrigger);
-        mStateMachine->AddTransition(sIdle, sMeleecombo, meleeTrigger);
+        mStateMachine->AddTransition(sIdle, sMeleeCombo1, meleeTrigger);
 
         mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkForward, sMeleecombo, meleeTrigger);
+        mStateMachine->AddTransition(sWalkForward, sMeleeCombo1, meleeTrigger);
 
 
         mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkBack, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkBack, sMeleecombo, meleeTrigger);
+        mStateMachine->AddTransition(sWalkBack, sMeleeCombo1, meleeTrigger);
 
 
         mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sMeleecombo, meleeTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sMeleeCombo1, meleeTrigger);
 
 
         mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sMeleecombo, meleeTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sMeleeCombo1, meleeTrigger);
 
 
         mStateMachine->AddTransition(sShooting, sIdle, idleTrigger);
@@ -257,7 +269,13 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sMeleecombo, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sMeleecombo, sStrafeRight, strafeRightTrigger);
         */
-        mStateMachine->AddTransition(sMeleecombo, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sMeleeCombo1, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sMeleeCombo2, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sMeleeCombo3, sIdle, idleTrigger);
+
+        mStateMachine->AddTransition(sMeleeCombo1, sMeleeCombo2, meleeTrigger);
+        mStateMachine->AddTransition(sMeleeCombo2, sMeleeCombo3, meleeTrigger);
+
 
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
@@ -315,9 +333,6 @@ void PlayerController::Update()
             {
                 mAnimationComponent->SendTrigger("tIdle", 0.1f);
             }
-            else {
-                mAnimationComponent->SendTrigger("tMelee", 0.2f);
-            }
             Idle();
 
 
@@ -335,7 +350,7 @@ void PlayerController::Update()
 
     case PlayerState::ATTACK:
         Attack();
-        mAnimationComponent->SendTrigger("tMelee", 0.1f);
+        
 
         break;
 
