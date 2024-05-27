@@ -162,7 +162,7 @@ class PlayerController :public Script
         GameObject* mRangeWeaponGameObject = nullptr;
         RangeWeapon* mRangeWeapon = nullptr;
         float mShootingTimer = 0.0f;
-
+        bool mHasShoot = false;
         float mRangeBaseDamage = 1.0f;
 
         //Melee
