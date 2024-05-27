@@ -42,6 +42,8 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMaterial(other.mMaterial->GetUID());
 	}
+
+	mModelUid = other.mModelUid;
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -242,6 +244,7 @@ void MeshRendererComponent::UpdatePalette()
 		if (model->mInvBindMatrices.size() == 0)
 		{
 			mHasSkinning = false;
+			App->GetResource()->ReleaseResource(mModelUid);
 			return;
 		}
 		// Initialize vector
@@ -252,11 +255,10 @@ void MeshRendererComponent::UpdatePalette()
 			{
 				root = root->GetParent();
 			}
-			root = root->GetParent(); //Gets the root of the model?
 		}
 
 		LoadAllChildJoints(root, model);
-		App->GetResource()->ReleaseResource(mModelUid); // Is it fine to release resource after use?
+		App->GetResource()->ReleaseResource(mModelUid); 
 	}
 
 	mPalette.clear();
