@@ -25,13 +25,14 @@ bool ModuleAudio::Init()
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.strings.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mStringBank) );
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
 	CheckError( mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Music.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMusicBank) );
+	CheckError(mSystem->loadBankFile(("Assets/FMOD/Music.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMusicBank));
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Vehicles.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mVehicleBank) );
 
 	// Set volume lower by default
 	FMOD::Studio::Bus* masterBus = nullptr;
 	CheckError(mSystem->getBus("bus:/", &masterBus));
 
-	CheckError(masterBus->setVolume(0.1f));
+	CheckError(masterBus->setVolume(0.5f));
 	return true;
 }
 

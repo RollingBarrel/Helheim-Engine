@@ -203,6 +203,11 @@ void EnemyRobot::Attack()
 
 }
 
+bool EnemyRobot::IsMoving()
+{
+    return (mCurrentState == EnemyState::CHASE);
+}
+
 void EnemyRobot::MeleeAttack() 
 {
     if ( mTimerAttack > mMeleeAttackCoolDown )

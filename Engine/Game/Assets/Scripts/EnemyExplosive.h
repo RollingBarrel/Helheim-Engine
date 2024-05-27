@@ -28,6 +28,7 @@ class EnemyExplosive : public Enemy
 		//void SearchPlayer() override;
 		void Armed();
 		void Explosion();
+		bool IsMoving();
 
 		//*****************************************************
 		//FOR TEST UNTIL AI WILL BE AVAILABLE

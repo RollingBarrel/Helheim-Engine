@@ -112,20 +112,39 @@ void AudioSourceComponent::SmoothUpdateParameterValueByName(const char* name, fl
 	}
 }
 
+void AudioSourceComponent::UpdatePosition(float3 position)
+{
+	if (!mPositionWithGameObject)
+	{
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+		attributes.position.x = position.x;
+		attributes.position.z = position.z;
+
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		mEventInstance->set3DAttributes(&attributes);
+	}
+}
+
 void AudioSourceComponent::Update()
 {
 	// UPDATE 3D parameters
-	float3 gameobjectPosition = GetOwner()->GetPosition();
+	if (mPositionWithGameObject)
+	{
+		float3 gameobjectPosition = GetOwner()->GetWorldPosition();
 
-	FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
-	attributes.position.x = gameobjectPosition.x;
-	attributes.position.z = gameobjectPosition.z;
+		attributes.position.x = gameobjectPosition.x;
+		attributes.position.z = gameobjectPosition.z;
 
-	attributes.forward.z = 1.0f;
-	attributes.up.y = 1.0f;
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
 
-	mEventInstance->set3DAttributes(&attributes);
+		mEventInstance->set3DAttributes(&attributes);
+	}
 }
 
 void AudioSourceComponent::Play()
@@ -148,9 +167,47 @@ void AudioSourceComponent::PlayOneShot()
 		mEventDescription->createInstance(&eventInstance);
 
 		eventInstance->start();
+		float3 gameobjectPosition = GetOwner()->GetWorldPosition();
+
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+		attributes.position.x = gameobjectPosition.x;
+		attributes.position.z = gameobjectPosition.z;
+
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		eventInstance->set3DAttributes(&attributes);
 		eventInstance->release();
 	}
 	else 
+	{
+		LOG("Cannot found audio source");
+	}
+
+}
+
+void AudioSourceComponent::PlayOneShotPosition(float3 position)
+{
+	if (this != nullptr)
+	{
+		FMOD::Studio::EventInstance* eventInstance = nullptr;
+		mEventDescription->createInstance(&eventInstance);
+
+		eventInstance->start();
+
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+		attributes.position.x = position.x;
+		attributes.position.z = position.z;
+
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		eventInstance->set3DAttributes(&attributes);
+		eventInstance->release();
+	}
+	else
 	{
 		LOG("Cannot found audio source");
 	}

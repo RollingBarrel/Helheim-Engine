@@ -16,8 +16,11 @@ class Enemy : public Script
 		virtual void TakeDamage(float damage);
 		virtual void Death();
 		virtual void PushBack();
+		virtual bool IsMoving();
 
 		virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
+
+		void AddFootStepAudio(GameObject* audio);
 		
 	protected:
 		bool Delay(float delay);
@@ -37,5 +40,7 @@ class Enemy : public Script
 	private:
 		void ActivateEnemy();
 
-		NavMeshController* mNavMeshControl = nullptr;		
+		NavMeshController* mNavMeshControl = nullptr;	
+		GameObject* mFootstepAudioHolder = nullptr;
+		
 };
