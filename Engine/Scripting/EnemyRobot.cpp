@@ -38,22 +38,25 @@ void EnemyRobot::Start()
 
 void EnemyRobot::Update()
 {
+    if (!mBeAttracted) {
+        switch (mCurrentState)
+        {
+        case EnemyState::IDLE:
 
-    switch (mCurrentState) 
-    {
-    case EnemyState::IDLE:
+            Idle();
 
-        Idle();
+            break;
+        case EnemyState::CHASE:
 
-        break;
-    case EnemyState::CHASE:
-
-        Chase();
-        break;
-    case EnemyState::ATTACK:
-        Attack();
-        break;
+            Chase();
+            break;
+        case EnemyState::ATTACK:
+            Attack();
+            break;
+        }
     }
+
+    Enemy::Update();
 }
 
 void EnemyRobot::Idle()

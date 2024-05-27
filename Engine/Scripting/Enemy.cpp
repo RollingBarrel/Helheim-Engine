@@ -14,6 +14,7 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
+    mBeAttracted = false;
 }
 
 void Enemy::ActivateEnemy() 

@@ -11,6 +11,7 @@ class GameManager : public Script
 public:
     static GameManager* GetInstance(); 
 
+    void Awake();
     void Start();
     void Update();
 

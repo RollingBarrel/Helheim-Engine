@@ -30,9 +30,13 @@ GameManager::~GameManager()
     delete mInstance;
 }
 
-void GameManager::Start()
+void GameManager::Awake()
 {
     mInstance = this;
+}
+
+void GameManager::Start()
+{
 }
 
 void GameManager::Update()

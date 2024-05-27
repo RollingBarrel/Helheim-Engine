@@ -13,7 +13,10 @@ class GameManager;
 class AnimationStateMachine;
 class BoxColliderComponent;
 class HudController;
+class Grenade;
 struct CollisionData;
+
+class RangeWeapon;
 
 enum class PlayerState 
 {
@@ -33,7 +36,7 @@ enum class BattleSituation {
     DEATH
 };
 
-enum class Weapon {
+enum class WeaponType {
     RANGE,
     MELEE
 };
@@ -99,6 +102,12 @@ class PlayerController :public Script
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
+        void UpdateGrenadeCooldown();
+        void GrenadeAttack();
+        void AimGrenade();
+        void GrenadeTarget();
+        void ThrowGrenade(float3 target);
+
         void Victory();
         void GameOver();
         bool Delay(float delay);
@@ -106,7 +115,7 @@ class PlayerController :public Script
         
         void OnCollisionEnter(CollisionData* collisionData);
 
-        Weapon mWeapon = Weapon::RANGE;
+        WeaponType mWeapon = WeaponType::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
@@ -145,7 +154,10 @@ class PlayerController :public Script
         //Range
         int mAmmoCapacity = 500000;
         int mBullets = 0;
-        GameObject* bullet = nullptr;
+        //GameObject* bullet = nullptr;
+        GameObject* mRangeWeaponGameObject = nullptr;
+        RangeWeapon* mRangeWeapon = nullptr;
+
         float mRangeBaseDamage = 1.0f;
 
         //Melee
@@ -177,6 +189,19 @@ class PlayerController :public Script
         bool mIsMeleeSpecialCoolDownActive = false;
         float mMeleeSpecialCoolDownTimer = 0.0f;
         float mMeleeSpecialCoolDown = 4.0f;
+
+        // Grenade
+        bool mAimingGrenade = false;
+        bool mThrowAwayGrenade = false;
+       
+        float mGrenadThrowDistance = 5.0f;  // mGrenadeAimAreaGO radius
+        float mGrenadeCoolDown = 5.0f;
+        float mGrenadeCoolDownTimer = mGrenadeCoolDown;
+
+        Grenade* mGrenade = nullptr;
+
+        GameObject* mGrenadeAimAreaGO = nullptr;
+        GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
 
         //HUD
         GameObject* mHudControllerGO = nullptr;

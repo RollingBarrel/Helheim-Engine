@@ -586,7 +586,6 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
 {
-
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);

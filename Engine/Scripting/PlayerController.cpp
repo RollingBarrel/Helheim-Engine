@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleDetourNavigation.h"
 #include "Physics.h"
 #include "ModuleScene.h"
@@ -24,8 +25,11 @@
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
 #include "ObjectPool.h"
+#include "Quadtree.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "RangeWeapon.h"
+#include "Grenade.h"
 
 CREATE(PlayerController)
 {
@@ -50,8 +54,14 @@ CREATE(PlayerController)
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
     MEMBER(MemberType::INT, mAmmoCapacity);
-
+    MEMBER(MemberType::GAMEOBJECT, mRangeWeaponGameObject);
     
+
+    SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
+    MEMBER(MemberType::FLOAT, mGrenadThrowDistance);
+    MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
+
 
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
@@ -77,6 +87,9 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 
 void PlayerController::Start()
 {
+    // TODO remove this line after testing
+    GameManager::GetInstance()->GetPlayer();
+
     if (mGameManagerGO)
     {
         ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
@@ -92,6 +105,16 @@ void PlayerController::Start()
         ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
         mHudController = static_cast<HudController*>(script->GetScriptInstance());
     }
+    
+    //Weapons
+    if (mRangeWeaponGameObject)
+    {
+        mRangeWeapon = reinterpret_cast<RangeWeapon*>(reinterpret_cast<ScriptComponent*>(mRangeWeaponGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    }
+    
+
+    if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
+
     
 
     if (mFootStepAudioHolder)
@@ -117,6 +140,13 @@ void PlayerController::Start()
 
     // CAMERA
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
+    
+
+    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    {
+        ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
+        mGrenade = (Grenade*)script->GetScriptInstance();
+    }
 
     //Animation
     mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
@@ -208,6 +238,7 @@ void PlayerController::Update()
 {
     CheckDebugOptions();
     UpdateShield();
+    UpdateGrenadeCooldown();
     UpdateBattleSituation();
 
     if (mIsDashCoolDownActive)
@@ -298,9 +329,16 @@ void PlayerController::Idle()
 
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
-        mWeapon = (mWeapon == Weapon::RANGE) ? Weapon::MELEE : Weapon::RANGE;
+        mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
     }
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
+
+    else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
+    {
+        mCurrentState = PlayerState::ATTACK;
+        mAimingGrenade = true;
+    }
+    
+    else if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
     {
 	    mCurrentState = PlayerState::DASH;
     }
@@ -328,7 +366,15 @@ void PlayerController::Idle()
             mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
             mLeftMouseButtonPressed = false;
         }
-    }  
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
+    {
+        if (mGrenadeAimAreaGO) 
+        {
+            mGrenadeAimAreaGO->SetEnabled(false);
+        }
+    }
 }
 
 void PlayerController::Moving()
@@ -589,12 +635,20 @@ void PlayerController::Dash()
 
 void PlayerController::Attack()
 {
+    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    {
+        if (mAimingGrenade && !mThrowAwayGrenade) {
+            GrenadeAttack();
+        }
+        return;
+    }
+
     switch (mWeapon)
     {
-    case Weapon::RANGE:
+    case WeaponType::RANGE:
         RangedAttack();
         break;
-    case Weapon::MELEE:
+    case WeaponType::MELEE:
         MeleeAttack();
         break;
     }
@@ -713,12 +767,18 @@ void PlayerController::MeleeHit (float AttackRange, float AttackDamage) {
 void PlayerController::RangedAttack() 
 {
 
-    Shoot(mRangeBaseDamage);
+    //Shoot(mRangeBaseDamage);
+    if (mRangeWeapon)
+    {
+        mRangeWeapon->BasicAttack();
+    }
+    
+    Idle();
 }
 
 void PlayerController::Shoot(float damage)
 {
-    //request a bullet from the object pool
+  /*  //request a bullet from the object pool
     if (mBulletPool)
     {
         bullet = mBulletPool->GetPooledObject();
@@ -759,6 +819,7 @@ void PlayerController::Shoot(float damage)
         }
     }
     mCurrentState = PlayerState::IDLE;
+    */
 }
 
 void PlayerController::Reload()
@@ -892,6 +953,113 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = (mGodMode) ? !mGodMode : mGodMode = true;
     }
+
+    if (App->GetInput()->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN)
+    {
+        mCurrentState = PlayerState::IDLE;
+    }
+}
+
+void PlayerController::UpdateGrenadeCooldown()
+{
+    if (mThrowAwayGrenade)
+    {
+        if (mGrenadeCoolDownTimer <= 0.0f)
+        {
+            mGrenadeCoolDownTimer = mGrenadeCoolDown;
+            mThrowAwayGrenade = false; 
+        }
+
+        if (mGrenadeCoolDownTimer > 0.0f)
+        {
+            mGrenadeCoolDownTimer -= App->GetDt();
+            LOG("Grenade cooldown, wait %f seconds", mGrenadeCoolDownTimer);
+        }
+        else
+        {
+            mGrenadeCoolDownTimer = 0.0f;
+        }
+    }
+}
+
+void PlayerController::GrenadeAttack()
+{
+    AimGrenade();
+
+    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
+    {
+        mCurrentState = PlayerState::IDLE;
+        mAimingGrenade = false;
+        mGrenadeAimAreaGO->SetEnabled(false);
+        mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
+    }
+}
+
+void PlayerController::AimGrenade()
+{
+    // Initialize circle
+    mGrenadeAimAreaGO->SetEnabled(true);
+    mGrenadeAimAreaGO->SetScale(float3(mGrenadThrowDistance, 0.5, mGrenadThrowDistance));
+    mGrenadeAimAreaGO->SetPosition(mGameObject->GetPosition());
+
+    GrenadeTarget();
+}
+
+void PlayerController::GrenadeTarget()
+{
+    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+    Ray ray = Physics::ScreenPointToRay(mousePosition);
+    Plane plane = Plane(mGrenadeAimAreaGO->GetWorldPosition(), float3::unitY);
+
+    float distance;
+    bool intersects = plane.Intersects(ray, &distance);
+    float3 hitPoint = ray.GetPoint(distance);
+
+    // Check if mouse hit inside circle
+    // TODO: Check hit with physic
+    float3 diff = hitPoint - mGameObject->GetWorldPosition();
+    float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+    float radiusSquared = mGrenadThrowDistance * mGrenadThrowDistance;
+
+    bool hit = distanceSquared <= radiusSquared;
+
+    if (intersects)
+    {
+        float3 finalPosition;
+        if (hit)
+        {
+            finalPosition = hitPoint;
+        }
+        else
+        {
+            // Project hitPoint to the edge of the circle
+            float distanceToEdge = mGrenadThrowDistance / sqrtf(distanceSquared);
+            finalPosition = mGameObject->GetWorldPosition() + diff * distanceToEdge;
+        }
+
+        mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
+        mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+        mGrenadeExplotionPreviewAreaGO->SetPosition(float3(finalPosition.x, 0.3f, finalPosition.z));
+
+        if ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)) {
+            ThrowGrenade(finalPosition);
+        }
+    }
+}
+
+void PlayerController::ThrowGrenade(float3 target)
+{
+    mCurrentState = PlayerState::IDLE;
+    mAimingGrenade = false;
+    mGrenadeAimAreaGO->SetEnabled(false);
+
+    mThrowAwayGrenade = true;
+
+    ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
+    Grenade* grenade = (Grenade*)script->GetScriptInstance();
+
+    // TODO wait for thow animation time
+    grenade->SetDestionation(target);
 }
 
 void PlayerController::UpdateBattleSituation()
