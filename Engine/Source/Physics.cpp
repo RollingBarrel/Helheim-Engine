@@ -9,9 +9,9 @@
 #include "float2.h"
 #include "Geometry/LineSegment.h"
 
-std::map<float, Hit> Physics::Raycast(Ray* ray)
+void Physics::Raycast(const Ray& ray, std::map<float, Hit>&  hits)
 {
-    return App->GetScene()->GetQuadtreeRoot()->RayCast(ray);
+    return App->GetScene()->GetQuadtreeRoot()->RayCast(ray, hits);
 }
 
 Ray Physics::ScreenPointToRay(float2 mouseGlobalPosition)
@@ -30,7 +30,7 @@ Ray Physics::ScreenPointToRay(float2 mouseGlobalPosition)
 
 		return (ray.dir.IsNormalized()) ? ray : Ray();
 	}
-	
+
 	return ray;
     
 }

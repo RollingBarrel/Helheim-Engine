@@ -169,7 +169,7 @@ void PlayerController::Start()
         std::string backTrigger = "tWalkBack";
         std::string strafeLeftTrigger = "tStrafeLeft";
         std::string strafeRightTrigger = "tStrafeRight";
-
+        std::string shootingTrigger = "tShooting";
 
         mStateMachine->SetClipName(0, clip);
 
@@ -194,6 +194,10 @@ void PlayerController::Start()
         mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(1.46));
         mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.85));
 
+        mStateMachine->AddState(clip, sShooting);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(4.9));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(6.18));
+
         //Transitions
         mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
 
@@ -202,6 +206,7 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sIdle, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
+        mStateMachine->AddTransition(sIdle, sShooting, shootingTrigger);
 
         mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
@@ -222,6 +227,12 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
+
+        mStateMachine->AddTransition(sShooting, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sShooting, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sShooting, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sShooting, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sShooting, sStrafeRight, strafeRightTrigger);
 
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
@@ -651,7 +662,7 @@ void PlayerController::Moving()
                 break;
             case MoveDirection::UP_RIGHT:
                 mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break; HandleRotation();
+                break; 
             case MoveDirection::UP_LEFT:
                 mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
                 break;
@@ -705,7 +716,8 @@ void PlayerController::Move(float3 direction)
 
 void PlayerController::HandleRotation()
 {
-    if (mCurrentState == PlayerState::ATTACK && mIsMeleeSpecialCoolDownActive)
+    if ((mCurrentState == PlayerState::ATTACK && mIsMeleeSpecialCoolDownActive) ||
+        (mWeapon == WeaponType::MELEE && mMeleeBaseComboStep == 3))
     {
         return;
     }
@@ -768,6 +780,7 @@ void PlayerController::Attack()
     switch (mWeapon)
     {
     case WeaponType::RANGE:
+        mAnimationComponent->SendTrigger("tShooting", 0.2f);
         RangedAttack();
         break;
     case WeaponType::MELEE:
@@ -892,10 +905,18 @@ void PlayerController::RangedAttack()
     //Shoot(mRangeBaseDamage);
     if (mRangeWeapon)
     {
+        
         mRangeWeapon->BasicAttack();
     }
-    
-    Idle();
+    if (mShootingTimer > 0.2f) {
+
+        mShootingTimer = 0.0f;
+        Idle();
+    }
+    else
+    {
+        mShootingTimer += App->GetDt();
+    }
 }
 
 void PlayerController::Shoot(float damage)
@@ -1083,6 +1104,7 @@ bool PlayerController::IsDead()
 
 void PlayerController::UpdateShield() 
 {
+    if (mHudController == nullptr) return;
     mHudController->SetHealth(mShield / mMaxShield);
 }
 

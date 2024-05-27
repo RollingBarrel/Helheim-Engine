@@ -15,6 +15,6 @@ struct Hit
 
 namespace Physics
 {
-	ENGINE_API std::map<float, Hit> Raycast(Ray* ray);
+	ENGINE_API void Raycast(const Ray& ray, std::map<float, Hit>& hits);
 	ENGINE_API Ray ScreenPointToRay(float2 mouseGlobalPosition);
 };

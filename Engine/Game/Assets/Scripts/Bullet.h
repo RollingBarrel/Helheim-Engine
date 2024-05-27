@@ -15,7 +15,7 @@ public:
 	Bullet(GameObject* owner);
 	~Bullet();
 	void Start() override;
-	void Update() override;
+	void Update() override; 
 
 	void OnCollisionEnter(CollisionData* collisionData);
 
@@ -34,5 +34,5 @@ private:
 	float mTotalMovement = 0.0f;
 	BoxColliderComponent* mCollider;
 	bool mHasCollided = false;
-	ParticleSystemComponent* mParticleSystem = nullptr;
+	GameObject* mHitParticles = nullptr;
 };

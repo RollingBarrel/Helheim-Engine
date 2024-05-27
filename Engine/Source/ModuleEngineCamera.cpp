@@ -123,7 +123,8 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 
 	if (!reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
 	{
-		std::map<float, Hit> hits = root->RayCast(&ray);
+		std::map<float, Hit> hits;
+		root->RayCast(ray, hits);
 		if (!hits.empty())
 		{
 			std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();
