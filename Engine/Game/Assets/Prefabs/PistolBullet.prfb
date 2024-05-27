@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1075275662,
+                "UID": 1626946792,
                 "ParentUID": 1,
                 "Name": "PistolBullet",
                 "isEnabled": true,
@@ -28,7 +28,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1084674497,
+                        "ID": 1631263294,
                         "ComponentType": 17,
                         "isEnabled": true,
                         "Center": [
@@ -50,7 +50,7 @@
                         "ScriptVariables": []
                     },
                     {
-                        "ID": 1691212649,
+                        "ID": 2008330630,
                         "ComponentType": 18,
                         "isEnabled": true,
                         "Image": 148626881,
@@ -61,10 +61,10 @@
                             "Lineal": 0.10000000149011612,
                             "isCurve": true,
                             "Curve": [
+                                1.100000023841858,
+                                0.0,
                                 1.0,
-                                0.2031249850988388,
-                                1.0,
-                                0.3046875
+                                -0.10000000149011612
                             ],
                             "Factor": -0.10000000149011612
                         },
@@ -92,8 +92,8 @@
                 ]
             },
             {
-                "UID": 1713909095,
-                "ParentUID": 1075275662,
+                "UID": 2027128300,
+                "ParentUID": 1626946792,
                 "Name": "HitParticles",
                 "isEnabled": true,
                 "Translation": [
@@ -119,8 +119,8 @@
                 "Components": []
             },
             {
-                "UID": 1715301515,
-                "ParentUID": 1713909095,
+                "UID": 2028520720,
+                "ParentUID": 2027128300,
                 "Name": "Sparks",
                 "isEnabled": true,
                 "Translation": [
@@ -145,7 +145,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1716485072,
+                        "ID": 2029216930,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,
@@ -200,8 +200,8 @@
                 ]
             },
             {
-                "UID": 1736605541,
-                "ParentUID": 1713909095,
+                "UID": 2045577865,
+                "ParentUID": 2027128300,
                 "Name": "Fire",
                 "isEnabled": true,
                 "Translation": [
@@ -226,7 +226,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1737301751,
+                        "ID": 2046204454,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,
@@ -281,8 +281,8 @@
                 ]
             },
             {
-                "UID": 1742871431,
-                "ParentUID": 1713909095,
+                "UID": 2054907079,
+                "ParentUID": 2027128300,
                 "Name": "Flash",
                 "isEnabled": true,
                 "Translation": [
@@ -307,7 +307,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1743637262,
+                        "ID": 2055672910,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 2041935686,
@@ -360,33 +360,6 @@
                         ]
                     }
                 ]
-            },
-            {
-                "UID": 1751643677,
-                "ParentUID": 1713909095,
-                "Name": "GameObject",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": []
             }
         ]
     }
