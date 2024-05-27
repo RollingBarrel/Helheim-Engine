@@ -3,6 +3,8 @@
 #include "Geometry/Ray.h"
 #include "ScriptComponent.h"
 
+class AnimationStateMachine;
+
 enum class EnemyState 
 {
 	IDLE,
@@ -37,6 +39,8 @@ private:
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	RobotType mType = RobotType::MELEE;
+
+	AnimationStateMachine* mStateMachine = nullptr;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
