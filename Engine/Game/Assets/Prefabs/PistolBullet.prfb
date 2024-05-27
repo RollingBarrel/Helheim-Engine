@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1626946792,
+                "UID": 712131381,
                 "ParentUID": 1,
                 "Name": "PistolBullet",
                 "isEnabled": true,
@@ -28,7 +28,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1631263294,
+                        "ID": 717004851,
                         "ComponentType": 17,
                         "isEnabled": true,
                         "Center": [
@@ -50,7 +50,7 @@
                         "ScriptVariables": []
                     },
                     {
-                        "ID": 2008330630,
+                        "ID": 1599868752,
                         "ComponentType": 18,
                         "isEnabled": true,
                         "Image": 148626881,
@@ -92,8 +92,8 @@
                 ]
             },
             {
-                "UID": 2027128300,
-                "ParentUID": 1626946792,
+                "UID": 1627717152,
+                "ParentUID": 712131381,
                 "Name": "HitParticles",
                 "isEnabled": true,
                 "Translation": [
@@ -119,8 +119,8 @@
                 "Components": []
             },
             {
-                "UID": 2028520720,
-                "ParentUID": 2027128300,
+                "UID": 1632103275,
+                "ParentUID": 1627717152,
                 "Name": "Sparks",
                 "isEnabled": true,
                 "Translation": [
@@ -145,7 +145,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 2029216930,
+                        "ID": 1633495695,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,
@@ -171,10 +171,10 @@
                             "Lineal": 15.0,
                             "isCurve": true,
                             "Curve": [
+                                1.100000023841858,
+                                0.0,
                                 1.0,
-                                0.2031249850988388,
-                                1.0,
-                                0.3046875
+                                -0.10000000149011612
                             ],
                             "Factor": 1.0
                         },
@@ -200,8 +200,8 @@
                 ]
             },
             {
-                "UID": 2045577865,
-                "ParentUID": 2027128300,
+                "UID": 1656957972,
+                "ParentUID": 1627717152,
                 "Name": "Fire",
                 "isEnabled": true,
                 "Translation": [
@@ -226,7 +226,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 2046204454,
+                        "ID": 1658559255,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,
@@ -281,8 +281,8 @@
                 ]
             },
             {
-                "UID": 2054907079,
-                "ParentUID": 2027128300,
+                "UID": 1676799957,
+                "ParentUID": 1627717152,
                 "Name": "Flash",
                 "isEnabled": true,
                 "Translation": [
@@ -307,7 +307,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 2055672910,
+                        "ID": 1678122756,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 2041935686,

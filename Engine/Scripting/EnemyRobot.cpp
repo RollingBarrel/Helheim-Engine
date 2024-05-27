@@ -203,6 +203,11 @@ void EnemyRobot::Attack()
 
 }
 
+bool EnemyRobot::IsMoving()
+{
+    return (mCurrentState == EnemyState::CHASE);
+}
+
 void EnemyRobot::MeleeAttack() 
 {
     if ( mTimerAttack > mMeleeAttackCoolDown )
@@ -263,5 +268,6 @@ void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetName().find("Bullet"))
     {
         TakeDamage(1.0f);
+        collisionData->collidedWith->SetEnabled(false);
     }
 }

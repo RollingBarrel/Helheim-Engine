@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "float3.h"
 
 #include <vector>
 #include <map>
@@ -27,11 +28,13 @@ public:
     void SetEventInstance(FMOD::Studio::EventInstance* event);
     void SetEventByName(const char* eventName);
     void GetParametersMaxMin(const char* eventName, float& max, float& min);
+    void SetPositionWithGameObject(bool with) { mPositionWithGameObject = with; };
 
     // Update parameters
     void UpdateParameterValueByIndex(int index, float value);
     void UpdateParameterValueByName(const char* name, float value);
     void SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime);
+    void UpdatePosition(float3 position);
 
     // Engine state control
     void PauseCurrentInstance();
@@ -41,6 +44,7 @@ public:
     void Update() override;
     void Play();
     void PlayOneShot();
+    void PlayOneShotPosition(float3 position);
     void Stop(bool fadeout);
     Component* Clone(GameObject* owner) const;
     void Save(Archive& archive) const;
@@ -61,5 +65,7 @@ private:
     FMOD::Studio::EventDescription* mEventDescription = nullptr;
     std::map<int, float> mParameters;
     std::map<std::string, int> mNameToParameters;
+
+    bool mPositionWithGameObject = true;
 };
 

@@ -161,6 +161,10 @@ void PlayerController::Start()
         std::string sStrafeLeft = "Strafe Left";
         std::string sStrafeRight = "Strafe Right";
         std::string sShooting = "Shooting";
+        std::string sMeleeCombo1 = "MeleeCombo1";
+        std::string sMeleeCombo2 = "MeleeCombo2";
+        std::string sMeleeCombo3 = "MeleeCombo3";
+
 
         std::string idleTrigger = "tIdle";
         std::string forwardTrigger = "tWalkForward";
@@ -168,33 +172,48 @@ void PlayerController::Start()
         std::string strafeLeftTrigger = "tStrafeLeft";
         std::string strafeRightTrigger = "tStrafeRight";
         std::string shootingTrigger = "tShooting";
+        std::string meleeTrigger = "tMelee";
 
         mStateMachine->SetClipName(0, clip);
 
         //States
         mStateMachine->AddState(clip, sIdle);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(6.2));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(11.57));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(12.4f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(23.14f));
 
         mStateMachine->AddState(clip, sWalkForward);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.89));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.87));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(5.78f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(7.74f));
 
         mStateMachine->AddState(clip, sWalkBack);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(3.90));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(4.88));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(7.8f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(9.76f));
 
         mStateMachine->AddState(clip, sStrafeLeft);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(1.43));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(2.86f));
 
         mStateMachine->AddState(clip, sStrafeRight);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(1.46));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.85));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.92f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(5.72f));
 
         mStateMachine->AddState(clip, sShooting);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(4.9));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(6.18));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(9.8f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(12.36f));
+
+        mStateMachine->AddState(clip, sMeleeCombo1);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(23.5f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(25.5f));
+
+        mStateMachine->AddState(clip, sMeleeCombo2);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(25.6f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(26.6f));
+
+
+        mStateMachine->AddState(clip, sMeleeCombo3);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(26.7f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(100.0f));
+
 
         //Transitions
         mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
@@ -205,32 +224,56 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
         mStateMachine->AddTransition(sIdle, sShooting, shootingTrigger);
+        mStateMachine->AddTransition(sIdle, sMeleeCombo1, meleeTrigger);
 
         mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
+        mStateMachine->AddTransition(sWalkForward, sMeleeCombo1, meleeTrigger);
+
 
         mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkBack, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
+        mStateMachine->AddTransition(sWalkBack, sMeleeCombo1, meleeTrigger);
+
 
         mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sMeleeCombo1, meleeTrigger);
+
 
         mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sMeleeCombo1, meleeTrigger);
+
 
         mStateMachine->AddTransition(sShooting, sIdle, idleTrigger);
         mStateMachine->AddTransition(sShooting, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sShooting, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sShooting, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sShooting, sStrafeRight, strafeRightTrigger);
+
+
+        /*
+        mStateMachine->AddTransition(sMeleecombo, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sMeleecombo, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sMeleecombo, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sMeleecombo, sStrafeRight, strafeRightTrigger);
+        */
+        mStateMachine->AddTransition(sMeleeCombo1, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sMeleeCombo2, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sMeleeCombo3, sIdle, idleTrigger);
+
+        mStateMachine->AddTransition(sMeleeCombo1, sMeleeCombo2, meleeTrigger);
+        mStateMachine->AddTransition(sMeleeCombo2, sMeleeCombo3, meleeTrigger);
+
 
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
@@ -284,7 +327,7 @@ void PlayerController::Update()
     case PlayerState::IDLE:
         if (!mVictory && !mGameOver)
         {   
-            if (mAnimationComponent)
+            if (mAnimationComponent && mMeleeBaseComboStep < 2)
             {
                 mAnimationComponent->SendTrigger("tIdle", 0.1f);
             }
@@ -305,6 +348,8 @@ void PlayerController::Update()
 
     case PlayerState::ATTACK:
         Attack();
+        
+
         break;
 
     case PlayerState::MOVE_ATTACK:
@@ -780,14 +825,14 @@ void PlayerController::Dash()
 
 void PlayerController::Attack()
 {
-    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    if (mAimingGrenade && !mThrowAwayGrenade) 
     {
-        if (mAimingGrenade && !mThrowAwayGrenade) {
+        if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+        {
             GrenadeAttack();
         }
-        return;
     }
-    else 
+    else
     {
         switch (mWeapon)
         {
@@ -800,8 +845,6 @@ void PlayerController::Attack()
             break;
         }
     }
-
-
 }
 
 void PlayerController::MeleeAttack()  
@@ -821,42 +864,67 @@ void PlayerController::MeleeBaseCombo()
     mMeleeBaseComboTimer = 0.0f;
     mIsMeleeBaseComboActive = true;
 
+
     switch (mMeleeBaseComboStep)
     {
-    case 1:
+    case 1:      
         //TODO: Implement base attack animation move 1
+        LOG("Step 1");
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
         mMeleeBaseComboStep++;
         mCurrentState = PlayerState::IDLE;
+        mComboTimer = 0.0f;
+        mAnimationComponent->SendTrigger("tMelee", 0.2f);
+
+        
 
         break;
 
     case 2:
-        //TODO: Implement base attack animation move 2
-		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mMeleeBaseComboStep++;
-        mCurrentState = PlayerState::IDLE;
+        mComboTimer += App->GetDt();
+        if (mComboTimer > mComboTime1)
+        {
 
+            //TODO: Implement base attack animation move 2
+            LOG("Step 2");
+            MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+            mMeleeBaseComboStep++;
+            mCurrentState = PlayerState::IDLE;
+            mComboTimer = 0.0f;
+            mAnimationComponent->SendTrigger("tMelee", 0.2f);
+
+        }
         break;
 
     case 3:
-		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mMeleeBaseFinalAttackTimer += App->GetDt();
-        if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
+        mComboTimer += App->GetDt();
+        if (mComboTimer > mComboTime2)
         {
-			mMeleeBaseComboStep = 1;
-			mIsMeleeBaseComboActive = false;
-			mMeleeBaseFinalAttackTimer = 0.0f;
-            mCurrentState = PlayerState::IDLE;
-		}
-        else
-        {
-            //TODO: Implement base attack animation move 3
-            float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
-            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
-            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-            mCurrentState = PlayerState::ATTACK;
+            mMeleeBaseFinalAttackTimer += App->GetDt();
+            if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
+            {
+                LOG("Step 3 hit");
+                MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+                mMeleeBaseComboStep = 1;
+                mIsMeleeBaseComboActive = false;
+                mMeleeBaseFinalAttackTimer = 0.0f;
+                mCurrentState = PlayerState::IDLE;
+                mComboTimer = 0.0f;
+
+            }
+            else
+            {
+                //TODO: Implement base attack animation move 3
+                float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
+                float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
+                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+                mCurrentState = PlayerState::ATTACK;
+            }
+
         }
+
+
+        
 
         break;
 	}
@@ -924,7 +992,7 @@ void PlayerController::RangedAttack()
         mRangeWeapon->BasicAttack();
         mHasShoot = true;
     }
-    if (mShootingTimer > 0.2f) {
+    if (mShootingTimer > 0.4f) {
 
         mShootingTimer = 0.0f;
         mHasShoot = false;
@@ -990,8 +1058,14 @@ void PlayerController::Reload()
 
 void PlayerController::ClosestMouseDirection(const float2& mouseState)
 {
-    int dx = mouseState.x - 960.0;
-    int dy = mouseState.y - 540.0;
+
+    float2 window(App->GetWindow()->GetGameWindowsPosition());
+    float2 windowSize(App->GetWindow()->GetGameWindowsSize());
+    
+    int dx = mouseState.x - (window.x + windowSize.x * 0.5);
+    int dy = mouseState.y - (window.y + windowSize.y * 0.5);
+
+    LOG("x: %f, y: %f", mouseState.x, mouseState.y);
 
     if (std::abs(dx) > std::abs(dy)) {
         if (dx > 0) {
@@ -1214,6 +1288,8 @@ void PlayerController::GrenadeTarget()
             float distanceToEdge = mGrenadThrowDistance / sqrtf(distanceSquared);
             finalPosition = mGameObject->GetWorldPosition() + diff * distanceToEdge;
         }
+        mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(true);
+        mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(false);
 
         mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
         mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
@@ -1230,6 +1306,14 @@ void PlayerController::ThrowGrenade(float3 target)
     mCurrentState = PlayerState::IDLE;
     mAimingGrenade = false;
     mGrenadeAimAreaGO->SetEnabled(false);
+
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
+
+    mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(false);
+    mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(true);
+
+
 
     mThrowAwayGrenade = true;
 
