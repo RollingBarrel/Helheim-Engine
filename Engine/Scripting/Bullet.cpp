@@ -12,7 +12,6 @@ unsigned int Bullet::mNumBullets = 0;
 CREATE(Bullet)
 {
 	CLASS(owner);
-	MEMBER(MemberType::GAMEOBJECT, mHitParticles);
 	END_CREATE;
 }
 

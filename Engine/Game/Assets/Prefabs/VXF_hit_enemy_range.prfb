@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1351267306,
+                "UID": 1537212057,
                 "ParentUID": 1,
                 "Name": "VXF_hit_enemy_range",
                 "isEnabled": true,
@@ -23,14 +23,14 @@
                     1.0
                 ],
                 "Tag": 0,
-                "PrefabId": 0,
+                "PrefabId": 1435578337,
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 1361501593,
-                "ParentUID": 1351267306,
+                "UID": 1551345120,
+                "ParentUID": 1537212057,
                 "Name": "Sparks",
                 "isEnabled": true,
                 "Translation": [
@@ -55,7 +55,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1363033255,
+                        "ID": 1552667919,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,
@@ -110,8 +110,8 @@
                 ]
             },
             {
-                "UID": 1408147663,
-                "ParentUID": 1351267306,
+                "UID": 1585877136,
+                "ParentUID": 1537212057,
                 "Name": "Flash",
                 "isEnabled": true,
                 "Translation": [
@@ -136,7 +136,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1408983115,
+                        "ID": 1586642967,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 2041935686,
@@ -191,8 +191,8 @@
                 ]
             },
             {
-                "UID": 1419217402,
-                "ParentUID": 1351267306,
+                "UID": 1594579761,
+                "ParentUID": 1537212057,
                 "Name": "Fire",
                 "isEnabled": true,
                 "Translation": [
@@ -217,7 +217,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1419843991,
+                        "ID": 1595206350,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,

@@ -38,6 +38,9 @@ void Pistol::BasicAttack()
         {
             LOG("%f, %f, %f", mShootPoint->GetWorldPosition().x, mShootPoint->GetWorldPosition().y, mShootPoint->GetWorldPosition().z);
             bullet->SetPosition(mShootPoint->GetWorldPosition());
+
+            mShootPoint->SetEnabled(false);
+            mShootPoint->SetEnabled(true); // Reset particles
         }
         bullet->SetRotation(mGameObject->GetWorldRotation());
     }
