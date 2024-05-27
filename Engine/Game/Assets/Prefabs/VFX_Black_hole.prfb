@@ -1,0 +1,105 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 2007975589,
+                "ParentUID": 1,
+                "Name": "VFX_Black_hole",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 2027330227,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 234303549,
+                        "Delay": 0.0,
+                        "Duration": 3.0,
+                        "Life Time": 5.0,
+                        "Emission Rate": 10.0,
+                        "Max Particles": 1,
+                        "Looping": false,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 10.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.0,
+                                1.0,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -1.0
+                        },
+                        "Speed": {
+                            "Lineal": 0.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Factor": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.0,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.48172757029533389,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4867110550403595,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4916943609714508,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

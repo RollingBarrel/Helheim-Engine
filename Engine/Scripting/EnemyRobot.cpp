@@ -268,5 +268,6 @@ void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetName().find("Bullet"))
     {
         TakeDamage(1.0f);
+        collisionData->collidedWith->SetEnabled(false);
     }
 }

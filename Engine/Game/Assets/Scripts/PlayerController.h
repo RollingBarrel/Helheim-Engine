@@ -153,7 +153,7 @@ class PlayerController :public Script
         float mDashCoolDown = 0.7f;
         float mDashTimer = 0.0f;
         float mDashDuration = 0.5f;
-        float mDashRange = 8.0f;
+        float mDashRange = 5.0f;
 
         //Range
         int mAmmoCapacity = 500000;
