@@ -111,11 +111,6 @@ void PlayerController::Start()
     {
         mRangeWeapon = reinterpret_cast<RangeWeapon*>(reinterpret_cast<ScriptComponent*>(mRangeWeaponGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     }
-    
-
-    if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
-
-    
 
     if (mFootStepAudioHolder)
     {
