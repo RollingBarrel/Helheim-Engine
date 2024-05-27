@@ -6,6 +6,8 @@
 #include "AnimationComponent.h"
 #include "AnimationStateMachine.h"
 #include "Physics.h"
+#include "BoxColliderComponent.h"
+
 CREATE(EnemyRobot)
 {
     CLASS(owner);
@@ -35,6 +37,12 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 void EnemyRobot::Start()
 {
     Enemy::Start();
+
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
+    }
 
     mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
     if (mAnimationComponent)
@@ -248,4 +256,12 @@ void EnemyRobot::RangeAttack()
                 }
             }
         }
+}
+
+void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
+{
+    if (collisionData->collidedWith->GetName().find("Bullet"))
+    {
+        TakeDamage(1.0f);
+    }
 }

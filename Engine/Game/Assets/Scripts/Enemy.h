@@ -26,7 +26,7 @@ class Enemy : public Script
 		
 		int mShieldDropRate = 20;
 		float mHealth = 0.0f;
-		float mMaxHealth = 100.0f;
+		float mMaxHealth = 6.0f;
 		float mSpeed = 1.0f;
 		float mRotationSpeed = 1.0f;
 		float mActivationRange = 15.0f;
