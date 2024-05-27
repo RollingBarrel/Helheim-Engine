@@ -332,7 +332,7 @@ void PlayerController::Update()
 
 void PlayerController::Idle()
 {
-
+    
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
@@ -704,13 +704,14 @@ void PlayerController::Moving()
         mFootStepAudio->PlayOneShot();
         mReadyToStep = false;
     }
-    
+  
     Idle();
 }
 
 void PlayerController::Move(float3 direction) 
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
+
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
 }
 
@@ -755,14 +756,22 @@ void PlayerController::Dash()
             mIsDashing = false;
             mCurrentState = PlayerState::IDLE; 
             mDashTimer = 0.0f;
+            mMoveDirection = float3::zero;
             mIsDashCoolDownActive = true;
         }
         else 
         {
             // Continue dashing
             float dashSpeed = mDashRange / mDashDuration;
-            float3 newPos = (mGameObject->GetPosition() + mMoveDirection * dashSpeed * App->GetDt());
-            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+            float3 newFuturePos = (mGameObject->GetPosition() + mMoveDirection * dashSpeed * App->GetDt());
+            float3 currentPos = mGameObject->GetPosition();
+            float3 navigationPos = App->GetNavigation()->FindNearestPoint(newFuturePos, float3(0.5f));
+            if (newFuturePos.x != navigationPos.x && newFuturePos.z != currentPos.z)
+            {
+                mCurrentState = PlayerState::MOVE;
+                return;
+            }
+            mGameObject->SetPosition(navigationPos);
         }
     }
 }
