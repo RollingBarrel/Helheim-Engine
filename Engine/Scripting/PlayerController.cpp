@@ -705,7 +705,8 @@ void PlayerController::Move(float3 direction)
 
 void PlayerController::HandleRotation()
 {
-    if (mCurrentState == PlayerState::ATTACK && mIsMeleeSpecialCoolDownActive)
+    if ((mCurrentState == PlayerState::ATTACK && mIsMeleeSpecialCoolDownActive) ||
+        (mWeapon == WeaponType::MELEE && mMeleeBaseComboStep == 3))
     {
         return;
     }
