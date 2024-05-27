@@ -53,7 +53,7 @@ void Pistol::BasicAttack()
     ray.dir = mGameObject->GetFront();
 
     float distance = 100.0f;
-    hits = Physics::Raycast(&ray);
+    Physics::Raycast(ray, hits);
 
     if (!hits.empty())
     {
