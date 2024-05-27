@@ -1050,6 +1050,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//Lighting Pass
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
 	glStencilMask(0x00);
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(0x00);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glActiveTexture(GL_TEXTURE1);
@@ -1072,12 +1074,21 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	
 	glStencilMask(0xFF);
 	glDisable(GL_STENCIL_TEST);
-	glUseProgram(0);
-	glBindVertexArray(0);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(0xFF);
 
-	
+	//particles
+	glActiveTexture(GL_TEXTURE0);
+	for (const ParticleSystemComponent* partSys : mParticleSystems)
+	{
+		partSys->Draw();
+	}
+	for (const Trail* trail : mTrails)
+	{
+		trail->Draw();
+	}
 
-
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight
 	mBatchManager.CleanUpCommands();
 	for (const GameObject* object : mHighlightedObjects)
@@ -1091,7 +1102,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 			}
 		}
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+
 	//Higlight pass
 	glClear(GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_STENCIL_TEST);
@@ -1113,16 +1124,10 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glEnable(GL_DEPTH_TEST);
 
 	mBatchManager.EndFrameDraw();
-
 	glActiveTexture(GL_TEXTURE0);
-	for (const ParticleSystemComponent* partSys : mParticleSystems)
-	{
-		partSys->Draw();
-	}
-	for (auto trail : mTrails)
-	{
-		trail->Draw();
-	}
+	glUseProgram(0);
+	glBindVertexArray(0);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

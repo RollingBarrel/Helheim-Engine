@@ -58,6 +58,7 @@ CREATE(PlayerController)
     
 
     SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadThrowDistance);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
@@ -136,9 +137,6 @@ void PlayerController::Start()
     // CAMERA
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
     
-    //ModuleScene* scene = App->GetScene();
-    //mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
-
     if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
     {
         ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
@@ -377,7 +375,7 @@ void PlayerController::Update()
 
 void PlayerController::Idle()
 {
-
+    
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
@@ -749,13 +747,14 @@ void PlayerController::Moving()
         mFootStepAudio->PlayOneShot();
         mReadyToStep = false;
     }
-    
+  
     Idle();
 }
 
 void PlayerController::Move(float3 direction) 
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
+
     mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
 }
 
@@ -800,37 +799,47 @@ void PlayerController::Dash()
             mIsDashing = false;
             mCurrentState = PlayerState::IDLE; 
             mDashTimer = 0.0f;
+            mMoveDirection = float3::zero;
             mIsDashCoolDownActive = true;
         }
         else 
         {
             // Continue dashing
             float dashSpeed = mDashRange / mDashDuration;
-            float3 newPos = (mGameObject->GetPosition() + mMoveDirection * dashSpeed * App->GetDt());
-            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+            float3 newFuturePos = (mGameObject->GetPosition() + mMoveDirection * dashSpeed * App->GetDt());
+            float3 currentPos = mGameObject->GetPosition();
+            float3 navigationPos = App->GetNavigation()->FindNearestPoint(newFuturePos, float3(0.5f));
+            if (newFuturePos.x != navigationPos.x && newFuturePos.z != currentPos.z)
+            {
+                mCurrentState = PlayerState::MOVE;
+                return;
+            }
+            mGameObject->SetPosition(navigationPos);
         }
     }
 }
 
 void PlayerController::Attack()
 {
-    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    if (mAimingGrenade && !mThrowAwayGrenade) 
     {
-        if (mAimingGrenade && !mThrowAwayGrenade) {
+        if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+        {
             GrenadeAttack();
         }
-        return;
     }
-
-    switch (mWeapon)
+    else
     {
-    case WeaponType::RANGE:
-        mAnimationComponent->SendTrigger("tShooting", 0.2f);
-        RangedAttack();
-        break;
-    case WeaponType::MELEE:
-        MeleeAttack();
-        break;
+        switch (mWeapon)
+        {
+        case WeaponType::RANGE:
+            mAnimationComponent->SendTrigger("tShooting", 0.2f);
+            RangedAttack();
+            break;
+        case WeaponType::MELEE:
+            MeleeAttack();
+            break;
+        }
     }
 }
 
@@ -1273,6 +1282,8 @@ void PlayerController::GrenadeTarget()
             float distanceToEdge = mGrenadThrowDistance / sqrtf(distanceSquared);
             finalPosition = mGameObject->GetWorldPosition() + diff * distanceToEdge;
         }
+        mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(true);
+        mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(false);
 
         mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
         mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
@@ -1289,6 +1300,14 @@ void PlayerController::ThrowGrenade(float3 target)
     mCurrentState = PlayerState::IDLE;
     mAimingGrenade = false;
     mGrenadeAimAreaGO->SetEnabled(false);
+
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
+
+    mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(false);
+    mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(true);
+
+
 
     mThrowAwayGrenade = true;
 
