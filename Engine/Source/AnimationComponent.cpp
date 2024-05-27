@@ -23,7 +23,7 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mSpeed = 1.0;
 	mStateMachine = nullptr;
 
-	mModelUid = other.mModelUid;
+	SetModelUUID(other.mModelUid);
 
 }
 
