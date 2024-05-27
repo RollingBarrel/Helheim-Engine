@@ -487,11 +487,14 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameO
 
 void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
 {
-	if (mBackgroundScene != nullptr) 
-	{ 
-		mClosePrefab = true; 
+	if (mBackgroundScene != nullptr)
+	{
+		mClosePrefab = true;
 	}
-	mPrefabPath = saveFilePath;
+	else
+	{
+		mPrefabPath = saveFilePath;
+	}
 }
 
 void ModuleScene::ClosePrefabScreen()
