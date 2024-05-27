@@ -43,6 +43,7 @@ public:
     
     void Update() override;
     void Play();
+    void PlayWithVolume(float volume);
     void PlayOneShot();
     void PlayOneShotPosition(float3 position);
     void Stop(bool fadeout);

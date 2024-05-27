@@ -34,12 +34,7 @@ void Level1AManager::Start()
     if (mLevel1AMainThemeHolder != nullptr)
     {
         mLevel1AMainTheme = (AudioSourceComponent*)mLevel1AMainThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
-        mLevel1AMainTheme->Play();
-    }
-
-    if (mLevel1AMainDeadHolder != nullptr)
-    {
-        mLevel1ADeadTheme = (AudioSourceComponent*)mLevel1AMainThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
+        mLevel1AMainTheme->PlayWithVolume(0.4f);
     }
 
     if (mPlayerControllerHolder != nullptr)
@@ -57,12 +52,12 @@ void Level1AManager::Start()
     {
         mStrangeBackgroundSound = (AudioSourceComponent*)mStangeBackgroudSoundHolder->GetComponent(ComponentType::AUDIOSOURCE);
         mStrangeBackgroundSound->SetPositionWithGameObject(false);
-        mStrangeBackgroundSound->Play();
+        mStrangeBackgroundSound->PlayWithVolume(0.3f);
     }
 }
 
 void Level1AManager::Update() {
-    //UpdateBackgroundMusic();
+    UpdateBackgroundMusic();
     UpdateEnemyFootStepMusic();
     UpdateBackgroundStrangeMusic();
 }
@@ -130,25 +125,5 @@ void Level1AManager::UpdateEnemyFootStepMusic()
 void Level1AManager::UpdateBackgroundStrangeMusic() {
     ModuleScene* scene = App->GetScene();
 
-    std::vector<GameObject*> machines;
-    scene->FindGameObjectsWithTag(scene->GetTagByName("Machine")->GetID(), machines);
-
-    GameObject* nearestMachine = nullptr;
-    float nearestDistance = std::numeric_limits<float>::max();
-
-    auto* player = GameManager::GetInstance()->GetPlayer();
-    auto playerPosition = player->GetWorldPosition();
-
-    for (auto* machine : machines) {
-        float dist = machine->GetWorldPosition().Distance(playerPosition);
-
-        if (dist < nearestDistance) {
-            nearestDistance = dist;
-            nearestMachine = machine;
-        }
-    }
-
-    if (nearestMachine != nullptr) {
-        mStrangeBackgroundSound->UpdatePosition(nearestMachine->GetWorldPosition());
-    }
+    mStrangeBackgroundSound->UpdatePosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }

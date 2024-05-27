@@ -30,9 +30,6 @@ private:
 	GameObject* mLevel1AMainThemeHolder = nullptr;
 	AudioSourceComponent* mLevel1AMainTheme = nullptr;
 
-	GameObject* mLevel1AMainDeadHolder = nullptr;
-	AudioSourceComponent* mLevel1ADeadTheme = nullptr;
-
 	GameObject* mEnemyFootStepHolder = nullptr;
 	AudioSourceComponent* mEnemyFootStep = nullptr;
 

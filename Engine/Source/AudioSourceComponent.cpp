@@ -159,6 +159,19 @@ void AudioSourceComponent::Play()
 	}
 }
 
+void AudioSourceComponent::PlayWithVolume(float volume)
+{
+	if (this != nullptr)
+	{
+		mEventInstance->setVolume(volume);
+		mEventInstance->start();
+	}
+	else
+	{
+		LOG("Cannot found audio source");
+	}
+}
+
 void AudioSourceComponent::PlayOneShot()
 {
 	if (this != nullptr)

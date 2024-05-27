@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1923657260,
+                "UID": 1284840323,
                 "ParentUID": 1,
                 "Name": "Granade",
                 "isEnabled": true,
@@ -23,15 +23,15 @@
                     1.0
                 ],
                 "Tag": 0,
-                "PrefabId": 0,
+                "PrefabId": 398376490,
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 1941340994,
-                "ParentUID": 1923657260,
-                "Name": "Sphere",
+                "UID": 1306074728,
+                "ParentUID": 1284840323,
+                "Name": "PreviewArea",
                 "isEnabled": false,
                 "Translation": [
                     0.0,
@@ -78,8 +78,8 @@
                 ]
             },
             {
-                "UID": 256767376,
-                "ParentUID": 1941340994,
+                "UID": 2024076101,
+                "ParentUID": 1306074728,
                 "Name": "Sphere",
                 "isEnabled": true,
                 "Translation": [
@@ -105,8 +105,8 @@
                 "Components": []
             },
             {
-                "UID": 260178805,
-                "ParentUID": 256767376,
+                "UID": 2032639484,
+                "ParentUID": 2024076101,
                 "Name": "Sphere",
                 "isEnabled": true,
                 "Translation": [
@@ -131,7 +131,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 261640846,
+                        "ID": 2039462342,
                         "MeshID": 81892183,
                         "MaterialID": 999999999,
                         "ComponentType": 0,
@@ -140,8 +140,8 @@
                 ]
             },
             {
-                "UID": 311210998,
-                "ParentUID": 1941340994,
+                "UID": 33727051,
+                "ParentUID": 1306074728,
                 "Name": "VFX_Black_hole",
                 "isEnabled": true,
                 "Translation": [
@@ -166,7 +166,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 313021144,
+                        "ID": 36303028,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 234303549,
@@ -239,9 +239,9 @@
                 ]
             },
             {
-                "UID": 355141849,
-                "ParentUID": 1923657260,
-                "Name": "Sphere (1)",
+                "UID": 94297321,
+                "ParentUID": 1284840323,
+                "Name": "AimArea",
                 "isEnabled": false,
                 "Translation": [
                     0.0,
@@ -266,8 +266,8 @@
                 "Components": []
             },
             {
-                "UID": 357996310,
-                "ParentUID": 355141849,
+                "UID": 98404960,
+                "ParentUID": 94297321,
                 "Name": "Sphere",
                 "isEnabled": true,
                 "Translation": [
@@ -293,10 +293,10 @@
                 "Components": []
             },
             {
-                "UID": 360641908,
-                "ParentUID": 357996310,
+                "UID": 101468284,
+                "ParentUID": 98404960,
                 "Name": "Sphere",
-                "isEnabled": true,
+                "isEnabled": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -319,7 +319,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 361755844,
+                        "ID": 103556914,
                         "MeshID": 81892183,
                         "MaterialID": 999999999,
                         "ComponentType": 0,

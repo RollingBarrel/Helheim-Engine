@@ -984,7 +984,7 @@ void PlayerController::RangedAttack()
     //Shoot(mRangeBaseDamage);
     if (mRangeWeapon)
     {
-        
+        mGunfireAudio->PlayOneShot();
         mRangeWeapon->BasicAttack();
     }
     if (mShootingTimer > 0.4f) {
