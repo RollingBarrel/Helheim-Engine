@@ -40,7 +40,6 @@ ModuleScene::ModuleScene()
 	mTags.push_back(new Tag(7, "Enemy", TagType::SYSTEM));
 	mTags.push_back(new Tag(8, "CombatArea", TagType::SYSTEM));
 	mTags.push_back(new Tag(9, "Bullet", TagType::SYSTEM));
-
 }
 
 ModuleScene::~ModuleScene()
@@ -491,7 +490,10 @@ void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
 	{ 
 		mClosePrefab = true; 
 	}
-	mPrefabPath = saveFilePath;
+	else
+	{
+		mPrefabPath = saveFilePath;
+	}
 }
 
 void ModuleScene::ClosePrefabScreen()

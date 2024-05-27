@@ -23,6 +23,7 @@ ModuleScriptManager::ModuleScriptManager()
 
 ModuleScriptManager::~ModuleScriptManager()
 {
+	FreeLibrary(static_cast<HMODULE>(mHandle));
 }
 
 bool ModuleScriptManager::Init()
@@ -51,7 +52,7 @@ update_status ModuleScriptManager::PostUpdate(float dt)
 
 bool ModuleScriptManager::CleanUp()
 {
-	FreeLibrary(static_cast<HMODULE>(mHandle));
+	//FreeLibrary(static_cast<HMODULE>(mHandle));
 	return true;
 }
 

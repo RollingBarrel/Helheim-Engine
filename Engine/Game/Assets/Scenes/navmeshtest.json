@@ -3,11 +3,10 @@
         "Name": "navmeshtest",
         "GameObjects": [
             {
-                "UID": 397830448,
+                "UID": 1260225735,
                 "ParentUID": 1,
                 "Name": "Cube",
                 "isEnabled": true,
-                "isActive": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -20,19 +19,21 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    3.8499999046325685,
+                    1.5499999523162842,
+                    7.599999904632568
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 601332631,
-                "ParentUID": 397830448,
+                "UID": 637835812,
+                "ParentUID": 1260225735,
                 "Name": "Cube",
                 "isEnabled": true,
-                "isActive": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -50,14 +51,16 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 612402370,
-                "ParentUID": 601332631,
+                "UID": 675361531,
+                "ParentUID": 637835812,
                 "Name": "Cube",
                 "isEnabled": true,
-                "isActive": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -75,11 +78,14 @@
                     1.0
                 ],
                 "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 616301146,
-                        "MeshID": 501396549,
-                        "MaterialID": 0,
+                        "ID": 1778993331,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
                         "ComponentType": 0,
                         "isEnabled": true
                     }

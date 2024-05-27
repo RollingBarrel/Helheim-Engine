@@ -12,7 +12,11 @@ class ObjectPool;
 class GameManager;
 class AnimationStateMachine;
 class BoxColliderComponent;
+class HudController;
+class Grenade;
 struct CollisionData;
+
+class RangeWeapon;
 
 enum class PlayerState 
 {
@@ -32,7 +36,7 @@ enum class BattleSituation {
     DEATH
 };
 
-enum class Weapon {
+enum class WeaponType {
     RANGE,
     MELEE
 };
@@ -42,6 +46,10 @@ enum class MouseDirection {
     DOWN,
     LEFT,
     RIGHT,
+    UP_RIGHT,
+    UP_LEFT,
+    DOWN_RIGHT,
+    DOWN_LEFT,
     DEFAULT
 };
 
@@ -90,23 +98,28 @@ class PlayerController :public Script
         void HandleRotation();
         void Shoot(float damage);
         void Reload();
-        void ClosestMouseDirection(float2 mouseState);
-        void SetMovingDirection(float3 moveDirection);
+        void ClosestMouseDirection(const float2& mouseState); 
+        void SetMovingDirection(const float3& moveDirection);
       
         void Death();
         void UpdateShield();
         void UpdateBattleSituation();
         void CheckDebugOptions();
 
+        void UpdateGrenadeCooldown();
+        void GrenadeAttack();
+        void AimGrenade();
+        void GrenadeTarget();
+        void ThrowGrenade(float3 target);
+
         void Victory();
-        void GameoOver();
+        void GameOver();
         bool Delay(float delay);
         void Loading();
         
-
         void OnCollisionEnter(CollisionData* collisionData);
 
-        Weapon mWeapon = Weapon::RANGE;
+        WeaponType mWeapon = WeaponType::RANGE;
         PlayerState mCurrentState = PlayerState::IDLE;
         PlayerState mPreviousState = PlayerState::IDLE;
         BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
@@ -145,21 +158,26 @@ class PlayerController :public Script
         //Range
         int mAmmoCapacity = 500000;
         int mBullets = 0;
-        GameObject* bullet = nullptr;
+        //GameObject* bullet = nullptr;
+        GameObject* mRangeWeaponGameObject = nullptr;
+        RangeWeapon* mRangeWeapon = nullptr;
+
         float mRangeBaseDamage = 1.0f;
 
         //Melee
         bool mLeftMouseButtonPressed = false;
 
-            //Melee Base Attack
+        //Melee Base Attack
         float mMeleeBaseDamage = 2.0f;
         float mMeleeBaseRange = 1.0f;
-               //Combo
+               
+        //Combo
         int mMeleeBaseComboStep = 1;
         float mMeleeBaseComboTimer = 0.0f;
         const float mMeleeBaseMaxComboInterval = 5.0f; 
         bool mIsMeleeBaseComboActive = false;
-               //Final Attack
+               
+        //Final Attack
         const float mMeleeBaseFinalAttackDuration = 0.5f; 
         float mMeleeBaseFinalAttackTimer = 0.0f;
         float mMeleeBaseMoveDuration = 0.5f;
@@ -170,14 +188,28 @@ class PlayerController :public Script
         const float mMeleeSpecialAttackDuration = 2.0f;
         float mMeleeSpecialDamage = 4.0f;
         float mMeleeSpecialRange = 2.0f;
-               //Cooldown
+              
+        //Cooldown
         bool mIsMeleeSpecialCoolDownActive = false;
         float mMeleeSpecialCoolDownTimer = 0.0f;
         float mMeleeSpecialCoolDown = 4.0f;
 
+        // Grenade
+        bool mAimingGrenade = false;
+        bool mThrowAwayGrenade = false;
+       
+        float mGrenadThrowDistance = 5.0f;  // mGrenadeAimAreaGO radius
+        float mGrenadeCoolDown = 5.0f;
+        float mGrenadeCoolDownTimer = mGrenadeCoolDown;
+
+        Grenade* mGrenade = nullptr;
+
+        GameObject* mGrenadeAimAreaGO = nullptr;
+        GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+
         //HUD
-        GameObject* mShieldGO = nullptr;
-        SliderComponent* mShieldSlider = nullptr;
+        GameObject* mHudControllerGO = nullptr;
+        HudController* mHudController = nullptr;
 
         //DEBUG
         bool mGodMode = false;
