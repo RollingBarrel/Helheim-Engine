@@ -973,8 +973,14 @@ void PlayerController::Reload()
 
 void PlayerController::ClosestMouseDirection(const float2& mouseState)
 {
-    int dx = mouseState.x - 960.0;
-    int dy = mouseState.y - 540.0;
+
+    float2 window(App->GetWindow()->GetGameWindowsPosition());
+    float2 windowSize(App->GetWindow()->GetGameWindowsSize());
+    
+    int dx = mouseState.x - (window.x + windowSize.x * 0.5);
+    int dy = mouseState.y - (window.y + windowSize.y * 0.5);
+
+    LOG("x: %f, y: %f", mouseState.x, mouseState.y);
 
     if (std::abs(dx) > std::abs(dy)) {
         if (dx > 0) {
