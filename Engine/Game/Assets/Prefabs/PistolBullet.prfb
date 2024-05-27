@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 782391736,
+                "UID": 933388093,
                 "ParentUID": 1,
                 "Name": "PistolBullet",
                 "isEnabled": true,
@@ -28,7 +28,7 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 786638617,
+                        "ID": 937078006,
                         "ComponentType": 17,
                         "isEnabled": true,
                         "Center": [
@@ -50,7 +50,7 @@
                         "ScriptVariables": []
                     },
                     {
-                        "ID": 1070970781,
+                        "ID": 1474064779,
                         "ComponentType": 18,
                         "isEnabled": true,
                         "Image": 148626881,
@@ -81,7 +81,7 @@
                         ]
                     },
                     {
-                        "ID": 1154446360,
+                        "ID": 1487432011,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,
@@ -93,7 +93,7 @@
                         "Looping": true,
                         "Stretched Billboard": false,
                         "Size": {
-                            "Lineal": 1.0,
+                            "Lineal": 17.0,
                             "isCurve": false,
                             "Curve": [
                                 0.0,
@@ -125,9 +125,9 @@
                             {
                                 "Time": 0.5,
                                 "Color": [
+                                    0.0,
+                                    0.6470589637756348,
                                     1.0,
-                                    0.0,
-                                    0.0,
                                     1.0
                                 ]
                             }
