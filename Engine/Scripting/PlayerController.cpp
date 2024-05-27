@@ -58,6 +58,7 @@ CREATE(PlayerController)
     
 
     SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadThrowDistance);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
@@ -136,9 +137,6 @@ void PlayerController::Start()
     // CAMERA
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
     
-    //ModuleScene* scene = App->GetScene();
-    //mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
-
     if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
     {
         ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
@@ -776,17 +774,21 @@ void PlayerController::Attack()
         }
         return;
     }
-
-    switch (mWeapon)
+    else 
     {
-    case WeaponType::RANGE:
-        mAnimationComponent->SendTrigger("tShooting", 0.2f);
-        RangedAttack();
-        break;
-    case WeaponType::MELEE:
-        MeleeAttack();
-        break;
+        switch (mWeapon)
+        {
+        case WeaponType::RANGE:
+            mAnimationComponent->SendTrigger("tShooting", 0.2f);
+            RangedAttack();
+            break;
+        case WeaponType::MELEE:
+            MeleeAttack();
+            break;
+        }
     }
+
+
 }
 
 void PlayerController::MeleeAttack()  
