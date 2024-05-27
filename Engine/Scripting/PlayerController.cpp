@@ -955,7 +955,7 @@ void PlayerController::RangedAttack()
         
         mRangeWeapon->BasicAttack();
     }
-    if (mShootingTimer > 0.2f) {
+    if (mShootingTimer > 0.4f) {
 
         mShootingTimer = 0.0f;
         Idle();
