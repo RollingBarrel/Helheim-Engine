@@ -58,6 +58,7 @@ CREATE(PlayerController)
     
 
     SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadThrowDistance);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
@@ -773,17 +774,21 @@ void PlayerController::Attack()
         }
         return;
     }
-
-    switch (mWeapon)
+    else 
     {
-    case WeaponType::RANGE:
-        mAnimationComponent->SendTrigger("tShooting", 0.2f);
-        RangedAttack();
-        break;
-    case WeaponType::MELEE:
-        MeleeAttack();
-        break;
+        switch (mWeapon)
+        {
+        case WeaponType::RANGE:
+            mAnimationComponent->SendTrigger("tShooting", 0.2f);
+            RangedAttack();
+            break;
+        case WeaponType::MELEE:
+            MeleeAttack();
+            break;
+        }
     }
+
+
 }
 
 void PlayerController::MeleeAttack()  
