@@ -12,7 +12,7 @@ unsigned int Bullet::mNumBullets = 0;
 CREATE(Bullet)
 {
 	CLASS(owner);
-
+	MEMBER(MemberType::GAMEOBJECT, mHitParticles);
 	END_CREATE;
 }
 
@@ -35,10 +35,10 @@ void Bullet::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Bullet::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 	
-	mParticleSystem = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));	
-	if (mParticleSystem)
+	mHitParticles = *(mGameObject->GetChildren().begin());
+	if (mHitParticles)
 	{
-		mParticleSystem->SetEnable(false);
+		mHitParticles->SetEnabled(false);
 	}
 
 }
@@ -60,7 +60,7 @@ void Bullet::Update()
 	}
 	else
 	{
-		if (Delay(5.0f)) 
+		if (Delay(1.0f)) 
 		{
 		  App->GetScene()->AddGameObjectToDelete(mGameObject);
 		}
@@ -70,8 +70,14 @@ void Bullet::Update()
 
 void Bullet::OnCollisionEnter(CollisionData* collisionData)
 {
-	mCollider->SetEnable(true);
-	mHasCollided = true;
+	if (collisionData->collidedWith->GetTag()->GetName().compare("Enemy") == 0) 
+	{
+		if (mHitParticles)
+		{
+			mHitParticles->SetEnabled(true);
+		}
+		mHasCollided = true;
+	}
 }
 
 bool Bullet::Delay(float delay)

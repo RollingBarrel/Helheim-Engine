@@ -57,7 +57,7 @@ ScriptComponent::~ScriptComponent()
 		mResourceScript = nullptr;
 	}
 
-	delete mScript; //Memory leack here, this shouldbe fixed.
+	//delete mScript; //Memory leack here, this shouldbe fixed.
 }
 
 void ScriptComponent::Update()
