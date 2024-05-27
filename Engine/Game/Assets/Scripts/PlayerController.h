@@ -175,7 +175,11 @@ class PlayerController :public Script
         //Combo
         int mMeleeBaseComboStep = 1;
         float mMeleeBaseComboTimer = 0.0f;
-        const float mMeleeBaseMaxComboInterval = 1.0f; 
+        const float mMeleeBaseMaxComboInterval = 2.3f; 
+        const float mComboTime1 = 1.9f;
+        const float mComboTime2 = 1.0f;
+        float mComboTimer = 0.0f;
+
         bool mIsMeleeBaseComboActive = false;
                
         //Final Attack

@@ -204,16 +204,16 @@ void PlayerController::Start()
         mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(12.36f));
 
         mStateMachine->AddState(clip, sMeleeCombo1);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(23.6f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(25.0f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(23.5f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(25.5f));
 
         mStateMachine->AddState(clip, sMeleeCombo2);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(25.3f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(25.9f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(25.6f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(26.6f));
 
 
         mStateMachine->AddState(clip, sMeleeCombo3);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(26.3f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(26.7f));
         mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(100.0f));
 
 
@@ -850,45 +850,68 @@ void PlayerController::MeleeBaseCombo()
 {
     mMeleeBaseComboTimer = 0.0f;
     mIsMeleeBaseComboActive = true;
-    mAnimationComponent->SendTrigger("tMelee", 0.2f);
 
 
     switch (mMeleeBaseComboStep)
     {
-    case 1:
+    case 1:      
         //TODO: Implement base attack animation move 1
+        LOG("Step 1");
 		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
         mMeleeBaseComboStep++;
         mCurrentState = PlayerState::IDLE;
+        mComboTimer = 0.0f;
+        mAnimationComponent->SendTrigger("tMelee", 0.2f);
+
+        
 
         break;
 
     case 2:
-        //TODO: Implement base attack animation move 2
-		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mMeleeBaseComboStep++;
-        mCurrentState = PlayerState::IDLE;
+        mComboTimer += App->GetDt();
+        if (mComboTimer > mComboTime1)
+        {
 
+            //TODO: Implement base attack animation move 2
+            LOG("Step 2");
+            MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+            mMeleeBaseComboStep++;
+            mCurrentState = PlayerState::IDLE;
+            mComboTimer = 0.0f;
+            mAnimationComponent->SendTrigger("tMelee", 0.2f);
+
+        }
         break;
 
     case 3:
-		MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mMeleeBaseFinalAttackTimer += App->GetDt();
-        if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
+        mComboTimer += App->GetDt();
+        if (mComboTimer > mComboTime2)
         {
-			mMeleeBaseComboStep = 1;
-			mIsMeleeBaseComboActive = false;
-			mMeleeBaseFinalAttackTimer = 0.0f;
-            mCurrentState = PlayerState::IDLE;
-		}
-        else
-        {
-            //TODO: Implement base attack animation move 3
-            float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
-            float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
-            mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-            mCurrentState = PlayerState::ATTACK;
+            mMeleeBaseFinalAttackTimer += App->GetDt();
+            if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
+            {
+                LOG("Step 3 hit");
+                MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+                mMeleeBaseComboStep = 1;
+                mIsMeleeBaseComboActive = false;
+                mMeleeBaseFinalAttackTimer = 0.0f;
+                mCurrentState = PlayerState::IDLE;
+                mComboTimer = 0.0f;
+
+            }
+            else
+            {
+                //TODO: Implement base attack animation move 3
+                float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
+                float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
+                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+                mCurrentState = PlayerState::ATTACK;
+            }
+
         }
+
+
+        
 
         break;
 	}
