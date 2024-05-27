@@ -6,6 +6,8 @@
 #include "ModuleInput.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
+#include "Enemy.h"
+#include "GameManager.h"
 #include "ModuleScene.h"
 
 CREATE(Level1AManager)
@@ -27,7 +29,6 @@ Level1AManager::~Level1AManager()
 
 void Level1AManager::Start()
 {
-    ModuleScene* scene = App->GetScene();
 
     if (mLevel1AMainThemeHolder != nullptr) 
     {
@@ -41,30 +42,40 @@ void Level1AManager::Start()
         mPlayerController = (PlayerController*) PlayerControllerScript->GetScriptInstance();
     }
 
-    if (mEnemyFootStepHolder != nullptr)
-    {
+
+}
+
+void Level1AManager::Update() {
+    //UpdateBackgroundMusic();
+    ModuleScene* scene = App->GetScene();
+
+    if (mEnemyFootStepHolder != nullptr) {
         mEnemyFootStep = (AudioSourceComponent*)mEnemyFootStepHolder->GetComponent(ComponentType::AUDIOSOURCE);
 
-        // Set footsteps for enemies
         std::vector<GameObject*> Enemies;
-
         scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
 
-        for (auto* e : Enemies)
-        {
-            AudioSourceComponent* newEnemyFootStep = new AudioSourceComponent(*mEnemyFootStep, e);
-            //newEnemyFootStep->Play();
-            //e->AddComponent(mEnemyFootStep, nullptr);
-            //mEnemyFootStep->Clone(e);e
+        if (!mReadyToStep) {
+            mStepTimePassed += App->GetDt();
+            if (mStepTimePassed >= mStepCoolDown) {
+                mStepTimePassed = 0;
+                mReadyToStep = true;
+            }
+        } else {
+            for (auto* e : Enemies) {
+                float dist = e->GetWorldPosition().Distance(GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+                ScriptComponent* enemyscript = (ScriptComponent*)e->GetComponent(ComponentType::SCRIPT);
+                Enemy* enemy = (Enemy*)enemyscript->GetScriptInstance();
+
+                if (dist < 10 && enemy->IsMoving()) {
+                    mEnemyFootStep->PlayOneShotPosition(e->GetPosition());
+                }
+            }
+            mReadyToStep = false;
         }
     }
 }
-
-void Level1AManager::Update()
-{
-    //UpdateBackgroundMusic();
-}
-
 
 void Level1AManager::UpdateBackgroundMusic()
 {

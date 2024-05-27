@@ -168,6 +168,33 @@ void AudioSourceComponent::PlayOneShot()
 
 }
 
+void AudioSourceComponent::PlayOneShotPosition(float3 position)
+{
+	if (this != nullptr)
+	{
+		FMOD::Studio::EventInstance* eventInstance = nullptr;
+		mEventDescription->createInstance(&eventInstance);
+
+		eventInstance->start();
+
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+		attributes.position.x = position.x;
+		attributes.position.z = position.z;
+
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		eventInstance->set3DAttributes(&attributes);
+		eventInstance->release();
+	}
+	else
+	{
+		LOG("Cannot found audio source");
+	}
+
+}
+
 void AudioSourceComponent::Stop(bool fadeout)
 {
 	if (fadeout) 

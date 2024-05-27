@@ -41,6 +41,11 @@ void EnemyExplosive::TakeDamage(float damage)
 {
 }
 
+bool EnemyExplosive::IsMoving()
+{
+    return false;
+}
+
 /*
 //Change actual animation state of the enemy
 void EnemyExplosive::ChangeState(EnemyState newState) 

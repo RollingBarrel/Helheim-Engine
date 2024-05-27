@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "float3.h"
 
 #include <vector>
 #include <map>
@@ -41,6 +42,7 @@ public:
     void Update() override;
     void Play();
     void PlayOneShot();
+    void PlayOneShotPosition(float3 position);
     void Stop(bool fadeout);
     Component* Clone(GameObject* owner) const;
     void Save(Archive& archive) const;

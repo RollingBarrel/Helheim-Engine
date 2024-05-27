@@ -33,6 +33,7 @@ private:
 	void Idle();
 	void Chase();
 	void Attack();
+	bool IsMoving();
 
 	void MeleeAttack() ;
 	void RangeAttack();

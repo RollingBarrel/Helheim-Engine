@@ -30,5 +30,9 @@ private:
 
 	GameObject* mEnemyFootStepHolder = nullptr;
 	AudioSourceComponent* mEnemyFootStep = nullptr;
+
+	bool mReadyToStep = false;
+	float mStepTimePassed = 0.0f;
+	float mStepCoolDown = 0.5f;
 };
 
