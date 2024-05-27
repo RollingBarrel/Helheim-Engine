@@ -428,6 +428,7 @@ void PlayerController::Idle()
 
 void PlayerController::Moving()
 {
+  
     mMoveDirection = float3::zero;
     float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized(); 
 
@@ -747,7 +748,10 @@ void PlayerController::Moving()
         mFootStepAudio->PlayOneShot();
         mReadyToStep = false;
     }
-  
+  if(mHasShoot)
+  {
+      mShootingTimer += App->GetDt();
+  }
     Idle();
 }
 
@@ -982,14 +986,16 @@ void PlayerController::RangedAttack()
 {
 
     //Shoot(mRangeBaseDamage);
-    if (mRangeWeapon)
+    if (mRangeWeapon && !mHasShoot)
     {
         mGunfireAudio->PlayOneShot();
         mRangeWeapon->BasicAttack();
+        mHasShoot = true;
     }
     if (mShootingTimer > 0.4f) {
 
         mShootingTimer = 0.0f;
+        mHasShoot = false;
         Idle();
     }
     else
