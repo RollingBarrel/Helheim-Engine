@@ -767,14 +767,14 @@ void PlayerController::Dash()
 
 void PlayerController::Attack()
 {
-    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    if (mAimingGrenade && !mThrowAwayGrenade) 
     {
-        if (mAimingGrenade && !mThrowAwayGrenade) {
+        if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+        {
             GrenadeAttack();
         }
-        return;
     }
-    else 
+    else
     {
         switch (mWeapon)
         {
@@ -787,8 +787,6 @@ void PlayerController::Attack()
             break;
         }
     }
-
-
 }
 
 void PlayerController::MeleeAttack()  
@@ -1199,6 +1197,8 @@ void PlayerController::GrenadeTarget()
             float distanceToEdge = mGrenadThrowDistance / sqrtf(distanceSquared);
             finalPosition = mGameObject->GetWorldPosition() + diff * distanceToEdge;
         }
+        mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(true);
+        mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(false);
 
         mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
         mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
@@ -1215,6 +1215,14 @@ void PlayerController::ThrowGrenade(float3 target)
     mCurrentState = PlayerState::IDLE;
     mAimingGrenade = false;
     mGrenadeAimAreaGO->SetEnabled(false);
+
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
+
+    mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(false);
+    mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(true);
+
+
 
     mThrowAwayGrenade = true;
 

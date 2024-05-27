@@ -1,0 +1,332 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1923657260,
+                "ParentUID": 1,
+                "Name": "Granade",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1941340994,
+                "ParentUID": 1923657260,
+                "Name": "Sphere",
+                "isEnabled": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "Grenade",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mGrenadeDPS",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mGrenadeDuration",
+                                "MemberType": 1,
+                                "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mGrenadeRadius",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 256767376,
+                "ParentUID": 1941340994,
+                "Name": "Sphere",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 260178805,
+                "ParentUID": 256767376,
+                "Name": "Sphere",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 261640846,
+                        "MeshID": 81892183,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 311210998,
+                "ParentUID": 1941340994,
+                "Name": "VFX_Black_hole",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.3560706675052643,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 2101824697,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 313021144,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 234303549,
+                        "Delay": 0.0,
+                        "Duration": 0.30000001192092898,
+                        "Life Time": 4.199999809265137,
+                        "Emission Rate": 1000.0,
+                        "Max Particles": 1,
+                        "Looping": false,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 30.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.0,
+                                1.0,
+                                0.0,
+                                1.0
+                            ],
+                            "Factor": -20.0
+                        },
+                        "Speed": {
+                            "Lineal": 0.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Factor": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.0,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.48172757029533389,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4867110550403595,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4916943609714508,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 355141849,
+                "ParentUID": 1923657260,
+                "Name": "Sphere (1)",
+                "isEnabled": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 357996310,
+                "ParentUID": 355141849,
+                "Name": "Sphere",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 360641908,
+                "ParentUID": 357996310,
+                "Name": "Sphere",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 361755844,
+                        "MeshID": 81892183,
+                        "MaterialID": 999999999,
+                        "ComponentType": 0,
+                        "isEnabled": true
+                    }
+                ]
+            }
+        ]
+    }
+}
