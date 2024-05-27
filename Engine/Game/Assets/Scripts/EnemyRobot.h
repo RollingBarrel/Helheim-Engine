@@ -48,5 +48,7 @@ private:
 	float mMeleeDistance = 2.0f;
 	float mMeeleDamage = 10.0f;
 	float mMeleeAttackCoolDown = 1.0f;
+	float mTimerAttack = 0.0f;
+	float mTimerDisengage = 0.0f;
 };
 
