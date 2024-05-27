@@ -5,6 +5,8 @@
 
 GENERATE_BODY(ItemShield);
 
+class AnimationComponent;
+
 class ItemShield : public Script
 {
     FRIEND(ItemShield)
@@ -21,4 +23,5 @@ private:
     float mActivationRange = 1.0f;
     float mHealthRecovered = 15.0f;
     GameObject* mPlayer = nullptr;
+    AnimationComponent* mAnimation = nullptr;
 };
