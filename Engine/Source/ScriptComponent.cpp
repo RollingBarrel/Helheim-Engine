@@ -69,7 +69,6 @@ Component* ScriptComponent::Clone(GameObject* owner) const
 	ScriptComponent* scriptComponent = new ScriptComponent(*this, owner);
 	scriptComponent->mScript->Awake();
 	return scriptComponent;
-
 }
 
 void ScriptComponent::Reset()

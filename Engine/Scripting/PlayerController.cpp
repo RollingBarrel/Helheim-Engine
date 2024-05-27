@@ -1,28 +1,35 @@
 #include "PlayerController.h"
+
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleScene.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleDetourNavigation.h"
-#include "Keys.h"
-#include "Math/MathFunc.h"
-#include "Geometry/Plane.h"
+#include "Physics.h"
+#include "ModuleScene.h"
+
 #include "AnimationComponent.h"
 #include "AnimationStateMachine.h"
 #include "AudioSourceComponent.h"
+#include "SliderComponent.h"
+#include "BoxColliderComponent.h"
+#include "CameraComponent.h"
+
+#include "Keys.h"
+#include "Math/MathFunc.h"
+#include "Geometry/Plane.h"
+#include <functional>
+
+#include "MathConstants.h"
 #include "EnemyExplosive.h"
 #include "EnemyRobot.h"
-#include "SliderComponent.h"
-#include "Physics.h"
 #include "ObjectPool.h"
 #include "Quadtree.h"
 #include "GameManager.h"
-#include "MathConstants.h"
-#include "BoxColliderComponent.h"
+#include "HudController.h"
 #include "RangeWeapon.h"
 #include "Grenade.h"
-#include <functional>
 
 CREATE(PlayerController)
 {
@@ -57,6 +64,7 @@ CREATE(PlayerController)
 
 
     SEPARATOR("HUD");
+    MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -92,16 +100,17 @@ void PlayerController::Start()
     mShield = mMaxShield;
     mSanity = mMaxSanity;
 
+    if (mHudControllerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
+        mHudController = static_cast<HudController*>(script->GetScriptInstance());
+    }
+    
     //Weapons
     if (mRangeWeaponGameObject)
     {
         mRangeWeapon = reinterpret_cast<RangeWeapon*>(reinterpret_cast<ScriptComponent*>(mRangeWeaponGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     }
-    
-
-    if (mShieldGO != nullptr) mShieldSlider = static_cast<SliderComponent*>(mShieldGO->GetComponent(ComponentType::SLIDER));
-
-    
 
     if (mFootStepAudioHolder)
     {
@@ -125,8 +134,8 @@ void PlayerController::Start()
     }
 
     // CAMERA
-    ModuleScene* scene = App->GetScene();
-    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
+    mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
+    
 
     if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
     {
@@ -214,7 +223,6 @@ void PlayerController::Start()
 
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
-
     }
 
     //END ANIMATION
@@ -223,7 +231,6 @@ void PlayerController::Start()
 void PlayerController::Update()
 {
     CheckDebugOptions();
-    UpdateShield();
     UpdateGrenadeCooldown();
     UpdateBattleSituation();
 
@@ -303,7 +310,7 @@ void PlayerController::Update()
 
     if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
     {
-        GameManager::GetInstance()->WinScreen();
+        mHudController->SetScreen(SCREEN::WIN, true);
     }
 
     Loading();
@@ -367,8 +374,6 @@ void PlayerController::Moving()
 {
     mMoveDirection = float3::zero;
     float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized(); 
-    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
-    ClosestMouseDirection(mousePosition);
 
     if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
     {
@@ -395,10 +400,10 @@ void PlayerController::Moving()
 
     if (!mMoveDirection.Equals(float3::zero))
     {
-
-
         mMoveDirection.Normalize(); 
         SetMovingDirection(mMoveDirection);
+        float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
+        ClosestMouseDirection(mousePosition);
         switch (mLookingAt)
         {
         case MouseDirection::UP:
@@ -528,15 +533,144 @@ void PlayerController::Moving()
             default:
                 break;
             }
+            break;
 
+        case MouseDirection::UP_RIGHT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            default:
+                break;
+            }
+            break;
+        case MouseDirection::UP_LEFT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            default:
+                break;
+            }
+            break;
+        case MouseDirection::DOWN_RIGHT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            default:
+                break;
+            }
+            break;
+        case MouseDirection::DOWN_LEFT:
+            switch (mMovingTo)
+            {
+            case MoveDirection::UP:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::RIGHT:
+                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
+                break;
+            case MoveDirection::LEFT:
+                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
+                break;
+            case MoveDirection::UP_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break; HandleRotation();
+            case MoveDirection::UP_LEFT:
+                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
+                break;
+            case MoveDirection::DOWN_RIGHT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            case MoveDirection::DOWN_LEFT:
+                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
+                break;
+            default:
+                break;
+            }
             break;
         default:
             break;
         }
 
-        
-
         Move(mMoveDirection);
+    }
+    else {
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
     }
 
     // Hardcoded play-step-sound solution: reproduce every second 
@@ -814,12 +948,11 @@ void PlayerController::Reload()
     LOG("Reloaded!Remaining bullets : %i", mBullets);
 }
 
-void PlayerController::ClosestMouseDirection(float2 mouseState)
+void PlayerController::ClosestMouseDirection(const float2& mouseState)
 {
     int dx = mouseState.x - 960.0;
     int dy = mouseState.y - 540.0;
 
-    // Determine the primary direction based on the largest absolute difference
     if (std::abs(dx) > std::abs(dy)) {
         if (dx > 0) {
             mLookingAt = MouseDirection::RIGHT;
@@ -836,9 +969,27 @@ void PlayerController::ClosestMouseDirection(float2 mouseState)
             mLookingAt = MouseDirection::UP;
         }
     }
+
+    if (std::abs(dx) > 0.5 * std::abs(dy) && std::abs(dy) > 0.5 * std::abs(dx)) {
+        if (dx > 0 && dy > 0) {
+            mLookingAt = MouseDirection::DOWN_RIGHT;
+        }
+        else if (dx > 0 && dy < 0) {
+            mLookingAt = MouseDirection::UP_RIGHT;
+        }
+        else if (dx < 0 && dy > 0) {
+            mLookingAt = MouseDirection::DOWN_LEFT;
+        }
+        else if (dx < 0 && dy < 0) {
+            mLookingAt = MouseDirection::UP_LEFT;
+        }
+    }
+    
+
+    
 }
 
-void PlayerController::SetMovingDirection(float3 moveDirection)
+void PlayerController::SetMovingDirection(const float3& moveDirection)
 {
 
     bool movingUp = moveDirection.z > 0 && moveDirection.x < 0 && std::abs(moveDirection.z) < std::abs(moveDirection.x);
@@ -851,7 +1002,7 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
     bool movingDownRight = moveDirection.x > 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
     bool movingDownLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
 
-
+    //LOG("x: %f, z: %f", moveDirection.x, moveDirection.z);
     if (movingDownLeft) {
         mMovingTo = MoveDirection::DOWN_LEFT;
     }
@@ -878,12 +1029,9 @@ void PlayerController::SetMovingDirection(float3 moveDirection)
         mMovingTo = MoveDirection::LEFT;
     }
     else {
-        
         mMovingTo = MoveDirection::NOT_MOVING;
     }
 }
-
-
 
 void PlayerController::RechargeShield(float shield)
 {
@@ -896,6 +1044,8 @@ void PlayerController::RechargeShield(float shield)
             mShield = mMaxShield;
         }
     }
+
+    UpdateShield();
 }
 
 void PlayerController::TakeDamage(float damage)
@@ -913,6 +1063,7 @@ void PlayerController::TakeDamage(float damage)
             {
                 mCurrentState = PlayerState::DEATH;
             }
+            UpdateShield();
         }
     }
 }
@@ -920,7 +1071,7 @@ void PlayerController::TakeDamage(float damage)
 void PlayerController::Death() 
 {
     mPlayerIsDead = true;
-    GameManager::GetInstance()->LoseScreen();
+    mHudController->SetScreen(SCREEN::LOSE, true);
 }
 
 bool PlayerController::IsDead() 
@@ -930,7 +1081,7 @@ bool PlayerController::IsDead()
 
 void PlayerController::UpdateShield() 
 {
-    if (mShieldSlider) mShieldSlider->SetFillPercent(mShield / mMaxShield);
+    mHudController->SetHealth(mShield / mMaxShield);
 }
 
 void PlayerController::CheckDebugOptions() 
@@ -1089,23 +1240,23 @@ void PlayerController::UpdateBattleSituation()
 void PlayerController::Victory()
 {
     mVictory = true;
-    App->GetScene()->Find("Victory")->SetEnabled(true);
+    mHudController->SetScreen(SCREEN::WIN, true);
 
     if (Delay(mTimeScreen))
     {
-        App->GetScene()->Find("Victory")->SetEnabled(false);
+        mHudController->SetScreen(SCREEN::WIN, false);
         mLoadingActive = true;
     }
 }
 
-void PlayerController::GameoOver()
+void PlayerController::GameOver()
 {
     mGameOver = true;
-    App->GetScene()->Find("Game_Over")->SetEnabled(true);
+    mHudController->SetScreen(SCREEN::LOSE, true);
 
     if (Delay(mTimeScreen))
     {
-        App->GetScene()->Find("Game_Over")->SetEnabled(false);
+        mHudController->SetScreen(SCREEN::LOSE, false);
         mLoadingActive = true;
     }
 }
@@ -1126,13 +1277,13 @@ void PlayerController::Loading()
 {
     if (mLoadingActive)
     {
-        App->GetScene()->Find("Loading_Screen")->SetEnabled(true);
+        mHudController->SetScreen(SCREEN::LOAD, true);
 
         if (Delay(3.0f))
         {
             mLoadingActive = false;
-            App->GetScene()->Find("Loading_Screen")->SetEnabled(false);
-            App->GetScene()->Load("MainMenu.json");
+            mHudController->SetScreen(SCREEN::LOAD, false);
+            GameManager::GetInstance()->LoadLevel("MainMenu.json");
         }
     }
 }

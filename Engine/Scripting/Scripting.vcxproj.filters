@@ -54,9 +54,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Grenade.h">
-      <Filter>ScriptHeaders</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -85,6 +82,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
       <Filter>Weapons\Range\Pistol</Filter>
     </ClInclude>
+    <ClInclude Include="Grenade.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -107,9 +106,6 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Grenade.cpp">
-      <Filter>SricptCode</Filter>
     </ClCompile>
     <ClCompile Include="ItemShield.cpp">
       <Filter>Player</Filter>
@@ -139,5 +135,7 @@
     <ClCompile Include="Pistol.cpp">
       <Filter>Weapons\Range\Pistol</Filter>
     </ClCompile>
+    <ClCompile Include="HudController.cpp" />
+    <ClCompile Include="Grenade.cpp" />
   </ItemGroup>
 </Project>

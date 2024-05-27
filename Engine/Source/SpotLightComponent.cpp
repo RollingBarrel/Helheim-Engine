@@ -40,7 +40,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 }
 
 SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
-	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow)
+	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias)
 {
 	App->GetOpenGL()->AddSpotLight(*this);
 }

@@ -12,6 +12,7 @@ class ObjectPool;
 class GameManager;
 class AnimationStateMachine;
 class BoxColliderComponent;
+class HudController;
 class Grenade;
 struct CollisionData;
 
@@ -45,6 +46,10 @@ enum class MouseDirection {
     DOWN,
     LEFT,
     RIGHT,
+    UP_RIGHT,
+    UP_LEFT,
+    DOWN_RIGHT,
+    DOWN_LEFT,
     DEFAULT
 };
 
@@ -93,8 +98,8 @@ class PlayerController :public Script
         void HandleRotation();
         void Shoot(float damage);
         void Reload();
-        void ClosestMouseDirection(float2 mouseState);
-        void SetMovingDirection(float3 moveDirection);
+        void ClosestMouseDirection(const float2& mouseState); 
+        void SetMovingDirection(const float3& moveDirection);
       
         void Death();
         void UpdateShield();
@@ -108,11 +113,10 @@ class PlayerController :public Script
         void ThrowGrenade(float3 target);
 
         void Victory();
-        void GameoOver();
+        void GameOver();
         bool Delay(float delay);
         void Loading();
         
-
         void OnCollisionEnter(CollisionData* collisionData);
 
         WeaponType mWeapon = WeaponType::RANGE;
@@ -163,15 +167,17 @@ class PlayerController :public Script
         //Melee
         bool mLeftMouseButtonPressed = false;
 
-            //Melee Base Attack
+        //Melee Base Attack
         float mMeleeBaseDamage = 2.0f;
         float mMeleeBaseRange = 1.0f;
-               //Combo
+               
+        //Combo
         int mMeleeBaseComboStep = 1;
         float mMeleeBaseComboTimer = 0.0f;
         const float mMeleeBaseMaxComboInterval = 5.0f; 
         bool mIsMeleeBaseComboActive = false;
-               //Final Attack
+               
+        //Final Attack
         const float mMeleeBaseFinalAttackDuration = 0.5f; 
         float mMeleeBaseFinalAttackTimer = 0.0f;
         float mMeleeBaseMoveDuration = 0.5f;
@@ -182,7 +188,8 @@ class PlayerController :public Script
         const float mMeleeSpecialAttackDuration = 2.0f;
         float mMeleeSpecialDamage = 4.0f;
         float mMeleeSpecialRange = 2.0f;
-               //Cooldown
+              
+        //Cooldown
         bool mIsMeleeSpecialCoolDownActive = false;
         float mMeleeSpecialCoolDownTimer = 0.0f;
         float mMeleeSpecialCoolDown = 4.0f;
@@ -201,8 +208,8 @@ class PlayerController :public Script
         GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
 
         //HUD
-        GameObject* mShieldGO = nullptr;
-        SliderComponent* mShieldSlider = nullptr;
+        GameObject* mHudControllerGO = nullptr;
+        HudController* mHudController = nullptr;
 
         //DEBUG
         bool mGodMode = false;
