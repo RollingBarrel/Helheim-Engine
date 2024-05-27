@@ -943,6 +943,11 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	bool loop = component->GetLoop();
 	//bool play = false;
 
+	ImGui::Text("Current state: ");
+	ImGui::SameLine();
+	ImGui::Text(component->GetCurrentStateName().c_str());
+
+
 	if (ImGui::Button("Play/Pause"))
 	{
 		component->OnStart();
@@ -953,6 +958,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	ImGui::SameLine();
 	ImGui::Dummy(ImVec2(40.0f, 0.0f));
 	ImGui::SameLine();
+
+
 
 	if (component->GetIsPlaying())
 	{
