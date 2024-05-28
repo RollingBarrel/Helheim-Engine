@@ -53,6 +53,9 @@
 
 #include "IconsFontAwesome6.h"
 
+
+#include "AnimationStateMachine.h"
+
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
@@ -966,6 +969,26 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 		component->OnRestart();
 	}
 	*/
+	
+	AnimationStateMachine* animSM = component->GetStateMachine();
+	float startTime = animSM->GetStateStartTime(0);
+	float endTime = animSM->GetStateEndTime(0);
+
+	if (ImGui::DragFloat("StartTime", &startTime, 0.01f, 0.0f, endTime))
+	{
+		animSM->SetStateStartTime(0, startTime);
+		component->ChangeState("default", 0.0f);
+	}
+
+	if (ImGui::DragFloat("EndTime", &endTime, 0.01f, startTime, 15.0f))
+	{
+		animSM->SetStateEndTime(0, endTime);
+		component->ChangeState("default", 0.0f);
+
+	}
+	
+
+
 
 	if (ImGui::Button("Restart"))
 	{
