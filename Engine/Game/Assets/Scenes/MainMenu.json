@@ -970,7 +970,7 @@
                     {
                         "ID": 979603251,
                         "ComponentType": 9,
-                        "isEnabled": true,
+                        "isEnabled": false,
                         "Translation": [
                             0.0,
                             0.0,
@@ -1045,7 +1045,7 @@
                     {
                         "ID": 2122941879,
                         "ComponentType": 9,
-                        "isEnabled": true,
+                        "isEnabled": false,
                         "Translation": [
                             0.0,
                             0.0,
@@ -1274,7 +1274,7 @@
                 "Components": [
                     {
                         "ComponentType": 6,
-                        "AspectRatio": 1.7777777910232545,
+                        "AspectRatio": 1.8978978395462037,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
