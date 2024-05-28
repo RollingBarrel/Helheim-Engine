@@ -60,8 +60,11 @@ void HudController::Start()
     mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
     mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
     mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
-    mGrenadeImage = static_cast<ImageComponent*>(mGrenadeGO->GetComponent(ComponentType::IMAGE));
     mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
+
+    mHealthGradualSlider->SetValue(1.0f);
+    mHealthSlider->SetValue(1.0f);
+    mGrenadeSlider->SetValue(0.001f);
 
     // Click events
     mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
@@ -159,6 +162,7 @@ void HudController::SwitchWeapon()
 
 void HudController::SetGrenadeCooldown(float cooldown)
 {
+    if (cooldown <= 0.001f) cooldown = 0.001f;
     mGrenadeSlider->SetValue(cooldown);
 }
 

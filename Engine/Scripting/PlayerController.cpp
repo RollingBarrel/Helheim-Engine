@@ -771,8 +771,7 @@ void PlayerController::HandleRotation()
     }
 
     std::map<float, Hit> hits;
-    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
-    Ray ray = Physics::ScreenPointToRay(mousePosition);
+    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
     Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
     
     float distance;
@@ -1220,6 +1219,8 @@ void PlayerController::UpdateGrenadeCooldown()
         {
             mGrenadeCoolDownTimer = mGrenadeCoolDown;
             mThrowAwayGrenade = false; 
+            mHudController->SetGrenadeCooldown(0.0f);
+            return;
         }
 
         if (mGrenadeCoolDownTimer > 0.0f)
@@ -1261,8 +1262,7 @@ void PlayerController::AimGrenade()
 
 void PlayerController::GrenadeTarget()
 {
-    float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
-    Ray ray = Physics::ScreenPointToRay(mousePosition);
+    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
     Plane plane = Plane(mGrenadeAimAreaGO->GetWorldPosition(), float3::unitY);
 
     float distance;
