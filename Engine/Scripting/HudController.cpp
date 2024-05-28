@@ -60,8 +60,11 @@ void HudController::Start()
     mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
     mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
     mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
-    mGrenadeImage = static_cast<ImageComponent*>(mGrenadeGO->GetComponent(ComponentType::IMAGE));
     mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
+
+    mHealthGradualSlider->SetValue(1.0f);
+    mHealthSlider->SetValue(1.0f);
+    mGrenadeSlider->SetValue(0.001f);
 
     // Click events
     mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
@@ -79,16 +82,20 @@ void HudController::Start()
 void HudController::Update()
 {
     Controls();
-    Loading();
 
     // Gradually decrease the gradual health slider
-    if (mHealthGradualSlider->GetValue() > mTargetHealth)
+    if (mHealthGradualSlider != nullptr)
     {
-        mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+        if (mHealthGradualSlider->GetValue() > mTargetHealth)
+        {
+            mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+        }
+        else if (mHealthGradualSlider->GetValue() < mTargetHealth) {
+            mHealthGradualSlider->SetValue(mTargetHealth);
+        }
     }
-    else if (mHealthGradualSlider->GetValue() < mTargetHealth) {
-        mHealthGradualSlider->SetValue(mTargetHealth);
-    }
+    
+    Loading();
 }
 
 bool HudController::Delay(float delay)
@@ -159,6 +166,7 @@ void HudController::SwitchWeapon()
 
 void HudController::SetGrenadeCooldown(float cooldown)
 {
+    if (cooldown <= 0.001f) cooldown = 0.001f;
     mGrenadeSlider->SetValue(cooldown);
 }
 
@@ -173,6 +181,9 @@ void HudController::SetScreen(SCREEN name, bool active)
             break;
         case SCREEN::WIN:
             mWinScreen->SetEnabled(active);
+            break;
+        case SCREEN::PAUSE:
+            mPauseScreen->SetEnabled(active);
             break;
         default:
             break;

@@ -10,7 +10,8 @@ class ImageComponent;
 enum SCREEN {
     LOAD,
     LOSE,
-    WIN
+    WIN,
+    PAUSE
 };
 
 GENERATE_BODY(HudController);
@@ -26,6 +27,8 @@ public:
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
     void SetScreen(SCREEN menu, bool active);
+
+    SliderComponent* mHealthGradualSlider = nullptr;
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -65,9 +68,7 @@ private:
     ButtonComponent* mYesBtn = nullptr;
     ButtonComponent* mNoBtn = nullptr;
     SliderComponent* mHealthSlider = nullptr;
-    SliderComponent* mHealthGradualSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
-    ImageComponent* mGrenadeImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
 
     float mTargetHealth = 1;

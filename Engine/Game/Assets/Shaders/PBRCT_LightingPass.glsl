@@ -117,7 +117,7 @@ vec3 GetAmbientLight()
 	vec3 radiance = textureLod(prefilteredIBL, R, rough * numLevels).rgb;
 	vec2 fab = texture(environmentBRDF, vec2(dotNV, rough)).rg;
 	vec3 diffuse = (cDif * (1 - cSpec));
-	return (diffuse * irradiance + radiance * (cSpec * fab.x + fab.y)) * 0.5;
+	return diffuse * irradiance + radiance * (cSpec * fab.x + fab.y);
 }
 
 void main() 

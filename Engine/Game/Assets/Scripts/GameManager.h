@@ -3,6 +3,7 @@
 #include "Macros.h"
 
 class ButtonComponent;
+class HudController;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -25,4 +26,9 @@ private:
     static GameManager* mInstance;
     
     GameObject* mPlayer = nullptr;
+    GameObject* mHudControllerGO = nullptr;
+
+    HudController* mHudController = nullptr;
+
+    bool mPaused = false;
 };

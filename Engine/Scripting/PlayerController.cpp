@@ -1219,6 +1219,8 @@ void PlayerController::UpdateGrenadeCooldown()
         {
             mGrenadeCoolDownTimer = mGrenadeCoolDown;
             mThrowAwayGrenade = false; 
+            mHudController->SetGrenadeCooldown(0.0f);
+            return;
         }
 
         if (mGrenadeCoolDownTimer > 0.0f)
