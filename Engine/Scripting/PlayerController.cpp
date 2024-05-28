@@ -161,9 +161,7 @@ void PlayerController::Start()
         std::string sStrafeLeft = "Strafe Left";
         std::string sStrafeRight = "Strafe Right";
         std::string sShooting = "Shooting";
-        std::string sMeleeCombo1 = "MeleeCombo1";
-        std::string sMeleeCombo2 = "MeleeCombo2";
-        std::string sMeleeCombo3 = "MeleeCombo3";
+        std::string sMeleeCombo = "MeleeCombo";
 
 
         std::string idleTrigger = "tIdle";
@@ -201,18 +199,9 @@ void PlayerController::Start()
         mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(9.8f));
         mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(12.36f));
 
-        mStateMachine->AddState(clip, sMeleeCombo1);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(23.5f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo1), float(25.5f));
-
-        mStateMachine->AddState(clip, sMeleeCombo2);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(25.6f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo2), float(26.6f));
-
-
-        mStateMachine->AddState(clip, sMeleeCombo3);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(26.7f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo3), float(100.0f));
+        mStateMachine->AddState(clip, sMeleeCombo);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo), float(23.9f));
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo), float(28.1f));
 
 
         //Transitions
@@ -224,34 +213,34 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
         mStateMachine->AddTransition(sIdle, sShooting, shootingTrigger);
-        mStateMachine->AddTransition(sIdle, sMeleeCombo1, meleeTrigger);
+        mStateMachine->AddTransition(sIdle, sMeleeCombo, meleeTrigger);
 
         mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkForward, sMeleeCombo1, meleeTrigger);
+        mStateMachine->AddTransition(sWalkForward, sMeleeCombo, meleeTrigger);
 
 
         mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkBack, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkBack, sMeleeCombo1, meleeTrigger);
+        mStateMachine->AddTransition(sWalkBack, sMeleeCombo, meleeTrigger);
 
 
         mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sMeleeCombo1, meleeTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sMeleeCombo, meleeTrigger);
 
 
         mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
         mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sMeleeCombo1, meleeTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sMeleeCombo, meleeTrigger);
 
 
         mStateMachine->AddTransition(sShooting, sIdle, idleTrigger);
@@ -267,12 +256,7 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sMeleecombo, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sMeleecombo, sStrafeRight, strafeRightTrigger);
         */
-        mStateMachine->AddTransition(sMeleeCombo1, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sMeleeCombo2, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sMeleeCombo3, sIdle, idleTrigger);
-
-        mStateMachine->AddTransition(sMeleeCombo1, sMeleeCombo2, meleeTrigger);
-        mStateMachine->AddTransition(sMeleeCombo2, sMeleeCombo3, meleeTrigger);
+        mStateMachine->AddTransition(sMeleeCombo, sIdle, idleTrigger);
 
 
         mAnimationComponent->OnStart();
@@ -849,6 +833,7 @@ void PlayerController::Attack()
 
 void PlayerController::MeleeAttack()
 {
+    /*
     if (mLeftMouseButtonPressed)
     {
         MeleeBaseCombo();
@@ -857,78 +842,112 @@ void PlayerController::MeleeAttack()
     {
         MeleeSpecialCombo();
     }
+    */
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+    {
+        mLeftMouseButtonPressed = true;
+    }
+    MeleeBaseCombo();
 }
 
 void PlayerController::MeleeBaseCombo()
 {
     mMeleeBaseComboTimer = 0.0f;
-    mIsMeleeBaseComboActive = true;
+    bool firstHit = false;
+    if (!mIsMeleeBaseComboActive)
+    {
+        // First hit
+        mAnimationComponent->SendTrigger("tMelee", 0.2f);
+        mIsMeleeBaseComboActive = true;
+        mMeleComboCurrentTime = 0.0f;
+        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        mMeleeBaseComboStep = 2;
+        firstHit = true;
+
+    }
+    if (mLeftMouseButtonPressed && !mNextComboStep)
+    {
+        mNextComboStep = !firstHit;
+        mLeftMouseButtonPressed = false;
+        mBreakMeleeCombo = 0.0f;
 
 
+    }
+    mMeleComboCurrentTime += App->GetDt();
+    if (mMeleComboCurrentTime > mMeleeComboMilestone1 && mMeleComboCurrentTime < mMeleeComboMilestone2 && mNextComboStep && mMeleeBaseComboStep == 2)
+    {
+        // Second hit
+        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        mMeleeBaseComboStep = 3;
+        mNextComboStep = false;
+        mLeftMouseButtonPressed = false;
+        mBreakMeleeCombo = 0.0f;
+
+
+    }
+    else if (mMeleComboCurrentTime > mMeleeComboMilestone2 && mMeleComboCurrentTime < mMeleeComboDuration && mMeleeBaseComboStep == 3 && mNextComboStep)
+    {
+        // Dashing
+        float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
+        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
+        mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
+        mBreakMeleeCombo = 0.0f;
+
+    }
+    else if (mMeleComboCurrentTime > mMeleeComboDuration && mMeleeBaseComboStep == 3 && mNextComboStep)
+    {
+        //End combo
+        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
+        mAnimationComponent->SendTrigger("tIdle", 0.2f);
+        mIsMeleeBaseComboActive = false;
+        mMeleComboCurrentTime = 0.0f;
+        mCurrentState = PlayerState::IDLE;
+        mMeleeBaseComboStep = 4; //this variable is weird, refactor how it works in next updates
+        mNextComboStep = false;
+        mLeftMouseButtonPressed = false;
+        mBreakMeleeCombo = 0.0f;
+
+    }
+    else if (!mNextComboStep)
+    {
+        mBreakMeleeCombo += App->GetDt();
+    }
+
+    float breakTime = 10.0f;
     switch (mMeleeBaseComboStep)
     {
     case 1:
-        //TODO: Implement base attack animation move 1
-        LOG("Step 1");
-        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mMeleeBaseComboStep++;
-        mCurrentState = PlayerState::IDLE;
-        mComboTimer = 0.0f;
-        mAnimationComponent->SendTrigger("tMelee", 0.2f);
-
-
-
+        breakTime = 10.0f;
         break;
-
     case 2:
-        mComboTimer += App->GetDt();
-        if (mComboTimer > mComboTime1)
-        {
-
-            //TODO: Implement base attack animation move 2
-            LOG("Step 2");
-            MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-            mMeleeBaseComboStep++;
-            mCurrentState = PlayerState::IDLE;
-            mComboTimer = 0.0f;
-            mAnimationComponent->SendTrigger("tMelee", 0.2f);
-
-        }
+        breakTime = 1.1f;
         break;
-
     case 3:
-        mComboTimer += App->GetDt();
-        if (mComboTimer > mComboTime2)
-        {
-            mMeleeBaseFinalAttackTimer += App->GetDt();
-            if (mMeleeBaseFinalAttackTimer >= mMeleeBaseFinalAttackDuration)
-            {
-                LOG("Step 3 hit");
-                MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-                mMeleeBaseComboStep = 1;
-                mIsMeleeBaseComboActive = false;
-                mMeleeBaseFinalAttackTimer = 0.0f;
-                mCurrentState = PlayerState::IDLE;
-                mComboTimer = 0.0f;
-
-            }
-            else
-            {
-                //TODO: Implement base attack animation move 3
-                float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
-                float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
-                mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-                mCurrentState = PlayerState::ATTACK;
-            }
-
-        }
-
-
-
-
+        breakTime = 0.9f;
+        break;
+    default:
         break;
     }
+
+    if (mBreakMeleeCombo > breakTime)
+    {
+        mAnimationComponent->SendTrigger("tIdle", 0.2f);
+        mIsMeleeBaseComboActive = false;
+        mMeleComboCurrentTime = 0.0f;
+        mCurrentState = PlayerState::IDLE;
+        mMeleeBaseComboStep = 1; //this variable is weird, refactor how it works in next updates
+        mNextComboStep = false;
+        mLeftMouseButtonPressed = false;
+        mBreakMeleeCombo = 0.0f;
+
+    }
+
+    if (mMeleComboCurrentTime > mMeleeComboDuration + 2.0f)
+    {
+        mMeleComboCurrentTime = 0.0f;
+    }
 }
+
 
 void PlayerController::MeleeSpecialCombo() {
 

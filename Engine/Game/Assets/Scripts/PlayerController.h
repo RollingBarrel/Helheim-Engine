@@ -175,12 +175,15 @@ private:
     //Combo
     int mMeleeBaseComboStep = 1;
     float mMeleeBaseComboTimer = 0.0f;
-    const float mMeleeBaseMaxComboInterval = 2.3f;
-    const float mComboTime1 = 1.9f;
-    const float mComboTime2 = 1.0f;
-    float mComboTimer = 0.0f;
-
+    const float mMeleeBaseMaxComboInterval = 1.0f;
+    float mMeleeComboDuration = 2.6f;
+    float mMeleeComboMilestone1 = 1.1f;
+    float mMeleeComboMilestone2 = 2.0f;
+    float mMeleComboCurrentTime = 0.0f;
+    float mBreakMeleeCombo = 0.0f;
+    bool mNextComboStep = false;
     bool mIsMeleeBaseComboActive = false;
+
 
     //Final Attack
     const float mMeleeBaseFinalAttackDuration = 0.5f;
