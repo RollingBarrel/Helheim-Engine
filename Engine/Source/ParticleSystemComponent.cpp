@@ -110,7 +110,7 @@ void ParticleSystemComponent::Draw() const
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
         const CameraComponent* cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
-        if (cam) {
+        if (cam && mParticles.size()) {
             float4x4 projection = cam->GetViewProjectionMatrix();
             float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
             float3 up = cam->GetFrustum().up;
@@ -285,9 +285,9 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mSizeCurve.LoadJson(data["Size"]);
     }
-    if (data.HasMember("Max Particles") && data["Max Particles"].IsInt())
+    if (data.HasMember("Max Particles") && data["Max Particles"].GetInt())
     {
-        mMaxParticles = data["Max Particles"].IsInt();
+        mMaxParticles = data["Max Particles"].GetInt();
     }
     if (data.HasMember("Looping") && data["Looping"].IsBool())
     {

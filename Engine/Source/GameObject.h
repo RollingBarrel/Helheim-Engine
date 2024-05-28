@@ -46,6 +46,7 @@ public:
 	const float3& GetRotation() const { return mEulerRotation; }
 	const Quat& GetRotationQuat() const { return mRotation; }
 	float3 GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
+	float3 GetWorldRotation() const { return mWorldTransformMatrix.RotatePart().ToEulerXYZ(); }
 	const float3& GetPosition() const { return mPosition; }
 	const float3& GetScale() const { return mScale; }
 	GameObject* GetParent() const { return mParent; }

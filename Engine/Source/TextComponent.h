@@ -33,6 +33,8 @@ public:
     int* GetLineSpacing() { return &mLineSpacing; }
     int* GetLineWidth() { return &mLineWidth; }
 
+    void SetText(std::string text) { mText = text; }
+
 private:
     void InitFreeType();
     void LoadFont(const std::string& fontPath);

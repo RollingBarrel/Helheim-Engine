@@ -57,6 +57,7 @@ private:
 	FMOD::Studio::Bank* mMasterBank = nullptr;
 	FMOD::Studio::Bank* mSFXBank = nullptr;
 	FMOD::Studio::Bank* mMusicBank = nullptr;
+	FMOD::Studio::Bank* mVehicleBank = nullptr;
 
 	bool mPaused = false;
 	bool mStopped = false;
