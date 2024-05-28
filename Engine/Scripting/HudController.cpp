@@ -82,16 +82,20 @@ void HudController::Start()
 void HudController::Update()
 {
     Controls();
-    Loading();
 
     // Gradually decrease the gradual health slider
-    if (mHealthGradualSlider->GetValue() > mTargetHealth)
+    if (mHealthGradualSlider != nullptr)
     {
-        mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+        if (mHealthGradualSlider->GetValue() > mTargetHealth)
+        {
+            mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+        }
+        else if (mHealthGradualSlider->GetValue() < mTargetHealth) {
+            mHealthGradualSlider->SetValue(mTargetHealth);
+        }
     }
-    else if (mHealthGradualSlider->GetValue() < mTargetHealth) {
-        mHealthGradualSlider->SetValue(mTargetHealth);
-    }
+    
+    Loading();
 }
 
 bool HudController::Delay(float delay)
@@ -177,6 +181,9 @@ void HudController::SetScreen(SCREEN name, bool active)
             break;
         case SCREEN::WIN:
             mWinScreen->SetEnabled(active);
+            break;
+        case SCREEN::PAUSE:
+            mPauseScreen->SetEnabled(active);
             break;
         default:
             break;
