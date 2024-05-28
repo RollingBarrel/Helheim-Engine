@@ -67,7 +67,6 @@ private:
     SliderComponent* mHealthSlider = nullptr;
     SliderComponent* mHealthGradualSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
-    ImageComponent* mGrenadeImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
 
     float mTargetHealth = 1;
