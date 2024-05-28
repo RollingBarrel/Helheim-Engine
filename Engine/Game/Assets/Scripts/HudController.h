@@ -53,8 +53,10 @@ private:
     GameObject* mHealthGO = nullptr;
     GameObject* mHealthGradualGO = nullptr;
     GameObject* mAmmoGO = nullptr;
-    GameObject* mWeaponGO = nullptr;
-    GameObject* mSecondWeaponGO = nullptr;
+    GameObject* mWeaponMeleeGO = nullptr;
+    GameObject* mSecondWeaponMeleeGO = nullptr;
+    GameObject* mWeaponRangeGO = nullptr;
+    GameObject* mSecondWeaponRangeGO = nullptr;
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
 
@@ -67,8 +69,6 @@ private:
     TextComponent* mAmmoText = nullptr;
     ImageComponent* mGrenadeImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
-    ImageComponent* mWeaponImage = nullptr;
-    ImageComponent* mSecondWeaponImage = nullptr;
 
     float mTargetHealth = 1;
 

@@ -76,10 +76,7 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 
 	if (gameObject->IsEnabled())
 	{
-		for (GameObject* child : gameObject->GetChildren())
-		{
-			DrawWidget(child);
-		}
+		
 
 		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
 		{
@@ -97,6 +94,11 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			{
 				text->Draw();
 			}
+		}
+		
+		for (GameObject* child : gameObject->GetChildren())
+		{
+			DrawWidget(child);
 		}
 	}
 }
