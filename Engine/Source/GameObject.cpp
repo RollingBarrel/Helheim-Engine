@@ -80,6 +80,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 		mComponents.push_back(component->Clone(this));
 	}
 	RecalculateLocalTransform();
+	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
@@ -87,8 +88,6 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 		mChildren.push_back(gameObject);
 	}
 	
- 
-	App->GetScene()->AddGameObjectToScene(this);
 }
 
 GameObject::~GameObject()
