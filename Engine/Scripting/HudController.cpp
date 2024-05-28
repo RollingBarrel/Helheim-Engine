@@ -19,8 +19,10 @@ CREATE(HudController)
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
-    MEMBER(MemberType::GAMEOBJECT, mWeaponGO);
-    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponGO);
+    MEMBER(MemberType::GAMEOBJECT, mWeaponMeleeGO);
+    MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
+    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponMeleeGO);
+    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
@@ -60,8 +62,6 @@ void HudController::Start()
     mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
     mGrenadeImage = static_cast<ImageComponent*>(mGrenadeGO->GetComponent(ComponentType::IMAGE));
     mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
-    mWeaponImage = static_cast<ImageComponent*>(mWeaponGO->GetComponent(ComponentType::IMAGE));
-    mSecondWeaponImage = static_cast<ImageComponent*>(mSecondWeaponGO->GetComponent(ComponentType::IMAGE));
 
     // Click events
     mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
@@ -139,16 +139,20 @@ void HudController::SetHealth(float health)
 
 void HudController::SwitchWeapon()
 {
-    if (mWeaponGO->IsEnabled())
+    if (mWeaponMeleeGO->IsEnabled())
     {
-        mWeaponGO->SetEnabled(false);
-        mSecondWeaponGO->SetEnabled(true);
+        mWeaponMeleeGO->SetEnabled(false);
+        mWeaponRangeGO->SetEnabled(true);
+        mSecondWeaponMeleeGO->SetEnabled(true);
+        mSecondWeaponRangeGO->SetEnabled(false);
         return;
     }
-    if (mSecondWeaponGO->IsEnabled())
+    else
     {
-        mSecondWeaponGO->SetEnabled(false);
-        mWeaponGO->SetEnabled(true);
+        mWeaponMeleeGO->SetEnabled(true);
+        mWeaponRangeGO->SetEnabled(false);
+        mSecondWeaponMeleeGO->SetEnabled(false);
+        mSecondWeaponRangeGO->SetEnabled(true);
         return;
     }
 }
