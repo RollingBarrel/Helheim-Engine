@@ -265,7 +265,7 @@ void EnemyRobot::RangeAttack()
 
 void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetName().find("Bullet"))
+    if (collisionData->collidedWith->GetName().find("Bullet") != std::string::npos)
     {
         TakeDamage(1.0f);
     }
