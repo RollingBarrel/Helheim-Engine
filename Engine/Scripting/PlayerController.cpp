@@ -991,7 +991,7 @@ void PlayerController::RangedAttack()
         mRangeWeapon->BasicAttack();
         mHasShoot = true;
     }
-    if (mShootingTimer > 0.4f) {
+    if (mShootingTimer > 0.2f) {
 
         mShootingTimer = 0.0f;
         mHasShoot = false;
