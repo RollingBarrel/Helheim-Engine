@@ -26,8 +26,8 @@ bool ModuleGame::Init()
 	//TODO: Add this code to is game playing in editor and game
 	//App->GetEngineScriptManager()->Start();
 	//App->GetScene()->GetNavController()->HandleBuild();
-	
-	//App->GetWindow()->SetGameWindowsPosition({0,0});
+
+	App->GetWindow()->SetGameWindowsPosition({ 0,0 });
 
 	//Camera
 	//Find camera on the scene and set !!!);
@@ -39,10 +39,9 @@ update_status ModuleGame::PreUpdate(float dt)
 	int width = App->GetWindow()->GetWidth();
 	int height = App->GetWindow()->GetHeight();
 
-	App->GetWindow()->GameWindowsResized({ (float)width, (float)height });
-
 	if (width != mScreenPrevSizeX || height != mScreenPrevSizeY)
 	{
+		App->GetWindow()->GameWindowsResized({ (float)width, (float)height });
 		App->GetOpenGL()->SceneFramebufferResized(width, height);
 		mScreenPrevSizeX = width;
 		mScreenPrevSizeY = height;
@@ -52,8 +51,6 @@ update_status ModuleGame::PreUpdate(float dt)
 
 update_status ModuleGame::Update(float dt)
 {
-
-
 	glUseProgram(mGameProgramId);
 	glBindVertexArray(mVAO);
 	glActiveTexture(GL_TEXTURE0);

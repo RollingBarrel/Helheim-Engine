@@ -114,7 +114,7 @@ bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
 
 void ModuleEngineCamera::MousePicking(Ray& ray)
 {
-	ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+	ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
 
 	bool intersects = false;
 	bool intersectsTriangle = false;
