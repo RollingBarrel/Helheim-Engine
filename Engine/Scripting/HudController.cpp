@@ -20,7 +20,9 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
     MEMBER(MemberType::GAMEOBJECT, mWeaponGO);
+    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
     SEPARATOR("Screens");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
@@ -57,7 +59,9 @@ void HudController::Start()
     mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
     mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
     mGrenadeImage = static_cast<ImageComponent*>(mGrenadeGO->GetComponent(ComponentType::IMAGE));
+    mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
     mWeaponImage = static_cast<ImageComponent*>(mWeaponGO->GetComponent(ComponentType::IMAGE));
+    mSecondWeaponImage = static_cast<ImageComponent*>(mSecondWeaponGO->GetComponent(ComponentType::IMAGE));
 
     // Click events
     mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
@@ -135,10 +139,23 @@ void HudController::SetHealth(float health)
 
 void HudController::SwitchWeapon()
 {
+    if (mWeaponGO->IsEnabled())
+    {
+        mWeaponGO->SetEnabled(false);
+        mSecondWeaponGO->SetEnabled(true);
+        return;
+    }
+    if (mSecondWeaponGO->IsEnabled())
+    {
+        mSecondWeaponGO->SetEnabled(false);
+        mWeaponGO->SetEnabled(true);
+        return;
+    }
 }
 
-void HudController::SetGrenadeOnCooldown()
+void HudController::SetGrenadeCooldown(float cooldown)
 {
+    mGrenadeSlider->SetValue(cooldown);
 }
 
 void HudController::SetScreen(SCREEN name, bool active)

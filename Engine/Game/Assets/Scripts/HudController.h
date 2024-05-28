@@ -24,7 +24,7 @@ public:
     void SetAmmo(int ammo);
     void SetHealth(float health);
     void SwitchWeapon();
-    void SetGrenadeOnCooldown();
+    void SetGrenadeCooldown(float cooldown);
     void SetScreen(SCREEN menu, bool active);
 private:
     HudController(GameObject* owner);
@@ -54,7 +54,9 @@ private:
     GameObject* mHealthGradualGO = nullptr;
     GameObject* mAmmoGO = nullptr;
     GameObject* mWeaponGO = nullptr;
+    GameObject* mSecondWeaponGO = nullptr;
     GameObject* mGrenadeGO = nullptr;
+    GameObject* mGrenadeSliderGO = nullptr;
 
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
@@ -64,7 +66,9 @@ private:
     SliderComponent* mHealthGradualSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
     ImageComponent* mGrenadeImage = nullptr;
+    SliderComponent* mGrenadeSlider = nullptr;
     ImageComponent* mWeaponImage = nullptr;
+    ImageComponent* mSecondWeaponImage = nullptr;
 
     float mTargetHealth = 1;
 

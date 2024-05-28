@@ -11,6 +11,7 @@
 
 #include "Enemy.h"
 #include "Bullet.h"
+#include "HudController.h"
 
 #include <map>
 
@@ -19,18 +20,34 @@ CREATE(Pistol)
     CLASS(owner);
     //SEPARATOR("STATS");
     MEMBER(MemberType::GAMEOBJECT, mShootPoint);
-   
+
+    SEPARATOR("HUD");
+    MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
+
     END_CREATE;
+}
+
+void Pistol::Start()
+{
+    if (mHudControllerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
+        mHudController = static_cast<HudController*>(script->GetScriptInstance());
+    }
 }
 
 void Pistol::BasicAttack()
 {
-
     GameObject* bullet = nullptr;
-    if (Bullet::GetNumBullets() < 10)
-    {
+    if (mCurrentAmmo > 0) {
         bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
+        mCurrentAmmo--;
     }
+    else {
+        mCurrentAmmo = mMaxAmmo;
+    }
+    
+    mHudController->SetAmmo(mCurrentAmmo);
 
     if (bullet != nullptr)
     {

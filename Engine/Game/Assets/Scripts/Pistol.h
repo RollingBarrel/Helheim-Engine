@@ -7,6 +7,7 @@ class Pistol : public RangeWeapon
 {
 	FRIEND(Pistol)
 public:
+	void Start() override;
 
 	Pistol(GameObject* owner) : RangeWeapon(owner) {}
 

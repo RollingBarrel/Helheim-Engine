@@ -1,5 +1,9 @@
 #pragma once
 #include "Weapon.h"
+
+class GameObject;
+class HudController;
+
 class RangeWeapon : public Weapon
 {
 
@@ -8,10 +12,13 @@ public:
 
 protected:
 
-	GameObject* mShootPoint;
+	GameObject* mShootPoint = nullptr;
 
-	float mCurrentAmmo;
-	float mMaxAmmo;
+	GameObject* mHudControllerGO = nullptr;
+	HudController* mHudController = nullptr;
+
+	int mCurrentAmmo = 16;
+	int mMaxAmmo = 16;
 
 };
 

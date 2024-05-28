@@ -372,13 +372,13 @@ void PlayerController::Update()
     Loading();
 }
 
-
 void PlayerController::Idle()
 {
     
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
+        mHudController->SwitchWeapon();
     }
 
     else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
@@ -1231,6 +1231,8 @@ void PlayerController::UpdateGrenadeCooldown()
         {
             mGrenadeCoolDownTimer = 0.0f;
         }
+
+        mHudController->SetGrenadeCooldown(mGrenadeCoolDownTimer / mGrenadeCoolDown);
     }
 }
 
@@ -1415,6 +1417,6 @@ void PlayerController::Loading()
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
-    LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
+    //LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
 }
 
