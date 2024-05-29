@@ -1,7 +1,9 @@
 #include "InspectorPanel.h"
+
 #include "ImBezier.h"
 #include "imgui.h"
 #include "imgui_color_gradient.h"
+
 #include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -14,6 +16,8 @@
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleOpenGL.h"
+#include "ModuleUI.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -33,13 +37,13 @@
 #include "TrailComponent.h"
 #include "EmitterShape.h"
 #include "BoxColliderComponent.h"
+#include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
+#include "SliderComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
 #include "MathFunc.h"
-#include "NavMeshObstacleComponent.h"
-#include "AnimationComponent.h"
-#include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
@@ -48,8 +52,6 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
-
-#include "ModuleUI.h"
 
 #include "IconsFontAwesome6.h"
 
@@ -437,6 +439,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
 					break;
+				case ComponentType::SLIDER:
+					DrawSliderComponent(reinterpret_cast<SliderComponent*>(component));
+					break;
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
@@ -586,7 +591,6 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
 {
-
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
@@ -939,6 +943,11 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	bool loop = component->GetLoop();
 	//bool play = false;
 
+	ImGui::Text("Current state: ");
+	ImGui::SameLine();
+	ImGui::Text(component->GetCurrentStateName().c_str());
+
+
 	if (ImGui::Button("Play/Pause"))
 	{
 		component->OnStart();
@@ -949,6 +958,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	ImGui::SameLine();
 	ImGui::Dummy(ImVec2(40.0f, 0.0f));
 	ImGui::SameLine();
+
+
 
 	if (component->GetIsPlaying())
 	{
@@ -1221,10 +1232,22 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
+
+	if (ImGui::Button("Play"))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		component->Stop(false);
+	}
+
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
 	std::string name = component->GetName();
+
 	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
 	{
 		for (auto i = 0; i < events.size(); i++) 
@@ -1278,6 +1301,14 @@ void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
 ;
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
 {
+}
+
+void InspectorPanel::DrawSliderComponent(SliderComponent* component)
+{
+	float value = component->GetValue();
+
+	ImGui::Text("Fill Percent:"); ImGui::SameLine(); ImGui::SliderFloat("##Fill Percent", &value, 0.0f, 1.0f);
+	component->SetValue(value);
 }
 
 void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 

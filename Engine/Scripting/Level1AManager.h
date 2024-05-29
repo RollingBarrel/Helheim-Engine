@@ -21,10 +21,23 @@ public:
 
 private:
 	void UpdateBackgroundMusic();
+	void UpdateEnemyFootStepMusic();
+	void UpdateBackgroundStrangeMusic();
+
 	GameObject* mPlayerControllerHolder = nullptr;
 	PlayerController* mPlayerController = nullptr;
 
 	GameObject* mLevel1AMainThemeHolder = nullptr;
 	AudioSourceComponent* mLevel1AMainTheme = nullptr;
+
+	GameObject* mEnemyFootStepHolder = nullptr;
+	AudioSourceComponent* mEnemyFootStep = nullptr;
+
+	GameObject* mStangeBackgroudSoundHolder = nullptr;
+	AudioSourceComponent* mStrangeBackgroundSound = nullptr;
+
+	bool mReadyToStep = false;
+	float mStepTimePassed = 0.0f;
+	float mStepCoolDown = 0.5f;
 };
 

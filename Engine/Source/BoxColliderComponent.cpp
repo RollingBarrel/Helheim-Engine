@@ -155,3 +155,14 @@ void BoxColliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject
 
 	ComputeBoundingBox();
 }
+
+void BoxColliderComponent::Enable()
+{
+	App->GetPhysics()->CreateBoxRigidbody(this);
+	ComputeBoundingBox();
+}
+
+void BoxColliderComponent::Disable()
+{
+	App->GetPhysics()->RemoveBoxRigidbody(this);
+}

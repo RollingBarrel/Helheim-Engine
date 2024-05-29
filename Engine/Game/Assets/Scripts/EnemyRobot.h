@@ -3,6 +3,10 @@
 #include "Geometry/Ray.h"
 #include "ScriptComponent.h"
 
+class AnimationStateMachine;
+struct CollisionData;
+class BoxColliderComponent;
+
 enum class EnemyState 
 {
 	IDLE,
@@ -31,18 +35,27 @@ private:
 	void Idle();
 	void Chase();
 	void Attack();
+	bool IsMoving();
 
-	void MeleeAttack() ;
+	void MeleeAttack();
 	void RangeAttack();
+	void OnCollisionEnter(CollisionData* collisionData);
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	RobotType mType = RobotType::MELEE;
+
+	AnimationStateMachine* mStateMachine = nullptr;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
 
 	float mMeleeDistance = 2.0f;
 	float mMeeleDamage = 10.0f;
-	float mMeleeAttackCoolDown = 1.0f;
+	float mMeleeAttackCoolDown = 2.0f;
+	float mTimerAttack = 0.0f;
+	float mTimerDisengage = 0.0f;
+
+	//Collider
+	BoxColliderComponent* mCollider;
 };
 
