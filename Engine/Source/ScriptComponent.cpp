@@ -57,11 +57,12 @@ ScriptComponent::~ScriptComponent()
 		mResourceScript = nullptr;
 	}
 
-	//delete mScript; //Memory leack here, this shouldbe fixed.
+	delete mScript;
 }
 
 void ScriptComponent::Update()
 {
+	//std::vector<Component*> components = App->GetScene()->GetRoot()->FindComponentsInChildren(App->GetScene()->GetRoot(), ComponentType::SCRIPT);
 }
 
 Component* ScriptComponent::Clone(GameObject* owner) const
@@ -69,7 +70,6 @@ Component* ScriptComponent::Clone(GameObject* owner) const
 	ScriptComponent* scriptComponent = new ScriptComponent(*this, owner);
 	scriptComponent->mScript->Awake();
 	return scriptComponent;
-
 }
 
 void ScriptComponent::Reset()
@@ -125,7 +125,7 @@ void::ScriptComponent::Save(Archive& archive) const
 	
 }
 
-void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * owner)
+void::ScriptComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
 	if (data.HasMember("ScriptName") && data["ScriptName"].IsString())
 	{
@@ -137,7 +137,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 		}
 		
 	}
-	
+
 	if (mScript && data.HasMember("ScriptVariables") && data["ScriptVariables"].IsArray())
 	{
 		const auto& array = data["ScriptVariables"].GetArray();
@@ -178,7 +178,7 @@ void::ScriptComponent::LoadFromJSON(const rapidjson::Value & data, GameObject * 
 								int  UID = array[i]["VariableData"].GetInt();
 								if (UID != -1) 
 								{
-									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset))));
+									App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>(reinterpret_cast<char*>(mScript) + member->mOffset)));
 								}
 								break;
 							}

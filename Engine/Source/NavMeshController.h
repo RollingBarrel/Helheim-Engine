@@ -100,7 +100,7 @@ private:
 	float mCellHeight = 0.20f; // 0.1 - 1.0
 
 	unsigned int mMaxSlopeAngle = 20; // 0 - 90
-	float mWalkableRadius = 0.6f; // 0.0 - 5.0
+	float mWalkableRadius = 1.2f; // 0.0 - 5.0
 	int mMinRegionArea = 8; // 0 - 150
 	int mMergeRegionArea = 20; // 0 - 150
 	float mMaxSimplificationError = 1.3f; // 0.1 - 3.0

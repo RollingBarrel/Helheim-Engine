@@ -82,6 +82,17 @@ void MainMenu::Update()
         App->GetScene()->Load("Level1");
     }
     
+    /*int mouseWheelDelta = GetMouseWheelDelta();
+    if (mouseWheelDelta != 0)
+    {
+        // Adjust the position based on the mouse wheel delta.
+        float scrollSpeed = 0.1f; // Adjust this value as needed.
+        float3 newPosition = mPosition;
+        newPosition.y += mouseWheelDelta * scrollSpeed;
+        newPosition.y = std::max(mLowerLimit.y, std::min(mPosition.y, mUpperLimit.y));
+        SetPosition(newPosition);
+    }*/
+
     Controls();
 }
 

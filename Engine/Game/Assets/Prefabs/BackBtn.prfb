@@ -1,0 +1,86 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 165826338,
+                "ParentUID": 1,
+                "Name": "BackBtn",
+                "isEnabled": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 169098525,
+                        "ComponentType": 9,
+                        "isEnabled": true,
+                        "Translation": [
+                            800.0,
+                            -478.1499938964844,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            230.0,
+                            50.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ImageID": 412586098,
+                        "ComponentType": 8,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    },
+                    {
+                        "ID": 180516369,
+                        "ComponentType": 11,
+                        "isEnabled": true
+                    }
+                ]
+            }
+        ]
+    }
+}
