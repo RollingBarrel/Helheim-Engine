@@ -54,6 +54,10 @@ public:
 
 private:
 
+	void LoadSpine(ResourceModel* model);
+	void LoadGameObjects(GameObject* current);
+	void LoadSpineChildren(GameObject* current);
+
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
 	int mCurrentState = 0;
@@ -68,8 +72,11 @@ private:
 	//Locomotion
 	AnimationController* mSpineController;
 	AnimationStateMachine* mSpineStateMachine;
-	GameObject* mSpineGameObject;
 	bool mHasSpine = false;
+
+	std::vector<GameObject*> mSpineObjects;
+	std::vector<GameObject*> mDefaultObjects;
+
 };
 
 #endif

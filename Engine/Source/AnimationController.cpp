@@ -39,19 +39,9 @@ AnimationController::~AnimationController()
 	}
 }
 
-void AnimationController::Update(GameObject* model)
+void AnimationController::Update()
 {
 	mCurrentTime += App->GetDt() * mSpeed;
-	if (!mTransition)
-	{
-		GetTransform(model);
-	}
-	else 
-	{
-		mCurrentTransitionTime += App->GetDt();
-
-		GetTransform_Blending(model);
-	}
 	
 }
 
@@ -155,10 +145,12 @@ void AnimationController::GetTransform(GameObject* model)
 
 		model->RecalculateMatrices();
 	}
+	/*
 	for (const auto& child : model->GetChildren())
 	{
 		GetTransform(child);
 	}
+	*/
 }
 
 void AnimationController::GetTransform_Blending(GameObject* model)
@@ -227,10 +219,12 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 
 			model->RecalculateMatrices();
 		}
+		/*
 		for (const auto& child : model->GetChildren())
 		{
 			GetTransform_Blending(child);
 		}
+		*/
 	}
 	else 
 	{
