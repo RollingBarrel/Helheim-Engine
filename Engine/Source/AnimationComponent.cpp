@@ -1,4 +1,5 @@
 #include "AnimationComponent.h"
+#include "AnimationComponent.h"
 #include "Application.h"
 #include "ModuleResource.h"
 #include "ResourceAnimation.h"
@@ -11,7 +12,7 @@
 #include "ResourceModel.h"
 #include "float4x4.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mModelUid(0)
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mModelUid(0), mSpineController(nullptr), mSpineGameObject(nullptr), mSpineStateMachine(nullptr)
 {
 	mStateMachine = nullptr;
 	mSpeed = 1.0;
@@ -31,6 +32,9 @@ AnimationComponent::~AnimationComponent()
 {
 	delete mController;
 	delete mStateMachine;
+
+	delete mSpineController;
+	delete mSpineStateMachine;
 	
 }
 
@@ -162,6 +166,17 @@ void AnimationComponent::SetModelUUID(unsigned int modelUid)
 	App->GetResource()->ReleaseResource(mModelUid);
 
 	
+}
+
+void AnimationComponent::SetModel(ResourceModel* model)
+{
+	mModelUid = model->GetUID();
+	if (mStateMachine)
+		delete mStateMachine;
+	mStateMachine = new AnimationStateMachine(model->mAnimationUids);
+	ChangeState("default", 0.0f);
+
+
 }
 
 void AnimationComponent::StartTransition(float transitionDuration)

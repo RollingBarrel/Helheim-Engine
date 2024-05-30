@@ -52,6 +52,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
+#include "ResourceModel.h"
 
 #include "IconsFontAwesome6.h"
 
@@ -946,77 +947,129 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	bool loop = component->GetLoop();
 	//bool play = false;
 
-	ImGui::Text("Current state: ");
-	ImGui::SameLine();
-	ImGui::Text(component->GetCurrentStateName().c_str());
 
-
-	if (ImGui::Button("Play/Pause"))
+	if (component->GetModelUUID() != 0)
 	{
-		//component->OnStart();
-		bool play = component->GetIsPlaying();
-		component->SetIsPlaying(!play);
-	}
+		ImGui::Text("Current state: ");
+		ImGui::SameLine();
+		ImGui::Text(component->GetCurrentStateName().c_str());
+	
+		if (ImGui::Button("Play/Pause"))
+		{
+			//component->OnStart();
+			bool play = component->GetIsPlaying();
+			component->SetIsPlaying(!play);
+		}
 
-	ImGui::SameLine();
-	ImGui::Dummy(ImVec2(40.0f, 0.0f));
-	ImGui::SameLine();
+		ImGui::SameLine();
+		ImGui::Dummy(ImVec2(40.0f, 0.0f));
+		ImGui::SameLine();
 
 
 
-	if (component->GetIsPlaying())
-	{
-		ImGui::Text("PLAYING");
+		if (component->GetIsPlaying())
+		{
+			ImGui::Text("PLAYING");
+		}
+		else
+		{
+			ImGui::Text("PAUSED");
+		}
+
+		AnimationStateMachine* animSM = component->GetStateMachine();
+		float startTime = animSM->GetStateStartTime(0);
+		float endTime = animSM->GetStateEndTime(0);
+
+		if (ImGui::DragFloat("StartTime", &startTime, 0.01f, 0.0f, endTime))
+		{
+			animSM->SetStateStartTime(0, startTime);
+			component->ChangeState("default", 0.0f);
+		}
+
+		if (ImGui::DragFloat("EndTime", &endTime, 0.01f, startTime, 15.0f))
+		{
+			animSM->SetStateEndTime(0, endTime);
+			component->ChangeState("default", 0.0f);
+
+		}
+
+
+		if (ImGui::Button("Restart"))
+		{
+			component->OnRestart();
+		}
+
+		if (ImGui::Checkbox("Loop", &loop))
+		{
+			component->SetLoop(loop);
+		}
+
+		float animSpeed = component->GetAnimSpeed();
+
+		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
+		{
+			component->SetAnimSpeed(animSpeed);
+		}
 	}
 	else
 	{
-		ImGui::Text("PAUSED");
+		const char* currentItem = "None";
+		if (ImGui::BeginCombo("##combo", currentItem))
+		{
+			std::vector<std::string> modelNames;
+			EngineApp->GetFileSystem()->DiscoverFiles("Assets/Models", ".emeta", modelNames);
+			for (int i = 0; i < modelNames.size(); ++i)
+			{
+
+				size_t slashPos = modelNames[i].find_last_of('/');
+				if (slashPos != std::string::npos)
+				{
+
+					modelNames[i].erase(0, slashPos + 1);
+				}
+
+				size_t dotPos = modelNames[i].find_first_of('.');
+				if (dotPos != std::string::npos)
+				{
+
+					modelNames[i].erase(dotPos);
+				}
+			}
+
+			for (int n = 0; n < modelNames.size(); n++)
+			{
+				bool is_selected = (currentItem == modelNames[n]);
+				if (ImGui::Selectable(modelNames[n].c_str(), is_selected))
+				{
+					currentItem = modelNames[n].c_str();
+					ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(std::string("Assets/Models/" + std::string(currentItem) + ".gltf").c_str()));
+					if (model)
+					{
+						if (model->mAnimationUids.size() > 0)
+						{
+							component->SetModel(model);
+						}
+						else
+						{
+							currentItem = "Error: Not animated";
+							is_selected = false;
+						}
+						App->GetResource()->ReleaseResource(model->GetUID());
+					}
+					
+				}
+
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+
+			}
+			ImGui::EndCombo();
+		}
 	}
 
-	/*
-	if (ImGui::Button("Stop"))
-	{
-		component->SetIsPlaying(false);
-		component->OnRestart();
-	}
-	*/
-	
-	AnimationStateMachine* animSM = component->GetStateMachine();
-	float startTime = animSM->GetStateStartTime(0);
-	float endTime = animSM->GetStateEndTime(0);
 
-	if (ImGui::DragFloat("StartTime", &startTime, 0.01f, 0.0f, endTime))
-	{
-		animSM->SetStateStartTime(0, startTime);
-		component->ChangeState("default", 0.0f);
-	}
-
-	if (ImGui::DragFloat("EndTime", &endTime, 0.01f, startTime, 15.0f))
-	{
-		animSM->SetStateEndTime(0, endTime);
-		component->ChangeState("default", 0.0f);
-
-	}
-	
-
-
-
-	if (ImGui::Button("Restart"))
-	{
-		component->OnRestart();
-	}
-
-	if (ImGui::Checkbox("Loop", &loop))
-	{
-		component->SetLoop(loop);
-	}
-
-	float animSpeed = component->GetAnimSpeed();
-
-	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
-	{
-		component->SetAnimSpeed(animSpeed);
-	}
 
 }
 

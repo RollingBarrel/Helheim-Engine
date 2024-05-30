@@ -45,7 +45,8 @@ public:
 
 	//Model UUID
 	unsigned int GetModelUUID() const { return mModelUid; }
-	void SetModelUUID(unsigned int modelUid); 
+	void SetModelUUID(unsigned int modelUid);
+	void SetModel(ResourceModel* model);
 
 	
 
@@ -64,7 +65,11 @@ private:
 
 	unsigned int mModelUid;
 
-	
+	//Locomotion
+	AnimationController* mSpineController;
+	AnimationStateMachine* mSpineStateMachine;
+	GameObject* mSpineGameObject;
+	bool mHasSpine = false;
 };
 
 #endif
