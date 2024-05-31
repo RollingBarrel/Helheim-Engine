@@ -1,25 +1,23 @@
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
-#include "Math/float4x4.h"
-#include "Geometry/Frustum.h"
-#include "Geometry/OBB.h"
-#include "Geometry/AABB.h"
+#include "ModuleDebugDraw.h"
 #include "EngineApp.h"
+
 #include "ModuleOpenGL.h"
 #include "ModuleEngineCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
+
+#include "SpotLightComponent.h"
 #include "DebugPanel.h"
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 
-//This will be removed when functional gizmos are implmented
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
-#include "InspectorPanel.h"
-#include "GameObject.h"
+#include "DebugPanel.h"
 
 
 #define DEBUG_DRAW_IMPLEMENTATION
@@ -535,7 +533,7 @@ private:
 // ========================================================
 
 const char * DDRenderInterfaceCoreGL::linePointVertShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec3 in_Position;\n"
     "in vec4 in_ColorPointSize;\n"
@@ -551,10 +549,10 @@ const char * DDRenderInterfaceCoreGL::linePointVertShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::linePointFragShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in  vec4 v_Color;\n"
-    "out vec4 out_FragColor;\n"
+    "layout(location = 5)out vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -562,7 +560,7 @@ const char * DDRenderInterfaceCoreGL::linePointFragShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::textVertShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec2 in_Position;\n"
     "in vec2 in_TexCoords;\n"
@@ -585,13 +583,13 @@ const char * DDRenderInterfaceCoreGL::textVertShaderSrc = "\n"
     "}\n";
 
 const char * DDRenderInterfaceCoreGL::textFragShaderSrc = "\n"
-    "#version 150\n"
+    "#version 460 core\n"
     "\n"
     "in vec2 v_TexCoords;\n"
     "in vec4 v_Color;\n"
     "\n"
     "uniform sampler2D u_glyphTexture;\n"
-    "out vec4 out_FragColor;\n"
+    "out layout(location = 5) vec4 out_FragColor;\n"
     "\n"
     "void main()\n"
     "{\n"
@@ -637,9 +635,9 @@ update_status  ModuleDebugDraw::Update(float dt)
         {
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
             
-            EngineApp->GetOpenGL()->BindSceneFramebuffer();
+            EngineApp->GetOpenGL()->BindGFramebuffer();
             Draw(viewproj, EngineApp->GetWindow()->GetGameWindowsSize().x, EngineApp->GetWindow()->GetGameWindowsSize().y);
-            EngineApp->GetOpenGL()->UnbindSceneFramebuffer();
+            EngineApp->GetOpenGL()->UnbindFramebuffer();
         }
     }
     return UPDATE_CONTINUE;
@@ -650,9 +648,9 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-    if (mDrawGrid) 
+    if (mDrawGrid)
     {
-       DrawGrid();
+        DrawGrid();
     }
 
 
@@ -670,6 +668,16 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             DrawFrustum(camera->GetFrustum());
         }
 
+        SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
+        if (spotLight)
+        {
+
+            float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
+            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
+            //Frustum ShadowFrustum = spotLight->GetFrustum();
+            //DrawFrustum(spotLight->GetFrustum());
+        }
+        
         BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
         if (boxCollider)
         {
@@ -772,7 +780,6 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 
     for (const auto& child : model->GetChildren()) 
     {
-
         DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
         DrawSkeleton(child);
     }
@@ -781,23 +788,24 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 
 void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
 {
-    //AABB aabb = gameObject->GetAABB();
+    
     std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
 
     if (!meshComponents.empty())
     {
-        AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
+        AABB aabb = gameObject->GetAABB();
+        //AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
         if (aabb.IsFinite())
         {
-            EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+            //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
         }
 
-        //OBB obb = gameObject->GetOBB();
-        OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
-        if (obb.IsFinite())
-        {
-            EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
-        }
+      ////OBB obb = gameObject->GetOBB();
+      //OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
+      //if (obb.IsFinite())
+      //{
+      //   // EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
+      //}
     }
     
 }

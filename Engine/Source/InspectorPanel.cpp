@@ -1,7 +1,9 @@
 #include "InspectorPanel.h"
+
 #include "ImBezier.h"
 #include "imgui.h"
 #include "imgui_color_gradient.h"
+
 #include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -14,6 +16,8 @@
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleOpenGL.h"
+#include "ModuleUI.h"
 #include "GameObject.h"
 
 #include "TestComponent.h"
@@ -33,13 +37,13 @@
 #include "TrailComponent.h"
 #include "EmitterShape.h"
 #include "BoxColliderComponent.h"
+#include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
+#include "SliderComponent.h"
 
 #include "ImporterMaterial.h"
 #include "Tag.h"
 #include "MathFunc.h"
-#include "NavMeshObstacleComponent.h"
-#include "AnimationComponent.h"
-#include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
@@ -48,8 +52,6 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
-
-#include "ModuleUI.h"
 
 #include "IconsFontAwesome6.h"
 
@@ -382,7 +384,8 @@ void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
 	ImGui::PopStyleVar();
 }
 
-void InspectorPanel::DrawComponents(GameObject* object) {
+void InspectorPanel::DrawComponents(GameObject* object) 
+{
 	for (auto component : object->mComponents) 
 	{
 		ImGui::PushID(component->mID);
@@ -436,6 +439,9 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
 					break;
+				case ComponentType::SLIDER:
+					DrawSliderComponent(reinterpret_cast<SliderComponent*>(component));
+					break;
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
@@ -464,7 +470,8 @@ void InspectorPanel::DrawComponents(GameObject* object) {
 	DragAndDropTarget(object, nullptr);
 }
 
-void InspectorPanel::DrawTestComponent(TestComponent* component) {
+void InspectorPanel::DrawTestComponent(TestComponent* component) 
+{
 	ImGui::Text("Demo Text");
 	ImGui::Text("Demo Text 2 ");
 
@@ -506,7 +513,8 @@ void InspectorPanel::DrawTestComponent(TestComponent* component) {
 	ImGui::Text(" gameobjects with the same tag.");
 }
 
-void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) 
+{
 	const float* pCol = component->GetColor();
 	float col[3] = { pCol[0], pCol[1] , pCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
@@ -526,28 +534,23 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	//ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
-void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
+void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) 
+{
 	const float* sCol = component->GetColor();
 	float col[3] = { sCol[0], sCol[1] , sCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
 	{
 		component->SetColor(col);
 	}
-	const float* sDir = component->GetDirection();
-	float dir[3] = { sDir[0], sDir[1] , sDir[2] };
-	if (ImGui::DragFloat3("Direction", dir, 0.05f, -1.f, 1.f))
-	{
-		component->SetDirection(dir);
-	}
 	float intensity = component->GetIntensity();
 	if (ImGui::DragFloat("Intensity", &intensity, 0.5f, 0.0f, 300.f))
 	{
 		component->SetIntensity(intensity);
 	}
-	float radius = component->GetRadius();
-	if (ImGui::DragFloat("Radius", &radius, 0.5f, 0.0f, 1000.f))
+	float radius = component->GetRange();
+	if (ImGui::DragFloat("Range", &radius, 0.5f, 0.0f, 1000.f))
 	{
-		component->SetRadius(radius);
+		component->SetRange(radius);
 	}
 	float innerAngle = RadToDeg(component->GetInnerAngle());
 	float outerAngle = RadToDeg(component->GetOuterAngle());
@@ -555,15 +558,39 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) {
 	{
 		component->SetInnerAngle(DegToRad(innerAngle));
 	}
-	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, innerAngle, 90.f))
+	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, innerAngle, 75.0f))
 	{
 		component->SetOuterAngle(DegToRad(outerAngle));
 	}
-	//ImGui::Checkbox("Debug draw", &component->debugDraw);
+
+	ImGui::SeparatorText("Shadows");
+
+	bool castShadow = component->CanCastShadow();
+	if (ImGui::Checkbox("Cast Shadow", &castShadow))
+	{
+		component->SetCastShadow(castShadow);
+	}
+
+	if (!castShadow)
+	{
+		ImGui::BeginDisabled();
+	}
+
+	float bias = component->GetBias();
+	if (ImGui::DragFloat("Bias", &bias, 0.00001f, 0.0f, 1.0, "%.5f"))
+	{
+		component->SetBias(bias);
+	}
+
+	if (!castShadow)
+	{
+		ImGui::EndDisabled();
+	}
+
 }
 
-void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) {
-
+void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
+{
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
@@ -905,7 +932,8 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 }
 
 
-void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) 
+{
 
 	ImGui::SeparatorText("Animation");
 
@@ -914,6 +942,11 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 
 	bool loop = component->GetLoop();
 	//bool play = false;
+
+	ImGui::Text("Current state: ");
+	ImGui::SameLine();
+	ImGui::Text(component->GetCurrentStateName().c_str());
+
 
 	if (ImGui::Button("Play/Pause"))
 	{
@@ -925,6 +958,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) {
 	ImGui::SameLine();
 	ImGui::Dummy(ImVec2(40.0f, 0.0f));
 	ImGui::SameLine();
+
+
 
 	if (component->GetIsPlaying())
 	{
@@ -1197,10 +1232,22 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
+
+	if (ImGui::Button("Play"))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		component->Stop(false);
+	}
+
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
 	std::string name = component->GetName();
+
 	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
 	{
 		for (auto i = 0; i < events.size(); i++) 
@@ -1254,6 +1301,14 @@ void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
 ;
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
 {
+}
+
+void InspectorPanel::DrawSliderComponent(SliderComponent* component)
+{
+	float value = component->GetValue();
+
+	ImGui::Text("Fill Percent:"); ImGui::SameLine(); ImGui::SliderFloat("##Fill Percent", &value, 0.0f, 1.0f);
+	component->SetValue(value);
 }
 
 void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 
@@ -1383,9 +1438,10 @@ ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
 }
 
 
-constexpr float FLOAT_TOLERANCE = 1e-6;
+#define FLOAT_TOLERANCE 1e-6f
 
-inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) {
+inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
+{
 	return std::fabs(a - b) < tolerance;
 }
 

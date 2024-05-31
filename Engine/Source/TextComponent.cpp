@@ -12,10 +12,11 @@
 #include "GameObject.h"
 #include "Math/TransformOps.h"
 
+
 TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) 
 {
     InitFreeType();
-    LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
+    LoadFont("Assets\\Fonts\\Akshar-Regular.ttf");
     CreateBuffers();
 
     mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
@@ -38,21 +39,13 @@ TextComponent::TextComponent(const TextComponent& other, GameObject* owner)
 
     mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 
-    LoadFont("Assets\\Fonts\\13_5Atom_Sans_Regular.ttf");
+    LoadFont("Assets\\Fonts\\Akshar-Regular.ttf");
 }
 
 TextComponent::~TextComponent() 
 {
     glDeleteBuffers(1, &mQuadVBO);
     glDeleteVertexArrays(1, &mQuadVAO);
-
-    // FreeType cleanup
-    if (mFace) {
-        FT_Done_Face(mFace);
-    }
-    if (mFt) {
-        FT_Done_FreeType(mFt);
-    }
 }
 
 Component* TextComponent::Clone(GameObject* owner) const
