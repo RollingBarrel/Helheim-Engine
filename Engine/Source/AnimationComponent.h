@@ -36,7 +36,7 @@ public:
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	
 	//Pallete calculations
-	const std::vector<float4x4> GetPalette() const { return mPalette; }
+	const std::vector<float4x4>& GetPalette() const { return mPalette; }
 
 	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
 

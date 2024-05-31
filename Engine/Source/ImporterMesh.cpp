@@ -46,9 +46,8 @@ static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* inter
         const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize / sizeof(float) + floatOffset];
         for (unsigned int j = 0; j < attributeNumFloats; ++j)
         {
-            ret[i * attributeNumFloats + j] = vert[j];
+            memcpy(&ret[i * attributeNumFloats + j], &vert[j], sizeof(float));
         }
-
     }
     return ret;
 }
@@ -109,7 +108,7 @@ static void SetTSpaceBasic(const SMikkTSpaceContext* pContext, const float fvTan
     memcpy(&ptr->tVertices[vertexTIdx + ptr->vertexSize + 3 * sizeof(float)], &fSign, sizeof(float));
 }
 
-static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int*& indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData)
+static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<float*>& attributeData, unsigned int& numIndices, unsigned int*& indexData, unsigned int& vertexSize, unsigned int& numVertices, float* vertexData, bool animated = false)
 {
 //#ifdef _DEBUG
     bool foundPos = false;
@@ -156,10 +155,11 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
     mikkInput.posOffset = 0;
     mikkInput.texCoordOffset = 3 * sizeof(float);
     mikkInput.normOffset = 5 * sizeof(float);
-    mikkInput.vertexSize = 8 * sizeof(float);
+    mikkInput.vertexSize = vertexSize;
     mikkInput.vertices = unweldedVertices;
     //Les mikktangents son vec4
-    char* unweldedTVertices = new char[numIndices * (vertexSize + 4 * sizeof(float))];
+    vertexSize += 4 * sizeof(float);
+    char* unweldedTVertices = new char[numIndices * vertexSize];
     mikkInput.tVertices = unweldedTVertices;
     SMikkTSpaceContext tangContext = {};
     tangContext.m_pInterface = &interfaceInput;
@@ -187,14 +187,27 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
 
     numVertices = uniqueVertices;
     numIndices = mikkInput.numVertices;
-    attributes.emplace_back(Attribute::POS, sizeof(float) * 3, 0);
-    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
-    attributes.emplace_back(Attribute::UV, sizeof(float) * 2, sizeof(float) * 3);
-    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
-    attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, sizeof(float) * 5);
-    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
-    attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, sizeof(float) * 8);
-    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, uniqueVertices * 12 * sizeof(float), 12 * sizeof(float)));
+    unsigned int bufferSize = uniqueVertices * vertexSize;
+    attributes.emplace_back(Attribute::POS, sizeof(float) * 3, 0, Attribute::Usage::ALL);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, bufferSize, vertexSize));
+    attributes.emplace_back(Attribute::UV, sizeof(float) * 2, sizeof(float) * 3, Attribute::Usage::ALL);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, bufferSize, vertexSize));
+    attributes.emplace_back(Attribute::NORMAL, sizeof(float) * 3, sizeof(float) * 5, Attribute::Usage::ALL);
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, bufferSize, vertexSize));
+    attributes.emplace_back(Attribute::TANGENT, sizeof(float) * 4, sizeof(float) * 8, Attribute::Usage::ALL);
+    if (animated)
+        attributes.back().offset = sizeof(float) * 16;
+    attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, bufferSize, vertexSize));
+    if (animated)
+    {
+        attributes.back().offset = sizeof(float) * 8;
+        attributes.emplace_back(Attribute::JOINT, sizeof(unsigned int) * 4, sizeof(float) * 8, Attribute::Usage::ANIMATION);
+        attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, bufferSize, vertexSize));
+        attributes.back().offset = sizeof(float) * 12;
+        attributes.emplace_back(Attribute::WEIGHT, sizeof(float) * 4, sizeof(float) * 12, Attribute::Usage::ANIMATION);
+        attributeData.push_back(GetAttributeDataFromInterleavedBuffer(attributes.back(), pfVertexDataOut, bufferSize, vertexSize));
+        attributes.back().offset = sizeof(float) * 16;
+    }
 
     numIndices = mikkInput.numVertices;
     indexData = reinterpret_cast<unsigned int*>(piRemapTable);
@@ -205,12 +218,9 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 {
     unsigned int numVertices = 0;
     unsigned int numIndices = 0;
-    unsigned int numJoints = 0;
-    unsigned int numWeights = 0;
     unsigned int vertexSize = 0;
+    unsigned int animatedVertexSize = 0;
     unsigned int* indices = nullptr;
-    unsigned int* joints = nullptr;
-    float* weights = nullptr;
     std::vector<Attribute>attributes;
     std::vector<float*>attributesData;
 
@@ -387,15 +397,11 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
         }
         attributesData.push_back(data);
     }
-    else
-    {
-        //Generate Tangents
-        float* interleavedVertices = GetInterleavedData(attributes, attributesData, numVertices);
-        GenerateTangents(attributes, attributesData, numIndices, indices, vertexSize, numVertices, interleavedVertices);
-    }
 
     if (!model.skins.empty())
     {
+        if(itJoints != primitive.attributes.end() && itWeights != primitive.attributes.end())
+            animatedVertexSize = vertexSize;
         if (itJoints != primitive.attributes.end())
         {
             const tinygltf::Accessor& jointsAcc = model.accessors[itJoints->second];
@@ -405,28 +411,27 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const tinygltf::BufferView& jointsView = model.bufferViews[jointsAcc.bufferView];
             const tinygltf::Buffer& jointsBuffer = model.buffers[jointsView.buffer];
 
-            numJoints = jointsAcc.count * 4;
-            joints = new unsigned int[jointsAcc.count * 4];
+            attributes.emplace_back(Attribute::JOINT, sizeof(unsigned int) * 4, animatedVertexSize, Attribute::Usage::ANIMATION);
+            animatedVertexSize += sizeof(unsigned int) * 4;
+            unsigned int* data = new unsigned int[jointsAcc.count * 4];
             switch (jointsAcc.componentType) {
             case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
             {
                 const unsigned short* bufferJointsShort = reinterpret_cast<const unsigned short*>(&jointsBuffer.data[jointsView.byteOffset + jointsAcc.byteOffset]);
 
-                //attributes.emplace_back(Attribute::JOINTS, sizeof(float) * 4, vertexSize);
-                //vertexSize += sizeof(float) * 4;
-
                 for (unsigned int i = 0; i < jointsAcc.count; ++i)
                 {
-                    joints[i * 4] = bufferJointsShort[0];
-                    joints[i * 4 + 1] = bufferJointsShort[1];
-                    joints[i * 4 + 2] = bufferJointsShort[2];
-                    joints[i * 4 + 3] = bufferJointsShort[3];
+                    data[i * 4] = bufferJointsShort[0];
+                    data[i * 4 + 1] = bufferJointsShort[1];
+                    data[i * 4 + 2] = bufferJointsShort[2];
+                    data[i * 4 + 3] = bufferJointsShort[3];
 
-                    if (jointsView.byteStride != 0) 
+                    if (jointsView.byteStride != 0)
                     {
                         bufferJointsShort = reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(bufferJointsShort) + jointsView.byteStride);
                     }
-                    else {
+                    else 
+                    {
                         bufferJointsShort += 4;
                     }
                 }
@@ -438,16 +443,17 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
                 for (unsigned int i = 0; i < jointsAcc.count; ++i)
                 {
-                    joints[i * 4] = bufferJointsInt[0];
-                    joints[i * 4 + 1] = bufferJointsInt[1];
-                    joints[i * 4 + 2] = bufferJointsInt[2];
-                    joints[i * 4 + 3] = bufferJointsInt[3];
+                    data[i * 4] = bufferJointsInt[0];
+                    data[i * 4 + 1] = bufferJointsInt[1];
+                    data[i * 4 + 2] = bufferJointsInt[2];
+                    data[i * 4 + 3] = bufferJointsInt[3];
 
-                    if (jointsView.byteStride != 0) 
+                    if (jointsView.byteStride != 0)
                     {
                         bufferJointsInt = reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(bufferJointsInt) + jointsView.byteStride);
                     }
-                    else {
+                    else 
+                    {
                         bufferJointsInt += 4;
                     }
                 }
@@ -459,16 +465,17 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
 
                 for (unsigned int i = 0; i < jointsAcc.count; ++i)
                 {
-                    joints[i * 4] = bufferJointsChar[0];
-                    joints[i * 4 + 1] = bufferJointsChar[1];
-                    joints[i * 4 + 2] = bufferJointsChar[2];
-                    joints[i * 4 + 3] = bufferJointsChar[3];
+                    data[i * 4] = bufferJointsChar[0];
+                    data[i * 4 + 1] = bufferJointsChar[1];
+                    data[i * 4 + 2] = bufferJointsChar[2];
+                    data[i * 4 + 3] = bufferJointsChar[3];
 
-                    if (jointsView.byteStride != 0) 
+                    if (jointsView.byteStride != 0)
                     {
                         bufferJointsChar = reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(bufferJointsChar) + jointsView.byteStride);
                     }
-                    else {
+                    else 
+                    {
                         bufferJointsChar += 4;
                     }
                 }
@@ -476,8 +483,10 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             }
             default:
                 //ERROR handling
+                assert("Not suported joints type");
                 break;
             }
+            attributesData.push_back(reinterpret_cast<float*>(data));
         }
 
         if (itWeights != primitive.attributes.end())
@@ -488,27 +497,38 @@ ResourceMesh* Importer::Mesh::Import(const tinygltf::Model& model, const tinyglt
             const tinygltf::BufferView& weightsView = model.bufferViews[weightsAcc.bufferView];
             const tinygltf::Buffer& weightsBuffer = model.buffers[weightsView.buffer];
 
+            attributes.emplace_back(Attribute::WEIGHT, sizeof(float) * 4, animatedVertexSize, Attribute::Usage::ANIMATION);
+            animatedVertexSize += sizeof(float) * 4;
             const float* bufferWeights = reinterpret_cast<const float*>(&weightsBuffer.data[weightsView.byteOffset + weightsAcc.byteOffset]);
-            numWeights = weightsAcc.count * 4;
-            weights = new float[numWeights];
+            float* data = new float[weightsAcc.count * 4];
             for (unsigned int i = 0; i < weightsAcc.count; ++i)
             {
-                weights[i * 4] = bufferWeights[0];
-                weights[i * 4 + 1] = bufferWeights[1];
-                weights[i * 4 + 2] = bufferWeights[2];
-                weights[i * 4 + 3] = bufferWeights[3];
+                data[i * 4] = bufferWeights[0];
+                data[i * 4 + 1] = bufferWeights[1];
+                data[i * 4 + 2] = bufferWeights[2];
+                data[i * 4 + 3] = bufferWeights[3];
 
-                if (weightsView.byteStride != 0) {
+                if (weightsView.byteStride != 0) 
+                {
                     bufferWeights = reinterpret_cast<const float*>(reinterpret_cast<const char*>(bufferWeights) + weightsView.byteStride);
                 }
                 else {
                     bufferWeights += 4;
                 }
             }
+            attributesData.push_back(data);
         }
     }
 
-    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numJoints, std::move(joints), numWeights, std::move(weights), numVertices, std::move(attributes), std::move(attributesData));
+    if(itTang == primitive.attributes.end())
+    {
+        unsigned int vSize = (animatedVertexSize) ? animatedVertexSize : vertexSize;
+        //Generate Tangents
+        float* interleavedVertices = GetInterleavedData(attributes, attributesData, numVertices);
+        GenerateTangents(attributes, attributesData, numIndices, indices, vSize, numVertices, interleavedVertices, animatedVertexSize);
+    }
+
+    ResourceMesh* rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
     Importer::Mesh::Save(rMesh);
     return rMesh;
 }
