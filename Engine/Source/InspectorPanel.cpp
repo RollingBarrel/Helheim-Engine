@@ -976,24 +976,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 			ImGui::Text("PAUSED");
 		}
 
-		AnimationStateMachine* animSM = component->GetStateMachine();
-		float startTime = animSM->GetStateStartTime(0);
-		float endTime = animSM->GetStateEndTime(0);
-
-		if (ImGui::DragFloat("StartTime", &startTime, 0.01f, 0.0f, endTime))
-		{
-			animSM->SetStateStartTime(0, startTime);
-			component->ChangeState("default", 0.0f);
-		}
-
-		if (ImGui::DragFloat("EndTime", &endTime, 0.01f, startTime, 15.0f))
-		{
-			animSM->SetStateEndTime(0, endTime);
-			component->ChangeState("default", 0.0f);
-
-		}
-
-
 		if (ImGui::Button("Restart"))
 		{
 			component->OnRestart();
