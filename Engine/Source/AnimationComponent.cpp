@@ -211,6 +211,76 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 
 }
 
+std::string AnimationComponent::GetCurrentSpineStateName()
+{
+	assert(!mHasSpine);
+	std::string currentStateName;
+
+	if (mStateMachine != nullptr && mCurrentSpineState < mStateMachine->GetNumStates())
+	{
+		currentStateName = mStateMachine->GetStateName(mCurrentSpineState);
+	}
+
+	return currentStateName;
+}
+
+void AnimationComponent::SendSpineTrigger(std::string trigger, float transitionTime)
+{
+	assert(!mHasSpine);
+
+	std::string currentStateName = GetCurrentSpineStateName();
+
+	for (size_t i = 0; i < mSpineStateMachine->GetnNumTransitions(); i++)
+	{
+		if (currentStateName == mSpineStateMachine->GetTransitionSource(i) && trigger == mSpineStateMachine->GetTransitionTrigger(i))
+		{
+			ChangeSpineState(mSpineStateMachine->GeTransitionTarget(i), transitionTime);
+		}
+	}
+}
+
+void AnimationComponent::ChangeSpineState(std::string stateName, float transitionTime)
+{
+	assert(!mHasSpine);
+
+	int stateIndex = mSpineStateMachine->GetStateIndex(stateName);
+
+	if (stateIndex < mSpineStateMachine->GetNumStates() /*&& (stateIndex == 0 || stateIndex != mCurrentState)*/)
+	{
+		mCurrentSpineState = stateIndex;
+
+		int clipIndex = mSpineStateMachine->GetClipIndex(mSpineStateMachine->GetStateClip(stateIndex));
+
+		unsigned int resourceAnimation = mSpineStateMachine->GetClipResource(clipIndex);
+
+		if (resourceAnimation != 0)
+		{
+			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
+			assert(tmpAnimation);
+			if (mSpineController)
+			{
+				mSpineController->SetNextAnimation(tmpAnimation);
+				float new_clip_start = mSpineStateMachine->GetStateStartTime(stateIndex);
+				float new_clip_end = mSpineStateMachine->GetStateEndTime(stateIndex);
+				mSpineController->SetClipStartTime(new_clip_start);
+				mSpineController->SetStartTime(new_clip_start);
+				mSpineController->SetEndTime(new_clip_end);
+				mSpineController->SetTransitionDuration(transitionTime);
+				mSpineController->ActivateTransition();
+
+			}
+			else
+			{
+				mSpineController = new AnimationController(tmpAnimation, true);
+				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(stateIndex));
+				mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(stateIndex));
+
+			}
+
+		}
+	}
+}
+
 void AnimationComponent::SetModelUUID(unsigned int modelUid)
 {
 	if (modelUid == mModelUid)

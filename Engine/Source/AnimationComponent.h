@@ -34,7 +34,8 @@ public:
 	void OnRestart();
 
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
-	
+	AnimationStateMachine* GetSpineStateMachine() const { return mSpineStateMachine; }
+
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed);
@@ -42,6 +43,10 @@ public:
 	std::string GetCurrentStateName();
 	void SendTrigger(std::string trigger, float transitionTime);
 	void ChangeState(std::string stateName, float transitionTime);
+	
+	std::string GetCurrentSpineStateName();
+	void SendSpineTrigger(std::string trigger, float transitionTime);
+	void ChangeSpineState(std::string stateName, float transitionTime);
 
 	//Model UUID
 	unsigned int GetModelUUID() const { return mModelUid; }
@@ -72,6 +77,7 @@ private:
 	//Locomotion
 	AnimationController* mSpineController;
 	AnimationStateMachine* mSpineStateMachine;
+	int mCurrentSpineState = 0;
 	bool mHasSpine = false;
 
 	std::vector<GameObject*> mSpineObjects;
