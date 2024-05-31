@@ -205,7 +205,7 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, mMaxLifeTime);
+            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, mMaxLifeTime.CalculateRandom());
             particle->SetSpeed(mSpeedCurve.GetInitialValue());
             particle->SetSize(mSizeCurve.GetInitialValue());
             
@@ -237,15 +237,17 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddInt("Image", mResourceId);
     archive.AddFloat("Delay", mDelay);
     archive.AddFloat("Duration", mDuration);
-    archive.AddFloat("Life Time", mMaxLifeTime);
     archive.AddFloat("Emission Rate", mEmissionRate);
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
     archive.AddBool("Stretched Billboard", mStretchedBillboard);
     Archive size;
     Archive speed;
+    Archive maxLifeTime;
     mSizeCurve.SaveJson(size);
     mSpeedCurve.SaveJson(speed);
+    mMaxLifeTime.SaveJson(maxLifeTime);
+    archive.AddObject("Life Time", maxLifeTime);
     archive.AddObject("Size", size);
     archive.AddObject("Speed", speed);
     mShape->Save(archive);
@@ -269,9 +271,9 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
         mResourceId = data["Image"].GetInt();
         SetImage(mResourceId);
     }
-    if (data.HasMember("Life Time") && data["Life Time"].IsFloat())
+    if (data.HasMember("Life Time") && data["Life Time"].IsObject())
     {
-        mMaxLifeTime = data["Life Time"].GetFloat();
+        mMaxLifeTime.LoadJson(data["Life Time"]);
     }
     if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
     {

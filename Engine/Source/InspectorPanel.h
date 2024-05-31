@@ -25,6 +25,7 @@ class TextComponent;
 class BoxColliderComponent;
 class TrailComponent;
 class BezierCurve;
+class RandomFloat;
 
 class InspectorPanel : public Panel
 {
@@ -72,4 +73,6 @@ private:
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
 	void DrawBezierCurve(BezierCurve* curve, const char* cLabel) const;
+	void DrawRandomFloat(RandomFloat& value, const char* cLabel) const;
+
 };

@@ -26,39 +26,49 @@
                 "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ID": 1219827526,
                         "ComponentType": 15,
                         "isEnabled": true,
                         "Image": 452546727,
+                        "Delay": 0.0,
                         "Duration": 5.0,
-                        "Life Time": 3.0,
                         "Emission Rate": 10.0,
-                        "Speed": 3.0,
                         "Max Particles": 1000,
                         "Looping": true,
-                        "Size": 3.0,
-                        "Speed": 3.0,
-                        "isSpeedCurve": false,
-                        "isSizeCurve": false,
-                        "SizeCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SpeedCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SizeFactor": 1.0,
-                        "SpeedFactor": 1.0,
+                        "Stretched Billboard": false,
+                        "Life Time": {
+                            "IsRandom": false,
+                            "Min Lifetime": 1.0,
+                            "Max Lifetime": 2.0
+                        },
+                        "Size": {
+                            "Lineal": 1.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Factor": 1.0
+                        },
+                        "Speed": {
+                            "Lineal": 1.0,
+                            "isCurve": false,
+                            "Curve": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Factor": 1.0
+                        },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
-                        "ShapeAngle": 0.7853749990463257,
+                        "ShapeRadius": 0.0,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0
@@ -78,81 +88,6 @@
                                 "Color": [
                                     0.08823537826538086,
                                     1.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 1779470953,
-                "ParentUID": 1,
-                "Name": "GameObject (1)",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Components": [
-                    {
-                        "ID": 849525641,
-                        "ComponentType": 15,
-                        "isEnabled": true,
-                        "Image": 452546727,
-                        "Duration": 5.0,
-                        "Life Time": 3.0,
-                        "Emission Rate": 10.0,
-                        "Speed": 3.0,
-                        "Max Particles": 1000,
-                        "Looping": true,
-                        "Size": 3.0,
-                        "Speed": 3.0,
-                        "isSpeedCurve": false,
-                        "isSizeCurve": false,
-                        "SizeCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SpeedCurve": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "SizeFactor": 1.0,
-                        "SpeedFactor": 1.0,
-                        "ShapeType": 1,
-                        "ShapeRadius": 1.0,
-                        "ShapeAngle": 0.7853749990463257,
-                        "ShapeSize": [
-                            1.0,
-                            1.0
-                        ],
-                        "Color Gradient": [
-                            {
-                                "Time": 0.5,
-                                "Color": [
-                                    1.0,
-                                    0.0,
                                     0.0,
                                     1.0
                                 ]

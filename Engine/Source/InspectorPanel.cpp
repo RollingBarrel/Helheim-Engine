@@ -48,6 +48,7 @@
 #include "AnimationController.h"
 #include "BezierCurve.h"
 #include "Trail.h"
+#include "RandomFloat.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -1540,9 +1541,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	ImGui::Text("Lifetime");
-	ImGui::SameLine(); 
-	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 0.1f, 0.0f);
+	DrawRandomFloat(component->mMaxLifeTime, "Lifetime");
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
@@ -1881,4 +1880,33 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 		std::string presets = label + " Presets";
 		ImGui::Bezier(presets.c_str(), points);
 	}
+}
+
+void InspectorPanel::DrawRandomFloat(RandomFloat& value, const char* cLabel) const
+{
+	std::string label = cLabel;
+	ImGui::Text("%s Rand", cLabel);
+	ImGui::SameLine();
+	std::string asCurve = "##" + label + "Rand";
+	ImGui::Checkbox(asCurve.c_str(), &(value.mIsRand));
+	if (!value.mIsRand)
+	{
+		ImGui::Text(cLabel);
+		ImGui::SameLine();
+		std::string min = "##Min " + label;
+		ImGui::DragFloat(min.c_str(), &value.mMin);
+	}
+	else
+	{
+		ImGui::Text("Min");
+		std::string min = "##Min " + label;
+		ImGui::SameLine();
+		ImGui::DragFloat(min.c_str(), &value.mMin);
+		ImGui::SameLine();
+		ImGui::Text("Max");
+		ImGui::SameLine();
+		std::string max = "##Max " + label;
+		ImGui::DragFloat(max.c_str(), &value.mMax);
+	}
+
 }

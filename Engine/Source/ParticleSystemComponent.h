@@ -5,6 +5,7 @@
 #include <map>
 #include "EmitterShape.h"
 #include "ColorGradient.h"
+#include "RandomFloat.h"
 
 class ResourceTexture;
 class Particle;
@@ -48,7 +49,7 @@ private:
 
 	float mDelay = 0.0f;
 	float mDuration = 5.0f;
-	float mMaxLifeTime = 3.0f;
+	RandomFloat mMaxLifeTime;
 
 	BezierCurve mSpeedCurve = BezierCurve();
 	BezierCurve mSizeCurve = BezierCurve();
