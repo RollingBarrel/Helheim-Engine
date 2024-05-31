@@ -33,8 +33,11 @@ AnimationComponent::~AnimationComponent()
 	delete mController;
 	delete mStateMachine;
 
-	delete mSpineController;
-	delete mSpineStateMachine;
+	if (mHasSpine)
+	{
+		delete mSpineController;
+		delete mSpineStateMachine;
+	}
 
 	mDefaultObjects.clear();
 	mSpineObjects.clear();
