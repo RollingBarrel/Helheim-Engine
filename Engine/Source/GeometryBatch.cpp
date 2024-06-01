@@ -280,15 +280,17 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 	}
 
 	unsigned int meshIdx = 0;
-	const AnimationComponent* cAnim = cMesh->GetOwner()->FindAnimationComponent();
-	if (cAnim)
+	//const AnimationComponent* cAnim = cMesh->GetOwner()->FindAnimationComponent();
+	
+	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();
+	
+	if (rMesh.HasAttribute(Attribute::JOINT) && rMesh.HasAttribute(Attribute::WEIGHT))
 	{
 		AddUniqueMesh(cMesh, meshIdx);
 	}
 	else
 	{
 		bool foundMesh = false;
-		const ResourceMesh& rMesh = *cMesh->GetResourceMesh();
 		for (; meshIdx < mUniqueMeshes.size(); ++meshIdx)
 		{
 			if (mUniqueMeshes[meshIdx].resource->GetUID() == rMesh.GetUID())
@@ -493,9 +495,10 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent* cMesh)
 
 bool BatchMeshRendererComponent::IsAnimated() const
 {
-	if (component != nullptr)
-	{
-		return component->GetPalette().size() != 0;
-	}
-	return false;
+	assert(component != nullptr);
+#ifdef _DEBUG
+	if(component->GetPalette().size() != 0)
+		assert(component->GetResourceMesh()->HasAttribute(Attribute::JOINT) && component->GetResourceMesh()->HasAttribute(Attribute::WEIGHT) && "Animated mesh does not have weights or joints");
+#endif // _DEBUG
+	return component->GetPalette().size() != 0;
 }
