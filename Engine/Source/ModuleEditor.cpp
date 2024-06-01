@@ -25,6 +25,7 @@
 #include "SettingsPanel.h"
 #include "EditorControlPanel.h"
 #include "TagsManagerPanel.h"
+#include "AnimationSMPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -57,6 +58,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
 	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
 	mPanels[SETTINGSPANEL] = new SettingsPanel();
+	mPanels[ANIMATIONSMPANEL] = new AnimationSMPanel();
 
 	// Panels closed by default
 	mPanels[TAGSMANAGERPANEL]->Close();

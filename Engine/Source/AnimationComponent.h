@@ -49,7 +49,7 @@ public:
 	void ChangeSpineState(std::string stateName, float transitionTime);
 
 	//Model UUID
-	unsigned int GetModelUUID() const { return mModelUid; }
+	unsigned int GetModelUUID() const;
 	void SetModelUUID(unsigned int modelUid);
 	void SetModel(ResourceModel* model);
 
@@ -72,7 +72,7 @@ private:
 
 	float mSpeed;
 
-	unsigned int mModelUid;
+	ResourceModel* mModel;
 
 	//Locomotion
 	AnimationController* mSpineController;

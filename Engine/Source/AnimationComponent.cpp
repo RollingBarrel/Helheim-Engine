@@ -12,7 +12,7 @@
 #include "ResourceModel.h"
 #include "float4x4.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mModelUid(0), mSpineController(nullptr), mSpineStateMachine(nullptr)
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mModel(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
 	mStateMachine = nullptr;
 	mSpeed = 1.0;
@@ -24,7 +24,7 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mSpeed = 1.0;
 	mStateMachine = nullptr;
 
-	SetModelUUID(other.mModelUid);
+	SetModel(other.mModel);
 
 }
 
@@ -41,6 +41,8 @@ AnimationComponent::~AnimationComponent()
 
 	mDefaultObjects.clear();
 	mSpineObjects.clear();
+
+	App->GetResource()->ReleaseResource(mModel->GetUID());
 	
 }
 
@@ -284,31 +286,27 @@ void AnimationComponent::ChangeSpineState(std::string stateName, float transitio
 	}
 }
 
+unsigned int AnimationComponent::GetModelUUID() const
+{
+	return mModel->GetUID();
+}
+
 void AnimationComponent::SetModelUUID(unsigned int modelUid)
 {
-	if (modelUid == mModelUid)
-		return;
-	mModelUid = modelUid;
-	ResourceModel* my_model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(modelUid, Resource::Type::Model));
+	mModel = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(modelUid, Resource::Type::Model));
 	delete mStateMachine;
-	mStateMachine = new AnimationStateMachine(my_model->mAnimationUids);
+	mStateMachine = new AnimationStateMachine(mModel->mAnimationUids);
 	ChangeState("default", 0.0f);
-	
-	LoadSpine(my_model);
-	
-	App->GetResource()->ReleaseResource(mModelUid);
-
-	
+	LoadSpine(mModel);	
 }
 
 void AnimationComponent::SetModel(ResourceModel* model)
 {
-	mModelUid = model->GetUID();
+	mModel = model;
 	delete mStateMachine;
 	mStateMachine = new AnimationStateMachine(model->mAnimationUids);
 	ChangeState("default", 0.0f);
 	LoadSpine(model);
-
 }
 
 void AnimationComponent::StartTransition(float transitionDuration)
@@ -370,7 +368,7 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 void AnimationComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ID", GetID());
-	archive.AddInt("ModelUID", mModelUid);
+	archive.AddInt("ModelUID", mModel->GetUID());
 
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());

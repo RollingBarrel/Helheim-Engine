@@ -229,6 +229,19 @@
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\crude_json.cpp">
+      <Filter>Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_canvas.cpp">
+      <Filter>Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor.cpp">
+      <Filter>Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_api.cpp">
+      <Filter>Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationSMPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -478,6 +491,25 @@
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\crude_json.h">
+      <Filter>Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_bezier_math.h">
+      <Filter>Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_canvas.h">
+      <Filter>Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_extra_math.h">
+      <Filter>Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor.h">
+      <Filter>Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_internal.h">
+      <Filter>Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationSMPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -525,5 +557,16 @@
     <Filter Include="Dependencies\Detour">
       <UniqueIdentifier>{37ae183b-2780-4bd8-b3ca-a0b37fa72e92}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_bezier_math.inl">
+      <Filter>Dependencies</Filter>
+    </None>
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_extra_math.inl">
+      <Filter>Dependencies</Filter>
+    </None>
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_internal.inl">
+      <Filter>Dependencies</Filter>
+    </None>
   </ItemGroup>
 </Project>
