@@ -25,7 +25,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 {
     ModelNode node;
 
-    const auto& tinyNode = model.nodes[index];
+    const tinygltf::Node& tinyNode = model.nodes[index];
 
     node.mName = tinyNode.name;
 
@@ -112,6 +112,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 
     if (node.mMeshId != -1)
     {
+
         int i = 0;
         bool imported = true;
         if (importedMeshes.find(node.mMeshId) == importedMeshes.end())
