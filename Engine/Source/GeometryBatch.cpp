@@ -27,7 +27,7 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	{
 		mAttributes.push_back(attr);
 	}
-	mVertexSize = cMesh->GetResourceMesh()->GetVertexSize();
+	mVertexSize = cMesh->GetResourceMesh()->GetVertexSize(Attribute::Usage::RENDER);
 
 	glGenVertexArrays(1, &mVao);
 	glBindVertexArray(mVao);
@@ -185,7 +185,7 @@ void GeometryBatch::RecreateVboAndEbo()
 	unsigned int eboOffset = 0;
 	for (const BatchMeshResource& res : mUniqueMeshes)
 	{
-		unsigned int size = res.resource->GetNumberVertices() * res.resource->GetVertexSize();
+		unsigned int size = res.resource->GetNumberVertices() * res.resource->GetVertexSize(Attribute::Usage::RENDER);
 		float* data = res.resource->GetInterleavedData(Attribute::Usage::RENDER);
 		glBufferSubData(GL_ARRAY_BUFFER, vboOffset, size, data);
 		vboOffset += size;
@@ -232,10 +232,10 @@ void GeometryBatch::RecreateMaterials()
 void GeometryBatch::AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx)
 {
 	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();
-	mUniqueMeshes.emplace_back(&rMesh, mEboDataSize / sizeof(unsigned int), mVboDataSize / rMesh.GetVertexSize());
+	mUniqueMeshes.emplace_back(&rMesh, mEboDataSize / sizeof(unsigned int), mVboDataSize / rMesh.GetVertexSize(Attribute::Usage::RENDER));
 	meshIdx = mUniqueMeshes.size() - 1;
 	mVBOFlag = true;
-	mVboDataSize += rMesh.GetNumberVertices() * rMesh.GetVertexSize();
+	mVboDataSize += rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::RENDER);
 	mEboDataSize += rMesh.GetNumberIndices() * sizeof(unsigned int);
 }
 
@@ -337,7 +337,7 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent* component)
 			if (it->second.bMeshIdx > bMeshIdx)
 				--(it->second.bMeshIdx);
 		}
-		mVboDataSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize();
+		mVboDataSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::RENDER);
 		mEboDataSize -= rMesh.GetNumberIndices() * sizeof(unsigned int);
 		mVBOFlag = true;
 	}
@@ -481,7 +481,8 @@ void GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
 		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::NORMAL), GL_STREAM_DRAW);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mTangSsbo);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::TANGENT), GL_STREAM_DRAW);
-		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * rMesh->GetVertexSize(), rMesh->GetVertexSize() * rMesh->GetNumberVertices());	
+		unsigned int vertexSize = rMesh->GetVertexSize(Attribute::Usage::RENDER);
+		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * vertexSize, vertexSize * rMesh->GetNumberVertices());
 		glUniform1i(25, rMesh->GetNumberVertices());
 		glUniform1i(26, batchMeshRenderer.bCAnim->GetIsPlaying());
 		glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);

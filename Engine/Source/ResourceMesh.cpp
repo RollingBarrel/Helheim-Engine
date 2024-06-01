@@ -10,7 +10,7 @@ ResourceMesh::ResourceMesh(
     unsigned int inNumVertices, 
     const std::vector<Attribute>& attributes, 
     const std::vector<float*>& attributesData) : Resource(uid, Type::Mesh),
-    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(new unsigned int[inNumIndices]), mVertexSize(0), mAttributes(attributes)
+    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(new unsigned int[inNumIndices]), mAttributes(attributes)
 {
     memcpy(mIndices, indices, mNumIndices * sizeof(unsigned int));;
     mAttributesData.reserve(attributesData.size());
@@ -19,7 +19,6 @@ ResourceMesh::ResourceMesh(
         float* newData = new float[mNumVertices * mAttributes[i].size / sizeof(float)];
         memcpy(newData, attributesData[i], mNumVertices * mAttributes[i].size);
         mAttributesData.push_back(newData);
-        mVertexSize += attributes[i].size;
     }
 }
 
@@ -30,15 +29,13 @@ ResourceMesh::ResourceMesh(
     unsigned int inNumVertices,
     std::vector<Attribute>&& attributes,
     std::vector<float*>&& attributesData) : Resource(uid, Type::Mesh),
-    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(indices), mVertexSize(0), mAttributes(std::move(attributes)), mAttributesData(std::move(attributesData))
+    mNumVertices(inNumVertices), mNumIndices(inNumIndices), mIndices(indices), mAttributes(std::move(attributes)), mAttributesData(std::move(attributesData))
 {
     indices = nullptr;
-    for (Attribute attribute : mAttributes)
-        mVertexSize += attribute.size;
 }
 
 ResourceMesh::ResourceMesh(const ResourceMesh& other): Resource(other.GetUID(), Type::Mesh),
-    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(new unsigned int[other.mNumIndices]), mVertexSize(other.mVertexSize), mAttributes(other.mAttributes)
+    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(new unsigned int[other.mNumIndices]), mAttributes(other.mAttributes)
 {
     memcpy(mIndices, other.mIndices, mNumIndices * sizeof(unsigned int));
     mAttributesData.reserve(other.mAttributesData.size());
@@ -51,7 +48,7 @@ ResourceMesh::ResourceMesh(const ResourceMesh& other): Resource(other.GetUID(), 
 }
 
 ResourceMesh::ResourceMesh(ResourceMesh&& other) : Resource(other.GetUID(), Type::Mesh),
-    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(other.mIndices), mVertexSize(other.mVertexSize), mAttributes(std::move(other.mAttributes)), mAttributesData(std::move(other.mAttributesData))
+    mNumVertices(other.mNumVertices), mNumIndices(other.mNumIndices), mIndices(other.mIndices), mAttributes(std::move(other.mAttributes)), mAttributesData(std::move(other.mAttributesData))
 {
     other.mIndices = nullptr;
     //TODO: Needed ??
@@ -115,12 +112,18 @@ int ResourceMesh::GetAttributeIdx(Attribute::Type type) const
     return -1;
 }
 
-float* ResourceMesh::GetInterleavedData(Attribute::Usage inUsage) const
+unsigned int ResourceMesh::GetVertexSize(Attribute::Usage inUsage) const
 {
     unsigned int vertexSize = 0;
-        for (Attribute att : mAttributes)
-            if (att.usage & inUsage)
-                vertexSize += att.size;
+    for (Attribute att : mAttributes)
+        if (att.usage & inUsage)
+            vertexSize += att.size;
+    return vertexSize;
+}
+
+float* ResourceMesh::GetInterleavedData(Attribute::Usage inUsage) const
+{
+    unsigned int vertexSize = GetVertexSize(inUsage);
     float* ret = new float[mNumVertices * vertexSize / sizeof(float)];
     unsigned int vertexFloats = vertexSize / sizeof(float);
     for (unsigned int vertexIdx = 0; vertexIdx < mNumVertices; ++vertexIdx)

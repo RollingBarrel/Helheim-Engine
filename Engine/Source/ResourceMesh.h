@@ -44,7 +44,7 @@ public:
 	void GetAttributes(std::vector<Attribute>&) const;
 	unsigned int GetNumberAttributes() const { return static_cast<unsigned int>(mAttributes.size()); }
 	bool HasAttribute(Attribute::Type type) const;
-	unsigned int GetVertexSize() const { return mVertexSize; }
+	unsigned int GetVertexSize(Attribute::Usage usage) const;
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
 	//This allocates memory in the return pointer that you must delete
@@ -57,7 +57,6 @@ private:
 
 	std::vector<float*> mAttributesData;
 	std::vector<Attribute> mAttributes;
-	unsigned int mVertexSize = 0;
 };
 
 #endif // _RESOURCE_MESH_H_
