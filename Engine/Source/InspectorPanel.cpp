@@ -1846,39 +1846,36 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 {
 	std::string label = cLabel;
 	ImGui::Text(cLabel);
-	ImGui::Text("Initial %s", cLabel);
-	ImGui::SameLine();
-	std::string initial = "##Initial " + label;
-	ImGui::DragFloat(initial.c_str(), &curve->mLineal, 1.0f, 0.0f);
+	std::string initial = "Initial " + label;
+	DrawRandomFloat(curve->mInitialValue, initial.c_str());
 
-	ImGui::Text("%s as a Curve", cLabel);
+	ImGui::Text("%s Curved", cLabel);
 	ImGui::SameLine();
-	std::string asCurve = "##" + label + " as a Curve";
+	std::string asCurve = "##" + label + " Curved";
 	ImGui::Checkbox(asCurve.c_str(), &(curve->mIsCurve));
 	if (curve->mIsCurve)
 	{
-		static float points[5] = { curve->mCurve[0],
-			curve->mCurve[1],
-			curve->mCurve[2],
-			curve->mCurve[3] };
+		//static float points[5] = { curve->mCurve[0],
+		//	curve->mCurve[1],
+		//	curve->mCurve[2],
+		//	curve->mCurve[3] };
 		ImGui::Text("%s Growing Factor", cLabel);
 		ImGui::SameLine();
 		std::string growing = "##" + label + " Growing Factor";
-		ImGui::DragFloat(growing.c_str(), &curve->mCurveFactor, 1.0f, 0.0f);
-		ImGui::Text("Point 1");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
-		ImGui::Text("Point 2");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+		ImGui::DragFloat(growing.c_str(), &curve->mFactor, 1.0f, 0.0f);
+		//ImGui::Text("Point 1");
+		//ImGui::SameLine();
+		//ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
+		//ImGui::Text("Point 2");
+		//ImGui::SameLine();
+		//ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
 
-		if (points[0] != curve->mCurve[0]) curve->mCurve[0] = points[0];
-		if (points[1] != curve->mCurve[1]) curve->mCurve[1] = points[1];
-		if (points[2] != curve->mCurve[2]) curve->mCurve[2] = points[2];
-		if (points[3] != curve->mCurve[3]) curve->mCurve[3] = points[3];
+		//std::string presets = label + " Presets";
 
-		std::string presets = label + " Presets";
-		ImGui::Bezier(presets.c_str(), points);
+		if (ImGui::Curve("Das editor", ImVec2(400, 200), 10, curve->mPoints))
+		{
+			// curve changed
+		}
 	}
 }
 

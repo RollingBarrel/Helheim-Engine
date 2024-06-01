@@ -15,7 +15,7 @@ RandomFloat::~RandomFloat()
 {
 }
 
-float RandomFloat::CalculateRandom()
+float RandomFloat::CalculateRandom() const
 {
     if (mIsRand) 
     {

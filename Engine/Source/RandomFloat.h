@@ -11,7 +11,7 @@ public:
 	RandomFloat(const RandomFloat& original);
 	~RandomFloat();
 
-	float CalculateRandom();
+	float CalculateRandom() const;
 
 	void SaveJson(Archive& archive) const;
 	void LoadJson(const rapidjson::Value& data);
