@@ -57,11 +57,11 @@ void PlayerCamera::Update()
     {
         float3 direction = mCameraPosition - position;
         deltaTime = deltaTime - App->GetDt(); // Quizas seria mejor usar el GameManager en vez de App
-        float3 rotation = mCameraRotation - mGameObject->GetRotation();
+        float3 rotation = mCameraRotation - mGameObject->GetEulerAngles();
         if (deltaTime > 0) 
         {
             float factor = (transitionTime - deltaTime) / transitionTime;
-            SetView(position + direction * factor, mGameObject->GetRotation()+ rotation * factor);
+            SetView(position + direction * factor, mGameObject->GetEulerAngles() + rotation * factor);
         }
     }
     else

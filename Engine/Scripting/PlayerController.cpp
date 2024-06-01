@@ -107,7 +107,7 @@ void PlayerController::Start()
 
     // CAMERA
     ModuleScene* scene = App->GetScene();
-    mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
+    //mCamera = scene->FindGameObjectWithTag(scene->GetTagByName("MainCamera")->GetID());
 
 
     //Animation

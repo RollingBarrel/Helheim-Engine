@@ -45,10 +45,7 @@ ModuleScene::~ModuleScene()
 		delete mQuadtreeRoot;
 	}
 
-	for (Tag* tag : mTags) 
-	{
-		delete tag;
-	}
+	mTags.clear();
 }
 
 #pragma region Basic Functions
@@ -140,17 +137,26 @@ void ModuleScene::FindGameObjectsWithTag(const std::string& tagID, std::vector<G
 	}
 }
 
+void ModuleScene::AddTag(std::string tagName)
+{
+	bool exists = false;
 
-//void ModuleScene::AddTag(std::string tagname)
-//{
-//	if (GetTagByName(tagname) == nullptr)
-//	{
-//		Tag* newTag = new Tag(mLastTagIndex, tagname, TagType::CUSTOM);
-//		mTags.push_back(newTag);
-//
-//		++mLastTagIndex;
-//	}
-//}
+	for (auto it = mTags.cbegin(); it < mTags.cend(); it++)
+	{
+
+	}
+	
+	if (!exists)
+	{
+		mTags.push_back(tagName);
+	}
+}
+
+void ModuleScene::DeleteTag(std::string tag)
+{
+
+}
+
 //
 //int ModuleScene::GetCustomTagsSize()
 //{
@@ -186,10 +192,10 @@ void ModuleScene::FindGameObjectsWithTag(const std::string& tagID, std::vector<G
 //		}
 //	}
 //	return nullptr;
-//}
+//}																																																																																																																																																																																	
 //
 //Tag* ModuleScene::GetTagByID(unsigned id)
-//{
+//{ 
 //	for (Tag* tag : mTags)
 //	{
 //		if (tag->GetID() == id)
@@ -469,7 +475,8 @@ void ModuleScene::RemoveGameObjectFromScene(int id) {
 	}
 }
 
-void ModuleScene::RemoveGameObjectFromScene(const std::string& name) {
+void ModuleScene::RemoveGameObjectFromScene(const std::string& name) 
+{
 	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
 	{
 		if ((*it)->GetName() == name)
@@ -482,10 +489,11 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name) {
 
 void ModuleScene::DeleteGameObjects()
 {
-
 	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
 		gameObject->GetParent()->DeleteChild(gameObject);
+
+		RemoveGameObjectFromScene(gameObject->GetName());
 	}
 
 	mGameObjectsToDelete.clear();

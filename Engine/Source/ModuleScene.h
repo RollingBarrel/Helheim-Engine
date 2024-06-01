@@ -76,6 +76,9 @@ public:
 	//Tag* GetTagByID(unsigned id);
 	//void DeleteTag(Tag* tag);
 
+	void AddTag(std::string tag);
+	void DeleteTag(std::string tag);
+
 	// Prefabs
 	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
 	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
@@ -109,8 +112,7 @@ private:
 	bool mClosePrefab = false;
 
 	// Tags
-	std::vector<Tag*> mTags;
-	unsigned mLastTagIndex = 10;
+	std::vector<std::string> mTags;
 
 	// Others
 	std::vector<const MeshRendererComponent*>mCurrRenderComponents;

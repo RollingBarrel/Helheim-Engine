@@ -819,7 +819,6 @@ GameObject* GameObject::RemoveChild(const int id)
 		}
 	}
 	return movedObject;
-
 }
 
 void GameObject::AddSuffix()

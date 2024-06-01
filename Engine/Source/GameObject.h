@@ -46,7 +46,7 @@ public:
 	bool IsDynamic() const { return mIsDynamic; }
 
 	//Setters
-	void SetTag(unsigned int tag) { mTag = tag; };
+	void SetTag(std::string tag) { mTag = tag; };
 	void SetName(const char* name) { mName = name; };
 	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
 

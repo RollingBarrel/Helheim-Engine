@@ -20,7 +20,7 @@ ItemShield::ItemShield(GameObject* owner) : Script(owner) {}
 void ItemShield::Start()
 {
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
+    //mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
 }
 
 void ItemShield::Update()
