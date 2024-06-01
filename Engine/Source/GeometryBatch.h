@@ -142,11 +142,7 @@ private:
 	//Animation
 	bool mAnimationSkinning = false;
 	unsigned int mPaletteSsbo = 0;
-	unsigned int mBoneIndicesSsbo = 0;
-	unsigned int mWeightsSsbo = 0;
-	unsigned int mPosSsbo = 0;
-	unsigned int mNormSsbo = 0;
-	unsigned int mTangSsbo = 0;
+	unsigned int mAnimSsbo = 0;
 
 	int mSsboAligment = 0;
 };

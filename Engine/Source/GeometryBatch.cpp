@@ -41,18 +41,10 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	glGenBuffers(1, &mIbo);
 
 	glGenBuffers(1, &mPaletteSsbo);
-	glGenBuffers(1, &mBoneIndicesSsbo);
-	glGenBuffers(1, &mWeightsSsbo);
-	glGenBuffers(1, &mPosSsbo);
-	glGenBuffers(1, &mNormSsbo);
-	glGenBuffers(1, &mTangSsbo);
+	glGenBuffers(1, &mAnimSsbo);
 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, mPaletteSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, mBoneIndicesSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 17, mWeightsSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 18, mPosSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 19, mNormSsbo);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mTangSsbo);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mAnimSsbo);
 
 	for (std::vector<Attribute>::const_iterator it = mAttributes.cbegin(); it != mAttributes.cend(); ++it)
 	{
@@ -102,11 +94,7 @@ GeometryBatch::~GeometryBatch()
 	glDeleteBuffers(1, &mIbo);
 
 	glDeleteBuffers(1, &mPaletteSsbo);
-	glDeleteBuffers(1, &mBoneIndicesSsbo);
-	glDeleteBuffers(1, &mWeightsSsbo);
-	glDeleteBuffers(1, &mPosSsbo);
-	glDeleteBuffers(1, &mNormSsbo);
-	glDeleteBuffers(1, &mTangSsbo);
+	glDeleteBuffers(1, &mAnimSsbo);
 
 	mMeshComponents.clear();
 	mUniqueMeshes.clear();
@@ -473,16 +461,10 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent* cMesh)
 
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, batchMeshRenderer.component->GetPalette().size() * sizeof(float) * 16, batchMeshRenderer.component->GetPalette().data(), GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(unsigned int) * 4, rMesh->GetAttributeData(Attribute::JOINT), GL_STREAM_DRAW);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::WEIGHT), GL_STREAM_DRAW);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPosSsbo);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::POS), GL_STREAM_DRAW);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mNormSsbo);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 3, rMesh->GetAttributeData(Attribute::NORMAL), GL_STREAM_DRAW);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mTangSsbo);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::TANGENT), GL_STREAM_DRAW);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mAnimSsbo);
+		float* data = rMesh->GetInterleavedData(Attribute::Usage::ANIMATION);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * rMesh->GetVertexSize(Attribute::Usage::ANIMATION), data, GL_STREAM_DRAW);
+		delete[] data;
 		unsigned int vertexSize = rMesh->GetVertexSize(Attribute::Usage::RENDER);
 		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * vertexSize, vertexSize * rMesh->GetNumberVertices());
 		glUniform1i(25, rMesh->GetNumberVertices());
