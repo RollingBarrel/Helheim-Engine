@@ -17,7 +17,7 @@ public:
 	AnimationController(ResourceAnimation* animation, bool loop, float startTime, float endTime);
 	~AnimationController();
 
-	void Update(GameObject* model);
+	void Update();
 	void Restart();
 
 	//GetTransforms
@@ -50,6 +50,7 @@ public:
 	void SetTransitionDuration(float time) { mTransitionDuration = time; }
 	void ActivateTransition() { mTransition = true; mStartTransitionTime = mCurrentTime; }
 	void SetClipStartTime(float time) { mClipStartTime = time; }
+	bool GetIsInTransition() const { return mTransition; }
 
 	float GetTransitionDuration() const { return mTransitionDuration; }
 
