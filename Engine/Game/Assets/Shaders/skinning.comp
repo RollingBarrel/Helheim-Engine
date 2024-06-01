@@ -25,14 +25,13 @@ void main()
        vec3 outPos = vec3(inPos[index * 3], inPos[index * 3 + 1], inPos[index * 3 +2]);
        vec3 outNorm = vec3(inNorm[index * 3], inNorm[index * 3 + 1], inNorm[index * 3 + 2]);
        vec4 outTang = vec4(inTang[index * 3], inTang[index * 3 + 1], inTang[index * 3 + 2], inTang[index * 3 + 3]);
-       mat4 skinTransform = mat4(1.0f);
 
-        skinTransform = palette[boneIndices[index][0]]*weights[index][0]+ palette[boneIndices[index][1]]*weights[index][1]+
+       mat4 skinTransform = palette[boneIndices[index][0]]*weights[index][0]+ palette[boneIndices[index][1]]*weights[index][1]+
         palette[boneIndices[index][2]]*weights[index][2]+palette[boneIndices[index][3]]*weights[index][3];
-       
+
        outVertices[index].pos.xyz = (skinTransform*vec4(outPos,1.0)).xyz;
        outVertices[index].norm.yzw = (skinTransform*vec4(outNorm,0.0)).xyz;
-       outVertices[index].tang.w = outTang.w;
        outVertices[index].tang.xyz = (skinTransform*vec4(outTang.xyz,0.0)).xyz;
+       outVertices[index].tang.w = outTang.w;
     }
 }
