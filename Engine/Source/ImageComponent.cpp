@@ -109,7 +109,6 @@ void ImageComponent::Draw()
 	}
 	if (mImage && mCanvas)
 	{
-
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
 

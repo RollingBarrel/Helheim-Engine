@@ -350,7 +350,7 @@ int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFile
 	App->GetFileSystem()->DiscoverFiles("Assets", root);
 	delete prefabArchive;
 	delete archive;
-	gameObject->GetParent()->DeleteChild(gameObject);
+	//gameObject->GetParent()->DeleteChild(gameObject);		//TODO: Why delete yourself?
 	return resourceId;
 }
 
@@ -491,9 +491,10 @@ void ModuleScene::DeleteGameObjects()
 {
 	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
-		gameObject->GetParent()->DeleteChild(gameObject);
+		gameObject->GetParent()->RemoveChild(gameObject->GetID());
+		delete gameObject;
 
-		RemoveGameObjectFromScene(gameObject->GetName());
+		//RemoveGameObjectFromScene(gameObject->GetName());
 	}
 
 	mGameObjectsToDelete.clear();
@@ -501,10 +502,10 @@ void ModuleScene::DeleteGameObjects()
 
 void ModuleScene::DuplicateGameObjects()
 {
-
 	for (GameObject* gameObject : mGameObjectsToDuplicate)
 	{
 		gameObject->GetParent()->AddChild(gameObject);
+		//AddGameObjectToScene(gameObject);
 	}
 
 	mGameObjectsToDuplicate.clear();

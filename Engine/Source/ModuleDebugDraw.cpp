@@ -790,7 +790,8 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
 {
     
-    std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+    std::vector<Component*> meshComponents;
+    gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 
     if (!meshComponents.empty())
     {

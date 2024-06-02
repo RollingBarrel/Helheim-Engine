@@ -49,20 +49,12 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 {
 	if (!mIsRoot)
 	{
-		App->GetScene()->AddGameObjectToScene(this);
+		//App->GetScene()->AddGameObjectToScene(this);
 
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
-		AddSuffix();
-	}
-}
-
-GameObject::GameObject(const GameObject& original) : GameObject(original, original.mParent)
-{
-	if (mParent)
-	{
-		AddSuffix();
+		//AddSuffix();
 	}
 }
 
@@ -76,14 +68,13 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	{
 		mComponents.push_back(component->Clone(this));
 	}
- 
-	App->GetScene()->AddGameObjectToScene(this);
+
+	//App->GetScene()->AddGameObjectToScene(this);
 
 	for (GameObject* child : original.mChildren)
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
-		gameObject->mParent = this;
-		mChildren.push_back(gameObject);
+		mParent->AddChild(gameObject);
 	}
 }
 
@@ -95,7 +86,7 @@ GameObject::~GameObject()
 	}
 	mComponents.clear();
  
-	App->GetScene()->RemoveGameObjectFromScene(this);
+	//App->GetScene()->RemoveGameObjectFromScene(this);
 
 	for (GameObject* gameObject : mChildren)
 	{
@@ -136,7 +127,8 @@ void GameObject::Update()
 #pragma region Getter & Setters
 AABB GameObject::GetAABB()
 {
-	std::vector<Component*> components = GetComponentsInChildren(ComponentType::MESHRENDERER);
+	std::vector<Component*> components;
+	GetComponentsInChildren(ComponentType::MESHRENDERER, components);
 
 	AABB mixedAABB;
 	mixedAABB.SetNegativeInfinity();
@@ -147,6 +139,17 @@ AABB GameObject::GetAABB()
 	}
 
 	return mixedAABB;
+}
+
+void GameObject::SetParent(GameObject* newParent)
+{
+	assert(newParent && "Parent was nullptr");
+	mParent->RemoveChild(mUid);
+	mParent = newParent;
+	mParent->AddChild(this);
+
+	RecalculateMatrices();
+	SetActiveInHierarchy(mParent->mIsActive && mIsEnabled);
 }
 
 void GameObject::SetEnabled(bool enabled)
@@ -413,25 +416,19 @@ Component* GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
-std::vector<Component*>& GameObject::GetComponents(ComponentType type) const
+void GameObject::GetComponents(ComponentType type, std::vector<Component*>& components) const
 {
-	std::vector<Component*> matchingComponents;
-
 	for (auto component : mComponents)
 	{
 		if (component->GetType() == type)
 		{
-			matchingComponents.push_back(component);
+			components.push_back(component);
 		}
 	}
-
-	return matchingComponents;
 }
 
-std::vector<Component*>& GameObject::GetComponentsInChildren(ComponentType type) const
+void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const
 {
-	std::vector<Component*> componentVector;
-
 	Component* gameObjectComponent = GetComponent(type);
 
 	if (gameObjectComponent)
@@ -441,15 +438,8 @@ std::vector<Component*>& GameObject::GetComponentsInChildren(ComponentType type)
 
 	for (GameObject* child : mChildren)
 	{
-		std::vector<Component*> childComponents = child->GetComponentsInChildren(type);
-		if (!childComponents.empty())
-		{
-			componentVector.insert(componentVector.end(), childComponents.begin(), childComponents.end());
-		}
-
+		child->GetComponentsInChildren(type, componentVector);
 	}
-
-	return componentVector;
 }
 
 Component* GameObject::GetComponentInParent(ComponentType type) const
@@ -652,13 +642,12 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 
 GameObject* GameObject::Find(const char* name) const
 {
-
 	GameObject* gameObject = nullptr;
 
-	for (auto child : mChildren)
+	for (GameObject* child : mChildren)
 	{
 
-		if (child->GetName()._Equal(std::string(name)))
+		if (child->GetName().compare(name) == 0)
 		{
 			gameObject = child;
 			break;
@@ -672,7 +661,6 @@ GameObject* GameObject::Find(const char* name) const
 				break;
 			}
 		}
-
 	}
 
 	return gameObject;
@@ -682,7 +670,7 @@ GameObject* GameObject::Find(unsigned int UID) const
 {
 	GameObject* gameObject = nullptr;
 
-	for (auto child : mChildren)
+	for (GameObject* child : mChildren)
 	{
 
 		if (child->GetID() == UID)
@@ -703,33 +691,6 @@ GameObject* GameObject::Find(unsigned int UID) const
 	}
 
 	return gameObject;
-}
-
-static GameObject* FindGameObjectParent(GameObject* gameObject, int UID)
-{
-	GameObject* gameObjectParent = nullptr;
-	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
-	for (int i = 0; i < gameObjects.size(); i++)
-	{
-		if (gameObjects[i]->GetID() == UID)
-		{
-			// Found the parent
-			gameObjectParent = gameObjects[i];
-			break;
-		}
-		else
-		{
-			// Recursively search in children
-			GameObject* gameObjectChild = FindGameObjectParent(gameObjects[i], UID);
-			if (gameObjectChild != nullptr)
-			{
-				// Found a match in children, return it as the gameobject parent
-				gameObjectParent = gameObjectChild;
-				break;
-			}
-		}
-	}
-	return gameObjectParent;
 }
 
 std::vector<Component*>& GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
@@ -773,54 +734,24 @@ std::vector<Component*>& GameObject::FindComponentsInChildren(GameObject* parent
 
 #pragma region Children
 
-void GameObject::DeleteChild(GameObject* child)
+void GameObject::AddChild(GameObject* child)
 {
-	RemoveChild(child->mUid);
-	delete child;
+	mChildren.push_back(child);	
 }
 
-void GameObject::AddChild(GameObject* child, const int aboveThisId)
+void GameObject::RemoveChild(const int id)
 {
-	child->mParent = this;
-	bool inserted = false;
-	if (aboveThisId != 0)
-	{
-		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
-		{
-			if ((*it)->GetID() == aboveThisId)
-			{
-				mChildren.insert(it, child);
-				inserted = true;
-				break;
-			}
-		}
-	}
-
-	child->RecalculateMatrices();
-	child->SetActiveInHierarchy(mIsActive && child->mIsEnabled);
-
-	if (!inserted)
-	{
-		mChildren.push_back(child);
-	}
-}
-
-GameObject* GameObject::RemoveChild(const int id)
-{
-	GameObject* movedObject = nullptr;
-	std::vector<GameObject*>::iterator itTargetPosition = mChildren.end();
-	for (auto it = mChildren.begin(); it != mChildren.cend(); ++it)
+	for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
 	{
 		if ((*it)->GetID() == id)
 		{
-			movedObject = *it;
 			mChildren.erase(it);
 			break;
 		}
 	}
-	return movedObject;
 }
 
+//TODO: Move this to hierarchy
 void GameObject::AddSuffix()
 {
 	bool found = true;

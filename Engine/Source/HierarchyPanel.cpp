@@ -117,10 +117,10 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 			if (ImGui::Selectable("Duplicate")) 
 			{
 				std::unordered_set<GameObject*> selectAfter;
-				for (auto object : FilterMarked()) 
+				for (GameObject* object : FilterMarked()) 
 				{
-					GameObject* gameObject = new GameObject(*object);
-					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
+					GameObject* gameObject = new GameObject(*object, object->GetParent());
+					EngineApp->GetScene()->AddGameObjectToDuplicate(object);
 					mLastClickedObject = gameObject->GetID();
 					InternalSetFocus(gameObject);
 					selectAfter.insert(gameObject);
@@ -281,12 +281,23 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						parent = parent->mParent;
 					}
 
-
 					if (!isParent) 
 					{
-						GameObject* pMovedObject = movedObject->mParent->RemoveChild(movedObject->GetID());
-						if (reorder) { target->mParent->AddChild(pMovedObject, target->mUid); }
-						else { target->AddChild(pMovedObject); }
+						movedObject->mParent->RemoveChild(movedObject->GetID());
+
+						if (reorder) 
+						{ 
+							for (auto it = parent->mChildren.cbegin(); it != parent->mChildren.cend(); ++it)
+							{
+								parent->mChildren.insert(it, movedObject);
+								break;
+								
+							}
+						}
+						else 
+						{ 
+							target->AddChild(movedObject);
+						}
 					}
 				}
 			}
@@ -305,7 +316,7 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 					if (reorder && newGO != nullptr)
 					{
 						target->RemoveChild(newGO->mUid);
-						target->mParent->AddChild(newGO, target->mUid);
+						//target->mParent->AddChild(newGO, target->mUid);
 					}
 					break;
 				}

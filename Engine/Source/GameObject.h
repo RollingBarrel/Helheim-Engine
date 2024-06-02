@@ -23,11 +23,14 @@ class ENGINE_API GameObject
 	friend class InspectorPanel;
 
 public:
-	GameObject(const char* name);
+	GameObject() = delete;
+	GameObject(const GameObject& original) = delete;
+	GameObject& operator=(const GameObject& other) = delete;
+
+	explicit GameObject(const char* name);
 	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
-	GameObject(const GameObject& original);
 	GameObject(const GameObject& original, GameObject* newParent);
 	~GameObject();
 
@@ -50,17 +53,18 @@ public:
 	void SetName(const char* name) { mName = name; };
 	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
 
+	void SetParent(GameObject* newParent);
+
 	bool IsRoot() const { return mIsRoot; }
 	// Status for this GameObject
 	void SetEnabled(bool enabled);
 	bool IsEnabled() const { return mIsEnabled; }
 	// Status for this GameObject and all its ancestors
 	bool IsActive() const { return mIsEnabled && mIsActive; }
-
+	
 	// Children
-	void AddChild(GameObject* child, const int aboveThisId = 0);
-	GameObject* RemoveChild(const int id);
-	void DeleteChild(GameObject* child);
+	void AddChild(GameObject* child);
+	void RemoveChild(const int id);
 
 	//Transform
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
@@ -102,8 +106,8 @@ public:
 	// Components
 	Component* CreateComponent(ComponentType type);
 	Component* GetComponent(ComponentType type) const;
-	std::vector<Component*>& GetComponents(ComponentType type) const;
-	std::vector<Component*>& GetComponentsInChildren(ComponentType type) const;
+	void GetComponents(ComponentType type, std::vector<Component*>& component) const;
+	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
 	Component* GetComponentInParent(ComponentType type) const;
 	void AddComponent(Component* component, Component* position);
 	void AddComponentToDelete(Component* component);
