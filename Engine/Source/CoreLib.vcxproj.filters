@@ -442,6 +442,10 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="AudioSourceComponentNew.cpp" />
+    <ClCompile Include="AudioUnit.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1921,6 +1925,10 @@
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="AudioSourceComponentNew.h" />
+    <ClInclude Include="AudioUnit.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
@@ -2022,5 +2030,6 @@
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl" />
   </ItemGroup>
 </Project>

@@ -168,6 +168,8 @@
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="AudioListenerComponent.cpp" />
     <ClCompile Include="AudioSourceComponent.cpp" />
+    <ClCompile Include="AudioSourceComponentNew.cpp" />
+    <ClCompile Include="AudioUnit.cpp" />
     <ClCompile Include="BatchManager.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
     <ClCompile Include="BezierCurve.cpp" />
@@ -289,6 +291,8 @@
     <ClInclude Include="Archive.h" />
     <ClInclude Include="AudioListenerComponent.h" />
     <ClInclude Include="AudioSourceComponent.h" />
+    <ClInclude Include="AudioSourceComponentNew.h" />
+    <ClInclude Include="AudioUnit.h" />
     <ClInclude Include="BatchManager.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="ButtonComponent.h" />

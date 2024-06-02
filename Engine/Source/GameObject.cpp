@@ -17,6 +17,7 @@
 #include "ButtonComponent.h"
 #include "ScriptComponent.h"
 #include "AudioSourceComponent.h"
+#include "AudioSourceComponentNew.h"
 #include "AudioListenerComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
@@ -408,6 +409,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::AUDIOLISTENER:
 		newComponent = new AudioListenerComponent(this);
+		break;
+	case ComponentType::AUDIOSOURCENEW:
+		newComponent = new AudioSourceComponentNew(this);
 		break;
 	case ComponentType::SLIDER:
 		newComponent = new SliderComponent(this);

@@ -48,7 +48,6 @@ void AudioSourceComponent::SetEventInstance(FMOD::Studio::EventInstance* event)
 
 	if (mEventInstance != nullptr) 
 	{
-
 		// Update parameters
 		event->getDescription(&mEventDescription);
 		UpdateParameters();

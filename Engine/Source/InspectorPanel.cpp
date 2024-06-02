@@ -1,4 +1,4 @@
-#include "InspectorPanel.h"
+﻿#include "InspectorPanel.h"
 
 #include "ImBezier.h"
 #include "imgui.h"
@@ -31,6 +31,7 @@
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
 #include "AudioSourceComponent.h"
+#include "AudioSourceComponentNew.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
@@ -48,6 +49,7 @@
 #include "AnimationController.h"
 #include "BezierCurve.h"
 #include "Trail.h"
+#include "AudioUnit.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -466,6 +468,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					break;
 				case ComponentType::TRAIL:
 					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
+					break;
+				case ComponentType::AUDIOSOURCENEW:
+					DrawNewAudioSourceComponent(reinterpret_cast<AudioSourceComponentNew*>(component));
 					break;
 			}
 		}
@@ -1350,6 +1355,89 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 		}
 	}
 
+}
+
+void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* component)
+{
+	// List event and add
+	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
+
+	ImGui::Text("Launch event");
+	ImGui::SameLine();
+
+	static std::string selectedEventName = "";
+	if (ImGui::BeginCombo("##audiosourceevent", selectedEventName.c_str()))
+	{
+		for (auto i = 0; i < events.size(); i++)
+		{
+			if (ImGui::Selectable(events[i]))
+			{
+				selectedEventName = events[i];
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::Button("Add Event"))
+	{
+		component->AddNewAudioByName(selectedEventName.c_str());
+	}
+
+	// Set event one by one
+	ImGui::Separator();
+	int counter = 1;
+	for (auto audioUnit : component->GetAudios())
+	{
+		ImGui::Text("%i : %s",counter, audioUnit->GetName().c_str());
+
+		if (ImGui::Button("Play"))
+		{
+			audioUnit->Play();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Stop"))
+		{
+			audioUnit->Stop(false);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Remove"))
+		{
+			component->RemoveAudio(audioUnit);
+			return;
+		}
+
+		ImGui::SameLine();
+		ImGui::Separator();
+		
+
+		std::vector<int> parameterKeys;
+		std::vector<const char*> names;
+		std::vector<float> parameterValues;
+		audioUnit->GetParametersNameAndValue(parameterKeys, names, parameterValues);
+		ImGui::Text("Num Event parameters: %i", parameterKeys.size());
+		for (auto i = 0; i < parameterKeys.size(); i++)
+		{
+			const char* paramName = names[i];
+			float value = parameterValues[i];
+
+			float max = 0;
+			float min = 0;
+			audioUnit->GetParametersMaxMin(paramName, max, min);
+
+			ImGui::Text("%s: ", paramName);
+			ImGui::SameLine();
+
+			std::string str(paramName);
+			std::string tagName = "##" + str;
+
+			if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f"))
+			{
+				audioUnit->UpdateParameterValueByIndex(parameterKeys[i], value);
+			}
+		}
+		counter++;
+		ImGui::Separator();
+	}
 }
 
 void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
