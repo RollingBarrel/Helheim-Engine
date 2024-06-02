@@ -48,7 +48,7 @@ class ENGINE_API AnimationStateMachine
 {
 
 public:
-	AnimationStateMachine(std::vector<unsigned int> animationUids);
+	AnimationStateMachine(const std::vector<unsigned int>& animationUids);
 	~AnimationStateMachine();
 	
 	//Clips

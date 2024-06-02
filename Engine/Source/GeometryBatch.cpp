@@ -21,12 +21,7 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent* cMesh)
 	memset(mSsboIndicesData, 0, sizeof(mSsboIndicesData));
 	memset(mSync, 0, sizeof(mSync));
 
-	std::vector<Attribute> attributes;
-	cMesh->GetResourceMesh()->GetAttributes(attributes);
-	for (const Attribute attr : attributes)
-	{
-		mAttributes.push_back(attr);
-	}
+	cMesh->GetResourceMesh()->GetAttributes(mAttributes, Attribute::Usage::RENDER);
 	mVertexSize = cMesh->GetResourceMesh()->GetVertexSize(Attribute::Usage::RENDER);
 
 	glGenVertexArrays(1, &mVao);
@@ -106,7 +101,8 @@ void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
 {
 	for (Attribute attribute : mAttributes)
 	{
-		attributes.push_back(attribute);
+		if(attribute.usage & Attribute::Usage::RENDER)
+			attributes.push_back(attribute);
 	}
 }
 
@@ -478,9 +474,9 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent* cMesh)
 bool BatchMeshRendererComponent::IsAnimated() const
 {
 	assert(component != nullptr);
-#ifdef _DEBUG
-	if(component->GetPalette().size() != 0)
-		assert(component->GetResourceMesh()->HasAttribute(Attribute::JOINT) && component->GetResourceMesh()->HasAttribute(Attribute::WEIGHT) && "Animated mesh does not have weights or joints");
-#endif // _DEBUG
-	return component->GetPalette().size() != 0;
+//#ifdef _DEBUG
+//	if(component->GetPalette().size() != 0)
+//		assert(component->GetResourceMesh()->HasAttribute(Attribute::JOINT) && component->GetResourceMesh()->HasAttribute(Attribute::WEIGHT) && "Animated mesh does not have weights or joints");
+//#endif // _DEBUG
+	return component->GetPalette().size() != 0 && component->GetResourceMesh()->HasAttribute(Attribute::JOINT) && component->GetResourceMesh()->HasAttribute(Attribute::WEIGHT);
 }

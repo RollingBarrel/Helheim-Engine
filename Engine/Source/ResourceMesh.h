@@ -41,8 +41,9 @@ public:
 	unsigned int GetNumberVertices() const { return mNumVertices; }
 	unsigned int GetNumberIndices() const { return mNumIndices; }
 	const unsigned int* GetIndices() const { return mIndices; }
-	void GetAttributes(std::vector<Attribute>&) const;
+	void GetAttributes(std::vector<Attribute>& vec, Attribute::Usage usage = Attribute::Usage::ALL) const;
 	unsigned int GetNumberAttributes() const { return static_cast<unsigned int>(mAttributes.size()); }
+	unsigned int GetNumberAttributes(Attribute::Usage usage) const;
 	bool HasAttribute(Attribute::Type type) const;
 	unsigned int GetVertexSize(Attribute::Usage usage) const;
 	const float* GetAttributeData(Attribute::Type type) const;

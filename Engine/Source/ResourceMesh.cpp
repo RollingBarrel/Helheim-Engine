@@ -72,10 +72,20 @@ ResourceMesh::~ResourceMesh()
     mAttributesData.clear();
 }
 
-void ResourceMesh::GetAttributes(std::vector<Attribute>& attributes) const
+void ResourceMesh::GetAttributes(std::vector<Attribute>& attributes, Attribute::Usage usage) const
 {
     for (const Attribute attribute : mAttributes)
-        attributes.push_back(attribute);
+        if (attribute.usage & usage)
+            attributes.push_back(attribute);
+}
+
+unsigned int ResourceMesh::GetNumberAttributes(Attribute::Usage usage) const
+{
+    unsigned int ret = 0;
+    for (const Attribute attribute : mAttributes)
+        if (attribute.usage & usage)
+            ++ret;
+    return ret;
 }
 
 bool ResourceMesh::HasAttribute(Attribute::Type type) const
@@ -137,8 +147,6 @@ float* ResourceMesh::GetInterleavedData(Attribute::Usage inUsage) const
                 const float* attributeData = mAttributesData[attributeIdx];
                 memcpy(&ret[vertexIdx * vertexFloats + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
             }
-            else
-                LOG("COOL");
         }
     }
     return ret;

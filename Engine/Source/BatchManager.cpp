@@ -21,7 +21,7 @@ void BatchManager::AddMeshComponent(const MeshRendererComponent* meshComponent)
 	for (int i = 0; i < mBatches.size(); ++i)
 	{
 		mBatches[i]->GetAttributes(batchAttributes);
-		if (batchAttributes.size() == rMesh->GetNumberAttributes())
+		if (batchAttributes.size() == rMesh->GetNumberAttributes(Attribute::Usage::RENDER))
 		{
 			int j = 0;
 			while (j < batchAttributes.size())

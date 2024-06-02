@@ -43,7 +43,7 @@ static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* inter
     unsigned int j = 0;
     for (unsigned int i = 0; i < numVertices; ++i)
     {
-        const float* vert = &reinterpret_cast<const float*>(interleavedBuffer)[i * vertexSize / sizeof(float) + floatOffset];
+        const float* vert = &interleavedBuffer[i * vertexSize / sizeof(float) + floatOffset];
         for (unsigned int j = 0; j < attributeNumFloats; ++j)
         {
             memcpy(&ret[i * attributeNumFloats + j], &vert[j], sizeof(float));
