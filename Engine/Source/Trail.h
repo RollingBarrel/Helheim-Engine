@@ -52,5 +52,6 @@ private:
 	unsigned int mVAO = 0;
 	unsigned int mVBO = 0;
 
-	BezierCurve mWidth = BezierCurve();
+	BezierCurve mWidth = BezierCurve(); // TODO: Make it a pointer so every particle that has a trail dont have a bezierCurve by itself
+	float mInitialWith;
 };

@@ -252,7 +252,6 @@
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="Quadtree.cpp" />
-    <ClCompile Include="RandomFloat.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
@@ -749,7 +748,6 @@
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Quadtree.h" />
-    <ClInclude Include="RandomFloat.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceAnimation.h" />
     <ClInclude Include="ResourceMaterial.h" />

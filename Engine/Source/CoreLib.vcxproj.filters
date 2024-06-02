@@ -442,9 +442,6 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="RandomFloat.cpp">
-      <Filter>Utils\Particles</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1923,9 +1920,6 @@
     </ClInclude>
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomFloat.h">
-      <Filter>Utils\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

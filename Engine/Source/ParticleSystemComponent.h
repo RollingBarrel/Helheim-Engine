@@ -5,7 +5,6 @@
 #include <map>
 #include "EmitterShape.h"
 #include "ColorGradient.h"
-#include "RandomFloat.h"
 
 class ResourceTexture;
 class Particle;
@@ -36,9 +35,7 @@ public:
 private:
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
-	template <int steps>
-	static void BezierTable(float2 P[], float2 results[]);
-	static float BezierValue(float dt01, float4 P);
+	float CalculateRandomLifetime() const;
 
 	ResourceTexture* mImage = nullptr;
 	unsigned int mResourceId = 452546727; // Default particle texture
@@ -49,7 +46,10 @@ private:
 
 	float mDelay = 0.0f;
 	float mDuration = 5.0f;
-	RandomFloat mMaxLifeTime;
+
+	bool mIsLifetimeRandom;
+	float mLifetime;
+	float mMaxLifetime;
 
 	BezierCurve mSpeedCurve = BezierCurve();
 	BezierCurve mSizeCurve = BezierCurve();

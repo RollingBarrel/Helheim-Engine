@@ -22,7 +22,8 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
-Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), mMaxLifeTime(original.mMaxLifeTime),
+Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), 
+mIsLifetimeRandom(original.mIsLifetimeRandom), mLifetime(original.mLifetime), mMaxLifetime(original.mMaxLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(new ColorGradient(*original.mColorGradient))
 {
@@ -178,8 +179,8 @@ void ParticleSystemComponent::Update()
 		}
         else
         {
-            mParticles[i]->SetSpeed(mSpeedCurve.GetValue(dt));
-            mParticles[i]->SetSize(mSizeCurve.GetValue(dt));
+            mParticles[i]->SetSpeed(mSpeedCurve.GetValue(dt, mParticles[i]->GetInitialSpeed()));
+            mParticles[i]->SetSize(mSizeCurve.GetValue(dt, mParticles[i]->GetInitialSize()));
             mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
         }
 	}
@@ -205,9 +206,9 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, mMaxLifeTime.CalculateRandom());
-            particle->SetSpeed(mSpeedCurve.GetInitialValue());
-            particle->SetSize(mSizeCurve.GetInitialValue());
+            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, CalculateRandomLifetime());
+            particle->SetInitialSpeed(mSpeedCurve.CalculateInitialValue());
+            particle->SetInitialSize(mSizeCurve.CalculateInitialValue());
             
 			mParticles.push_back(particle);
 		}
@@ -218,6 +219,20 @@ void ParticleSystemComponent::SetImage(unsigned int resourceId)
 {
     mResourceId = resourceId;
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
+}
+
+float ParticleSystemComponent::CalculateRandomLifetime() const
+{
+    if (mIsLifetimeRandom)
+    {
+        //std::srand(static_cast<unsigned int>(std::time(nullptr)));
+        float random_value = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+        return random_value * (mMaxLifetime - mLifetime) + mLifetime;
+    }
+    else
+    {
+        return mLifetime;
+    }
 }
 
 void ParticleSystemComponent::Reset()
@@ -241,13 +256,14 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
     archive.AddBool("Stretched Billboard", mStretchedBillboard);
+    archive.AddBool("IsRandom", mIsLifetimeRandom);
+    archive.AddFloat("Min Lifetime", mLifetime);
+    archive.AddFloat("Max Lifetime", mMaxLifetime);
+
     Archive size;
     Archive speed;
-    Archive maxLifeTime;
     mSizeCurve.SaveJson(size);
     mSpeedCurve.SaveJson(speed);
-    mMaxLifeTime.SaveJson(maxLifeTime);
-    archive.AddObject("Life Time", maxLifeTime);
     archive.AddObject("Size", size);
     archive.AddObject("Speed", speed);
     mShape->Save(archive);
@@ -271,9 +287,17 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
         mResourceId = data["Image"].GetInt();
         SetImage(mResourceId);
     }
-    if (data.HasMember("Life Time") && data["Life Time"].IsObject())
+    if (data.HasMember("IsLifetimeRandom") && data["IsLifetimeRandom"].IsBool())
     {
-        mMaxLifeTime.LoadJson(data["Life Time"]);
+        mIsLifetimeRandom = data["IsLifetimeRandom"].GetBool();
+    }
+    if (data.HasMember("Lifetime") && data["Lifetime"].IsFloat())
+    {
+        mLifetime = data["Lifetime"].GetFloat();
+    }
+    if (data.HasMember("MaxLifetime") && data["MaxLifetime"].IsFloat())
+    {
+        mMaxLifetime = data["MaxLifetime"].GetFloat();
     }
     if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
     {

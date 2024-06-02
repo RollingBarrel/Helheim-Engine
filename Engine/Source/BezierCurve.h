@@ -1,7 +1,6 @@
 #pragma once
 #include "MathGeoLib.h"
 #include "Archive.h"
-#include "RandomFloat.h"
 
 class BezierCurve 
 {
@@ -9,8 +8,8 @@ class BezierCurve
 public:
 	BezierCurve();
 
-	float GetValue(float dt) const;
-	float GetInitialValue() const { return mInitialValue.CalculateRandom(); }
+	float GetValue(const float dt, const float initialValue) const;
+	float CalculateInitialValue();
 
 	void SaveJson(Archive& archive) const;
 	void LoadJson(const rapidjson::Value& data);
@@ -19,9 +18,15 @@ private:
 	void spline(const float* key, int num, int dim, float t, float* v) const;
 	float CurveValueSmooth(float p) const;
 	float CurveValue(float p) const;
+	float CalculateRandomValue();
 
     bool mIsCurve = false;
-    RandomFloat mInitialValue;
+
+	bool mIsValueRandom;
+	float mValue;
+	float mMaxValue;
+	float mInitialValue;
+
     std::vector<float2> mPoints;
     float mFactor = 1.0f;
 };

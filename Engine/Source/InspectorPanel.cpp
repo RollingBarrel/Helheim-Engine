@@ -48,7 +48,6 @@
 #include "AnimationController.h"
 #include "BezierCurve.h"
 #include "Trail.h"
-#include "RandomFloat.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -1599,7 +1598,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	DrawRandomFloat(component->mMaxLifeTime, "Lifetime");
+	DrawRandomFloat(component->mIsLifetimeRandom, component->mLifetime, component->mMaxLifetime, "Lifetime");
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
@@ -1905,7 +1904,7 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	std::string label = cLabel;
 	ImGui::Text(cLabel);
 	std::string initial = "Initial " + label;
-	DrawRandomFloat(curve->mInitialValue, initial.c_str());
+	DrawRandomFloat(curve->mIsValueRandom, curve->mValue, curve->mMaxValue, initial.c_str());
 
 	ImGui::Text("%s Curved", cLabel);
 	ImGui::SameLine();
@@ -1937,31 +1936,38 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	}
 }
 
-void InspectorPanel::DrawRandomFloat(RandomFloat& value, const char* cLabel) const
+void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, const char* cLabel) const
 {
 	std::string label = cLabel;
 	ImGui::Text("%s Rand", cLabel);
 	ImGui::SameLine();
 	std::string asCurve = "##" + label + "Rand";
-	ImGui::Checkbox(asCurve.c_str(), &(value.mIsRand));
-	if (!value.mIsRand)
+	ImGui::Checkbox(asCurve.c_str(), &isRand);
+	ImGui::SameLine();
+	float itemWidth = ImGui::GetWindowWidth() / 4.0f; // Por ejemplo, un cuarto del ancho de la ventana
+	if (!isRand)
 	{
-		ImGui::Text(cLabel);
-		ImGui::SameLine();
 		std::string min = "##Min " + label;
-		ImGui::DragFloat(min.c_str(), &value.mMin);
+		ImGui::PushItemWidth(itemWidth*2); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::PopItemWidth(); // Restaura el ancho original
 	}
 	else
 	{
 		ImGui::Text("Min");
 		std::string min = "##Min " + label;
 		ImGui::SameLine();
-		ImGui::DragFloat(min.c_str(), &value.mMin);
+		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::PopItemWidth(); // Restaura el ancho original
+
 		ImGui::SameLine();
 		ImGui::Text("Max");
 		ImGui::SameLine();
 		std::string max = "##Max " + label;
-		ImGui::DragFloat(max.c_str(), &value.mMax);
-	}
+		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(max.c_str(), &maxV);
+		ImGui::PopItemWidth(); // Restaura el ancho original
 
+	}
 }

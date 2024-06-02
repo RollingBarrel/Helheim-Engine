@@ -4,9 +4,15 @@ BezierCurve::BezierCurve()
 {
 }
 
-float BezierCurve::GetValue(float dt) const
+float BezierCurve::GetValue(float dt, float initialValue) const
 {
-    return mIsCurve ? mInitialValue.CalculateRandom() + (CurveValue(dt) * mFactor) : mInitialValue.CalculateRandom();
+    return mIsCurve ? initialValue + (CurveValue(dt) * mFactor) : initialValue;
+}
+
+float BezierCurve::CalculateInitialValue()
+{
+    CalculateRandomValue();
+    return mInitialValue;
 }
 
 void BezierCurve::spline(const float* key, int num, int dim, float t, float* v) const
@@ -72,11 +78,25 @@ float BezierCurve::CurveValue(float p) const
     return mPoints[left].y + (mPoints[left + 1].y - mPoints[left].y) * d;
 }
 
+float BezierCurve::CalculateRandomValue()
+{
+    if (mIsValueRandom)
+    {
+        float random_value = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+        mInitialValue = random_value * (mMaxValue - mValue) + mValue;
+    }
+    else
+    {
+        mInitialValue = mValue;
+    }
+    return mInitialValue;
+}
+
 void BezierCurve::SaveJson(Archive& archive) const
 {
-    Archive initialValue;
-    mInitialValue.SaveJson(initialValue);
-    archive.AddObject("Initial Value", initialValue);
+    archive.AddBool("IsRandomValue", mIsValueRandom);
+    archive.AddFloat("Value", mValue);
+    archive.AddFloat("MaxValue", mMaxValue);
     archive.AddBool("isCurve", mIsCurve);
     archive.AddFloat("Factor", mFactor);
 
@@ -93,9 +113,17 @@ void BezierCurve::SaveJson(Archive& archive) const
 
 void BezierCurve::LoadJson(const rapidjson::Value& data)
 {
-    if (data.HasMember("Initial Value") && data["Initial Value"].IsFloat())
+    if (data.HasMember("IsValueRandom") && data["IsValueRandom"].IsBool())
     {
-        mInitialValue.LoadJson(data["Initial Value"]);
+        mIsValueRandom = data["IsValueRandom"].GetBool();
+    }
+    if (data.HasMember("Value") && data["Value"].IsFloat())
+    {
+        mValue = data["Value"].GetFloat();
+    }
+    if (data.HasMember("MaxValue") && data["MaxValue"].IsFloat())
+    {
+        mMaxValue = data["MaxValue"].GetFloat();
     }
     if (data.HasMember("Factor") && data["Factor"].IsFloat())
     {
