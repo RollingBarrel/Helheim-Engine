@@ -475,7 +475,8 @@ bool BatchMeshRendererComponent::IsAnimated() const
 {
 	assert(component != nullptr);
 #ifdef _DEBUG
-	if(component->GetPalette().size() != 0)
+	if (component->GetPalette().size() != 0)
 		assert(component->GetResourceMesh()->HasAttribute(Attribute::JOINT) && component->GetResourceMesh()->HasAttribute(Attribute::WEIGHT) && "Animated mesh does not have weights or joints");
 #endif // _DEBUG
 	return component->GetPalette().size() != 0;
+}
