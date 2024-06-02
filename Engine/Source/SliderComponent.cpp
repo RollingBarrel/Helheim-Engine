@@ -24,8 +24,8 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 		self->SetName("Slider");
 		mSliderTransform2D = new Transform2DComponent(self);
 
-		mBackground = this->GetOwner()->GetChildren()[0];
-		mFill = this->GetOwner()->GetChildren()[1];
+		mBackground = new GameObject("Background", self);
+		mFill = new GameObject("Fill", self);
 
 		mBgImage = new ImageComponent(mBackground);
 		mFillImage = new ImageComponent(mFill);

@@ -320,10 +320,15 @@ void GameObject::ResetTransform()
 #pragma endregion
 
 #pragma region Components
-//TODO: Crate a component that requires ids not clean now
+
+template<typename T>
+T* GameObject::CreateComponent()
+{
+	return new T(this);
+}
+
 Component* GameObject::CreateComponent(ComponentType type)
 {
-
 	Component* newComponent = nullptr;
 
 	switch (type)
@@ -334,7 +339,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::CAMERA:
 		newComponent = new CameraComponent(this);
 		break;
-	case ComponentType::POINTLIGHT:
+	case ComponentType::POINTLIGHT:		//TODO: Redoo PointLights
 	{
 		const float3 pos = mPosition;
 		const PointLight def = { pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f };
@@ -342,10 +347,8 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	}
 	case ComponentType::SPOTLIGHT:
-	{
 		newComponent = new SpotLightComponent(this);
 		break;
-	}
 	case ComponentType::SCRIPT:
 		newComponent = new ScriptComponent(this);
 		break;
@@ -376,19 +379,13 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::AUDIOLISTENER:
 		newComponent = new AudioListenerComponent(this);
 		break;
-	case ComponentType::SLIDER:
-		{		
-			GameObject* mFill = new GameObject("Fill", this);
-			GameObject* mBackground = new GameObject("Background", this);
-			newComponent = new SliderComponent(this);
-			break;
-		}
-	case ComponentType::PARTICLESYSTEM:
-	{
-		ParticleSystemComponent* pc = new ParticleSystemComponent(this);
-		newComponent = pc;
+	case ComponentType::SLIDER:				//TODO: Redoo UI To not create gameObjects in a component	
+		newComponent = new SliderComponent(this);
 		break;
-	}
+	case ComponentType::PARTICLESYSTEM:
+		newComponent = new ParticleSystemComponent(this);
+		break;
+	
 	default:
 		break;
 	}
@@ -397,7 +394,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 	{
 		mComponents.push_back(newComponent);
 	}
-	if (type == ComponentType::MESHRENDERER)
+	if (type == ComponentType::MESHRENDERER)		//TODO: WTF is this doing here?
 	{
 		App->GetScene()->GetQuadtreeRoot()->AddObject(this);
 	}
@@ -416,15 +413,19 @@ Component* GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
-void GameObject::GetComponents(ComponentType type, std::vector<Component*>& components) const
+
+template<typename T> 
+T* GameObject::GetComponent() const
 {
-	for (auto component : mComponents)
+	ComponentType type = T::GetType();
+	for (Component* component : mComponents)
 	{
 		if (component->GetType() == type)
 		{
-			components.push_back(component);
+			return component;
 		}
 	}
+	return nullptr;
 }
 
 void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const

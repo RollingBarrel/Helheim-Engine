@@ -340,41 +340,41 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 }
 
-void InspectorPanel::DragAndDropSource(Component* component) {
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
-
-		ImGui::Text(Component::GetNameFromType(component->GetType()));
-		ImGui::EndDragDropSource();
-	}
-}
-
-void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-	ImGui::InvisibleButton("##", ImVec2(-1, 5));
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
-		{
-			Component* movedComponent = (Component*)payload->Data;
-			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) 
-			{
-				Component* pMovedComponent = object->RemoveComponent(movedComponent);
-				object->AddComponent(pMovedComponent, target);
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
-	ImGui::PopStyleVar();
-}
+//void InspectorPanel::DragAndDropSource(Component* component) {
+//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+//	{
+//		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
+//
+//		ImGui::Text(Component::GetNameFromType(component->GetType()));
+//		ImGui::EndDragDropSource();
+//	}
+//}
+//
+//void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
+//	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+//	ImGui::InvisibleButton("##", ImVec2(-1, 5));
+//	if (ImGui::BeginDragDropTarget())
+//	{
+//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
+//		{
+//			Component* movedComponent = (Component*)payload->Data;
+//			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) 
+//			{
+//				Component* pMovedComponent = object->RemoveComponent(movedComponent);
+//				object->AddComponent(pMovedComponent, target);
+//			}
+//		}
+//		ImGui::EndDragDropTarget();
+//	}
+//	ImGui::PopStyleVar();
+//}
 
 void InspectorPanel::DrawComponents(GameObject* object) 
 {
 	for (auto component : object->mComponents) 
 	{
 		ImGui::PushID(component->mID);
-		DragAndDropTarget(object, component);
+		//DragAndDropTarget(object, component);
 
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		RightClickPopup(component);
@@ -385,7 +385,7 @@ void InspectorPanel::DrawComponents(GameObject* object)
 			component->SetEnable(isEnabled);
 		}
 
-		DragAndDropSource(component);
+		//DragAndDropSource(component);
 		
 		if (isOpen) 
 		{
@@ -446,7 +446,7 @@ void InspectorPanel::DrawComponents(GameObject* object)
 		}
 		ImGui::PopID();
 	}
-	DragAndDropTarget(object, nullptr);
+	//DragAndDropTarget(object, nullptr);
 }
 
 void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
@@ -531,7 +531,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 
 	MaterialVariables(component);
 
-	ImGui::Text(" ");
 	//TODO: SEPARATE GAME ENGINE
 	//bool shouldDraw = component->ShouldDraw();
 	//if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
@@ -589,8 +588,6 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 	{
 		component->SetStoppingDistance(stoppingDistance);
 	}*/
-
-
 
 }
 

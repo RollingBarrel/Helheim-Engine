@@ -104,12 +104,15 @@ public:
 	std::vector<Component*>& FindComponentsInChildren(GameObject* parent, const ComponentType type);
 
 	// Components
+	template<typename T> T* CreateComponent();
 	Component* CreateComponent(ComponentType type);
+	template<typename T> T* GetComponent() const;
 	Component* GetComponent(ComponentType type) const;
-	void GetComponents(ComponentType type, std::vector<Component*>& component) const;
-	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
-	Component* GetComponentInParent(ComponentType type) const;
-	void AddComponent(Component* component, Component* position);
+
+	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;	//TODO: template
+	Component* GetComponentInParent(ComponentType type) const;											//TODO: template
+
+	void AddComponent(Component* component, Component* position);	//TODO: DELETE FAST PLS
 	void AddComponentToDelete(Component* component);
 
 	// Save / Load

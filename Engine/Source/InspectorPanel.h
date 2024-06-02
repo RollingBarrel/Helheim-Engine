@@ -64,8 +64,8 @@ private:
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
 
-	void DragAndDropSource(Component* component);
-	void DragAndDropTarget(GameObject* object, Component* target);
+	//void DragAndDropSource(Component* component);
+	//void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(MeshRendererComponent* renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
