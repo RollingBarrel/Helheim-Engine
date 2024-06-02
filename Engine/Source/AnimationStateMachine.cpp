@@ -6,13 +6,6 @@
 #include "AnimationController.h"
 
 
-AnimationClip::AnimationClip(unsigned int animationUID)
-{
-	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(animationUID, Resource::Type::Animation));
-	mName = anim ? anim->GetName() : std::to_string(animationUID);
-	mAnimationUID = animationUID;
-};
-
 
 AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animationUids)
 {
@@ -21,10 +14,6 @@ AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animation
 	{
 		mClips.push_back(AnimationClip(resourceAnimation));
 	}
-	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(animationUids[0], Resource::Type::Animation));
-
-
-	mStates.push_back(AnimationState(mClips[0].mName, "default", 0.0, anim->GetDuration()));
 }
 
 AnimationStateMachine::~AnimationStateMachine()
@@ -75,12 +64,13 @@ const unsigned int AnimationStateMachine::GetClipResource(int index) const
 	return mClips[index].mAnimationUID;
 }
 
-void AnimationStateMachine::AddState(std::string& clipName, std::string& name)
+const AnimationState& AnimationStateMachine::AddState(std::string& clipName)
 {
 	int resource_idx = GetClipResource(GetClipIndex(clipName));
-	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resource_idx, Resource::Type::Animation));
-
-	mStates.push_back(AnimationState(clipName,name, 0.0f, anim->GetDuration()));
+	AnimationState newState = AnimationState(clipName, mCurrentId);
+	mCurrentId += 3; // 1 for node id, 1 for pin input id, 1 for pin output id
+	mStates.push_back(newState);
+	return newState;
 }
 
 void AnimationStateMachine::RemoveState(int index)
@@ -146,9 +136,24 @@ void AnimationStateMachine::SetStateEndTime(int index, float time)
 	mStates[index].mEndTime = time;
 }
 
-void AnimationStateMachine::AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger)
+const AnimationTransition& AnimationStateMachine::AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger)
 {
-	mTransitions.push_back(AnimationTransition(sourceName, targetName, trigger));
+	int inId = 0, outId = 0;
+	for (AnimationState state : mStates)
+	{
+		if (state.mName == sourceName)
+		{
+			inId = state.mEditorId + 1;
+		}
+		if (state.mName == targetName)
+		{
+			outId = state.mEditorId + 2;
+		}
+
+	}
+	AnimationTransition newTransition = AnimationTransition(sourceName, targetName, trigger, mCurrentId++, inId, outId);
+	mTransitions.push_back(newTransition);
+	return newTransition;
 }
 
 void AnimationStateMachine::RemoveTransition(int index)
