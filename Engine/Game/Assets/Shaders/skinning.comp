@@ -10,7 +10,7 @@ struct InVertex
     uvec4 joints;
     vec4 weights;
 };
-layout(std430, binding = 20) readonly buffer Tangents {InVertex animVertices[];};
+layout(std430, binding = 20) readonly buffer AnimVertices {InVertex animVertices[];};
 struct OutVertex
 {
     vec4 pos; // w == uv.x

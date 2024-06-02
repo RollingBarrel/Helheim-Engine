@@ -465,7 +465,7 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent* cMesh)
 		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * vertexSize, vertexSize * rMesh->GetNumberVertices());
 		glUniform1i(25, rMesh->GetNumberVertices());
 		//glUniform1i(26, batchMeshRenderer.bCAnim->GetIsPlaying());
-		glDispatchCompute((rMesh->GetNumberVertices() + (63)) / 64, 1, 1);
+		glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);
 		mAnimationSkinning = true;
 	}
 	glUseProgram(0);
