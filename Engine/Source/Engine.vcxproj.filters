@@ -241,7 +241,9 @@
     <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_api.cpp">
       <Filter>Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationSMPanel.cpp" />
+    <ClCompile Include="AnimationSMPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -509,7 +511,9 @@
     <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_internal.h">
       <Filter>Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationSMPanel.h" />
+    <ClInclude Include="AnimationSMPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">

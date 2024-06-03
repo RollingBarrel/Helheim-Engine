@@ -67,8 +67,7 @@ const unsigned int AnimationStateMachine::GetClipResource(int index) const
 const AnimationState& AnimationStateMachine::AddState(std::string& clipName)
 {
 	int resource_idx = GetClipResource(GetClipIndex(clipName));
-	AnimationState newState = AnimationState(clipName, mCurrentId);
-	mCurrentId += 3; // 1 for node id, 1 for pin input id, 1 for pin output id
+	AnimationState newState = AnimationState(clipName);
 	mStates.push_back(newState);
 	return newState;
 }
@@ -80,7 +79,7 @@ void AnimationStateMachine::RemoveState(int index)
 
 }
 
-const int AnimationStateMachine::GetStateIndex(std::string& stateName) const
+const int AnimationStateMachine::GetStateIndex(const std::string& stateName) const
 {
 	int index = 0;
 
@@ -138,20 +137,8 @@ void AnimationStateMachine::SetStateEndTime(int index, float time)
 
 const AnimationTransition& AnimationStateMachine::AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger)
 {
-	int inId = 0, outId = 0;
-	for (AnimationState state : mStates)
-	{
-		if (state.mName == sourceName)
-		{
-			inId = state.mEditorId + 1;
-		}
-		if (state.mName == targetName)
-		{
-			outId = state.mEditorId + 2;
-		}
 
-	}
-	AnimationTransition newTransition = AnimationTransition(sourceName, targetName, trigger, mCurrentId++, inId, outId);
+	AnimationTransition newTransition = AnimationTransition(sourceName, targetName, trigger);
 	mTransitions.push_back(newTransition);
 	return newTransition;
 }
@@ -188,7 +175,7 @@ const std::string& AnimationStateMachine::GetTransitionSource(int index) const
 	return mTransitions[index].mSource;
 }
 
-const std::string& AnimationStateMachine::GeTransitionTarget(int index) const
+const std::string& AnimationStateMachine::GetTransitionTarget(int index) const
 {
 	return mTransitions[index].mTarget;
 }

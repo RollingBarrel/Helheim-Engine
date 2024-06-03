@@ -18,39 +18,31 @@ public:
 struct AnimationState
 {
 public:
-	AnimationState(std::string clipName, int id) {
+	AnimationState(std::string clipName) {
 		mClip = clipName;
 		mStartTime = 0.0f;
 		mEndTime = 10.0f;
 		mLoop = true;
-		mEditorId = id;
 	};
 
 	std::string mName;
 	std::string mClip;
 	float mStartTime, mEndTime;
 	bool mLoop;
-	int mEditorId;
 
 };
 
 struct AnimationTransition
 {
 public:
-	AnimationTransition(std::string sourceName, std::string targetName, std::string trigger, int id, int sourceId, int tragetId) {
+	AnimationTransition(std::string sourceName, std::string targetName, std::string trigger) {
 		mSource = sourceName;
 		mTarget = targetName;
 		mTrigger = trigger;
-		mEditorId = id;
-		mSourceId = sourceId;
-		mTargetId = tragetId;
 	};
 	std::string mTrigger;
 	std::string mSource;
 	std::string mTarget;
-	int mEditorId;
-	int mSourceId;
-	int mTargetId;
 };
 
 class ENGINE_API AnimationStateMachine
@@ -72,7 +64,7 @@ public:
 	const AnimationState& AddState(std::string& clipName);
 	void RemoveState(int index);
 
-	const int GetStateIndex(std::string& stateName) const;
+	const int GetStateIndex(const std::string& stateName) const;
 	const std::string& GetStateClip(int index) const;
 	const std::string& GetStateName(int index) const;
 	const float GetStateStartTime(int index) const;
@@ -90,20 +82,18 @@ public:
 	const int GetTransitionIndex(std::string& sourceName, std::string& trigger) const;
 	const std::string& GetTransitionTrigger(int index) const;
 	const std::string& GetTransitionSource(int index) const;
-	const std::string& GeTransitionTarget(int index) const;
-	const unsigned int GetnNumTransitions() const { return mTransitions.size();};
+	const std::string& GetTransitionTarget(int index) const;
+	const unsigned int GetNumTransitions() const { return mTransitions.size();};
 	const std::string& GetJsonConfig() const { return mJsonConfig; }
 
 
-	const std::vector<AnimationState>& GetStates() const { return mStates; }
-	const std::vector<AnimationTransition>& GetTransitions() const { return mTransitions; }
+
 private:
 	
 	std::vector<AnimationClip> mClips;
 	std::vector<AnimationState> mStates;
 	std::vector<AnimationTransition> mTransitions;
 	std::string mJsonConfig = "Simple.json";
-	int mCurrentId = 0;
 	
 	
 

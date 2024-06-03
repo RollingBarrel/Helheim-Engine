@@ -161,11 +161,11 @@ void AnimationComponent::SendTrigger(std::string trigger, float transitionTime)
 
 	std::string currentStateName = GetCurrentStateName();
 
-	for (size_t i = 0; i < mStateMachine->GetnNumTransitions(); i++)
+	for (size_t i = 0; i < mStateMachine->GetNumTransitions(); i++)
 	{
 		if (currentStateName == mStateMachine->GetTransitionSource(i) && trigger == mStateMachine->GetTransitionTrigger(i))
 		{
-			ChangeState(mStateMachine->GeTransitionTarget(i), transitionTime);
+			ChangeState(mStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
 
@@ -235,11 +235,11 @@ void AnimationComponent::SendSpineTrigger(std::string trigger, float transitionT
 
 	std::string currentStateName = GetCurrentSpineStateName();
 
-	for (size_t i = 0; i < mSpineStateMachine->GetnNumTransitions(); i++)
+	for (size_t i = 0; i < mSpineStateMachine->GetNumTransitions(); i++)
 	{
 		if (currentStateName == mSpineStateMachine->GetTransitionSource(i) && trigger == mSpineStateMachine->GetTransitionTrigger(i))
 		{
-			ChangeSpineState(mSpineStateMachine->GeTransitionTarget(i), transitionTime);
+			ChangeSpineState(mSpineStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
 }

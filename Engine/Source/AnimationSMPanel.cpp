@@ -29,42 +29,73 @@ void AnimationSMPanel::Draw(int windowFlags)
         if (mStateMachine)
         {
             //Draw nodes
-            for (AnimationState state : mStateMachine->GetStates())
+            for (int i = 0; i < mStateMachine->GetNumStates(); i++)
             {
-                ed::BeginNode(state.mEditorId);
-                ImGui::Text(state.mName.c_str());
-                ed::BeginPin(state.mEditorId + 1, ed::PinKind::Input);
-                ImGui::Text("-> In");
+                ed::PushStyleColor(ed::StyleColor_PinRect, ImColor(60, 180, 255, 150));
+                ed::PushStyleColor(ed::StyleColor_PinRectBorder, ImColor(60, 180, 255, 150));
+
+                ed::BeginNode(i * 3 + 1);
+                ImGui::Indent(1.0);
+                ImGui::TextColored(ImVec4(255, 255, 0, 255), mStateMachine->GetStateName(i).c_str());
+
+                ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f * ImGui::GetStyle().Alpha);
+
+                ImVec2 size = ed::GetNodeSize(i * 3 + 1);
+
+
+                ImGui::PopStyleVar();
+
+                ImGui::Dummy(ImVec2(96.0, 8.0));
+                ImGui::BulletText("Clip: %s", mStateMachine->GetStateClip(i).c_str());
+                if (i == 0)
+                {
+                    ImGui::BulletText("Default");
+                }
+
+                ImGui::Dummy(ImVec2(96.0, 8.0));
+
+                ImGui::Dummy(ImVec2(64.0, 8.0));
+
+                // In Pin
+                ed::PushStyleVar(ed::StyleVar_PinArrowSize, 8.0f);
+                ed::PushStyleVar(ed::StyleVar_PinArrowWidth, 8.0f);
+                ed::PushStyleVar(ed::StyleVar_PinRadius, 10.0f);
+                ed::PushStyleVar(ed::StyleVar_TargetDirection, ImVec2(0.0f, 0.0f));
+                ed::BeginPin(i * 3 + 2, ed::PinKind::Input);
+                ImGui::Text("In");
                 ed::EndPin();
-                ImGui::SameLine();
-                ed::BeginPin(state.mEditorId + 2, ed::PinKind::Output);
-                ImGui::Text("Out ->");
+                ed::PopStyleVar(4);
+
+                // Out Pin
+                ImGui::SameLine(size.x - 40);
+                ed::PushStyleVar(ed::StyleVar_PinArrowSize, 0.0f);
+                ed::PushStyleVar(ed::StyleVar_PinArrowWidth, 0.0f);
+                ed::PushStyleVar(ed::StyleVar_TargetDirection, ImVec2(0.0f, 0.0f));
+                ed::BeginPin(i * 3 + 3, ed::PinKind::Output);
+                ImGui::Text("Out");
+
                 ed::EndPin();
-                float start = state.mStartTime;
-                float end = state.mEndTime;
-                bool loop = state.mLoop;
-                if (ImGui::DragFloat("Start time", &start, 0.01f, 0.0f, end))
-                {
-                    state.mStartTime = start; // works with const?
-                }
-                if (ImGui::DragFloat("End time", &end, 0.01f, start, 30.0f))
-                {
-                    state.mEndTime = end; // works with const?
-                }
-                if (ImGui::Checkbox("Loop", &loop))
-                {
-                    state.mLoop = loop; // works with const?
-                }
+
                 ed::EndNode();
+
+                ed::PopStyleVar(3);
+                ed::PopStyleColor(2);
             }
 
             //Draw transitions
-            for (AnimationTransition transition : mStateMachine->GetTransitions())
+            ed::PushStyleVar(ed::StyleVar_LinkStrength, 4.0f);
+            int num_nodes = mStateMachine->GetNumStates();
+            for (int i = 0, count = mStateMachine->GetNumTransitions(); i < count; ++i)
             {
-                ed::Link(transition.mEditorId, transition.mSourceId, transition.mTargetId);
+                int source = mStateMachine->GetStateIndex(mStateMachine->GetTransitionSource(i));
+                int target = mStateMachine->GetStateIndex(mStateMachine->GetTransitionTarget(i));
 
+                if (source < num_nodes && target < num_nodes)
+                {
+                    ed::Link(num_nodes * 3 + i + 1, source * 3 + 3, target * 3 + 2);
+                }
             }
-
+            ed::PopStyleVar(1);
             //Add transition
             if (ed::BeginCreate())
             {
@@ -105,6 +136,8 @@ void AnimationSMPanel::Draw(int windowFlags)
         ed::End();
         ed::SetCurrentEditor(nullptr);
 		
+
+        //Draw add node panel
         
 
 	}
