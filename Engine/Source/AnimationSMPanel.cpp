@@ -58,11 +58,7 @@ void AnimationSMPanel::Close()
 
 void AnimationSMPanel::LoadConfig()
 {
-    if (mEditorContext) // Necessary¿¿¿
-    {
-        ed::DestroyEditor(mEditorContext);
 
-    }
     ed::Config config;
     config.SettingsFile = mStateMachine->GetJsonConfig().c_str();
     mEditorContext = ed::CreateEditor(&config);
@@ -319,5 +315,6 @@ void AnimationSMPanel::ManageCreate()
                 }
             }
         }
+        ed::EndCreate();
     }
 }
