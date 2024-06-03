@@ -152,7 +152,7 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
         ImGui::Separator();
 
         //Draw add node panel
-        char buffer[16];
+        char buffer[32];
         strncpy(buffer, mNewNodeName.c_str(), sizeof(buffer));
         buffer[sizeof(buffer) - 1] = '\0';
 
@@ -180,7 +180,7 @@ void AnimationSMPanel::ShowNodeMenu()
         ImGui::Separator();
 
         std::string name = mStateMachine->GetStateName(mSelectedNode);
-        char buffer[16];
+        char buffer[32];
         strncpy(buffer, name.c_str(), sizeof(buffer));
         buffer[sizeof(buffer) - 1] = '\0';
 
@@ -209,6 +209,35 @@ void AnimationSMPanel::ShowNodeMenu()
 
 void AnimationSMPanel::ShowLinkMenu()
 {
+    if (ImGui::BeginPopup("Transition Context Menu"))
+    {
+        ImGui::TextUnformatted("Edit Transition Menu");
+        ImGui::Separator();
+
+        std::string name = mStateMachine->GetTransitionTrigger(mSelectedLink);
+        char buffer[32];
+        strncpy(buffer, name.c_str(), sizeof(buffer));
+        buffer[sizeof(buffer) - 1] = '\0';
+
+        if (ImGui::InputText("Transition name: ", buffer, sizeof(buffer))) {
+            // Update mNewNodeName with the new value from the buffer
+            name = std::string(buffer);
+            mStateMachine->SetStateName(mSelectedLink, name);
+        }
+
+        std::string from = mStateMachine->GetTransitionSource(mSelectedLink);
+        std::string to = mStateMachine->GetTransitionTarget(mSelectedLink);
+
+        ImGui::Text(from.c_str());
+        ImGui::SameLine();
+        ImGui::Text(" -> ");
+        ImGui::SameLine();
+        ImGui::Text(to.c_str());
+
+
+        ImGui::EndPopup();
+    }
+
 }
 
 void AnimationSMPanel::ShowContextMenus()
