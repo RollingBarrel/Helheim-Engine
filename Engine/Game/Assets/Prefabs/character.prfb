@@ -2,9 +2,9 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 761122190,
+                "UID": 1134802830,
                 "ParentUID": 1,
-                "Name": "character",
+                "Name": "Character",
                 "isEnabled": true,
                 "Translation": [
                     0.0,
@@ -18,18 +18,18 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
                 ],
-                "Tag": 5,
+                "Tag": 0,
                 "PrefabId": 0,
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 764881724,
-                        "ModelUID": 1960913412,
+                        "ID": 1139049711,
+                        "ModelUID": 1983058791,
                         "ComponentType": 10,
                         "isEnabled": true
                     },
@@ -63,7 +63,7 @@
                             {
                                 "VariableName": "mDashRange",
                                 "MemberType": 1,
-                                "VariableData": 8.0
+                                "VariableData": 5.0
                             },
                             {
                                 "VariableName": "mDashCoolDown",
@@ -123,9 +123,14 @@
                                 "MemberType": 5
                             },
                             {
+                                "VariableName": "mGrenadeAimAreaGO",
+                                "MemberType": 3,
+                                "VariableData": 1276047752
+                            },
+                            {
                                 "VariableName": "mGrenadeExplotionPreviewAreaGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1117172630
                             },
                             {
                                 "VariableName": "mGrenadThrowDistance",
@@ -144,7 +149,7 @@
                             {
                                 "VariableName": "mHudControllerGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 353037479
                             },
                             {
                                 "VariableName": "DEBUG MODE",
@@ -192,8 +197,8 @@
                 ]
             },
             {
-                "UID": 1271235257,
-                "ParentUID": 761122190,
+                "UID": 2024976936,
+                "ParentUID": 1134802830,
                 "Name": "Character",
                 "isEnabled": true,
                 "Translation": [
@@ -208,9 +213,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    0.009999999776482582,
-                    0.010000000707805157,
-                    0.010000000707805157
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
                 ],
                 "Tag": 0,
                 "PrefabId": 0,
@@ -219,8 +224,8 @@
                 "Components": []
             },
             {
-                "UID": 1274020097,
-                "ParentUID": 1271235257,
+                "UID": 2028666849,
+                "ParentUID": 2024976936,
                 "Name": "OB_maincharacter_tpose",
                 "isEnabled": true,
                 "Translation": [
@@ -246,8 +251,8 @@
                 "Components": []
             },
             {
-                "UID": 1278266978,
-                "ParentUID": 1274020097,
+                "UID": 2031730173,
+                "ParentUID": 2028666849,
                 "Name": "OB_maincharacter_tpose",
                 "isEnabled": true,
                 "Translation": [
@@ -272,17 +277,18 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ID": 1279450535,
-                        "MeshID": 1960913413,
-                        "MaterialID": 1960913418,
+                        "ID": 2032774488,
+                        "MeshID": 1983058792,
+                        "MaterialID": 1983058797,
+                        "ModelUID": 1983058791,
                         "ComponentType": 0,
                         "isEnabled": true
                     }
                 ]
             },
             {
-                "UID": 1552504097,
-                "ParentUID": 1271235257,
+                "UID": 333650081,
+                "ParentUID": 2024976936,
                 "Name": "mixamorig:Hips",
                 "isEnabled": true,
                 "Translation": [
@@ -308,8 +314,8 @@
                 "Components": []
             },
             {
-                "UID": 1555149695,
-                "ParentUID": 1552504097,
+                "UID": 336852647,
+                "ParentUID": 333650081,
                 "Name": "mixamorig:Spine",
                 "isEnabled": true,
                 "Translation": [
@@ -335,8 +341,8 @@
                 "Components": []
             },
             {
-                "UID": 1557099083,
-                "ParentUID": 1555149695,
+                "UID": 339846350,
+                "ParentUID": 336852647,
                 "Name": "mixamorig:Spine1",
                 "isEnabled": true,
                 "Translation": [
@@ -362,8 +368,8 @@
                 "Components": []
             },
             {
-                "UID": 1559187713,
-                "ParentUID": 1557099083,
+                "UID": 343118537,
+                "ParentUID": 339846350,
                 "Name": "mixamorig:Spine2",
                 "isEnabled": true,
                 "Translation": [
@@ -389,8 +395,8 @@
                 "Components": []
             },
             {
-                "UID": 1561276343,
-                "ParentUID": 1559187713,
+                "UID": 346181861,
+                "ParentUID": 343118537,
                 "Name": "mixamorig:Neck",
                 "isEnabled": true,
                 "Translation": [
@@ -416,8 +422,8 @@
                 "Components": []
             },
             {
-                "UID": 1565523224,
-                "ParentUID": 1561276343,
+                "UID": 349245185,
+                "ParentUID": 346181861,
                 "Name": "mixamorig:Head",
                 "isEnabled": true,
                 "Translation": [
@@ -443,8 +449,8 @@
                 "Components": []
             },
             {
-                "UID": 1567472612,
-                "ParentUID": 1565523224,
+                "UID": 352238888,
+                "ParentUID": 349245185,
                 "Name": "mixamorig:HeadTop_End",
                 "isEnabled": true,
                 "Translation": [
@@ -470,8 +476,8 @@
                 "Components": []
             },
             {
-                "UID": 1569909347,
-                "ParentUID": 1559187713,
+                "UID": 356137664,
+                "ParentUID": 343118537,
                 "Name": "mixamorig:LeftShoulder",
                 "isEnabled": true,
                 "Translation": [
@@ -497,8 +503,8 @@
                 "Components": []
             },
             {
-                "UID": 1572276461,
-                "ParentUID": 1569909347,
+                "UID": 359618714,
+                "ParentUID": 356137664,
                 "Name": "mixamorig:LeftArm",
                 "isEnabled": true,
                 "Translation": [
@@ -524,8 +530,8 @@
                 "Components": []
             },
             {
-                "UID": 1574365091,
-                "ParentUID": 1572276461,
+                "UID": 363030143,
+                "ParentUID": 359618714,
                 "Name": "mixamorig:LeftForeArm",
                 "isEnabled": true,
                 "Translation": [
@@ -551,8 +557,8 @@
                 "Components": []
             },
             {
-                "UID": 1576453721,
-                "ParentUID": 1574365091,
+                "UID": 366302330,
+                "ParentUID": 363030143,
                 "Name": "mixamorig:LeftHand",
                 "isEnabled": true,
                 "Translation": [
@@ -578,8 +584,8 @@
                 "Components": []
             },
             {
-                "UID": 1578611972,
-                "ParentUID": 1576453721,
+                "UID": 369435275,
+                "ParentUID": 366302330,
                 "Name": "mixamorig:LeftHandIndex1",
                 "isEnabled": true,
                 "Translation": [
@@ -605,8 +611,8 @@
                 "Components": []
             },
             {
-                "UID": 1580630981,
-                "ParentUID": 1578611972,
+                "UID": 372777083,
+                "ParentUID": 369435275,
                 "Name": "mixamorig:LeftHandIndex2",
                 "isEnabled": true,
                 "Translation": [
@@ -632,8 +638,8 @@
                 "Components": []
             },
             {
-                "UID": 1582928474,
-                "ParentUID": 1580630981,
+                "UID": 375910028,
+                "ParentUID": 372777083,
                 "Name": "mixamorig:LeftHandIndex3",
                 "isEnabled": true,
                 "Translation": [
@@ -659,8 +665,8 @@
                 "Components": []
             },
             {
-                "UID": 1584947483,
-                "ParentUID": 1582928474,
+                "UID": 378973352,
+                "ParentUID": 375910028,
                 "Name": "mixamorig:LeftHandIndex4",
                 "isEnabled": true,
                 "Translation": [
@@ -686,8 +692,8 @@
                 "Components": []
             },
             {
-                "UID": 1588498154,
-                "ParentUID": 1559187713,
+                "UID": 384264548,
+                "ParentUID": 343118537,
                 "Name": "mixamorig:RightShoulder",
                 "isEnabled": true,
                 "Translation": [
@@ -713,8 +719,8 @@
                 "Components": []
             },
             {
-                "UID": 1590656405,
-                "ParentUID": 1588498154,
+                "UID": 387606356,
+                "ParentUID": 384264548,
                 "Name": "mixamorig:RightArm",
                 "isEnabled": true,
                 "Translation": [
@@ -740,8 +746,8 @@
                 "Components": []
             },
             {
-                "UID": 1592745035,
-                "ParentUID": 1590656405,
+                "UID": 390878543,
+                "ParentUID": 387606356,
                 "Name": "mixamorig:RightForeArm",
                 "isEnabled": true,
                 "Translation": [
@@ -767,8 +773,8 @@
                 "Components": []
             },
             {
-                "UID": 1594764044,
-                "ParentUID": 1592745035,
+                "UID": 394011488,
+                "ParentUID": 390878543,
                 "Name": "mixamorig:RightHand",
                 "isEnabled": true,
                 "Translation": [
@@ -794,8 +800,8 @@
                 "Components": []
             },
             {
-                "UID": 1596713432,
-                "ParentUID": 1594764044,
+                "UID": 397074812,
+                "ParentUID": 394011488,
                 "Name": "mixamorig:RightHandIndex1",
                 "isEnabled": true,
                 "Translation": [
@@ -821,8 +827,8 @@
                 "Components": []
             },
             {
-                "UID": 1598593199,
-                "ParentUID": 1596713432,
+                "UID": 400277378,
+                "ParentUID": 397074812,
                 "Name": "mixamorig:RightHandIndex2",
                 "isEnabled": true,
                 "Translation": [
@@ -848,8 +854,8 @@
                 "Components": []
             },
             {
-                "UID": 1600960313,
-                "ParentUID": 1598593199,
+                "UID": 403410323,
+                "ParentUID": 400277378,
                 "Name": "mixamorig:RightHandIndex3",
                 "isEnabled": true,
                 "Translation": [
@@ -875,8 +881,8 @@
                 "Components": []
             },
             {
-                "UID": 1602909701,
-                "ParentUID": 1600960313,
+                "UID": 406543268,
+                "ParentUID": 403410323,
                 "Name": "mixamorig:RightHandIndex4",
                 "isEnabled": true,
                 "Translation": [
@@ -902,8 +908,8 @@
                 "Components": []
             },
             {
-                "UID": 1606808477,
-                "ParentUID": 1552504097,
+                "UID": 412809158,
+                "ParentUID": 333650081,
                 "Name": "mixamorig:LeftUpLeg",
                 "isEnabled": true,
                 "Translation": [
@@ -929,8 +935,8 @@
                 "Components": []
             },
             {
-                "UID": 1608827486,
-                "ParentUID": 1606808477,
+                "UID": 416150966,
+                "ParentUID": 412809158,
                 "Name": "mixamorig:LeftLeg",
                 "isEnabled": true,
                 "Translation": [
@@ -956,8 +962,8 @@
                 "Components": []
             },
             {
-                "UID": 1610776874,
-                "ParentUID": 1608827486,
+                "UID": 419353532,
+                "ParentUID": 416150966,
                 "Name": "mixamorig:LeftFoot",
                 "isEnabled": true,
                 "Translation": [
@@ -983,8 +989,8 @@
                 "Components": []
             },
             {
-                "UID": 1612656641,
-                "ParentUID": 1610776874,
+                "UID": 422556098,
+                "ParentUID": 419353532,
                 "Name": "mixamorig:LeftToeBase",
                 "isEnabled": true,
                 "Translation": [
@@ -1010,8 +1016,8 @@
                 "Components": []
             },
             {
-                "UID": 1614536408,
-                "ParentUID": 1612656641,
+                "UID": 425828285,
+                "ParentUID": 422556098,
                 "Name": "mixamorig:LeftToe_End",
                 "isEnabled": true,
                 "Translation": [
@@ -1037,8 +1043,8 @@
                 "Components": []
             },
             {
-                "UID": 1617321248,
-                "ParentUID": 1552504097,
+                "UID": 430423271,
+                "ParentUID": 333650081,
                 "Name": "mixamorig:RightUpLeg",
                 "isEnabled": true,
                 "Translation": [
@@ -1064,8 +1070,8 @@
                 "Components": []
             },
             {
-                "UID": 1619340257,
-                "ParentUID": 1617321248,
+                "UID": 433695458,
+                "ParentUID": 430423271,
                 "Name": "mixamorig:RightLeg",
                 "isEnabled": true,
                 "Translation": [
@@ -1091,8 +1097,8 @@
                 "Components": []
             },
             {
-                "UID": 1621150403,
-                "ParentUID": 1619340257,
+                "UID": 436828403,
+                "ParentUID": 433695458,
                 "Name": "mixamorig:RightFoot",
                 "isEnabled": true,
                 "Translation": [
@@ -1118,8 +1124,8 @@
                 "Components": []
             },
             {
-                "UID": 1623030170,
-                "ParentUID": 1621150403,
+                "UID": 440100590,
+                "ParentUID": 436828403,
                 "Name": "mixamorig:RightToeBase",
                 "isEnabled": true,
                 "Translation": [
@@ -1145,8 +1151,8 @@
                 "Components": []
             },
             {
-                "UID": 1624979558,
-                "ParentUID": 1623030170,
+                "UID": 443512019,
+                "ParentUID": 440100590,
                 "Name": "mixamorig:RightToe_End",
                 "isEnabled": true,
                 "Translation": [
