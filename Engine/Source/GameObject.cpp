@@ -401,19 +401,6 @@ Component* GameObject::CreateComponent(ComponentType type)
 	return newComponent;
 }
 
-Component* GameObject::GetComponent(ComponentType type) const
-{
-	for (Component* component : mComponents)
-	{
-		if (component->GetType() == type)
-		{
-			return component;
-		}
-	}
-	return nullptr;
-}
-
-
 template<typename T> 
 T* GameObject::GetComponent() const
 {
@@ -428,6 +415,37 @@ T* GameObject::GetComponent() const
 	return nullptr;
 }
 
+Component* GameObject::GetComponent(ComponentType type) const
+{
+	for (Component* component : mComponents)
+	{
+		if (component->GetType() == type)
+		{
+			return component;
+		}
+	}
+	return nullptr;
+}
+
+
+
+template<typename T>
+void GameObject::GetComponentsInChildren(std::vector<T*>& componentVector) const
+{
+	Component* gameObjectComponent = GetComponent(T::GetType());
+
+	if (gameObjectComponent)
+	{
+		componentVector.push_back(gameObjectComponent);
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		child->GetComponentsInChildren(type, componentVector);
+	}
+}
+
+
 void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const
 {
 	Component* gameObjectComponent = GetComponent(type);
@@ -441,6 +459,27 @@ void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Compone
 	{
 		child->GetComponentsInChildren(type, componentVector);
 	}
+}
+
+template<typename T>
+T* GameObject::GetComponentInParent() const
+{
+	Component* component = nullptr;
+	const GameObject* parent = this;
+	while (parent)
+	{
+		component = parent->GetComponent(T::GetType());
+
+		if (component)
+		{
+			return component;
+		}
+		else
+		{
+			parent = parent->mParent;
+		}
+	}
+	return nullptr;
 }
 
 Component* GameObject::GetComponentInParent(ComponentType type) const

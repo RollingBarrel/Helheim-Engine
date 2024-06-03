@@ -108,9 +108,10 @@ public:
 	Component* CreateComponent(ComponentType type);
 	template<typename T> T* GetComponent() const;
 	Component* GetComponent(ComponentType type) const;
-
-	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;	//TODO: template
-	Component* GetComponentInParent(ComponentType type) const;											//TODO: template
+	template<typename T> void GetComponentsInChildren(std::vector<T*>& componentVector) const;
+	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
+	template<typename T> T* GetComponentInParent() const;											
+	Component* GetComponentInParent(ComponentType type) const;											
 
 	void AddComponent(Component* component, Component* position);	//TODO: DELETE FAST PLS
 	void AddComponentToDelete(Component* component);
