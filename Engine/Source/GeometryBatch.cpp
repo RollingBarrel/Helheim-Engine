@@ -190,19 +190,19 @@ void GeometryBatch::RecreateVboAndEbo()
 	glBufferData(GL_ARRAY_BUFFER, mVboDataSize, nullptr, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboDataSize, nullptr, GL_STATIC_DRAW);
+	float* vboBuffer = reinterpret_cast<float*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	unsigned int vboOffset = 0;
 	unsigned int eboOffset = 0;
 	for (const BatchMeshResource& res : mUniqueMeshes)
 	{
-		unsigned int size = res.resource->GetNumberVertices() * res.resource->GetVertexSize(Attribute::Usage::RENDER);
-		float* data = res.resource->GetInterleavedData(Attribute::Usage::RENDER);
-		glBufferSubData(GL_ARRAY_BUFFER, vboOffset, size, data);
+		unsigned int size;
+		res.resource->GetInterleavedData(Attribute::Usage::RENDER, vboBuffer, &size);
 		vboOffset += size;
-		delete[] data;
 		size = res.resource->GetNumberIndices() * sizeof(unsigned int);
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, eboOffset, size, res.resource->GetIndices());
 		eboOffset += size;
 	}
+	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	mVBOFlag = false;
