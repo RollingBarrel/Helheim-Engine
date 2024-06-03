@@ -77,7 +77,6 @@ public:
 
     void RechargeShield(float shield);
     void TakeDamage(float damage);
-    bool IsDead();
 
     BattleSituation GetBattleSituation() { return mCurrentSituation; };
 
@@ -101,7 +100,6 @@ private:
     void ClosestMouseDirection(const float2& mouseState);
     void SetMovingDirection(const float3& moveDirection);
 
-    void Death();
     void UpdateShield();
     void UpdateBattleSituation();
     void CheckDebugOptions();
@@ -112,10 +110,12 @@ private:
     void GrenadeTarget();
     void ThrowGrenade(float3 target);
 
+    // Game State
     void Victory();
     void GameOver();
+
+    // Utils
     bool Delay(float delay);
-    void Loading();
 
     void OnCollisionEnter(CollisionData* collisionData);
 
@@ -134,16 +134,12 @@ private:
     GameObject* mBulletPoolHolder = nullptr;
     ObjectPool* mBulletPool = nullptr;
 
-    GameManager* mGameManager = nullptr;
-    GameObject* mGameManagerGO = nullptr;
-
     //Stats
     float mPlayerSpeed = 2.0f;
     float mShield = 0.0f;
     float mMaxShield = 100.0f;
     float mSanity = 0.0f;
     float mMaxSanity = 100.0f;
-    bool mPlayerIsDead = false;
     float3 mMoveDirection = float3::zero;
 
     //Dash
@@ -238,10 +234,13 @@ private:
     bool mGameOver = false;
     bool mLoadingActive = false;
     float mTimeScreen = 3.0f;
-    float mTimePassed = 0.0f;
 
     //CAMERA
     GameObject* mCamera = nullptr;
     //Collider
-    BoxColliderComponent* mCollider;
+    BoxColliderComponent* mCollider = nullptr;
+
+    // Timer
+    float mTimePassed = 0.0f;
+
 };
