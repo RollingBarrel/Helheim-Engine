@@ -63,10 +63,6 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mGrenadThrowDistance);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
 
-
-    SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
-
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
@@ -100,12 +96,6 @@ void PlayerController::Start()
     mBullets = mAmmoCapacity;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
-
-    if (mHudControllerGO)
-    {
-        ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
-        mHudController = static_cast<HudController*>(script->GetScriptInstance());
-    }
 
     //Weapons
     if (mRangeWeaponGameObject)
@@ -350,7 +340,7 @@ void PlayerController::Update()
 
     if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
     {
-        mHudController->SetScreen(SCREEN::WIN, true);
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
     }
 
     Loading();
@@ -362,7 +352,7 @@ void PlayerController::Idle()
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
-        mHudController->SwitchWeapon();
+        GameManager::GetInstance()->GetHud()->SwitchWeapon();
     }
 
     else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
@@ -1204,7 +1194,7 @@ void PlayerController::TakeDamage(float damage)
 void PlayerController::Death()
 {
     mPlayerIsDead = true;
-    mHudController->SetScreen(SCREEN::LOSE, true);
+    GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::LOSE, true);
 }
 
 bool PlayerController::IsDead()
@@ -1214,8 +1204,7 @@ bool PlayerController::IsDead()
 
 void PlayerController::UpdateShield()
 {
-    if (mHudController == nullptr) return;
-    mHudController->SetHealth(mShield / mMaxShield);
+    GameManager::GetInstance()->GetHud()->SetHealth(mShield / mMaxShield);
 }
 
 void PlayerController::CheckDebugOptions()
@@ -1239,7 +1228,7 @@ void PlayerController::UpdateGrenadeCooldown()
         {
             mGrenadeCoolDownTimer = mGrenadeCoolDown;
             mThrowAwayGrenade = false;
-            mHudController->SetGrenadeCooldown(0.0f);
+            GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(0.0f);
             return;
         }
 
@@ -1253,7 +1242,7 @@ void PlayerController::UpdateGrenadeCooldown()
             mGrenadeCoolDownTimer = 0.0f;
         }
 
-        mHudController->SetGrenadeCooldown(mGrenadeCoolDownTimer / mGrenadeCoolDown);
+        GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mGrenadeCoolDownTimer / mGrenadeCoolDown);
     }
 }
 
@@ -1387,11 +1376,11 @@ void PlayerController::UpdateBattleSituation()
 void PlayerController::Victory()
 {
     mVictory = true;
-    mHudController->SetScreen(SCREEN::WIN, true);
+    GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
 
     if (Delay(mTimeScreen))
     {
-        mHudController->SetScreen(SCREEN::WIN, false);
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, false);
         mLoadingActive = true;
     }
 }
@@ -1399,11 +1388,11 @@ void PlayerController::Victory()
 void PlayerController::GameOver()
 {
     mGameOver = true;
-    mHudController->SetScreen(SCREEN::LOSE, true);
+    GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::LOSE, true);
 
     if (Delay(mTimeScreen))
     {
-        mHudController->SetScreen(SCREEN::LOSE, false);
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::LOSE, false);
         mLoadingActive = true;
     }
 }
@@ -1424,12 +1413,12 @@ void PlayerController::Loading()
 {
     if (mLoadingActive)
     {
-        mHudController->SetScreen(SCREEN::LOAD, true);
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::LOAD, true);
 
         if (Delay(3.0f))
         {
             mLoadingActive = false;
-            mHudController->SetScreen(SCREEN::LOAD, false);
+            GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::LOAD, false);
             GameManager::GetInstance()->LoadLevel("MainMenu.json");
         }
     }
@@ -1439,7 +1428,7 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetName().compare("WinArea") == 0)
     {
-        mHudController->SetScreen(SCREEN::WIN, true);
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
     }
     LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
 }

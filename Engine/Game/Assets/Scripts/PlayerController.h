@@ -215,10 +215,6 @@ private:
     GameObject* mGrenadeAimAreaGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
 
-    //HUD
-    GameObject* mHudControllerGO = nullptr;
-    HudController* mHudController = nullptr;
-
     //DEBUG
     bool mGodMode = false;
 
