@@ -1,6 +1,6 @@
 #pragma once
 #include "Panel.h"
-#include "../Source/Dependencies/imgui-node-editor-0.9.3/imgui_node_editor.h"
+#include "imgui_node_editor.h"
 #define ANIMATIONSMPANEL "AnimationSM##"
 #include "string"
 

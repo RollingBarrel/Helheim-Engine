@@ -1,6 +1,6 @@
 #include "AnimationSMPanel.h"
 #include "imgui.h"
-#include "../Source/Dependencies/imgui-node-editor-0.9.3/imgui_node_editor.h"
+#include "imgui_node_editor.h"
 #include "AnimationStateMachine.h"
 
 namespace ed = ax::NodeEditor;
@@ -10,11 +10,13 @@ AnimationSMPanel::AnimationSMPanel() : Panel(ANIMATIONSMPANEL, false)
 	ed::Config config;
 	config.SettingsFile = "Simple.json";
 	mEditorContext = ed::CreateEditor(&config);
+    mStateMachine = nullptr;
 }
 
 AnimationSMPanel::~AnimationSMPanel()
 {
 	ed::DestroyEditor(mEditorContext);
+    
 }
 
 void AnimationSMPanel::Draw(int windowFlags)
