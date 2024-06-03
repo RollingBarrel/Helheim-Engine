@@ -442,6 +442,9 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="BlendMode.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1920,6 +1923,9 @@
     </ClInclude>
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendMode.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

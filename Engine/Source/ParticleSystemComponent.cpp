@@ -104,7 +104,7 @@ void ParticleSystemComponent::Draw() const
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
         glDepthMask(GL_FALSE);
         glEnable(GL_BLEND);									// Enable Blending
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
+        BlendModeFunction(mBlendMode);                      
         //glEnable(GL_TEXTURE_2D);
         //glBlendEquation(GL_FUNC_ADD);
         glUseProgram(programId);
@@ -257,8 +257,8 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddBool("Looping", mLooping);
     archive.AddBool("Stretched Billboard", mStretchedBillboard);
     archive.AddBool("IsRandom", mIsLifetimeRandom);
-    archive.AddFloat("Min Lifetime", mLifetime);
-    archive.AddFloat("Max Lifetime", mMaxLifetime);
+    archive.AddFloat("Lifetime", mLifetime);
+    archive.AddFloat("MaxLifetime", mMaxLifetime);
 
     Archive size;
     Archive speed;

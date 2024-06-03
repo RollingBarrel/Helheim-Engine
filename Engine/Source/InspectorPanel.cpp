@@ -1640,6 +1640,8 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			break;
 
 	}
+
+	DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint")) 
 	{
@@ -1969,5 +1971,28 @@ void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, con
 		ImGui::DragFloat(max.c_str(), &maxV);
 		ImGui::PopItemWidth(); // Restaura el ancho original
 
+	}
+}
+
+void InspectorPanel::DrawBlendTypeSelector(int& type, const char* cLabel) const
+{
+	std::string label = cLabel;
+	static const char* items[]{ 
+		"TRANSPARENCY", 
+		"ADDITIVE", 
+		"MULTIPLICATIVE", 
+		"SUBTRACTIVE", 
+		"PREMULTIPLIED_ALPHA", 
+		"SCREEN"
+	};
+	int selected = static_cast<int>(type);
+	ImGui::Separator();
+	ImGui::Text(cLabel);
+	ImGui::SameLine();
+	std::string labelID = "##" + label;
+	bool check = ImGui::Combo(labelID.c_str(), &selected, items, IM_ARRAYSIZE(items));
+	if (check)
+	{
+		type = static_cast<BlendMode>(selected);
 	}
 }

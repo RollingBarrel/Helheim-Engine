@@ -9,7 +9,7 @@
                 "isEnabled": true,
                 "Translation": [
                     0.0,
-                    0.0,
+                    0.5795221924781799,
                     0.0
                 ],
                 "Rotation": [
@@ -36,39 +36,31 @@
                         "Delay": 0.0,
                         "Duration": 5.0,
                         "Emission Rate": 10.0,
-                        "Max Particles": 1000,
+                        "Max Particles": 10,
                         "Looping": true,
                         "Stretched Billboard": false,
-                        "Life Time": {
-                            "IsRandom": false,
-                            "Min Lifetime": 1.0,
-                            "Max Lifetime": 2.0
-                        },
+                        "IsRandom": false,
+                        "Lifetime": 1.0,
+                        "MaxLifetime": 0.0,
                         "Size": {
-                            "Lineal": 1.0,
+                            "IsRandomValue": false,
+                            "Value": 1.0,
+                            "MaxValue": 0.0,
                             "isCurve": false,
-                            "Curve": [
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "Factor": 1.0
+                            "Factor": 1.0,
+                            "CurvePoints": []
                         },
                         "Speed": {
-                            "Lineal": 1.0,
+                            "IsRandomValue": false,
+                            "Value": 1.0,
+                            "MaxValue": 0.0,
                             "isCurve": false,
-                            "Curve": [
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0
-                            ],
-                            "Factor": 1.0
+                            "Factor": 1.0,
+                            "CurvePoints": []
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.0,
-                        "ShapeAngle": 0.0,
+                        "ShapeAngle": 1.0,
                         "ShapeSize": [
                             1.0,
                             1.0
@@ -93,6 +85,96 @@
                                 ]
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "UID": 2046555566,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    -1.090895652770996,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    10.0,
+                    1.0,
+                    10.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1180655287,
+                "ParentUID": 2046555566,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1217136691,
+                "ParentUID": 1180655287,
+                "Name": "Cube",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 2065549159,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "ModelUID": 496453539,
+                        "ComponentType": 0,
+                        "isEnabled": true
                     }
                 ]
             }

@@ -5,6 +5,7 @@
 #include <map>
 #include "EmitterShape.h"
 #include "ColorGradient.h"
+#include "BlendMode.h"
 
 class ResourceTexture;
 class Particle;
@@ -61,6 +62,8 @@ private:
 
 	EmitterShape* mShape;
 	EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
+
+	int mBlendMode = 0;
 
 	ColorGradient* mColorGradient = new ColorGradient();
 	std::vector<Particle*> mParticles;
