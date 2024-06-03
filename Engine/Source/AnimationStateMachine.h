@@ -20,6 +20,7 @@ struct AnimationState
 public:
 	AnimationState(std::string clipName) {
 		mClip = clipName;
+		mName = clipName;
 		mStartTime = 0.0f;
 		mEndTime = 10.0f;
 		mLoop = true;
