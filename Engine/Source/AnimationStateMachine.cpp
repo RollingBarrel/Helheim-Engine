@@ -136,6 +136,22 @@ void AnimationStateMachine::SetStateEndTime(int index, float time)
 	mStates[index].mEndTime = time;
 }
 
+void AnimationStateMachine::DeleteState(int index)
+{
+	std::string state = mStates[index].mName;
+	int i = 0;
+	for (AnimationTransition transition : mTransitions)
+	{
+		if (transition.mSource == state || transition.mTarget == state)
+		{
+			DeleteTransition(i);
+		}
+		i++;
+	}
+
+	mStates.erase(mStates.begin() + index);
+}
+
 const AnimationTransition& AnimationStateMachine::AddTransition(const std::string& sourceName, const std::string& targetName, const std::string& trigger)
 {
 

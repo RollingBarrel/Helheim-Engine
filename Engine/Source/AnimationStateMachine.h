@@ -75,6 +75,9 @@ public:
 	void SetStateStartTime(int index, float time);
 	void SetStateEndTime(int index, float time);
 	const int GetNumStates() const { return mStates.size();}
+	const bool GetStateLoop(int index) const { return mStates[index].mLoop; }
+	void SetStateLoop(int index, bool loop) { mStates[index].mLoop = loop; }
+	void DeleteState(int index);
 
 	//Transitions
 	const AnimationTransition& AddTransition(const std::string& sourceName, const std::string& targetName, const std::string& trigger);
@@ -86,7 +89,8 @@ public:
 	const std::string& GetTransitionTarget(int index) const;
 	const unsigned int GetNumTransitions() const { return mTransitions.size();};
 	const std::string& GetJsonConfig() const { return mJsonConfig; }
-
+	void SetTransitionTrigger(int index, std::string trigger) { mTransitions[index].mTrigger = trigger; }
+	void DeleteTransition(int index) { mTransitions.erase(mTransitions.begin() + index); }
 
 
 private:

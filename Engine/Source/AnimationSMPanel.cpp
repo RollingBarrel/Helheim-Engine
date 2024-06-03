@@ -202,8 +202,21 @@ void AnimationSMPanel::ShowNodeMenu()
         {
             mStateMachine->SetStateEndTime(mSelectedNode, endTime);
         }
-        // TODO: Get state loop set state loop & controller works with state loop and not own/other loop
 
+        bool loop = mStateMachine->GetStateLoop(mSelectedNode);
+        if (ImGui::Checkbox("Loop", &loop))
+        {
+            mStateMachine->SetStateLoop(mSelectedNode, loop);
+        }
+        if (mSelectedNode != 0)
+        {
+            ImGui::SameLine();
+            if (ImGui::Button("Delete"))
+            {
+                mStateMachine->DeleteState(mSelectedNode);
+                mSelectedNode = 0;
+            }
+        }
 
         ImGui::EndPopup();
     }
@@ -224,7 +237,7 @@ void AnimationSMPanel::ShowLinkMenu()
         if (ImGui::InputText("Transition name: ", buffer, sizeof(buffer))) {
             // Update mNewNodeName with the new value from the buffer
             name = std::string(buffer);
-            mStateMachine->SetStateName(mSelectedLink, name);
+            mStateMachine->SetTransitionTrigger(mSelectedLink, name);
         }
 
         std::string from = mStateMachine->GetTransitionSource(mSelectedLink);
@@ -235,6 +248,12 @@ void AnimationSMPanel::ShowLinkMenu()
         ImGui::Text(" -> ");
         ImGui::SameLine();
         ImGui::Text(to.c_str());
+
+        if (ImGui::Button("Delete"))
+        {
+            mStateMachine->DeleteTransition(mSelectedLink);
+            mSelectedLink = 0;
+        }
 
 
         ImGui::EndPopup();
