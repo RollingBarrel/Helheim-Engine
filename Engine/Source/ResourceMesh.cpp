@@ -131,10 +131,13 @@ unsigned int ResourceMesh::GetVertexSize(Attribute::Usage inUsage) const
     return vertexSize;
 }
 
-float* ResourceMesh::GetInterleavedData(Attribute::Usage inUsage) const
+float* ResourceMesh::GetInterleavedData(Attribute::Usage inUsage, float* fillPtr, unsigned int* fillSize) const
 {
     unsigned int vertexSize = GetVertexSize(inUsage);
-    float* ret = new float[mNumVertices * vertexSize / sizeof(float)];
+    if(!fillPtr)
+        fillPtr = new float[mNumVertices * vertexSize / sizeof(float)];
+    if (fillSize)
+        *fillSize = mNumVertices * vertexSize;
     unsigned int vertexFloats = vertexSize / sizeof(float);
     for (unsigned int vertexIdx = 0; vertexIdx < mNumVertices; ++vertexIdx)
     {
@@ -145,9 +148,9 @@ float* ResourceMesh::GetInterleavedData(Attribute::Usage inUsage) const
                 unsigned int attributeSize = mAttributes[attributeIdx].size / sizeof(float);
                 unsigned int attributeOffset = mAttributes[attributeIdx].offset / sizeof(float);
                 const float* attributeData = mAttributesData[attributeIdx];
-                memcpy(&ret[vertexIdx * vertexFloats + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
+                memcpy(&fillPtr[vertexIdx * vertexFloats + attributeOffset], &attributeData[vertexIdx * attributeSize], attributeSize * sizeof(float));
             }
         }
     }
-    return ret;
+    return fillPtr;
 }

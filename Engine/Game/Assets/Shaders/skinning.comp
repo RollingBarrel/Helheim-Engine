@@ -18,6 +18,7 @@ struct OutVertex
     vec4 tang;
 };
 layout(std430, binding = 21) writeonly buffer Vertices {OutVertex outVertices[];};
+layout(location = 0) uniform uint skinOffset;
 
 
 layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
@@ -26,7 +27,7 @@ void main()
 	uint index = gl_GlobalInvocationID.x;
     if(index < numVertices) 
     {
-       InVertex vertex = animVertices[index];
+       InVertex vertex = animVertices[skinOffset + index];
 
        mat4 skinTransform = palette[vertex.joints[0]]*vertex.weights[0]+ palette[vertex.joints[1]]*vertex.weights[1]+
         palette[vertex.joints[2]]*vertex.weights[2]+palette[vertex.joints[3]]*vertex.weights[3];

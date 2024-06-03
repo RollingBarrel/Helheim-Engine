@@ -49,7 +49,7 @@ public:
 	const float* GetAttributeData(Attribute::Type type) const;
 	int GetAttributeIdx(Attribute::Type type) const;
 	//This allocates memory in the return pointer that you must delete
-	float* GetInterleavedData(Attribute::Usage usage) const;
+	float* GetInterleavedData(Attribute::Usage usage, float* fillPtr = nullptr, unsigned int* fillSize = nullptr) const;
 
 private:
 	unsigned int* mIndices = nullptr;

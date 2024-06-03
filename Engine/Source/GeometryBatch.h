@@ -22,11 +22,13 @@ class BatchMeshResource
 {
 public:
 	BatchMeshResource(const ResourceMesh* res, unsigned int fIndex = 0, unsigned int bVertex = 0)
-		: resource(res), firstIndex(fIndex), baseVertex(bVertex), referenceCount(1) {}
+		: resource(res), firstIndex(fIndex), baseVertex(bVertex), referenceCount(1), skinOffset(-1) {}
 	const ResourceMesh* resource;
 	unsigned int firstIndex;
 	unsigned int baseVertex;
 	unsigned int referenceCount;
+	unsigned int skinOffset;
+	bool HasSkinning() const { return skinOffset != -1; }
 };
 
 class BatchMeshRendererComponent
@@ -99,6 +101,7 @@ public:
 
 private:
 	void RecreatePersistentSsbos();
+	void RecreateSkinningSsbos();
 	void RecreateVboAndEbo();
 	void RecreateMaterials();
 	void AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx);
@@ -107,6 +110,7 @@ private:
 	bool mPersistentsFlag = false;
 	bool mVBOFlag = false;
 	bool mIboFlag = false;
+	bool mSkinningFlag = false;
 	
 	std::unordered_map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
@@ -116,7 +120,6 @@ private:
 	std::unordered_map<unsigned int, Command> mComandsMap;
 
 	unsigned int mVertexSize = 0;
-
 
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
@@ -140,9 +143,11 @@ private:
 	unsigned int mEboNumElements = 0;
 
 	//Animation
-	bool mAnimationSkinning = false;
+	bool mSkinningApplied = false;
 	unsigned int mPaletteSsbo = 0;
-	unsigned int mAnimSsbo = 0;
+	unsigned int mBiggestPaletteSize = 0;
+	unsigned int mSkinSsbo = 0;
+	unsigned int mSkinBufferSize = 0;
 
 	int mSsboAligment = 0;
 };
