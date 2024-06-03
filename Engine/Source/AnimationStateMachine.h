@@ -76,7 +76,7 @@ public:
 	const int GetNumStates() const { return mStates.size();}
 
 	//Transitions
-	const AnimationTransition& AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger);
+	const AnimationTransition& AddTransition(const std::string& sourceName, const std::string& targetName, const std::string& trigger);
 	void RemoveTransition(int index);
 
 	const int GetTransitionIndex(std::string& sourceName, std::string& trigger) const;

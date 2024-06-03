@@ -58,6 +58,7 @@
 
 
 #include "AnimationStateMachine.h"
+#include "AnimationSMPanel.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -991,6 +992,13 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
 		{
 			component->SetAnimSpeed(animSpeed);
+		}
+
+		if (ImGui::Button("Edit state machine"))
+		{
+			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+			panel->SetStateMachine(component->GetStateMachine());
+			panel->Open();
 		}
 	}
 	else

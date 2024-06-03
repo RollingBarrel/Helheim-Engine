@@ -14,6 +14,7 @@ AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animation
 	{
 		mClips.push_back(AnimationClip(resourceAnimation));
 	}
+	mStates.push_back(AnimationState(std::string("Default")));
 }
 
 AnimationStateMachine::~AnimationStateMachine()
@@ -135,7 +136,7 @@ void AnimationStateMachine::SetStateEndTime(int index, float time)
 	mStates[index].mEndTime = time;
 }
 
-const AnimationTransition& AnimationStateMachine::AddTransition(std::string& sourceName, std::string& targetName, std::string& trigger)
+const AnimationTransition& AnimationStateMachine::AddTransition(const std::string& sourceName, const std::string& targetName, const std::string& trigger)
 {
 
 	AnimationTransition newTransition = AnimationTransition(sourceName, targetName, trigger);

@@ -116,19 +116,42 @@ void AnimationSMPanel::Draw(int windowFlags)
 
                     if (inputPinId && outputPinId) // both are valid, let's accept link
                     {
-                        // ed::AcceptNewItem() return true when user release mouse button.
-                        if (ed::AcceptNewItem())
+                        bool startIsInput = unsigned int(inputPinId.Get() - 1) % 3 == 1;
+                        bool endIsInput = unsigned int(outputPinId.Get() - 1) % 3 == 1;
+                        unsigned int startNode = unsigned int(inputPinId.Get() - 1) / 3;
+                        unsigned int endNode = unsigned int(outputPinId.Get() - 1) / 3;
+
+                        if (outputPinId == inputPinId)
                         {
-                            // Since we accepted new link, lets add one to our list of links.
-                            // m_Links.push_back({ ed::LinkId(m_NextLinkId++), inputPinId, outputPinId });
-
-                            // Draw new link.
-                            // ed::Link(m_Links.back().Id, m_Links.back().InputId, m_Links.back().OutputId);
+                            ed::RejectNewItem(ImColor(255, 0, 0), 2.0f);
                         }
+                        else if (startIsInput == endIsInput)
+                        {
+                            //showLabel("x Incompatible Pins. Must be In->Out", ImColor(45, 32, 32, 180));
+                            ed::RejectNewItem(ImColor(255, 0, 0), 2.0f);
+                        }
+                        else if (startNode == endNode)
+                        {
+                            //showLabel("x Cannot connect to self", ImColor(45, 32, 32, 180));
+                            ed::RejectNewItem(ImColor(255, 0, 0), 1.0f);
+                        }
+                        else
+                        {
+                            //showLabel("+ Create Link", ImColor(32, 45, 32, 180));
+                            if (ed::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
+                            {
+                                if (startIsInput)
+                                {
+                                    mStateMachine->AddTransition(mStateMachine->GetStateName(endNode), mStateMachine->GetStateName(startNode), std::string("DefaultTransition"));
+                                }
+                                else
+                                {
+                                    mStateMachine->AddTransition(mStateMachine->GetStateName(startNode), mStateMachine->GetStateName(endNode), std::string("DefaultTransition"));
+                                }
 
-                        // You may choose to reject connection between these nodes
-                        // by calling ed::RejectNewItem(). This will allow editor to give
-                        // visual feedback by changing link thickness and color.
+                                //animation->Save();
+                            }
+                        }
                     }
                 }
             }
@@ -138,10 +161,30 @@ void AnimationSMPanel::Draw(int windowFlags)
 		
 
         //Draw add node panel
-        
+        ImGui::Separator();
+        char buffer[16];
+        strncpy(buffer, mNewNodeName.c_str(), sizeof(buffer));
+        buffer[sizeof(buffer) - 1] = '\0';
+
+        if (ImGui::InputText("Input new node name: ", buffer, sizeof(buffer))) {
+            // Update mNewNodeName with the new value from the buffer
+            mNewNodeName = std::string(buffer);
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button("Create new node")) {
+            mStateMachine->AddState(mNewNodeName);
+            mNewNodeName = "";
+        }
 
 	}
 	ImGui::End();
+}
+
+void AnimationSMPanel::Close()
+{
+    ed::DestroyEditor(mEditorContext);
+    mStateMachine = nullptr; //Do a state machine save here when sm is a resource
 }
 
 void AnimationSMPanel::LoadConfig()
