@@ -33,6 +33,8 @@ void AnimationSMPanel::Draw(int windowFlags)
             ShowContextMenus();
 
             ed::Suspend();
+            ShowNodeMenu();
+            ShowLinkMenu();
             ShowCreateNewNodeMenu();
             ed::Resume();
 
