@@ -319,5 +319,6 @@ void AnimationSMPanel::ManageCreate()
                 }
             }
         }
+        ed::EndCreate();
     }
 }
