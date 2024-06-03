@@ -27,13 +27,15 @@ private:
 	void ShowCreateNewNodeMenu();
 	void ShowNodeMenu();
 	void ShowLinkMenu();
-	void AddAnimationNode(unsigned int index);
 	void ManageCreate();
 
 
 	AnimationStateMachine* mStateMachine;
 	ed::EditorContext* mEditorContext;
 	std::string mNewNodeName;
+
+	int mSelectedNode = 0;
+	int mSelectedLink = 0;
 	
 };
 

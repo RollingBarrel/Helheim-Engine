@@ -170,14 +170,67 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
     }
 }
 
+void AnimationSMPanel::ShowNodeMenu()
+{
+    if (ImGui::BeginPopup("State Context Menu"))
+    {
+        ImGui::TextUnformatted("Edit State Menu");
+        ImGui::Separator();
+
+        std::string name = mStateMachine->GetStateName(mSelectedNode);
+        char buffer[16];
+        strncpy(buffer, name.c_str(), sizeof(buffer));
+        buffer[sizeof(buffer) - 1] = '\0';
+
+        if (ImGui::InputText("State name: ", buffer, sizeof(buffer))) {
+            // Update mNewNodeName with the new value from the buffer
+            name = std::string(buffer);
+            mStateMachine->SetStateName(mSelectedNode, name);
+        }
+
+        float startTime = mStateMachine->GetStateStartTime(mSelectedNode);
+        float endTime = mStateMachine->GetStateEndTime(mSelectedNode);
+        if (ImGui::DragFloat("Start time: ", &startTime, 0.01f, 0.0f, endTime))
+        {
+            mStateMachine->SetStateStartTime(mSelectedNode, startTime);
+        }
+        if (ImGui::DragFloat("End time: ", &endTime, 0.01f, startTime, startTime + 5.0f))
+        {
+            mStateMachine->SetStateEndTime(mSelectedNode, endTime);
+        }
+        // TODO: Get state loop set state loop & controller works with state loop and not own/other loop
+
+
+        ImGui::EndPopup();
+    }
+}
+
+void AnimationSMPanel::ShowLinkMenu()
+{
+}
+
 void AnimationSMPanel::ShowContextMenus()
 {
     ed::Suspend();
 
-    if (ed::ShowBackgroundContextMenu())
+    ed::NodeId contextNodeId = 0;
+    ed::PinId contextPinId = 0;
+    ed::LinkId contextLinkId = 0;
+    if (ed::ShowNodeContextMenu(&contextNodeId))
+    {
+        mSelectedNode = int(contextNodeId.Get() - 1) / 3;
+        ImGui::OpenPopup("State Context Menu");
+    }
+    else if (ed::ShowLinkContextMenu(&contextLinkId))
+    {
+        mSelectedLink = int(contextLinkId.Get()) - mStateMachine->GetNumStates() * 3 - 1;
+        ImGui::OpenPopup("Transition Context Menu");
+    }
+    else if (ed::ShowBackgroundContextMenu())
     {
         ImGui::OpenPopup("Create New Node");
     }
+
 
     ed::Resume();
 
@@ -194,6 +247,7 @@ void AnimationSMPanel::ManageCreate()
         {
             if (inputPinId && outputPinId)
             {
+                
                 bool startIsInput = unsigned int(inputPinId.Get() - 1) % 3 == 1;
                 bool endIsInput = unsigned int(outputPinId.Get() - 1) % 3 == 1;
                 unsigned int startNode = unsigned int(inputPinId.Get() - 1) / 3;
