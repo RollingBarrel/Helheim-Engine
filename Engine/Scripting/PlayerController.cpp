@@ -9,8 +9,6 @@
 #include "Physics.h"
 #include "ModuleScene.h"
 
-#include "AnimationComponent.h"
-#include "AnimationStateMachine.h"
 #include "AudioSourceComponent.h"
 #include "SliderComponent.h"
 #include "BoxColliderComponent.h"
@@ -143,126 +141,6 @@ void PlayerController::Start()
         mGrenade = (Grenade*)script->GetScriptInstance();
     }
 
-    //Animation
-    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
-    if (mAnimationComponent)
-    {
-        mStateMachine = mAnimationComponent->GetStateMachine();
-
-    }
-    if (mStateMachine)
-    {
-        std::string clip = "Character";
-
-        std::string defaultState = "default";
-        std::string sIdle = "Idle";
-        std::string sWalkForward = "Walk Forward";
-        std::string sWalkBack = "Walk Back";
-        std::string sStrafeLeft = "Strafe Left";
-        std::string sStrafeRight = "Strafe Right";
-        std::string sShooting = "Shooting";
-        std::string sMeleeCombo = "MeleeCombo";
-
-
-        std::string idleTrigger = "tIdle";
-        std::string forwardTrigger = "tWalkForward";
-        std::string backTrigger = "tWalkBack";
-        std::string strafeLeftTrigger = "tStrafeLeft";
-        std::string strafeRightTrigger = "tStrafeRight";
-        std::string shootingTrigger = "tShooting";
-        std::string meleeTrigger = "tMelee";
-
-        mStateMachine->SetClipName(0, clip);
-
-        //States
-        mStateMachine->AddState(clip, sIdle);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(12.4f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(23.14f));
-
-        mStateMachine->AddState(clip, sWalkForward);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(5.78f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(7.74f));
-
-        mStateMachine->AddState(clip, sWalkBack);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(7.8f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(9.76f));
-
-        mStateMachine->AddState(clip, sStrafeLeft);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(2.86f));
-
-        mStateMachine->AddState(clip, sStrafeRight);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.92f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(5.72f));
-
-        mStateMachine->AddState(clip, sShooting);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(9.8f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(12.36f));
-
-        mStateMachine->AddState(clip, sMeleeCombo);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo), float(23.9f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo), float(28.1f));
-
-
-        //Transitions
-        mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
-
-
-        mStateMachine->AddTransition(sIdle, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sIdle, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sIdle, sShooting, shootingTrigger);
-        mStateMachine->AddTransition(sIdle, sMeleeCombo, meleeTrigger);
-
-        mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkForward, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sWalkBack, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkBack, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sShooting, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sShooting, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sShooting, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sShooting, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sShooting, sStrafeRight, strafeRightTrigger);
-
-
-        /*
-        mStateMachine->AddTransition(sMeleecombo, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sMeleecombo, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sMeleecombo, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sMeleecombo, sStrafeRight, strafeRightTrigger);
-        */
-        mStateMachine->AddTransition(sMeleeCombo, sIdle, idleTrigger);
-
-
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-    }
-
     //END ANIMATION
 }
 
@@ -311,10 +189,6 @@ void PlayerController::Update()
     case PlayerState::IDLE:
         if (!mVictory && !mGameOver)
         {
-            if (mAnimationComponent && mMeleeBaseComboStep < 2)
-            {
-                mAnimationComponent->SendTrigger("tIdle", 0.1f);
-            }
             Idle();
 
 
@@ -445,274 +319,11 @@ void PlayerController::Moving()
         SetMovingDirection(mMoveDirection);
         float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
         ClosestMouseDirection(mousePosition);
-        switch (mLookingAt)
-        {
-        case MouseDirection::UP:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
 
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-
-            break;
-        case MouseDirection::DOWN:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-
-            break;
-        case MouseDirection::LEFT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::RIGHT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case MouseDirection::UP_RIGHT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::UP_LEFT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::DOWN_RIGHT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::DOWN_LEFT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
 
         Move(mMoveDirection);
     }
-    else {
-        mAnimationComponent->SendTrigger("tIdle", 0.1f);
-    }
+    
 
     // Hardcoded play-step-sound solution: reproduce every second 
     // TODO play sound according the animation
@@ -821,7 +432,6 @@ void PlayerController::Attack()
         switch (mWeapon)
         {
         case WeaponType::RANGE:
-            mAnimationComponent->SendTrigger("tShooting", 0.2f);
             RangedAttack();
             break;
         case WeaponType::MELEE:
@@ -857,7 +467,6 @@ void PlayerController::MeleeBaseCombo()
     if (!mIsMeleeBaseComboActive)
     {
         // First hit
-        mAnimationComponent->SendTrigger("tMelee", 0.2f);
         mIsMeleeBaseComboActive = true;
         mMeleComboCurrentTime = 0.0f;
         MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
@@ -898,7 +507,6 @@ void PlayerController::MeleeBaseCombo()
     {
         //End combo
         MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mAnimationComponent->SendTrigger("tIdle", 0.2f);
         mIsMeleeBaseComboActive = false;
         mMeleComboCurrentTime = 0.0f;
         mCurrentState = PlayerState::IDLE;
@@ -931,7 +539,6 @@ void PlayerController::MeleeBaseCombo()
 
     if (mBreakMeleeCombo > breakTime)
     {
-        mAnimationComponent->SendTrigger("tIdle", 0.2f);
         mIsMeleeBaseComboActive = false;
         mMeleComboCurrentTime = 0.0f;
         mCurrentState = PlayerState::IDLE;

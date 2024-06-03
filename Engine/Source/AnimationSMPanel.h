@@ -21,6 +21,16 @@ private:
 
 	void LoadConfig();
 
+	void DrawNodes();
+	void DrawTransitions();
+	void ShowContextMenus();
+	void ShowCreateNewNodeMenu();
+	void ShowNodeMenu();
+	void ShowLinkMenu();
+	void AddAnimationNode(unsigned int index);
+	void ManageCreate();
+
+
 	AnimationStateMachine* mStateMachine;
 	ed::EditorContext* mEditorContext;
 	std::string mNewNodeName;
