@@ -49,7 +49,8 @@ float BezierCurve::CurveValueSmooth(float p) const
     float* input = new float[mPoints.size() * 2];
     float output[4];
 
-    for (int i = 0; i < mPoints.size(); ++i) {
+    for (int i = 0; i < mPoints.size(); ++i) 
+    {
         input[i * 2 + 0] = mPoints[i].x;
         input[i * 2 + 1] = mPoints[i].y;
     }
