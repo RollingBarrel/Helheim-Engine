@@ -441,7 +441,7 @@ void GameObject::GetComponentsInChildren(std::vector<T*>& componentVector) const
 
 	for (GameObject* child : mChildren)
 	{
-		child->GetComponentsInChildren(type, componentVector);
+		child->GetComponentsInChildren(T::GetType(), componentVector);
 	}
 }
 
