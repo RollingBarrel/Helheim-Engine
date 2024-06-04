@@ -14,9 +14,9 @@ BatchManager::~BatchManager()
 	}
 }
 
-void BatchManager::AddMeshComponent(const MeshRendererComponent* meshComponent)
+void BatchManager::AddMeshComponent(const MeshRendererComponent& meshComponent)
 {
-	const ResourceMesh* rMesh = meshComponent->GetResourceMesh();
+	const ResourceMesh* rMesh = meshComponent.GetResourceMesh();
 	std::vector<Attribute> batchAttributes;
 	for (int i = 0; i < mBatches.size(); ++i)
 	{
@@ -47,7 +47,7 @@ void BatchManager::AddMeshComponent(const MeshRendererComponent* meshComponent)
 	mBatches.push_back(newBatch);
 }
 
-void BatchManager::RemoveMeshComponent(const MeshRendererComponent* meshComponent)
+void BatchManager::RemoveMeshComponent(const MeshRendererComponent& meshComponent)
 {
 	for (GeometryBatch* batch : mBatches)
 	{
@@ -56,7 +56,7 @@ void BatchManager::RemoveMeshComponent(const MeshRendererComponent* meshComponen
 	}
 }
 
-void BatchManager::EditMaterial(const MeshRendererComponent* meshComponent)
+void BatchManager::EditMaterial(const MeshRendererComponent& meshComponent)
 {
 	for (GeometryBatch* batch : mBatches)
 	{
@@ -65,7 +65,7 @@ void BatchManager::EditMaterial(const MeshRendererComponent* meshComponent)
 	}
 }
 
-void BatchManager::AddCommand(const MeshRendererComponent* meshComponent)
+void BatchManager::AddCommand(const MeshRendererComponent& meshComponent)
 {
 	for (GeometryBatch* batch : mBatches)
 	{

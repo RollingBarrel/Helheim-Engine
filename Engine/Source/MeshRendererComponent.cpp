@@ -52,7 +52,7 @@ MeshRendererComponent::~MeshRendererComponent()
 	{
 		App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 	}
-	App->GetOpenGL()->BatchRemoveMesh(this);
+	App->GetOpenGL()->BatchRemoveMesh(*this);
 	if (mMesh)
 	{
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
@@ -77,7 +77,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		{
 			if (mMaterial)
 			{
-				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetOpenGL()->BatchRemoveMesh(*this);
 				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMesh->GetUID());
@@ -91,7 +91,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		if (mMaterial)
 		{
-			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetOpenGL()->BatchAddMesh(*this);
 			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 
@@ -108,7 +108,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		{
 			if (mMesh)
 			{
-				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetOpenGL()->BatchRemoveMesh(*this);
 				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMaterial->GetUID());
@@ -118,7 +118,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		mMaterial = tmpMaterial;
 		if (mMesh)
 		{
-			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetOpenGL()->BatchAddMesh(*this);
 			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 	}
@@ -169,7 +169,16 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 	mAABB.SetFrom(mOBB);
 }
 
-void MeshRendererComponent::Save(Archive& archive) const 
+bool MeshRendererComponent::IsAnimated() const
+{
+#ifdef _DEBUG
+	if (mMesh && GetPalette().size() != 0)
+		assert(mMesh->HasAttribute(Attribute::JOINT) && mMesh->HasAttribute(Attribute::WEIGHT) && "Animated mesh does not have weights or joints");
+#endif // _DEBUG
+	return GetPalette().size() != 0;
+}
+
+void MeshRendererComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ID", GetID());
 	archive.AddInt("MeshID", mMesh->GetUID());

@@ -40,8 +40,7 @@ public:
 	//Pallete calculations
 	const std::vector<float4x4>& GetPalette() const { return mPalette; }
 
-
-
+	bool IsAnimated() const;
 
 
 private:
