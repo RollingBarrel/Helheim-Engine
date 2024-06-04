@@ -50,10 +50,7 @@ public:
 	ResourceModel(unsigned int uid);
 
 	const std::vector<ModelNode>& GetNodes() { return modelNodes; }
-
-	std::vector<unsigned int> mAnimationUids;
-
 	std::vector<ModelNode> modelNodes;
-
+	std::vector<unsigned int> mAnimationUids;
 	std::vector<std::pair<std::string, float4x4>> mInvBindMatrices;
 };
