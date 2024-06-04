@@ -267,6 +267,7 @@
     <ClCompile Include="SaveLoadModel.cpp" />
     <ClCompile Include="SaveLoadNavMesh.cpp" />
     <ClCompile Include="SaveLoadScript.cpp" />
+    <ClCompile Include="SaveLoadStateMachine.cpp" />
     <ClCompile Include="SaveLoadTexture.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
@@ -762,6 +763,7 @@
     <ClInclude Include="SaveLoadModel.h" />
     <ClInclude Include="SaveLoadNavMesh.h" />
     <ClInclude Include="SaveLoadScript.h" />
+    <ClInclude Include="SaveLoadStateMachine.h" />
     <ClInclude Include="SaveLoadTexture.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="ScriptComponent.h" />

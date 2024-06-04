@@ -94,6 +94,12 @@ public:
 	void DeleteTransition(int index) { mTransitions.erase(mTransitions.begin() + index); }
 
 
+	//Save & Load
+	const std::vector<AnimationClip>& GetClips() const { return mClips; }
+	const std::vector<AnimationState>& GetStates() const { return mStates; }
+	const std::vector<AnimationTransition>& GetTransitions() const { return mTransitions; }
+
+
 private:
 	
 	std::vector<AnimationClip> mClips;
