@@ -176,6 +176,10 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
 
 void AnimationSMPanel::ShowNodeMenu()
 {
+    if (mSelectedNode == -1)
+    {
+        return;
+    }
     if (ImGui::BeginPopup("State Context Menu"))
     {
         ImGui::TextUnformatted("Edit State Menu");
@@ -214,7 +218,7 @@ void AnimationSMPanel::ShowNodeMenu()
             if (ImGui::Button("Delete"))
             {
                 mStateMachine->DeleteState(mSelectedNode);
-                mSelectedNode = 0;
+                mSelectedNode = -1;
             }
         }
 
@@ -224,6 +228,10 @@ void AnimationSMPanel::ShowNodeMenu()
 
 void AnimationSMPanel::ShowLinkMenu()
 {
+    if (mSelectedLink == -1)
+    {
+        return;
+    }
     if (ImGui::BeginPopup("Transition Context Menu"))
     {
         ImGui::TextUnformatted("Edit Transition Menu");
@@ -252,7 +260,7 @@ void AnimationSMPanel::ShowLinkMenu()
         if (ImGui::Button("Delete"))
         {
             mStateMachine->DeleteTransition(mSelectedLink);
-            mSelectedLink = 0;
+            mSelectedLink = -1;
         }
 
 
