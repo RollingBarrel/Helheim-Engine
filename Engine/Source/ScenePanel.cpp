@@ -12,6 +12,7 @@
 #include "HierarchyPanel.h"
 #include "EditorControlPanel.h"
 
+#include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"

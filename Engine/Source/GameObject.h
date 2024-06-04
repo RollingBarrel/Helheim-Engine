@@ -9,11 +9,8 @@
 #include "Math/float4.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
-#include "MeshRendererComponent.h"
 #include "Archive.h"
 
-class AIAgentComponent;
-class CameraComponent;
 class Component;
 enum class ComponentType : unsigned int;
 
@@ -111,8 +108,7 @@ public:
 	Component* GetComponentInParent(ComponentType type) const;											
 	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
 
-	void AddComponent(Component* component, Component* position);	//TODO: DELETE FAST PLS
-	void AddComponentToDelete(Component* component);
+	void AddComponentToDelete(Component* component); //TODO: This need to be here?
 
 	// Save / Load
 	void Save(JsonObject& obj) const;
@@ -155,6 +151,9 @@ private:
 	// Components
 	std::vector<Component*> mComponents;
 	std::vector<Component*> mComponentsToDelete;	//TODO: MOVE SCENE
+
+	AABB mAABB;
+	OBB mOBB;
 
 	// Prefabs
 	int mPrefabId = 0;

@@ -27,16 +27,11 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 		mBackground = new GameObject("Background", self);
 		mFill = new GameObject("Fill", self);
 
-		mBgImage = new ImageComponent(mBackground);
-		mFillImage = new ImageComponent(mFill);
-		mBgTransform2D = new Transform2DComponent(mBackground);
-		mFillTransform2D = new Transform2DComponent(mFill);
-
-		self->AddComponent(mSliderTransform2D, this);
-		mBackground->AddComponent(mBgTransform2D, this);
-		mBackground->AddComponent(mBgImage, this);
-		mFill->AddComponent(mFillTransform2D, this);
-		mFill->AddComponent(mFillImage, this);
+		self->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::IMAGE);
+		mFill->CreateComponent(ComponentType::TRANSFORM2D);
+		mFill->CreateComponent(ComponentType::IMAGE);
 	}
 	else 
 	{

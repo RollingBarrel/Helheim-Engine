@@ -10,6 +10,7 @@
 #include "ModuleUI.h"
 
 #include "GameObject.h"
+#include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"

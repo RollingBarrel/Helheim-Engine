@@ -486,19 +486,6 @@ Component* GameObject::GetComponentInParent(ComponentType type) const
 	return nullptr;
 }
 
-void GameObject::AddComponent(Component* component, Component* position)
-{
-	if (position == nullptr)
-	{
-		mComponents.push_back(component);
-	}
-	else
-	{
-		auto it = std::find(mComponents.begin(), mComponents.end(), position);
-		mComponents.insert(it, component);
-	}
-}
-
 void GameObject::AddComponentToDelete(Component* component)
 {
 	mComponentsToDelete.push_back(component);
