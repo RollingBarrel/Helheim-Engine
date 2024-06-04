@@ -98,6 +98,7 @@ public:
 	const std::vector<AnimationClip>& GetClips() const { return mClips; }
 	const std::vector<AnimationState>& GetStates() const { return mStates; }
 	const std::vector<AnimationTransition>& GetTransitions() const { return mTransitions; }
+	const int GetUID() const { return mUID; }
 
 
 private:
@@ -106,6 +107,7 @@ private:
 	std::vector<AnimationState> mStates;
 	std::vector<AnimationTransition> mTransitions;
 	std::string mJsonConfig = "Simple.json";
+	unsigned int mUID = 0;
 	
 	
 
