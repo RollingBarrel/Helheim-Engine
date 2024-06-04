@@ -93,11 +93,6 @@ GeometryBatch::~GeometryBatch()
 
 	glDeleteBuffers(1, &mPaletteSsbo);
 	glDeleteBuffers(1, &mSkinSsbo);
-
-	mMeshComponents.clear();
-	mUniqueMeshes.clear();
-	mAttributes.clear();
-	mCommands.clear();
 }
 
 void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
