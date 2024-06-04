@@ -2,7 +2,7 @@
 
 #include "ImBezier.h"
 #include "imgui.h"
-#include "imgui_color_gradient.h"
+#include "ImColorGradient.h"
 
 #include "EngineApp.h"
 #include "ModuleScene.h"
@@ -1470,110 +1470,109 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	
 }
 
-ImColor Float4ToImColor(const float4& color)
-{
-	ImColor ret = ImColor(color.x, color.y, color.z, color.w);
-	return ret;
-}
-
-float4 ImColorToFloat4(const float* color)
-{
-	return float4(color[0], color[1], color[2], color[3]);
-}
-
-
-ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
-	ImGradient result;
-
-	const std::map<float, float4>& marks = gradient->GetColorMarks();
-
-	for (const auto& mark : marks) {
-		result.addMark(mark.first, Float4ToImColor(mark.second));
-	}
-
-	return result;
-}
-
-
-#define FLOAT_TOLERANCE 1e-6f
-
-inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
-{
-	return std::fabs(a - b) < tolerance;
-}
-
-bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
-	if (approximatelyEqual(a->position, b.first)) {
-		for (int i = 0; i < 4; ++i) {
-			if (!approximatelyEqual(a->color[i], b.second[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-	return false;
-}
-
-bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
-
-	// find if marksEdited has not a mark from the gradient to delete it
-	for (const auto& mark : marks) {
-		auto it = std::find_if(
-			marksEdited.begin(), marksEdited.end(),
-			[&](const ImGradientMark* mark1) {
-				return areMarksEquivalent(mark1, mark);
-			}
-		);
-
-		if (it == marksEdited.end())
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
-
-	// find if marksEdited has not a mark from the gradient to delete it
-	for (const auto& mark : marks) {
-		auto it = std::find_if(marksEdited.begin(), marksEdited.end(),[&](const ImGradientMark* mark1) 
-			{
-				return areMarksEquivalent(mark1, mark);
-			}
-		);
-		if (it == marksEdited.end()) 
-		{
-			gradient->RemoveColorGradientMark(mark.first);
-		}
-	}
-}
-
-static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	std::map<float, float4> marks = gradient->GetColorMarks();
-
-	// find if markEdit is not in marks to add it
-	for (const ImGradientMark* markEdit : marksEdited) {
-		auto it = std::find_if(
-			marks.begin(), marks.end(),
-			[&](const std::pair<float, float4> mark) {
-				return areMarksEquivalent(markEdit, mark);
-			}
-		);
-		if (it == marks.end()) 
-		{
-			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
-		}
-	}
-}
+//ImColor Float4ToImColor(const float4& color)
+//{
+//	ImColor ret = ImColor(color.x, color.y, color.z, color.w);
+//	return ret;
+//}
+//
+//float4 ImColorToFloat4(const float* color)
+//{
+//	return float4(color[0], color[1], color[2], color[3]);
+//}
+//
+//ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
+//	ImGradient result;
+//
+//	const std::map<float, float4>& marks = gradient->GetColorMarks();
+//
+//	for (const auto& mark : marks) {
+//		result.addMark(mark.first, Float4ToImColor(mark.second));
+//	}
+//
+//	return result;
+//}
+//
+//
+//#define FLOAT_TOLERANCE 1e-6f
+//
+//inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
+//{
+//	return std::fabs(a - b) < tolerance;
+//}
+//
+//bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
+//	if (approximatelyEqual(a->position, b.first)) {
+//		for (int i = 0; i < 4; ++i) {
+//			if (!approximatelyEqual(a->color[i], b.second[i])) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
+//	return false;
+//}
+//
+//bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	auto marks = gradient->GetColorMarks();
+//
+//	// find if marksEdited has not a mark from the gradient to delete it
+//	for (const auto& mark : marks) {
+//		auto it = std::find_if(
+//			marksEdited.begin(), marksEdited.end(),
+//			[&](const ImGradientMark* mark1) {
+//				return areMarksEquivalent(mark1, mark);
+//			}
+//		);
+//
+//		if (it == marksEdited.end())
+//		{
+//			return false;
+//		}
+//	}
+//	return true;
+//}
+//
+//void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	auto marks = gradient->GetColorMarks();
+//
+//	// find if marksEdited has not a mark from the gradient to delete it
+//	for (const auto& mark : marks) {
+//		auto it = std::find_if(marksEdited.begin(), marksEdited.end(),[&](const ImGradientMark* mark1) 
+//			{
+//				return areMarksEquivalent(mark1, mark);
+//			}
+//		);
+//		if (it == marksEdited.end()) 
+//		{
+//			gradient->RemoveColorGradientMark(mark.first);
+//		}
+//	}
+//}
+//
+//static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	std::map<float, float4> marks = gradient->GetColorMarks();
+//
+//	// find if markEdit is not in marks to add it
+//	for (const ImGradientMark* markEdit : marksEdited) {
+//		auto it = std::find_if(
+//			marks.begin(), marks.end(),
+//			[&](const std::pair<float, float4> mark) {
+//				return areMarksEquivalent(markEdit, mark);
+//			}
+//		);
+//		if (it == marks.end()) 
+//		{
+//			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
+//		}
+//	}
+//}
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
@@ -1692,21 +1691,38 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		//ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
 		//ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
 
-		//::GRADIENT DATA::
-		static unsigned int id = 0;
-		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
-		static ImGradientMark* draggingMark = nullptr;
-		static ImGradientMark* selectedMark = nullptr;
-		if (!EqualGradients(gradient, component->mColorGradient))
-		{
-			gradient = ColorGradientToImGradient(component->mColorGradient);
-		}
-		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
+				////::GRADIENT DATA::
+		//static unsigned int id = 0;
+		////static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		//if (!EqualGradients(gradient, &component->mTrail->mGradient))
+		//{
+		//	gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
+		//}
+		bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
 
-		if (updated) {
-			findRemovedMarks(gradient, component->mColorGradient);
-			findAddedMarks(gradient, component->mColorGradient);			
+		if (updated)
+		{
+			//findRemovedMarks(gradient, &component->mTrail->mGradient);
+			//findAddedMarks(gradient, &component->mTrail->mGradient);
 		}
+
+		////::GRADIENT DATA::
+		//static unsigned int id = 0;
+		//static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
+		//static ImGradientMark* draggingMark = nullptr;
+		//static ImGradientMark* selectedMark = nullptr;
+		//if (!EqualGradients(gradient, component->mColorGradient))
+		//{
+		//	gradient = ColorGradientToImGradient(component->mColorGradient);
+		//}
+		//bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
+
+		//if (updated) {
+		//	findRemovedMarks(gradient, component->mColorGradient);
+		//	findAddedMarks(gradient, component->mColorGradient);			
+		//}
 	}
 }
 
@@ -1880,21 +1896,21 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		}
 		ImGui::Columns(1);
 
-		//::GRADIENT DATA::
-		static unsigned int id = 0;
-		static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		static ImGradientMark* draggingMark = nullptr;
-		static ImGradientMark* selectedMark = nullptr;
-		if (!EqualGradients(gradient, &component->mTrail->mGradient))
-		{
-			gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		}
-		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
+		////::GRADIENT DATA::
+		//static unsigned int id = 0;
+		////static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		//if (!EqualGradients(gradient, &component->mTrail->mGradient))
+		//{
+		//	gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
+		//}
+		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
 
 		if (updated) 
 		{
-			findRemovedMarks(gradient, &component->mTrail->mGradient);
-			findAddedMarks(gradient, &component->mTrail->mGradient);
+			//findRemovedMarks(gradient, &component->mTrail->mGradient);
+			//findAddedMarks(gradient, &component->mTrail->mGradient);
 		}
 	}
 }

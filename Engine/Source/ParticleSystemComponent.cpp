@@ -16,7 +16,7 @@
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
     SetImage(mResourceId);
-    mColorGradient->AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
+    mColorGradient.AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();
 }
 
@@ -24,13 +24,12 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), 
 mIsLifetimeRandom(original.mIsLifetimeRandom), mLifetime(original.mLifetime), mMaxLifetime(original.mMaxLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
-mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(new ColorGradient(*original.mColorGradient)), 
+mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
 mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize)
 {
     SetImage(original.mResourceId);
     Init();
     mShapeType = original.mShapeType;
-    mColorGradient = new ColorGradient(*(original.mColorGradient));
 }
 
 ParticleSystemComponent::~ParticleSystemComponent() 
@@ -38,7 +37,6 @@ ParticleSystemComponent::~ParticleSystemComponent()
     App->GetOpenGL()->RemoveParticleSystem(this);
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
-    delete mColorGradient;
     for (auto particle : mParticles)
     {
         delete particle;
@@ -179,7 +177,7 @@ void ParticleSystemComponent::Update()
         {
             mParticles[i]->SetSpeed(mSpeedCurve.GetValue(dt, mParticles[i]->GetInitialSpeed()));
             mParticles[i]->SetSize(mSizeCurve.GetValue(dt, mParticles[i]->GetInitialSize()));
-            mParticles[i]->SetColor(mColorGradient->CalculateColor(dt));
+            mParticles[i]->SetColor(mColorGradient.CalculateColor(dt));
         }
 	}
     if (!mLooping and mEmitterTime - mDelay > mDuration) return;
@@ -204,7 +202,7 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient->CalculateColor(0.0f), rotation, CalculateRandomLifetime());
+            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, CalculateRandomLifetime());
             particle->SetInitialSpeed(mSpeedCurve.CalculateInitialValue());
             particle->SetInitialSize(mSizeCurve.CalculateInitialValue());
             
@@ -235,7 +233,6 @@ float ParticleSystemComponent::CalculateRandomLifetime() const
 
 void ParticleSystemComponent::Reset()
 {
-    delete mColorGradient;
     for (auto particle : mParticles)
     {
         delete particle;
@@ -269,7 +266,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddObject("Size", size);
     archive.AddObject("Speed", speed);
 
-    mColorGradient->Save(archive);
+    mColorGradient.Save(archive);
     }
 
 void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -326,7 +323,7 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     }
     if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
     {
-        mColorGradient->LoadFromJSON(data);
+        mColorGradient.LoadFromJSON(data);
     }
     if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
     {

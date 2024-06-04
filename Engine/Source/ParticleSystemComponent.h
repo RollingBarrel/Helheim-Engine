@@ -79,7 +79,7 @@ private:
 
 	int mBlendMode = 0;
 
-	ColorGradient* mColorGradient = new ColorGradient();
+	ColorGradient mColorGradient;
 	std::vector<Particle*> mParticles;
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;

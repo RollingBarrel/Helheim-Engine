@@ -80,9 +80,9 @@ namespace ImGui
 {
     bool GradientButton(ColorGradient* gradient);
 
-    bool GradientEditor(ColorGradient* gradient,
-        ImGradientMark*& draggingMark,
-        ImGradientMark*& selectedMark);
+    bool GradientEditor(ColorGradient& gradient,
+        float& draggingMark,
+        float& selectedMark);
 
 
 }

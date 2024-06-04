@@ -96,6 +96,7 @@ void TrailComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
         mMinDistance = data["Min Distance"].GetFloat();
     }
     mTrail->LoadJson(data);
+    Init();
 }
 
 void TrailComponent::Enable()
