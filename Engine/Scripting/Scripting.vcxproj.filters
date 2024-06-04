@@ -66,7 +66,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Level1AManager.h">
+    <ClInclude Include="Level1Manager.h">
       <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuManager.h">
@@ -121,7 +121,7 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Level1AManager.cpp">
+    <ClCompile Include="Level1Manager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuManager.cpp">

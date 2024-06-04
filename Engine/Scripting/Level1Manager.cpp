@@ -1,4 +1,4 @@
-#include "Level1AManager.h"
+#include "Level1Manager.h"
 #include "AudioSourceComponent.h"
 #include "Application.h"
 #include "GameObject.h"
@@ -10,44 +10,37 @@
 #include "GameManager.h"
 #include "ModuleScene.h"
 
-CREATE(Level1AManager)
+CREATE(Level1Manager)
 {
     CLASS(owner);
-    MEMBER(MemberType::GAMEOBJECT, mLevel1AMainThemeHolder);
+    MEMBER(MemberType::GAMEOBJECT, mLevel1MainThemeHolder);
     MEMBER(MemberType::GAMEOBJECT, mPlayerControllerHolder);
     MEMBER(MemberType::GAMEOBJECT, mEnemyFootStepHolder);
     MEMBER(MemberType::GAMEOBJECT, mStangeBackgroudSoundHolder);
     END_CREATE;
 }
 
-Level1AManager::Level1AManager(GameObject* owner) : Script(owner)
+Level1Manager::~Level1Manager()
 {
 }
 
-Level1AManager::~Level1AManager()
-{
-}
-
-void Level1AManager::Start()
+void Level1Manager::Start()
 {
 
-    if (mLevel1AMainThemeHolder != nullptr)
+    if (mLevel1MainThemeHolder != nullptr)
     {
-        mLevel1AMainTheme = (AudioSourceComponent*)mLevel1AMainThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
-        mLevel1AMainTheme->PlayWithVolume(0.4f);
+        mLevel1MainTheme = (AudioSourceComponent*)mLevel1MainThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
+        mLevel1MainTheme->PlayWithVolume(0.4f);
     }
-
     if (mPlayerControllerHolder != nullptr)
     {
         ScriptComponent* PlayerControllerScript = (ScriptComponent*)mPlayerControllerHolder->GetComponent(ComponentType::SCRIPT);
         mPlayerController = (PlayerController*)PlayerControllerScript->GetScriptInstance();
     }
-
     if (mEnemyFootStepHolder != nullptr)
     {
         mEnemyFootStep = (AudioSourceComponent*)mEnemyFootStepHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
-
     if (mStangeBackgroudSoundHolder != nullptr)
     {
         mStrangeBackgroundSound = (AudioSourceComponent*)mStangeBackgroudSoundHolder->GetComponent(ComponentType::AUDIOSOURCE);
@@ -56,44 +49,50 @@ void Level1AManager::Start()
     }
 }
 
-void Level1AManager::Update() {
+Level1Manager::Level1Manager(GameObject* owner) : Script(owner)
+{
+}
+
+
+
+void Level1Manager::Update() {
     UpdateBackgroundMusic();
     UpdateEnemyFootStepMusic();
     UpdateBackgroundStrangeMusic();
 }
 
-void Level1AManager::UpdateBackgroundMusic()
+void Level1Manager::UpdateBackgroundMusic()
 {
     BattleSituation currentSituation = mPlayerController->GetBattleSituation();
 
     if (currentSituation == BattleSituation::IDLE_HIGHT_HP) 
     {
-        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 0, 5);
+        mLevel1MainTheme->SmoothUpdateParameterValueByName("Area", 0, 5);
     }
 
     if (currentSituation == BattleSituation::BATTLE_LOW_HP) 
     {
-        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 30, 5);
+        mLevel1MainTheme->SmoothUpdateParameterValueByName("Area", 30, 5);
     }
 
     if (currentSituation == BattleSituation::BATTLE_HIGHT_HP) 
     {
-        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 60, 5);
+        mLevel1MainTheme->SmoothUpdateParameterValueByName("Area", 60, 5);
     }
 
     if (currentSituation == BattleSituation::IDLE_LOW_HP) 
     {
-        mLevel1AMainTheme->SmoothUpdateParameterValueByName("Area", 80, 5);
+        mLevel1MainTheme->SmoothUpdateParameterValueByName("Area", 80, 5);
     }
 
     if (currentSituation == BattleSituation::DEATH) 
     {
-        mLevel1AMainTheme->Stop(true);
-        mLevel1AMainTheme->Play();
+        mLevel1MainTheme->Stop(true);
+        mLevel1MainTheme->Play();
     }
 }
 
-void Level1AManager::UpdateEnemyFootStepMusic()
+void Level1Manager::UpdateEnemyFootStepMusic()
 {
     ModuleScene* scene = App->GetScene();
 
@@ -122,7 +121,7 @@ void Level1AManager::UpdateEnemyFootStepMusic()
     }
 }
 
-void Level1AManager::UpdateBackgroundStrangeMusic() {
+void Level1Manager::UpdateBackgroundStrangeMusic() {
     ModuleScene* scene = App->GetScene();
 
     mStrangeBackgroundSound->UpdatePosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition());

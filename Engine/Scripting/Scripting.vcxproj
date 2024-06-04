@@ -184,7 +184,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
-    <ClInclude Include="Level1AManager.h" />
+    <ClInclude Include="Level1Manager.h" />
     <ClInclude Include="MainMenuManager.h" />
     <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
@@ -197,7 +197,7 @@
     <ClCompile Include="HudController.cpp" />
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="ItemShield.cpp" />
-    <ClCompile Include="Level1AManager.cpp" />
+    <ClCompile Include="Level1Manager.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuManager.cpp" />
