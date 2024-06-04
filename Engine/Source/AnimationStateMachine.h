@@ -8,6 +8,7 @@ public:
 	AnimationClip(unsigned int animationUID) 
 	{
 		mAnimationUID = animationUID;
+		mName = std::string("Default");
 	};
 
 	std::string mName;
