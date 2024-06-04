@@ -20,7 +20,6 @@ AnimationStateMachine::~AnimationStateMachine()
 {
 }
 
-
 void AnimationStateMachine::AddClip(unsigned int animationUID)
 {
 	mClips.push_back(AnimationClip(animationUID));
@@ -41,16 +40,13 @@ void AnimationStateMachine::SetClipName(int index, const std::string& name)
 int AnimationStateMachine::GetClipIndex(const std::string& clipName) const
 {
 	int index = -1;
-
 	for (size_t i = 0; i < mClips.size(); i++)
 	{
-
 		if (clipName == mClips[i].mName)
 		{
 			index = i;
 			break;
 		}
-
 	}
 	return index;
 }
@@ -154,14 +150,12 @@ void AnimationStateMachine::DeleteState(int index)
 {
 	assert(index >= mStates.size());
 	std::string state = mStates[index].mName;
-	int i = 0;
-	for (AnimationTransition transition : mTransitions)
+	for (int i = 0; i<mTransitions.size(); ++i)
 	{
-		if (transition.mSource == state || transition.mTarget == state)
+		if (mTransitions[i].mSource == state || mTransitions[i].mTarget == state)
 		{
 			DeleteTransition(i);
 		}
-		i++;
 	}
 
 	mStates.erase(mStates.begin() + index);
@@ -213,7 +207,7 @@ const std::string& AnimationStateMachine::GetTransitionTarget(int index) const
 	return mTransitions[index].mTarget;
 }
 
-void AnimationStateMachine::SetTransitionTrigger(int index, const std::string trigger)
+void AnimationStateMachine::SetTransitionTrigger(int index, const std::string& trigger)
 {
 	assert(index >= mTransitions.size());
 	mTransitions[index].mTrigger = trigger;
