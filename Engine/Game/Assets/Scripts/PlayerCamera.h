@@ -20,12 +20,10 @@ public:
 
 private:
 
-    GameObject* mLookTarget = nullptr;
     GameObject* mFollowTarget = nullptr;
-    CameraComponent* mCameraComponent = nullptr;
-    float3 mCameraPosition = float3(-11.90, -9.1f, 2.6f);
-    float3 mCameraRotation = float3(0.60f, -1.30f, 0.0f);
-    void SetView(float3 position, float3 rotation);
+    float mDistanceToPlayer = 18.0f;
+    float mYawAngle = 45.0f;
+    float mPitchAngle = 53.0f;
 
 
 };
