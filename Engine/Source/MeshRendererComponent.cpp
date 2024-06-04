@@ -249,12 +249,15 @@ void MeshRendererComponent::UpdatePalette()
 		}
 		// Initialize vector
 		GameObject* root = mOwner;
-		if (root->GetParent() != nullptr)
+		while (root->GetParent() != nullptr && root->GetComponent(ComponentType::ANIMATION) == nullptr)
 		{
-			while (root->GetParent()->GetParent() != nullptr)
-			{
-				root = root->GetParent();
-			}
+			root = root->GetParent();
+		}
+		if (root->GetComponent(ComponentType::ANIMATION) == nullptr)
+		{
+			mHasSkinning = false;
+			App->GetResource()->ReleaseResource(mModelUid);
+			return;
 		}
 
 		LoadAllChildJoints(root, model);
