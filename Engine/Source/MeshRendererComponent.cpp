@@ -253,7 +253,7 @@ void MeshRendererComponent::UpdatePalette()
 		{
 			root = root->GetParent();
 		}
-		if (root->GetComponent(ComponentType::ANIMATION) != nullptr)
+		if (root->GetComponent(ComponentType::ANIMATION) == nullptr)
 		{
 			mHasSkinning = false;
 			return;
