@@ -212,7 +212,7 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
 {
 	AddJointNode(currentObject, model);
-	for (const auto& object : currentObject->GetChildren())
+	for (GameObject* object : currentObject->GetChildren())
 	{
 		LoadAllChildJoints(object, model);
 	}
@@ -224,7 +224,7 @@ void MeshRendererComponent::AddJointNode(GameObject* node, ResourceModel* model)
 	{
 		if (pair.first == node->GetName())
 		{
-			mGameobjectsInverseMatrices.push_back(std::pair<GameObject*, float4x4>(node, pair.second));
+			mGameobjectsInverseMatrices.emplace_back(node, pair.second);
 			break;
 		}
 	}
@@ -256,6 +256,7 @@ void MeshRendererComponent::UpdatePalette()
 		if (root->GetComponent(ComponentType::ANIMATION) == nullptr)
 		{
 			mHasSkinning = false;
+			App->GetResource()->ReleaseResource(mModelUid);
 			return;
 		}
 

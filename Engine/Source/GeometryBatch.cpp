@@ -190,13 +190,13 @@ void GeometryBatch::RecreateVboAndEbo()
 	glBufferData(GL_ARRAY_BUFFER, mVboDataSize, nullptr, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mEboDataSize, nullptr, GL_STATIC_DRAW);
-	float* vboBuffer = reinterpret_cast<float*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+	char* vboBuffer = reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	unsigned int vboOffset = 0;
 	unsigned int eboOffset = 0;
 	for (const BatchMeshResource& res : mUniqueMeshes)
 	{
 		unsigned int size;
-		res.resource->GetInterleavedData(Attribute::Usage::RENDER, vboBuffer, &size);
+		res.resource->GetInterleavedData(Attribute::Usage::RENDER, reinterpret_cast<float*>(vboBuffer + vboOffset), &size);
 		vboOffset += size;
 		size = res.resource->GetNumberIndices() * sizeof(unsigned int);
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, eboOffset, size, res.resource->GetIndices());
@@ -240,11 +240,12 @@ void GeometryBatch::RecreateMaterials()
 
 void GeometryBatch::AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx)
 {
+	meshIdx = mUniqueMeshes.size();
 	const ResourceMesh& rMesh = *cMesh->GetResourceMesh();
-	mUniqueMeshes.emplace_back(&rMesh, mEboDataSize / sizeof(unsigned int), mVboDataSize / rMesh.GetVertexSize(Attribute::Usage::RENDER));
-	meshIdx = mUniqueMeshes.size() - 1;
+	const unsigned int vertexSize = rMesh.GetVertexSize(Attribute::Usage::RENDER);
+	mUniqueMeshes.emplace_back(&rMesh, mEboDataSize / sizeof(unsigned int), mVboDataSize / vertexSize);
 	mVBOFlag = true;
-	mVboDataSize += rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::RENDER);
+	mVboDataSize += rMesh.GetNumberVertices() * vertexSize;
 	mEboDataSize += rMesh.GetNumberIndices() * sizeof(unsigned int);
 }
 
@@ -463,9 +464,6 @@ void GeometryBatch::Draw()
 
 	//CleanUp
 	glBindVertexArray(0);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
-	glUseProgram(0);
 }
 
 void GeometryBatch::CleanUpCommands()
