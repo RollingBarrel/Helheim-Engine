@@ -408,9 +408,6 @@
     <ClCompile Include="ResourceNavmesh.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="EmitterShape.cpp">
-      <Filter>Utils\Particles</Filter>
-    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
@@ -1031,9 +1028,6 @@
     </ClInclude>
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="EmitterShape.h">
-      <Filter>Utils\Particles</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Utils\Particles</Filter>

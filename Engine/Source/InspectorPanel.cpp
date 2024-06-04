@@ -35,7 +35,6 @@
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
 #include "TrailComponent.h"
-#include "EmitterShape.h"
 #include "BoxColliderComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
@@ -1615,28 +1614,27 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
 	if (check)
 	{
-		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
-		component->InitEmitterShape();
+		component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
 	}	
 	switch(component->mShapeType)
 	{
-		case EmitterShape::Type::CONE:
+		case ParticleSystemComponent::EmitterType::CONE:
 			ImGui::Text("Angle");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Angle", &component->mShape->mShapeAngle, 0.1f, 0.0f);
+			ImGui::DragFloat("##Angle", &component->mShapeAngle, 0.1f, 0.0f);
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
-		case EmitterShape::Type::SQUARE:
+		case ParticleSystemComponent::EmitterType::SQUARE:
 			ImGui::Text("Width");
 			ImGui::SameLine();
-			ImGui::DragFloat2("##Width", &component->mShape->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::DragFloat2("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
 			break;
-		case EmitterShape::Type::CIRCLE:
+		case ParticleSystemComponent::EmitterType::CIRCLE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
 
 	}
@@ -1993,6 +1991,6 @@ void InspectorPanel::DrawBlendTypeSelector(int& type, const char* cLabel) const
 	bool check = ImGui::Combo(labelID.c_str(), &selected, items, IM_ARRAYSIZE(items));
 	if (check)
 	{
-		type = static_cast<BlendMode>(selected);
+		type = selected;
 	}
 }

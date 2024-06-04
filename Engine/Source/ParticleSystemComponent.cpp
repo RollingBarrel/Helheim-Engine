@@ -1,6 +1,5 @@
 #include "ParticleSystemComponent.h"
 #include "Particle.h"
-#include "EmitterShape.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "glew.h"
@@ -25,11 +24,12 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), 
 mIsLifetimeRandom(original.mIsLifetimeRandom), mLifetime(original.mLifetime), mMaxLifetime(original.mMaxLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
-mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(new ColorGradient(*original.mColorGradient))
+mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(new ColorGradient(*original.mColorGradient)), 
+mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize)
 {
     SetImage(original.mResourceId);
     Init();
-    mShape->CopyShape(*original.mShape);
+    mShapeType = original.mShapeType;
     mColorGradient = new ColorGradient(*(original.mColorGradient));
 }
 
@@ -38,7 +38,6 @@ ParticleSystemComponent::~ParticleSystemComponent()
     App->GetOpenGL()->RemoveParticleSystem(this);
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
-    delete mShape;
     delete mColorGradient;
     for (auto particle : mParticles)
     {
@@ -94,7 +93,6 @@ void ParticleSystemComponent::Init()
     glBindVertexArray(0);
 
     App->GetOpenGL()->AddParticleSystem(this);
-    InitEmitterShape();
 }
 
 void ParticleSystemComponent::Draw() const
@@ -194,8 +192,8 @@ void ParticleSystemComponent::Update()
             // Initializes a particle with a random position, direction and rotation
             // relative to the shape of emission
 
-			float3 emitionPosition = mShape->RandomInitPosition();
-            float3 emitionDirection = mShape->RandomInitDirection();
+			float3 emitionPosition = ShapeInitPosition();
+            float3 emitionDirection = ShapeInitDirection();
             float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
             emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
             float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
@@ -242,7 +240,6 @@ void ParticleSystemComponent::Reset()
     {
         delete particle;
     }
-    delete mShape;
     *this = ParticleSystemComponent(mOwner);
 }
 
@@ -256,9 +253,14 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddInt("Max Particles", mMaxParticles);
     archive.AddBool("Looping", mLooping);
     archive.AddBool("Stretched Billboard", mStretchedBillboard);
-    archive.AddBool("IsRandom", mIsLifetimeRandom);
+    archive.AddBool("IsLifetimeRandom", mIsLifetimeRandom);
     archive.AddFloat("Lifetime", mLifetime);
     archive.AddFloat("MaxLifetime", mMaxLifetime);
+    archive.AddInt("ShapeType", (int)mShapeType);
+    archive.AddFloat("ShapeRadius", mShapeRadius);
+    archive.AddFloat("ShapeAngle", mShapeAngle);
+    archive.AddFloat3("ShapeSize", mShapeSize);
+    archive.AddInt("BlendMode", mBlendMode);
 
     Archive size;
     Archive speed;
@@ -266,8 +268,7 @@ void ParticleSystemComponent::Save(Archive& archive) const
     mSpeedCurve.SaveJson(speed);
     archive.AddObject("Size", size);
     archive.AddObject("Speed", speed);
-    mShape->Save(archive);
-    
+
     mColorGradient->Save(archive);
     }
 
@@ -329,29 +330,33 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     }
     if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
     {
-        mShapeType = (EmitterShape::Type)data["ShapeType"].GetInt();
-        InitEmitterShape();
-        mShape->LoadFromJSON(data);
+        mShapeType = (EmitterType)data["ShapeType"].GetInt();
     }
-
-}
-
-void ParticleSystemComponent::InitEmitterShape()
-{
-    switch (mShapeType)
+    if (data.HasMember("ShapeRadius") && data["ShapeRadius"].IsFloat())
     {
-    case EmitterShape::Type::CONE:
-        mShape = new EmitterShapeCone();
-        break;
-    case EmitterShape::Type::SQUARE:
-        //mShape = EmitterShapeSquare();
-        break;
-    case EmitterShape::Type::CIRCLE:
-        //mShape = EmitterShapeCircle();
-        break;
-    case EmitterShape::Type::NONE:
-        break;
+        mShapeRadius = data["ShapeRadius"].GetFloat();
     }
+    if (data.HasMember("ShapeAngle") && data["ShapeAngle"].IsFloat())
+    {
+        mShapeAngle = data["ShapeAngle"].GetFloat();
+    }
+    if (data.HasMember("ShapeSize") && data["ShapeSize"].IsArray())
+    {
+        const rapidjson::Value& values = data["ShapeSize"];
+        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
+        if (values.Size() == 3 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat())
+        {
+            x = values[0].GetFloat();
+            y = values[1].GetFloat();
+            z = values[2].GetFloat();
+        }
+        mShapeSize = float3(x, y, z);
+    }
+    if (data.HasMember("BlendMode") && data["BlendMode"].IsInt())
+    {
+        mBlendMode = data["BlendMode"].GetInt();
+    }
+
 }
 
 void ParticleSystemComponent::Enable()
@@ -370,3 +375,74 @@ void ParticleSystemComponent::Disable()
     mParticles.clear();
 }
 
+float3 ParticleSystemComponent::ShapeInitPosition() const
+{
+    switch (mShapeType)
+    {
+    case EmitterType::CONE:
+    {
+        float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float angle = r * 2 * math::pi;
+        r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float distance = r * mShapeRadius;
+        float x = distance * cos(angle);
+        float y = distance * sin(angle);
+
+        return float3(x, y, 0);
+        break;
+    }
+    case EmitterType::SQUARE:
+    {
+        float randX = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        randX -= 0.5f;
+        float randY = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        randY -= 0.5f;
+        return float3(mShapeSize.x * randX, mShapeSize.y * randY, 0);
+        break;
+    }
+    case EmitterType::CIRCLE:
+    {
+        float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float angle = r * 2 * math::pi;
+        r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float distance = r * mShapeRadius;
+        float x = distance * cos(angle);
+        float y = distance * sin(angle);
+
+        return float3(x, y, 0);
+        break;
+    }
+    default:
+        return float3(1.0f, 1.0f, 1.0f);
+    }
+}
+
+float3 ParticleSystemComponent::ShapeInitDirection() const
+{
+    switch (mShapeType)
+    {
+    case EmitterType::CONE:
+    {
+        float r1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        float theta = r1 * 2 * math::pi; // Angle in XY plane
+
+        // Instead of a linear distribution for angleB, we use an angular distribution.
+        float r2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        float phi = std::acos(1 - r2 * (1 - std::cos(mShapeAngle))); // Angle from Z axis
+
+        float x = std::sin(phi) * std::cos(theta);
+        float y = std::sin(phi) * std::sin(theta);
+        float z = std::cos(phi);
+
+        return float3(x, y, z).Normalized(); // Normalize to ensure unit length        break;
+    }
+    //case EmitterType::SQUARE:
+    //    break;
+    //case EmitterType::CIRCLE:
+    //    break;
+    //case EmitterType::NONE:
+    //    break;
+    default:
+        return float3(0, 0, 1);
+    }
+}

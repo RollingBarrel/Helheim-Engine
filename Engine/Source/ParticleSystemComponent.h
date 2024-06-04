@@ -3,7 +3,6 @@
 #include "Component.h"
 #include "BezierCurve.h"
 #include <map>
-#include "EmitterShape.h"
 #include "ColorGradient.h"
 #include "BlendMode.h"
 
@@ -15,6 +14,13 @@ class ENGINE_API ParticleSystemComponent : public Component
 {
 	friend class InspectorPanel;
 public:
+	enum class EmitterType
+	{
+		NONE = 0,
+		CONE,
+		SQUARE,
+		CIRCLE
+	};
 	ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
 	~ParticleSystemComponent();
@@ -28,10 +34,13 @@ public:
 	void Enable() override;
 	void Disable() override;
 
+	float3 ShapeInitPosition() const;
+
+	float3 ShapeInitDirection() const;
+
 	Component* Clone(GameObject* owner) const override;
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
-	void InitEmitterShape();
 
 private:
 	void SetImage(unsigned int resourceId);
@@ -60,8 +69,13 @@ private:
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 
-	EmitterShape* mShape;
-	EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
+	//EmitterShape* mShape;
+	//EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
+
+	EmitterType mShapeType = EmitterType::NONE;
+	float mShapeRadius = 0.0f;
+	float mShapeAngle = math::pi / 4.0f;
+	float3 mShapeSize = float3(1.0f, 1.0f, 1.0f);
 
 	int mBlendMode = 0;
 

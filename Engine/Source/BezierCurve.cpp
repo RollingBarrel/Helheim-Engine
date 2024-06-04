@@ -95,7 +95,7 @@ float BezierCurve::CalculateRandomValue()
 
 void BezierCurve::SaveJson(Archive& archive) const
 {
-    archive.AddBool("IsRandomValue", mIsValueRandom);
+    archive.AddBool("IsValueRandom", mIsValueRandom);
     archive.AddFloat("Value", mValue);
     archive.AddFloat("MaxValue", mMaxValue);
     archive.AddBool("isCurve", mIsCurve);
@@ -148,7 +148,7 @@ void BezierCurve::LoadJson(const rapidjson::Value& data)
                 y = values[1].GetFloat();
             }
 
-            mPoints[i] = float2(x, y);
+            mPoints.push_back(float2(x, y));
         }
     }
 }
