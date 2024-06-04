@@ -271,7 +271,7 @@ void ScenePanel::DrawScene()
 				}
 				case Resource::Type::Scene:
 					break;
-				case Resource::Type::Object:
+				case Resource::Type::Prefab:
 				{
 					EngineApp->GetScene()->LoadPrefab(asset->mPath);
 					break;

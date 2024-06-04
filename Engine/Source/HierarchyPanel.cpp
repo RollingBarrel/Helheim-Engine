@@ -6,6 +6,42 @@
 #include "ModuleOpenGL.h"
 #include "GameObject.h"
 #include "ModuleFileSystem.h"
+#include <regex>
+
+static void AddSuffix(GameObject& gameObject)
+{
+	bool found = true;
+	int count = 0;
+	std::regex regularExpression(".+\\s\\(\\d+\\)$");
+	std::string nameWithoutSuffix = gameObject.GetName();
+	std::string name = nameWithoutSuffix;
+
+	if (std::regex_match(nameWithoutSuffix, regularExpression))
+	{
+		nameWithoutSuffix.erase(nameWithoutSuffix.rfind(" ("));
+	}
+	while (found)
+	{
+		found = false;
+		if (count > 0)
+		{
+			name = nameWithoutSuffix + " (" + std::to_string(count) + ")";
+		}
+		else
+		{
+			name = nameWithoutSuffix;
+		}
+		for (GameObject* child : gameObject.GetParent()->GetChildren())
+		{
+			if (child != &gameObject && child->GetName() == name)
+			{
+				found = true;
+			}
+		}
+		count++;
+	}
+	gameObject.SetName(name.c_str());
+}
 
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 
@@ -120,7 +156,8 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				for (GameObject* object : FilterMarked()) 
 				{
 					GameObject* gameObject = new GameObject(*object, object->GetParent());
-					EngineApp->GetScene()->AddGameObjectToDuplicate(object);
+					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
+					AddSuffix(*gameObject);
 					mLastClickedObject = gameObject->GetID();
 					InternalSetFocus(gameObject);
 					selectAfter.insert(gameObject);
@@ -176,7 +213,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.50f, 0.50f, 0.50f, 1.00f));
 		}
 		ShiftClick(node, selected);
-		ImGui::InvisibleButton("##", ImVec2(-1, 5)); //This can be changed to modify the spacing between elements
+		ImGui::Dummy(ImVec2(-1, 5));
 		DragAndDropTarget(node, true);
 		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (selected) {
@@ -195,7 +232,9 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			mNodesToOpen.erase(node->GetID());
 			ImGui::SetNextItemOpen(true);
 		}
-		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->mUid, baseFlags, node->mName.c_str()) && (node->mChildren.size() > 0);
+		std::string treeNodeName = node->mName.c_str();
+		treeNodeName += "##" + std::to_string(node->mUid);
+		nodeOpen = ImGui::TreeNodeEx(treeNodeName.c_str(), baseFlags) && (node->mChildren.size() > 0);
 		ImGui::PopStyleVar();
 		if (!node->IsActive())
 		{
@@ -310,7 +349,7 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 			{
 				switch (resource->GetType())
 				{
-				case Resource::Type::Object:
+				case Resource::Type::Prefab:
 				{
 					GameObject* newGO = EngineApp->GetScene()->LoadPrefab(asset->mPath, target);
 					if (reorder && newGO != nullptr)

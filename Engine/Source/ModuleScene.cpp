@@ -492,9 +492,8 @@ void ModuleScene::DeleteGameObjects()
 	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
 		gameObject->GetParent()->RemoveChild(gameObject->GetID());
+		RemoveGameObjectFromScene(gameObject->GetName());
 		delete gameObject;
-
-		//RemoveGameObjectFromScene(gameObject->GetName());
 	}
 
 	mGameObjectsToDelete.clear();
@@ -502,10 +501,10 @@ void ModuleScene::DeleteGameObjects()
 
 void ModuleScene::DuplicateGameObjects()
 {
-	for (GameObject* gameObject : mGameObjectsToDuplicate)
+	for (int i = 0; i < mGameObjectsToDuplicate.size(); ++i)
 	{
-		gameObject->GetParent()->AddChild(gameObject);
-		//AddGameObjectToScene(gameObject);
+		mGameObjectsToDuplicate[i]->GetParent()->AddChild(mGameObjectsToDuplicate[i]);
+		AddGameObjectToScene(mGameObjectsToDuplicate[i]);
 	}
 
 	mGameObjectsToDuplicate.clear();

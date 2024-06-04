@@ -27,7 +27,7 @@
 #include "Algorithm/Random/LCG.h"
 #include "MathFunc.h"
 #include "Quadtree.h"
-#include <regex>
+
 
 #pragma region Constructors and Destructors
 
@@ -49,7 +49,7 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 {
 	if (!mIsRoot)
 	{
-		//App->GetScene()->AddGameObjectToScene(this);
+		App->GetScene()->AddGameObjectToScene(this);
 
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 		mIsActive = parent->mIsActive;
@@ -69,7 +69,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 		mComponents.push_back(component->Clone(this));
 	}
 
-	//App->GetScene()->AddGameObjectToScene(this);
+	App->GetScene()->AddGameObjectToScene(this);
 
 	for (GameObject* child : original.mChildren)
 	{
@@ -86,7 +86,7 @@ GameObject::~GameObject()
 	}
 	mComponents.clear();
  
-	//App->GetScene()->RemoveGameObjectFromScene(this);
+	App->GetScene()->RemoveGameObjectFromScene(this);
 
 	for (GameObject* gameObject : mChildren)
 	{
@@ -788,40 +788,6 @@ void GameObject::RemoveChild(const int id)
 			mChildren.erase(it);
 			break;
 		}
-	}
-}
-
-//TODO: Move this to hierarchy
-void GameObject::AddSuffix()
-{
-	bool found = true;
-	int count = 0;
-	std::regex regularExpression(".+\\s\\(\\d+\\)$");
-	std::string nameWithoutSuffix = mName;
-
-	if (std::regex_match(nameWithoutSuffix, regularExpression))
-	{
-		nameWithoutSuffix.erase(nameWithoutSuffix.rfind(" ("));
-	}
-	while (found)
-	{
-		found = false;
-		if (count > 0)
-		{
-			mName = nameWithoutSuffix + " (" + std::to_string(count) + ")";
-		}
-		else
-		{
-			mName = nameWithoutSuffix;
-		}
-		for (GameObject* child : mParent->mChildren)
-		{
-			if (child != this && child->mName == mName)
-			{
-				found = true;
-			}
-		}
-		count++;
 	}
 }
 
