@@ -1912,22 +1912,10 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	ImGui::Checkbox(asCurve.c_str(), &(curve->mIsCurve));
 	if (curve->mIsCurve)
 	{
-		//static float points[5] = { curve->mCurve[0],
-		//	curve->mCurve[1],
-		//	curve->mCurve[2],
-		//	curve->mCurve[3] };
 		ImGui::Text("%s Growing Factor", cLabel);
 		ImGui::SameLine();
 		std::string growing = "##" + label + " Growing Factor";
 		ImGui::DragFloat(growing.c_str(), &curve->mFactor, 1.0f, 0.0f);
-		//ImGui::Text("Point 1");
-		//ImGui::SameLine();
-		//ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
-		//ImGui::Text("Point 2");
-		//ImGui::SameLine();
-		//ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
-
-		//std::string presets = label + " Presets";
 
 		if (ImGui::Curve("Das editor", ImVec2(400, 200), 10, curve->mPoints))
 		{
