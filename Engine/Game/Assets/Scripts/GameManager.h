@@ -17,6 +17,7 @@ public:
     void Update();
 
     GameObject* GetPlayer() { return mPlayer; };
+    HudController* GetHud() { return mHudController; };
 
     void LoadLevel(const char* LevelName);
 private:
