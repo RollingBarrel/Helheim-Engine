@@ -296,7 +296,7 @@ void AnimationComponent::SetModelUUID(unsigned int modelUid)
 	mModel = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(modelUid, Resource::Type::Model));
 	delete mStateMachine;
 	mStateMachine = new AnimationStateMachine(mModel->mAnimationUids);
-	ChangeState("default", 0.0f);
+	ChangeState("Default", 0.0f);
 	LoadSpine(mModel);	
 }
 
@@ -305,7 +305,7 @@ void AnimationComponent::SetModel(ResourceModel* model)
 	mModel = model;
 	delete mStateMachine;
 	mStateMachine = new AnimationStateMachine(model->mAnimationUids);
-	ChangeState("default", 0.0f);
+	ChangeState("Default", 0.0f);
 	LoadSpine(model);
 }
 
