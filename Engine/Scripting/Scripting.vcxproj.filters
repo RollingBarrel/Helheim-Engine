@@ -84,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
+    <ClInclude Include="AudioManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -137,5 +140,8 @@
     </ClCompile>
     <ClCompile Include="HudController.cpp" />
     <ClCompile Include="Grenade.cpp" />
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
