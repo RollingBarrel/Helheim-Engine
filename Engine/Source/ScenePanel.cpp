@@ -22,7 +22,7 @@
 #include "Math/float2.h"
 #include "imgui.h"
 
-GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rModel, GameObject* parent, bool isRoot)
+GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceModel& rModel, GameObject* parent, bool isRoot)
 {
 	const char* name = "";
 	static int nodeIt = 0;
@@ -54,7 +54,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			if (rModel.mAnimationUids[0] != 0)
 			{
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
-				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
+				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->CreateComponent(ComponentType::ANIMATION));
 				cAnimation->SetModelUUID(rModel.GetUID());
 
 			}
@@ -78,10 +78,6 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			cSpot->SetRange(node.mLight.mRange);
 			cSpot->SetInnerAngle(node.mLight.mInnerConeAngle);
 			cSpot->SetOuterAngle(node.mLight.mOuterConeAngle);
-		}
-		else
-		{
-			//Directional we don't import them xd
 		}
 	}
 
@@ -224,16 +220,6 @@ void ScenePanel::DrawScene()
 			{
 				switch (resource->GetType())
 				{
-				case Resource::Type::Texture:
-					break;
-				case Resource::Type::Mesh:
-					break;
-				case Resource::Type::Bone:
-					break;
-				case Resource::Type::Animation:
-					break;
-				case Resource::Type::Material:
-					break;
 				case Resource::Type::Model:
 				{
 					std::string name;
@@ -245,11 +231,12 @@ void ScenePanel::DrawScene()
 					std::vector<GameObject*> tempVec;
 					ResourceModel* rModel = reinterpret_cast<ResourceModel*>(resource);
 					
-					tempVec.reserve(rModel->GetNodes().size());
+					const std::vector<ModelNode>& nodes = rModel->GetNodes();
+					tempVec.reserve(nodes.size());
 
-					for (int i = 0; i < rModel->GetNodes().size(); ++i)
+					for (int i = 0; i < nodes.size(); ++i)
 					{
-						ModelNode node = rModel->GetNodes()[i];
+						const ModelNode& node = nodes[i];
 						if (node.mParentIndex == -1)
 							tempVec.push_back(DragToScene(node, i, *rModel, gameObjectRoot, true));
 						else
@@ -271,13 +258,17 @@ void ScenePanel::DrawScene()
 					EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}
-				case Resource::Type::Scene:
-					break;
 				case Resource::Type::Object:
 				{
 					EngineApp->GetScene()->LoadPrefab(asset->mPath);
 					break;
 				}
+				case Resource::Type::Texture:
+				case Resource::Type::Mesh:
+				case Resource::Type::Bone:
+				case Resource::Type::Animation:
+				case Resource::Type::Material:
+				case Resource::Type::Scene:
 				case Resource::Type::NavMesh:
 					break;
 				}

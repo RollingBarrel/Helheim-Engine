@@ -29,26 +29,23 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 
     node.mName = tinyNode.name;
 
-    math::float4x4 matrix = float4x4::identity;
+    float4x4 matrix = float4x4::identity;
     if (tinyNode.matrix.size() == 16)
     {
         matrix = float4x4(
-            tinyNode.matrix[0], tinyNode.matrix[1], tinyNode.matrix[2], tinyNode.matrix[3],
-            tinyNode.matrix[4], tinyNode.matrix[5], tinyNode.matrix[6], tinyNode.matrix[7],
-            tinyNode.matrix[8], tinyNode.matrix[9], tinyNode.matrix[10], tinyNode.matrix[11],
-            tinyNode.matrix[12], tinyNode.matrix[13], tinyNode.matrix[14], tinyNode.matrix[15]
+            tinyNode.matrix[0], tinyNode.matrix[4], tinyNode.matrix[8], tinyNode.matrix[12],
+            tinyNode.matrix[1], tinyNode.matrix[5], tinyNode.matrix[9], tinyNode.matrix[13],
+            tinyNode.matrix[2], tinyNode.matrix[6], tinyNode.matrix[10], tinyNode.matrix[14],
+            tinyNode.matrix[3], tinyNode.matrix[7], tinyNode.matrix[11], tinyNode.matrix[15]
         );
 
-        matrix = matrix.Transposed();
         matrix.Decompose(node.mTranslation, node.mRotation, node.mScale);
-
         node.mHasTransform = true;
     }
     else
     {
         if (tinyNode.translation.size() == 3) {
             node.mTranslation = { static_cast<float>(tinyNode.translation[0]),static_cast<float>(tinyNode.translation[1]), static_cast<float>(tinyNode.translation[2]) };
-
             node.mHasTransform = true;
         }
         else
@@ -57,7 +54,6 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
         if (tinyNode.rotation.size() == 4) {
             node.mRotation = { static_cast<float>(tinyNode.rotation[0]),static_cast<float>(tinyNode.rotation[1]), static_cast<float>(tinyNode.rotation[2]),static_cast<float>(tinyNode.rotation[3]) };
-
             node.mHasTransform = true;
         }
         else
@@ -66,7 +62,6 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
         if (tinyNode.scale.size() == 3) {
             node.mScale = { static_cast<float>(tinyNode.scale[0]),static_cast<float>(tinyNode.scale[1]), static_cast<float>(tinyNode.scale[2]) };
-
             node.mHasTransform = true;
         }
         else
@@ -102,9 +97,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
     }
 
     node.mMeshId = tinyNode.mesh;
-
     node.mCameraId = tinyNode.camera;
-
     node.mSkinId = tinyNode.skin;
 
     unsigned int meshId = 0;
