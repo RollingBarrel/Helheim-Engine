@@ -66,12 +66,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Level1Manager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h">
       <Filter>Weapons\Melee</Filter>
@@ -84,6 +78,12 @@
     </ClInclude>
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Level1Manager.h">
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -121,12 +121,6 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Level1Manager.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuManager.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="MeleeWeapon.cpp">
       <Filter>Weapons\Melee</Filter>
@@ -139,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="HudController.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Level1Manager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>

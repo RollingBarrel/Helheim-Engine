@@ -24,6 +24,10 @@ Level1Manager::~Level1Manager()
 {
 }
 
+Level1Manager::Level1Manager(GameObject* owner) : Script(owner)
+{
+}
+
 void Level1Manager::Start()
 {
 
@@ -48,12 +52,6 @@ void Level1Manager::Start()
         mStrangeBackgroundSound->PlayWithVolume(0.3f);
     }
 }
-
-Level1Manager::Level1Manager(GameObject* owner) : Script(owner)
-{
-}
-
-
 
 void Level1Manager::Update() {
     UpdateBackgroundMusic();
