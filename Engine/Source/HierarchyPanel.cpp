@@ -425,7 +425,13 @@ const std::vector<GameObject*> HierarchyPanel::FilterMarked() const
 GameObject* HierarchyPanel::GetFocusedObject() const 
 {
 	GameObject* root = EngineApp->GetScene()->GetRoot();
-	GameObject* focus = root->Find(mFocusId);
-	if (focus == nullptr) { return root; }
-	else { return focus; }
+	GameObject* focus = root->Find(mFocusId);	//TODO:Remove Find function to iterate all scene game objects
+	if (focus == nullptr) 
+	{ 
+		return root; 
+	}
+	else 
+	{ 
+		return focus; 
+	}
 }

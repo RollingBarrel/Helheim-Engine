@@ -870,9 +870,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 	ImGui::SeparatorText("Animation");
 
-	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
-	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
-
 	bool loop = component->GetLoop();
 	//bool play = false;
 

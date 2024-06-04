@@ -464,13 +464,14 @@ void ModuleScene::RemoveGameObjectFromScene(GameObject* gameObject)
 	}
 }
 
-void ModuleScene::RemoveGameObjectFromScene(int id) {
+void ModuleScene::RemoveGameObjectFromScene(int id) 
+{
 	for (std::vector<GameObject*>::iterator it = mSceneGO.begin(); it != mSceneGO.end(); ++it)
 	{
 		if ((*it)->GetID() == id)
 		{
 			mSceneGO.erase(it);
-			return;
+			break;
 		}
 	}
 }
@@ -482,7 +483,7 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 		if ((*it)->GetName() == name)
 		{
 			mSceneGO.erase(it);
-			return;
+			break;
 		}
 	}
 }

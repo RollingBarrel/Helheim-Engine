@@ -119,7 +119,10 @@ void GameObject::Update()
 		mIsTransformModified = false;
 	}
 
-	DeleteComponents();
+	if (mComponentsToDelete.size() > 0)
+	{
+		DeleteComponents();
+	}
 }
 
 #pragma endregion
@@ -427,25 +430,6 @@ Component* GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
-
-
-template<typename T>
-void GameObject::GetComponentsInChildren(std::vector<T*>& componentVector) const
-{
-	Component* gameObjectComponent = GetComponent(T::GetType());
-
-	if (gameObjectComponent)
-	{
-		componentVector.push_back(gameObjectComponent);
-	}
-
-	for (GameObject* child : mChildren)
-	{
-		child->GetComponentsInChildren(T::GetType(), componentVector);
-	}
-}
-
-
 void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const
 {
 	Component* gameObjectComponent = GetComponent(type);
@@ -522,7 +506,12 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::DeleteComponents()
 {
-	for (auto component : mComponentsToDelete)
+	for (std::vector<Component*>::const_iterator it = mComponentsToDelete.cbegin(); it > mComponentsToDelete.cend(); ++it)
+	{
+		mComponents.erase(it);
+		delete* it;
+	}
+	/*for (auto component : mComponentsToDelete)
 	{
 		auto it = std::find(mComponents.begin(), mComponents.end(), component);
 		if (it != mComponents.end())
@@ -531,7 +520,7 @@ void GameObject::DeleteComponents()
 			delete component;
 			component = nullptr;
 		}
-	}
+	}*/
 }
 
 Component* GameObject::RemoveComponent(Component* component)
@@ -733,20 +722,6 @@ GameObject* GameObject::Find(unsigned int UID) const
 	return gameObject;
 }
 
-std::vector<Component*>& GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
-{
-	std::vector<Component*> components;
-
-	std::vector<GameObject*> children = parent->GetChildren();
-	for (GameObject* child : children)
-	{
-		std::vector<Component*> childComponents = FindComponentsInChildren(child, type);
-		components.insert(components.end(), childComponents.begin(), childComponents.end());
-	}
-
-	return components;
-}
-
 //GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 //{
 //	Tag* tag = App->GetScene()->GetTagByName(tagname);
@@ -779,16 +754,20 @@ void GameObject::AddChild(GameObject* child)
 	mChildren.push_back(child);	
 }
 
-void GameObject::RemoveChild(const int id)
+GameObject* GameObject::RemoveChild(const int id)
 {
+	GameObject* object = nullptr;
 	for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
 	{
 		if ((*it)->GetID() == id)
 		{
+			object = *it;
 			mChildren.erase(it);
 			break;
 		}
 	}
+	
+	return object;
 }
 
 #pragma endregion

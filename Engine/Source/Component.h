@@ -27,7 +27,7 @@ public:
 	virtual void Load(const JsonObject& data);
 
 	ComponentType GetType() const { return mType; }
-	GameObject* const GetOwner() const { return mOwner; }
+	GameObject* GetOwner() const { return mOwner; }
 
 	unsigned int GetID() const { return mID; }
 

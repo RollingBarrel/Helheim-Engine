@@ -41,15 +41,15 @@ public:
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	unsigned int GetID() const { return mUid; }
-	float3 GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); } 
-	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
-	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
+	const float3& GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); } 
+	const float3& GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
+	const float3& GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
 	const std::string& GetTag() const { return mTag; }
 	AABB GetAABB();
 	bool IsDynamic() const { return mIsDynamic; }
 
 	//Setters
-	void SetTag(std::string tag) { mTag = tag; };
+	void SetTag(const std::string tag) { mTag = tag; };
 	void SetName(const char* name) { mName = name; };
 	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
 
@@ -64,7 +64,7 @@ public:
 	
 	// Children
 	void AddChild(GameObject* child);
-	void RemoveChild(const int id);
+	GameObject* RemoveChild(const int id);	//Remove from mChildren does not delete
 
 	//Transform
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
@@ -99,19 +99,17 @@ public:
 	void ResetTransform();
 
 	// Finds
-	GameObject* Find(const char* name) const;
-	GameObject* Find(unsigned int UID) const;
-	std::vector<Component*>& FindComponentsInChildren(GameObject* parent, const ComponentType type);
+	GameObject* Find(const char* name) const;  //TODO: DELETE FAST PLS
+	GameObject* Find(unsigned int UID) const;  //TODO: DELETE FAST PLS
 
 	// Components
 	template<typename T> T* CreateComponent();
 	Component* CreateComponent(ComponentType type);
 	template<typename T> T* GetComponent() const;
 	Component* GetComponent(ComponentType type) const;
-	template<typename T> void GetComponentsInChildren(std::vector<T*>& componentVector) const;
-	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
 	template<typename T> T* GetComponentInParent() const;											
 	Component* GetComponentInParent(ComponentType type) const;											
+	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
 
 	void AddComponent(Component* component, Component* position);	//TODO: DELETE FAST PLS
 	void AddComponentToDelete(Component* component);
@@ -121,17 +119,16 @@ public:
 	void Load(const JsonObject& obj);
 
 	// Prefabs
-	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
-	void SetPrefabId(unsigned int id) { mPrefabId = id; }
-	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }
-
+	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here?
+	void SetPrefabId(unsigned int id) { mPrefabId = id; }						   //TODO: This need to be here?
+	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }					   //TODO: This need to be here?
+																				   
 private:
-	void AddSuffix();
 
-	void DeleteComponents();
+	void DeleteComponents(); //TODO: MOVE SCENE
 	Component* RemoveComponent(Component* component);
 
-	void SetActiveInHierarchy(bool active);
+	void SetActiveInHierarchy(bool active);  //TODO: MOVE FAST PLS
 
 	const unsigned int mUid;
 	std::string mName = "GameObject";
@@ -157,7 +154,7 @@ private:
 
 	// Components
 	std::vector<Component*> mComponents;
-	std::vector<Component*> mComponentsToDelete;
+	std::vector<Component*> mComponentsToDelete;	//TODO: MOVE SCENE
 
 	// Prefabs
 	int mPrefabId = 0;
