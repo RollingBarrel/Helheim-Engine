@@ -31,6 +31,11 @@
 #include "RangeWeapon.h"
 #include "Grenade.h"
 
+#include "State.h"
+#include "MoveState.h"
+#include "IdleState.h"
+#include "DashState.h"
+
 CREATE(PlayerController)
 {
     CLASS(owner);
@@ -55,7 +60,6 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
     MEMBER(MemberType::INT, mAmmoCapacity);
     MEMBER(MemberType::GAMEOBJECT, mRangeWeaponGameObject);
-
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
@@ -82,7 +86,7 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
 }
 
-#pragma region MyRegion
+#pragma region Basic Functions
 
 void PlayerController::Start()
 {
@@ -256,6 +260,16 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
+    // Check input
+    CheckInput();
+
+    // Check state
+    StateMachine();
+
+    // Rotate the player to mouse
+    HandleRotation();
+
+    // OLD
     CheckDebugOptions();
     UpdateGrenadeCooldown();
     UpdateBattleSituation();
@@ -294,7 +308,27 @@ void PlayerController::Update()
         }
     }
 
-    switch (mCurrentState)
+
+
+    // Change for trigger
+    if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
+    {
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
+    }
+}
+
+#pragma endregion
+
+void PlayerController::StateMachine()
+{
+    // Check if dead
+
+    mLowerState->Update();
+    mUpperState->Update();
+    
+
+
+    /*switch (mCurrentState)
     {
     case PlayerState::IDLE:
         if (!mVictory && !mGameOver)
@@ -304,8 +338,6 @@ void PlayerController::Update()
                 mAnimationComponent->SendTrigger("tIdle", 0.1f);
             }
             Idle();
-
-
         }
         break;
 
@@ -315,13 +347,10 @@ void PlayerController::Update()
 
     case PlayerState::MOVE:
         Moving();
-
         break;
 
     case PlayerState::ATTACK:
         Attack();
-
-
         break;
 
     case PlayerState::MOVE_ATTACK:
@@ -332,23 +361,99 @@ void PlayerController::Update()
     case PlayerState::DEATH:
         GameOver();
         break;
-    }
+    }*/
+}
 
-    HandleRotation();
-
-    if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
+void PlayerController::CheckInput() 
+{
+    // Lowerbody state machine
+    StateType type = mLowerState->HandleInput();
+    if (mLowerStateType != type) 
     {
-        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
+        mLowerStateType = type;
+        mLowerState->Exit();
+        
+        switch (type) {
+        case StateType::DASH:
+            mLowerState = mDashState;
+            break;
+        case StateType::MOVE:
+            mLowerState = mMoveState;
+            break;
+        case StateType::IDLE:
+            mLowerState = mIdleState;
+            break;
+        case StateType::NONE:
+            break;
+        default:
+            break;
+        }
+
+        mLowerState->Enter();
+    }
+    
+
+    // Upperbody state machine
+    type = mUpperState->HandleInput();
+    if (mUpperStateType != type)
+    {
+        mUpperStateType = type;
+        mUpperState->Exit();
+
+        switch (type) {
+        case StateType::DASH:
+            mUpperState = mDashState;
+            break;
+        case StateType::MOVE:
+            mUpperState = mMoveState;
+            break;
+        case StateType::IDLE:
+            mUpperState = mIdleState;
+            break;
+        case StateType::NONE:
+            break;
+        default:
+            break;
+        }
+
+        mUpperState->Enter();
     }
 }
 
-#pragma endregion
+void PlayerController::HandleRotation()
+{
+    // TODO: Not aim on melee state?
 
+    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
+    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
 
+    float distance;
+    bool intersects = plane.Intersects(ray, &distance);
+    float3 hitPoint = ray.GetPoint(distance);
+
+    if (intersects)
+    {
+        mAimPosition = float3(hitPoint.x, hitPoint.y, hitPoint.z);
+        mGameObject->LookAt(mAimPosition);
+    }
+}
+
+void PlayerController::MoveInDirection(float3 direction)
+{
+    float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
+
+    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f))); // TODO: Why hardcoded to 5?
+}
+
+void PlayerController::MoveToPosition(float3 position) 
+{
+    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(position, float3(5.0f))); // TODO: Why hardcoded to 5?
+}
+
+// --------- OLD -----------------
 
 void PlayerController::Idle()
 {
-
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
@@ -698,7 +803,7 @@ void PlayerController::Moving()
             break;
         }
 
-        Move(mMoveDirection);
+        MoveInDirection(mMoveDirection);
     }
     else {
         mAnimationComponent->SendTrigger("tIdle", 0.1f);
@@ -727,35 +832,6 @@ void PlayerController::Moving()
         mShootingTimer += App->GetDt();
     }
     Idle();
-}
-
-void PlayerController::Move(float3 direction)
-{
-    float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
-
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-}
-
-void PlayerController::HandleRotation()
-{
-    if ((mCurrentState == PlayerState::ATTACK && mIsMeleeSpecialCoolDownActive) ||
-        (mWeapon == WeaponType::MELEE && mMeleeBaseComboStep == 3))
-    {
-        return;
-    }
-
-    std::map<float, Hit> hits;
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
-
-    float distance;
-    bool intersects = plane.Intersects(ray, &distance);
-    float3 hitPoint = ray.GetPoint(distance);
-    if (intersects)
-    {
-        float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
-        mGameObject->LookAt(target);
-    }
 }
 
 void PlayerController::Dash()

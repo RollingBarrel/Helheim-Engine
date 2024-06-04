@@ -31,6 +31,15 @@
     <Filter Include="Weapons\Range\Pistol">
       <UniqueIdentifier>{26a052d1-42d1-4771-81c9-b465aab29ef1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{dab926c2-b3d8-4b05-9554-248d057853e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\Move">
+      <UniqueIdentifier>{80e247c2-a634-48fe-b9f2-db894f956ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\Attack">
+      <UniqueIdentifier>{30388697-f73b-4a9c-9e6d-8d5797552617}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
@@ -86,6 +95,21 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="DashState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="AimState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -140,6 +164,21 @@
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>States\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>States\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="DashState.cpp">
+      <Filter>States\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="AimState.cpp">
+      <Filter>States\Attack</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -15,8 +15,13 @@ class BoxColliderComponent;
 class HudController;
 class Grenade;
 struct CollisionData;
-
 class RangeWeapon;
+
+class State;
+class DashState;
+class IdleState;
+class MoveState;
+enum StateType;
 
 enum class PlayerState
 {
@@ -65,6 +70,14 @@ enum class MoveDirection {
     NOT_MOVING
 };
 
+/*enum StateType {
+    IDLE,
+    DASH,
+    MOVE,
+    SAME,
+    NONE,
+};*/
+
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {
@@ -75,12 +88,40 @@ public:
     void Start() override;
     void Update() override;
 
+    float3 GetPlayerDirection() { return mPlayerDirection; }
+    float3 GetPlayerAimPosition() { return mAimPosition; }
+
+    void MoveToPosition(float3 position);
+    void MoveInDirection(float3 direction);
+
+    // --------------- OLD ----------------------
+
     void RechargeShield(float shield);
     void TakeDamage(float damage);
 
     BattleSituation GetBattleSituation() { return mCurrentSituation; };
 
 private:
+    void CheckInput();
+    void StateMachine();
+
+    // STATES
+    State* mLowerState;
+    StateType mLowerStateType;
+
+    DashState* mDashState;
+    IdleState* mIdleState;
+    MoveState* mMoveState;
+
+    State* mUpperState;
+    StateType mUpperStateType;
+
+    // Mouse
+    float3 mPlayerDirection;
+    float3 mAimPosition;
+
+    // -------- OLD ---------------
+
     void Idle();
     void Moving();
     void Dash();
@@ -93,7 +134,7 @@ private:
 
     void MeleeHit(float AttackRange, float AttackDamage);
     void RangedAttack();
-    void Move(float3 position);
+    //void Move(float3 position);
     void HandleRotation();
     void Shoot(float damage);
     void Reload();
