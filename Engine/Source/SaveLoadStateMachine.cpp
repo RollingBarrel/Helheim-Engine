@@ -90,3 +90,14 @@ ENGINE_API void Importer::StateMachine::Save(AnimationStateMachine* ourStateMach
     delete[] libraryPath;
     delete[] fileBuffer;
 }
+
+ENGINE_API AnimationStateMachine* Importer::StateMachine::Load(const char* fileName, unsigned int uid)
+{
+    char* fileBuffer = nullptr;
+    AnimationStateMachine* ourStateMachine = nullptr;
+
+    if (App->GetFileSystem()->Load(fileName, &fileBuffer))
+    {
+
+    }
+}
