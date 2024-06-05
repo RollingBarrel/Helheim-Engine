@@ -149,14 +149,14 @@ void SettingsPanel::SaveSettings()
 	scene.AddString("Name", EngineApp->GetScene()->GetName().c_str());
 
 	std::string buffer = doc.Serialize();
-	App->GetFileSystem()->Save("projectSettings.txt", buffer.c_str(), buffer.length());
+	App->GetFileSystem()->Save("userSettings.json", buffer.c_str(), buffer.length());
 }
 
 void SettingsPanel::LoadSettings()
 {
 	char* fileBuffer;
 	
-	if (App->GetFileSystem()->Load("projectSettings.txt", &fileBuffer))
+	if (App->GetFileSystem()->Load("userSettings.json", &fileBuffer))
 	{
 		Archive doc(fileBuffer);
 
