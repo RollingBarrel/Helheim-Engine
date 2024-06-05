@@ -151,7 +151,7 @@ void TextComponent::RenderText(const std::string& text)
 
         Character ch = mCharacters[c];
 
-        if (x + (ch.Advance >> 6) > mLineWidth && mLineWidth != 0)
+        if (x + (static_cast<int>(ch.Advance) >> 6 >> 6) > mLineWidth && mLineWidth != 0)
         {
             y -= lineHeight;
             x = 0;

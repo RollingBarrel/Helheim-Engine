@@ -21,6 +21,10 @@ class State;
 class DashState;
 class IdleState;
 class MoveState;
+class AimState;
+class AttackState;
+class GrenadeState;
+class SwitchState;
 enum StateType;
 
 enum class PlayerState
@@ -70,14 +74,6 @@ enum class MoveDirection {
     NOT_MOVING
 };
 
-/*enum StateType {
-    IDLE,
-    DASH,
-    MOVE,
-    SAME,
-    NONE,
-};*/
-
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {
@@ -90,9 +86,23 @@ public:
 
     float3 GetPlayerDirection() { return mPlayerDirection; }
     float3 GetPlayerAimPosition() { return mAimPosition; }
+    float3 GetPlayerPosition();
+   
+    void SetAnimation(std::string trigger, float transitionTime);
+    void PlayOneShot(std::string name);
 
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
+
+    void SwitchWeapon();
+
+    float GetDashCoolDown() const { return mDashCoolDown; }
+    float GetDashDuration() const { return mDashDuration; }
+    float GetDashRange() const { return mDashRange; }
+
+    void SetDashCoolDown(float dashCoolDown) { mDashCoolDown = dashCoolDown; }
+    void SetDashDuration(float dashDuration) { mDashDuration = dashDuration; }
+    void SetDashRange(float dashRange) { mDashRange = dashRange; }
 
     // --------------- OLD ----------------------
 
@@ -106,19 +116,46 @@ private:
     void StateMachine();
 
     // STATES
-    State* mLowerState;
+    State* mLowerState = nullptr;
     StateType mLowerStateType;
 
     DashState* mDashState;
     IdleState* mIdleState;
     MoveState* mMoveState;
 
-    State* mUpperState;
+    State* mUpperState = nullptr;
     StateType mUpperStateType;
 
-    // Mouse
+    AimState* mAimState;
+    AttackState* mAttackState;
+    GrenadeState* mGrenadeState;
+    SwitchState* mSwitchState;
+
+    // MOUSE
     float3 mPlayerDirection;
     float3 mAimPosition;
+
+    // ANIMATION
+    AnimationComponent* mAnimationComponent = nullptr;
+
+    // STATS
+    WeaponType mWeapon = WeaponType::RANGE;
+    // Dash
+    float mDashCoolDown = 0.7f;
+    float mDashDuration = 0.5f;
+    float mDashRange = 5.0f;
+    // Speed
+    float mPlayerSpeed = 2.0f;
+
+    // -------- PROVISIONAL --------
+
+    // AUIDO
+    // Footstep
+    GameObject* mFootStepAudioHolder = nullptr;
+    AudioSourceComponent* mFootStepAudio = nullptr;
+    // Gunfire
+    GameObject* mGunfireAudioHolder = nullptr;
+    AudioSourceComponent* mGunfireAudio = nullptr;
 
     // -------- OLD ---------------
 
@@ -160,7 +197,7 @@ private:
 
     void OnCollisionEnter(CollisionData* collisionData);
 
-    WeaponType mWeapon = WeaponType::RANGE;
+    
     PlayerState mCurrentState = PlayerState::IDLE;
     PlayerState mPreviousState = PlayerState::IDLE;
     BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
@@ -169,14 +206,12 @@ private:
     float mBattleStateTransitionTime = 0.0f;
 
     NavMeshController* mNavMeshControl = nullptr;
-    AnimationComponent* mAnimationComponent = nullptr;
     AnimationStateMachine* mStateMachine = nullptr;
 
     GameObject* mBulletPoolHolder = nullptr;
     ObjectPool* mBulletPool = nullptr;
 
     //Stats
-    float mPlayerSpeed = 2.0f;
     float mShield = 0.0f;
     float mMaxShield = 100.0f;
     float mSanity = 0.0f;
@@ -186,11 +221,6 @@ private:
     //Dash
     bool mIsDashing = false;
     bool mIsDashCoolDownActive = false;
-    float mDashCoolDownTimer = 0.0f;
-    float mDashCoolDown = 0.7f;
-    float mDashTimer = 0.0f;
-    float mDashDuration = 0.5f;
-    float mDashRange = 5.0f;
 
     //Range
     int mAmmoCapacity = 500000;
@@ -258,17 +288,11 @@ private:
     GameObject* mWinArea = nullptr;
 
     // Audios section
-    // Footstep
-    GameObject* mFootStepAudioHolder = nullptr;
-    AudioSourceComponent* mFootStepAudio = nullptr;
     bool mIsMoving = false;
     bool mReadyToStep = false;
     float mStepTimePassed = 0.0f;
     float mStepCoolDown = 0.5f;
 
-    // Gunfire
-    GameObject* mGunfireAudioHolder = nullptr;
-    AudioSourceComponent* mGunfireAudio = nullptr;
 
     //SCREENS
     bool mVictory = false;

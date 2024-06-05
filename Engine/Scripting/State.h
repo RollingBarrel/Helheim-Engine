@@ -7,6 +7,11 @@ enum StateType
 	IDLE,
 	DASH,
 	MOVE,
+	AIM,
+	ATTACK,
+	SWITCH,
+	GRENADE,
+	SPECIAL,
 	NONE,
 };
 

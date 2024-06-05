@@ -110,6 +110,15 @@
     <ClInclude Include="AimState.h">
       <Filter>States\Attack</Filter>
     </ClInclude>
+    <ClInclude Include="AttackState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="GrenadeState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -178,6 +187,15 @@
       <Filter>States\Move</Filter>
     </ClCompile>
     <ClCompile Include="AimState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="GrenadeState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchState.cpp">
       <Filter>States\Attack</Filter>
     </ClCompile>
   </ItemGroup>

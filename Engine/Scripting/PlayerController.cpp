@@ -35,6 +35,10 @@
 #include "MoveState.h"
 #include "IdleState.h"
 #include "DashState.h"
+#include "AimState.h"
+#include "AttackState.h"
+#include "GrenadeState.h"
+#include "SwitchState.h"
 
 CREATE(PlayerController)
 {
@@ -84,12 +88,25 @@ CREATE(PlayerController)
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
+    mDashState = new DashState(this);
+    mIdleState = new IdleState(this);
+    mMoveState = new MoveState(this);
+    mAimState = new AimState(this);
+    mAttackState = new AttackState(this);
+    mGrenadeState = new GrenadeState(this);
+    mSwitchState = new SwitchState(this);
+
+    mLowerStateType = StateType::IDLE;
+    mUpperStateType = StateType::AIM;
 }
 
 #pragma region Basic Functions
 
 void PlayerController::Start()
 {
+    mUpperState = mAimState;
+    mLowerState = mIdleState;
+
 
     mBullets = mAmmoCapacity;
     mShield = mMaxShield;
@@ -274,7 +291,7 @@ void PlayerController::Update()
     UpdateGrenadeCooldown();
     UpdateBattleSituation();
 
-    if (mIsDashCoolDownActive)
+    /*if (mIsDashCoolDownActive)
     {
         mDashCoolDownTimer += App->GetDt();
         if (mDashCoolDownTimer >= mDashCoolDown)
@@ -306,7 +323,7 @@ void PlayerController::Update()
             mIsMeleeSpecialCoolDownActive = false;
             mCurrentState = PlayerState::IDLE;
         }
-    }
+    }*/
 
 
 
@@ -370,6 +387,7 @@ void PlayerController::CheckInput()
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 
     {
+        LOG(("LOWER: " + std::to_string(type)).c_str());
         mLowerStateType = type;
         mLowerState->Exit();
         
@@ -397,6 +415,7 @@ void PlayerController::CheckInput()
     type = mUpperState->HandleInput();
     if (mUpperStateType != type)
     {
+        LOG(("UPPER: " + std::to_string(type)).c_str());
         mUpperStateType = type;
         mUpperState->Exit();
 
@@ -438,62 +457,63 @@ void PlayerController::HandleRotation()
     }
 }
 
+void PlayerController::SetAnimation(std::string trigger, float transitionTime)
+{
+    mAnimationComponent->SendTrigger(trigger, transitionTime);
+}
+
+void PlayerController::PlayOneShot(std::string name)
+{
+    if (strcmp(name.c_str(), "Step")) {
+        mFootStepAudio->PlayOneShot();
+    }
+    if (strcmp(name.c_str(), "Shot")) {
+        mGunfireAudio->PlayOneShot();
+    }
+}
+
 void PlayerController::MoveInDirection(float3 direction)
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
-
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f))); // TODO: Why hardcoded to 5?
+    mPlayerDirection = direction;
+    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(0.5f)));
 }
 
-void PlayerController::MoveToPosition(float3 position) 
+void PlayerController::MoveToPosition(float3 position)
 {
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(position, float3(5.0f))); // TODO: Why hardcoded to 5?
+    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(position, float3(0.5f)));
+}
+
+void PlayerController::SwitchWeapon() 
+{
+    mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
+}
+
+float3 PlayerController::GetPlayerPosition()
+{
+    return  mGameObject->GetPosition(); 
 }
 
 // --------- OLD -----------------
-
-void PlayerController::Idle()
+// Done
+void PlayerController::Idle() 
 {
-    if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
-    {
-        mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
-        GameManager::GetInstance()->GetHud()->SwitchWeapon();
-    }
-
-    else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
+    /*
+    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
     {
         mCurrentState = PlayerState::ATTACK;
         mAimingGrenade = true;
     }
 
-    else if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
-        mCurrentState = PlayerState::DASH;
+        mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
+        mLeftMouseButtonPressed = true;
     }
-    else
+    else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
     {
-        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-        {
-            mCurrentState = PlayerState::MOVE;
-        }
-        else
-        {
-            mCurrentState = PlayerState::IDLE;
-        }
-
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-        {
-            mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
-            mLeftMouseButtonPressed = true;
-        }
-        else if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
-        {
-            mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
-            mLeftMouseButtonPressed = false;
-        }
+        mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
+        mLeftMouseButtonPressed = false;
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
@@ -502,341 +522,12 @@ void PlayerController::Idle()
         {
             mGrenadeAimAreaGO->SetEnabled(false);
         }
-    }
+    }*/
 }
-
-void PlayerController::Moving()
-{
-
-    mMoveDirection = float3::zero;
-    float3 front = mCamera->GetRight().Cross(float3::unitY).Normalized();
-
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
-    {
-        mMoveDirection += front;
-
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-    {
-        mMoveDirection -= front;
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
-    {
-        mMoveDirection += float3::unitY.Cross(front);
-
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-    {
-        mMoveDirection -= float3::unitY.Cross(front);
-
-    }
-
-    if (!mMoveDirection.Equals(float3::zero))
-    {
-        mMoveDirection.Normalize();
-        SetMovingDirection(mMoveDirection);
-        float2 mousePosition(App->GetInput()->GetGlobalMousePosition());
-        ClosestMouseDirection(mousePosition);
-        switch (mLookingAt)
-        {
-        case MouseDirection::UP:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-
-            break;
-        case MouseDirection::DOWN:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-
-            break;
-        case MouseDirection::LEFT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::RIGHT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-
-        case MouseDirection::UP_RIGHT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::UP_LEFT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::DOWN_RIGHT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        case MouseDirection::DOWN_LEFT:
-            switch (mMovingTo)
-            {
-            case MoveDirection::UP:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::RIGHT:
-                mAnimationComponent->SendTrigger("tStrafeLeft", 0.1f);
-                break;
-            case MoveDirection::LEFT:
-                mAnimationComponent->SendTrigger("tStrafeRight", 0.1f);
-                break;
-            case MoveDirection::UP_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::UP_LEFT:
-                mAnimationComponent->SendTrigger("tWalkBack", 0.1f);
-                break;
-            case MoveDirection::DOWN_RIGHT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            case MoveDirection::DOWN_LEFT:
-                mAnimationComponent->SendTrigger("tWalkForward", 0.1f);
-                break;
-            default:
-                break;
-            }
-            break;
-        default:
-            break;
-        }
-
-        MoveInDirection(mMoveDirection);
-    }
-    else {
-        mAnimationComponent->SendTrigger("tIdle", 0.1f);
-    }
-
-    // Hardcoded play-step-sound solution: reproduce every second 
-    // TODO play sound according the animation
-
-    if (!mReadyToStep)
-    {
-        mStepTimePassed += App->GetDt();
-        if (mStepTimePassed >= mStepCoolDown)
-        {
-            mStepTimePassed = 0;
-            mStepTimePassed = false;
-            mReadyToStep = true;
-        }
-    }
-    else
-    {
-        mFootStepAudio->PlayOneShot();
-        mReadyToStep = false;
-    }
-    if (mHasShoot)
-    {
-        mShootingTimer += App->GetDt();
-    }
-    Idle();
-}
-
+// Done
 void PlayerController::Dash()
 {
-    if (!mIsDashing)
+    /*if (!mIsDashing)
     {
         // Start dashing
         mIsDashing = true;
@@ -870,11 +561,15 @@ void PlayerController::Dash()
             }
             mGameObject->SetPosition(navigationPos);
         }
-    }
+    }*/
 }
 
 void PlayerController::Attack()
 {
+    /*if (mHasShoot)
+    {
+        mShootingTimer += App->GetDt();
+    }*/
     if (mAimingGrenade && !mThrowAwayGrenade)
     {
         if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
@@ -1185,50 +880,6 @@ void PlayerController::ClosestMouseDirection(const float2& mouseState)
 
 
 
-}
-
-void PlayerController::SetMovingDirection(const float3& moveDirection)
-{
-
-    bool movingUp = moveDirection.z > 0 && moveDirection.x < 0 && std::abs(moveDirection.z) < std::abs(moveDirection.x);
-    bool movingDown = moveDirection.z < 0 && moveDirection.x > 0 && std::abs(moveDirection.z) < std::abs(moveDirection.x);
-    bool movingRight = moveDirection.x < 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
-    bool movingLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
-
-    bool movingUpRight = moveDirection.x < 0 && moveDirection.z < 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
-    bool movingUpLeft = moveDirection.x < 0 && moveDirection.z > 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
-    bool movingDownRight = moveDirection.x > 0 && moveDirection.z < 0 && std::abs(moveDirection.x) < std::abs(moveDirection.z);
-    bool movingDownLeft = moveDirection.x > 0 && moveDirection.z > 0 && std::abs(moveDirection.x) > std::abs(moveDirection.z);
-
-    //LOG("x: %f, z: %f", moveDirection.x, moveDirection.z);
-    if (movingDownLeft) {
-        mMovingTo = MoveDirection::DOWN_LEFT;
-    }
-    else if (movingUpLeft) {
-        mMovingTo = MoveDirection::UP_LEFT;
-    }
-    else if (movingDownRight) {
-        mMovingTo = MoveDirection::DOWN_RIGHT;
-    }
-    else if (movingUpRight) {
-        mMovingTo = MoveDirection::UP_RIGHT;
-    }
-    else if (movingUp) {
-        mMovingTo = MoveDirection::UP;
-    }
-    else if (movingDown) {
-        mMovingTo = MoveDirection::DOWN;
-    }
-    else if (movingRight) {
-        mMovingTo = MoveDirection::RIGHT;
-    }
-    else if (movingLeft) {
-
-        mMovingTo = MoveDirection::LEFT;
-    }
-    else {
-        mMovingTo = MoveDirection::NOT_MOVING;
-    }
 }
 
 void PlayerController::CheckDebugOptions()

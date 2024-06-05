@@ -1,11 +1,11 @@
 #pragma once
 #include "State.h"
 
-class DashState : public State
+class GrenadeState : public State
 {
 public:
-	DashState(PlayerController* player);
-	~DashState();
+	GrenadeState(PlayerController* player);
+	~GrenadeState();
 
 	StateType HandleInput() override;
 	void Update() override;
@@ -15,6 +15,4 @@ public:
 
 private:
 
-	float mDashTimer = 0.0f;
-	float mDashDuration = 0.5f;
 };
