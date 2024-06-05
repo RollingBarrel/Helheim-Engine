@@ -6,6 +6,7 @@
 #include "ResourceTexture.h"
 #include "ModuleResource.h"
 #include "glew.h"
+#include "MathGeoLib.h"
 
 #define POSITION_LOCATION 0
 #define TEXCOORD_LOCATION 1
@@ -31,6 +32,8 @@ Trail::~Trail()
 
 void Trail::Init()
 {
+    mInitialWith = mWidth.CalculateInitialValue();
+
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
     glBindVertexArray(mVAO);
@@ -100,8 +103,8 @@ void Trail::Draw() const
             direction = mPoints[i].direction.Normalized();
         }
 
-        float3 topPointPos = mPoints[i].position + direction * mWidth.GetValue(dp) * 0.5f;
-        float3 botPointPos = mPoints[i].position - direction * mWidth.GetValue(dp) * 0.5f;
+        float3 topPointPos = mPoints[i].position + direction * mWidth.GetValue(dp, mInitialWith) * 0.5f;
+        float3 botPointPos = mPoints[i].position - direction * mWidth.GetValue(dp, mInitialWith) * 0.5f;
         float2 topPointTexCoord = float2(dp, 1);
         float2 botPointTexCoord = float2(dp, 0);
         float4 color = mGradient.CalculateColor(dp);
@@ -148,7 +151,7 @@ void Trail::AddTrailPositions(float3 position, Quat rotation)
     mPoints.push_back(TrailPoint{ position, rotatedVector, mTrailTime});
 }
 
-float3 Trail::GetLastPosition() const
+const float3& Trail::GetLastPosition() const
 {
     if (mPoints.empty()) 
     {
@@ -157,7 +160,7 @@ float3 Trail::GetLastPosition() const
     return mPoints.back().position;
 }
 
-float3 Trail::GetFirstPosition() const
+const float3& Trail::GetFirstPosition() const
 {
     if (mPoints.empty())
     {

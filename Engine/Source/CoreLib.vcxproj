@@ -169,6 +169,7 @@
     <ClCompile Include="AudioListenerComponent.cpp" />
     <ClCompile Include="AudioSourceComponent.cpp" />
     <ClCompile Include="BatchManager.cpp" />
+    <ClCompile Include="BlendMode.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
     <ClCompile Include="BezierCurve.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
@@ -224,7 +225,6 @@
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\SSEMath.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Math\TransformOps.cpp" />
     <ClCompile Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.cpp" />
-    <ClCompile Include="EmitterShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
@@ -290,6 +290,7 @@
     <ClInclude Include="AudioListenerComponent.h" />
     <ClInclude Include="AudioSourceComponent.h" />
     <ClInclude Include="BatchManager.h" />
+    <ClInclude Include="BlendMode.h" />
     <ClInclude Include="BoxColliderComponent.h" />
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="CameraComponent.h" />
@@ -719,7 +720,6 @@
     <ClInclude Include="Dependencies\MathGeoLib-v1.5\include\Time\Clock.h" />
     <ClInclude Include="Dependencies\Optick\include\optick.config.h" />
     <ClInclude Include="Dependencies\Optick\include\optick.h" />
-    <ClInclude Include="EmitterShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryBatch.h" />
     <ClInclude Include="Globals.h" />
