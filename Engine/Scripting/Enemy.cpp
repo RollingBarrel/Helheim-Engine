@@ -1,19 +1,19 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "GameManager.h"
 #include "AudioSourceComponent.h"
 #include "Math/MathFunc.h"
+
+
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
 void Enemy::Start()
 {
     ModuleScene* scene = App->GetScene();
-    //TAG: mPlayer = scene->FindGameObjectWithTag(scene->GetTag("Player")->GetID());
-    mHealth = mMaxHealth;
-    
-    
-    
+    mPlayer = GameManager::GetInstance()->GetPlayer();
+    mHealth = mMaxHealth;  
 }
 
 void Enemy::Update()

@@ -11,10 +11,11 @@
 
 #include "imgui.h"
 
+#define ENGINE_TAGS 3
+
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
 {
-
 }
 
 SettingsPanel::~SettingsPanel()
@@ -114,18 +115,18 @@ void SettingsPanel::Draw(int windowFlags)
 
 		if (ImGui::Button("Save settings")) 
 		{
-			SaveSettings();
+			SaveUserSettings();
 		}
 		if (ImGui::Button("Load settings")) 
 		{
-			LoadSettings();
+			LoadUserSettings();
 		}
 
 	}
 	ImGui::End();
 }
 
-void SettingsPanel::SaveSettings()
+void SettingsPanel::SaveUserSettings() const
 {
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
@@ -152,7 +153,7 @@ void SettingsPanel::SaveSettings()
 	App->GetFileSystem()->Save("userSettings.json", buffer.c_str(), buffer.length());
 }
 
-void SettingsPanel::LoadSettings()
+void SettingsPanel::LoadUserSettings()
 {
 	char* fileBuffer;
 	
@@ -193,6 +194,55 @@ void SettingsPanel::LoadSettings()
 
 		JsonObject scene = root.GetJsonObject("Scene Settings");
 		std::string name = scene.GetString("Name");
-		//App->GetScene()->Load(name.c_str());
+		//App->GetScene()->Load(name.c_str());		//TODO: Uncomment this
+	}	
+}
+
+void SettingsPanel::SaveProjectSettings() const
+{
+	Archive document;
+	JsonObject root = document.GetRootObject();
+	JsonArray tags = root.AddNewJsonArray("Tags");
+
+	for (int i = 0; i < mTags.size(); ++i)
+	{
+		tags.PushBackString(mTags[i].c_str());
 	}
-}	
+
+	std::string buffer = document.Serialize();
+	App->GetFileSystem()->Save("projectSettings.json", buffer.c_str(), buffer.length());
+}
+
+void SettingsPanel::LoadProjectSettings()
+{
+	char* fileBuffer;
+
+	if (App->GetFileSystem()->Load("projectSettings.json", &fileBuffer))
+	{
+		Archive document(fileBuffer);
+
+		JsonObject root = document.GetRootObject();
+		JsonArray tags = root.GetJsonArray("Tags");
+
+		mTags.reserve(tags.Size() + ENGINE_TAGS);
+
+		mTags.push_back("Untagged");
+		mTags.push_back("MainCamera");
+		mTags.push_back("Player");
+
+		for (int i = 0; i < tags.Size(); ++i)
+		{
+			mTags.push_back(tags.GetString(i));
+		}
+	}
+	else
+	{
+		mTags.reserve(ENGINE_TAGS);
+
+		mTags.push_back("Untagged");
+		mTags.push_back("MainCamera");
+		mTags.push_back("Player");
+	}
+
+}
+

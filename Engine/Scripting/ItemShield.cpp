@@ -2,6 +2,7 @@
 #include "PlayerController.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "GameManager.h"
 #include "Math/MathFunc.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
@@ -21,7 +22,7 @@ ItemShield::ItemShield(GameObject* owner) : Script(owner) {}
 void ItemShield::Start()
 {
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag("Player");
+    mPlayer = GameManager::GetInstance()->GetPlayer();
 
 
     std::vector<Component*> components;

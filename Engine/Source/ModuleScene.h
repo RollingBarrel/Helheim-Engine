@@ -110,11 +110,8 @@ private:
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
 
-	// Tags
-	std::vector<std::string> mTags;
-
 	// Others
-	std::vector<const MeshRendererComponent*>mCurrRenderComponents;
+	std::vector<const MeshRendererComponent*> mCurrRenderComponents;
 };
 
 #endif //_MODULE_SCENE_H_

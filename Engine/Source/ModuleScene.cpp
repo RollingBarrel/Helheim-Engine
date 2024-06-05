@@ -44,8 +44,6 @@ ModuleScene::~ModuleScene()
 	{
 		delete mQuadtreeRoot;
 	}
-
-	mTags.clear();
 }
 
 #pragma region Basic Functions
@@ -139,17 +137,17 @@ void ModuleScene::FindGameObjectsWithTag(const std::string& tagID, std::vector<G
 
 void ModuleScene::AddTag(std::string tagName)
 {
-	bool exists = false;
-
-	for (auto it = mTags.cbegin(); it < mTags.cend(); it++)
-	{
-
-	}
-	
-	if (!exists)
-	{
-		mTags.push_back(tagName);
-	}
+	//bool exists = false;
+	//
+	//for (auto it = mTags.cbegin(); it < mTags.cend(); it++)
+	//{
+	//
+	//}
+	//
+	//if (!exists)
+	//{
+	//	mTags.push_back(tagName);
+	//}
 }
 
 void ModuleScene::DeleteTag(std::string tag)

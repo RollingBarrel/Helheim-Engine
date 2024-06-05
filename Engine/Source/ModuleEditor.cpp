@@ -24,7 +24,6 @@
 #include "TimerPanel.h"
 #include "SettingsPanel.h"
 #include "EditorControlPanel.h"
-#include "TagsManagerPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -55,11 +54,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
-	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
 	mPanels[SETTINGSPANEL] = new SettingsPanel();
-
-	// Panels closed by default
-	mPanels[TAGSMANAGERPANEL]->Close();
 
 	for (auto panel : mPanels) 
 	{
@@ -102,7 +97,8 @@ bool ModuleEditor::Init()
 	mOptick = new OptickAdapter();
 
 	// Load the saved layout when opening the engine
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadUserSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
 	mPanels[SETTINGSPANEL]->Close();
 
 	Style();
@@ -186,7 +182,7 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 
 void ModuleEditor::SaveSettings()
 {
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveUserSettings();
 }
 
 void ModuleEditor::ShowMainMenuBar() 

@@ -39,7 +39,10 @@ private:
 	Component* mComponent = nullptr;
 
 	bool mLocked = false;
-	bool mSameComponentPopup = false;
+	bool mSameComponentPopup = false; 
+	bool mTagsLayersPopUp = false;
+
+	void ShowTagsLayerPopUp();
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);

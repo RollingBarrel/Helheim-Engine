@@ -252,7 +252,7 @@ void EnemyRobot::RangeAttack()
         //recorrer todos los hits y hacer da�o a los objetos que tengan tag = target
         for (const std::pair<float, Hit>& hit : hits) 
         {
-            //if (hit.second.mGameObject->GetTag()->GetName() == "Player") 
+            if (hit.second.mGameObject->GetTag() == "Player") 
             {
                 PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)

@@ -9,25 +9,26 @@
 
 #define SETTINGSPANEL "Settings##"
 
-struct WindowState 
-{
-	std::string mName;
-	bool mIsOpen = false;
-	ImVec2 mPosition;
-	ImVec2 mSize;
-};
-
 class SettingsPanel : public Panel
 {
 public:
 	SettingsPanel();
 	~SettingsPanel();
 
-	void SaveSettings();
-	void LoadSettings();
 	void Draw(int windowFlags) override;
+	
+	void SaveUserSettings() const;			//User Settings	(No)
+	void LoadUserSettings();
+
+	void LoadProjectSettings();		
+
+	const std::vector<std::string>& GetTags() { return mTags; }
 
 private:
+	void SaveEditorLayout() const;		//ImGui	(Yes)
+	void LoadEditorLayout();			
+
+	void SaveProjectSettings() const;		//Project Settings -> Tags & Layers (Yes)
 
 	bool mCulling = false;
 	bool mEngineVsyncEnabled = false;
@@ -38,5 +39,6 @@ private:
 	int mGameFpsLimit = 0;
 	bool mGrid = true;
 
+	std::vector<std::string> mTags;
 };
 

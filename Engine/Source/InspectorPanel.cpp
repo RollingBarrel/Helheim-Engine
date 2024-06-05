@@ -10,7 +10,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
 #include "HierarchyPanel.h"
-#include "TagsManagerPanel.h"
+#include "SettingsPanel.h"
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
@@ -124,26 +124,21 @@ void InspectorPanel::Draw(int windowFlags)
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
-		//std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
-		//if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
-		//{
-		//	for (auto i = 0; i < tags.size(); i++) 
-		//	{
-		//		if (ImGui::Selectable(tags[i]->GetName().c_str()))
-		//		{
-		//			focusedObject->SetTag(tags[i]);
-		//		}
-		//	}
-		//
-		//	ImGui::EndCombo();
-		//}
+		SettingsPanel* settingsPanel =  reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
 
-		ImGui::SameLine();
-
-		if (ImGui::Button("Add Tag")) 
+		if (ImGui::BeginCombo("##tags", focusedObject->GetTag().c_str()))
 		{
-			EngineApp->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
+			for (unsigned int i = 0; i < settingsPanel->GetTags().size(); i++)
+			{
+				if (ImGui::Selectable(settingsPanel->GetTags()[i].c_str()))
+				{
+					focusedObject->SetTag(settingsPanel->GetTags()[i]);
+				}
+			}
+			ImGui::Separator();
+			mTagsLayersPopUp = ImGui::Button("Add Tags...");
+			ImGui::EndCombo();
 		}
 
 		if (focusedObject->mPrefabId != 0) {
@@ -162,11 +157,38 @@ void InspectorPanel::Draw(int windowFlags)
 		ShowSameComponentPopup();
 	}
 
+	if (mTagsLayersPopUp)
+	{
+		ImGui::OpenPopup("Tags&Layers");
+		ShowTagsLayerPopUp();
+	}
+
+
 	ImGui::End();
 	ImGui::PopID();
 }
 
-void InspectorPanel::DrawTransform(GameObject* object) 
+void InspectorPanel::ShowTagsLayerPopUp()
+{
+	if(ImGui::BeginPopup("Tags&Layers"))
+	{
+		char tmp[280] = "";
+		if (ImGui::InputText("New Tag", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Save"))
+		{
+			mTagsLayersPopUp = false;
+			//TODO: Add To add Vector
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("Cancel"))
+		{
+			mTagsLayersPopUp = false;
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void InspectorPanel::DrawTransform(GameObject* object)
 {
 	ImGui::PushID(object->mUid);
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
@@ -236,7 +258,8 @@ void InspectorPanel::DrawTransform(GameObject* object)
 	ImGui::PopID();
 }
 
-void InspectorPanel::AddComponentButton(GameObject* object) {
+void InspectorPanel::AddComponentButton(GameObject* object) 
+{
 	float windowWidth = ImGui::GetWindowWidth();
 	float buttonWidth = 150.0f; // Desired width for the button
 	float posX = (windowWidth - buttonWidth) * 0.5f;
