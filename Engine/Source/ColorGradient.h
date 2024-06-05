@@ -16,6 +16,7 @@ public:
 	void RemoveColorGradientMark(float position);
 
 	std::map<float, float4> GetColorMarks() const { return mColorMarks; };
+	float* GetColor(float pos);
 
 	float4 CalculateColor(float position) const;
 

@@ -177,8 +177,9 @@ namespace ImGui
 
         ImU32 colorAU32 = 0;
         ImU32 colorBU32 = 0;
-
-        for (auto markIt = gradient.GetColorMarks().begin(); markIt != gradient.GetColorMarks().end(); ++markIt)
+        const auto& colorMarks = gradient.GetColorMarks();
+        auto endit = colorMarks.end();
+        for (auto markIt = colorMarks.begin(); markIt != endit; ++markIt)
         {
             float mark = markIt->first;
 
@@ -242,7 +243,9 @@ namespace ImGui
         ImU32 colorAU32 = 0;
         ImU32 colorBU32 = 0;
 
-        for (auto markIt = gradient.GetColorMarks().begin(); markIt != gradient.GetColorMarks().end(); ++markIt)
+        const auto& colorMarks = gradient.GetColorMarks();
+        auto endit = colorMarks.end();
+        for (auto markIt = colorMarks.begin(); markIt != endit; ++markIt)
         {
             float mark = markIt->first;
 
@@ -372,8 +375,11 @@ namespace ImGui
 
             if (increment != 0.0f && insideZone)
             {
-                draggingMark += increment;
-                draggingMark = ImClamp(draggingMark, 0.0f, 1.0f);
+                float newDrag = draggingMark + increment;
+                newDrag = ImClamp(newDrag, 0.0f, 1.0f);
+                gradient.AddColorGradientMark(newDrag, gradient.GetColorMarks()[draggingMark]);
+                gradient.RemoveColorGradientMark(draggingMark);
+                draggingMark = newDrag;
                 refreshCache(gradient);
                 modified = true;
             }
@@ -389,16 +395,16 @@ namespace ImGui
             }
         }
 
-        if (!selectedMark && gradient.GetColorMarks().size() > 0)
+        if (selectedMark == -1.0f && gradient.GetColorMarks().size() > 0)
         {
             selectedMark = gradient.GetColorMarks().begin()->first;
         }
 
-        if (selectedMark)
+        if (selectedMark != -1.0f)
         {
-            bool colorModified = ImGui::ColorPicker3("Gradient Color", gradient.GetColorMarks()[selectedMark].ptr());
+            bool colorModified = ImGui::ColorPicker4("Gradient Color", gradient.GetColor(selectedMark));
 
-            if (selectedMark && colorModified)
+            if (selectedMark != -1.0f && colorModified)
             {
                 modified = true;
                 refreshCache(gradient);
