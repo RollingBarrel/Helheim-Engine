@@ -149,7 +149,7 @@ void GameObject::SetParent(GameObject* newParent)
 	mParent->AddChild(this);
 
 	RecalculateMatrices();
-	SetActiveInHierarchy(mParent->mIsActive && mIsEnabled);
+	SetActive(mParent->mIsActive && mIsEnabled);
 }
 
 void GameObject::SetEnabled(bool enabled)
@@ -161,12 +161,12 @@ void GameObject::SetEnabled(bool enabled)
 
 		if (!enabled || IsRoot() || mParent->IsActive())
 		{
-			SetActiveInHierarchy(enabled);
+			SetActive(enabled);
 		}
 	}
 }
 
-void GameObject::SetActiveInHierarchy(bool active)
+void GameObject::SetActive(bool active)
 {
 	if (active && !mIsEnabled)
 	{
@@ -183,7 +183,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 
 	for (GameObject* child : mChildren)
 	{
-		child->SetActiveInHierarchy(active);
+		child->SetActive(active);
 	}
 }
 
@@ -494,20 +494,6 @@ void GameObject::DeleteComponents()
 	mComponentsToDelete.clear();
 }
 
-Component* GameObject::RemoveComponent(Component* component)
-{
-	Component* movedComponent = nullptr;
-	for (auto it = mComponents.begin(); it != mComponents.cend(); ++it)
-	{
-		if ((*it)->GetID() == component->GetID())
-		{
-			movedComponent = *it;
-			mComponents.erase(it);
-			break;
-		}
-	}
-	return movedComponent;
-}
 #pragma endregion
 
 #pragma region Save / Load
@@ -636,33 +622,6 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 	}
 
 }
-#pragma endregion
-
-#pragma region Finds
-
-//GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
-//{
-//	Tag* tag = App->GetScene()->GetTagByName(tagname);
-//
-//	if (tag != nullptr)
-//	{
-//		return App->GetScene()->FindGameObjectWithTag(tag->GetID());
-//	}
-//	else
-//	{
-//		return nullptr;
-//	}
-//
-//}
-//
-//std::vector<GameObject*>& GameObject::FindGameObjectsWithTag(std::string tagname)
-//{
-//	std::vector<GameObject*> foundGameObjects;
-//	Tag* tag = App->GetScene()->GetTagByName(tagname);
-//	App->GetScene()->FindGameObjectsWithTag(tag->GetID(), foundGameObjects);
-//
-//	return foundGameObjects;
-//}
 #pragma endregion
 
 #pragma region Children

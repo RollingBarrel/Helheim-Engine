@@ -515,7 +515,6 @@ void ModuleScene::DuplicateGameObjects()
 	}
 
 	mGameObjectsToDuplicate.clear();
-
 }
 
 void ModuleScene::LoadGameObjectsIntoScripts()

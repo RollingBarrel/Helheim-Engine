@@ -1,25 +1,21 @@
 #include "NavMeshController.h"
+#include "EngineApp.h"
+
+#include "ModuleDetourNavigation.h"
+#include "ModuleEngineResource.h"
+#include "ModuleScene.h"
+
 #include "GameObject.h"
 #include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
-#include "ModuleDetourNavigation.h"
-#include "ModuleScene.h"
-#include "ModuleOpenGL.h"
-#include "Application.h"
-#include "float4x4.h"
-#include "ImporterMesh.h"
-#include "ModuleDebugDraw.h"
+
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
 #include "Recast.h"
-#include "ModuleFileSystem.h"
-#include "Algorithm/Random/LCG.h"
-#include "ImporterNavMesh.h"
-#include "ModuleResource.h"
-#include "EngineApp.h"
-#include "ModuleEngineResource.h"
-#include "ResourceNavmesh.h"
+
+
+
+
 NavMeshController::NavMeshController()
 {
 }

@@ -44,21 +44,17 @@ public:
 	const std::string& GetTag() const { return mTag; }
 	AABB GetAABB();
 	bool IsDynamic() const { return mIsDynamic; }
+	bool IsRoot() const { return mIsRoot; }
+	bool IsEnabled() const { return mIsEnabled; } // Status for this GameObject
+	bool IsActive() const { return mIsEnabled && mIsActive; } 	// Status for this GameObject and all its ancestors
 
 	//Setters
 	void SetTag(const std::string tag) { mTag = tag; };
 	void SetName(const char* name) { mName = name; };
 	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
-
 	void SetParent(GameObject* newParent);
-
-	bool IsRoot() const { return mIsRoot; }
-	// Status for this GameObject
 	void SetEnabled(bool enabled);
-	bool IsEnabled() const { return mIsEnabled; }
-	// Status for this GameObject and all its ancestors
-	bool IsActive() const { return mIsEnabled && mIsActive; }
-	
+
 	// Children
 	void AddChild(GameObject* child);
 	GameObject* RemoveChild(const int id);	//Remove from mChildren does not delete
@@ -73,6 +69,7 @@ public:
 	const float3& GetLocalPosition() const { return mLocalPosition; }
 	void SetPosition(const float3& position);
 	void SetLocalPosition(const float3& position);
+
 	//Rotation
 	const Quat& GetRotation() const { return mRotation; }
 	const Quat& GetLocalRotation() const { return mLocalRotation; }
@@ -82,6 +79,7 @@ public:
 	void SetLocalRotation(const float3& rotation);
 	void SetRotation(const Quat& rotation);
 	void SetLocalRotation(const Quat& rotation);
+
 	//Scale
 	const float3& GetScale() const { return mScale; }
 	const float3& GetLocalScale() const { return mLocalScale; }
@@ -90,7 +88,6 @@ public:
 
 	// Transform
 	const bool HasUpdatedTransform() const;
-
 	void Translate(const float3& translation);
 	void LookAt(const float3& target);
 	void ResetTransform();
@@ -103,8 +100,7 @@ public:
 	template<typename T> T* GetComponentInParent() const;											
 	Component* GetComponentInParent(ComponentType type) const;											
 	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
-
-	void AddComponentToDelete(Component* component); //TODO: This need to be here?
+	void AddComponentToDelete(Component* component);
 
 	// Save / Load
 	void Save(JsonObject& obj) const;
@@ -113,14 +109,13 @@ public:
 	// Prefabs
 	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here?
 	void SetPrefabId(unsigned int id) { mPrefabId = id; }						   //TODO: This need to be here?
-	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }					   //TODO: This need to be here?
+	void SetPrefabOverride(bool override) { mPrefabOverride = override; }		   //TODO: This need to be here?
 																				   
 private:
 
-	void DeleteComponents(); //TODO: MOVE SCENE
-	Component* RemoveComponent(Component* component);
+	void DeleteComponents();
 
-	void SetActiveInHierarchy(bool active);  //TODO: MOVE FAST PLS
+	void SetActive(bool active); 
 
 	const unsigned int mUid;
 	std::string mName = "GameObject";
@@ -146,10 +141,7 @@ private:
 
 	// Components
 	std::vector<Component*> mComponents;
-	std::vector<Component*> mComponentsToDelete;	//TODO: MOVE SCENE
-
-	AABB mAABB;
-	OBB mOBB;
+	std::vector<Component*> mComponentsToDelete;
 
 	// Prefabs
 	int mPrefabId = 0;

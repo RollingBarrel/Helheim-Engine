@@ -32,6 +32,9 @@ public:
 	// GameObjects
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
+	GameObject* FindGameObjectWithTag(const std::string& tagID);
+	void FindGameObjectsWithTag(const std::string& tagID, std::vector<GameObject*>& foundGameObjects);
+
 	void AddGameObjectToScene(GameObject* gameObject);
 	void RemoveGameObjectFromScene(GameObject* gameObjet);
 	void RemoveGameObjectFromScene(int id); 
@@ -61,10 +64,6 @@ public:
 	void NewScene();
 	void Save(const char* saveFilePath) const;
 	void Load(const char* saveFilePath);
-
-	// Tags
-	GameObject* FindGameObjectWithTag(const std::string& tagID);
-	void FindGameObjectsWithTag(const std::string& tagID, std::vector<GameObject*>& foundGameObjects);
 
 	//void AddTag(std::string tag);
 	//unsigned int GetSize() { return static_cast<unsigned int>(mTags.size()); };
