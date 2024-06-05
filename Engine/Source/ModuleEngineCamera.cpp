@@ -41,6 +41,7 @@ update_status ModuleEngineCamera::Update(float dt)
 	CameraControls(dt);
 	mEditorCameraGameObject->Update();
 	//LOG("X: %f, Y: %f, Z: %f", RadToDeg(mEditorCameraGameObject->GetRotation().x), RadToDeg(mEditorCameraGameObject->GetRotation().y), RadToDeg(mEditorCameraGameObject->GetRotation().z));
+	//LOG("X: %f, Y: %f, Z: %f", mEditorCameraGameObject->GetRotation().x, mEditorCameraGameObject->GetRotation().y, mEditorCameraGameObject->GetRotation().z);
 	return UPDATE_CONTINUE;
 }
 

@@ -342,11 +342,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::CAMERA:
 		newComponent = new CameraComponent(this);
 		break;
-	case ComponentType::POINTLIGHT:		//TODO: Redoo PointLights
-	{
+	case ComponentType::POINTLIGHT:
 		newComponent = new PointLightComponent(this);
 		break;
-	}
 	case ComponentType::SPOTLIGHT:
 		newComponent = new SpotLightComponent(this);
 		break;
