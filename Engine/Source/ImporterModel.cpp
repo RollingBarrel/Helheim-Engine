@@ -209,6 +209,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     if (!loadOk)
     {
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
+        assert("Error parsing the gltf");
     }
 
     std::unordered_map<unsigned int, std::vector<unsigned int>>importedMeshes;
@@ -222,25 +223,19 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     if (!model.skins.empty())
     {
-        for (const auto& skins : model.skins)
+        for (const tinygltf::Skin& skins : model.skins)
         {
-            const int inverseBindMatricesIndex = skins.inverseBindMatrices;
-            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[inverseBindMatricesIndex];
-
+            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[skins.inverseBindMatrices];
             const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
 
-            const unsigned char* inverseBindMatricesBuffer = &model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset];
-
-            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(inverseBindMatricesBuffer);
-
-            size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
+            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(&model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset]);
+            const size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
 
             for (size_t i = 0; i < num_inverseBindMatrices; i++)
             {
                 const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
 
                 float4x4 inverseBindMatrix;
-
                 for (size_t row = 0; row < 4; row++)
                 {
                     for (size_t col = 0; col < 4; col++)
@@ -249,14 +244,12 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
                     }
                 }
                 rModel->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
-
             }
         }
     }
 
 
     unsigned int currentUid = uid;
-
     for (int i = 0; i < model.scenes.size(); ++i)
     {
         for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
@@ -267,17 +260,13 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
 
     if (!model.animations.empty())
     {
-        for (const auto& srcAnimation : model.animations)
+        for (const tinygltf::Animation& srcAnimation : model.animations)
         {
             ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, currentUid);
-            animationId = ourAnimation->GetUID();
-            rModel->mAnimationUids.push_back(animationId);
-
+            rModel->mAnimationUids.push_back(ourAnimation->GetUID());
             delete ourAnimation;
         }
     }
-
-
 
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
     bufferSize += sizeof(unsigned int);                                     //Size vector
@@ -290,8 +279,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
         bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;       // Size of the string characters
     }
 
-    if (rModel)
-        Importer::Model::Save(rModel, bufferSize);
+    Importer::Model::Save(rModel, bufferSize);
 
     return rModel;
 }
