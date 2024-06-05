@@ -4,8 +4,10 @@
 #include "Application.h"
 #include "ModuleResource.h"
 #include "AnimationController.h"
+#include "ModuleFileSystem.h"
 
 
+#define ASSETS_PATH_STATEMACHINE "Assets/StateMachines"
 
 AnimationStateMachine::AnimationStateMachine(const std::vector<unsigned int>& animationUids)
 {
@@ -228,5 +230,199 @@ void AnimationStateMachine::DeleteTransition(int index)
 {
 	assert(!(index >= mTransitions.size()));
 	mTransitions.erase(mTransitions.begin() + index);
+}
+
+void AnimationStateMachine::SaveResource() const
+{
+	unsigned int header[3] = { GetNumClips(), GetNumStates(), GetNumTransitions() };
+	unsigned int size = sizeof(header);
+
+	for (AnimationState state : GetStates())
+	{
+		size += sizeof(float) * 2 + sizeof(unsigned int) * 2 + sizeof(bool); // float (mStartTime, mEndTime) : int(name len, clip index) : bool(mLoop)
+		size += sizeof(char) * (state.mName.length() + 1); // char (mName)
+	}
+
+	for (AnimationClip clip : GetClips())
+	{
+		size += sizeof(unsigned int) * 2 + sizeof(char) * (clip.mName.length() + 1); // int (mUid, name len) : char  (mName)
+	}
+
+	for (AnimationTransition transition : GetTransitions())
+	{
+		size += sizeof(unsigned int) * 3 + sizeof(char) * (transition.mTrigger.length() + 1); //int (mTarget id, mSource id, trigger name length) : char(mTrigger)
+	}
+
+	char* fileBuffer = new char[size];
+	char* cursor = fileBuffer;
+
+	memcpy(cursor, header, sizeof(header));
+	cursor += sizeof(header);
+
+	for (AnimationClip clip : GetClips())
+	{
+		memcpy(cursor, &clip.mAnimationUID, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		unsigned int namelen = clip.mName.length() + 1;
+		memcpy(cursor, &namelen, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		memcpy(cursor, &clip.mName, sizeof(char) * namelen);
+		cursor += sizeof(char) * namelen;
+	}
+
+	for (AnimationState state : GetStates())
+	{
+		unsigned int clipPos = GetClipIndex(state.mClip);
+		memcpy(cursor, &clipPos, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		unsigned int statename = state.mName.length() + 1;
+		memcpy(cursor, &statename, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		memcpy(cursor, &state.mName, sizeof(char) * statename);
+		cursor += sizeof(char) * statename;
+
+		memcpy(cursor, &state.mStartTime, sizeof(float));
+		cursor += sizeof(float);
+
+		memcpy(cursor, &state.mEndTime, sizeof(float));
+		cursor += sizeof(float);
+
+		memcpy(cursor, &state.mLoop, sizeof(bool));
+		cursor += sizeof(bool);
+
+
+	}
+
+
+	for (AnimationTransition transition : GetTransitions())
+	{
+		unsigned int sourceID = GetStateIndex(transition.mSource);
+		memcpy(cursor, &sourceID, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		unsigned int targetID = GetStateIndex(transition.mTarget);
+		memcpy(cursor, &targetID, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		unsigned int triggername = transition.mTrigger.length() + 1;
+		memcpy(cursor, &triggername, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		memcpy(cursor, &transition.mTrigger, sizeof(char) * triggername);
+		cursor += sizeof(char) * triggername;
+
+	}
+
+	std::string path = std::string(ASSETS_PATH_STATEMACHINE);
+	path += mName;
+	path += ".animsm";
+	App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+
+	delete[] fileBuffer;
+}
+
+void AnimationStateMachine::LoadResource(const char* fileName)
+{
+	char* fileBuffer = nullptr;
+	if (App->GetFileSystem()->Load(fileName, &fileBuffer))
+	{
+		char* cursor = fileBuffer;
+		unsigned int header[3];
+		unsigned int bytes = sizeof(header);
+		memcpy(header, cursor, bytes);
+		cursor += bytes;
+		unsigned int numClips = header[0];
+		unsigned int numStates = header[1];
+		unsigned int numTransitions = header[2];
+
+		AnimationClip clip = AnimationClip(0);
+		AnimationState state = AnimationState(std::string(""));
+		AnimationTransition transition = AnimationTransition(std::string(""), std::string(""), std::string(""));
+		for (unsigned int i = 0; i < numClips; ++i)
+		{
+			unsigned int c_uid = 0;
+			memcpy(&c_uid, cursor, sizeof(unsigned int));
+			cursor += sizeof(unsigned int);
+
+			unsigned int namelen = 0;
+			memcpy(&namelen, cursor, sizeof(unsigned int));
+			cursor += sizeof(unsigned int);
+
+			char* name = new char[namelen];
+			memcpy(name, cursor, sizeof(char) * namelen);
+			cursor += sizeof(char) * namelen;
+
+			clip.mName = std::string(name);
+			clip.mAnimationUID = c_uid;
+			PushBackClip(clip);
+			delete[] name;
+		}
+
+		for (unsigned int i = 0; i < numClips; ++i)
+		{
+			unsigned int clipPos = 0;
+			memcpy(&clipPos, cursor, sizeof(unsigned int));
+			cursor += sizeof(unsigned int);
+
+			unsigned int namelen = 0;
+			memcpy(&namelen, cursor, sizeof(unsigned int));
+			cursor += sizeof(unsigned int);
+
+			char* name = new char[namelen];
+			memcpy(name, cursor, sizeof(char) * namelen);
+			cursor += sizeof(char) * namelen;
+
+			float start = 0.0f;
+			memcpy(&start, cursor, sizeof(float));
+			cursor += sizeof(float);
+
+			float end = 0.0f;
+			memcpy(&end, cursor, sizeof(float));
+			cursor += sizeof(float);
+
+			bool loop = true;
+			memcpy(&loop, cursor, sizeof(bool));
+			cursor += sizeof(bool);
+
+			state.mClip = GetClipName(clipPos);
+			state.mName = std::string(name);
+			state.mStartTime = start;
+			state.mEndTime = end;
+			state.mLoop = loop;
+			PushBackState(state);
+			delete[] name;
+		}
+
+
+		for (unsigned int i = 0; i < numTransitions; ++i)
+		{
+			unsigned int sourceID = 0;
+			memcpy(&sourceID, cursor, sizeof(unsigned int));
+			cursor += sizeof(unsigned int);
+
+			unsigned int targetID = 0;
+			memcpy(&targetID, cursor, sizeof(unsigned int));
+			cursor += sizeof(unsigned int);
+
+			unsigned int namelen = 0;
+			memcpy(&namelen, cursor, sizeof(unsigned int));
+			cursor += sizeof(unsigned int);
+
+			char* name = new char[namelen];
+			memcpy(name, cursor, sizeof(char) * namelen);
+			cursor += sizeof(char) * namelen;
+
+			transition.mSource = GetStateName(sourceID);
+			transition.mTarget = GetStateName(targetID);
+			transition.mTrigger = std::string(name);
+			delete[] name;
+		}
+		delete[] fileBuffer;
+	}
+
 }
 

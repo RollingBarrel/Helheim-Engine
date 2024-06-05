@@ -92,7 +92,7 @@ public:
 	const std::string& GetTransitionSource(int index) const;
 	const std::string& GetTransitionTarget(int index) const;
 	unsigned int GetNumTransitions() const { return mTransitions.size();};
-	const std::string& GetJsonConfig() const { return mJsonConfig; }
+	const std::string& GetJsonConfig() const { return mName + ".json"; }
 	void SetTransitionTrigger(int index, const std::string& trigger);
 	void DeleteTransition(int index);
 
@@ -101,20 +101,23 @@ public:
 	const std::vector<AnimationClip>& GetClips() const { return mClips; }
 	const std::vector<AnimationState>& GetStates() const { return mStates; }
 	const std::vector<AnimationTransition>& GetTransitions() const { return mTransitions; }
-	int GetUID() const { return mUID; }
 
 	void PushBackClip(const AnimationClip& clip) { mClips.push_back(clip); };
 	void PushBackState(const AnimationState& state) { mStates.push_back(state); };
 	void PushBackTransition(const AnimationTransition& transition) { mTransitions.push_back(transition); };
 
+	void SaveResource() const;
+	void LoadResource(const char* fileName);
+
+	void SetName(const std::string& name) { mName = name; }
+	const std::string& GetName() const { return mName; }
 
 private:
 	
 	std::vector<AnimationClip> mClips;
 	std::vector<AnimationState> mStates;
 	std::vector<AnimationTransition> mTransitions;
-	std::string mJsonConfig = "Simple.json";
-	unsigned int mUID = 0;
+	std::string mName = "Simple";
 	
 	
 
