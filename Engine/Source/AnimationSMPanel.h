@@ -28,6 +28,8 @@ private:
 	void ShowNodeMenu();
 	void ShowLinkMenu();
 	void ManageCreate();
+	void GetResourcesList();
+	void DrawMenuBar();
 
 
 	AnimationStateMachine* mStateMachine;
@@ -36,6 +38,7 @@ private:
 
 	int mSelectedNode = 0;
 	int mSelectedLink = 0;
+	bool mUpToDate = true;
 	
 };
 

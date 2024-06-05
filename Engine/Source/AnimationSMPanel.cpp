@@ -2,6 +2,8 @@
 #include "imgui.h"
 #include "imgui_node_editor.h"
 #include "AnimationStateMachine.h"
+#include "EngineApp.h"
+#include "ModuleFileSystem.h"
 
 namespace ed = ax::NodeEditor;
 
@@ -25,6 +27,7 @@ void AnimationSMPanel::Draw(int windowFlags)
     {
 	    if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	    {
+
             ed::SetCurrentEditor(mEditorContext);
             ed::Begin("My Editor", ImVec2(0.0, 0.0f));
 
@@ -150,7 +153,11 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
 {
     if (ImGui::BeginPopup("Create New Node"))
     {
-        ImGui::TextUnformatted("Create Node Menu");
+        ImGui::TextUnformatted("State Machine Menu");
+        ImGui::Separator();
+
+        DrawMenuBar();
+
         ImGui::Separator();
 
         //Draw add node panel
@@ -291,7 +298,6 @@ void AnimationSMPanel::ShowContextMenus()
         ImGui::OpenPopup("Create New Node");
     }
 
-
     ed::Resume();
 
 }
@@ -348,4 +354,82 @@ void AnimationSMPanel::ManageCreate()
         }
     }
     ed::EndCreate();
+}
+
+void AnimationSMPanel::GetResourcesList()
+{
+    const char* currentItem = mStateMachine->GetName().c_str();
+    if (ImGui::BeginCombo("##combo", currentItem))
+    {
+        std::vector<std::string> modelNames;
+        EngineApp->GetFileSystem()->DiscoverFiles("Assets/StateMachines", ".bin", modelNames);
+        for (int i = 0; i < modelNames.size(); ++i)
+        {
+
+            size_t slashPos = modelNames[i].find_last_of('/');
+            if (slashPos != std::string::npos)
+            {
+
+                modelNames[i].erase(0, slashPos + 1);
+            }
+
+            size_t dotPos = modelNames[i].find_first_of('.');
+            if (dotPos != std::string::npos)
+            {
+
+                modelNames[i].erase(dotPos);
+            }
+        }
+
+        for (int n = 0; n < modelNames.size(); n++)
+        {
+            bool is_selected = (currentItem == modelNames[n]);
+            if (ImGui::Selectable(modelNames[n].c_str(), is_selected))
+            {
+                currentItem = modelNames[n].c_str();
+                std::string path = std::string("Assets/StateMachines/" + modelNames[n] + ".bin");
+                mStateMachine->LoadResource(path.c_str());
+                
+            }
+
+            if (is_selected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+
+        }
+        ImGui::EndCombo();
+    }
+}
+
+void AnimationSMPanel::DrawMenuBar()
+{
+    std::string name = mStateMachine->GetName();
+    char buffer[32];
+    strncpy(buffer, name.c_str(), sizeof(buffer));
+    buffer[sizeof(buffer) - 1] = '\0';
+
+    if (ImGui::InputText("Current State Machine: ", buffer, sizeof(buffer))) {
+        // Update mNewNodeName with the new value from the buffer
+        name = std::string(buffer);
+        mStateMachine->SetName(buffer);
+    }
+    ImGui::SameLine();
+    if (!mUpToDate)
+    {
+        ImGui::Text("     *(Unsaved changes)     ");
+        ImGui::SameLine();
+    }
+    ImGui::Text("Select resource state machine: ");
+    ImGui::SameLine();
+    GetResourcesList();
+    
+    ImGui::SameLine();
+    if (ImGui::Button("Save StateMachine"))
+    {
+        mStateMachine->SaveResource();
+        mUpToDate = true;
+    }
+
+
 }

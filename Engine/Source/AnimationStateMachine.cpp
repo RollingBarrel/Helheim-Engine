@@ -7,7 +7,7 @@
 #include "ModuleFileSystem.h"
 
 
-#define ASSETS_PATH_STATEMACHINE "Assets/StateMachines"
+#define ASSETS_PATH_STATEMACHINE "Assets/StateMachines/"
 
 AnimationStateMachine::AnimationStateMachine(const std::vector<unsigned int>& animationUids)
 {
@@ -237,6 +237,8 @@ void AnimationStateMachine::SaveResource() const
 	unsigned int header[3] = { GetNumClips(), GetNumStates(), GetNumTransitions() };
 	unsigned int size = sizeof(header);
 
+	size += sizeof(unsigned int) + sizeof(char) * (mName.length() + 1);
+
 	for (AnimationState state : GetStates())
 	{
 		size += sizeof(float) * 2 + sizeof(unsigned int) * 2 + sizeof(bool); // float (mStartTime, mEndTime) : int(name len, clip index) : bool(mLoop)
@@ -259,6 +261,13 @@ void AnimationStateMachine::SaveResource() const
 	memcpy(cursor, header, sizeof(header));
 	cursor += sizeof(header);
 
+	unsigned int smname = mName.length() + 1;
+	memcpy(cursor, &smname, sizeof(unsigned int));
+	cursor += sizeof(int);
+
+	memcpy(cursor, mName.c_str(), sizeof(char) * smname);
+	cursor += sizeof(char) * smname;
+
 	for (AnimationClip clip : GetClips())
 	{
 		memcpy(cursor, &clip.mAnimationUID, sizeof(unsigned int));
@@ -268,7 +277,7 @@ void AnimationStateMachine::SaveResource() const
 		memcpy(cursor, &namelen, sizeof(unsigned int));
 		cursor += sizeof(unsigned int);
 
-		memcpy(cursor, &clip.mName, sizeof(char) * namelen);
+		memcpy(cursor, clip.mName.c_str(), sizeof(char) * namelen);
 		cursor += sizeof(char) * namelen;
 	}
 
@@ -282,7 +291,7 @@ void AnimationStateMachine::SaveResource() const
 		memcpy(cursor, &statename, sizeof(unsigned int));
 		cursor += sizeof(unsigned int);
 
-		memcpy(cursor, &state.mName, sizeof(char) * statename);
+		memcpy(cursor, state.mName.c_str(), sizeof(char) * statename);
 		cursor += sizeof(char) * statename;
 
 		memcpy(cursor, &state.mStartTime, sizeof(float));
@@ -312,14 +321,14 @@ void AnimationStateMachine::SaveResource() const
 		memcpy(cursor, &triggername, sizeof(unsigned int));
 		cursor += sizeof(unsigned int);
 
-		memcpy(cursor, &transition.mTrigger, sizeof(char) * triggername);
+		memcpy(cursor, transition.mTrigger.c_str(), sizeof(char) * triggername);
 		cursor += sizeof(char) * triggername;
 
 	}
 
 	std::string path = std::string(ASSETS_PATH_STATEMACHINE);
 	path += mName;
-	path += ".animsm";
+	path += ".bin";
 	App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
 
 	delete[] fileBuffer;
@@ -327,6 +336,10 @@ void AnimationStateMachine::SaveResource() const
 
 void AnimationStateMachine::LoadResource(const char* fileName)
 {
+	mClips.clear();
+	mStates.clear();
+	mTransitions.clear();
+
 	char* fileBuffer = nullptr;
 	if (App->GetFileSystem()->Load(fileName, &fileBuffer))
 	{
@@ -338,6 +351,16 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 		unsigned int numClips = header[0];
 		unsigned int numStates = header[1];
 		unsigned int numTransitions = header[2];
+
+		unsigned int namelen = 0;
+		memcpy(&namelen, cursor, sizeof(unsigned int));
+		cursor += sizeof(unsigned int);
+
+		char* smname = new char[namelen];
+		memcpy(smname, cursor, sizeof(char) * namelen);
+		cursor += sizeof(char) * namelen;
+		mName = std::string(smname);
+		
 
 		AnimationClip clip = AnimationClip(0);
 		AnimationState state = AnimationState(std::string(""));
@@ -362,7 +385,7 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 			delete[] name;
 		}
 
-		for (unsigned int i = 0; i < numClips; ++i)
+		for (unsigned int i = 0; i < numStates; ++i)
 		{
 			unsigned int clipPos = 0;
 			memcpy(&clipPos, cursor, sizeof(unsigned int));
@@ -419,8 +442,10 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 			transition.mSource = GetStateName(sourceID);
 			transition.mTarget = GetStateName(targetID);
 			transition.mTrigger = std::string(name);
+			PushBackTransition(transition);
 			delete[] name;
 		}
+		delete[] smname;
 		delete[] fileBuffer;
 	}
 
