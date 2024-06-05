@@ -11,7 +11,8 @@ TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGam
 }
 
 TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner) : Component(owner, ComponentType::TRAIL), 
-mResourceId(original.mResourceId), mFileName(original.mFileName), mTrail(new Trail(*original.mTrail))
+mResourceId(original.mResourceId), mFileName(original.mFileName), mTrail(new Trail(*original.mTrail)),
+mMaxPoints(original.mMaxPoints), mMinDistance(original.mMinDistance)
 {
     Init();
 }

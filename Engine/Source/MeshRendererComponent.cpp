@@ -18,6 +18,7 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "ResourceModel.h"
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
@@ -40,6 +41,8 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMaterial(other.mMaterial->GetUID());
 	}
+
+	mModelUid = other.mModelUid;
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -59,6 +62,9 @@ MeshRendererComponent::~MeshRendererComponent()
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
 		mMaterial = nullptr;
 	}
+
+	mGameobjectsInverseMatrices.clear();
+	mPalette.clear();
 }
 
 void MeshRendererComponent::SetMesh(unsigned int uid)
@@ -130,6 +136,11 @@ void MeshRendererComponent::Update()
 		RefreshBoundingBoxes();
 	}
 
+	if (mHasSkinning)
+	{
+		UpdatePalette();
+	}
+
 }
 
 //void MeshRendererComponent::Enable()
@@ -170,5 +181,66 @@ void MeshRendererComponent::Load(const JsonObject& data)
 
 	SetMesh(data.GetInt("MeshID"));
 	SetMaterial(data.GetInt("MaterialID"));
+}
+
+void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
+{
+	AddJointNode(currentObject, model);
+	for (const auto& object : currentObject->GetChildren())
+	{
+		LoadAllChildJoints(object, model);
+	}
+}
+
+void MeshRendererComponent::AddJointNode(GameObject* node, ResourceModel* model)
+{
+	for (const auto& pair : model->mInvBindMatrices)
+	{
+		if (pair.first == node->GetName())
+		{
+			mGameobjectsInverseMatrices.push_back(std::pair<GameObject*, float4x4>(node, pair.second));
+			break;
+		}
+	}
+
+}
+
+void MeshRendererComponent::UpdatePalette()
+{
+	if (mModelUid == 0)
+	{
+		return;
+	}
+
+	if (mGameobjectsInverseMatrices.size() == 0)
+	{
+		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
+		if (model->mInvBindMatrices.size() == 0)
+		{
+			mHasSkinning = false;
+			App->GetResource()->ReleaseResource(mModelUid);
+			return;
+		}
+		// Initialize vector
+		GameObject* root = mOwner;
+		if (root->GetParent() != nullptr)
+		{
+			while (root->GetParent()->GetParent() != nullptr)
+			{
+				root = root->GetParent();
+			}
+		}
+
+		LoadAllChildJoints(root, model);
+		App->GetResource()->ReleaseResource(mModelUid); 
+	}
+
+	mPalette.clear();
+	mPalette.reserve(mGameobjectsInverseMatrices.size());
+	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
+	{
+		mPalette.push_back((mGameobjectsInverseMatrices[i].first->GetWorldTransform() * mGameobjectsInverseMatrices[i].second).Transposed());
+	}
+
 }
 

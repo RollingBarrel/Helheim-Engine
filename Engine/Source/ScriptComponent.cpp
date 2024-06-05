@@ -57,11 +57,12 @@ ScriptComponent::~ScriptComponent()
 		mResourceScript = nullptr;
 	}
 
-	//delete mScript; //Memory leack here, this shouldbe fixed.
+	delete mScript;
 }
 
 void ScriptComponent::Update()
 {
+	//std::vector<Component*> components = App->GetScene()->GetRoot()->FindComponentsInChildren(App->GetScene()->GetRoot(), ComponentType::SCRIPT);
 }
 
 Component* ScriptComponent::Clone(GameObject* owner) const
@@ -69,7 +70,6 @@ Component* ScriptComponent::Clone(GameObject* owner) const
 	ScriptComponent* scriptComponent = new ScriptComponent(*this, owner);
 	scriptComponent->mScript->Awake();
 	return scriptComponent;
-
 }
 
 void ScriptComponent::Reset()

@@ -299,7 +299,7 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent* cMesh)
 			AddUniqueMesh(cMesh, meshIdx);
 		}
 	}
-	mMeshComponents[cMesh->GetID()] = {cMesh, meshIdx, matIdx, cAnim};
+	mMeshComponents[cMesh->GetID()] = {cMesh, meshIdx, matIdx};
 	mPersistentsFlag = true;
 }
 
@@ -375,12 +375,12 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent* component)
 	if (mPersistentsFlag)
 		RecreatePersistentSsbos();
 	
-	ComputeAnimation(component);
+	ComputeSkinning(component);
 
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 
 	const BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[component->GetID()];
-	if (batchMeshRenderer.IsAnimated() && batchMeshRenderer.bCAnim->GetIsPlaying())
+	if (batchMeshRenderer.IsAnimated())
 	{
 		memcpy(mSsboModelMatricesData[idx] + 16 * mCommands.size(), float4x4::identity.ptr(), sizeof(float) * 16);
 	}
@@ -456,7 +456,7 @@ void GeometryBatch::EndFrameDraw()
 	++mDrawCount;
 }
 
-void GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
+void GeometryBatch::ComputeSkinning(const MeshRendererComponent* cMesh)
 {
 	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[cMesh->GetID()];
 	const MeshRendererComponent* meshRenderer = batchMeshRenderer.component;
@@ -466,7 +466,7 @@ void GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
 		glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
 
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, batchMeshRenderer.bCAnim->GetPalette().size() * sizeof(float) * 16, batchMeshRenderer.bCAnim->GetPalette().data(), GL_DYNAMIC_DRAW);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, batchMeshRenderer.component->GetPalette().size() * sizeof(float) * 16, batchMeshRenderer.component->GetPalette().data(), GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mBoneIndicesSsbo);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberJoints() * sizeof(unsigned int), rMesh->GetJoints(), GL_STREAM_DRAW);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mWeightsSsbo);
@@ -479,9 +479,18 @@ void GeometryBatch::ComputeAnimation(const MeshRendererComponent* cMesh)
 		glBufferData(GL_SHADER_STORAGE_BUFFER, rMesh->GetNumberVertices() * sizeof(float) * 4, rMesh->GetAttributeData(Attribute::TANGENT), GL_STREAM_DRAW);
 		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * rMesh->GetVertexSize(), rMesh->GetVertexSize() * rMesh->GetNumberVertices());
 		glUniform1i(25, rMesh->GetNumberVertices());
-		glUniform1i(26, batchMeshRenderer.bCAnim->GetIsPlaying());
+		//glUniform1i(26, batchMeshRenderer.bCAnim->GetIsPlaying());
 		glDispatchCompute((rMesh->GetNumberVertices() + (63)) / 64, 1, 1);
 		mAnimationSkinning = true;
 	}
 	glUseProgram(0);
+}
+
+bool BatchMeshRendererComponent::IsAnimated() const
+{
+	if (component != nullptr)
+	{
+		return component->GetPalette().size() != 0;
+	}
+	return false;
 }

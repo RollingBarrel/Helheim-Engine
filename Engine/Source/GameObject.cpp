@@ -68,14 +68,14 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	{
 		mComponents.push_back(component->Clone(this));
 	}
-
+	//RecalculateLocalTransform(); TODO: Review if this is neccesary
 	App->GetScene()->AddGameObjectToScene(this);
-
 	for (GameObject* child : original.mChildren)
 	{
 		GameObject* gameObject = new GameObject(*(child), this);
 		mParent->AddChild(gameObject);
 	}
+	
 }
 
 GameObject::~GameObject()

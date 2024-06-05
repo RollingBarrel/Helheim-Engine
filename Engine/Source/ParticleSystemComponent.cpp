@@ -110,7 +110,7 @@ void ParticleSystemComponent::Draw() const
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
         const CameraComponent* cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
-        if (cam) {
+        if (cam && mParticles.size()) {
             float4x4 projection = cam->GetViewProjectionMatrix();
             float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
             float3 up = cam->GetFrustum().up;

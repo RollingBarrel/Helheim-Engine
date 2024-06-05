@@ -1,7 +1,9 @@
 #include "InspectorPanel.h"
+
 #include "ImBezier.h"
 #include "imgui.h"
 #include "imgui_color_gradient.h"
+
 #include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
@@ -14,6 +16,8 @@
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleOpenGL.h"
+#include "ModuleUI.h"
 #include "GameObject.h"
 
 #include "MeshRendererComponent.h"
@@ -32,12 +36,12 @@
 #include "TrailComponent.h"
 #include "EmitterShape.h"
 #include "BoxColliderComponent.h"
+#include "NavMeshObstacleComponent.h"
+#include "AnimationComponent.h"
+#include "SliderComponent.h"
 
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
-#include "NavMeshObstacleComponent.h"
-#include "AnimationComponent.h"
-#include "ModuleOpenGL.h"
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
@@ -46,10 +50,12 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
-
-#include "ModuleUI.h"
+#include "ResourceModel.h"
 
 #include "IconsFontAwesome6.h"
+
+
+#include "AnimationStateMachine.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -421,6 +427,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
 					break;
+				case ComponentType::SLIDER:
+					DrawSliderComponent(reinterpret_cast<SliderComponent*>(component));
+					break;
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
 					break;
@@ -526,7 +535,6 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
 {
-
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
@@ -873,50 +881,111 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	bool loop = component->GetLoop();
 	//bool play = false;
 
-	if (ImGui::Button("Play/Pause"))
-	{
-		component->OnStart();
-		bool play = component->GetIsPlaying();
-		component->SetIsPlaying(!play);
-	}
 
-	ImGui::SameLine();
-	ImGui::Dummy(ImVec2(40.0f, 0.0f));
-	ImGui::SameLine();
-
-	if (component->GetIsPlaying())
+	if (component->GetModelUUID() != 0)
 	{
-		ImGui::Text("PLAYING");
+		ImGui::Text("Current state: ");
+		ImGui::SameLine();
+		ImGui::Text(component->GetCurrentStateName().c_str());
+	
+		if (ImGui::Button("Play/Pause"))
+		{
+			//component->OnStart();
+			bool play = component->GetIsPlaying();
+			component->SetIsPlaying(!play);
+		}
+
+		ImGui::SameLine();
+		ImGui::Dummy(ImVec2(40.0f, 0.0f));
+		ImGui::SameLine();
+
+
+
+		if (component->GetIsPlaying())
+		{
+			ImGui::Text("PLAYING");
+		}
+		else
+		{
+			ImGui::Text("PAUSED");
+		}
+
+		if (ImGui::Button("Restart"))
+		{
+			component->OnRestart();
+		}
+
+		if (ImGui::Checkbox("Loop", &loop))
+		{
+			component->SetLoop(loop);
+		}
+
+		float animSpeed = component->GetAnimSpeed();
+
+		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
+		{
+			component->SetAnimSpeed(animSpeed);
+		}
 	}
 	else
 	{
-		ImGui::Text("PAUSED");
+		const char* currentItem = "None";
+		if (ImGui::BeginCombo("##combo", currentItem))
+		{
+			std::vector<std::string> modelNames;
+			EngineApp->GetFileSystem()->DiscoverFiles("Assets/Models", ".emeta", modelNames);
+			for (int i = 0; i < modelNames.size(); ++i)
+			{
+
+				size_t slashPos = modelNames[i].find_last_of('/');
+				if (slashPos != std::string::npos)
+				{
+
+					modelNames[i].erase(0, slashPos + 1);
+				}
+
+				size_t dotPos = modelNames[i].find_first_of('.');
+				if (dotPos != std::string::npos)
+				{
+
+					modelNames[i].erase(dotPos);
+				}
+			}
+
+			for (int n = 0; n < modelNames.size(); n++)
+			{
+				bool is_selected = (currentItem == modelNames[n]);
+				if (ImGui::Selectable(modelNames[n].c_str(), is_selected))
+				{
+					currentItem = modelNames[n].c_str();
+					ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(std::string("Assets/Models/" + std::string(currentItem) + ".gltf").c_str()));
+					if (model)
+					{
+						if (model->mAnimationUids.size() > 0)
+						{
+							component->SetModel(model);
+						}
+						else
+						{
+							currentItem = "Error: Not animated";
+							is_selected = false;
+						}
+						App->GetResource()->ReleaseResource(model->GetUID());
+					}
+					
+				}
+
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+
+			}
+			ImGui::EndCombo();
+		}
 	}
 
-	/*
-	if (ImGui::Button("Stop"))
-	{
-		component->SetIsPlaying(false);
-		component->OnRestart();
-	}
-	*/
 
-	if (ImGui::Button("Restart"))
-	{
-		component->OnRestart();
-	}
-
-	if (ImGui::Checkbox("Loop", &loop))
-	{
-		component->SetLoop(loop);
-	}
-
-	float animSpeed = component->GetAnimSpeed();
-
-	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
-	{
-		component->SetAnimSpeed(animSpeed);
-	}
 
 }
 
@@ -1155,10 +1224,22 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
+
+	if (ImGui::Button("Play"))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		component->Stop(false);
+	}
+
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
 	std::string name = component->GetName();
+
 	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
 	{
 		for (auto i = 0; i < events.size(); i++) 
@@ -1212,6 +1293,14 @@ void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
 ;
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
 {
+}
+
+void InspectorPanel::DrawSliderComponent(SliderComponent* component)
+{
+	float value = component->GetValue();
+
+	ImGui::Text("Fill Percent:"); ImGui::SameLine(); ImGui::SliderFloat("##Fill Percent", &value, 0.0f, 1.0f);
+	component->SetValue(value);
 }
 
 void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 

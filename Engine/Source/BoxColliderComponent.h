@@ -64,6 +64,9 @@ public:
 	void Load(const JsonObject& data) override;
 
 private:
+	void Enable() override;
+	void Disable() override;
+
 	AABB mLocalAABB = { float3(-0.5f), float3(0.5f) };
 	OBB mWorldOBB = { mLocalAABB };
 	float3 mCenter = float3::zero;

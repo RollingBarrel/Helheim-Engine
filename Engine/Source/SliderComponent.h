@@ -19,7 +19,10 @@ public:
     void Update() override {}
 
     Component* Clone(GameObject* owner) const override;
-    void SetFillPercent(float fillPercent);
+    void SetValue(float fillPercent);
+
+    float GetValue() { return mValue; }
+    float* GetValuePointer() { return &mValue; }
 
     void Save(JsonObject& obj) const override;
     void Load(const JsonObject& data) override;
@@ -29,12 +32,16 @@ private:
 
     GameObject* mFill = nullptr;
     GameObject* mBackground = nullptr;
+
     Transform2DComponent* mSliderTransform2D = nullptr;
+
     ImageComponent* mBgImage = nullptr;
     ImageComponent* mFillImage = nullptr;
+
     Transform2DComponent* mBgTransform2D = nullptr;
     Transform2DComponent* mFillTransform2D = nullptr;
-    float mFillPercent = 0.75f;
+
+    float mValue = 0.75f;
 
     CanvasComponent* mCanvas = nullptr;
 };

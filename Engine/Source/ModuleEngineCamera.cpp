@@ -115,7 +115,7 @@ bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
 
 void ModuleEngineCamera::MousePicking(Ray& ray)
 {
-	ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+	ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
 
 	bool intersects = false;
 	bool intersectsTriangle = false;
@@ -124,7 +124,8 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 
 	if (!reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
 	{
-		std::map<float, Hit> hits = root->RayCast(&ray);
+		std::map<float, Hit> hits;
+		root->RayCast(ray, hits);
 		if (!hits.empty())
 		{
 			std::pair<const float, Hit> intersectGameObjectPair = *hits.begin();

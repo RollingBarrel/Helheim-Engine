@@ -17,7 +17,8 @@ Trail::Trail()
 {
 }
 
-Trail::Trail(const Trail& original): mPoints(original.mPoints), mGradient(ColorGradient(original.mGradient)), mWidth(original.mWidth)
+Trail::Trail(const Trail& original): mPoints(original.mPoints), mGradient(ColorGradient(original.mGradient)), mWidth(original.mWidth), 
+mFixedDirection(original.mFixedDirection), mTrailTime(original.mTrailTime), mDirection(original.mDirection), mMaxLifeTime(original.mMaxLifeTime)
 {
 
 }

@@ -98,6 +98,8 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
 			cMesh->SetMaterial(it->second);
+			cMesh->SetModelUUID(rModel.GetUID());
+
 		}
 	}
 

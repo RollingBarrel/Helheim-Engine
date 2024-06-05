@@ -786,7 +786,10 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 
     for (const auto& child : model->GetChildren()) 
     {
-        DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
+        if (child->GetComponent(ComponentType::MESHRENDERER) == nullptr)
+        {
+            DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
+        }
         DrawSkeleton(child);
     }
     
