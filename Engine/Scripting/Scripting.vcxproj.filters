@@ -83,7 +83,7 @@
     <ClInclude Include="MainMenuManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Level1Manager.h">
+    <ClInclude Include="..\Game\Assets\Scripts\Level1Manager.h">
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>

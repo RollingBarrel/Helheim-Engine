@@ -1,25 +1,41 @@
 #pragma once
-#include <Script.h>
+#include "Script.h"
 #include "Macros.h"
 
 class AudioSourceComponent;
+class PlayerController;
 
-GENERATE_BODY(Level1AManager);
+GENERATE_BODY(Level1Manager);
 
-class Level1AManager :public Script
+class Level1Manager :public Script
 {
-	// Level 1 ABOVE
 
-	FRIEND(Level1AManager)
+	FRIEND(Level1Manager)
 
 public:
-	Level1AManager(GameObject* owner);
-	~Level1AManager();
+	Level1Manager(GameObject* owner);
+	~Level1Manager();
 	void Start() override;
 	void Update() override;
 
 private:
-	GameObject* mLevel1AMainThemeHolder = nullptr;
-	AudioSourceComponent* mLevel1AMainTheme = nullptr;
-};
+	void UpdateBackgroundMusic();
+	void UpdateEnemyFootStepMusic();
+	void UpdateBackgroundStrangeMusic();
 
+	GameObject* mPlayerControllerHolder = nullptr;
+	PlayerController* mPlayerController = nullptr;
+
+	GameObject* mLevel1MainThemeHolder = nullptr;
+	AudioSourceComponent* mLevel1MainTheme = nullptr;
+
+	GameObject* mEnemyFootStepHolder = nullptr;
+	AudioSourceComponent* mEnemyFootStep = nullptr;
+
+	GameObject* mStangeBackgroudSoundHolder = nullptr;
+	AudioSourceComponent* mStrangeBackgroundSound = nullptr;
+
+	bool mReadyToStep = false;
+	float mStepTimePassed = 0.0f;
+	float mStepCoolDown = 0.5f;
+};
