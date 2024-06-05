@@ -133,7 +133,7 @@ void AudioSourceComponent::Update()
 	// UPDATE 3D parameters
 	if (mPositionWithGameObject)
 	{
-		float3 gameobjectPosition = GetOwner()->GetWorldPosition();
+		float3 gameobjectPosition = GetOwner()->GetPosition();
 
 		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
@@ -180,7 +180,7 @@ void AudioSourceComponent::PlayOneShot()
 		mEventDescription->createInstance(&eventInstance);
 
 		eventInstance->start();
-		float3 gameobjectPosition = GetOwner()->GetWorldPosition();
+		float3 gameobjectPosition = GetOwner()->GetPosition();
 
 		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 

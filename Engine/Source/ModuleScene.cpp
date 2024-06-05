@@ -294,7 +294,7 @@ void ModuleScene::Load(const char* sceneName)
 		mRoot->SetName(scene.GetString("Name").c_str());
 
 		JsonArray gameObjects = scene.GetJsonArray("GameObjects");
-		for (int i = 0; i < gameObjects.Size(); ++i)
+		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
 			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
 			GameObject* gO = new GameObject(gameObjectData.GetInt("UID"), gameObjectData.GetString("Name").c_str(), Find(gameObjectData.GetInt("ParentUID")));

@@ -49,7 +49,7 @@ void Bullet::Update()
 	{
 		if (mTotalMovement <= mRange)
 		{
-			mTotalMovement += mGameObject->GetPosition().Distance((mGameObject->GetPosition() + mGameObject->GetFront() * mSpeed));
+			mTotalMovement += mGameObject->GetPosition().Distance((mGameObject->GetPosition() + mGameObject->GetFront().Mul(mSpeed)));
 			mGameObject->SetPosition(mGameObject->GetPosition() + mDirection * mSpeed);
 		}
 		else
@@ -69,7 +69,7 @@ void Bullet::Update()
 
 void Bullet::OnCollisionEnter(CollisionData* collisionData)
 {
-	if (collisionData->collidedWith->GetTag()->GetName().compare("Enemy") == 0) 
+	if (collisionData->collidedWith->GetTag().compare("Enemy") == 0) 
 	{
 		if (mHitParticles)
 		{

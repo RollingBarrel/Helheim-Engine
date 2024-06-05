@@ -21,10 +21,12 @@ ItemShield::ItemShield(GameObject* owner) : Script(owner) {}
 void ItemShield::Start()
 {
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
+    mPlayer = scene->FindGameObjectWithTag("Player");
 
 
-    std::vector<Component*> components = mGameObject->GetComponentsInChildren(ComponentType::ANIMATION);
+    std::vector<Component*> components;
+    mGameObject->GetComponentsInChildren(ComponentType::ANIMATION, components);
+
 
     if (!components.empty())
     {

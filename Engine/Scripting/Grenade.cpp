@@ -90,13 +90,13 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
     ModuleScene* scene = App->GetScene();
     std::vector<GameObject*> AllEnemies;
     std::vector<GameObject*> AffectedEnemies;
-    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), AllEnemies);
+    scene->FindGameObjectsWithTag("Enemy", AllEnemies);
 
     // Check if enemies are inside circle
     // TODO: Check hit with physic
     for (const auto& e : AllEnemies)
     {
-        float3 diff = e->GetWorldPosition() - mGameObject->GetWorldPosition();
+        float3 diff = e->GetPosition() - mGameObject->GetPosition();
         float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
         if (distanceSquared <= (mGrenadeRadius * mGrenadeRadius))

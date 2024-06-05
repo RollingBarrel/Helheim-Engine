@@ -16,7 +16,7 @@ public:
 	PointLightComponent(const PointLightComponent& original) = delete;
 	~PointLightComponent();
 
-	PointLightComponent& operator=(const SpotLightComponent& other) = delete;
+	PointLightComponent& operator=(const PointLightComponent& other) = delete;
 
 	void Enable() override;
 	void Disable() override;

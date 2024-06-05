@@ -128,7 +128,7 @@ void::ScriptComponent::Load(const JsonObject& data)
 	JsonArray scriptData = data.GetJsonArray("ScriptVariables");
 	if (mScript && (scriptData.Size() > 0))
 	{
-		for (int i = 0; i < scriptData.Size(); ++i)
+		for (unsigned int i = 0; i < scriptData.Size(); ++i)
 		{
 			JsonObject data = scriptData.GetJsonObject(i);
 			const char* name = data.GetString("VariableName").c_str();

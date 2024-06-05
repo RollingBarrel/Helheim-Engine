@@ -24,7 +24,6 @@ CREATE(TestScript)
 void TestScript::Start()
 {
 	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
-	CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
 	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
