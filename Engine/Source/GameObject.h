@@ -38,9 +38,9 @@ public:
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	unsigned int GetID() const { return mUid; }
-	float3 GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); } 
-	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
-	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
+	const float3& GetFront() const { return mFront; }
+	const float3& GetUp() const { return mUp; }
+	const float3& GetRight() const { return mRight; }
 	const std::string& GetTag() const { return mTag; }
 	AABB GetAABB();
 	bool IsDynamic() const { return mIsDynamic; }
@@ -62,7 +62,7 @@ public:
 	//Transform
 	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
-	void RecalculateMatrices();
+	void RecalculateMatrices();															//TODO: REVIEW METHOD
 
 	//Position
 	const float3& GetPosition() const { return mPosition; }
@@ -107,7 +107,7 @@ public:
 	void Load(const JsonObject& obj);
 
 	// Prefabs
-	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here?
+	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here? 
 	void SetPrefabId(unsigned int id) { mPrefabId = id; }						   //TODO: This need to be here?
 	void SetPrefabOverride(bool override) { mPrefabOverride = override; }		   //TODO: This need to be here?
 																				   
@@ -126,6 +126,12 @@ private:
 	// Transform
 	float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;
+
+	//Direction
+	float3 mFront;
+	float3 mUp;
+	float3 mRight;
+
 	//Position
 	float3 mPosition = float3::zero;
 	float3 mLocalPosition = float3::zero;

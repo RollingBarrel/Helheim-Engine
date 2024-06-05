@@ -200,6 +200,10 @@ void GameObject::RecalculateMatrices() //TODO: REDO
 		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
 	}
 
+	mFront = (mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized();
+	mUp = (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized();
+	mRight = (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized();
+
 	for (size_t i = 0; i < mChildren.size(); i++)
 	{
 		mChildren[i]->RecalculateMatrices();
@@ -231,6 +235,13 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 	mIsTransformModified = true;
 }
 
+void GameObject::SetRotation(const Quat& rotation)
+{
+	mRotation = rotation;
+	mEulerAngles = rotation.ToEulerXYZ();
+	mIsTransformModified = true;
+}
+
 void GameObject::SetLocalRotation(const float3& rotationInRadians)
 {
 	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
@@ -242,12 +253,7 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 	mIsTransformModified = true;
 }
 
-void GameObject::SetRotation(const Quat& rotation)
-{
-	mRotation = rotation;
-	mEulerAngles = rotation.ToEulerXYZ();
-	mIsTransformModified = true;
-}
+
 
 void GameObject::SetLocalRotation(const Quat& rotation)
 {
