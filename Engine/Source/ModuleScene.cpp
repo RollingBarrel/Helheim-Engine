@@ -426,7 +426,10 @@ GameObject* ModuleScene::Find(const char* name) const
 {
 	for (GameObject* go : mSceneGO)
 	{
-		if (go->GetName() == name) return go;
+		if (go->GetName() == name)
+		{
+			return go;
+		}
 	}
 
 	return nullptr;

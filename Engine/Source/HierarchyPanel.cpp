@@ -48,8 +48,15 @@ HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 void HierarchyPanel::Draw(int windowFlags)
 {
 	GameObject* root = EngineApp->GetScene()->GetRoot();
-	if (mLastClickedObject == 0) { mLastClickedObject = root->GetID(); }
-	if (mFocusId == 0) { mFocusId = mLastClickedObject; }
+	if (mLastClickedObject == 0)
+	{ 
+		mLastClickedObject = root->GetID();
+	}
+	if (mFocusId == 0) 
+	{ 
+		mFocusId = mLastClickedObject;
+	}
+
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
@@ -61,7 +68,8 @@ void HierarchyPanel::Draw(int windowFlags)
 	}
 	if (mLastClickedObject != root->GetID()) 
 	{ 
-		GameObject* marked = root->Find(mLastClickedObject);
+		//GameObject* marked = root->Find(mLastClickedObject);
+		GameObject* marked = App->GetScene()->Find(mLastClickedObject);
 		mMarked.insert(marked);
 	}
 	mLastMarkSeen = 0; mShiftClicked = 0;
@@ -433,11 +441,10 @@ const std::vector<GameObject*> HierarchyPanel::FilterMarked() const
 
 GameObject* HierarchyPanel::GetFocusedObject() const 
 {
-	GameObject* root = EngineApp->GetScene()->GetRoot();
-	GameObject* focus = root->Find(mFocusId);	//TODO:Remove Find function to iterate all scene game objects
+	GameObject* focus = App->GetScene()->Find(mFocusId);
 	if (focus == nullptr) 
 	{ 
-		return root; 
+		return EngineApp->GetScene()->GetRoot();
 	}
 	else 
 	{ 

@@ -192,7 +192,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 #pragma endregion
 
 #pragma region Transform
-void GameObject::RecalculateMatrices()
+void GameObject::RecalculateMatrices() //TODO: REDO
 {
 	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
 
@@ -282,12 +282,12 @@ const bool GameObject::HasUpdatedTransform() const
 	return mIsTransformModified;
 }
 
-void GameObject::Translate(float3 translation)
+void GameObject::Translate(const float3& translation)
 {
 	SetPosition(mPosition + translation);
 }
 
-void GameObject::LookAt(float3 target)
+void GameObject::LookAt(const float3& target)
 {
 	float4x4 rotationMatrix = float4x4::identity;
 
@@ -650,59 +650,6 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 #pragma endregion
 
 #pragma region Finds
-
-GameObject* GameObject::Find(const char* name) const
-{
-	GameObject* gameObject = nullptr;
-
-	for (GameObject* child : mChildren)
-	{
-
-		if (child->GetName().compare(name) == 0)
-		{
-			gameObject = child;
-			break;
-		}
-		else
-		{
-			gameObject = child->Find(name);
-
-			if (gameObject)
-			{
-				break;
-			}
-		}
-	}
-
-	return gameObject;
-}
-
-GameObject* GameObject::Find(unsigned int UID) const
-{
-	GameObject* gameObject = nullptr;
-
-	for (GameObject* child : mChildren)
-	{
-
-		if (child->GetID() == UID)
-		{
-			gameObject = child;
-			break;
-		}
-		else
-		{
-			gameObject = child->Find(UID);
-
-			if (gameObject)
-			{
-				break;
-			}
-		}
-
-	}
-
-	return gameObject;
-}
 
 //GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
 //{

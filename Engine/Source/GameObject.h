@@ -91,13 +91,9 @@ public:
 	// Transform
 	const bool HasUpdatedTransform() const;
 
-	void Translate(float3 translation);
-	void LookAt(float3 target);
+	void Translate(const float3& translation);
+	void LookAt(const float3& target);
 	void ResetTransform();
-
-	// Finds
-	GameObject* Find(const char* name) const;  //TODO: DELETE FAST PLS
-	GameObject* Find(unsigned int UID) const;  //TODO: DELETE FAST PLS
 
 	// Components
 	template<typename T> T* CreateComponent();
