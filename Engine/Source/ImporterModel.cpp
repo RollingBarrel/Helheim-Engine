@@ -25,7 +25,9 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 {
     ModelNode node;
 
-    const tinygltf::Node& tinyNode = model.nodes[index];
+    node.mGltfId = index;
+    const tinygltf::Node& tinyNode = model.nodes[node.mGltfId];
+    node.mParentVecIdx = parentIndex;
 
     node.mName = tinyNode.name;
 
@@ -44,7 +46,8 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
     }
     else
     {
-        if (tinyNode.translation.size() == 3) {
+        if (tinyNode.translation.size() == 3) 
+        {
             node.mTranslation = { static_cast<float>(tinyNode.translation[0]),static_cast<float>(tinyNode.translation[1]), static_cast<float>(tinyNode.translation[2]) };
             node.mHasTransform = true;
         }
@@ -114,7 +117,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
             importedMeshes[node.mMeshId] = vec;
             imported = false;
         }
-        for (const auto& primitive : model.meshes[node.mMeshId].primitives)
+        for (const tinygltf::Primitive& primitive : model.meshes[node.mMeshId].primitives)
         {
             if (!imported)
             {
@@ -154,10 +157,9 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
     }
 
-    node.mParentIndex = parentIndex;
-
     size += node.mName.length() + 1         //Name
             + sizeof(int)                   //Parent Index in the vector
+            + sizeof(int)                   //Gltf Index
             + sizeof(int) * 4;              //Mesh/Camera/Skin/Light
 
     size += sizeof(bool);                   //Tranforms
@@ -187,8 +189,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
                 + (sizeof(unsigned int) * 2) * node.mUids.size();  //Uid Mesh & Material
     }
 
-    unsigned int currentIdx = modelNodes.size();
-
+    const unsigned int currentIdx = modelNodes.size();
     modelNodes.push_back(node);
 
     for (int i = 0; i < tinyNode.children.size(); ++i)
@@ -217,24 +218,33 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     std::unordered_map<unsigned int, unsigned int>importedTextures;
     unsigned int bufferSize = 0;
 
-    unsigned int animationId = 0;
-
     ResourceModel* rModel = new ResourceModel(uid++);
+
+    unsigned int currentUid = uid;
+    assert(model.scenes.size() <= 1 && "No support for multiple scenes gltf");
+    for (int i = 0; i < model.scenes.size(); ++i)
+    {
+        for (int j = 0; j < model.scenes[0].nodes.size(); ++j)
+        {
+            ImportNode(rModel->modelNodes, filePath, model, model.scenes[0].nodes[j], currentUid, bufferSize, modifyAssets, importedMaterials, importedTextures, importedMeshes);
+        }
+    }
 
     if (!model.skins.empty())
     {
-        for (const tinygltf::Skin& skins : model.skins)
+        std::vector<std::pair<unsigned int, float4x4>> vec;
+        for (const tinygltf::Skin& skin : model.skins)
         {
-            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[skins.inverseBindMatrices];
+            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[skin.inverseBindMatrices];
             const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
 
             const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(&model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset]);
             const size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
 
+            vec.reserve(skin.joints.size());
             for (size_t i = 0; i < num_inverseBindMatrices; i++)
             {
                 const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
-
                 float4x4 inverseBindMatrix;
                 for (size_t row = 0; row < 4; row++)
                 {
@@ -243,18 +253,10 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
                         inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
-                rModel->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
+                vec.emplace_back(skin.joints[i], inverseBindMatrix);
             }
-        }
-    }
-
-
-    unsigned int currentUid = uid;
-    for (int i = 0; i < model.scenes.size(); ++i)
-    {
-        for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
-        {
-            ImportNode(rModel->modelNodes, filePath, model, model.scenes[i].nodes[j], currentUid, bufferSize, modifyAssets, importedMaterials, importedTextures, importedMeshes);
+            rModel->mInvBindMatrices.push_back(vec);
+            vec.clear();
         }
     }
 
@@ -271,12 +273,15 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
     bufferSize += sizeof(unsigned int);                                     //Size vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
-    bufferSize += sizeof(unsigned int);
-    for (int i = 0; i < rModel->mInvBindMatrices.size(); ++i) 
+    bufferSize += sizeof(unsigned int);                                     //num of invBindMatrix vectors
+    for (int j = 0; j < rModel->mInvBindMatrices.size(); ++j) 
     {
-        bufferSize += sizeof(float) * 16;                                   // Size of the float array
-        bufferSize += sizeof(unsigned int);                                 // Size of the string length
-        bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;       // Size of the string characters
+        bufferSize += sizeof(unsigned int);                                 //num of elements in the array
+        for(int i = 0; i < rModel->mInvBindMatrices[j].size(); ++i)
+        {
+            bufferSize += sizeof(unsigned int);                                  //gltfId
+            bufferSize += sizeof(float) * 16;                                    // Matrix
+        }
     }
 
     Importer::Model::Save(rModel, bufferSize);

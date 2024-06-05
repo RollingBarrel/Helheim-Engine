@@ -90,10 +90,9 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 			}
 			GameObject* gO = new GameObject(name, gameObject);
 			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
+			//MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gameObject->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
 			cMesh->SetMaterial(it->second);
-			cMesh->SetModelUUID(rModel.GetUID());
-
 		}
 	}
 
@@ -230,17 +229,26 @@ void ScenePanel::DrawScene()
 					std::vector<GameObject*> tempVec;
 					ResourceModel* rModel = reinterpret_cast<ResourceModel*>(resource);
 					
+					std::unordered_map<unsigned int, GameObject*> gltfGoMap;
+					std::vector<GameObject*>skinGos;
+					skinGos.reserve(rModel->mInvBindMatrices.size());
 					const std::vector<ModelNode>& nodes = rModel->GetNodes();
 					tempVec.reserve(nodes.size());
 
 					for (int i = 0; i < nodes.size(); ++i)
 					{
 						const ModelNode& node = nodes[i];
-						if (node.mParentIndex == -1)
+						if (node.mParentVecIdx == -1)
 							tempVec.push_back(DragToScene(node, i, *rModel, gameObjectRoot, true));
 						else
-							tempVec.push_back(DragToScene(node, i, *rModel, tempVec.at(node.mParentIndex), false));
-
+							tempVec.push_back(DragToScene(node, i, *rModel, tempVec.at(node.mParentVecIdx), false));
+						
+						//Skinning data
+						gltfGoMap[node.mGltfId] = tempVec.back();
+						if (node.mSkinId != -1)
+						{
+							skinGos.push_back(tempVec.back());
+						}
 						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
 						//{
 						//	if (reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first == i)
@@ -251,9 +259,26 @@ void ScenePanel::DrawScene()
 						//	}
 						//}
 					}
-
-					tempVec.clear();
-
+					//Load Skinning data
+					std::vector<std::pair<GameObject*, float4x4>> invBindVec;
+					for (int j = 0; j<skinGos.size(); ++j)
+					{
+						invBindVec.reserve(rModel->mInvBindMatrices[j].size());
+						for (int i = 0; i < rModel->mInvBindMatrices[j].size(); ++i) 
+						{
+							invBindVec.emplace_back(gltfGoMap[rModel->mInvBindMatrices[j][i].first], rModel->mInvBindMatrices[j][i].second);
+						}
+						assert(skinGos[j]->GetChildren().size() != 0 && skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER) != nullptr);
+						MeshRendererComponent* paletteOwner = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER));
+						paletteOwner->SetInvBindMatrices(std::move(invBindVec));
+						for (int z = 1; z < skinGos[j]->GetChildren().size(); ++z)
+						{
+							MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[z]->GetComponent(ComponentType::MESHRENDERER));
+							if(meshRenderer != nullptr)
+								meshRenderer->SetInvBindMatrices(std::move(invBindVec), paletteOwner);
+						}
+						invBindVec.clear();
+					}
 					EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}

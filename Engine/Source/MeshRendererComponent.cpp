@@ -42,8 +42,6 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMaterial(other.mMaterial->GetUID());
 	}
-
-	mModelUid = other.mModelUid;
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -129,6 +127,19 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	//}
 }
 
+void MeshRendererComponent::SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette)
+{
+	if (palette != nullptr)
+	{
+		mPaletteOwner = palette;
+	}
+	else
+	{
+		mGameobjectsInverseMatrices = std::move(bindMatrices);
+	}
+	mHasSkinning = true;
+}
+
 
 void MeshRendererComponent::Update() 
 {
@@ -137,11 +148,7 @@ void MeshRendererComponent::Update()
 		RefreshBoundingBoxes();
 	}
 
-	if (mHasSkinning)
-	{
-		UpdatePalette();
-	}
-
+	UpdatePalette();
 }
 
 //void MeshRendererComponent::Enable()
@@ -169,21 +176,11 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 	mAABB.SetFrom(mOBB);
 }
 
-bool MeshRendererComponent::IsAnimated() const
-{
-#ifdef _DEBUG
-	if (mMesh && GetPalette().size() != 0)
-		assert(mMesh->HasAttribute(Attribute::JOINT) && mMesh->HasAttribute(Attribute::WEIGHT) && "Animated mesh does not have weights or joints");
-#endif // _DEBUG
-	return GetPalette().size() != 0;
-}
-
 void MeshRendererComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ID", GetID());
 	archive.AddInt("MeshID", mMesh->GetUID());
 	archive.AddInt("MaterialID", mMaterial->GetUID());
-	archive.AddInt("ModelUID", mModelUid);
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 
 	archive.AddBool("isEnabled", IsEnabled());
@@ -213,65 +210,64 @@ void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, 
 		modelUid = componentJson["ModelUID"].GetInt();
 	}
 
-	SetModelUUID(modelUid);
 	SetMesh(meshID);
 	SetMaterial(materialID);
 }
 
-void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
-{
-	AddJointNode(currentObject, model);
-	for (GameObject* object : currentObject->GetChildren())
-	{
-		LoadAllChildJoints(object, model);
-	}
-}
-
-void MeshRendererComponent::AddJointNode(GameObject* node, ResourceModel* model)
-{
-	for (const auto& pair : model->mInvBindMatrices)
-	{
-		if (pair.first == node->GetName())
-		{
-			mGameobjectsInverseMatrices.emplace_back(node, pair.second);
-			break;
-		}
-	}
-
-}
+//void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
+//{
+//	AddJointNode(currentObject, model);
+//	for (GameObject* object : currentObject->GetChildren())
+//	{
+//		LoadAllChildJoints(object, model);
+//	}
+//}
+//
+//void MeshRendererComponent::AddJointNode(GameObject* node, ResourceModel* model)
+//{
+//	for (const auto& pair : model->mInvBindMatrices)
+//	{
+//		if (pair.first == node->GetName())
+//		{
+//			mGameobjectsInverseMatrices.emplace_back(node, pair.second);
+//			break;
+//		}
+//	}
+//
+//}
 
 void MeshRendererComponent::UpdatePalette()
 {
-	if (mModelUid == 0)
-	{
-		return;
-	}
-
-	if (mGameobjectsInverseMatrices.size() == 0)
-	{
-		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
-		if (model->mInvBindMatrices.size() == 0)
-		{
-			mHasSkinning = false;
-			App->GetResource()->ReleaseResource(mModelUid);
-			return;
-		}
-		// Initialize vector
-		GameObject* root = mOwner;
-		while (root->GetComponent(ComponentType::ANIMATION) == nullptr && root->GetParent()!= nullptr)
-		{
-			root = root->GetParent();
-		}
-		if (root->GetComponent(ComponentType::ANIMATION) == nullptr)
-		{
-			mHasSkinning = false;
-			App->GetResource()->ReleaseResource(mModelUid);
-			return;
-		}
-
-		LoadAllChildJoints(root, model);
-		App->GetResource()->ReleaseResource(mModelUid); 
-	}
+	//if (mModelUid == 0)
+	//{
+	//	return;
+	//}
+	//
+	//if (mGameobjectsInverseMatrices.size() == 0)
+	//{
+	//	ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
+	//	if (model->mInvBindMatrices.size() == 0)
+	//	{
+	//		mHasSkinning = false;
+	//		App->GetResource()->ReleaseResource(mModelUid);
+	//		return;
+	//	}
+	//	// Initialize vector
+	//	GameObject* root = mOwner;
+	//	while (root->GetComponent(ComponentType::ANIMATION) == nullptr && root->GetParent()!= nullptr)
+	//	{
+	//		root = root->GetParent();
+	//	}
+	//	if (root->GetComponent(ComponentType::ANIMATION) == nullptr)
+	//	{
+	//		mHasSkinning = false;
+	//		App->GetResource()->ReleaseResource(mModelUid);
+	//		return;
+	//	}
+	//
+	//	LoadAllChildJoints(root, model);
+	//	App->GetResource()->ReleaseResource(mModelUid); 
+	//}
 
 	mPalette.clear();
 	mPalette.reserve(mGameobjectsInverseMatrices.size());

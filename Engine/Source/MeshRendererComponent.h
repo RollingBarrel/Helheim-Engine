@@ -32,15 +32,10 @@ public:
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMesh(unsigned int uid);
 	void SetMaterial(unsigned int uid);
+	void SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette = nullptr);
 
-
-	unsigned int GetModelUUID() const { return mModelUid; }
-	void SetModelUUID(unsigned int modelUid) { mModelUid = modelUid; }
-
-	//Pallete calculations
-	const std::vector<float4x4>& GetPalette() const { return mPalette; }
-
-	bool IsAnimated() const;
+	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
+	bool IsAnimated() const { return mHasSkinning; };
 
 
 private:
@@ -48,8 +43,8 @@ private:
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 
 	//Palette functions
-	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
-	void AddJointNode(GameObject* node, ResourceModel* model);
+	//void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
+	//void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
 
 
@@ -66,7 +61,7 @@ private:
 	//Skinning
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 	std::vector<float4x4> mPalette;
-	unsigned int mModelUid = 0;
-	bool mHasSkinning = true;
+	const MeshRendererComponent* mPaletteOwner = nullptr;
+	bool mHasSkinning = false;
 
 };
