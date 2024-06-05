@@ -1,7 +1,7 @@
 #pragma once
 #include <Script.h>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include "Macros.h"
 #include "float3.h"
 
@@ -13,6 +13,7 @@ namespace FMOD {
 }
 
 class AudioSourceComponentNew;
+class AudioUnit;
 
 GENERATE_BODY(AudioManager);
 class AudioManager : public Script
@@ -29,14 +30,17 @@ private:
 	AudioManager(GameObject* owner);
 	~AudioManager();
 
-	int Play(std::string audioName, float3 audioPosition);
-	void PlayOneShot(std::string audioName, float3 audioPosition);
+	int Play(std::string audioName, float3 audioPosition, std::unordered_map<std::string, int> parameters = {});
+	void PlayOneShot(std::string audioName, float3 audioPosition, std::unordered_map<std::string, int> parameters = {});
 
 	static AudioManager* mInstance;
-
+	 
 	AudioSourceComponentNew* mAudioSources = nullptr;
 
-	std::vector<FMOD::Studio::EventInstance*> mAudiosSourceList;
+	std::vector<AudioUnit*> mBackgroundAudioList;
+	std::vector<AudioUnit*> mSFXList;
+
+	int mBackgroundAudioCounter = 0;
 
 };
 

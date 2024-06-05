@@ -34,6 +34,16 @@ AudioManager::~AudioManager()
 	mInstance = nullptr;
 }
 
+int AudioManager::Play(std::string audioName, float3 audioPosition, std::unordered_map<std::string, int> parameters)
+{
+
+    return mBackgroundAudioCounter++;
+}
+
+void AudioManager::PlayOneShot(std::string audioName, float3 audioPosition, std::unordered_map<std::string, int> parameters)
+{
+}
+
 
 
 
