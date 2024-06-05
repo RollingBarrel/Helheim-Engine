@@ -52,6 +52,7 @@ class ENGINE_API AnimationStateMachine
 
 public:
 	AnimationStateMachine(const std::vector<unsigned int>& animationUids);
+	AnimationStateMachine();
 	~AnimationStateMachine();
 	
 	//Clips
@@ -60,7 +61,9 @@ public:
 	
 	void SetClipName(int index, const std::string& name);
 	int  GetClipIndex(const std::string& clipName) const;
+	const std::string& GetClipName(int index) const;
 	unsigned int GetClipResource(int index) const;
+	unsigned int GetNumClips() const { return mClips.size(); }
 
 	//States
 	void AddState(const std::string& clipName);
@@ -75,7 +78,7 @@ public:
 	void SetStateName(int index, const std::string& name);
 	void SetStateStartTime(int index, float time);
 	void SetStateEndTime(int index, float time);
-	int GetNumStates() const { return mStates.size();}
+	unsigned int GetNumStates() const { return mStates.size();}
 	bool GetStateLoop(int index) const;
 	void SetStateLoop(int index, bool loop);
 	void DeleteState(int index);
@@ -99,6 +102,10 @@ public:
 	const std::vector<AnimationState>& GetStates() const { return mStates; }
 	const std::vector<AnimationTransition>& GetTransitions() const { return mTransitions; }
 	int GetUID() const { return mUID; }
+
+	void PushBackClip(const AnimationClip& clip) { mClips.push_back(clip); };
+	void PushBackState(const AnimationState& state) { mStates.push_back(state); };
+	void PushBackTransition(const AnimationTransition& transition) { mTransitions.push_back(transition); };
 
 
 private:

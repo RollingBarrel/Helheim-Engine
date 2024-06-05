@@ -16,6 +16,10 @@ AnimationStateMachine::AnimationStateMachine(const std::vector<unsigned int>& an
 	mStates.push_back(AnimationState(std::string("Default")));
 }
 
+AnimationStateMachine::AnimationStateMachine()
+{
+}
+
 AnimationStateMachine::~AnimationStateMachine()
 {
 }
@@ -49,6 +53,13 @@ int AnimationStateMachine::GetClipIndex(const std::string& clipName) const
 		}
 	}
 	return index;
+}
+
+const std::string& AnimationStateMachine::GetClipName(int index) const
+{
+	// // O: insert return statement here
+	assert(!(index >= mClips.size()));
+	return mClips[index].mName;
 }
 
 unsigned int AnimationStateMachine::GetClipResource(int index) const

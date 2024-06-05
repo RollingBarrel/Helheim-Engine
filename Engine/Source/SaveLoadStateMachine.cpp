@@ -5,7 +5,9 @@
 
 ENGINE_API void Importer::StateMachine::Save(AnimationStateMachine* ourStateMachine)
 {
-    unsigned int size = 0;
+    unsigned int header[3] = { ourStateMachine->GetNumClips(), ourStateMachine->GetNumStates(), ourStateMachine->GetNumTransitions() };
+    unsigned int size = sizeof(header);
+
     for (AnimationState state : ourStateMachine->GetStates())
     {
         size += sizeof(float) * 2 + sizeof(unsigned int) * 2 + sizeof(bool); // float (mStartTime, mEndTime) : int(name len, clip index) : bool(mLoop)
@@ -24,6 +26,9 @@ ENGINE_API void Importer::StateMachine::Save(AnimationStateMachine* ourStateMach
     
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
+
+    memcpy(cursor, header, sizeof(header));
+    cursor += sizeof(header);
     
     for (AnimationClip clip : ourStateMachine->GetClips())
     {
@@ -94,10 +99,103 @@ ENGINE_API void Importer::StateMachine::Save(AnimationStateMachine* ourStateMach
 ENGINE_API AnimationStateMachine* Importer::StateMachine::Load(const char* fileName, unsigned int uid)
 {
     char* fileBuffer = nullptr;
-    AnimationStateMachine* ourStateMachine = nullptr;
+    AnimationStateMachine* ourStateMachine = new AnimationStateMachine();
 
     if (App->GetFileSystem()->Load(fileName, &fileBuffer))
     {
+        char* cursor = fileBuffer;
+        unsigned int header[3];
+        unsigned int bytes = sizeof(header);
+        memcpy(header, cursor, bytes);
+        cursor += bytes;
+        unsigned int numClips = header[0];
+        unsigned int numStates = header[1];
+        unsigned int numTransitions = header[2];
 
+        AnimationClip clip = AnimationClip(0);
+        AnimationState state = AnimationState(std::string(""));
+        AnimationTransition transition = AnimationTransition(std::string(""), std::string(""), std::string(""));
+        for (unsigned int i = 0; i < numClips; ++i)
+        {
+            unsigned int uid = 0;
+            memcpy(&uid, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            unsigned int namelen = 0;
+            memcpy(&namelen, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            char* name = new char[namelen];
+            memcpy(name, cursor, sizeof(char) * namelen);
+            cursor += sizeof(char) * namelen;
+
+            clip.mName = std::string(name);
+            clip.mAnimationUID = uid;
+            ourStateMachine->PushBackClip(clip);
+            delete[] name;
+        }
+
+        for (unsigned int i = 0; i<numClips; ++i)
+        {
+            unsigned int clipPos = 0;
+            memcpy(&clipPos, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            unsigned int namelen = 0;
+            memcpy(&namelen, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            char* name = new char[namelen];
+            memcpy(name, cursor, sizeof(char) * namelen);
+            cursor += sizeof(char) * namelen;
+
+            float start = 0.0f;
+            memcpy(&start, cursor, sizeof(float));
+            cursor += sizeof(float);
+
+            float end = 0.0f;
+            memcpy(&end, cursor, sizeof(float));
+            cursor += sizeof(float);
+
+            bool loop = true;
+            memcpy(&loop, cursor, sizeof(bool));
+            cursor += sizeof(bool);
+
+            state.mClip = ourStateMachine->GetClipName(clipPos);
+            state.mName = std::string(name);
+            state.mStartTime = start;
+            state.mEndTime = end;
+            state.mLoop = loop;
+            ourStateMachine->PushBackState(state);
+            delete[] name;
+        }
+
+
+        for (unsigned int i = 0; i< numTransitions; ++i)
+        {
+            unsigned int sourceID = 0;
+            memcpy(&sourceID, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            unsigned int targetID = 0;
+            memcpy(&targetID, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            unsigned int namelen = 0;
+            memcpy(&namelen, cursor, sizeof(unsigned int));
+            cursor += sizeof(unsigned int);
+
+            char* name = new char[namelen];
+            memcpy(name, cursor, sizeof(char) * namelen);
+            cursor += sizeof(char) * namelen;
+
+            transition.mSource = ourStateMachine->GetStateName(sourceID);
+            transition.mTarget = ourStateMachine->GetStateName(targetID);
+            transition.mTrigger = std::string(name);
+            delete[] name;
+        }
+        delete[] fileBuffer;
     }
+
+    return ourStateMachine;
 }
