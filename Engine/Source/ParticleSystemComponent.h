@@ -2,9 +2,9 @@
 
 #include "Component.h"
 #include "BezierCurve.h"
-#include <map>
 #include "ColorGradient.h"
 #include "BlendMode.h"
+#include "MathConstants.h"
 
 class ResourceTexture;
 class Particle;
@@ -21,10 +21,10 @@ public:
 		SQUARE,
 		CIRCLE
 	};
-	ParticleSystemComponent(GameObject* ownerGameObject);
+	explicit ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
 	~ParticleSystemComponent();
-	ResourceTexture* GetImage() const { return mImage; }
+	const ResourceTexture* GetImage() const { return mImage; }
 	const char* GetFileName() const { return mFileName; }
 	void Reset();
 

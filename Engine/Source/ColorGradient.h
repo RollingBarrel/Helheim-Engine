@@ -1,6 +1,5 @@
 #pragma once
 #include "Globals.h"
-#include "MathGeoLib.h"
 #include "Archive.h"
 #include <map>
 

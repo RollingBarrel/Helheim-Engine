@@ -6,6 +6,7 @@
 #include "ResourceTexture.h"
 #include "ModuleResource.h"
 #include "glew.h"
+#include "MathGeoLib.h"
 
 #define POSITION_LOCATION 0
 #define TEXCOORD_LOCATION 1
@@ -150,7 +151,7 @@ void Trail::AddTrailPositions(float3 position, Quat rotation)
     mPoints.push_back(TrailPoint{ position, rotatedVector, mTrailTime});
 }
 
-float3 Trail::GetLastPosition() const
+const float3& Trail::GetLastPosition() const
 {
     if (mPoints.empty()) 
     {
@@ -159,7 +160,7 @@ float3 Trail::GetLastPosition() const
     return mPoints.back().position;
 }
 
-float3 Trail::GetFirstPosition() const
+const float3& Trail::GetFirstPosition() const
 {
     if (mPoints.empty())
     {

@@ -1,5 +1,4 @@
 #pragma once
-#include "MathGeoLib.h"
 #include "ColorGradient.h"
 
 class Particle
@@ -11,15 +10,14 @@ public:
 
     float Update(float deltaTime);
 
-    float3 GetPosition() const { return mPosition; }
-    float3 GetDirection() const { return mDirection; }
+    const float3& GetPosition() const { return mPosition; }
+    const float3& GetDirection() const { return mDirection; }
     float GetRotation() const { return mRotation; }
     float GetSpeed() const { return mSpeed; }
     float GetInitialSpeed() const { return mInitialSpeed; }
     float GetSize() const { return mSize; }
     float GetInitialSize() const { return mInitialSize; }
-    float4 GetColor() const { return mColor; }
-
+    const float4& GetColor() const { return mColor; }
     float GetLifetime() const { return mLifeTime; }
     float GetMaxLifetime() const { return mMaxLifeTime; }
 
@@ -30,8 +28,7 @@ public:
     void SetInitialSpeed(float speed) { mInitialSpeed = speed; }
     void SetSize(float size) { mSize = size; }
     void SetInitialSize(float size) { mInitialSize = size; }
-    void SetColor(float4 color) { mColor = color; }
-
+    void SetColor(const float4& color) { mColor = color; }
     void SetLifetime(float lifetime) { mLifeTime = lifetime; }
 
 private:
@@ -44,7 +41,6 @@ private:
     float mInitialSpeed;
     float mSize = 1.0f;
     float mInitialSize;
-
 
     float mLifeTime = 0.0f;
     const float mMaxLifeTime = 3.0f;

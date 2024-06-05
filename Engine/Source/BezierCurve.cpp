@@ -17,11 +17,13 @@ float BezierCurve::CalculateInitialValue()
 
 void BezierCurve::spline(const float* key, int num, int dim, float t, float* v) const
 {
-    static signed char coefs[16] = {
+    static signed char coefs[16] = 
+    {
         -1, 2,-1, 0,
          3,-5, 0, 2,
         -3, 4, 1, 0,
-         1,-1, 0, 0 };
+         1,-1, 0, 0 
+    };
 
     const int size = dim + 1;
     // find key

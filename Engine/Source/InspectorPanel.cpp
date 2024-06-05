@@ -1646,7 +1646,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->GetImage();
+		const ResourceTexture* image = component->GetImage();
 
 		if (image)
 		{

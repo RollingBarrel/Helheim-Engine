@@ -5,7 +5,8 @@
 void BlendModeFunction(int type)
 {
     BlendType blendType = static_cast<BlendType>(type);
-    switch (blendType) {
+    switch (blendType) 
+    {
     case BlendType::TRANSPARENCY:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         break;

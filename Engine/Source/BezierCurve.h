@@ -1,6 +1,6 @@
 #pragma once
-#include "MathGeoLib.h"
 #include "Archive.h"
+#include "float2.h"
 
 class BezierCurve 
 {
