@@ -79,17 +79,19 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 
 GameObject::~GameObject()
 {
-	App->GetScene()->RemoveGameObjectFromScene(this);
-
 	for (Component* component : mComponents)
 	{
 		delete component;
 	}
+	mComponents.clear();
+ 
+	App->GetScene()->RemoveGameObjectFromScene(this);
 
 	for (GameObject* gameObject : mChildren)
 	{
 		delete gameObject;
 	}
+	mChildren.clear();
 }
 
 #pragma endregion
@@ -492,6 +494,17 @@ void GameObject::DeleteComponents()
 		delete *it;
 	}
 	mComponentsToDelete.clear();
+
+	/*for (auto component : mComponentsToDelete)
+	{
+		auto it = std::find(mComponents.begin(), mComponents.end(), component);
+		if (it != mComponents.end())
+		{
+			mComponents.erase(it);
+			delete component;
+			component = nullptr;
+		}
+	}*/
 }
 
 Component* GameObject::RemoveComponent(Component* component)
