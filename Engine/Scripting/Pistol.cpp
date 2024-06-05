@@ -36,9 +36,10 @@ void Pistol::BasicAttack()
         bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
     }
-    else {
-        mCurrentAmmo = mMaxAmmo;
-    }
+    //else
+    //{
+    //    mCurrentAmmo = mMaxAmmo;
+    //}
     
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 
@@ -83,6 +84,13 @@ void Pistol::BasicAttack()
     }*/
 }
 
+void Pistol::Reload()
+{
+    mCurrentAmmo = mMaxAmmo;
+    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
+
 void Pistol::SpecialAttack()
 {
+
 }

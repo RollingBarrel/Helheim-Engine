@@ -11,6 +11,8 @@ public:
 	virtual void BasicAttack() = 0;
 	virtual void SpecialAttack() = 0;
 
+	virtual void Reload() = 0;
+
 protected:
 
 	float mDamage = 0.0f;

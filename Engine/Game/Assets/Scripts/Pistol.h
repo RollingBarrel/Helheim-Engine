@@ -14,5 +14,7 @@ public:
 	void BasicAttack() override;
 	void SpecialAttack() override;
 
+	void Reload() override;
+
 };
 

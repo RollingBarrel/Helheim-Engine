@@ -144,12 +144,15 @@ void PlayerController::Start()
 
         std::string defaultState = "default";
         std::string sIdle = "Idle";
+        
         std::string sWalkForward = "Walk Forward";
         std::string sWalkBack = "Walk Back";
         std::string sStrafeLeft = "Strafe Left";
         std::string sStrafeRight = "Strafe Right";
         std::string sShooting = "Shooting";
         std::string sMeleeCombo = "MeleeCombo";
+        
+        std::string sReloading = "Reloading";
 
 
         std::string idleTrigger = "tIdle";
@@ -160,37 +163,42 @@ void PlayerController::Start()
         std::string shootingTrigger = "tShooting";
         std::string meleeTrigger = "tMelee";
 
+        std::string reloadingTrigger = "tReloading";
+
         mStateMachine->SetClipName(0, clip);
 
         //States
         mStateMachine->AddState(clip, sIdle);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(12.4f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(23.14f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), 12.4f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), 23.14f);
 
         mStateMachine->AddState(clip, sWalkForward);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(5.78f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(7.74f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), 5.78f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), 7.74f);
 
         mStateMachine->AddState(clip, sWalkBack);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(7.8f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(9.76f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), 7.8f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), 9.76f);
 
         mStateMachine->AddState(clip, sStrafeLeft);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(2.86f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), 0.0f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), 2.86f);
 
         mStateMachine->AddState(clip, sStrafeRight);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.92f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(5.72f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), 2.92f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), 5.72f);
 
         mStateMachine->AddState(clip, sShooting);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(9.8f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(12.36f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), 9.8f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), 12.36f);
 
         mStateMachine->AddState(clip, sMeleeCombo);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo), float(23.9f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo), float(28.1f));
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo), 23.9f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo), 28.1f);
 
+        mStateMachine->AddState(clip, sReloading);
+        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sReloading), 1.0f);
+        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sReloading), 0.1f);
 
         //Transitions
         mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
@@ -202,12 +210,14 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
         mStateMachine->AddTransition(sIdle, sShooting, shootingTrigger);
         mStateMachine->AddTransition(sIdle, sMeleeCombo, meleeTrigger);
+        mStateMachine->AddTransition(sIdle, sReloading, reloadingTrigger);
 
         mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
         mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
         mStateMachine->AddTransition(sWalkForward, sMeleeCombo, meleeTrigger);
+        mStateMachine->AddTransition(sWalkForward, sReloading, reloadingTrigger);
 
 
         mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
@@ -215,6 +225,7 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
         mStateMachine->AddTransition(sWalkBack, sMeleeCombo, meleeTrigger);
+        mStateMachine->AddTransition(sWalkBack, sReloading, reloadingTrigger);
 
 
         mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
@@ -222,6 +233,7 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
         mStateMachine->AddTransition(sStrafeLeft, sMeleeCombo, meleeTrigger);
+        mStateMachine->AddTransition(sStrafeLeft, sReloading, reloadingTrigger);
 
 
         mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
@@ -229,6 +241,7 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sStrafeRight, sMeleeCombo, meleeTrigger);
+        mStateMachine->AddTransition(sStrafeRight, sReloading, reloadingTrigger);
 
 
         mStateMachine->AddTransition(sShooting, sIdle, idleTrigger);
@@ -236,7 +249,14 @@ void PlayerController::Start()
         mStateMachine->AddTransition(sShooting, sWalkBack, backTrigger);
         mStateMachine->AddTransition(sShooting, sStrafeLeft, strafeLeftTrigger);
         mStateMachine->AddTransition(sShooting, sStrafeRight, strafeRightTrigger);
+        mStateMachine->AddTransition(sShooting, sReloading, reloadingTrigger);
 
+        mStateMachine->AddTransition(sReloading, sIdle, idleTrigger);
+        mStateMachine->AddTransition(sReloading, sWalkForward, forwardTrigger);
+        mStateMachine->AddTransition(sReloading, sWalkBack, backTrigger);
+        mStateMachine->AddTransition(sReloading, sStrafeLeft, strafeLeftTrigger);
+        mStateMachine->AddTransition(sReloading, sStrafeRight, strafeRightTrigger);
+        //mStateMachine->AddTransition(sReloading, sMeleeCombo, meleeTrigger);
 
         /*
         mStateMachine->AddTransition(sMeleecombo, sWalkForward, forwardTrigger);
@@ -304,8 +324,6 @@ void PlayerController::Update()
                 mAnimationComponent->SendTrigger("tIdle", 0.1f);
             }
             Idle();
-
-
         }
         break;
 
@@ -320,15 +338,16 @@ void PlayerController::Update()
 
     case PlayerState::ATTACK:
         Attack();
-
-
         break;
 
     case PlayerState::MOVE_ATTACK:
         Moving();
         Attack();
         break;
-
+    case PlayerState::RELOADING:
+        mAnimationComponent->SendTrigger("tReloading", 0.1f);
+        Reload();
+        break;
     case PlayerState::DEATH:
         GameOver();
         break;
@@ -343,8 +362,6 @@ void PlayerController::Update()
 }
 
 #pragma endregion
-
-
 
 void PlayerController::Idle()
 {
@@ -364,6 +381,18 @@ void PlayerController::Idle()
     else if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
     {
         mCurrentState = PlayerState::DASH;
+    }
+    else if (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN && mRangeWeapon) 
+    {
+        if (mRangeWeapon->GetCurrentAmmo() != mRangeWeapon->GetMaxAmmo()) 
+        {
+            //RELOAD SOUND EFFECT
+            mCurrentState = PlayerState::RELOADING;
+
+            if (mReloadingTimer >= mTimeToReload) {
+                mReloadingTimer = 0.0f;
+            }
+        }
     }
     else
     {
@@ -722,7 +751,7 @@ void PlayerController::Moving()
         mFootStepAudio->PlayOneShot();
         mReadyToStep = false;
     }
-    if (mHasShoot)
+    if (mHasShot)
     {
         mShootingTimer += App->GetDt();
     }
@@ -992,18 +1021,23 @@ void PlayerController::MeleeHit(float AttackRange, float AttackDamage) {
 
 void PlayerController::RangedAttack()
 {
-
     //Shoot(mRangeBaseDamage);
-    if (mRangeWeapon && !mHasShoot)
+    if (mRangeWeapon && !mHasShot)
     {
         mGunfireAudio->PlayOneShot();
         mRangeWeapon->BasicAttack();
-        mHasShoot = true;
+        if (mRangeWeapon->GetCurrentAmmo() == 0) 
+        {
+            //RELOAD SOUND EFFECT
+            mCurrentState = PlayerState::RELOADING;
+            mReloadingTimer = 0.0f;
+        }
+        mHasShot = true;
     }
     if (mShootingTimer > 0.2f) {
 
         mShootingTimer = 0.0f;
-        mHasShoot = false;
+        mHasShot = false;
         Idle();
     }
     else
@@ -1060,8 +1094,17 @@ void PlayerController::Shoot(float damage)
 
 void PlayerController::Reload()
 {
-    mBullets = mAmmoCapacity;
-    LOG("Reloaded!Remaining bullets : %i", mBullets);
+    if (mReloadingTimer < mTimeToReload) 
+    {
+        mReloadingTimer += App->GetDt();
+    }
+    else 
+    {
+        //mBullets = mAmmoCapacity;     THIS IS USELESS IT'S ALWAYS 50000
+        mRangeWeapon->Reload();
+        mCurrentState = PlayerState::IDLE;
+    }
+    
 }
 
 void PlayerController::ClosestMouseDirection(const float2& mouseState)

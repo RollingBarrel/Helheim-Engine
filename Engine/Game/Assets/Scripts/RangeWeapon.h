@@ -10,6 +10,9 @@ class RangeWeapon : public Weapon
 public:
 	RangeWeapon(GameObject* owner) : Weapon(owner) {}
 
+	int GetCurrentAmmo() { return mCurrentAmmo; }
+	int GetMaxAmmo() { return mMaxAmmo; }
+
 protected:
 
 	GameObject* mShootPoint = nullptr;

@@ -25,6 +25,7 @@ enum class PlayerState
     MOVE,
     ATTACK,
     MOVE_ATTACK,
+    RELOADING,
     DEATH,
 };
 
@@ -152,14 +153,18 @@ private:
     float mDashRange = 5.0f;
 
     //Range
-    int mAmmoCapacity = 500000;
+    int mAmmoCapacity = 16;
     int mBullets = 0;
     //GameObject* bullet = nullptr;
     GameObject* mRangeWeaponGameObject = nullptr;
     RangeWeapon* mRangeWeapon = nullptr;
     float mShootingTimer = 0.0f;
-    bool mHasShoot = false;
+    bool mHasShot = false;
     float mRangeBaseDamage = 1.0f;
+
+    //Reloading weapon
+    float mTimeToReload = 1.0f;
+    float mReloadingTimer = 1.0f;
 
     //Melee
     bool mLeftMouseButtonPressed = false;
