@@ -54,7 +54,6 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
-		//AddSuffix();
 	}
 }
 
@@ -68,7 +67,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	{
 		mComponents.push_back(component->Clone(this));
 	}
-	//RecalculateLocalTransform(); TODO: Review if this is neccesary
+
 	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{

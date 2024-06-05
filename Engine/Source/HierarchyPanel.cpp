@@ -143,6 +143,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 		{
 			GameObject* gameObject = new GameObject(node);
 			//node->AddChild(gameObject);
+			AddSuffix(*gameObject);
 			mLastClickedObject = gameObject->GetID();
 			InternalSetFocus(gameObject);
 			mMarked.clear();
@@ -213,7 +214,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.50f, 0.50f, 0.50f, 1.00f));
 		}
 		ShiftClick(node, selected);
-		ImGui::Dummy(ImVec2(-1, 5));
+		ImGui::InvisibleButton("##", ImVec2(-1, 5));
 		DragAndDropTarget(node, true);
 		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (selected) {
@@ -305,37 +306,45 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
 			if (mMarked.find(target) == mMarked.end()) 
-			{ //Don't drag object into itself
-				for (auto movedObject : FilterMarked()) 
+			{ 
+				std::vector<GameObject*> gameObjects = FilterMarked();
+				for (GameObject* movedObject : gameObjects) 
 				{
 					bool isParent = false;
-
-					GameObject* parent = target->mParent;
-					while (parent != nullptr) 
+					GameObject* targetParent = target->mParent;
+					while (targetParent != nullptr)
 					{
-						if (parent->mUid == movedObject->mUid) 
+						if (targetParent->mUid == movedObject->mUid)
 						{
 							isParent = true;
 						}
-						parent = parent->mParent;
+						targetParent = targetParent->mParent;
 					}
 
 					if (!isParent) 
 					{
-						movedObject->mParent->RemoveChild(movedObject->GetID());
-
+						
 						if (reorder) 
 						{ 
-							for (auto it = parent->mChildren.cbegin(); it != parent->mChildren.cend(); ++it)
+							movedObject->mParent->RemoveChild(movedObject->mUid);
+							movedObject->mParent = target;
+							for (std::vector<GameObject*>::const_iterator it = target->mChildren.cbegin(); it != target->mChildren.cend(); ++it)
 							{
-								parent->mChildren.insert(it, movedObject);
-								break;
+								
+								if ((*it)->mUid == target->mUid)
+								{
+									target->mParent->mChildren.insert(it, movedObject);
+									//inserted = true;
+									break;
+								}
+								
 								
 							}
 						}
 						else 
 						{ 
-							target->AddChild(movedObject);
+							//target->AddChild(movedObject);
+							movedObject->SetParent(target);
 						}
 					}
 				}
