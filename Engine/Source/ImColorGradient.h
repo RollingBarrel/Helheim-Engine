@@ -44,41 +44,16 @@
  gradient.addMark(1.0f, ImColor(0xE6, 0xBF, 0x83));
 
  */
-
 #pragma once
 
 #include "imgui.h"
 #include <list>
 #include "ColorGradient.h"
-//
-//struct ImGradientMark
-//{
-//    float color[4];
-//    float position; //0 to 1
-//};
-//
-//class ImGradient
-//{
-//public:
-//    ImGradient();
-//    ~ImGradient();
-//
-//    void getColorAt(float position, float* color) const;
-//    void addMark(float position, ImColor const color);
-//    void removeMark(ImGradientMark* mark);
-//    void refreshCache();
-//    const std::list<ImGradientMark*>& getMarks() const { return m_marks; }
-//
-//    ImGradient& operator=(const ImGradient& original);
-//private:
-//    void computeColorAt(float position, float* color) const;
-//    std::list<ImGradientMark*> m_marks;
-//    float m_cachedValues[256 * 3];
-//};
+
 
 namespace ImGui
 {
-    bool GradientButton(ColorGradient* gradient);
+    bool GradientButton(ColorGradient& gradient);
 
     bool GradientEditor(ColorGradient& gradient,
         float& draggingMark,

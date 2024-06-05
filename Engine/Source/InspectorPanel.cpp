@@ -1685,44 +1685,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 		}
 		ImGui::Columns(1);
-
-		// Color and alpha
-		//float4* color = &component->mColorGradient[0.0f];
-		//ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
-		//ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
-
-				////::GRADIENT DATA::
-		//static unsigned int id = 0;
-		////static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
 		static float draggingMark = -1.0f;
 		static float selectedMark = -1.0f;
-		//if (!EqualGradients(gradient, &component->mTrail->mGradient))
-		//{
-		//	gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		//}
 		bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
-
-		if (updated)
-		{
-			//findRemovedMarks(gradient, &component->mTrail->mGradient);
-			//findAddedMarks(gradient, &component->mTrail->mGradient);
-		}
-
-		////::GRADIENT DATA::
-		//static unsigned int id = 0;
-		//static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
-		//static ImGradientMark* draggingMark = nullptr;
-		//static ImGradientMark* selectedMark = nullptr;
-		//if (!EqualGradients(gradient, component->mColorGradient))
-		//{
-		//	gradient = ColorGradientToImGradient(component->mColorGradient);
-		//}
-		//bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
-
-		//if (updated) {
-		//	findRemovedMarks(gradient, component->mColorGradient);
-		//	findAddedMarks(gradient, component->mColorGradient);			
-		//}
 	}
 }
 
@@ -1895,23 +1860,9 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 
 		}
 		ImGui::Columns(1);
-
-		////::GRADIENT DATA::
-		//static unsigned int id = 0;
-		////static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
 		static float draggingMark = -1.0f;
 		static float selectedMark = -1.0f;
-		//if (!EqualGradients(gradient, &component->mTrail->mGradient))
-		//{
-		//	gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		//}
 		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
-
-		if (updated) 
-		{
-			//findRemovedMarks(gradient, &component->mTrail->mGradient);
-			//findAddedMarks(gradient, &component->mTrail->mGradient);
-		}
 	}
 }
 

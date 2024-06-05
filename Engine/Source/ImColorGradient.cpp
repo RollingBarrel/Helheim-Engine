@@ -11,130 +11,6 @@
 static const float GRADIENT_BAR_WIDGET_HEIGHT = 25;
 static const float GRADIENT_BAR_EDITOR_HEIGHT = 40;
 static const float GRADIENT_MARK_DELETE_DIFFY = 40;
-//
-//ImGradient::ImGradient()
-//{
-//    //addMark(0.0f, ImColor(0.0f,0.0f,0.0f));
-//    //addMark(1.0f, ImColor(1.0f,1.0f,1.0f));
-//}
-//
-//ImGradient::~ImGradient()
-//{
-//    for (ImGradientMark* mark : m_marks)
-//    {
-//        delete mark;
-//    }
-//}
-//
-//void ImGradient::addMark(float position, ImColor const color)
-//{
-//    position = ImClamp(position, 0.0f, 1.0f);
-//    ImGradientMark* newMark = new ImGradientMark();
-//    newMark->position = position;
-//    newMark->color[0] = color.Value.x;
-//    newMark->color[1] = color.Value.y;
-//    newMark->color[2] = color.Value.z;
-//    newMark->color[3] = color.Value.w;
-//
-//    m_marks.push_back(newMark);
-//    refreshCache();
-//}
-//
-//void ImGradient::removeMark(ImGradientMark* mark)
-//{
-//    m_marks.remove(mark);
-//    refreshCache();
-//}
-//
-//void ImGradient::getColorAt(float position, float* color) const
-//{
-//    position = ImClamp(position, 0.0f, 1.0f);
-//    int cachePos = (position * 255);
-//    cachePos *= 3;
-//    color[0] = m_cachedValues[cachePos + 0];
-//    color[1] = m_cachedValues[cachePos + 1];
-//    color[2] = m_cachedValues[cachePos + 2];
-//}
-//
-//ImGradient& ImGradient::operator=(const ImGradient& original)
-//{
-//    // TODO: insert return statement here
-//    if (this != &original) // Check for self-assignment
-//    {
-//        // Clear existing marks
-//        for (auto mark : m_marks)
-//            delete mark;
-//        m_marks.clear();
-//
-//        // Copy marks from original
-//        for (auto mark : original.m_marks)
-//            m_marks.push_back(new ImGradientMark(*mark));
-//
-//        // Copy cached values
-//        std::copy(original.m_cachedValues, original.m_cachedValues + (256 * 3), m_cachedValues);
-//    }
-//    return *this;
-//}
-//
-//void ImGradient::computeColorAt(float position, float* color) const
-//{
-//    position = ImClamp(position, 0.0f, 1.0f);
-//
-//    ImGradientMark* lower = nullptr;
-//    ImGradientMark* upper = nullptr;
-//
-//    for (ImGradientMark* mark : m_marks)
-//    {
-//        if (mark->position < position)
-//        {
-//            if (!lower || lower->position < mark->position)
-//            {
-//                lower = mark;
-//            }
-//        }
-//
-//        if (mark->position >= position)
-//        {
-//            if (!upper || upper->position > mark->position)
-//            {
-//                upper = mark;
-//            }
-//        }
-//    }
-//
-//    if (upper && !lower)
-//    {
-//        lower = upper;
-//    }
-//    else if (!upper && lower)
-//    {
-//        upper = lower;
-//    }
-//    else if (!lower && !upper)
-//    {
-//        color[0] = color[1] = color[2] = 0;
-//        return;
-//    }
-//
-//    if (upper == lower)
-//    {
-//        color[0] = upper->color[0];
-//        color[1] = upper->color[1];
-//        color[2] = upper->color[2];
-//    }
-//    else
-//    {
-//        float distance = upper->position - lower->position;
-//        float delta = (position - lower->position) / distance;
-//
-//        //lerp
-//        color[0] = ((1.0f - delta) * lower->color[0]) + ((delta)*upper->color[0]);
-//        color[1] = ((1.0f - delta) * lower->color[1]) + ((delta)*upper->color[1]);
-//        color[2] = ((1.0f - delta) * lower->color[2]) + ((delta)*upper->color[2]);
-//    }
-//}
-//
-
 
 namespace ImGui
 {
@@ -143,8 +19,6 @@ namespace ImGui
 
     void refreshCache(ColorGradient& gradient)
     {
-        //m_marks.sort([](const float a, const float b) { return a < b; });
-
         for (int i = 0; i < 256; ++i)
         {
             m_cachedValues[i] = gradient.CalculateColor(i / 255.0f);
@@ -361,13 +235,12 @@ namespace ImGui
         DrawGradientBar(gradient, bar_pos, maxWidth, GRADIENT_BAR_EDITOR_HEIGHT);
         DrawGradientMarks(gradient, draggingMark, selectedMark, bar_pos, maxWidth, GRADIENT_BAR_EDITOR_HEIGHT);
 
-        if (!ImGui::IsMouseDown(0) && draggingMark)
+        if (!ImGui::IsMouseDown(0) and draggingMark != -1.0f)
         {
-            draggingMark = -1.0f
-                ;
+            draggingMark = -1.0f;
         }
 
-        if (ImGui::IsMouseDragging(0) && draggingMark)
+        if (ImGui::IsMouseDragging(0) and draggingMark != -1.0f)
         {
             float increment = ImGui::GetIO().MouseDelta.x / maxWidth;
             bool insideZone = (ImGui::GetIO().MousePos.x > bar_pos.x) &&
@@ -380,6 +253,7 @@ namespace ImGui
                 gradient.AddColorGradientMark(newDrag, gradient.GetColorMarks()[draggingMark]);
                 gradient.RemoveColorGradientMark(draggingMark);
                 draggingMark = newDrag;
+                selectedMark = newDrag;
                 refreshCache(gradient);
                 modified = true;
             }
