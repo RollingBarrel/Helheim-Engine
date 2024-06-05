@@ -344,9 +344,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::POINTLIGHT:		//TODO: Redoo PointLights
 	{
-		const float3 pos = mPosition;
-		const PointLight def = { pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f };
-		newComponent = new PointLightComponent(this, def);
+		newComponent = new PointLightComponent(this);
 		break;
 	}
 	case ComponentType::SPOTLIGHT:

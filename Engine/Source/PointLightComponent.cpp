@@ -3,16 +3,33 @@
 
 #include "PointLightComponent.h"
 
-PointLightComponent::PointLightComponent(GameObject* owner, const PointLight& light) : Component(owner, ComponentType::POINTLIGHT), mData(light) 
+PointLightComponent::PointLightComponent(GameObject* owner) : Component(owner, ComponentType::POINTLIGHT) 
 {
 	const float3& pos = owner->GetPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
+
+	mData.radius = 25.0f;
+
+	mData.color[0] = 1.0f;
+	mData.color[1] = 1.0f;
+	mData.color[2] = 1.0f;
+
+	mData.intensity = 50.0f;
+	
 	App->GetOpenGL()->AddPointLight(*this);
 }
 
-PointLightComponent::~PointLightComponent() { App->GetOpenGL()->RemovePointLight(*this); }
+PointLightComponent::PointLightComponent(const PointLightComponent* original, GameObject* owner) : Component(owner, ComponentType::POINTLIGHT), mData(original->mData)
+{
+	App->GetOpenGL()->AddPointLight(*this);
+}
+
+PointLightComponent::~PointLightComponent() 
+{ 
+	App->GetOpenGL()->RemovePointLight(*this); 
+}
 
 const float* PointLightComponent::GetPosition() const 
 { 
@@ -29,9 +46,9 @@ void PointLightComponent::SetPosition(const float pos[3])
 
 void PointLightComponent::SetColor(float col[3])
 {
-	mData.col[0] = col[0];
-	mData.col[1] = col[1];
-	mData.col[2] = col[2];
+	mData.color[0] = col[0];
+	mData.color[1] = col[1];
+	mData.color[2] = col[2];
 	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
@@ -67,7 +84,7 @@ void PointLightComponent::Update()
 
 inline Component* PointLightComponent::Clone(GameObject* owner) const 
 {
-	return new PointLightComponent(owner, mData);
+	return new PointLightComponent(this, owner);
 }
 
 void PointLightComponent::Save(JsonObject& obj) const 
@@ -75,7 +92,7 @@ void PointLightComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 	obj.AddFloats("Position", mData.pos, 3);
 	obj.AddFloat("Radius", mData.radius);
-	obj.AddFloats("Color", mData.col, 3);
+	obj.AddFloats("Color", mData.color, 3);
 	obj.AddFloat("Intensity", mData.intensity);
 }
 
@@ -95,9 +112,27 @@ void PointLightComponent::Load(const JsonObject& data)
 	data.GetFloats("Color", color);
 	for (unsigned int i = 0; i < 3; ++i)
 	{
-		mData.col[i] = color[i];
+		mData.color[i] = color[i];
 	}
 	mData.intensity = data.GetFloat("Intensity");
+}
+
+void PointLightComponent::Reset()
+{
+	const float3& pos = mOwner->GetPosition();
+	mData.pos[0] = pos.x;
+	mData.pos[1] = pos.y;
+	mData.pos[2] = pos.z;
+
+	mData.radius = 25.0f;
+
+	mData.color[0] = 1.0f;
+	mData.color[1] = 1.0f;
+	mData.color[2] = 1.0f;
+
+	mData.intensity = 50.0f;
+
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::Enable()

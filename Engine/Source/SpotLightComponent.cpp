@@ -16,12 +16,12 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mData.aimD[0] = dir.x;
 	mData.aimD[1] = dir.y;
 	mData.aimD[2] = dir.z;
-	mData.aimD[3] = cos(DegToRad(25.f)); //cos inner angle
+	mData.aimD[3] = cos(DegToRad(25.0f)); //cos inner angle
 
 	mData.color[0] = 1.0f;
 	mData.color[1] = 1.0f;
 	mData.color[2] = 1.0f;
-	mData.color[3] = cos(DegToRad(38.f)); //cos outer angle
+	mData.color[3] = cos(DegToRad(38.0f)); //cos outer angle
 
 	mData.range = 15.0f;
 	mBias = 0.00001f;
@@ -38,8 +38,9 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	App->GetOpenGL()->AddSpotLight(*this);
 }
 
+
 SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
-	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow)
+	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias)
 {
 	App->GetOpenGL()->AddSpotLight(*this);
 }
@@ -184,6 +185,40 @@ void SpotLightComponent::Load(const JsonObject& data)
 	mShadowFrustum.front = owner->GetFront();
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.01f;
+	mShadowFrustum.farPlaneDistance = mData.range;
+	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
+	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
+
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
+void SpotLightComponent::Reset()
+{
+	const float3& pos = mOwner->GetPosition();
+	mData.pos[0] = pos.x;
+	mData.pos[1] = pos.y;
+	mData.pos[2] = pos.z;
+	mData.pos[3] = 50.0f; //intensity
+
+	const float3& dir = mOwner->GetFront();
+	mData.aimD[0] = dir.x;
+	mData.aimD[1] = dir.y;
+	mData.aimD[2] = dir.z;
+	mData.aimD[3] = cos(DegToRad(25.0f)); //cos inner angle
+
+	mData.color[0] = 1.0f;
+	mData.color[1] = 1.0f;
+	mData.color[2] = 1.0f;
+	mData.color[3] = cos(DegToRad(38.0f)); //cos outer angle
+
+	mData.range = 15.0f;
+	mBias = 0.00001f;
+
+	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
+	mShadowFrustum.pos = mOwner->GetPosition();
+	mShadowFrustum.front = mOwner->GetFront();
+	mShadowFrustum.up = mOwner->GetUp();
+	mShadowFrustum.nearPlaneDistance = 0.1f;
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);

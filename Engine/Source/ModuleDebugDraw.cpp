@@ -1,6 +1,5 @@
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
-#include "ModuleDebugDraw.h"
 #include "EngineApp.h"
 
 #include "ModuleOpenGL.h"
@@ -9,7 +8,7 @@
 #include "ModuleScene.h"
 
 #include "SpotLightComponent.h"
-#include "DebugPanel.h"
+#include "PointLightComponent.h"
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "BoxColliderComponent.h"
@@ -20,7 +19,6 @@
 #include "DebugPanel.h"
 
 
-#define DEBUG_DRAW_IMPLEMENTATION
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
 
@@ -672,13 +670,18 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
         if (spotLight)
         {
-
             float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
             DrawCone(spotLight->GetOwner()->GetPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
             //Frustum ShadowFrustum = spotLight->GetFrustum();
             //DrawFrustum(spotLight->GetFrustum());
         }
-        
+        PointLightComponent* pointLight = reinterpret_cast<PointLightComponent*>(focusGameObject->GetComponent(ComponentType::POINTLIGHT));
+        if (pointLight)
+        {
+            DrawSphere(pointLight->GetPosition(), pointLight->GetColor(), pointLight->GetRadius());
+        }
+
+
         BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
         if (boxCollider)
         {
@@ -730,6 +733,8 @@ void ModuleDebugDraw::DrawSphere(const float center[3], const float color[3], co
     //    }
     //}
     dd::sphere(ddVec3(center), ddVec3(color), radius);
+
+    dd::flush();
 }
 
 void ModuleDebugDraw::DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius)
