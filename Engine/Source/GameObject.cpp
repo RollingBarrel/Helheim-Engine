@@ -71,8 +71,8 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{
-		GameObject* gameObject = new GameObject(*(child), this);
-		mParent->AddChild(gameObject);
+		GameObject* gameObject = new GameObject(*child, this);
+		AddChild(gameObject);
 	}
 	
 }
