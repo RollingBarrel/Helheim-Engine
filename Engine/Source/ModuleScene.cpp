@@ -465,13 +465,6 @@ void ModuleScene::LoadGameObjectsIntoScripts()
 	mGameObjectsToLoadIntoScripts.clear();
 }
 
-void ModuleScene::FillGameObjectsByTags()
-{
-
-
-
-}
-
 #pragma endregion
 
 #pragma region Others

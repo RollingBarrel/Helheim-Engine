@@ -166,11 +166,9 @@ void GameObject::SetParent(GameObject* newParent)
 
 void GameObject::SetEnabled(bool enabled)
 {
-	// TODO, kind of redundant, no?
 	if (mIsEnabled != enabled)
 	{
 		mIsEnabled = enabled;
-
 		if (!enabled || IsRoot() || mParent->IsActive())
 		{
 			SetActive(enabled);
@@ -191,7 +189,6 @@ void GameObject::SetActive(bool active)
 	{
 		component->SetEnable(active);
 	}
-
 
 	for (GameObject* child : mChildren)
 	{
@@ -652,7 +649,7 @@ void GameObject::AddChild(GameObject* child)
 GameObject* GameObject::RemoveChild(const int id)
 {
 	GameObject* object = nullptr;
-	for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
+	for (std::vector<GameObject*>::const_iterator it = mChildren.cbegin(); it != mChildren.cend(); ++it)
 	{
 		if ((*it)->GetID() == id)
 		{

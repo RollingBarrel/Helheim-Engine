@@ -287,7 +287,7 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("MainCamera");
 		mTags.push_back("Player");
 
-		for (int i = 0; i < tags.Size(); ++i)
+		for (unsigned int i = 0; i < tags.Size(); ++i)
 		{
 			mTags.push_back(tags.GetString(i));
 		}
