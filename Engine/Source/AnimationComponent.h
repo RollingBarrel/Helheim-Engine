@@ -48,10 +48,9 @@ public:
 	void SendSpineTrigger(std::string trigger, float transitionTime);
 	void ChangeSpineState(std::string stateName, float transitionTime);
 
-	//Model UUID
-	unsigned int GetModelUUID() const;
-	void SetModelUUID(unsigned int modelUid);
-	void SetModel(ResourceModel* model);
+	//Animations UUIDs
+	void SetAnimationsUids(const std::vector<unsigned int>& uids) { mAnimationsUIDs = uids; }
+	const  std::vector<unsigned int>& GetAnimationUids() const { return mAnimationsUIDs; }
 
 	
 
@@ -72,7 +71,6 @@ private:
 
 	float mSpeed;
 
-	ResourceModel* mModel;
 
 	//Locomotion
 	AnimationController* mSpineController;
@@ -82,6 +80,7 @@ private:
 
 	std::vector<GameObject*> mSpineObjects;
 	std::vector<GameObject*> mDefaultObjects;
+	std::vector<unsigned int> mAnimationsUIDs;
 
 };
 

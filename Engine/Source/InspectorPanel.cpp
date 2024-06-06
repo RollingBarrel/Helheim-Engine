@@ -949,7 +949,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	//bool play = false;
 
 
-	if (component->GetModelUUID() != 0)
+	if (component->GetAnimationUids().size() > 0)
 	{
 		ImGui::Text("Current state: ");
 		ImGui::SameLine();
@@ -1037,7 +1037,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 					{
 						if (model->mAnimationUids.size() > 0)
 						{
-							component->SetModel(model);
+							component->SetAnimationsUids(model->mAnimationUids);
 						}
 						else
 						{

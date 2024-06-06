@@ -12,7 +12,7 @@
 #include "ResourceModel.h"
 #include "float4x4.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mModel(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
 	mStateMachine = nullptr;
 	mSpeed = 1.0;
@@ -24,7 +24,7 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mSpeed = 1.0;
 	mStateMachine = nullptr;
 
-	SetModel(other.mModel);
+	SetAnimationsUids(other.mAnimationsUIDs);
 
 }
 
@@ -39,11 +39,6 @@ AnimationComponent::~AnimationComponent()
 		delete mSpineStateMachine;
 	}
 
-	mDefaultObjects.clear();
-	mSpineObjects.clear();
-
-	App->GetResource()->ReleaseResource(mModel->GetUID());
-	
 }
 
 void AnimationComponent::SetLoop(bool loop)
@@ -260,6 +255,7 @@ void AnimationComponent::ChangeSpineState(std::string stateName, float transitio
 
 		if (resourceAnimation != 0)
 		{
+			// TODO: Before doing the request check if it is the same Resource (uid) as the current to avoid loading time :)
 			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
 			assert(tmpAnimation);
 			if (mSpineController)
@@ -286,28 +282,7 @@ void AnimationComponent::ChangeSpineState(std::string stateName, float transitio
 	}
 }
 
-unsigned int AnimationComponent::GetModelUUID() const
-{
-	return mModel->GetUID();
-}
 
-void AnimationComponent::SetModelUUID(unsigned int modelUid)
-{
-	mModel = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(modelUid, Resource::Type::Model));
-	delete mStateMachine;
-	mStateMachine = new AnimationStateMachine(mModel->mAnimationUids);
-	ChangeState("Default", 0.0f);
-	LoadSpine(mModel);	
-}
-
-void AnimationComponent::SetModel(ResourceModel* model)
-{
-	mModel = model;
-	delete mStateMachine;
-	mStateMachine = new AnimationStateMachine(model->mAnimationUids);
-	ChangeState("Default", 0.0f);
-	LoadSpine(model);
-}
 
 void AnimationComponent::StartTransition(float transitionDuration)
 {
@@ -368,7 +343,7 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 void AnimationComponent::Save(Archive& archive) const
 {
 	archive.AddInt("ID", GetID());
-	archive.AddInt("ModelUID", mModel->GetUID());
+	archive.AddIntArray("AnimationUIDs", mAnimationsUIDs);
 
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
@@ -384,14 +359,17 @@ void AnimationComponent::Save(Archive& archive) const
 
 void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
-	int modelUid = { 0 };
-
-	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
+	std::vector<unsigned int> animationsUids;
+	if (data.HasMember("AnimationUIDs") && data["AnimationUIDs"].IsArray()) 
 	{
-		modelUid = data["ModelUID"].GetInt();
+		const rapidjson::Value& uids = data["AnimationsUIDs"];
+		for (rapidjson::SizeType i = 0; i < uids.Size(); i++)
+		{
+			animationsUids.push_back(uids[i].GetInt());
+		}
 	}
+	mAnimationsUIDs = animationsUids;
 
-	SetModelUUID(modelUid); // Don't create state machines here...
 
 	int lowerStateMachine = { 0 };
 
