@@ -7,14 +7,12 @@
 TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::TRAIL)
 {
     mTrail = new Trail();
-    Init();
 }
 
 TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner) : Component(owner, ComponentType::TRAIL), 
 mResourceId(original.mResourceId), mFileName(original.mFileName), mTrail(new Trail(*original.mTrail)),
 mMaxPoints(original.mMaxPoints), mMinDistance(original.mMinDistance)
 {
-    Init();
 }
 
 TrailComponent::~TrailComponent()
@@ -26,8 +24,6 @@ Component* TrailComponent::Clone(GameObject* owner) const
 {
     return new TrailComponent(*this, owner);
 }
-
-
 
 void TrailComponent::Init()
 {
@@ -45,6 +41,7 @@ void TrailComponent::Draw()
 
 void TrailComponent::Update()
 {
+    //Init(); // THIS IS HORRIBLE HELP ME FIND A SOLUTION
     if (IsEnabled())
     {        
         float3 position, scale;
@@ -99,11 +96,13 @@ void TrailComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owne
         mMinDistance = data["Min Distance"].GetFloat();
     }
     mTrail->LoadJson(data);
+    Init();
 }
 
 void TrailComponent::Enable()
 {
     App->GetOpenGL()->AddTrail(mTrail);
+    Init(); // THIS IS HORRIBLE HELP ME FIND A SOLUTION
 }
 
 void TrailComponent::Disable()
