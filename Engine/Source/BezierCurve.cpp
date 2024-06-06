@@ -95,9 +95,10 @@ float BezierCurve::CalculateRandomValue()
     return mInitialValue;
 }
 
-void BezierCurve::SaveJson(Archive& archive) const
+void BezierCurve::Save(JsonObject& obj) const
 {
-    archive.AddBool("IsValueRandom", mIsValueRandom);
+    //TODO: Redoo Save
+    /*archive.AddBool("IsValueRandom", mIsValueRandom);
     archive.AddFloat("Value", mValue);
     archive.AddFloat("MaxValue", mMaxValue);
     archive.AddBool("isCurve", mIsCurve);
@@ -111,11 +112,20 @@ void BezierCurve::SaveJson(Archive& archive) const
         objectArray.push_back(dataArchive);
     }
 
-    archive.AddObjectArray("CurvePoints", objectArray);
+    archive.AddObjectArray("CurvePoints", objectArray);*/
 }
 
-void BezierCurve::LoadJson(const rapidjson::Value& data)
+void BezierCurve::Load(const JsonObject& data)
 {
+        //TODO: Redoo Save
+    /*mLineal = data.GetFloat("Lineal");
+    mIsCurve = data.GetBool("IsCurve");
+    mCurveFactor = data.GetFloat("Factor");
+
+    float curve[4];
+    data.GetFloats("Curve", curve);
+    mCurve = float4(curve);
+
     if (data.HasMember("IsValueRandom") && data["IsValueRandom"].IsBool())
     {
         mIsValueRandom = data["IsValueRandom"].GetBool();
@@ -152,5 +162,5 @@ void BezierCurve::LoadJson(const rapidjson::Value& data)
 
             mPoints.push_back(float2(x, y));
         }
-    }
+    }*/
 }

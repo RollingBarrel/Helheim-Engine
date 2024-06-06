@@ -40,7 +40,10 @@ private:
 	Component* mComponent = nullptr;
 
 	bool mLocked = false;
-	bool mSameComponentPopup = false;
+	bool mSameComponentPopup = false; 
+	bool mTagsLayersPopUp = false;
+
+	void ShowTagsLayerPopUp();
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);
@@ -48,7 +51,6 @@ private:
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
 
-	void DrawTestComponent(TestComponent* component);
 	void DrawCameraComponent(CameraComponent* component);
 	void DrawScriptComponent(ScriptComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);
@@ -67,8 +69,8 @@ private:
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
 
-	void DragAndDropSource(Component* component);
-	void DragAndDropTarget(GameObject* object, Component* target);
+	//void DragAndDropSource(Component* component);
+	//void DragAndDropTarget(GameObject* object, Component* target);
 	void MaterialVariables(const MeshRendererComponent& renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);

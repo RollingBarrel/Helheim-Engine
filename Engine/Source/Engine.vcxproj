@@ -237,7 +237,6 @@
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
-    <ClCompile Include="TagsManagerPanel.cpp" />
     <ClCompile Include="TimerPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -313,7 +312,6 @@
     <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ImporterTexture.h" />
-    <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="OptickAdapter.h" />
     <ClInclude Include="SettingsPanel.h" />
     <ClInclude Include="TimerPanel.h" />

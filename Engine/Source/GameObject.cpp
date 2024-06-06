@@ -6,7 +6,6 @@
 #include "Component.h"
 #include "MeshRendererComponent.h"
 #include "CameraComponent.h"
-#include "TestComponent.h"
 #include "AIAgentComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
@@ -21,16 +20,14 @@
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ParticleSystemComponent.h"
-#include "TextComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
 #include "MathFunc.h"
-#include "Tag.h"
 #include "Quadtree.h"
-#include <regex>
+
 
 #pragma region Constructors and Destructors
 
@@ -46,65 +43,55 @@ GameObject::GameObject(const char* name, GameObject* parent) : GameObject(LCG().
 {
 }
 
-GameObject::GameObject(unsigned int ID, const char* name, GameObject* parent)
-	:mID(ID), mName(name), mParent(parent), mTag(App->GetScene()->GetTagByName("Untagged")),
-	mIsRoot(parent == nullptr)
+GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
+	:mUid(uid), mName(name), mParent(parent), mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot)
 	{
+		SetTag("Untagged");
+
 		App->GetScene()->AddGameObjectToScene(this);
 
 		mWorldTransformMatrix = mParent->GetWorldTransform();
 		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
-		AddSuffix();
-	}
-}
-
-GameObject::GameObject(const GameObject& original) : GameObject(original, original.mParent)
-{
-	if (mParent)
-	{
-		AddSuffix();
 	}
 }
 
 GameObject::GameObject(const GameObject& original, GameObject* newParent)
-	:mID(LCG().Int()), mName(original.mName), mParent(newParent),
-	mTag(original.GetTag()), mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mPrefabResourceId(original.mPrefabResourceId), mPrefabOverride(original.mPrefabOverride),
-	mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled), mIsRoot(original.mIsRoot)
+	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
+	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
+	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
+	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride)
 {
+	SetTag(original.mTag);
 	for (Component* component : original.mComponents)
 	{
 		mComponents.push_back(component->Clone(this));
 	}
-	RecalculateLocalTransform();
+
 	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{
-		GameObject* gameObject = new GameObject(*(child), this);
-		gameObject->mParent = this;
-		mChildren.push_back(gameObject);
+		GameObject* gameObject = new GameObject(*child, this);
+		AddChild(gameObject);
 	}
 	
 }
 
 GameObject::~GameObject()
 {
+	App->GetScene()->RemoveGameObjectFromScene(this);
+
 	for (Component* component : mComponents)
 	{
 		delete component;
 	}
-	mComponents.clear();
- 
-	App->GetScene()->RemoveGameObjectFromScene(this);
 
 	for (GameObject* gameObject : mChildren)
 	{
 		delete gameObject;
 	}
-	mChildren.clear();
 }
 
 #pragma endregion
@@ -131,110 +118,19 @@ void GameObject::Update()
 		mIsTransformModified = false;
 	}
 
-	DeleteComponents();
+	if (mComponentsToDelete.size() > 0)
+	{
+		DeleteComponents();
+	}
 }
 
 #pragma endregion
 
-#pragma region Setters and Getters
-
-Component* GameObject::GetComponent(ComponentType type) const
-{
-	for (Component* component : mComponents)
-	{
-		if (component->GetType() == type)
-		{
-			return component;
-		}
-	}
-	return nullptr;
-}
-
-std::vector<Component*> GameObject::GetComponents(ComponentType type) const
-{
-	std::vector<Component*> matchingComponents;
-
-	for (auto component : mComponents)
-	{
-		if (component->GetType() == type)
-		{
-			matchingComponents.push_back(component);
-		}
-	}
-
-	return matchingComponents;
-}
-
-std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) const
-{
-	std::vector<Component*> componentVector;
-
-	Component* gameObjectComponent = GetComponent(type);
-
-	if (gameObjectComponent)
-	{
-		componentVector.push_back(gameObjectComponent);
-	}
-
-	for (GameObject* child : mChildren)
-	{
-		std::vector<Component*> childComponents = child->GetComponentsInChildren(type);
-		if (!childComponents.empty())
-		{
-			componentVector.insert(componentVector.end(), childComponents.begin(), childComponents.end());
-		}
-
-	}
-
-	return componentVector;
-}
-
-Component* GameObject::GetComponentInParent(ComponentType type) const
-{
-	Component* component = nullptr;
-	const GameObject* parent = this;
-	while (parent)
-	{
-		component = parent->GetComponent(type);
-
-		if (component)
-		{
-			return component;
-		}
-		else
-		{
-			parent = parent->mParent;
-		}
-	}
-	return nullptr;
-}
-
-void GameObject::RecalculateMatrices()
-{
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-	
-	mWorldTransformMatrix =  mLocalTransformMatrix;
-	if (mParent != nullptr)
-	{
-		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
-	}
-	
-
-	for (size_t i = 0; i < mChildren.size(); i++) 
-	{
-		mChildren[i]->RecalculateMatrices();
-	}
-
-}
-
-void GameObject::Translate(float3 translation)
-{
-	SetPosition(mPosition + translation);
-}
-
+#pragma region Getter & Setters
 AABB GameObject::GetAABB()
 {
-	std::vector<Component*> components = GetComponentsInChildren(ComponentType::MESHRENDERER);
+	std::vector<Component*> components;
+	GetComponentsInChildren(ComponentType::MESHRENDERER, components);
 
 	AABB mixedAABB;
 	mixedAABB.SetNegativeInfinity();
@@ -247,79 +143,40 @@ AABB GameObject::GetAABB()
 	return mixedAABB;
 }
 
-void GameObject::LookAt(float3 target)
+
+//Setters
+
+void GameObject::SetTag(const std::string& tag) 
 {
-	float4x4 rotationMatrix = float4x4::identity;
+	App->GetScene()->DeleteFromTagMap(tag, this);
+	mTag = tag;
+	App->GetScene()->AddToTagMap(tag, this);
+}
 
-	//rotationMatrix = rotationMatrix.RotateFromTo(GetFront().Normalized() , (target - mPosition).Normalized());
-	
-	float3 forward = -(target - GetWorldPosition()).Normalized();
-	float3 right = Cross(forward, float3::unitY).Normalized();
-	float3 up = Cross(right, forward).Normalized();
-	
-	rotationMatrix[0][0] = right.x;
-	rotationMatrix[1][0] = right.y;
-	rotationMatrix[2][0] = right.z;
-	rotationMatrix[0][1] = up.x;
-	rotationMatrix[1][1] = up.y;
-	rotationMatrix[2][1] = up.z;
-	rotationMatrix[0][2] = -forward.x;
-	rotationMatrix[1][2] = -forward.y;
-	rotationMatrix[2][2] = -forward.z;
+void GameObject::SetParent(GameObject* newParent)
+{
+	assert(newParent && "Parent was nullptr");
+	mParent->RemoveChild(mUid);
+	mParent = newParent;
+	mParent->AddChild(this);
 
-	
-	mRotation = Quat(rotationMatrix);
-	mEulerRotation = mRotation.ToEulerXYZ();
-
-	mIsTransformModified = true;
+	RecalculateMatrices();
+	SetActive(mParent->mIsActive && mIsEnabled);
 }
 
 void GameObject::SetEnabled(bool enabled)
 {
-	// TODO, kind of redundant, no?
 	if (mIsEnabled != enabled)
 	{
 		mIsEnabled = enabled;
-
 		if (!enabled || IsRoot() || mParent->IsActive())
 		{
-			SetActiveInHierarchy(enabled);
+			SetActive(enabled);
 		}
 	}
 }
 
-void GameObject::SetRotation(const float3& rotationInRadians)
-{
-	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
-	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
-	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
-	mRotation = yQuat * xQuat * zQuat;
-
-	/*mRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);*/
-	mEulerRotation = rotationInRadians;
-	mIsTransformModified = true;
-}
-
-void GameObject::SetRotation(const Quat& rotation)
-{
-	mRotation = rotation;
-	mEulerRotation = rotation.ToEulerXYZ();
-	mIsTransformModified = true;
-}
-
-void GameObject::SetPosition(const float3& position)
-{
-	mPosition = position;
-	mIsTransformModified = true;
-}
-
-void GameObject::SetScale(const float3& scale)
-{
-	mScale = scale;
-	mIsTransformModified = true;
-}
-
-void GameObject::SetActiveInHierarchy(bool active)
+void GameObject::SetActive(bool active)
 {
 	if (active && !mIsEnabled)
 	{
@@ -333,27 +190,160 @@ void GameObject::SetActiveInHierarchy(bool active)
 		component->SetEnable(active);
 	}
 
-
 	for (GameObject* child : mChildren)
 	{
-		child->SetActiveInHierarchy(active);
+		child->SetActive(active);
 	}
 }
 
+#pragma endregion
+
+#pragma region Transform
+void GameObject::RecalculateMatrices() //TODO: REDO
+{
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+
+	mWorldTransformMatrix = mLocalTransformMatrix;
+	if (mParent != nullptr)
+	{
+		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+	}
+
+	mFront = (mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized();
+	mUp = (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized();
+	mRight = (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized();
+
+	for (size_t i = 0; i < mChildren.size(); i++)
+	{
+		mChildren[i]->RecalculateMatrices();
+	}
+
+}
+
+//Position
+void GameObject::SetPosition(const float3& position)
+{
+	mPosition = position;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetLocalPosition(const float3& position)
+{
+	mLocalPosition = position;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetRotation(const float3& rotationInRadians)
+{
+	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
+	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
+	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
+	mRotation = yQuat * xQuat * zQuat;
+
+	mEulerAngles = rotationInRadians;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetRotation(const Quat& rotation)
+{
+	mRotation = rotation;
+	mEulerAngles = rotation.ToEulerXYZ();
+	mIsTransformModified = true;
+}
+
+void GameObject::SetLocalRotation(const float3& rotationInRadians)
+{
+	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
+	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
+	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
+	mLocalRotation = yQuat * xQuat * zQuat;
+
+	mLocalEulerAngles = rotationInRadians;
+	mIsTransformModified = true;
+}
+
+
+
+void GameObject::SetLocalRotation(const Quat& rotation)
+{
+	mLocalRotation = rotation;
+	mLocalEulerAngles = rotation.ToEulerXYZ();
+	mIsTransformModified = true;
+}
+
+void GameObject::SetScale(const float3& scale)
+{
+	mScale = scale;
+	mIsTransformModified = true;
+}
+
+void GameObject::SetLocalScale(const float3& scale)
+{
+	mLocalScale = scale;
+	mIsTransformModified = true;
+}
+
+const bool GameObject::HasUpdatedTransform() const
+{
+	if (!mIsTransformModified && mParent != nullptr)
+	{
+		if (mParent->HasUpdatedTransform())
+		{
+			return true;
+		}
+	}
+	return mIsTransformModified;
+}
+
+void GameObject::Translate(const float3& translation)
+{
+	SetPosition(mPosition + translation);
+}
+
+void GameObject::LookAt(const float3& target)
+{
+	float4x4 rotationMatrix = float4x4::identity;
+
+	float3 forward = -(target - GetPosition()).Normalized();
+	float3 right = Cross(forward, float3::unitY).Normalized();
+	float3 up = Cross(right, forward).Normalized();
+
+	rotationMatrix[0][0] = right.x;
+	rotationMatrix[1][0] = right.y;
+	rotationMatrix[2][0] = right.z;
+	rotationMatrix[0][1] = up.x;
+	rotationMatrix[1][1] = up.y;
+	rotationMatrix[2][1] = up.z;
+	rotationMatrix[0][2] = -forward.x;
+	rotationMatrix[1][2] = -forward.y;
+	rotationMatrix[2][2] = -forward.z;
+
+
+	mRotation = Quat(rotationMatrix);
+	mEulerAngles = mRotation.ToEulerXYZ();
+
+	mIsTransformModified = true;
+}
+
+void GameObject::ResetTransform()
+{
+	SetPosition(float3::zero);
+	SetRotation(float3::zero);
+	SetScale(float3::one);
+}
 
 #pragma endregion
 
 #pragma region Components
 
-void GameObject::AddComponentToDelete(Component* component)
+template<typename T>
+T* GameObject::CreateComponent()
 {
-	mComponentsToDelete.push_back(component);
+	return new T(this);
 }
 
-//TODO: Crate a component that requires ids not clean now
 Component* GameObject::CreateComponent(ComponentType type)
 {
-
 	Component* newComponent = nullptr;
 
 	switch (type)
@@ -365,22 +355,13 @@ Component* GameObject::CreateComponent(ComponentType type)
 		newComponent = new CameraComponent(this);
 		break;
 	case ComponentType::POINTLIGHT:
-	{
-		const float3 pos = GetWorldPosition();
-		const PointLight def = { pos.x, pos.y, pos.z, 25.0f, 1.f, 1.f, 1.f, 50.0f };
-		newComponent = new PointLightComponent(this, def);
+		newComponent = new PointLightComponent(this);
 		break;
-	}
 	case ComponentType::SPOTLIGHT:
-	{
 		newComponent = new SpotLightComponent(this);
 		break;
-	}
 	case ComponentType::SCRIPT:
 		newComponent = new ScriptComponent(this);
-		break;
-	case ComponentType::TEST:
-		newComponent = new TestComponent(this);
 		break;
 	case ComponentType::AIAGENT:
 		newComponent = new AIAgentComponent(this);
@@ -409,21 +390,13 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::AUDIOLISTENER:
 		newComponent = new AudioListenerComponent(this);
 		break;
-	case ComponentType::SLIDER:
+	case ComponentType::SLIDER:				//TODO: Redoo UI To not create gameObjects in a component	
 		newComponent = new SliderComponent(this);
-		break;
-	case ComponentType::TEXT:
-		newComponent = new TextComponent(this);
 		break;
 	case ComponentType::PARTICLESYSTEM:
 		newComponent = new ParticleSystemComponent(this);
 		break;
-	case ComponentType::TRAIL:
-		newComponent = new TrailComponent(this);
-		break;
-	case ComponentType::BOXCOLLIDER:
-		newComponent = new BoxColliderComponent(this);
-		break;
+	
 	default:
 		break;
 	}
@@ -432,321 +405,176 @@ Component* GameObject::CreateComponent(ComponentType type)
 	{
 		mComponents.push_back(newComponent);
 	}
+	if (type == ComponentType::MESHRENDERER)		//TODO: WTF is this doing here?
+	{
+		App->GetScene()->GetQuadtreeRoot()->AddObject(this);
+	}
 	return newComponent;
+}
+
+template<typename T> 
+T* GameObject::GetComponent() const
+{
+	ComponentType type = T::GetType();
+	for (Component* component : mComponents)
+	{
+		if (component->GetType() == type)
+		{
+			return component;
+		}
+	}
+	return nullptr;
+}
+
+Component* GameObject::GetComponent(ComponentType type) const
+{
+	for (Component* component : mComponents)
+	{
+		if (component->GetType() == type)
+		{
+			return component;
+		}
+	}
+	return nullptr;
+}
+
+void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const
+{
+	Component* gameObjectComponent = GetComponent(type);
+
+	if (gameObjectComponent)
+	{
+		componentVector.push_back(gameObjectComponent);
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		child->GetComponentsInChildren(type, componentVector);
+	}
+}
+
+template<typename T>
+T* GameObject::GetComponentInParent() const
+{
+	Component* component = nullptr;
+	const GameObject* parent = this;
+	while (parent)
+	{
+		component = parent->GetComponent(T::GetType());
+
+		if (component)
+		{
+			return component;
+		}
+		else
+		{
+			parent = parent->mParent;
+		}
+	}
+	return nullptr;
+}
+
+Component* GameObject::GetComponentInParent(ComponentType type) const
+{
+	Component* component = nullptr;
+	const GameObject* parent = this;
+	while (parent)
+	{
+		component = parent->GetComponent(type);
+
+		if (component)
+		{
+			return component;
+		}
+		else
+		{
+			parent = parent->mParent;
+		}
+	}
+	return nullptr;
+}
+
+void GameObject::AddComponentToDelete(Component* component)
+{
+	mComponentsToDelete.push_back(component);
 }
 
 void GameObject::DeleteComponents()
 {
-	for (auto component : mComponentsToDelete)
+	for (std::vector<Component*>::const_iterator it = mComponentsToDelete.cbegin(); it > mComponentsToDelete.cend(); ++it)
 	{
-		auto it = std::find(mComponents.begin(), mComponents.end(), component);
-		if (it != mComponents.end())
-		{
-			mComponents.erase(it);
-			delete component;
-			component = nullptr;
-		}
+		mComponents.erase(it);
+		delete *it;
 	}
-}
-
-Component* GameObject::RemoveComponent(Component* component)
-{
-	Component* movedComponent = nullptr;
-	for (auto it = mComponents.begin(); it != mComponents.cend(); ++it)
-	{
-		if ((*it)->GetID() == component->GetID())
-		{
-			movedComponent = *it;
-			mComponents.erase(it);
-			break;
-		}
-	}
-	return movedComponent;
-}
-
-void GameObject::AddComponent(Component* component, Component* position)
-{
-	if (position == nullptr)
-	{
-		mComponents.push_back(component);
-	}
-	else
-	{
-		auto it = std::find(mComponents.begin(), mComponents.end(), position);
-		mComponents.insert(it, component);
-	}
-}
-
-std::vector<Component*> GameObject::FindComponentsInChildren(GameObject* parent, const ComponentType type)
-{
-	std::vector<Component*> components;
-
-	std::vector<GameObject*> children = parent->GetChildren();
-	for (GameObject* child : children)
-	{
-		std::vector<Component*> childComponents = FindComponentsInChildren(child, type);
-		components.insert(components.end(), childComponents.begin(), childComponents.end());
-	}
-
-	return components;
-}
-
-const AnimationComponent* GameObject::FindAnimationComponent() {
-
-	const AnimationComponent* cAnim = reinterpret_cast<AnimationComponent*>(this->GetComponent(ComponentType::ANIMATION));
-	if (cAnim == nullptr && mParent != nullptr)
-	{
-		return mParent->FindAnimationComponent();
-	}
-	else
-		return cAnim;
-
-	return nullptr;
-}
-
-#pragma endregion
-
-#pragma region Transform
-
-void GameObject::ResetTransform()
-{
-	SetPosition(float3::zero);
-	SetRotation(float3::zero);
-	SetScale(float3::one);
-}
-
-void GameObject::RecalculateLocalTransform() 
-{
-	if (mParent->mWorldTransformMatrix.Determinant4() != 0)
-	{
-		mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
-	}
-	else 
-	{
-		mLocalTransformMatrix = float4x4::identity;
-	}
-
-	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
-	mEulerRotation = mRotation.ToEulerXYZ();
-
-	if (mEulerRotation.Equals(float3::zero)) 
-	{
-		mEulerRotation = float3::zero;
-	}
-	
-	for (int i = 0; i < mChildren.size(); ++i)
-	{
-		mChildren[i]->RecalculateLocalTransform();
-	}
-}
-
-const bool GameObject::HasUpdatedTransform() const
-{
-	if (!mIsTransformModified && mParent != nullptr)
-	{
-		if (mParent->HasUpdatedTransform())
-		{
-			return true;
-		}
-	}
-	return mIsTransformModified;
+	mComponentsToDelete.clear();
 }
 
 #pragma endregion
 
 #pragma region Save / Load
 
-void GameObject::Save(Archive& archive) const
+void GameObject::Save(JsonObject& obj) const
 {
-	archive.AddInt("UID", mID);
+	obj.AddInt("UID", mUid);
 	if (mParent == App->GetScene()->GetRoot())
 	{
-		archive.AddInt("ParentUID", 1);
+		obj.AddInt("ParentUID", 1);
 	}
 	else
 	{
-		archive.AddInt("ParentUID", mParent->GetID());
+		obj.AddInt("ParentUID", mParent->GetID());
 	}
-	archive.AddString("Name", mName.c_str());
-	archive.AddBool("isEnabled", mIsEnabled);
-	archive.AddFloat3("Translation", mPosition);
-	archive.AddQuat("Rotation", mRotation);
-	archive.AddFloat3("Scale", mScale);
-	archive.AddInt("Tag", mTag->GetID());
-	archive.AddInt("PrefabId", mPrefabResourceId);
-	archive.AddBool("OverridePrefab", mPrefabOverride);
-	archive.AddBool("Dynamic", mIsDynamic);
+	obj.AddString("Name", mName.c_str());
+	obj.AddBool("Enabled", mIsEnabled);
+	obj.AddFloats("Translation", mPosition.ptr(), 3);
+	obj.AddFloats("Rotation", mRotation.ptr(), 4);
+	obj.AddFloats("Scale", mScale.ptr(), 3);
+	obj.AddString("Tag", mTag.c_str());
+	obj.AddInt("PrefabUid", mPrefabId);
+	obj.AddBool("OverridePrefab", mPrefabOverride);
+	obj.AddBool("Dynamic", mIsDynamic);
+
 	// Save components
-	std::vector<Archive> componentsArchiveVector;
-
-	for (const auto& component : mComponents)
+	JsonArray components = obj.AddNewJsonArray("Components");
+	for (const Component* component : mComponents)
 	{
-		Archive componentArchive;
-		component->Save(componentArchive);
-		componentsArchiveVector.push_back(componentArchive);
-	}
-
-	archive.AddObjectArray("Components", componentsArchiveVector);
-
-}
-
-void GameObject::LoadComponentsFromJSON(const rapidjson::Value& components)
-{
-	for (rapidjson::SizeType i = 0; i < components.Size(); i++)
-	{
-		if (components[i].IsObject())
-		{
-			const rapidjson::Value& componentValue = components[i];
-			if (componentValue.HasMember("ComponentType") && componentValue["ComponentType"].IsInt())
-			{
-				ComponentType cType = ComponentType(componentValue["ComponentType"].GetInt());
-				Component* component = this->CreateComponent(cType);
-				component->LoadFromJSON(componentValue, this);
-			}
-		}
+		JsonObject comp = components.PushBackNewObject();
+		component->Save(comp);
 	}
 }
 
-GameObject* GameObject::LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent, std::unordered_map<int, int>* uuids)
+void GameObject::Load(const JsonObject& jsonObject)
 {
-	unsigned int uuid{ 0 };
-	int parentUID{ 0 };
-	int prefabId{ 0 };
-	bool overridePrefab = true;
-	const char* name = { "" };
-	float3 position;
-	float3 scale;
-	Quat rotation;
-	bool isEnabled = true;
-	bool isDynamic = false;
-	Tag* tag = App->GetScene()->GetTagByName("Untagged");
+	mIsEnabled = jsonObject.GetBool("Enabled");
+	float pos[3]; 
+	jsonObject.GetFloats("Translation", pos);
+	SetPosition(float3(pos));
+	float rot[4]; 
+	jsonObject.GetFloats("Rotation", rot);
+	SetRotation(Quat(rot));
+	float scale[3]; 
+	jsonObject.GetFloats("Scale", scale);
+	SetScale(float3(scale));
 
-	if (gameObject.HasMember("UID") && gameObject["UID"].IsInt())
-	{
-		uuid = gameObject["UID"].GetInt();
-	}
-	if (gameObject.HasMember("ParentUID") && gameObject["ParentUID"].IsInt())
-	{
-		parentUID = gameObject["ParentUID"].GetInt();
-	}
-	if (gameObject.HasMember("Name") && gameObject["Name"].IsString())
-	{
-		name = gameObject["Name"].GetString();
-	}
-	if (gameObject.HasMember("isEnabled") && gameObject["isEnabled"].IsBool())
-	{
-		isEnabled = gameObject["isEnabled"].GetBool();
-	}
-	if (gameObject.HasMember("PrefabId") && gameObject["PrefabId"].IsInt())
-	{
-		prefabId = gameObject["PrefabId"].GetInt();
-	}
-	if (gameObject.HasMember("OverridePrefab") && gameObject["OverridePrefab"].IsBool())
-	{
-		overridePrefab = gameObject["OverridePrefab"].GetBool();
-	}
-	if (gameObject.HasMember("Translation") && gameObject["Translation"].IsArray())
-	{
-		const rapidjson::Value& translationValues = gameObject["Translation"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (translationValues.Size() == 3 && translationValues[0].IsFloat() && translationValues[1].IsFloat() && translationValues[2].IsFloat())
-		{
-			x = translationValues[0].GetFloat();
-			y = translationValues[1].GetFloat();
-			z = translationValues[2].GetFloat();
-		}
+	SetTag(jsonObject.GetString("Tag"));
+	mPrefabId = jsonObject.GetInt("PrefabUid");
+	mPrefabOverride = jsonObject.GetBool("OverridePrefab");
+	mIsDynamic = jsonObject.GetBool("Dynamic");
 
-		position = float3(x, y, z);
-	}
-	if (gameObject.HasMember("Rotation") && gameObject["Rotation"].IsArray())
+	// Load components
+	JsonArray components = jsonObject.GetJsonArray("Components");
+	for (unsigned int i = 0; i < components.Size(); ++i)
 	{
-		const rapidjson::Value& rotationValues = gameObject["Rotation"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-		if (rotationValues.Size() == 4 && rotationValues[0].IsFloat() && rotationValues[1].IsFloat() && rotationValues[2].IsFloat() && rotationValues[3].IsFloat())
-		{
-			x = rotationValues[0].GetFloat();
-			y = rotationValues[1].GetFloat();
-			z = rotationValues[2].GetFloat();
-			w = rotationValues[3].GetFloat();
-		}
-
-		rotation = Quat(x, y, z, w);
+		JsonObject componentData = components.GetJsonObject(i);
+		ComponentType cType = (ComponentType) componentData.GetInt("ComponentType");
+		Component* component = this->CreateComponent(cType);
+		component->Load(componentData);
 	}
-
-	if (gameObject.HasMember("Scale") && gameObject["Scale"].IsArray())
-	{
-		const rapidjson::Value& scaleValues = gameObject["Scale"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (scaleValues.Size() == 3 && scaleValues[0].IsFloat() && scaleValues[1].IsFloat() && scaleValues[2].IsFloat())
-		{
-			x = scaleValues[0].GetFloat();
-			y = scaleValues[1].GetFloat();
-			z = scaleValues[2].GetFloat();
-		}
-
-		scale = float3(x, y, z);
-	}
-
-	if (gameObject.HasMember("Tag"))
-	{
-		const rapidjson::Value& tagint = gameObject["Tag"];
-		int tagid = tagint.GetInt();
-		Tag* loadedTag = App->GetScene()->GetTagByID(tagid);
-
-		if (loadedTag != nullptr)
-		{
-			tag = loadedTag;
-		}
-	}
-	if (gameObject.HasMember("Dynamic") && gameObject["Dynamic"].IsBool())
-	{
-		isDynamic = gameObject["Dynamic"].GetBool();
-	}
-
-	GameObject* go;
-	if (uuids == nullptr)
-	{
-		if (parentUID == 1)
-		{
-			go = new GameObject(uuid, name, parent);
-		}
-		else
-		{
-			GameObject* gameObjectParent = App->GetScene()->Find(parentUID);
-			go = new GameObject(uuid, name, gameObjectParent);
-		}
-	}
-	else
-	{
-		if (parentUID == 1)
-		{
-			go = new GameObject(name, parent);
-			(*uuids)[uuid] = go->mID;
-		}
-		else
-		{
-			GameObject* gameObjectParent = App->GetScene()->Find((*uuids)[parentUID]);
-			go = new GameObject(name, gameObjectParent);
-			(*uuids)[uuid] = go->mID;
-		}
-		
-	}
-
-	go->SetPosition(position);
-	go->SetRotation(rotation);
-	go->SetScale(scale);
-	go->SetPrefabId(prefabId);
-	go->SetPrefabOverride(overridePrefab);
-	go->SetTag(tag);
-	go->SetEnabled(isEnabled);
-	go->SetDynamic(isDynamic);
-
-	return go;
 }
 
 void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id)
 {
-	if (mPrefabOverride && mPrefabResourceId == id)
+	if (mPrefabOverride && mPrefabId == id)
 	{
 		std::vector<GameObject*> loadedObjects;
 		for (GameObject* child : mChildren)
@@ -778,14 +606,14 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
 						{
 							loadedObjects.push_back(this);
-							uuids[uuid] = mID;
+							uuids[uuid] = mUid;
 							//LoadComponentsFromJSON(gameObjects[i]["Components"]);
 						}
 					}
 					else
 					{
-						GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
-						loadedObjects.push_back(go);
+						//GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+						//loadedObjects.push_back(go);
 						//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 					}
 				}
@@ -795,7 +623,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 			{
 				if (gameObjects[i].IsObject())
 				{
-					loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+					//loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
 				}
 			}
 		}
@@ -809,242 +637,29 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 	}
 
 }
-
-void GameObject::Load(const rapidjson::Value& gameObjectsJson)
-{
-	//GameObject* scene = App->GetScene()->GetRoot();
-
-	// Manage GameObjects inside the Scene
-	if (gameObjectsJson.HasMember("GameObjects") && gameObjectsJson["GameObjects"].IsArray())
-	{
-		const rapidjson::Value& gameObjects = gameObjectsJson["GameObjects"];
-		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-		{
-			if (gameObjects[i].IsObject())
-			{
-				//LoadGameObjectFromJSON(gameObjects[i], this);
-			}
-		}
-	}
-	RecalculateMatrices();
-}
-
-#pragma endregion
-
-#pragma region Finds
-
-GameObject* GameObject::Find(const char* name) const
-{
-
-	GameObject* gameObject = nullptr;
-
-	for (auto child : mChildren)
-	{
-
-		if (child->GetName()._Equal(std::string(name)))
-		{
-			gameObject = child;
-			break;
-		}
-		else
-		{
-			gameObject = child->Find(name);
-
-			if (gameObject)
-			{
-				break;
-			}
-		}
-
-	}
-
-	return gameObject;
-}
-
-GameObject* GameObject::Find(unsigned int UID) const
-{
-	GameObject* gameObject = nullptr;
-
-	for (auto child : mChildren)
-	{
-
-		if (child->GetID() == UID)
-		{
-			gameObject = child;
-			break;
-		}
-		else
-		{
-			gameObject = child->Find(UID);
-
-			if (gameObject)
-			{
-				break;
-			}
-		}
-
-	}
-
-	return gameObject;
-}
-
-static GameObject* FindGameObjectParent(GameObject* gameObject, int UID)
-{
-	GameObject* gameObjectParent = nullptr;
-	const std::vector<GameObject*>& gameObjects = gameObject->GetChildren();
-	for (int i = 0; i < gameObjects.size(); i++)
-	{
-		if (gameObjects[i]->GetID() == UID)
-		{
-			// Found the parent
-			gameObjectParent = gameObjects[i];
-			break;
-		}
-		else
-		{
-			// Recursively search in children
-			GameObject* gameObjectChild = FindGameObjectParent(gameObjects[i], UID);
-			if (gameObjectChild != nullptr)
-			{
-				// Found a match in children, return it as the gameobject parent
-				gameObjectParent = gameObjectChild;
-				break;
-			}
-		}
-	}
-	return gameObjectParent;
-}
-
-std::vector<GameObject*> GameObject::FindGameObjectsWithTag(std::string tagname)
-{
-	std::vector<GameObject*> foundGameObjects;
-	Tag* tag = App->GetScene()->GetTagByName(tagname);
-	App->GetScene()->FindGameObjectsWithTag(tag->GetID(), foundGameObjects);
-
-	return foundGameObjects;
-}
-
-GameObject* GameObject::FindGameObjectWithTag(std::string tagname)
-{
-	Tag* tag = App->GetScene()->GetTagByName(tagname);
-
-	if (tag != nullptr)
-	{
-		return App->GetScene()->FindGameObjectWithTag(tag->GetID());
-	}
-	else
-	{
-		return nullptr;
-	}
-
-}
-
-std::pair<GameObject*, int> GameObject::RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind) {
-
-	if (currentGameObject.first == nullptr)
-	{
-		std::vector<GameObject*> children = owner->GetChildren();
-		currentGameObject.second++;
-
-		if (currentGameObject.second == objectToFind)
-		{
-			std::pair<GameObject*, int> pair(owner, currentGameObject.second);
-			return pair;
-		}
-
-		for (GameObject* child : children)
-		{
-			currentGameObject = RecursiveTreeSearch(child, currentGameObject, objectToFind);
-		}
-	}
-
-	return currentGameObject;
-}
-
 #pragma endregion
 
 #pragma region Children
 
-void GameObject::DeleteChild(GameObject* child)
+void GameObject::AddChild(GameObject* child)
 {
-	RemoveChild(child->mID);
-	delete child;
-}
-
-void GameObject::AddChild(GameObject* child, const int aboveThisId)
-{
-	child->mParent = this;
-	bool inserted = false;
-	if (aboveThisId != 0)
-	{
-		for (auto it = mChildren.cbegin(); it != mChildren.cend(); ++it)
-		{
-			if ((*it)->GetID() == aboveThisId)
-			{
-				mChildren.insert(it, child);
-				inserted = true;
-				break;
-			}
-		}
-	}
-
-	child->RecalculateLocalTransform();
-	child->SetActiveInHierarchy(mIsActive && child->mIsEnabled);
-
-	if (!inserted)
-	{
-		mChildren.push_back(child);
-	}
+	mChildren.push_back(child);	
 }
 
 GameObject* GameObject::RemoveChild(const int id)
 {
-	GameObject* movedObject = nullptr;
-	std::vector<GameObject*>::iterator itTargetPosition = mChildren.end();
-	for (auto it = mChildren.begin(); it != mChildren.cend(); ++it)
+	GameObject* object = nullptr;
+	for (std::vector<GameObject*>::const_iterator it = mChildren.cbegin(); it != mChildren.cend(); ++it)
 	{
 		if ((*it)->GetID() == id)
 		{
-			movedObject = *it;
+			object = *it;
 			mChildren.erase(it);
 			break;
 		}
 	}
-	return movedObject;
-
-}
-
-void GameObject::AddSuffix()
-{
-	bool found = true;
-	int count = 0;
-	std::regex regularExpression(".+\\s\\(\\d+\\)$");
-	std::string nameWithoutSuffix = mName;
-
-	if (std::regex_match(nameWithoutSuffix, regularExpression))
-	{
-		nameWithoutSuffix.erase(nameWithoutSuffix.rfind(" ("));
-	}
-	while (found)
-	{
-		found = false;
-		if (count > 0)
-		{
-			mName = nameWithoutSuffix + " (" + std::to_string(count) + ")";
-		}
-		else
-		{
-			mName = nameWithoutSuffix;
-		}
-		for (GameObject* child : mParent->mChildren)
-		{
-			if (child != this && child->mName == mName)
-			{
-				found = true;
-			}
-		}
-		count++;
-	}
+	
+	return object;
 }
 
 #pragma endregion

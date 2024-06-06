@@ -2,6 +2,9 @@
 #include <map>
 #include "Component.h"
 
+#include "float2.h"
+#include "float3.h"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -21,8 +24,8 @@ public:
 
     Component* Clone(GameObject* owner) const override;
 
-    void Save(Archive& archive) const override;
-    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+    void Save(JsonObject& archive) const override;
+    void Load(const JsonObject& data) override;
 
     void Draw();
 

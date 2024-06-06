@@ -19,8 +19,8 @@ MotionState::~MotionState()
 
 void MotionState::getWorldTransform(btTransform& worldTransform) const
 {
-	float3 position = mCollider->GetOwner()->GetWorldPosition();
-	Quat rotation = mCollider->GetOwner()->GetRotationQuat();
+	float3 position = mCollider->GetOwner()->GetPosition();
+	Quat rotation = mCollider->GetOwner()->GetRotation();
 
 	worldTransform = btTransform(btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w), btVector3(position.x, position.y, position.z)) * mMassCenterOffset.inverse();
 }
@@ -35,7 +35,7 @@ void MotionState::setWorldTransform(const btTransform& worldTransform)
 		btTransform mTransform = worldTransform * (freezeRotation ? btTransform::getIdentity() : mMassCenterOffset);
 		float3 parentScale = mCollider->GetOwner()->GetParent()->GetScale();
 		float3 parentPosition = mCollider->GetOwner()->GetParent()->GetPosition();
-		Quat parentRotation = mCollider->GetOwner()->GetParent()->GetRotationQuat().Inverted();
+		Quat parentRotation = mCollider->GetOwner()->GetParent()->GetRotation().Inverted();
 
 		// Set Local Position
 		float3 position = (float3)(mTransform.getOrigin() + (freezeRotation ? mMassCenterOffset.getOrigin() : btVector3(0, 0, 0)));

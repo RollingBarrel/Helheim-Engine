@@ -21,7 +21,6 @@
 #include "ResourceModel.h"
 
 
-
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
 {
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
@@ -176,99 +175,23 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 	mAABB.SetFrom(mOBB);
 }
 
-void MeshRendererComponent::Save(Archive& archive) const
+void MeshRendererComponent::Save(JsonObject& obj) const 
 {
-	archive.AddInt("ID", GetID());
-	archive.AddInt("MeshID", mMesh->GetUID());
-	archive.AddInt("MaterialID", mMaterial->GetUID());
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-
-	archive.AddBool("isEnabled", IsEnabled());
+	Component::Save(obj);
+	obj.AddInt("MeshID", mMesh->GetUID());
+	obj.AddInt("MaterialID", mMaterial->GetUID());
 }
 
-void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
+void MeshRendererComponent::Load(const JsonObject& data) 
 {
-	int ID = { 0 };
-	int meshID = { 0 };
-	int materialID = { 0 };
-	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) 
-	{
-		ID = componentJson["ID"].GetInt();
-	}
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) 
-	{
-		meshID = componentJson["MeshID"].GetInt();
-	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) 
-	{
-		materialID = componentJson["MaterialID"].GetInt();
-	}
-	int modelUid = { 0 };
+	Component::Load(data);
 
-	if (componentJson.HasMember("ModelUID") && componentJson["ModelUID"].IsInt())
-	{
-		modelUid = componentJson["ModelUID"].GetInt();
-	}
-
-	SetMesh(meshID);
-	SetMaterial(materialID);
+	SetMesh(data.GetInt("MeshID"));
+	SetMaterial(data.GetInt("MaterialID"));
 }
-
-//void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
-//{
-//	AddJointNode(currentObject, model);
-//	for (GameObject* object : currentObject->GetChildren())
-//	{
-//		LoadAllChildJoints(object, model);
-//	}
-//}
-//
-//void MeshRendererComponent::AddJointNode(GameObject* node, ResourceModel* model)
-//{
-//	for (const auto& pair : model->mInvBindMatrices)
-//	{
-//		if (pair.first == node->GetName())
-//		{
-//			mGameobjectsInverseMatrices.emplace_back(node, pair.second);
-//			break;
-//		}
-//	}
-//
-//}
 
 void MeshRendererComponent::UpdatePalette()
 {
-	//if (mModelUid == 0)
-	//{
-	//	return;
-	//}
-	//
-	//if (mGameobjectsInverseMatrices.size() == 0)
-	//{
-	//	ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
-	//	if (model->mInvBindMatrices.size() == 0)
-	//	{
-	//		mHasSkinning = false;
-	//		App->GetResource()->ReleaseResource(mModelUid);
-	//		return;
-	//	}
-	//	// Initialize vector
-	//	GameObject* root = mOwner;
-	//	while (root->GetComponent(ComponentType::ANIMATION) == nullptr && root->GetParent()!= nullptr)
-	//	{
-	//		root = root->GetParent();
-	//	}
-	//	if (root->GetComponent(ComponentType::ANIMATION) == nullptr)
-	//	{
-	//		mHasSkinning = false;
-	//		App->GetResource()->ReleaseResource(mModelUid);
-	//		return;
-	//	}
-	//
-	//	LoadAllChildJoints(root, model);
-	//	App->GetResource()->ReleaseResource(mModelUid); 
-	//}
-
 	mPalette.clear();
 	mPalette.reserve(mGameobjectsInverseMatrices.size());
 	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)

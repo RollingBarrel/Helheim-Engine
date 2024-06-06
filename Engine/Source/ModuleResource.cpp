@@ -125,7 +125,7 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Animation::Load(lPath, uid);
 		break;
 	}
-	case Resource::Type::Object:
+	case Resource::Type::Prefab:
 	{
 		ret = new Resource(uid, type);
 		break;

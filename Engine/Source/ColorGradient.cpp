@@ -60,50 +60,34 @@ float4 ColorGradient::CalculateColor(float position) const
     return color;
 }
 
-void ColorGradient::Save(Archive& archive) const {
-    std::vector<Archive> objectArray;
+void ColorGradient::Save(JsonObject& obj) const 
+{
 
-    for (const auto& mark : mColorMarks) {
+    JsonArray arr = obj.AddNewJsonArray("Color Gradient");
+    for (const auto& mark : mColorMarks)
+    {
+        JsonObject colorObj = arr.PushBackNewObject();
         float time = mark.first;
         float4 color = mark.second;
-        Archive colorArchive;
-        colorArchive.AddFloat("Time", time);
-
-        const float c[4] = { color.x, color.y, color.z, color.w };
-        colorArchive.AddFloat4("Color", c);
-
-        objectArray.push_back(colorArchive);
+        colorObj.AddFloat("Time", mark.first);
+        colorObj.AddFloats("Color", mark.second.ptr(), 4);
     }
-
-    archive.AddObjectArray("Color Gradient", objectArray);
 }
 
 
-void ColorGradient::LoadFromJSON(const rapidjson::Value& data) {
-    const auto& colorArray = data["Color Gradient"].GetArray();
-
+void ColorGradient::Load(const JsonObject& data) 
+{
+    // Clear existing marks before loading new ones
     mColorMarks.clear();
 
-    // Iterate over the JSON array
-    for (const auto& color : colorArray) {
+    JsonArray colorArray = data.GetJsonArray("Color Gradient");
+    for (unsigned int i = 0; i < colorArray.Size(); ++i)
+    {
+        JsonObject color = colorArray.GetJsonObject(i);
         float time = 0.0f;
-        if (color.HasMember("Time") && color["Time"].IsFloat()) {
-            time = color["Time"].GetFloat();
-        }
-
-        float colorVec[4] = { 0 };
-        if (color.HasMember("Color") && color["Color"].IsArray()) {
-            const auto& colArray = color["Color"].GetArray();
-            if (colArray.Size() == 4) {
-                for (unsigned int j = 0; j < colArray.Size(); ++j) {
-                    if (colArray[j].IsFloat() && j < 4) {
-                        colorVec[j] = colArray[j].GetFloat();
-                    }
-                }
-            }
-        }
-
-        // Create a new ColorGradientMark and add it to the list
-        mColorMarks[time] = float4(colorVec);
+        time = color.GetFloat("Time");
+        float col[4];
+        color.GetFloats("Color", col);
+        mColorMarks[time] = float4(col);
     }
 }
