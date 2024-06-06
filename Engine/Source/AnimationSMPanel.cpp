@@ -4,6 +4,7 @@
 #include "AnimationStateMachine.h"
 #include "EngineApp.h"
 #include "ModuleFileSystem.h"
+#include "ModuleEngineResource.h"
 
 namespace ed = ax::NodeEditor;
 
@@ -429,6 +430,8 @@ void AnimationSMPanel::DrawMenuBar()
     if (ImGui::Button("Save StateMachine"))
     {
         mStateMachine->SaveResource("Assets/StateMachines/");
+        std::string filePath = "Assets/StateMachines/" + mStateMachine->GetName() + ".smbin";
+        EngineApp->GetEngineResource()->CreateNewResource(filePath.c_str(), "", Resource::Type::StateMachine);
         mUpToDate = true;
     }
 

@@ -10,6 +10,7 @@
 #include "ResourceScript.h"
 #include "ResourceAnimation.h"
 #include "ResourceNavMesh.h"
+#include "ResourceStateMachine.h"
 
 #include <algorithm>
 
@@ -19,6 +20,7 @@
 #include "ImporterModel.h"
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
+#include "ImporterStateMachine.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -173,6 +175,8 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Object:
 		ret = new Resource(uid, type);
 		break;
+	case Resource::Type::StateMachine:
+		ret = Importer::StateMachine::Import(assetsFile, uid);
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
