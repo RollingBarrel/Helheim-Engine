@@ -373,6 +373,13 @@ void AnimationComponent::Save(Archive& archive) const
 	archive.AddInt("ComponentType", static_cast<int>(GetType()));
 	archive.AddBool("isEnabled", IsEnabled());
 
+	archive.AddInt("LowerSMUID", mStateMachine->GetUID());
+	if (mSpineObjects.size() > 0)
+	{
+		archive.AddInt("UpperSMUID", mSpineStateMachine->GetUID());
+
+	}
+
 }
 
 void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
@@ -384,5 +391,19 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 		modelUid = data["ModelUID"].GetInt();
 	}
 
-	SetModelUUID(modelUid);
+	SetModelUUID(modelUid); // Don't create state machines here...
+
+	int lowerStateMachine = { 0 };
+
+	if (data.HasMember("LowerSMUID") && data["LowerSMUID"].IsInt())
+	{
+		lowerStateMachine = data["LowerSMUID"].GetInt();
+	}
+
+	int upperStateMachine = { 0 };
+
+	if (data.HasMember("UpperSMUID") && data["UpperSMUID"].IsInt())
+	{
+		upperStateMachine = data["UpperSMUID"].GetInt();
+	}
 }

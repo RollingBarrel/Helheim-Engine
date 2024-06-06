@@ -431,7 +431,8 @@ void AnimationSMPanel::DrawMenuBar()
     {
         mStateMachine->SaveResource("Assets/StateMachines/");
         std::string filePath = "Assets/StateMachines/" + mStateMachine->GetName() + ".smbin";
-        EngineApp->GetEngineResource()->CreateNewResource(filePath.c_str(), "", Resource::Type::StateMachine);
+        unsigned int uid = EngineApp->GetEngineResource()->CreateNewResource(filePath.c_str(), "", Resource::Type::StateMachine)->GetUID();
+        mStateMachine->SetUID(uid);
         mUpToDate = true;
     }
 

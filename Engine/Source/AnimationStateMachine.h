@@ -111,12 +111,15 @@ public:
 	void SetName(const std::string& name) { mName = name; }
 	const std::string& GetName() const { return mName; }
 
+	unsigned int GetUID() const { return mResourceUID; }
+	void SetUID(unsigned int uid) { mResourceUID = uid; }
 private:
 	
 	std::vector<AnimationClip> mClips;
 	std::vector<AnimationState> mStates;
 	std::vector<AnimationTransition> mTransitions;
 	std::string mName = "Simple";
+	unsigned int mResourceUID = 0;
 	
 	
 
