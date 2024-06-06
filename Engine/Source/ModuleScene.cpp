@@ -111,117 +111,55 @@ update_status ModuleScene::PostUpdate(float dt)
 
 #pragma region Tags
 
-GameObject* ModuleScene::FindGameObjectWithTag(const std::string& tagID)
+GameObject* ModuleScene::FindGameObjectWithTag(const std::string& tag)
 {
-	for (GameObject* go : mSceneGO)
+	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		if (go->GetTag() == tagID)
+		if (!mGameObjectsByTags[tag].empty())
 		{
-			return go;
+			return *mGameObjectsByTags[tag].begin();
 		}
 	}
 
 	return nullptr;
 }
 
-void ModuleScene::FindGameObjectsWithTag(const std::string& tagID, std::vector<GameObject*>& foundGameObjects)
+void ModuleScene::FindGameObjectsWithTag(const std::string& tag, std::vector<GameObject*>& foundGameObjects)
 {
-	for (GameObject* go : mSceneGO)
+	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		if (go->GetTag() == tagID)
+		if (!mGameObjectsByTags[tag].empty())
 		{
-			foundGameObjects.push_back(go);
+			foundGameObjects = mGameObjectsByTags[tag];
 		}
 	}
 }
 
-void ModuleScene::AddTag(std::string tagName)
+void ModuleScene::AddToTagMap(const std::string& tag, GameObject* gameObject)
 {
-	//bool exists = false;
-	//
-	//for (auto it = mTags.cbegin(); it < mTags.cend(); it++)
-	//{
-	//
-	//}
-	//
-	//if (!exists)
-	//{
-	//	mTags.push_back(tagName);
-	//}
-}
-
-void ModuleScene::DeleteTag(std::string tag)
-{
+	
+	if (mGameObjectsByTags.find(tag) == mGameObjectsByTags.end())
+	{
+		mGameObjectsByTags[tag] = std::vector<GameObject*>();	
+	}
+	mGameObjectsByTags[tag].push_back(gameObject);
 
 }
 
-//
-//int ModuleScene::GetCustomTagsSize()
-//{
-//	std::vector<Tag*> customs = GetCustomTag();
-//	return customs.size();
-//}
-//
-//std::vector<Tag*> ModuleScene::GetSystemTag()
-//{
-//	std::vector<Tag*> systemTags;
-//	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
-//		[](Tag* tag) { return tag->GetType() == TagType::SYSTEM; });
-//
-//	return systemTags;
-//}
-//
-//std::vector<Tag*> ModuleScene::GetCustomTag()
-//{
-//	std::vector<Tag*> systemTags;
-//	std::copy_if(mTags.begin(), mTags.end(), std::back_inserter(systemTags),
-//		[](Tag* tag) { return tag->GetType() == TagType::CUSTOM; });
-//
-//	return systemTags;
-//}
-//
-//Tag* ModuleScene::GetTagByName(std::string tagname)
-//{
-//	for (Tag* tag : mTags)
-//	{
-//		if (std::strcmp(tag->GetName().c_str(), tagname.c_str()) == 0)
-//		{
-//			return tag;
-//		}
-//	}
-//	return nullptr;
-//}																																																																																																																																																																																	
-//
-//Tag* ModuleScene::GetTagByID(unsigned id)
-//{ 
-//	for (Tag* tag : mTags)
-//	{
-//		if (tag->GetID() == id)
-//		{
-//			return tag;
-//		}
-//	}
-//	return nullptr;
-//}
-//
-//void ModuleScene::DeleteTag(Tag* tag)
-//{
-//	auto it = std::find(mTags.begin(), mTags.end(), tag);
-//
-//	if (it != mTags.end())
-//	{
-//		// 1. Set tags to untagged
-//		//std::vector<GameObject*> objects = GameObject::FindGameObjectsWithTag(tag->GetName());
-//		//for (auto object : objects)
-//		//{
-//		//	object->SetTag(GetTagByName("Untagged"));
-//		//}
-//		//
-//		// 2. Delete it
-//		mTags.erase(it);
-//		delete tag;
-//	}
-//}
+void ModuleScene::DeleteFromTagMap(const std::string& tag, GameObject* gameObject)
+{
+	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
+	{
+		for (std::vector<GameObject*>::const_iterator it = mGameObjectsByTags[tag].cbegin(); it != mGameObjectsByTags[tag].cend(); ++it)
+		{
+			if ((*it)->GetID() == gameObject->GetID())
+			{
+				mGameObjectsByTags[tag].erase(it);
+				break;
+			}
+		}
+	}
+}
 
 #pragma endregion
 
@@ -523,6 +461,13 @@ void ModuleScene::LoadGameObjectsIntoScripts()
 	}
 
 	mGameObjectsToLoadIntoScripts.clear();
+}
+
+void ModuleScene::FillGameObjectsByTags()
+{
+
+
+
 }
 
 #pragma endregion

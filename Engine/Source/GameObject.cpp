@@ -141,6 +141,16 @@ AABB GameObject::GetAABB()
 	return mixedAABB;
 }
 
+
+//Setters
+
+void GameObject::SetTag(const std::string& tag) 
+{
+	App->GetScene()->DeleteFromTagMap(tag, this);
+	mTag = tag;
+	App->GetScene()->AddToTagMap(tag, this);
+}
+
 void GameObject::SetParent(GameObject* newParent)
 {
 	assert(newParent && "Parent was nullptr");
@@ -547,7 +557,7 @@ void GameObject::Load(const JsonObject& jsonObject)
 	jsonObject.GetFloats("Scale", scale);
 	SetScale(float3(scale));
 
-	mTag = jsonObject.GetString("Tag");
+	SetTag(jsonObject.GetString("Tag"));
 	mPrefabId = jsonObject.GetInt("PrefabUid");
 	mPrefabOverride = jsonObject.GetBool("OverridePrefab");
 	mIsDynamic = jsonObject.GetBool("Dynamic");

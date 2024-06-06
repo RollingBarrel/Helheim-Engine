@@ -49,7 +49,7 @@ public:
 	bool IsActive() const { return mIsEnabled && mIsActive; } 	// Status for this GameObject and all its ancestors
 
 	//Setters
-	void SetTag(const std::string tag) { mTag = tag; };
+	void SetTag(const std::string& tag);;
 	void SetName(const char* name) { mName = name; };
 	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
 	void SetParent(GameObject* newParent);
@@ -114,7 +114,6 @@ public:
 private:
 
 	void DeleteComponents();
-
 	void SetActive(bool active); 
 
 	const unsigned int mUid;
@@ -135,12 +134,15 @@ private:
 	//Position
 	float3 mPosition = float3::zero;
 	float3 mLocalPosition = float3::zero;
+
 	//Rotation
 	Quat mRotation = Quat::identity;
 	Quat mLocalRotation = Quat::identity;
+
 	//Rotation in Euler Angles (Rads Always)
 	float3 mEulerAngles = float3::zero;
 	float3 mLocalEulerAngles = float3::zero;
+
 	//Scale
 	float3 mScale = float3::one;
 	float3 mLocalScale = float3::one;

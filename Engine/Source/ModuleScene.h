@@ -5,6 +5,7 @@
 #include "Math/float3.h"
 #include "Archive.h"
 #include <vector>
+#include <unordered_map>
 #include <string>
 #include <unordered_map>
 
@@ -32,22 +33,16 @@ public:
 	// GameObjects
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
-	GameObject* FindGameObjectWithTag(const std::string& tagID);
-	void FindGameObjectsWithTag(const std::string& tagID, std::vector<GameObject*>& foundGameObjects);
+	GameObject* FindGameObjectWithTag(const std::string& tag);
+	void FindGameObjectsWithTag(const std::string& tag, std::vector<GameObject*>& foundGameObjects);
 
 	void AddGameObjectToScene(GameObject* gameObject);
 	void RemoveGameObjectFromScene(GameObject* gameObjet);
 	void RemoveGameObjectFromScene(int id); 
 	void RemoveGameObjectFromScene(const std::string& name);
-	void AddGameObjectToDelete(GameObject* gameObject) {
-		mGameObjectsToDelete.push_back(gameObject);
-	}
-	void AddGameObjectToDuplicate(GameObject* gameObject) {
-		mGameObjectsToDuplicate.push_back(gameObject);
-	}
-	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**> pair) {
-		mGameObjectsToLoadIntoScripts.push_back(pair);
-	}
+	void AddGameObjectToDelete(GameObject* gameObject) { mGameObjectsToDelete.push_back(gameObject); }
+	void AddGameObjectToDuplicate(GameObject* gameObject) {	mGameObjectsToDuplicate.push_back(gameObject); }
+	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**> pair) { mGameObjectsToLoadIntoScripts.push_back(pair); }
 
 	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
 
@@ -65,18 +60,9 @@ public:
 	void Save(const char* saveFilePath) const;
 	void Load(const char* saveFilePath);
 
-	//void AddTag(std::string tag);
-	//unsigned int GetSize() { return static_cast<unsigned int>(mTags.size()); };
-	//int GetCustomTagsSize();
-	//std::vector<Tag*> GetAllTags() { return mTags; };
-	//std::vector<Tag*> GetSystemTag();
-	//std::vector<Tag*> GetCustomTag();
-	//Tag* GetTagByName(std::string tagname);
-	//Tag* GetTagByID(unsigned id);
-	//void DeleteTag(Tag* tag);
-
-	void AddTag(std::string tag);
-	void DeleteTag(std::string tag);
+	// Tags
+	void AddToTagMap(const std::string &tag, GameObject* gameObject);
+	void DeleteFromTagMap(const std::string& tag, GameObject* gameObject);
 
 	// Prefabs
 	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
@@ -91,6 +77,7 @@ private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
 	void LoadGameObjectsIntoScripts();
+	void FillGameObjectsByTags();
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
@@ -100,6 +87,7 @@ private:
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
 	std::vector<std::pair<unsigned int, GameObject**>> mGameObjectsToLoadIntoScripts;
+	std::unordered_map<std::string, std::vector<GameObject*>> mGameObjectsByTags;
 
 	// Quadtree
 	Quadtree* mQuadtreeRoot = nullptr;
