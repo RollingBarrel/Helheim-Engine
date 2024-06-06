@@ -371,13 +371,11 @@ void PlayerController::Idle()
         mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
         GameManager::GetInstance()->GetHud()->SwitchWeapon();
     }
-
     else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
     {
         mCurrentState = PlayerState::ATTACK;
         mAimingGrenade = true;
     }
-
     else if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN && !mIsDashCoolDownActive)
     {
         mCurrentState = PlayerState::DASH;
@@ -410,6 +408,8 @@ void PlayerController::Idle()
         
         if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN || App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
         {
+            //If KEY_DOWN the state remains ATTACK until the mFastShootingTimer reaches the buffer time?
+            //We will see when animation works
             mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
             mLeftMouseButtonPressed = true;
         }
