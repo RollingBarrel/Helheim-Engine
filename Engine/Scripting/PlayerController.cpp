@@ -962,9 +962,9 @@ void PlayerController::MeleeSpecialCombo() {
 void PlayerController::MeleeHit(float AttackRange, float AttackDamage) {
 
     ModuleScene* scene = App->GetScene();
-    std::vector<GameObject*> Enemies;
+    const std::vector<GameObject*>& Enemies = scene->FindGameObjectsWithTag("Enemy");
 
-    scene->FindGameObjectsWithTag("Enemy", Enemies);
+    
     float3 playerPosition = mGameObject->GetPosition();
 
     // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador

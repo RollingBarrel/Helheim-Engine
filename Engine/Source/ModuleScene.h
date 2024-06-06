@@ -34,7 +34,7 @@ public:
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
 	GameObject* FindGameObjectWithTag(const std::string& tag);
-	void FindGameObjectsWithTag(const std::string& tag, std::vector<GameObject*>& foundGameObjects);
+	const std::vector<GameObject*>& FindGameObjectsWithTag(const std::string& tag);
 
 	void AddGameObjectToScene(GameObject* gameObject);
 	void RemoveGameObjectFromScene(GameObject* gameObjet);

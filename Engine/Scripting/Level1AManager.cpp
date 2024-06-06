@@ -97,8 +97,8 @@ void Level1AManager::UpdateEnemyFootStepMusic()
 {
     ModuleScene* scene = App->GetScene();
 
-    std::vector<GameObject*> Enemies;
-    scene->FindGameObjectsWithTag("Enemy", Enemies);
+    const std::vector<GameObject*>& Enemies = scene->FindGameObjectsWithTag("Enemy");
+    
 
     if (!mReadyToStep) {
         mStepTimePassed += App->GetDt();

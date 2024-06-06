@@ -44,11 +44,12 @@ GameObject::GameObject(const char* name, GameObject* parent) : GameObject(LCG().
 }
 
 GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
-	:mUid(uid), mName(name), mParent(parent), mTag("Untagged"),
-	mIsRoot(parent == nullptr)
+	:mUid(uid), mName(name), mParent(parent), mIsRoot(parent == nullptr)
 {
 	if (!mIsRoot)
 	{
+		SetTag("Untagged");
+
 		App->GetScene()->AddGameObjectToScene(this);
 
 		mWorldTransformMatrix = mParent->GetWorldTransform();
@@ -61,8 +62,9 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent)
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mTag(original.GetTag()), mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride)
+	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride)
 {
+	SetTag(original.mTag);
 	for (Component* component : original.mComponents)
 	{
 		mComponents.push_back(component->Clone(this));

@@ -124,15 +124,17 @@ GameObject* ModuleScene::FindGameObjectWithTag(const std::string& tag)
 	return nullptr;
 }
 
-void ModuleScene::FindGameObjectsWithTag(const std::string& tag, std::vector<GameObject*>& foundGameObjects)
+const std::vector<GameObject*>& ModuleScene::FindGameObjectsWithTag(const std::string& tag)
 {
 	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
 		if (!mGameObjectsByTags[tag].empty())
 		{
-			foundGameObjects = mGameObjectsByTags[tag];
+			return mGameObjectsByTags[tag];
 		}
 	}
+
+	return std::vector<GameObject*>();
 }
 
 void ModuleScene::AddToTagMap(const std::string& tag, GameObject* gameObject)

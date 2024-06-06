@@ -88,9 +88,9 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
 {
     // Until 
     ModuleScene* scene = App->GetScene();
-    std::vector<GameObject*> AllEnemies;
+    const std::vector<GameObject*>& AllEnemies = scene->FindGameObjectsWithTag("Enemy");
     std::vector<GameObject*> AffectedEnemies;
-    scene->FindGameObjectsWithTag("Enemy", AllEnemies);
+    
 
     // Check if enemies are inside circle
     // TODO: Check hit with physic

@@ -206,8 +206,7 @@ void SettingsPanel::AddTag(const char* newTag)
 
 void SettingsPanel::DeleteTag(const char* tagToDelete)
 {
-	std::vector<GameObject*> foundGameObjects;
-	App->GetScene()->FindGameObjectsWithTag(tagToDelete, foundGameObjects);
+	const std::vector<GameObject*>& foundGameObjects = App->GetScene()->FindGameObjectsWithTag(tagToDelete);
 
 	if (foundGameObjects.empty())
 	{
@@ -274,5 +273,9 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Player");
 	}
 
+}
+
+void SettingsPanel::SaveEditorLayout() const
+{
 }
 
