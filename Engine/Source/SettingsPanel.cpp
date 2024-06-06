@@ -11,7 +11,7 @@
 
 #include "imgui.h"
 
-#define ENGINE_TAGS 3
+
 
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
@@ -198,13 +198,43 @@ void SettingsPanel::LoadUserSettings()
 	}	
 }
 
+void SettingsPanel::AddTag(const char* newTag)
+{
+	mTags.push_back(newTag);
+	SaveProjectSettings();
+}
+
+void SettingsPanel::DeleteTag(const char* tagToDelete)
+{
+	std::vector<GameObject*> foundGameObjects;
+	App->GetScene()->FindGameObjectsWithTag(tagToDelete, foundGameObjects);
+
+	if (foundGameObjects.empty())
+	{
+		for (std::vector<std::string>::iterator it = mTags.begin(); it != mTags.end(); ++i)
+		{
+			if ((*it).compare("tagToDelete") == 0)
+			{
+				mTags.erase(it);
+				SaveProjectSettings();
+				break;
+			}
+		}
+	}
+	else 
+	{
+		//TODO:: POPUP TAG CANT BE DELETED
+	}
+
+}
+
 void SettingsPanel::SaveProjectSettings() const
 {
 	Archive document;
 	JsonObject root = document.GetRootObject();
 	JsonArray tags = root.AddNewJsonArray("Tags");
 
-	for (int i = 0; i < mTags.size(); ++i)
+	for (int i = NUM_ENGINE_TAGS; i < mTags.size(); ++i)
 	{
 		tags.PushBackString(mTags[i].c_str());
 	}
@@ -224,7 +254,7 @@ void SettingsPanel::LoadProjectSettings()
 		JsonObject root = document.GetRootObject();
 		JsonArray tags = root.GetJsonArray("Tags");
 
-		mTags.reserve(tags.Size() + ENGINE_TAGS);
+		mTags.reserve(tags.Size() + NUM_ENGINE_TAGS);
 
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");
@@ -237,7 +267,7 @@ void SettingsPanel::LoadProjectSettings()
 	}
 	else
 	{
-		mTags.reserve(ENGINE_TAGS);
+		mTags.reserve(NUM_ENGINE_TAGS);
 
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");

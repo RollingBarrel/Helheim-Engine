@@ -8,6 +8,7 @@
 #include "imgui.h"
 
 #define SETTINGSPANEL "Settings##"
+#define NUM_ENGINE_TAGS 3
 
 class SettingsPanel : public Panel
 {
@@ -20,6 +21,9 @@ public:
 	void SaveUserSettings() const;			//User Settings	(No)
 	void LoadUserSettings();
 
+	void AddTag(const char* newTag);
+	void DeleteTag(const char* tagToDelete)
+
 	void LoadProjectSettings();		
 
 	const std::vector<std::string>& GetTags() { return mTags; }
@@ -27,6 +31,8 @@ public:
 private:
 	void SaveEditorLayout() const;		//ImGui	(Yes)
 	void LoadEditorLayout();			
+
+	
 
 	void SaveProjectSettings() const;		//Project Settings -> Tags & Layers (Yes)
 

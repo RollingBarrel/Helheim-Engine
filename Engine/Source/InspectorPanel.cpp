@@ -131,10 +131,25 @@ void InspectorPanel::Draw(int windowFlags)
 		{
 			for (unsigned int i = 0; i < settingsPanel->GetTags().size(); i++)
 			{
+				ImGui::SetNextItemAllowOverlap();
 				if (ImGui::Selectable(settingsPanel->GetTags()[i].c_str()))
 				{
 					focusedObject->SetTag(settingsPanel->GetTags()[i]);
 				}
+				
+				if (i >= NUM_ENGINE_TAGS)
+				{
+					ImGui::SameLine();
+					if (ImGui::Button(ICON_FA_TRASH_CAN))
+					{
+						LOG("YEEEEEEE");
+					}
+				}
+				
+				
+
+				
+
 			}
 			ImGui::Separator();
 			mTagsLayersPopUp = ImGui::Button("Add Tags...");
@@ -170,13 +185,18 @@ void InspectorPanel::Draw(int windowFlags)
 
 void InspectorPanel::ShowTagsLayerPopUp()
 {
+	SettingsPanel* settingsPanel = reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+
 	if(ImGui::BeginPopup("Tags&Layers"))
 	{
 		char tmp[280] = "";
-		if (ImGui::InputText("New Tag", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Save"))
+		if (ImGui::InputText("New Tag", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Save")) //TODO: SAVE button is not working
 		{
+			if (strcmp(tmp, "") != 0)
+			{
+				settingsPanel->AddTag(tmp);
+			}
 			mTagsLayersPopUp = false;
-			//TODO: Add To add Vector
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("Cancel"))
