@@ -153,15 +153,18 @@ private:
     float mDashRange = 5.0f;
 
     //Range
-    int mAmmoCapacity = 16;
-    int mBullets = 0;
+    //int mAmmoCapacity = 16;
+    //int mBullets = 0;
     //GameObject* bullet = nullptr;
     GameObject* mRangeWeaponGameObject = nullptr;
     RangeWeapon* mRangeWeapon = nullptr;
-    float mShootingTimer = 0.0f;
+    float mFastShootingTimer = 0.0f; 
+    float mFastShootingBuffer = 0.2f;   //Clicking repeatedly
+    float mSlowShootingTimer = 0.0f;
+    float mSlowShootingBuffer = 0.5f;   //Holding the mouse pressed
+    bool mHoldingLeftMouse = false;
     bool mHasShot = false;
     float mRangeBaseDamage = 1.0f;
-
     //Reloading weapon
     float mTimeToReload = 1.0f;
     float mReloadingTimer = 1.0f;

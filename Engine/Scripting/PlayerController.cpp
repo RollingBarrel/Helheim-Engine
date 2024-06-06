@@ -53,7 +53,7 @@ CREATE(PlayerController)
 
     SEPARATOR("RANGE ATTACK");
     MEMBER(MemberType::FLOAT, mRangeBaseDamage);
-    MEMBER(MemberType::INT, mAmmoCapacity);
+    //MEMBER(MemberType::INT, mAmmoCapacity);
     MEMBER(MemberType::GAMEOBJECT, mRangeWeaponGameObject);
 
 
@@ -87,7 +87,7 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 void PlayerController::Start()
 {
 
-    mBullets = mAmmoCapacity;
+    //mBullets = mAmmoCapacity;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
 
@@ -407,8 +407,8 @@ void PlayerController::Idle()
         {
             mCurrentState = PlayerState::IDLE;
         }
-
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+        
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN || App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
         {
             mCurrentState = (mCurrentState == PlayerState::MOVE) ? PlayerState::MOVE_ATTACK : PlayerState::ATTACK;
             mLeftMouseButtonPressed = true;
@@ -753,7 +753,9 @@ void PlayerController::Moving()
     }
     if (mHasShot)
     {
-        mShootingTimer += App->GetDt();
+        //TODO: This is called in Moving and RangedAttack. should only be called once to have the code more organized
+        //mSlowShootingTimer isn't called here 
+        mFastShootingTimer += App->GetDt();
     }
     Idle();
 }
@@ -1026,7 +1028,7 @@ void PlayerController::RangedAttack()
     {
         mGunfireAudio->PlayOneShot();
         mRangeWeapon->BasicAttack();
-        if (mRangeWeapon->GetCurrentAmmo() == 0) 
+        if (mRangeWeapon->GetCurrentAmmo() == 0)
         {
             //RELOAD SOUND EFFECT
             mCurrentState = PlayerState::RELOADING;
@@ -1034,20 +1036,37 @@ void PlayerController::RangedAttack()
         }
         mHasShot = true;
     }
-    if (mShootingTimer > 0.2f) {
 
-        mShootingTimer = 0.0f;
-        mHasShot = false;
-        Idle();
-    }
-    else
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
     {
-        mShootingTimer += App->GetDt();
+        if (mSlowShootingTimer > mSlowShootingBuffer)
+        {
+            mSlowShootingTimer = 0.0f;
+            mHasShot = false;
+            Idle();
+        }
+        else {
+            mSlowShootingTimer += App->GetDt();
+        }
+    }
+    else {
+        if (mFastShootingTimer > mFastShootingBuffer)
+        {
+            mFastShootingTimer = 0.0f;
+            mHasShot = false;
+            Idle();
+        }
+        else
+        {
+            //TODO: This is called in Moving and RangedAttack. should only be called once to have the code more organized
+            mFastShootingTimer += App->GetDt();
+        }
+        mSlowShootingTimer = 0;
     }
 }
 
-void PlayerController::Shoot(float damage)
-{
+//void PlayerController::Shoot(float damage)
+//{
     /*  //request a bullet from the object pool
       if (mBulletPool)
       {
@@ -1090,7 +1109,7 @@ void PlayerController::Shoot(float damage)
       }
       mCurrentState = PlayerState::IDLE;
       */
-}
+//}
 
 void PlayerController::Reload()
 {
@@ -1116,7 +1135,7 @@ void PlayerController::ClosestMouseDirection(const float2& mouseState)
     int dx = mouseState.x - (window.x + windowSize.x * 0.5);
     int dy = mouseState.y - (window.y + windowSize.y * 0.5);
 
-    LOG("x: %f, y: %f", mouseState.x, mouseState.y);
+    //LOG("x: %f, y: %f", mouseState.x, mouseState.y);
 
     if (std::abs(dx) > std::abs(dy)) {
         if (dx > 0) {
