@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Archive.h"
+#include "float4.h"
 #include <map>
 
 
