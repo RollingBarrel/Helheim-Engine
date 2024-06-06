@@ -42,9 +42,6 @@ private:
 	void Save(JsonObject& obj) const override;
 	void Load(const JsonObject& data) override;
 
-	//Palette functions
-	//void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
-	//void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
 
 
