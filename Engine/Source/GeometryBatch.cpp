@@ -154,6 +154,14 @@ void GeometryBatch::RecreatePersistentSsbos()
 		mSsboIndicesData[i] = mSsboIndicesData[0] + ((size * i) / sizeof(uint32_t));
 	}
 
+	//TODO: Move and correct
+	int i = 0;
+	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
+	{
+		it->second.baseInstance = i;
+		++i;
+	}
+
 	mPersistentsFlag = false;
 }
 
@@ -193,7 +201,6 @@ void GeometryBatch::RecreateVboAndEbo()
 		BatchMeshResource& res = mUniqueMeshes[i];
 		res.baseVertex = vboOffset / mVertexSize;
 		res.firstIndex = eboOffset / sizeof(unsigned int);
-		res.baseInstance = i;
 		unsigned int size;
 		res.resource->GetInterleavedData(Attribute::Usage::RENDER, reinterpret_cast<float*>(vboBuffer + vboOffset), &size);
 		vboOffset += size;
@@ -213,7 +220,7 @@ void GeometryBatch::RecreateMaterials()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mUniqueMaterials.size() * materialSize, nullptr, GL_STATIC_DRAW);
 	unsigned int offset = 0;
-	for (const BatchMaterialResource rMaterial : mUniqueMaterials) {
+	for (const BatchMaterialResource& rMaterial : mUniqueMaterials) {
 		Material material;
 		memcpy(material.baseColor, rMaterial.resource->GetBaseColorFactor().ptr(), sizeof(float) * 3);
 		memcpy(material.emissiveFactor, rMaterial.resource->GetEmissiveFactor().ptr(), sizeof(float) * 3);
@@ -400,20 +407,20 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
 
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 
-	const BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[component.GetID()];
-	const BatchMeshResource& bRes = mUniqueMeshes[batchMeshRenderer.bMeshIdx];
+	const BatchMeshRendererComponent& bComp = mMeshComponents[component.GetID()];
+	const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
 	if (component.IsAnimated())
 	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * bRes.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
+		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
 	}
 	else
 	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * bRes.baseInstance, component.GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, component.GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 	}
 
-	memcpy(mSsboIndicesData[idx] + bRes.baseInstance, &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
+	memcpy(mSsboIndicesData[idx] + bComp.baseInstance, &bComp.bMaterialIdx, sizeof(uint32_t));
 	
-	mCommands.emplace_back(component.GetResourceMesh()->GetNumberIndices(), 1, bRes.firstIndex, bRes.baseVertex, bRes.baseInstance);
+	mCommands.emplace_back(component.GetResourceMesh()->GetNumberIndices(), 1, bRes.firstIndex, bRes.baseVertex, bComp.baseInstance);
 	mComandsMap[component.GetID()] = mCommands.back();
 	mIboFlag = true;
 	return true;
