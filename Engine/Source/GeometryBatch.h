@@ -58,10 +58,11 @@ class GeometryBatch
 	{
 	public:
 		BatchMeshResource(const ResourceMesh* res, unsigned int fIndex = 0, unsigned int bVertex = 0)
-			: resource(res), firstIndex(fIndex), baseVertex(bVertex), referenceCount(1), skinOffset(-1) {}
+			: resource(res), firstIndex(fIndex), baseVertex(bVertex), referenceCount(1), skinOffset(-1), baseInstance(-1) {}
 		const ResourceMesh* resource;
 		unsigned int firstIndex;
 		unsigned int baseVertex;
+		unsigned int baseInstance;
 		unsigned int referenceCount;
 		unsigned int skinOffset;
 		bool HasSkinning() const { return skinOffset != -1; }

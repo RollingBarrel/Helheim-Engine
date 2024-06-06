@@ -188,10 +188,12 @@ void GeometryBatch::RecreateVboAndEbo()
 	char* vboBuffer = reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	unsigned int vboOffset = 0;
 	unsigned int eboOffset = 0;
-	for (BatchMeshResource& res : mUniqueMeshes)
+	for (int i = 0; i < mUniqueMeshes.size(); ++i)
 	{
+		BatchMeshResource& res = mUniqueMeshes[i];
 		res.baseVertex = vboOffset / mVertexSize;
 		res.firstIndex = eboOffset / sizeof(unsigned int);
+		res.baseInstance = i;
 		unsigned int size;
 		res.resource->GetInterleavedData(Attribute::Usage::RENDER, reinterpret_cast<float*>(vboBuffer + vboOffset), &size);
 		vboOffset += size;
@@ -399,18 +401,19 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 
 	const BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[component.GetID()];
+	const BatchMeshResource& bRes = mUniqueMeshes[batchMeshRenderer.bMeshIdx];
 	if (component.IsAnimated())
 	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * mCommands.size(), float4x4::identity.ptr(), sizeof(float) * 16);
+		memcpy(mSsboModelMatricesData[idx] + 16 * bRes.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
 	}
 	else
 	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * mCommands.size(), component.GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+		memcpy(mSsboModelMatricesData[idx] + 16 * bRes.baseInstance, component.GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 	}
 
-	memcpy(mSsboIndicesData[idx] + mCommands.size(), &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
+	memcpy(mSsboIndicesData[idx] + bRes.baseInstance, &batchMeshRenderer.bMaterialIdx, sizeof(uint32_t));
 	
-	mCommands.emplace_back(component.GetResourceMesh()->GetNumberIndices(), 1, mUniqueMeshes[batchMeshRenderer.bMeshIdx].firstIndex, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex, mCommands.size());
+	mCommands.emplace_back(component.GetResourceMesh()->GetNumberIndices(), 1, bRes.firstIndex, bRes.baseVertex, bRes.baseInstance);
 	mComandsMap[component.GetID()] = mCommands.back();
 	mIboFlag = true;
 	return true;
@@ -480,9 +483,10 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent& cMesh)
 	if (cMesh.IsAnimated())
 	{
 		glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
+		const BatchMeshResource& bRes = mUniqueMeshes[batchMeshRenderer.bMeshIdx];
 		//TODO: El buffer range de los vertices dskin entre 2 batches no funcionara
-		assert(mUniqueMeshes[batchMeshRenderer.bMeshIdx].skinOffset != -1 && "Skin mesh does not have the offset set");
-		glUniform1ui(0, mUniqueMeshes[batchMeshRenderer.bMeshIdx].skinOffset);
+		assert(bRes.skinOffset != -1 && "Skin mesh does not have the offset set");
+		glUniform1ui(0, bRes.skinOffset);
 
 		const std::vector<float4x4>& palette = cMesh.GetPalette();
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
@@ -495,8 +499,7 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent& cMesh)
 		{
 			glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, palette.size() * sizeof(float) * 16, palette.data());
 		}
-		unsigned int vertexSize = rMesh->GetVertexSize(Attribute::Usage::RENDER);
-		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, mUniqueMeshes[batchMeshRenderer.bMeshIdx].baseVertex * vertexSize, vertexSize * rMesh->GetNumberVertices());
+		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, bRes.baseVertex * mVertexSize, mVertexSize * rMesh->GetNumberVertices());
 		glUniform1i(25, rMesh->GetNumberVertices());
 		glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);
 		mSkinningApplied = true;
