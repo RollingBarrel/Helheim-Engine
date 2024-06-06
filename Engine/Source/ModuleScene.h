@@ -37,7 +37,7 @@ public:
 	const std::vector<GameObject*>& FindGameObjectsWithTag(const std::string& tag);
 
 	void AddGameObjectToScene(GameObject* gameObject);
-	void RemoveGameObjectFromScene(GameObject* gameObjet);
+	void RemoveGameObjectFromScene(GameObject* gameObject);
 	void RemoveGameObjectFromScene(int id); 
 	void RemoveGameObjectFromScene(const std::string& name);
 	void AddGameObjectToDelete(GameObject* gameObject) { mGameObjectsToDelete.push_back(gameObject); }
@@ -77,7 +77,6 @@ private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
 	void LoadGameObjectsIntoScripts();
-	void FillGameObjectsByTags();
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
