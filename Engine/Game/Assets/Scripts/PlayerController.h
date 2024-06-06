@@ -163,7 +163,7 @@ private:
     float mSlowShootingTimer = 0.0f;
     float mSlowShootingBuffer = 0.5f;   //Holding the mouse pressed
     bool mHoldingLeftMouse = false;
-    bool mHasShot = false;
+    bool mHasShot = true;
     float mRangeBaseDamage = 1.0f;
     //Reloading weapon
     float mTimeToReload = 1.0f;
