@@ -2022,5 +2022,8 @@
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

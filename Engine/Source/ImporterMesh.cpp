@@ -40,14 +40,10 @@ static float* GetAttributeDataFromInterleavedBuffer(Attribute attr, float* inter
     unsigned int attributeNumFloats = (attr.size / sizeof(float));
     float* ret = new float[numVertices * attributeNumFloats];
     unsigned int floatOffset = attr.offset / sizeof(float);
-    unsigned int j = 0;
     for (unsigned int i = 0; i < numVertices; ++i)
     {
         const float* vert = &interleavedBuffer[i * vertexSize / sizeof(float) + floatOffset];
-        for (unsigned int j = 0; j < attributeNumFloats; ++j)
-        {
-            memcpy(&ret[i * attributeNumFloats + j], &vert[j], sizeof(float));
-        }
+        memcpy(&ret[i * attributeNumFloats], vert, sizeof(float) * attributeNumFloats);
     }
     return ret;
 }
@@ -173,8 +169,8 @@ static void GenerateTangents(std::vector<Attribute>& attributes, std::vector<flo
     }
 
     int* piRemapTable = new int[mikkInput.numVertices];
-    float* pfVertexDataOut = new float[mikkInput.numVertices * 12];
-    unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut, reinterpret_cast<float*>(mikkInput.tVertices), mikkInput.numVertices, 12);
+    float* pfVertexDataOut = new float[mikkInput.numVertices * vertexSize/sizeof(float)];
+    unsigned int uniqueVertices = WeldMesh(piRemapTable, pfVertexDataOut, reinterpret_cast<float*>(mikkInput.tVertices), mikkInput.numVertices, vertexSize / sizeof(float));
     delete[] unweldedTVertices;
     delete[] unweldedVertices;
 
