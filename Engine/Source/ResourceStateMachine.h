@@ -3,7 +3,7 @@
 
 class AnimationStateMachine;
 
-class ResourceStateMachine :
+class ENGINE_API ResourceStateMachine :
     public Resource
 {
 public:

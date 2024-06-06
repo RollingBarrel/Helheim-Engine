@@ -92,7 +92,6 @@ public:
 	const std::string& GetTransitionSource(int index) const;
 	const std::string& GetTransitionTarget(int index) const;
 	unsigned int GetNumTransitions() const { return mTransitions.size();};
-	const std::string& GetJsonConfig() const { return mName + ".json"; }
 	void SetTransitionTrigger(int index, const std::string& trigger);
 	void DeleteTransition(int index);
 
