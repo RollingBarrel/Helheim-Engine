@@ -211,9 +211,9 @@ void SettingsPanel::DeleteTag(const char* tagToDelete)
 
 	if (foundGameObjects.empty())
 	{
-		for (std::vector<std::string>::iterator it = mTags.begin(); it != mTags.end(); ++i)
+		for (std::vector<std::string>::iterator it = mTags.begin(); it != mTags.end(); ++it)
 		{
-			if ((*it).compare("tagToDelete") == 0)
+			if ((*it).compare(tagToDelete) == 0)
 			{
 				mTags.erase(it);
 				SaveProjectSettings();

@@ -142,13 +142,9 @@ void InspectorPanel::Draw(int windowFlags)
 					ImGui::SameLine();
 					if (ImGui::Button(ICON_FA_TRASH_CAN))
 					{
-						LOG("YEEEEEEE");
+						settingsPanel->DeleteTag(settingsPanel->GetTags()[i].c_str());
 					}
 				}
-				
-				
-
-				
 
 			}
 			ImGui::Separator();
@@ -189,19 +185,22 @@ void InspectorPanel::ShowTagsLayerPopUp()
 
 	if(ImGui::BeginPopup("Tags&Layers"))
 	{
-		char tmp[280] = "";
-		if (ImGui::InputText("New Tag", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Save")) //TODO: SAVE button is not working
+		static char tmp[280] = "";
+		ImGui::InputText("New Tag", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_AlwaysOverwrite);
+		if (ImGui::IsKeyPressed(ImGuiKey_Enter) || ImGui::Button("Save"))
 		{
 			if (strcmp(tmp, "") != 0)
 			{
 				settingsPanel->AddTag(tmp);
 			}
+			memset(tmp, 0, 280);
 			mTagsLayersPopUp = false;
 		}
 		ImGui::SameLine();
 		if(ImGui::Button("Cancel"))
 		{
 			mTagsLayersPopUp = false;
+			memset(tmp, 0, 280);
 		}
 
 		ImGui::EndPopup();

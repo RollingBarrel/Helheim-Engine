@@ -22,7 +22,7 @@ public:
 	void LoadUserSettings();
 
 	void AddTag(const char* newTag);
-	void DeleteTag(const char* tagToDelete)
+	void DeleteTag(const char* tagToDelete);
 
 	void LoadProjectSettings();		
 
