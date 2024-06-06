@@ -12,7 +12,6 @@ MoveState::MoveState(PlayerController* player) : State(player)
 {
     mMoveDirection = float3::zero;
     mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetFront().Cross(float3::unitY).Normalized();
-        //->GetRight().Cross(float3::unitY).Normalized();
 }
 
 MoveState::~MoveState()
@@ -117,11 +116,7 @@ void MoveState::DoAnimation()
 
         mPlayerController->SetAnimation(animation, 0.1f);
     }
-    else {
-        mPlayerController->SetAnimation("tIdle", 0.1f);
-    }
 }
-
 
 float2 MoveState::SetMovingDirection() 
 {
@@ -157,7 +152,6 @@ float2 MoveState::SetMovingDirection()
         return float2(0, 0); // Not moving
     }
 }
-
 
 void MoveState::DoAudio()
 {

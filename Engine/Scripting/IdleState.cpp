@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "PlayerController.h"
 
 IdleState::IdleState(PlayerController* player) : State(player)
 {
@@ -37,6 +38,7 @@ void IdleState::Update()
 
 void IdleState::Enter()
 {
+    mPlayerController->SetAnimation("tIdle", 0.1f);
 }
 
 void IdleState::Exit()

@@ -1,11 +1,11 @@
 #pragma once
 #include "State.h"
 
-class AttackState : public State
+class SpecialState : public State
 {
 public:
-	AttackState(PlayerController* player);
-	~AttackState();
+	SpecialState(PlayerController* player);
+	~SpecialState();
 
 	StateType HandleInput() override;
 	void Update() override;
@@ -14,5 +14,5 @@ public:
 	void Exit() override;
 
 private:
-	void DoAudio();
+
 };

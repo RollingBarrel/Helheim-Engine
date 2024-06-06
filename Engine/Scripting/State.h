@@ -12,6 +12,7 @@ enum StateType
 	SWITCH,
 	GRENADE,
 	SPECIAL,
+	RELOAD,
 	NONE,
 };
 

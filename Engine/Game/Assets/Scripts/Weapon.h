@@ -1,20 +1,32 @@
 #pragma once
-#include <Script.h>
 
-
-
-class Weapon : public Script
+class Weapon
 {
 public:
+	enum class WeaponType {
+		RANGE,
+		MELEE
+	};
 
-	Weapon(GameObject* owner) : Script(owner) {}
+	Weapon();
+	~Weapon();
+
 	virtual void BasicAttack() = 0;
 	virtual void SpecialAttack() = 0;
 
+	WeaponType GetType() { return mType; }
+	int GetCurrentAmmo() { return mCurrentAmmo; }
+	int GetMaxAmmo() { return mMaxAmmo; }
+
+	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
+
 protected:
+	WeaponType mType;
 
 	float mDamage = 0.0f;
 	float mAttackRate = 0.0f;
-	
+
+	int mCurrentAmmo = 0;
+	int mMaxAmmo = 0;
 };
 

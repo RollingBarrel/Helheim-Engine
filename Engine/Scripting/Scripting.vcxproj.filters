@@ -81,7 +81,6 @@
     <ClInclude Include="MainMenuManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h">
       <Filter>Weapons\Melee</Filter>
     </ClInclude>
@@ -91,7 +90,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
       <Filter>Weapons\Range\Pistol</Filter>
     </ClInclude>
-    <ClInclude Include="Grenade.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -117,6 +115,18 @@
       <Filter>States\Attack</Filter>
     </ClInclude>
     <ClInclude Include="SwitchState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Grenade.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="ReloadState.h">
       <Filter>States\Attack</Filter>
     </ClInclude>
   </ItemGroup>
@@ -160,7 +170,6 @@
     <ClCompile Include="MainMenuManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="MeleeWeapon.cpp">
       <Filter>Weapons\Melee</Filter>
     </ClCompile>
@@ -170,7 +179,6 @@
     <ClCompile Include="Pistol.cpp">
       <Filter>Weapons\Range\Pistol</Filter>
     </ClCompile>
-    <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -196,6 +204,18 @@
       <Filter>States\Attack</Filter>
     </ClCompile>
     <ClCompile Include="SwitchState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecialState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Grenade.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="ReloadState.cpp">
       <Filter>States\Attack</Filter>
     </ClCompile>
   </ItemGroup>

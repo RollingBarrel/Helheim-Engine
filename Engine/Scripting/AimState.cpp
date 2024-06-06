@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "PlayerController.h"
 
 AimState::AimState(PlayerController* player) : State(player)
 {
@@ -14,24 +15,38 @@ AimState::~AimState()
 
 StateType AimState::HandleInput()
 {
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+    mGrenadeTimer += App->GetDt();
+    if (mPlayerController->GetGrenadeCooldown() >= mGrenadeTimer &&
+        App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
-        return StateType::SPECIAL;
+        return StateType::GRENADE;
     }
 
-    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+    mAttackTimer += App->GetDt();
+    if (mPlayerController->GetAttackCooldown() >= mAttackTimer &&
+        App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
     {
         return StateType::ATTACK;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
+    mSpecialAttackTimer += App->GetDt();
+    if (mPlayerController->GetSpecialAttackCooldown() >= mSpecialAttackTimer &&
+        App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+    {
+        return StateType::SPECIAL;
+    }
+
+    mSwitchTimer += App->GetDt();
+    if (mPlayerController->GetSwitchCooldown() >= mSwitchTimer &&
+        App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
     {
         return StateType::SWITCH;
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
+    if (mPlayerController->CanReload() &&
+        App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN)
     {
-        return StateType::GRENADE;
+        return StateType::RELOAD;
     }
 
     

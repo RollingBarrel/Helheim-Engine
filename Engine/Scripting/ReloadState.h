@@ -1,11 +1,11 @@
 #pragma once
 #include "State.h"
 
-class AttackState : public State
+class ReloadState : public State
 {
 public:
-	AttackState(PlayerController* player);
-	~AttackState();
+	ReloadState(PlayerController* player);
+	~ReloadState();
 
 	StateType HandleInput() override;
 	void Update() override;
@@ -14,5 +14,6 @@ public:
 	void Exit() override;
 
 private:
-	void DoAudio();
+	float mReloadTimer = 0;
+	bool mReloaded = false;
 };
