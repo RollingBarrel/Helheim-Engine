@@ -225,6 +225,7 @@
     <ClCompile Include="ImporterScript.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
+    <ClCompile Include="ImporterStateMachine.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleEngineCamera.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="ImporterMaterial.h" />
+    <ClInclude Include="ImporterStateMachine.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClCompile Include="EngineMain.cpp" />

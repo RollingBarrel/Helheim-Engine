@@ -244,6 +244,9 @@
     <ClCompile Include="AnimationSMPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ImporterStateMachine.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -513,6 +516,9 @@
     </ClInclude>
     <ClInclude Include="AnimationSMPanel.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterStateMachine.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
