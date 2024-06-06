@@ -362,7 +362,7 @@ void AnimationSMPanel::GetResourcesList()
     if (ImGui::BeginCombo("##combo", currentItem))
     {
         std::vector<std::string> modelNames;
-        EngineApp->GetFileSystem()->DiscoverFiles("Assets/StateMachines", ".bin", modelNames);
+        EngineApp->GetFileSystem()->DiscoverFiles("Assets/StateMachines", ".smbin", modelNames);
         for (int i = 0; i < modelNames.size(); ++i)
         {
 
@@ -387,7 +387,7 @@ void AnimationSMPanel::GetResourcesList()
             if (ImGui::Selectable(modelNames[n].c_str(), is_selected))
             {
                 currentItem = modelNames[n].c_str();
-                std::string path = std::string("Assets/StateMachines/" + modelNames[n] + ".bin");
+                std::string path = std::string("Assets/StateMachines/" + modelNames[n] + ".smbin");
                 mStateMachine->LoadResource(path.c_str());
                 
             }
@@ -427,7 +427,7 @@ void AnimationSMPanel::DrawMenuBar()
     ImGui::SameLine();
     if (ImGui::Button("Save StateMachine"))
     {
-        mStateMachine->SaveResource();
+        mStateMachine->SaveResource("Assets/StateMachines/");
         mUpToDate = true;
     }
 

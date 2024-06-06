@@ -17,6 +17,7 @@ public:
 		Script,
 		Object,
 		IBL,
+		StateMachine,
 		Unknown = 0
 	};
 
