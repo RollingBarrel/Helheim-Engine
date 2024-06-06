@@ -188,8 +188,10 @@ void GeometryBatch::RecreateVboAndEbo()
 	char* vboBuffer = reinterpret_cast<char*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	unsigned int vboOffset = 0;
 	unsigned int eboOffset = 0;
-	for (const BatchMeshResource& res : mUniqueMeshes)
+	for (BatchMeshResource& res : mUniqueMeshes)
 	{
+		res.baseVertex = vboOffset / mVertexSize;
+		res.firstIndex = eboOffset / sizeof(unsigned int);
 		unsigned int size;
 		res.resource->GetInterleavedData(Attribute::Usage::RENDER, reinterpret_cast<float*>(vboBuffer + vboOffset), &size);
 		vboOffset += size;
@@ -237,10 +239,9 @@ void GeometryBatch::AddUniqueMesh(const MeshRendererComponent& cMesh, unsigned i
 {
 	meshIdx = mUniqueMeshes.size();
 	const ResourceMesh& rMesh = *cMesh.GetResourceMesh();
-	const unsigned int vertexSize = rMesh.GetVertexSize(Attribute::Usage::RENDER);
-	mUniqueMeshes.emplace_back(&rMesh, mEboDataSize / sizeof(unsigned int), mVboDataSize / vertexSize);
+	mUniqueMeshes.emplace_back(&rMesh, 0, 0);
 	mVBOFlag = true;
-	mVboDataSize += rMesh.GetNumberVertices() * vertexSize;
+	mVboDataSize += rMesh.GetNumberVertices() * mVertexSize;
 	mEboDataSize += rMesh.GetNumberIndices() * sizeof(unsigned int);
 }
 
@@ -343,12 +344,7 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 			mSkinBufferSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::ANIMATION);
 			mSkinningFlag = true;
 		}
-		std::vector<BatchMeshResource>::iterator its = mUniqueMeshes.erase(mUniqueMeshes.begin() + bMeshIdx);
-		for (std::vector<BatchMeshResource>::iterator it = its; it != mUniqueMeshes.end(); ++it)
-		{
-			it->baseVertex -= rMesh.GetNumberVertices();
-			it->firstIndex -= rMesh.GetNumberIndices();
-		}
+		mUniqueMeshes.erase(mUniqueMeshes.begin() + bMeshIdx);
 		for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 		{
 			if (it->second.bMeshIdx > bMeshIdx)
