@@ -11,7 +11,9 @@
 
 #include "imgui.h"
 
-
+#include <fstream>
+#include <string>
+#include <sstream>
 
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
@@ -104,6 +106,14 @@ void SettingsPanel::Draw(int windowFlags)
 			{
 				ImGui::EndDisabled();
 			}
+
+
+			if (ImGui::Button("Save settings"))
+			{
+				SaveUserSettings();
+			}
+
+
 		}
 
 		ImGui::SeparatorText("Editor settings");
@@ -112,14 +122,10 @@ void SettingsPanel::Draw(int windowFlags)
 		{
 			EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
 		}
-
-		if (ImGui::Button("Save settings")) 
+		
+		if (ImGui::Button("Save Editor layout"))
 		{
-			SaveUserSettings();
-		}
-		if (ImGui::Button("Load settings")) 
-		{
-			LoadUserSettings();
+			SaveEditorLayout();
 		}
 
 	}
@@ -277,5 +283,25 @@ void SettingsPanel::LoadProjectSettings()
 
 void SettingsPanel::SaveEditorLayout() const
 {
+	std::ofstream out_file("imgui.ini");
+	if (out_file.is_open())
+	{
+		size_t settings_len;
+		const char* settings = ImGui::SaveIniSettingsToMemory(&settings_len);
+		out_file.write(settings, settings_len);
+		out_file.close();
+	}
+
+}
+
+void SettingsPanel::LoadEditorLayout()
+{
+	std::ifstream in_file("imgui.ini");
+	if (in_file.is_open())
+	{
+		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
+		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
+		in_file.close();
+	}
 }
 

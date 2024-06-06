@@ -25,12 +25,13 @@ public:
 	void DeleteTag(const char* tagToDelete);
 
 	void LoadProjectSettings();		
+	void LoadEditorLayout();
 
 	const std::vector<std::string>& GetTags() { return mTags; }
 
 private:
 	void SaveEditorLayout() const;		//ImGui	(Yes)
-	void LoadEditorLayout();			
+			
 
 	
 
