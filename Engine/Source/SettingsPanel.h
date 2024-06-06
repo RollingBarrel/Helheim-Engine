@@ -29,13 +29,15 @@ public:
 
 	const std::vector<std::string>& GetTags() { return mTags; }
 
+	const void ShowDeleteTagsPopup();
+	bool mDeleteTagPopup = false;
+
 private:
 	void SaveEditorLayout() const;		//ImGui	(Yes)
 			
 
-	
-
 	void SaveProjectSettings() const;		//Project Settings -> Tags & Layers (Yes)
+
 
 	bool mCulling = false;
 	bool mEngineVsyncEnabled = false;
@@ -47,5 +49,8 @@ private:
 	bool mGrid = true;
 
 	std::vector<std::string> mTags;
+
+	std::string mTagToDelete;
+
 };
 

@@ -76,7 +76,9 @@ bool ModuleEditor::Init()
 	mIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	mIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	mIO->ConfigDragClickToInputText = true;
+
 	mIO->IniFilename = nullptr;
+
 
 	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->window, EngineApp->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");

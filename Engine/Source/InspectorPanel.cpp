@@ -62,6 +62,8 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
+	SettingsPanel* settingsPanel =  reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+	
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) 
@@ -78,6 +80,7 @@ void InspectorPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
+
 
 	if (!focusedObject->IsRoot())
 	{
@@ -125,7 +128,6 @@ void InspectorPanel::Draw(int windowFlags)
 		ImGui::Text("Tag");
 		ImGui::SameLine();
 
-		SettingsPanel* settingsPanel =  reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
 
 		if (ImGui::BeginCombo("##tags", focusedObject->GetTag().c_str()))
 		{
@@ -177,6 +179,11 @@ void InspectorPanel::Draw(int windowFlags)
 		ShowTagsLayerPopUp();
 	}
 
+	if (settingsPanel->mDeleteTagPopup)
+	{
+		ImGui::OpenPopup("DeleteTag");
+		settingsPanel->ShowDeleteTagsPopup();
+	}
 
 	ImGui::End();
 	ImGui::PopID();

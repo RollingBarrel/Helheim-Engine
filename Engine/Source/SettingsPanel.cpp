@@ -127,7 +127,6 @@ void SettingsPanel::Draw(int windowFlags)
 		{
 			SaveEditorLayout();
 		}
-
 	}
 	ImGui::End();
 }
@@ -200,7 +199,7 @@ void SettingsPanel::LoadUserSettings()
 
 		JsonObject scene = root.GetJsonObject("Scene Settings");
 		std::string name = scene.GetString("Name");
-		//App->GetScene()->Load(name.c_str());		//TODO: Uncomment this
+		App->GetScene()->Load(name.c_str());		//TODO: Uncomment this
 	}	
 }
 
@@ -228,10 +227,12 @@ void SettingsPanel::DeleteTag(const char* tagToDelete)
 	}
 	else 
 	{
-		//TODO:: POPUP TAG CANT BE DELETED
+		mDeleteTagPopup = true;
+		mTagToDelete = tagToDelete;
 	}
-
 }
+
+
 
 void SettingsPanel::SaveProjectSettings() const
 {
@@ -246,6 +247,27 @@ void SettingsPanel::SaveProjectSettings() const
 
 	std::string buffer = document.Serialize();
 	App->GetFileSystem()->Save("projectSettings.json", buffer.c_str(), buffer.length());
+}
+
+const void SettingsPanel::ShowDeleteTagsPopup()
+{
+	const std::vector<GameObject*>& foundGameObjects = App->GetScene()->FindGameObjectsWithTag(mTagToDelete.c_str());
+
+	if(ImGui::BeginPopupModal("DeleteTag", &mDeleteTagPopup, ImGuiWindowFlags_NoMove))
+	{
+		static char tmp[200] = "Can't be deleted cause is being used by";
+		auto windowWidth = ImGui::GetWindowSize().x;
+		auto textWidth = ImGui::CalcTextSize(tmp).x;
+
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::TextColored(ImVec4(0,1,1,1), "%s", mTagToDelete.c_str());
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::Text(tmp);
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::TextColored(ImVec4(0,1,0,1),"%s", foundGameObjects[0]->GetName().c_str());
+
+		ImGui::EndPopup();
+	}
 }
 
 void SettingsPanel::LoadProjectSettings()
