@@ -132,23 +132,26 @@ void InspectorPanel::Draw(int windowFlags)
 			for (unsigned int i = 0; i < settingsPanel->GetTags().size(); i++)
 			{
 				ImGui::SetNextItemAllowOverlap();
-				if (ImGui::Selectable(settingsPanel->GetTags()[i].c_str()))
+				if (ImGui::Selectable(settingsPanel->GetTags()[i].c_str(), false, 0, ImVec2(100.0f, 20.0f)))
 				{
 					focusedObject->SetTag(settingsPanel->GetTags()[i]);
 				}
 				
+				
 				if (i >= NUM_ENGINE_TAGS)
 				{
 					ImGui::SameLine();
+					ImGui::PushID(i);
 					if (ImGui::Button(ICON_FA_TRASH_CAN))
 					{
 						settingsPanel->DeleteTag(settingsPanel->GetTags()[i].c_str());
 					}
+					ImGui::PopID();
 				}
 
 			}
 			ImGui::Separator();
-			mTagsLayersPopUp = ImGui::Button("Add Tags...");
+			mTagsLayersPopUp = ImGui::Button("Add Tag...");
 			ImGui::EndCombo();
 		}
 
