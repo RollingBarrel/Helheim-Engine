@@ -10,7 +10,7 @@ public:
     ResourceStateMachine(unsigned int uid, AnimationStateMachine* sm);
     ~ResourceStateMachine();
 
-    const AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
+    AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 
 private:
 

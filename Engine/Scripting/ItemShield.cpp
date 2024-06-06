@@ -32,7 +32,6 @@ void ItemShield::Start()
 
         if (mAnimation)
         {
-            mAnimation->OnStart();
             mAnimation->SetIsPlaying(true);
         }
     }

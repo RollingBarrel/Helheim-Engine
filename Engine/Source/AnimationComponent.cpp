@@ -9,8 +9,8 @@
 
 #include "GameObject.h"
 
-#include "ResourceModel.h"
 #include "float4x4.h"
+#include "ResourceStateMachine.h"
 
 AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
@@ -51,9 +51,25 @@ void AnimationComponent::SetLoop(bool loop)
 	}
 }
 
-void AnimationComponent::OnStart()
+void AnimationComponent::StartUp()
 {
+	assert(mAnimationsUIDs.size() > 0);
 	
+	mStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+	mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+	
+	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationsUIDs[0], Resource::Type::Animation));
+	mController = new AnimationController(tmpAnimation, true);
+	mController->SetStartTime(mStateMachine->GetStateStartTime(0));
+	mController->SetEndTime(mStateMachine->GetStateEndTime(0));
+	mStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+
+	mSpineController = new AnimationController(tmpAnimation, true);
+	mSpineController->SetStartTime(mStateMachine->GetStateStartTime(0));
+	mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
+	mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+
+
 }
 
 void AnimationComponent::Update()
@@ -291,19 +307,6 @@ void AnimationComponent::StartTransition(float transitionDuration)
 }
 
 
-void AnimationComponent::LoadSpine(ResourceModel* model)
-{
-	
-	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(model->mAnimationUids[0], Resource::Type::Animation));
-	mSpineController = new AnimationController(anim, true);
-	mSpineStateMachine = new AnimationStateMachine(model->mAnimationUids);
-	mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
-	mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
-
-
-	
-	
-}
 
 void AnimationComponent::LoadGameObjects(GameObject* current)
 {
@@ -369,7 +372,9 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 		}
 	}
 	mAnimationsUIDs = animationsUids;
-
+	assert(animationsUids.size() > 0);
+	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationsUIDs[0], Resource::Type::Animation));
+	mController = new AnimationController(tmpAnimation, true);
 
 	int lowerStateMachine = { 0 };
 
@@ -378,10 +383,40 @@ void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* 
 		lowerStateMachine = data["LowerSMUID"].GetInt();
 	}
 
+	if (lowerStateMachine != 0)
+	{
+		ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
+		mStateMachine = resSM->GetStateMachine();
+	}
+	else
+	{
+		mStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+	}
+
+	mController->SetStartTime(mStateMachine->GetStateStartTime(0));
+	mController->SetEndTime(mStateMachine->GetStateEndTime(0));
+
+
 	int upperStateMachine = { 0 };
 
 	if (data.HasMember("UpperSMUID") && data["UpperSMUID"].IsInt())
 	{
 		upperStateMachine = data["UpperSMUID"].GetInt();
+	}
+
+	if (upperStateMachine != 0)
+	{
+		ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
+		mSpineStateMachine = resSM->GetStateMachine();
+		mSpineController = new AnimationController(tmpAnimation, true);
+		mController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
+		mController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
+
+
+	}
+	else
+	{
+		mSpineController = nullptr;
+		mSpineStateMachine = nullptr;
 	}
 }

@@ -7,7 +7,6 @@
 
 class AnimationController;
 class AnimationStateMachine;
-class ResourceModel;
 
 
 class ENGINE_API AnimationComponent : public Component {
@@ -29,7 +28,7 @@ public:
 	bool GetIsPlaying() const { return mIsPlaying; }
 	void SetIsPlaying(bool isPlaying) { mIsPlaying = isPlaying; }
 
-	void OnStart();
+	void StartUp();
 	void OnStop();
 	void OnRestart();
 
@@ -58,7 +57,6 @@ public:
 
 private:
 
-	void LoadSpine(ResourceModel* model);
 	void LoadGameObjects(GameObject* current);
 	void LoadSpineChildren(GameObject* current);
 
