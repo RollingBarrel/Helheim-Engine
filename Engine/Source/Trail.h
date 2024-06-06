@@ -1,9 +1,9 @@
 #pragma once
 #include <deque>
-#include "MathGeoLib.h"
 #include "ColorGradient.h"
 #include "BezierCurve.h"
 #include "Archive.h"
+#include "float3.h"
 
 class ResourceTexture;
 
@@ -30,8 +30,8 @@ public:
 	
 	void AddTrailPositions(float3 position, Quat rotation);
 
-	float3 GetLastPosition() const;
-	float3 GetFirstPosition() const;
+	const float3& GetLastPosition() const;
+	const float3& GetFirstPosition() const;
 	unsigned long long GetSize() const { return mPoints.size(); }
 
 	void SetImage(ResourceTexture* image) { mImage = image; }
@@ -52,5 +52,6 @@ private:
 	unsigned int mVAO = 0;
 	unsigned int mVBO = 0;
 
-	BezierCurve mWidth = BezierCurve();
+	BezierCurve mWidth = BezierCurve(); // TODO: Make it a pointer so every particle that has a trail dont have a bezierCurve by itself
+	float mInitialWith;
 };

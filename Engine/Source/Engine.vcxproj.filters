@@ -217,14 +217,14 @@
     <ClCompile Include="ImBezier.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.cpp">
-      <Filter>Dependencies\ImGuizmo</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEngineCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ImColorGradient.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -463,14 +463,14 @@
     <ClInclude Include="ImBezier.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h">
-      <Filter>Dependencies\ImGuizmo</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleEngineCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ImColorGradient.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

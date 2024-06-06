@@ -24,7 +24,11 @@ void ColorGradient::RemoveColorGradientMark(float position)
     mColorMarks.erase(position);
 }
 
-//template<typename T> static inline T MyClamp(T v, T mn, T mx) { return (v < mn) ? mn : (v > mx) ? mx : v; }
+float* ColorGradient::GetColor(float pos)
+{
+    assert(mColorMarks.find(pos) != mColorMarks.end() && "Position not found in ColorGradient");
+    return mColorMarks[pos].ptr();
+}
 
 float4 ColorGradient::CalculateColor(float position) const
 {

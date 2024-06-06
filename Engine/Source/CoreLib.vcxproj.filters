@@ -90,6 +90,9 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Tag.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -121,6 +124,9 @@
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="SpotLightComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="CanvasComponent.cpp">
@@ -402,9 +408,6 @@
     <ClCompile Include="ResourceNavmesh.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="EmitterShape.cpp">
-      <Filter>Utils\Particles</Filter>
-    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
@@ -423,6 +426,7 @@
     <ClCompile Include="BezierCurve.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -435,12 +439,15 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationStateMachine.cpp">
+    <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Tag.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
@@ -474,6 +481,9 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="SpotLightComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="CanvasComponent.h">
@@ -1019,9 +1029,6 @@
     <ClInclude Include="ModuleScriptManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="EmitterShape.h">
-      <Filter>Utils\Particles</Filter>
-    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>
@@ -1046,6 +1053,7 @@
     <ClInclude Include="BezierCurve.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -1910,7 +1918,7 @@
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationStateMachine.h">
+    <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -2014,8 +2022,6 @@
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl">
-      <Filter>Shaders</Filter>
-    </None>
+    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl" />
   </ItemGroup>
 </Project>

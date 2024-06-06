@@ -1,6 +1,5 @@
 #pragma once
 #include "Globals.h"
-#include "MathGeoLib.h"
 #include "Archive.h"
 #include <map>
 
@@ -16,6 +15,7 @@ public:
 	void RemoveColorGradientMark(float position);
 
 	std::map<float, float4> GetColorMarks() const { return mColorMarks; };
+	float* GetColor(float pos);
 
 	float4 CalculateColor(float position) const;
 

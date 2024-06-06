@@ -2,7 +2,7 @@
 
 #include "ImBezier.h"
 #include "imgui.h"
-#include "imgui_color_gradient.h"
+#include "ImColorGradient.h"
 
 #include "EngineApp.h"
 #include "ModuleScene.h"
@@ -34,7 +34,6 @@
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
 #include "TrailComponent.h"
-#include "EmitterShape.h"
 #include "BoxColliderComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
@@ -1457,110 +1456,109 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	
 }
 
-ImColor Float4ToImColor(const float4& color)
-{
-	ImColor ret = ImColor(color.x, color.y, color.z, color.w);
-	return ret;
-}
-
-float4 ImColorToFloat4(const float* color)
-{
-	return float4(color[0], color[1], color[2], color[3]);
-}
-
-
-ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
-	ImGradient result;
-
-	const std::map<float, float4>& marks = gradient->GetColorMarks();
-
-	for (const auto& mark : marks) {
-		result.addMark(mark.first, Float4ToImColor(mark.second));
-	}
-
-	return result;
-}
-
-
-#define FLOAT_TOLERANCE 1e-6f
-
-inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
-{
-	return std::fabs(a - b) < tolerance;
-}
-
-bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
-	if (approximatelyEqual(a->position, b.first)) {
-		for (int i = 0; i < 4; ++i) {
-			if (!approximatelyEqual(a->color[i], b.second[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-	return false;
-}
-
-bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
-
-	// find if marksEdited has not a mark from the gradient to delete it
-	for (const auto& mark : marks) {
-		auto it = std::find_if(
-			marksEdited.begin(), marksEdited.end(),
-			[&](const ImGradientMark* mark1) {
-				return areMarksEquivalent(mark1, mark);
-			}
-		);
-
-		if (it == marksEdited.end())
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
-
-	// find if marksEdited has not a mark from the gradient to delete it
-	for (const auto& mark : marks) {
-		auto it = std::find_if(marksEdited.begin(), marksEdited.end(),[&](const ImGradientMark* mark1) 
-			{
-				return areMarksEquivalent(mark1, mark);
-			}
-		);
-		if (it == marksEdited.end()) 
-		{
-			gradient->RemoveColorGradientMark(mark.first);
-		}
-	}
-}
-
-static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	std::map<float, float4> marks = gradient->GetColorMarks();
-
-	// find if markEdit is not in marks to add it
-	for (const ImGradientMark* markEdit : marksEdited) {
-		auto it = std::find_if(
-			marks.begin(), marks.end(),
-			[&](const std::pair<float, float4> mark) {
-				return areMarksEquivalent(markEdit, mark);
-			}
-		);
-		if (it == marks.end()) 
-		{
-			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
-		}
-	}
-}
+//ImColor Float4ToImColor(const float4& color)
+//{
+//	ImColor ret = ImColor(color.x, color.y, color.z, color.w);
+//	return ret;
+//}
+//
+//float4 ImColorToFloat4(const float* color)
+//{
+//	return float4(color[0], color[1], color[2], color[3]);
+//}
+//
+//ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
+//	ImGradient result;
+//
+//	const std::map<float, float4>& marks = gradient->GetColorMarks();
+//
+//	for (const auto& mark : marks) {
+//		result.addMark(mark.first, Float4ToImColor(mark.second));
+//	}
+//
+//	return result;
+//}
+//
+//
+//#define FLOAT_TOLERANCE 1e-6f
+//
+//inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
+//{
+//	return std::fabs(a - b) < tolerance;
+//}
+//
+//bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
+//	if (approximatelyEqual(a->position, b.first)) {
+//		for (int i = 0; i < 4; ++i) {
+//			if (!approximatelyEqual(a->color[i], b.second[i])) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
+//	return false;
+//}
+//
+//bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	auto marks = gradient->GetColorMarks();
+//
+//	// find if marksEdited has not a mark from the gradient to delete it
+//	for (const auto& mark : marks) {
+//		auto it = std::find_if(
+//			marksEdited.begin(), marksEdited.end(),
+//			[&](const ImGradientMark* mark1) {
+//				return areMarksEquivalent(mark1, mark);
+//			}
+//		);
+//
+//		if (it == marksEdited.end())
+//		{
+//			return false;
+//		}
+//	}
+//	return true;
+//}
+//
+//void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	auto marks = gradient->GetColorMarks();
+//
+//	// find if marksEdited has not a mark from the gradient to delete it
+//	for (const auto& mark : marks) {
+//		auto it = std::find_if(marksEdited.begin(), marksEdited.end(),[&](const ImGradientMark* mark1) 
+//			{
+//				return areMarksEquivalent(mark1, mark);
+//			}
+//		);
+//		if (it == marksEdited.end()) 
+//		{
+//			gradient->RemoveColorGradientMark(mark.first);
+//		}
+//	}
+//}
+//
+//static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	std::map<float, float4> marks = gradient->GetColorMarks();
+//
+//	// find if markEdit is not in marks to add it
+//	for (const ImGradientMark* markEdit : marksEdited) {
+//		auto it = std::find_if(
+//			marks.begin(), marks.end(),
+//			[&](const std::pair<float, float4> mark) {
+//				return areMarksEquivalent(markEdit, mark);
+//			}
+//		);
+//		if (it == marks.end()) 
+//		{
+//			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
+//		}
+//	}
+//}
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
@@ -1584,9 +1582,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	ImGui::Text("Lifetime");
-	ImGui::SameLine(); 
-	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 0.1f, 0.0f);
+	DrawRandomFloat(component->mIsLifetimeRandom, component->mLifetime, component->mMaxLifetime, "Lifetime");
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
@@ -1603,31 +1599,32 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
 	if (check)
 	{
-		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
-		component->InitEmitterShape();
+		component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
 	}	
 	switch(component->mShapeType)
 	{
-		case EmitterShape::Type::CONE:
+		case ParticleSystemComponent::EmitterType::CONE:
 			ImGui::Text("Angle");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Angle", &component->mShape->mShapeAngle, 0.1f, 0.0f);
+			ImGui::DragFloat("##Angle", &component->mShapeAngle, 0.1f, 0.0f);
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
-		case EmitterShape::Type::SQUARE:
+		case ParticleSystemComponent::EmitterType::SQUARE:
 			ImGui::Text("Width");
 			ImGui::SameLine();
-			ImGui::DragFloat2("##Width", &component->mShape->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::DragFloat2("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
 			break;
-		case EmitterShape::Type::CIRCLE:
+		case ParticleSystemComponent::EmitterType::CIRCLE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
 
 	}
+
+	DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint")) 
 	{
@@ -1635,7 +1632,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->GetImage();
+		const ResourceTexture* image = component->GetImage();
 
 		if (image)
 		{
@@ -1674,27 +1671,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 		}
 		ImGui::Columns(1);
-
-		// Color and alpha
-		//float4* color = &component->mColorGradient[0.0f];
-		//ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
-		//ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
-
-		//::GRADIENT DATA::
-		static unsigned int id = 0;
-		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
-		static ImGradientMark* draggingMark = nullptr;
-		static ImGradientMark* selectedMark = nullptr;
-		if (!EqualGradients(gradient, component->mColorGradient))
-		{
-			gradient = ColorGradientToImGradient(component->mColorGradient);
-		}
-		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
-
-		if (updated) {
-			findRemovedMarks(gradient, component->mColorGradient);
-			findAddedMarks(gradient, component->mColorGradient);			
-		}
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
 	}
 }
 
@@ -1867,23 +1846,9 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 
 		}
 		ImGui::Columns(1);
-
-		//::GRADIENT DATA::
-		static unsigned int id = 0;
-		static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		static ImGradientMark* draggingMark = nullptr;
-		static ImGradientMark* selectedMark = nullptr;
-		if (!EqualGradients(gradient, &component->mTrail->mGradient))
-		{
-			gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		}
-		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
-
-		if (updated) 
-		{
-			findRemovedMarks(gradient, &component->mTrail->mGradient);
-			findAddedMarks(gradient, &component->mTrail->mGradient);
-		}
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
 	}
 }
 
@@ -1891,38 +1856,82 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 {
 	std::string label = cLabel;
 	ImGui::Text(cLabel);
-	ImGui::Text("Initial %s", cLabel);
-	ImGui::SameLine();
-	std::string initial = "##Initial " + label;
-	ImGui::DragFloat(initial.c_str(), &curve->mLineal, 1.0f, 0.0f);
+	std::string initial = "Initial " + label;
+	DrawRandomFloat(curve->mIsValueRandom, curve->mValue, curve->mMaxValue, initial.c_str());
 
-	ImGui::Text("%s as a Curve", cLabel);
+	ImGui::Text("%s Curved", cLabel);
 	ImGui::SameLine();
-	std::string asCurve = "##" + label + " as a Curve";
+	std::string asCurve = "##" + label + " Curved";
 	ImGui::Checkbox(asCurve.c_str(), &(curve->mIsCurve));
 	if (curve->mIsCurve)
 	{
-		static float points[5] = { curve->mCurve[0],
-			curve->mCurve[1],
-			curve->mCurve[2],
-			curve->mCurve[3] };
 		ImGui::Text("%s Growing Factor", cLabel);
 		ImGui::SameLine();
 		std::string growing = "##" + label + " Growing Factor";
-		ImGui::DragFloat(growing.c_str(), &curve->mCurveFactor, 1.0f, 0.0f);
-		ImGui::Text("Point 1");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
-		ImGui::Text("Point 2");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+		ImGui::DragFloat(growing.c_str(), &curve->mFactor, 1.0f, 0.0f);
 
-		if (points[0] != curve->mCurve[0]) curve->mCurve[0] = points[0];
-		if (points[1] != curve->mCurve[1]) curve->mCurve[1] = points[1];
-		if (points[2] != curve->mCurve[2]) curve->mCurve[2] = points[2];
-		if (points[3] != curve->mCurve[3]) curve->mCurve[3] = points[3];
+		if (ImGui::Curve("Das editor", ImVec2(400, 200), 10, curve->mPoints))
+		{
+			// curve changed
+		}
+	}
+}
 
-		std::string presets = label + " Presets";
-		ImGui::Bezier(presets.c_str(), points);
+void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, const char* cLabel) const
+{
+	std::string label = cLabel;
+	ImGui::Text("%s Rand", cLabel);
+	ImGui::SameLine();
+	std::string asCurve = "##" + label + "Rand";
+	ImGui::Checkbox(asCurve.c_str(), &isRand);
+	ImGui::SameLine();
+	float itemWidth = ImGui::GetWindowWidth() / 4.0f; // Por ejemplo, un cuarto del ancho de la ventana
+	if (!isRand)
+	{
+		std::string min = "##Min " + label;
+		ImGui::PushItemWidth(itemWidth*2); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::PopItemWidth(); // Restaura el ancho original
+	}
+	else
+	{
+		ImGui::Text("Min");
+		std::string min = "##Min " + label;
+		ImGui::SameLine();
+		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::PopItemWidth(); // Restaura el ancho original
+
+		ImGui::SameLine();
+		ImGui::Text("Max");
+		ImGui::SameLine();
+		std::string max = "##Max " + label;
+		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(max.c_str(), &maxV);
+		ImGui::PopItemWidth(); // Restaura el ancho original
+
+	}
+}
+
+void InspectorPanel::DrawBlendTypeSelector(int& type, const char* cLabel) const
+{
+	std::string label = cLabel;
+	static const char* items[]{ 
+		"TRANSPARENCY", 
+		"ADDITIVE", 
+		"MULTIPLICATIVE", 
+		"SUBTRACTIVE", 
+		"PREMULTIPLIED_ALPHA", 
+		"SCREEN"
+	};
+	int selected = static_cast<int>(type);
+	ImGui::Separator();
+	ImGui::Text(cLabel);
+	ImGui::SameLine();
+	std::string labelID = "##" + label;
+	bool check = ImGui::Combo(labelID.c_str(), &selected, items, IM_ARRAYSIZE(items));
+	if (check)
+	{
+		type = selected;
 	}
 }
