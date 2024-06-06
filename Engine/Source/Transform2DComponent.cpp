@@ -50,97 +50,44 @@ void Transform2DComponent::Reset()
 	ResetTransform();
 }
 
-void Transform2DComponent::Save(Archive& archive) const
+void Transform2DComponent::Save(JsonObject& obj) const
 {
-	Component::Save(archive);
-
-	archive.AddFloat3("Translation", mPosition);
-	archive.AddQuat("Rotation", mRotation);
-	archive.AddFloat2("Size", mSize);
-	archive.AddFloat2("AnchorMin", mAnchorMin);
-	archive.AddFloat2("AnchorMax", mAnchorMax);
-	archive.AddFloat2("Pivot", mPivot);
+	Component::Save(obj);
+	obj.AddFloats("Position", mPosition.ptr(), 3);
+	obj.AddFloats("Rotation", mRotation.ptr(), 4);
+	obj.AddFloats("Size", mSize.ptr(), 2);
+	obj.AddFloats("AnchorMin", mAnchorMin.ptr(), 2);
+	obj.AddFloats("AnchorMax", mAnchorMax.ptr(), 2);
+	obj.AddFloats("Pivot", mPivot.ptr(), 2);
 }
 
-void Transform2DComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void Transform2DComponent::Load(const JsonObject& data)
 {
-	Component::LoadFromJSON(data, owner);
+	Component::Load(data);
 
-	if (data.HasMember("Translation") && data["Translation"].IsArray()) 
-	{
-		const rapidjson::Value& translationValues = data["Translation"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (translationValues.Size() == 3 && translationValues[0].IsFloat() && translationValues[1].IsFloat() && translationValues[2].IsFloat()) 
-		{
-			x = translationValues[0].GetFloat();
-			y = translationValues[1].GetFloat();
-			z = translationValues[2].GetFloat();
-		}
+	float pos[3];
+	data.GetFloats("Position", pos);
+	mPosition = float3(pos);
 
-		mPosition = float3(x, y, z);
-	}
-	if (data.HasMember("Rotation") && data["Rotation"].IsArray()) 
-	{
-		const rapidjson::Value& rotationValues = data["Rotation"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-		if (rotationValues.Size() == 4 && rotationValues[0].IsFloat() && rotationValues[1].IsFloat() && rotationValues[2].IsFloat() && rotationValues[3].IsFloat()) 
-		{
-			x = rotationValues[0].GetFloat();
-			y = rotationValues[1].GetFloat();
-			z = rotationValues[2].GetFloat();
-			w = rotationValues[3].GetFloat();
-		}
+	float rot[4];
+	data.GetFloats("Rotation", rot);
+	mRotation = Quat(pos);
 
-		mRotation = Quat(x, y, z, w);
-	}
-	if (data.HasMember("Size") && data["Size"].IsArray()) 
-	{
-		const rapidjson::Value& sizeValues = data["Size"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (sizeValues.Size() == 2 && sizeValues[0].IsFloat() && sizeValues[1].IsFloat()) 
-		{
-			x = sizeValues[0].GetFloat();
-			y = sizeValues[1].GetFloat();
-		}
+	float size[2];
+	data.GetFloats("Size", size);
+	mSize = float2(size);
 
-		mSize = float2(x, y);
-	}
-	if (data.HasMember("AnchorMin") && data["AnchorMin"].IsArray()) 
-	{
-		const rapidjson::Value& anchorMinValues = data["AnchorMin"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (anchorMinValues.Size() == 2 && anchorMinValues[0].IsFloat() && anchorMinValues[1].IsFloat()) 
-		{
-			x = anchorMinValues[0].GetFloat();
-			y = anchorMinValues[1].GetFloat();
-		}
+	float anchorMin[2];
+	data.GetFloats("AnchorMin", anchorMin);
+	mAnchorMin = float2(anchorMin);
 
-		mAnchorMin = float2(x, y);
-	}
-	if (data.HasMember("AnchorMax") && data["AnchorMax"].IsArray()) 
-	{
-		const rapidjson::Value& anchorMaxValues = data["AnchorMax"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (anchorMaxValues.Size() == 2 && anchorMaxValues[0].IsFloat() && anchorMaxValues[1].IsFloat()) 
-		{
-			x = anchorMaxValues[0].GetFloat();
-			y = anchorMaxValues[1].GetFloat();
-		}
+	float anchorMax[2];
+	data.GetFloats("AnchorMax", anchorMax);
+	mAnchorMax = float2(anchorMax);
 
-		mAnchorMax = float2(x, y);
-	}
-	if (data.HasMember("Pivot") && data["Pivot"].IsArray()) 
-	{
-		const rapidjson::Value& pivotValues = data["Pivot"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (pivotValues.Size() == 2 && pivotValues[0].IsFloat() && pivotValues[1].IsFloat()) 
-		{
-			x = pivotValues[0].GetFloat();
-			y = pivotValues[1].GetFloat();
-		}
-
-		mPivot = float2(x, y);
-	}
+	float pivot[2];
+	data.GetFloats("Pivot", pivot);
+	mPivot = float2(pivot);
 
 	CalculateMatrices();
 }

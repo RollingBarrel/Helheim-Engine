@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleDetourNavigation.h"
 #include "GameObject.h"
+
 AIAgentComponent::AIAgentComponent(GameObject* ownerGameObject)
  : Component(ownerGameObject, ComponentType::AIAGENT)
 {
@@ -61,21 +62,22 @@ void AIAgentComponent::MoveAgent(float3 destination, float speed )
 }
 
 
-void AIAgentComponent::Save(Archive& archive) const
+void AIAgentComponent::Save(JsonObject& obj) const
 {
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	//archive.AddFloat("Radius", mRadius);
-	//archive.AddFloat("Height", mHeight);
-	//archive.AddFloat("StepHeight", mStepHeight);
-	//archive.AddInt("MaxSlope", mMaxSlope);
-	//archive.AddFloat("Speed", mSpeed);
-	//archive.AddFloat("AngularSpeed", mAngularSpeed);
-	//archive.AddFloat("Acceleration", mAcceleration);
-	//archive.AddFloat("StoppingDistance", mStoppingDistance);
+	Component::Save(obj);
+	//obj.AddFloat("Radius", mRadius);
+	//obj.AddFloat("Height", mHeight);
+	//obj.AddFloat("StepHeight", mStepHeight);
+	//obj.AddInt("MaxSlope", mMaxSlope);
+	//obj.AddFloat("Speed", mSpeed);
+	//obj.AddFloat("AngularSpeed", mAngularSpeed);
+	//obj.AddFloat("Acceleration", mAcceleration);
+	//obj.AddFloat("StoppingDistance", mStoppingDistance);
 }
 
-void AIAgentComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AIAgentComponent::Load(const JsonObject& data)
 {
+	Component::Load(data);
 	//if (data.HasMember("Radius")) 
 	//{
 	//	mRadius = data["Radius"].GetFloat();

@@ -367,24 +367,14 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 	return new AnimationComponent(*this, owner);
 }
 
-void AnimationComponent::Save(Archive& archive) const
+void AnimationComponent::Save(JsonObject& obj) const
 {
-	archive.AddInt("ID", GetID());
-	archive.AddInt("ModelUID", mModelUid);
-
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddBool("isEnabled", IsEnabled());
-
+	Component::Save(obj);
+	obj.AddInt("ModelUID", mModelUid);
 }
 
-void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AnimationComponent::Load(const JsonObject& data)
 {
-	int modelUid = { 0 };
-
-	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
-	{
-		modelUid = data["ModelUID"].GetInt();
-	}
-
-	SetModelUUID(modelUid);
+	Component::Load(data);	
+	SetModelUUID(data.GetInt("ModelUID"));
 }

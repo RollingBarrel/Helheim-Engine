@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Archive.h"
+#include "float4.h"
 #include <map>
 
 
@@ -19,8 +20,8 @@ public:
 
 	float4 CalculateColor(float position) const;
 
-	void Save(Archive& archive) const;
-	void LoadFromJSON(const rapidjson::Value& data);
+	void Save(JsonObject& archive) const;
+	void Load(const JsonObject& data);
 private:
 	std::map<float, float4> mColorMarks;
 };

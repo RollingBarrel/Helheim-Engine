@@ -11,8 +11,9 @@ public:
 	float GetValue(const float dt, const float initialValue) const;
 	float CalculateInitialValue();
 
-	void SaveJson(Archive& archive) const;
-	void LoadJson(const rapidjson::Value& data);
+	void Save(JsonObject& archive) const;
+	void Load(const JsonObject& data);
+
 
 private:
 	void spline(const float* key, int num, int dim, float t, float* v) const;

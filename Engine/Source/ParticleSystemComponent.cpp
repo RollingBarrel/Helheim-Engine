@@ -243,9 +243,21 @@ void ParticleSystemComponent::Reset()
     *this = ParticleSystemComponent(mOwner);
 }
 
-void ParticleSystemComponent::Save(Archive& archive) const
+void ParticleSystemComponent::Save(JsonObject& obj) const
 {
-    Component::Save(archive);
+    //TODO: REDOOO
+   //Component::Save(obj);
+   //obj.AddInt("Image", mResourceId);
+   //obj.AddFloat("Delay", mDelay);
+   //obj.AddFloat("Duration", mDuration);
+   //obj.AddFloat("Life Time", mMaxLifeTime);
+   //obj.AddFloat("Emission Rate", mEmissionRate);
+   //obj.AddInt("Max Particles", mMaxParticles);
+   //obj.AddBool("Stretched Billboard", mStretchedBillboard);
+   //obj.AddBool("Looping", mLooping);
+   //obj.AddInt("ShapeType", mShapeType);
+
+    /*Component::Save(archive);
     archive.AddInt("Image", mResourceId);
     archive.AddFloat("Delay", mDelay);
     archive.AddFloat("Duration", mDuration);
@@ -270,11 +282,19 @@ void ParticleSystemComponent::Save(Archive& archive) const
     archive.AddObject("Speed", speed);
 
     mColorGradient.Save(archive);
-    }
+    }*/
 
-void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+   //mSizeCurve.Save(obj);
+   //mSpeedCurve.Save(obj);
+   //mShape->Save(obj);
+   //mColorGradient->Save(obj);
+}
+
+
+void ParticleSystemComponent::Load(const JsonObject& data)
 {
-    Component::LoadFromJSON(data, owner);
+    //TODO REDOOO
+    /*Component::LoadFromJSON(data, owner);
     if (data.HasMember("Delay") && data["Delay"].IsFloat())
     {
         mDelay = data["Delay"].GetFloat();
@@ -356,7 +376,7 @@ void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObj
     {
         mBlendMode = data["BlendMode"].GetInt();
     }
-
+*/
 }
 
 void ParticleSystemComponent::Enable()

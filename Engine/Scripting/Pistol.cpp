@@ -46,13 +46,13 @@ void Pistol::BasicAttack()
     {
         if (mShootPoint)
         {
-            LOG("%f, %f, %f", mShootPoint->GetWorldPosition().x, mShootPoint->GetWorldPosition().y, mShootPoint->GetWorldPosition().z);
-            bullet->SetPosition(mShootPoint->GetWorldPosition());
+            LOG("%f, %f, %f", mShootPoint->GetPosition().x, mShootPoint->GetPosition().y, mShootPoint->GetPosition().z);
+            bullet->SetPosition(mShootPoint->GetPosition());
 
             mShootPoint->SetEnabled(false);
             mShootPoint->SetEnabled(true); // Reset particles
         }
-        bullet->SetRotation(mGameObject->GetWorldRotation());
+        bullet->SetRotation(mGameObject->GetRotation());
     }
 
     /*std::map<float, Hit> hits;

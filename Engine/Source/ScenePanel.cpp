@@ -12,6 +12,7 @@
 #include "HierarchyPanel.h"
 #include "EditorControlPanel.h"
 
+#include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
@@ -273,7 +274,7 @@ void ScenePanel::DrawScene()
 				}
 				case Resource::Type::Scene:
 					break;
-				case Resource::Type::Object:
+				case Resource::Type::Prefab:
 				{
 					EngineApp->GetScene()->LoadPrefab(asset->mPath);
 					break;

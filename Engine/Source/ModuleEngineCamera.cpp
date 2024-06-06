@@ -41,6 +41,7 @@ update_status ModuleEngineCamera::Update(float dt)
 	CameraControls(dt);
 	mEditorCameraGameObject->Update();
 	//LOG("X: %f, Y: %f, Z: %f", RadToDeg(mEditorCameraGameObject->GetRotation().x), RadToDeg(mEditorCameraGameObject->GetRotation().y), RadToDeg(mEditorCameraGameObject->GetRotation().z));
+	//LOG("X: %f, Y: %f, Z: %f", mEditorCameraGameObject->GetRotation().x, mEditorCameraGameObject->GetRotation().y, mEditorCameraGameObject->GetRotation().z);
 	return UPDATE_CONTINUE;
 }
 
@@ -225,7 +226,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(-mX));
 			float3x3 rotation = rotationY.Mul(rotationX);
 
-			Quat quatOriginal = mEditorCameraGameObject->GetRotationQuat();
+			Quat quatOriginal = mEditorCameraGameObject->GetRotation();
 			Quat newQuat = Quat(rotation);
 			newQuat =  newQuat * quatOriginal;
 			float3 eulerRotation = newQuat.ToEulerXYZ();
@@ -308,7 +309,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 				}
 
 				mEditorCameraGameObject->SetPosition(focus);
-				mEditorCameraGameObject->LookAt(focusedObject->GetWorldPosition());
+				mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
 				
 				MouseFix();
 			}	
@@ -333,7 +334,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 						distance *= objectSphere.r;
 					}
 
-					float3 selectedObjectPosition = selectedGameObject->GetWorldPosition();
+					float3 selectedObjectPosition = selectedGameObject->GetPosition();
 					float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
 					mEditorCameraGameObject->SetPosition(finalCameraPosition);
 				}
