@@ -159,7 +159,7 @@ private:
     GameObject* mRangeWeaponGameObject = nullptr;
     RangeWeapon* mRangeWeapon = nullptr;
     float mFastShootingTimer = 0.0f; 
-    float mFastShootingBuffer = 0.2f;   //Clicking repeatedly
+    float mFastShootingBuffer = 0.1f;   //Clicking repeatedly
     float mSlowShootingTimer = 0.0f;
     float mSlowShootingBuffer = 0.5f;   //Holding the mouse pressed
     bool mHoldingLeftMouse = false;
