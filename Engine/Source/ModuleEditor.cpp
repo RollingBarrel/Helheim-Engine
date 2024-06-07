@@ -56,12 +56,8 @@ ModuleEditor::ModuleEditor()
 	mPanels[RESOURCEPANEL] = new ResourcePanel();
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
-	mPanels[TAGSMANAGERPANEL] = new TagsManagerPanel();
 	mPanels[SETTINGSPANEL] = new SettingsPanel();
 	mPanels[ANIMATIONSMPANEL] = new AnimationSMPanel();
-
-	// Panels closed by default
-	mPanels[TAGSMANAGERPANEL]->Close();
 
 	for (auto panel : mPanels) 
 	{
@@ -83,7 +79,10 @@ bool ModuleEditor::Init()
 	mIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	mIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 	mIO->ConfigDragClickToInputText = true;
-	mIO->IniFilename = NULL;
+
+	mIO->IniFilename = nullptr;
+
+
 	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->window, EngineApp->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
@@ -104,8 +103,9 @@ bool ModuleEditor::Init()
 	mOptick = new OptickAdapter();
 
 	// Load the saved layout when opening the engine
-	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
 	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadUserSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadProjectSettings();
+	((SettingsPanel*)mPanels[SETTINGSPANEL])->LoadEditorLayout();
 	mPanels[SETTINGSPANEL]->Close();
 
 	Style();
@@ -129,7 +129,6 @@ update_status ModuleEditor::PreUpdate(float dt)
 			}
 		}
 	}
-
 
 	static bool show = true;
 	//ImGui::ShowDemoWindow(&show);
@@ -188,7 +187,7 @@ void ModuleEditor::OpenPanel(const char* name, const bool focus)
 	panel->Open();
 }
 
-void ModuleEditor::SaveUserSettings()
+void ModuleEditor::SaveSettings()
 {
 	((SettingsPanel*)mPanels[SETTINGSPANEL])->SaveUserSettings();
 }

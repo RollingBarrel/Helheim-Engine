@@ -97,8 +97,8 @@ void Level1AManager::UpdateEnemyFootStepMusic()
 {
     ModuleScene* scene = App->GetScene();
 
-    std::vector<GameObject*> Enemies;
-    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
+    const std::vector<GameObject*>& Enemies = scene->FindGameObjectsWithTag("Enemy");
+    
 
     if (!mReadyToStep) {
         mStepTimePassed += App->GetDt();
@@ -109,7 +109,7 @@ void Level1AManager::UpdateEnemyFootStepMusic()
     }
     else {
         for (auto* e : Enemies) {
-            float dist = e->GetWorldPosition().Distance(GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+            float dist = e->GetPosition().Distance(GameManager::GetInstance()->GetPlayer()->GetPosition());
 
             ScriptComponent* enemyscript = (ScriptComponent*)e->GetComponent(ComponentType::SCRIPT);
             Enemy* enemy = (Enemy*)enemyscript->GetScriptInstance();
@@ -125,5 +125,5 @@ void Level1AManager::UpdateEnemyFootStepMusic()
 void Level1AManager::UpdateBackgroundStrangeMusic() {
     ModuleScene* scene = App->GetScene();
 
-    mStrangeBackgroundSound->UpdatePosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    mStrangeBackgroundSound->UpdatePosition(GameManager::GetInstance()->GetPlayer()->GetPosition());
 }

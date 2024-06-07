@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 #include "Archive.h"
 
 enum class ENGINE_API ComponentType : unsigned int
@@ -6,7 +7,7 @@ enum class ENGINE_API ComponentType : unsigned int
 	MESHRENDERER, POINTLIGHT, SPOTLIGHT, SCRIPT, NAVMESHOBSTACLE, AIAGENT, 
 	CAMERA, CANVAS, IMAGE, TRANSFORM2D, ANIMATION, BUTTON, SLIDER,
 	AUDIOSOURCE, AUDIOLISTENER, PARTICLESYSTEM, TEXT,
-	BOXCOLLIDER, TRAIL,	TEST, NONE
+	BOXCOLLIDER, TRAIL, NONE
 };
 
 class GameObject;
@@ -21,11 +22,12 @@ public:
 	virtual	void Update() = 0;
 	
 	virtual Component* Clone(GameObject* owner) const = 0;
-	virtual void Save(Archive& archive) const;
-	virtual void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
+
+	virtual void Save(JsonObject& obj) const;
+	virtual void Load(const JsonObject& data);
 
 	ComponentType GetType() const { return mType; }
-	GameObject* const GetOwner() const { return mOwner; }
+	GameObject* GetOwner() const { return mOwner; }
 
 	unsigned int GetID() const { return mID; }
 

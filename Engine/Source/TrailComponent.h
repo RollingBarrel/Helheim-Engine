@@ -23,8 +23,8 @@ public:
 	void Disable() override;
 
 	Component* Clone(GameObject* owner) const override;
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Save(JsonObject& archive) const override;
+	void Load(const JsonObject& data) override;
 
 private:
 	void SetImage(unsigned int resourceId);

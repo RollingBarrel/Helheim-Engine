@@ -37,13 +37,14 @@ Component* AudioListenerComponent::Clone(GameObject* owner) const
 	return new AudioListenerComponent(*this, owner);
 }
 
-void AudioListenerComponent::Save(Archive& archive) const
+void AudioListenerComponent::Save(JsonObject& obj) const
 {
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	Component::Save(obj);
 }
 
-void AudioListenerComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AudioListenerComponent::Load(const JsonObject& data)
 {
+	Component::Load(data);
 }
 
 void AudioListenerComponent::Enable()

@@ -199,7 +199,6 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.cpp" />
-    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp" />
     <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c" />
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c" />
@@ -218,6 +217,7 @@
     <ClCompile Include="EngineApp.cpp" />
     <ClCompile Include="EngineLog.cpp" />
     <ClCompile Include="ImBezier.cpp" />
+    <ClCompile Include="ImColorGradient.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
@@ -243,7 +243,6 @@
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
-    <ClCompile Include="TagsManagerPanel.cpp" />
     <ClCompile Include="TimerPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -290,7 +289,6 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.h" />
-    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h" />
     <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h" />
@@ -305,6 +303,7 @@
     <ClInclude Include="EditorControlPanel.h" />
     <ClInclude Include="EngineApp.h" />
     <ClInclude Include="ImBezier.h" />
+    <ClInclude Include="ImColorGradient.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterNavMesh.h" />
     <ClInclude Include="ImporterScript.h" />
@@ -327,7 +326,6 @@
     <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ImporterTexture.h" />
-    <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="OptickAdapter.h" />
     <ClInclude Include="SettingsPanel.h" />
     <ClInclude Include="TimerPanel.h" />

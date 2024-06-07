@@ -91,9 +91,6 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="TagsManagerPanel.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="EditorControlPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -220,9 +217,6 @@
     <ClCompile Include="ImBezier.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.cpp">
-      <Filter>Dependencies\ImGuizmo</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEngineCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -246,6 +240,8 @@
     </ClCompile>
     <ClCompile Include="ImporterStateMachine.cpp">
       <Filter>Importers</Filter>
+    <ClCompile Include="ImColorGradient.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,9 +372,6 @@
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="TagsManagerPanel.h">
-      <Filter>Panels</Filter>
-    </ClInclude>
     <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -487,9 +480,6 @@
     <ClInclude Include="ImBezier.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h">
-      <Filter>Dependencies\ImGuizmo</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleEngineCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -519,6 +509,8 @@
     </ClInclude>
     <ClInclude Include="ImporterStateMachine.h">
       <Filter>Importers</Filter>
+    <ClInclude Include="ImColorGradient.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

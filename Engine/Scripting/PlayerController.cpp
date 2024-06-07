@@ -61,10 +61,6 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mGrenadThrowDistance);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
 
-
-    SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
-
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
@@ -84,26 +80,14 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
 }
 
+#pragma region MyRegion
+
 void PlayerController::Start()
 {
-    // TODO remove this line after testing
-    GameManager::GetInstance()->GetPlayer();
-
-    if (mGameManagerGO)
-    {
-        ScriptComponent* script = (ScriptComponent*)mGameManagerGO->GetComponent(ComponentType::SCRIPT);
-        mGameManager = (GameManager*)script->GetScriptInstance();
-    }
 
     mBullets = mAmmoCapacity;
     mShield = mMaxShield;
     mSanity = mMaxSanity;
-
-    if (mHudControllerGO)
-    {
-        ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
-        mHudController = static_cast<HudController*>(script->GetScriptInstance());
-    }
 
     //Weapons
     if (mRangeWeaponGameObject)
@@ -111,6 +95,7 @@ void PlayerController::Start()
         mRangeWeapon = reinterpret_cast<RangeWeapon*>(reinterpret_cast<ScriptComponent*>(mRangeWeaponGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     }
 
+    // AUDIO
     if (mFootStepAudioHolder)
     {
         mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
@@ -121,11 +106,13 @@ void PlayerController::Start()
         mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
     }
 
+    // OBJECT POOL
     if (mBulletPoolHolder)
     {
         mBulletPool = (ObjectPool*)((ScriptComponent*)mBulletPoolHolder->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
     }
 
+    // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
@@ -135,6 +122,7 @@ void PlayerController::Start()
     // CAMERA
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
 
+    // GRENADE
     if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
     {
         ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
@@ -216,7 +204,7 @@ void PlayerController::Update()
         break;
 
     case PlayerState::DEATH:
-        Death();
+        GameOver();
         break;
     }
 
@@ -224,11 +212,13 @@ void PlayerController::Update()
 
     if (mWinArea && mGameObject->GetPosition().Distance(mWinArea->GetPosition()) < 2.0f)
     {
-        mHudController->SetScreen(SCREEN::WIN, true);
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
     }
-
-    Loading();
 }
+
+#pragma endregion
+
+
 
 void PlayerController::Idle()
 {
@@ -236,7 +226,7 @@ void PlayerController::Idle()
     if (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
         mWeapon = (mWeapon == WeaponType::RANGE) ? WeaponType::MELEE : WeaponType::RANGE;
-        mHudController->SwitchWeapon();
+        GameManager::GetInstance()->GetHud()->SwitchWeapon();
     }
 
     else if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_REPEAT && !mThrowAwayGrenade)
@@ -367,14 +357,14 @@ void PlayerController::HandleRotation()
 
     std::map<float, Hit> hits;
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
+    Plane plane = Plane(mGameObject->GetPosition(), float3::unitY);
 
     float distance;
     bool intersects = plane.Intersects(ray, &distance);
     float3 hitPoint = ray.GetPoint(distance);
     if (intersects)
     {
-        float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
+        float3 target = float3(hitPoint.x, mGameObject->GetPosition().y, hitPoint.z);
         mGameObject->LookAt(target);
     }
 }
@@ -555,7 +545,6 @@ void PlayerController::MeleeBaseCombo()
     }
 }
 
-
 void PlayerController::MeleeSpecialCombo() {
 
     mIsMeleeSpecialCoolDownActive = true;
@@ -580,9 +569,9 @@ void PlayerController::MeleeSpecialCombo() {
 void PlayerController::MeleeHit(float AttackRange, float AttackDamage) {
 
     ModuleScene* scene = App->GetScene();
-    std::vector<GameObject*> Enemies;
+    const std::vector<GameObject*>& Enemies = scene->FindGameObjectsWithTag("Enemy");
 
-    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
+    
     float3 playerPosition = mGameObject->GetPosition();
 
     // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
@@ -773,58 +762,6 @@ void PlayerController::SetMovingDirection(const float3& moveDirection)
     }
 }
 
-void PlayerController::RechargeShield(float shield)
-{
-    if (mShield < mMaxShield)
-    {
-        mShield += shield;
-
-        if (mShield >= mMaxShield)
-        {
-            mShield = mMaxShield;
-        }
-    }
-
-    UpdateShield();
-}
-
-void PlayerController::TakeDamage(float damage)
-{
-    if (!mIsDashing)
-    {
-        if (!mGodMode)
-        {
-            if (mShield > 0.0f)
-            {
-                mShield -= damage;
-                mShield = Max(mShield, 0.0f);
-            }
-            else
-            {
-                mCurrentState = PlayerState::DEATH;
-            }
-            UpdateShield();
-        }
-    }
-}
-
-void PlayerController::Death()
-{
-    mPlayerIsDead = true;
-    mHudController->SetScreen(SCREEN::LOSE, true);
-}
-
-bool PlayerController::IsDead()
-{
-    return mPlayerIsDead;
-}
-
-void PlayerController::UpdateShield()
-{
-    if (mHudController == nullptr) return;
-    mHudController->SetHealth(mShield / mMaxShield);
-}
-
 void PlayerController::CheckDebugOptions()
 {
     if (App->GetInput()->GetKey(Keys::Keys_J) == KeyState::KEY_REPEAT)
@@ -838,6 +775,43 @@ void PlayerController::CheckDebugOptions()
     }
 }
 
+#pragma region Shield
+
+void PlayerController::RechargeShield(float shield)
+{
+    if (mShield < mMaxShield) 
+    {
+        mShield = Clamp(mShield + shield, 0.0f, mMaxShield);
+        UpdateShield();
+    }
+}
+
+void PlayerController::TakeDamage(float damage)
+{
+    if (mIsDashing || mGodMode) 
+    {
+        return;
+    }
+
+    mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+    UpdateShield();
+
+    if (mShield < 0.0f)
+    {
+        mCurrentState = PlayerState::DEATH;
+    }
+}
+
+void PlayerController::UpdateShield()
+{
+    float healthRatio = mShield / mMaxShield;
+    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
+}
+
+#pragma endregion
+
+#pragma region Grenade
+
 void PlayerController::UpdateGrenadeCooldown()
 {
     if (mThrowAwayGrenade)
@@ -846,7 +820,7 @@ void PlayerController::UpdateGrenadeCooldown()
         {
             mGrenadeCoolDownTimer = mGrenadeCoolDown;
             mThrowAwayGrenade = false;
-            mHudController->SetGrenadeCooldown(0.0f);
+            GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(0.0f);
             return;
         }
 
@@ -860,7 +834,7 @@ void PlayerController::UpdateGrenadeCooldown()
             mGrenadeCoolDownTimer = 0.0f;
         }
 
-        mHudController->SetGrenadeCooldown(mGrenadeCoolDownTimer / mGrenadeCoolDown);
+        GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mGrenadeCoolDownTimer / mGrenadeCoolDown);
     }
 }
 
@@ -890,7 +864,7 @@ void PlayerController::AimGrenade()
 void PlayerController::GrenadeTarget()
 {
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane = Plane(mGrenadeAimAreaGO->GetWorldPosition(), float3::unitY);
+    Plane plane = Plane(mGrenadeAimAreaGO->GetPosition(), float3::unitY);
 
     float distance;
     bool intersects = plane.Intersects(ray, &distance);
@@ -898,7 +872,7 @@ void PlayerController::GrenadeTarget()
 
     // Check if mouse hit inside circle
     // TODO: Check hit with physic
-    float3 diff = hitPoint - mGameObject->GetWorldPosition();
+    float3 diff = hitPoint - mGameObject->GetPosition();
     float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
     float radiusSquared = mGrenadThrowDistance * mGrenadThrowDistance;
 
@@ -915,7 +889,7 @@ void PlayerController::GrenadeTarget()
         {
             // Project hitPoint to the edge of the circle
             float distanceToEdge = mGrenadThrowDistance / sqrtf(distanceSquared);
-            finalPosition = mGameObject->GetWorldPosition() + diff * distanceToEdge;
+            finalPosition = mGameObject->GetPosition() + diff * distanceToEdge;
         }
         mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(true);
         mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(false);
@@ -952,6 +926,8 @@ void PlayerController::ThrowGrenade(float3 target)
     // TODO wait for thow animation time
     grenade->SetDestionation(target);
 }
+
+#pragma endregion
 
 void PlayerController::UpdateBattleSituation()
 {
@@ -991,29 +967,27 @@ void PlayerController::UpdateBattleSituation()
     }
 }
 
+#pragma region Game State
+
 void PlayerController::Victory()
 {
     mVictory = true;
-    mHudController->SetScreen(SCREEN::WIN, true);
+    GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
 
-    if (Delay(mTimeScreen))
-    {
-        mHudController->SetScreen(SCREEN::WIN, false);
-        mLoadingActive = true;
-    }
+    // Loading activated from HUD controller on Btn Click.
 }
 
 void PlayerController::GameOver()
 {
     mGameOver = true;
-    mHudController->SetScreen(SCREEN::LOSE, true);
+    GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::LOSE, true);
 
-    if (Delay(mTimeScreen))
-    {
-        mHudController->SetScreen(SCREEN::LOSE, false);
-        mLoadingActive = true;
-    }
+    // Loading activated from HUD controller on Btn Click.
 }
+
+#pragma endregion
+
+#pragma region Util
 
 bool PlayerController::Delay(float delay)
 {
@@ -1024,29 +998,16 @@ bool PlayerController::Delay(float delay)
         mTimePassed = 0;
         return true;
     }
-    else return false;
+    return false;
 }
 
-void PlayerController::Loading()
-{
-    if (mLoadingActive)
-    {
-        mHudController->SetScreen(SCREEN::LOAD, true);
-
-        if (Delay(3.0f))
-        {
-            mLoadingActive = false;
-            mHudController->SetScreen(SCREEN::LOAD, false);
-            GameManager::GetInstance()->LoadLevel("MainMenu.json");
-        }
-    }
-}
+#pragma endregion
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetName().compare("WinArea") == 0)
     {
-        mHudController->SetScreen(SCREEN::WIN, true);
+        GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::WIN, true);
     }
     LOG("COLLISION WITH: %s", collisionData->collidedWith->GetName().c_str());
 }

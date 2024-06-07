@@ -8,14 +8,7 @@
 #include "imgui.h"
 
 #define SETTINGSPANEL "Settings##"
-
-struct WindowState 
-{
-	std::string name;
-	bool IsOpen = false;
-	ImVec2 position;
-	ImVec2 size;
-};
+#define NUM_ENGINE_TAGS 3
 
 class SettingsPanel : public Panel
 {
@@ -23,11 +16,29 @@ public:
 	SettingsPanel();
 	~SettingsPanel();
 
-	void SaveUserSettings();
-	void LoadUserSettings();
-	void LoadProjectSettings();
 	void Draw(int windowFlags) override;
+	
+	void SaveUserSettings() const;			//User Settings	(No)
+	void LoadUserSettings();
+
+	void AddTag(const char* newTag);
+	void DeleteTag(const char* tagToDelete);
+
+	void LoadProjectSettings();		
+	void LoadEditorLayout();
+
+	const std::vector<std::string>& GetTags() { return mTags; }
+
+	const void ShowDeleteTagsPopup();
+	bool mDeleteTagPopup = false;
+
 private:
+	void SaveEditorLayout() const;		//ImGui	(Yes)
+			
+
+	void SaveProjectSettings() const;		//Project Settings -> Tags & Layers (Yes)
+
+
 	bool mCulling = false;
 	bool mEngineVsyncEnabled = false;
 	bool mGameVsyncEnabled = false;
@@ -37,8 +48,9 @@ private:
 	int mGameFpsLimit = 0;
 	bool mGrid = true;
 
-	std::vector<WindowState*> mOpenedWindowsInfo;
-	void SaveProjectSettings();
+	std::vector<std::string> mTags;
+
+	std::string mTagToDelete;
 
 };
 

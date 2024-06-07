@@ -15,7 +15,7 @@ public:
 		Scene,
 		NavMesh,
 		Script,
-		Object,
+		Prefab,
 		IBL,
 		StateMachine,
 		Unknown = 0

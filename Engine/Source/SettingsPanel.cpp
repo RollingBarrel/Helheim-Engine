@@ -4,6 +4,8 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "ModuleEngineCamera.h"
+#include "ModuleFileSystem.h"
+#include "Archive.h"
 #include "GameObject.h"
 #include "Timer.h"
 
@@ -16,14 +18,10 @@
 
 SettingsPanel::SettingsPanel() : Panel(SETTINGSPANEL, false)
 {
-
 }
 
 SettingsPanel::~SettingsPanel()
 {
-	for (auto window : mOpenedWindowsInfo) {
-		delete window;
-	}
 }
 
 void SettingsPanel::Draw(int windowFlags) 
@@ -40,271 +38,292 @@ void SettingsPanel::Draw(int windowFlags)
 		mGameFpsLimit = EngineApp->GetGameClock()->GetFpsLimit();
 		mGrid = EngineApp->GetDebugDraw()->GetShouldRenderGrid();
 
-		ImGui::SeparatorText("Graphic settings");
-		if (ImGui::Checkbox("EngineApply frustum culling", &mCulling))
+		ImGui::SeparatorText("Scene");
 		{
-			EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
+			ImGui::Text("Current Scene: ");
+			ImGui::SameLine();
+			ImGui::Text(EngineApp->GetScene()->GetName().c_str());
 		}
-		ImGui::Indent();
-		ImGui::SeparatorText("Engine");
-		ImGui::Checkbox("Engine Vsync enabled", &mEngineVsyncEnabled);
-		if (mEngineVsyncEnabled != EngineApp->GetEngineClock()->GetVsyncStatus())
+		//TODO: Redoo this to delete Timer and other windows 
+		if(ImGui::CollapsingHeader("Graphics"))
 		{
-			EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
-		}
+			ImGui::SeparatorText("Graphic settings");
+			if (ImGui::Checkbox("EngineApply frustum culling", &mCulling))
+			{
+				EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
+			}
+			ImGui::Indent();
+			ImGui::SeparatorText("Engine");
+			ImGui::Checkbox("Engine Vsync enabled", &mEngineVsyncEnabled);
+			if (mEngineVsyncEnabled != EngineApp->GetEngineClock()->GetVsyncStatus())
+			{
+				EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
+			}
 
-		if (mEngineVsyncEnabled) 
-		{
-			ImGui::BeginDisabled();
-		}
+			if (mEngineVsyncEnabled)
+			{
+				ImGui::BeginDisabled();
+			}
 
-		if (ImGui::Checkbox("Enable FPS Limit##1", &mEngineFpsLimitEnabled))
-		{
-			EngineApp->GetEngineClock()->EnableFpsLimit(mEngineFpsLimitEnabled);
-		}
+			if (ImGui::Checkbox("Enable FPS Limit##1", &mEngineFpsLimitEnabled))
+			{
+				EngineApp->GetEngineClock()->EnableFpsLimit(mEngineFpsLimitEnabled);
+			}
 
-		if (ImGui::SliderInt("FPS Limit##1", &mEngineFpsLimit, 10, 240))
-		{
-			EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
-		}
-		
-		if (mEngineVsyncEnabled) 
-		{
-			ImGui::EndDisabled();
-		}
+			if (ImGui::SliderInt("FPS Limit##1", &mEngineFpsLimit, 10, 240))
+			{
+				EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
+			}
 
-		ImGui::Spacing();
-		ImGui::SeparatorText("Game");
-		ImGui::Checkbox("Game Vsync enabled", &mGameVsyncEnabled);
-		if (mGameVsyncEnabled != EngineApp->GetGameClock()->GetVsyncStatus()) 
-		{
-			EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
-		}
+			if (mEngineVsyncEnabled)
+			{
+				ImGui::EndDisabled();
+			}
+			ImGui::Spacing();
+			ImGui::SeparatorText("Game");
+			ImGui::Checkbox("Game Vsync enabled", &mGameVsyncEnabled);
+			if (mGameVsyncEnabled != EngineApp->GetGameClock()->GetVsyncStatus())
+			{
+				EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
+			}
 
-		if (mGameVsyncEnabled) 
-		{
-			ImGui::BeginDisabled();
-		}
+			if (mGameVsyncEnabled)
+			{
+				ImGui::BeginDisabled();
+			}
 
-		if (ImGui::Checkbox("Enable FPS Limit##2", &mGameFpsLimitEnabled))
-		{
-			EngineApp->GetGameClock()->EnableFpsLimit(mGameFpsLimitEnabled);
-		}
+			if (ImGui::Checkbox("Enable FPS Limit##2", &mGameFpsLimitEnabled))
+			{
+				EngineApp->GetGameClock()->EnableFpsLimit(mGameFpsLimitEnabled);
+			}
 
-		if (ImGui::SliderInt("FPS Limit##2", &mGameFpsLimit, 10, 240))
-		{
-			EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
-		}
+			if (ImGui::SliderInt("FPS Limit##2", &mGameFpsLimit, 10, 240))
+			{
+				EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
+			}
 
-		if (mGameVsyncEnabled) 
-		{
-			ImGui::EndDisabled();
-		}
+			if (mGameVsyncEnabled)
+			{
+				ImGui::EndDisabled();
+			}
 
-		ImGui::Unindent();
+
+			if (ImGui::Button("Save settings"))
+			{
+				SaveUserSettings();
+			}
+
+
+		}
 
 		ImGui::SeparatorText("Editor settings");
+
 		if (ImGui::Checkbox("Draw Grid", &mGrid)) 
 		{
 			EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
 		}
-
-		if (ImGui::Button("Save settings")) 
+		
+		if (ImGui::Button("Save Editor layout"))
 		{
-			SaveProjectSettings();
-		}
-		if (ImGui::Button("Load settings")) 
-		{
-			LoadProjectSettings();
+			SaveEditorLayout();
 		}
 	}
 	ImGui::End();
 }
 
-void SettingsPanel::SaveProjectSettings()
+void SettingsPanel::SaveUserSettings() const
 {
-	mOpenedWindowsInfo.clear();
-	std::ofstream out_file("projectSettings.txt");
+	Archive doc;
+	JsonObject root = doc.GetRootObject();
+	JsonObject engine = root.AddNewJsonObject("Engine Settings");
+	engine.AddBool("Draw Grid", mGrid);
+	engine.AddBool("Frustum Culling", mCulling);
+	engine.AddBool("Vsync", mEngineVsyncEnabled);
+	engine.AddBool("Enable FPS Limit", mEngineFpsLimitEnabled);
+	engine.AddFloat("FPS Limit", mEngineFpsLimit);
 
-	// Settings variables we want to store
-	if (out_file.is_open())
+	JsonObject game = root.AddNewJsonObject("Game Settings");
+	game.AddBool("Vsync", mGameVsyncEnabled);
+	game.AddBool("Enable FPS Limit", mGameFpsLimitEnabled);
+	game.AddFloat("FPS Limit", mGameFpsLimit);
+
+	JsonObject camera = root.AddNewJsonObject("Camera Settings");
+	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition().ptr(), 3);
+	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation().ptr(), 4);
+
+	JsonObject scene = root.AddNewJsonObject("Scene Settings");
+	scene.AddString("Name", EngineApp->GetScene()->GetName().c_str());
+
+	std::string buffer = doc.Serialize();
+	App->GetFileSystem()->Save("userSettings.json", buffer.c_str(), buffer.length());
+}
+
+void SettingsPanel::LoadUserSettings()
+{
+	char* fileBuffer;
+	
+	if (App->GetFileSystem()->Load("userSettings.json", &fileBuffer))
 	{
-		out_file << "EngineApply frustum culling: " << mCulling << "\n";
-		out_file << "Engine Vsync enabled: " << mEngineVsyncEnabled << "\n";
-		out_file << "Engine FPS Limit: " << mEngineFpsLimit << "\n";
-		out_file << "Game Vsync enabled: " << mGameVsyncEnabled << "\n";
-		out_file << "Game FPS Limit: " << mGameFpsLimit << "\n";
-		out_file << "Draw Grid: " << mGrid << "\n";
-	}
+		Archive doc(fileBuffer);
 
-	// Window states
-	out_file << EngineApp->GetEditor()->GetPanelList().size() << "\n";
-	for (const auto& panels : EngineApp->GetEditor()->GetPanelList())	
+		JsonObject root = doc.GetRootObject();
+
+		JsonObject engine = root.GetJsonObject("Engine Settings");
+		mGrid = engine.GetBool("Draw Grid");
+		EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
+		mCulling = engine.GetBool("Frustum Culling");
+		EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
+		mEngineVsyncEnabled = engine.GetBool("Vsync");
+		EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
+		mEngineFpsLimitEnabled = engine.GetBool("Enable FPS Limit");
+		EngineApp->GetEngineClock()->EnableFpsLimit(mEngineFpsLimitEnabled);
+		mEngineFpsLimit = engine.GetFloat("FPS Limit");
+		EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
+
+		JsonObject game = root.GetJsonObject("Game Settings");
+		mGameVsyncEnabled = game.GetBool("Vsync");
+		EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
+		mGameFpsLimitEnabled = game.GetBool("Enable FPS Limit");
+		EngineApp->GetGameClock()->EnableFpsLimit(mGameFpsLimitEnabled);
+		mGameFpsLimit = game.GetFloat("FPS Limit");
+		EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
+
+		JsonObject camera = root.GetJsonObject("Camera Settings");
+		float position[3];
+		camera.GetFloats("Position", position);
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(float3(position));
+
+		float rotation[4];
+		camera.GetFloats("Rotation", rotation);
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(Quat(rotation));
+
+		JsonObject scene = root.GetJsonObject("Scene Settings");
+		std::string name = scene.GetString("Name");
+		App->GetScene()->Load(name.c_str());
+	}	
+}
+
+void SettingsPanel::AddTag(const char* newTag)
+{
+	mTags.push_back(newTag);
+	SaveProjectSettings();
+}
+
+void SettingsPanel::DeleteTag(const char* tagToDelete)
+{
+	const std::vector<GameObject*>& foundGameObjects = App->GetScene()->FindGameObjectsWithTag(tagToDelete);
+
+	if (foundGameObjects.empty())
 	{
-		WindowState* windowState = new WindowState();
-		ImGui::Begin(panels.first);
-		windowState->name = panels.first;
-		windowState->IsOpen = panels.second->IsOpen();
-		windowState->position = ImGui::GetWindowPos();
-		windowState->size = ImGui::GetWindowSize();
-		ImGui::End();
-		mOpenedWindowsInfo.push_back(windowState);
-
-		if (out_file.is_open())	
+		for (std::vector<std::string>::iterator it = mTags.begin(); it != mTags.end(); ++it)
 		{
-			out_file << windowState->name << "\n";
-			out_file << windowState->IsOpen << "\n";
-			out_file << windowState->position.x << " " << windowState->position.y << "\n";
-			out_file << windowState->size.x << " " << windowState->size.y << "\n";
+			if ((*it).compare(tagToDelete) == 0)
+			{
+				mTags.erase(it);
+				SaveProjectSettings();
+				break;
+			}
 		}
 	}
+	else 
+	{
+		mDeleteTagPopup = true;
+		mTagToDelete = tagToDelete;
+	}
+}
 
-	// Saves the docking layout
-	if (out_file.is_open())	
+
+
+void SettingsPanel::SaveProjectSettings() const
+{
+	Archive document;
+	JsonObject root = document.GetRootObject();
+	JsonArray tags = root.AddNewJsonArray("Tags");
+
+	for (int i = NUM_ENGINE_TAGS; i < mTags.size(); ++i)
+	{
+		tags.PushBackString(mTags[i].c_str());
+	}
+
+	std::string buffer = document.Serialize();
+	App->GetFileSystem()->Save("projectSettings.json", buffer.c_str(), buffer.length());
+}
+
+const void SettingsPanel::ShowDeleteTagsPopup()
+{
+	const std::vector<GameObject*>& foundGameObjects = App->GetScene()->FindGameObjectsWithTag(mTagToDelete.c_str());
+
+	if(ImGui::BeginPopupModal("DeleteTag", &mDeleteTagPopup, ImGuiWindowFlags_NoMove))
+	{
+		static char tmp[200] = "Can't be deleted cause is being used by";
+		auto windowWidth = ImGui::GetWindowSize().x;
+		auto textWidth = ImGui::CalcTextSize(tmp).x;
+
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::TextColored(ImVec4(0,1,1,1), "%s", mTagToDelete.c_str());
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::Text(tmp);
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::TextColored(ImVec4(0,1,0,1),"%s", foundGameObjects[0]->GetName().c_str());
+
+		ImGui::EndPopup();
+	}
+}
+
+void SettingsPanel::LoadProjectSettings()
+{
+	char* fileBuffer;
+
+	if (App->GetFileSystem()->Load("projectSettings.json", &fileBuffer))
+	{
+		Archive document(fileBuffer);
+
+		JsonObject root = document.GetRootObject();
+		JsonArray tags = root.GetJsonArray("Tags");
+
+		mTags.reserve(tags.Size() + NUM_ENGINE_TAGS);
+
+		mTags.push_back("Untagged");
+		mTags.push_back("MainCamera");
+		mTags.push_back("Player");
+
+		for (unsigned int i = 0; i < tags.Size(); ++i)
+		{
+			mTags.push_back(tags.GetString(i));
+		}
+	}
+	else
+	{
+		mTags.reserve(NUM_ENGINE_TAGS);
+
+		mTags.push_back("Untagged");
+		mTags.push_back("MainCamera");
+		mTags.push_back("Player");
+	}
+
+}
+
+void SettingsPanel::SaveEditorLayout() const
+{
+	std::ofstream out_file("imgui.ini");
+	if (out_file.is_open())
 	{
 		size_t settings_len;
 		const char* settings = ImGui::SaveIniSettingsToMemory(&settings_len);
 		out_file.write(settings, settings_len);
 		out_file.close();
 	}
-}
-
-void SettingsPanel::SaveUserSettings()
-{
-	std::ofstream userSettings("userSettings.txt");
-	float3 cameraPosition = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition();
-	float3 cameraRotation = EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation();
-
-	if (userSettings.is_open())
-	{
-		userSettings << "Camera Position:\n" << cameraPosition.x << '\n' << cameraPosition.y << '\n' << cameraPosition.z << "\n";
-		userSettings << "Camera Rotation:\n" << cameraRotation.x << '\n' << cameraRotation.y << '\n' << cameraRotation.z << "\n";
-		
-		userSettings << "Scene: \n" << App->GetScene()->GetName();
-	}
-}
-
-void SettingsPanel::LoadUserSettings()
-{
-	std::ifstream userSettings("userSettings.txt");
-
-	std::string line;
-
-	float3 cameraPosition;
-	float3 cameraRotation;
-
-	if (userSettings.is_open())
-	{
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-			cameraPosition[i] = std::stof(line);
-		}
-		std::getline(userSettings, line);
-		for (int i = 0; i < 3; ++i)
-		{
-			if (std::getline(userSettings, line))
-			cameraRotation[i] = std::stof(line);
-		}
-
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(cameraPosition);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(cameraRotation);
-		
-		std::getline(userSettings, line);
-		std::getline(userSettings, line);
-		App->GetScene()->Load(line.c_str());
-
-	}
-
-	
-
 
 }
 
-void SettingsPanel::LoadProjectSettings()
+void SettingsPanel::LoadEditorLayout()
 {
-	mOpenedWindowsInfo.clear();
-	// Load the settings for all the windows
-	std::ifstream in_file("projectSettings.txt");
-	if (in_file.is_open()) 
+	std::ifstream in_file("imgui.ini");
+	if (in_file.is_open())
 	{
-		std::string line;
-
-		// Load the settings variables
-		if (std::getline(in_file, line))
-		{
-			mCulling = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mEngineVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mEngineFpsLimit = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mGameVsyncEnabled = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mGameFpsLimit = std::stoi(line.substr(line.find(":") + 1));
-		}
-		if (std::getline(in_file, line))
-		{
-			mGrid = std::stoi(line.substr(line.find(":") + 1));
-		}
-
-		std::vector<const char*> panelNames = EngineApp->GetEditor()->GetPanelNames();
-
-		// Load the windows state
-		if (std::getline(in_file, line))
-		{
-			int numWindows = std::stoi(line);
-
-			for (int i = 0; i < numWindows; ++i)
-			{
-				WindowState* windowState = new WindowState();
-
-				if (std::getline(in_file, line)) windowState->name = line.c_str();
-				if (std::getline(in_file, line)) windowState->IsOpen = std::stoi(line);
-				if (std::getline(in_file, line))
-				{
-					std::istringstream iss(line);
-					iss >> windowState->position.x >> windowState->position.y;
-				}
-				if (std::getline(in_file, line))
-				{
-					std::istringstream iss(line);
-					iss >> windowState->size.x >> windowState->size.y;
-				}
-				auto it = std::find(panelNames.begin(), panelNames.end(), windowState->name);
-				bool panelExists = it != panelNames.end();
-				if (panelExists)
-				{
-					const char* panelName = *it;
-					if (windowState->name == panelName && windowState->IsOpen)
-					{
-						EngineApp->GetEditor()->GetPanel(panelName)->Open();
-					}
-					mOpenedWindowsInfo.push_back(windowState);
-				}
-			}
-		}
-
-		// EngineApply the loaded settings to the ImGui panel
-		EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
-		EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
-		EngineApp->GetEngineClock()->SetFpsLimit(mEngineFpsLimit);
-		EngineApp->GetGameClock()->SetVsyncStatus(mGameVsyncEnabled);
-		EngineApp->GetGameClock()->SetFpsLimit(mGameFpsLimit);
-		EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
-
-		// Load the docking layout
 		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
 		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
 		in_file.close();
 	}
 }
+

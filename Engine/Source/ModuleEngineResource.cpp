@@ -172,7 +172,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);
 		break;
-	case Resource::Type::Object:
+	case Resource::Type::Prefab:
 		ret = new Resource(uid, type);
 		break;
 	case Resource::Type::StateMachine:
@@ -217,7 +217,7 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 		EngineApp->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
 		break;
 	}
-	case Resource::Type::Object:
+	case Resource::Type::Prefab:
 		assetsFilePath = importedFilePath;
 		break;
 	case Resource::Type::Script:

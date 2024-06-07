@@ -343,7 +343,7 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 	return new AnimationComponent(*this, owner);
 }
 
-void AnimationComponent::Save(Archive& archive) const
+void AnimationComponent::Save(JsonObject& obj) const
 {
 	archive.AddInt("ID", GetID());
 	archive.AddIntArray("AnimationUIDs", mAnimationsUIDs);
@@ -360,7 +360,7 @@ void AnimationComponent::Save(Archive& archive) const
 
 }
 
-void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AnimationComponent::Load(const JsonObject& data)
 {
 	std::vector<unsigned int> animationsUids;
 	if (data.HasMember("AnimationUIDs") && data["AnimationUIDs"].IsArray()) 
