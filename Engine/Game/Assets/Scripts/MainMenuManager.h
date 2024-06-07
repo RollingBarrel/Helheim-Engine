@@ -1,21 +1,22 @@
 #pragma once
-#include <Script.h>
+#include "Script.h"
 #include "Macros.h"
 
 class AudioSourceComponent;
 
-GENERATE_BODY(MainMenuController);
+GENERATE_BODY(MainMenuManager);
 
-class MainMenuController :
+class MainMenuManager :
     public Script
 {
-    FRIEND(MainMenuController)
+    FRIEND(MainMenuManager)
 
 public:
-    MainMenuController(GameObject* owner);
-    ~MainMenuController();
+    MainMenuManager(GameObject* owner);
+    ~MainMenuManager();
 
-    void PlaySFX();
+    void PlayOKSFX();
+    void PlaySelectSFX();
 
     void Start() override;
     void Update() override;
@@ -24,7 +25,10 @@ private:
     GameObject* mMainMenuThemeHolder = nullptr;
     AudioSourceComponent* mMainMenuTheme = nullptr;
 
-    GameObject* mSFXHolder = nullptr;
-    AudioSourceComponent* mSFX = nullptr;
+    GameObject* mOKSFXHolder = nullptr;
+    AudioSourceComponent* mOKSFX = nullptr;
+
+    GameObject* mSelectSFXHolder = nullptr;
+    AudioSourceComponent* mSelectSFX = nullptr;
 };
 
