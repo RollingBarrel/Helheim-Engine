@@ -24,7 +24,6 @@
 #include "TimerPanel.h"
 #include "SettingsPanel.h"
 #include "EditorControlPanel.h"
-#include "TagsManagerPanel.h"
 #include "AnimationSMPanel.h"
 
 #include "imgui_impl_sdl2.h"

@@ -19,9 +19,9 @@ public:
 struct AnimationState
 {
 public:
-	AnimationState(const std::string& clipName) {
-		mClip = clipName;
-		mName = clipName;
+	AnimationState(const std::string& stateName) {
+		mClip = "Default";
+		mName = stateName;
 		mStartTime = 0.0f;
 		mEndTime = 10.0f;
 		mLoop = true;

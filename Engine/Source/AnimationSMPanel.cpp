@@ -167,13 +167,13 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
         strncpy(buffer, mNewNodeName.c_str(), sizeof(buffer));
         buffer[sizeof(buffer) - 1] = '\0';
 
-        if (ImGui::InputText("Input new node name: ", buffer, sizeof(buffer))) {
+        if (ImGui::InputText("Input new state name: ", buffer, sizeof(buffer))) {
             // Update mNewNodeName with the new value from the buffer
             mNewNodeName = std::string(buffer);
         }
 
         ImGui::SameLine();
-        if (ImGui::Button("Create new node")) {
+        if (ImGui::Button("Create new state")) {
             mStateMachine->AddState(mNewNodeName);
             mNewNodeName = "";
         }

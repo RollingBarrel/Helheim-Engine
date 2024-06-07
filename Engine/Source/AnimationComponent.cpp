@@ -345,16 +345,18 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 
 void AnimationComponent::Save(JsonObject& obj) const
 {
-	archive.AddInt("ID", GetID());
-	archive.AddIntArray("AnimationUIDs", mAnimationsUIDs);
+	Component::Save(obj);
+	obj.AddInt("ID", GetID());
+	obj.AddInts("AnimationsUIDs", static_cast<const int*>(static_cast<const void*>(mAnimationsUIDs.data())), mAnimationsUIDs.size());
+	obj.AddInt("NumAnimationUIDs", mAnimationsUIDs.size());
 
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddBool("isEnabled", IsEnabled());
+	obj.AddInt("ComponentType", static_cast<int>(GetType()));
+	obj.AddBool("isEnabled", IsEnabled());
 
-	archive.AddInt("LowerSMUID", mStateMachine->GetUID());
+	obj.AddInt("LowerSMUID", mStateMachine->GetUID());
 	if (mSpineObjects.size() > 0)
 	{
-		archive.AddInt("UpperSMUID", mSpineStateMachine->GetUID());
+		obj.AddInt("UpperSMUID", mSpineStateMachine->GetUID());
 
 	}
 
@@ -362,27 +364,24 @@ void AnimationComponent::Save(JsonObject& obj) const
 
 void AnimationComponent::Load(const JsonObject& data)
 {
-	std::vector<unsigned int> animationsUids;
-	if (data.HasMember("AnimationUIDs") && data["AnimationUIDs"].IsArray()) 
+	Component::Load(data);
+
+	int numUids = data.GetInt("NumAnimationUIDs");
+
+	int* animationUids = new int[numUids];
+
+	data.GetInts("AnimationsUIDs", animationUids);
+
+	for (unsigned int i = 0; i < numUids; ++i)
 	{
-		const rapidjson::Value& uids = data["AnimationsUIDs"];
-		for (rapidjson::SizeType i = 0; i < uids.Size(); i++)
-		{
-			animationsUids.push_back(uids[i].GetInt());
-		}
+		mAnimationsUIDs.push_back(animationUids[i]);
 	}
-	mAnimationsUIDs = animationsUids;
-	assert(animationsUids.size() > 0);
+
+	assert(mAnimationsUIDs.size() > 0);
 	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationsUIDs[0], Resource::Type::Animation));
 	mController = new AnimationController(tmpAnimation, true);
 
-	int lowerStateMachine = { 0 };
-
-	if (data.HasMember("LowerSMUID") && data["LowerSMUID"].IsInt())
-	{
-		lowerStateMachine = data["LowerSMUID"].GetInt();
-	}
-
+	int lowerStateMachine = data.GetInt("LowerSMUID");
 	if (lowerStateMachine != 0)
 	{
 		ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
@@ -397,12 +396,7 @@ void AnimationComponent::Load(const JsonObject& data)
 	mController->SetEndTime(mStateMachine->GetStateEndTime(0));
 
 
-	int upperStateMachine = { 0 };
-
-	if (data.HasMember("UpperSMUID") && data["UpperSMUID"].IsInt())
-	{
-		upperStateMachine = data["UpperSMUID"].GetInt();
-	}
+	int upperStateMachine = data.GetInt("UpperSMUID");
 
 	if (upperStateMachine != 0)
 	{
