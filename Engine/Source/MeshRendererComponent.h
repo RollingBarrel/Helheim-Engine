@@ -35,6 +35,7 @@ public:
 	void SetMaterial(unsigned int uid);
 	void SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette = nullptr);
 	void UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
+	void UpdateSkletonGoIds();
 
 	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
 	bool HasSkinning() const { return mHasSkinning; };

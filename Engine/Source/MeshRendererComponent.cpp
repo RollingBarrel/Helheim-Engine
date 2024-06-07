@@ -164,7 +164,6 @@ void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const
 	}
 }
 
-
 void MeshRendererComponent::Update() 
 {
 	if (mOwner->HasUpdatedTransform())
@@ -205,6 +204,18 @@ void MeshRendererComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 	obj.AddInt("MeshID", mMesh->GetUID());
 	obj.AddInt("MaterialID", mMaterial->GetUID());
+	obj.AddBool("HasSkinning", mHasSkinning);
+	if (mPaletteOwner)
+		obj.AddInt("PaletteOwner", mPaletteOwner->GetID());
+	else
+		obj.AddInt("PaletteOwner", 0);
+	JsonArray arr = obj.AddNewJsonArray("InverseBindMatrices");
+	for (int i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
+	{
+		JsonObject obj = arr.PushBackNewObject();
+		obj.AddInt("GoId", mGameobjectsInverseMatrices[i].first->GetID());
+		obj.AddFloats("Matrix", mGameobjectsInverseMatrices[i].second.ptr(), 16);
+	}
 }
 
 void MeshRendererComponent::Load(const JsonObject& data) 
@@ -213,6 +224,26 @@ void MeshRendererComponent::Load(const JsonObject& data)
 
 	SetMesh(data.GetInt("MeshID"));
 	SetMaterial(data.GetInt("MaterialID"));
+	mHasSkinning = data.GetBool("HasSkinning");
+
+	unsigned int id = data.GetInt("PaletteOwner");
+	if (id)
+	{
+		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(id);
+	}
+	JsonArray arr = data.GetJsonArray("InverseBindMatrices");
+	for (int i = 0; i < arr.Size(); ++i)
+	{
+		JsonObject obj = arr.GetJsonObject(i);
+		mGameobjectsInverseMatrices[i].first = reinterpret_cast<GameObject*>(obj.GetInt("GoId"));
+		float matrix[16];
+		obj.GetFloats("Matrix", matrix);
+		mGameobjectsInverseMatrices[i].second = float4x4(
+			matrix[0], matrix[1], matrix[2], matrix[3],
+			matrix[4], matrix[5], matrix[6], matrix[7], 
+			matrix[8], matrix[9], matrix[10], matrix[11], 
+			matrix[12], matrix[13], matrix[14], matrix[15]);
+	}
 }
 
 void MeshRendererComponent::UpdatePalette()
