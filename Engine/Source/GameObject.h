@@ -12,6 +12,7 @@
 #include "Archive.h"
 
 class Component;
+class MeshRendererComponent;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject
@@ -100,6 +101,8 @@ public:
 	template<typename T> T* GetComponentInParent() const;											
 	Component* GetComponentInParent(ComponentType type) const;											
 	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
+	//TODO: do the template correctly,SRRY
+	void GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const;
 	void AddComponentToDelete(Component* component);
 
 	// Save / Load

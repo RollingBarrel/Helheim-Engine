@@ -65,11 +65,13 @@ update_status ModuleScene::Update(float dt)
 	mShouldUpdateQuadtree = false;
 	mRoot->Update();
 
-	if (mShouldUpdateQuadtree)
-	{
-		mQuadtreeRoot->UpdateTree();
-	}
-	mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
+	//TODO: temporally removed the quadtree
+	//if (mShouldUpdateQuadtree)
+	//{
+	//	mQuadtreeRoot->UpdateTree();
+	//}
+	//mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
+	mRoot->GetMeshesInChildren(mCurrRenderComponents);
 	App->GetOpenGL()->Draw(mCurrRenderComponents);
 	mCurrRenderComponents.clear();
 

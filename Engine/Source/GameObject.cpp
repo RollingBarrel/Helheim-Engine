@@ -454,6 +454,21 @@ void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Compone
 	}
 }
 
+void GameObject::GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const
+{
+	MeshRendererComponent* gameObjectComponent = reinterpret_cast<MeshRendererComponent*>(GetComponent(ComponentType::MESHRENDERER));
+
+	if (gameObjectComponent)
+	{
+		componentVector.push_back(gameObjectComponent);
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		child->GetMeshesInChildren(componentVector);
+	}
+}
+
 template<typename T>
 T* GameObject::GetComponentInParent() const
 {
