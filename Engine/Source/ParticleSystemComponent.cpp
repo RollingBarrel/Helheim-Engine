@@ -194,7 +194,7 @@ void ParticleSystemComponent::Update()
             // relative to the shape of emission
 
 			float3 emitionPosition = ShapeInitPosition();
-            float3 emitionDirection = ShapeInitDirection();
+            float3 emitionDirection = ShapeInitDirection(emitionPosition);
             float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
             emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
             float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
@@ -257,10 +257,12 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddBool("IsLifetimeRandom", mIsLifetimeRandom);
     obj.AddFloat("Lifetime", mLifetime);
     obj.AddFloat("MaxLifetime", mMaxLifetime);
+
     obj.AddInt("ShapeType", static_cast<int>(mShapeType));
     obj.AddFloat("ShapeRadius", mShapeRadius);
     obj.AddFloat("ShapeAngle", mShapeAngle);
     obj.AddFloats("ShapeSize", mShapeSize.ptr(), 3);
+
     obj.AddInt("BlendMode", mBlendMode);
 
     JsonObject size = obj.AddNewJsonObject("SizeCurve");
@@ -319,71 +321,113 @@ void ParticleSystemComponent::Disable()
 
 float3 ParticleSystemComponent::ShapeInitPosition() const
 {
+    auto randFloat = []() -> float {
+        return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        };
+
     switch (mShapeType)
     {
     case EmitterType::CONE:
     {
-        float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        float angle = r * 2 * math::pi;
-        r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float r = sqrt(randFloat());  // Usar la raíz cuadrada para una distribución uniforme
+        float angle = randFloat() * 2 * math::pi;
         float distance = r * mShapeRadius;
         float x = distance * cos(angle);
         float y = distance * sin(angle);
 
         return float3(x, y, 0);
-        break;
     }
-    case EmitterType::SQUARE:
+    case EmitterType::BOX:
     {
-        float randX = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        randX -= 0.5f;
-        float randY = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        randY -= 0.5f;
-        return float3(mShapeSize.x * randX, mShapeSize.y * randY, 0);
-        break;
+        float randX = randFloat() - 0.5f;
+        float randY = randFloat() - 0.5f;
+        float randZ = randFloat() - 0.5f;
+        return float3(mShapeSize.x * randX, mShapeSize.y * randY, mShapeSize.z * randZ);
     }
-    case EmitterType::CIRCLE:
+    case EmitterType::SPHERE:
     {
-        float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        float angle = r * 2 * math::pi;
-        r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        float distance = r * mShapeRadius;
-        float x = distance * cos(angle);
-        float y = distance * sin(angle);
+        float u = randFloat();
+        float v = randFloat();
+        float theta = u * 2.0f * math::pi;
+        float phi = acos(2.0f * v - 1.0f);
+        float r = cbrt(randFloat()) * mShapeRadius;
+        float x = r * sin(phi) * cos(theta);
+        float y = r * sin(phi) * sin(theta);
+        float z = r * cos(phi);
 
-        return float3(x, y, 0);
-        break;
+        return float3(x, y, z);
     }
     default:
         return float3(1.0f, 1.0f, 1.0f);
     }
 }
 
-float3 ParticleSystemComponent::ShapeInitDirection() const
+
+float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
 {
+    auto randFloat = []() -> float {
+        return static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f;
+        };
+
     switch (mShapeType)
     {
     case EmitterType::CONE:
     {
-        float r1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        float theta = r1 * 2 * math::pi; // Angle in XY plane
+        float theta = 0.0f;
+        float phi = 0.0f;
+        if (mIsShapeAngleRand) 
+        {
+            theta = pos.AngleBetween(float3(1, 0, 0)) + randFloat() * mShapeRandAngle;
+            if (pos.y < 0) theta = -theta;
+            phi = (pos.Length() / mShapeRadius) * mShapeAngle + randFloat() * mShapeRandAngle;
+        }
+        else 
+        {
+            theta = pos.AngleBetween(float3(1, 0, 0));
+            if (pos.y < 0) theta = -theta;
+            phi = (pos.Length() / mShapeRadius) * mShapeAngle;
 
-        // Instead of a linear distribution for angleB, we use an angular distribution.
-        float r2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        float phi = std::acos(1 - r2 * (1 - std::cos(mShapeAngle))); // Angle from Z axis
-
+        }
         float x = std::sin(phi) * std::cos(theta);
         float y = std::sin(phi) * std::sin(theta);
         float z = std::cos(phi);
 
-        return float3(x, y, z).Normalized(); // Normalize to ensure unit length        break;
+        return float3(x, y, z).Normalized();
     }
-    //case EmitterType::SQUARE:
-    //    break;
-    //case EmitterType::CIRCLE:
-    //    break;
-    //case EmitterType::NONE:
-    //    break;
+    case EmitterType::BOX:
+    {
+        float3 direction;
+        if (mShapeInverseDir) direction = (-pos).Normalized();
+        else direction = pos.Normalized();
+        if (mIsShapeAngleRand)
+        {
+            float theta = randFloat() * math::pi * 2;
+            float phi = randFloat() * mShapeRandAngle;
+            // Calculate rotation axis (a vector perpendicular to direction)
+            float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
+            float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
+            // Rotate direction around the rotation axis by phi
+            direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
+        }
+        return direction;
+    }
+    case EmitterType::SPHERE:
+    {
+        float3 direction;
+        if (mShapeAngle > 0) direction = (-pos).Normalized();
+        else direction = pos.Normalized();
+        if (mIsShapeAngleRand)
+        {
+            float theta = randFloat() * math::pi * 2;
+            float phi = randFloat() * mShapeRandAngle;
+            // Calculate rotation axis (a vector perpendicular to direction)
+            float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
+            float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
+            // Rotate direction around the rotation axis by phi
+            direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
+        }
+        return direction;
+    }
     default:
         return float3(0, 0, 1);
     }

@@ -18,8 +18,8 @@ public:
 	{
 		NONE = 0,
 		CONE,
-		SQUARE,
-		CIRCLE
+		BOX,
+		SPHERE
 	};
 	explicit ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
@@ -36,7 +36,7 @@ public:
 
 	float3 ShapeInitPosition() const;
 
-	float3 ShapeInitDirection() const;
+	float3 ShapeInitDirection(const float3& pos) const;
 
 	Component* Clone(GameObject* owner) const override;
 	
@@ -77,6 +77,9 @@ private:
 	float mShapeRadius = 0.0f;
 	float mShapeAngle = math::pi / 4.0f;
 	float3 mShapeSize = float3(1.0f, 1.0f, 1.0f);
+	bool mIsShapeAngleRand = false;
+	float mShapeRandAngle = 0.0f;
+	bool mShapeInverseDir = false;
 
 	int mBlendMode = 0;
 

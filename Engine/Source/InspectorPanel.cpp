@@ -1592,7 +1592,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
 	DrawBezierCurve(&(component->mSizeCurve), "Size");
 	ImGui::Separator();
-	static const char* items[]{ "Cone","Square","Circle" };
+	static const char* items[]{ "Cone","Box","Sphere"};
 	static int Selecteditem = 0;
 	ImGui::Text("Shape");
 	ImGui::SameLine();
@@ -1611,17 +1611,32 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
-		case ParticleSystemComponent::EmitterType::SQUARE:
+		case ParticleSystemComponent::EmitterType::BOX:
 			ImGui::Text("Width");
 			ImGui::SameLine();
-			ImGui::DragFloat2("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::DragFloat3("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::Text("Invers Dir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
+
 			break;
-		case ParticleSystemComponent::EmitterType::CIRCLE:
+		case ParticleSystemComponent::EmitterType::SPHERE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
-			break;
+			ImGui::Text("Invers Dir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
 
+			break;
+	}
+	ImGui::Text("Rand Dir");
+	ImGui::SameLine();
+	ImGui::Checkbox("##FixedDirection", &(component->mIsShapeAngleRand));
+	if (component->mIsShapeAngleRand) 
+	{
+		ImGui::SameLine();
+		ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
 	}
 
 	DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
