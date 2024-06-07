@@ -28,7 +28,7 @@ public:
 	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
-	GameObject(const GameObject& original, GameObject* newParent);
+	GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<GameObject*, GameObject*>* originalToNew = nullptr);
 	~GameObject();
 
 	void Update();

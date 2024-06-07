@@ -139,6 +139,25 @@ void MeshRendererComponent::SetInvBindMatrices(std::vector<std::pair<GameObject*
 	mHasSkinning = true;
 }
 
+void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew)
+{
+	assert(mHasSkinning && "Component does not have skinning");
+	if (mPaletteOwner != nullptr)
+	{
+		assert(originalToNew.find(mPaletteOwner->GetOwner()) != originalToNew.end() && originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER) != nullptr);
+		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER));
+	}
+	else
+	{
+		assert(mGameobjectsInverseMatrices.size() && "Component does not have skeleton");
+		for (auto& pair : mGameobjectsInverseMatrices)
+		{
+			assert(originalToNew.find(pair.first) == originalToNew.end());
+			pair.first = originalToNew.at(pair.first);
+		}
+	}
+}
+
 
 void MeshRendererComponent::Update() 
 {
@@ -164,6 +183,7 @@ void MeshRendererComponent::Update()
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
+
 	return new MeshRendererComponent(*this, owner);
 }
 

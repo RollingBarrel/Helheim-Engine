@@ -58,12 +58,13 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 	}
 }
 
-GameObject::GameObject(const GameObject& original, GameObject* newParent)
+GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<GameObject*, GameObject*>* originalToNew)
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride)
 {
+	originalToNew[&original] = this;
 	SetTag(original.mTag);
 	for (Component* component : original.mComponents)
 	{

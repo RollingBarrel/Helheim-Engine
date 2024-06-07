@@ -164,7 +164,8 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				std::unordered_set<GameObject*> selectAfter;
 				for (GameObject* object : FilterMarked()) 
 				{
-					GameObject* gameObject = new GameObject(*object, object->GetParent());
+					std::unordered_map<const GameObject*, GameObject*> originalToNew;
+					GameObject* gameObject = new GameObject(*object, object->GetParent(), &originalToNew);
 					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
 					AddSuffix(*gameObject);
 					mLastClickedObject = gameObject->GetID();
