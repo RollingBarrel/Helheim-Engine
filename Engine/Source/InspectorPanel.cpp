@@ -10,7 +10,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
 #include "HierarchyPanel.h"
-#include "TagsManagerPanel.h"
+#include "SettingsPanel.h"
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
@@ -20,7 +20,6 @@
 #include "ModuleUI.h"
 #include "GameObject.h"
 
-#include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
@@ -41,7 +40,6 @@
 #include "SliderComponent.h"
 
 #include "ImporterMaterial.h"
-#include "Tag.h"
 #include "MathFunc.h"
 #include "Script.h"
 #include "AnimationController.h"
@@ -63,6 +61,8 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
+	SettingsPanel* settingsPanel =  reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+	
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) 
@@ -75,10 +75,11 @@ void InspectorPanel::Draw(int windowFlags)
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
 	bool enabled = focusedObject->IsEnabled();
-	ImGui::PushID(focusedObject->mID);
+	ImGui::PushID(focusedObject->mUid);
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
+
 
 	if (!focusedObject->IsRoot())
 	{
@@ -90,7 +91,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 
 		// Rename
-		ImGui::PushID(focusedObject->mID);
+		ImGui::PushID(focusedObject->mUid);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
@@ -125,29 +126,37 @@ void InspectorPanel::Draw(int windowFlags)
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
-		std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
-		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
+
+		if (ImGui::BeginCombo("##tags", focusedObject->GetTag().c_str()))
 		{
-			for (auto i = 0; i < tags.size(); i++) 
+			for (unsigned int i = 0; i < settingsPanel->GetTags().size(); i++)
 			{
-				if (ImGui::Selectable(tags[i]->GetName().c_str()))
+				ImGui::SetNextItemAllowOverlap();
+				if (ImGui::Selectable(settingsPanel->GetTags()[i].c_str(), false, 0, ImVec2(100.0f, 20.0f)))
 				{
-					focusedObject->SetTag(tags[i]);
+					focusedObject->SetTag(settingsPanel->GetTags()[i]);
 				}
-			}
+				
+				
+				if (i >= NUM_ENGINE_TAGS)
+				{
+					ImGui::SameLine();
+					ImGui::PushID(i);
+					if (ImGui::Button(ICON_FA_TRASH_CAN))
+					{
+						settingsPanel->DeleteTag(settingsPanel->GetTags()[i].c_str());
+					}
+					ImGui::PopID();
+				}
 
+			}
+			ImGui::Separator();
+			mTagsLayersPopUp = ImGui::Button("Add Tag...");
 			ImGui::EndCombo();
 		}
 
-		ImGui::SameLine();
-
-		if (ImGui::Button("Add Tag")) 
-		{
-			EngineApp->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
-		}
-
-		if (focusedObject->mPrefabResourceId != 0) {
+		if (focusedObject->mPrefabId != 0) {
 			ImGui::Text("From Prefab");
 			ImGui::Checkbox("Override Prefab", &focusedObject->mPrefabOverride);
 		}
@@ -163,12 +172,53 @@ void InspectorPanel::Draw(int windowFlags)
 		ShowSameComponentPopup();
 	}
 
+	if (mTagsLayersPopUp)
+	{
+		ImGui::OpenPopup("Tags&Layers");
+		ShowTagsLayerPopUp();
+	}
+
+	if (settingsPanel->mDeleteTagPopup)
+	{
+		ImGui::OpenPopup("DeleteTag");
+		settingsPanel->ShowDeleteTagsPopup();
+	}
+
 	ImGui::End();
 	ImGui::PopID();
 }
 
-void InspectorPanel::DrawTransform(GameObject* object) {
-	ImGui::PushID(object->mID);
+void InspectorPanel::ShowTagsLayerPopUp()
+{
+	SettingsPanel* settingsPanel = reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+
+	if(ImGui::BeginPopup("Tags&Layers"))
+	{
+		static char tmp[280] = "";
+		ImGui::InputText("New Tag", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_AlwaysOverwrite);
+		if (ImGui::IsKeyPressed(ImGuiKey_Enter) || ImGui::Button("Save"))
+		{
+			if (strcmp(tmp, "") != 0)
+			{
+				settingsPanel->AddTag(tmp);
+			}
+			memset(tmp, 0, 280);
+			mTagsLayersPopUp = false;
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("Cancel"))
+		{
+			mTagsLayersPopUp = false;
+			memset(tmp, 0, 280);
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void InspectorPanel::DrawTransform(GameObject* object)
+{
+	ImGui::PushID(object->mUid);
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) 
@@ -193,7 +243,7 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 
 			bool modifiedTransform = false;
 			float3 newPosition = object->mPosition;
-			float3 newRotation = RadToDeg(object->mEulerRotation);
+			float3 newRotation = RadToDeg(object->mLocalEulerAngles);
 			float3 newScale = object->mScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
@@ -236,7 +286,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PopID();
 }
 
-void InspectorPanel::AddComponentButton(GameObject* object) {
+void InspectorPanel::AddComponentButton(GameObject* object) 
+{
 	float windowWidth = ImGui::GetWindowWidth();
 	float buttonWidth = 150.0f; // Desired width for the button
 	float posX = (windowWidth - buttonWidth) * 0.5f;
@@ -327,18 +378,6 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 		switch (component->GetType()) 
 		{
-		case ComponentType::TEST: 
-		{
-			if (ImGui::MenuItem("Custom Test Component Option")) 
-			{
-				ImGui::CloseCurrentPopup();
-			}
-			if (ImGui::MenuItem("Custom Test Component Option 2")) 
-			{
-				ImGui::CloseCurrentPopup();
-			}
-			break;
-		}
 		case ComponentType::MESHRENDERER: 
 		{
 			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) 
@@ -358,41 +397,41 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 }
 
-void InspectorPanel::DragAndDropSource(Component* component) {
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
-
-		ImGui::Text(Component::GetNameFromType(component->GetType()));
-		ImGui::EndDragDropSource();
-	}
-}
-
-void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-	ImGui::InvisibleButton("##", ImVec2(-1, 5));
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
-		{
-			Component* movedComponent = (Component*)payload->Data;
-			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) 
-			{
-				Component* pMovedComponent = object->RemoveComponent(movedComponent);
-				object->AddComponent(pMovedComponent, target);
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
-	ImGui::PopStyleVar();
-}
+//void InspectorPanel::DragAndDropSource(Component* component) {
+//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+//	{
+//		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
+//
+//		ImGui::Text(Component::GetNameFromType(component->GetType()));
+//		ImGui::EndDragDropSource();
+//	}
+//}
+//
+//void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
+//	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+//	ImGui::InvisibleButton("##", ImVec2(-1, 5));
+//	if (ImGui::BeginDragDropTarget())
+//	{
+//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
+//		{
+//			Component* movedComponent = (Component*)payload->Data;
+//			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) 
+//			{
+//				Component* pMovedComponent = object->RemoveComponent(movedComponent);
+//				object->AddComponent(pMovedComponent, target);
+//			}
+//		}
+//		ImGui::EndDragDropTarget();
+//	}
+//	ImGui::PopStyleVar();
+//}
 
 void InspectorPanel::DrawComponents(GameObject* object) 
 {
 	for (auto component : object->mComponents) 
 	{
 		ImGui::PushID(component->mID);
-		DragAndDropTarget(object, component);
+		//DragAndDropTarget(object, component);
 
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		RightClickPopup(component);
@@ -403,7 +442,7 @@ void InspectorPanel::DrawComponents(GameObject* object)
 			component->SetEnable(isEnabled);
 		}
 
-		DragAndDropSource(component);
+		//DragAndDropSource(component);
 		
 		if (isOpen) 
 		{
@@ -432,9 +471,6 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					break;
 				case ComponentType::ANIMATION: 
 					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
-					break;
-				case ComponentType::TEST: 
-					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
 					break;
 				case ComponentType::IMAGE:
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
@@ -470,54 +506,10 @@ void InspectorPanel::DrawComponents(GameObject* object)
 		}
 		ImGui::PopID();
 	}
-	DragAndDropTarget(object, nullptr);
+	//DragAndDropTarget(object, nullptr);
 }
 
-void InspectorPanel::DrawTestComponent(TestComponent* component) 
-{
-	ImGui::Text("Demo Text");
-	ImGui::Text("Demo Text 2 ");
-
-	ImGui::SeparatorText("TAGS SYSYEM TEST");
-	ImGui::Text("The first name of game object found with");
-	ImGui::SameLine();
-	std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
-
-	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
-	{
-		for (auto i = 0; i < tags.size(); i++) 
-		{
-			if (ImGui::Selectable(tags[i]->GetName().c_str()))
-			{
-				component->mTestSavedTag1 = i;
-			}
-		}
-
-		ImGui::EndCombo();
-	}
-	ImGui::Text("tag is ");
-	ImGui::SameLine();
-	GameObject* found = GameObject::FindGameObjectWithTag(tags[component->mTestSavedTag1]->GetName());
-	if (found != nullptr)
-	{
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
-	}
-	else 
-	{
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
-	}
-
-
-	ImGui::Separator();
-	ImGui::Text("There is ");
-	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), std::to_string(GameObject::FindGameObjectsWithTag(tags[component->mTestSavedTag1]->GetName()).capacity()).c_str());
-	ImGui::SameLine();
-	ImGui::Text(" gameobjects with the same tag.");
-}
-
-void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) 
-{
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	const float* pCol = component->GetColor();
 	float col[3] = { pCol[0], pCol[1] , pCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
@@ -598,7 +590,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component)
 
 	MaterialVariables(component);
 
-	ImGui::Text(" ");
 	//TODO: SEPARATE GAME ENGINE
 	//bool shouldDraw = component->ShouldDraw();
 	//if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
@@ -656,8 +647,6 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 	{
 		component->SetStoppingDistance(stoppingDistance);
 	}*/
-
-
 
 }
 
@@ -939,9 +928,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 {
 
 	ImGui::SeparatorText("Animation");
-
-	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
-	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
 
 	bool loop = component->GetLoop();
 	//bool play = false;

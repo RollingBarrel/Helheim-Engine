@@ -24,8 +24,8 @@ public:
     float GetValue() { return mValue; }
     float* GetValuePointer() { return &mValue; }
 
-    void Save(Archive& archive) const override;
-    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+    void Save(JsonObject& obj) const override;
+    void Load(const JsonObject& data) override;
 
 private:
     GameObject* FindCanvasOnParents(GameObject* gameObject);

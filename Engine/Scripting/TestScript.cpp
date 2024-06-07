@@ -24,16 +24,16 @@ CREATE(TestScript)
 void TestScript::Start()
 {
 	LOG("El nombre de mi gameobject es: %s ", mGameObject->GetName().c_str());
-	CameraComponent* component1 = (CameraComponent*)mGameObject->CreateComponent(ComponentType::CAMERA);
 	PointLightComponent* component3 = (PointLightComponent*)mGameObject->CreateComponent(ComponentType::POINTLIGHT);
 	SpotLightComponent* component4 = (SpotLightComponent*)mGameObject->CreateComponent(ComponentType::SPOTLIGHT);
 
-    GameObject* juan = App->GetScene()->Find("Juan");
+    const std::vector<GameObject*>& foundGameObjects = App->GetScene()->FindGameObjectsWithTag("Player");
+   
 
     // Create an instance from a prefab
     // We need the Prefab's filename
-
-    App->GetScene()->InstantiatePrefab("Item_Shield.prfb", juan);
+    LOG("HOLA");
+    //App->GetScene()->InstantiatePrefab("Item_Shield.prfb", juan);
 }
 
 void TestScript::Update()

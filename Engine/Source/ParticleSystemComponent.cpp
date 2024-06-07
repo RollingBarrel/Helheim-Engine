@@ -243,120 +243,62 @@ void ParticleSystemComponent::Reset()
     *this = ParticleSystemComponent(mOwner);
 }
 
-void ParticleSystemComponent::Save(Archive& archive) const
+void ParticleSystemComponent::Save(JsonObject& obj) const
 {
-    Component::Save(archive);
-    archive.AddInt("Image", mResourceId);
-    archive.AddFloat("Delay", mDelay);
-    archive.AddFloat("Duration", mDuration);
-    archive.AddFloat("Emission Rate", mEmissionRate);
-    archive.AddInt("Max Particles", mMaxParticles);
-    archive.AddBool("Looping", mLooping);
-    archive.AddBool("Stretched Billboard", mStretchedBillboard);
-    archive.AddBool("IsLifetimeRandom", mIsLifetimeRandom);
-    archive.AddFloat("Lifetime", mLifetime);
-    archive.AddFloat("MaxLifetime", mMaxLifetime);
-    archive.AddInt("ShapeType", (int)mShapeType);
-    archive.AddFloat("ShapeRadius", mShapeRadius);
-    archive.AddFloat("ShapeAngle", mShapeAngle);
-    archive.AddFloat3("ShapeSize", mShapeSize);
-    archive.AddInt("BlendMode", mBlendMode);
+    //TODO: REDOOO
+    Component::Save(obj);
+    obj.AddInt("Image", mResourceId);
+    obj.AddFloat("Delay", mDelay);
+    obj.AddFloat("Duration", mDuration);
+    obj.AddFloat("EmissionRate", mEmissionRate);
+    obj.AddInt("MaxParticles", mMaxParticles);
+    obj.AddBool("Looping", mLooping);
+    obj.AddBool("StretchedBillboard", mStretchedBillboard);  
+    obj.AddBool("IsLifetimeRandom", mIsLifetimeRandom);
+    obj.AddFloat("Lifetime", mLifetime);
+    obj.AddFloat("MaxLifetime", mMaxLifetime);
+    obj.AddInt("ShapeType", static_cast<int>(mShapeType));
+    obj.AddFloat("ShapeRadius", mShapeRadius);
+    obj.AddFloat("ShapeAngle", mShapeAngle);
+    obj.AddFloats("ShapeSize", mShapeSize.ptr(), 3);
+    obj.AddInt("BlendMode", mBlendMode);
 
-    Archive size;
-    Archive speed;
-    mSizeCurve.SaveJson(size);
-    mSpeedCurve.SaveJson(speed);
-    archive.AddObject("Size", size);
-    archive.AddObject("Speed", speed);
+    JsonObject size = obj.AddNewJsonObject("SizeCurve");
+    JsonObject speed = obj.AddNewJsonObject("SpeedCurve");
+    mSizeCurve.Save(size);
+    mSpeedCurve.Save(speed);
+    mColorGradient.Save(obj);
 
-    mColorGradient.Save(archive);
-    }
+}
 
-void ParticleSystemComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+
+void ParticleSystemComponent::Load(const JsonObject& data)
 {
-    Component::LoadFromJSON(data, owner);
-    if (data.HasMember("Delay") && data["Delay"].IsFloat())
-    {
-        mDelay = data["Delay"].GetFloat();
-    }
-    if (data.HasMember("Duration") && data["Duration"].IsFloat())
-    {
-        mDuration = data["Duration"].GetFloat();
-    }
-    if (data.HasMember("Image") && data["Image"].IsInt())
-    {
-        mResourceId = data["Image"].GetInt();
-        SetImage(mResourceId);
-    }
-    if (data.HasMember("IsLifetimeRandom") && data["IsLifetimeRandom"].IsBool())
-    {
-        mIsLifetimeRandom = data["IsLifetimeRandom"].GetBool();
-    }
-    if (data.HasMember("Lifetime") && data["Lifetime"].IsFloat())
-    {
-        mLifetime = data["Lifetime"].GetFloat();
-    }
-    if (data.HasMember("MaxLifetime") && data["MaxLifetime"].IsFloat())
-    {
-        mMaxLifetime = data["MaxLifetime"].GetFloat();
-    }
-    if (data.HasMember("Emission Rate") && data["Emission Rate"].IsFloat())
-    {
-        mEmissionRate = data["Emission Rate"].GetFloat();
-    }
-    if (data.HasMember("Speed") && data["Speed"].IsObject())
-    {
-        mSpeedCurve.LoadJson(data["Speed"]);
-    } 
-    if (data.HasMember("Size") && data["Size"].IsObject())
-    {
-        mSizeCurve.LoadJson(data["Size"]);
-    }
-    if (data.HasMember("Max Particles") && data["Max Particles"].GetInt())
-    {
-        mMaxParticles = data["Max Particles"].GetInt();
-    }
-    if (data.HasMember("Looping") && data["Looping"].IsBool())
-    {
-        mLooping = data["Looping"].GetBool();
-    }
-    if (data.HasMember("Stretched Billboard") && data["Stretched Billboard"].IsBool())
-    {
-        mStretchedBillboard = data["Stretched Billboard"].GetBool();
-    }
-    if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
-    {
-        mColorGradient.LoadFromJSON(data);
-    }
-    if (data.HasMember("ShapeType") && data["ShapeType"].IsInt())
-    {
-        mShapeType = (EmitterType)data["ShapeType"].GetInt();
-    }
-    if (data.HasMember("ShapeRadius") && data["ShapeRadius"].IsFloat())
-    {
-        mShapeRadius = data["ShapeRadius"].GetFloat();
-    }
-    if (data.HasMember("ShapeAngle") && data["ShapeAngle"].IsFloat())
-    {
-        mShapeAngle = data["ShapeAngle"].GetFloat();
-    }
-    if (data.HasMember("ShapeSize") && data["ShapeSize"].IsArray())
-    {
-        const rapidjson::Value& values = data["ShapeSize"];
-        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-        if (values.Size() == 3 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat())
-        {
-            x = values[0].GetFloat();
-            y = values[1].GetFloat();
-            z = values[2].GetFloat();
-        }
-        mShapeSize = float3(x, y, z);
-    }
-    if (data.HasMember("BlendMode") && data["BlendMode"].IsInt())
-    {
-        mBlendMode = data["BlendMode"].GetInt();
-    }
+    //TODO REDOOO
+    Component::Load(data);
+    mResourceId = data.GetInt("Image");
+    SetImage(mResourceId);
+    mDelay = data.GetFloat("Delay");
+    mDuration = data.GetFloat("Duration");
+    mEmissionRate = data.GetFloat("EmissionRate");
+    mMaxParticles = data.GetInt("MaxParticles");
+    mLooping = data.GetBool("Looping");
+    mStretchedBillboard = data.GetBool("StretchedBillboard");
+    mIsLifetimeRandom = data.GetBool("IsLifetimeRandom");
+    mLifetime = data.GetFloat("Lifetime");
+    mMaxLifetime = data.GetFloat("MaxLifetime");
+    mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
+    mShapeRadius = data.GetFloat("ShapeRadius");
+    mShapeAngle = data.GetFloat("ShapeAngle");
+    float size[3];
+    data.GetFloats("ShapeSize", size);
+    mBlendMode = data.GetInt("BlendMode");
 
+    JsonObject sizeObj = data.GetJsonObject("SizeCurve"); 
+    mSizeCurve.Load(sizeObj);
+    JsonObject speedObj = data.GetJsonObject("SpeedCurve");
+    mSizeCurve.Load(speedObj);
+    mColorGradient.Load(data);  
 }
 
 void ParticleSystemComponent::Enable()

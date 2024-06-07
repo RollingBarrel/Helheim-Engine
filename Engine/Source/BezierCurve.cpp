@@ -95,62 +95,40 @@ float BezierCurve::CalculateRandomValue()
     return mInitialValue;
 }
 
-void BezierCurve::SaveJson(Archive& archive) const
+void BezierCurve::Save(JsonObject& obj) const
 {
-    archive.AddBool("IsValueRandom", mIsValueRandom);
-    archive.AddFloat("Value", mValue);
-    archive.AddFloat("MaxValue", mMaxValue);
-    archive.AddBool("isCurve", mIsCurve);
-    archive.AddFloat("Factor", mFactor);
+    //TODO: Test
+    obj.AddBool("IsValueRandom", mIsValueRandom);
+    obj.AddFloat("Value", mValue);
+    obj.AddFloat("MaxValue", mMaxValue);
+    obj.AddBool("IsCurve", mIsCurve);
+    obj.AddFloat("Factor", mFactor);
 
-    std::vector<Archive> objectArray;
-    for (auto i = 0; i < mPoints.size(); i++)
+    JsonArray curvePoint = obj.AddNewJsonArray("CurvePoints");
+
+    for(unsigned int i = 0; mPoints.size(); ++i)
     {
-        Archive dataArchive;
-        dataArchive.AddFloat2("Point", mPoints[i]);
-        objectArray.push_back(dataArchive);
+        JsonObject point = curvePoint.PushBackNewObject();
+        point.AddFloats("Point", mPoints[i].ptr(), 2);
     }
-
-    archive.AddObjectArray("CurvePoints", objectArray);
 }
 
-void BezierCurve::LoadJson(const rapidjson::Value& data)
+void BezierCurve::Load(const JsonObject& data)
 {
-    if (data.HasMember("IsValueRandom") && data["IsValueRandom"].IsBool())
-    {
-        mIsValueRandom = data["IsValueRandom"].GetBool();
-    }
-    if (data.HasMember("Value") && data["Value"].IsFloat())
-    {
-        mValue = data["Value"].GetFloat();
-    }
-    if (data.HasMember("MaxValue") && data["MaxValue"].IsFloat())
-    {
-        mMaxValue = data["MaxValue"].GetFloat();
-    }
-    if (data.HasMember("Factor") && data["Factor"].IsFloat())
-    {
-        mFactor = data["Factor"].GetFloat();
-    }
-    if (data.HasMember("isCurve") && data["isCurve"].IsBool())
-    {
-        mIsCurve = data["isCurve"].GetBool();
-    }
-    if (data.HasMember("CurvePoints") && data["CurvePoints"].IsArray())
-    {
-        const auto& array = data["CurvePoints"].GetArray();
+     //TODO: Test   
+    mIsValueRandom = data.GetBool("IsValueRandom");
+    mValue = data.GetFloat("Value");
+    mMaxValue = data.GetFloat("MaxValue");
+    mFactor = data.GetFloat("Factor");
+    mIsCurve = data.GetBool("IsCurve");
 
-        for (unsigned int i = 0; i < array.Size(); ++i)
-        {
-            const rapidjson::Value& values = array[i]["Point"];
-            float x{ 0.0f }, y{ 0.0f };
-            if (values.Size() == 2 && values[0].IsFloat() && values[1].IsFloat())
-            {
-                x = values[0].GetFloat();
-                y = values[1].GetFloat();
-            }
+    JsonArray curvePoint = data.GetJsonArray("CurvePoints");
 
-            mPoints.push_back(float2(x, y));
-        }
+    for (int i = 0; i < curvePoint.Size(); ++i)
+    {
+        JsonObject pointObj = curvePoint.GetJsonObject(i);
+        float point[2];
+        pointObj.GetFloats("Point", point);
+        mPoints.push_back(float2(point));    
     }
 }

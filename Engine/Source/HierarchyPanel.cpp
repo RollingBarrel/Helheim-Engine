@@ -6,14 +6,57 @@
 #include "ModuleOpenGL.h"
 #include "GameObject.h"
 #include "ModuleFileSystem.h"
+#include <regex>
+
+static void AddSuffix(GameObject& gameObject)
+{
+	bool found = true;
+	int count = 0;
+	std::regex regularExpression(".+\\s\\(\\d+\\)$");
+	std::string nameWithoutSuffix = gameObject.GetName();
+	std::string name = nameWithoutSuffix;
+
+	if (std::regex_match(nameWithoutSuffix, regularExpression))
+	{
+		nameWithoutSuffix.erase(nameWithoutSuffix.rfind(" ("));
+	}
+	while (found)
+	{
+		found = false;
+		if (count > 0)
+		{
+			name = nameWithoutSuffix + " (" + std::to_string(count) + ")";
+		}
+		else
+		{
+			name = nameWithoutSuffix;
+		}
+		for (GameObject* child : gameObject.GetParent()->GetChildren())
+		{
+			if (child != &gameObject && child->GetName() == name)
+			{
+				found = true;
+			}
+		}
+		count++;
+	}
+	gameObject.SetName(name.c_str());
+}
 
 HierarchyPanel::HierarchyPanel() : Panel(HIERARCHYPANEL, true) {}
 
 void HierarchyPanel::Draw(int windowFlags)
 {
 	GameObject* root = EngineApp->GetScene()->GetRoot();
-	if (mLastClickedObject == 0) { mLastClickedObject = root->GetID(); }
-	if (mFocusId == 0) { mFocusId = mLastClickedObject; }
+	if (mLastClickedObject == 0)
+	{ 
+		mLastClickedObject = root->GetID();
+	}
+	if (mFocusId == 0) 
+	{ 
+		mFocusId = mLastClickedObject;
+	}
+
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
@@ -25,7 +68,8 @@ void HierarchyPanel::Draw(int windowFlags)
 	}
 	if (mLastClickedObject != root->GetID()) 
 	{ 
-		GameObject* marked = root->Find(mLastClickedObject);
+		//GameObject* marked = root->Find(mLastClickedObject);
+		GameObject* marked = App->GetScene()->Find(mLastClickedObject);
 		mMarked.insert(marked);
 	}
 	mLastMarkSeen = 0; mShiftClicked = 0;
@@ -46,7 +90,7 @@ void HierarchyPanel::Draw(int windowFlags)
 
 void HierarchyPanel::SetFocus(const GameObject& focusedObject) 
 { 
-	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
+	//App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mUnmarkFlag = true;
 	mFocusId = focusedObject.GetID();
 	mLastClickedObject = focusedObject.GetID();
@@ -56,7 +100,7 @@ void HierarchyPanel::SetFocus(const GameObject& focusedObject)
 		mNodesToOpen.insert(parent->GetID());
 		parent = parent->GetParent();
 	}
-	App->GetOpenGL()->AddHighLight(focusedObject);
+	//App->GetOpenGL()->AddHighLight(focusedObject);
 }
 
 void HierarchyPanel::OnLeftClickNode(GameObject* node) 
@@ -107,6 +151,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 		{
 			GameObject* gameObject = new GameObject(node);
 			//node->AddChild(gameObject);
+			AddSuffix(*gameObject);
 			mLastClickedObject = gameObject->GetID();
 			InternalSetFocus(gameObject);
 			mMarked.clear();
@@ -117,10 +162,11 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 			if (ImGui::Selectable("Duplicate")) 
 			{
 				std::unordered_set<GameObject*> selectAfter;
-				for (auto object : FilterMarked()) 
+				for (GameObject* object : FilterMarked()) 
 				{
-					GameObject* gameObject = new GameObject(*object);
+					GameObject* gameObject = new GameObject(*object, object->GetParent());
 					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
+					AddSuffix(*gameObject);
 					mLastClickedObject = gameObject->GetID();
 					InternalSetFocus(gameObject);
 					selectAfter.insert(gameObject);
@@ -157,9 +203,9 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 
 void HierarchyPanel::InternalSetFocus(GameObject* focusedObject)
 {
-	App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
+	//App->GetOpenGL()->RemoveHighLight(*GetFocusedObject());
 	mFocusId = focusedObject->GetID();
-	App->GetOpenGL()->AddHighLight(*focusedObject);
+	//App->GetOpenGL()->AddHighLight(*focusedObject);
 }
 
 void HierarchyPanel::DrawTree(GameObject* node)
@@ -176,7 +222,7 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.50f, 0.50f, 0.50f, 1.00f));
 		}
 		ShiftClick(node, selected);
-		ImGui::InvisibleButton("##", ImVec2(-1, 5)); //This can be changed to modify the spacing between elements
+		ImGui::InvisibleButton("##", ImVec2(-1, 5));
 		DragAndDropTarget(node, true);
 		ImGuiTreeNodeFlags baseFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		if (selected) {
@@ -195,7 +241,9 @@ void HierarchyPanel::DrawTree(GameObject* node)
 			mNodesToOpen.erase(node->GetID());
 			ImGui::SetNextItemOpen(true);
 		}
-		nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)node->mID, baseFlags, node->mName.c_str()) && (node->mChildren.size() > 0);
+		std::string treeNodeName = node->mName.c_str();
+		treeNodeName += "##" + std::to_string(node->mUid);
+		nodeOpen = ImGui::TreeNodeEx(treeNodeName.c_str(), baseFlags) && (node->mChildren.size() > 0);
 		ImGui::PopStyleVar();
 		if (!node->IsActive())
 		{
@@ -266,27 +314,46 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_TREENODE"))
 		{
 			if (mMarked.find(target) == mMarked.end()) 
-			{ //Don't drag object into itself
-				for (auto movedObject : FilterMarked()) 
+			{ 
+				std::vector<GameObject*> gameObjects = FilterMarked();
+				for (GameObject* movedObject : gameObjects) 
 				{
 					bool isParent = false;
-
-					GameObject* parent = target->mParent;
-					while (parent != nullptr) 
+					GameObject* targetParent = target->mParent;
+					while (targetParent != nullptr)
 					{
-						if (parent->mID == movedObject->mID) 
+						if (targetParent->mUid == movedObject->mUid)
 						{
 							isParent = true;
 						}
-						parent = parent->mParent;
+						targetParent = targetParent->mParent;
 					}
-
 
 					if (!isParent) 
 					{
-						GameObject* pMovedObject = movedObject->mParent->RemoveChild(movedObject->GetID());
-						if (reorder) { target->mParent->AddChild(pMovedObject, target->mID); }
-						else { target->AddChild(pMovedObject); }
+						
+						if (reorder) 
+						{ 
+							movedObject->mParent->RemoveChild(movedObject->mUid);
+							movedObject->mParent = target;
+							for (std::vector<GameObject*>::const_iterator it = target->mChildren.cbegin(); it != target->mChildren.cend(); ++it)
+							{
+								
+								if ((*it)->mUid == target->mUid)
+								{
+									target->mParent->mChildren.insert(it, movedObject);
+									//inserted = true;
+									break;
+								}
+								
+								
+							}
+						}
+						else 
+						{ 
+							//target->AddChild(movedObject);
+							movedObject->SetParent(target);
+						}
 					}
 				}
 			}
@@ -299,13 +366,13 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 			{
 				switch (resource->GetType())
 				{
-				case Resource::Type::Object:
+				case Resource::Type::Prefab:
 				{
 					GameObject* newGO = EngineApp->GetScene()->LoadPrefab(asset->mPath, target);
 					if (reorder && newGO != nullptr)
 					{
-						target->RemoveChild(newGO->mID);
-						target->mParent->AddChild(newGO, target->mID);
+						target->RemoveChild(newGO->mUid);
+						//target->mParent->AddChild(newGO, target->mUid);
 					}
 					break;
 				}
@@ -374,8 +441,13 @@ const std::vector<GameObject*> HierarchyPanel::FilterMarked() const
 
 GameObject* HierarchyPanel::GetFocusedObject() const 
 {
-	GameObject* root = EngineApp->GetScene()->GetRoot();
-	GameObject* focus = root->Find(mFocusId);
-	if (focus == nullptr) { return root; }
-	else { return focus; }
+	GameObject* focus = App->GetScene()->Find(mFocusId);
+	if (focus == nullptr) 
+	{ 
+		return EngineApp->GetScene()->GetRoot();
+	}
+	else 
+	{ 
+		return focus; 
+	}
 }

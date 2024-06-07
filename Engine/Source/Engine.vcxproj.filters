@@ -91,9 +91,6 @@
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp">
       <Filter>Dependencies\ImGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="TagsManagerPanel.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="EditorControlPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -357,9 +354,6 @@
     </ClInclude>
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h">
       <Filter>Dependencies\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="TagsManagerPanel.h">
-      <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="InspectorPanel.h">
       <Filter>Panels</Filter>

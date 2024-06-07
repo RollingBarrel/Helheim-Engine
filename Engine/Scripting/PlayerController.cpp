@@ -746,14 +746,14 @@ void PlayerController::HandleRotation()
 
     std::map<float, Hit> hits;
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
+    Plane plane = Plane(mGameObject->GetPosition(), float3::unitY);
 
     float distance;
     bool intersects = plane.Intersects(ray, &distance);
     float3 hitPoint = ray.GetPoint(distance);
     if (intersects)
     {
-        float3 target = float3(hitPoint.x, mGameObject->GetWorldPosition().y, hitPoint.z);
+        float3 target = float3(hitPoint.x, mGameObject->GetPosition().y, hitPoint.z);
         mGameObject->LookAt(target);
     }
 }
@@ -962,9 +962,9 @@ void PlayerController::MeleeSpecialCombo() {
 void PlayerController::MeleeHit(float AttackRange, float AttackDamage) {
 
     ModuleScene* scene = App->GetScene();
-    std::vector<GameObject*> Enemies;
+    const std::vector<GameObject*>& Enemies = scene->FindGameObjectsWithTag("Enemy");
 
-    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
+    
     float3 playerPosition = mGameObject->GetPosition();
 
     // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
@@ -1257,7 +1257,7 @@ void PlayerController::AimGrenade()
 void PlayerController::GrenadeTarget()
 {
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane = Plane(mGrenadeAimAreaGO->GetWorldPosition(), float3::unitY);
+    Plane plane = Plane(mGrenadeAimAreaGO->GetPosition(), float3::unitY);
 
     float distance;
     bool intersects = plane.Intersects(ray, &distance);
@@ -1265,7 +1265,7 @@ void PlayerController::GrenadeTarget()
 
     // Check if mouse hit inside circle
     // TODO: Check hit with physic
-    float3 diff = hitPoint - mGameObject->GetWorldPosition();
+    float3 diff = hitPoint - mGameObject->GetPosition();
     float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
     float radiusSquared = mGrenadThrowDistance * mGrenadThrowDistance;
 
@@ -1282,7 +1282,7 @@ void PlayerController::GrenadeTarget()
         {
             // Project hitPoint to the edge of the circle
             float distanceToEdge = mGrenadThrowDistance / sqrtf(distanceSquared);
-            finalPosition = mGameObject->GetWorldPosition() + diff * distanceToEdge;
+            finalPosition = mGameObject->GetPosition() + diff * distanceToEdge;
         }
         mGrenadeExplotionPreviewAreaGO->GetChildren()[0]->SetEnabled(true);
         mGrenadeExplotionPreviewAreaGO->GetChildren()[1]->SetEnabled(false);
