@@ -1,2 +1,10 @@
 #include "RangeWeapon.h"
-#include "HudController.h"
+
+RangeWeapon::RangeWeapon() : Weapon()
+{
+	mType = WeaponType::RANGE;
+}
+
+RangeWeapon::~RangeWeapon()
+{
+}

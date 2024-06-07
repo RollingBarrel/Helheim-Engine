@@ -15,17 +15,15 @@
 #include "GameManager.h"
 
 #include <map>
+#include "Bat.h"
 
-CREATE(Pistol)
+Pistol::Pistol() : RangeWeapon()
 {
-    CLASS(owner);
-    //SEPARATOR("STATS");
-    MEMBER(MemberType::GAMEOBJECT, mShootPoint);
-
-    END_CREATE;
+    mCurrentAmmo = 16;
+    mMaxAmmo = 16;
 }
 
-void Pistol::Start()
+Pistol::~Pistol()
 {
 }
 
@@ -40,19 +38,19 @@ void Pistol::BasicAttack()
         mCurrentAmmo = mMaxAmmo;
     }
     
+
+    //mPlayerController->PlayOneShot("Shot");
+    //mAnimationComponent->SendTrigger("tShooting", 0.2f);
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 
     if (bullet != nullptr)
     {
-        if (mShootPoint)
-        {
-            LOG("%f, %f, %f", mShootPoint->GetPosition().x, mShootPoint->GetPosition().y, mShootPoint->GetPosition().z);
-            bullet->SetPosition(mShootPoint->GetPosition());
+        /*bullet->SetPosition(mPlayerCharacter->GetPosition());
 
-            mShootPoint->SetEnabled(false);
-            mShootPoint->SetEnabled(true); // Reset particles
-        }
-        bullet->SetRotation(mGameObject->GetRotation());
+        mShootPoint->SetEnabled(false);
+        mShootPoint->SetEnabled(true); // Reset particles
+        
+        bullet->SetRotation(mGameObject->GetWorldRotation());*/
     }
 
     /*std::map<float, Hit> hits;

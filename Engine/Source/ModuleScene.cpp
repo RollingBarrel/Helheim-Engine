@@ -205,6 +205,7 @@ void ModuleScene::Load(const char* sceneName)
 	//Close Prefab editor before loading a new scene
 	if (mBackgroundScene != nullptr)
 	{
+		mSceneGO.clear();
 		delete mRoot;
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
@@ -239,7 +240,6 @@ void ModuleScene::Load(const char* sceneName)
 			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
 			GameObject* gO = new GameObject(gameObjectData.GetInt("UID"), gameObjectData.GetString("Name").c_str(), Find(gameObjectData.GetInt("ParentUID")));
 			gO->Load(gameObjectData);
-			mSceneGO.push_back(gO);
 		}
 
 		mRoot->RecalculateMatrices();		

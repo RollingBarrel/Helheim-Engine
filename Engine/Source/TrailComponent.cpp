@@ -74,19 +74,18 @@ void TrailComponent::Save(JsonObject& obj) const
 {
     Component::Save(obj);
     obj.AddInt("Image", mResourceId);
-    obj.AddInt("Max Points", mMaxPoints);
-    obj.AddFloat("Min Distance", mMinDistance);
+    obj.AddInt("MaxPoints", mMaxPoints);
+    obj.AddFloat("MinDistance", mMinDistance);
     mTrail->Save(obj);
 }
 
 void TrailComponent::Load(const JsonObject& data)
 {
     Component::Load(data);
-
     mResourceId = data.GetInt("Image");
     SetImage(mResourceId);
-    mMaxPoints = data.GetInt("Mas Points");
-    mMinDistance = data.GetFloat("Min Distance");    
+    mMaxPoints = data.GetInt("MasPoints");
+    mMinDistance = data.GetFloat("MinDistance");    
     mTrail->Load(data);
     Init();
 }
