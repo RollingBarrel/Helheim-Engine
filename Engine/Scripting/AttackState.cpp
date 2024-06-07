@@ -17,8 +17,6 @@ AttackState::~AttackState()
 StateType AttackState::HandleInput()
 {
 	return StateType::AIM;
-
-	//return State::HandleInput();
 }
 
 void AttackState::Update()

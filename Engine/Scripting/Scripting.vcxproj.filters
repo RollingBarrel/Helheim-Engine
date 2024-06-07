@@ -72,12 +72,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Level1AManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h">
       <Filter>Weapons\Melee</Filter>
     </ClInclude>
@@ -87,47 +81,53 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveState.h">
-      <Filter>States\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="IdleState.h">
-      <Filter>States\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="DashState.h">
-      <Filter>States\Move</Filter>
-    </ClInclude>
-    <ClInclude Include="AimState.h">
-      <Filter>States\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="AttackState.h">
-      <Filter>States\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="GrenadeState.h">
-      <Filter>States\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="SwitchState.h">
-      <Filter>States\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="SpecialState.h">
-      <Filter>States\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="Grenade.h">
-      <Filter>Weapons</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="ReloadState.h">
-      <Filter>States\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>Weapons\Melee</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
       <Filter>Weapons\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AimState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AttackState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\GrenadeState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ReloadState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\SpecialState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\SwitchState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\DashState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\IdleState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\MoveState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Bat.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
+      <Filter>Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -113,8 +113,6 @@ PlayerController::~PlayerController()
     delete mReloadState;
 }
 
-#pragma region Basic Functions
-
 void PlayerController::Start()
 {
     // AUDIO
@@ -274,8 +272,6 @@ void PlayerController::Update()
 
 }
 
-#pragma endregion
-
 void PlayerController::StateMachine()
 {
     // Check if dead
@@ -356,15 +352,12 @@ void PlayerController::HandleRotation()
     // TODO: Not aim on melee state?
 
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane = Plane(mGameObject->GetWorldPosition(), float3::unitY);
+    Plane plane(mGameObject->GetWorldPosition(), float3::unitY);
 
     float distance;
-    bool intersects = plane.Intersects(ray, &distance);
-    float3 hitPoint = ray.GetPoint(distance);
-
-    if (intersects)
+    if (plane.Intersects(ray, &distance))
     {
-        mAimPosition = float3(hitPoint.x, hitPoint.y, hitPoint.z);
+        mAimPosition = ray.GetPoint(distance);
         mGameObject->LookAt(mAimPosition);
     }
 }
@@ -468,7 +461,7 @@ void PlayerController::UpdateShield()
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetName().compare("WinArea") == 0)
+    if (collisionData->collidedWith->GetName() == "WinArea")
     {
         GameManager::GetInstance()->Victory();
     }
