@@ -4,79 +4,131 @@ BezierCurve::BezierCurve()
 {
 }
 
-float BezierCurve::GetValue(float dt) const
+float BezierCurve::GetValue(float dt, float initialValue) const
 {
-    return mIsCurve ? mLineal + (BezierValue(dt, mCurve) * mCurveFactor) : mLineal;
+    return mIsCurve ? initialValue + (CurveValue(dt) * mFactor) : initialValue;
 }
 
-float BezierCurve::BezierValue(float dt01, float4 P)
+float BezierCurve::CalculateInitialValue()
 {
-    enum { STEPS = 256 };
-    float2 Q[4] = { {0, 0}, {P[0], P[1]}, {P[2], P[3]}, {1, 1} };
-    float2 results[STEPS + 1];
-    BezierCurve::BezierTable<STEPS>(Q, results);
-    return results[(int)((dt01 < 0 ? 0 : dt01 > 1 ? 1 : dt01) * STEPS)].y;
+    CalculateRandomValue();
+    return mInitialValue;
 }
 
-template <int steps>
-void BezierCurve::BezierTable(float2 P[], float2 results[])
+void BezierCurve::spline(const float* key, int num, int dim, float t, float* v) const
 {
-    static float C[(steps + 1) * 4], * K = 0;
-    if (!K)
+    static signed char coefs[16] = 
     {
-        K = C;
-        for (unsigned step = 0; step <= steps; ++step)
-        {
-            float t = (float)step / (float)steps;
-            C[step * 4 + 0] = (1 - t) * (1 - t) * (1 - t); // * P0
-            C[step * 4 + 1] = 3 * (1 - t) * (1 - t) * t;   // * P1
-            C[step * 4 + 2] = 3 * (1 - t) * t * t;         // * P2
-            C[step * 4 + 3] = t * t * t;                   // * P3
-        }
-    }
-    for (unsigned step = 0; step <= steps; ++step)
+        -1, 2,-1, 0,
+         3,-5, 0, 2,
+        -3, 4, 1, 0,
+         1,-1, 0, 0 
+    };
+
+    const int size = dim + 1;
+    // find key
+    int k = 0; while (key[k * size] < t) k++;
+    // interpolant
+    const float h = (t - key[(k - 1) * size]) / (key[k * size] - key[(k - 1) * size]);
+    // init result
+    for (int i = 0; i < dim; i++) v[i] = 0.0f;
+    // add basis functions
+    for (int i = 0; i < 4; i++)
     {
-        float2 point = {
-            K[step * 4 + 0] * P[0].x + K[step * 4 + 1] * P[1].x + K[step * 4 + 2] * P[2].x + K[step * 4 + 3] * P[3].x,
-            K[step * 4 + 0] * P[0].y + K[step * 4 + 1] * P[1].y + K[step * 4 + 2] * P[2].y + K[step * 4 + 3] * P[3].y };
-        results[step] = point;
+        int kn = k + i - 2; if (kn < 0) kn = 0; else if (kn > (num - 1)) kn = num - 1;
+        const signed char* co = coefs + 4 * i;
+        const float b = 0.5f * (((co[0] * h + co[1]) * h + co[2]) * h + co[3]);
+        for (int j = 0; j < dim; j++) v[j] += b * key[kn * size + j + 1];
     }
 }
 
-void BezierCurve::SaveJson(Archive& archive) const
+float BezierCurve::CurveValueSmooth(float p) const
 {
-    archive.AddFloat("Lineal", mLineal);
-    archive.AddBool("isCurve", mIsCurve);
-    archive.AddFloat4("Curve", mCurve.ptr());
-    archive.AddFloat("Factor", mCurveFactor);
+    if (mPoints.size() < 2 || mPoints.empty())
+        return 0;
+    if (p < 0) return mPoints[0].y;
+
+    float* input = new float[mPoints.size() * 2];
+    float output[4];
+
+    for (int i = 0; i < mPoints.size(); ++i) 
+    {
+        input[i * 2 + 0] = mPoints[i].x;
+        input[i * 2 + 1] = mPoints[i].y;
+    }
+
+    spline(input, mPoints.size(), 1, p, output);
+
+    delete[] input;
+    return output[0];
 }
 
-void BezierCurve::LoadJson(const rapidjson::Value& data)
+float BezierCurve::CurveValue(float p) const
 {
-    if (data.HasMember("Lineal") && data["Lineal"].IsFloat())
-    {
-        mLineal = data["Lineal"].GetFloat();
-    }
-    if (data.HasMember("Factor") && data["Factor"].IsFloat())
-    {
-        mCurveFactor = data["Factor"].GetFloat();
-    }
-    if (data.HasMember("isCurve") && data["isCurve"].IsBool())
-    {
-        mIsCurve = data["isCurve"].GetBool();
-    }
-    if (data.HasMember("Curve") && data["Curve"].IsArray())
-    {
-        const rapidjson::Value& values = data["Curve"];
-        float x{ 0.0f }, y{ 0.0f }, z{ 0.0f }, w{ 0.0f };
-        if (values.Size() == 4 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat() && values[3].IsFloat())
-        {
-            x = values[0].GetFloat();
-            y = values[1].GetFloat();
-            z = values[2].GetFloat();
-            w = values[3].GetFloat();
-        }
+    if (mPoints.size() < 2 || mPoints.empty())
+        return 0;
+    if (p < 0) return mPoints[0].y;
 
-        mCurve = float4(x, y, z, w);
+    int left = 0;
+    while (left < mPoints.size() && mPoints[left].x < p && mPoints[left].x != -1) left++;
+    if (left) left--;
+
+    if (left == mPoints.size() - 1)
+        return mPoints[mPoints.size() - 1].y;
+
+    float d = (p - mPoints[left].x) / (mPoints[left + 1].x - mPoints[left].x);
+
+    return mPoints[left].y + (mPoints[left + 1].y - mPoints[left].y) * d;
+}
+
+float BezierCurve::CalculateRandomValue()
+{
+    if (mIsValueRandom)
+    {
+        float random_value = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+        mInitialValue = random_value * (mMaxValue - mValue) + mValue;
+    }
+    else
+    {
+        mInitialValue = mValue;
+    }
+    return mInitialValue;
+}
+
+void BezierCurve::Save(JsonObject& obj) const
+{
+    //TODO: Test
+    obj.AddBool("IsValueRandom", mIsValueRandom);
+    obj.AddFloat("Value", mValue);
+    obj.AddFloat("MaxValue", mMaxValue);
+    obj.AddBool("IsCurve", mIsCurve);
+    obj.AddFloat("Factor", mFactor);
+
+    JsonArray curvePoint = obj.AddNewJsonArray("CurvePoints");
+
+    for(unsigned int i = 0; mPoints.size(); ++i)
+    {
+        JsonObject point = curvePoint.PushBackNewObject();
+        point.AddFloats("Point", mPoints[i].ptr(), 2);
+    }
+}
+
+void BezierCurve::Load(const JsonObject& data)
+{
+     //TODO: Test   
+    mIsValueRandom = data.GetBool("IsValueRandom");
+    mValue = data.GetFloat("Value");
+    mMaxValue = data.GetFloat("MaxValue");
+    mFactor = data.GetFloat("Factor");
+    mIsCurve = data.GetBool("IsCurve");
+
+    JsonArray curvePoint = data.GetJsonArray("CurvePoints");
+
+    for (int i = 0; i < curvePoint.Size(); ++i)
+    {
+        JsonObject pointObj = curvePoint.GetJsonObject(i);
+        float point[2];
+        pointObj.GetFloats("Point", point);
+        mPoints.push_back(float2(point));    
     }
 }

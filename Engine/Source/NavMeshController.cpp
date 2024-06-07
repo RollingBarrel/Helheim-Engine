@@ -1,26 +1,21 @@
 #include "NavMeshController.h"
+#include "EngineApp.h"
+
+#include "ModuleDetourNavigation.h"
+#include "ModuleEngineResource.h"
+#include "ModuleScene.h"
+
 #include "GameObject.h"
 #include "ResourceMesh.h"
 #include "MeshRendererComponent.h"
-#include "ModuleDetourNavigation.h"
-#include "ModuleScene.h"
-#include "ModuleOpenGL.h"
-#include "Application.h"
-#include "float4x4.h"
-#include "ImporterMesh.h"
-#include "ModuleDebugDraw.h"
+
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMesh.h"
-#include "DetourNavMeshQuery.h"
 #include "Recast.h"
-#include "Tag.h"
-#include "ModuleFileSystem.h"
-#include "Algorithm/Random/LCG.h"
-#include "ImporterNavMesh.h"
-#include "ModuleResource.h"
-#include "EngineApp.h"
-#include "ModuleEngineResource.h"
-#include "ResourceNavmesh.h"
+
+
+
+
 NavMeshController::NavMeshController()
 {
 }
@@ -121,13 +116,13 @@ void NavMeshController::HandleBuild()
 		}
 		int meshIndiceNumber = testMesh->GetResourceMesh()->GetNumberIndices();
 		const unsigned int* meshIndices = testMesh->GetResourceMesh()->GetIndices();
-		Tag* goTag = mGameObjects[index]->GetTag();
-		if (goTag && goTag->GetName() == "Obstacle") 
-		{
-
-			ObstacleTriangle obstacle{ lastIndex/3,meshIndiceNumber };
-			mObstaclesTriangles.push_back(obstacle);
-		}
+		//Tag* goTag = mGameObjects[index]->GetTag();
+		//if (goTag && goTag->GetName() == "Obstacle") 
+		//{
+		//
+		//	ObstacleTriangle obstacle{ lastIndex/3,meshIndiceNumber };
+		//	mObstaclesTriangles.push_back(obstacle);
+		//}
 
 		for (int i = 0; i < meshIndiceNumber; i++) 
 		{

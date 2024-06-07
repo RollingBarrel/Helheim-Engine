@@ -1,7 +1,7 @@
 #pragma once
 #include "Globals.h"
-#include "MathGeoLib.h"
 #include "Archive.h"
+#include "float4.h"
 #include <map>
 
 
@@ -16,11 +16,12 @@ public:
 	void RemoveColorGradientMark(float position);
 
 	std::map<float, float4> GetColorMarks() const { return mColorMarks; };
+	float* GetColor(float pos);
 
 	float4 CalculateColor(float position) const;
 
-	void Save(Archive& archive) const;
-	void LoadFromJSON(const rapidjson::Value& data);
+	void Save(JsonObject& archive) const;
+	void Load(const JsonObject& data);
 private:
 	std::map<float, float4> mColorMarks;
 };

@@ -24,20 +24,16 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	if (self->GetChildren().empty()) 
 	{
 		self->SetName("Slider");
-		mFill = new GameObject("Fill", self);
-		mBackground = new GameObject("Background", self);
-
 		mSliderTransform2D = new Transform2DComponent(self);
-		mBgImage = new ImageComponent(mBackground);
-		mFillImage = new ImageComponent(mFill);
-		mBgTransform2D = new Transform2DComponent(mBackground);
-		mFillTransform2D = new Transform2DComponent(mFill);
 
-		self->AddComponent(mSliderTransform2D, this);
-		mBackground->AddComponent(mBgTransform2D, this);
-		mBackground->AddComponent(mBgImage, this);
-		mFill->AddComponent(mFillTransform2D, this);
-		mFill->AddComponent(mFillImage, this);
+		mBackground = new GameObject("Background", self);
+		mFill = new GameObject("Fill", self);
+
+		self->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::IMAGE);
+		mFill->CreateComponent(ComponentType::TRANSFORM2D);
+		mFill->CreateComponent(ComponentType::IMAGE);
 	}
 	else 
 	{
@@ -81,14 +77,14 @@ void SliderComponent::SetValue(float fillPercent)
 	}
 }
 
-void SliderComponent::Save(Archive& archive) const
+void SliderComponent::Save(JsonObject& obj) const
 {
-	Component::Save(archive);
+	Component::Save(obj);
 }
 
-void SliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void SliderComponent::Load(const JsonObject& data)
 {
-	Component::LoadFromJSON(data, owner);
+	Component::Load(data);
 }
 
 SliderComponent:: ~SliderComponent()

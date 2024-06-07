@@ -17,7 +17,7 @@ ObjectPool::ObjectPool(GameObject* owner) : Script(owner) {}
 
 void ObjectPool::Start()
 {
-    App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetTagByName("Bullet")->GetID(), mObject);
+    //TAG: App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetTagByName("Bullet")->GetID(), mObject);
     mPoolCount = mObject.size();
     for (int i = 0 ; i < mObject.size() ; i++)
     {

@@ -55,6 +55,6 @@ private:
 	float mTimerDisengage = 0.0f;
 
 	//Collider
-	BoxColliderComponent* mCollider;
+	BoxColliderComponent* mCollider = nullptr;
 };
 

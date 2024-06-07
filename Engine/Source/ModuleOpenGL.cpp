@@ -10,6 +10,7 @@
 #include "ModuleUI.h"
 
 #include "GameObject.h"
+#include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
@@ -379,7 +380,8 @@ void ModuleOpenGL::AddHighLight(const GameObject& gameObject)
 {
 	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents;
+		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 		if (!meshComponents.empty())
 		{
 			for (const Component* comp : meshComponents)
@@ -394,7 +396,8 @@ void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
 {
 	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents;
+		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 		if (!meshComponents.empty())
 		{
 			for (Component* comp : meshComponents)
