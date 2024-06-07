@@ -46,11 +46,12 @@ private:
     void RenderText(const std::string& text);
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
-    struct Character {
-        unsigned int  TextureID; // ID handle of the glyph texture
+    struct Character 
+    {
+        unsigned int  TextureID = 0; // ID handle of the glyph texture
         float2 Size;  // Size of glyph
         float2 Bearing;  // Offset from baseline to left/top of glyph
-        unsigned int  Advance;  // Offset to advance to next glyph
+        unsigned int  Advance = 0;  // Offset to advance to next glyph
     };
 
     std::map<char, Character> mCharacters;

@@ -1,7 +1,10 @@
 #pragma once
 #include "SliderComponent.h"
+
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
+#include "GameObject.h"
+#include "Transform2DComponent.h"
 
 SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(owner, ComponentType::SLIDER)
 {

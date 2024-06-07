@@ -1,10 +1,10 @@
 #pragma once
 #include "Component.h"
-#include "GameObject.h"
-#include "ImageComponent.h"
-#include "Transform2DComponent.h"
 
 class CanvasComponent;
+class GameObject;
+class Transform2DComponent;
+class ImageComponent;
 
 class ENGINE_API SliderComponent :
     public Component
