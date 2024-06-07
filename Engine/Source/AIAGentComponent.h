@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-
+#include <vector>
 class ENGINE_API AIAgentComponent :public Component
 {
 public:
@@ -11,6 +11,8 @@ public:
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
+
+	void SetNavigationPath(const float3& destination);
 
 	//const float GetRadius() const { return mRadius; };
 	//const float GetHeight() const { return mHeight; };
@@ -30,10 +32,11 @@ public:
 	//void SetStoppingDistance(float stoppingDistance) { mStoppingDistance = stoppingDistance; };
 
 
-	void MoveAgent(float3 destination, float speed);
+	void MoveAgent(float speed) const;
 	void Save(Archive& archive) const override;
 	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
 private:
+
 	//Agent Parameters:
 	//float mRadius = 0.0f;
 	//float mHeight = 0.0f;
@@ -44,6 +47,6 @@ private:
 	//float mAngularSpeed = 0.0f; //Maximum speed of rotation
 	//float mAcceleration = 0.0f; 
 	//float mStoppingDistance = 0.0f; //The GO will stop when this close to the goal location.
-
+	std::vector<float3> mNavPositions;
 };
 

@@ -17,6 +17,7 @@ CREATE(EnemyRobot)
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::INT, mShieldDropRate);
+    MEMBER(MemberType::FLOAT, mChaseDelay);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::FLOAT, mRangeDistance);
@@ -44,7 +45,9 @@ void EnemyRobot::Start()
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
     }
 
-    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+    
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mStateMachine = mAnimationComponent->GetStateMachine();
@@ -128,6 +131,7 @@ void EnemyRobot::Idle()
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
         mAnimationComponent->SendTrigger("tWalkForward", 0.2);
     }
 }
@@ -139,15 +143,29 @@ void EnemyRobot::Chase()
     float range = 0.0f;
     if (IsPlayerInRange(mActivationRange))
     {
-        AIAgentComponent* agentComponent = (AIAgentComponent*)mGameObject->GetComponent(ComponentType::AIAGENT);
-        if (agentComponent)
+        if (mAiAgentComponent)
         {
-            agentComponent->MoveAgent(mPlayer->GetPosition(), mSpeed);
-            float3 direction = mPlayer->GetPosition() - agentComponent->GetOwner()->GetPosition();
-            direction.y = 0;
-            direction.Normalize();
-            float angle = std::atan2(direction.x, direction.z);
-            mGameObject->SetRotation(float3(0, angle, 0));
+            if(Delay(mChaseDelay)) 
+            {
+                mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+                float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
+                direction.y = 0;
+                direction.Normalize();
+                float angle = std::atan2(direction.x, direction.z);;
+
+                if (mGameObject->GetRotation().y != angle)
+                {
+                    mGameObject->SetRotation(float3(0, angle, 0));
+
+                }
+
+            }
+             
+
+
+
+            mAiAgentComponent->MoveAgent(mSpeed);
+
         }
         switch (mType)
         {
@@ -194,6 +212,7 @@ void EnemyRobot::Attack()
     {
 
         mCurrentState = EnemyState::CHASE;
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
         mAnimationComponent->SendTrigger("tWalkForward", 0.3);
         mTimerDisengage = 0.0f;
     }
