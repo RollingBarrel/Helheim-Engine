@@ -338,7 +338,7 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 		found = true;
 		bMeshIdx = mapIterator->second.bMeshIdx;
 		bMaterialIdx = mapIterator->second.bMaterialIdx;
-		if (component.IsAnimated())
+		if (component.HasSkinning())
 			mSkinningFlag = true;
 		mMeshComponents.erase(mapIterator);
 	}
@@ -409,7 +409,7 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
 
 	const BatchMeshRendererComponent& bComp = mMeshComponents[component.GetID()];
 	const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
-	if (component.IsAnimated())
+	if (component.HasSkinning())
 	{
 		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
 	}
@@ -487,7 +487,7 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent& cMesh)
 	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[cMesh.GetID()];
 	const ResourceMesh* rMesh = cMesh.GetResourceMesh();
 	const unsigned int idx = mDrawCount % NUM_BUFFERS;
-	if (cMesh.IsAnimated())
+	if (cMesh.HasSkinning())
 	{
 		glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
 		const BatchMeshResource& bRes = mUniqueMeshes[batchMeshRenderer.bMeshIdx];

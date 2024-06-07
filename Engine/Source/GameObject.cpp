@@ -58,26 +58,37 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 	}
 }
 
-GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<GameObject*, GameObject*>* originalToNew)
+GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew, std::vector<MeshRendererComponent*>* meshRendererComps)
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride)
+	mEulerAngles(original.mEulerAngles), mRotation(original.mRotation), mLocalRotation(original.mLocalRotation), mLocalEulerAngles(original.mLocalEulerAngles),
+	mPosition(original.mPosition), mLocalPosition(original.mLocalPosition), mScale(original.mScale), mLocalScale(original.mLocalScale), 
+	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight),
+	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
-	originalToNew[&original] = this;
 	SetTag(original.mTag);
 	for (Component* component : original.mComponents)
 	{
-		mComponents.push_back(component->Clone(this));
+		Component* cloned = component->Clone(this);
+		mComponents.push_back(cloned);
+		if (meshRendererComps && cloned->GetType() == ComponentType::MESHRENDERER)
+		{
+			meshRendererComps->push_back(reinterpret_cast<MeshRendererComponent*>(cloned));
+		}
 	}
 
 	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{
-		GameObject* gameObject = new GameObject(*child, this);
+		GameObject* gameObject = new GameObject(*child, this, originalToNew, meshRendererComps);
 		AddChild(gameObject);
 	}
-	
+
+	if (originalToNew)
+	{
+		(*originalToNew)[&original] = this;
+	}
 }
 
 GameObject::~GameObject()

@@ -29,7 +29,7 @@ public:
 	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
-	GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<GameObject*, GameObject*>* originalToNew = nullptr);
+	GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew = nullptr, std::vector<MeshRendererComponent*>*meshRendererComps = nullptr);
 	~GameObject();
 
 	void Update();

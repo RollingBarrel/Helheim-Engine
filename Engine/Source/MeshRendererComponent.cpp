@@ -41,6 +41,12 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMaterial(other.mMaterial->GetUID());
 	}
+	mHasSkinning = other.mHasSkinning;
+	mPaletteOwner = other.mPaletteOwner;
+	for (int i = 0; i < other.mGameobjectsInverseMatrices.size(); ++i)
+	{
+		mGameobjectsInverseMatrices.push_back(other.mGameobjectsInverseMatrices[i]);
+	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -152,7 +158,7 @@ void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const
 		assert(mGameobjectsInverseMatrices.size() && "Component does not have skeleton");
 		for (auto& pair : mGameobjectsInverseMatrices)
 		{
-			assert(originalToNew.find(pair.first) == originalToNew.end());
+			assert(originalToNew.find(pair.first) != originalToNew.end());
 			pair.first = originalToNew.at(pair.first);
 		}
 	}
@@ -169,21 +175,20 @@ void MeshRendererComponent::Update()
 	UpdatePalette();
 }
 
-//void MeshRendererComponent::Enable()
-//{
-//	if(mMaterial && mMesh)
-//		App->GetOpenGL()->BatchAddMesh(this);
-//}
-//
-//void MeshRendererComponent::Disable()
-//{
-//	if (mMaterial && mMesh)
-//		App->GetOpenGL()->BatchRemoveMesh(this);
-//}
+void MeshRendererComponent::Enable()
+{
+	if(mMaterial && mMesh)
+		App->GetOpenGL()->BatchAddMesh(*this);
+}
+
+void MeshRendererComponent::Disable()
+{
+	if (mMaterial && mMesh)
+		App->GetOpenGL()->BatchRemoveMesh(*this);
+}
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
-
 	return new MeshRendererComponent(*this, owner);
 }
 

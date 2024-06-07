@@ -3,6 +3,7 @@
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
 #include <vector>
+#include <unordered_map>
 #include "Math/float4x4.h"
 
 class ResourceMesh;
@@ -33,9 +34,13 @@ public:
 	void SetMesh(unsigned int uid);
 	void SetMaterial(unsigned int uid);
 	void SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette = nullptr);
+	void UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
 
 	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
-	bool IsAnimated() const { return mHasSkinning; };
+	bool HasSkinning() const { return mHasSkinning; };
+
+	void Enable() override;
+	void Disable() override;
 
 
 private:
