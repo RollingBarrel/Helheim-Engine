@@ -13,6 +13,9 @@ public:
 	void Enter() override;
 	void Exit() override;
 
+	StateType GetType() override;
+
+
 private:
 	float mAttackTimer = 0.0f;
 	float mSpecialAttackTimer = 0.0f;

@@ -33,3 +33,8 @@ void SwitchState::Enter()
 void SwitchState::Exit()
 {
 }
+
+StateType SwitchState::GetType()
+{
+	return StateType::SWITCH;
+}

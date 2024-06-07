@@ -39,3 +39,8 @@ void ReloadState::Enter()
 void ReloadState::Exit()
 {
 }
+
+StateType ReloadState::GetType()
+{
+	return StateType::RELOAD;
+}

@@ -28,6 +28,8 @@ public:
 	virtual void Enter();
 	virtual void Exit();
 
+	virtual StateType GetType();
+
 protected:
 	PlayerController* mPlayerController = nullptr;
 

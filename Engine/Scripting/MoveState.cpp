@@ -75,6 +75,11 @@ void MoveState::Exit()
 {
 }
 
+StateType MoveState::GetType()
+{
+    return StateType::MOVE;
+}
+
 void MoveState::DoAnimation() 
 {
     if (!mMoveDirection.Equals(float3::zero)) 

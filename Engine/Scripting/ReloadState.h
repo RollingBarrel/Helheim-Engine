@@ -13,6 +13,9 @@ public:
 	void Enter() override;
 	void Exit() override;
 
+	StateType GetType() override;
+
+
 private:
 	float mReloadTimer = 0;
 	bool mReloaded = false;

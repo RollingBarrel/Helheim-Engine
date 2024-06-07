@@ -49,3 +49,8 @@ void DashState::Enter()
 void DashState::Exit()
 {
 }
+
+StateType DashState::GetType()
+{
+    return StateType::DASH;
+}

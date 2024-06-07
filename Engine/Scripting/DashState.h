@@ -13,6 +13,9 @@ public:
 	void Enter() override;
 	void Exit() override;
 
+	StateType GetType() override;
+
+
 private:
 
 	float mDashTimer = 0.0f;

@@ -184,6 +184,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="AimState.h" />
     <ClInclude Include="AttackState.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="DashState.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="GrenadeState.h" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClCompile Include="AimState.cpp" />
     <ClCompile Include="AttackState.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Enemy.cpp" />

@@ -24,3 +24,8 @@ void SpecialState::Enter()
 void SpecialState::Exit()
 {
 }
+
+StateType SpecialState::GetType()
+{
+	return StateType::SPECIAL;
+}

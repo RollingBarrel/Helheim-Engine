@@ -28,9 +28,6 @@
     <Filter Include="Weapons\Range">
       <UniqueIdentifier>{a5234334-8063-4966-9fdf-1bdf4286b373}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Weapons\Range\Pistol">
-      <UniqueIdentifier>{26a052d1-42d1-4771-81c9-b465aab29ef1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="States">
       <UniqueIdentifier>{dab926c2-b3d8-4b05-9554-248d057853e8}</UniqueIdentifier>
     </Filter>
@@ -87,9 +84,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h">
       <Filter>Weapons\Range</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
-      <Filter>Weapons\Range\Pistol</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -128,6 +122,12 @@
     </ClInclude>
     <ClInclude Include="ReloadState.h">
       <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
+      <Filter>Weapons\Range</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +176,6 @@
     <ClCompile Include="RangeWeapon.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
-    <ClCompile Include="Pistol.cpp">
-      <Filter>Weapons\Range\Pistol</Filter>
-    </ClCompile>
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -217,6 +214,12 @@
     </ClCompile>
     <ClCompile Include="ReloadState.cpp">
       <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Weapons\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="Pistol.cpp">
+      <Filter>Weapons\Range</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

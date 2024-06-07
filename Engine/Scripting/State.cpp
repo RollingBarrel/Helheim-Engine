@@ -27,3 +27,8 @@ void State::Enter()
 void State::Exit()
 {
 }
+
+StateType State::GetType()
+{
+	return StateType::NONE;
+}

@@ -16,6 +16,8 @@ public:
 	void Enter() override;
 	void Exit() override;
 
+	StateType GetType() override;
+
 private:
 	void DoAnimation();
 	void DoAudio();

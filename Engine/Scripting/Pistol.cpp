@@ -15,11 +15,16 @@
 #include "GameManager.h"
 
 #include <map>
+#include "Bat.h"
 
 Pistol::Pistol() : RangeWeapon()
 {
     mCurrentAmmo = 16;
     mMaxAmmo = 16;
+}
+
+Pistol::~Pistol()
+{
 }
 
 void Pistol::BasicAttack()

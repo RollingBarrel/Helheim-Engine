@@ -37,6 +37,11 @@ void AttackState::Exit()
 {
 }
 
+StateType AttackState::GetType()
+{
+    return StateType::ATTACK;
+}
+
 void AttackState::DoAudio()
 {
 }

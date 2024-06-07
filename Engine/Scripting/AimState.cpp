@@ -64,3 +64,8 @@ void AimState::Enter()
 void AimState::Exit()
 {
 }
+
+StateType AimState::GetType()
+{
+    return StateType::AIM;
+}

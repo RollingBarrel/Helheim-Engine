@@ -44,3 +44,8 @@ void IdleState::Enter()
 void IdleState::Exit()
 {
 }
+
+StateType IdleState::GetType()
+{
+    return StateType::IDLE;
+}
