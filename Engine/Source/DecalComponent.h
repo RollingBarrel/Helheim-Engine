@@ -5,6 +5,7 @@ class ResourceTexture;
 
 class DecalComponent : public Component
 {
+	friend class InspectorPanel;
 public:
 	DecalComponent() = delete;
 	explicit DecalComponent(GameObject* owner);
@@ -27,6 +28,10 @@ private:
 	ResourceTexture* mDiffuseTexture = nullptr;
 	ResourceTexture* mSpecularTexture = nullptr;
 	ResourceTexture* mNormalTexture = nullptr;
+
+	const char* mDiffuseName;
+	const char* mSpecularName;
+	const char* mNormalName;
 
 };
 

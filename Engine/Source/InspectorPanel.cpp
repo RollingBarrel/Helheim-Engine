@@ -38,6 +38,7 @@
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
 #include "SliderComponent.h"
+#include "DecalComponent.h"
 
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
@@ -1858,7 +1859,147 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 {
 
-	ImGui::Text("Decal");
+	unsigned int textureSize = 50;
+
+	ImGui::Text("Diffuse Texture");
+	ImGui::BeginGroup();
+	if (component->mDiffuseTexture)
+	{
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+		ImTextureID imageID = (void*)(intptr_t)component->mDiffuseTexture->GetOpenGLId();
+		ImGui::Image(imageID, ImVec2(textureSize, textureSize));
+		
+
+		ImGui::NextColumn();
+		if (component->mDiffuseName)
+		{
+			ImGui::Text(component->mDiffuseName);
+		}
+		if (component->mDiffuseTexture)
+		{
+			ImGui::Text("Width:%dpx", component->mDiffuseTexture->GetWidth());
+			ImGui::Text("Height:%dpx", component->mDiffuseTexture->GetHeight());
+		}
+		ImGui::Columns(1);
+	}
+	else
+	{
+		ImGui::Image(0, ImVec2(textureSize, textureSize));
+		ImGui::SameLine();
+		ImGui::Text("Drop Diffuse Texture");
+	}
+	ImGui::EndGroup();
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+		{
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+			if (resource && (resource->GetType() == Resource::Type::Texture))
+			{
+				component->mDiffuseTexture = reinterpret_cast<ResourceTexture*>(resource);
+				component->mDiffuseName = asset->mName;
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	ImGui::Dummy(ImVec2(0.0f, 20.0f));
+	ImGui::Text("Specular Texture");
+	ImGui::BeginGroup();
+	if (component->mSpecularTexture)
+	{
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+		ImTextureID imageID = (void*)(intptr_t)component->mSpecularTexture->GetOpenGLId();
+		ImGui::Image(imageID, ImVec2(textureSize, textureSize));
+
+
+		ImGui::NextColumn();
+		if (component->mSpecularName)
+		{
+			ImGui::Text(component->mSpecularName);
+		}
+		if (component->mSpecularTexture)
+		{
+			ImGui::Text("Width:%dpx", component->mSpecularTexture->GetWidth());
+			ImGui::Text("Height:%dpx", component->mSpecularTexture->GetHeight());
+		}
+		ImGui::Columns(1);
+	}
+	else
+	{
+		ImGui::Image(0, ImVec2(textureSize, textureSize));
+		ImGui::SameLine();
+		ImGui::Text("Drop Specular Texture");
+	}
+	ImGui::EndGroup();
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+		{
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+			if (resource && (resource->GetType() == Resource::Type::Texture))
+			{
+				component->mSpecularTexture = reinterpret_cast<ResourceTexture*>(resource);
+				component->mSpecularName = asset->mName;
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+
+	ImGui::Dummy(ImVec2(0.0f, 20.0f));
+	ImGui::Text("Normal Map");
+	ImGui::BeginGroup();
+	if (component->mNormalTexture)
+	{
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+		ImTextureID imageID = (void*)(intptr_t)component->mNormalTexture->GetOpenGLId();
+		ImGui::Image(imageID, ImVec2(textureSize, textureSize));
+
+
+		ImGui::NextColumn();
+		if (component->mNormalName)
+		{
+			ImGui::Text(component->mNormalName);
+		}
+		if (component->mNormalTexture)
+		{
+			ImGui::Text("Width:%dpx", component->mNormalTexture->GetWidth());
+			ImGui::Text("Height:%dpx", component->mNormalTexture->GetHeight());
+		}
+		ImGui::Columns(1);
+	}
+	else
+	{
+		ImGui::Image(0, ImVec2(textureSize, textureSize));
+		ImGui::SameLine();
+		ImGui::Text("Drop Normal Map");
+	}
+	ImGui::EndGroup();
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+		{
+			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+			if (resource && (resource->GetType() == Resource::Type::Texture))
+			{
+				component->mNormalTexture = reinterpret_cast<ResourceTexture*>(resource);
+				component->mNormalName = asset->mName;
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+	
+
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const
