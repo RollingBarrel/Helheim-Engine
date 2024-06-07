@@ -436,7 +436,9 @@
     <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="DecalComponent.cpp" />
+    <ClCompile Include="DecalComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1910,7 +1912,9 @@
     <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="DecalComponent.h" />
+    <ClInclude Include="DecalComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">

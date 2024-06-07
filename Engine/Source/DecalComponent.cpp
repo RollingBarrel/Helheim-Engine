@@ -25,8 +25,10 @@ Component* DecalComponent::Clone(GameObject* owner) const
 
 void DecalComponent::Save(JsonObject& obj) const
 {
+	Component::Save(obj);
 }
 
 void DecalComponent::Load(const JsonObject& data)
 {
+	Component::Load(data);
 }

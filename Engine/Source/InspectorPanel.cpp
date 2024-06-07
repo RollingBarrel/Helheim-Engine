@@ -1859,147 +1859,69 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 {
 
-	unsigned int textureSize = 50;
+	unsigned int imageSize = 50;
 
-	ImGui::Text("Diffuse Texture");
-	ImGui::BeginGroup();
-	if (component->mDiffuseTexture)
-	{
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, 70.0);
-		ImTextureID imageID = (void*)(intptr_t)component->mDiffuseTexture->GetOpenGLId();
-		ImGui::Image(imageID, ImVec2(textureSize, textureSize));
-		
+	ResourceTexture** textures[3] = { &component->mDiffuseTexture , &component->mSpecularTexture , &component->mNormalTexture };
+	std::string* fileNames[3] = { &component->mDiffuseName, &component->mSpecularName , &component->mNormalName };
+	const char* names[3] = { "Diffuse Texture", "Specular Texture", "Normal Map" };
 
-		ImGui::NextColumn();
-		if (component->mDiffuseName)
-		{
-			ImGui::Text(component->mDiffuseName);
-		}
-		if (component->mDiffuseTexture)
-		{
-			ImGui::Text("Width:%dpx", component->mDiffuseTexture->GetWidth());
-			ImGui::Text("Height:%dpx", component->mDiffuseTexture->GetHeight());
-		}
-		ImGui::Columns(1);
-	}
-	else
+	if (ImGui::BeginTable("1", 2, ImGuiTableFlags_BordersInnerV))
 	{
-		ImGui::Image(0, ImVec2(textureSize, textureSize));
-		ImGui::SameLine();
-		ImGui::Text("Drop Diffuse Texture");
-	}
-	ImGui::EndGroup();
 
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+		for (int i = 0; i < 3; ++i)
 		{
-			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
-			if (resource && (resource->GetType() == Resource::Type::Texture))
+			ImGui::BeginGroup();
+			ImGui::TableNextRow();
+
+			ImGui::TableNextColumn();
+			ImGui::Text(names[i]);
+			if (*textures[i])
 			{
-				component->mDiffuseTexture = reinterpret_cast<ResourceTexture*>(resource);
-				component->mDiffuseName = asset->mName;
+				ImTextureID imageID = (void*)(intptr_t)(*textures[i])->GetOpenGLId();
+				ImGui::Image(imageID, ImVec2(imageSize, imageSize));
+
+				ImGui::TableNextColumn();
+				if (!(*fileNames[i]).empty())
+				{
+					ImGui::Text((*fileNames[i]).c_str());
+				}
+				if ((*textures[i]))
+				{
+					ImGui::Text("Width:%dpx", (*textures[i])->GetWidth());
+					ImGui::Text("Height:%dpx", (*textures[i])->GetHeight());
+				}
+
+			}
+			else
+			{
+
+				ImGui::Image(0, ImVec2(imageSize, imageSize));
+				ImGui::TableNextColumn();
+				ImGui::Dummy(ImVec2(0.0f, 20.0f));
+				ImGui::Text("Drop Texture");
+			}
+			ImGui::EndGroup();
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+				{
+					AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+					Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+					if (resource && (resource->GetType() == Resource::Type::Texture))
+					{
+						(*textures[i]) = reinterpret_cast<ResourceTexture*>(resource);
+						(*fileNames[i]) = asset->mName;
+					}
+				}
+				ImGui::EndDragDropTarget();
 			}
 		}
-		ImGui::EndDragDropTarget();
+
+		ImGui::EndTable();
 	}
 
-	ImGui::Dummy(ImVec2(0.0f, 20.0f));
-	ImGui::Text("Specular Texture");
-	ImGui::BeginGroup();
-	if (component->mSpecularTexture)
-	{
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, 70.0);
-		ImTextureID imageID = (void*)(intptr_t)component->mSpecularTexture->GetOpenGLId();
-		ImGui::Image(imageID, ImVec2(textureSize, textureSize));
-
-
-		ImGui::NextColumn();
-		if (component->mSpecularName)
-		{
-			ImGui::Text(component->mSpecularName);
-		}
-		if (component->mSpecularTexture)
-		{
-			ImGui::Text("Width:%dpx", component->mSpecularTexture->GetWidth());
-			ImGui::Text("Height:%dpx", component->mSpecularTexture->GetHeight());
-		}
-		ImGui::Columns(1);
-	}
-	else
-	{
-		ImGui::Image(0, ImVec2(textureSize, textureSize));
-		ImGui::SameLine();
-		ImGui::Text("Drop Specular Texture");
-	}
-	ImGui::EndGroup();
-
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
-		{
-			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
-			if (resource && (resource->GetType() == Resource::Type::Texture))
-			{
-				component->mSpecularTexture = reinterpret_cast<ResourceTexture*>(resource);
-				component->mSpecularName = asset->mName;
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
-
-
-	ImGui::Dummy(ImVec2(0.0f, 20.0f));
-	ImGui::Text("Normal Map");
-	ImGui::BeginGroup();
-	if (component->mNormalTexture)
-	{
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, 70.0);
-		ImTextureID imageID = (void*)(intptr_t)component->mNormalTexture->GetOpenGLId();
-		ImGui::Image(imageID, ImVec2(textureSize, textureSize));
-
-
-		ImGui::NextColumn();
-		if (component->mNormalName)
-		{
-			ImGui::Text(component->mNormalName);
-		}
-		if (component->mNormalTexture)
-		{
-			ImGui::Text("Width:%dpx", component->mNormalTexture->GetWidth());
-			ImGui::Text("Height:%dpx", component->mNormalTexture->GetHeight());
-		}
-		ImGui::Columns(1);
-	}
-	else
-	{
-		ImGui::Image(0, ImVec2(textureSize, textureSize));
-		ImGui::SameLine();
-		ImGui::Text("Drop Normal Map");
-	}
-	ImGui::EndGroup();
-
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
-		{
-			AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-			Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
-			if (resource && (resource->GetType() == Resource::Type::Texture))
-			{
-				component->mNormalTexture = reinterpret_cast<ResourceTexture*>(resource);
-				component->mNormalName = asset->mName;
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
 	
-
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const

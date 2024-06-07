@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include <string>
 
 class ResourceTexture;
 
@@ -29,9 +30,9 @@ private:
 	ResourceTexture* mSpecularTexture = nullptr;
 	ResourceTexture* mNormalTexture = nullptr;
 
-	const char* mDiffuseName;
-	const char* mSpecularName;
-	const char* mNormalName;
+	std::string mDiffuseName;
+	std::string mSpecularName;
+	std::string mNormalName;
 
 };
 

@@ -6,14 +6,14 @@ Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mTyp
 
 void Component::Save(JsonObject& obj) const
 {
-	obj.AddInt("ID", GetID());
+	//obj.AddInt("ID", GetID());
 	obj.AddInt("ComponentType", static_cast<int>(GetType()));
 	obj.AddBool("IsEnabled", IsEnabled());
 }
 
 void Component::Load(const JsonObject& data)
 {
-	mID = data.GetInt("ID");
+	//mID = data.GetInt("ID");
 	mType = (ComponentType) data.GetInt("ComponentType");
 	mIsEnabled = data.GetBool("IsEnabled");
 }
