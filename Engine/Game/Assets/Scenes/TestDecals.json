@@ -30,7 +30,49 @@
                 "Components": [
                     {
                         "ComponentType": 19,
-                        "IsEnabled": true
+                        "IsEnabled": true,
+                        "DiffuseID": 1608476329,
+                        "DiffuseName": "diffuse_green.tga",
+                        "SpecularID": 2022236665,
+                        "SpecularName": "specular_green.tga",
+                        "NormalName": ""
+                    }
+                ]
+            },
+            {
+                "UID": 722509130,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "DiffuseID": 1608476329,
+                        "DiffuseName": "diffuse_green.tga",
+                        "SpecularID": 2022236665,
+                        "SpecularName": "specular_green.tga",
+                        "NormalName": ""
                     }
                 ]
             }
