@@ -86,6 +86,15 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="EnemySpawner.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomController.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPool.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -140,6 +149,15 @@
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomController.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPool.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
