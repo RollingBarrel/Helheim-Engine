@@ -58,7 +58,7 @@ void DecalComponent::Load(const JsonObject& data)
 	
 	if (data.HasMember("DiffuseID"))
 	{
-		(ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("DiffuseID"), Resource::Type::Texture);
+		mDiffuseTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("DiffuseID"), Resource::Type::Texture);
 		if (data.HasMember("DiffuseName"))
 		{
 			mDiffuseName = data.GetString("DiffuseName");
@@ -67,7 +67,7 @@ void DecalComponent::Load(const JsonObject& data)
 	
 	if (data.HasMember("SpecularID"))
 	{
-		(ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("SpecularID"), Resource::Type::Texture);
+		mSpecularTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("SpecularID"), Resource::Type::Texture);
 		if (data.HasMember("SpecularName"))
 		{
 			mDiffuseName = data.GetString("SpecularName");
@@ -76,7 +76,7 @@ void DecalComponent::Load(const JsonObject& data)
 	
 	if (data.HasMember("NormalID"))
 	{
-		(ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("NormalID"), Resource::Type::Texture);
+		mNormalTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("NormalID"), Resource::Type::Texture);
 		if (data.HasMember("NormalName"))
 		{
 			mDiffuseName = data.GetString("NormalName");
