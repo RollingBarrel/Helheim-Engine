@@ -4,7 +4,7 @@
 class ReloadState : public State
 {
 public:
-	ReloadState(PlayerController* player);
+	explicit ReloadState(PlayerController* player);
 	~ReloadState();
 
 	StateType HandleInput() override;

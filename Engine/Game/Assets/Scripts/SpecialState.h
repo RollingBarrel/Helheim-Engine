@@ -4,7 +4,7 @@
 class SpecialState : public State
 {
 public:
-	SpecialState(PlayerController* player);
+	explicit SpecialState(PlayerController* player);
 	~SpecialState();
 
 	StateType HandleInput() override;

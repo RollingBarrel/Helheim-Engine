@@ -7,7 +7,7 @@
 class MoveState : public State
 {
 public:
-	MoveState(PlayerController* player);
+	explicit MoveState(PlayerController* player);
 	~MoveState();
 
 	StateType HandleInput() override;

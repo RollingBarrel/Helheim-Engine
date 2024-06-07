@@ -165,7 +165,8 @@ void MoveState::DoAudio()
 {
     // TODO: play sound according the animation
     mStepTimer += App->GetDt();
-    if (mStepTimer >= mStepCooldown) {
+    if (mStepTimer >= mStepCooldown) 
+    {
         mStepTimer = 0;
         mPlayerController->PlayOneShot("Step");
     }

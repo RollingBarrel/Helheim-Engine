@@ -4,7 +4,7 @@
 class AttackState : public State
 {
 public:
-	AttackState(PlayerController* player);
+	explicit AttackState(PlayerController* player);
 	~AttackState();
 
 	StateType HandleInput() override;

@@ -4,7 +4,7 @@
 class SwitchState : public State
 {
 public:
-	SwitchState(PlayerController* player);
+	explicit SwitchState(PlayerController* player);
 	~SwitchState();
 
 	StateType HandleInput() override;

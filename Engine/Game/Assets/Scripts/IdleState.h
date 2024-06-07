@@ -4,7 +4,7 @@
 class IdleState : public State
 {
 public:
-	IdleState(PlayerController* player);
+	explicit IdleState(PlayerController* player);
 	~IdleState();
 
 	StateType HandleInput() override;

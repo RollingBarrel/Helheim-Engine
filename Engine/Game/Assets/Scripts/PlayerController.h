@@ -39,8 +39,11 @@ class PlayerController :public Script
 {
     FRIEND(PlayerController)
 public:
-    PlayerController(GameObject* owner);
+    explicit PlayerController(GameObject* owner);
+    PlayerController(const PlayerController& playerController) = delete;
     ~PlayerController();
+    PlayerController& operator=(const PlayerController& other) = delete;
+
     void Start() override;
     void Update() override;
 
@@ -65,8 +68,8 @@ public:
     float GetSpecialAttackCooldown() const { return mSpecialAttackCoolDown; }
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetReloadDuration() const { return mReloadDuration; }
-    Weapon* GetWeapon() const { return mWeapon; }
-    State* GetPlayerUpperState() const { return mUpperState; }
+    const Weapon* GetWeapon() const { return mWeapon; }
+    const State* GetPlayerUpperState() const { return mUpperState; }
     
     bool CanReload() const;
     void Reload() const;

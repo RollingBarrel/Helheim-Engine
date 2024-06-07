@@ -4,7 +4,7 @@
 class GrenadeState : public State
 {
 public:
-	GrenadeState(PlayerController* player);
+	explicit GrenadeState(PlayerController* player);
 	~GrenadeState();
 
 	StateType HandleInput() override;

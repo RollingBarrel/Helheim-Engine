@@ -10,8 +10,7 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 
-CREATE(EnemyRobot)
-{
+CREATE(EnemyRobot){
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);

@@ -19,7 +19,7 @@ enum StateType
 class State
 {
 public:
-	State(PlayerController* player);
+	explicit State(PlayerController* player);
 	~State();
 
 	virtual StateType HandleInput();

@@ -46,7 +46,8 @@ private:
     void RenderText(const std::string& text);
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
-    struct Character {
+    struct Character 
+    {
         unsigned int  TextureID = 0; // ID handle of the glyph texture
         float2 Size;  // Size of glyph
         float2 Bearing;  // Offset from baseline to left/top of glyph
