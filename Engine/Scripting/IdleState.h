@@ -16,5 +16,4 @@ public:
 	StateType GetType() override;
 
 private:
-
 };

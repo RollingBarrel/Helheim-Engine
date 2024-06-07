@@ -21,8 +21,11 @@ MoveState::~MoveState()
 StateType MoveState::HandleInput()
 {
     // Check dash cooldown
-    if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
+    mDashTimer += App->GetDt();
+    if (mDashTimer > mPlayerController->GetDashCoolDown() &&
+        App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
     {
+        mDashTimer = 0.0f;
         return StateType::DASH;
     }
     else if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||

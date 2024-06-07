@@ -29,4 +29,6 @@ private:
 
 	float mStepTimer = 0.0f;
 	float mStepCooldown = 0.5f;
+
+	float mDashTimer = 0.0f;
 };

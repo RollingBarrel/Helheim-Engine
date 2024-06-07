@@ -50,7 +50,7 @@ StateType AimState::HandleInput()
     }
 
     
-	return State::HandleInput();
+	return StateType::AIM;
 }
 
 void AimState::Update()

@@ -97,6 +97,7 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
     // Weapons
     mMeleeWeapon = new Bat();
     mRangeWeapon = new Pistol();
+    mWeapon = mMeleeWeapon;
 }
 
 PlayerController::~PlayerController()
@@ -292,25 +293,16 @@ void PlayerController::CheckInput()
         LOG(("LOWER: " + std::to_string(type)).c_str());
         mLowerStateType = type;
         mLowerState->Exit();
-        
+
         switch (type) {
-            case StateType::AIM:
-                mLowerState = mAimState;
+            case StateType::DASH:
+                mLowerState = mDashState;
                 break;
-            case StateType::ATTACK:
-                mLowerState = mAttackState;
+            case StateType::MOVE:
+                mLowerState = mMoveState;
                 break;
-            case StateType::GRENADE:
-                mLowerState = mGrenadeState;
-                break;
-            case StateType::SWITCH:
-                mLowerState = mSwitchState;
-                break;
-            case StateType::SPECIAL:
-                mLowerState = mSpecialState;
-                break;
-            case StateType::RELOAD:
-                mLowerState = mReloadState;
+            case StateType::IDLE:
+                mLowerState = mIdleState;
                 break;
             case StateType::NONE:
                 break;
@@ -331,14 +323,23 @@ void PlayerController::CheckInput()
         mUpperState->Exit();
 
         switch (type) {
-            case StateType::DASH:
-                mUpperState = mDashState;
+            case StateType::AIM:
+                mUpperState = mAimState;
                 break;
-            case StateType::MOVE:
-                mUpperState = mMoveState;
+            case StateType::ATTACK:
+                mUpperState = mAttackState;
                 break;
-            case StateType::IDLE:
-                mUpperState = mIdleState;
+            case StateType::GRENADE:
+                mUpperState = mGrenadeState;
+                break;
+            case StateType::SWITCH:
+                mUpperState = mSwitchState;
+                break;
+            case StateType::SPECIAL:
+                mUpperState = mSpecialState;
+                break;
+            case StateType::RELOAD:
+                mUpperState = mReloadState;
                 break;
             case StateType::NONE:
                 break;
@@ -387,12 +388,12 @@ void PlayerController::MoveInDirection(float3 direction)
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
     mPlayerDirection = direction;
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(0.5f)));
+    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
 }
 
 void PlayerController::MoveToPosition(float3 position)
 {
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(position, float3(0.5f)));
+    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(position, float3(10.0f)));
 }
 
 void PlayerController::SwitchWeapon() 

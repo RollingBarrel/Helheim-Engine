@@ -116,7 +116,7 @@ private:
 
     // STATS
     // Dash
-    float mDashCoolDown = 0.7f;
+    float mDashCoolDown = 2.0f;
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
     // Speed
