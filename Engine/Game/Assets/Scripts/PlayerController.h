@@ -68,7 +68,7 @@ public:
     float GetSpecialAttackCooldown() const { return mSpecialAttackCoolDown; }
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetReloadDuration() const { return mReloadDuration; }
-    const Weapon* GetWeapon() const { return mWeapon; }
+    Weapon* GetWeapon() const { return mWeapon; }
     const State* GetPlayerUpperState() const { return mUpperState; }
     
     bool CanReload() const;
