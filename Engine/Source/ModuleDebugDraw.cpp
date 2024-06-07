@@ -13,6 +13,7 @@
 #include "MeshRendererComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
+#include "DecalComponent.h"
 
 #include "ModuleEditor.h"
 #include "HierarchyPanel.h"
@@ -675,17 +676,23 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             //Frustum ShadowFrustum = spotLight->GetFrustum();
             //DrawFrustum(spotLight->GetFrustum());
         }
+
         PointLightComponent* pointLight = reinterpret_cast<PointLightComponent*>(focusGameObject->GetComponent(ComponentType::POINTLIGHT));
         if (pointLight)
         {
             DrawSphere(pointLight->GetPosition(), pointLight->GetColor(), pointLight->GetRadius());
         }
 
-
         BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
         if (boxCollider)
         {
             DrawColliders(focusGameObject);
+        }
+
+        DecalComponent* decalComponent = reinterpret_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
+        if (decalComponent)
+        {
+            DrawCube(focusGameObject->GetPosition().ptr(), focusGameObject->GetScale().x, focusGameObject->GetScale().y, focusGameObject->GetScale().z, float3(0.8f, 0.8f, 0.8f));
         }
 
         if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawBoundingBoxes())
@@ -700,6 +707,12 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     dd::flush();
 }
 
+void ModuleDebugDraw::DrawCube(const float center[3], const float width, const float heigh, const float depth, const float3& color)
+{
+    dd::box(ddVec3(center),color, width, heigh, depth);
+    dd::flush();
+}
+
 void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
 {
     ddVec3 points[8];
@@ -709,7 +722,6 @@ void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
         points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
     };
     dd::box(orderedPoints, color);
-
     dd::flush();
 }
 
