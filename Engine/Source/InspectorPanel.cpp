@@ -1590,6 +1590,10 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Stretched Billboard");
 	ImGui::SameLine();
 	ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
+	ImGui::Text("Stretched Ratio");
+	ImGui::SameLine();
+	ImGui::DragFloat("##StretchedRatio", &(component->mStretchedRatio), 0.1f, 0.0f);
+
 	DrawBezierCurve(&(component->mSizeCurve), "Size");
 	ImGui::Separator();
 	static const char* items[]{ "Cone","Box","Sphere"};

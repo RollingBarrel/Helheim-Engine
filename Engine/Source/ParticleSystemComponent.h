@@ -65,6 +65,7 @@ private:
 	BezierCurve mSpeedCurve = BezierCurve();
 	BezierCurve mSizeCurve = BezierCurve();
 	bool mStretchedBillboard = false;
+	float mStretchedRatio = 0.0f;
 
 	float mEmissionRate = 10.0f;
 	int mMaxParticles = 1000.0f;

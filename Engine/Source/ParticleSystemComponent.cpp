@@ -133,7 +133,7 @@ void ParticleSystemComponent::Draw() const
                     float3 aux2 = Cross(aux1, norm).Normalized();
                     transform = { float4(aux2, 0), float4(aux1, 0),float4(norm, 0),float4(pos, 1) };
                     float stretch = (mParticles[i]->GetDirection() * mParticles[i]->GetSpeed()).Dot(aux2);
-                    scaleMatrix[0][0] = scaleMatrix[0][0] * std::max(1.0f, Sqrt(stretch/scale));
+                    scaleMatrix[0][0] = scaleMatrix[0][0] * std::max(1.0f, Sqrt(stretch/scale) * mStretchedRatio);
                 }
                 else 
                 {
@@ -342,6 +342,7 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
         float randX = randFloat() - 0.5f;
         float randY = randFloat() - 0.5f;
         float randZ = randFloat() - 0.5f;
+
         return float3(mShapeSize.x * randX, mShapeSize.y * randY, mShapeSize.z * randZ);
     }
     case EmitterType::SPHERE:
@@ -414,7 +415,7 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
     case EmitterType::SPHERE:
     {
         float3 direction;
-        if (mShapeAngle > 0) direction = (-pos).Normalized();
+        if (mShapeInverseDir) direction = (-pos).Normalized();
         else direction = pos.Normalized();
         if (mIsShapeAngleRand)
         {
