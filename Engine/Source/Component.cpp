@@ -60,6 +60,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Box Collider";
 		case ComponentType::TRAIL:
 			return "Trail";
+		case ComponentType::DECAL:
+			return "Decal Projector";
 		default:
 			return "None";
 		}

@@ -502,6 +502,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 				case ComponentType::TRAIL:
 					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
 					break;
+				case ComponentType::DECAL:
+					DrawDecalComponent(reinterpret_cast<DecalComponent*>(component));
+					break;
 			}
 		}
 		ImGui::PopID();
@@ -1850,6 +1853,12 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		static float selectedMark = -1.0f;
 		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
 	}
+}
+
+void InspectorPanel::DrawDecalComponent(DecalComponent* component)
+{
+
+	ImGui::Text("Decal");
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const

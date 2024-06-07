@@ -90,9 +90,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Tag.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -124,9 +121,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="SpotLightComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TestComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="CanvasComponent.cpp">
@@ -442,12 +436,10 @@
     <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="DecalComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Tag.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
@@ -481,9 +473,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="SpotLightComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TestComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="CanvasComponent.h">
@@ -1921,6 +1910,7 @@
     <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="DecalComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">

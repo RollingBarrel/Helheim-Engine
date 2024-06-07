@@ -13,7 +13,8 @@ class ENGINE_API ScriptComponent : public Component
 	friend class ModuleEngineScriptManager;
 public:
 
-	ScriptComponent(GameObject* owner);
+	ScriptComponent() = delete;
+	explicit ScriptComponent(GameObject* owner);
 	ScriptComponent(const ScriptComponent& other, GameObject* owner);
 	~ScriptComponent();
 	void Update() override;
@@ -30,6 +31,7 @@ public:
 	void Enable() override;
 	void Disable() override;
 	
+	ScriptComponent& operator=(const ScriptComponent& other) = delete;
 
 private:
 	ResourceScript* mResourceScript = nullptr;

@@ -22,6 +22,7 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
+#include "DecalComponent.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -396,7 +397,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::PARTICLESYSTEM:
 		newComponent = new ParticleSystemComponent(this);
 		break;
-	
+	case ComponentType::DECAL:
+		newComponent = new DecalComponent(this);
+		break;
 	default:
 		break;
 	}

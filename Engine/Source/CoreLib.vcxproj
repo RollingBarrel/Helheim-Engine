@@ -178,6 +178,7 @@
     <ClCompile Include="ColorGradient.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DecalComponent.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp" />
@@ -298,6 +299,7 @@
     <ClInclude Include="ColorGradient.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DecalComponent.h" />
     <ClInclude Include="Dependencies\Bullet\include\btBulletCollisionCommon.h" />
     <ClInclude Include="Dependencies\Bullet\include\btBulletDynamicsCommon.h" />
     <ClInclude Include="Dependencies\Bullet\include\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
