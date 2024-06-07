@@ -2,6 +2,9 @@
 #include "Component.h"
 
 class CanvasComponent;
+class GameObject;
+class Transform2DComponent;
+class ImageComponent;
 
 class ENGINE_API SliderComponent :
     public Component

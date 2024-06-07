@@ -104,6 +104,9 @@ PlayerController::~PlayerController()
     delete mSwitchState;
     delete mSpecialState;
     delete mReloadState;
+
+    delete mMeleeWeapon;
+    delete mRangeWeapon;
 }
 
 void PlayerController::Start()
@@ -345,7 +348,7 @@ void PlayerController::HandleRotation()
     // TODO: Not aim on melee state?
 
     Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane(mGameObject->GetWorldPosition(), float3::unitY);
+    Plane plane(mGameObject->GetPosition(), float3::unitY);
 
     float distance;
     if (plane.Intersects(ray, &distance))

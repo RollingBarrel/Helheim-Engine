@@ -1,5 +1,6 @@
 #pragma once
 #include "SliderComponent.h"
+
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "GameObject.h"
