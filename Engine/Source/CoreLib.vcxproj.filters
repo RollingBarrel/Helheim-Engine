@@ -2017,5 +2017,11 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

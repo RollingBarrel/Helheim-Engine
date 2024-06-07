@@ -775,6 +775,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl" />
