@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "AudioSourceComponent.h"
 #include "Math/MathFunc.h"
+#include "GameObject.h"
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 

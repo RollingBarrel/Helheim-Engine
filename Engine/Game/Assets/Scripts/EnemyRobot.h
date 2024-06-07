@@ -1,7 +1,6 @@
 #pragma once
 #include "Enemy.h"
 #include "Geometry/Ray.h"
-#include "ScriptComponent.h"
 
 class AnimationStateMachine;
 struct CollisionData;

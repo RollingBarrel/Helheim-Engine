@@ -7,6 +7,8 @@
 #include "AnimationStateMachine.h"
 #include "Physics.h"
 #include "BoxColliderComponent.h"
+#include "GameObject.h"
+#include "ScriptComponent.h"
 
 CREATE(EnemyRobot)
 {
@@ -94,7 +96,7 @@ void EnemyRobot::Start()
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
 
-        mAnimationComponent->SendTrigger("tIdle", 0.1);
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
     }
 }
 
@@ -128,7 +130,7 @@ void EnemyRobot::Idle()
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
-        mAnimationComponent->SendTrigger("tWalkForward", 0.2);
+        mAnimationComponent->SendTrigger("tWalkForward", 0.2f);
     }
 }
 
@@ -162,13 +164,13 @@ void EnemyRobot::Chase()
         if (IsPlayerInRange(range))
         {
             mCurrentState = EnemyState::ATTACK;
-            mAnimationComponent->SendTrigger("tAttack", 0.2);
+            mAnimationComponent->SendTrigger("tAttack", 0.2f);
         }
     }
     else
     {
         mCurrentState = EnemyState::IDLE;
-        mAnimationComponent->SendTrigger("tIdle", 0.2);
+        mAnimationComponent->SendTrigger("tIdle", 0.2f);
     }
 }
 
@@ -194,7 +196,7 @@ void EnemyRobot::Attack()
     {
 
         mCurrentState = EnemyState::CHASE;
-        mAnimationComponent->SendTrigger("tWalkForward", 0.3);
+        mAnimationComponent->SendTrigger("tWalkForward", 0.3f);
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange) {

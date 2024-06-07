@@ -2,34 +2,26 @@
 
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleWindow.h"
 #include "ModuleCamera.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleDetourNavigation.h"
+#include "GameObject.h"
 #include "Physics.h"
-#include "ModuleScene.h"
 
 #include "AnimationComponent.h"
 #include "AnimationStateMachine.h"
 #include "AudioSourceComponent.h"
-#include "SliderComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
+#include "ScriptComponent.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
 #include <functional>
 
-#include "MathConstants.h"
-#include "EnemyExplosive.h"
-#include "EnemyRobot.h"
-#include "ObjectPool.h"
-#include "Quadtree.h"
-#include "HudController.h"
-#include "Grenade.h"
-
 #include "GameManager.h"
+#include "HudController.h"
+
 #include "State.h"
 #include "MoveState.h"
 #include "IdleState.h"
@@ -46,6 +38,7 @@
 #include "RangeWeapon.h"
 #include "Bat.h"
 #include "Pistol.h"
+#include "Grenade.h"
 
 CREATE(PlayerController)
 {

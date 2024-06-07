@@ -1,8 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "GameObject.h"
-#include "ImageComponent.h"
-#include "Transform2DComponent.h"
 
 class CanvasComponent;
 
