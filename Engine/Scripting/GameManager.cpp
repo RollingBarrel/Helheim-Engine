@@ -37,6 +37,7 @@ GameManager::~GameManager()
 
 void GameManager::Awake()
 {
+    assert(!mInstance);
     mInstance = this;
 }
 
