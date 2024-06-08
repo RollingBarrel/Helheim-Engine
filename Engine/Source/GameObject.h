@@ -107,7 +107,8 @@ public:
 
 	// Save / Load
 	void Save(JsonObject& obj) const;
-	void Load(const JsonObject& obj);
+	void LoadGameObject(const JsonObject& obj, std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
+	void LoadComponents(const JsonObject& obj, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
 
 	// Prefabs
 	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here? 

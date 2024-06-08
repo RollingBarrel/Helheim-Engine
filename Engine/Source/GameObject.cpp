@@ -160,7 +160,7 @@ AABB GameObject::GetAABB()
 
 void GameObject::SetTag(const std::string& tag) 
 {
-	App->GetScene()->DeleteFromTagMap(tag, this);
+	App->GetScene()->DeleteFromTagMap(mTag, this);
 	mTag = tag;
 	App->GetScene()->AddToTagMap(tag, this);
 }
@@ -570,7 +570,7 @@ void GameObject::Save(JsonObject& obj) const
 	}
 }
 
-void GameObject::Load(const JsonObject& jsonObject)
+void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	mIsEnabled = jsonObject.GetBool("Enabled");
 	float pos[3]; 
@@ -587,15 +587,19 @@ void GameObject::Load(const JsonObject& jsonObject)
 	mPrefabId = jsonObject.GetInt("PrefabUid");
 	mPrefabOverride = jsonObject.GetBool("OverridePrefab");
 	mIsDynamic = jsonObject.GetBool("Dynamic");
+	uidPointerMap[mUid] = this;
+}
 
+void GameObject::LoadComponents(const JsonObject& jsonObject, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
+{
 	// Load components
 	JsonArray components = jsonObject.GetJsonArray("Components");
 	for (unsigned int i = 0; i < components.Size(); ++i)
 	{
 		JsonObject componentData = components.GetJsonObject(i);
-		ComponentType cType = (ComponentType) componentData.GetInt("ComponentType");
+		ComponentType cType = (ComponentType)componentData.GetInt("ComponentType");
 		Component* component = this->CreateComponent(cType);
-		component->Load(componentData);
+		component->Load(componentData, uidPointerMap);
 	}
 }
 

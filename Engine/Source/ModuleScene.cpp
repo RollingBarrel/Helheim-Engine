@@ -154,11 +154,12 @@ void ModuleScene::DeleteFromTagMap(const std::string& tag, GameObject* gameObjec
 {
 	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		for (std::vector<GameObject*>::const_iterator it = mGameObjectsByTags[tag].cbegin(); it != mGameObjectsByTags[tag].cend(); ++it)
+		std::vector<GameObject*>& tagVec = mGameObjectsByTags[tag];
+		for (std::vector<GameObject*>::const_iterator it = tagVec.cbegin(); it != tagVec.cend(); ++it)
 		{
 			if ((*it)->GetID() == gameObject->GetID())
 			{
-				mGameObjectsByTags[tag].erase(it);
+				tagVec.erase(it);
 				break;
 			}
 		}
@@ -212,7 +213,7 @@ void ModuleScene::Load(const char* sceneName)
 		mRoot->SetEnabled(true);
 	}
 	std::string filePath = ASSETS_SCENES_PATH + std::string(sceneName);
-	
+
 	if (filePath.find(".json") == std::string::npos)
 	{
 		filePath += ".json";
@@ -229,23 +230,30 @@ void ModuleScene::Load(const char* sceneName)
 		mRoot = new GameObject("SampleScene", nullptr);
 
 		Archive doc(fileBuffer);
+		delete[] fileBuffer;
 		JsonObject root = doc.GetRootObject();
 
 		JsonObject scene = root.GetJsonObject("Scene");
 		mRoot->SetName(scene.GetString("Name").c_str());
 
 		JsonArray gameObjects = scene.GetJsonArray("GameObjects");
+		std::unordered_map<unsigned int, GameObject*> loadMap;
+		//Load GameObjects
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
 			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
 			GameObject* gO = new GameObject(gameObjectData.GetInt("UID"), gameObjectData.GetString("Name").c_str(), Find(gameObjectData.GetInt("ParentUID")));
-			gO->Load(gameObjectData);
+			gO->LoadGameObject(gameObjectData, loadMap);
+		}
+		//Load Components
+		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
+		{
+			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
+			mSceneGO[i]->LoadComponents(gameObjectData, loadMap);
 		}
 
-		mRoot->RecalculateMatrices();		
+		mRoot->RecalculateMatrices();
 		mQuadtreeRoot->UpdateTree();
-
-		delete[] fileBuffer;
 
 		LoadGameObjectsIntoScripts();
 		App->GetScriptManager()->AwakeScripts();
@@ -451,7 +459,6 @@ void ModuleScene::DuplicateGameObjects()
 	for (int i = 0; i < mGameObjectsToDuplicate.size(); ++i)
 	{
 		mGameObjectsToDuplicate[i]->GetParent()->AddChild(mGameObjectsToDuplicate[i]);
-		AddGameObjectToScene(mGameObjectsToDuplicate[i]);
 	}
 
 	mGameObjectsToDuplicate.clear();

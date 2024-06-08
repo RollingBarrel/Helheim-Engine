@@ -258,9 +258,9 @@ void AudioSourceComponent::Save(JsonObject& obj) const
 	}
 }
 
-void AudioSourceComponent::Load(const JsonObject& data)
+void AudioSourceComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 
 	SetEventByName(data.GetString("EventName").c_str());
 

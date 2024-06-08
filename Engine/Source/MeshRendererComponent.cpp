@@ -1,24 +1,15 @@
 #include "MeshRendererComponent.h"
-#include "AnimationComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
-#include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
-#include "DebugPanel.h"
-#include "GeometryBatch.h"
-
-#include "ImporterMaterial.h"
 
 #include "float4.h"
 #include "float3.h"
 
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
-#include "ResourceTexture.h"
-#include "ResourceModel.h"
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
@@ -206,7 +197,7 @@ void MeshRendererComponent::Save(JsonObject& obj) const
 	obj.AddInt("MaterialID", mMaterial->GetUID());
 	obj.AddBool("HasSkinning", mHasSkinning);
 	if (mPaletteOwner)
-		obj.AddInt("PaletteOwner", mPaletteOwner->GetID());
+		obj.AddInt("PaletteOwner", mPaletteOwner->GetOwner()->GetID());
 	else
 		obj.AddInt("PaletteOwner", 0);
 	JsonArray arr = obj.AddNewJsonArray("InverseBindMatrices");
@@ -218,9 +209,9 @@ void MeshRendererComponent::Save(JsonObject& obj) const
 	}
 }
 
-void MeshRendererComponent::Load(const JsonObject& data) 
+void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 
 	SetMesh(data.GetInt("MeshID"));
 	SetMaterial(data.GetInt("MaterialID"));
@@ -229,20 +220,20 @@ void MeshRendererComponent::Load(const JsonObject& data)
 	unsigned int id = data.GetInt("PaletteOwner");
 	if (id)
 	{
-		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(id);
+		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
 	}
 	JsonArray arr = data.GetJsonArray("InverseBindMatrices");
 	for (int i = 0; i < arr.Size(); ++i)
 	{
 		JsonObject obj = arr.GetJsonObject(i);
-		mGameobjectsInverseMatrices[i].first = reinterpret_cast<GameObject*>(obj.GetInt("GoId"));
+		GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
 		float matrix[16];
 		obj.GetFloats("Matrix", matrix);
-		mGameobjectsInverseMatrices[i].second = float4x4(
-			matrix[0], matrix[1], matrix[2], matrix[3],
-			matrix[4], matrix[5], matrix[6], matrix[7], 
-			matrix[8], matrix[9], matrix[10], matrix[11], 
-			matrix[12], matrix[13], matrix[14], matrix[15]);
+		mGameobjectsInverseMatrices.emplace_back(ptr,
+			float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
+			matrix[4], matrix[5], matrix[6], matrix[7],
+			matrix[8], matrix[9], matrix[10], matrix[11],
+			matrix[12], matrix[13], matrix[14], matrix[15]));
 	}
 }
 

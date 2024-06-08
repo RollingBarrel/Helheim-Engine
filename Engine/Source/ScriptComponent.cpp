@@ -119,9 +119,9 @@ void::ScriptComponent::Save(JsonObject& obj) const
 	}
 }
 
-void::ScriptComponent::Load(const JsonObject& data)
+void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 
 	mName = data.GetString("ScriptName");
 	if (!mName.empty())

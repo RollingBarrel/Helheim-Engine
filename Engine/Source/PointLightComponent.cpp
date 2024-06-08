@@ -97,9 +97,9 @@ void PointLightComponent::Save(JsonObject& obj) const
 }
 
 //TODO: why is the GO owner passed here??
-void PointLightComponent::Load(const JsonObject& data)
+void PointLightComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 
 	float pos[3];
 	data.GetFloats("Position", pos);

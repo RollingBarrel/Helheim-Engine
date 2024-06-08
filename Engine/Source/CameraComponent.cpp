@@ -127,9 +127,9 @@ void CameraComponent::Save(JsonObject& obj) const
     obj.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
 }
 
-void CameraComponent::Load(const JsonObject& data)
+void CameraComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    Component::Load(data);
+    Component::Load(data, uidPointerMap);
 
     mAspectRatio = data.GetFloat("AspectRatio");
     mFrustum.nearPlaneDistance = data.GetFloat("NearPlane");
