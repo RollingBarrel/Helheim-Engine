@@ -126,10 +126,8 @@ private:
 	uint64_t mDrawCount = 0;
 	unsigned int mSsboModelMatrices = 0;
 	float* mSsboModelMatricesData[NUM_BUFFERS];
-	unsigned int mSsboIndices = 0;
-	uint32_t* mSsboIndicesData = nullptr;
-	unsigned int mSsboCommands = 0;
-	uint32_t* mSsboCommandsData = nullptr;
+	unsigned int mSsboIndicesCommands = 0;
+	uint32_t* mSsboMatIndicesCommandsData = nullptr;
 	GLsync mSync[NUM_BUFFERS];
 
 	unsigned int mSsboMaterials = 0;

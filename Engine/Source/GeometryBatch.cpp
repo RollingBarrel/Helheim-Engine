@@ -34,7 +34,7 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent& cMesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glGenBuffers(1, &mSsboModelMatrices);
 	glGenBuffers(1, &mSsboMaterials);
-	glGenBuffers(1, &mSsboIndices);
+	glGenBuffers(1, &mSsboIndicesCommands);
 	glGenBuffers(1, &mIbo);
 
 	glGenBuffers(1, &mPaletteSsbo);
@@ -87,7 +87,7 @@ GeometryBatch::~GeometryBatch()
 	glDeleteBuffers(1, &mEbo);
 	glDeleteBuffers(1, &mSsboModelMatrices);
 	glDeleteBuffers(1, &mSsboMaterials);
-	glDeleteBuffers(1, &mSsboIndices);
+	glDeleteBuffers(1, &mSsboIndicesCommands);
 	glDeleteBuffers(1, &mIbo);
 
 	glDeleteBuffers(1, &mPaletteSsbo);
@@ -142,23 +142,39 @@ void GeometryBatch::RecreatePersistentSsbos()
 		mSsboModelMatricesData[i] = mSsboModelMatricesData[0] + ((size * i) / sizeof(float));
 	}
 
-	glDeleteBuffers(1, &mSsboIndices);
-	glGenBuffers(1, &mSsboIndices);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboIndices);
-	size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4);
+	glDeleteBuffers(1, &mSsboIndicesCommands);
+	glGenBuffers(1, &mSsboIndicesCommands);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboIndicesCommands);
+	size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(uint32_t) + sizeof(Command), 4);
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size, nullptr, flags);
-	mSsboIndicesData = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size, flags));
+	mSsboMatIndicesCommandsData = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size, flags));
 
-	int i = 0;
+	unsigned int i = 0;
+	unsigned int offset = mMeshComponents.size();
 	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 	{
-		it->second.baseInstance = i;
-		mSsboIndicesData[i] = it->second.bMaterialIdx;
+		BatchMeshRendererComponent& bMesh = it->second;
+		bMesh.baseInstance = i;
+		mSsboMatIndicesCommandsData[i] = bMesh.bMaterialIdx;
+		mSsboMatIndicesCommandsData[offset + i * 5] = mUniqueMeshes[bMesh.bMeshIdx].resource->GetNumberIndices();//Count: Number of indices in the mesh
+		mSsboMatIndicesCommandsData[offset + i * 5 + 1] = 0; //InstanceCount: Number of instances to render
+		mSsboMatIndicesCommandsData[offset + i * 5 + 2] = mUniqueMeshes[bMesh.bMeshIdx].firstIndex;	 //FirstIndex: Index offset in the EBO
+		mSsboMatIndicesCommandsData[offset + i * 5 + 3] = mUniqueMeshes[bMesh.bMeshIdx].baseVertex;	 //BaseVertex: Vertex offset in the VBO
+		mSsboMatIndicesCommandsData[offset + i * 5 + 4] = i;   //BaseInstance Instance Index
 		++i;
 	}
 
 	mPersistentsFlag = false;
 }
+
+//unsigned int GeometryBatch::GetCommandsSSBO()
+//{
+//	unsigned int retId;
+//	glGenBuffers(1, &retId);
+//	glBindBuffer(GL_SHADER_STORAGE_BUFFER, retId);
+//	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshRendererComponents.size(), nullptr, GL_DYNAMIC_DRAW);
+//	return retId;
+//}
 
 void GeometryBatch::RecreateSkinningSsbos()
 {
@@ -377,15 +393,6 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 	return true;
 }
 
-//unsigned int GeometryBatch::GetCommandsSSBO()
-//{
-//	unsigned int retId;
-//	glGenBuffers(1, &retId);
-//	glBindBuffer(GL_SHADER_STORAGE_BUFFER, retId);
-//	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshRendererComponents.size(), nullptr, GL_DYNAMIC_DRAW);
-//	return retId;
-//}
-
 bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
 {
 	if (mMeshComponents.find(component.GetID()) == mMeshComponents.end())
@@ -463,7 +470,7 @@ void GeometryBatch::Draw()
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndicesCommands, 0, ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4) * mMeshComponents.size());
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
 
 	//CleanUp
