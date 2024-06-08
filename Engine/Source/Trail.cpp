@@ -6,6 +6,7 @@
 #include "ResourceTexture.h"
 #include "ModuleResource.h"
 #include "glew.h"
+#include "MathGeoLib.h"
 
 #define POSITION_LOCATION 0
 #define TEXCOORD_LOCATION 1
@@ -31,6 +32,8 @@ Trail::~Trail()
 
 void Trail::Init()
 {
+    mInitialWith = mWidth.CalculateInitialValue();
+
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
     glBindVertexArray(mVAO);
@@ -100,8 +103,8 @@ void Trail::Draw() const
             direction = mPoints[i].direction.Normalized();
         }
 
-        float3 topPointPos = mPoints[i].position + direction * mWidth.GetValue(dp) * 0.5f;
-        float3 botPointPos = mPoints[i].position - direction * mWidth.GetValue(dp) * 0.5f;
+        float3 topPointPos = mPoints[i].position + direction * mWidth.GetValue(dp, mInitialWith) * 0.5f;
+        float3 botPointPos = mPoints[i].position - direction * mWidth.GetValue(dp, mInitialWith) * 0.5f;
         float2 topPointTexCoord = float2(dp, 1);
         float2 botPointTexCoord = float2(dp, 0);
         float4 color = mGradient.CalculateColor(dp);
@@ -148,7 +151,7 @@ void Trail::AddTrailPositions(float3 position, Quat rotation)
     mPoints.push_back(TrailPoint{ position, rotatedVector, mTrailTime});
 }
 
-float3 Trail::GetLastPosition() const
+const float3& Trail::GetLastPosition() const
 {
     if (mPoints.empty()) 
     {
@@ -157,7 +160,7 @@ float3 Trail::GetLastPosition() const
     return mPoints.back().position;
 }
 
-float3 Trail::GetFirstPosition() const
+const float3& Trail::GetFirstPosition() const
 {
     if (mPoints.empty())
     {
@@ -166,27 +169,24 @@ float3 Trail::GetFirstPosition() const
     return mPoints.front().position;
 }
 
-void Trail::SaveJson(Archive& archive) const
+void Trail::Save(JsonObject& obj) const
 {
-    archive.AddFloat("Max Life Time", mMaxLifeTime);
-    Archive width;
-    mWidth.SaveJson(width);
-    archive.AddObject("Width", width);
-    mGradient.Save(archive);
+    obj.AddFloat("Max Life Time", mMaxLifeTime);
+
+    obj.AddNewJsonObject("Width");
+    mWidth.Save(obj);
+
+    obj.AddNewJsonObject("Gradient");
+    mGradient.Save(obj);
 }
 
-void Trail::LoadJson(const rapidjson::Value& data)
+void Trail::Load(const JsonObject& data)
 {
-    if (data.HasMember("Max Life Time") && data["Max Life Time"].IsFloat())
-    {
-        mMaxLifeTime = data["Max Life Time"].GetFloat();
-    }
-    if (data.HasMember("Color Gradient") && data["Color Gradient"].IsArray())
-    {
-        mGradient.LoadFromJSON(data);
-    }
-    if (data.HasMember("Width") && data["Width"].IsObject())
-    {
-        mWidth.LoadJson(data["Width"]);
-    }
+    mMaxLifeTime = data.GetFloat("Max Life Time");
+
+    JsonObject width = data.GetJsonObject("Width");
+    mWidth.Load(width);
+
+    JsonObject gradient = data.GetJsonObject("Gradient");
+    mWidth.Load(gradient);
 }

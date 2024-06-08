@@ -19,8 +19,10 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;	
 	void Reset() override;
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data) override;
+
 	void LoadScript(const char* scriptName);
 	const char* GetScriptName() const { return mName.c_str(); }
 	Script* GetScriptInstance() const { return mScript; }

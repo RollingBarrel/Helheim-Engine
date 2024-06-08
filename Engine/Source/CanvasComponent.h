@@ -23,8 +23,8 @@ public:
     inline void SetSize(float2 size) { mSize = size; }
     void SetScreenSpace(bool screen) { mScreenSpace = screen; }
 
-    void Save(Archive& archive) const override;
-    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+    void Save(JsonObject& obj) const override;
+    void Load(const JsonObject& data) override;
 
 private:
     float2 mSize;

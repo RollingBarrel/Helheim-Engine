@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 #include <vector>
+#include "float3.h"
+
 class ENGINE_API AIAgentComponent :public Component
 {
 public:
@@ -33,8 +35,8 @@ public:
 
 
 	void MoveAgent(float speed) const;
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data) override;
 private:
 
 	//Agent Parameters:

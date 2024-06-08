@@ -15,7 +15,7 @@ bool ModuleCamera::CleanUp()
 
 bool ModuleCamera::AddMainCamera(CameraComponent* camera)
 {
-	if (!mMainCamera && camera->GetOwner()->GetTag()->GetName().compare("MainCamera") == 0)
+	if (!mMainCamera && camera->GetOwner()->GetTag().compare("MainCamera") == 0 )
 	{
 		mMainCamera = camera;
 		mCurrentCamera = camera;

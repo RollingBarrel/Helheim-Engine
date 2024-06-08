@@ -29,7 +29,7 @@ private:
 		{".dds", Resource::Type::Texture},
 		{".gltf", Resource::Type::Model},
 		{".h", Resource::Type::Script},
-		{".prfb", Resource::Type::Object},
+		{".prfb", Resource::Type::Prefab},
 		{".navmesshi", Resource::Type::NavMesh}
 		// Add more mappings for other resource types as needed
 	};

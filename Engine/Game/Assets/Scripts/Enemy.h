@@ -1,7 +1,8 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
-#include "GameObject.h"
+
+class GameObject;
 class NavMeshController;
 class AnimationComponent;
 class AIAgentComponent;

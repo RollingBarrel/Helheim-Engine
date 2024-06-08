@@ -18,7 +18,7 @@ struct ObstacleTriangle {
 	int startIndicePos=0;
 	int numberOfIndices=0;
 };
-class ENGINE_API NavMeshController
+class NavMeshController
 {
 public:
 	NavMeshController();

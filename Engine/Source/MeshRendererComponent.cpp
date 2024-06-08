@@ -21,7 +21,6 @@
 #include "ResourceModel.h"
 
 
-
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
 {
 	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
@@ -169,44 +168,19 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 	mAABB.SetFrom(mOBB);
 }
 
-void MeshRendererComponent::Save(Archive& archive) const 
+void MeshRendererComponent::Save(JsonObject& obj) const 
 {
-	archive.AddInt("ID", GetID());
-	archive.AddInt("MeshID", mMesh->GetUID());
-	archive.AddInt("MaterialID", mMaterial->GetUID());
-	archive.AddInt("ModelUID", mModelUid);
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-
-	archive.AddBool("isEnabled", IsEnabled());
+	Component::Save(obj);
+	obj.AddInt("MeshID", mMesh->GetUID());
+	obj.AddInt("MaterialID", mMaterial->GetUID());
 }
 
-void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
+void MeshRendererComponent::Load(const JsonObject& data) 
 {
-	int ID = { 0 };
-	int meshID = { 0 };
-	int materialID = { 0 };
-	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) 
-	{
-		ID = componentJson["ID"].GetInt();
-	}
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) 
-	{
-		meshID = componentJson["MeshID"].GetInt();
-	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) 
-	{
-		materialID = componentJson["MaterialID"].GetInt();
-	}
-	int modelUid = { 0 };
+	Component::Load(data);
 
-	if (componentJson.HasMember("ModelUID") && componentJson["ModelUID"].IsInt())
-	{
-		modelUid = componentJson["ModelUID"].GetInt();
-	}
-
-	SetModelUUID(modelUid);
-	SetMesh(meshID);
-	SetMaterial(materialID);
+	SetMesh(data.GetInt("MeshID"));
+	SetMaterial(data.GetInt("MaterialID"));
 }
 
 void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)

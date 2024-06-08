@@ -7,14 +7,12 @@
 TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::TRAIL)
 {
     mTrail = new Trail();
-    Init();
 }
 
 TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner) : Component(owner, ComponentType::TRAIL), 
 mResourceId(original.mResourceId), mFileName(original.mFileName), mTrail(new Trail(*original.mTrail)),
 mMaxPoints(original.mMaxPoints), mMinDistance(original.mMinDistance)
 {
-    Init();
 }
 
 TrailComponent::~TrailComponent()
@@ -26,8 +24,6 @@ Component* TrailComponent::Clone(GameObject* owner) const
 {
     return new TrailComponent(*this, owner);
 }
-
-
 
 void TrailComponent::Init()
 {
@@ -45,6 +41,7 @@ void TrailComponent::Draw()
 
 void TrailComponent::Update()
 {
+    //Init(); // THIS IS HORRIBLE HELP ME FIND A SOLUTION
     if (IsEnabled())
     {        
         float3 position, scale;
@@ -73,37 +70,30 @@ void TrailComponent::Reset()
     *this = TrailComponent(mOwner);
 }
 
-void TrailComponent::Save(Archive& archive) const
+void TrailComponent::Save(JsonObject& obj) const
 {
-    Component::Save(archive);
-    archive.AddInt("Image", mResourceId);
-    archive.AddInt("Max Points", mMaxPoints);
-    archive.AddFloat("Min Distance", mMinDistance);
-    mTrail->SaveJson(archive);
+    Component::Save(obj);
+    obj.AddInt("Image", mResourceId);
+    obj.AddInt("MaxPoints", mMaxPoints);
+    obj.AddFloat("MinDistance", mMinDistance);
+    mTrail->Save(obj);
 }
 
-void TrailComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void TrailComponent::Load(const JsonObject& data)
 {
-    Component::LoadFromJSON(data, owner);
-    if (data.HasMember("Image") && data["Image"].IsInt())
-    {
-        mResourceId = data["Image"].GetInt();
-        SetImage(mResourceId);
-    }
-    if (data.HasMember("Max Points") && data["Max Points"].IsInt())
-    {
-        mMaxPoints = data["Max Points"].GetInt();
-    }
-    if (data.HasMember("Min Distance") && data["Min Distance"].IsFloat())
-    {
-        mMinDistance = data["Min Distance"].GetFloat();
-    }
-    mTrail->LoadJson(data);
+    Component::Load(data);
+    mResourceId = data.GetInt("Image");
+    SetImage(mResourceId);
+    mMaxPoints = data.GetInt("MasPoints");
+    mMinDistance = data.GetFloat("MinDistance");    
+    mTrail->Load(data);
+    Init();
 }
 
 void TrailComponent::Enable()
 {
     App->GetOpenGL()->AddTrail(mTrail);
+    Init(); // THIS IS HORRIBLE HELP ME FIND A SOLUTION
 }
 
 void TrailComponent::Disable()

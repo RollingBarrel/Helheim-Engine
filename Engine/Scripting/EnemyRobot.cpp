@@ -7,9 +7,10 @@
 #include "AnimationStateMachine.h"
 #include "Physics.h"
 #include "BoxColliderComponent.h"
+#include "GameObject.h"
+#include "ScriptComponent.h"
 
-CREATE(EnemyRobot)
-{
+CREATE(EnemyRobot){
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
@@ -97,7 +98,7 @@ void EnemyRobot::Start()
         mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
 
-        mAnimationComponent->SendTrigger("tIdle", 0.1);
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
     }
 }
 
@@ -132,7 +133,7 @@ void EnemyRobot::Idle()
     {
         mCurrentState = EnemyState::CHASE;
         mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
-        mAnimationComponent->SendTrigger("tWalkForward", 0.2);
+        mAnimationComponent->SendTrigger("tWalkForward", 0.2f);
     }
 }
 
@@ -180,13 +181,13 @@ void EnemyRobot::Chase()
         if (IsPlayerInRange(range))
         {
             mCurrentState = EnemyState::ATTACK;
-            mAnimationComponent->SendTrigger("tAttack", 0.2);
+            mAnimationComponent->SendTrigger("tAttack", 0.2f);
         }
     }
     else
     {
         mCurrentState = EnemyState::IDLE;
-        mAnimationComponent->SendTrigger("tIdle", 0.2);
+        mAnimationComponent->SendTrigger("tIdle", 0.2f);
     }
 }
 
@@ -213,7 +214,7 @@ void EnemyRobot::Attack()
 
         mCurrentState = EnemyState::CHASE;
         mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
-        mAnimationComponent->SendTrigger("tWalkForward", 0.3);
+        mAnimationComponent->SendTrigger("tWalkForward", 0.3f);
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange) {
@@ -271,7 +272,7 @@ void EnemyRobot::RangeAttack()
         //recorrer todos los hits y hacer da�o a los objetos que tengan tag = target
         for (const std::pair<float, Hit>& hit : hits) 
         {
-            if (hit.second.mGameObject->GetTag()->GetName() == "Player") 
+            if (hit.second.mGameObject->GetTag() == "Player") 
             {
                 PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)

@@ -10,6 +10,9 @@ class GameManager : public Script
 {
     FRIEND(GameManager)
 public:
+    GameManager(GameObject* owner); 
+    ~GameManager();
+
     static GameManager* GetInstance(); 
 
     void Awake();
@@ -22,9 +25,12 @@ public:
     
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
+
+    void Victory();
+    void GameOver();
+
 private:
-    GameManager(GameObject* owner); 
-    ~GameManager();
+
 
     static GameManager* mInstance;
     
