@@ -182,6 +182,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
+    <ClInclude Include="ActiveBattleAreaController.h" />
+    <ClInclude Include="BattleArea.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
@@ -189,6 +191,8 @@
     <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActiveBattleAreaController.cpp" />
+    <ClCompile Include="BattleArea.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />

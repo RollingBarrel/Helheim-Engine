@@ -12,7 +12,6 @@ public:
 	void Start() override;
 	void Update() override;
 
-
 private:
 	int mMaxNumEnemies = 0;
 	int mCurrentEnemies = 0;

@@ -4,6 +4,7 @@
 #include "GameObject.h"
 class NavMeshController;
 class AnimationComponent;
+class AIAgentComponent;
 
 class Enemy : public Script
 {
@@ -30,12 +31,14 @@ class Enemy : public Script
 		int mShieldDropRate = 20;
 		float mHealth = 0.0f;
 		float mMaxHealth = 6.0f;
-		float mSpeed = 1.0f;
+		float mSpeed = 1.75f;
 		float mRotationSpeed = 1.0f;
 		float mActivationRange = 15.0f;
+		float mChaseDelay = 1.25f;
 		bool mBeAttracted = false;
 		GameObject* mPlayer = nullptr;
 		AnimationComponent* mAnimationComponent = nullptr;
+		AIAgentComponent* mAiAgentComponent = nullptr;
 
 	private:
 		void ActivateEnemy();

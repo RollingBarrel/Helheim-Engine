@@ -4,7 +4,7 @@
 
 class ButtonComponent;
 class HudController;
-
+class BattleArea;
 GENERATE_BODY(GameManager);
 class GameManager : public Script
 {
@@ -16,10 +16,12 @@ public:
     void Start();
     void Update();
 
-    GameObject* GetPlayer() { return mPlayer; };
-    HudController* GetHud() { return mHudController; };
-
+    GameObject* GetPlayer() const { return mPlayer; };
+    HudController* GetHud() const { return mHudController; };
+    BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
+    
     void LoadLevel(const char* LevelName);
+    void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
 private:
     GameManager(GameObject* owner); 
     ~GameManager();
@@ -29,6 +31,7 @@ private:
     GameObject* mPlayer = nullptr;
     GameObject* mHudControllerGO = nullptr;
 
+    BattleArea* mActiveBattleArea = nullptr;
     HudController* mHudController = nullptr;
 
     bool mPaused = false;
