@@ -258,7 +258,7 @@
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
     <ClCompile Include="ResourceNavmesh.cpp" />
-    <ClCompile Include="ResourceObject.cpp" />
+    <ClCompile Include="ResourceScene.cpp" />
     <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="SaveLoadAnimation.cpp" />
@@ -266,6 +266,7 @@
     <ClCompile Include="SaveLoadMesh.cpp" />
     <ClCompile Include="SaveLoadModel.cpp" />
     <ClCompile Include="SaveLoadNavMesh.cpp" />
+    <ClCompile Include="SaveLoadScene.cpp" />
     <ClCompile Include="SaveLoadScript.cpp" />
     <ClCompile Include="SaveLoadTexture.cpp" />
     <ClCompile Include="Script.cpp" />
@@ -752,6 +753,7 @@
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="ResourceNavMesh.h" />
+    <ClInclude Include="ResourceScene.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="SaveLoadAnimation.h" />
@@ -759,6 +761,7 @@
     <ClInclude Include="SaveLoadMesh.h" />
     <ClInclude Include="SaveLoadModel.h" />
     <ClInclude Include="SaveLoadNavMesh.h" />
+    <ClInclude Include="SaveLoadScene.h" />
     <ClInclude Include="SaveLoadScript.h" />
     <ClInclude Include="SaveLoadTexture.h" />
     <ClInclude Include="Script.h" />

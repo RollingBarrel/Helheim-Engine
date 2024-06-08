@@ -7,8 +7,10 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
-#include "ResourceScript.h"
 #include "ResourceAnimation.h"
+#include "ResourceScene.h"
+//#include "ResourcePrefab.h"
+#include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 
 #include <algorithm>
@@ -17,6 +19,8 @@
 
 #include "ImporterTexture.h"
 #include "ImporterModel.h"
+#include "ImporterScene.h"
+//#include "ImporterPrefab.h"
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
 
@@ -153,25 +157,24 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 		break;
 	case Resource::Type::Mesh:
 		break;
-	case Resource::Type::Bone:
+	case Resource::Type::Material:
 		break;
 	case Resource::Type::Animation:
-		break;
-	case Resource::Type::Material:
 		break;
 	case Resource::Type::Model:
 		ret = Importer::Model::Import(importedFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Scene:
+		ret = Importer::Scene::Import(assetsFile, uid, modifyAssets);
 		break;
-	case Resource::Type::NavMesh:
-		ret = Importer::NavMesh::Import(uid, assetsFile);
+	case Resource::Type::Prefab:
+		//ret = Importer::Prefab::Import(assetsFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);
 		break;
-	case Resource::Type::Prefab:
-		ret = new Resource(uid, type);
+	case Resource::Type::NavMesh:
+		ret = Importer::NavMesh::Import(uid, assetsFile);
 		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
@@ -185,8 +188,6 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 
 	return ret;
 }
-
-
 
 std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
 {
@@ -230,7 +231,6 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 
 	return assetsFilePath;
 }
-
 
 Resource::Type ModuleEngineResource::DeduceResourceType(const char* assetsFile)
 {

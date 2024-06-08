@@ -221,7 +221,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	mResourceId = data.GetInt("ImageID");
 	SetImage(mResourceId);
 
-	float col[2];
+	float col[3];
 	data.GetFloats("Color", col);
 	mColor = float3(col);
 	mAlpha = data.GetFloat("Alpha");

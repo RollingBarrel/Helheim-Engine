@@ -90,9 +90,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Tag.cpp">
-      <Filter>GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -126,9 +123,6 @@
     <ClCompile Include="SpotLightComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="TestComponent.cpp">
-      <Filter>GameObjects\Components</Filter>
-    </ClCompile>
     <ClCompile Include="CanvasComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
@@ -154,9 +148,6 @@
       <Filter>Utils\Timer</Filter>
     </ClCompile>
     <ClCompile Include="ResourceAnimation.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceObject.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
@@ -442,12 +433,15 @@
     <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceScene.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadScene.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
-      <Filter>GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Tag.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
@@ -481,9 +475,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="SpotLightComponent.h">
-      <Filter>GameObjects\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TestComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="CanvasComponent.h">
@@ -1920,6 +1911,12 @@
     </ClInclude>
     <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceScene.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadScene.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

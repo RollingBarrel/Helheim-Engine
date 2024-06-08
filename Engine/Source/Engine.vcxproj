@@ -217,6 +217,7 @@
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterNavMesh.cpp" />
+    <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterScript.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="ImColorGradient.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterNavMesh.h" />
+    <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ImporterMesh.h" />
