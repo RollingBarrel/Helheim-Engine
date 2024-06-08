@@ -21,7 +21,7 @@ public:
 	void Reset() override;
 
 	void Save(JsonObject& obj) const override;
-	void Load(const JsonObject& data) override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 	void LoadScript(const char* scriptName);
 	const char* GetScriptName() const { return mName.c_str(); }

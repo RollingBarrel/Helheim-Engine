@@ -85,9 +85,9 @@ void AIAgentComponent::Save(JsonObject& obj) const
 	//obj.AddFloat("StoppingDistance", mStoppingDistance);
 }
 
-void AIAgentComponent::Load(const JsonObject& data)
+void AIAgentComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 	//if (data.HasMember("Radius")) 
 	//{
 	//	mRadius = data["Radius"].GetFloat();

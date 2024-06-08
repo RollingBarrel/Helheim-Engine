@@ -25,30 +25,30 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 {
     ModelNode node;
 
-    const auto& tinyNode = model.nodes[index];
+    node.mGltfId = index;
+    const tinygltf::Node& tinyNode = model.nodes[node.mGltfId];
+    node.mParentVecIdx = parentIndex;
 
     node.mName = tinyNode.name;
 
-    math::float4x4 matrix = float4x4::identity;
+    float4x4 matrix = float4x4::identity;
     if (tinyNode.matrix.size() == 16)
     {
         matrix = float4x4(
-            tinyNode.matrix[0], tinyNode.matrix[1], tinyNode.matrix[2], tinyNode.matrix[3],
-            tinyNode.matrix[4], tinyNode.matrix[5], tinyNode.matrix[6], tinyNode.matrix[7],
-            tinyNode.matrix[8], tinyNode.matrix[9], tinyNode.matrix[10], tinyNode.matrix[11],
-            tinyNode.matrix[12], tinyNode.matrix[13], tinyNode.matrix[14], tinyNode.matrix[15]
+            tinyNode.matrix[0], tinyNode.matrix[4], tinyNode.matrix[8], tinyNode.matrix[12],
+            tinyNode.matrix[1], tinyNode.matrix[5], tinyNode.matrix[9], tinyNode.matrix[13],
+            tinyNode.matrix[2], tinyNode.matrix[6], tinyNode.matrix[10], tinyNode.matrix[14],
+            tinyNode.matrix[3], tinyNode.matrix[7], tinyNode.matrix[11], tinyNode.matrix[15]
         );
 
-        matrix = matrix.Transposed();
         matrix.Decompose(node.mTranslation, node.mRotation, node.mScale);
-
         node.mHasTransform = true;
     }
     else
     {
-        if (tinyNode.translation.size() == 3) {
+        if (tinyNode.translation.size() == 3) 
+        {
             node.mTranslation = { static_cast<float>(tinyNode.translation[0]),static_cast<float>(tinyNode.translation[1]), static_cast<float>(tinyNode.translation[2]) };
-
             node.mHasTransform = true;
         }
         else
@@ -57,7 +57,6 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
         if (tinyNode.rotation.size() == 4) {
             node.mRotation = { static_cast<float>(tinyNode.rotation[0]),static_cast<float>(tinyNode.rotation[1]), static_cast<float>(tinyNode.rotation[2]),static_cast<float>(tinyNode.rotation[3]) };
-
             node.mHasTransform = true;
         }
         else
@@ -66,7 +65,6 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
         if (tinyNode.scale.size() == 3) {
             node.mScale = { static_cast<float>(tinyNode.scale[0]),static_cast<float>(tinyNode.scale[1]), static_cast<float>(tinyNode.scale[2]) };
-
             node.mHasTransform = true;
         }
         else
@@ -102,9 +100,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
     }
 
     node.mMeshId = tinyNode.mesh;
-
     node.mCameraId = tinyNode.camera;
-
     node.mSkinId = tinyNode.skin;
 
     unsigned int meshId = 0;
@@ -112,6 +108,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
 
     if (node.mMeshId != -1)
     {
+
         int i = 0;
         bool imported = true;
         if (importedMeshes.find(node.mMeshId) == importedMeshes.end())
@@ -120,7 +117,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
             importedMeshes[node.mMeshId] = vec;
             imported = false;
         }
-        for (const auto& primitive : model.meshes[node.mMeshId].primitives)
+        for (const tinygltf::Primitive& primitive : model.meshes[node.mMeshId].primitives)
         {
             if (!imported)
             {
@@ -160,10 +157,9 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
         }
     }
 
-    node.mParentIndex = parentIndex;
-
     size += node.mName.length() + 1         //Name
             + sizeof(int)                   //Parent Index in the vector
+            + sizeof(int)                   //Gltf Index
             + sizeof(int) * 4;              //Mesh/Camera/Skin/Light
 
     size += sizeof(bool);                   //Tranforms
@@ -193,8 +189,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
                 + (sizeof(unsigned int) * 2) * node.mUids.size();  //Uid Mesh & Material
     }
 
-    unsigned int currentIdx = modelNodes.size();
-
+    const unsigned int currentIdx = modelNodes.size();
     modelNodes.push_back(node);
 
     for (int i = 0; i < tinyNode.children.size(); ++i)
@@ -215,6 +210,7 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     if (!loadOk)
     {
         LOG("[MODEL] Error loading %s: %s", filePath, error.c_str());
+        assert("Error parsing the gltf");
     }
 
     std::unordered_map<unsigned int, std::vector<unsigned int>>importedMeshes;
@@ -222,31 +218,34 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
     std::unordered_map<unsigned int, unsigned int>importedTextures;
     unsigned int bufferSize = 0;
 
-    unsigned int animationId = 0;
-
     ResourceModel* rModel = new ResourceModel(uid++);
+
+    unsigned int currentUid = uid;
+    assert(model.scenes.size() <= 1 && "No support for multiple scenes gltf");
+    for (int i = 0; i < model.scenes.size(); ++i)
+    {
+        for (int j = 0; j < model.scenes[0].nodes.size(); ++j)
+        {
+            ImportNode(rModel->modelNodes, filePath, model, model.scenes[0].nodes[j], currentUid, bufferSize, modifyAssets, importedMaterials, importedTextures, importedMeshes);
+        }
+    }
 
     if (!model.skins.empty())
     {
-        for (const auto& skins : model.skins)
+        std::vector<std::pair<unsigned int, float4x4>> vec;
+        for (const tinygltf::Skin& skin : model.skins)
         {
-            const int inverseBindMatricesIndex = skins.inverseBindMatrices;
-            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[inverseBindMatricesIndex];
-
+            const tinygltf::Accessor& inverseBindMatricesAccesor = model.accessors[skin.inverseBindMatrices];
             const tinygltf::BufferView& inverseBindMatricesBufferView = model.bufferViews[inverseBindMatricesAccesor.bufferView];
 
-            const unsigned char* inverseBindMatricesBuffer = &model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset];
+            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(&model.buffers[inverseBindMatricesBufferView.buffer].data[inverseBindMatricesBufferView.byteOffset + inverseBindMatricesAccesor.byteOffset]);
+            const size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
 
-            const float* inverseBindMatricesPtr = reinterpret_cast<const float*>(inverseBindMatricesBuffer);
-
-            size_t num_inverseBindMatrices = inverseBindMatricesAccesor.count;
-
+            vec.reserve(skin.joints.size());
             for (size_t i = 0; i < num_inverseBindMatrices; i++)
             {
                 const float* matrixPtr = &inverseBindMatricesPtr[i * 16];
-
                 float4x4 inverseBindMatrix;
-
                 for (size_t row = 0; row < 4; row++)
                 {
                     for (size_t col = 0; col < 4; col++)
@@ -254,50 +253,38 @@ ResourceModel* Importer::Model::Import(const char* filePath, unsigned int uid, b
                         inverseBindMatrix[col][row] = matrixPtr[row * 4 + col];
                     }
                 }
-                rModel->mInvBindMatrices.push_back({ model.nodes[skins.joints[i]].name, inverseBindMatrix });
-
+                vec.emplace_back(skin.joints[i], inverseBindMatrix);
             }
-        }
-    }
-
-
-    unsigned int currentUid = uid;
-
-    for (int i = 0; i < model.scenes.size(); ++i)
-    {
-        for (int j = 0; j < model.scenes[i].nodes.size(); ++j)
-        {
-            ImportNode(rModel->modelNodes, filePath, model, model.scenes[i].nodes[j], currentUid, bufferSize, modifyAssets, importedMaterials, importedTextures, importedMeshes);
+            rModel->mInvBindMatrices.push_back(vec);
+            vec.clear();
         }
     }
 
     if (!model.animations.empty())
     {
-        for (const auto& srcAnimation : model.animations)
+        for (const tinygltf::Animation& srcAnimation : model.animations)
         {
             ResourceAnimation* ourAnimation = Importer::Animation::Import(model, srcAnimation, currentUid);
-            animationId = ourAnimation->GetUID();
-            rModel->mAnimationUids.push_back(animationId);
-
+            rModel->mAnimationUids.push_back(ourAnimation->GetUID());
             delete ourAnimation;
         }
     }
 
-
-
     bufferSize += sizeof(unsigned int);                                     //Nodes vector
     bufferSize += sizeof(unsigned int);                                     //Size vector
     bufferSize += sizeof(unsigned int) * rModel->mAnimationUids.size();     //Animation UIDs
-    bufferSize += sizeof(unsigned int);
-    for (int i = 0; i < rModel->mInvBindMatrices.size(); ++i) 
+    bufferSize += sizeof(unsigned int);                                     //num of invBindMatrix vectors
+    for (int j = 0; j < rModel->mInvBindMatrices.size(); ++j) 
     {
-        bufferSize += sizeof(float) * 16;                                   // Size of the float array
-        bufferSize += sizeof(unsigned int);                                 // Size of the string length
-        bufferSize += rModel->mInvBindMatrices[i].first.length() + 1;       // Size of the string characters
+        bufferSize += sizeof(unsigned int);                                 //num of elements in the array
+        for(int i = 0; i < rModel->mInvBindMatrices[j].size(); ++i)
+        {
+            bufferSize += sizeof(unsigned int);                                  //gltfId
+            bufferSize += sizeof(float) * 16;                                    // Matrix
+        }
     }
 
-    if (rModel)
-        Importer::Model::Save(rModel, bufferSize);
+    Importer::Model::Save(rModel, bufferSize);
 
     return rModel;
 }

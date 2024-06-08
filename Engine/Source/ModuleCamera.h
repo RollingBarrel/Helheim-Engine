@@ -10,10 +10,7 @@ class GameObject;
 class ENGINE_API ModuleCamera : public Module
 {
 public:
-	bool Init() override;
-	update_status Update(float dt) override;
-	bool CleanUp() override;
-
+	void ActivateFirstCamera() { if(mActiveCameras.size()) mCurrentCamera = mActiveCameras.front(); }
 	virtual bool AddEnabledCamera(CameraComponent* camera);
 	virtual bool RemoveEnabledCamera(CameraComponent* camera);
 

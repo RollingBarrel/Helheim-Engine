@@ -55,10 +55,6 @@ public:
 	ModuleFileSystem();
 	~ModuleFileSystem();
 
-	bool Init() override;
-	update_status PreUpdate(float dt) override;
-	update_status Update(float dt) override;
-	//update_status PostUpdate() override;
 	bool CleanUp() override;
 
 	unsigned int Load(const char* filePath, char** buffer) const;

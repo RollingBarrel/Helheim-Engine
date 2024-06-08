@@ -12,6 +12,7 @@
 #include "Archive.h"
 
 class Component;
+class MeshRendererComponent;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject
@@ -28,7 +29,7 @@ public:
 	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
-	GameObject(const GameObject& original, GameObject* newParent);
+	GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew = nullptr, std::vector<MeshRendererComponent*>*meshRendererComps = nullptr);
 	~GameObject();
 
 	void Update();
@@ -100,11 +101,14 @@ public:
 	template<typename T> T* GetComponentInParent() const;											
 	Component* GetComponentInParent(ComponentType type) const;											
 	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
+	//TODO: do the template correctly,SRRY
+	void GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const;
 	void AddComponentToDelete(Component* component);
 
 	// Save / Load
 	void Save(JsonObject& obj) const;
-	void Load(const JsonObject& obj);
+	void LoadGameObject(const JsonObject& obj, std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
+	void LoadComponents(const JsonObject& obj, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
 
 	// Prefabs
 	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here? 

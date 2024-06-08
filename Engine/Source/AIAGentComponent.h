@@ -36,7 +36,7 @@ public:
 
 	void MoveAgent(float speed) const;
 	void Save(JsonObject& obj) const override;
-	void Load(const JsonObject& data) override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 private:
 
 	//Agent Parameters:

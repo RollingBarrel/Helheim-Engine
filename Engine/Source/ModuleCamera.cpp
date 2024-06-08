@@ -3,16 +3,6 @@
 #include "ModuleOpenGL.h"
 #include "CameraComponent.h"
 
-bool ModuleCamera::Init()
-{
-	return true;
-}
-
-bool ModuleCamera::CleanUp()
-{
-	return true;
-}
-
 bool ModuleCamera::AddMainCamera(CameraComponent* camera)
 {
 	if (!mMainCamera && camera->GetOwner()->GetTag().compare("MainCamera") == 0 )
@@ -106,10 +96,4 @@ void ModuleCamera::SetAspectRatio(float aspectRatio)
 	{
 		mCurrentCamera->SetAspectRatio(aspectRatio);
 	}
-}
-
-
-update_status ModuleCamera::Update(float dt)
-{
-	return UPDATE_CONTINUE;
 }
