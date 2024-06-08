@@ -5937,6 +5937,98 @@
                         ]
                     }
                 ]
+            },
+            {
+                "UID": 1219845629,
+                "ParentUID": 1,
+                "Name": "DamagedHelmet",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -3.4000000953674318
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1276099397,
+                "ParentUID": 1219845629,
+                "Name": "node_damagedHelmet_-6514",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    -0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1301650304,
+                "ParentUID": 1276099397,
+                "Name": "node_damagedHelmet_-6514",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1318220102,
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 539182079,
+                        "MaterialID": 539182084,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
             }
         ]
     }
