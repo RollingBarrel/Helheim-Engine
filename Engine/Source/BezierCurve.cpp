@@ -77,14 +77,13 @@ float BezierCurve::CurveValue(float p) const
 
 void BezierCurve::Save(JsonObject& obj) const
 {
-    //TODO: Test
     mValue.Save(obj);
     obj.AddBool("IsCurve", mIsCurve);
     obj.AddFloat("Factor", mFactor);
 
     JsonArray curvePoint = obj.AddNewJsonArray("CurvePoints");
 
-    for(unsigned int i = 0; mPoints.size(); ++i)
+    for(unsigned int i = 0; i < mPoints.size(); ++i)
     {
         JsonObject point = curvePoint.PushBackNewObject();
         point.AddFloats("Point", mPoints[i].ptr(), 2);
