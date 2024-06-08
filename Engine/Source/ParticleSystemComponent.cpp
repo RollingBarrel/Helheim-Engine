@@ -272,10 +272,10 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
 }
 
 
-void ParticleSystemComponent::Load(const JsonObject& data)
+void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
     //TODO REDOOO
-    Component::Load(data);
+    Component::Load(data, uidPointerMap);
     mResourceId = data.GetInt("Image");
     SetImage(mResourceId);
     mDelay = data.GetFloat("Delay");

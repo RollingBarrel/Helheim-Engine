@@ -1,24 +1,15 @@
 #include "MeshRendererComponent.h"
-#include "AnimationComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
-#include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
-#include "DebugPanel.h"
-#include "GeometryBatch.h"
-
-#include "ImporterMaterial.h"
 
 #include "float4.h"
 #include "float3.h"
 
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
-#include "ResourceTexture.h"
-#include "ResourceModel.h"
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
@@ -41,8 +32,12 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMaterial(other.mMaterial->GetUID());
 	}
-
-	mModelUid = other.mModelUid;
+	mHasSkinning = other.mHasSkinning;
+	mPaletteOwner = other.mPaletteOwner;
+	for (int i = 0; i < other.mGameobjectsInverseMatrices.size(); ++i)
+	{
+		mGameobjectsInverseMatrices.push_back(other.mGameobjectsInverseMatrices[i]);
+	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -51,7 +46,7 @@ MeshRendererComponent::~MeshRendererComponent()
 	{
 		App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 	}
-	App->GetOpenGL()->BatchRemoveMesh(this);
+	App->GetOpenGL()->BatchRemoveMesh(*this);
 	if (mMesh)
 	{
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
@@ -76,7 +71,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		{
 			if (mMaterial)
 			{
-				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetOpenGL()->BatchRemoveMesh(*this);
 				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMesh->GetUID());
@@ -90,7 +85,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		if (mMaterial)
 		{
-			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetOpenGL()->BatchAddMesh(*this);
 			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 
@@ -107,7 +102,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		{
 			if (mMesh)
 			{
-				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetOpenGL()->BatchRemoveMesh(*this);
 				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMaterial->GetUID());
@@ -117,7 +112,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		mMaterial = tmpMaterial;
 		if (mMesh)
 		{
-			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetOpenGL()->BatchAddMesh(*this);
 			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 	}
@@ -128,6 +123,37 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	//}
 }
 
+void MeshRendererComponent::SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette)
+{
+	if (palette != nullptr)
+	{
+		mPaletteOwner = palette;
+	}
+	else
+	{
+		mGameobjectsInverseMatrices = std::move(bindMatrices);
+	}
+	mHasSkinning = true;
+}
+
+void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew)
+{
+	assert(mHasSkinning && "Component does not have skinning");
+	if (mPaletteOwner != nullptr)
+	{
+		assert(originalToNew.find(mPaletteOwner->GetOwner()) != originalToNew.end() && originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER) != nullptr);
+		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER));
+	}
+	else
+	{
+		assert(mGameobjectsInverseMatrices.size() && "Component does not have skeleton");
+		for (auto& pair : mGameobjectsInverseMatrices)
+		{
+			assert(originalToNew.find(pair.first) != originalToNew.end());
+			pair.first = originalToNew.at(pair.first);
+		}
+	}
+}
 
 void MeshRendererComponent::Update() 
 {
@@ -136,24 +162,20 @@ void MeshRendererComponent::Update()
 		RefreshBoundingBoxes();
 	}
 
-	if (mHasSkinning)
-	{
-		UpdatePalette();
-	}
-
+	UpdatePalette();
 }
 
-//void MeshRendererComponent::Enable()
-//{
-//	if(mMaterial && mMesh)
-//		App->GetOpenGL()->BatchAddMesh(this);
-//}
-//
-//void MeshRendererComponent::Disable()
-//{
-//	if (mMaterial && mMesh)
-//		App->GetOpenGL()->BatchRemoveMesh(this);
-//}
+void MeshRendererComponent::Enable()
+{
+	if(mMaterial && mMesh)
+		App->GetOpenGL()->BatchAddMesh(*this);
+}
+
+void MeshRendererComponent::Disable()
+{
+	if (mMaterial && mMesh)
+		App->GetOpenGL()->BatchRemoveMesh(*this);
+}
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
@@ -173,68 +195,50 @@ void MeshRendererComponent::Save(JsonObject& obj) const
 	Component::Save(obj);
 	obj.AddInt("MeshID", mMesh->GetUID());
 	obj.AddInt("MaterialID", mMaterial->GetUID());
+	obj.AddBool("HasSkinning", mHasSkinning);
+	if (mPaletteOwner)
+		obj.AddInt("PaletteOwner", mPaletteOwner->GetOwner()->GetID());
+	else
+		obj.AddInt("PaletteOwner", 0);
+	JsonArray arr = obj.AddNewJsonArray("InverseBindMatrices");
+	for (int i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
+	{
+		JsonObject obj = arr.PushBackNewObject();
+		obj.AddInt("GoId", mGameobjectsInverseMatrices[i].first->GetID());
+		obj.AddFloats("Matrix", mGameobjectsInverseMatrices[i].second.ptr(), 16);
+	}
 }
 
-void MeshRendererComponent::Load(const JsonObject& data) 
+void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 
 	SetMesh(data.GetInt("MeshID"));
 	SetMaterial(data.GetInt("MaterialID"));
-}
+	mHasSkinning = data.GetBool("HasSkinning");
 
-void MeshRendererComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
-{
-	AddJointNode(currentObject, model);
-	for (const auto& object : currentObject->GetChildren())
+	unsigned int id = data.GetInt("PaletteOwner");
+	if (id)
 	{
-		LoadAllChildJoints(object, model);
+		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
 	}
-}
-
-void MeshRendererComponent::AddJointNode(GameObject* node, ResourceModel* model)
-{
-	for (const auto& pair : model->mInvBindMatrices)
+	JsonArray arr = data.GetJsonArray("InverseBindMatrices");
+	for (int i = 0; i < arr.Size(); ++i)
 	{
-		if (pair.first == node->GetName())
-		{
-			mGameobjectsInverseMatrices.push_back(std::pair<GameObject*, float4x4>(node, pair.second));
-			break;
-		}
+		JsonObject obj = arr.GetJsonObject(i);
+		GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
+		float matrix[16];
+		obj.GetFloats("Matrix", matrix);
+		mGameobjectsInverseMatrices.emplace_back(ptr,
+			float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
+			matrix[4], matrix[5], matrix[6], matrix[7],
+			matrix[8], matrix[9], matrix[10], matrix[11],
+			matrix[12], matrix[13], matrix[14], matrix[15]));
 	}
-
 }
 
 void MeshRendererComponent::UpdatePalette()
 {
-	if (mModelUid == 0)
-	{
-		return;
-	}
-
-	if (mGameobjectsInverseMatrices.size() == 0)
-	{
-		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
-		if (model->mInvBindMatrices.size() == 0)
-		{
-			mHasSkinning = false;
-			App->GetResource()->ReleaseResource(mModelUid);
-			return;
-		}
-		// Initialize vector
-		GameObject* root = mOwner;
-		if (root->GetParent() != nullptr)
-		{
-			while (root->GetParent()->GetParent() != nullptr)
-			{
-				root = root->GetParent();
-			}
-		}
-
-		LoadAllChildJoints(root, model);
-		App->GetResource()->ReleaseResource(mModelUid); 
-	}
-
 	mPalette.clear();
 	mPalette.reserve(mGameobjectsInverseMatrices.size());
 	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)

@@ -1,38 +1,40 @@
 #version 460 core
 
 layout(std430, binding = 15) readonly buffer Palette {mat4 palette[];};
-layout(std430, binding = 16) readonly buffer BoneIndices {uvec4 boneIndices[];};
-layout(std430, binding = 17) readonly buffer Weights {vec4 weights[];};
-layout(std430, binding = 18) readonly buffer Positions {float inPos[];};
-layout(std430, binding = 19) readonly buffer Normals {float inNorm[];};
-layout(std430, binding = 20) readonly buffer Tangents {float inTang[];};
 layout(location = 25) uniform int numVertices;
-struct Vertex
+struct InVertex
+{
+    vec4 pos; // w == uv.x
+    vec4 norm; // x == uv.y
+    vec4 tang;
+    uvec4 joints;
+    vec4 weights;
+};
+layout(std430, binding = 20) readonly buffer AnimVertices {InVertex animVertices[];};
+struct OutVertex
 {
     vec4 pos; // w == uv.x
     vec4 norm; // x == uv.y
     vec4 tang;
 };
-layout(std430, binding = 21) writeonly buffer Vertices {Vertex outVertices[];};
+layout(std430, binding = 21) writeonly buffer Vertices {OutVertex outVertices[];};
+layout(location = 0) uniform uint skinOffset;
+
 
 layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
-
 void main()
 {
 	uint index = gl_GlobalInvocationID.x;
     if(index < numVertices) 
     {
-       vec3 outPos = vec3(inPos[index * 3], inPos[index * 3 + 1], inPos[index * 3 +2]);
-       vec3 outNorm = vec3(inNorm[index * 3], inNorm[index * 3 + 1], inNorm[index * 3 + 2]);
-       vec4 outTang = vec4(inTang[index * 3], inTang[index * 3 + 1], inTang[index * 3 + 2], inTang[index * 3 + 3]);
-       mat4 skinTransform = mat4(1.0f);
+       InVertex vertex = animVertices[skinOffset + index];
 
-        skinTransform = palette[boneIndices[index][0]]*weights[index][0]+ palette[boneIndices[index][1]]*weights[index][1]+
-        palette[boneIndices[index][2]]*weights[index][2]+palette[boneIndices[index][3]]*weights[index][3];
-       
-       outVertices[index].pos.xyz = (skinTransform*vec4(outPos,1.0)).xyz;
-       outVertices[index].norm.yzw = (skinTransform*vec4(outNorm,0.0)).xyz;
-       outVertices[index].tang.w = outTang.w;
-       outVertices[index].tang.xyz = (skinTransform*vec4(outTang.xyz,0.0)).xyz;
+       mat4 skinTransform = palette[vertex.joints[0]]*vertex.weights[0]+ palette[vertex.joints[1]]*vertex.weights[1]+
+        palette[vertex.joints[2]]*vertex.weights[2]+palette[vertex.joints[3]]*vertex.weights[3];
+
+       outVertices[index].pos.xyz = (skinTransform*vec4(vertex.pos.xyz,1.0)).xyz;
+       outVertices[index].norm.yzw = (skinTransform*vec4(vertex.norm.yzw,0.0)).xyz;
+       outVertices[index].tang.xyz = (skinTransform*vec4(vertex.tang.xyz,0.0)).xyz;
+       outVertices[index].tang.w = vertex.tang.w;
     }
 }

@@ -47,8 +47,8 @@ public:
 	bool IsCubemap() const;
 	unsigned int GetTexelSize() const { return mTexelSize; }
 
-	void MakeTextutureBindless();
-	void GenerateMipmaps();
+	void MakeTextutureBindless() const;
+	void GenerateMipmaps() const;
 
 private:
 	unsigned int mGLTarget;
@@ -58,12 +58,12 @@ private:
 	unsigned int mInternalFormat;
 	unsigned int mTexFormat;
 	unsigned int mDataType;
-	unsigned int mMipLevels;
-	unsigned int mPixelsSize;
+	mutable unsigned int mMipLevels;
+	mutable unsigned int mPixelsSize;
 	unsigned int mTexelSize;
 
 	bool mHasAlpha;
 
 	unsigned int mOpenGLId;
-	uint64_t mTexHandle;
+	mutable uint64_t mTexHandle;
 };

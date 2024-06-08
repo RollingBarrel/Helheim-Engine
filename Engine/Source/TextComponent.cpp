@@ -201,9 +201,9 @@ void TextComponent::Save(JsonObject& obj) const
     obj.AddFloat("Alpha", mAlpha);
 }
 
-void TextComponent::Load(const JsonObject& data)
+void TextComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    Component::Load(data);
+    Component::Load(data, uidPointerMap);
 
     mText = data.GetString("Text");
 

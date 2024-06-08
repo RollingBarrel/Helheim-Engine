@@ -11,11 +11,11 @@ class ENGINE_API BatchManager
 public:
 	BatchManager();
 	~BatchManager();
-	void AddMeshComponent(const MeshRendererComponent* meshComponent);
-	void RemoveMeshComponent(const MeshRendererComponent* meshComponent);
-	void EditMaterial(const MeshRendererComponent* meshComponent);
+	void AddMeshComponent(const MeshRendererComponent& meshComponent);
+	void RemoveMeshComponent(const MeshRendererComponent& meshComponent);
+	void EditMaterial(const MeshRendererComponent& meshComponent);
 
-	void AddCommand(const MeshRendererComponent* meshComponent);
+	void AddCommand(const MeshRendererComponent& meshComponent);
 	void CleanUpCommands();
 	void Draw();
 	void EndFrameDraw();
