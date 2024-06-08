@@ -215,9 +215,9 @@ void ImageComponent::Save(JsonObject& obj) const
 	obj.AddBool("IsPlaying", mIsPlaying);
 }
 
-void ImageComponent::Load(const JsonObject& data)
+void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 	mResourceId = data.GetInt("ImageID");
 	SetImage(mResourceId);
 
