@@ -22,6 +22,33 @@ DecalComponent::~DecalComponent()
 {
 }
 
+unsigned int DecalComponent::GetDiffuseId() const
+{
+	if (mDiffuseTexture)
+	{
+		return mDiffuseTexture->GetOpenGLId();
+	}
+	return 0;
+}
+
+unsigned int DecalComponent::GetSpecularId() const
+{
+	if (mSpecularTexture)
+	{
+		return mSpecularTexture->GetOpenGLId();
+	}
+	return 0;
+}
+
+unsigned int DecalComponent::GetNormalId() const
+{
+	if (mNormalTexture)
+	{
+		return mNormalTexture->GetOpenGLId();
+	}
+	return 0;
+}
+
 void DecalComponent::Update()
 {
 }

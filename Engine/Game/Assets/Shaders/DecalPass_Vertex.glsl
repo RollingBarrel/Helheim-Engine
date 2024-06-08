@@ -2,7 +2,7 @@
 
 layout(location = 0) in vec3 inPos;
 
-out vec3 sPos;
+out vec4 clipping;
 
 layout(location = 1) uniform mat4 model;
 
@@ -14,6 +14,6 @@ layout(std140, binding = 0) uniform CameraMatrices{
 
 void main()
 {
-	sPos = (model*vec4(inPos,1)).xyz;
-	gl_Position = proj * view * model * vec4(inPos,1);
+	clipping = proj * view * model * vec4(inPos,1);
+	gl_Position = clipping;
 }

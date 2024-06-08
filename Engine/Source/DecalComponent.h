@@ -15,6 +15,14 @@ public:
 
 	DecalComponent& operator=(const DecalComponent& other) = delete;
 
+	unsigned int GetDiffuseId() const;
+	unsigned int GetSpecularId() const;
+	unsigned int GetNormalId() const;
+
+	bool HasDiffuse() const{ return mDiffuseTexture; };
+	bool HasSpecular() const { return mSpecularTexture; };
+	bool HasNormal() const { return mNormalTexture; };
+
 	void Reset() override {}
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;

@@ -1063,6 +1063,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	{
 		mBatchManager.AddCommand(*mesh);
 	}
+
 	//Geometry Pass
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	glDisable(GL_BLEND);
@@ -1075,10 +1076,35 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 	//Decal Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, mGNormals);
+	
+
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mSkyVao);
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetDiffuseId());
+
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
+
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
+
+		glUniform1i(6, mDecalComponents[i]->HasDiffuse());
+		glUniform1i(7, mDecalComponents[i]->HasSpecular());
+		glUniform1i(8, mDecalComponents[i]->HasNormal());
+		glUniformMatrix4fv(9, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().Inverted().ptr());
+
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
@@ -1088,6 +1114,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glPopDebugGroup();
 
 	//Lighting Pass
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
 	glStencilMask(0x00);
 	glDisable(GL_DEPTH_TEST);
@@ -1116,6 +1143,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glDisable(GL_STENCIL_TEST);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(0xFF);
+	glPopDebugGroup();
 
 	//Particles
 	glActiveTexture(GL_TEXTURE0);
